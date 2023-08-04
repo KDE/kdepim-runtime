@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-02 00:48+0000\n"
+"POT-Creation-Date: 2023-08-03 00:47+0000\n"
 "PO-Revision-Date: 2022-10-11 10:11+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -38,7 +38,7 @@ msgid "Enabled"
 msgstr "Включить"
 
 # BUGME: clarify that "from" does not mean e-mail sender. --aspotashev
-#: newmailnotifieragent.cpp:371
+#: newmailnotifieragent.cpp:373
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -50,7 +50,7 @@ msgstr[1] "%1 новых письма в %2 в «%3»"
 msgstr[2] "%1 новых писем в %2 в «%3»"
 msgstr[3] "Одно новое письмо в %2 в «%3»"
 
-#: newmailnotifieragent.cpp:395
+#: newmailnotifieragent.cpp:398
 #, kde-format
 msgid "New mail arrived"
 msgstr "Получено письмо"
@@ -141,12 +141,12 @@ msgstr "Показывать кнопки действий"
 msgid "Reply Mail"
 msgstr "Ответное письмо"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:152
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:151
 #, kde-format
 msgid "Reply to Author"
 msgstr "Ответить автору"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:155
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:154
 #, kde-format
 msgid "Reply to All"
 msgstr "Ответить всем"
@@ -218,32 +218,38 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "aspotashev@gmail.com,gammaray@gmail.com"
 
-#: specialnotifierjob.cpp:114
+#: specialnotifierjob.cpp:109
 #, kde-format
 msgid "From: %1"
 msgstr "От: %1"
 
-#: specialnotifierjob.cpp:122
+#: specialnotifierjob.cpp:117
 #, kde-format
 msgid "Subject: %1"
 msgstr "Тема: %1"
 
-#: specialnotifierjob.cpp:125
+#: specialnotifierjob.cpp:121
 #, kde-format
 msgid "In: %1"
 msgstr "В папке: %1"
 
-#: specialnotifierjob.cpp:148
+#: specialnotifierjob.cpp:123
+#, fuzzy, kde-format
+#| msgid "In: %1"
+msgid "In: %1 (%2)"
+msgstr "В папке: %1"
+
+#: specialnotifierjob.cpp:147
 #, kde-format
 msgid "Show mail..."
 msgstr "Показать письмо..."
 
-#: specialnotifierjob.cpp:148
+#: specialnotifierjob.cpp:147
 #, kde-format
 msgid "Mark As Read"
 msgstr "Отметить как прочитанное"
 
-#: specialnotifierjob.cpp:148
+#: specialnotifierjob.cpp:147
 #, kde-format
 msgid "Delete"
 msgstr "Удалить"

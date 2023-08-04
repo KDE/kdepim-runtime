@@ -1290,7 +1290,3 @@ msgstr "Актуализирането на елемента е неуспешн
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Елементът е недостъпен, докато се обработва отговор на елемента."
-
-#~ msgid "Please enter password for user '%1' and Exchange account '%2'."
-#~ msgstr ""
-#~ "Моля, въведете парола за потребител ' %1' и акаунт в Exchange ' %2'."

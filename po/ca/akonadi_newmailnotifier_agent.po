@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-02 00:48+0000\n"
-"PO-Revision-Date: 2023-06-17 12:05+0200\n"
+"POT-Creation-Date: 2023-08-03 00:47+0000\n"
+"PO-Revision-Date: 2023-08-03 10:06+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 23.04.3\n"
 
 #: newmailnotificationhistorydialog.cpp:24
 #, kde-format
@@ -33,7 +33,7 @@ msgstr "Historial de notificacions"
 msgid "Enabled"
 msgstr "Activada"
 
-#: newmailnotifieragent.cpp:371
+#: newmailnotifieragent.cpp:373
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -43,7 +43,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Un correu electrònic nou en %2 des de «%3»"
 msgstr[1] "%1 correus electrònics nous en %2 des de «%3»"
 
-#: newmailnotifieragent.cpp:395
+#: newmailnotifieragent.cpp:398
 #, kde-format
 msgid "New mail arrived"
 msgstr "Ha arribat correu nou"
@@ -134,12 +134,12 @@ msgstr "Mostra els botons d'acció"
 msgid "Reply Mail"
 msgstr "Respon el correu"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:152
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:151
 #, kde-format
 msgid "Reply to Author"
 msgstr "Respon a l'autor"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:155
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:154
 #, kde-format
 msgid "Reply to All"
 msgstr "Respon a tots"
@@ -211,32 +211,37 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "antonibella5@yahoo.com"
 
-#: specialnotifierjob.cpp:114
+#: specialnotifierjob.cpp:109
 #, kde-format
 msgid "From: %1"
 msgstr "Des de: %1"
 
-#: specialnotifierjob.cpp:122
+#: specialnotifierjob.cpp:117
 #, kde-format
 msgid "Subject: %1"
 msgstr "Assumpte: %1"
 
-#: specialnotifierjob.cpp:125
+#: specialnotifierjob.cpp:121
 #, kde-format
 msgid "In: %1"
 msgstr "A: %1"
 
-#: specialnotifierjob.cpp:148
+#: specialnotifierjob.cpp:123
+#, kde-format
+msgid "In: %1 (%2)"
+msgstr "A: %1 (%2)"
+
+#: specialnotifierjob.cpp:147
 #, kde-format
 msgid "Show mail..."
 msgstr "Mostra el correu..."
 
-#: specialnotifierjob.cpp:148
+#: specialnotifierjob.cpp:147
 #, kde-format
 msgid "Mark As Read"
 msgstr "Marca com a llegit"
 
-#: specialnotifierjob.cpp:148
+#: specialnotifierjob.cpp:147
 #, kde-format
 msgid "Delete"
 msgstr "Elimina"

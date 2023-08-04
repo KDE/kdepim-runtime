@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-07-04 00:49+0000\n"
+"POT-Creation-Date: 2023-08-03 00:47+0000\n"
 "PO-Revision-Date: 2014-09-19 22:55+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Enabled"
 msgstr "Slått på"
 
-#: newmailnotifieragent.cpp:371
+#: newmailnotifieragent.cpp:373
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -41,7 +41,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] ""
 msgstr[1] ""
 
-#: newmailnotifieragent.cpp:391
+#: newmailnotifieragent.cpp:398
 #, kde-format
 msgid "New mail arrived"
 msgstr "Ny e-post ankommet"
@@ -131,12 +131,12 @@ msgstr ""
 msgid "Reply Mail"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:154
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:151
 #, kde-format
 msgid "Reply to Author"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:157
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:154
 #, kde-format
 msgid "Reply to All"
 msgstr ""
@@ -208,32 +208,37 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "bjornst@skogkatt.homelinux.org"
 
-#: specialnotifierjob.cpp:116
+#: specialnotifierjob.cpp:109
 #, kde-format
 msgid "From: %1"
 msgstr "Fra: %1"
 
-#: specialnotifierjob.cpp:124
+#: specialnotifierjob.cpp:117
 #, kde-format
 msgid "Subject: %1"
 msgstr "Emne: %1"
 
-#: specialnotifierjob.cpp:127
+#: specialnotifierjob.cpp:121
 #, kde-format
 msgid "In: %1"
 msgstr "I: %1"
 
-#: specialnotifierjob.cpp:150
+#: specialnotifierjob.cpp:123
+#, kde-format
+msgid "In: %1 (%2)"
+msgstr ""
+
+#: specialnotifierjob.cpp:147
 #, kde-format
 msgid "Show mail..."
 msgstr "Vis e-post …"
 
-#: specialnotifierjob.cpp:150
+#: specialnotifierjob.cpp:147
 #, kde-format
 msgid "Mark As Read"
 msgstr ""
 
-#: specialnotifierjob.cpp:150
+#: specialnotifierjob.cpp:147
 #, kde-format
 msgid "Delete"
 msgstr ""
