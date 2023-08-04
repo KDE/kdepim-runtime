@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-08-03 00:47+0000\n"
-"PO-Revision-Date: 2023-06-17 13:34+0300\n"
+"PO-Revision-Date: 2023-08-03 12:41+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.07.70\n"
+"X-Generator: Lokalize 23.11.70\n"
 "X-POOTLE-MTIME: 1413102278.000000\n"
 
 #: newmailnotificationhistorydialog.cpp:24
@@ -42,8 +42,8 @@ msgctxt ""
 "user named it)"
 msgid "One new email in %2 from \"%3\""
 msgid_plural "%1 new emails in %2 from \"%3\""
-msgstr[0] "%2 dizininde %3 kişisinden bir yeni e-posta"
-msgstr[1] "%2 dizininde %3 kişisinden %1 yeni e-posta"
+msgstr[0] "%2 içinde %3 kişisinden bir yeni e-posta"
+msgstr[1] "%2 içinde %3 kişisinden %1 yeni e-posta"
 
 #: newmailnotifieragent.cpp:398
 #, kde-format
@@ -54,7 +54,7 @@ msgstr "Yeni e-posta alındı"
 #, kde-format
 msgctxt "%f is a variable for agent. Do not change it"
 msgid "A message was received from %f"
-msgstr "%f konumundan bir ileti alındı"
+msgstr "%f aracısından bir ileti alındı"
 
 #: newmailnotifierreplymessagejob.cpp:38 newmailnotifiershowmessagejob.cpp:36
 #, kde-format
@@ -103,7 +103,7 @@ msgstr "Fotoğrafı Göster"
 #: newmailnotifiersettingswidget.cpp:61
 #, kde-format
 msgid "Show From"
-msgstr "Kimden Kısmını Göster"
+msgstr "Kimden Olduğunu Göster"
 
 #: newmailnotifiersettingswidget.cpp:65
 #, kde-format
@@ -173,7 +173,7 @@ msgstr "Bildir"
 #: newmailnotifiersettingswidget.cpp:144
 #, kde-format
 msgid "Folders"
-msgstr "Dizinler"
+msgstr "Klasörler"
 
 #: newmailnotifiersettingswidget.cpp:147
 #, kde-format
@@ -183,7 +183,7 @@ msgstr "Yeni Posta Bildirici Yardımcısı"
 #: newmailnotifiersettingswidget.cpp:149
 #, kde-format
 msgid "Notify about new mails."
-msgstr "Yeni posta bildirimi yap."
+msgstr "Yeni postaları bildir."
 
 #: newmailnotifiersettingswidget.cpp:151
 #, kde-format
@@ -225,13 +225,12 @@ msgstr "Konu: %1"
 #: specialnotifierjob.cpp:121
 #, kde-format
 msgid "In: %1"
-msgstr "Gelen: %1"
+msgstr "Şurada: %1"
 
 #: specialnotifierjob.cpp:123
-#, fuzzy, kde-format
-#| msgid "In: %1"
+#, kde-format
 msgid "In: %1 (%2)"
-msgstr "Gelen: %1"
+msgstr "Şurada: %1 (%2)"
 
 #: specialnotifierjob.cpp:147
 #, kde-format

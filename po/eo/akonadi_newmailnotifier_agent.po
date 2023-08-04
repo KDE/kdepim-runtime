@@ -11,7 +11,7 @@ msgstr ""
 "org\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-08-03 00:47+0000\n"
-"PO-Revision-Date: 2023-06-17 09:31+0100\n"
+"PO-Revision-Date: 2023-08-03 06:41+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -226,10 +226,9 @@ msgid "In: %1"
 msgstr "En: %1"
 
 #: specialnotifierjob.cpp:123
-#, fuzzy, kde-format
-#| msgid "In: %1"
+#, kde-format
 msgid "In: %1 (%2)"
-msgstr "En: %1"
+msgstr "En: %1 (%2)"
 
 #: specialnotifierjob.cpp:147
 #, kde-format

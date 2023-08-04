@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-08-03 00:47+0000\n"
-"PO-Revision-Date: 2023-06-17 08:53+0300\n"
+"PO-Revision-Date: 2023-08-03 09:56+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -229,10 +229,9 @@ msgid "In: %1"
 msgstr "У %1"
 
 #: specialnotifierjob.cpp:123
-#, fuzzy, kde-format
-#| msgid "In: %1"
+#, kde-format
 msgid "In: %1 (%2)"
-msgstr "У %1"
+msgstr "У %1 (%2)"
 
 #: specialnotifierjob.cpp:147
 #, kde-format

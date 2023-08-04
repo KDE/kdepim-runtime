@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-08-03 00:47+0000\n"
-"PO-Revision-Date: 2023-07-25 09:25+0200\n"
+"PO-Revision-Date: 2023-08-03 07:19+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
@@ -219,13 +219,12 @@ msgstr "Rubrik: %1"
 #: specialnotifierjob.cpp:121
 #, kde-format
 msgid "In: %1"
-msgstr "I: %1"
+msgstr "In: %1"
 
 #: specialnotifierjob.cpp:123
-#, fuzzy, kde-format
-#| msgid "In: %1"
+#, kde-format
 msgid "In: %1 (%2)"
-msgstr "I: %1"
+msgstr "In: %1 (%2)"
 
 #: specialnotifierjob.cpp:147
 #, kde-format
