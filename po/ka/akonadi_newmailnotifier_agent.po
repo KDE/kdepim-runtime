@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-07-04 00:49+0000\n"
-"PO-Revision-Date: 2022-09-12 09:40+0200\n"
+"PO-Revision-Date: 2023-08-04 07:25+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,13 +16,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: newmailnotificationhistorydialog.cpp:24
 #, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
-msgstr ""
+msgstr "გაფრთხილებების ისტორია"
 
 #: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:111
@@ -60,6 +60,8 @@ msgstr "KMail აპლიკაციის გაშვების შეც�
 #, kde-format
 msgid "Select which folders to monitor for new message notifications:"
 msgstr ""
+"აირჩიეთ, რომელი საქაღალდეებს ვადევნო თვალყური ახალი შეტყობინების "
+"გაფრთხილებებისთვის:"
 
 #: newmailnotifierselectcollectionwidget.cpp:125
 #, kde-format
@@ -82,6 +84,8 @@ msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
 "li><li>%f set from</li></ul></qt>"
 msgstr ""
+"<qt><p>აქ შეგიძლიათ შეტყობინება განსაზღვროთ. შეგიძლიათ, გამოიყენოთ::</"
+"p><ul><li>%s თემს დაყენება</li><li>%f საიდან დაყენება</li></ul></qt>"
 
 #: newmailnotifiersettingswidget.cpp:52
 #, kde-format
@@ -116,7 +120,7 @@ msgstr "არ შემატყობინო, თუ ელფოსტა �
 #: newmailnotifiersettingswidget.cpp:77
 #, kde-format
 msgid "Keep Persistent Notification"
-msgstr ""
+msgstr "მუდმივი შეტყობინების შენარჩუნება"
 
 #: newmailnotifiersettingswidget.cpp:81
 #, kde-format
@@ -234,3 +238,7 @@ msgstr "წაკითხულად მონიშვნა"
 #, kde-format
 msgid "Delete"
 msgstr "წაშლა"
+
+#~| msgid "In: %1"
+#~ msgid "In: %1 (%2)"
+#~ msgstr "თარიღი: %1 (%2)"
