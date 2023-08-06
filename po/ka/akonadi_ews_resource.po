@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-04-28 00:49+0000\n"
-"PO-Revision-Date: 2022-06-24 22:28+0200\n"
+"PO-Revision-Date: 2023-08-05 09:53+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: ewsautodiscoveryjob.cpp:44 ewsautodiscoveryjob.cpp:51
 #, kde-format
@@ -134,6 +134,8 @@ msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
 "still want to save your settings?"
 msgstr ""
+"ავტომატური აღმოჩენის პრობლემა. ეს შეიძლება არასწორმა პარამეტრებმა "
+"გამოიწვიონ. მაინც გნებავთ პარამეტრების შენახვა?"
 
 #: ewsconfigdialog.cpp:338
 #, kde-format
@@ -146,6 +148,8 @@ msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
 "Do you still want to save your settings?"
 msgstr ""
+"Exchange სერვერთან მიერთების პრობლემა. ეს შეიძლება არასწორმა პარამეტრებმა "
+"გამოიწვიონ. მაინც გნებავთ პარამეტრების შენახვა?"
 
 #: ewsconfigdialog.cpp:369
 #, kde-format
@@ -188,6 +192,7 @@ msgstr "ანგარიშის სახელი:"
 #, kde-format
 msgid "This is the account name that will appear in all Akonadi applications"
 msgstr ""
+"ეს არის ანგარიშის სახელი, რომელიც Akonadi-ის ყველა აპლიკაციაში გამოჩნდება"
 
 #. i18n: ectx: property (text), widget (QLabel, emailLabel)
 #: ewsconfigdialog.ui:71
@@ -793,6 +798,8 @@ msgstr "ელემენტის გადატანის შეცდო�
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
 msgstr ""
+"ელემენტის გადატანის შეცდომა - სერვერიდან მიღებული პასუხების რაოდენობა "
+"არასწორია"
 
 #: ewsresource.cpp:720
 #, kde-format
@@ -812,12 +819,13 @@ msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
 msgstr ""
+"ელემენტის წაშლის შეცდომა - სერვერიდან მიღებული პასუხების რაოდენობა არასწორია"
 
 #: ewsresource.cpp:779 ewsresource.cpp:992
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
-msgstr ""
+msgstr "ელემენტის ტიპი შექმნისთვის მხარდაჭერილი არაა"
 
 #: ewsresource.cpp:790
 #, kde-format
@@ -836,6 +844,7 @@ msgstr "ელემენტის შექმნა შეუძლებე�
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr ""
+"კოლექციის დამატების შეცდომა - EWS-ის საქაღალდის ტიპის დადგენა შეუძლებელია"
 
 #: ewsresource.cpp:836
 #, kde-format
@@ -873,6 +882,8 @@ msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
 msgstr ""
+"საქაღალდის გადატანის შეცდომა - სერვერიდან მიღებული პასუხების რაოდენობა "
+"არასწორია"
 
 #: ewsresource.cpp:900
 #, kde-format
@@ -898,6 +909,8 @@ msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
 msgstr ""
+"საქაღალდის განახლების შეცდომა - სერვერიდან მიღებული პასუხების რაოდენობა "
+"არასწორია"
 
 #: ewsresource.cpp:951
 #, kde-format
@@ -939,7 +952,7 @@ msgstr "ელემენტის გაგზავნა შეუძლე�
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
-msgstr ""
+msgstr "სერვერიდან მიღებული პასუხების რაოდენობა არასწორია"
 
 #: ewsresource.cpp:1243
 #, kde-format
@@ -963,13 +976,13 @@ msgstr "ელემენტის ჭდეების განახლე�
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
-msgstr ""
+msgstr "გლობალური ჭდის განახლების მოთხოვნის დამუშავების შეცდომა"
 
 #: ewsresource.cpp:1315
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
-msgstr ""
+msgstr "გლობალური ჭდის განახლების მიღების დამუშავების შეცდომა"
 
 #: ewsresource.cpp:1386
 #, kde-format
@@ -1016,7 +1029,7 @@ msgstr "მომხმარებელი"
 #: ewsresource.kcfg:16 ewsresource.kcfg:17
 #, kde-format
 msgid "The username that is used to log into the Microsoft Exchange server"
-msgstr ""
+msgstr "Microsoft Exchange სერვერზე შესვლისას გამოყენებული მომხმარებლის სახელი"
 
 #. i18n: ectx: label, entry (Domain), group (General)
 #: ewsresource.kcfg:20
@@ -1029,13 +1042,13 @@ msgstr "დომენი"
 #: ewsresource.kcfg:21 ewsresource.kcfg:22
 #, kde-format
 msgid "The Active Directory domain the user belongs to"
-msgstr ""
+msgstr "Active Directory-ის დომენი, რომელსაც ეს მომხმარებელი ეკუთვნის"
 
 #. i18n: ectx: label, entry (HasDomain), group (General)
 #: ewsresource.kcfg:25
 #, kde-format
 msgid "Use a domain name during authentication"
-msgstr ""
+msgstr "ავთენტიკაციისას დომენის სახელის გამოყენება"
 
 #. i18n: ectx: label, entry (Email), group (General)
 #: ewsresource.kcfg:29
@@ -1049,13 +1062,13 @@ msgstr "ელ-ფოსტა"
 #: ewsresource.kcfg:30 ewsresource.kcfg:31
 #, kde-format
 msgid "The primary e-mail address of this account"
-msgstr ""
+msgstr "ძირითადი ელფოსტის მისამართია ამ ანგარიშისთვის"
 
 #. i18n: ectx: tooltip, entry (AutoDiscovery), group (General)
 #: ewsresource.kcfg:35
 #, kde-format
 msgid "Attempt to automatically discover Exchange server address"
-msgstr ""
+msgstr "Exchange სერვერის მისამართის ავტომატური აღმოჩენის მცდელობა"
 
 #. i18n: ectx: whatsthis, entry (AutoDiscovery), group (General)
 #: ewsresource.kcfg:36
@@ -1075,13 +1088,13 @@ msgstr ""
 #: ewsresource.kcfg:40
 #, kde-format
 msgid "Sets the interval for checking for new mail"
-msgstr ""
+msgstr "ახალი ელფოსტის შემოწმების ინტერვალის დაყენება"
 
 #. i18n: ectx: whatsthis, entry (PollInterval), group (General)
 #: ewsresource.kcfg:41
 #, kde-format
 msgid "Sets the interval for checking for new mail."
-msgstr ""
+msgstr "ახალი ელფოსტის შემოწმების ინტერვალის დაყენება."
 
 #. i18n: ectx: label, entry (ServerSubscription), group (General)
 #: ewsresource.kcfg:47
@@ -1093,19 +1106,19 @@ msgstr ""
 #: ewsresource.kcfg:50
 #, kde-format
 msgid "List of folders to subscribe to"
-msgstr ""
+msgstr "გამოსაწერი საქაღალდეების სია"
 
 #. i18n: ectx: label, entry (EnableNTLMv2), group (General)
 #: ewsresource.kcfg:54
 #, kde-format
 msgid "Enable NTLMv2 authentication"
-msgstr ""
+msgstr "NTLMv2 ავთენტიკაციის ჩართვა"
 
 #. i18n: ectx: label, entry (UserAgent), group (General)
 #: ewsresource.kcfg:58
 #, kde-format
 msgid "Forces a non-default User-Agent string"
-msgstr ""
+msgstr "არანაგულისხმევი User-Agent სტრიქონის დაყენება"
 
 #. i18n: ectx: label, entry (OAuth2AppId), group (General)
 #: ewsresource.kcfg:64
