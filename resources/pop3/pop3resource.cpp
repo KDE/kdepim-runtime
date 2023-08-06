@@ -20,6 +20,7 @@
 
 #include "pop3resource_debug.h"
 #include <KAuthorized>
+#include <KLocalizedString>
 #include <KMessageBox>
 #include <KNotification>
 #include <KPasswordDialog>
