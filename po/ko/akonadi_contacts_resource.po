@@ -36,8 +36,8 @@ msgid ""
 "Select the directory whose contents should be represented by this resource. "
 "If the directory does not exist, it will be created."
 msgstr ""
-"이 자원에서 사용할 연락처 디렉터리를 지정하십시오. 지정한 디렉터리가 없으면 "
-"새로 만듭니다."
+"이 리소스에서 사용할 연락처 디렉터리를 지정하십시오. 지정한 디렉터리가 없으"
+"면 새로 만듭니다."
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: contactsagentsettingswidget.ui:65

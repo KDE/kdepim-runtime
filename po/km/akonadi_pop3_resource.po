@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-09 00:49+0000\n"
+"POT-Creation-Date: 2023-08-08 00:47+0000\n"
 "PO-Revision-Date: 2012-06-12 10:21+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -24,7 +24,7 @@ msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " នាទី"
 
-#: accountwidget.cpp:125 pop3resource.cpp:49
+#: accountwidget.cpp:125 pop3resource.cpp:50
 #, kde-format
 msgid "POP3 Account"
 msgstr "គណនី POP3"
@@ -278,78 +278,78 @@ msgstr ""
 msgid "Unexpected response from POP3 server."
 msgstr "លុប​សារ​ពី​ម៉ាស៊ីនបម្រើ ។"
 
-#: pop3resource.cpp:98
+#: pop3resource.cpp:99
 #, kde-format
 msgid "Mail check aborted."
 msgstr "បាន​បោះបង់​ការ​ពិនិត្យ​មើល​សំបុត្រ ។"
 
-#: pop3resource.cpp:105
+#: pop3resource.cpp:106
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "កា​រពិនិត្យ​មើល​សំបុត្រ​ត្រូវ​បាន​បោះបង់​ដោយដៃ ។"
 
-#: pop3resource.cpp:133
+#: pop3resource.cpp:134
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "សូម​បញ្ចូល​ឈ្មោះ​អ្នកប្រើ និង​ពាក្យសម្ងាត់​សម្រាប់​គណនី '%1' ។"
 
-#: pop3resource.cpp:150
+#: pop3resource.cpp:151
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "អ្នក​ត្រូវ​បាន​សួរ​នៅ​ទីនេះ ពីព្រោះ​ពាក្យ​សម្ងាត់​មិន​អាច​ត្រូវ​បាន​ផ្ទុក​ពី​កាបូប​ទេ ។"
 
-#: pop3resource.cpp:166
+#: pop3resource.cpp:167
 #, kde-format
 msgid "Account:"
 msgstr "គណនី ៖"
 
-#: pop3resource.cpp:183
+#: pop3resource.cpp:184
 #, kde-format
 msgid "No username and password supplied."
 msgstr "គ្មាន​ឈ្មោះ​អ្នកប្រើ និង​ពាក្យ​សម្ងាត់​បាន​ផ្ដល់​ទេ ។"
 
-#: pop3resource.cpp:202
+#: pop3resource.cpp:203
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "រៀបចំ​បញ្ជូន​ពី \"%1\" ។"
 
-#: pop3resource.cpp:223
+#: pop3resource.cpp:224
 #, kde-format
 msgid "Executing precommand."
 msgstr "ប្រតិបត្តិ​ពាក្យ​បញ្ជា ។"
 
-#: pop3resource.cpp:248
+#: pop3resource.cpp:249
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "អ្នក​ត្រូវ​បាន​សួរ​នៅ​ទីនេះ ពីព្រោះ​ការ​ចូល​ពី​លើក​មុន​មិន​ជោគជ័យ​ឡើយ ។"
 
-#: pop3resource.cpp:250
+#: pop3resource.cpp:251
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "អ្នក​ត្រូវ​បាន​សួរ​នៅ​ទីនេះ ពីព្រោះ​ឈ្មោះ​អ្នកប្រើ​ដែល​អ្នក​ផ្ដល់​គឺ​ទទេ ។"
 
-#: pop3resource.cpp:277
+#: pop3resource.cpp:278
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "ទៅយក​បញ្ជី​សំបុត្រ​រួម ។"
 
-#: pop3resource.cpp:334
+#: pop3resource.cpp:335
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "រក្សាទុក​សារ​ដែលបាន​ទាញយក ។"
 
-#: pop3resource.cpp:352
+#: pop3resource.cpp:353
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "រក្សាទុក​ពាក្យ​សម្ងាត់​ទៅកាន់​កាបូប ។"
 
-#: pop3resource.cpp:394
+#: pop3resource.cpp:395
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr "កំហុស​ខណៈពេលព្យាយាម​យក​ថត​ប្រអប់​​ទទួល​មូលដ្ឋាន​ បោះបង់​ការ​ពិនិត្យ​សំបុត្រ ។"
 
-#: pop3resource.cpp:401
+#: pop3resource.cpp:402
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -359,39 +359,39 @@ msgstr ""
 "<qt>ថត​ដែល​អ្នក​បាន​លុប​ត្រូវ​បាន​ភ្ជាប់​ជា​មួយ​គណនី <b>%1</b> ដែល​បាន​បញ្ចូល​សំបុត្រ​ឲ្យ​វា ។ ថត​ដែល​គណនី​"
 "បញ្ជូន​សំបុត្រ​ថ្មី​ទៅ​ត្រូវ​បាន​កំណត់​ជា​ថត​ប្រអប់​ទទួល​មេ ។</qt>"
 
-#: pop3resource.cpp:422
+#: pop3resource.cpp:423
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr "កំហុស​ខណៈ​ពេល​ព្យាយាម​យក​ថត​សម្រាប់​សំបុត្រ​ចូល បោះបង់​ការ​ពិនិត្យ​សំបុត្រ ។"
 
-#: pop3resource.cpp:435
+#: pop3resource.cpp:436
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr "មិន​អាច​រក​ថត​សម្រាប់​សំបុត្រ​ចូល​បានទេ បោះបង់​ការ​ពិនិត្យ​សំបុត្រ ។"
 
-#: pop3resource.cpp:446
+#: pop3resource.cpp:447
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "កំហុស​ ខណៈ​ពេល​ប្រតិបត្តិ​​មុន​ពាក្យ​បញ្ជា​"
 
-#: pop3resource.cpp:460
+#: pop3resource.cpp:461
 #, fuzzy, kde-format
 #| msgid "Unable to login to the server %1."
 msgid "Unable to login to the server \"%1\"."
 msgstr "មិន​អាច​ចូល​​ទៅ​កាន់​ម៉ាស៊ីន​បម្រើ​ %1 បាន​ទេ ។"
 
-#: pop3resource.cpp:469
+#: pop3resource.cpp:470
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "កំហុស​ខណៈ​ពេល​យក​បញ្ជី​សារ​នៅ​លើ​ម៉ាស៊ីន​បម្រើ ។"
 
-#: pop3resource.cpp:483
+#: pop3resource.cpp:484
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr "កំហុស​ខណៈ​ពេល​យក​បញ្ជី​របស់​ឧបករណ៍​សម្គាល់​អត្តសញ្ញាណ​​សំបុត្រ​តែ​មួយ​គត់​ពី​ម៉ាស៊ីន​បម្រើ ។"
 
-#: pop3resource.cpp:496
+#: pop3resource.cpp:497
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -404,64 +404,64 @@ msgstr ""
 "ឲ្យ​កំណត់ នៅ​​ក្នុង​វិធីដែលអាច​ទុកចិត្ត​បាន ដែលសំបុត្រ​នៅ​លើ​ម៉ាស៊ីនបម្រើ KMail បាន​ឃើញ​រួច​ហើយ​ពីមុន\n"
 "លក្ខណពិសេស​ គឺ​ត្រូវទុក​សំបុត្រ​នៅ​លើ​ម៉ាស៊ីន​បម្រើ​ ដូច្នេះ​នឹង​មិន​ដំណើរការ​ត្រឹមត្រូវ​ទេ ។"
 
-#: pop3resource.cpp:511
+#: pop3resource.cpp:512
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "កំហុស​ខណៈពេល​ទៅយក​សំបុត្រ​​ពី​ម៉ាស៊ីន​បម្រើ ។"
 
-#: pop3resource.cpp:571
+#: pop3resource.cpp:572
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
 msgstr "ទៅ​យក​សារ %1 នៃ %2 (%3 នៃ %4 KB) សម្រាប់ %5 (នៅ​សល់​ %6 គីឡូបៃ​នៅ​លើ​ម៉ាស៊ីន​បម្រើ) ។"
 
-#: pop3resource.cpp:580
+#: pop3resource.cpp:581
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "ទៅ​យក​សារ %1 នៃ %2 (%3 នៃ %4 KB) សម្រាប់ %5"
 
-#: pop3resource.cpp:603
+#: pop3resource.cpp:604
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "មិន​អាច​រក្សា​​ទុក​សំបុត្រ​ដែល​ទាញ​យក​បាន​ទេ ។"
 
-#: pop3resource.cpp:751
+#: pop3resource.cpp:752
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "បាន​បរាជ័យ​ក្នុងការ​លុប​សារ​ពី​ម៉ាស៊ីន​បម្រើ ។"
 
-#: pop3resource.cpp:807
+#: pop3resource.cpp:808
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "បាន​បញ្ចប់​ការ​ពិនិត្យ​មើល​សំបុត្រ គ្មានសារ​ត្រូវ​​ទាញយកទេ"
 
-#: pop3resource.cpp:809
+#: pop3resource.cpp:810
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "បាន​បញ្ចប់​ការ​ពិនិត្យ​សារ បាន​ទាញ​យកសារ %1 ។"
 
-#: pop3resource.cpp:823
+#: pop3resource.cpp:824
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "មិនអាច​បញ្ចប់​ការ​ទៅយក​សំបុត្រ​នេះ​បាន​ទេ ។"
 
-#: pop3resource.cpp:958
+#: pop3resource.cpp:959
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "កំពុង​ពិនិត្យ​មើល​សំបុត្រ​ហើយ មិន​អាច​ចាប់ផ្ដើម​ពិនិត្យ​ជាលើក​ទីពីរ​បាន​ទេ ។"
 
-#: pop3resource.cpp:979
+#: pop3resource.cpp:980
 #, kde-format
 msgid "Ready"
 msgstr "រួចហើយ"
 
-#: pop3resource.cpp:982
+#: pop3resource.cpp:983
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "បាន​បោះបង់​ការ​ពិនិត្យ​មើល​សំបុត្រ បន្ទាប់​ពី​ទៅ​ក្រៅ​បណ្ដាញ ។"
 
-#: pop3resource.cpp:984
+#: pop3resource.cpp:985
 #, kde-format
 msgid "Offline"
 msgstr "ក្រៅ​បណ្ដាញ"

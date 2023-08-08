@@ -20,7 +20,7 @@ msgstr ""
 #: etesyncresource.cpp:49
 #, kde-format
 msgid "EteSync Resource"
-msgstr "EteSync 자원"
+msgstr "EteSync 리소스"
 
 #: etesyncresource.cpp:187
 #, kde-format

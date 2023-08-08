@@ -69,7 +69,7 @@ msgid ""
 "Select the directory whose contents should be represented by this resource. "
 "If the directory does not exist, it will be created."
 msgstr ""
-"이 자원과 연결할 디렉터리를 선택하십시오. 디렉터리가 없으면 생성합니다."
+"이 리소스와 연결할 디렉터리를 선택하십시오. 디렉터리가 없으면 생성합니다."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: icaldirsagentsettingswidget.ui:68

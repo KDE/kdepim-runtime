@@ -112,7 +112,7 @@ msgstr "메일의 플래그를 변경할 수 없습니다. %1"
 #: maildirresource.cpp:366
 #, kde-format
 msgid "Maildir resource got a non-mail content."
-msgstr "Maildir 자원에 메일이 아닌 것이 있습니다."
+msgstr "Maildir 리소스에 메일이 아닌 것이 있습니다."
 
 #: maildirresource.cpp:393
 #, kde-format
