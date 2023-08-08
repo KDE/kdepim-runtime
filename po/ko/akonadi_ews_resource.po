@@ -79,7 +79,7 @@ msgstr "사용자 정의"
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
-msgstr "Microsoft Exchange 웹 서비스(EWS)용 Akonadi 자원"
+msgstr "Microsoft Exchange 웹 서비스(EWS)용 Akonadi 리소스"
 
 #: ewsconfigdialog.cpp:150
 #, kde-format
@@ -258,11 +258,11 @@ msgstr ""
 "<html><head/><body><p>사용자의 액티브 디렉터리 도메인을 지정할 수 있도록 합니"
 "다.</p><p><span style=\" font-weight:600;\">메모:</span> &quot;빈 도메인"
 "&quot;과 &quot;도메인 없음&quot;에는 차이가 있습니다.</p><p>빈 도메인(도메인 "
-"체크 상자 선택, 도메인을 입력하지 않음)을 사용하는 경우에는 EWS 자원 빈 도메"
-"인을 명시적으로 지정합니다(&quot;\\username&quot;).</p><p>도메인을 선택하지 "
-"않으면(도메인 체크 상자 선택 해제) 사용자 이름에 도메인을 추가하지 않습니다"
-"(&quot;username&quot;). 이때 서버에서 기본적으로 지정한 도메인을 사용합니다."
-"</p></body></html>"
+"체크 상자 선택, 도메인을 입력하지 않음)을 사용하는 경우에는 EWS 리소스 빈 도"
+"메인을 명시적으로 지정합니다(&quot;\\username&quot;).</p><p>도메인을 선택하"
+"지 않으면(도메인 체크 상자 선택 해제) 사용자 이름에 도메인을 추가하지 않습니"
+"다(&quot;username&quot;). 이때 서버에서 기본적으로 지정한 도메인을 사용합니"
+"다.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_HasDomain)
 #: ewsconfigdialog.ui:146
@@ -701,20 +701,20 @@ msgstr "부모 Exchange 계정:"
 #: ewsmtaresource.cpp:57
 #, kde-format
 msgid "Unable to connect to master EWS resource"
-msgstr "주 EWS 자원에 연결할 수 없음"
+msgstr "주 EWS 리소스에 연결할 수 없음"
 
 #. i18n: ectx: label, entry (EwsResource), group (General)
 #: ewsmtaresource.kcfg:10
 #, kde-format
 msgid "Ews Resource"
-msgstr "EWS 자원"
+msgstr "EWS 리소스"
 
 #. i18n: ectx: tooltip, entry (EwsResource), group (General)
 #. i18n: ectx: whatsthis, entry (EwsResource), group (General)
 #: ewsmtaresource.kcfg:11 ewsmtaresource.kcfg:12
 #, kde-format
 msgid "The name of the parent EWS Resource to use when sending mail"
-msgstr "메일을 보낼 때 사용할 부모 EWS 자원 이름"
+msgstr "메일을 보낼 때 사용할 부모 EWS 리소스 이름"
 
 #: ewsprogressdialog.cpp:34
 #, kde-format

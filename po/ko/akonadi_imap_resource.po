@@ -502,7 +502,7 @@ msgstr "서버 정보"
 #: serverinfodialog.cpp:83
 #, kde-format
 msgid "Resource not synchronized yet."
-msgstr "자원을 아직 동기화하지 않았습니다."
+msgstr "리소스를 아직 동기화하지 않았습니다."
 
 #: sessionpool.cpp:250 sessionpool.cpp:406
 #, kde-format

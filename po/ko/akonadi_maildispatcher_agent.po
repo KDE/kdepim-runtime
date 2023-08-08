@@ -112,12 +112,12 @@ msgstr "메시지를 보낼 수 없습니다. 전송 설정이 잘못되었습�
 #: sendjob.cpp:97
 #, kde-format
 msgid "Failed to get D-Bus interface of resource %1."
-msgstr "자원 %1의 D-Bus 인터페이스를 가져올 수 없습니다."
+msgstr "리소스 %1의 D-Bus 인터페이스를 가져올 수 없습니다."
 
 #: sendjob.cpp:110
 #, kde-format
 msgid "Invalid D-Bus reply from resource %1."
-msgstr "자원 %1에서 잘못된 D-Bus 응답이 돌아왔습니다."
+msgstr "리소스 %1에서 잘못된 D-Bus 응답이 돌아왔습니다."
 
 #: sendjob.cpp:228
 #, kde-format
