@@ -21,7 +21,7 @@ msgstr ""
 #: settingsdialog.ui:29
 #, kde-format
 msgid "Directory settings of the resource."
-msgstr "자원의 디렉터리 설정입니다."
+msgstr "리소스의 디렉터리 설정입니다."
 
 #. i18n: ectx: property (whatsThis), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:32
@@ -29,7 +29,7 @@ msgstr "자원의 디렉터리 설정입니다."
 msgid ""
 "Select settings of the directory whose contents should be represented by "
 "this resource."
-msgstr "이 자원의 내용으로 표시할 디렉터리 설정을 선택하십시오."
+msgstr "이 리소스의 내용으로 표시할 디렉터리 설정을 선택하십시오."
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: settingsdialog.ui:39
@@ -56,7 +56,7 @@ msgid ""
 "Select the directory whose contents should be represented by this resource. "
 "If the directory does not exist, it will be created."
 msgstr ""
-"이 자원과 연결할 디렉터리를 선택하십시오. 디렉터리가 없으면 생성합니다."
+"이 리소스와 연결할 디렉터리를 선택하십시오. 디렉터리가 없으면 생성합니다."
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: settingsdialog.ui:81
@@ -127,7 +127,7 @@ msgstr "분 단위의 자동 저장 간격입니다."
 #, kde-format
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr ""
-"자원 데이터를 자동으로 저장할 분 단위 자동 저장 시간 간격을 선택하십시오."
+"리소스 데이터를 자동으로 저장할 분 단위 자동 저장 시간 간격을 선택하십시오."
 
 #: singlefileresource.h:65
 #, kde-format
@@ -137,7 +137,7 @@ msgstr "파일이 선택되지 않았음."
 #: singlefileresource.h:67
 #, kde-format
 msgid "The resource not configured yet"
-msgstr "자원이 설정되지 않음"
+msgstr "리소스가 설정되지 않음"
 
 #: singlefileresource.h:98 singlefileresource.h:127 singlefileresource.h:212
 #: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294

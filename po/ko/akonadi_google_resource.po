@@ -167,7 +167,7 @@ msgstr "로그인"
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
-msgstr "자원이 설정되지 않음"
+msgstr "리소스가 설정되지 않음"
 
 #: googleresource.cpp:248
 #, kde-format

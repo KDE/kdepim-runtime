@@ -55,6 +55,7 @@ Comment[gl]=Fornece acceso ao correo, citas, tarefas e contractos dun servidor d
 Comment[hsb]=Spřistupni mejlki, terminy a kontakty Microsoft Exchange-serwera z pomocu EWS
 Comment[ia]=Provide accesso a messages de e-posta, cargas de appunctamentos e contactos de un servitor de Microsoft Exchange usante EWS
 Comment[it]=Consente l'accesso a messaggi di posta, appuntamenti, attività e contatti di un server Microsoft Exchange tramite EWS
+Comment[ka]=გაძლევთ EWS-ის საშუალებით Microsoft Exchange სერვერზე ელფოსტის, შეხვედრებისა და კონტაქტებზე წვდომის საშუალებას
 Comment[ko]=EWS를 사용하여 Microsoft Exchange 서버의 약속, 할 일, 연락처 정보를 가져옵니다
 Comment[nl]=Geeft toegang tot e-mail, taken bij afspraken en contactpersonen op een Microsoft Exchange server met EWS.
 Comment[nn]=Gjev tilgang til e-post, avtalar og kontakt på ein Microsoft-Exchange-tenar via EWS

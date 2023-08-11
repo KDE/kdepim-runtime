@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-09 00:49+0000\n"
+"POT-Creation-Date: 2023-08-08 00:47+0000\n"
 "PO-Revision-Date: 2010-11-21 15:56-0800\n"
 "Last-Translator: Fumiaki Okushi <okushi@kde.gr.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -24,7 +24,7 @@ msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " 分"
 
-#: accountwidget.cpp:125 pop3resource.cpp:49
+#: accountwidget.cpp:125 pop3resource.cpp:50
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 アカウント"
@@ -283,80 +283,80 @@ msgstr ""
 msgid "Unexpected response from POP3 server."
 msgstr ""
 
-#: pop3resource.cpp:98
+#: pop3resource.cpp:99
 #, kde-format
 msgid "Mail check aborted."
 msgstr "メールチェックを中止しました。"
 
-#: pop3resource.cpp:105
+#: pop3resource.cpp:106
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "メールチェックが手動でキャンセルされました。"
 
-#: pop3resource.cpp:133
+#: pop3resource.cpp:134
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "アカウント “%1” のユーザ名とパスワードを入力してください。"
 
-#: pop3resource.cpp:150
+#: pop3resource.cpp:151
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "パスワードをウォレットから読み込めませんでした。"
 
-#: pop3resource.cpp:166
+#: pop3resource.cpp:167
 #, kde-format
 msgid "Account:"
 msgstr "アカウント:"
 
-#: pop3resource.cpp:183
+#: pop3resource.cpp:184
 #, kde-format
 msgid "No username and password supplied."
 msgstr "ユーザ名とパスワードが与えられていません。"
 
-#: pop3resource.cpp:202
+#: pop3resource.cpp:203
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr ""
 
-#: pop3resource.cpp:223
+#: pop3resource.cpp:224
 #, kde-format
 msgid "Executing precommand."
 msgstr "前コマンドを実行しています。"
 
-#: pop3resource.cpp:248
+#: pop3resource.cpp:249
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "前回、ログインに失敗しました。"
 
-#: pop3resource.cpp:250
+#: pop3resource.cpp:251
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "ユーザ名が空です。"
 
-#: pop3resource.cpp:277
+#: pop3resource.cpp:278
 #, kde-format
 msgid "Fetching mail listing."
 msgstr ""
 
-#: pop3resource.cpp:334
+#: pop3resource.cpp:335
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "ダウンロードしたメッセージを保存しています。"
 
-#: pop3resource.cpp:352
+#: pop3resource.cpp:353
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "パスワードをウォレットに保存しています。"
 
-#: pop3resource.cpp:394
+#: pop3resource.cpp:395
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
 "ローカルの受信箱フォルダの取得中にエラーが発生したため、メールチェックを中止"
 "します。"
 
-#: pop3resource.cpp:401
+#: pop3resource.cpp:402
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -367,7 +367,7 @@ msgstr ""
 "ました。このアカウントの新着メールの行き先を標準の受信箱にリセットしました。"
 "</qt>"
 
-#: pop3resource.cpp:422
+#: pop3resource.cpp:423
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
@@ -375,34 +375,34 @@ msgstr ""
 "受信メール用のフォルダを取得中にエラーが発生したため、メールチェックを中止し"
 "ます。"
 
-#: pop3resource.cpp:435
+#: pop3resource.cpp:436
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr ""
 "受信メール用のフォルダが見つからなかったため、メールチェックを中止します。"
 
-#: pop3resource.cpp:446
+#: pop3resource.cpp:447
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "前コマンドの実行中にエラーが発生しました。"
 
-#: pop3resource.cpp:460
+#: pop3resource.cpp:461
 #, fuzzy, kde-format
 #| msgid "Unable to login to the server %1."
 msgid "Unable to login to the server \"%1\"."
 msgstr "サーバ %1 にログインできません。"
 
-#: pop3resource.cpp:469
+#: pop3resource.cpp:470
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "サーバ上のメッセージリストを取得中にエラーが発生しました。"
 
-#: pop3resource.cpp:483
+#: pop3resource.cpp:484
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr "サーバからメールの一意識別子のリストを取得中にエラーが発生しました。"
 
-#: pop3resource.cpp:496
+#: pop3resource.cpp:497
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -416,12 +416,12 @@ msgstr ""
 "なのかを確実に判断するために必要です。したがって、メッセージをサーバに残して"
 "おく機能は正常には動作しません。</html>"
 
-#: pop3resource.cpp:511
+#: pop3resource.cpp:512
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "サーバからメールを取得中にエラーが発生しました。"
 
-#: pop3resource.cpp:571
+#: pop3resource.cpp:572
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
@@ -429,54 +429,54 @@ msgstr ""
 "“%5” の %1 / %2 件 (%3 / %4 KB) のメッセージを取得中 (サーバに %6 KB 残ってい"
 "ます)。"
 
-#: pop3resource.cpp:580
+#: pop3resource.cpp:581
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "“%5” の %1 / %2 件 (%3 / %4 KB) のメッセージを取得中。"
 
-#: pop3resource.cpp:603
+#: pop3resource.cpp:604
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "ダウンロードしたメールを保存できません。"
 
-#: pop3resource.cpp:751
+#: pop3resource.cpp:752
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "サーバからメッセージを削除できませんでした。"
 
-#: pop3resource.cpp:807
+#: pop3resource.cpp:808
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "メールチェック終了。ダウンロードしたメッセージはありません。"
 
-#: pop3resource.cpp:809
+#: pop3resource.cpp:810
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "メールチェック終了。%1 件のメッセージをダウンロードしました。"
 
-#: pop3resource.cpp:823
+#: pop3resource.cpp:824
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "メールの取得を完了できません。"
 
-#: pop3resource.cpp:958
+#: pop3resource.cpp:959
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "メールチェックは既に進行中なので、2 回目のチェックを開始できません。"
 
-#: pop3resource.cpp:979
+#: pop3resource.cpp:980
 #, kde-format
 msgid "Ready"
 msgstr ""
 
-#: pop3resource.cpp:982
+#: pop3resource.cpp:983
 #, fuzzy, kde-format
 #| msgid "Mail check aborted."
 msgid "Mail check aborted after going offline."
 msgstr "メールチェックを中止しました。"
 
-#: pop3resource.cpp:984
+#: pop3resource.cpp:985
 #, kde-format
 msgid "Offline"
 msgstr ""

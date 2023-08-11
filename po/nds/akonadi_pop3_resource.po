@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-09 00:49+0000\n"
+"POT-Creation-Date: 2023-08-08 00:47+0000\n"
 "PO-Revision-Date: 2014-03-12 22:41+0100\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -26,7 +26,7 @@ msgid_plural " minutes"
 msgstr[0] " Minuut"
 msgstr[1] " Minuten"
 
-#: accountwidget.cpp:125 pop3resource.cpp:49
+#: accountwidget.cpp:125 pop3resource.cpp:50
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3-Konto"
@@ -291,81 +291,81 @@ msgstr ""
 msgid "Unexpected response from POP3 server."
 msgstr "Narichten warrt op den Server wegmaakt."
 
-#: pop3resource.cpp:98
+#: pop3resource.cpp:99
 #, kde-format
 msgid "Mail check aborted."
 msgstr "Kieken na Nettpost afbraken."
 
-#: pop3resource.cpp:105
+#: pop3resource.cpp:106
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "Kieken na Nettpost wöör vun Hand afbraken."
 
-#: pop3resource.cpp:133
+#: pop3resource.cpp:134
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "Giff bitte Brukernaam un Passwoort för dat Konto \"%1\" in."
 
-#: pop3resource.cpp:150
+#: pop3resource.cpp:151
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr ""
 "Disse Affraag dukt op, wiel dat Passwoort sik nich ut de Knipp laden lett."
 
-#: pop3resource.cpp:166
+#: pop3resource.cpp:167
 #, kde-format
 msgid "Account:"
 msgstr "Konto:"
 
-#: pop3resource.cpp:183
+#: pop3resource.cpp:184
 #, kde-format
 msgid "No username and password supplied."
 msgstr "Keen Brukernaam un Passwoort angeven."
 
-#: pop3resource.cpp:202
+#: pop3resource.cpp:203
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "Överdregen vun \"%1\" warrt torechtmaakt."
 
-#: pop3resource.cpp:223
+#: pop3resource.cpp:224
 #, kde-format
 msgid "Executing precommand."
 msgstr "Vörwegbefehl warrt utföhrt."
 
-#: pop3resource.cpp:248
+#: pop3resource.cpp:249
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "Disse Affraag dukt op, wiel dat verleden Anmellen fehlslaan is."
 
-#: pop3resource.cpp:250
+#: pop3resource.cpp:251
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "Disse Affraag dukt op, wiel keen Brukernaam angeven is."
 
-#: pop3resource.cpp:277
+#: pop3resource.cpp:278
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "Nettpostlist warrt haalt."
 
-#: pop3resource.cpp:334
+#: pop3resource.cpp:335
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "Daallaadt Narichten warrt sekert."
 
-#: pop3resource.cpp:352
+#: pop3resource.cpp:353
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "Passwoort warrt binnen de Knipp sekert."
 
-#: pop3resource.cpp:394
+#: pop3resource.cpp:395
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
 "Lokaal Postingangorner lett sik nich halen, Kieken na Nettpost warrt "
 "afbraken."
 
-#: pop3resource.cpp:401
+#: pop3resource.cpp:402
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -376,41 +376,41 @@ msgstr ""
 "Nettpost dor binnen afleggt wöör. För dit Konto wöör de Orner för't Aflevern "
 "vun Nettpost op den Hööft-Postingang torüchsett.</qt>"
 
-#: pop3resource.cpp:422
+#: pop3resource.cpp:423
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr ""
 "Postingangorner lett sik nich halen. Kieken na Nettpost warrt afbraken."
 
-#: pop3resource.cpp:435
+#: pop3resource.cpp:436
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr ""
 "Postingangorner lett sik nich finnen. Kieken na Nettpost warrt afbraken."
 
-#: pop3resource.cpp:446
+#: pop3resource.cpp:447
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "Fehler bi't Utföhren vun den Vörwegbefehl."
 
-#: pop3resource.cpp:460
+#: pop3resource.cpp:461
 #, fuzzy, kde-format
 #| msgid "Unable to login to the server %1."
 msgid "Unable to login to the server \"%1\"."
 msgstr "Anmellen bi Server \"%1\" nich mööglich."
 
-#: pop3resource.cpp:469
+#: pop3resource.cpp:470
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "Narichtenlist lett sik nich vun den Server halen."
 
-#: pop3resource.cpp:483
+#: pop3resource.cpp:484
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr "List mit eenkennig Narichtenkennen lett sik nich vun den Server halen."
 
-#: pop3resource.cpp:496
+#: pop3resource.cpp:497
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -425,12 +425,12 @@ msgstr ""
 "De Funkschoon, de Nettbreven op den Server to laten, warrt nich richtig "
 "arbeiden."
 
-#: pop3resource.cpp:511
+#: pop3resource.cpp:512
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "Fehler bi't Halen vun de Nettbreven vun den Server."
 
-#: pop3resource.cpp:571
+#: pop3resource.cpp:572
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
@@ -438,54 +438,54 @@ msgstr ""
 "Naricht %1 vun %2 (%3 vun %4 kB) warrt för %5 haalt (%6kB blievt op den "
 "Server)."
 
-#: pop3resource.cpp:580
+#: pop3resource.cpp:581
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "Naricht %1 vun %2 (%3 vun %4 kB) warrt för %5 haalt."
 
-#: pop3resource.cpp:603
+#: pop3resource.cpp:604
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "Daallaadt Narichten laat sik nich sekern."
 
-#: pop3resource.cpp:751
+#: pop3resource.cpp:752
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "Narichten laat sik nich op den Server wegmaken."
 
-#: pop3resource.cpp:807
+#: pop3resource.cpp:808
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "Kieken na Nettpost afslaten, keen Naricht daallaadt."
 
-#: pop3resource.cpp:809
+#: pop3resource.cpp:810
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "Kieken na Nettpost afslaten, een Naricht daallaadt."
 msgstr[1] "Kieken na Nettpost afslaten, %1 Narichten daallaadt."
 
-#: pop3resource.cpp:823
+#: pop3resource.cpp:824
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "Kieken na Nettpost lett sik nich afsluten."
 
-#: pop3resource.cpp:958
+#: pop3resource.cpp:959
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "Kieken na Nettpost löppt al un lett sik nich nochmaal starten."
 
-#: pop3resource.cpp:979
+#: pop3resource.cpp:980
 #, kde-format
 msgid "Ready"
 msgstr "Praat"
 
-#: pop3resource.cpp:982
+#: pop3resource.cpp:983
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "Kieken na Nettpost in'n Afkoppelbedrief afbraken"
 
-#: pop3resource.cpp:984
+#: pop3resource.cpp:985
 #, kde-format
 msgid "Offline"
 msgstr "Afkoppelt"

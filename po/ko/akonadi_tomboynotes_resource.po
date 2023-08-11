@@ -85,19 +85,19 @@ msgstr "Tomboy 노트 %1"
 #: tomboynotesresource.cpp:101
 #, kde-format
 msgid "Resource configuration is not valid"
-msgstr "자원 설정이 올바르지 않음"
+msgstr "리소스 설정이 올바르지 않음"
 
 #: tomboynotesresource.cpp:227 tomboynotesresource.cpp:248
 #: tomboynotesresource.cpp:268
 #, kde-format
 msgid "Resource is read-only"
-msgstr "자원이 읽기 전용임"
+msgstr "리소스가 읽기 전용임"
 
 #. i18n: ectx: label, entry (collectionName), group (General)
 #: tomboynotesresource.kcfg:10
 #, kde-format
 msgid "The display name of this resource"
-msgstr "이 자원의 표시 이름"
+msgstr "이 리소스의 표시 이름"
 
 #. i18n: ectx: label, entry (ServerURL), group (General)
 #: tomboynotesresource.kcfg:14
