@@ -63,7 +63,7 @@ void TimezoneTest::testFromHardcodedList()
 void TimezoneTest::testKolabObjectWriter()
 {
     KCalendarCore::Event::Ptr event(new KCalendarCore::Event());
-    event->setDtStart(QDateTime(QDate(2012, 11, 11), QTime(1, 1), QTimeZone(QTimeZone::windowsIdToDefaultIanaId("(GMT+01:00) West Central Africa"))));
+    event->setDtStart(QDateTime(QDate(2012, 11, 11), QTime(1, 1), QTimeZone("Africa/Lagos")));
     KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeEvent(event);
     Kolab::KolabObjectReader reader(msg);
     KCalendarCore::Event::Ptr result = reader.getEvent();
