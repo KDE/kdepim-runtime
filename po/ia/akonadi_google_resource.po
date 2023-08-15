@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-29 00:48+0000\n"
+"POT-Creation-Date: 2023-08-15 02:26+0000\n"
 "PO-Revision-Date: 2023-05-08 12:54+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -96,44 +96,44 @@ msgstr "Preste"
 msgid "Invalid item."
 msgstr "Elemento invalide."
 
-#: googleresource.cpp:88
+#: googleresource.cpp:87
 #, kde-format
 msgid "Fetching password..."
 msgstr "Cercante contrasigno..."
 
-#: googleresource.cpp:95
+#: googleresource.cpp:94
 #, kde-format
 msgid "Can't fetch password"
 msgstr "Nonn pote trovar contrasigno"
 
-#: googleresource.cpp:136
+#: googleresource.cpp:135
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Preste"
 
-#: googleresource.cpp:148
+#: googleresource.cpp:147
 #, kde-format
 msgid "not configured"
 msgstr "non configurate"
 
-#: googleresource.cpp:148
+#: googleresource.cpp:147
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google Groupware (%1)"
 
-#: googleresource.cpp:157
+#: googleresource.cpp:156
 #, kde-format
 msgid "Configured account does not exist"
 msgstr "Conto configurate non existe"
 
-#: googleresource.cpp:205
+#: googleresource.cpp:204
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Conto configurate ha essite disconnectite"
 
-#: googleresource.cpp:208
+#: googleresource.cpp:207
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -142,7 +142,7 @@ msgstr ""
 "Google Groupware ha essite disconnectite ab tu conto. Pro favor tu accede "
 "pro activar syncronisation de Google Contact e Calendario novemente."
 
-#: googleresource.cpp:209
+#: googleresource.cpp:208
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -151,36 +151,36 @@ msgstr ""
 "Google Groupware ha essite disconnectite ab conto %1. Pro favor tu accede "
 "pro activar syncronisation de Google Contact e Calendario novemente."
 
-#: googleresource.cpp:213
+#: googleresource.cpp:212
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 necessita tu attention."
 
-#: googleresource.cpp:218
+#: googleresource.cpp:217
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Accede"
 
-#: googleresource.cpp:232 googleresource.cpp:233
+#: googleresource.cpp:231 googleresource.cpp:232
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Ressource non es configurate"
 
-#: googleresource.cpp:248
+#: googleresource.cpp:247
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Il falleva refrescar indicios"
 
-#: googleresource.cpp:436 googleresource.cpp:450 googleresource.cpp:464
-#: googleresource.cpp:479 googleresource.cpp:493 googleresource.cpp:507
+#: googleresource.cpp:435 googleresource.cpp:449 googleresource.cpp:463
+#: googleresource.cpp:478 googleresource.cpp:492 googleresource.cpp:506
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Invalide typo de cargo"
 
-#: googleresource.cpp:521 googleresource.cpp:535 googleresource.cpp:549
+#: googleresource.cpp:520 googleresource.cpp:534 googleresource.cpp:548
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Mimetype de collection incognite"
