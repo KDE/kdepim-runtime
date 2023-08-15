@@ -208,7 +208,6 @@ void GoogleResource::requestAuthenticationFromUser(const KGAPI2::AccountPtr &acc
                                     i18nc("@title", "%1 needs your attention.", agentName()),
                                     msg,
                                     QStringLiteral("im-google"),
-                                    /*widget=*/nullptr,
                                     KNotification::Persistent | KNotification::SkipGrouping);
     ntf->setActions({i18nc("@action", "Log in")});
     ntf->setComponentName(QStringLiteral("akonadi_google_resource"));

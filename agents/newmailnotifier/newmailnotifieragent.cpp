@@ -407,7 +407,6 @@ void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const 
                              QString(),
                              message,
                              mDefaultIconName,
-                             nullptr,
                              NewMailNotifierAgentSettings::keepPersistentNotification() ? KNotification::Persistent | KNotification::SkipGrouping
                                                                                         : KNotification::CloseOnTimeout,
                              QStringLiteral("akonadi_newmailnotifier_agent"));
@@ -415,7 +414,6 @@ void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const 
         KNotification::event(QStringLiteral("new-email"),
                              message,
                              pixmap,
-                             nullptr,
                              NewMailNotifierAgentSettings::keepPersistentNotification() ? KNotification::Persistent | KNotification::SkipGrouping
                                                                                         : KNotification::CloseOnTimeout,
                              QStringLiteral("akonadi_newmailnotifier_agent"));

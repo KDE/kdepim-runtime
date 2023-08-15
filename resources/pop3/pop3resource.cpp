@@ -897,7 +897,6 @@ void POP3Resource::cancelSync(const QString &errorMessage, bool error)
                              name(),
                              errorMessage.toHtmlEscaped(),
                              QString(),
-                             nullptr,
                              KNotification::CloseOnTimeout,
                              QStringLiteral("akonadi_pop3_resource"));
     } else {
