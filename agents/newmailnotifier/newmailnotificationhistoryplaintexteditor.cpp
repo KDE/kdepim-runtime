@@ -8,7 +8,7 @@
 #include <QMenu>
 
 NewMailNotificationHistoryPlainTextEditor::NewMailNotificationHistoryPlainTextEditor(QWidget *parent)
-    : KPIMTextEdit::PlainTextEditor(parent)
+    : TextCustomEditor::PlainTextEditor(parent)
 {
 }
 

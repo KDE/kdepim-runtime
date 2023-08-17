@@ -10,7 +10,7 @@
 #include "newmailnotifieragentsettings.h"
 #include <KLocalizedString>
 
-#include <KPIMTextEdit/PlainTextEditor>
+#include <TextCustomEditor/PlainTextEditor>
 
 #include <QCheckBox>
 #include <QScrollBar>

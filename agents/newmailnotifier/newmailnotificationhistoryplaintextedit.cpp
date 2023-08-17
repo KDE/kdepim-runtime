@@ -7,7 +7,7 @@
 #include "newmailnotificationhistoryplaintexteditor.h"
 
 NewMailNotificationHistoryPlainTextEdit::NewMailNotificationHistoryPlainTextEdit(NewMailNotificationHistoryPlainTextEditor *editor, QWidget *parent)
-    : KPIMTextEdit::PlainTextEditorWidget(editor, parent)
+    : TextCustomEditor::PlainTextEditorWidget(editor, parent)
 {
     connect(editor, &NewMailNotificationHistoryPlainTextEditor::clearHistory, this, &NewMailNotificationHistoryPlainTextEdit::clear);
 }

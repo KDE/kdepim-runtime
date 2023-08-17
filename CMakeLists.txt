@@ -83,6 +83,7 @@ set(AKONADICONTACT_LIB_VERSION "5.240.43")
 set(AKONADINOTE_LIB_VERSION "5.240.40")
 set(KGAPI_LIB_VERSION "5.240.40")
 set(KLDAP_LIB_VERSION "5.240.41")
+set(KTEXTADDONS_MIN_VERSION "1.4.42")
 
 set( SharedMimeInfo_MINIMUM_VERSION "1.3" )
 find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
@@ -126,7 +127,7 @@ set_package_properties(KF6DocTools PROPERTIES DESCRIPTION
     TYPE OPTIONAL
 )
 
-
+find_package(KF6TextCustomEditor ${KTEXTADDONS_MIN_VERSION} CONFIG REQUIRED)
 
 # KdepimLibs package
 find_package(KPim6Akonadi ${AKONADI_VERSION} CONFIG REQUIRED)

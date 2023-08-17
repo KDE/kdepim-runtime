@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include <KPIMTextEdit/PlainTextEditor>
+#include <TextCustomEditor/PlainTextEditor>
 
-class NewMailNotificationHistoryPlainTextEditor : public KPIMTextEdit::PlainTextEditor
+class NewMailNotificationHistoryPlainTextEditor : public TextCustomEditor::PlainTextEditor
 {
     Q_OBJECT
 public:
