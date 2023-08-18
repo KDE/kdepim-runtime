@@ -61,8 +61,8 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF6::I18n
   KF6::KIOGui
   KF6::WindowSystem
-  KPim6::PimTextEdit
   KF6::ConfigWidgets
+  KF6::TextCustomEditor
 )
 
 if(Qt6TextToSpeech_FOUND)
