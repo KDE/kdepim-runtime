@@ -34,5 +34,4 @@ Dependencies:
     'frameworks/kdav': '@latest-kf6'
     'frameworks/kdoctools': '@latest-kf6'
     'third-party/qtkeychain': '@latest-kf6'
-    'pim/kpimtextedit' : '@latest-kf6'
     'libraries/ktextaddons': '@latest-kf6'
