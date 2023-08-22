@@ -144,24 +144,35 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         } else {
             notification->setPixmap(pixmap);
         }
-        QStringList lstActions{i18n("Show mail..."), i18n("Mark As Read"), i18n("Delete")};
+
+        auto showMailAction = notification->addAction(i18n("Show mail..."));
+        connect(showMailAction, &KNotificationAction::activated, this, &SpecialNotifierJob::slotOpenMail);
+
+        auto markAsReadAction = notification->addAction(i18n("Mark As Read"));
+        connect(markAsReadAction, &KNotificationAction::activated, this, &SpecialNotifierJob::slotMarkAsRead);
+
+        auto deleteAction = notification->addAction(i18n("Delete"));
+        connect(deleteAction, &KNotificationAction::activated, this, &SpecialNotifierJob::slotDeleteMessage);
+
         if (NewMailNotifierAgentSettings::replyMail()) {
+            QString replyLabel;
             switch (NewMailNotifierAgentSettings::replyMailType()) {
             case 0:
-                lstActions << i18n("Reply to Author");
+                replyLabel = i18n("Reply to Author");
                 break;
             case 1:
-                lstActions << i18n("Reply to All");
+                replyLabel = i18n("Reply to All");
                 break;
             default:
                 qCWarning(NEWMAILNOTIFIER_LOG) << " Problem with NewMailNotifierAgentSettings::replyMailType() value: "
                                                << NewMailNotifierAgentSettings::replyMailType();
                 break;
             }
-        }
-        notification->setActions(lstActions);
 
-        connect(notification, &KNotification::activated, this, &SpecialNotifierJob::slotActivateNotificationAction);
+            auto replyAction = notification->addAction(replyLabel);
+            connect(replyAction, &KNotificationAction::activated, this, &SpecialNotifierJob::slotReplyMessage);
+        }
+
         connect(notification, &KNotification::closed, this, &SpecialNotifierJob::deleteLater);
 
         notification->sendEvent();
@@ -169,26 +180,6 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         Q_EMIT displayNotification(pixmap, result.join(QStringLiteral("<br>")));
         deleteLater();
     }
-}
-
-void SpecialNotifierJob::slotActivateNotificationAction(unsigned int index)
-{
-    // Index == 0 => is the default action. We don't have it.
-    switch (index) {
-    case 1:
-        slotOpenMail();
-        return;
-    case 2:
-        slotMarkAsRead();
-        return;
-    case 3:
-        slotDeleteMessage();
-        return;
-    case 4:
-        slotReplyMessage();
-        return;
-    }
-    qCWarning(NEWMAILNOTIFIER_LOG) << " SpecialNotifierJob::slotActivateNotificationAction unknown index " << index;
 }
 
 void SpecialNotifierJob::slotReplyMessage()

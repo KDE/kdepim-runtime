@@ -209,9 +209,9 @@ void GoogleResource::requestAuthenticationFromUser(const KGAPI2::AccountPtr &acc
                                     msg,
                                     QStringLiteral("im-google"),
                                     KNotification::Persistent | KNotification::SkipGrouping);
-    ntf->setActions({i18nc("@action", "Log in")});
     ntf->setComponentName(QStringLiteral("akonadi_google_resource"));
-    connect(ntf, &KNotification::action1Activated, this, [this, ntf, account, args]() {
+    auto loginAction = ntf->addAction(i18nc("@action", "Log in"));
+    connect(loginAction, &KNotificationAction::activated, this, [this, ntf, account, args]() {
         runAuthJob(account, args);
         ntf->close();
     });

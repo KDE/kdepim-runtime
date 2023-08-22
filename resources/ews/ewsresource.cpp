@@ -1383,13 +1383,15 @@ void EwsResource::reauthenticate()
             mReauthNotification = new KNotification(QStringLiteral("auth-expired"), KNotification::Persistent, this);
 
             mReauthNotification->setText(reauthPrompt.arg(name()));
-            mReauthNotification->setActions(QStringList(i18nc("@action:button", "Authenticate")));
             mReauthNotification->setComponentName(QStringLiteral("akonadi_ews_resource"));
             auto acceptedFn = std::bind(&EwsResource::reauthNotificationDismissed, this, true);
             auto rejectedFn = std::bind(&EwsResource::reauthNotificationDismissed, this, false);
-            connect(mReauthNotification.data(), &KNotification::action1Activated, this, acceptedFn);
             connect(mReauthNotification.data(), &KNotification::closed, this, rejectedFn);
             connect(mReauthNotification.data(), &KNotification::ignored, this, rejectedFn);
+
+            auto authenticateAction = mReauthNotification->addAction(i18nc("@action:button", "Authenticate"));
+            connect(authenticateAction, &KNotificationAction::activated, this, acceptedFn);
+
             mReauthNotification->sendEvent();
             break;
         }

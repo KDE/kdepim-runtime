@@ -39,7 +39,6 @@ private:
     void slotOpenMail();
     void slotMarkAsRead();
     void slotDeleteMessage();
-    void slotActivateNotificationAction(unsigned int index);
     void emitNotification(const QPixmap &pixmap = QPixmap());
     void deleteItemDone(KJob *job);
     void slotReplyMessage();
