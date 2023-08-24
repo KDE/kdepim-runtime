@@ -42,6 +42,8 @@ VCardDirResource::~VCardDirResource()
 
 void VCardDirResource::slotReloadConfig()
 {
+    VcardDirResourceSettings::self()->load();
+
     initializeVCardDirectory();
     loadAddressees();
 
@@ -273,7 +275,11 @@ void VCardDirResource::initializeVCardDirectory() const
 
     // if folder does not exists, create it
     if (!dir.exists()) {
-        QDir::root().mkpath(dir.absolutePath());
+        if (!QDir::root().mkpath(dir.absolutePath())) {
+            qCritical() << "Failed to create vCard directory" << dir.absolutePath();
+        } else {
+            qDebug() << "vCard directory " << dir.absolutePath() << "successfuly created";
+        }
     }
 
     // check whether warning file is in place...
