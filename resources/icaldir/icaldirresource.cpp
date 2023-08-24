@@ -82,6 +82,8 @@ ICalDirResource::~ICalDirResource() = default;
 
 void ICalDirResource::slotReloadConfig()
 {
+    IcalDirResourceSettings::self()->load();
+
     initializeICalDirectory();
     loadIncidences();
 
@@ -284,7 +286,11 @@ void ICalDirResource::initializeICalDirectory() const
 
     // if folder does not exists, create it
     if (!dir.exists()) {
-        QDir::root().mkpath(dir.absolutePath());
+        if (!QDir::root().mkpath(dir.absolutePath())) {
+            qCritical() << "Failed to create ical directory" << dir.absolutePath();
+        } else {
+            qDebug() << "iCal directory " << dir.absolutePath() << "successfuly created";
+        }
     }
 
     // check whether warning file is in place...
