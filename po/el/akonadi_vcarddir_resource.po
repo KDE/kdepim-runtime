@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcarddir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-15 00:45+0000\n"
+"POT-Creation-Date: 2023-08-25 00:47+0000\n"
 "PO-Revision-Date: 2014-11-04 18:55+0200\n"
 "Last-Translator: Dimitris Kardarakos <dimkard@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -97,17 +97,17 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "Καθυστέρηση αυτόματης αποθήκευσης:"
 
-#: vcarddirresource.cpp:120
+#: vcarddirresource.cpp:122
 #, kde-format
 msgid "Contact with uid '%1' not found."
 msgstr "Η επαφή με το αναγνωριστικό ταυτότητας '%1' δε βρέθηκε."
 
-#: vcarddirresource.cpp:132 vcarddirresource.cpp:166 vcarddirresource.cpp:202
+#: vcarddirresource.cpp:134 vcarddirresource.cpp:168 vcarddirresource.cpp:204
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Προσπάθεια εγγραφής σε κατάλογο για ανάγνωση μόνο: '%1'."
 
-#: vcarddirresource.cpp:237
+#: vcarddirresource.cpp:239
 #, kde-format
 msgid "Contacts Folder"
 msgstr "Φάκελος επαφών"
