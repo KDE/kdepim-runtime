@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-11-25 00:29+0000\n"
+"POT-Creation-Date: 2023-08-25 02:27+0000\n"
 "PO-Revision-Date: 2021-07-07 19:01+0100\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -13,17 +13,17 @@ msgstr ""
 "X-POFile-SpellExtra: iCal UID\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: icaldirresource.cpp:119
+#: icaldirresource.cpp:121
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "A incidência com o UID '%1' não foi encontrada."
 
-#: icaldirresource.cpp:133 icaldirresource.cpp:166 icaldirresource.cpp:198
+#: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "A tentar escrever numa pasta apenas para leitura: '%1'"
 
-#: icaldirresource.cpp:248
+#: icaldirresource.cpp:250
 #, kde-format
 msgid "Calendar Folder"
 msgstr "Pasta do Calendário"

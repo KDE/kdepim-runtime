@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-15 00:45+0000\n"
+"POT-Creation-Date: 2023-08-25 02:27+0000\n"
 "PO-Revision-Date: 2022-09-12 09:40+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -95,17 +95,17 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "ავტომატური შენახვის ინტერვალი:"
 
-#: vcarddirresource.cpp:120
+#: vcarddirresource.cpp:122
 #, kde-format
 msgid "Contact with uid '%1' not found."
 msgstr "კონტაქტი UID-ით %1 არ არსებობს."
 
-#: vcarddirresource.cpp:132 vcarddirresource.cpp:166 vcarddirresource.cpp:202
+#: vcarddirresource.cpp:134 vcarddirresource.cpp:168 vcarddirresource.cpp:204
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "საქაღალდე, რომელშიც ჩაწერას ცდილობთ, მხოლოდ კითხვადია: %1"
 
-#: vcarddirresource.cpp:237
+#: vcarddirresource.cpp:239
 #, kde-format
 msgid "Contacts Folder"
 msgstr "კონტაქტების საქაღალდე"

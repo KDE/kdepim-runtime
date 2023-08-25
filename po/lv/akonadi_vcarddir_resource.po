@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcarddir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-15 00:45+0000\n"
+"POT-Creation-Date: 2023-08-25 02:27+0000\n"
 "PO-Revision-Date: 2010-01-01 21:07+0200\n"
 "Last-Translator: Viesturs Zarins <viesturs.zarins@mii.lu.lv>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -96,17 +96,17 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "Automātiskās saglabāšanas aizture:"
 
-#: vcarddirresource.cpp:120
+#: vcarddirresource.cpp:122
 #, kde-format
 msgid "Contact with uid '%1' not found."
 msgstr ""
 
-#: vcarddirresource.cpp:132 vcarddirresource.cpp:166 vcarddirresource.cpp:202
+#: vcarddirresource.cpp:134 vcarddirresource.cpp:168 vcarddirresource.cpp:204
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Mēģināts rakstīt tikai lasāmā mapē: '%1'"
 
-#: vcarddirresource.cpp:237
+#: vcarddirresource.cpp:239
 #, kde-format
 msgid "Contacts Folder"
 msgstr ""

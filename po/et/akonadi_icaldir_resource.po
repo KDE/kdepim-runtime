@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-11-25 00:29+0000\n"
+"POT-Creation-Date: 2023-08-25 02:27+0000\n"
 "PO-Revision-Date: 2016-07-30 20:38+0300\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@linux.ee>\n"
@@ -17,17 +17,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: icaldirresource.cpp:119
+#: icaldirresource.cpp:121
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "Sündmust UID-ga \"%1\" ei leitud."
 
-#: icaldirresource.cpp:133 icaldirresource.cpp:166 icaldirresource.cpp:198
+#: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Püüti kirjutata kirjutuskaitstud kataloogi: \"%1\""
 
-#: icaldirresource.cpp:248
+#: icaldirresource.cpp:250
 #, kde-format
 msgid "Calendar Folder"
 msgstr "Kalendrikataloog"

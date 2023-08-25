@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-11-25 00:29+0000\n"
+"POT-Creation-Date: 2023-08-25 02:27+0000\n"
 "PO-Revision-Date: 2021-10-11 14:38+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -21,17 +21,17 @@ msgstr ""
 "X-Generator: Lokalize 20.04.2\n"
 "X-POT-Import-Date: 2012-12-01 22:24:47+0000\n"
 
-#: icaldirresource.cpp:119
+#: icaldirresource.cpp:121
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "Esiintymää, jonka tunniste on ”%1”, ei löytynyt."
 
-#: icaldirresource.cpp:133 icaldirresource.cpp:166 icaldirresource.cpp:198
+#: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Yritetään kirjoittaa vain luku -kansioon: ”%1”"
 
-#: icaldirresource.cpp:248
+#: icaldirresource.cpp:250
 #, kde-format
 msgid "Calendar Folder"
 msgstr "Kalenterikansio"

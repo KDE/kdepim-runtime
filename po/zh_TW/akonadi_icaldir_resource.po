@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-11-25 00:29+0000\n"
+"POT-Creation-Date: 2023-08-25 02:27+0000\n"
 "PO-Revision-Date: 2016-11-14 21:16+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -18,17 +18,17 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: icaldirresource.cpp:119
+#: icaldirresource.cpp:121
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "找不到使用者代碼 %1 的事件。"
 
-#: icaldirresource.cpp:133 icaldirresource.cpp:166 icaldirresource.cpp:198
+#: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "試著寫入唯讀目錄：%1"
 
-#: icaldirresource.cpp:248
+#: icaldirresource.cpp:250
 #, kde-format
 msgid "Calendar Folder"
 msgstr "行事曆資料夾"

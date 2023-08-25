@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-11-25 00:29+0000\n"
+"POT-Creation-Date: 2023-08-25 02:27+0000\n"
 "PO-Revision-Date: 2013-01-15 02:10+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -17,17 +17,17 @@ msgstr ""
 "X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: icaldirresource.cpp:119
+#: icaldirresource.cpp:121
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "uid '%1' дегенмен ештеңе жоқ."
 
-#: icaldirresource.cpp:133 icaldirresource.cpp:166 icaldirresource.cpp:198
+#: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Тек оқу үшін ғана каталогында жазу әрекеті: '%1'"
 
-#: icaldirresource.cpp:248
+#: icaldirresource.cpp:250
 #, kde-format
 msgid "Calendar Folder"
 msgstr "Күнтізбе қапшығы"
