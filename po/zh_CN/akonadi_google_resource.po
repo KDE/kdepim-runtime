@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-07-20 00:49+0000\n"
-"PO-Revision-Date: 2023-08-02 12:40\n"
+"POT-Creation-Date: 2023-08-15 00:46+0000\n"
+"PO-Revision-Date: 2023-08-27 03:40\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -95,44 +95,44 @@ msgstr "就绪"
 msgid "Invalid item."
 msgstr "无效项目。"
 
-#: googleresource.cpp:88
+#: googleresource.cpp:87
 #, kde-format
 msgid "Fetching password..."
 msgstr "正在获取密码..."
 
-#: googleresource.cpp:95
+#: googleresource.cpp:94
 #, kde-format
 msgid "Can't fetch password"
 msgstr "无法获取密码"
 
-#: googleresource.cpp:136
+#: googleresource.cpp:135
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "就绪"
 
-#: googleresource.cpp:148
+#: googleresource.cpp:147
 #, kde-format
 msgid "not configured"
 msgstr "未配置"
 
-#: googleresource.cpp:148
+#: googleresource.cpp:147
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google 协作套件 (%1)"
 
-#: googleresource.cpp:157
+#: googleresource.cpp:156
 #, kde-format
 msgid "Configured account does not exist"
 msgstr "配置的账号不存在"
 
-#: googleresource.cpp:205
+#: googleresource.cpp:204
 #, kde-format
 msgid "Account has been logged out."
 msgstr "此账号已退出。"
 
-#: googleresource.cpp:208
+#: googleresource.cpp:207
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -141,7 +141,7 @@ msgstr ""
 "您的账号已从 Google 协作套件中退出，请重新登录以启用 Google 联系人和日历同"
 "步。"
 
-#: googleresource.cpp:209
+#: googleresource.cpp:208
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -150,36 +150,36 @@ msgstr ""
 "您的账号 (%1) 已从 Google 协作套件中退出，请重新登录以启用 Google 联系人和日"
 "历同步。"
 
-#: googleresource.cpp:213
+#: googleresource.cpp:212
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "请您留意账号 %1。"
 
-#: googleresource.cpp:218
+#: googleresource.cpp:217
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "登录"
 
-#: googleresource.cpp:232 googleresource.cpp:233
+#: googleresource.cpp:231 googleresource.cpp:232
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "资源尚未配置"
 
-#: googleresource.cpp:248
+#: googleresource.cpp:247
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "获取刷新令牌失败"
 
-#: googleresource.cpp:436 googleresource.cpp:450 googleresource.cpp:464
-#: googleresource.cpp:479 googleresource.cpp:493 googleresource.cpp:507
+#: googleresource.cpp:435 googleresource.cpp:449 googleresource.cpp:463
+#: googleresource.cpp:478 googleresource.cpp:492 googleresource.cpp:506
 #, kde-format
 msgid "Invalid payload type"
 msgstr "无效的内容"
 
-#: googleresource.cpp:521 googleresource.cpp:535 googleresource.cpp:549
+#: googleresource.cpp:520 googleresource.cpp:534 googleresource.cpp:548
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "未知收藏文件类型"

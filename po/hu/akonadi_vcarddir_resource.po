@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-15 00:45+0000\n"
+"POT-Creation-Date: 2023-08-25 00:47+0000\n"
 "PO-Revision-Date: 2014-05-04 17:45+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -96,17 +96,17 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "Az automatikus mentés időköze:"
 
-#: vcarddirresource.cpp:120
+#: vcarddirresource.cpp:122
 #, kde-format
 msgid "Contact with uid '%1' not found."
 msgstr "Nem található „%1” azonosítójú névjegy."
 
-#: vcarddirresource.cpp:132 vcarddirresource.cpp:166 vcarddirresource.cpp:202
+#: vcarddirresource.cpp:134 vcarddirresource.cpp:168 vcarddirresource.cpp:204
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Csak olvasható mappa írásának kísérlete: „%1”"
 
-#: vcarddirresource.cpp:237
+#: vcarddirresource.cpp:239
 #, kde-format
 msgid "Contacts Folder"
 msgstr "Névjegyek mappája"
