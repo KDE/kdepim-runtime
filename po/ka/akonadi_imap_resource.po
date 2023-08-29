@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-05-18 00:49+0000\n"
-"PO-Revision-Date: 2023-08-04 07:28+0200\n"
+"PO-Revision-Date: 2023-08-28 06:21+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -405,6 +405,8 @@ msgstr "%1-ში შეტყობინების გადატანი�
 #, kde-format
 msgid "Failed to move item, it has no message payload. Remote id: %1"
 msgstr ""
+"ელემენტის გადატანა ჩავარდა. მას შეტყობინების შემცველობა არ გააჩნია. "
+"დაშორებული id: %1"
 
 #: moveitemstask.cpp:190
 #, kde-format
@@ -552,6 +554,8 @@ msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
 "set up for that."
 msgstr ""
+"%1-თან მისაერთებლად თქვენ TLS/SSL მიერთება მიუთითეთ, მაგრამ, როგორც ჩანს, "
+"სერვერს მისი მხარდაჭერა არ გააჩნია."
 
 #: sessionpool.cpp:409
 #, kde-format

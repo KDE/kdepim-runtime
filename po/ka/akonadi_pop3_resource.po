@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-05-09 00:49+0000\n"
-"PO-Revision-Date: 2023-08-04 07:29+0200\n"
+"PO-Revision-Date: 2023-08-28 06:21+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -43,6 +43,10 @@ msgid ""
 "Since some servers do not correctly announce their capabilities you still "
 "have the possibility to turn leaving fetched messages on the server on."
 msgstr ""
+"როგორც ჩანს, სერვერს შეტყობინების უნიკალური ნომრების მხარდაჭერა არ გააჩნია, "
+"მაგრამ ეს პარამეტრი შეტყობინებების სერვერზე დასატოვებლადაა საჭირო.\n"
+"რადგან ზოგიერთი სერვერი თავის შესაძლებლობებს არ აცხადებს, გამოთხოვნილი "
+"შეტყობინებების სერვერზე დატოვება ხელით უნდა ჩართოთ."
 
 #: accountwidget.cpp:257
 #, kde-format
@@ -348,6 +352,8 @@ msgstr ""
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr ""
+"საქაღალდე შემომავალი ფოსტისთვის აღმოჩენილი არაა. ელფოსტის შემოწმება "
+"გაუქმდება."
 
 #: pop3resource.cpp:446
 #, kde-format
@@ -368,6 +374,8 @@ msgstr "სერვერიდან შეტყობინებები�
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr ""
+"შეცდომა სერვერიდან უნიკალური ელფოსტის შეტყობინებების იდენტიფიკატორების სიის "
+"გამოთხოვისას."
 
 #: pop3resource.cpp:496
 #, kde-format
@@ -581,7 +589,7 @@ msgstr "POP პარამეტრები"
 #: popsettings.ui:239
 #, kde-format
 msgid "If checked the message is not deleted from the mail server"
-msgstr ""
+msgstr "თუ ჩართულია, შეტყობინება ელფოსტის სერვერიდან არ წაიშლება"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, leaveOnServerCheck)
 #: popsettings.ui:242
@@ -601,7 +609,7 @@ msgstr "გამოთხოვილი შეტყობინებებ�
 #: popsettings.ui:258
 #, kde-format
 msgid "The original message is deleted from the server after x days"
-msgstr ""
+msgstr "ორიგინალი შეტყობინება სერვერიდან x დღეში წაიშლება"
 
 #. i18n: ectx: property (text), widget (QCheckBox, leaveOnServerDaysCheck)
 #: popsettings.ui:261
@@ -613,7 +621,7 @@ msgstr "რამდენი დღე დარჩება შეტყობ
 #: popsettings.ui:284
 #, kde-format
 msgid "Only the x most recent messages are kept on the server"
-msgstr ""
+msgstr "სერვერზე მხოლოდ უახლესი x შეტყობინება იქნება ხელმისაწვდომი"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, leaveOnServerCountCheck)
 #: popsettings.ui:287
@@ -633,7 +641,7 @@ msgstr "შესანახი შეტყობინებების რ�
 #: popsettings.ui:313
 #, kde-format
 msgid "Keep most recent messages within the quota and delete oldest"
-msgstr ""
+msgstr "უახლესი შეტყობინებების კვოტაში ჩატევა და უძველების წაშლა"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, leaveOnServerSizeCheck)
 #: popsettings.ui:316
@@ -677,7 +685,7 @@ msgstr "პრე-ბრძანება:"
 #: popsettings.ui:391
 #, kde-format
 msgid "Command that is executed before checking mail"
-msgstr ""
+msgstr "ელფოსტის შემოწმების წინ შესასრულებელი ბრძანება"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget_2)
 #: popsettings.ui:403
