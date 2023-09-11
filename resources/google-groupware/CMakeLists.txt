@@ -67,6 +67,9 @@ set(googleresource_SRCS
     ${googleresource_common_SRCS}
 )
 
+ki18n_wrap_ui(googleresource_SRCS googlesettingswidget.ui)
+
+
 add_executable(akonadi_google_resource ${googleresource_SRCS})
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_google_resource PROPERTIES UNITY_BUILD ON)
@@ -123,7 +126,6 @@ install(
 kcoreaddons_add_plugin(googleconfig
     INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config"
 )
-
 target_sources(googleconfig
 PRIVATE
     googleconfig.cpp
@@ -131,9 +133,6 @@ PRIVATE
     googlesettingswidget.h
     ${googleresource_common_SRCS}
 )
-
-ki18n_wrap_ui(googleconfig googlesettingswidget.ui)
-
 target_link_libraries(googleconfig
     KPim${KF_MAJOR_VERSION}::AkonadiCore
     KPim${KF_MAJOR_VERSION}::AkonadiCalendar
