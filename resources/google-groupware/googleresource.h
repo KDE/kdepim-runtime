@@ -14,7 +14,6 @@
 
 #include "calendarhandler.h"
 #include "generichandler.h"
-#include "googlesettings.h"
 
 #define JOB_PROPERTY "_KGAPI2Job"
 
@@ -38,6 +37,7 @@ public:
 
     void cleanup() override;
 public Q_SLOTS:
+    void configure(WId windowId) override;
     void reloadConfig();
 
 protected:
@@ -83,7 +83,7 @@ protected Q_SLOTS:
 
 private:
     bool m_isConfiguring = false;
-    GoogleSettings m_settings;
+    GoogleSettings *m_settings = nullptr;
     Akonadi::Collection m_rootCollection;
 
     GoogleResourceState *const m_iface;
