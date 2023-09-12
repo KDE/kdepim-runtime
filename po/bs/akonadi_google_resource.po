@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bosnianuniversetranslation\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-15 02:26+0000\n"
+"POT-Creation-Date: 2023-09-12 02:26+0000\n"
 "PO-Revision-Date: 2014-02-09 17:00+0100\n"
 "Last-Translator: Samir Ribić <megaribi@epn.ba>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -109,28 +109,33 @@ msgstr "Spreman"
 msgid "Invalid item."
 msgstr "Nevažeća korisna informacija stavke"
 
-#: googleresource.cpp:87
+#: googleresource.cpp:84
 #, kde-format
 msgid "Fetching password..."
 msgstr ""
 
-#: googleresource.cpp:94
+#: googleresource.cpp:93
 #, kde-format
 msgid "Can't fetch password"
 msgstr ""
 
-#: googleresource.cpp:135
+#: googleresource.cpp:137
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Spreman"
 
-#: googleresource.cpp:147
+#: googleresource.cpp:157 googleresource.cpp:195
+#, kde-format
+msgid "Configured account does not exist"
+msgstr "Konfigurisani nalog ne postoji"
+
+#: googleresource.cpp:188
 #, kde-format
 msgid "not configured"
 msgstr "nije konfigurisano"
 
-#: googleresource.cpp:147
+#: googleresource.cpp:188
 #, fuzzy, kde-format
 #| msgctxt "%1 is account name (user@gmail.com)"
 #| msgid "Google Contacts (%1)"
@@ -138,66 +143,61 @@ msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google kontakti (%1)"
 
-#: googleresource.cpp:156
-#, kde-format
-msgid "Configured account does not exist"
-msgstr "Konfigurisani nalog ne postoji"
-
-#: googleresource.cpp:204
+#: googleresource.cpp:241
 #, fuzzy, kde-format
 #| msgid "Configured account has been removed"
 msgid "Account has been logged out."
 msgstr "Konfigurisani nalog je uklonjen"
 
-#: googleresource.cpp:207
+#: googleresource.cpp:244
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
 
-#: googleresource.cpp:208
+#: googleresource.cpp:245
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
 
-#: googleresource.cpp:212
+#: googleresource.cpp:249
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr ""
 
-#: googleresource.cpp:217
+#: googleresource.cpp:254
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr ""
 
-#: googleresource.cpp:231 googleresource.cpp:232
+#: googleresource.cpp:268 googleresource.cpp:269
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Resurs nije konfigurisan"
 
-#: googleresource.cpp:247
+#: googleresource.cpp:284
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Neuspjelo osvježenje tokena"
 
-#: googleresource.cpp:435 googleresource.cpp:449 googleresource.cpp:463
-#: googleresource.cpp:478 googleresource.cpp:492 googleresource.cpp:506
+#: googleresource.cpp:471 googleresource.cpp:485 googleresource.cpp:499
+#: googleresource.cpp:514 googleresource.cpp:528 googleresource.cpp:542
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Nevažećavrsta korisne informacije"
 
-#: googleresource.cpp:520 googleresource.cpp:534 googleresource.cpp:548
+#: googleresource.cpp:556 googleresource.cpp:570 googleresource.cpp:584
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Nepoznat mime tip kolekcije"
 
-#: googlesettingswidget.cpp:46
+#: googlesettingsdialog.cpp:57
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -206,40 +206,40 @@ msgstr[1] "minute"
 msgstr[2] "minuta"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:108 googlesettingswidget.ui:30
+#: googlesettingsdialog.cpp:123 googlesettingsdialog.ui:30
 #, fuzzy, kde-format
 #| msgid "not configured"
 msgid "<b>not configured</b>"
 msgstr "nije konfigurisano"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)
-#: googlesettingswidget.ui:23
+#: googlesettingsdialog.ui:23
 #, fuzzy, kde-format
 #| msgid "Accounts"
 msgid "Account:"
 msgstr "Nalozi"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
-#: googlesettingswidget.ui:42
+#: googlesettingsdialog.ui:42
 #, fuzzy, kde-format
 #| msgid "not configured"
 msgid "Configure..."
 msgstr "nije konfigurisano"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
-#: googlesettingswidget.ui:49
+#: googlesettingsdialog.ui:49
 #, kde-format
 msgid "Enable interval refresh"
 msgstr "Uključi intervalno osvježavanje"
 
 #. i18n: ectx: property (text), widget (QLabel, refreshLabel)
-#: googlesettingswidget.ui:56
+#: googlesettingsdialog.ui:56
 #, kde-format
 msgid "Refresh interval:"
 msgstr "Interval osvježavanja:"
 
 #. i18n: ectx: property (text), widget (QLabel, eventsLimitLabel)
-#: googlesettingswidget.ui:79
+#: googlesettingsdialog.ui:79
 #, fuzzy, kde-format
 #| msgctxt "Followed by a date picker widget"
 #| msgid "&Fetch only new events since"
@@ -247,7 +247,7 @@ msgid "Fetch only events since:"
 msgstr "&Dobavi samo nove događaje nakon"
 
 #. i18n: ectx: property (text), widget (QLabel, calendarsLabel)
-#: googlesettingswidget.ui:92
+#: googlesettingsdialog.ui:92
 #, fuzzy, kde-format
 #| msgid "Calendars"
 msgid "Enabled Calendars:"
@@ -255,13 +255,13 @@ msgstr "Kalendari"
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
-#: googlesettingswidget.ui:123 googlesettingswidget.ui:168
+#: googlesettingsdialog.ui:123 googlesettingsdialog.ui:168
 #, kde-format
 msgid "Reload"
 msgstr "Ponovo učitaj"
 
 #. i18n: ectx: property (text), widget (QLabel, taskListsLabel)
-#: googlesettingswidget.ui:137
+#: googlesettingsdialog.ui:137
 #, fuzzy, kde-format
 #| msgid "Tasklists"
 msgid "Enabled Tasklists:"
