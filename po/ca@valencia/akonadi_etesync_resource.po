@@ -146,7 +146,8 @@ msgstr "Credencials d'inici de sessió"
 #: setupwizard.cpp:67
 #, kde-format
 msgid "Enter your credentials to login to the EteSync server"
-msgstr "Introduïu les credencials per a iniciar la sessió al servidor EteSync"
+msgstr ""
+"Introduïu les credencials per a iniciar la sessió en el servidor EteSync"
 
 #: setupwizard.cpp:76
 #, kde-format
