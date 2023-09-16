@@ -420,7 +420,7 @@ msgstr "S'ha produït un error en executar l'ordre prèvia."
 #: pop3resource.cpp:461
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
-msgstr "No s'ha pogut iniciar la sessió al servidor «%1»."
+msgstr "No s'ha pogut iniciar la sessió en el servidor «%1»."
 
 #: pop3resource.cpp:470
 #, kde-format

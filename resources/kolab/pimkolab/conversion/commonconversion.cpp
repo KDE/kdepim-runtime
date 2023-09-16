@@ -89,7 +89,7 @@ cDateTime fromDate(const QDateTime &dt, bool isAllDay)
             const QTime &t = utcDate.time();
             date.setTime(t.hour(), t.minute(), t.second());
             date.setUTC(true);
-        } else if (dt.timeSpec() == Qt::TimeZone) {
+        } else if (dt.timeSpec() == Qt::TimeZone || dt.timeSpec() == Qt::LocalTime) {
             const QString timezone = TimezoneConverter::normalizeTimezone(QString::fromUtf8(dt.timeZone().id()));
             if (!timezone.isEmpty()) {
                 date.setTimezone(toStdString(timezone));
