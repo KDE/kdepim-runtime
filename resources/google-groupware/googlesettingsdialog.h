@@ -7,37 +7,40 @@
 
 #pragma once
 
-#include "googlesettings.h"
-#include "ui_googlesettingswidget.h"
 #include <KGAPI/Types>
+#include <QDialog>
 
+namespace Ui
+{
+class GoogleSettingsDialog;
+}
 namespace KGAPI2
 {
 class Job;
 }
-class GoogleSettingsWidget : public QWidget, private Ui::GoogleSettingsWidget
+class GoogleResource;
+class GoogleSettings;
+
+class GoogleSettingsDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit GoogleSettingsWidget(GoogleSettings &settings, const QString &identifier, QWidget *parent);
-    ~GoogleSettingsWidget() override;
-
-    void loadSettings();
-    void saveSettings();
-
-Q_SIGNALS:
-    void okEnabled(bool enabled);
+    explicit GoogleSettingsDialog(GoogleResource *resource, GoogleSettings *settings, WId wId);
+    ~GoogleSettingsDialog() override;
 
 protected:
     bool handleError(KGAPI2::Job *job);
     void accountChanged();
 
 private:
+    void slotConfigure();
     void slotAuthJobFinished(KGAPI2::Job *job);
+    void slotSaveSettings();
     void slotReloadCalendars();
     void slotReloadTaskLists();
 
-    GoogleSettings &m_settings;
+    GoogleResource *const m_resource;
+    GoogleSettings *const m_settings;
+    Ui::GoogleSettingsDialog *const m_ui;
     KGAPI2::AccountPtr m_account;
-    const QString m_identifier;
 };
