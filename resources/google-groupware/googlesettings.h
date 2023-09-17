@@ -33,14 +33,7 @@ class GoogleSettings : public SettingsBase
     Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Google.ExtendedSettings")
 
 public:
-    enum class Option {
-        NoOption = 0,
-        ExportToDBus = 1,
-    };
-    Q_DECLARE_FLAGS(Options, Option)
-
-    explicit GoogleSettings(const KSharedConfigPtr &config, Options options = Option::ExportToDBus);
-
+    GoogleSettings();
     void init();
     void setWindowId(WId id);
     void setResourceId(const QString &resourceIdentifier);
@@ -57,11 +50,9 @@ public:
     bool isReady() const;
     QKeychain::WritePasswordJob *storeAccount(KGAPI2::AccountPtr account);
     void cleanup();
-
 Q_SIGNALS:
     void accountReady(bool ready);
     void accountChanged();
-    void okEnabled(bool enabled);
 
 private:
     void slotWalletOpened(bool success);

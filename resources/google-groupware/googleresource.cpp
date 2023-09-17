@@ -9,8 +9,8 @@
 #include "googleresource.h"
 #include "googleresource_debug.h"
 #include "googleresourcestate.h"
-#include "googlescopes.h"
 #include "googlesettings.h"
+#include "googlesettingsdialog.h"
 #include "settingsadaptor.h"
 
 #include "personhandler.h"
@@ -67,11 +67,8 @@ bool accountIsValid(const KGAPI2::AccountPtr &account)
 GoogleResource::GoogleResource(const QString &id)
     : ResourceBase(id)
     , AgentBase::ObserverV3()
-    , m_settings(KSharedConfig::openConfig())
     , m_iface(new GoogleResourceState(this))
 {
-    m_settings.setResourceId(identifier());
-
     AttributeFactory::registerAttribute<DefaultReminderAttribute>();
 
     connect(this, &GoogleResource::reloadConfiguration, this, &GoogleResource::reloadConfig);
@@ -86,7 +83,9 @@ GoogleResource::GoogleResource(const QString &id)
 
     Q_EMIT status(NotConfigured, i18n("Fetching password..."));
 
-    connect(&m_settings, &GoogleSettings::accountReady, this, [this](bool ready) {
+    m_settings = new GoogleSettings();
+    m_settings->setWindowId(winIdForDialogs());
+    connect(m_settings, &GoogleSettings::accountReady, this, [this](bool ready) {
         if (accountId() > 0) {
             return;
         }
@@ -95,7 +94,7 @@ GoogleResource::GoogleResource(const QString &id)
             return;
         }
 
-        const auto account = m_settings.accountPtr();
+        const auto account = m_settings->accountPtr();
         if (account.isNull()) {
             Q_EMIT status(NotConfigured);
             return;
@@ -108,15 +107,18 @@ GoogleResource::GoogleResource(const QString &id)
             synchronize();
         }
     });
-    m_settings.init();
+    m_settings->init();
 
     updateResourceName();
 
-    m_freeBusyHandler = std::make_unique<FreeBusyHandler>(m_iface, &m_settings);
+    m_freeBusyHandler = std::make_unique<FreeBusyHandler>(m_iface, m_settings);
     m_handlers.clear();
-    m_handlers.push_back(GenericHandler::Ptr(new CalendarHandler(m_iface, &m_settings)));
-    m_handlers.push_back(GenericHandler::Ptr(new PersonHandler(m_iface, &m_settings)));
-    m_handlers.push_back(GenericHandler::Ptr(new TaskHandler(m_iface, &m_settings)));
+    m_handlers.push_back(GenericHandler::Ptr(new CalendarHandler(m_iface, m_settings)));
+    m_handlers.push_back(GenericHandler::Ptr(new PersonHandler(m_iface, m_settings)));
+    m_handlers.push_back(GenericHandler::Ptr(new TaskHandler(m_iface, m_settings)));
+
+    new SettingsAdaptor(m_settings);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), m_settings, QDBusConnection::ExportAdaptors);
 }
 
 GoogleResource::~GoogleResource()
@@ -126,7 +128,7 @@ GoogleResource::~GoogleResource()
 
 void GoogleResource::cleanup()
 {
-    m_settings.cleanup();
+    m_settings->cleanup();
     ResourceBase::cleanup();
 }
 
@@ -135,30 +137,65 @@ void GoogleResource::emitReadyStatus()
     Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
 }
 
+void GoogleResource::configure(WId windowId)
+{
+    if (!m_settings->isReady() || m_isConfiguring) {
+        Q_EMIT configurationDialogAccepted();
+        return;
+    }
+
+    m_isConfiguring = true;
+
+    QScopedPointer<GoogleSettingsDialog> settingsDialog(new GoogleSettingsDialog(this, m_settings, windowId));
+    settingsDialog->setWindowIcon(QIcon::fromTheme(QStringLiteral("im-google")));
+    if (settingsDialog->exec() == QDialog::Accepted) {
+        updateResourceName();
+
+        Q_EMIT configurationDialogAccepted();
+
+        if (m_settings->accountPtr().isNull()) {
+            Q_EMIT status(NotConfigured, i18n("Configured account does not exist"));
+            m_isConfiguring = false;
+            return;
+        }
+
+        emitReadyStatus();
+        synchronize();
+    } else {
+        updateResourceName();
+
+        Q_EMIT configurationDialogRejected();
+    }
+
+    m_isConfiguring = false;
+}
+
 QList<QUrl> GoogleResource::scopes() const
 {
     // TODO: determine it based on what user wants?
-    return googleScopes();
+    const QList<QUrl> scopes = {
+        Account::accountInfoScopeUrl(),
+        Account::calendarScopeUrl(),
+        Account::peopleScopeUrl(),
+        Account::tasksScopeUrl(),
+    };
+    return scopes;
 }
 
 void GoogleResource::updateResourceName()
 {
-    const QString accountName = m_settings.account();
+    const QString accountName = m_settings->account();
     setName(i18nc("%1 is account name (user@gmail.com)", "Google Groupware (%1)", accountName.isEmpty() ? i18n("not configured") : accountName));
 }
 
 void GoogleResource::reloadConfig()
 {
-    updateResourceName();
-
-    const AccountPtr account = m_settings.accountPtr();
+    const AccountPtr account = m_settings->accountPtr();
     if (account.isNull() || account->accountName().isEmpty()) {
         Q_EMIT status(NotConfigured, i18n("Configured account does not exist"));
-        return;
+    } else {
+        emitReadyStatus();
     }
-
-    emitReadyStatus();
-    synchronize();
 }
 
 bool GoogleResource::handleError(KGAPI2::Job *job, bool _cancelTask)
@@ -194,7 +231,7 @@ bool GoogleResource::handleError(KGAPI2::Job *job, bool _cancelTask)
 
 void GoogleResource::runAuthJob(const KGAPI2::AccountPtr &account, const QVariant &args)
 {
-    auto authJob = new AuthJob(account, m_settings.clientId(), m_settings.clientSecret(), this);
+    auto authJob = new AuthJob(account, m_settings->clientId(), m_settings->clientSecret(), this);
     authJob->setProperty(JOB_PROPERTY, args);
     connect(authJob, &AuthJob::finished, this, &GoogleResource::slotAuthJobFinished);
 }
@@ -227,7 +264,7 @@ void GoogleResource::requestAuthenticationFromUser(const KGAPI2::AccountPtr &acc
 
 bool GoogleResource::canPerformTask()
 {
-    if (!m_settings.accountPtr() && accountId() == 0) {
+    if (!m_settings->accountPtr() && accountId() == 0) {
         cancelTask(i18nc("@info:status", "Resource is not configured"));
         Q_EMIT status(NotConfigured, i18nc("@info:status", "Resource is not configured"));
         return false;
@@ -252,11 +289,10 @@ void GoogleResource::slotAuthJobFinished(KGAPI2::Job *job)
 
     auto authJob = qobject_cast<AuthJob *>(job);
     AccountPtr account = authJob->account();
-    auto writeJob = m_settings.storeAccount(account);
+    auto writeJob = m_settings->storeAccount(account);
     connect(writeJob, &WritePasswordJob::finished, this, [job, account, writeJob]() {
         if (writeJob->error()) {
             qCWarning(GOOGLE_LOG) << "Failed to store account's password in secret storage" << writeJob->errorString();
-            return;
         }
 
         auto otherJob = job->property(JOB_PROPERTY).value<KGAPI2::Job *>();
@@ -339,22 +375,22 @@ void GoogleResource::retrieveCollections()
 
     setCollectionStreamingEnabled(true);
     CachePolicy cachePolicy;
-    if (m_settings.enableIntervalCheck()) {
+    if (m_settings->enableIntervalCheck()) {
         cachePolicy.setInheritFromParent(false);
-        cachePolicy.setIntervalCheckTime(m_settings.intervalCheckTime());
+        cachePolicy.setIntervalCheckTime(m_settings->intervalCheckTime());
     }
 
     // Setting up root collection
     m_rootCollection = Collection();
     m_rootCollection.setContentMimeTypes({Collection::mimeType(), Collection::virtualMimeType()});
     m_rootCollection.setRemoteId(ROOT_COLLECTION_REMOTEID);
-    m_rootCollection.setName(m_settings.accountPtr()->accountName());
+    m_rootCollection.setName(m_settings->accountPtr()->accountName());
     m_rootCollection.setParentCollection(Collection::root());
     m_rootCollection.setRights(Collection::CanCreateCollection);
     m_rootCollection.setCachePolicy(cachePolicy);
 
     auto attr = m_rootCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-    attr->setDisplayName(m_settings.accountPtr()->accountName());
+    attr->setDisplayName(m_settings->accountPtr()->accountName());
     attr->setIconName(QStringLiteral("im-google"));
 
     collectionsRetrieved({m_rootCollection});

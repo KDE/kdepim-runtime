@@ -40,7 +40,7 @@ NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *pare
             &NewMailNotificationHistoryWidget::slotHistoryAdded);
 
     mPlainTextEdit->setPlainText(NewMailNotificationHistoryManager::self()->history().join(QLatin1Char('\n')));
-    connect(mPlainTextEdit, &NewMailNotificationHistoryPlainTextEdit::clear, this, [this]() {
+    connect(mPlainTextEdit, &NewMailNotificationHistoryPlainTextEdit::clearHistory, this, [this]() {
         NewMailNotificationHistoryManager::self()->clear();
         mPlainTextEdit->clear();
     });
