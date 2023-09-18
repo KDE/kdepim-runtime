@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-15 00:46+0000\n"
+"POT-Creation-Date: 2023-09-18 00:46+0000\n"
 "PO-Revision-Date: 2023-07-26 00:36+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -96,44 +96,44 @@ msgstr "준비"
 msgid "Invalid item."
 msgstr "항목이 잘못되었습니다."
 
-#: googleresource.cpp:87
+#: googleresource.cpp:84
 #, kde-format
 msgid "Fetching password..."
 msgstr "암호 가져오는 중..."
 
-#: googleresource.cpp:94
+#: googleresource.cpp:93
 #, kde-format
 msgid "Can't fetch password"
 msgstr "암호를 가져올 수 없음"
 
-#: googleresource.cpp:135
+#: googleresource.cpp:137
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "준비"
 
-#: googleresource.cpp:147
+#: googleresource.cpp:157 googleresource.cpp:195
+#, kde-format
+msgid "Configured account does not exist"
+msgstr "설정된 계정이 없음"
+
+#: googleresource.cpp:188
 #, kde-format
 msgid "not configured"
 msgstr "설정되지 않음"
 
-#: googleresource.cpp:147
+#: googleresource.cpp:188
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google 그룹웨어(%1)"
 
-#: googleresource.cpp:156
-#, kde-format
-msgid "Configured account does not exist"
-msgstr "설정된 계정이 없음"
-
-#: googleresource.cpp:204
+#: googleresource.cpp:241
 #, kde-format
 msgid "Account has been logged out."
 msgstr "계정에서 로그아웃되었습니다."
 
-#: googleresource.cpp:207
+#: googleresource.cpp:244
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -142,7 +142,7 @@ msgstr ""
 "계정에서 Google 그룹웨어가 로그아웃되었습니다. Google 연락처 및 캘린더를 다"
 "시 동기화하려면 로그인하십시오."
 
-#: googleresource.cpp:208
+#: googleresource.cpp:245
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -151,97 +151,97 @@ msgstr ""
 "%1 계정에서 Google 그룹웨어가 로그아웃되었습니다. Google 연락처 및 캘린더를 "
 "다시 동기화하려면 로그인하십시오."
 
-#: googleresource.cpp:212
+#: googleresource.cpp:249
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1에서 작업이 필요합니다."
 
-#: googleresource.cpp:217
+#: googleresource.cpp:254
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "로그인"
 
-#: googleresource.cpp:231 googleresource.cpp:232
+#: googleresource.cpp:268 googleresource.cpp:269
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "리소스가 설정되지 않음"
 
-#: googleresource.cpp:247
+#: googleresource.cpp:284
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "토큰을 새로 고칠 수 없음"
 
-#: googleresource.cpp:435 googleresource.cpp:449 googleresource.cpp:463
-#: googleresource.cpp:478 googleresource.cpp:492 googleresource.cpp:506
+#: googleresource.cpp:471 googleresource.cpp:485 googleresource.cpp:499
+#: googleresource.cpp:514 googleresource.cpp:528 googleresource.cpp:542
 #, kde-format
 msgid "Invalid payload type"
 msgstr "잘못된 페이로드 형식"
 
-#: googleresource.cpp:520 googleresource.cpp:534 googleresource.cpp:548
+#: googleresource.cpp:556 googleresource.cpp:570 googleresource.cpp:584
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "알 수 없는 모음집 MIME 형식"
 
-#: googlesettingswidget.cpp:46
+#: googlesettingsdialog.cpp:57
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " 분"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:108 googlesettingswidget.ui:30
+#: googlesettingsdialog.cpp:123 googlesettingsdialog.ui:30
 #, kde-format
 msgid "<b>not configured</b>"
 msgstr "<b>설정되지 않음</b>"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)
-#: googlesettingswidget.ui:23
+#: googlesettingsdialog.ui:23
 #, kde-format
 msgid "Account:"
 msgstr "계정:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
-#: googlesettingswidget.ui:42
+#: googlesettingsdialog.ui:42
 #, kde-format
 msgid "Configure..."
 msgstr "설정..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
-#: googlesettingswidget.ui:49
+#: googlesettingsdialog.ui:49
 #, kde-format
 msgid "Enable interval refresh"
 msgstr "자동 새로 고침 사용"
 
 #. i18n: ectx: property (text), widget (QLabel, refreshLabel)
-#: googlesettingswidget.ui:56
+#: googlesettingsdialog.ui:56
 #, kde-format
 msgid "Refresh interval:"
 msgstr "새로 고침 간격:"
 
 #. i18n: ectx: property (text), widget (QLabel, eventsLimitLabel)
-#: googlesettingswidget.ui:79
+#: googlesettingsdialog.ui:79
 #, kde-format
 msgid "Fetch only events since:"
 msgstr "다음 이후의 새 이벤트만 가져오기:"
 
 #. i18n: ectx: property (text), widget (QLabel, calendarsLabel)
-#: googlesettingswidget.ui:92
+#: googlesettingsdialog.ui:92
 #, kde-format
 msgid "Enabled Calendars:"
 msgstr "활성화된 달력:"
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
-#: googlesettingswidget.ui:123 googlesettingswidget.ui:166
+#: googlesettingsdialog.ui:123 googlesettingsdialog.ui:166
 #, kde-format
 msgid "Reload"
 msgstr "새로 고침"
 
 #. i18n: ectx: property (text), widget (QLabel, taskListsLabel)
-#: googlesettingswidget.ui:135
+#: googlesettingsdialog.ui:135
 #, kde-format
 msgid "Enabled Tasklists:"
 msgstr "활성화된 작업 목록:"

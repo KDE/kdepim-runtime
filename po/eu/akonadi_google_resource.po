@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-15 00:46+0000\n"
+"POT-Creation-Date: 2023-09-18 00:46+0000\n"
 "PO-Revision-Date: 2023-07-21 10:58+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -99,44 +99,44 @@ msgstr "Prest"
 msgid "Invalid item."
 msgstr "Elementu baliogabea."
 
-#: googleresource.cpp:87
+#: googleresource.cpp:84
 #, kde-format
 msgid "Fetching password..."
 msgstr "Pasahitza ekartzen..."
 
-#: googleresource.cpp:94
+#: googleresource.cpp:93
 #, kde-format
 msgid "Can't fetch password"
 msgstr "Ezin du pasahitza ekarri"
 
-#: googleresource.cpp:135
+#: googleresource.cpp:137
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Prest"
 
-#: googleresource.cpp:147
+#: googleresource.cpp:157 googleresource.cpp:195
+#, kde-format
+msgid "Configured account does not exist"
+msgstr "Konfiguratutako kontua ez da existitzen"
+
+#: googleresource.cpp:188
 #, kde-format
 msgid "not configured"
 msgstr "konfiguratu gabe"
 
-#: googleresource.cpp:147
+#: googleresource.cpp:188
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google Groupware (%1)"
 
-#: googleresource.cpp:156
-#, kde-format
-msgid "Configured account does not exist"
-msgstr "Konfiguratutako kontua ez da existitzen"
-
-#: googleresource.cpp:204
+#: googleresource.cpp:241
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Kontua saio-itxi da."
 
-#: googleresource.cpp:207
+#: googleresource.cpp:244
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -145,7 +145,7 @@ msgstr ""
 "Zure kontutik Google Groupware-tik saioa itxi da. Mesedez saioa ireki Google "
 "Kontaktuak eta Google Egutegiak berriz sinkronizatu daitezen."
 
-#: googleresource.cpp:208
+#: googleresource.cpp:245
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -154,41 +154,41 @@ msgstr ""
 "%1 kontutik Google Groupware-tik saioa itxi da. Mesedez saioa ireki Google "
 "Kontaktuak eta Google Egutegiak berriz sinkronizatu daitezen."
 
-#: googleresource.cpp:212
+#: googleresource.cpp:249
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1(e)k zure arreta behar du."
 
-#: googleresource.cpp:217
+#: googleresource.cpp:254
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Hasi saioa"
 
-#: googleresource.cpp:231 googleresource.cpp:232
+#: googleresource.cpp:268 googleresource.cpp:269
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Baliabidea ez dago konfiguratuta"
 
-#: googleresource.cpp:247
+#: googleresource.cpp:284
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Tokenak freskatzea huts egin du"
 
-#: googleresource.cpp:435 googleresource.cpp:449 googleresource.cpp:463
-#: googleresource.cpp:478 googleresource.cpp:492 googleresource.cpp:506
+#: googleresource.cpp:471 googleresource.cpp:485 googleresource.cpp:499
+#: googleresource.cpp:514 googleresource.cpp:528 googleresource.cpp:542
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Zama-erabilgarri mota baliogabea"
 
-#: googleresource.cpp:520 googleresource.cpp:534 googleresource.cpp:548
+#: googleresource.cpp:556 googleresource.cpp:570 googleresource.cpp:584
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Bildumaren MIME-mota ezezaguna"
 
-#: googlesettingswidget.cpp:46
+#: googlesettingsdialog.cpp:57
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -196,56 +196,56 @@ msgstr[0] " minutu"
 msgstr[1] " minutu"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:108 googlesettingswidget.ui:30
+#: googlesettingsdialog.cpp:123 googlesettingsdialog.ui:30
 #, kde-format
 msgid "<b>not configured</b>"
 msgstr "<b>konfiguratu gabe</b>"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)
-#: googlesettingswidget.ui:23
+#: googlesettingsdialog.ui:23
 #, kde-format
 msgid "Account:"
 msgstr "Kontua:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
-#: googlesettingswidget.ui:42
+#: googlesettingsdialog.ui:42
 #, kde-format
 msgid "Configure..."
 msgstr "Konfiguratu..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
-#: googlesettingswidget.ui:49
+#: googlesettingsdialog.ui:49
 #, kde-format
 msgid "Enable interval refresh"
 msgstr "Gaitu freskatzeko bitartea"
 
 #. i18n: ectx: property (text), widget (QLabel, refreshLabel)
-#: googlesettingswidget.ui:56
+#: googlesettingsdialog.ui:56
 #, kde-format
 msgid "Refresh interval:"
 msgstr "Freskatzeko bitartea:"
 
 #. i18n: ectx: property (text), widget (QLabel, eventsLimitLabel)
-#: googlesettingswidget.ui:79
+#: googlesettingsdialog.ui:79
 #, kde-format
 msgid "Fetch only events since:"
 msgstr "Ekarri hemendik aurrerako ekitaldiak bakarrik:"
 
 #. i18n: ectx: property (text), widget (QLabel, calendarsLabel)
-#: googlesettingswidget.ui:92
+#: googlesettingsdialog.ui:92
 #, kde-format
 msgid "Enabled Calendars:"
 msgstr "Gaitutako egutegiak:"
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
-#: googlesettingswidget.ui:123 googlesettingswidget.ui:166
+#: googlesettingsdialog.ui:123 googlesettingsdialog.ui:166
 #, kde-format
 msgid "Reload"
 msgstr "Birzamatu"
 
 #. i18n: ectx: property (text), widget (QLabel, taskListsLabel)
-#: googlesettingswidget.ui:135
+#: googlesettingsdialog.ui:135
 #, kde-format
 msgid "Enabled Tasklists:"
 msgstr "Gaitutako zeregin-zerrendak:"
