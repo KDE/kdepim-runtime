@@ -8,6 +8,8 @@
 
 #include "googlesettings.h"
 #include "googleresource_debug.h"
+#include "googlescopes.h"
+#include "settingsadaptor.h"
 
 #include <KGAPI/Account>
 #include <KLocalizedString>
@@ -27,8 +29,16 @@ using namespace KGAPI2;
 
 static const QString googleWalletFolder = QStringLiteral("Akonadi Google");
 
-GoogleSettings::GoogleSettings()
+GoogleSettings::GoogleSettings(const KSharedConfigPtr &config, Options options)
+    : SettingsBase(config)
 {
+    qDebug() << config;
+    if (options & Option::ExportToDBus) {
+        new SettingsAdaptor(this);
+        QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
+                                                     this,
+                                                     QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
+    }
 }
 
 void GoogleSettings::init()
@@ -82,15 +92,17 @@ WritePasswordJob *GoogleSettings::storeAccount(AccountPtr account)
     m_account = account;
 
     QStringList scopes;
-    const QList<QUrl> urlScopes = m_account->scopes();
+    const QList<QUrl> urlScopes = googleScopes();
     scopes.reserve(urlScopes.count());
     for (const QUrl &url : urlScopes) {
         scopes << url.toString();
     }
 
-    const QMap<QString, QString> map = {{QStringLiteral("accessToken"), m_account->accessToken()},
-                                        {QStringLiteral("refreshToken"), m_account->refreshToken()},
-                                        {QStringLiteral("scopes"), scopes.join(QLatin1Char(','))}};
+    const QMap<QString, QString> map = {
+        {QStringLiteral("accessToken"), m_account->accessToken()},
+        {QStringLiteral("refreshToken"), m_account->refreshToken()},
+        {QStringLiteral("scopes"), scopes.join(QLatin1Char(','))},
+    };
 
     // Legacy: store the map exactly like Kwallet is doing it
     QByteArray mapData;
