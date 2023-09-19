@@ -11,7 +11,6 @@
 #include "googleresourcestate.h"
 #include "googlescopes.h"
 #include "googlesettings.h"
-#include "googlesettingswidget.h"
 #include "settingsadaptor.h"
 
 #include "personhandler.h"
