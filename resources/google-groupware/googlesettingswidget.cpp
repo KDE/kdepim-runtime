@@ -36,7 +36,6 @@ GoogleSettingsWidget::GoogleSettingsWidget(GoogleSettings &settings, const QStri
     , m_settings(settings)
     , m_identifier(identifier)
 {
-    qDebug() << m_settings.account();
     auto mainLayout = new QVBoxLayout(this);
 
     auto mainWidget = new QWidget(this);
@@ -83,7 +82,7 @@ bool GoogleSettingsWidget::handleError(KGAPI2::Job *job)
     }
 
     if (job->error() == KGAPI2::Unauthorized) {
-        qCDebug(GOOGLE_LOG) << job << job->errorString();
+        qWarning() << job << job->errorString();
         const QList<QUrl> resourceScopes = googleScopes();
         for (const QUrl &scope : resourceScopes) {
             if (!m_account->scopes().contains(scope)) {

@@ -6,6 +6,7 @@
 
 #include <Akonadi/AgentConfigurationBase>
 
+#include "googleresource_debug.h"
 #include "googlesettings.h"
 #include "googlesettingswidget.h"
 
@@ -25,7 +26,12 @@ public:
     void load() override
     {
         Akonadi::AgentConfigurationBase::load();
-        mWidget.loadSettings();
+        mSettings.init();
+        connect(&mSettings, &GoogleSettings::accountReady, this, [this](bool ready) {
+            if (ready) {
+                mWidget.loadSettings();
+            }
+        });
     }
 
     Q_REQUIRED_RESULT bool save() const override

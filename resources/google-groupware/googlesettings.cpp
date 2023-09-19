@@ -28,7 +28,6 @@ static const QString googleWalletFolder = QStringLiteral("Akonadi Google");
 GoogleSettings::GoogleSettings(const KSharedConfigPtr &config, Options options)
     : SettingsBase(config)
 {
-    qDebug() << config;
     if (options & Option::ExportToDBus) {
         new SettingsAdaptor(this);
         QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
@@ -40,9 +39,11 @@ GoogleSettings::GoogleSettings(const KSharedConfigPtr &config, Options options)
 void GoogleSettings::init()
 {
     // First read from QtKeyChain
-    auto job = new QKeychain::ReadPasswordJob(googleWalletFolder);
+    auto job = new QKeychain::ReadPasswordJob(googleWalletFolder, this);
+    job->setKey(account());
     connect(job, &QKeychain::Job::finished, this, [this, job]() {
         if (job->error() != QKeychain::Error::NoError) {
+            qCWarning(GOOGLE_LOG) << "Unable to read password" << job->error();
             Q_EMIT accountReady(false);
             return;
         }
@@ -50,18 +51,19 @@ void GoogleSettings::init()
         // Found something with QtKeyChain
         if (!account().isEmpty()) {
             m_account = fetchAccountFromKeychain(account(), job);
+            m_isReady = true;
+            Q_EMIT accountReady(true);
         }
-        m_isReady = true;
-        Q_EMIT accountReady(true);
     });
+    job->start();
 }
 
 KGAPI2::AccountPtr GoogleSettings::fetchAccountFromKeychain(const QString &accountName, QKeychain::ReadPasswordJob *job)
 {
     QMap<QString, QString> map;
     auto value = job->binaryData();
-    if (!value.isEmpty()) {
-        qCDebug(GOOGLE_LOG) << "Account" << accountName << "not found in KWallet";
+    if (value.isEmpty()) {
+        qCWarning(GOOGLE_LOG) << "Account" << accountName << "not found in KWallet";
         return {};
     }
 
@@ -112,6 +114,7 @@ WritePasswordJob *GoogleSettings::storeAccount(AccountPtr account)
 
     connect(writeJob, &WritePasswordJob::finished, this, [this, writeJob]() {
         if (writeJob->error()) {
+            qCWarning(GOOGLE_LOG) << "Unable to write password" << writeJob->error();
             return;
         }
         SettingsBase::setAccount(m_account->accountName());
