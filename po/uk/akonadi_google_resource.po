@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-12 02:26+0000\n"
+"POT-Creation-Date: 2023-09-20 02:27+0000\n"
 "PO-Revision-Date: 2023-05-07 09:45+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -103,44 +103,44 @@ msgstr "Виконано"
 msgid "Invalid item."
 msgstr "Некоректний запис."
 
-#: googleresource.cpp:84
+#: googleresource.cpp:87
 #, kde-format
 msgid "Fetching password..."
 msgstr "Отримуємо пароль…"
 
-#: googleresource.cpp:93
+#: googleresource.cpp:94
 #, kde-format
 msgid "Can't fetch password"
 msgstr "Не вдалося отримати пароль"
 
-#: googleresource.cpp:137
+#: googleresource.cpp:135
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Виконано"
 
-#: googleresource.cpp:157 googleresource.cpp:195
-#, kde-format
-msgid "Configured account does not exist"
-msgstr "Налаштованого облікового запису не існує"
-
-#: googleresource.cpp:188
+#: googleresource.cpp:147
 #, kde-format
 msgid "not configured"
 msgstr "не налаштовано"
 
-#: googleresource.cpp:188
+#: googleresource.cpp:147
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Групова робота у Google (%1)"
 
-#: googleresource.cpp:241
+#: googleresource.cpp:156
+#, kde-format
+msgid "Configured account does not exist"
+msgstr "Налаштованого облікового запису не існує"
+
+#: googleresource.cpp:204
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Здійснено вихід з облікового запису."
 
-#: googleresource.cpp:244
+#: googleresource.cpp:207
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -150,7 +150,7 @@ msgstr ""
 "подальшу синхронізацію контактів та календаря Google, будь ласка, знову "
 "увійдіть до облікового запису."
 
-#: googleresource.cpp:245
+#: googleresource.cpp:208
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -160,41 +160,41 @@ msgstr ""
 "подальшу синхронізацію контактів та календаря Google, будь ласка, знову "
 "увійдіть до облікового запису."
 
-#: googleresource.cpp:249
+#: googleresource.cpp:212
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 потребує вашої уваги."
 
-#: googleresource.cpp:254
+#: googleresource.cpp:217
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Увійти"
 
-#: googleresource.cpp:268 googleresource.cpp:269
+#: googleresource.cpp:231 googleresource.cpp:232
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Ресурс не налаштовано"
 
-#: googleresource.cpp:284
+#: googleresource.cpp:247
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Не вдалося оновити записи"
 
-#: googleresource.cpp:471 googleresource.cpp:485 googleresource.cpp:499
-#: googleresource.cpp:514 googleresource.cpp:528 googleresource.cpp:542
+#: googleresource.cpp:435 googleresource.cpp:449 googleresource.cpp:463
+#: googleresource.cpp:478 googleresource.cpp:492 googleresource.cpp:506
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Некоректний тип вмісту"
 
-#: googleresource.cpp:556 googleresource.cpp:570 googleresource.cpp:584
+#: googleresource.cpp:520 googleresource.cpp:534 googleresource.cpp:548
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Невідомий тип MIME збірки"
 
-#: googlesettingsdialog.cpp:57
+#: googlesettingswidget.cpp:45
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -204,56 +204,56 @@ msgstr[2] " хвилин"
 msgstr[3] " хвилина"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingsdialog.cpp:123 googlesettingsdialog.ui:30
+#: googlesettingswidget.cpp:107 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>not configured</b>"
 msgstr "<b>не налаштовано</b>"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)
-#: googlesettingsdialog.ui:23
+#: googlesettingswidget.ui:23
 #, kde-format
 msgid "Account:"
 msgstr "Обліковий запис:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
-#: googlesettingsdialog.ui:42
+#: googlesettingswidget.ui:42
 #, kde-format
 msgid "Configure..."
 msgstr "Налаштувати…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
-#: googlesettingsdialog.ui:49
+#: googlesettingswidget.ui:49
 #, kde-format
 msgid "Enable interval refresh"
 msgstr "Увімкнути періодичне оновлення"
 
 #. i18n: ectx: property (text), widget (QLabel, refreshLabel)
-#: googlesettingsdialog.ui:56
+#: googlesettingswidget.ui:56
 #, kde-format
 msgid "Refresh interval:"
 msgstr "Інтервал оновлення:"
 
 #. i18n: ectx: property (text), widget (QLabel, eventsLimitLabel)
-#: googlesettingsdialog.ui:79
+#: googlesettingswidget.ui:79
 #, kde-format
 msgid "Fetch only events since:"
 msgstr "Отримати лише нові повідомлення з:"
 
 #. i18n: ectx: property (text), widget (QLabel, calendarsLabel)
-#: googlesettingsdialog.ui:92
+#: googlesettingswidget.ui:92
 #, kde-format
 msgid "Enabled Calendars:"
 msgstr "Увімкнені календарі:"
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
-#: googlesettingsdialog.ui:123 googlesettingsdialog.ui:168
+#: googlesettingswidget.ui:123 googlesettingswidget.ui:168
 #, kde-format
 msgid "Reload"
 msgstr "Перезавантажити"
 
 #. i18n: ectx: property (text), widget (QLabel, taskListsLabel)
-#: googlesettingsdialog.ui:137
+#: googlesettingswidget.ui:137
 #, kde-format
 msgid "Enabled Tasklists:"
 msgstr "Увімкнені списки завдань:"
