@@ -5,12 +5,23 @@
 */
 #pragma once
 
+#include <Akonadi/Item>
 #include <QObject>
 
 class NewMailNotificationHistoryManager : public QObject
 {
     Q_OBJECT
 public:
+    struct HistoryMailInfo {
+        QString message;
+        Akonadi::Item::Id identifier;
+    };
+
+    struct HistoryFolderInfo {
+        QString message;
+        Akonadi::Collection::Id identifier;
+    };
+
     explicit NewMailNotificationHistoryManager(QObject *parent = nullptr);
     ~NewMailNotificationHistoryManager() override;
 
