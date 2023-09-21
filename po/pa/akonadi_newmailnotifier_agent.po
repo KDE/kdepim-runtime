@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-03 00:47+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2011-01-14 08:16+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
@@ -29,7 +29,7 @@ msgstr ""
 msgid "Enabled"
 msgstr ""
 
-#: newmailnotifieragent.cpp:373
+#: newmailnotifieragent.cpp:365
 #, fuzzy, kde-format
 #| msgid "One new email in %2"
 #| msgid_plural "%1 new emails in %2"
@@ -41,7 +41,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "%2 ਵਿੱਚ ਇੱਕ ਨਵੀਂ ਈਮੇਲ"
 msgstr[1] "%2 ਵਿੱਚ %1 ਨਵੀਆਂ ਈਮੇਲ ਹਨ"
 
-#: newmailnotifieragent.cpp:398
+#: newmailnotifieragent.cpp:390
 #, kde-format
 msgid "New mail arrived"
 msgstr ""
@@ -57,7 +57,7 @@ msgstr ""
 msgid "Unable to start KMail application."
 msgstr ""
 
-#: newmailnotifierselectcollectionwidget.cpp:94
+#: newmailnotifierselectcollectionwidget.cpp:95
 #, kde-format
 msgid "Select which folders to monitor for new message notifications:"
 msgstr ""

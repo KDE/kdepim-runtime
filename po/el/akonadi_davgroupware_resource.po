@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-01-13 00:57+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2017-04-20 16:15+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -542,12 +542,12 @@ msgstr "χρήστη με όνομα"
 msgid "a contact with email"
 msgstr "επαφή με email"
 
-#: settings.cpp:481
+#: settings.cpp:477
 #, kde-format
 msgid "A password is required for user %1"
 msgstr "Απαιτείται κωδικός πρόσβασης για τον χρήστη %1"
 
-#: settings.cpp:484
+#: settings.cpp:480
 #, kde-format
 msgid "Password: "
 msgstr "Κωδικός: "
@@ -575,23 +575,23 @@ msgstr "Δώστε τα διαπιστευτήριά σας για την είσ
 msgid "User:"
 msgstr "Χρήστης"
 
-#: setupwizard.cpp:258
+#: setupwizard.cpp:257
 #, kde-format
 msgid "No, choose another server"
 msgstr "Όχι, να επιλεγεί άλλος εξυπηρετητής"
 
-#: setupwizard.cpp:260
+#: setupwizard.cpp:259
 #, kde-format
 msgid "Predefined provider found"
 msgstr "Βρέθηκε ο προκαθορισμένος πάροχος"
 
-#: setupwizard.cpp:261
+#: setupwizard.cpp:260
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr ""
 "Επιλέξτε αν θέλετε να χρησιμοποιήσετε τον πάροχο που ανιχνεύτηκε αυτόματα"
 
-#: setupwizard.cpp:280
+#: setupwizard.cpp:279
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -603,78 +603,78 @@ msgstr ""
 "μπορεί να διαμορφώσει αυτόματα έναν λογαριασμό για %1 υπηρεσίες.\n"
 "Θέλετε να γίνει έτσι;"
 
-#: setupwizard.cpp:285
+#: setupwizard.cpp:284
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Ναι να χρησιμοποιηθεί ο %1 ως πάροχος"
 
-#: setupwizard.cpp:311
+#: setupwizard.cpp:310
 #, kde-format
 msgid "Groupware Server"
 msgstr "Εξυπηρετητής Groupware"
 
-#: setupwizard.cpp:312
+#: setupwizard.cpp:311
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr ""
 "Επιλογή εξυπηρετητή groupware για τον οποίο θα γίνει διαμόρφωση του πόρου"
 
-#: setupwizard.cpp:343
+#: setupwizard.cpp:340
 #, kde-format
 msgid "Use one of those servers:"
 msgstr "Να χρησιμοποιηθεί ένας από αυτούς τους εξυπηρετητές:"
 
-#: setupwizard.cpp:352
+#: setupwizard.cpp:349
 #, kde-format
 msgid "Configure the resource manually"
 msgstr "Διαμορφώστε τον πόρο χειροκίνητα"
 
-#: setupwizard.cpp:390
+#: setupwizard.cpp:383
 #, kde-format
 msgid "Connection"
 msgstr "Σύνδεση"
 
-#: setupwizard.cpp:391
+#: setupwizard.cpp:384
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Εισαγωγή πληροφοριών σύνδεσης για τον εξυπηρετητή groupware"
 
-#: setupwizard.cpp:398
+#: setupwizard.cpp:391
 #, kde-format
 msgid "Host"
 msgstr "Υπολογιστής"
 
-#: setupwizard.cpp:401
+#: setupwizard.cpp:394
 #, kde-format
 msgid "Installation path"
 msgstr "Διαδρομή εγκατάστασης"
 
-#: setupwizard.cpp:404
+#: setupwizard.cpp:397
 #, kde-format
 msgid "Use secure connection"
 msgstr "Χρήση ασφαλούς σύνδεσης"
 
-#: setupwizard.cpp:432
+#: setupwizard.cpp:425
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "Τελικό URL (CalDav)"
 
-#: setupwizard.cpp:437
+#: setupwizard.cpp:430
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "Τελικό URL (CardDav)"
 
-#: setupwizard.cpp:442
+#: setupwizard.cpp:435
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "Τελικό URL (GroupDav)"
 
-#: setupwizard.cpp:506 setupwizard.cpp:512
+#: setupwizard.cpp:499 setupwizard.cpp:505
 #, kde-format
 msgid "Test Connection"
 msgstr "Έλεγχος σύνδεσης"
 
-#: setupwizard.cpp:507
+#: setupwizard.cpp:500
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -683,12 +683,12 @@ msgstr ""
 "Με την τρέχουσα διαμόρφωση μπορείτε τώρα να δοκιμάσετε την πρόσβαση στον "
 "εξυπηρετητή groupware"
 
-#: setupwizard.cpp:552
+#: setupwizard.cpp:545
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Παρουσιάστηκε σφάλμα: %1"
 
-#: setupwizard.cpp:555
+#: setupwizard.cpp:548
 #, kde-format
 msgid "Connected successfully"
 msgstr "Σύνδεση επιτυχής"

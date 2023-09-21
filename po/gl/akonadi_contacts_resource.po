@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2019-11-26 23:17+0100\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
@@ -167,8 +167,5 @@ msgstr "Ruta do directorio cos contactos"
 msgid "Do not change the actual backend data."
 msgstr "Non cambiar os datos reais da infraestrutura."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/contactswizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Ruta do ficheiro:"
+#~ msgid "Filename:"
+#~ msgstr "Ruta do ficheiro:"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-03 00:47+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2023-08-06 19:52+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -29,7 +29,7 @@ msgstr "알림 과거 기록"
 msgid "Enabled"
 msgstr "활성화됨"
 
-#: newmailnotifieragent.cpp:373
+#: newmailnotifieragent.cpp:365
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -38,7 +38,7 @@ msgid "One new email in %2 from \"%3\""
 msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "\"%3\" 계정의 \"%2\" 폴더에 새 메일 %1개 있음"
 
-#: newmailnotifieragent.cpp:398
+#: newmailnotifieragent.cpp:390
 #, kde-format
 msgid "New mail arrived"
 msgstr "새 메일 도착함"
@@ -54,7 +54,7 @@ msgstr "%f에서 보낸 메시지를 받음"
 msgid "Unable to start KMail application."
 msgstr "KMail 앱을 시작할 수 없습니다."
 
-#: newmailnotifierselectcollectionwidget.cpp:94
+#: newmailnotifierselectcollectionwidget.cpp:95
 #, kde-format
 msgid "Select which folders to monitor for new message notifications:"
 msgstr "새 메시지 알림을 받을 폴더를 선택하십시오:"

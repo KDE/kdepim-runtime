@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2010-12-16 08:41+0100\n"
 "Last-Translator: Manfred Wiese <m.j.wiese@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -75,11 +75,8 @@ msgstr "Toföögt Element \"%1\" lett sik nich halen."
 msgid "Unable to retrieve modified item %1."
 msgstr "Ännert Element \"%1\" lett sik nich halen."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Dateinaam:"
+#~ msgid "Filename:"
+#~ msgstr "Dateinaam:"
 
 #~ msgid "Select Calendar"
 #~ msgstr "Kalenner utsöken"

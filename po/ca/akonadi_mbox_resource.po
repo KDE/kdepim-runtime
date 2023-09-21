@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-24 00:49+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2023-03-24 10:47+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -332,8 +332,5 @@ msgstr "Fitxer de bloqueig"
 msgid "Number of deleted messages before a purge is started."
 msgstr "Nombre de missatges suprimits abans d'iniciar una purga."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/mailboxwizard.ui:19
-#, kde-format
-msgid "URL:"
-msgstr "URL:"
+#~ msgid "URL:"
+#~ msgstr "URL:"

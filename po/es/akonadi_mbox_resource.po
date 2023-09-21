@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-24 00:49+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2023-03-25 00:30+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -328,8 +328,5 @@ msgstr "Archivo de bloqueo"
 msgid "Number of deleted messages before a purge is started."
 msgstr "Número de mensajes borrados antes de iniciar una purga."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/mailboxwizard.ui:19
-#, kde-format
-msgid "URL:"
-msgstr "URL:"
+#~ msgid "URL:"
+#~ msgstr "URL:"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2020-03-22 13:24+0100\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -164,8 +164,5 @@ msgstr "Cesta k adresáři s kontakty"
 msgid "Do not change the actual backend data."
 msgstr "Neměnit data aktuální podpůrné vrstvy."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/contactswizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Název souboru:"
+#~ msgid "Filename:"
+#~ msgstr "Název souboru:"

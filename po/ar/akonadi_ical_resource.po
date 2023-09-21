@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2018-01-23 13:02+0300\n"
 "Last-Translator: Safa Alfulaij <safa1996alfulaij@gmail.com>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -75,11 +75,8 @@ msgstr "تعذّر جلب العنصر %1 المُضاف."
 msgid "Unable to retrieve modified item %1."
 msgstr "تعذّر جلب العنصر %1 المعدّل."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "اسم الملفّ:"
+#~ msgid "Filename:"
+#~ msgstr "اسم الملفّ:"
 
 #~ msgid "Select Calendar"
 #~ msgstr "اختر تقويمًا"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_contacts_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2019-07-07 19:27+0300\n"
 "Last-Translator: Moo\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -166,8 +166,5 @@ msgstr "Kelias iki adresatų katalogo"
 msgid "Do not change the actual backend data."
 msgstr "Nekeisti dabartinių vidinės pusės duomenų."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/contactswizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Failo pavadinimas:"
+#~ msgid "Filename:"
+#~ msgstr "Failo pavadinimas:"

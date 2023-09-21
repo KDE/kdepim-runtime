@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-24 00:49+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2023-05-05 17:56+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -326,8 +326,5 @@ msgstr "Lukitustiedosto"
 msgid "Number of deleted messages before a purge is started."
 msgstr "Poistettavien viestien määrä, ennen kuin poistaminen aloitetaan."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/mailboxwizard.ui:19
-#, kde-format
-msgid "URL:"
-msgstr "Verkko-osoite:"
+#~ msgid "URL:"
+#~ msgstr "Verkko-osoite:"

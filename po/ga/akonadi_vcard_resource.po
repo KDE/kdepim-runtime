@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2009-04-06 08:33-0500\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -56,12 +56,6 @@ msgstr "Ná hathraigh na sonraí féin."
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "Déan monatóireacht ar athruithe."
-
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/vcardwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr ""
 
 #~ msgid "Select Address Book"
 #~ msgstr "Roghnaigh Leabhar Seoltaí"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-08 00:47+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2023-09-16 10:08\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -24,7 +24,7 @@ msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " 分钟"
 
-#: accountwidget.cpp:125 pop3resource.cpp:50
+#: accountwidget.cpp:125 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 账户"
@@ -148,7 +148,7 @@ msgstr ""
 msgid "Could not send to server.\n"
 msgstr "无法发送到服务器。\n"
 
-#: pop3protocol.cpp:356
+#: pop3protocol.cpp:352
 #, kde-format
 msgid ""
 "Login via APOP failed. The server %1 may not support APOP, although it "
@@ -161,12 +161,12 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:406
+#: pop3protocol.cpp:402
 #, kde-format
 msgid "An error occurred during authentication: %1"
 msgstr "身份验证时发生错误：%1"
 
-#: pop3protocol.cpp:500
+#: pop3protocol.cpp:496
 #, kde-format
 msgid ""
 "Login via SASL (%1) failed. The server may not support %2, or the password "
@@ -178,7 +178,7 @@ msgstr ""
 "\n"
 "%3"
 
-#: pop3protocol.cpp:511
+#: pop3protocol.cpp:507
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
@@ -187,7 +187,7 @@ msgstr ""
 "您的 POP3 服务器 (%1) 不支持 SASL。\n"
 "请选择另外一种身份验证方式。"
 
-#: pop3protocol.cpp:528 pop3protocol.cpp:617
+#: pop3protocol.cpp:524 pop3protocol.cpp:613
 #, kde-format
 msgid ""
 "Could not login to %1.\n"
@@ -196,7 +196,7 @@ msgstr ""
 "无法登录到 %1。\n"
 "\n"
 
-#: pop3protocol.cpp:536
+#: pop3protocol.cpp:532
 #, kde-format
 msgid ""
 "Could not login to %1. The password may be wrong.\n"
@@ -207,22 +207,22 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:568
+#: pop3protocol.cpp:564
 #, kde-format
 msgid "SSL/TLS error: %1"
 msgstr "SSL/TLS 错误：%1"
 
-#: pop3protocol.cpp:599
+#: pop3protocol.cpp:595
 #, kde-format
 msgid "%1: %2"
 msgstr "%1：%2"
 
-#: pop3protocol.cpp:618
+#: pop3protocol.cpp:614
 #, kde-format
 msgid "The server terminated the connection immediately."
 msgstr "服务器立刻中止了连接。"
 
-#: pop3protocol.cpp:619
+#: pop3protocol.cpp:615
 #, kde-format
 msgid ""
 "Server does not respond properly:\n"
@@ -231,7 +231,7 @@ msgstr ""
 "服务器响应不正确：\n"
 "%1\n"
 
-#: pop3protocol.cpp:643
+#: pop3protocol.cpp:639
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
@@ -240,7 +240,7 @@ msgstr ""
 "您的 POP3 服务器 (%1) 不支持 APOP。\n"
 "请选择另外一种身份验证方式。"
 
-#: pop3protocol.cpp:653
+#: pop3protocol.cpp:649
 #, kde-format
 msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
@@ -249,115 +249,115 @@ msgstr ""
 "您的 POP3 服务器声称支持 TLS，但是协议对接失败。\n"
 "您可以在 POP 账户设置中禁用 TLS。"
 
-#: pop3protocol.cpp:738
+#: pop3protocol.cpp:734
 #, kde-format
 msgid "Internal error: missing argument for command %1"
 msgstr "内部错误：缺少命令 %1 的参数"
 
-#: pop3protocol.cpp:794
+#: pop3protocol.cpp:790
 #, kde-format
 msgid "Internal error: missing item"
 msgstr "内部错误：缺少项目"
 
-#: pop3protocol.cpp:821
+#: pop3protocol.cpp:817
 #, kde-format
 msgid "Timeout from POP3 server %1"
 msgstr "POP3 服务器超时 %1"
 
-#: pop3protocol.cpp:823
+#: pop3protocol.cpp:819
 #, kde-format
 msgid "Connection broken from POP3 server %1"
 msgstr "从 POP3服务器断开连接 %1"
 
-#: pop3protocol.cpp:884
+#: pop3protocol.cpp:880
 #, kde-format
 msgid ""
 "Error during communication with the POP3 server while trying to download "
 "mail: %1"
 msgstr "下载邮件时与 POP3 服务器通信出错：%1"
 
-#: pop3protocol.cpp:894
+#: pop3protocol.cpp:890
 #, kde-format
 msgid "Internal error, number expected: %1"
 msgstr "内部错误，预计数字： %1"
 
-#: pop3protocol.cpp:914
+#: pop3protocol.cpp:910
 #, kde-format
 msgid "Unexpected response from POP3 server."
 msgstr "POP3 服务器应答不正常。"
 
-#: pop3resource.cpp:99
+#: pop3resource.cpp:95
 #, kde-format
 msgid "Mail check aborted."
 msgstr "邮件检查已中止。"
 
-#: pop3resource.cpp:106
+#: pop3resource.cpp:102
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "邮件检查已被手动取消。"
 
-#: pop3resource.cpp:134
+#: pop3resource.cpp:130
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "请输入账户“%1”的用户名和密码。"
 
-#: pop3resource.cpp:151
+#: pop3resource.cpp:147
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "由于无法从密码库中加载该密码，所以只能向您询问。"
 
-#: pop3resource.cpp:167
+#: pop3resource.cpp:163
 #, kde-format
 msgid "Account:"
 msgstr "账户："
 
-#: pop3resource.cpp:184
+#: pop3resource.cpp:180
 #, kde-format
 msgid "No username and password supplied."
 msgstr "未提供用户名和密码。"
 
-#: pop3resource.cpp:203
+#: pop3resource.cpp:199
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "正在准备从“%1”传送。"
 
-#: pop3resource.cpp:224
+#: pop3resource.cpp:220
 #, kde-format
 msgid "Executing precommand."
 msgstr "正在执行前置命令。"
 
-#: pop3resource.cpp:249
+#: pop3resource.cpp:245
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "询问您账户的原因是上一次登录未成功。"
 
-#: pop3resource.cpp:251
+#: pop3resource.cpp:247
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "询问您账户的原因是提供的用户名为空。"
 
-#: pop3resource.cpp:278
+#: pop3resource.cpp:274
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "正在获取邮件列表。"
 
-#: pop3resource.cpp:335
+#: pop3resource.cpp:330
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "正在保存已下载的信件。"
 
-#: pop3resource.cpp:353
+#: pop3resource.cpp:348
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "将密码保存到密码库。"
 
-#: pop3resource.cpp:395
+#: pop3resource.cpp:390
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr "尝试获取本地收件夹时出错，中止邮件检查。"
 
-#: pop3resource.cpp:402
+#: pop3resource.cpp:397
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -367,38 +367,38 @@ msgstr ""
 "<qt>您所删除的文件夹与与账户 <b>%1</b> 关联，发往该账户的邮件将会投递到该文件"
 "夹中。发往该账户的新邮件已重置为主收件箱文件夹。</qt>"
 
-#: pop3resource.cpp:423
+#: pop3resource.cpp:418
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr "尝试获取新收件的文件夹时出错，中止邮件检查。"
 
-#: pop3resource.cpp:436
+#: pop3resource.cpp:431
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr "找不到新收件的文件夹，中止邮件检查。"
 
-#: pop3resource.cpp:447
+#: pop3resource.cpp:442
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "执行前置命令时出错。"
 
-#: pop3resource.cpp:461
+#: pop3resource.cpp:456
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr "无法登录至服务器“%1”。"
 
-#: pop3resource.cpp:470
+#: pop3resource.cpp:465
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "获取服务器上的信件列表时出错。"
 
-#: pop3resource.cpp:484
+#: pop3resource.cpp:479
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr "从服务器获取信件唯一标识符列表时出错。"
 
-#: pop3resource.cpp:497
+#: pop3resource.cpp:492
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -411,65 +411,65 @@ msgstr ""
 "器上哪些邮件 KMail 已经下载过；\n"
 "因此把邮件保留在服务器上的功能无法正常工作。"
 
-#: pop3resource.cpp:512
+#: pop3resource.cpp:507
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "从服务器获取信件时出错。"
 
-#: pop3resource.cpp:572
+#: pop3resource.cpp:567
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
 msgstr ""
 "正在获取 %5 的信件，已获取 %1 封，共 %2 封(%3/%4 KB，服务器上剩余 %6 KB)。"
 
-#: pop3resource.cpp:581
+#: pop3resource.cpp:576
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "正在获取 %5 的信件，已获取 %1 封，共 %2 封(%3/%4 KB)"
 
-#: pop3resource.cpp:604
+#: pop3resource.cpp:599
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "无法存储已下载的邮件。"
 
-#: pop3resource.cpp:752
+#: pop3resource.cpp:747
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "从服务器删除信件失败。"
 
-#: pop3resource.cpp:808
+#: pop3resource.cpp:803
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "邮件检查完成，没有新下载的信件。"
 
-#: pop3resource.cpp:810
+#: pop3resource.cpp:805
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "邮件检查完成，下载了 %1 封信件。"
 
-#: pop3resource.cpp:824
+#: pop3resource.cpp:819
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "无法完成获取邮件操作。"
 
-#: pop3resource.cpp:959
+#: pop3resource.cpp:953
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "邮件检查还在进行，无法重复开始检查。"
 
-#: pop3resource.cpp:980
+#: pop3resource.cpp:974
 #, kde-format
 msgid "Ready"
 msgstr "就绪"
 
-#: pop3resource.cpp:983
+#: pop3resource.cpp:977
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "离线后邮件检查已中止。"
 
-#: pop3resource.cpp:985
+#: pop3resource.cpp:979
 #, kde-format
 msgid "Offline"
 msgstr "离线"

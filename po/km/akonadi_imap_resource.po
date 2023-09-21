@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-18 00:49+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2012-06-11 16:03+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -280,7 +280,7 @@ msgstr "កំណត់​ប្រភេទ​ការ​ផ្ទៀងផ្
 msgid "No server configured yet."
 msgstr "គ្មាន​ម៉ាស៊ីន​បម្រើ​ត្រូវ​បាន​កំណត់​រចនាសម្ព័ន្ធ​នៅ​ឡើយ​ទេ ។"
 
-#: imapresourcebase.cpp:245 setupserver.cpp:663
+#: imapresourcebase.cpp:245 setupserver.cpp:647
 #, fuzzy, kde-format
 #| msgid "Serverside Subscription..."
 msgctxt "@title:window"
@@ -419,13 +419,13 @@ msgstr ""
 "បាន​បរាជ័យ​ក្នុង​ការ​សម្គាល់​សារ​ពី '%1' សម្រាប់​លុប​នៅ​លើ​ម៉ាស៊ីន​បម្រើ IMAP ។ វា​នឹង​បង្ហាញ​ឡើង​វិញ​នៅ​​ពេល​"
 "ធ្វើសមកាលកម្ម​បន្ទាប់ ។"
 
-#: removecollectionrecursivetask.cpp:116 removecollectionrecursivetask.cpp:132
-#: removecollectionrecursivetask.cpp:145
+#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
+#: removecollectionrecursivetask.cpp:141
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "បរាជ័យ​ក្នុង​ការ​លុប​ថត ស្ដារ​បញ្ជី​ថត​ឡើងវិញ ។"
 
-#: removecollectionrecursivetask.cpp:150
+#: removecollectionrecursivetask.cpp:146
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "បរាជ័យ​ក្នុង​ការ​លុប​ថត ស្ដារ​បញ្ជី​ថត​ឡើងវិញ ។"
@@ -657,7 +657,7 @@ msgstr "សូម​បញ្ចូល​ពាក្យ​សម្ងាត់
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:77 setupserverview_desktop.ui:294
+#: setupserver.cpp:73 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -666,37 +666,37 @@ msgstr "សម្អាត​អត្ថបទ"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:79 setupserverview_desktop.ui:329
+#: setupserver.cpp:75 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "អានាមិក"
 
-#: setupserver.cpp:81
+#: setupserver.cpp:77
 #, kde-format
 msgctxt "Authentication method"
 msgid "Gmail"
 msgstr ""
 
-#: setupserver.cpp:148
+#: setupserver.cpp:140
 #, fuzzy, kde-format
 #| msgid "Shared Folders"
 msgid "Archive Folder"
 msgstr "ថត​ដែល​បាន​ចែក​រំលែក"
 
-#: setupserver.cpp:160
+#: setupserver.cpp:152
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " នាទី"
 
-#: setupserver.cpp:175
+#: setupserver.cpp:167
 #, kde-format
 msgid "Identity:"
 msgstr "អត្តសញ្ញាណ ៖"
 
-#: setupserver.cpp:266
+#: setupserver.cpp:250
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -704,12 +704,12 @@ msgid ""
 "again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:269
+#: setupserver.cpp:253
 #, kde-format
 msgid "Server address change"
 msgstr ""
 
-#: setupserver.cpp:276
+#: setupserver.cpp:260
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -717,13 +717,13 @@ msgid ""
 "account again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:279
+#: setupserver.cpp:263
 #, fuzzy, kde-format
 #| msgid "Username"
 msgid "User name change"
 msgstr "ឈ្មោះ​អ្នកប្រើ"
 
-#: setupserver.cpp:424 setupserver.cpp:480
+#: setupserver.cpp:408 setupserver.cpp:464
 #, kde-format
 msgid ""
 "Could not access KWallet. If you want to store the password permanently then "
@@ -734,29 +734,29 @@ msgstr ""
 "សកម្ម ។ ប្រសិន​បើ​អ្នក​មិន​ចង់​ប្រើ KWallet សូម​ធីក​ប្រអប់​ខាងក្រោម ប៉ុន្តែ​ត្រូវ​ចាំថា អ្នក​នឹង​តម្រូវ​ឲ្យ​បញ្ចូល​"
 "ពាក្យ​សម្ងាត់ នៅពេល​ដែល​ត្រូវការ ។"
 
-#: setupserver.cpp:429 setupserver.cpp:485
+#: setupserver.cpp:413 setupserver.cpp:469
 #, kde-format
 msgid "Do not use KWallet"
 msgstr "កុំប្រើ KWallet"
 
-#: setupserver.cpp:550
+#: setupserver.cpp:534
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "មិន​អាច​តភ្ជាប់​ទៅ​កាន់​ម៉ាស៊ីន​បម្រើ​បាន​ទេ សូម​ផ្ទៀងផ្ទាត់​អាសយដ្ឋាន​ម៉ាស៊ីន​បម្រើ ។"
 
-#: setupserver.cpp:562
+#: setupserver.cpp:546
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>TLS គឺ​ត្រូវបាន​គាំទ្រ និងផ្ដល់​អានុសាសន៍ ។</b></qt>"
 
-#: setupserver.cpp:565
+#: setupserver.cpp:549
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>TLS គឺ​ត្រូវបាន​គាំទ្រ និងផ្ដល់​អានុសាសន៍ ។</b></qt>"
 
-#: setupserver.cpp:569
+#: setupserver.cpp:553
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -765,7 +765,7 @@ msgstr ""
 "<qt><b>គ្មាន​សុវត្ថិភាព​ដែល​បាន​គាំទ្រ​ទេ ។ វា​មិន​ត្រូវ​ផ្ដល់​អនុសាសន៍​​ឲ្យ​តភ្ជាប់​ទៅកាន់​ម៉ាស៊ីន​បម្រើ​នេះ​ទេ ។"
 "</b></qt>"
 
-#: setupserver.cpp:572
+#: setupserver.cpp:556
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>វា​មិន​អាច​ប្រើ​ម៉ាស៊ីន​បម្រើ​នេះ​បាន​ទេ ។</b></qt>"

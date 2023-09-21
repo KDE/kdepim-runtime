@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2010-01-19 08:55+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: ਪੰਜਾਬੀ <punjabi-users@lists.sf.net>\n"
@@ -55,12 +55,6 @@ msgstr ""
 #: vcardresource.kcfg:22
 #, kde-format
 msgid "Monitor file for changes."
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/vcardwizard.ui:19
-#, kde-format
-msgid "Filename:"
 msgstr ""
 
 #~ msgid "Select Address Book"

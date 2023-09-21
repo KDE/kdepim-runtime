@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2014-04-02 21:27+0200\n"
 "Last-Translator: Roman Paholík <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
@@ -56,11 +56,8 @@ msgstr "Nezmeniť aktuálne backend dáta."
 msgid "Monitor file for changes."
 msgstr "Sledovať zmeny súboru."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/vcardwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Názov súboru:"
+#~ msgid "Filename:"
+#~ msgstr "Názov súboru:"
 
 #~ msgid "Select Address Book"
 #~ msgstr "Vybrať adresár kontaktov"

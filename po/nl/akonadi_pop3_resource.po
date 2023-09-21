@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-08 00:47+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2021-11-06 09:47+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -25,7 +25,7 @@ msgid_plural " minutes"
 msgstr[0] " minuut"
 msgstr[1] " min"
 
-#: accountwidget.cpp:125 pop3resource.cpp:50
+#: accountwidget.cpp:125 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3-account"
@@ -168,7 +168,7 @@ msgstr ""
 msgid "Could not send to server.\n"
 msgstr "Kon niet naar de server zenden.\n"
 
-#: pop3protocol.cpp:356
+#: pop3protocol.cpp:352
 #, kde-format
 msgid ""
 "Login via APOP failed. The server %1 may not support APOP, although it "
@@ -182,12 +182,12 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:406
+#: pop3protocol.cpp:402
 #, kde-format
 msgid "An error occurred during authentication: %1"
 msgstr "Er deed zich een fout voor tijdens de authenticatie: %1"
 
-#: pop3protocol.cpp:500
+#: pop3protocol.cpp:496
 #, kde-format
 msgid ""
 "Login via SASL (%1) failed. The server may not support %2, or the password "
@@ -200,7 +200,7 @@ msgstr ""
 "\n"
 "%3"
 
-#: pop3protocol.cpp:511
+#: pop3protocol.cpp:507
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
@@ -209,7 +209,7 @@ msgstr ""
 "Uw POP3-server (%1) ondersteunt geen SASL.\n"
 "Kies een andere authenticatiemethode."
 
-#: pop3protocol.cpp:528 pop3protocol.cpp:617
+#: pop3protocol.cpp:524 pop3protocol.cpp:613
 #, kde-format
 msgid ""
 "Could not login to %1.\n"
@@ -218,7 +218,7 @@ msgstr ""
 "Het aanmelden bij %1 mislukte.\n"
 "\n"
 
-#: pop3protocol.cpp:536
+#: pop3protocol.cpp:532
 #, kde-format
 msgid ""
 "Could not login to %1. The password may be wrong.\n"
@@ -229,22 +229,22 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:568
+#: pop3protocol.cpp:564
 #, kde-format
 msgid "SSL/TLS error: %1"
 msgstr "SSL/TLS-fout: %1"
 
-#: pop3protocol.cpp:599
+#: pop3protocol.cpp:595
 #, kde-format
 msgid "%1: %2"
 msgstr "%1: %2"
 
-#: pop3protocol.cpp:618
+#: pop3protocol.cpp:614
 #, kde-format
 msgid "The server terminated the connection immediately."
 msgstr "De server verbrak onmiddellijk de verbinding."
 
-#: pop3protocol.cpp:619
+#: pop3protocol.cpp:615
 #, kde-format
 msgid ""
 "Server does not respond properly:\n"
@@ -253,7 +253,7 @@ msgstr ""
 "De server geeft geen goed antwoord:\n"
 "%1\n"
 
-#: pop3protocol.cpp:643
+#: pop3protocol.cpp:639
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
@@ -262,7 +262,7 @@ msgstr ""
 "Uw POP3-server (%1) ondersteunt geen APOP.\n"
 "Kies een andere authenticatiemethode."
 
-#: pop3protocol.cpp:653
+#: pop3protocol.cpp:649
 #, kde-format
 msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
@@ -272,27 +272,27 @@ msgstr ""
 "zonder succes.\n"
 "U kunt TLS uitschakelen in de instellingendialoog van het POP-account."
 
-#: pop3protocol.cpp:738
+#: pop3protocol.cpp:734
 #, kde-format
 msgid "Internal error: missing argument for command %1"
 msgstr "Interne fout: ontbrekend argument voor commando %1"
 
-#: pop3protocol.cpp:794
+#: pop3protocol.cpp:790
 #, kde-format
 msgid "Internal error: missing item"
 msgstr "Interne fout: ontbrekend item"
 
-#: pop3protocol.cpp:821
+#: pop3protocol.cpp:817
 #, kde-format
 msgid "Timeout from POP3 server %1"
 msgstr "Tijdslimiet vanaf POP3-server %1 verlopen"
 
-#: pop3protocol.cpp:823
+#: pop3protocol.cpp:819
 #, kde-format
 msgid "Connection broken from POP3 server %1"
 msgstr "Verbinding met POP3-server %1 verbroken"
 
-#: pop3protocol.cpp:884
+#: pop3protocol.cpp:880
 #, kde-format
 msgid ""
 "Error during communication with the POP3 server while trying to download "
@@ -301,32 +301,32 @@ msgstr ""
 "Fout bij het communiceren met de POP3-server bij het proberen om e-mail te "
 "downloaden: %1"
 
-#: pop3protocol.cpp:894
+#: pop3protocol.cpp:890
 #, kde-format
 msgid "Internal error, number expected: %1"
 msgstr "Interne fout, getal verwacht: %1"
 
-#: pop3protocol.cpp:914
+#: pop3protocol.cpp:910
 #, kde-format
 msgid "Unexpected response from POP3 server."
 msgstr "Onverwacht antwoord van de POP3-server."
 
-#: pop3resource.cpp:99
+#: pop3resource.cpp:95
 #, kde-format
 msgid "Mail check aborted."
 msgstr "E-mail controle afgebroken."
 
-#: pop3resource.cpp:106
+#: pop3resource.cpp:102
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "E-mail controle is handmatig afgebroken."
 
-#: pop3resource.cpp:134
+#: pop3resource.cpp:130
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "Gaarne de gebruikersnaam en wachtwoord voor account '%1' invoeren."
 
-#: pop3resource.cpp:151
+#: pop3resource.cpp:147
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
@@ -334,59 +334,59 @@ msgstr ""
 "U wordt hier gevraagd omdat het wachtwoord niet uit de portefeuille kon "
 "worden geladen."
 
-#: pop3resource.cpp:167
+#: pop3resource.cpp:163
 #, kde-format
 msgid "Account:"
 msgstr "Account:"
 
-#: pop3resource.cpp:184
+#: pop3resource.cpp:180
 #, kde-format
 msgid "No username and password supplied."
 msgstr "Geen wachtwoord en gebruikersnaam ingegeven."
 
-#: pop3resource.cpp:203
+#: pop3resource.cpp:199
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "Overdracht van \"%1\" wordt voorbereid."
 
-#: pop3resource.cpp:224
+#: pop3resource.cpp:220
 #, kde-format
 msgid "Executing precommand."
 msgstr "Precommando wordt uitgevoerd."
 
-#: pop3resource.cpp:249
+#: pop3resource.cpp:245
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "U wordt hier gevraagd omdat de vorige aanmelding zonder succes was."
 
-#: pop3resource.cpp:251
+#: pop3resource.cpp:247
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "U wordt hier gevraagd omdat de gebruikersnaam die u invoerde leeg is."
 
-#: pop3resource.cpp:278
+#: pop3resource.cpp:274
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "E-maillijst ophalen."
 
-#: pop3resource.cpp:335
+#: pop3resource.cpp:330
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "Gedownloade berichten opslaan."
 
-#: pop3resource.cpp:353
+#: pop3resource.cpp:348
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "Wachtwoord opslaan in de portefeuille."
 
-#: pop3resource.cpp:395
+#: pop3resource.cpp:390
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
 "Fout bij het proberen de lokale postvak-in op te halen, e-mail controle "
 "afgebroken."
 
-#: pop3resource.cpp:402
+#: pop3resource.cpp:397
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -397,7 +397,7 @@ msgstr ""
 "berichten in plaatst. Berichten die op dat account binnenkomen zullen nu in "
 "het algemene postvak-in terecht komen.</qt>"
 
-#: pop3resource.cpp:423
+#: pop3resource.cpp:418
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
@@ -405,36 +405,36 @@ msgstr ""
 "Fout bij het proberen om de map voor inkomende e-mail op te halen, e-mail "
 "controle afgebroken."
 
-#: pop3resource.cpp:436
+#: pop3resource.cpp:431
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr ""
 "Kon de map voor inkomende e-mail niet vinden, e-mail controle wordt "
 "afgebroken."
 
-#: pop3resource.cpp:447
+#: pop3resource.cpp:442
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "Fout bij het uitvoeren van het precommando."
 
-#: pop3resource.cpp:461
+#: pop3resource.cpp:456
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr "Aanmelden op de server \"%1\" lukt niet."
 
-#: pop3resource.cpp:470
+#: pop3resource.cpp:465
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "Fout bij het ophalen van de lijst van berichten op de server."
 
-#: pop3resource.cpp:484
+#: pop3resource.cpp:479
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr ""
 "Fout bij het ophalen van een lijst met unieke e-mailidentifiers vanaf de "
 "server."
 
-#: pop3resource.cpp:497
+#: pop3resource.cpp:492
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -449,12 +449,12 @@ msgstr ""
 "De functie om berichten op de server achter te laten zal hierdoor niet goed "
 "werken."
 
-#: pop3resource.cpp:512
+#: pop3resource.cpp:507
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "Fout bij het ophalen van e-mails van de server."
 
-#: pop3resource.cpp:572
+#: pop3resource.cpp:567
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
@@ -462,54 +462,54 @@ msgstr ""
 "Bericht %1 ophalen van %2 (%3 van %4 KB) voor %5 (%6 KB staat nog op de "
 "server)."
 
-#: pop3resource.cpp:581
+#: pop3resource.cpp:576
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "Bericht %1 van %2 (%3 van %4 KB) voor %5"
 
-#: pop3resource.cpp:604
+#: pop3resource.cpp:599
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "Opslaan van gedownloade e-mails lukt niet."
 
-#: pop3resource.cpp:752
+#: pop3resource.cpp:747
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "Het verwijderen van de berichten op de server is mislukt."
 
-#: pop3resource.cpp:808
+#: pop3resource.cpp:803
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "E-mail controle beëindigd, geen berichten gedownload."
 
-#: pop3resource.cpp:810
+#: pop3resource.cpp:805
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "E-mail controle beëindigd, 1 bericht gedownload."
 msgstr[1] "E-mail controle beëindigd, %1 berichten gedownload."
 
-#: pop3resource.cpp:824
+#: pop3resource.cpp:819
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "Het ophalen van e-mail kan niet worden beëindigd."
 
-#: pop3resource.cpp:959
+#: pop3resource.cpp:953
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "Controle op e-mail al gaande, kan geen tweede controle starten."
 
-#: pop3resource.cpp:980
+#: pop3resource.cpp:974
 #, kde-format
 msgid "Ready"
 msgstr "Gereed"
 
-#: pop3resource.cpp:983
+#: pop3resource.cpp:977
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "E-mail controle afgebroken na offline gaan."
 
-#: pop3resource.cpp:985
+#: pop3resource.cpp:979
 #, kde-format
 msgid "Offline"
 msgstr "Offline"

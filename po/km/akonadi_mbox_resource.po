@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-24 00:49+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2010-11-29 09:16+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -358,8 +358,5 @@ msgstr "ឯកសារ​ជាប់សោ"
 msgid "Number of deleted messages before a purge is started."
 msgstr "ចំនួន​សារ​ដែល​បានលុប​មុន​ពេលការ​ជម្រះ​ត្រូ​វបាន​ចាប់ផ្ដើម ។"
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/mailboxwizard.ui:19
-#, kde-format
-msgid "URL:"
-msgstr "URL ៖"
+#~ msgid "URL:"
+#~ msgstr "URL ៖"

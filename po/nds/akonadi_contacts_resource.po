@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2014-08-14 00:03+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -165,11 +165,8 @@ msgstr "Padd na den Kontaktenorner"
 msgid "Do not change the actual backend data."
 msgstr "De Hülpprogramm-Daten nich ännern"
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/contactswizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Dateinaam:"
+#~ msgid "Filename:"
+#~ msgstr "Dateinaam:"
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Töövtiet för't automaatsche Sekern (in Minuten)"

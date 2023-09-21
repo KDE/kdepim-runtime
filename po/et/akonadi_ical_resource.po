@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2010-12-13 19:36+0200\n"
 "Last-Translator: Marek Laane <bald@smail.ee>\n"
 "Language-Team: Estonian <kde-et@linux.ee>\n"
@@ -74,11 +74,8 @@ msgstr "Lisatud elemendi %1 hankimine nurjus."
 msgid "Unable to retrieve modified item %1."
 msgstr "Muudetud elemendi %1 hankimine nurjus."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Failinimi:"
+#~ msgid "Filename:"
+#~ msgstr "Failinimi:"
 
 #~ msgid "Select Calendar"
 #~ msgstr "Kalendri valimine"

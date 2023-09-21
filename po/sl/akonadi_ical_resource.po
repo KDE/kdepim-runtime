@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2014-08-18 11:12+0200\n"
 "Last-Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -76,11 +76,8 @@ msgstr "Dodanega predmeta %1 ni mogoče pridobiti."
 msgid "Unable to retrieve modified item %1."
 msgstr "Spremenjenega predmeta %1 ni mogoče pridobiti."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Ime datoteke:"
+#~ msgid "Filename:"
+#~ msgstr "Ime datoteke:"
 
 #~ msgid "Select Calendar"
 #~ msgstr "Izberi koledar"

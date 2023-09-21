@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-08 00:47+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2022-05-15 22:21+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -23,7 +23,7 @@ msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " 분"
 
-#: accountwidget.cpp:125 pop3resource.cpp:50
+#: accountwidget.cpp:125 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 계정"
@@ -152,7 +152,7 @@ msgstr ""
 msgid "Could not send to server.\n"
 msgstr "서버로 보낼 수 없습니다.\n"
 
-#: pop3protocol.cpp:356
+#: pop3protocol.cpp:352
 #, kde-format
 msgid ""
 "Login via APOP failed. The server %1 may not support APOP, although it "
@@ -165,12 +165,12 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:406
+#: pop3protocol.cpp:402
 #, kde-format
 msgid "An error occurred during authentication: %1"
 msgstr "인증 중 오류 발생: %1"
 
-#: pop3protocol.cpp:500
+#: pop3protocol.cpp:496
 #, kde-format
 msgid ""
 "Login via SASL (%1) failed. The server may not support %2, or the password "
@@ -183,7 +183,7 @@ msgstr ""
 "\n"
 "%3"
 
-#: pop3protocol.cpp:511
+#: pop3protocol.cpp:507
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
@@ -192,7 +192,7 @@ msgstr ""
 "POP3 서버(%1)에서 SASL을 지원하지 않습니다.\n"
 "다른 인증 방법을 선택하십시오."
 
-#: pop3protocol.cpp:528 pop3protocol.cpp:617
+#: pop3protocol.cpp:524 pop3protocol.cpp:613
 #, kde-format
 msgid ""
 "Could not login to %1.\n"
@@ -201,7 +201,7 @@ msgstr ""
 "%1에 로그인할 수 없습니다.\n"
 "\n"
 
-#: pop3protocol.cpp:536
+#: pop3protocol.cpp:532
 #, kde-format
 msgid ""
 "Could not login to %1. The password may be wrong.\n"
@@ -212,22 +212,22 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:568
+#: pop3protocol.cpp:564
 #, kde-format
 msgid "SSL/TLS error: %1"
 msgstr "SSL/TLS 오류: %1"
 
-#: pop3protocol.cpp:599
+#: pop3protocol.cpp:595
 #, kde-format
 msgid "%1: %2"
 msgstr "%1: %2"
 
-#: pop3protocol.cpp:618
+#: pop3protocol.cpp:614
 #, kde-format
 msgid "The server terminated the connection immediately."
 msgstr "서버에서 연결을 즉시 종료했습니다."
 
-#: pop3protocol.cpp:619
+#: pop3protocol.cpp:615
 #, kde-format
 msgid ""
 "Server does not respond properly:\n"
@@ -236,7 +236,7 @@ msgstr ""
 "서버에서 올바르게 응답하지 않았습니다:\n"
 "%1\n"
 
-#: pop3protocol.cpp:643
+#: pop3protocol.cpp:639
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
@@ -245,7 +245,7 @@ msgstr ""
 "POP3 서버(%1)에서 APOP을 지원하지 않습니다\n"
 "다른 인증 방법을 선택하십시오."
 
-#: pop3protocol.cpp:653
+#: pop3protocol.cpp:649
 #, kde-format
 msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
@@ -254,115 +254,115 @@ msgstr ""
 "POP3 서버에서 TLS 지원을 하는 것처럼 전달했으나 협상이 실패했습니다.\n"
 "POP 계정 설정에서 TLS를 비활성화할 수 있습니다."
 
-#: pop3protocol.cpp:738
+#: pop3protocol.cpp:734
 #, kde-format
 msgid "Internal error: missing argument for command %1"
 msgstr "내부 오류: %1 명령의 인자 없음"
 
-#: pop3protocol.cpp:794
+#: pop3protocol.cpp:790
 #, kde-format
 msgid "Internal error: missing item"
 msgstr "내부 오류: 항목 없음"
 
-#: pop3protocol.cpp:821
+#: pop3protocol.cpp:817
 #, kde-format
 msgid "Timeout from POP3 server %1"
 msgstr "POP3 서버 %1의 시간 초과됨"
 
-#: pop3protocol.cpp:823
+#: pop3protocol.cpp:819
 #, kde-format
 msgid "Connection broken from POP3 server %1"
 msgstr "POP3 서버 %1의 연결 끊김"
 
-#: pop3protocol.cpp:884
+#: pop3protocol.cpp:880
 #, kde-format
 msgid ""
 "Error during communication with the POP3 server while trying to download "
 "mail: %1"
 msgstr "메일을 다운로드하려고 POP3 서버와 통신하는 중 오류 발생: %1"
 
-#: pop3protocol.cpp:894
+#: pop3protocol.cpp:890
 #, kde-format
 msgid "Internal error, number expected: %1"
 msgstr "내부 오류, 숫자가 예상됨: %1"
 
-#: pop3protocol.cpp:914
+#: pop3protocol.cpp:910
 #, kde-format
 msgid "Unexpected response from POP3 server."
 msgstr "POP3 서버에서 예상하지 못한 응답이 돌아왔습니다."
 
-#: pop3resource.cpp:99
+#: pop3resource.cpp:95
 #, kde-format
 msgid "Mail check aborted."
 msgstr "메일 확인 중단됨."
 
-#: pop3resource.cpp:106
+#: pop3resource.cpp:102
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "메일 확인이 수동으로 중단되었습니다."
 
-#: pop3resource.cpp:134
+#: pop3resource.cpp:130
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "계정 '%1'의 사용자 이름 및 암호를 입력하십시오."
 
-#: pop3resource.cpp:151
+#: pop3resource.cpp:147
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "지갑에서 암호를 불러올 수 없으므로 직접 입력해야 합니다."
 
-#: pop3resource.cpp:167
+#: pop3resource.cpp:163
 #, kde-format
 msgid "Account:"
 msgstr "계정:"
 
-#: pop3resource.cpp:184
+#: pop3resource.cpp:180
 #, kde-format
 msgid "No username and password supplied."
 msgstr "사용자 이름과 암호가 지정되지 않았습니다."
 
-#: pop3resource.cpp:203
+#: pop3resource.cpp:199
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "\"%1\"에서 전송 준비 중."
 
-#: pop3resource.cpp:224
+#: pop3resource.cpp:220
 #, kde-format
 msgid "Executing precommand."
 msgstr "사전 명령 실행 중."
 
-#: pop3resource.cpp:249
+#: pop3resource.cpp:245
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "이전 로그인이 실패했으므로 물어 봅니다."
 
-#: pop3resource.cpp:251
+#: pop3resource.cpp:247
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "지정한 사용자 이름이 비어 있으므로 물어 봅니다."
 
-#: pop3resource.cpp:278
+#: pop3resource.cpp:274
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "메일 목록 가져오는 중."
 
-#: pop3resource.cpp:335
+#: pop3resource.cpp:330
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "다운로드된 메시지 저장 중."
 
-#: pop3resource.cpp:353
+#: pop3resource.cpp:348
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "지갑에 암호 저장 중."
 
-#: pop3resource.cpp:395
+#: pop3resource.cpp:390
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr "로컬 받은 편지함 폴더를 가져오는 중 오류 발생, 메일 확인 중단됨."
 
-#: pop3resource.cpp:402
+#: pop3resource.cpp:397
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -372,38 +372,38 @@ msgstr ""
 "<qt>삭제한 폴더는 계정 <b>%1</b>에서 메일을 전달할 때 사용하는 폴더입니다. "
 "새 메일을 전달할 기본 폴더가 받은 편지함 폴더로 초기화됩니다.</qt>"
 
-#: pop3resource.cpp:423
+#: pop3resource.cpp:418
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr "받은 메일을 전달하는 폴더 가져오는 중 오류 발생, 메일 확인 중단됨."
 
-#: pop3resource.cpp:436
+#: pop3resource.cpp:431
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr "받은 메일을 전달하는 폴더를 찾을 수 없음, 메일 확인 중단됨."
 
-#: pop3resource.cpp:447
+#: pop3resource.cpp:442
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "사전 명령 실행 중 오류 발생."
 
-#: pop3resource.cpp:461
+#: pop3resource.cpp:456
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr "서버 \"%1\"에 로그인할 수 없습니다."
 
-#: pop3resource.cpp:470
+#: pop3resource.cpp:465
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "서버의 메시지 목록을 가져오는 중 오류 발생."
 
-#: pop3resource.cpp:484
+#: pop3resource.cpp:479
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr "서버의 고유 메일 식별자를 가져오는 중 오류 발생."
 
-#: pop3resource.cpp:497
+#: pop3resource.cpp:492
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -416,64 +416,64 @@ msgstr ""
 "미 가져온 메시지가 있는 지를 확인하는 신뢰할 수 있는 방법입니다.\n"
 "서버에 메시지를 남기는 기능이 올바르게 동작하지 않을 수도 있습니다."
 
-#: pop3resource.cpp:512
+#: pop3resource.cpp:507
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "서버에서 메일 가져오는 중 오류 발생."
 
-#: pop3resource.cpp:572
+#: pop3resource.cpp:567
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
 msgstr "%5의 메시지 %2개 중 %1개 (%4KB 중 %3) 가져오는 중 (서버에 %6KB 남음)."
 
-#: pop3resource.cpp:581
+#: pop3resource.cpp:576
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "%5의 메시지 %2개 중 %1개 (%4KB 중 %3) 가져오는 중"
 
-#: pop3resource.cpp:604
+#: pop3resource.cpp:599
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "다운로드한 메일을 저장할 수 없음."
 
-#: pop3resource.cpp:752
+#: pop3resource.cpp:747
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "서버에서 메시지를 삭제할 수 없음."
 
-#: pop3resource.cpp:808
+#: pop3resource.cpp:803
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "메일 확인 완료됨, 다운로드된 메시지 없음."
 
-#: pop3resource.cpp:810
+#: pop3resource.cpp:805
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "메일 확인 완료됨, 메시지 %1개 다운로드됨."
 
-#: pop3resource.cpp:824
+#: pop3resource.cpp:819
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "메일 가져오기 과정을 완료할 수 없음."
 
-#: pop3resource.cpp:959
+#: pop3resource.cpp:953
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "메일 확인 진행 중, 두 번째 확인을 시작할 수 없음."
 
-#: pop3resource.cpp:980
+#: pop3resource.cpp:974
 #, kde-format
 msgid "Ready"
 msgstr "준비"
 
-#: pop3resource.cpp:983
+#: pop3resource.cpp:977
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "오프라인으로 전환 이전 메일 확인이 중단되었습니다."
 
-#: pop3resource.cpp:985
+#: pop3resource.cpp:979
 #, kde-format
 msgid "Offline"
 msgstr "오프라인"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2022-04-05 13:23+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -76,11 +76,8 @@ msgstr "Eklenen %1 ögesi getirilemedi."
 msgid "Unable to retrieve modified item %1."
 msgstr "Değiştirilen %1 ögesi getirilemedi."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Dosya adı:"
+#~ msgid "Filename:"
+#~ msgstr "Dosya adı:"
 
 #~ msgid "Select Calendar"
 #~ msgstr "Takvim Seç"

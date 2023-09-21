@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2014-04-05 21:15+0900\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -57,11 +57,8 @@ msgstr "실제 백엔드 데이터를 바꾸지 않습니다."
 msgid "Monitor file for changes."
 msgstr "파일 변경 사항을 감시합니다."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/vcardwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "파일 이름:"
+#~ msgid "Filename:"
+#~ msgstr "파일 이름:"
 
 #~ msgid "Select Address Book"
 #~ msgstr "주소록 선택(&S)"

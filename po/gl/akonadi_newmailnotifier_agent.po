@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-03 00:47+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2023-08-05 10:05+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
@@ -31,7 +31,7 @@ msgstr "Historial de notificacións"
 msgid "Enabled"
 msgstr "Activado"
 
-#: newmailnotifieragent.cpp:373
+#: newmailnotifieragent.cpp:365
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -41,7 +41,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Unha nova mensaxe de «%3» en %2"
 msgstr[1] "%1 novas mensaxes de «%3» en %2"
 
-#: newmailnotifieragent.cpp:398
+#: newmailnotifieragent.cpp:390
 #, kde-format
 msgid "New mail arrived"
 msgstr "Chegou correo novo"
@@ -57,7 +57,7 @@ msgstr "Recibiuse unha mensaxe de %f"
 msgid "Unable to start KMail application."
 msgstr "Non se pode iniciar a aplicación KMail."
 
-#: newmailnotifierselectcollectionwidget.cpp:94
+#: newmailnotifierselectcollectionwidget.cpp:95
 #, kde-format
 msgid "Select which folders to monitor for new message notifications:"
 msgstr ""

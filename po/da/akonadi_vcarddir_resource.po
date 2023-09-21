@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcarddir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-25 00:47+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2020-07-31 19:05+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -133,8 +133,5 @@ msgid_plural " minutes"
 msgstr[0] " minut"
 msgstr[1] " minutter"
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/vcarddirwizard.ui:19
-#, kde-format
-msgid "Path:"
-msgstr "Sti:"
+#~ msgid "Path:"
+#~ msgstr "Sti:"

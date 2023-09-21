@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2011-05-30 16:34+0200\n"
 "Last-Translator: Torbjörn Klatt <torbjoern@torbjoern-klatt.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -73,11 +73,8 @@ msgstr "Das hinzugefügte Element %1 kann nicht geladen werden."
 msgid "Unable to retrieve modified item %1."
 msgstr "Das geänderte Element %1 kann nicht geladen werden."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Dateiname:"
+#~ msgid "Filename:"
+#~ msgstr "Dateiname:"
 
 #~ msgid "Select Calendar"
 #~ msgstr "Kalender auswählen"

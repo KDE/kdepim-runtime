@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-04-04 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2012-10-16 19:27+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: maildispatcheragent.cpp:84 maildispatcheragent.cpp:233
+#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
 #, kde-format
 msgid "Sending messages (1 item in queue)..."
 msgid_plural "Sending messages (%1 items in queue)..."
@@ -29,56 +29,56 @@ msgstr[1] "Надсилання повідомлень (%1 пункти у че�
 msgstr[2] "Надсилання повідомлень (%1 пунктів у черзі)..."
 msgstr[3] "Надсилання повідомлень (%1 пункт у черзі)..."
 
-#: maildispatcheragent.cpp:94
+#: maildispatcheragent.cpp:90
 #, kde-format
 msgid "Sending canceled."
 msgstr "Надсилання скасовано."
 
-#: maildispatcheragent.cpp:101
+#: maildispatcheragent.cpp:97
 #, kde-format
 msgid "Finished sending messages."
 msgstr "Надсилання повідомлень завершено."
 
-#: maildispatcheragent.cpp:107
+#: maildispatcheragent.cpp:103
 #, kde-format
 msgctxt "Notification title when email was sent"
 msgid "E-Mail Successfully Sent"
 msgstr "Пошту успішно надіслано"
 
-#: maildispatcheragent.cpp:108
+#: maildispatcheragent.cpp:104
 #, kde-format
 msgctxt "Notification when the email was sent"
 msgid "Your E-Mail has been sent successfully."
 msgstr "Вашу пошту успішно надіслано."
 
-#: maildispatcheragent.cpp:114
+#: maildispatcheragent.cpp:110
 #, kde-format
 msgid "No items in queue."
 msgstr "У черзі немає пунктів."
 
-#: maildispatcheragent.cpp:164
+#: maildispatcheragent.cpp:155
 #, kde-format
 msgid "Online, sending messages in queue."
 msgstr "У мережі, надсилання повідомлень з черги."
 
-#: maildispatcheragent.cpp:168
+#: maildispatcheragent.cpp:159
 #, kde-format
 msgid "Offline, message sending suspended."
 msgstr "Поза мережею, надсилання повідомлень призупинено"
 
-#: maildispatcheragent.cpp:193
+#: maildispatcheragent.cpp:184
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
 msgstr "Надсилання: %1"
 
-#: maildispatcheragent.cpp:258
+#: maildispatcheragent.cpp:249
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
 msgstr "Спроба надсилання пошти зазнала невдачі"
 
-#: maildispatcheragent.cpp:291
+#: maildispatcheragent.cpp:282
 #, kde-format
 msgid "Ready to dispatch messages."
 msgstr "Готовий до розподілу повідомлень."

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2021-01-11 16:37+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@neuf.fr>\n"
 "Language-Team: French <kde-francophone@kde.org>\n"
@@ -79,11 +79,8 @@ msgstr "Impossible d'extraire l'élément ajouté %1."
 msgid "Unable to retrieve modified item %1."
 msgstr "Impossible d'extraire l'élément modifié %1."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Nom de fichier :"
+#~ msgid "Filename:"
+#~ msgstr "Nom de fichier :"
 
 #~ msgid "Select Calendar"
 #~ msgstr "Sélectionnez un calendrier"

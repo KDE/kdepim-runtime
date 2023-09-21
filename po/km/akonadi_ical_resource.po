@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2010-12-20 16:16+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -71,11 +71,8 @@ msgstr "មិនអាច​ទៅ​យក​ធាតុ​ដែល​បា
 msgid "Unable to retrieve modified item %1."
 msgstr "មិនអាច​ទៅយក​ធាតុ​ដែល​បាន​កែសម្រួល %1 បានទេ ។"
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "ឈ្មោះ​ឯកសារ ៖"
+#~ msgid "Filename:"
+#~ msgstr "ឈ្មោះ​ឯកសារ ៖"
 
 #~ msgid "Select Calendar"
 #~ msgstr "ជ្រើស​ប្រតិទិន"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2014-04-04 20:44+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -59,11 +59,8 @@ msgstr "Nie zmieniaj rzeczywistych danych."
 msgid "Monitor file for changes."
 msgstr "Monitoruj zmiany w pliku."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/vcardwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Nazwa pliku:"
+#~ msgid "Filename:"
+#~ msgstr "Nazwa pliku:"
 
 #~ msgid "Select Address Book"
 #~ msgstr "Wybierz książkę adresową"

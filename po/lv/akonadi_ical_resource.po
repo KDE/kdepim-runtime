@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2011-07-14 21:43+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -79,11 +79,8 @@ msgstr "Nevar atlasīt pievienoto ierakstu %1."
 msgid "Unable to retrieve modified item %1."
 msgstr "Nevar atlasīt laboto ierakstu %1."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Faila nosaukums:"
+#~ msgid "Filename:"
+#~ msgstr "Faila nosaukums:"
 
 #~ msgid "Select Calendar"
 #~ msgstr "Izvēlieties kalendāru"

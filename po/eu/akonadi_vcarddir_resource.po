@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-25 00:47+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2022-08-27 18:06+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -137,8 +137,5 @@ msgid_plural " minutes"
 msgstr[0] " minutu"
 msgstr[1] " minutu"
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/vcarddirwizard.ui:19
-#, kde-format
-msgid "Path:"
-msgstr "Bide-izena:"
+#~ msgid "Path:"
+#~ msgstr "Bide-izena:"

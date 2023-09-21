@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-04-28 00:49+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2021-12-24 23:35+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -27,7 +27,7 @@ msgstr "Incorrecte adresse de E-Posta"
 msgid "Exchange protocol information not found"
 msgstr "Information de protocollo de Exchange non trovate"
 
-#: ewsclient/auth/ewsoauth.cpp:527
+#: ewsclient/auth/ewsoauth.cpp:513
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -37,7 +37,7 @@ msgstr ""
 "Credentiales de Microsoft  Exchange per le conto <b>%1</b> non es plus "
 "valide. Tu necessita authenticar per continuar a usar lo."
 
-#: ewsclient/auth/ewsoauth.cpp:536
+#: ewsclient/auth/ewsoauth.cpp:522
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -70,31 +70,36 @@ msgctxt "Server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:138
+#: ewsconfigdialog.cpp:121 ewsconfigdialog.cpp:123
+#, kde-format
+msgid "PEM file"
+msgstr ""
+
+#: ewsconfigdialog.cpp:141
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "Personalisate"
 
-#: ewsconfigdialog.cpp:149
+#: ewsconfigdialog.cpp:152
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Ressource de Akonadi per Microsoft Exchange Web Services (EWS)"
 
-#: ewsconfigdialog.cpp:150
+#: ewsconfigdialog.cpp:153
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "Copyright (c) Krzysztof Nowicki 2015-2020"
 
-#: ewsconfigdialog.cpp:151
+#: ewsconfigdialog.cpp:154
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "Version %1"
 
-#: ewsconfigdialog.cpp:152
+#: ewsconfigdialog.cpp:155
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -102,37 +107,37 @@ msgid ""
 "later."
 msgstr "Distribuite sub le Licentia GNU General Public Version 2.o o plu nove."
 
-#: ewsconfigdialog.cpp:247
+#: ewsconfigdialog.cpp:250
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "Autodiscovery (discoperta automatic) falleva"
 
-#: ewsconfigdialog.cpp:262
+#: ewsconfigdialog.cpp:265
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Connexion fallite"
 
-#: ewsconfigdialog.cpp:263 ewsconfigdialog.cpp:421
+#: ewsconfigdialog.cpp:266 ewsconfigdialog.cpp:424
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Fallite"
 
-#: ewsconfigdialog.cpp:264 ewsconfigdialog.cpp:422
+#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:425
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Incognite"
 
-#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:426
+#: ewsconfigdialog.cpp:270 ewsconfigdialog.cpp:429
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:337
+#: ewsconfigdialog.cpp:340
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -141,12 +146,12 @@ msgstr ""
 "Autodiscovery (discoperta automatic) falleva. Isto pote esser causate per "
 "parametros incorrecte. Tu ancora vole salveguardar tu preferentias?"
 
-#: ewsconfigdialog.cpp:338
+#: ewsconfigdialog.cpp:341
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "Autodiscovery (discoperta automatic)  de servitor Exchange"
 
-#: ewsconfigdialog.cpp:368
+#: ewsconfigdialog.cpp:371
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -155,12 +160,12 @@ msgstr ""
 "Falleva a connecter a Exchange.  Isto poteva esser causate per parametros "
 "incorrecte. Tu vole ancora salveguardar tu preferentias?"
 
-#: ewsconfigdialog.cpp:369
+#: ewsconfigdialog.cpp:372
 #, kde-format
 msgid "Exchange server connection"
 msgstr "Connexion de servitor Exchange"
 
-#: ewsconfigdialog.cpp:423
+#: ewsconfigdialog.cpp:426
 #, kde-format
 msgid "Connection failed"
 msgstr "Connexion fallite"
@@ -213,7 +218,7 @@ msgstr "Le adresse de e-posta de iste conto"
 
 #. i18n: ectx: property (title), widget (QGroupBox, authenticationGroupBox)
 #. i18n: ectx: property (title), widget (QGroupBox, advAuthenticationGroupBox)
-#: ewsconfigdialog.ui:88 ewsconfigdialog.ui:492
+#: ewsconfigdialog.ui:88 ewsconfigdialog.ui:486
 #, kde-format
 msgid "Authentication"
 msgstr "Authentication"
@@ -441,25 +446,25 @@ msgid "Certificate:"
 msgstr "Certificato:"
 
 #. i18n: ectx: property (text), widget (QLabel, pkeyAuthKeyLabel)
-#: ewsconfigdialog.ui:356
+#: ewsconfigdialog.ui:353
 #, kde-format
 msgid "Private key:"
 msgstr "Clave private:"
 
 #. i18n: ectx: property (text), widget (QLabel, pkeyAuthPasswordLabel)
-#: ewsconfigdialog.ui:370
+#: ewsconfigdialog.ui:364
 #, kde-format
 msgid "Key password:"
 msgstr "Contrasigno de clave:"
 
 #. i18n: ectx: attribute (title), widget (QWidget, subscriptionTab)
-#: ewsconfigdialog.ui:401
+#: ewsconfigdialog.ui:395
 #, kde-format
 msgid "Subscriptions"
 msgstr "Subscriptiones"
 
 #. i18n: ectx: attribute (title), widget (QWidget, advancedTab)
-#: ewsconfigdialog.ui:407
+#: ewsconfigdialog.ui:401
 #, kde-format
 msgctxt "Advanced settings tab"
 msgid "Advanced"
@@ -467,13 +472,13 @@ msgstr "Avantiate"
 
 #. i18n: ectx: property (title), widget (QGroupBox, retrievalMethodGroupBox)
 #. i18n: ectx: label, entry (RetrievalMethod), group (General)
-#: ewsconfigdialog.ui:413 ewsresource.kcfg:44
+#: ewsconfigdialog.ui:407 ewsresource.kcfg:44
 #, kde-format
 msgid "Retrieval"
 msgstr "Recuperar"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, pollRadioButton)
-#: ewsconfigdialog.ui:419
+#: ewsconfigdialog.ui:413
 #, kde-format
 msgid ""
 "<html><head/><body><p>Periodically asks for new item change events.</p></"
@@ -483,25 +488,25 @@ msgstr ""
 "elemento.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, pollRadioButton)
-#: ewsconfigdialog.ui:422
+#: ewsconfigdialog.ui:416
 #, kde-format
 msgid "Po&ll for new messages"
 msgstr "&Obtene nove messages"
 
 #. i18n: ectx: property (suffix), widget (QDoubleSpinBox, kcfg_PollInterval)
-#: ewsconfigdialog.ui:447
+#: ewsconfigdialog.ui:441
 #, kde-format
 msgid " minutes"
 msgstr " minutas"
 
 #. i18n: ectx: property (text), widget (QLabel, pollIntervalLabel)
-#: ewsconfigdialog.ui:466
+#: ewsconfigdialog.ui:460
 #, kde-format
 msgid "Interval"
 msgstr "Intervallo"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, streamingRadioButton)
-#: ewsconfigdialog.ui:476
+#: ewsconfigdialog.ui:470
 #, kde-format
 msgid ""
 "<html><head/><body><p>Streaming notifications behave similarly to push mode "
@@ -516,13 +521,13 @@ msgstr ""
 "plus recente.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, streamingRadioButton)
-#: ewsconfigdialog.ui:479
+#: ewsconfigdialog.ui:473
 #, kde-format
 msgid "&Use streaming notifications"
 msgstr "&Usa notificationes de streaming"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_EnableNTLMv2)
-#: ewsconfigdialog.ui:498
+#: ewsconfigdialog.ui:492
 #, kde-format
 msgid ""
 "<html><head/><body><p>By default KDE uses the less secure NTLMv1 "
@@ -538,13 +543,13 @@ msgstr ""
 "esser habilitate per poter connecter con successo.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_EnableNTLMv2)
-#: ewsconfigdialog.ui:501
+#: ewsconfigdialog.ui:495
 #, kde-format
 msgid "Enable NTLMv2"
 msgstr "Habilita NTLMy2"
 
 #. i18n: ectx: property (whatsThis), widget (QGroupBox, userAgentGroupBox)
-#: ewsconfigdialog.ui:511
+#: ewsconfigdialog.ui:505
 #, kde-format
 msgid ""
 "<html><head/><body><p>Some organizations restrict access to mail only to "
@@ -565,19 +570,19 @@ msgstr ""
 "html>"
 
 #. i18n: ectx: property (title), widget (QGroupBox, userAgentGroupBox)
-#: ewsconfigdialog.ui:514
+#: ewsconfigdialog.ui:508
 #, kde-format
 msgid "Use custo&m User Agent"
 msgstr "Usa Agente de Usator &personalisate "
 
 #. i18n: ectx: property (title), widget (QGroupBox, clearSyncStateGroupBox)
-#: ewsconfigdialog.ui:539
+#: ewsconfigdialog.ui:533
 #, kde-format
 msgid "Clear Synchronization State"
 msgstr "Netta stato de Synchronisation"
 
 #. i18n: ectx: property (text), widget (QLabel, clearSyncStateLabel)
-#: ewsconfigdialog.ui:545
+#: ewsconfigdialog.ui:539
 #, kde-format
 msgid ""
 "Resets synchronization state between Exchange and Akonadi. Use in case some "
@@ -587,57 +592,57 @@ msgstr ""
 "elementos o dossier non es monstrante malgrado existente in Exchange. "
 
 #. i18n: ectx: property (text), widget (QPushButton, clearFolderTreeSyncStateButton)
-#: ewsconfigdialog.ui:570
+#: ewsconfigdialog.ui:564
 #, kde-format
 msgid "Clear Folder Tree State"
 msgstr "Munde Stato de Arbore de Dossier"
 
 #. i18n: ectx: property (text), widget (QPushButton, clearFolderItemSyncStateButton)
-#: ewsconfigdialog.ui:577
+#: ewsconfigdialog.ui:571
 #, kde-format
 msgid "Clear Folder Item State"
 msgstr "Munde Stato de Elemento de Dossier"
 
 #. i18n: ectx: attribute (title), widget (QWidget, statusTab)
-#: ewsconfigdialog.ui:604
+#: ewsconfigdialog.ui:598
 #, kde-format
 msgid "Status"
 msgstr "Stato"
 
 #. i18n: ectx: property (title), widget (QGroupBox, serverStatusGroupBox)
-#: ewsconfigdialog.ui:610
+#: ewsconfigdialog.ui:604
 #, kde-format
 msgid "Server Status"
 msgstr "Stato de servitor"
 
 #. i18n: ectx: property (text), widget (QLabel, serverStatusLabel)
-#: ewsconfigdialog.ui:616
+#: ewsconfigdialog.ui:610
 #, kde-format
 msgid "Status:"
 msgstr "Stato:"
 
 #. i18n: ectx: property (text), widget (QLabel, serverStatusText)
-#: ewsconfigdialog.ui:623
+#: ewsconfigdialog.ui:617
 #, kde-format
 msgctxt "Unknown server status"
 msgid "Unknown"
 msgstr "Incognite"
 
 #. i18n: ectx: property (text), widget (QLabel, serverVersionLabel)
-#: ewsconfigdialog.ui:633
+#: ewsconfigdialog.ui:627
 #, kde-format
 msgid "Version:"
 msgstr "Version:"
 
 #. i18n: ectx: property (text), widget (QLabel, serverVersionText)
-#: ewsconfigdialog.ui:640
+#: ewsconfigdialog.ui:634
 #, kde-format
 msgctxt "Unknown server version"
 msgid "Unknown"
 msgstr "Incognite"
 
 #. i18n: ectx: attribute (title), widget (QWidget, aboutTab)
-#: ewsconfigdialog.ui:664
+#: ewsconfigdialog.ui:658
 #, kde-format
 msgid "About"
 msgstr "A proposito"

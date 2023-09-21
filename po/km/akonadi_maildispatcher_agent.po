@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-04-04 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2011-12-21 14:33+0700\n"
 "Last-Translator: Seng Sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <supprot@khmeros.info>\n"
@@ -17,23 +17,23 @@ msgstr ""
 "X-Generator: WordForge 0.8 RC1\n"
 "X-Language: km-KH\n"
 
-#: maildispatcheragent.cpp:84 maildispatcheragent.cpp:233
+#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
 #, kde-format
 msgid "Sending messages (1 item in queue)..."
 msgid_plural "Sending messages (%1 items in queue)..."
 msgstr[0] "កំពុង​ផ្ញើសារ (ធាតុ %1 នៅ​ក្នុងជួរ)...​"
 
-#: maildispatcheragent.cpp:94
+#: maildispatcheragent.cpp:90
 #, kde-format
 msgid "Sending canceled."
 msgstr "បានបោះបង់​ការ​ផ្ញើ ។"
 
-#: maildispatcheragent.cpp:101
+#: maildispatcheragent.cpp:97
 #, kde-format
 msgid "Finished sending messages."
 msgstr "បានបញ្ចប់​កា​រផ្ញើសារ ។"
 
-#: maildispatcheragent.cpp:107
+#: maildispatcheragent.cpp:103
 #, fuzzy, kde-format
 #| msgctxt "Notification when the email was sent"
 #| msgid "E-mail successfully sent"
@@ -41,7 +41,7 @@ msgctxt "Notification title when email was sent"
 msgid "E-Mail Successfully Sent"
 msgstr "បាន​ផ្ញើ​អ៊ីមែល​ដោយ​ជោគជ័យ"
 
-#: maildispatcheragent.cpp:108
+#: maildispatcheragent.cpp:104
 #, fuzzy, kde-format
 #| msgctxt "Notification when the email was sent"
 #| msgid "E-mail successfully sent"
@@ -49,28 +49,28 @@ msgctxt "Notification when the email was sent"
 msgid "Your E-Mail has been sent successfully."
 msgstr "បាន​ផ្ញើ​អ៊ីមែល​ដោយ​ជោគជ័យ"
 
-#: maildispatcheragent.cpp:114
+#: maildispatcheragent.cpp:110
 #, kde-format
 msgid "No items in queue."
 msgstr "គ្មាន​ធាតុ​នៅ​ក្នុង​ជួរ​ទេ ។"
 
-#: maildispatcheragent.cpp:164
+#: maildispatcheragent.cpp:155
 #, kde-format
 msgid "Online, sending messages in queue."
 msgstr "លើ​បណ្ដាញ ផ្ញើ​សារ​នៅ​ក្នុង​ជួរ ។"
 
-#: maildispatcheragent.cpp:168
+#: maildispatcheragent.cpp:159
 #, kde-format
 msgid "Offline, message sending suspended."
 msgstr "ក្រៅ​បណ្ដាញ ការ​ផ្ញើសារ​បាន​ផ្អាក ។"
 
-#: maildispatcheragent.cpp:193
+#: maildispatcheragent.cpp:184
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
 msgstr "ផ្ញើ ៖ %1"
 
-#: maildispatcheragent.cpp:258
+#: maildispatcheragent.cpp:249
 #, fuzzy, kde-format
 #| msgctxt "Notification when email sending failed"
 #| msgid "E-mail sending failed: %1"
@@ -78,7 +78,7 @@ msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
 msgstr "បានបរាជ័​ក្នុងការ​ផ្ញើ​អ៊ីមែល ៖ %1"
 
-#: maildispatcheragent.cpp:291
+#: maildispatcheragent.cpp:282
 #, kde-format
 msgid "Ready to dispatch messages."
 msgstr "ត្រៀម​រួច​ហើយ​ដើម្បី​​បញ្ជូន​​សារ ។"

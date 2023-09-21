@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-01-13 00:57+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2021-08-23 23:39+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -543,12 +543,12 @@ msgstr "una persona con nome"
 msgid "a contact with email"
 msgstr "un contatto con indirizzo di posta"
 
-#: settings.cpp:481
+#: settings.cpp:477
 #, kde-format
 msgid "A password is required for user %1"
 msgstr "È richiesta una password per l'utente %1"
 
-#: settings.cpp:484
+#: settings.cpp:480
 #, kde-format
 msgid "Password: "
 msgstr "Password: "
@@ -574,22 +574,22 @@ msgstr "Inserisci le credenziali per accedere al server groupware"
 msgid "User:"
 msgstr "Utente:"
 
-#: setupwizard.cpp:258
+#: setupwizard.cpp:257
 #, kde-format
 msgid "No, choose another server"
 msgstr "No, scegli un altro server"
 
-#: setupwizard.cpp:260
+#: setupwizard.cpp:259
 #, kde-format
 msgid "Predefined provider found"
 msgstr "Trovato provider predefinito"
 
-#: setupwizard.cpp:261
+#: setupwizard.cpp:260
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "Seleziona se vuoi usare il provider rilevato automaticamente"
 
-#: setupwizard.cpp:280
+#: setupwizard.cpp:279
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -600,77 +600,77 @@ msgstr ""
 "servizi di %1 basandosi sull'indirizzo email che hai usato per l'accesso.\n"
 "Vuoi proseguire?"
 
-#: setupwizard.cpp:285
+#: setupwizard.cpp:284
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Si, usa %1 come provider"
 
-#: setupwizard.cpp:311
+#: setupwizard.cpp:310
 #, kde-format
 msgid "Groupware Server"
 msgstr "Server groupware "
 
-#: setupwizard.cpp:312
+#: setupwizard.cpp:311
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "Seleziona il server groupware per il quale configurare la risorsa"
 
-#: setupwizard.cpp:343
+#: setupwizard.cpp:340
 #, kde-format
 msgid "Use one of those servers:"
 msgstr "Usa uno di questi server:"
 
-#: setupwizard.cpp:352
+#: setupwizard.cpp:349
 #, kde-format
 msgid "Configure the resource manually"
 msgstr "Configura manualmente la risorsa"
 
-#: setupwizard.cpp:390
+#: setupwizard.cpp:383
 #, kde-format
 msgid "Connection"
 msgstr "Connessione"
 
-#: setupwizard.cpp:391
+#: setupwizard.cpp:384
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Inserisci le informazioni di connessione per il server groupware"
 
-#: setupwizard.cpp:398
+#: setupwizard.cpp:391
 #, kde-format
 msgid "Host"
 msgstr "Host"
 
-#: setupwizard.cpp:401
+#: setupwizard.cpp:394
 #, kde-format
 msgid "Installation path"
 msgstr "Percorso di installazione"
 
-#: setupwizard.cpp:404
+#: setupwizard.cpp:397
 #, kde-format
 msgid "Use secure connection"
 msgstr "Usa connessione sicura"
 
-#: setupwizard.cpp:432
+#: setupwizard.cpp:425
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "URL finale (CalDav)"
 
-#: setupwizard.cpp:437
+#: setupwizard.cpp:430
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "URL finale (CardDav)"
 
-#: setupwizard.cpp:442
+#: setupwizard.cpp:435
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "URL finale (GroupDav)"
 
-#: setupwizard.cpp:506 setupwizard.cpp:512
+#: setupwizard.cpp:499 setupwizard.cpp:505
 #, kde-format
 msgid "Test Connection"
 msgstr "Prova la connessione"
 
-#: setupwizard.cpp:507
+#: setupwizard.cpp:500
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -679,12 +679,12 @@ msgstr ""
 "Puoi provare subito se il server groupware è accessibile con la "
 "configurazione attuale"
 
-#: setupwizard.cpp:552
+#: setupwizard.cpp:545
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Si è verificato un errore: %1"
 
-#: setupwizard.cpp:555
+#: setupwizard.cpp:548
 #, kde-format
 msgid "Connected successfully"
 msgstr "Connesso correttamente"

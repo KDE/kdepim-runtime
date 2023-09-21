@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2021-01-11 16:43+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@neuf.fr>\n"
 "Language-Team: French <kde-francophone@kde.org>\n"
@@ -64,11 +64,8 @@ msgstr "Ne pas modifier les données actuelles du moteur."
 msgid "Monitor file for changes."
 msgstr "Surveiller les modifications de fichiers."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/vcardwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Nom de fichier :"
+#~ msgid "Filename:"
+#~ msgstr "Nom de fichier :"
 
 #~ msgid "Select Address Book"
 #~ msgstr "Sélectionnez le carnet d'adresses"

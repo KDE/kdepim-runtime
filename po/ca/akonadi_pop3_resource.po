@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-08 00:47+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2022-04-22 18:50+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -30,7 +30,7 @@ msgid_plural " minutes"
 msgstr[0] " minut"
 msgstr[1] " minuts"
 
-#: accountwidget.cpp:125 pop3resource.cpp:50
+#: accountwidget.cpp:125 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "Compte POP3"
@@ -170,7 +170,7 @@ msgstr ""
 msgid "Could not send to server.\n"
 msgstr "No es pot enviar al servidor.\n"
 
-#: pop3protocol.cpp:356
+#: pop3protocol.cpp:352
 #, kde-format
 msgid ""
 "Login via APOP failed. The server %1 may not support APOP, although it "
@@ -184,12 +184,12 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:406
+#: pop3protocol.cpp:402
 #, kde-format
 msgid "An error occurred during authentication: %1"
 msgstr "S'ha produït un error durant l'autenticació: %1"
 
-#: pop3protocol.cpp:500
+#: pop3protocol.cpp:496
 #, kde-format
 msgid ""
 "Login via SASL (%1) failed. The server may not support %2, or the password "
@@ -202,7 +202,7 @@ msgstr ""
 "\n"
 "%3"
 
-#: pop3protocol.cpp:511
+#: pop3protocol.cpp:507
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
@@ -211,7 +211,7 @@ msgstr ""
 "El vostre servidor POP3 (%1) no accepta el SASL.\n"
 "Escolliu un mètode d'autenticació diferent."
 
-#: pop3protocol.cpp:528 pop3protocol.cpp:617
+#: pop3protocol.cpp:524 pop3protocol.cpp:613
 #, kde-format
 msgid ""
 "Could not login to %1.\n"
@@ -220,7 +220,7 @@ msgstr ""
 "No s'ha pogut iniciar la sessió a %1.\n"
 "\n"
 
-#: pop3protocol.cpp:536
+#: pop3protocol.cpp:532
 #, kde-format
 msgid ""
 "Could not login to %1. The password may be wrong.\n"
@@ -231,22 +231,22 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:568
+#: pop3protocol.cpp:564
 #, kde-format
 msgid "SSL/TLS error: %1"
 msgstr "Error de SSL/TLS: %1"
 
-#: pop3protocol.cpp:599
+#: pop3protocol.cpp:595
 #, kde-format
 msgid "%1: %2"
 msgstr "%1: %2"
 
-#: pop3protocol.cpp:618
+#: pop3protocol.cpp:614
 #, kde-format
 msgid "The server terminated the connection immediately."
 msgstr "El servidor ha finalitzat la connexió immediatament."
 
-#: pop3protocol.cpp:619
+#: pop3protocol.cpp:615
 #, kde-format
 msgid ""
 "Server does not respond properly:\n"
@@ -255,7 +255,7 @@ msgstr ""
 "El servidor no respon correctament:\n"
 "%1\n"
 
-#: pop3protocol.cpp:643
+#: pop3protocol.cpp:639
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
@@ -264,7 +264,7 @@ msgstr ""
 "El vostre servidor POP3 (%1) no accepta l'APOP.\n"
 "Escolliu un mètode d'autenticació diferent."
 
-#: pop3protocol.cpp:653
+#: pop3protocol.cpp:649
 #, kde-format
 msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
@@ -274,27 +274,27 @@ msgstr ""
 "èxit.\n"
 "Podeu desactivar el TLS al diàleg de configuració del compte POP."
 
-#: pop3protocol.cpp:738
+#: pop3protocol.cpp:734
 #, kde-format
 msgid "Internal error: missing argument for command %1"
 msgstr "Error intern: manca l'argument per a l'ordre %1"
 
-#: pop3protocol.cpp:794
+#: pop3protocol.cpp:790
 #, kde-format
 msgid "Internal error: missing item"
 msgstr "Error intern: manca l'element"
 
-#: pop3protocol.cpp:821
+#: pop3protocol.cpp:817
 #, kde-format
 msgid "Timeout from POP3 server %1"
 msgstr "Temps excedit des del servidor POP3 %1"
 
-#: pop3protocol.cpp:823
+#: pop3protocol.cpp:819
 #, kde-format
 msgid "Connection broken from POP3 server %1"
 msgstr "Connexió trencada des del servidor POP3 %1"
 
-#: pop3protocol.cpp:884
+#: pop3protocol.cpp:880
 #, kde-format
 msgid ""
 "Error during communication with the POP3 server while trying to download "
@@ -303,93 +303,93 @@ msgstr ""
 "Error durant la comunicació amb el servidor POP3 en intentar baixar el "
 "correu: %1"
 
-#: pop3protocol.cpp:894
+#: pop3protocol.cpp:890
 #, kde-format
 msgid "Internal error, number expected: %1"
 msgstr "Error intern, s'esperava el número: %1"
 
-#: pop3protocol.cpp:914
+#: pop3protocol.cpp:910
 #, kde-format
 msgid "Unexpected response from POP3 server."
 msgstr "Resposta inesperada des del servidor POP3."
 
-#: pop3resource.cpp:99
+#: pop3resource.cpp:95
 #, kde-format
 msgid "Mail check aborted."
 msgstr "S'ha interromput la comprovació del correu."
 
-#: pop3resource.cpp:106
+#: pop3resource.cpp:102
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "La comprovació del correu s'ha cancel·lat manualment."
 
-#: pop3resource.cpp:134
+#: pop3resource.cpp:130
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr ""
 "Si us plau, introduïu el nom d'usuari i la contrasenya per al compte «%1»."
 
-#: pop3resource.cpp:151
+#: pop3resource.cpp:147
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr ""
 "Se us pregunta per què la contrasenya no s'ha pogut carregar de la cartera."
 
-#: pop3resource.cpp:167
+#: pop3resource.cpp:163
 #, kde-format
 msgid "Account:"
 msgstr "Compte:"
 
-#: pop3resource.cpp:184
+#: pop3resource.cpp:180
 #, kde-format
 msgid "No username and password supplied."
 msgstr "No s'han proporcionat l'usuari i la contrasenya."
 
-#: pop3resource.cpp:203
+#: pop3resource.cpp:199
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "S'està preparant la transmissió des de «%1»."
 
-#: pop3resource.cpp:224
+#: pop3resource.cpp:220
 #, kde-format
 msgid "Executing precommand."
 msgstr "S'està executant l'ordre prèvia."
 
-#: pop3resource.cpp:249
+#: pop3resource.cpp:245
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "Se us pregunta per què el darrer inici de la sessió ha estat erroni."
 
-#: pop3resource.cpp:251
+#: pop3resource.cpp:247
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr ""
 "Se us pregunta per què el nom d'usuari que heu proporcionat estava buit."
 
-#: pop3resource.cpp:278
+#: pop3resource.cpp:274
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "S'està recuperant el llistat dels correus."
 
-#: pop3resource.cpp:335
+#: pop3resource.cpp:330
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "S'estan desant els missatges baixats."
 
-#: pop3resource.cpp:353
+#: pop3resource.cpp:348
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "S'està desant la contrasenya a la cartera."
 
-#: pop3resource.cpp:395
+#: pop3resource.cpp:390
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
 "S'ha produït un error en intentar obtenir la carpeta de la safata d'entrada "
 "local, s'interromp la comprovació del correu."
 
-#: pop3resource.cpp:402
+#: pop3resource.cpp:397
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -400,7 +400,7 @@ msgstr ""
 "la qual es lliurava el correu. S'ha reiniciat la carpeta on el compte lliura "
 "el correu, a la carpeta de la safata d'entrada principal.</qt>"
 
-#: pop3resource.cpp:423
+#: pop3resource.cpp:418
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
@@ -408,36 +408,36 @@ msgstr ""
 "S'ha produït un error en intentar obtenir la carpeta per al correu entrant, "
 "s'interromp la comprovació del correu."
 
-#: pop3resource.cpp:436
+#: pop3resource.cpp:431
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr ""
 "No s'ha pogut trobar la carpeta per al correu entrant, s'interromp la "
 "comprovació del correu."
 
-#: pop3resource.cpp:447
+#: pop3resource.cpp:442
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "Error en executar l'ordre prèvia."
 
-#: pop3resource.cpp:461
+#: pop3resource.cpp:456
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr "No s'ha pogut iniciar la sessió al servidor «%1»."
 
-#: pop3resource.cpp:470
+#: pop3resource.cpp:465
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "S'ha produït un error en obtenir la llista de missatges del servidor."
 
-#: pop3resource.cpp:484
+#: pop3resource.cpp:479
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr ""
 "S'ha produït un error en obtenir la llista d'identificadors únics de "
 "missatges del servidor."
 
-#: pop3resource.cpp:497
+#: pop3resource.cpp:492
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -452,12 +452,12 @@ msgstr ""
 "per tant, la característica de deixar els missatges al servidor no "
 "funcionarà correctament."
 
-#: pop3resource.cpp:512
+#: pop3resource.cpp:507
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "S'ha produït un error en recuperar els correus del servidor."
 
-#: pop3resource.cpp:572
+#: pop3resource.cpp:567
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
@@ -465,55 +465,55 @@ msgstr ""
 "S'està recuperant el missatge %1 de %2 (%3 de %4 kB) per a %5 (queden %6 kB "
 "en el servidor)."
 
-#: pop3resource.cpp:581
+#: pop3resource.cpp:576
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "S'està recuperant el missatge %1 de %2 (%3 de %4 kB) per a %5"
 
-#: pop3resource.cpp:604
+#: pop3resource.cpp:599
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "No s'han pogut emmagatzemar els correus baixats."
 
-#: pop3resource.cpp:752
+#: pop3resource.cpp:747
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "Ha fallat en suprimir els missatges del servidor."
 
-#: pop3resource.cpp:808
+#: pop3resource.cpp:803
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "Ha finalitzat la comprovació del correu, no s'ha baixat cap missatge."
 
-#: pop3resource.cpp:810
+#: pop3resource.cpp:805
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "Ha finalitzat la comprovació del correu, s'ha baixat 1 missatge."
 msgstr[1] "Ha finalitzat la comprovació del correu, s'han baixat %1 missatges."
 
-#: pop3resource.cpp:824
+#: pop3resource.cpp:819
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "No s'ha pogut completar l'obtenció del correu."
 
-#: pop3resource.cpp:959
+#: pop3resource.cpp:953
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr ""
 "Ja s'està comprovant el correu, no s'ha pogut iniciar una segona comprovació."
 
-#: pop3resource.cpp:980
+#: pop3resource.cpp:974
 #, kde-format
 msgid "Ready"
 msgstr "Preparat"
 
-#: pop3resource.cpp:983
+#: pop3resource.cpp:977
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "S'ha interromput la comprovació del correu després de la desconnexió."
 
-#: pop3resource.cpp:985
+#: pop3resource.cpp:979
 #, kde-format
 msgid "Offline"
 msgstr "Desconnectat"

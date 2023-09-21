@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-04-04 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2013-05-30 14:03+0200\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: maildispatcheragent.cpp:84 maildispatcheragent.cpp:233
+#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
 #, kde-format
 msgid "Sending messages (1 item in queue)..."
 msgid_plural "Sending messages (%1 items in queue)..."
@@ -25,56 +25,56 @@ msgstr[0] "Odesílám zprávy (1 položka ve frontě)..."
 msgstr[1] "Odesílám zprávy (%1 položky ve frontě)..."
 msgstr[2] "Odesílám zprávy (%1 položek ve frontě)..."
 
-#: maildispatcheragent.cpp:94
+#: maildispatcheragent.cpp:90
 #, kde-format
 msgid "Sending canceled."
 msgstr "Odesílání zrušeno"
 
-#: maildispatcheragent.cpp:101
+#: maildispatcheragent.cpp:97
 #, kde-format
 msgid "Finished sending messages."
 msgstr "Dokončeno odesílání zpráv."
 
-#: maildispatcheragent.cpp:107
+#: maildispatcheragent.cpp:103
 #, kde-format
 msgctxt "Notification title when email was sent"
 msgid "E-Mail Successfully Sent"
 msgstr "E-mail úspěšně odeslán"
 
-#: maildispatcheragent.cpp:108
+#: maildispatcheragent.cpp:104
 #, kde-format
 msgctxt "Notification when the email was sent"
 msgid "Your E-Mail has been sent successfully."
 msgstr "E-mail byl úspěšně odeslán."
 
-#: maildispatcheragent.cpp:114
+#: maildispatcheragent.cpp:110
 #, kde-format
 msgid "No items in queue."
 msgstr "Žádné položky ve frontě."
 
-#: maildispatcheragent.cpp:164
+#: maildispatcheragent.cpp:155
 #, kde-format
 msgid "Online, sending messages in queue."
 msgstr "Připojeno, odesílají se zprávy ve frontě."
 
-#: maildispatcheragent.cpp:168
+#: maildispatcheragent.cpp:159
 #, kde-format
 msgid "Offline, message sending suspended."
 msgstr "Odpojeno, odesílání zpráv pozastaveno."
 
-#: maildispatcheragent.cpp:193
+#: maildispatcheragent.cpp:184
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
 msgstr "Odesílám: %1"
 
-#: maildispatcheragent.cpp:258
+#: maildispatcheragent.cpp:249
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
 msgstr "Odeslání E-mailu selhalo"
 
-#: maildispatcheragent.cpp:291
+#: maildispatcheragent.cpp:282
 #, kde-format
 msgid "Ready to dispatch messages."
 msgstr "Připraven odeslat zprávy."

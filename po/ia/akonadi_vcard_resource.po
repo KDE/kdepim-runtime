@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2015-06-12 10:25+0200\n"
 "Last-Translator: Giovanni Sora <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -57,11 +57,8 @@ msgstr "Non modifica le datos actual de retro-administration."
 msgid "Monitor file for changes."
 msgstr "Controla file pro modificationes."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/vcardwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Nomine de file:"
+#~ msgid "Filename:"
+#~ msgstr "Nomine de file:"
 
 #~ msgid "Select Address Book"
 #~ msgstr "Selige adressario"

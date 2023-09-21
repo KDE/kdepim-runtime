@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2010-12-10 17:52+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: Dutch <kde-i18n-nl@kde.org>\n"
@@ -76,11 +76,8 @@ msgstr "Het toegevoegde item %1 kon niet worden opgehaald."
 msgid "Unable to retrieve modified item %1."
 msgstr "Het gewijzigde item %1 kon niet worden opgehaald."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Bestandsnaam:"
+#~ msgid "Filename:"
+#~ msgstr "Bestandsnaam:"
 
 #~ msgid "Select Calendar"
 #~ msgstr "Agenda selecteren"

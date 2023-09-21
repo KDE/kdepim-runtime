@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-03 00:47+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2023-08-03 11:57+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -32,7 +32,7 @@ msgstr "Jakinarazpen-historia"
 msgid "Enabled"
 msgstr "Gaituta"
 
-#: newmailnotifieragent.cpp:373
+#: newmailnotifieragent.cpp:365
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -42,7 +42,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "\"%3\"(r)en posta berri bat %2(e)an"
 msgstr[1] "\"%3\"(r)en %1 posta berri %2(e)an"
 
-#: newmailnotifieragent.cpp:398
+#: newmailnotifieragent.cpp:390
 #, kde-format
 msgid "New mail arrived"
 msgstr "Posta berria iritsi da"
@@ -58,7 +58,7 @@ msgstr "%f(r)en mezu bat jaso da"
 msgid "Unable to start KMail application."
 msgstr "Ez da KMail aplikazioa hasteko gai."
 
-#: newmailnotifierselectcollectionwidget.cpp:94
+#: newmailnotifierselectcollectionwidget.cpp:95
 #, kde-format
 msgid "Select which folders to monitor for new message notifications:"
 msgstr "Hautatu mezu berrien jakinarazpenetarako zein karpeta gainbegiratu:"

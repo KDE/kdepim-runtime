@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_contacts_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2019-11-18 17:37+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -166,11 +166,8 @@ msgstr "Kontaktide kataloogi asukoht"
 msgid "Do not change the actual backend data."
 msgstr "Taustaprogrammi tegelikke andmeid ei muudeta."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/contactswizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Failinimi:"
+#~ msgid "Filename:"
+#~ msgstr "Failinimi:"
 
 #, fuzzy
 #~ msgid "Autosave interval time (in minutes)."

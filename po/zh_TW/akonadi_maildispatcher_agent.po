@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-04-04 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2012-10-19 12:33+0800\n"
 "Last-Translator: Franklin Weng <franklin at goodhorse dot idv dot tw>\n"
 "Language-Team: Chinese Traditional <kde-tw@googlegroups.com>\n"
@@ -18,62 +18,62 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: maildispatcheragent.cpp:84 maildispatcheragent.cpp:233
+#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
 #, kde-format
 msgid "Sending messages (1 item in queue)..."
 msgid_plural "Sending messages (%1 items in queue)..."
 msgstr[0] "傳送信件中（佇列中有 %1 個項目）"
 
-#: maildispatcheragent.cpp:94
+#: maildispatcheragent.cpp:90
 #, kde-format
 msgid "Sending canceled."
 msgstr "傳送已取消。"
 
-#: maildispatcheragent.cpp:101
+#: maildispatcheragent.cpp:97
 #, kde-format
 msgid "Finished sending messages."
 msgstr "已完成傳送信件。"
 
-#: maildispatcheragent.cpp:107
+#: maildispatcheragent.cpp:103
 #, kde-format
 msgctxt "Notification title when email was sent"
 msgid "E-Mail Successfully Sent"
 msgstr "電子郵件已成功傳送"
 
-#: maildispatcheragent.cpp:108
+#: maildispatcheragent.cpp:104
 #, kde-format
 msgctxt "Notification when the email was sent"
 msgid "Your E-Mail has been sent successfully."
 msgstr "您的電子郵件已成功傳送。"
 
-#: maildispatcheragent.cpp:114
+#: maildispatcheragent.cpp:110
 #, kde-format
 msgid "No items in queue."
 msgstr "佇列中沒有任何項目。"
 
-#: maildispatcheragent.cpp:164
+#: maildispatcheragent.cpp:155
 #, kde-format
 msgid "Online, sending messages in queue."
 msgstr "回到線上，傳送佇列中的信件中。"
 
-#: maildispatcheragent.cpp:168
+#: maildispatcheragent.cpp:159
 #, kde-format
 msgid "Offline, message sending suspended."
 msgstr "已離線，傳送信件動作已暫停。"
 
-#: maildispatcheragent.cpp:193
+#: maildispatcheragent.cpp:184
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
 msgstr "傳送中：%1"
 
-#: maildispatcheragent.cpp:258
+#: maildispatcheragent.cpp:249
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
 msgstr "傳送信件失敗"
 
-#: maildispatcheragent.cpp:291
+#: maildispatcheragent.cpp:282
 #, kde-format
 msgid "Ready to dispatch messages."
 msgstr "已準備好發送信件。"

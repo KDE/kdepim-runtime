@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2012-10-05 23:30+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -76,11 +76,8 @@ msgstr "Nisam u mogućnosti da pruzmem dodatu stavku %1."
 msgid "Unable to retrieve modified item %1."
 msgstr "Nisam u mogućnosti da pruzmem izmijenjenu stavku %1."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Ime datoteke:"
+#~ msgid "Filename:"
+#~ msgstr "Ime datoteke:"
 
 #~ msgid "Select Calendar"
 #~ msgstr "Izaberite kalendar"

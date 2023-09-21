@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-18 00:49+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2022-01-04 14:29+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -276,7 +276,7 @@ msgstr "يحدّد نوع التّعريف الذي يستخدمه خادوم «
 msgid "No server configured yet."
 msgstr "لم يُضبط خادوم بعد."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:663
+#: imapresourcebase.cpp:245 setupserver.cpp:647
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -410,13 +410,13 @@ msgstr ""
 "فشل تعليم الرّسالة من ’%1‘ للحذف على خادوم IMAP. ستظهر ثانيةً عند المزامنة "
 "التّالية."
 
-#: removecollectionrecursivetask.cpp:116 removecollectionrecursivetask.cpp:132
-#: removecollectionrecursivetask.cpp:145
+#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
+#: removecollectionrecursivetask.cpp:141
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "فشل حذف المجلّد، يستعيد قائمة المجلّدات."
 
-#: removecollectionrecursivetask.cpp:150
+#: removecollectionrecursivetask.cpp:146
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "فشل العثور على المجلّد الذي سيُحذف، يستعيد قائمة المجلّدات."
@@ -628,7 +628,7 @@ msgstr "رجاءً أدخِل كلمة سرّ المستخدم ’%1‘ على �
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:77 setupserverview_desktop.ui:294
+#: setupserver.cpp:73 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -637,25 +637,25 @@ msgstr "نصّ واضح"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:79 setupserverview_desktop.ui:329
+#: setupserver.cpp:75 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "مجهّل"
 
-#: setupserver.cpp:81
+#: setupserver.cpp:77
 #, kde-format
 msgctxt "Authentication method"
 msgid "Gmail"
 msgstr "Gmail"
 
-#: setupserver.cpp:148
+#: setupserver.cpp:140
 #, kde-format
 msgid "Archive Folder"
 msgstr "مجلّد الأرشفة"
 
-#: setupserver.cpp:160
+#: setupserver.cpp:152
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -666,12 +666,12 @@ msgstr[3] " دقائق"
 msgstr[4] " دقيقة"
 msgstr[5] " دقيقة"
 
-#: setupserver.cpp:175
+#: setupserver.cpp:167
 #, kde-format
 msgid "Identity:"
 msgstr "الهويّة:"
 
-#: setupserver.cpp:266
+#: setupserver.cpp:250
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -681,12 +681,12 @@ msgstr ""
 "لقد غيّرت عنوان الخادوم. حتّى لو كان هذا نفس الخادوم السّابق سيكون عليك إعادة "
 "تنزيل كلّ رسائل البريد لهذا الحساب ثانيةً. أمتأكّد من المتابعة؟"
 
-#: setupserver.cpp:269
+#: setupserver.cpp:253
 #, kde-format
 msgid "Server address change"
 msgstr "تغيّر عنوان الخادوم"
 
-#: setupserver.cpp:276
+#: setupserver.cpp:260
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -696,12 +696,12 @@ msgstr ""
 "لقد غيّرت اسم المستخدم. حتّى لو كان هذا اسم مستخدم لنفس الخادوم السّابق سيكون "
 "عليك إعادة تنزيل كلّ رسائل البريد لهذا الحساب ثانيةً. أمتأكّد من المتابعة؟"
 
-#: setupserver.cpp:279
+#: setupserver.cpp:263
 #, kde-format
 msgid "User name change"
 msgstr "تغيّر اسم المستخدم"
 
-#: setupserver.cpp:424 setupserver.cpp:480
+#: setupserver.cpp:408 setupserver.cpp:464
 #, kde-format
 msgid ""
 "Could not access KWallet. If you want to store the password permanently then "
@@ -712,34 +712,34 @@ msgstr ""
 "ترد استخدام «محفظتك» فأشّر على المربّع أسفل، ولكن اعلم بأنّك ستُسأل عن كلمة السّرّ "
 "عند الحاجة."
 
-#: setupserver.cpp:429 setupserver.cpp:485
+#: setupserver.cpp:413 setupserver.cpp:469
 #, kde-format
 msgid "Do not use KWallet"
 msgstr "لا تستخدم «محفظتك»"
 
-#: setupserver.cpp:550
+#: setupserver.cpp:534
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "تعذّر الاتّصال بالخادوم، رجاءً افحص عنوان الخادوم."
 
-#: setupserver.cpp:562
+#: setupserver.cpp:546
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<b>‏STARTTLS مدعوم ومستحسن.</b>"
 
-#: setupserver.cpp:565
+#: setupserver.cpp:549
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<b>‏SSL/TLS مدعوم ومستحسن.</b>"
 
-#: setupserver.cpp:569
+#: setupserver.cpp:553
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
 msgstr "<b>لا أمن مدعوم. ليس مستحسنًا الاتّصال بهذا الخادوم.</b>"
 
-#: setupserver.cpp:572
+#: setupserver.cpp:556
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<b>الاتّصال بهذا الخادوم ليس ممكنًا.</b>"

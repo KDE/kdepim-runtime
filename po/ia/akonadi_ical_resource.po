@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2011-07-19 16:30+0200\n"
 "Last-Translator: g.sora <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-it@kde.org>\n"
@@ -73,11 +73,8 @@ msgstr "Incapace de recuperar elemento addite %1."
 msgid "Unable to retrieve modified item %1."
 msgstr "Incapace de recuperar elemento modificate %1."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Nomine de file:"
+#~ msgid "Filename:"
+#~ msgstr "Nomine de file:"
 
 #~ msgid "Select Calendar"
 #~ msgstr "Selige calendario"

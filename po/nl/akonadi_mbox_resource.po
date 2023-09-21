@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-24 00:49+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2023-03-24 09:41+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -331,11 +331,8 @@ msgstr "Vergrendelbestand"
 msgid "Number of deleted messages before a purge is started."
 msgstr "Aantal verwijderde berichten voordat echte verwijdering wordt gestart."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/mailboxwizard.ui:19
-#, kde-format
-msgid "URL:"
-msgstr "URL-adres:"
+#~ msgid "URL:"
+#~ msgstr "URL-adres:"
 
 #~ msgid "Non&e (Use with care)"
 #~ msgstr "Ge&en (met zorg gebruiken)"

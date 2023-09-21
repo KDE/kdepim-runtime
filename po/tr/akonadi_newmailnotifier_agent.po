@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-03 00:47+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2023-08-03 12:41+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -35,7 +35,7 @@ msgstr "Bildirim Geçmişi"
 msgid "Enabled"
 msgstr "Etkin"
 
-#: newmailnotifieragent.cpp:373
+#: newmailnotifieragent.cpp:365
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -45,7 +45,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "%2 içinde %3 kişisinden bir yeni e-posta"
 msgstr[1] "%2 içinde %3 kişisinden %1 yeni e-posta"
 
-#: newmailnotifieragent.cpp:398
+#: newmailnotifieragent.cpp:390
 #, kde-format
 msgid "New mail arrived"
 msgstr "Yeni e-posta alındı"
@@ -61,7 +61,7 @@ msgstr "%f aracısından bir ileti alındı"
 msgid "Unable to start KMail application."
 msgstr "K Posta uygulaması başlatılamıyor."
 
-#: newmailnotifierselectcollectionwidget.cpp:94
+#: newmailnotifierselectcollectionwidget.cpp:95
 #, kde-format
 msgid "Select which folders to monitor for new message notifications:"
 msgstr "Yeni ileti bildirimlerinin izleneceği klasörleri seçin:"

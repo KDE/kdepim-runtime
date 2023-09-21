@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2014-04-02 22:39+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -59,11 +59,8 @@ msgstr "Bitte de aktuellen Hülpprogramm-Daten nich ännern."
 msgid "Monitor file for changes."
 msgstr "Datei op Ännern beluern"
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/vcardwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Dateinaam:"
+#~ msgid "Filename:"
+#~ msgstr "Dateinaam:"
 
 #~ msgid "Select Address Book"
 #~ msgstr "Adressbook utsöken"

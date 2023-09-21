@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_contacts_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2016-05-24 16:34+0200\n"
 "Last-Translator: Petros Vidalis <pvidalis@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -165,8 +165,5 @@ msgstr "Διαδρομή προς τον κατάλογο επαφών"
 msgid "Do not change the actual backend data."
 msgstr "Μην αλλάξετε τα δεδομένα του συστήματος υποστήριξης."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/contactswizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Όνομα αρχείου:"
+#~ msgid "Filename:"
+#~ msgstr "Όνομα αρχείου:"

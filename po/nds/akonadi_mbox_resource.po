@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-24 00:49+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2014-04-02 22:38+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -369,11 +369,8 @@ msgstr "Slottdatei"
 msgid "Number of deleted messages before a purge is started."
 msgstr "Tall vun wegdaan Nettbreven, ehr dat Oprümen anfangt"
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/mailboxwizard.ui:19
-#, kde-format
-msgid "URL:"
-msgstr "Adress:"
+#~ msgid "URL:"
+#~ msgstr "Adress:"
 
 #~ msgid "Non&e (Use with care)"
 #~ msgstr "K&een (mit Acht bruken)"

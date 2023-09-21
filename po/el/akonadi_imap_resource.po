@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-18 00:49+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2017-04-20 16:28+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -302,7 +302,7 @@ msgstr ""
 msgid "No server configured yet."
 msgstr "Δεν έχει γίνει ακόμα διαμόρφωση του εξυπηρετητή."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:663
+#: imapresourcebase.cpp:245 setupserver.cpp:647
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -450,13 +450,13 @@ msgstr ""
 "Αποτυχία σημείωσης του μηνύματος από το '%1' για διαγραφή στον εξυπηρετητή "
 "IMAP. Το μήνυμα θα επανεμφανιστεί στον επόμενο συγχρονισμό."
 
-#: removecollectionrecursivetask.cpp:116 removecollectionrecursivetask.cpp:132
-#: removecollectionrecursivetask.cpp:145
+#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
+#: removecollectionrecursivetask.cpp:141
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "Αποτυχία διαγραφής του φακέλου. Γίνεται επαναφορά λίστας φακέλων."
 
-#: removecollectionrecursivetask.cpp:150
+#: removecollectionrecursivetask.cpp:146
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""
@@ -687,7 +687,7 @@ msgstr "Εισαγωγή κωδικού για τον χρήστη '%1' στον
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:77 setupserverview_desktop.ui:294
+#: setupserver.cpp:73 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -696,37 +696,37 @@ msgstr "Μη κρυπτογραφημένο κείμενο"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:79 setupserverview_desktop.ui:329
+#: setupserver.cpp:75 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Ανώνυμο"
 
-#: setupserver.cpp:81
+#: setupserver.cpp:77
 #, kde-format
 msgctxt "Authentication method"
 msgid "Gmail"
 msgstr "Gmail"
 
-#: setupserver.cpp:148
+#: setupserver.cpp:140
 #, kde-format
 msgid "Archive Folder"
 msgstr "Αρχειοθέτηση φακέλου"
 
-#: setupserver.cpp:160
+#: setupserver.cpp:152
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " λεπτό"
 msgstr[1] " λεπτά"
 
-#: setupserver.cpp:175
+#: setupserver.cpp:167
 #, kde-format
 msgid "Identity:"
 msgstr "Ταυτότητα:"
 
-#: setupserver.cpp:266
+#: setupserver.cpp:250
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -737,12 +737,12 @@ msgstr ""
 "εξυπηρετητής όπως πριν, θα χρειστεί να επαναληφθεί η λήψη όλων των μηνυμάτων "
 "σας από αυτόν τον λογαριασμό. Είστε βέβαιοι ότι θέλετε να συνεχίσετε;"
 
-#: setupserver.cpp:269
+#: setupserver.cpp:253
 #, kde-format
 msgid "Server address change"
 msgstr "Η διεύθυνση του εξυπηρετητή άλλαξε"
 
-#: setupserver.cpp:276
+#: setupserver.cpp:260
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -754,12 +754,12 @@ msgstr ""
 "μηνυμάτων σας από αυτόν τον λογαριασμό. Είστε βέβαιοι ότι θέλετε να "
 "συνεχίσετε;"
 
-#: setupserver.cpp:279
+#: setupserver.cpp:263
 #, kde-format
 msgid "User name change"
 msgstr "Το όνομα χρήστη άλλαξε"
 
-#: setupserver.cpp:424 setupserver.cpp:480
+#: setupserver.cpp:408 setupserver.cpp:464
 #, kde-format
 msgid ""
 "Could not access KWallet. If you want to store the password permanently then "
@@ -771,31 +771,31 @@ msgstr ""
 "του KWallet, ενεργοποιήστε την παρακάτω επιλογή, αλλά θα σας ζητείται ο "
 "κωδικός πρόσβασης όποτε απαιτείται."
 
-#: setupserver.cpp:429 setupserver.cpp:485
+#: setupserver.cpp:413 setupserver.cpp:469
 #, kde-format
 msgid "Do not use KWallet"
 msgstr "Χωρίς χρήση του KWallet"
 
-#: setupserver.cpp:550
+#: setupserver.cpp:534
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Αδυναμία σύνδεσης με τον εξυπηρετητή, επιβεβαιώστε τη διεύθυνση του "
 "εξυπηρετητή."
 
-#: setupserver.cpp:562
+#: setupserver.cpp:546
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>Το TLS υποστηρίζεται και συνιστάται.</b></qt>"
 
-#: setupserver.cpp:565
+#: setupserver.cpp:549
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>Το TLS υποστηρίζεται και συνιστάται.</b></qt>"
 
-#: setupserver.cpp:569
+#: setupserver.cpp:553
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -804,7 +804,7 @@ msgstr ""
 "<qt><b>Δεν υποστηρίζεται καμία ασφάλεια. Δεν προτείνεται η σύνδεση με αυτόν "
 "τον εξυπηρετητή.</b></qt>"
 
-#: setupserver.cpp:572
+#: setupserver.cpp:556
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Δεν είναι δυνατή η χρήση αυτού του εξυπηρετητή.</b></qt>"
