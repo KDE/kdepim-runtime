@@ -27,5 +27,8 @@ Q_SIGNALS:
     void historyAdded(const QString &str);
 
 private:
+    Q_REQUIRED_RESULT QString generateOpenMailStr() const;
+    Q_REQUIRED_RESULT QString generateOpenFolderStr() const;
+    void cleanupStr(QString &str);
     QStringList mHistory;
 };

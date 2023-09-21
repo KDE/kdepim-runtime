@@ -25,6 +25,16 @@ QStringList NewMailNotificationHistoryManager::history() const
     return mHistory;
 }
 
+QString NewMailNotificationHistoryManager::generateOpenFolderStr() const
+{
+    return {};
+}
+
+QString NewMailNotificationHistoryManager::generateOpenMailStr() const
+{
+    return {};
+}
+
 void NewMailNotificationHistoryManager::addHistory(QString str)
 {
     // TODO add url to open folder or email.
@@ -35,12 +45,17 @@ void NewMailNotificationHistoryManager::addHistory(QString str)
     if (!str.startsWith(QLatin1Char('\n')) && !str.startsWith(QStringLiteral("<br>"))) {
         newStr += QLatin1Char('\n');
     }
-    str.replace(QStringLiteral("<br>"), QStringLiteral("\n"));
-    str.replace(QStringLiteral("&lt;"), QStringLiteral("<"));
-    str.replace(QStringLiteral("&gt;"), QStringLiteral(">"));
+    cleanupStr(str);
     newStr += str;
     mHistory += newStr;
     Q_EMIT historyAdded(newStr);
+}
+
+void NewMailNotificationHistoryManager::cleanupStr(QString &str)
+{
+    str.replace(QStringLiteral("<br>"), QStringLiteral("\n"));
+    str.replace(QStringLiteral("&lt;"), QStringLiteral("<"));
+    str.replace(QStringLiteral("&gt;"), QStringLiteral(">"));
 }
 
 void NewMailNotificationHistoryManager::setHistory(const QStringList &newHistory)
