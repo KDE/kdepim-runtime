@@ -27,6 +27,7 @@ QStringList NewMailNotificationHistoryManager::history() const
 
 void NewMailNotificationHistoryManager::addHistory(QString str)
 {
+    // TODO add url to open folder or email.
     if (!mHistory.isEmpty()) {
         mHistory += QStringLiteral("\n");
     }
