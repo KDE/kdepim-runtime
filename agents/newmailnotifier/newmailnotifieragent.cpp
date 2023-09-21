@@ -332,17 +332,17 @@ void NewMailNotifierAgent::slotShowNotifications()
                 displayName = it.key().name();
             }
 
-            if (!mCacheResourceName.contains(it.key().resource())) {
+            const QString resource = it.key().resource();
+            resourceName = mCacheResourceName.value(resource);
+            if (resourceName.isEmpty()) {
                 const Akonadi::AgentInstance::List lst = Akonadi::AgentManager::self()->instances();
                 for (const Akonadi::AgentInstance &instance : lst) {
-                    if (instance.identifier() == it.key().resource()) {
+                    if (instance.identifier() == resource) {
                         mCacheResourceName.insert(instance.identifier(), instance.name());
                         resourceName = instance.name();
                         break;
                     }
                 }
-            } else {
-                resourceName = mCacheResourceName.value(it.key().resource());
             }
 
             if (hasUniqMessage) {
