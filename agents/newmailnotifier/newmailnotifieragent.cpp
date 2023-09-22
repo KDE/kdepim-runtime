@@ -309,6 +309,7 @@ void NewMailNotifierAgent::slotShowNotifications()
         return;
     }
 
+    QList<NewMailNotificationHistoryManager::HistoryFolderInfo> infos;
     QString message;
     if (NewMailNotifierAgentSettings::verboseNotification()) {
         bool hasUniqMessage = true;
@@ -396,7 +397,6 @@ void NewMailNotifierAgent::slotShowNotifications()
 
     qCDebug(NEWMAILNOTIFIER_LOG) << message;
 
-    QList<NewMailNotificationHistoryManager::HistoryFolderInfo> infos;
     // TODO implement it.
     addFoldersInfoNotificationHistory(message, std::move(infos));
 

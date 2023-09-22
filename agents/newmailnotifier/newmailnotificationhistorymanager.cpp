@@ -5,6 +5,7 @@
 */
 
 #include "newmailnotificationhistorymanager.h"
+#include <KLocalizedString>
 #include <QDateTime>
 
 NewMailNotificationHistoryManager::NewMailNotificationHistoryManager(QObject *parent)
@@ -27,12 +28,12 @@ QStringList NewMailNotificationHistoryManager::history() const
 
 QString NewMailNotificationHistoryManager::generateOpenFolderStr(Akonadi::Collection::Id id)
 {
-    return {};
+    return i18n("[Show Mail]");
 }
 
 QString NewMailNotificationHistoryManager::generateOpenMailStr(Akonadi::Item::Id id)
 {
-    return {};
+    return i18n("[Open Folder]");
 }
 
 void NewMailNotificationHistoryManager::addEmailInfoNotificationHistory(const NewMailNotificationHistoryManager::HistoryMailInfo &info)
