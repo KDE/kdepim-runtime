@@ -43,12 +43,14 @@ void NewMailNotificationHistoryManager::addEmailInfoNotificationHistory(const Ne
 
 void NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory(const QList<NewMailNotificationHistoryManager::HistoryFolderInfo> &infos)
 {
+    for (const NewMailNotificationHistoryManager::HistoryFolderInfo &info : infos) {
+        // TODO
+    }
     // TODO
 }
 
 void NewMailNotificationHistoryManager::addHistory(QString str)
 {
-    // TODO add url to open folder or email.
     if (!mHistory.isEmpty()) {
         mHistory += QStringLiteral("\n");
     }
