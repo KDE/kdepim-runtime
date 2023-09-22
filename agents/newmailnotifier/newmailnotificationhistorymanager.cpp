@@ -35,6 +35,16 @@ QString NewMailNotificationHistoryManager::generateOpenMailStr(Akonadi::Item::Id
     return {};
 }
 
+void NewMailNotificationHistoryManager::addEmailInfoNotificationHistory(const NewMailNotificationHistoryManager::HistoryMailInfo &info)
+{
+    // TODO
+}
+
+void NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory(const QList<NewMailNotificationHistoryManager::HistoryFolderInfo> &infos)
+{
+    // TODO
+}
+
 void NewMailNotificationHistoryManager::addHistory(QString str)
 {
     // TODO add url to open folder or email.

@@ -9,7 +9,6 @@
 #include "newmailnotifieragent.h"
 
 #include "newmailnotificationhistorydialog.h"
-#include "newmailnotificationhistorymanager.h"
 #include "newmailnotifieradaptor.h"
 #include "newmailnotifieragentsettings.h"
 #include "specialnotifierjob.h"
@@ -377,7 +376,12 @@ void NewMailNotifierAgent::slotShowNotifications()
             info.defaultIconName = mDefaultIconName;
             info.resourceName = resourceName;
             auto job = new SpecialNotifierJob(std::move(info), this);
-            connect(job, &SpecialNotifierJob::displayNotification, this, &NewMailNotifierAgent::slotDisplayNotification);
+            connect(job, &SpecialNotifierJob::displayNotification, this, [this, itemId](const QPixmap &pixmap, const QString &message) {
+                NewMailNotificationHistoryManager::HistoryMailInfo info;
+                info.message = message;
+                info.identifier = itemId;
+                addEmailInfoNotificationHistory(pixmap, message, std::move(info));
+            });
 #if HAVE_TEXT_TO_SPEECH_SUPPORT
             connect(job, &SpecialNotifierJob::say, this, &NewMailNotifierAgent::slotSay);
 #endif
@@ -392,16 +396,37 @@ void NewMailNotifierAgent::slotShowNotifications()
 
     qCDebug(NEWMAILNOTIFIER_LOG) << message;
 
-    slotDisplayNotification(QPixmap(), message);
+    QList<NewMailNotificationHistoryManager::HistoryFolderInfo> infos;
+    // TODO implement it.
+    addFoldersInfoNotificationHistory(message, std::move(infos));
 
     mNewMails.clear();
 }
 
+void NewMailNotifierAgent::addEmailInfoNotificationHistory(const QPixmap &pixmap,
+                                                           const QString &message,
+                                                           const NewMailNotificationHistoryManager::HistoryMailInfo &info)
+{
+    slotDisplayNotification(pixmap, message);
+    if (NewMailNotifierAgentSettings::enableNotificationHistory()) {
+        // TODO remove it.
+        NewMailNotificationHistoryManager::self()->addHistory(message);
+        NewMailNotificationHistoryManager::self()->addEmailInfoNotificationHistory(info);
+    }
+}
+
+void NewMailNotifierAgent::addFoldersInfoNotificationHistory(const QString &message, const QList<NewMailNotificationHistoryManager::HistoryFolderInfo> &infos)
+{
+    slotDisplayNotification(QPixmap(), message);
+    if (NewMailNotifierAgentSettings::enableNotificationHistory()) {
+        // TODO remove it.
+        NewMailNotificationHistoryManager::self()->addHistory(message);
+        NewMailNotificationHistoryManager::self()->addFoldersInfoNotificationHistory(infos);
+    }
+}
+
 void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const QString &message)
 {
-    if (NewMailNotifierAgentSettings::enableNotificationHistory()) {
-        NewMailNotificationHistoryManager::self()->addHistory(message);
-    }
     if (pixmap.isNull()) {
         KNotification::event(QStringLiteral("new-email"),
                              QString(),

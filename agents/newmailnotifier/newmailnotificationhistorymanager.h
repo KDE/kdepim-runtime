@@ -30,9 +30,13 @@ public:
     Q_REQUIRED_RESULT QStringList history() const;
     void setHistory(const QStringList &newHistory);
 
+    // FIXME remove it.
     void addHistory(QString str);
 
     void clear();
+
+    void addEmailInfoNotificationHistory(const NewMailNotificationHistoryManager::HistoryMailInfo &info);
+    void addFoldersInfoNotificationHistory(const QList<NewMailNotificationHistoryManager::HistoryFolderInfo> &infos);
 
 Q_SIGNALS:
     void historyAdded(const QString &str);

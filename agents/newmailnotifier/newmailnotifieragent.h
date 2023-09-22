@@ -8,6 +8,7 @@
 
 #pragma once
 #include "config-newmailnotifier.h"
+#include "newmailnotificationhistorymanager.h"
 #include <Akonadi/AgentBase>
 #include <Akonadi/Collection> // make sure this is included before QHash, otherwise it won't find the correct qHash implementation for some reason
 
@@ -60,6 +61,8 @@ private:
     void slotIdentitiesChanged();
     void slotInstanceNameChanged(const Akonadi::AgentInstance &instance);
     void slotSay(const QString &message);
+    void addEmailInfoNotificationHistory(const QPixmap &pixmap, const QString &message, const NewMailNotificationHistoryManager::HistoryMailInfo &info);
+    void addFoldersInfoNotificationHistory(const QString &message, const QList<NewMailNotificationHistoryManager::HistoryFolderInfo> &infos);
     Q_REQUIRED_RESULT bool excludeAgentType(const Akonadi::AgentInstance &instance);
     Q_REQUIRED_RESULT bool ignoreStatusMail(const Akonadi::Item &item);
     Q_REQUIRED_RESULT bool isActive() const;
