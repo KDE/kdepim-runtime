@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2010-12-27 12:43+0100\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -75,8 +75,5 @@ msgstr "Klarer ikke hente tilagt element %1."
 msgid "Unable to retrieve modified item %1."
 msgstr "Klarer ikke hente endret element %1."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Filnavn:"
+#~ msgid "Filename:"
+#~ msgstr "Filnavn:"

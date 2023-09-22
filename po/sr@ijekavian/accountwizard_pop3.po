@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: accountwizard_pop3\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2019-05-20 03:16+0200\n"
+"POT-Creation-Date: 2020-08-15 02:21+0200\n"
 "PO-Revision-Date: 2013-11-17 17:01+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: pop3wizard.es:23
+#: pop3wizard.es:10
 msgid "Personal Settings"
 msgstr "Личне поставке"
 

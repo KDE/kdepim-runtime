@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2020-04-15 03:34+0200\n"
+"POT-Creation-Date: 2023-04-23 00:50+0000\n"
 "PO-Revision-Date: 2017-01-14 19:23+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -66,7 +66,7 @@ msgstr ""
 "fascikla ne postoji, biće napravljena."
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: settingsdialog.ui:81 singlefileresourceconfigwidget_desktop.ui:125
+#: settingsdialog.ui:81
 #, kde-format
 msgid "Access Rights"
 msgstr "Prava pristupa"
@@ -100,7 +100,7 @@ msgstr ""
 "nad fasciklom."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
-#: settingsdialog.ui:93 singlefileresourceconfigwidget_desktop.ui:145
+#: settingsdialog.ui:93 singlefileresourceconfigwidget_desktop.ui:92
 #, kde-format
 msgid "Read only"
 msgstr "Samo za čitanje"
@@ -142,69 +142,69 @@ msgstr ""
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr ""
 
-#: singlefileresource.h:72
+#: singlefileresource.h:65
 #, kde-format
 msgid "No file selected."
 msgstr "Nema izabranog fajla."
 
-#: singlefileresource.h:74
+#: singlefileresource.h:67
 #, kde-format
 msgid "The resource not configured yet"
 msgstr "Resurs još nije podešen."
 
-#: singlefileresource.h:106 singlefileresource.h:135 singlefileresource.h:223
-#: singlefileresourcebase.cpp:292 singlefileresourcebase.cpp:309
+#: singlefileresource.h:98 singlefileresource.h:127 singlefileresource.h:212
+#: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Spreman"
 
-#: singlefileresource.h:108
+#: singlefileresource.h:100
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "Ne mogu da napravim fajl „%1“."
 
-#: singlefileresource.h:122
+#: singlefileresource.h:114
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "Ne mogu da čitam fajl „%1“."
 
-#: singlefileresource.h:138
+#: singlefileresource.h:130
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Drugo preuzimanje je još u toku."
 
-#: singlefileresource.h:148 singlefileresource.h:237
+#: singlefileresource.h:140 singlefileresource.h:226
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Drugo otpremanje je još u toku."
 
-#: singlefileresource.h:167
+#: singlefileresource.h:156
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Preuzimam udaljeni fajl."
 
-#: singlefileresource.h:187
+#: singlefileresource.h:176
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Pokušaj upisivanja u fajl samo‑za‑čitanje: „%1“."
 
-#: singlefileresource.h:199
+#: singlefileresource.h:188
 #, kde-format
 msgid "No file specified."
 msgstr "Nema zadatog fajla."
 
-#: singlefileresource.h:227
+#: singlefileresource.h:216
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Preuzimanje je još u toku."
 
-#: singlefileresource.h:269
+#: singlefileresource.h:256
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Otpremam keširani fajl na udaljenu lokaciju."
 
-#: singlefileresourcebase.cpp:256
+#: singlefileresourcebase.cpp:240
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -213,151 +213,161 @@ msgstr ""
 "Fajl „%1“ izmenjen je na disku. Iz predostrožnosti, rezerva prethodnog "
 "sadržaja fajla napravljena je u „%2“."
 
-#: singlefileresourcebase.cpp:279
+#: singlefileresourcebase.cpp:264
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Ne mogu da učitam fajl „%1“."
 
-#: singlefileresourcebase.cpp:298
+#: singlefileresourcebase.cpp:283
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Ne mogu da sačuvam fajl „%1“."
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
-#: singlefileresourceconfigwidget_desktop.ui:24
+#: singlefileresourceconfigwidget_desktop.ui:39
 #, kde-format
 msgid "File"
 msgstr "Fajl"
 
-#. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
-#: singlefileresourceconfigwidget_desktop.ui:30
-#, kde-format
-msgid "Filename"
-msgstr "Ime fajla"
-
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: singlefileresourceconfigwidget_desktop.ui:40
-#, kde-format
-msgid "&Filename:"
+#. i18n: ectx: property (text), widget (QLabel, filenameLabel)
+#: singlefileresourceconfigwidget_desktop.ui:47
+#, fuzzy, kde-format
+#| msgid "&Filename:"
+msgid "File Name:"
 msgstr "&Ime fajla:"
 
-#. i18n: ectx: property (text), widget (QLabel, statusLabel)
-#: singlefileresourceconfigwidget_desktop.ui:57
-#, kde-format
-msgid "Status:"
-msgstr "Stanje:"
-
-#. i18n: ectx: property (html), widget (QTextEdit, textEdit)
-#: singlefileresourceconfigwidget_desktop.ui:71
+#. i18n: ectx: property (text), widget (QLabel, pathLabel)
+#: singlefileresourceconfigwidget_desktop.ui:66
 #, kde-format
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-"REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; font-"
-"weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Select the file whose "
-"contents should be represented by this resource. If the file does not exist, "
-"it will be created. A URL of a remote file can also be specified, but note "
-"that monitoring for file changes will not work in this case.</p></body></"
-"html>"
+"Select a file. A new file will be created if it doesn't exist. You can also "
+"use a URL, but in that case, monitoring for file changes is not possible."
 msgstr ""
-"<html><p>Izaberite fajl čiji sadržaj treba predstaviti ovim resursom. Ako "
-"fajl ne postoji, biće napravljen. Može se zadati i URL udaljenog fajla, ali "
-"u tom slučaju neće raditi nadgledanje za izmenama.</p></html>"
 
-#. i18n: ectx: property (title), widget (QGroupBox, groupBox_3)
-#: singlefileresourceconfigwidget_desktop.ui:85
-#, kde-format
-msgid "Display Name"
+#. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
+#: singlefileresourceconfigwidget_desktop.ui:79
+#, fuzzy, kde-format
+#| msgid "Display Name"
+msgid "Display Name:"
 msgstr "Prikazno ime"
 
-#. i18n: ectx: property (text), widget (QLabel, label_1)
-#: singlefileresourceconfigwidget_desktop.ui:93
-#, kde-format
-msgid "&Name:"
-msgstr "&Ime:"
-
-#. i18n: ectx: property (html), widget (QTextEdit, textEdit_2)
-#: singlefileresourceconfigwidget_desktop.ui:115
-#, kde-format
+#. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
+#: singlefileresourceconfigwidget_desktop.ui:108
+#, fuzzy, kde-format
+#| msgid ""
+#| "If read-only mode is enabled, no changes will be written to the directory "
+#| "selected above. Read-only mode will be automatically enabled if you do "
+#| "not have write access to the directory."
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-"REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; font-"
-"weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Enter the name used to "
-"identify this resource in displays. If not specified, the filename will be "
-"used.</p></body></html>"
+"When read-only mode is enabled, no changes will be written. Read-only mode "
+"is automatically enabled when the selected file does not support write "
+"access."
 msgstr ""
-"<html><p>Unesite ime koje će identifikovati ovaj resurs u prikazima. Ako se "
-"ne zada, upotrebiće se ime fajla.</p></html>"
-
-#. i18n: ectx: property (html), widget (QTextEdit, textEdit_3)
-#: singlefileresourceconfigwidget_desktop.ui:138
-#, kde-format
-msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-"REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; font-"
-"weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">If read-only mode is "
-"enabled, no changes will be written to the file selected above. Read-only "
-"mode will be automatically enabled if you do not have write access to the "
-"file or the file is on a remote server that does not support write access.</"
-"p></body></html>"
-msgstr ""
-"<html><p>U režimu samo‑za‑čitanje nikakve izmene neće biti upisivane u gore "
-"izabrani fajl. Ovaj režim će biti automatski aktiviran ako nemate pristup za "
-"pisanje nad fajlom, ili se fajl nalazi na udaljenom serveru koji ne podržava "
-"pristup za pisanje.</p></html>"
-
-#. i18n: ectx: property (title), widget (QGroupBox, groupBox_MonitorFile)
-#: singlefileresourceconfigwidget_desktop.ui:155
-#, kde-format
-msgid "Monitoring"
-msgstr "Nadgledanje"
+"U režimu samo‑za‑čitanje nikakve izmene neće biti upisivane u gore izabranu "
+"fasciklu. Ovaj režim biće automatski aktiviran ako nemate pristup za pisanje "
+"nad fasciklom."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
-#: singlefileresourceconfigwidget_desktop.ui:161
+#: singlefileresourceconfigwidget_desktop.ui:121
 #, kde-format
 msgid "Enable file &monitoring"
 msgstr "&Nadgledanje fajla"
 
-#. i18n: ectx: property (html), widget (QTextEdit, textEdit_4)
-#: singlefileresourceconfigwidget_desktop.ui:175
+#. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
+#: singlefileresourceconfigwidget_desktop.ui:134
 #, kde-format
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-"REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; font-"
-"weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">If file monitoring is "
-"enabled the resource will reload the file when changes are made by other "
-"programs. It also tries to create a backup in case of conflicts whenever "
-"possible.</p></body></html>"
+"Changes made by other applications will reload the file when monitoring is "
+"enabled. Backups will be created to avoid conflicts when possible."
 msgstr ""
-"<html><p>Ako je nadgledanje fajla aktivirano, resurs će biti ponovo učitan "
-"kad god neki drugi program izmeni fajl. Takođe se prave rezerve u slučaju "
-"sukoba, kad god je to moguće.</p></html>"
 
-#: singlefileresourceconfigwidgetbase.cpp:137
+#: singlefileresourceconfigwidgetbase.cpp:126
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information..."
 msgstr "Proveravam podatke o fajlu..."
+
+#~ msgid "Filename"
+#~ msgstr "Ime fajla"
+
+#~ msgid "Status:"
+#~ msgstr "Stanje:"
+
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Select the file whose "
+#~ "contents should be represented by this resource. If the file does not "
+#~ "exist, it will be created. A URL of a remote file can also be specified, "
+#~ "but note that monitoring for file changes will not work in this case.</"
+#~ "p></body></html>"
+#~ msgstr ""
+#~ "<html><p>Izaberite fajl čiji sadržaj treba predstaviti ovim resursom. Ako "
+#~ "fajl ne postoji, biće napravljen. Može se zadati i URL udaljenog fajla, "
+#~ "ali u tom slučaju neće raditi nadgledanje za izmenama.</p></html>"
+
+#~ msgid "&Name:"
+#~ msgstr "&Ime:"
+
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">Enter the name used to "
+#~ "identify this resource in displays. If not specified, the filename will "
+#~ "be used.</p></body></html>"
+#~ msgstr ""
+#~ "<html><p>Unesite ime koje će identifikovati ovaj resurs u prikazima. Ako "
+#~ "se ne zada, upotrebiće se ime fajla.</p></html>"
+
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">If read-only mode is "
+#~ "enabled, no changes will be written to the file selected above. Read-only "
+#~ "mode will be automatically enabled if you do not have write access to the "
+#~ "file or the file is on a remote server that does not support write access."
+#~ "</p></body></html>"
+#~ msgstr ""
+#~ "<html><p>U režimu samo‑za‑čitanje nikakve izmene neće biti upisivane u "
+#~ "gore izabrani fajl. Ovaj režim će biti automatski aktiviran ako nemate "
+#~ "pristup za pisanje nad fajlom, ili se fajl nalazi na udaljenom serveru "
+#~ "koji ne podržava pristup za pisanje.</p></html>"
+
+#~ msgid "Monitoring"
+#~ msgstr "Nadgledanje"
+
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\">If file monitoring is "
+#~ "enabled the resource will reload the file when changes are made by other "
+#~ "programs. It also tries to create a backup in case of conflicts whenever "
+#~ "possible.</p></body></html>"
+#~ msgstr ""
+#~ "<html><p>Ako je nadgledanje fajla aktivirano, resurs će biti ponovo "
+#~ "učitan kad god neki drugi program izmeni fajl. Takođe se prave rezerve u "
+#~ "slučaju sukoba, kad god je to moguće.</p></html>"

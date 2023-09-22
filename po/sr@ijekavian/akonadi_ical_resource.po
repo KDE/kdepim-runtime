@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2019-05-20 03:15+0200\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2011-08-20 23:55+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -48,34 +48,31 @@ msgstr "Надгледај фајл за изменама."
 msgid "Autosave interval time (in minutes)."
 msgstr "Период аутоматског уписивања (у минутима)."
 
-#: shared/icalresource.cpp:59
+#: shared/icalresource.cpp:47
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "Случај са УИД‑ом „%1“ није нађен."
 
-#: shared/icalresourcebase.cpp:62 shared/icalresourcebase.cpp:94
-#: shared/icalresourcebase.h:97
+#: shared/icalresourcebase.cpp:46 shared/icalresourcebase.cpp:59
+#: shared/icalresourcebase.cpp:90 shared/icalresourcebase.h:88
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "Календар није учитан."
 
-#: shared/icalresourcebase.cpp:141
+#: shared/icalresourcebase.cpp:134
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Не могу да сачувам фајл календара у %1."
 
-#: shared/icalresourcebase.h:102
+#: shared/icalresourcebase.h:93
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "Не могу да добавим додату ставку %1."
 
-#: shared/icalresourcebase.h:103
+#: shared/icalresourcebase.h:93
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Не могу да повратим измењену ставку %1."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Име фајла:"
+#~ msgid "Filename:"
+#~ msgstr "Име фајла:"

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-18 00:49+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2014-09-19 22:53+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -280,7 +280,7 @@ msgstr "Definerer identifikasjonstypen som tilpasset sieve-tjener bruker"
 msgid "No server configured yet."
 msgstr "Ingen tjener satt opp ennå."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:663
+#: imapresourcebase.cpp:245 setupserver.cpp:647
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -416,13 +416,13 @@ msgstr ""
 "Klarte ikke merke meldinga fra «%1» for sletting på IMAP-tjeneren. Den blir "
 "vist igjen ved neste synkronisering."
 
-#: removecollectionrecursivetask.cpp:116 removecollectionrecursivetask.cpp:132
-#: removecollectionrecursivetask.cpp:145
+#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
+#: removecollectionrecursivetask.cpp:141
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "Klarte ikke å slette mappa, tilbakestiller mappelista."
 
-#: removecollectionrecursivetask.cpp:150
+#: removecollectionrecursivetask.cpp:146
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""
@@ -633,7 +633,7 @@ msgstr "Oppgi passord for bruker «%1» på IMAP-tjener «%2»."
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:77 setupserverview_desktop.ui:294
+#: setupserver.cpp:73 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -642,37 +642,37 @@ msgstr "Klartekst"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:79 setupserverview_desktop.ui:329
+#: setupserver.cpp:75 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Anonym"
 
-#: setupserver.cpp:81
+#: setupserver.cpp:77
 #, kde-format
 msgctxt "Authentication method"
 msgid "Gmail"
 msgstr ""
 
-#: setupserver.cpp:148
+#: setupserver.cpp:140
 #, kde-format
 msgid "Archive Folder"
 msgstr ""
 
-#: setupserver.cpp:160
+#: setupserver.cpp:152
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " minutt"
 msgstr[1] " minutter"
 
-#: setupserver.cpp:175
+#: setupserver.cpp:167
 #, kde-format
 msgid "Identity:"
 msgstr "Identitet:"
 
-#: setupserver.cpp:266
+#: setupserver.cpp:250
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -680,12 +680,12 @@ msgid ""
 "again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:269
+#: setupserver.cpp:253
 #, kde-format
 msgid "Server address change"
 msgstr ""
 
-#: setupserver.cpp:276
+#: setupserver.cpp:260
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -693,12 +693,12 @@ msgid ""
 "account again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:279
+#: setupserver.cpp:263
 #, kde-format
 msgid "User name change"
 msgstr ""
 
-#: setupserver.cpp:424 setupserver.cpp:480
+#: setupserver.cpp:408 setupserver.cpp:464
 #, kde-format
 msgid ""
 "Could not access KWallet. If you want to store the password permanently then "
@@ -709,27 +709,27 @@ msgstr ""
 "aktivere den. Hvis du ikke vil bruke KWallet, så sett kryss i boksen "
 "nedenfor, men merk at du må oppgi passord hver gang det trengs."
 
-#: setupserver.cpp:429 setupserver.cpp:485
+#: setupserver.cpp:413 setupserver.cpp:469
 #, kde-format
 msgid "Do not use KWallet"
 msgstr "Ikke bruk KWallet"
 
-#: setupserver.cpp:550
+#: setupserver.cpp:534
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Kan ikke koble til tjeneren, se etter at tjeneradressen er riktig."
 
-#: setupserver.cpp:562
+#: setupserver.cpp:546
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr ""
 
-#: setupserver.cpp:565
+#: setupserver.cpp:549
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr ""
 
-#: setupserver.cpp:569
+#: setupserver.cpp:553
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -738,7 +738,7 @@ msgstr ""
 "<qt><b>Ingen sikkerhetsløsning er støttet. Det anbefales ikke å koble til "
 "denne tjeneren.</b></qt>"
 
-#: setupserver.cpp:572
+#: setupserver.cpp:556
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Det er ikke mulig å bruke denne tjeneren.</b></qt>"
@@ -1039,8 +1039,8 @@ msgstr "Ingen"
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-"css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'HandelGotDLig'; font-size:10pt; "
 "font-weight:400; font-style:normal;\">\n"
@@ -1061,8 +1061,8 @@ msgid ""
 msgstr ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-"css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'HandelGotDlig'; font-size:10pt; "
 "font-weight:400; font-style:normal;\">\n"

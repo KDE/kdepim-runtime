@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2009-06-14 21:14+0200\n"
 "Last-Translator: Eirik U. Birkeland <eirbir@gmail.com>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
@@ -75,9 +75,3 @@ msgstr "Klarte ikkje henta det nye elementet %1."
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Klarte ikkje henta det endra elementet %1."
-
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/icalwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr ""

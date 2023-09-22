@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2019-06-21 03:22+0200\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2014-04-05 22:19+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: compactpage.cpp:87
+#: compactpage.cpp:71
 #, kde-format
 msgid "(1 message marked for deletion)"
 msgid_plural "(%1 messages marked for deletion)"
@@ -27,17 +27,17 @@ msgstr[1] "(%1 поруке означене за брисање)"
 msgstr[2] "(%1 порука означено за брисање)"
 msgstr[3] "(%1 порука означена за брисање)"
 
-#: compactpage.cpp:95
+#: compactpage.cpp:78
 #, kde-format
 msgid "Failed to fetch the collection."
 msgstr "Не могу да добавим збирку."
 
-#: compactpage.cpp:112
+#: compactpage.cpp:94
 #, kde-format
 msgid "Failed to load the mbox file"
 msgstr "Не могу да добавим мбокс фајл."
 
-#: compactpage.cpp:114
+#: compactpage.cpp:96
 #, kde-format
 msgid "(Deleting 1 message)"
 msgid_plural "(Deleting %1 messages)"
@@ -46,12 +46,12 @@ msgstr[1] "(Бришем %1 поруке)"
 msgstr[2] "(Бришем %1 порука)"
 msgstr[3] "(Бришем %1 поруку)"
 
-#: compactpage.cpp:127 compactpage.cpp:135
+#: compactpage.cpp:107 compactpage.cpp:115
 #, kde-format
 msgid "Failed to compact the mbox file."
 msgstr "Не могу да сажмем мбокс фајл."
 
-#: compactpage.cpp:137
+#: compactpage.cpp:117
 #, kde-format
 msgid "MBox file compacted."
 msgstr "Мбокс фајл сажет."
@@ -59,15 +59,37 @@ msgstr "Мбокс фајл сажет."
 # rewrite-msgid: /the actual file/the actual file on disk/
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: compactpage.ui:23
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#| "REC-html40/strict.dtd\">\n"
+#| "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#| "css\">\n"
+#| "p, li { white-space: pre-wrap; }\n"
+#| "</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; "
+#| "font-weight:400; font-style:normal;\">\n"
+#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#| "right:0px; -qt-block-indent:0; text-indent:0px;\">The only way to fully "
+#| "remove a mail from an mbox file is by removing it from the actual file. "
+#| "As this can be a rather expensive operation, the mbox resource keeps a "
+#| "list of deleted messages. Once in a while these messages are really "
+#| "removed from the file.</p>\n"
+#| "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#| "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#| "\"></p>\n"
+#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#| "weight:600;\">Note:</span> The downside of this is that if the file is "
+#| "changed by another program, the list of deleted messages cannot be "
+#| "trusted any longer and deleted messages might reappear.</p></body></html>"
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
 "\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; font-"
-"weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-size:10pt; font-weight:400; font-style:"
+"normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\">The only way to fully "
 "remove a mail from an mbox file is by removing it from the actual file. As "
@@ -122,15 +144,33 @@ msgstr "Поставке мбокса"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: lockfilepage.ui:27
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#| "REC-html40/strict.dtd\">\n"
+#| "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#| "css\">\n"
+#| "p, li { white-space: pre-wrap; }\n"
+#| "</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; "
+#| "font-weight:400; font-style:normal;\">\n"
+#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#| "right:0px; -qt-block-indent:0; text-indent:0px;\">Select a method to lock "
+#| "the mbox file when data is read from or written to the file.</p>\n"
+#| "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#| "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
+#| "\"></p>\n"
+#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+#| "weight:600;\">Note</span>: For some methods you might need to install "
+#| "additional software before they can be used.</p></body></html>"
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
 "\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; font-"
-"weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-size:10pt; font-weight:400; font-style:"
+"normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\">Select a method to lock "
 "the mbox file when data is read from or written to the file.</p>\n"
@@ -198,55 +238,55 @@ msgstr ""
 "Пазите тада да и овај ресурс и сви други програми користе исти метод "
 "закључавања."
 
-#: mboxconfig.cpp:33
+#: mboxconfig.cpp:20
 #, fuzzy, kde-format
 #| msgid "MBox file compacted."
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "Мбокс фајл сажет."
 
-#: mboxconfig.cpp:34
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Compact frequency"
 msgstr "Учестаност сажимања"
 
-#: mboxconfig.cpp:35
+#: mboxconfig.cpp:22
 #, kde-format
 msgid "Lock method"
 msgstr "Метод закључавања"
 
-#: mboxresource.cpp:101 mboxresource.cpp:155 mboxresource.cpp:194
+#: mboxresource.cpp:87 mboxresource.cpp:140 mboxresource.cpp:179
 #, kde-format
 msgctxt "@info:status"
 msgid "MBox not configured."
 msgstr "Мбокс није подешен."
 
-#: mboxresource.cpp:151 mboxresource.cpp:190
+#: mboxresource.cpp:136 mboxresource.cpp:175
 #, kde-format
 msgid "MBox not loaded."
 msgstr "Мбокс није учитан."
 
-#: mboxresource.cpp:166
+#: mboxresource.cpp:151
 #, kde-format
 msgid "Failed to read message with uid '%1'."
 msgstr "Не могу да прочитам поруку са УИД‑ом „%1“."
 
-#: mboxresource.cpp:200
+#: mboxresource.cpp:185
 #, kde-format
 msgid "Only email messages can be added to the MBox resource."
 msgstr "Само се поруке е‑поште могу додавати у мбокс ресурс."
 
-#: mboxresource.cpp:206
+#: mboxresource.cpp:191
 #, kde-format
 msgid "Mail message not added to the MBox."
 msgstr "Поштанска порука није додата у мбокс."
 
-#: mboxresource.cpp:249
+#: mboxresource.cpp:230
 #, kde-format
 msgid "Could not fetch the collection: %1"
 msgstr "Не могу да добавим збирку: %1"
 
-#: mboxresource.cpp:279
+#: mboxresource.cpp:259
 #, kde-format
 msgid ""
 "The MBox file was changed by another program. A copy of the new file was "
@@ -259,12 +299,12 @@ msgstr ""
 "убудуће, активирајте закључавање и обезбедите да сви програм који приступају "
 "мбоксу користе исти метод закључавања."
 
-#: mboxresource.cpp:310
+#: mboxresource.cpp:290
 #, kde-format
 msgid "Failed to save mbox file to %1"
 msgstr "Не могу да сачувам мбокс фајл у %1."
 
-#: mboxresource.cpp:369
+#: mboxresource.cpp:349
 #, kde-format
 msgid ""
 "Failed to update the changed item because the old item could not be deleted "
@@ -309,8 +349,5 @@ msgstr "Забравни фајл"
 msgid "Number of deleted messages before a purge is started."
 msgstr "Број обрисаних порука на који почиње прочишћавање."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/mailboxwizard.ui:19
-#, kde-format
-msgid "URL:"
-msgstr "УРЛ:"
+#~ msgid "URL:"
+#~ msgstr "УРЛ:"

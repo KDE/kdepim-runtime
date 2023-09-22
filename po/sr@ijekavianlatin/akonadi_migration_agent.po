@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_migration_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2020-04-22 03:37+0200\n"
+"POT-Creation-Date: 2021-01-27 03:07+0100\n"
 "PO-Revision-Date: 2013-11-24 22:51+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: migrationagent.cpp:59
+#: migrationagent.cpp:47
 #, kde-format
 msgctxt ""
 "Title of the window that shows the status of the migration agent and offers "
@@ -26,38 +26,38 @@ msgctxt ""
 msgid "Migration Status"
 msgstr "Stanje selidbe"
 
-#: migrationexecutor.cpp:34
+#: migrationexecutor.cpp:20
 #, kde-format
 msgctxt "User visible name of ongoing Akonadi migration jobs"
 msgid "PIM Maintenance"
 msgstr "PIM održavanje"
 
-#: migrationexecutor.cpp:55
+#: migrationexecutor.cpp:41
 #, kde-format
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress..."
 msgstr "U toku..."
 
-#: migrationexecutor.cpp:61
+#: migrationexecutor.cpp:47
 #, kde-format
 msgid "PIM Maintenance"
 msgstr "PIM održavanje"
 
-#: migrationexecutor.cpp:86
+#: migrationexecutor.cpp:72
 #, kde-format
 msgctxt "PIM-Maintenance is paused."
 msgid "Paused."
 msgstr "Pauzirano."
 
 # >> @title:column
-#: migrationscheduler.cpp:164
+#: migrationscheduler.cpp:145
 #, kde-format
 msgctxt "Name of the migrator in this row"
 msgid "Name"
 msgstr "ime"
 
 # >> @title:column
-#: migrationscheduler.cpp:166
+#: migrationscheduler.cpp:147
 #, fuzzy, kde-format
 #| msgctxt "Progress of the mgirator in %"
 #| msgid "Progress"
@@ -66,18 +66,18 @@ msgid "Progress"
 msgstr "napredak"
 
 # >> @title:column
-#: migrationscheduler.cpp:168
+#: migrationscheduler.cpp:149
 #, kde-format
 msgctxt "Current status of the migrator (done, in progress, ...)"
 msgid "Status"
 msgstr "stanje"
 
-#: migrationstatuswidget.cpp:112
+#: migrationstatuswidget.cpp:98
 #, kde-format
 msgid "Logfile"
 msgstr "Dnevnički fajl"
 
-#: migrationstatuswidget.cpp:121
+#: migrationstatuswidget.cpp:107
 #, kde-format
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"

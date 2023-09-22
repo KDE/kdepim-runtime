@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: accountwizard_kolab\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2019-05-20 03:16+0200\n"
+"POT-Creation-Date: 2020-08-15 02:21+0200\n"
 "PO-Revision-Date: 2015-05-08 19:26+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,33 +18,33 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: kolabwizard.es:23
+#: kolabwizard.es:10
 msgid "Personal Settings"
 msgstr "Личне поставке"
 
-#: kolabwizard.es:24
+#: kolabwizard.es:11
 msgid "Autoconfiguration"
 msgstr "Аутоматско подешавање"
 
-#: kolabwizard.es:89 kolabwizard.es:269
+#: kolabwizard.es:76 kolabwizard.es:256
 msgid "Probing IMAP server..."
 msgstr "Испитујем ИМАП сервер..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, checkBoxFreebusyEdit)
 #. i18n: ectx: property (text), widget (QCheckBox, checkBoxLdapEdit)
-#: kolabwizard.es:141 kolabwizard.es:142 kolabwizard2.ui:85 kolabwizard2.ui:163
+#: kolabwizard.es:128 kolabwizard.es:129 kolabwizard2.ui:85 kolabwizard2.ui:163
 #, kde-format
 msgid "Create"
 msgstr "Направи"
 
 #. i18n: ectx: property (text), widget (QCheckBox, checkBoxImapEdit)
 #. i18n: ectx: property (text), widget (QCheckBox, checkBoxSmtpEdit)
-#: kolabwizard.es:189 kolabwizard.es:200 kolabwizard2.ui:55 kolabwizard2.ui:136
+#: kolabwizard.es:176 kolabwizard.es:187 kolabwizard2.ui:55 kolabwizard2.ui:136
 #, kde-format
 msgid "Manual Edit"
 msgstr "Уреди ручно"
 
-#: kolabwizard.es:226
+#: kolabwizard.es:213
 msgid "Probing SMTP server..."
 msgstr "Испитујем СМТП сервер..."
 

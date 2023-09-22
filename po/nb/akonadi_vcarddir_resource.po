@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-25 00:47+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2013-04-05 22:22+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -127,8 +127,5 @@ msgid_plural " minutes"
 msgstr[0] " minutt"
 msgstr[1] "min"
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/vcarddirwizard.ui:19
-#, kde-format
-msgid "Path:"
-msgstr "Sti:"
+#~ msgid "Path:"
+#~ msgstr "Sti:"

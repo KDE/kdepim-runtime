@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2020-02-22 03:22+0100\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2012-10-20 16:36+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: maildispatcheragent.cpp:93 maildispatcheragent.cpp:257
+#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
 #, kde-format
 msgid "Sending messages (1 item in queue)..."
 msgid_plural "Sending messages (%1 items in queue)..."
@@ -27,56 +27,56 @@ msgstr[1] "Šaljem poruke (%1 stavke u redu)..."
 msgstr[2] "Šaljem poruke (%1 stavki u redu)..."
 msgstr[3] "Šaljem poruke (%1 stavka u redu)..."
 
-#: maildispatcheragent.cpp:104
+#: maildispatcheragent.cpp:90
 #, kde-format
 msgid "Sending canceled."
 msgstr "Slanje otkazano."
 
-#: maildispatcheragent.cpp:111
+#: maildispatcheragent.cpp:97
 #, kde-format
 msgid "Finished sending messages."
 msgstr "Slanje poruka je završeno."
 
-#: maildispatcheragent.cpp:117
+#: maildispatcheragent.cpp:103
 #, kde-format
 msgctxt "Notification title when email was sent"
 msgid "E-Mail Successfully Sent"
 msgstr "E‑pošta uspešno poslata"
 
-#: maildispatcheragent.cpp:118
+#: maildispatcheragent.cpp:104
 #, kde-format
 msgctxt "Notification when the email was sent"
 msgid "Your E-Mail has been sent successfully."
 msgstr "E‑pošta je uspešno poslata."
 
-#: maildispatcheragent.cpp:124
+#: maildispatcheragent.cpp:110
 #, kde-format
 msgid "No items in queue."
 msgstr "Nema stavki u redu."
 
-#: maildispatcheragent.cpp:183
+#: maildispatcheragent.cpp:155
 #, kde-format
 msgid "Online, sending messages in queue."
 msgstr "Na vezi, šalje poruke u redu."
 
-#: maildispatcheragent.cpp:187
+#: maildispatcheragent.cpp:159
 #, kde-format
 msgid "Offline, message sending suspended."
 msgstr "Van veze, slanje poruka pauzirano."
 
-#: maildispatcheragent.cpp:211
+#: maildispatcheragent.cpp:184
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
 msgstr "Šaljem: %1"
 
-#: maildispatcheragent.cpp:283
+#: maildispatcheragent.cpp:249
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
 msgstr "Slanje e‑pošte nije uspelo"
 
-#: maildispatcheragent.cpp:316
+#: maildispatcheragent.cpp:282
 #, kde-format
 msgid "Ready to dispatch messages."
 msgstr "Spreman za otpremanje poruka."
@@ -93,81 +93,81 @@ msgstr "ID zbirke otpremnog sandučeta"
 msgid "Sent Mail collection id"
 msgstr "ID zbirke poslate pošte"
 
-#: outboxqueue.cpp:276
+#: outboxqueue.cpp:265
 #, kde-format
 msgid "Could not access the outbox folder (%1)."
 msgstr "Ne mogu da pristupim fascikli otpremnog sandučeta (%1)."
 
-#: sendjob.cpp:62 sendjob.cpp:63
+#: sendjob.cpp:49 sendjob.cpp:50
 #, kde-format
 msgid "Message sending aborted."
 msgstr "Slanje poruke obustavljeno."
 
-#: sendjob.cpp:71
+#: sendjob.cpp:59
 #, kde-format
 msgid "Could not initiate message transport. Possibly invalid transport."
 msgstr "Ne mogu da pripremim prenos poruka. Možda je transport loš."
 
-#: sendjob.cpp:77
+#: sendjob.cpp:65
 #, kde-format
 msgid "Could not send message. Invalid transport."
 msgstr "Ne mogu da pošaljem poruku. Loš transport."
 
-#: sendjob.cpp:109
+#: sendjob.cpp:97
 #, kde-format
 msgid "Failed to get D-Bus interface of resource %1."
 msgstr "Ne mogu da dobavim D‑Bus sučelje resursa %1."
 
-#: sendjob.cpp:124
+#: sendjob.cpp:110
 #, kde-format
 msgid "Invalid D-Bus reply from resource %1."
 msgstr "Loš D‑Bus odgovor iz resursa %1."
 
-#: sendjob.cpp:244
+#: sendjob.cpp:228
 #, kde-format
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr ""
 "Podrazumevana fascikla poslate pošte nije dostupna. Poruka zadržana u "
 "otpremnom sandučetu."
 
-#: sendjob.cpp:256
+#: sendjob.cpp:240
 #, kde-format
 msgid "Message transport aborted."
 msgstr "Prenos poruke obustavljen."
 
-#: sendjob.cpp:257
+#: sendjob.cpp:240
 #, kde-format
 msgid "Failed to transport message."
 msgstr "Prenos poruke nije uspeo."
 
-#: sendjob.cpp:299
+#: sendjob.cpp:282
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr "Ne mogu da dobavim D‑Bus sučelje za mailfilteragent."
 
-#: sendjob.cpp:306
+#: sendjob.cpp:289
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr "Loš D‑Bus odgovor iz mailfilteragent."
 
-#: sendjob.cpp:349
+#: sendjob.cpp:331
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr "Slanje je uspelo, ali poruka nije mogla da se ukloni iz otpremnog."
 
-#: sendjob.cpp:353
+#: sendjob.cpp:334
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
 msgstr ""
 "Slanje je uspelo, ali poruka nije mogla da se premesti u fasciklu poslatog."
 
-#: sendjob.cpp:389
+#: sendjob.cpp:370
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "Ne mogu da uskladištim rezultat u stavci."
 
-#: storeresultjob.cpp:76
+#: storeresultjob.cpp:59
 #, kde-format
 msgid "Failed to fetch item."
 msgstr "Dobavljanje stavke nije uspelo."

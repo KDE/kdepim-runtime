@@ -2,20 +2,20 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Javier Vinal <fjvibal@gmail.com>, 2017, 2018.
-# Eloy Cuadra <ecuadra@eloihr.net>, 2019, 2020, 2021.
+# SPDX-FileCopyrightText: 2019, 2020, 2021, 2023 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: kde-l10n-es\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2021-08-26 01:15+0200\n"
+"PO-Revision-Date: 2023-09-21 16:34+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 21.08.0\n"
+"X-Generator: Lokalize 23.08.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: ewsautodiscoveryjob.cpp:44 ewsautodiscoveryjob.cpp:51
@@ -36,7 +36,7 @@ msgid ""
 "valid. You need to authenticate in order to continue using it."
 msgstr ""
 "Las credenciales de Microsoft Exchange para la cuenta <b>%1</b> ya no son "
-"válidas. Usted necesita autenticarse para usarlas."
+"válidas. Debe autenticarse para usarlas."
 
 #: ewsclient/auth/ewsoauth.cpp:522
 #, kde-kuit-format
@@ -45,8 +45,8 @@ msgid ""
 "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
 "Please update it in the account settings page."
 msgstr ""
-"Ha fallado la obtención de credenciales para la cuenta Microsoft Exchange <b>"
-"%1</b>. Por favor, actualice en la página de preferencias de la cuenta."
+"Ha fallado la obtención de credenciales para la cuenta de Microsoft Exchange "
+"<b>%1</b>. Actualice en la página de preferencias de la cuenta."
 
 #: ewsclient/auth/ewspasswordauth.cpp:57
 #, kde-format
@@ -55,8 +55,8 @@ msgid ""
 "The username/password for the Microsoft Exchange EWS account <b>%1</b> is "
 "not valid. Please update it in the account settings page."
 msgstr ""
-"El usuario/contraseña para la cuenta de Microsoft Exchange EWS<b>%1</b> no "
-"es válido. Por favor, actualice en la página de preferencias de la cuenta."
+"El usuario o la contraseña para la cuenta de Microsoft Exchange EWS<b>%1</b> "
+"no son válidos. Actualícelos en la página de preferencias de la cuenta."
 
 #: ewsconfigdialog.cpp:76
 #, kde-format
@@ -73,7 +73,7 @@ msgstr "Correcto"
 #: ewsconfigdialog.cpp:121 ewsconfigdialog.cpp:123
 #, kde-format
 msgid "PEM file"
-msgstr ""
+msgstr "Archivo PEM"
 
 #: ewsconfigdialog.cpp:141
 #, kde-format
@@ -145,8 +145,8 @@ msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
 "still want to save your settings?"
 msgstr ""
-"Ha fallado el autodescubrimiento. Esto puede ser debido a parámetros "
-"incorrectos. ¿Todavía quiere usted guardar sus preferencias?"
+"Ha fallado el descubrimiento automático. Se puede deber a la existencia de "
+"parámetros incorrectos. Aún así, ¿quiere guardar las preferencias?"
 
 #: ewsconfigdialog.cpp:341
 #, kde-format
@@ -159,8 +159,8 @@ msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
 "Do you still want to save your settings?"
 msgstr ""
-"Ha fallado la conexión a Exchange. Esto puede ser debido a parámetros "
-"incorrectos. ¿Todavía quiere usted guardar sus preferencias?"
+"Ha fallado la conexión a Exchange. Se puede deber a la existencia de "
+"parámetros incorrectos. Aún así, ¿quiere guardar las preferencias?"
 
 #: ewsconfigdialog.cpp:372
 #, kde-format
@@ -426,14 +426,14 @@ msgid ""
 "is not required.</p></body></html>"
 msgstr ""
 "<html><head/><body><p>La autenticación mediante clave privada (PKey) se usa "
-"como un paso adicional de autenticación para las basadas en OAuth2. Usa un "
-"certificado X.509 y una clave privada que identifica al dispositivo "
-"confiable, que se ha unido al directorio Azure Directory usando un Workplace "
-"Join.</p><p>Algunos administradores pueden obligar a usar autenticación PKey "
-"cuando se comectan a Office 365 desde fuera de la red corporativa. En otros "
-"casos, cuando está establecida la autenticación multifactorial, el uso de la "
-"autenticación PKey puede satisfacer requisitos de autenticación fuerte, en "
-"cuyo caso no se exihge introducir el código MFA.</p></body></html>"
+"como un paso adicional de autenticación basada en OAuth2. Usa un certificado "
+"X.509 y una clave privada que identifica al dispositivo fiable, que se ha "
+"unido al directorio Azure Directory usando un Workplace Join.</p><p>Algunos "
+"administradores pueden obligar a usar autenticación PKey cuando se conectan "
+"a Office 365 desde fuera de la red corporativa. En otros casos, cuando se ha "
+"configurado la autenticación multifactor, el uso de la autenticación PKey "
+"puede satisfacer requisitos de autenticación fuerte, en cuyo caso no se "
+"necesita introducir el código MFA.</p></body></html>"
 
 #. i18n: ectx: property (title), widget (QGroupBox, pkeyAuthGroupBox)
 #: ewsconfigdialog.ui:327
@@ -517,8 +517,8 @@ msgid ""
 "version 2010 SP1 or later.</p></body></html>"
 msgstr ""
 "<html><head/><body><p>Las notificaciones de flujo se comportan de forma "
-"similar al modo de empuje - una conexión se mantiene viva y las "
-"notificaciones sobre cambios de elementos se envían instantáneamente.</"
+"similar al modo de empuje (una conexión se mantiene viva y las "
+"notificaciones sobre cambios de elementos se envían instantáneamente).</"
 "p><p><br/></p><p>Esta opción exige una versión del servidor Exchange 2010 "
 "SP1 o posterior.</p></body></html>"
 
@@ -563,13 +563,12 @@ msgid ""
 "</p></body></html>"
 msgstr ""
 "<html><head/><body><p>Algunas organizaciones restringen el acceso al correo "
-"solo a clientes aprobados, tales como Microsoft Outlook.En el lado del "
-"servidor, esto se implementa analizando la cadena de Agente de Usuario y "
-"solo permitiendo una lista de clientes aprobados.</p><p>Esta preferencia "
-"permite emular algunos clientes bien conocidos además de proporcionar una "
-"cadena de agente de usuario personalizada.</p><p>Por favor, se le advierte "
-"de que saltare las políticas de empresa puede causar problemas personales.</"
-"p></body></html>"
+"solo a clientes aprobados, como Microsoft Outlook. En el lado del servidor, "
+"esto se implementa analizando la cadena de «agente de usuario» y permitiendo "
+"solo una lista de clientes aprobados.</p><p>Este ajuste permite emular "
+"algunos clientes bien conocidos, además de proporcionar una cadena de agente "
+"de usuario personalizada.</p><p>Se le advierte de que saltare las políticas "
+"de la empresa puede acarrear problemas personales.</p></body></html>"
 
 #. i18n: ectx: property (title), widget (QGroupBox, userAgentGroupBox)
 #: ewsconfigdialog.ui:508
@@ -654,7 +653,8 @@ msgstr "Acerca de"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
-msgstr "Ha fallado al procesar la solicitud de recuperación de elementos"
+msgstr ""
+"Ha fallado el procesamiento de la solicitud de recuperación de elementos"
 
 #: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
 #: ewsresource.cpp:529
@@ -668,14 +668,14 @@ msgstr "Ha fallado la recuperación de elementos"
 msgctxt "@info:status"
 msgid "Failed to retrieve items - incorrect number of responses"
 msgstr ""
-"Ha fallado la recuperación de elementos - número incorrecto de respuestas"
+"Ha fallado la recuperación de elementos: número incorrecto de respuestas"
 
 #: ewsfetchitempayloadjob.cpp:91
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Akonadi item not found for item %1"
 msgstr ""
-"Ha fallado la recuperación de elementos - elemento de Akonadi no encontrado "
+"Ha fallado la recuperación de elementos: elemento de Akonadi no encontrado "
 "para el elemento %1"
 
 #: ewsfetchitempayloadjob.cpp:98
@@ -683,7 +683,7 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Unknown item type for item %1"
 msgstr ""
-"Ha fallado la recuperación de elementos - tipo desconocido de elemento para "
+"Ha fallado la recuperación de elementos: tipo desconocido de elemento para "
 "el elemento %1"
 
 #: ewsfetchitempayloadjob.cpp:104
@@ -808,19 +808,19 @@ msgstr "Recuperando elementos"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
-msgstr "Ha fallado la recuperación de elementos - error interno"
+msgstr "Ha fallado la recuperación de elementos: error interno"
 
 #: ewsresource.cpp:462
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
-msgstr "Ha fallado al recuperar carpetas - error interno"
+msgstr "Ha fallado la recuperación de carpetas: error interno"
 
 #: ewsresource.cpp:468
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
-msgstr "Ha fallado al procesar la petición de recuperación de carpetas"
+msgstr "Ha fallado el procesamiento de la petición de recuperación de carpetas"
 
 #: ewsresource.cpp:485
 #, kde-format
@@ -846,58 +846,60 @@ msgstr "Actualizando indicadores de los elementos"
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
 msgstr ""
-"Ha fallado al procesar peticiones de actualización de indicadores de "
-"elementos"
+"Ha fallado el procesamiento de la petición de actualización de indicadores "
+"de los elementos"
 
 #: ewsresource.cpp:580
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
-msgstr "Ha fallado al actualizar indicadores de elemento - error interno"
+msgstr ""
+"Ha fallado la actualización de indicadores de los elementos: error interno"
 
 #: ewsresource.cpp:594
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
-msgstr "Ha fallado al procesar la solicitud de actualización de elemento"
+msgstr ""
+"Ha fallado el procesamiento de la solicitud de actualización de elementos"
 
 #: ewsresource.cpp:601
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
-msgstr "Ha fallado al actualizar el elemento - error interno"
+msgstr "Ha fallado la actualización del elemento: error interno"
 
 #: ewsresource.cpp:636
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
-msgstr "Ha fallado al procesar la solicitud de mover el elemento"
+msgstr "Ha fallado el procesamiento de la solicitud de mover el elemento"
 
 #: ewsresource.cpp:643
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
-msgstr "Ha fallado al mover el elemento - petición inválida"
+msgstr "Ha fallado el movimiento del elemento: error interno"
 
 #: ewsresource.cpp:650
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
 msgstr ""
-"Ha fallado al mover el elemento - número inválido de respuestas recibidas "
-"del servidor"
+"Ha fallado el movimiento del elemento: número no válido de respuestas "
+"recibidas del servidor"
 
 #: ewsresource.cpp:720
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
-msgstr "Ha fallado al procesar la petición de borrado del elemento"
+msgstr "Ha fallado el procesamiento de la petición de borrado del elemento"
 
 #: ewsresource.cpp:727
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
-msgstr "Ha fallado al borrar el elemento - error interno"
+msgstr "Ha fallado el borrado del elemento: error interno"
 
 #: ewsresource.cpp:734
 #, kde-format
@@ -905,7 +907,7 @@ msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
 msgstr ""
-"Ha fallado al borrar el elemento - número inválido de respuestas recibidas "
+"Ha fallado el borrar del elemento: número no válido de respuestas recibidas "
 "del servidor"
 
 #: ewsresource.cpp:779 ewsresource.cpp:992
@@ -918,51 +920,52 @@ msgstr "Tipo de elemento no admitido para creación"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
-msgstr "Ha fallado al procesar la solicitud de creación del elemento"
+msgstr "Ha fallado el procesamiento de la solicitud de creación del elemento"
 
 #: ewsresource.cpp:796
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
-msgstr "Ha fallado al crear el elemento - error interno"
+msgstr "Ha fallado la creación del elemento: error interno"
 
 #: ewsresource.cpp:817
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr ""
-"Ha fallado al añadir la colección - no se puede determinar el tipo de "
+"Ha fallado la adición de la colección: no se puede determinar el tipo de "
 "carpeta EWS"
 
 #: ewsresource.cpp:836
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
-msgstr "Ha fallado al procesar la solicitud de creación de carpeta"
+msgstr "Ha fallado el procesamiento de la solicitud de creación de carpeta"
 
 #: ewsresource.cpp:842
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
-msgstr "Ha fallado al crear la carpeta - error interno"
+msgstr "Ha fallado la creación de la carpeta: error interno"
 
 #: ewsresource.cpp:854
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
-msgstr "Ha fallado al crear la carpeta"
+msgstr "Ha fallado la creación de la carpeta"
 
 #: ewsresource.cpp:877
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
-msgstr "Ha fallado al procesar la solicitud de mover la carpeta"
+msgstr ""
+"Ha fallado el procesamiento de la solicitud de movimiento de la carpeta"
 
 #: ewsresource.cpp:883
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
-msgstr "Ha fallado al mover la carpeta - error interno"
+msgstr "Ha fallado el movimiento de la carpeta: error interno"
 
 #: ewsresource.cpp:889
 #, kde-format
@@ -970,26 +973,27 @@ msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
 msgstr ""
-"Ha fallado al mover la carpeta - número inválido de respuestas recibidas "
-"desde el servidor"
+"Ha fallado el movimiento de la carpeta: número no válido de respuestas "
+"recibidas del servidor"
 
 #: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
-msgstr "Ha fallado al mover la carpeta"
+msgstr "Ha fallado el movimiento de la carpeta"
 
 #: ewsresource.cpp:928
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
-msgstr "Ha fallado al procesar la solicitud de actualización de la carpeta"
+msgstr ""
+"Ha fallado el procesamiento de la solicitud de actualización de la carpeta"
 
 #: ewsresource.cpp:934
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
-msgstr "Ha fallado al actualizar la carpeta - error interno"
+msgstr "Ha fallado la actualización de la carpeta: error interno"
 
 #: ewsresource.cpp:940
 #, kde-format
@@ -997,44 +1001,44 @@ msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
 msgstr ""
-"Ha fallado al actualizar la carpeta - número inválido de respuestas "
-"recibidas desde el servidor"
+"Ha fallado la actualización de la carpeta: número no válido de respuestas "
+"recibidas del servidor"
 
 #: ewsresource.cpp:951
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
-msgstr "Ha fallado al actualizar la carpeta"
+msgstr "Ha fallado la actualización de la carpeta"
 
 #: ewsresource.cpp:968
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
-msgstr "Ha fallado al procesar la solicitud de borrado de la carpeta"
+msgstr "Ha fallado el procesamiento de la solicitud de borrado de la carpeta"
 
 #: ewsresource.cpp:974
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
-msgstr "Ha fallado al borrar la carpeta - error interno"
+msgstr "Ha fallado el borrado de la carpeta: error interno"
 
 #: ewsresource.cpp:982
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
-msgstr "Ha fallado al borrar la carpeta"
+msgstr "Ha fallado el borrado de la carpeta"
 
 #: ewsresource.cpp:1006 ewsresource.cpp:1040
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
-msgstr "Ha fallado al procesar la solicitud de envío del elemento"
+msgstr "Ha fallado el procesamiento de la solicitud de envío del elemento"
 
 #: ewsresource.cpp:1012 ewsresource.cpp:1046
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
-msgstr "Ha fallado al enviar el elemento - error interno"
+msgstr "Ha fallado el envío del elemento: error interno"
 
 #: ewsresource.cpp:1051
 #, kde-format
@@ -1053,28 +1057,30 @@ msgstr "Actualizando etiquetas de los elementos"
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr ""
-"Ha fallado al procesar la solicitud de actualización de etiquetas del "
-"elemento"
+"Ha fallado el procesamiento de la solicitud de actualización de etiquetas "
+"del elemento"
 
 #: ewsresource.cpp:1262
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
-msgstr "Ha fallado al actualizar las etiquetas del elemento - error interno"
+msgstr "Ha fallado actualización de las etiquetas del elemento: error interno"
 
 #: ewsresource.cpp:1299
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr ""
-"Ha fallado al procesar la solicitud de actualización de la etiqueta global"
+"Ha fallado el procesamiento de la solicitud de actualización de etiquetas "
+"globales"
 
 #: ewsresource.cpp:1315
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr ""
-"Ha fallado al procesar la solicitud de recuperación de etiquetas globales"
+"Ha fallado el procesamiento de la solicitud de recuperación de etiquetas "
+"globales"
 
 #: ewsresource.cpp:1386
 #, kde-format
@@ -1252,7 +1258,7 @@ msgstr "Servidor Exchange no configurado."
 #, kde-format
 msgctxt "@info"
 msgid "Failed to retrieve folder list."
-msgstr "Ha fallado al recuperar la lista de carpetas."
+msgstr "Ha fallado la recuperación de la lista de carpetas."
 
 #: ewssubscriptionwidget.cpp:286
 #, kde-format
@@ -1288,7 +1294,7 @@ msgstr "Solo suscritas"
 #: mail/ewscreatemailjob.cpp:218
 #, kde-format
 msgid "Failed to create mail item"
-msgstr "Ha fallado al crear el elemento de correo"
+msgstr "Ha fallado la creación del elemento de correo"
 
 #: mail/ewsmodifymailjob.cpp:92
 #, kde-format

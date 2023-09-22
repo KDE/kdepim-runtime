@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_tomboynotes_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2020-04-24 03:45+0200\n"
+"POT-Creation-Date: 2023-05-26 00:47+0000\n"
 "PO-Revision-Date: 2017-09-25 19:53+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: tomboyitemuploadjob.cpp:120 tomboyitemuploadjob.cpp:126
+#: tomboyitemuploadjob.cpp:107 tomboyitemuploadjob.cpp:113
 #, kde-format
 msgid "Sync error. Server status not as expected."
 msgstr "Грешка у синхронизацији. Неочекивано стање сервера."
@@ -77,19 +77,19 @@ msgstr "Отвори само за читање"
 msgid "Ignore SSL errors"
 msgstr "Занемари ССЛ грешке"
 
-#: tomboynotesconfigwidget.cpp:61
+#: tomboynotesconfigwidget.cpp:48
 #, kde-format
 msgid "Tomboy Notes %1"
 msgstr "Томичине белешке %1"
 
-#: tomboynotesresource.cpp:76 tomboynotesresource.cpp:97
-#: tomboynotesresource.cpp:116
+#: tomboynotesresource.cpp:61 tomboynotesresource.cpp:82
+#: tomboynotesresource.cpp:101
 #, kde-format
 msgid "Resource configuration is not valid"
 msgstr "Постава ресурса није добра."
 
-#: tomboynotesresource.cpp:242 tomboynotesresource.cpp:263
-#: tomboynotesresource.cpp:283
+#: tomboynotesresource.cpp:227 tomboynotesresource.cpp:248
+#: tomboynotesresource.cpp:268
 #, kde-format
 msgid "Resource is read-only"
 msgstr "Ресурс је само за читање."
@@ -154,7 +154,7 @@ msgstr "Занемари ССЛ грешке"
 msgid "Refresh every"
 msgstr "Освежи сваких"
 
-#: tomboyserverauthenticatejob.cpp:71
+#: tomboyserverauthenticatejob.cpp:58
 #, kde-format
 msgid "Authorization failed. It could be an SSL error."
 msgstr "Овлашћивање пропало. Може бити услед ССЛ грешке."

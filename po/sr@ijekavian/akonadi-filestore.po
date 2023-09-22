@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi-filestore\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2019-05-20 03:16+0200\n"
+"POT-Creation-Date: 2021-11-03 00:20+0000\n"
 "PO-Revision-Date: 2011-08-20 23:55+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,64 +18,64 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: abstractlocalstore.cpp:414 abstractlocalstore.cpp:445
-#: abstractlocalstore.cpp:477 abstractlocalstore.cpp:503
-#: abstractlocalstore.cpp:534 abstractlocalstore.cpp:567
-#: abstractlocalstore.cpp:595 abstractlocalstore.cpp:629
-#: abstractlocalstore.cpp:666 abstractlocalstore.cpp:700
-#: abstractlocalstore.cpp:734 abstractlocalstore.cpp:786
+#: abstractlocalstore.cpp:396 abstractlocalstore.cpp:427
+#: abstractlocalstore.cpp:458 abstractlocalstore.cpp:484
+#: abstractlocalstore.cpp:515 abstractlocalstore.cpp:546
+#: abstractlocalstore.cpp:574 abstractlocalstore.cpp:608
+#: abstractlocalstore.cpp:639 abstractlocalstore.cpp:673
+#: abstractlocalstore.cpp:707 abstractlocalstore.cpp:753
 #, kde-format
 msgctxt "@info:status"
 msgid "Configured storage location is empty"
 msgstr "Подешена складишна локација је празна."
 
-#: abstractlocalstore.cpp:419 abstractlocalstore.cpp:451
-#: abstractlocalstore.cpp:482 abstractlocalstore.cpp:508
-#: abstractlocalstore.cpp:541 abstractlocalstore.cpp:572
-#: abstractlocalstore.cpp:636 abstractlocalstore.cpp:742
+#: abstractlocalstore.cpp:401 abstractlocalstore.cpp:432
+#: abstractlocalstore.cpp:463 abstractlocalstore.cpp:489
+#: abstractlocalstore.cpp:520 abstractlocalstore.cpp:551
+#: abstractlocalstore.cpp:613 abstractlocalstore.cpp:713
 #, kde-format
 msgctxt "@info:status"
 msgid "Given folder name is empty"
 msgstr "Дато име фасцикле је празно."
 
-#: abstractlocalstore.cpp:424 abstractlocalstore.cpp:546
+#: abstractlocalstore.cpp:406 abstractlocalstore.cpp:525
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits folder creation in folder %1"
 msgstr "Контрола приступа забрањује стварање фасцикле у фасцикли %1."
 
-#: abstractlocalstore.cpp:456
+#: abstractlocalstore.cpp:437
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits folder deletion in folder %1"
 msgstr "Контрола приступа забрањује брисање фасцикле у фасцикли %1."
 
-#: abstractlocalstore.cpp:513
+#: abstractlocalstore.cpp:494
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits folder modification in folder %1"
 msgstr "Контрола приступа забрањује мењање фасцикле у фасцикли %1."
 
-#: abstractlocalstore.cpp:601 abstractlocalstore.cpp:672
-#: abstractlocalstore.cpp:706 abstractlocalstore.cpp:763
+#: abstractlocalstore.cpp:580 abstractlocalstore.cpp:645
+#: abstractlocalstore.cpp:679 abstractlocalstore.cpp:731
 #, kde-format
 msgctxt "@info:status"
 msgid "Given item identifier is empty"
 msgstr "Дати идентификатор ставке је празан."
 
-#: abstractlocalstore.cpp:643 abstractlocalstore.cpp:749
+#: abstractlocalstore.cpp:618 abstractlocalstore.cpp:719
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits item creation in folder %1"
 msgstr "Контрола приступа забрањује стварање ставке у фасцикли %1."
 
-#: abstractlocalstore.cpp:678
+#: abstractlocalstore.cpp:651
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits item modification in folder %1"
 msgstr "Контрола приступа забрањује мењање ставке у фасцикли %1."
 
-#: abstractlocalstore.cpp:712 abstractlocalstore.cpp:756
+#: abstractlocalstore.cpp:685 abstractlocalstore.cpp:725
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits item deletion in folder %1"

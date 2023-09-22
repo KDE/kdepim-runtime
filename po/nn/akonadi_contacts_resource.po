@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-18 00:17+0000\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2010-04-20 21:47+0200\n"
 "Last-Translator: Eirik U. Birkeland <eirbir@gmail.com>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
@@ -165,9 +165,3 @@ msgstr "Adresse til kontaktkatalog"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Ikkje endra grunnlagsdataa."
-
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/contactswizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr ""

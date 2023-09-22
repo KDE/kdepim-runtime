@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2020-02-22 03:22+0100\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2014-04-05 22:19+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,18 +18,18 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: vcardconfig.cpp:29
+#: vcardconfig.cpp:16
 #, kde-format
 msgctxt "Filedialog filter for *.vcf"
 msgid "vCard Address Book File"
 msgstr "фајл в‑кард адресара"
 
-#: vcardresource.cpp:51
+#: vcardresource.cpp:71
 #, kde-format
 msgid "Contact with uid '%1' not found."
 msgstr "Контакт са УИД‑ом „%1“ није нађен."
 
-#: vcardresource.cpp:146 vcardresource.cpp:166
+#: vcardresource.cpp:164 vcardresource.cpp:184
 #, kde-format
 msgid "Unable to open vCard file '%1'."
 msgstr "Не могу да отворим в‑кард фајл „%1“."
@@ -58,8 +58,5 @@ msgstr "Не мењај заиста позадинске податке."
 msgid "Monitor file for changes."
 msgstr "Надгледај фајл за изменама."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/vcardwizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Име фајла:"
+#~ msgid "Filename:"
+#~ msgstr "Име фајла:"

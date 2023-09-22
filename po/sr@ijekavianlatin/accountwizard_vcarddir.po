@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: accountwizard_vcarddir\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2019-05-20 03:16+0200\n"
+"POT-Creation-Date: 2020-08-15 02:21+0200\n"
 "PO-Revision-Date: 2014-04-05 22:19+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: vcarddirwizard.es.cmake:20
+#: vcarddirwizard.es.cmake:7
 msgid "Settings"
 msgstr "Postavke"
 
-#: vcarddirwizard.es.cmake:37
+#: vcarddirwizard.es.cmake:24
 msgid "Default Contact"
 msgstr "Podrazumevani kontakt"
 

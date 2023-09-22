@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kio_akonadi\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2019-05-20 03:15+0200\n"
+"POT-Creation-Date: 2022-10-07 00:47+0000\n"
 "PO-Revision-Date: 2014-08-17 13:36+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -28,22 +28,22 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "caslav.ilic@gmx.net"
 
-#: akonadislave.cpp:48
+#: akonadiworker.cpp:49
 #, kde-format
 msgid "Protocol name"
 msgstr "Ime protokola"
 
-#: akonadislave.cpp:49 akonadislave.cpp:50
+#: akonadiworker.cpp:50 akonadiworker.cpp:51
 #, kde-format
 msgid "Socket name"
 msgstr "Ime soketa"
 
-#: akonadislave.cpp:87 akonadislave.cpp:116 akonadislave.cpp:136
+#: akonadiworker.cpp:87 akonadiworker.cpp:113 akonadiworker.cpp:131
 #, kde-format
 msgid "No such item."
 msgstr "Nema takve stavke."
 
-#: akonadislave.cpp:173 akonadislave.cpp:180
+#: akonadiworker.cpp:166 akonadiworker.cpp:172
 #, kde-format
 msgid "No such collection."
 msgstr "Nema takve zbirke."

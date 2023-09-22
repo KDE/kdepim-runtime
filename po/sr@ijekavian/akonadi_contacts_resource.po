@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_contacts_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2019-11-18 03:10+0100\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
 "PO-Revision-Date: 2016-05-22 23:05+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -65,89 +65,89 @@ msgstr ""
 "фасциклу. Овај режим биће аутоматски активиран ако немате приступ за писање "
 "над фасциклом."
 
-#: contactsresource.cpp:58
+#: contactsresource.cpp:44
 #, kde-format
 msgid "Personal Contacts"
 msgstr "Лични контакти"
 
-#: contactsresource.cpp:138
+#: contactsresource.cpp:124
 #, kde-format
 msgid "Directory '%1' does not exists"
 msgstr "Фасцикла „%1“ не постоји."
 
-#: contactsresource.cpp:161 contactsresource.cpp:205
+#: contactsresource.cpp:148 contactsresource.cpp:223
 #, kde-format
 msgid "Found file of unknown format: '%1'"
 msgstr "Нађен фајл непознатог формата „%1“."
 
-#: contactsresource.cpp:179
+#: contactsresource.cpp:197
 #, kde-format
 msgid "Unable to open file '%1'"
 msgstr "Не могу да отворим фајл „%1“."
 
-#: contactsresource.cpp:189
+#: contactsresource.cpp:207
 #, kde-format
 msgid "Found invalid contact in file '%1'"
 msgstr "Нађен лош контакт у фајлу „%1“."
 
-#: contactsresource.cpp:199
+#: contactsresource.cpp:217
 #, kde-format
 msgid "Found invalid contact group in file '%1': %2"
 msgstr "Нађена лоша група контаката у фајлу „%1“: %2"
 
-#: contactsresource.cpp:219 contactsresource.cpp:344 contactsresource.cpp:365
-#: contactsresource.cpp:398
+#: contactsresource.cpp:233 contactsresource.cpp:358 contactsresource.cpp:379
+#: contactsresource.cpp:412
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Покушај уписивања у фасциклу само‑за‑читање: %1"
 
-#: contactsresource.cpp:237 contactsresource.cpp:252 contactsresource.cpp:287
-#: contactsresource.cpp:299
+#: contactsresource.cpp:251 contactsresource.cpp:266 contactsresource.cpp:301
+#: contactsresource.cpp:313
 #, kde-format
 msgid "Unable to write to file '%1': %2"
 msgstr "Не могу да пишем у фајл „%1“: %2"
 
-#: contactsresource.cpp:271 contactsresource.cpp:319
+#: contactsresource.cpp:285 contactsresource.cpp:333
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'"
 msgstr "Покушај уписивања у фајл само‑за‑читање: %1"
 
-#: contactsresource.cpp:309
+#: contactsresource.cpp:323
 #, kde-format
 msgid "Received item with unknown payload %1"
 msgstr "Примљена ставка са непознатим товаром %1."
 
-#: contactsresource.cpp:334
+#: contactsresource.cpp:348
 #, kde-format
 msgid "Unable to remove file '%1'"
 msgstr "Не могу да уклоним фајл „%1“."
 
-#: contactsresource.cpp:351
+#: contactsresource.cpp:365
 #, kde-format
 msgid "Unable to create folder '%1'."
 msgstr "Не могу да направим фасциклу „%1“."
 
-#: contactsresource.cpp:386
+#: contactsresource.cpp:400
 #, kde-format
 msgid "Unable to rename folder '%1'."
 msgstr "Не могу да преименујем фасциклу „%1“"
 
-#: contactsresource.cpp:404
+#: contactsresource.cpp:418
 #, kde-format
 msgid "Unknown folder to delete."
 msgstr ""
 
-#: contactsresource.cpp:408
+#: contactsresource.cpp:422
 #, kde-format
 msgid "Unable to delete folder '%1'."
 msgstr "Не могу да обришем фасциклу „%1“."
 
-#: contactsresource.cpp:423
+#: contactsresource.cpp:437
 #, kde-format
 msgid "Unable to move file '%1' to '%2', '%2' already exists."
 msgstr "Не могу да преместим фајл „%1“ на „%2“, јер овај већ постоји."
 
-#: contactsresource.cpp:435
+#: contactsresource.cpp:451
 #, kde-format
 msgid "Unable to move directory '%1' to '%2', '%2' already exists."
 msgstr "Не могу да преместим фасциклу „%1“ на „%2“, јер ова већ постоји."
@@ -164,8 +164,5 @@ msgstr "Путања до фасцикле контаката"
 msgid "Do not change the actual backend data."
 msgstr "Не мијењај заиста позадинске податке."
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: wizard/contactswizard.ui:19
-#, kde-format
-msgid "Filename:"
-msgstr "Име фајла:"
+#~ msgid "Filename:"
+#~ msgstr "Име фајла:"
