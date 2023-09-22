@@ -313,7 +313,7 @@ void NewMailNotifierAgent::slotShowNotifications()
     QString message;
     if (NewMailNotifierAgentSettings::verboseNotification()) {
         bool hasUniqMessage = true;
-        Akonadi::Item::Id item = -1;
+        Akonadi::Item::Id itemId = -1;
         QString currentPath;
         QStringList texts;
         const int numberOfCollection(mNewMails.count());
@@ -351,7 +351,7 @@ void NewMailNotifierAgent::slotShowNotifications()
                     // You can have an unique folder with 0 message
                     return;
                 } else if (numberOfValue == 1) {
-                    item = it.value().at(0);
+                    itemId = it.value().at(0);
                     currentPath = displayName;
                     break;
                 } else {
@@ -371,7 +371,7 @@ void NewMailNotifierAgent::slotShowNotifications()
         }
         if (hasUniqMessage) {
             SpecialNotifierJob::SpecialNotificationInfo info;
-            info.itemId = item;
+            info.itemId = itemId;
             info.path = currentPath;
             info.listEmails = mListEmails;
             info.defaultIconName = mDefaultIconName;
