@@ -42,8 +42,8 @@ Q_SIGNALS:
     void historyAdded(const QString &str);
 
 private:
-    Q_REQUIRED_RESULT QString generateOpenMailStr(Akonadi::Item::Id id) const;
-    Q_REQUIRED_RESULT QString generateOpenFolderStr(Akonadi::Collection::Id id) const;
+    Q_REQUIRED_RESULT static QString generateOpenMailStr(Akonadi::Item::Id id);
+    Q_REQUIRED_RESULT static QString generateOpenFolderStr(Akonadi::Collection::Id id);
     void cleanupStr(QString &str);
     QStringList mHistory;
 };
