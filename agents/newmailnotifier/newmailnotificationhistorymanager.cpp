@@ -28,22 +28,28 @@ QStringList NewMailNotificationHistoryManager::history() const
 
 QString NewMailNotificationHistoryManager::generateOpenFolderStr(Akonadi::Collection::Id id)
 {
-    return i18n("[Show Mail]");
+    return QStringLiteral(" <a href=\"%1\">%2</a>").arg(QStringLiteral("openMail:%1").arg(id), i18n("[Show Mail]"));
 }
 
 QString NewMailNotificationHistoryManager::generateOpenMailStr(Akonadi::Item::Id id)
 {
-    return i18n("[Open Folder]");
+    return QStringLiteral(" <a href=\"%1\">%2</a>").arg(QStringLiteral("openFolder:%1").arg(id), i18n("[Open Folder]"));
 }
 
 void NewMailNotificationHistoryManager::addEmailInfoNotificationHistory(const NewMailNotificationHistoryManager::HistoryMailInfo &info)
 {
+    const QString message = info.message + generateOpenMailStr(info.identifier);
     // TODO
 }
 
 void NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory(const QList<NewMailNotificationHistoryManager::HistoryFolderInfo> &infos)
 {
+    QString messages;
     for (const NewMailNotificationHistoryManager::HistoryFolderInfo &info : infos) {
+        if (!messages.isEmpty()) {
+            messages += QStringLiteral("<br>");
+        }
+        messages += info.message + generateOpenFolderStr(info.identifier);
         // TODO
     }
     // TODO
