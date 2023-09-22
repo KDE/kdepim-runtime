@@ -25,12 +25,12 @@ QStringList NewMailNotificationHistoryManager::history() const
     return mHistory;
 }
 
-QString NewMailNotificationHistoryManager::generateOpenFolderStr() const
+QString NewMailNotificationHistoryManager::generateOpenFolderStr(Akonadi::Collection::Id id) const
 {
     return {};
 }
 
-QString NewMailNotificationHistoryManager::generateOpenMailStr() const
+QString NewMailNotificationHistoryManager::generateOpenMailStr(Akonadi::Item::Id id) const
 {
     return {};
 }
