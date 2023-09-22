@@ -48,3 +48,4 @@ private:
     Akonadi::Item mItem;
     const SpecialNotificationInfo mSpecialNotificationInfo;
 };
+Q_DECLARE_TYPEINFO(SpecialNotifierJob::SpecialNotificationInfo, Q_RELOCATABLE_TYPE);

@@ -376,7 +376,7 @@ void NewMailNotifierAgent::slotShowNotifications()
             info.listEmails = mListEmails;
             info.defaultIconName = mDefaultIconName;
             info.resourceName = resourceName;
-            auto job = new SpecialNotifierJob(info, this);
+            auto job = new SpecialNotifierJob(std::move(info), this);
             connect(job, &SpecialNotifierJob::displayNotification, this, &NewMailNotifierAgent::slotDisplayNotification);
 #if HAVE_TEXT_TO_SPEECH_SUPPORT
             connect(job, &SpecialNotifierJob::say, this, &NewMailNotifierAgent::slotSay);
