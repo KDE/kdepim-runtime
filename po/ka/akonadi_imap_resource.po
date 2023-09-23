@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2023-08-24 05:21+0200\n"
+"PO-Revision-Date: 2023-09-22 21:33+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -590,6 +590,8 @@ msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
 "Please ask your sysadmin to upgrade the server."
 msgstr ""
+"IMAP სერვერს %1 ვერ გამოვიყენებ, რადგან მას აუცილებელი შესაძლებლობები აკლია: "
+"%2. სთხოვეთ თქვენს სისადმინს, ვერსია ასწიოს."
 
 #: sessionpool.cpp:532
 #, kde-format

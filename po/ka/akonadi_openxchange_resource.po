@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-03-24 00:45+0000\n"
-"PO-Revision-Date: 2022-08-25 17:10+0200\n"
+"PO-Revision-Date: 2023-09-22 21:34+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,12 +16,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: configwidget.cpp:25
 #, kde-format
 msgid "Enter the http or https URL to your Open-Xchange installation here."
-msgstr ""
+msgstr "შეიყვანეთ http ან https ბმული თქვენს Open-Xchange-ის სერვერამდე."
 
 #: configwidget.cpp:26
 #, kde-format
@@ -70,6 +70,7 @@ msgid ""
 "The URL of the Open-Xchange server, should be something like https://"
 "myserver.org/"
 msgstr ""
+"Open-Xchange სერვერის URL. უნდა იყოს რაღაც ამნაირი: https://myserver.org/"
 
 #. i18n: ectx: property (text), widget (QLabel, label_Username)
 #: configwidget.ui:52
@@ -150,12 +151,12 @@ msgstr ""
 msgid ""
 "Object not found. Maybe it was deleted by another participant in the "
 "meantime."
-msgstr ""
+msgstr "ობიექტი ვერ ვიპოვე. შეიძლება, ამ დროში, ის სხვა მონაწილემ წაშალა."
 
 #: openxchangeresource.cpp:811
 #, kde-format
 msgid "You don't have the permission to perform this action on this object."
-msgstr ""
+msgstr "ამ ობიექტზე ამ ქმედების განხორციელების წვდომა არ გაგაჩნიათ."
 
 #: openxchangeresource.cpp:814
 #, kde-format
@@ -163,6 +164,7 @@ msgid ""
 "A conflict detected. Please check if there are other objects in conflict "
 "with this one."
 msgstr ""
+"აღმოჩენილია კონფლიქტი. გადაამოწმეთ, ამ ობიექტს სხვა ობიექტებიც ხომ არ ერჩიან."
 
 #: openxchangeresource.cpp:817
 #, kde-format
@@ -170,6 +172,8 @@ msgid ""
 "A mandatory data field is missing. Please check. Otherwise contact your "
 "administrator."
 msgstr ""
+"აკლია აუცილებელი მონაცემის ველი. გადაამოწმეთ ან დაუკავშირდით თქვენს "
+"ადმინისტრატორს."
 
 #: openxchangeresource.cpp:820
 #, kde-format
@@ -177,6 +181,8 @@ msgid ""
 "An appointment conflict detected.\n"
 "Please check if there are other appointments in conflict with this one."
 msgstr ""
+"აღმოჩენილია შეხვედრის კონფლიქტი.\n"
+"გადაამოწმეთ, სხვა შეხვედრაც ხომ არ ერჩის."
 
 #: openxchangeresource.cpp:823
 #, kde-format
@@ -216,3 +222,5 @@ msgid ""
 "Use incremental updates instead of reloading all data from the server each "
 "time"
 msgstr ""
+"ინკრემენტული განახლებების გამოყენება სერვერიდან ყოველ ჯერზე მონაცემების "
+"სრულად ჩატვირთვის მაგიერ"

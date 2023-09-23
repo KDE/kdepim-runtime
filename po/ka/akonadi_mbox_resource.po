@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2022-09-02 05:45+0200\n"
+"PO-Revision-Date: 2023-09-22 21:34+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,34 +16,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: compactpage.cpp:71
 #, kde-format
 msgid "(1 message marked for deletion)"
 msgid_plural "(%1 messages marked for deletion)"
-msgstr[0] ""
+msgstr[0] "(წასაშლელად მონიშნულია 1 შეტყობინება)"
+msgstr[1] "(წასაშლელად მონიშნულია %1 შეტყობინება)"
 
 #: compactpage.cpp:78
 #, kde-format
 msgid "Failed to fetch the collection."
-msgstr ""
+msgstr "კოლექციის გამოთხოვა ჩავარდა."
 
 #: compactpage.cpp:94
 #, kde-format
 msgid "Failed to load the mbox file"
-msgstr ""
+msgstr "Mbox ფაილის ჩატვირთვა ჩავარდა"
 
 #: compactpage.cpp:96
 #, kde-format
 msgid "(Deleting 1 message)"
 msgid_plural "(Deleting %1 messages)"
-msgstr[0] ""
+msgstr[0] "(იშლება 1 შეტყობინება)"
+msgstr[1] "(იშლება %1 შეტყობინება)"
 
 #: compactpage.cpp:107 compactpage.cpp:115
 #, kde-format
 msgid "Failed to compact the mbox file."
-msgstr ""
+msgstr "Mbox ფაილის დაპატარავება ჩავარდა."
 
 #: compactpage.cpp:117
 #, kde-format
@@ -81,19 +83,19 @@ msgstr ""
 #: compactpage.ui:49
 #, kde-format
 msgid "&Compact now"
-msgstr ""
+msgstr "&ახლა შემცირება"
 
 #. i18n: ectx: property (text), widget (QRadioButton, never)
 #: compactpage.ui:79
 #, kde-format
 msgid "&Never compact automatically"
-msgstr ""
+msgstr "&არასდროს დააპატარავო ავტომატურად"
 
 #. i18n: ectx: property (text), widget (QRadioButton, per_x_messages)
 #: compactpage.ui:86
 #, kde-format
 msgid "C&ompact every"
-msgstr ""
+msgstr "&დაპატარავება ყოველ"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_MessageCount)
 #: compactpage.ui:96
@@ -201,22 +203,22 @@ msgstr "MBox ჩატვირთული არაა."
 #: mboxresource.cpp:151
 #, kde-format
 msgid "Failed to read message with uid '%1'."
-msgstr ""
+msgstr "შეტყობინების, UID-ით '%1', წაკითხვა ჩავარდა."
 
 #: mboxresource.cpp:185
 #, kde-format
 msgid "Only email messages can be added to the MBox resource."
-msgstr ""
+msgstr "MBox-ის რესურსშ მხოლოდ ელფოსტის შეტყობინებების ჩამატება შეგიძლიათ."
 
 #: mboxresource.cpp:191
 #, kde-format
 msgid "Mail message not added to the MBox."
-msgstr ""
+msgstr "ელფოსტის შეტყობინება MBox-ში არ ჩამატებულა."
 
 #: mboxresource.cpp:230
 #, kde-format
 msgid "Could not fetch the collection: %1"
-msgstr ""
+msgstr "კოლექცის გამოთხოვა შეუძლებელია: %1"
 
 #: mboxresource.cpp:259
 #, kde-format
@@ -230,7 +232,7 @@ msgstr ""
 #: mboxresource.cpp:290
 #, kde-format
 msgid "Failed to save mbox file to %1"
-msgstr ""
+msgstr "შეცდომა mbox ფაილის %1-ში შენახვისას"
 
 #: mboxresource.cpp:349
 #, kde-format
@@ -273,7 +275,7 @@ msgstr "ბლოკის ფაილი"
 #: mboxresource.kcfg:50
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
-msgstr ""
+msgstr "წაშლილი შეტყობინების რიცხვი, სანამ განადგურება დაიწყება."
 
 #~ msgid "URL:"
 #~ msgstr "მისამართი:"

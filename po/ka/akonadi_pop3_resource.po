@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2023-08-24 05:20+0200\n"
+"PO-Revision-Date: 2023-09-22 21:34+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -112,7 +112,7 @@ msgstr[1] " შეტყობინება"
 #: jobs.cpp:145
 #, kde-format
 msgid "Unable to initialize SASL, aborting mail check."
-msgstr ""
+msgstr "SASL-ის ინიციალიზაცია შეუძლებელია. ელფოსტის შემოწმება გაუქმდა."
 
 #: pop3protocol.cpp:189
 #, kde-format
@@ -167,6 +167,8 @@ msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
 "Choose a different authentication method."
 msgstr ""
+"თქვენს POP სერვერს (%1) SASL-ის მხარდაჭერა არ გააჩნია.\n"
+"აირჩიეთ ავთენტიკაციის სხვა მეთოდი."
 
 #: pop3protocol.cpp:524 pop3protocol.cpp:613
 #, kde-format
@@ -218,6 +220,8 @@ msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
 "Choose a different authentication method."
 msgstr ""
+"თქვენს POP სერვერს (%1) APOP-ის მხარდაჭერა არ გააჩნია.\n"
+"აირჩიეთ ავთენტიკაციის სხვა მეთოდი."
 
 #: pop3protocol.cpp:649
 #, kde-format
@@ -769,6 +773,8 @@ msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
 msgstr ""
+"თუ ჩართულია, ელფოსტის სერვერთან მისაერთებლად სისტემური პროქსის პარამეტრები "
+"იქნება გამოყენებული."
 
 #. i18n: ectx: property (text), widget (QCheckBox, proxyCheck)
 #: popsettings.ui:505

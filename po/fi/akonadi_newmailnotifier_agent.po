@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-09-23 01:45+0000\n"
 "PO-Revision-Date: 2023-07-25 19:52+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -24,6 +24,18 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Ilmoitushistoria"
+
+#: newmailnotificationhistorymanager.cpp:31
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "[Show Mail]"
+msgstr "Näytä viesti…"
+
+#: newmailnotificationhistorymanager.cpp:36
+#, fuzzy, kde-format
+#| msgid "Folders"
+msgid "[Open Folder]"
+msgstr "Kansiot"
 
 #: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:111
@@ -41,7 +53,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Yksi uusi viesti tilin ”%3” kansiossa %2"
 msgstr[1] "%1 uutta viestiä tilin ”%3” kansiossa %2"
 
-#: newmailnotifieragent.cpp:390
+#: newmailnotifieragent.cpp:395
 #, kde-format
 msgid "New mail arrived"
 msgstr "Uutta postia saapunut"

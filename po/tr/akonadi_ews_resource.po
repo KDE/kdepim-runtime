@@ -72,7 +72,7 @@ msgstr "Tamam"
 #: ewsconfigdialog.cpp:121 ewsconfigdialog.cpp:123
 #, kde-format
 msgid "PEM file"
-msgstr ""
+msgstr "PEM dosyası"
 
 #: ewsconfigdialog.cpp:141
 #, kde-format
@@ -1269,6 +1269,3 @@ msgstr "Öge güncelleme başarısız."
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Öge yanıtı işlenirken öge bozuldu."
-
-#~ msgid "Please enter password for user '%1' and Exchange account '%2'."
-#~ msgstr "'%1' kullanıcısı ve '%2' Exchange hesabı için parolayı girin."
