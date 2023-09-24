@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2023-09-22 21:34+0200\n"
+"PO-Revision-Date: 2023-09-23 07:34+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -78,6 +78,26 @@ msgid ""
 "changed by another program, the list of deleted messages cannot be trusted "
 "any longer and deleted messages might reappear.</p></body></html>"
 msgstr ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-size:10pt; font-weight:400; font-style:"
+"normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">MBox ფაილიდან ელფოსტის "
+"სრულად წასაშლელად ერთადერთი გზა მისი ფაილიდან წაშლაა. რადგანაც ეს ოპერაცია "
+"საკმოდ ძვირია, Mbox რესურსი წაშლილი შეტყობინებების სიას ინახავს. რამდენიმე "
+"ხანში ერთხელ შეტყობინებები ფაილიდან მართლა იშლება.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></"
+"p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">შენიშვნა:</span> ამისი უარყოფითი მხარეა ის, რომ თუ ფაილი სხვა "
+"პროგრამის მერ შეიცვალა, წაშლილი შეტყობინებების სია უკვე სანდო აღარაა და "
+"წაშლილი შეტყობინებები, შეიძლება, თავიდან გამოჩნდეს.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QPushButton, compactButton)
 #: compactpage.ui:49
@@ -131,6 +151,23 @@ msgid ""
 "weight:600;\">Note</span>: For some methods you might need to install "
 "additional software before they can be used.</p></body></html>"
 msgstr ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-size:10pt; font-weight:400; font-style:"
+"normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">აირჩიეთ მეთოდი, რომლითაც "
+"დაიბლოკება MBox ფაილი, როცა ფაილიდან წაკითხვა  ან მასში ჩაწერა მოხდება.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></"
+"p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">შენიშვნა</span>: ზოგიერთი მეთოდისთვის შეიძლება დამატებითი "
+"პროგრამების დაყენება დაგჭირდეთ.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, procmail)
 #: lockfilepage.ui:43
@@ -142,13 +179,13 @@ msgstr "Procmail loc&kfile"
 #: lockfilepage.ui:53
 #, kde-format
 msgid "&Mutt dotlock"
-msgstr ""
+msgstr "&Mutt-ის დაბლოკვა"
 
 #. i18n: ectx: property (text), widget (QRadioButton, mutt_dotlock_privileged)
 #: lockfilepage.ui:60
 #, kde-format
 msgid "M&utt dotlock privileged"
-msgstr ""
+msgstr "&Mutt-ის პრივილეგირებული დაბლოკვა"
 
 #. i18n: ectx: property (text), widget (QRadioButton, none)
 #: lockfilepage.ui:67
@@ -172,6 +209,11 @@ msgid ""
 "this is the case, the resource and the other programs must all use the same "
 "locking method."
 msgstr ""
+"არაფერი, ნაგულისხმევი კონფიგურაცია ჩვეულებრივ უსაფრთხოა.  მაგრამ, თუ "
+"პროგრამები, რომლებიც Akonadi-ის არ იყენებ და mbox ფაილთან წვდომა მანც აქვთ, "
+"საჭიროა, დაბლოკვის შესაბამისი მეთოდი დააყენოთ. დაიმახსოვრეთ, რომ ამ "
+"შემთხვევაში, რესურსი და სხვა პროგრამები იგივე დაბლოკვის მეთოდს უნდა "
+"იყენებდნენ."
 
 #: mboxconfig.cpp:20
 #, kde-format
@@ -228,6 +270,10 @@ msgid ""
 "happening use locking and make sure that all programs accessing the mbox use "
 "the same locking method."
 msgstr ""
+"Mbox ფაილი სხვა პროგრამის მიერ შეიცვალა. ახალი ფაილი დაკოპირდა და დარჩენილი "
+"ცვლილებები ასლზე გადატარდა. ამის თავიდან ასაცილებლად გამოიყენეთ დაბლოკვა და "
+"დარწმუნდით, რომ ყველა პროგრამა, რომელსაც MBox-თან წვდომა აქვს, დაბლოკვის "
+"იგივე მეთოდს იყენებს."
 
 #: mboxresource.cpp:290
 #, kde-format
@@ -240,6 +286,8 @@ msgid ""
 "Failed to update the changed item because the old item could not be deleted "
 "Reason: %1"
 msgstr ""
+"შეცვლილი ელემენტის განახლება ჩავარდა, რადგან ძველი ელემენტის წაშლა "
+"შეუძლებელია: მიზეზი: %1"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: mboxresource.kcfg:10

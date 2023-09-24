@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2023-09-22 21:33+0200\n"
+"PO-Revision-Date: 2023-09-23 08:35+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -236,6 +236,12 @@ msgid ""
 "hosted Office 365 instances, where the administrator has chosen to enable it."
 "</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Exchange server-თან ტრადიციული მომხმარებელი/პაროლით "
+"ავთენტიკაცია. ეს შეიცავს ისეთ მეთოდებს, როგორიცაა Basic, NTLM ან Kerberos.</"
+"p><p>ეს ავთენტიკაციის მეთოდი მიღებულია, რომ ოდნავ მოძველებულია და "
+"გამოიყენება მხოლოდ პატარა, ლოკალურ Exchange-ის ვარიანტებზე და დაჰოსტილ "
+"Office 365-ის გაშვებულ ასლებზე, სადაც ადმინისტრატორმა აირჩია, ჩაერთო ის.</"
+"p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authUsernameRadioButton)
 #: ewsconfigdialog.ui:97
@@ -258,6 +264,15 @@ msgid ""
 "will cause the server to set the domain to the default one its configured "
 "with.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>საშუალებას გაძლევთ, მიუთითოთ Active Directory-ის "
+"დომენი მომხმარებლისთვის.</p><p><span style=\" font-weight:600;\">შენიშვნა:</"
+"span> არსებობს მცირე განსხვავება &quot;ცარიელ დომენსა&quot; და &quot;"
+"უდომენობას&quot; შორის</p><p>როცა დომენი ცარიელია (დომენის თოლია დასმულია, "
+"შესაბამისი ველი კი - ცარიელი) EWS-ის რესურსი მომხმარებლის სახელს "
+"განსაზღვრულად ცარიელს მიაწვდის(&quot;\\username&quot;).</p><p>თუ დომენი "
+"დაყენებული არაა (დომენის თოლია დასმული არაა) მომხმარებლის სახელი დომენის "
+"გარეშე (&quot;username&quot;) იქნება გადაცემული, რაც სერვერს აიძულებს, "
+"დომენი თავის საკუთარზე დააყენოს.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_HasDomain)
 #: ewsconfigdialog.ui:146
@@ -292,6 +307,9 @@ msgid ""
 "p><p><span style=\" font-weight:600;\">Note:</span> This can be left empty "
 "when using Kerberos authentication.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>პაროლი Exchange Server-ზე შესასვლელად.</p><p><span "
+"style=\" font-weight:600;\">შენიშვნა:</span> Kerberos-ით ავთენტიკაციისას, "
+"ეს, ცარიელი შეგიძლიათ, დატოვოთ.</p></body></html>"
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Username)
 #: ewsconfigdialog.ui:193
@@ -301,6 +319,9 @@ msgid ""
 "p><p><span style=\" font-weight:600;\">Note:</span> This can be left empty "
 "when using Kerberos authentication.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>მომხმარებლის სახელი Exchange Server-ზე შესასვლელად.</"
+"p><p><span style=\" font-weight:600;\">შენიშვნა:</span> Kerberos-ით "
+"ავთენტიკაციისას, ეს, ცარიელი შეგიძლიათ, დატოვოთ.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QLabel, kerberosNoteLabel)
 #: ewsconfigdialog.ui:203
@@ -310,6 +331,9 @@ msgid ""
 "Username and password are not needed (can be empty) when Kerberos is "
 "properly configured on your system.</p></body></html>"
 msgstr ""
+"<html><head/><body><p><span style=\" font-weight:600;\">შენიშვნა:</span> "
+"როცა სისტემაში Kerberos სწორადაა მორგებული, მომხმარებელი და პაროლი საჭირო "
+"არაა(შეიძლება, ცარიელი იყოს).</p></body></html>"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, authOAuth2RadioButton)
 #: ewsconfigdialog.ui:222
@@ -354,6 +378,9 @@ msgid ""
 "<html><head/><body><p>Attempts to find out the Microsoft Exchange server "
 "address relevant to the supplied e-mail address.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>მცდელობა, გავარკვიოთ Microsoft Exchange სერვერის "
+"მისამართი, რომელიც მითითებულ ელფოსტის მისამართს შეესაბამება.</p></body></"
+"html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_AutoDiscovery)
 #. i18n: ectx: label, entry (AutoDiscovery), group (General)
@@ -526,6 +553,10 @@ msgid ""
 "Resets synchronization state between Exchange and Akonadi. Use in case some "
 "items or folders are not showing up despite existing in Exchange."
 msgstr ""
+"Exchange-ისა და Akonadi-ის შორის სინქრონიზაციის მდგომარეობის საწყის "
+"მდგომარეობაზე დაბრუნება. გამოიყენეთ ეს იმ შემთხვევაში, თუ არსებობს "
+"ელემენტები ან საქაღალდეები, რომლებიც არსებობენ Exchange-ზე, მაგრამ მაინც არ "
+"ჩანს."
 
 #. i18n: ectx: property (text), widget (QPushButton, clearFolderTreeSyncStateButton)
 #: ewsconfigdialog.ui:564
@@ -1118,7 +1149,7 @@ msgstr "ახალი ელფოსტის შემოწმების 
 #: ewsresource.kcfg:47
 #, kde-format
 msgid "Enable Server-Side Subscriptions"
-msgstr ""
+msgstr "სერვერის მხარეს გამოწერების ჩართვა"
 
 #. i18n: ectx: label, entry (ServerSubscriptionList), group (General)
 #: ewsresource.kcfg:50

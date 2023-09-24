@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-03-24 00:45+0000\n"
-"PO-Revision-Date: 2023-09-22 21:34+0200\n"
+"PO-Revision-Date: 2023-09-23 07:36+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -144,7 +144,7 @@ msgstr "სერვერთან დაკავშირებს შეც�
 #, kde-format
 msgid ""
 "The object was edited by another participant in the meantime. Please check."
-msgstr ""
+msgstr "ამასობაში ობიექტი სხვა მონაწილის მიერ შეიცვალა. გადაამოწმეთ."
 
 #: openxchangeresource.cpp:808
 #, kde-format
