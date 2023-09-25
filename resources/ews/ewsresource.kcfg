@@ -8,6 +8,7 @@
   <group name="General">
     <entry name="BaseUrl" type="String">
       <label>Server URL</label>
+      <default>https://outlook.office365.com/EWS/Exchange.asmx</default>
       <tooltip>The URL of the Microsoft Exchange server, should be something like https://myserver.org/EWS/Exchange.asmx</tooltip>
       <whatsthis>The URL of the Microsoft Exchange server, should be something like https://myserver.org/EWS/Exchange.asmx</whatsthis>
     </entry>
