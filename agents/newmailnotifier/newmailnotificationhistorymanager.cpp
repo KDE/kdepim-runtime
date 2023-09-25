@@ -64,17 +64,21 @@ void NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory(const 
     Q_EMIT historyAdded(mHistory.join(QStringLiteral("<br>")));
 }
 
+void NewMailNotificationHistoryManager::setTestModeEnabled(bool test)
+{
+    mTestEnabled = test;
+}
+
 void NewMailNotificationHistoryManager::addHeader()
 {
     if (!mHistory.isEmpty()) {
         mHistory += QStringLiteral("<br>");
     }
-    mHistory += QStringLiteral("<b> %1 </b>").arg(QDateTime::currentDateTime().toString());
-}
-
-void NewMailNotificationHistoryManager::addHistory()
-{
-    Q_EMIT historyAdded(mHistory.join(QStringLiteral("<br>")));
+    if (mTestEnabled) { // Only for test
+        mHistory += QStringLiteral("<b> %1 </b>").arg(QDate::currentDate().toString());
+    } else {
+        mHistory += QStringLiteral("<b> %1 </b>").arg(QDateTime::currentDateTime().toString());
+    }
 }
 
 void NewMailNotificationHistoryManager::cleanupStr(QString &str)

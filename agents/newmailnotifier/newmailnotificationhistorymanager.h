@@ -37,16 +37,18 @@ public:
     void addEmailInfoNotificationHistory(const NewMailNotificationHistoryManager::HistoryMailInfo &info);
     void addFoldersInfoNotificationHistory(const QList<NewMailNotificationHistoryManager::HistoryFolderInfo> &infos);
 
+    void setTestModeEnabled(bool test);
+
 Q_SIGNALS:
     void historyAdded(const QString &str);
 
 private:
-    NEWMAILNOTIFIER_NO_EXPORT void addHistory();
     Q_REQUIRED_RESULT static NEWMAILNOTIFIER_NO_EXPORT QString generateOpenMailStr(Akonadi::Item::Id id);
     Q_REQUIRED_RESULT static NEWMAILNOTIFIER_NO_EXPORT QString generateOpenFolderStr(Akonadi::Collection::Id id);
     NEWMAILNOTIFIER_NO_EXPORT void addHeader();
     NEWMAILNOTIFIER_NO_EXPORT void cleanupStr(QString &str);
     QStringList mHistory;
+    bool mTestEnabled = false;
 };
 Q_DECLARE_TYPEINFO(NewMailNotificationHistoryManager::HistoryMailInfo, Q_RELOCATABLE_TYPE);
 Q_DECLARE_TYPEINFO(NewMailNotificationHistoryManager::HistoryFolderInfo, Q_RELOCATABLE_TYPE);
