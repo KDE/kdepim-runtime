@@ -43,9 +43,10 @@ Q_SIGNALS:
     void historyAdded(const QString &str);
 
 private:
-    Q_REQUIRED_RESULT static QString generateOpenMailStr(Akonadi::Item::Id id);
-    Q_REQUIRED_RESULT static QString generateOpenFolderStr(Akonadi::Collection::Id id);
-    void cleanupStr(QString &str);
+    Q_REQUIRED_RESULT static NEWMAILNOTIFIER_NO_EXPORT QString generateOpenMailStr(Akonadi::Item::Id id);
+    Q_REQUIRED_RESULT static NEWMAILNOTIFIER_NO_EXPORT QString generateOpenFolderStr(Akonadi::Collection::Id id);
+    NEWMAILNOTIFIER_NO_EXPORT void addHeader();
+    NEWMAILNOTIFIER_NO_EXPORT void cleanupStr(QString &str);
     QStringList mHistory;
 };
 Q_DECLARE_TYPEINFO(NewMailNotificationHistoryManager::HistoryMailInfo, Q_RELOCATABLE_TYPE);

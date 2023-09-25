@@ -38,21 +38,44 @@ QString NewMailNotificationHistoryManager::generateOpenMailStr(Akonadi::Item::Id
 
 void NewMailNotificationHistoryManager::addEmailInfoNotificationHistory(const NewMailNotificationHistoryManager::HistoryMailInfo &info)
 {
-    const QString message = info.message + generateOpenMailStr(info.identifier);
+    // TODO addHeader();
+    QString messageInfo = info.message;
+    cleanupStr(messageInfo);
+    const QString message = messageInfo + generateOpenMailStr(info.identifier);
+    // mHistory += messages;
     // TODO
+    // Q_EMIT historyAdded(newStr);
 }
 
 void NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory(const QList<NewMailNotificationHistoryManager::HistoryFolderInfo> &infos)
 {
+    // TODO addHeader();
     QString messages;
     for (const NewMailNotificationHistoryManager::HistoryFolderInfo &info : infos) {
         if (!messages.isEmpty()) {
             messages += QStringLiteral("<br>");
         }
-        messages += info.message + generateOpenFolderStr(info.identifier);
+        QString messageInfo = info.message;
+        cleanupStr(messageInfo);
+        messages += messageInfo + generateOpenFolderStr(info.identifier);
         // TODO
     }
     // TODO
+    // mHistory += messages;
+    // Q_EMIT historyAdded(newStr);
+}
+
+void NewMailNotificationHistoryManager::addHeader()
+{
+#if 0
+    if (!mHistory.isEmpty()) {
+        mHistory += QStringLiteral("\n");
+    }
+    QString newStr = QStringLiteral("============ %1 ============").arg(QDateTime::currentDateTime().toString());
+    if (!str.startsWith(QLatin1Char('\n')) && !str.startsWith(QStringLiteral("<br>"))) {
+        newStr += QLatin1Char('\n');
+    }
+#endif
 }
 
 void NewMailNotificationHistoryManager::addHistory(QString str)
