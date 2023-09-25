@@ -38,7 +38,7 @@ QString NewMailNotificationHistoryManager::generateOpenMailStr(Akonadi::Item::Id
 
 void NewMailNotificationHistoryManager::addEmailInfoNotificationHistory(const NewMailNotificationHistoryManager::HistoryMailInfo &info)
 {
-    qDebug() << "NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory  " << info;
+    // qDebug() << "NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory  " << info;
     addHeader();
     QString messageInfo = info.message;
     cleanupStr(messageInfo);
@@ -49,7 +49,7 @@ void NewMailNotificationHistoryManager::addEmailInfoNotificationHistory(const Ne
 
 void NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory(const QList<NewMailNotificationHistoryManager::HistoryFolderInfo> &infos)
 {
-    qDebug() << "NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory  " << infos;
+    // qDebug() << "NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory  " << infos;
     addHeader();
     QString messages;
     for (const NewMailNotificationHistoryManager::HistoryFolderInfo &info : infos) {
@@ -69,7 +69,7 @@ void NewMailNotificationHistoryManager::addHeader()
     if (!mHistory.isEmpty()) {
         mHistory += QStringLiteral("<br>");
     }
-    mHistory += QStringLiteral("<b> %1 </b>").arg(QDateTime::currentDateTime().toString()) + QStringLiteral("<br>");
+    mHistory += QStringLiteral("<b> %1 </b>").arg(QDateTime::currentDateTime().toString());
 }
 
 void NewMailNotificationHistoryManager::addHistory()
