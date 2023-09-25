@@ -45,3 +45,20 @@ void NewMailNotificationHistoryManagerTest::generateHtmlFromUniqueEmail()
                      .arg(QString::number(info.identifier));
     QCOMPARE(w.history().join(QStringLiteral("<br>")), reference);
 }
+
+void NewMailNotificationHistoryManagerTest::generateHtmlFromFolders()
+{
+    NewMailNotificationHistoryManager w;
+    w.setTestModeEnabled(true);
+
+    NewMailNotificationHistoryManager::HistoryFolderInfo info;
+    info.message = QStringLiteral("Foo bla");
+    info.identifier = 45;
+    w.addFoldersInfoNotificationHistory({info});
+
+    QString reference = QStringLiteral("<b> %1 </b><br>%2 <a href=\"openFolder:%3\">[Open Folder]</a>")
+                            .arg(QDate::currentDate().toString())
+                            .arg(info.message)
+                            .arg(QString::number(info.identifier));
+    QCOMPARE(w.history().join(QStringLiteral("<br>")), reference);
+}
