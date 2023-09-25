@@ -3,6 +3,30 @@ include_directories(${kdepim-runtime_BINARY_DIR})
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_newmailnotifier_agent\")
 configure_file(config-newmailnotifier.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-newmailnotifier.h)
 
+
+add_library(newmailnotifier)
+
+target_sources(newmailnotifier PRIVATE
+    newmailnotificationhistorymanager.h
+    newmailnotificationhistorymanager.cpp
+)
+
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(newmailnotifier PROPERTIES UNITY_BUILD ON)
+endif()
+generate_export_header(newmailnotifier BASE_NAME newmailnotifier)
+
+target_link_libraries(newmailnotifier
+    PRIVATE
+    KPim6::AkonadiCore
+    KF6::I18n
+)
+
+set_target_properties(newmailnotifier PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
+
+install(TARGETS newmailnotifier ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NAMELINK_SKIP)
+
+
 add_executable( akonadi_newmailnotifier_agent)
 set(newmailnotifier_common_SRCS)
 kconfig_add_kcfg_files(newmailnotifier_common_SRCS
