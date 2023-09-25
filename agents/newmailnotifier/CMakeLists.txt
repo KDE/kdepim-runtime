@@ -124,6 +124,7 @@ target_sources(newmailnotifierconfig PRIVATE
     )
 
 target_link_libraries(newmailnotifierconfig
+    PRIVATE
     KPim6::AkonadiCore
     KPim6::AkonadiMime
     Qt::Widgets
