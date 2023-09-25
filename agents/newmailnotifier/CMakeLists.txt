@@ -103,6 +103,7 @@ endif ()
 
 if(BUILD_TESTING)
     add_subdirectory(tests)
+    add_subdirectory(autotests)
 endif()
 install(TARGETS akonadi_newmailnotifier_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
 
