@@ -361,12 +361,19 @@ void NewMailNotifierAgent::slotShowNotifications()
 
             const int numberOfEmails(it.value().count());
             if (numberOfEmails > 0) {
-                texts.append(i18ncp("%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as user named it)",
-                                    "One new email in %2 from \"%3\"",
-                                    "%1 new emails in %2 from \"%3\"",
-                                    numberOfEmails,
-                                    displayName,
-                                    resourceName));
+                const QString text = i18ncp("%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as user named it)",
+                                            "One new email in %2 from \"%3\"",
+                                            "%1 new emails in %2 from \"%3\"",
+                                            numberOfEmails,
+                                            displayName,
+                                            resourceName);
+                texts.append(text);
+                if (!hasUniqMessage) {
+                    NewMailNotificationHistoryManager::HistoryFolderInfo info;
+                    info.message = text;
+                    info.identifier = it.key().id();
+                    infos.append(info);
+                }
             }
         }
         if (hasUniqMessage) {
@@ -397,7 +404,6 @@ void NewMailNotifierAgent::slotShowNotifications()
 
     qCDebug(NEWMAILNOTIFIER_LOG) << message;
 
-    // TODO implement it.
     addFoldersInfoNotificationHistory(message, std::move(infos));
 
     mNewMails.clear();
@@ -409,8 +415,6 @@ void NewMailNotifierAgent::addEmailInfoNotificationHistory(const QPixmap &pixmap
 {
     slotDisplayNotification(pixmap, message);
     if (NewMailNotifierAgentSettings::enableNotificationHistory()) {
-        // TODO remove it.
-        NewMailNotificationHistoryManager::self()->addHistory(message);
         NewMailNotificationHistoryManager::self()->addEmailInfoNotificationHistory(info);
     }
 }
@@ -419,8 +423,6 @@ void NewMailNotifierAgent::addFoldersInfoNotificationHistory(const QString &mess
 {
     slotDisplayNotification(QPixmap(), message);
     if (NewMailNotifierAgentSettings::enableNotificationHistory()) {
-        // TODO remove it.
-        NewMailNotificationHistoryManager::self()->addHistory(message);
         NewMailNotificationHistoryManager::self()->addFoldersInfoNotificationHistory(infos);
     }
 }

@@ -28,28 +28,29 @@ QStringList NewMailNotificationHistoryManager::history() const
 
 QString NewMailNotificationHistoryManager::generateOpenFolderStr(Akonadi::Collection::Id id)
 {
-    return QStringLiteral(" <a href=\"%1\">%2</a>").arg(QStringLiteral("openMail:%1").arg(id), i18n("[Show Mail]"));
+    return QStringLiteral(" <a href=\"%1\">%2</a>").arg(QStringLiteral("openFolder:%1").arg(id), i18n("[Open Folder]"));
 }
 
 QString NewMailNotificationHistoryManager::generateOpenMailStr(Akonadi::Item::Id id)
 {
-    return QStringLiteral(" <a href=\"%1\">%2</a>").arg(QStringLiteral("openFolder:%1").arg(id), i18n("[Open Folder]"));
+    return QStringLiteral(" <a href=\"%1\">%2</a>").arg(QStringLiteral("openMail:%1").arg(id), i18n("[Show Mail]"));
 }
 
 void NewMailNotificationHistoryManager::addEmailInfoNotificationHistory(const NewMailNotificationHistoryManager::HistoryMailInfo &info)
 {
-    // TODO addHeader();
+    qDebug() << "NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory  " << info;
+    addHeader();
     QString messageInfo = info.message;
     cleanupStr(messageInfo);
     const QString message = messageInfo + generateOpenMailStr(info.identifier);
-    // mHistory += messages;
-    // TODO
-    // Q_EMIT historyAdded(newStr);
+    mHistory += message;
+    Q_EMIT historyAdded(mHistory.join(QStringLiteral("<br>")));
 }
 
 void NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory(const QList<NewMailNotificationHistoryManager::HistoryFolderInfo> &infos)
 {
-    // TODO addHeader();
+    qDebug() << "NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory  " << infos;
+    addHeader();
     QString messages;
     for (const NewMailNotificationHistoryManager::HistoryFolderInfo &info : infos) {
         if (!messages.isEmpty()) {
@@ -58,44 +59,27 @@ void NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory(const 
         QString messageInfo = info.message;
         cleanupStr(messageInfo);
         messages += messageInfo + generateOpenFolderStr(info.identifier);
-        // TODO
     }
-    // TODO
-    // mHistory += messages;
-    // Q_EMIT historyAdded(newStr);
+    mHistory += messages;
+    Q_EMIT historyAdded(mHistory.join(QStringLiteral("<br>")));
 }
 
 void NewMailNotificationHistoryManager::addHeader()
 {
-#if 0
     if (!mHistory.isEmpty()) {
-        mHistory += QStringLiteral("\n");
+        mHistory += QStringLiteral("<br>");
     }
-    QString newStr = QStringLiteral("============ %1 ============").arg(QDateTime::currentDateTime().toString());
-    if (!str.startsWith(QLatin1Char('\n')) && !str.startsWith(QStringLiteral("<br>"))) {
-        newStr += QLatin1Char('\n');
-    }
-#endif
+    mHistory += QStringLiteral("<b> %1 </b>").arg(QDateTime::currentDateTime().toString()) + QStringLiteral("<br>");
 }
 
-void NewMailNotificationHistoryManager::addHistory(QString str)
+void NewMailNotificationHistoryManager::addHistory()
 {
-    if (!mHistory.isEmpty()) {
-        mHistory += QStringLiteral("\n");
-    }
-    QString newStr = QStringLiteral("============ %1 ============").arg(QDateTime::currentDateTime().toString());
-    if (!str.startsWith(QLatin1Char('\n')) && !str.startsWith(QStringLiteral("<br>"))) {
-        newStr += QLatin1Char('\n');
-    }
-    cleanupStr(str);
-    newStr += str;
-    mHistory += newStr;
-    Q_EMIT historyAdded(newStr);
+    Q_EMIT historyAdded(mHistory.join(QStringLiteral("<br>")));
 }
 
 void NewMailNotificationHistoryManager::cleanupStr(QString &str)
 {
-    str.replace(QStringLiteral("<br>"), QStringLiteral("\n"));
+    // str.replace(QStringLiteral("<br>"), QStringLiteral("\n"));
     str.replace(QStringLiteral("&lt;"), QStringLiteral("<"));
     str.replace(QStringLiteral("&gt;"), QStringLiteral(">"));
 }
@@ -108,6 +92,19 @@ void NewMailNotificationHistoryManager::setHistory(const QStringList &newHistory
 void NewMailNotificationHistoryManager::clear()
 {
     mHistory.clear();
+}
+
+QDebug operator<<(QDebug d, const NewMailNotificationHistoryManager::HistoryFolderInfo &id)
+{
+    d << "message: " << id.message;
+    d << "identifier: " << id.identifier;
+    return d;
+}
+QDebug operator<<(QDebug d, const NewMailNotificationHistoryManager::HistoryMailInfo &id)
+{
+    d << "message: " << id.message;
+    d << "identifier: " << id.identifier;
+    return d;
 }
 
 #include "moc_newmailnotificationhistorymanager.cpp"

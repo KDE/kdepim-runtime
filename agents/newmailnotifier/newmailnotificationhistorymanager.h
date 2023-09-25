@@ -7,6 +7,7 @@
 
 #include "newmailnotifier_export.h"
 #include <Akonadi/Item>
+#include <QDebug>
 #include <QObject>
 
 class NEWMAILNOTIFIER_EXPORT NewMailNotificationHistoryManager : public QObject
@@ -31,9 +32,6 @@ public:
     Q_REQUIRED_RESULT QStringList history() const;
     void setHistory(const QStringList &newHistory);
 
-    // FIXME remove it.
-    void addHistory(QString str);
-
     void clear();
 
     void addEmailInfoNotificationHistory(const NewMailNotificationHistoryManager::HistoryMailInfo &info);
@@ -43,6 +41,7 @@ Q_SIGNALS:
     void historyAdded(const QString &str);
 
 private:
+    NEWMAILNOTIFIER_NO_EXPORT void addHistory();
     Q_REQUIRED_RESULT static NEWMAILNOTIFIER_NO_EXPORT QString generateOpenMailStr(Akonadi::Item::Id id);
     Q_REQUIRED_RESULT static NEWMAILNOTIFIER_NO_EXPORT QString generateOpenFolderStr(Akonadi::Collection::Id id);
     NEWMAILNOTIFIER_NO_EXPORT void addHeader();
@@ -51,3 +50,5 @@ private:
 };
 Q_DECLARE_TYPEINFO(NewMailNotificationHistoryManager::HistoryMailInfo, Q_RELOCATABLE_TYPE);
 Q_DECLARE_TYPEINFO(NewMailNotificationHistoryManager::HistoryFolderInfo, Q_RELOCATABLE_TYPE);
+QDebug operator<<(QDebug d, const NewMailNotificationHistoryManager::HistoryFolderInfo &id);
+QDebug operator<<(QDebug d, const NewMailNotificationHistoryManager::HistoryMailInfo &id);

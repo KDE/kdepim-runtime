@@ -4,9 +4,9 @@
 */
 
 #include "newmailnotificationhistorywidget.h"
+#include "newmailnotificationhistorybrowsertext.h"
+#include "newmailnotificationhistorybrowsertextwidget.h"
 #include "newmailnotificationhistorymanager.h"
-#include "newmailnotificationhistoryplaintextedit.h"
-#include "newmailnotificationhistoryplaintexteditor.h"
 #include "newmailnotifieragentsettings.h"
 #include <KLocalizedString>
 
@@ -18,7 +18,7 @@
 
 NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *parent)
     : QWidget{parent}
-    , mPlainTextEdit(new NewMailNotificationHistoryPlainTextEdit(new NewMailNotificationHistoryPlainTextEditor(this), this))
+    , mTextBrowser(new NewMailNotificationHistoryBrowserTextWidget(new NewMailNotificationHistoryBrowserText(this), this))
     , mEnabledHistory(new QCheckBox(i18n("Enabled"), this))
 {
     auto mainLayout = new QVBoxLayout(this);
@@ -27,9 +27,8 @@ NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *pare
 
     mEnabledHistory->setObjectName(QStringLiteral("mEnabledHistory"));
 
-    mPlainTextEdit->setObjectName(QStringLiteral("mPlainTextEdit"));
-    mPlainTextEdit->setReadOnly(true);
-    mainLayout->addWidget(mPlainTextEdit);
+    mTextBrowser->setObjectName(QStringLiteral("mTextBrowser"));
+    mainLayout->addWidget(mTextBrowser);
 
     mainLayout->addWidget(mEnabledHistory);
     connect(mEnabledHistory, &QCheckBox::clicked, this, &NewMailNotificationHistoryWidget::slotEnableChanged);
@@ -39,10 +38,10 @@ NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *pare
             this,
             &NewMailNotificationHistoryWidget::slotHistoryAdded);
 
-    mPlainTextEdit->setPlainText(NewMailNotificationHistoryManager::self()->history().join(QLatin1Char('\n')));
-    connect(mPlainTextEdit, &NewMailNotificationHistoryPlainTextEdit::clearHistory, this, [this]() {
+    mTextBrowser->setHtml(NewMailNotificationHistoryManager::self()->history().join(QStringLiteral("<br>")));
+    connect(mTextBrowser, &NewMailNotificationHistoryBrowserTextWidget::clearHistory, this, [this]() {
         NewMailNotificationHistoryManager::self()->clear();
-        mPlainTextEdit->clear();
+        mTextBrowser->clear();
     });
     slotEnableChanged(NewMailNotifierAgentSettings::self()->enableNotificationHistory());
     mEnabledHistory->setChecked(NewMailNotifierAgentSettings::self()->enableNotificationHistory());
@@ -52,13 +51,13 @@ NewMailNotificationHistoryWidget::~NewMailNotificationHistoryWidget() = default;
 
 void NewMailNotificationHistoryWidget::slotHistoryAdded(const QString &str)
 {
-    mPlainTextEdit->editor()->appendPlainText(str);
-    mPlainTextEdit->editor()->verticalScrollBar()->setValue(mPlainTextEdit->editor()->verticalScrollBar()->maximum());
+    mTextBrowser->editor()->setHtml(str);
+    mTextBrowser->editor()->verticalScrollBar()->setValue(mTextBrowser->editor()->verticalScrollBar()->maximum());
 }
 
 void NewMailNotificationHistoryWidget::slotEnableChanged(bool clicked)
 {
-    mPlainTextEdit->setEnabled(clicked);
+    mTextBrowser->setEnabled(clicked);
     NewMailNotifierAgentSettings::self()->setEnableNotificationHistory(clicked);
     NewMailNotifierAgentSettings::self()->save();
 }

@@ -7,7 +7,7 @@
 
 #include <QWidget>
 class QCheckBox;
-class NewMailNotificationHistoryPlainTextEdit;
+class NewMailNotificationHistoryBrowserTextWidget;
 class NewMailNotificationHistoryWidget : public QWidget
 {
     Q_OBJECT
@@ -18,6 +18,6 @@ public:
 private:
     void slotHistoryAdded(const QString &str);
     void slotEnableChanged(bool clicked);
-    NewMailNotificationHistoryPlainTextEdit *const mPlainTextEdit;
+    NewMailNotificationHistoryBrowserTextWidget *const mTextBrowser;
     QCheckBox *const mEnabledHistory;
 };
