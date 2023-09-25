@@ -56,8 +56,6 @@ target_sources(akonadi_newmailnotifier_agent PRIVATE
   newmailnotificationhistorywidget.cpp
   newmailnotificationhistorydialog.h
   newmailnotificationhistorydialog.cpp
-  newmailnotificationhistorymanager.h
-  newmailnotificationhistorymanager.cpp
   newmailnotificationhistoryplaintextedit.h
   newmailnotificationhistoryplaintextedit.cpp
 
@@ -73,6 +71,7 @@ if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 
 target_link_libraries( akonadi_newmailnotifier_agent
+    PRIVATE
   KPim6::AkonadiCore
   KPim6::Mime
   KPim6::AkonadiMime
@@ -87,10 +86,11 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF6::WindowSystem
   KF6::ConfigWidgets
   KF6::TextCustomEditor
+  newmailnotifier
 )
 
 if(Qt6TextToSpeech_FOUND)
-    target_link_libraries( akonadi_newmailnotifier_agent
+    target_link_libraries( akonadi_newmailnotifier_agent PRIVATE
       Qt::TextToSpeech
     )
 endif()

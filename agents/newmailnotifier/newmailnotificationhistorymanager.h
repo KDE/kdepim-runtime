@@ -5,19 +5,20 @@
 */
 #pragma once
 
+#include "newmailnotifier_export.h"
 #include <Akonadi/Item>
 #include <QObject>
 
-class NewMailNotificationHistoryManager : public QObject
+class NEWMAILNOTIFIER_EXPORT NewMailNotificationHistoryManager : public QObject
 {
     Q_OBJECT
 public:
-    struct HistoryMailInfo {
+    struct NEWMAILNOTIFIER_EXPORT HistoryMailInfo {
         QString message;
         Akonadi::Item::Id identifier;
     };
 
-    struct HistoryFolderInfo {
+    struct NEWMAILNOTIFIER_EXPORT HistoryFolderInfo {
         QString message;
         Akonadi::Collection::Id identifier;
     };
