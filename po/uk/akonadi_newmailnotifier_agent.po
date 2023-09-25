@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-23 01:45+0000\n"
-"PO-Revision-Date: 2023-08-03 09:56+0300\n"
+"PO-Revision-Date: 2023-09-24 18:46+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -27,16 +27,14 @@ msgid "Notification History"
 msgstr "Журнал сповіщень"
 
 #: newmailnotificationhistorymanager.cpp:31
-#, fuzzy, kde-format
-#| msgid "Show mail..."
+#, kde-format
 msgid "[Show Mail]"
-msgstr "Показати пошту…"
+msgstr "[Показати пошту]"
 
 #: newmailnotificationhistorymanager.cpp:36
-#, fuzzy, kde-format
-#| msgid "Folders"
+#, kde-format
 msgid "[Open Folder]"
-msgstr "Теки"
+msgstr "[Відкрити теку]"
 
 #: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:111

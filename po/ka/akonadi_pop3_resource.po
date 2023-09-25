@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2023-09-23 08:43+0200\n"
+"PO-Revision-Date: 2023-09-24 04:50+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -61,6 +61,17 @@ msgid ""
 "you should do some testing first by sending yourself a batch\n"
 "of mail and downloading it."
 msgstr ""
+"დაიმახსოვრეთ, რომ ამ თვისებამ, ზოგიერთს სერვერს, რომელსაც ფაიფლაინის "
+"მხარდაჭერა არ გააჩნია, დაზიანებული ელფოსტის გამოგზავნა აიძულოს.\n"
+"ეს მორგებადია, რადგან ზოგიერთ სერვერს ფაიფლაინის მხარდაჭერა აქვს,\n"
+"მაგრამ ამის შესახებ არ აცხადებს. იმის შესამოწმებლად, აცხადებს თუ არა POP3 "
+"სერვერი\n"
+"ფაიფლაინის მხარდაჭერის შესახებ, ამ ფანჯრის ბოლოში არსებული \"ავტომატური "
+"გამოცნობის\" ღილაკი გამოიყენეთ.\n"
+"თუ თქვენი სერვერი ამის შესახებ არ აცხადებს, მაგრამ თქვენ მეტი სიჩქარე "
+"გჭირდებათ,\n"
+"მაშინ ჯერ უნდა დატესტოთ ის თქვენივე თავისთვის ბევრი ელფოსტის გაგზავნის,\n"
+"შემდეგ კი გადმოწერის გზით."
 
 #: accountwidget.cpp:290
 #, kde-format
@@ -84,6 +95,14 @@ msgid ""
 "should first test it by sending yourself a larger number of test messages "
 "which you all download in one go from the POP server."
 msgstr ""
+"როგორც ჩანს, სერვერს ფაიფლაინის მხარდაჭერა არ გააჩნია, ამიტომ, ეს პარამეტრი "
+"გაითიშა.\n"
+"მაგრამ, ზოგიერთი სერვერი თავის შესაძლებლობებს სწორად არ აცხადებს, ამიტომ "
+"ფაიფლაინის მხარდაჭერა შეგიძლიათ, ხელით, მაინც ჩართოთ. ამავე დროს, "
+"დაიმახსოვრეთ, რომ ამან ზოგიერთ POP3 სერვერს, რომელსაც ფაიფლაინის მხარდაჭერა "
+"არ გააჩნია, ელფოსტის დაზიანება აიძულოს. ასე რომ, სანამ ამ ფუნქციას "
+"მნიშვნელოვან ელფოსტაზე გამოიყენებთ, ჯერ დატესტეთ ეს ფუნქცია თქვენივე "
+"თავისთვის ბევრი ელფოსტის გაგზავნით, შემდეგ კი მათი ერთდროული გადმოწერის გზით."
 
 #: accountwidget.cpp:387
 #, kde-format
@@ -706,7 +725,7 @@ msgstr " მბ"
 #: popsettings.ui:345
 #, kde-format
 msgid "&Use pipelining for faster mail download"
-msgstr ""
+msgstr "&ელფოსტის უფრო სწრაფად გადმოსაწერად ფაიფლაინის გამოყენება"
 
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: popsettings.ui:365
