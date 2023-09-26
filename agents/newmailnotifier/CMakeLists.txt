@@ -44,12 +44,12 @@ ecm_qt_declare_logging_category(newmailnotifier_common_SRCS HEADER newmailnotifi
 qt_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
 target_sources(akonadi_newmailnotifier_agent PRIVATE
   newmailnotifieragent.cpp
-  specialnotifierjob.cpp
-  newmailnotifiershowmessagejob.cpp
-  newmailnotifierreplymessagejob.cpp
   newmailnotifieragent.h
+  specialnotifierjob.cpp
   specialnotifierjob.h
+  newmailnotifiershowmessagejob.cpp
   newmailnotifiershowmessagejob.h
+  newmailnotifierreplymessagejob.cpp
   newmailnotifierreplymessagejob.h
 
   newmailnotificationhistorywidget.h
