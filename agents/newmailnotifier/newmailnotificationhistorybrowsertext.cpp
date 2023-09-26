@@ -23,11 +23,14 @@ void NewMailNotificationHistoryBrowserText::doSetSource(const QUrl &url, QTextDo
 {
     Q_UNUSED(type);
     QString uri = url.toString();
-    if (uri.startsWith(QLatin1String("openMail:"))) {
-        uri.remove(QStringLiteral("openMail:"));
+    // qDebug() << " uri " << uri;
+    if (uri.startsWith(QLatin1String("openmail:"))) {
+        uri.remove(QStringLiteral("openmail:"));
+        // qDebug() << "openMail uri " << uri;
         Q_EMIT openMail(uri);
-    } else if (uri.startsWith(QLatin1String("openFolder:"))) {
-        uri.remove(QStringLiteral("openFolder:"));
+    } else if (uri.startsWith(QLatin1String("openfolder:"))) {
+        uri.remove(QStringLiteral("openfolder:"));
+        // qDebug() << "openFolder uri " << uri;
         Q_EMIT openFolder(uri);
     }
 }
@@ -44,14 +47,12 @@ void NewMailNotificationHistoryBrowserText::slotOpenMail(const QString &identifi
 {
     auto job = new NewMailNotifierShowMessageJob(identifier.toLong());
     job->start();
-    deleteLater();
 }
 
 void NewMailNotificationHistoryBrowserText::slotSelectFolder(const QString &identifier)
 {
     auto job = new NewMailNotifierOpenFolderJob(identifier);
     job->start();
-    deleteLater();
 }
 
 #include "moc_newmailnotificationhistorybrowsertext.cpp"
