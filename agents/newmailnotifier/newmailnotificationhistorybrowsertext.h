@@ -27,4 +27,5 @@ protected:
 
 private:
     void slotOpenMail(const QString &identifier);
+    void slotSelectFolder(const QString &identifier);
 };

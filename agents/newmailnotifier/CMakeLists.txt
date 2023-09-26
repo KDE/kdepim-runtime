@@ -52,6 +52,9 @@ target_sources(akonadi_newmailnotifier_agent PRIVATE
   newmailnotifierreplymessagejob.cpp
   newmailnotifierreplymessagejob.h
 
+  newmailnotifieropenfolderjob.h
+  newmailnotifieropenfolderjob.cpp
+
   newmailnotificationhistorywidget.h
   newmailnotificationhistorywidget.cpp
   newmailnotificationhistorydialog.h
