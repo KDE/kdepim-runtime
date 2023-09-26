@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-23 01:45+0000\n"
+"POT-Creation-Date: 2023-09-26 01:46+0000\n"
 "PO-Revision-Date: 2022-10-11 10:11+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -33,15 +33,15 @@ msgstr "Показывать постоянное уведомление"
 
 #: newmailnotificationhistorymanager.cpp:31
 #, fuzzy, kde-format
-#| msgid "Show mail..."
-msgid "[Show Mail]"
-msgstr "Показать письмо..."
-
-#: newmailnotificationhistorymanager.cpp:36
-#, fuzzy, kde-format
 #| msgid "Folders"
 msgid "[Open Folder]"
 msgstr "Папки"
+
+#: newmailnotificationhistorymanager.cpp:36
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "[Show Mail]"
+msgstr "Показать письмо..."
 
 #: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:111
@@ -62,7 +62,7 @@ msgstr[1] "%1 новых письма в %2 в «%3»"
 msgstr[2] "%1 новых писем в %2 в «%3»"
 msgstr[3] "Одно новое письмо в %2 в «%3»"
 
-#: newmailnotifieragent.cpp:395
+#: newmailnotifieragent.cpp:402
 #, kde-format
 msgid "New mail arrived"
 msgstr "Получено письмо"

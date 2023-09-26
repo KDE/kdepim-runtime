@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-23 01:45+0000\n"
+"POT-Creation-Date: 2023-09-26 01:46+0000\n"
 "PO-Revision-Date: 2023-09-24 18:46+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -28,13 +28,13 @@ msgstr "Журнал сповіщень"
 
 #: newmailnotificationhistorymanager.cpp:31
 #, kde-format
-msgid "[Show Mail]"
-msgstr "[Показати пошту]"
+msgid "[Open Folder]"
+msgstr "[Відкрити теку]"
 
 #: newmailnotificationhistorymanager.cpp:36
 #, kde-format
-msgid "[Open Folder]"
-msgstr "[Відкрити теку]"
+msgid "[Show Mail]"
+msgstr "[Показати пошту]"
 
 #: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:111
@@ -54,7 +54,7 @@ msgstr[1] "%1 нових повідомлення від «%3» у %2"
 msgstr[2] "%1 нових повідомлень від «%3» у %2"
 msgstr[3] "Одне нове повідомлення від «%3» у %2"
 
-#: newmailnotifieragent.cpp:395
+#: newmailnotifieragent.cpp:402
 #, kde-format
 msgid "New mail arrived"
 msgstr "Надійшла пошта"

@@ -163,6 +163,3 @@ msgstr "Cesta k adresáři s kontakty"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Neměnit data aktuální podpůrné vrstvy."
-
-#~ msgid "Filename:"
-#~ msgstr "Název souboru:"

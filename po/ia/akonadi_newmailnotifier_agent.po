@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-23 01:45+0000\n"
+"POT-Creation-Date: 2023-09-26 01:46+0000\n"
 "PO-Revision-Date: 2023-09-24 17:54+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -26,13 +26,13 @@ msgstr "Chronologia de Notification "
 
 #: newmailnotificationhistorymanager.cpp:31
 #, kde-format
-msgid "[Show Mail]"
-msgstr "[Monstra posta]"
+msgid "[Open Folder]"
+msgstr "[Aperi dossier]"
 
 #: newmailnotificationhistorymanager.cpp:36
 #, kde-format
-msgid "[Open Folder]"
-msgstr "[Aperi dossier]"
+msgid "[Show Mail]"
+msgstr "[Monstra posta]"
 
 #: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:111
@@ -50,7 +50,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Un nove message de e-posta in %2 ex \"%3\""
 msgstr[1] "%1 nove messages de e-postas in %2 ex \"%3\""
 
-#: newmailnotifieragent.cpp:395
+#: newmailnotifieragent.cpp:402
 #, kde-format
 msgid "New mail arrived"
 msgstr "Nove message de e-posta arrivate"

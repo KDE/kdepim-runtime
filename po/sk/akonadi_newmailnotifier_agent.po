@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-23 01:45+0000\n"
+"POT-Creation-Date: 2023-09-26 01:46+0000\n"
 "PO-Revision-Date: 2019-07-17 16:24+0200\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -26,15 +26,15 @@ msgstr "Zobraziť trvalé oznámenie"
 
 #: newmailnotificationhistorymanager.cpp:31
 #, fuzzy, kde-format
-#| msgid "Show mail..."
-msgid "[Show Mail]"
-msgstr "Zobraziť mail..."
-
-#: newmailnotificationhistorymanager.cpp:36
-#, fuzzy, kde-format
 #| msgid "Folders"
 msgid "[Open Folder]"
 msgstr "Priečinky"
+
+#: newmailnotificationhistorymanager.cpp:36
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "[Show Mail]"
+msgstr "Zobraziť mail..."
 
 #: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:111
@@ -53,7 +53,7 @@ msgstr[0] "Jeden nový email v %2 z \"%3\""
 msgstr[1] "%1 nové emaily v %2 z \"%3\""
 msgstr[2] "%1 nových emailov v %2 z \"%3\""
 
-#: newmailnotifieragent.cpp:395
+#: newmailnotifieragent.cpp:402
 #, kde-format
 msgid "New mail arrived"
 msgstr "Prišla nová pošta"

@@ -134,6 +134,3 @@ msgid_plural " minutes"
 msgstr[0] " minuta"
 msgstr[1] " minuty"
 msgstr[2] " minut"
-
-#~ msgid "Path:"
-#~ msgstr "Cesta:"

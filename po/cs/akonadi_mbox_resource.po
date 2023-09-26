@@ -280,6 +280,3 @@ msgstr "Zamykací soubor"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Počet smazaných zpráv před zahájením pročištění."
-
-#~ msgid "URL:"
-#~ msgstr "URL:"

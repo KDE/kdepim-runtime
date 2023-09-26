@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-23 01:45+0000\n"
+"POT-Creation-Date: 2023-09-26 01:46+0000\n"
 "PO-Revision-Date: 2017-04-20 16:35+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -29,15 +29,15 @@ msgstr ""
 
 #: newmailnotificationhistorymanager.cpp:31
 #, fuzzy, kde-format
-#| msgid "Show mail..."
-msgid "[Show Mail]"
-msgstr "Εμφάνιση αλληλογραφίας..."
-
-#: newmailnotificationhistorymanager.cpp:36
-#, fuzzy, kde-format
 #| msgid "Folders"
 msgid "[Open Folder]"
 msgstr "Φάκελοι"
+
+#: newmailnotificationhistorymanager.cpp:36
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "[Show Mail]"
+msgstr "Εμφάνιση αλληλογραφίας..."
 
 #: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:111
@@ -55,7 +55,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Ένα νέο μήνυμα στο «%2» από «%3»"
 msgstr[1] "%1 νέα μηνύματα στο «%2» από «%3»"
 
-#: newmailnotifieragent.cpp:395
+#: newmailnotifieragent.cpp:402
 #, kde-format
 msgid "New mail arrived"
 msgstr "Έφτασε νέα αλληλογραφία"

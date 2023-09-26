@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-23 01:45+0000\n"
+"POT-Creation-Date: 2023-09-26 01:46+0000\n"
 "PO-Revision-Date: 2011-12-28 12:28-0500\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -25,12 +25,12 @@ msgstr ""
 
 #: newmailnotificationhistorymanager.cpp:31
 #, kde-format
-msgid "[Show Mail]"
+msgid "[Open Folder]"
 msgstr ""
 
 #: newmailnotificationhistorymanager.cpp:36
 #, kde-format
-msgid "[Open Folder]"
+msgid "[Show Mail]"
 msgstr ""
 
 #: newmailnotificationhistorywidget.cpp:22
@@ -54,7 +54,7 @@ msgstr[2] "%1 theachtaireacht nua i %2"
 msgstr[3] "%1 dteachtaireacht nua i %2"
 msgstr[4] "%1 teachtaireacht nua i %2"
 
-#: newmailnotifieragent.cpp:395
+#: newmailnotifieragent.cpp:402
 #, kde-format
 msgid "New mail arrived"
 msgstr ""

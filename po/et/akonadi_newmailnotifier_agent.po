@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-23 01:45+0000\n"
+"POT-Creation-Date: 2023-09-26 01:46+0000\n"
 "PO-Revision-Date: 2020-01-02 11:46+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -26,15 +26,15 @@ msgstr "Püsivate märguannete alleshoidmine"
 
 #: newmailnotificationhistorymanager.cpp:31
 #, fuzzy, kde-format
-#| msgid "Show mail..."
-msgid "[Show Mail]"
-msgstr "Näita kirja..."
-
-#: newmailnotificationhistorymanager.cpp:36
-#, fuzzy, kde-format
 #| msgid "Folders"
 msgid "[Open Folder]"
 msgstr "Kaustad"
+
+#: newmailnotificationhistorymanager.cpp:36
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "[Show Mail]"
+msgstr "Näita kirja..."
 
 #: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:111
@@ -52,7 +52,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Üks uus kiri kaustas %2 saatjalt %3"
 msgstr[1] "%1 uut kirja kaustas %2 saatjalt %3"
 
-#: newmailnotifieragent.cpp:395
+#: newmailnotifieragent.cpp:402
 #, kde-format
 msgid "New mail arrived"
 msgstr "Saabus uus kiri"

@@ -56,6 +56,3 @@ msgstr "Neměnit data aktuální podpůrné vrstvy."
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "Monitorovat změny souboru."
-
-#~ msgid "Filename:"
-#~ msgstr "Název souboru:"

@@ -72,6 +72,3 @@ msgstr "Nelze získat přidanou položku %1."
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Nelze získat upravenou položku %1."
-
-#~ msgid "Filename:"
-#~ msgstr "Název souboru:"

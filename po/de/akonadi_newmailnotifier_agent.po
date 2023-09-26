@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-23 01:45+0000\n"
+"POT-Creation-Date: 2023-09-26 01:46+0000\n"
 "PO-Revision-Date: 2023-08-13 16:18+0200\n"
 "Last-Translator: Frederik Schwarzer <schwarzer@kde.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -24,15 +24,15 @@ msgstr "Benachrichtigungsverlauf"
 
 #: newmailnotificationhistorymanager.cpp:31
 #, fuzzy, kde-format
-#| msgid "Show mail..."
-msgid "[Show Mail]"
-msgstr "E-Mail anzeigen ..."
-
-#: newmailnotificationhistorymanager.cpp:36
-#, fuzzy, kde-format
 #| msgid "Folders"
 msgid "[Open Folder]"
 msgstr "Ordner"
+
+#: newmailnotificationhistorymanager.cpp:36
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "[Show Mail]"
+msgstr "E-Mail anzeigen ..."
 
 #: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:111
@@ -50,7 +50,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Eine neue E-Mail in %2 von %3"
 msgstr[1] "%1 neue E-Mails in %2 von %3"
 
-#: newmailnotifieragent.cpp:395
+#: newmailnotifieragent.cpp:402
 #, kde-format
 msgid "New mail arrived"
 msgstr "Neue Nachrichten eingetroffen"
