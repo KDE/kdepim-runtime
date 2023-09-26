@@ -46,8 +46,8 @@ private:
     Q_REQUIRED_RESULT static NEWMAILNOTIFIER_NO_EXPORT QString generateOpenMailStr(Akonadi::Item::Id id);
     Q_REQUIRED_RESULT static NEWMAILNOTIFIER_NO_EXPORT QString generateOpenFolderStr(Akonadi::Collection::Id id);
     NEWMAILNOTIFIER_NO_EXPORT void addHeader();
-    NEWMAILNOTIFIER_NO_EXPORT void cleanupStr(QString &str);
     QStringList mHistory;
+    // Only for autotest
     bool mTestEnabled = false;
 };
 Q_DECLARE_TYPEINFO(NewMailNotificationHistoryManager::HistoryMailInfo, Q_RELOCATABLE_TYPE);

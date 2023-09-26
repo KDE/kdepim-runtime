@@ -40,8 +40,7 @@ void NewMailNotificationHistoryManager::addEmailInfoNotificationHistory(const Ne
 {
     // qDebug() << "NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory  " << info;
     addHeader();
-    QString messageInfo = info.message;
-    cleanupStr(messageInfo);
+    const QString messageInfo = info.message;
     const QString message = messageInfo + generateOpenMailStr(info.identifier);
     mHistory += message;
     Q_EMIT historyAdded(mHistory.join(QStringLiteral("<br>")));
@@ -56,8 +55,7 @@ void NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory(const 
         if (!messages.isEmpty()) {
             messages += QStringLiteral("<br>");
         }
-        QString messageInfo = info.message;
-        cleanupStr(messageInfo);
+        const QString messageInfo = info.message;
         messages += messageInfo + generateOpenFolderStr(info.identifier);
     }
     mHistory += messages;
@@ -79,13 +77,6 @@ void NewMailNotificationHistoryManager::addHeader()
     } else {
         mHistory += QStringLiteral("<b> %1 </b>").arg(QDateTime::currentDateTime().toString());
     }
-}
-
-void NewMailNotificationHistoryManager::cleanupStr(QString &str)
-{
-    // str.replace(QStringLiteral("<br>"), QStringLiteral("\n"));
-    str.replace(QStringLiteral("&lt;"), QStringLiteral("<"));
-    str.replace(QStringLiteral("&gt;"), QStringLiteral(">"));
 }
 
 void NewMailNotificationHistoryManager::setHistory(const QStringList &newHistory)
