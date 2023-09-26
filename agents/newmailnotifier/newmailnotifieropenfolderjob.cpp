@@ -48,3 +48,5 @@ void NewMailNotifierOpenFolderJob::start()
 
     emitResult();
 }
+
+#include "moc_newmailnotifieropenfolderjob.cpp"

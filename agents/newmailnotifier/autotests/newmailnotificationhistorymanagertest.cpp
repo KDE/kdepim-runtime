@@ -62,3 +62,5 @@ void NewMailNotificationHistoryManagerTest::generateHtmlFromFolders()
                             .arg(QString::number(info.identifier));
     QCOMPARE(w.history().join(QStringLiteral("<br>")), reference);
 }
+
+#include "moc_newmailnotificationhistorymanagertest.cpp"
