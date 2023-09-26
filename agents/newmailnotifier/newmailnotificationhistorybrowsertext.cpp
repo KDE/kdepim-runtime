@@ -4,12 +4,14 @@
 */
 
 #include "newmailnotificationhistorybrowsertext.h"
+#include "newmailnotifiershowmessagejob.h"
 #include <KStandardAction>
 #include <QMenu>
 
 NewMailNotificationHistoryBrowserText::NewMailNotificationHistoryBrowserText(QWidget *parent)
     : TextCustomEditor::RichTextBrowser(parent)
 {
+    connect(this, &NewMailNotificationHistoryBrowserText::openMail, this, &NewMailNotificationHistoryBrowserText::slotOpenMail);
 }
 
 NewMailNotificationHistoryBrowserText::~NewMailNotificationHistoryBrowserText() = default;
@@ -33,6 +35,13 @@ void NewMailNotificationHistoryBrowserText::addExtraMenuEntry(QMenu *menu, QPoin
     QAction *clearAllAction = KStandardAction::clear(this, &NewMailNotificationHistoryBrowserText::clearHistory, menu);
     menu->addSeparator();
     menu->addAction(clearAllAction);
+}
+
+void NewMailNotificationHistoryBrowserText::slotOpenMail(const QString &identifier)
+{
+    auto job = new NewMailNotifierShowMessageJob(identifier.toLong());
+    job->start();
+    deleteLater();
 }
 
 #include "moc_newmailnotificationhistorybrowsertext.cpp"

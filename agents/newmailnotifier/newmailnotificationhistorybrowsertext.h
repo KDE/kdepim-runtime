@@ -16,6 +16,7 @@ public:
 
 protected:
     void doSetSource(const QUrl &url, QTextDocument::ResourceType type = QTextDocument::UnknownResource) override;
+
 Q_SIGNALS:
     void clearHistory();
     void openMail(const QString &mailIdentifier);
@@ -23,4 +24,7 @@ Q_SIGNALS:
 
 protected:
     void addExtraMenuEntry(QMenu *menu, QPoint pos) override;
+
+private:
+    void slotOpenMail(const QString &identifier);
 };
