@@ -19,13 +19,12 @@ void NewMailNotificationHistoryBrowserText::doSetSource(const QUrl &url, QTextDo
     Q_UNUSED(type);
     QString uri = url.toString();
     if (uri.startsWith(QLatin1String("openMail:"))) {
-        // TODO open mail emit
+        uri.remove(QStringLiteral("openMail:"));
+        Q_EMIT openMail(uri);
     } else if (uri.startsWith(QLatin1String("openFolder:"))) {
-        // TODO open folder emit
-        // uri.replace(QRegularExpression(QLatin1String("^([^:]+:)/+")), QStringLiteral("\\1"));
+        uri.remove(QStringLiteral("openFolder:"));
+        Q_EMIT openFolder(uri);
     }
-
-    // TODO
 }
 
 void NewMailNotificationHistoryBrowserText::addExtraMenuEntry(QMenu *menu, QPoint pos)
