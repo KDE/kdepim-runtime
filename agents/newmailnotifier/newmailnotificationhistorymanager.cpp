@@ -31,6 +31,11 @@ QString NewMailNotificationHistoryManager::generateOpenFolderStr(Akonadi::Collec
     return QStringLiteral(" <a href=\"%1\">%2</a>").arg(QStringLiteral("openfolder:%1").arg(id), i18n("[Open Folder]"));
 }
 
+QString NewMailNotificationHistoryManager::joinHistory() const
+{
+    return mHistory.join(QStringLiteral("<br>"));
+}
+
 QString NewMailNotificationHistoryManager::generateOpenMailStr(Akonadi::Item::Id id)
 {
     return QStringLiteral(" <a href=\"%1\">%2</a>").arg(QStringLiteral("openmail:%1").arg(id), i18n("[Show Mail]"));
@@ -43,7 +48,7 @@ void NewMailNotificationHistoryManager::addEmailInfoNotificationHistory(const Ne
     const QString messageInfo = info.message;
     const QString message = messageInfo + generateOpenMailStr(info.identifier);
     mHistory += message;
-    Q_EMIT historyAdded(mHistory.join(QStringLiteral("<br>")));
+    Q_EMIT historyAdded(joinHistory());
 }
 
 void NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory(const QList<NewMailNotificationHistoryManager::HistoryFolderInfo> &infos)
@@ -59,7 +64,7 @@ void NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory(const 
         messages += messageInfo + generateOpenFolderStr(info.identifier);
     }
     mHistory += messages;
-    Q_EMIT historyAdded(mHistory.join(QStringLiteral("<br>")));
+    Q_EMIT historyAdded(joinHistory());
 }
 
 void NewMailNotificationHistoryManager::setTestModeEnabled(bool test)
