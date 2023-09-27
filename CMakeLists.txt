@@ -3,35 +3,6 @@ set(PIM_VERSION "5.240.40")
 set(KDEPIM_RUNTIME_VERSION_NUMBER ${PIM_VERSION})
 project(kdepim-runtime VERSION ${KDEPIM_RUNTIME_VERSION_NUMBER})
 
-############### KDEPIM-Runtime version ################
-# KDEPIM_RUNTIME_VERSION
-# Version scheme: "x.y.z build".
-#
-# x is the version number.
-# y is the major release number.
-# z is the minor release number.
-#
-# "x.y.z" follow the kdelibs version kdepim is released with.
-#
-# If "z" is 0, it the version is "x.y"
-#
-# KDEPIM_DEV_VERSION
-# is empty for final versions. For development versions "build" is
-# something like "pre", "", "alpha", "beta1", "beta2", "rc1", "rc2".
-#
-# Examples in chronological order:
-#
-#    3.0
-#    3.0.1
-#    3.1 
-#    3.1 beta1
-#    3.1 beta2
-#    3.1 rc1
-#    3.1
-#    3.1.1
-#    3.2 pre
-#    3.2 
-
 set(KDEPIM_DEV_VERSION alpha)
 set(RELEASE_SERVICE_VERSION "23.11.40")
 
