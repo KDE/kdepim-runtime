@@ -17,6 +17,7 @@ void NewMailNotificationHistoryManagerTest::shouldHaveDefaultValues()
 {
     NewMailNotificationHistoryManager w;
     QVERIFY(w.history().isEmpty());
+    QVERIFY(w.joinHistory().isEmpty());
 }
 
 void NewMailNotificationHistoryManagerTest::generateHtmlFromUniqueEmail()
@@ -31,7 +32,7 @@ void NewMailNotificationHistoryManagerTest::generateHtmlFromUniqueEmail()
                             .arg(QDate::currentDate().toString())
                             .arg(info.message)
                             .arg(QString::number(info.identifier));
-    QCOMPARE(w.history().join(QStringLiteral("<br>")), reference);
+    QCOMPARE(w.joinHistory(), reference);
 
     info.message = QStringLiteral("Mail 2");
     info.identifier = 55;
@@ -43,7 +44,7 @@ void NewMailNotificationHistoryManagerTest::generateHtmlFromUniqueEmail()
                      .arg(QDate::currentDate().toString())
                      .arg(info.message)
                      .arg(QString::number(info.identifier));
-    QCOMPARE(w.history().join(QStringLiteral("<br>")), reference);
+    QCOMPARE(w.joinHistory(), reference);
 }
 
 void NewMailNotificationHistoryManagerTest::generateHtmlFromFolders()
