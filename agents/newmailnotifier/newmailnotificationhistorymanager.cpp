@@ -74,9 +74,9 @@ void NewMailNotificationHistoryManager::setTestModeEnabled(bool test)
 
 void NewMailNotificationHistoryManager::addHeader()
 {
-    if (!mHistory.isEmpty()) {
-        mHistory += QStringLiteral("<br>");
-    }
+    // if (!mHistory.isEmpty()) {
+    //     mHistory += QStringLiteral("<br>");
+    // }
     if (mTestEnabled) { // Only for test
         mHistory += QStringLiteral("<b> %1 </b>").arg(QDate::currentDate().toString());
     } else {

@@ -37,7 +37,7 @@ void NewMailNotificationHistoryManagerTest::generateHtmlFromUniqueEmail()
     info.identifier = 55;
     w.addEmailInfoNotificationHistory(info);
 
-    const QString betweenTwoMail = QStringLiteral("<br><br><br>");
+    const QString betweenTwoMail = QStringLiteral("<br>");
     reference += betweenTwoMail;
     reference += QStringLiteral("<b> %1 </b><br>%2 <a href=\"openmail:%3\">[Show Mail]</a>")
                      .arg(QDate::currentDate().toString())
