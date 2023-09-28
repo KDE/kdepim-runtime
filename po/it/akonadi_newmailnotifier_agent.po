@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-27 01:41+0000\n"
-"PO-Revision-Date: 2023-08-03 22:53+0200\n"
+"POT-Creation-Date: 2023-09-28 01:40+0000\n"
+"PO-Revision-Date: 2023-09-25 18:59+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -25,16 +25,14 @@ msgid "Notification History"
 msgstr "Cronologia delle notifiche"
 
 #: newmailnotificationhistorymanager.cpp:31
-#, fuzzy, kde-format
-#| msgid "Folders"
+#, kde-format
 msgid "[Open Folder]"
-msgstr "Cartelle"
+msgstr "[Apri cartella]"
 
-#: newmailnotificationhistorymanager.cpp:36
-#, fuzzy, kde-format
-#| msgid "Show mail..."
+#: newmailnotificationhistorymanager.cpp:41
+#, kde-format
 msgid "[Show Mail]"
-msgstr "Mostra messaggio di posta..."
+msgstr "[Mostra messaggio di posta]"
 
 #: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:111

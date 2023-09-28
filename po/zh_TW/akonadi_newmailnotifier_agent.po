@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-27 01:41+0000\n"
+"POT-Creation-Date: 2023-09-28 01:40+0000\n"
 "PO-Revision-Date: 2019-01-19 19:35+0800\n"
 "Last-Translator: pan93412 <pan93412@gmail.com>\n"
 "Language-Team: Chinese <zh-l10n@lists.linux.org.tw>\n"
@@ -33,7 +33,7 @@ msgstr "保持持續通知"
 msgid "[Open Folder]"
 msgstr "資料夾"
 
-#: newmailnotificationhistorymanager.cpp:36
+#: newmailnotificationhistorymanager.cpp:41
 #, fuzzy, kde-format
 #| msgid "Show mail..."
 msgid "[Show Mail]"
