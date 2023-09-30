@@ -126,6 +126,3 @@ msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " minutt"
 msgstr[1] "min"
-
-#~ msgid "Path:"
-#~ msgstr "Sti:"

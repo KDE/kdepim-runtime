@@ -58,6 +58,3 @@ msgstr "Ikkje endra grunnlagsdataa."
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "Overvak fila for endringar."
-
-#~ msgid "Filename:"
-#~ msgstr "Filnamn:"

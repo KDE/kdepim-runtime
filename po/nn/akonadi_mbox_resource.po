@@ -284,6 +284,3 @@ msgstr "Låsefil"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Talet på fjerna meldingar før den fysiske slettinga vert utført."
-
-#~ msgid "URL:"
-#~ msgstr "Adresse:"

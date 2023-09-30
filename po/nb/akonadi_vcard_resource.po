@@ -58,6 +58,3 @@ msgstr "Ikke endre de virkelige bakgrunnsdataene."
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "Overvåk fil etter endringer."
-
-#~ msgid "Filename:"
-#~ msgstr "Filnavn:"

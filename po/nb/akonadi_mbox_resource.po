@@ -288,6 +288,3 @@ msgstr "Låsefil"
 msgid "Number of deleted messages before a purge is started."
 msgstr ""
 "Antall slettede meldinger før en pakking startes og fjerner meldingene."
-
-#~ msgid "URL:"
-#~ msgstr "URL:"

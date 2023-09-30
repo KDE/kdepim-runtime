@@ -164,6 +164,3 @@ msgstr "Sti til kontakter-mappe"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Ikke endre de virkelige bakgrunnsdataene."
-
-#~ msgid "Filename:"
-#~ msgstr "Filnavn:"
