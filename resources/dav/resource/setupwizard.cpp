@@ -52,27 +52,24 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
         return {};
     }
 
-    const QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
+    const QStringList supportedProtocols = service->property<QStringList>(QStringLiteral("X-DavGroupware-SupportedProtocols"));
     if (!supportedProtocols.contains(protocol)) {
         return {};
     }
 
     const QString pathPropertyName(QStringLiteral("X-DavGroupware-") + protocol + QStringLiteral("Path"));
-    if (service->property(pathPropertyName).isNull()) {
+    if (service->property<QString>(pathPropertyName).isEmpty()) {
         return {};
     }
 
-    QString pathPattern = service->property(pathPropertyName).toString() + QLatin1Char('/');
+    QString pathPattern = service->property<QString>(pathPropertyName) + QLatin1Char('/');
 
     const QString username = wizard->field(QStringLiteral("credentialsUserName")).toString();
     QString localPart(username);
     localPart.remove(QRegularExpression(QStringLiteral("@.*$")));
     pathPattern.replace(QLatin1String("$user$"), username);
     pathPattern.replace(QLatin1String("$localpart$"), localPart);
-    QString providerName;
-    if (!service->property(QStringLiteral("X-DavGroupware-Provider")).isNull()) {
-        providerName = service->property(QStringLiteral("X-DavGroupware-Provider")).toString();
-    }
+    QString providerName = service->property<QString>(QStringLiteral("X-DavGroupware-Provider"));
     const QString localPath = wizard->field(QStringLiteral("installationPath")).toString();
     if (!localPath.isEmpty()) {
         if (providerName == QLatin1String("davical")) {
@@ -92,18 +89,18 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
     QUrl url;
 
     if (!wizard->property("usePredefinedProvider").isNull()) {
-        if (service->property(QStringLiteral("X-DavGroupware-ProviderUsesSSL")).toBool()) {
+        if (service->property<bool>(QStringLiteral("X-DavGroupware-ProviderUsesSSL"))) {
             url.setScheme(QStringLiteral("https"));
         } else {
             url.setScheme(QStringLiteral("http"));
         }
 
         const QString hostPropertyName(QStringLiteral("X-DavGroupware-") + protocol + QStringLiteral("Host"));
-        if (service->property(hostPropertyName).isNull()) {
+        if (service->property<QString>(hostPropertyName).isEmpty()) {
             return {};
         }
 
-        url.setHost(service->property(hostPropertyName).toString());
+        url.setHost(service->property<QString>(hostPropertyName));
         url.setPath(pathPattern);
     } else {
         if (wizard->field(QStringLiteral("connectionUseSecureConnection")).toBool()) {
@@ -175,7 +172,7 @@ SetupWizard::Url::List SetupWizard::urls() const
         return urls;
     }
 
-    const QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
+    const QStringList supportedProtocols = service->property<QStringList>(QStringLiteral("X-DavGroupware-SupportedProtocols"));
     for (const QString &protocol : supportedProtocols) {
         Url url;
 
@@ -411,12 +408,12 @@ void ConnectionPage::initializePage()
         return;
     }
 
-    const QString providerInstallationPath = service->property(QStringLiteral("X-DavGroupware-InstallationPath")).toString();
+    const QString providerInstallationPath = service->property<QString>(QStringLiteral("X-DavGroupware-InstallationPath"));
     if (!providerInstallationPath.isEmpty()) {
         mPath->setText(providerInstallationPath);
     }
 
-    const QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
+    const QStringList supportedProtocols = service->property<QStringList>(QStringLiteral("X-DavGroupware-SupportedProtocols"));
 
     mPreviewLayout = new QFormLayout;
     mLayout->addRow(mPreviewLayout);
