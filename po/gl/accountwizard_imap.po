@@ -43,4 +43,4 @@ msgstr "Servid&or de saída:"
 #: imapwizard.ui:63
 #, kde-format
 msgid "&Download all messages for offline use"
-msgstr "&Descargar todas as mensaxes para utilizadas desconectado"
+msgstr "&Descargar todas as mensaxes para usadas desconectado"

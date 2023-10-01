@@ -44,7 +44,7 @@ msgid ""
 "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
 "Please update it in the account settings page."
 msgstr ""
-"Non se puideron obter as credenciais da conta <b>%1</b> de Microsoft "
+"Non foi posíbel obter as credenciais da conta <b>%1</b> de Microsoft "
 "Exchange. Actualíceas na páxina de configuración da conta."
 
 #: ewsclient/auth/ewspasswordauth.cpp:57
@@ -666,27 +666,27 @@ msgstr "Sobre"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
-msgstr "Non se puido procesar a solicitude de obtención de elementos"
+msgstr "Non foi posíbel procesar a solicitude de obtención de elementos"
 
 #: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
 #: ewsresource.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
-msgstr "Non se puideron obter os elementos"
+msgstr "Non foi posíbel obter os elementos"
 
 #: ewsfetchitempayloadjob.cpp:78
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - incorrect number of responses"
-msgstr "Non se puideron obter os elementos — número incorrecto de respostas"
+msgstr "Non foi posíbel obter os elementos — número incorrecto de respostas"
 
 #: ewsfetchitempayloadjob.cpp:91
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Akonadi item not found for item %1"
 msgstr ""
-"Non se puideron obter os elementos — non se atopou o elemento de Akonadi "
+"Non foi posíbel obter os elementos — non se atopou o elemento de Akonadi "
 "para o elemento %1"
 
 #: ewsfetchitempayloadjob.cpp:98
@@ -694,14 +694,14 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Unknown item type for item %1"
 msgstr ""
-"Non se puideron obter os elementos — Tipo de elemento descoñecido para o "
+"Non foi posíbel obter os elementos — Tipo de elemento descoñecido para o "
 "elemento %1"
 
 #: ewsfetchitempayloadjob.cpp:104
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to fetch item payload"
-msgstr "Non se puideron obter os datos do elemento"
+msgstr "Non foi posíbel obter os datos do elemento"
 
 #: ewsfetchitemsjob.cpp:98
 #, kde-format
@@ -743,7 +743,7 @@ msgstr "Conta superior de Exchange:"
 #: ewsmtaresource.cpp:57
 #, kde-format
 msgid "Unable to connect to master EWS resource"
-msgstr "Non se pode conectar co recurso mestre de EWS"
+msgstr "Non é posíbel conectar co recurso mestre de EWS"
 
 #. i18n: ectx: label, entry (EwsResource), group (General)
 #: ewsmtaresource.kcfg:10
@@ -799,7 +799,7 @@ msgstr "Conectando ao servidor de Exchange"
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
-msgstr "Non se pode conectar ao servidor de Exchange"
+msgstr "Non é posíbel conectar ao servidor de Exchange"
 
 #: ewsresource.cpp:253
 #, kde-format
@@ -825,19 +825,19 @@ msgstr "Obtendo %1 elementos"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
-msgstr "Non se puideron obter os elementos — erro interno"
+msgstr "Non foi posíbel obter os elementos — erro interno"
 
 #: ewsresource.cpp:462
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
-msgstr "Non se puideron obter os cartafoles — erro interno"
+msgstr "Non foi posíbel obter os cartafoles — erro interno"
 
 #: ewsresource.cpp:468
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
-msgstr "Non se puido procesar a solicitude de obtención de cartafoles"
+msgstr "Non foi posíbel procesar a solicitude de obtención de cartafoles"
 
 #: ewsresource.cpp:485
 #, kde-format
@@ -864,57 +864,57 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
 msgstr ""
-"Non se puido procesar a solicitude de actualización de marcas de elemento"
+"Non foi posíbel procesar a solicitude de actualización de marcas de elemento"
 
 #: ewsresource.cpp:580
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
-msgstr "Non se puideron actualizar as marcas de elemento — erro interno"
+msgstr "Non foi posíbel actualizar as marcas de elemento — erro interno"
 
 #: ewsresource.cpp:594
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
-msgstr "Non se puido procesar a solicitude de actualización de elemento"
+msgstr "Non foi posíbel procesar a solicitude de actualización de elemento"
 
 #: ewsresource.cpp:601
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
-msgstr "Non se puido actualizar o elemento — erro interno"
+msgstr "Non foi posíbel actualizar o elemento — erro interno"
 
 #: ewsresource.cpp:636
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
-msgstr "Non se puido procesar a solicitude de movemento de elemento"
+msgstr "Non foi posíbel procesar a solicitude de movemento de elemento"
 
 #: ewsresource.cpp:643
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
-msgstr "Non se puido mover o elemento — erro interno"
+msgstr "Non foi posíbel mover o elemento — erro interno"
 
 #: ewsresource.cpp:650
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
 msgstr ""
-"Non se puido mover o elemento — recibiuse un número incorrecto de respostas "
-"do servidor"
+"Non foi posíbel mover o elemento — recibiuse un número incorrecto de "
+"respostas do servidor"
 
 #: ewsresource.cpp:720
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
-msgstr "Non se puido procesar a solicitude de eliminación de elemento"
+msgstr "Non foi posíbel procesar a solicitude de eliminación de elemento"
 
 #: ewsresource.cpp:727
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
-msgstr "Non se puido eliminar o elemento — erro interno"
+msgstr "Non foi posíbel eliminar o elemento — erro interno"
 
 #: ewsresource.cpp:734
 #, kde-format
@@ -922,7 +922,7 @@ msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
 msgstr ""
-"Non se puido eliminar o elemento — recibiuse un número incorrecto de "
+"Non foi posíbel eliminar o elemento — recibiuse un número incorrecto de "
 "respostas do servidor"
 
 #: ewsresource.cpp:779 ewsresource.cpp:992
@@ -935,51 +935,51 @@ msgstr "Non se permite o tipo de elemento para crear"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
-msgstr "Non se puido procesar a solicitude de creación de elemento"
+msgstr "Non foi posíbel procesar a solicitude de creación de elemento"
 
 #: ewsresource.cpp:796
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
-msgstr "Non se puido crear o elemento — erro interno"
+msgstr "Non foi posíbel crear o elemento — erro interno"
 
 #: ewsresource.cpp:817
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr ""
-"Non se puido engadir a colección — non se pode determinar o tipo de cartafol "
-"de EWS"
+"Non foi posíbel engadir a colección — non se pode determinar o tipo de "
+"cartafol de EWS"
 
 #: ewsresource.cpp:836
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
-msgstr "Non se puido procesar a solicitude de creación de cartafol"
+msgstr "Non foi posíbel procesar a solicitude de creación de cartafol"
 
 #: ewsresource.cpp:842
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
-msgstr "Non se puido crear o cartafol — erro interno"
+msgstr "Non foi posíbel crear o cartafol — erro interno"
 
 #: ewsresource.cpp:854
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
-msgstr "Non se puido crear o cartafol"
+msgstr "Non foi posíbel crear o cartafol"
 
 #: ewsresource.cpp:877
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
-msgstr "Non se puido procesar a solicitude de movemento de cartafol"
+msgstr "Non foi posíbel procesar a solicitude de movemento de cartafol"
 
 #: ewsresource.cpp:883
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
-msgstr "Non se puido mover o cartafol — erro interno"
+msgstr "Non foi posíbel mover o cartafol — erro interno"
 
 #: ewsresource.cpp:889
 #, kde-format
@@ -987,26 +987,26 @@ msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
 msgstr ""
-"Non se puido mover o cartafol — recibiuse un número incorrecto de respostas "
-"do servidor"
+"Non foi posíbel mover o cartafol — recibiuse un número incorrecto de "
+"respostas do servidor"
 
 #: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
-msgstr "Non se puido mover o cartafol"
+msgstr "Non foi posíbel mover o cartafol"
 
 #: ewsresource.cpp:928
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
-msgstr "Non se puido procesar a solicitude de actualización de cartafol"
+msgstr "Non foi posíbel procesar a solicitude de actualización de cartafol"
 
 #: ewsresource.cpp:934
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
-msgstr "Non se puido actualizar o cartafol — erro interno"
+msgstr "Non foi posíbel actualizar o cartafol — erro interno"
 
 #: ewsresource.cpp:940
 #, kde-format
@@ -1014,44 +1014,44 @@ msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
 msgstr ""
-"Non se puido actualizar o cartafol — recibiuse un número incorrecto de "
+"Non foi posíbel actualizar o cartafol — recibiuse un número incorrecto de "
 "respostas do servidor"
 
 #: ewsresource.cpp:951
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
-msgstr "Non se puido actualizar o cartafol"
+msgstr "Non foi posíbel actualizar o cartafol"
 
 #: ewsresource.cpp:968
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
-msgstr "Non se puido procesar a solicitude de eliminación de cartafol"
+msgstr "Non foi posíbel procesar a solicitude de eliminación de cartafol"
 
 #: ewsresource.cpp:974
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
-msgstr "Non se puido eliminar o cartafol — erro interno"
+msgstr "Non foi posíbel eliminar o cartafol — erro interno"
 
 #: ewsresource.cpp:982
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
-msgstr "Non se puido eliminar o cartafol"
+msgstr "Non foi posíbel eliminar o cartafol"
 
 #: ewsresource.cpp:1006 ewsresource.cpp:1040
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
-msgstr "Non se puido procesar a solicitude de envío de elemento"
+msgstr "Non foi posíbel procesar a solicitude de envío de elemento"
 
 #: ewsresource.cpp:1012 ewsresource.cpp:1046
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
-msgstr "Non se puido enviar o elemento — erro interno"
+msgstr "Non foi posíbel enviar o elemento — erro interno"
 
 #: ewsresource.cpp:1051
 #, kde-format
@@ -1070,25 +1070,28 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr ""
-"Non se puido procesar a solicitude de actualización de etiquetas de elemento"
+"Non foi posíbel procesar a solicitude de actualización de etiquetas de "
+"elemento"
 
 #: ewsresource.cpp:1262
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
-msgstr "Non se puideron actualizar as etiquetas de elemento — erro interno"
+msgstr "Non foi posíbel actualizar as etiquetas de elemento — erro interno"
 
 #: ewsresource.cpp:1299
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
-msgstr "Non se puido procesar a solicitude de actualización de etiqueta global"
+msgstr ""
+"Non foi posíbel procesar a solicitude de actualización de etiqueta global"
 
 #: ewsresource.cpp:1315
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
-msgstr "Non se puido procesar a solicitude de obtención de etiquetas globais"
+msgstr ""
+"Non foi posíbel procesar a solicitude de obtención de etiquetas globais"
 
 #: ewsresource.cpp:1386
 #, kde-format
@@ -1265,7 +1268,7 @@ msgstr "O servidor de Exchange non está configurado."
 #, kde-format
 msgctxt "@info"
 msgid "Failed to retrieve folder list."
-msgstr "Non se puido obter a lista de cartafoles."
+msgstr "Non foi posíbel obter a lista de cartafoles."
 
 #: ewssubscriptionwidget.cpp:286
 #, kde-format
@@ -1301,7 +1304,7 @@ msgstr "Só os subscritos"
 #: mail/ewscreatemailjob.cpp:218
 #, kde-format
 msgid "Failed to create mail item"
-msgstr "Non se puido crear o elemento de correo"
+msgstr "Non foi posíbel crear o elemento de correo"
 
 #: mail/ewsmodifymailjob.cpp:92
 #, kde-format

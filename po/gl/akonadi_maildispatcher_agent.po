@@ -69,7 +69,7 @@ msgstr "Desconectado; suspendeuse o envío de mensaxes."
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
-msgstr "Estase a enviar: %1"
+msgstr "Enviando: %1"
 
 #: maildispatcheragent.cpp:258
 #, kde-format
@@ -97,7 +97,7 @@ msgstr "Identificador da colección de Correo Enviado"
 #: outboxqueue.cpp:265
 #, kde-format
 msgid "Could not access the outbox folder (%1)."
-msgstr "Non se puido acceder ao cartafol de saída (%1)."
+msgstr "Non foi posíbel acceder ao cartafol de saída (%1)."
 
 #: sendjob.cpp:49 sendjob.cpp:50
 #, kde-format
@@ -108,18 +108,18 @@ msgstr "Interrompeuse o envío de mensaxes."
 #, kde-format
 msgid "Could not initiate message transport. Possibly invalid transport."
 msgstr ""
-"Non se puido iniciar o transporte de mensaxes. Posibelmente o transporte "
+"Non foi posíbel iniciar o transporte de mensaxes. Posibelmente o transporte "
 "sexa incorrecto."
 
 #: sendjob.cpp:65
 #, kde-format
 msgid "Could not send message. Invalid transport."
-msgstr "Non se puido enviar a mensaxe. O transporte é incorrecto."
+msgstr "Non foi posíbel enviar a mensaxe. O transporte é incorrecto."
 
 #: sendjob.cpp:97
 #, kde-format
 msgid "Failed to get D-Bus interface of resource %1."
-msgstr "Non se puido obter a interface D-Bus do recurso %1."
+msgstr "Non foi posíbel obter a interface D-Bus do recurso %1."
 
 #: sendjob.cpp:110
 #, kde-format
@@ -141,12 +141,12 @@ msgstr "Interrompeuse o transporte das mensaxes."
 #: sendjob.cpp:240
 #, kde-format
 msgid "Failed to transport message."
-msgstr "Non se puido transportar a mensaxe."
+msgstr "Non foi posíbel transportar a mensaxe."
 
 #: sendjob.cpp:282
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
-msgstr "Non se puido obter a interface D-Bus do axente de filtro de correo."
+msgstr "Non foi posíbel obter a interface D-Bus do axente de filtro de correo."
 
 #: sendjob.cpp:289
 #, kde-format
@@ -171,12 +171,12 @@ msgstr ""
 #: sendjob.cpp:370
 #, kde-format
 msgid "Failed to store result in item."
-msgstr "Non se puido almacenar o resultado no elemento."
+msgstr "Non foi posíbel almacenar o resultado no elemento."
 
 #: storeresultjob.cpp:59
 #, kde-format
 msgid "Failed to fetch item."
-msgstr "Non se puido obter o elemento."
+msgstr "Non foi posíbel obter o elemento."
 
 #~ msgid "Mail Dispatcher Agent Settings"
 #~ msgstr "Configuración do Axente de Despacho de Correo"

@@ -32,7 +32,7 @@ msgstr "xosecalvo@gmail.com"
 #: ../kmigratorbase.cpp:116
 #, kde-format
 msgid "Creating instance of type %1"
-msgstr "Estase a crear unha instancia tipo %1"
+msgstr "Creando unha instancia tipo %1"
 
 #: ../migratorbase.cpp:128
 #, kde-format
@@ -43,13 +43,13 @@ msgstr "Falta o identificador"
 #, kde-format
 msgid "Failed to start migration because migrator is not ready"
 msgstr ""
-"Non se puido iniciar a migración porque o programa de migración non está "
+"Non foi posíbel iniciar a migración porque o programa de migración non está "
 "listo"
 
 #: ../migratorbase.cpp:147
 #, kde-format
 msgid "Starting migration..."
-msgstr "Estase a iniciar a migración…"
+msgstr "Iniciando a migración…"
 
 #: ../migratorbase.cpp:189
 #, kde-format

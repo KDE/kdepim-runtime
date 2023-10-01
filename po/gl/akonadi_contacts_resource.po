@@ -86,7 +86,7 @@ msgstr "Atopouse un ficheiro cun formato descoñecido: «%1»"
 #: contactsresource.cpp:197
 #, kde-format
 msgid "Unable to open file '%1'"
-msgstr "Non se pode abrir o ficheiro «%1»"
+msgstr "Non é posíbel abrir o ficheiro «%1»"
 
 #: contactsresource.cpp:207
 #, kde-format
@@ -102,18 +102,18 @@ msgstr "Atopouse un grupo de contactos incorrecto no ficheiro «%1»: %2"
 #: contactsresource.cpp:412
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
-msgstr "Estase a intentar escribir nun directorio só para lectura: «%1»"
+msgstr "Intentando escribir nun directorio só para lectura: «%1»"
 
 #: contactsresource.cpp:251 contactsresource.cpp:266 contactsresource.cpp:301
 #: contactsresource.cpp:313
 #, kde-format
 msgid "Unable to write to file '%1': %2"
-msgstr "Non se pode escribir no ficheiro «%1»: %2"
+msgstr "Non é posíbel escribir no ficheiro «%1»: %2"
 
 #: contactsresource.cpp:285 contactsresource.cpp:333
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'"
-msgstr "Estase a intentar escribir nun ficheiro só para lectura: «%1»"
+msgstr "Intentando escribir nun ficheiro só para lectura: «%1»"
 
 #: contactsresource.cpp:323
 #, kde-format
@@ -123,17 +123,17 @@ msgstr "Recibiuse o elemento con carga descoñecida %1"
 #: contactsresource.cpp:348
 #, kde-format
 msgid "Unable to remove file '%1'"
-msgstr "Non se pode retirar o ficheiro «%1»"
+msgstr "Non é posíbel retirar o ficheiro «%1»"
 
 #: contactsresource.cpp:365
 #, kde-format
 msgid "Unable to create folder '%1'."
-msgstr "Non se pode crear o cartafol «%1»."
+msgstr "Non é posíbel crear o cartafol «%1»."
 
 #: contactsresource.cpp:400
 #, kde-format
 msgid "Unable to rename folder '%1'."
-msgstr "Non se pode renomear o cartafol «%1»."
+msgstr "Non é posíbel renomear o cartafol «%1»."
 
 #: contactsresource.cpp:418
 #, kde-format
@@ -143,17 +143,17 @@ msgstr "Cartafol para eliminar descoñecido."
 #: contactsresource.cpp:422
 #, kde-format
 msgid "Unable to delete folder '%1'."
-msgstr "Non se pode eliminar o cartafol «%1»."
+msgstr "Non é posíbel eliminar o cartafol «%1»."
 
 #: contactsresource.cpp:437
 #, kde-format
 msgid "Unable to move file '%1' to '%2', '%2' already exists."
-msgstr "Non se pode mover o ficheiro «%1» a «%2»; «%2» xa existe."
+msgstr "Non é posíbel mover o ficheiro «%1» a «%2»; «%2» xa existe."
 
 #: contactsresource.cpp:451
 #, kde-format
 msgid "Unable to move directory '%1' to '%2', '%2' already exists."
-msgstr "Non se pode mover o directorio «%1» a «%2»; «%2» xa existe."
+msgstr "Non é posíbel mover o directorio «%1» a «%2»; «%2» xa existe."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: contactsresource.kcfg:10

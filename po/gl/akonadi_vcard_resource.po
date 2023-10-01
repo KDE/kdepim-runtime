@@ -33,7 +33,7 @@ msgstr "Non se atopou o contacto con identificador «%1»."
 #: vcardresource.cpp:164 vcardresource.cpp:184
 #, kde-format
 msgid "Unable to open vCard file '%1'."
-msgstr "Non se pode abrir o ficheiro vCard «%1»."
+msgstr "Non é posíbel abrir o ficheiro vCard «%1»."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: vcardresource.kcfg:10

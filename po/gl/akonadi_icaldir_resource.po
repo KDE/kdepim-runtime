@@ -26,7 +26,7 @@ msgstr "Non se atopou ningunha incidencia co identificador de usuario «%1»."
 #: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
-msgstr "Estase a intentar escribir nun directorio só de lectura: «%1»."
+msgstr "Intentando escribir nun directorio só de lectura: «%1»."
 
 #: icaldirresource.cpp:250
 #, kde-format
