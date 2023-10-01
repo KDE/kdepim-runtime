@@ -62,17 +62,17 @@ msgstr "Non se cargou o calendario."
 #: shared/icalresourcebase.cpp:134
 #, kde-format
 msgid "Failed to save calendar file to %1"
-msgstr "Non se puido gardar o ficheiro de calendario en %1"
+msgstr "Non foi posíbel gardar o ficheiro de calendario en %1"
 
 #: shared/icalresourcebase.h:93
 #, kde-format
 msgid "Unable to retrieve added item %1."
-msgstr "Non se pode recuperar o elemento engadido %1."
+msgstr "Non é posíbel recuperar o elemento engadido %1."
 
 #: shared/icalresourcebase.h:93
 #, kde-format
 msgid "Unable to retrieve modified item %1."
-msgstr "Non se pode recuperar o elemento modificado %1."
+msgstr "Non é posíbel recuperar o elemento modificado %1."
 
 #~ msgid "Filename:"
 #~ msgstr "Ruta do ficheiro:"

@@ -30,12 +30,12 @@ msgstr[1] "(%1 mensaxes marcadas para eliminárense)"
 #: compactpage.cpp:78
 #, kde-format
 msgid "Failed to fetch the collection."
-msgstr "Non se puido obter a colección."
+msgstr "Non foi posíbel obter a colección."
 
 #: compactpage.cpp:94
 #, kde-format
 msgid "Failed to load the mbox file"
-msgstr "Non se puido cargar o ficheiro de mbox"
+msgstr "Non foi posíbel cargar o ficheiro de mbox"
 
 #: compactpage.cpp:96
 #, kde-format
@@ -47,7 +47,7 @@ msgstr[1] "(A eliminar %1 mensaxes)"
 #: compactpage.cpp:107 compactpage.cpp:115
 #, kde-format
 msgid "Failed to compact the mbox file."
-msgstr "Non se puido compactar o ficheiro de mbox."
+msgstr "Non foi posíbel compactar o ficheiro de mbox."
 
 #: compactpage.cpp:117
 #, kde-format
@@ -256,7 +256,7 @@ msgstr ""
 "maioría dos casos. Porén, se tamén hai programas que non usen Akonadi que "
 "accedan ao ficheiro mbox configurado, haberá que designar un método de "
 "bloqueo axeitado. Lembre que, de ser o caso, o recurso e os demais programas "
-"teñen que utilizar todos o mesmo método de bloqueo."
+"teñen que usar todos o mesmo método de bloqueo."
 
 #: mboxconfig.cpp:20
 #, kde-format
@@ -288,7 +288,7 @@ msgstr "Non se cargou o mBox."
 #: mboxresource.cpp:151
 #, kde-format
 msgid "Failed to read message with uid '%1'."
-msgstr "Non se puido ler a mensaxe co uid «%1»."
+msgstr "Non foi posíbel ler a mensaxe co uid «%1»."
 
 #: mboxresource.cpp:185
 #, kde-format
@@ -303,7 +303,7 @@ msgstr "Non se engadiu a mensaxe de correo ao MBox."
 #: mboxresource.cpp:230
 #, kde-format
 msgid "Could not fetch the collection: %1"
-msgstr "Non se puido obter a colección: %1"
+msgstr "Non foi posíbel obter a colección: %1"
 
 #: mboxresource.cpp:259
 #, kde-format
@@ -321,7 +321,7 @@ msgstr ""
 #: mboxresource.cpp:290
 #, kde-format
 msgid "Failed to save mbox file to %1"
-msgstr "Non se puido gardar o ficheiro de mbox en %1"
+msgstr "Non foi posíbel gardar o ficheiro de mbox en %1"
 
 #: mboxresource.cpp:349
 #, kde-format
@@ -329,8 +329,8 @@ msgid ""
 "Failed to update the changed item because the old item could not be deleted "
 "Reason: %1"
 msgstr ""
-"Non se puido actualizar o elemento cambiado porque non se puido eliminar o "
-"elemento antigo. Razón: %1"
+"Non foi posíbel actualizar o elemento cambiado porque non se puido eliminar "
+"o elemento antigo. Razón: %1"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: mboxresource.kcfg:10

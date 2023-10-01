@@ -25,13 +25,13 @@ msgstr ""
 #, kde-format
 msgid "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'."
 msgstr ""
-"Non se pode engadir o cartafol IMAP «%1» a un cartafol pai «%2» que non "
+"Non é posíbel engadir o cartafol IMAP «%1» a un cartafol pai «%2» que non "
 "existe."
 
 #: addcollectiontask.cpp:67
 #, kde-format
 msgid "Failed to create the folder '%1' on the IMAP server. "
-msgstr "Non se puido crear o cartafol «%1» no servidor IMAP. "
+msgstr "Non foi posíbel crear o cartafol «%1» no servidor IMAP. "
 
 #: addcollectiontask.cpp:87 movecollectiontask.cpp:119
 #, kde-format
@@ -39,14 +39,15 @@ msgid ""
 "Failed to subscribe to the folder '%1' on the IMAP server. It will disappear "
 "on next sync. Use the subscription dialog to overcome that"
 msgstr ""
-"Non se puido subscribir ao cartafol «%1» no servidor de IMAP. Ha desaparecer "
-"na vindeira sincronización. Use o diálogo de subscrición para solucionar iso"
+"Non foi posíbel subscribir ao cartafol «%1» no servidor de IMAP. Ha "
+"desaparecer na vindeira sincronización. Use o diálogo de subscrición para "
+"solucionar iso"
 
 #: addcollectiontask.cpp:130 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
 msgstr ""
-"Non se puideron escribir algunhas anotacións novas de «%1» no servidor de "
+"Non foi posíbel escribir algunhas anotacións novas de «%1» no servidor de "
 "IMAP. %2"
 
 #: additemtask.cpp:115 changeitemtask.cpp:181 changeitemtask.cpp:205
@@ -54,13 +55,13 @@ msgstr ""
 #, kde-format
 msgid "Could not determine the UID for the newly created message on the server"
 msgstr ""
-"Non se puido determinar o identificador de usuario da mensaxe recentemente "
-"creada no servidor"
+"Non foi posíbel determinar o identificador de usuario da mensaxe "
+"recentemente creada no servidor"
 
 #: changecollectiontask.cpp:39
 #, kde-format
 msgid "Cannot modify IMAP folder '%1', it does not exist on the server."
-msgstr "Non se pode modificar o cartafol «%1» porque non existe no servidor."
+msgstr "Non é posíbel modificar o cartafol «%1» porque non existe no servidor."
 
 #: changecollectiontask.cpp:51
 #, kde-format
@@ -74,7 +75,7 @@ msgstr ""
 #: changecollectiontask.cpp:237
 #, kde-format
 msgid "Failed to rename the folder, restoring folder list."
-msgstr "Non se puido renomear o cartafol; restáurase a lista de cartafoles."
+msgstr "Non foi posíbel renomear o cartafol; restáurase a lista de cartafoles."
 
 #: changecollectiontask.cpp:256
 #, kde-format
@@ -82,7 +83,7 @@ msgid ""
 "Failed to subscribe to the renamed folder '%1' on the IMAP server. It will "
 "disappear on next sync. Use the subscription dialog to overcome that"
 msgstr ""
-"Non se puido subscribir ao cartafol renomeado «%1» no servidor de IMAP. "
+"Non foi posíbel subscribir ao cartafol renomeado «%1» no servidor de IMAP. "
 "Reaparecerá na vindeira sincronización. Use o diálogo de subscrición para "
 "solucionar isto."
 
@@ -90,7 +91,7 @@ msgstr ""
 #, kde-format
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr ""
-"Non se puideron escribir algunhas ACL novas de «%1» no servidor de IMAP. %2"
+"Non foi posíbel escribir algunhas ACL novas de «%1» no servidor de IMAP. %2"
 
 #: imapresource.cpp:49
 #, kde-format
@@ -354,7 +355,7 @@ msgstr "Obtendo os cartafoles."
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
-msgstr "Estase a obter información adicional do cartafol «%1»."
+msgstr "Obtendo información adicional do cartafol «%1»."
 
 #: imapresourcebase.cpp:415
 #, kde-format
@@ -372,7 +373,7 @@ msgstr "Actualizando o cartafol «%1»."
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
-msgstr "Estase a retirar o cartafol «%1»."
+msgstr "Retirando o cartafol «%1»."
 
 #: imapresourcebase.cpp:441
 #, kde-format
@@ -390,46 +391,46 @@ msgstr "Buscando…"
 #, kde-format
 msgid "Cannot move IMAP folder '%1', it does not exist on the server."
 msgstr ""
-"Non se pode mover o cartafol de IMAP «%1» porque non existe no servidor."
+"Non é posíbel mover o cartafol de IMAP «%1» porque non existe no servidor."
 
 #: movecollectiontask.cpp:35
 #, kde-format
 msgid ""
 "Cannot move IMAP folder '%1' out of '%2', '%2' does not exist on the server."
 msgstr ""
-"Non se pode sacar o cartafol de IMAP «%1» de «%2» porque «%2» non existe no "
-"servidor."
+"Non é posíbel sacar o cartafol de IMAP «%1» de «%2» porque «%2» non existe "
+"no servidor."
 
 #: movecollectiontask.cpp:41
 #, kde-format
 msgid ""
 "Cannot move IMAP folder '%1' to '%2', '%2' does not exist on the server."
 msgstr ""
-"Non se pode mover o cartafol de IMAP «%1» a «%2» porque «%2» non existe no "
+"Non é posíbel mover o cartafol de IMAP «%1» a «%2» porque «%2» non existe no "
 "servidor."
 
 #: moveitemstask.cpp:41
 #, kde-format
 msgid "Cannot move message, it does not exist on the server."
-msgstr "Non se pode mover a mensaxe porque non existe no servidor."
+msgstr "Non é posíbel mover a mensaxe porque non existe no servidor."
 
 #: moveitemstask.cpp:48
 #, kde-format
 msgid "Cannot move message out of '%1', '%1' does not exist on the server."
 msgstr ""
-"Non se pode sacar a mensaxe de «%1» porque «%1» non existe no servidor."
+"Non é posíbel sacar a mensaxe de «%1» porque «%1» non existe no servidor."
 
 #: moveitemstask.cpp:55
 #, kde-format
 msgid "Cannot move message to '%1', '%1' does not exist on the server."
 msgstr ""
-"Non se pode mover a mensaxe para «%1» porque «%1» non existe no servidor."
+"Non é posíbel mover a mensaxe para «%1» porque «%1» non existe no servidor."
 
 #: moveitemstask.cpp:113
 #, kde-format
 msgid "Failed to move item, it has no message payload. Remote id: %1"
 msgstr ""
-"Non se puido mover o elemento, carece de datos de mensaxe. Identificador "
+"Non foi posíbel mover o elemento, carece de datos de mensaxe. Identificador "
 "remoto: %1."
 
 #: moveitemstask.cpp:190
@@ -438,20 +439,20 @@ msgid ""
 "Failed to mark the message from '%1' for deletion on the IMAP server. It "
 "will reappear on next sync."
 msgstr ""
-"Non se puido marcar para eliminar a mensaxe de «%1» no servidor de IMAP. "
+"Non foi posíbel marcar para eliminar a mensaxe de «%1» no servidor de IMAP. "
 "Reaparecerá na vindeira sincronización."
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
-msgstr "Non se puido eliminar o cartafol; restáurase a lista de cartafoles."
+msgstr "Non foi posíbel eliminar o cartafol; restáurase a lista de cartafoles."
 
 #: removecollectionrecursivetask.cpp:146
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""
-"Non se puido atopar o cartafol para eliminar, restaurando a lista de "
+"Non foi posíbel atopar o cartafol para eliminar, restaurando a lista de "
 "cartafoles."
 
 #: resourcestate.cpp:274
@@ -462,7 +463,7 @@ msgstr "Reiniciando a obtención do elemento."
 #: resourcetask.cpp:69
 #, kde-format
 msgid "Unable to connect to the IMAP server."
-msgstr "Non se pode conectar co servidor de IMAP."
+msgstr "Non é posíbel conectar co servidor de IMAP."
 
 #: resourcetask.cpp:113 resourcetask.cpp:125
 #, kde-format
@@ -542,7 +543,7 @@ msgid ""
 "Could not connect to the IMAP-server %1.\n"
 "%2"
 msgstr ""
-"Non se puido conectar co servidor de IMAP %1.\n"
+"Non foi posíbel conectar co servidor de IMAP %1.\n"
 "%2"
 
 #: sessionpool.cpp:254
@@ -551,7 +552,7 @@ msgid ""
 "Could not connect to the IMAP server.\n"
 "%1"
 msgstr ""
-"Non se puido conectar co servidor de IMAP.\n"
+"Non foi posíbel conectar co servidor de IMAP.\n"
 "%1"
 
 #: sessionpool.cpp:279 sessionpool.cpp:319 sessionpool.cpp:388
@@ -563,12 +564,13 @@ msgstr "Desconectado do servidor durante o acceso."
 #: sessionpool.cpp:303
 #, kde-format
 msgid "Could not create another extra connection to the IMAP-server %1."
-msgstr "Non se puido crear unha conexión adicional co servidor de IMAP %1."
+msgstr "Non foi posíbel crear unha conexión adicional co servidor de IMAP %1."
 
 #: sessionpool.cpp:332
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
-msgstr "Non se puido ler o contrasinal: o usuario rexeitou o acceso á carteira"
+msgstr ""
+"Non foi posíbel ler o contrasinal: o usuario rexeitou o acceso á carteira"
 
 #: sessionpool.cpp:340
 #, kde-format
@@ -590,7 +592,7 @@ msgid ""
 "Could not connect to the IMAP-server.\n"
 "%1"
 msgstr ""
-"Non se puido conectar co servidor de IMAP.\n"
+"Non foi posíbel conectar co servidor de IMAP.\n"
 "%1"
 
 #: sessionpool.cpp:432
@@ -599,7 +601,7 @@ msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
 "%2"
 msgstr ""
-"Non se puideron examinar as capacidades admitidas polo servidor de IMAP %1.\n"
+"Non foi posíbel examinar as capacidades admitidas polo servidor de IMAP %1.\n"
 "%2"
 
 #: sessionpool.cpp:440
@@ -608,7 +610,7 @@ msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
 "%1"
 msgstr ""
-"Non se puideron examinar as capacidades admitidas polo servidor de IMAP.\n"
+"Non foi posíbel examinar as capacidades admitidas polo servidor de IMAP.\n"
 "%1"
 
 #: sessionpool.cpp:460
@@ -617,7 +619,7 @@ msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
 "Please ask your sysadmin to upgrade the server."
 msgstr ""
-"Non se pode usar o servidor de IMAP %1 porque faltan algunhas capacidades "
+"Non é posíbel usar o servidor de IMAP %1 porque faltan algunhas capacidades "
 "requiridas: %2. Pídalle ao administrador do sistema que anove o servidor."
 
 #: sessionpool.cpp:532
@@ -644,7 +646,7 @@ msgstr ""
 #, kde-format
 msgctxt "@title:window"
 msgid "Could Not Authenticate"
-msgstr "Non se puido autenticar"
+msgstr "Non foi posíbel autenticar"
 
 #: settingspasswordrequester.cpp:64
 #, kde-format
@@ -743,10 +745,10 @@ msgid ""
 "you have to activate it. If you do not want to use KWallet, check the box "
 "below, but note that you will be prompted for your password when needed."
 msgstr ""
-"Non se puido acceder a KWallet. Se quere almacenar o contrasinal de maneira "
-"permanente haino que activar. Se non quere usar KWallet, marque a opción de "
-"embaixo, pero lembre que se lle ha pedir o contrasinal sempre que for "
-"preciso."
+"Non foi posíbel acceder a KWallet. Se quere almacenar o contrasinal de "
+"maneira permanente haino que activar. Se non quere usar KWallet, marque a "
+"opción de embaixo, pero lembre que se lle ha pedir o contrasinal sempre que "
+"for preciso."
 
 #: setupserver.cpp:413 setupserver.cpp:469
 #, kde-format
@@ -756,7 +758,7 @@ msgstr "Non usar KWallet"
 #: setupserver.cpp:534
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
-msgstr "Non se pode conectar co servidor; verifique o enderezo do servidor."
+msgstr "Non é posíbel conectar co servidor; verifique o enderezo do servidor."
 
 #: setupserver.cpp:546
 #, kde-format
@@ -853,7 +855,7 @@ msgstr "Opcións da comprobación do correo"
 #: setupserverview_desktop.ui:115
 #, kde-format
 msgid "&Download all messages for offline use"
-msgstr "&Descargar todas as mensaxes para utilizadas desconectado"
+msgstr "&Descargar todas as mensaxes para usadas desconectado"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableMailCheckBox)
 #: setupserverview_desktop.ui:122

@@ -177,7 +177,7 @@ msgstr "O recurso non está configurado"
 #: googleresource.cpp:241
 #, kde-format
 msgid "Failed to refresh tokens"
-msgstr "Non se puideron actualizar os tokens."
+msgstr "Non foi posíbel actualizar os tokens."
 
 #: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
 #: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
@@ -418,7 +418,7 @@ msgstr[1] "Non foi posíbel eliminar o contacto."
 #: taskhandler.cpp:225
 #, kde-format
 msgid "Failed to delete task: %1"
-msgstr "Non se puido eliminar a tarefa: %1"
+msgstr "Non foi posíbel eliminar a tarefa: %1"
 
 #: taskhandler.cpp:261
 #, fuzzy, kde-format

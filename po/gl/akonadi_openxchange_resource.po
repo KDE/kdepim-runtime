@@ -36,7 +36,7 @@ msgstr "Insira aquí o contrasinal da conta de Open-Xchange."
 #: configwidget.cpp:72
 #, kde-format
 msgid "Unable to connect: %1"
-msgstr "Non se pode conectar: %1"
+msgstr "Non é posíbel conectar: %1"
 
 #: configwidget.cpp:72
 #, kde-format
@@ -139,7 +139,7 @@ msgstr "Cartafol do sistema"
 #: openxchangeresource.cpp:617
 #, kde-format
 msgid "Unable to connect to server"
-msgstr "Non se pode conectar co servidor"
+msgstr "Non é posíbel conectar co servidor"
 
 #: openxchangeresource.cpp:805
 #, kde-format
