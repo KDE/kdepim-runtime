@@ -22,6 +22,7 @@ Dependencies:
     'pim/libkdepim': '@same'
     'pim/libkgapi' : '@same'
     'pim/kldap' : '@same'
+    'pim/kpimtextedit' : '@same'
     'third-party/libkolabxml' : '@stable'
     'frameworks/kconfig': '@latest'
     'frameworks/kconfigwidgets': '@latest'
@@ -36,4 +37,3 @@ Dependencies:
     'frameworks/kdav': '@latest'
     'frameworks/kdoctools': '@latest'
     'third-party/qtkeychain': '@latest'
-    'pim/kpimtextedit' : '@latest'
