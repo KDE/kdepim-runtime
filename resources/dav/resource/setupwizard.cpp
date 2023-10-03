@@ -52,17 +52,17 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
         return {};
     }
 
-    const QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
+    const QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols"), QMetaType::QStringList).toStringList();
     if (!supportedProtocols.contains(protocol)) {
         return {};
     }
 
     const QString pathPropertyName(QStringLiteral("X-DavGroupware-") + protocol + QStringLiteral("Path"));
-    if (service->property(pathPropertyName).isNull()) {
+    if (service->property(pathPropertyName, QMetaType::QString).isNull()) {
         return {};
     }
 
-    QString pathPattern = service->property(pathPropertyName).toString() + QLatin1Char('/');
+    QString pathPattern = service->property(pathPropertyName, QMetaType::QString).toString() + QLatin1Char('/');
 
     const QString username = wizard->field(QStringLiteral("credentialsUserName")).toString();
     QString localPart(username);
@@ -70,8 +70,8 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
     pathPattern.replace(QLatin1String("$user$"), username);
     pathPattern.replace(QLatin1String("$localpart$"), localPart);
     QString providerName;
-    if (!service->property(QStringLiteral("X-DavGroupware-Provider")).isNull()) {
-        providerName = service->property(QStringLiteral("X-DavGroupware-Provider")).toString();
+    if (!service->property(QStringLiteral("X-DavGroupware-Provider"), QMetaType::QString).isNull()) {
+        providerName = service->property(QStringLiteral("X-DavGroupware-Provider"), QMetaType::QString).toString();
     }
     const QString localPath = wizard->field(QStringLiteral("installationPath")).toString();
     if (!localPath.isEmpty()) {
@@ -92,18 +92,18 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
     QUrl url;
 
     if (!wizard->property("usePredefinedProvider").isNull()) {
-        if (service->property(QStringLiteral("X-DavGroupware-ProviderUsesSSL")).toBool()) {
+        if (service->property(QStringLiteral("X-DavGroupware-ProviderUsesSSL"), QMetaType::Bool).toBool()) {
             url.setScheme(QStringLiteral("https"));
         } else {
             url.setScheme(QStringLiteral("http"));
         }
 
         const QString hostPropertyName(QStringLiteral("X-DavGroupware-") + protocol + QStringLiteral("Host"));
-        if (service->property(hostPropertyName).isNull()) {
+        if (service->property(hostPropertyName, QMetaType::QString).isNull()) {
             return {};
         }
 
-        url.setHost(service->property(hostPropertyName).toString());
+        url.setHost(service->property(hostPropertyName, QMetaType::QString).toString());
         url.setPath(pathPattern);
     } else {
         if (wizard->field(QStringLiteral("connectionUseSecureConnection")).toBool()) {
@@ -175,7 +175,7 @@ SetupWizard::Url::List SetupWizard::urls() const
         return urls;
     }
 
-    const QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
+    const QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols"), QMetaType::QStringList).toStringList();
     for (const QString &protocol : supportedProtocols) {
         Url url;
 
@@ -418,12 +418,13 @@ void ConnectionPage::initializePage()
         return;
     }
 
-    QString providerInstallationPath = service->property(QStringLiteral("X-DavGroupware-InstallationPath")).toString();
+    QString providerInstallationPath = service->property(QStringLiteral("X-DavGroupware-InstallationPath"), QMetaType::QString).toString();
+
     if (!providerInstallationPath.isEmpty()) {
         mPath->setText(providerInstallationPath);
     }
 
-    QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
+    QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols"), QMetaType::QStringList).toStringList();
 
     mPreviewLayout = new QFormLayout;
     mLayout->addRow(mPreviewLayout);
