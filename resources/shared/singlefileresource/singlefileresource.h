@@ -17,6 +17,7 @@
 #include <KIO/Job>
 #include <KLocalizedString>
 
+#include <Akonadi/CachePolicy>
 #include <Akonadi/CollectionModifyJob>
 #include <QDebug>
 #include <QDir>
@@ -299,6 +300,14 @@ public:
             new CollectionModifyJob(c);
         }
         attr->setIconName(mCollectionIcon);
+
+        if (mSettings->periodicUpdate()) {
+            Akonadi::CachePolicy cachePolicy;
+            cachePolicy.setInheritFromParent(false);
+            cachePolicy.setIntervalCheckTime(mSettings->updatePeriod());
+            c.setCachePolicy(cachePolicy);
+        }
+
         return c;
     }
 

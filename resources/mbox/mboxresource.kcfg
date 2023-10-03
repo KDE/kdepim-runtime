@@ -22,6 +22,14 @@
       <label>Monitor file for changes.</label>
       <default>true</default>
     </entry>
+    <entry name="PeriodicUpdate" type="Bool">
+      <label>Periodically update the file.</label>
+      <default>false</default>
+    </entry>
+    <entry name="UpdatePeriod" type="Int">
+      <label>Automatic update period in minutes.</label>
+      <default>60</default>
+    </entry>
   </group>
   <group name="Locking">
     <entry name="LockfileMethod" type="Enum">
