@@ -44,7 +44,7 @@
          <item row="0" column="0">
           <widget class="QLabel" name="filenameLabel">
            <property name="text">
-            <string>File Name:</string>
+            <string>File or URL:</string>
            </property>
            <property name="buddy">
             <cstring>kcfg_Path</cstring>
@@ -63,7 +63,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Select a file. A new file will be created if it doesn't exist. You can also use a URL, but in that case, monitoring for file changes is not possible.</string>
+            <string>Select a local file or a remote URL to download a file from. A new local file will be created if it doesn't exist.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -105,7 +105,7 @@
             <bool>true</bool>
            </property>
            <property name="text">
-            <string>When read-only mode is enabled, no changes will be written. Read-only mode is automatically enabled when the selected file does not support write access.</string>
+            <string>When read-only mode is enabled, no changes will be written. Read-only mode is automatically enabled when the selected file does not support write access or when displaying a calendar from remote URL.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -118,7 +118,7 @@
          <item row="5" column="1">
           <widget class="QCheckBox" name="kcfg_MonitorFile">
            <property name="text">
-            <string>Enable file &amp;monitoring</string>
+            <string>Monitor for &amp;changes</string>
            </property>
           </widget>
          </item>
@@ -131,7 +131,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Changes made by other applications will reload the file when monitoring is enabled. Backups will be created to avoid conflicts when possible.</string>
+            <string>Changes made by other applications will reload the file when monitoring is enabled. Backups will be created to avoid conflicts when possible. Monitoring is not available for remote URLs.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>

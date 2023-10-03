@@ -120,9 +120,9 @@ void SingleFileResourceConfigWidgetBase::validate()
             Q_EMIT okEnabled(false);
             return;
         }
-        if (mMonitorEnabled) {
-            ui.kcfg_MonitorFile->setEnabled(false);
-        }
+
+        ui.kcfg_MonitorFile->setChecked(false);
+        ui.kcfg_MonitorFile->setEnabled(false);
         ui.statusLabel->setText(i18nc("@info:status", "Checking file information..."));
         ui.statusLabel->setVisible(true);
 
