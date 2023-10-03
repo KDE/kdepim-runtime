@@ -40,9 +40,11 @@ SingleFileResourceConfigWidgetBase::SingleFileResourceConfigWidgetBase(QWidget *
     ui.kcfg_Path->setFocus();
     QTimer::singleShot(0, this, &SingleFileResourceConfigWidgetBase::validate);
 
-    ui.readOnlyLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));
-    ui.monitoringLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));
-    ui.pathLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));
+    const auto smallFont = QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont);
+    ui.readOnlyLabel->setFont(smallFont);
+    ui.monitoringLabel->setFont(smallFont);
+    ui.pathLabel->setFont(smallFont);
+    ui.periodicUpdateLabel->setFont(smallFont);
 }
 
 SingleFileResourceConfigWidgetBase::~SingleFileResourceConfigWidgetBase() = default;
