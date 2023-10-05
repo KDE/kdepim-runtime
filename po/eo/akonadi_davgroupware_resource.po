@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-01-13 00:57+0000\n"
+"POT-Creation-Date: 2023-10-05 02:26+0000\n"
 "PO-Revision-Date: 2023-05-29 07:34+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -635,27 +635,27 @@ msgstr "Vojo de instalado"
 msgid "Use secure connection"
 msgstr "Uzi sekuran konekton"
 
-#: setupwizard.cpp:432
+#: setupwizard.cpp:433
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "Fina URL (CalDav)"
 
-#: setupwizard.cpp:437
+#: setupwizard.cpp:438
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "Fina URL (CardDav)"
 
-#: setupwizard.cpp:442
+#: setupwizard.cpp:443
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "Fina URL (GroupDav)"
 
-#: setupwizard.cpp:506 setupwizard.cpp:512
+#: setupwizard.cpp:507 setupwizard.cpp:513
 #, kde-format
 msgid "Test Connection"
 msgstr "Testa Konekto"
 
-#: setupwizard.cpp:507
+#: setupwizard.cpp:508
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -663,12 +663,12 @@ msgid ""
 msgstr ""
 "Vi povas testi nun ĉu la grupvarservilo estas alirebla kun la nuna agordo"
 
-#: setupwizard.cpp:552
+#: setupwizard.cpp:553
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Eraro okazis: %1"
 
-#: setupwizard.cpp:555
+#: setupwizard.cpp:556
 #, kde-format
 msgid "Connected successfully"
 msgstr "Konektita sukcese"

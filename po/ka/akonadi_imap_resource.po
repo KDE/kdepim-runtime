@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-05-18 00:49+0000\n"
-"PO-Revision-Date: 2023-08-28 06:21+0200\n"
+"PO-Revision-Date: 2023-10-04 18:48+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -178,6 +178,9 @@ msgid ""
 "Defines if the annotations, ACLs and quota information of mailboxes should\n"
 "             also be retrieved when the mailboxes get listed."
 msgstr ""
+"აღწერს, უნდა მოხდეს თუ არა საფოსტო ყუთების ანოტაციების, ACL-ების და კვოტის "
+"ინფორმაციის\n"
+"            მიღება, როცა საფოსტო ყუთების ჩამოთვლა ხდება."
 
 #. i18n: ectx: label, entry (AutomaticExpungeEnabled), group (cache)
 #: imapresource.kcfg:63
@@ -187,6 +190,9 @@ msgid ""
 "be\n"
 "             triggered manually through the D-Bus interface."
 msgstr ""
+"აღწერს, უნდა გაეშვას თუ არა ბრძანება expunge ავტომატურად. წინააღმდეგ "
+"შემთხვევაში ის ხელით,\n"
+"               D-Bus-ის ინტერფეისით უნდა გაეშვას."
 
 #. i18n: ectx: label, entry (TrashCollection), group (cache)
 #: imapresource.kcfg:67
@@ -454,6 +460,8 @@ msgid ""
 "<p>Your access rights to folder <b>%1</b> have been restricted, it will no "
 "longer be possible to add messages to this folder.</p>"
 msgstr ""
+"<p>თქვენი წვდომები საქაღალდეზე <b>%1</b> შეზღუდულია. ამ საქაღალდეში "
+"შეტყობინებებს ვეღარ დაამატებთ.</p>"
 
 #: retrievecollectionmetadatatask.cpp:182
 #, kde-format
@@ -590,6 +598,8 @@ msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
 "Please ask your sysadmin to upgrade the server."
 msgstr ""
+"IMAP სერვერს %1 ვერ გამოვიყენებ, რადგან მას აუცილებელი შესაძლებლობები აკლია: "
+"%2. სთხოვეთ თქვენს სისადმინს, ვერსია ასწიოს."
 
 #: sessionpool.cpp:532
 #, kde-format
@@ -605,6 +615,12 @@ msgid ""
 "\n"
 "%1"
 msgstr ""
+"სერვერმა ანგარიშისთვის \"%2\" მიწოდებული მომხმარებლის სახელი და პაროლი "
+"უარყჰყო.\n"
+"გნებავთ, გადახვიდეთ პარამეტრებში, კიდევ ერთხელ სცადოთ შესვლა, თუ არაფერი "
+"გააკეთოთ?\n"
+"\n"
+"%1"
 
 #: settingspasswordrequester.cpp:60
 #, kde-format
@@ -676,6 +692,9 @@ msgid ""
 "as before we will have to re-download all your emails from this account "
 "again. Are you sure you want to proceed?"
 msgstr ""
+"შეცვალეთ სერვერის მისამართი. იმის მიუხედავად, რომ შეიძლება, ეს იგივე "
+"სერვერია, თქვენი ყველა ელფოსტა სერვერიდან თავიდან უნდა გადმოვწერო. "
+"დარწმუნებული ბრძანდებით, რომ გნებავთ, გააკეთოთ ეს?"
 
 #: setupserver.cpp:269
 #, kde-format
@@ -689,6 +708,9 @@ msgid ""
 "account as before we will have to re-download all your emails from this "
 "account again. Are you sure you want to proceed?"
 msgstr ""
+"შეცვალეთ მომხმარებლის სახელი. მაშინაც კი, თუ ეს მომხმარებლის სახელი იგივე "
+"ანგარიშისაა, ყველა თქვენი ელფოსტა სერვერიდან თავიდან უნდა გადმოვწეროთ. "
+"მართლა გნებავთ ამის გაკეთება?"
 
 #: setupserver.cpp:279
 #, kde-format
@@ -702,6 +724,9 @@ msgid ""
 "you have to activate it. If you do not want to use KWallet, check the box "
 "below, but note that you will be prompted for your password when needed."
 msgstr ""
+"KWallet-თან წვდომა შეუძლებელია. თუ გნებავთ, პაროლები სამუდამოდ შეინახოთ, ის "
+"უნდა ჩართოთ. თუ არ გნებავთ KWallet-ის გამოყენება, ჩართეთ პარამეტრი ქვემოთ, "
+"მაგრამ დაიმახსოვრეთ, რომ პაროლს ყოველ ჯერზე გკითხავთ, როცა საჭირო იქნება."
 
 #: setupserver.cpp:429 setupserver.cpp:485
 #, kde-format

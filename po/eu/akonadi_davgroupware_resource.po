@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-01-13 00:57+0000\n"
+"POT-Creation-Date: 2023-10-05 02:26+0000\n"
 "PO-Revision-Date: 2022-08-31 21:07+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -642,27 +642,27 @@ msgstr "Instalazioaren bide-izena"
 msgid "Use secure connection"
 msgstr "Erabili konexio segurua"
 
-#: setupwizard.cpp:432
+#: setupwizard.cpp:433
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "Amaierako URLa (CalDav)"
 
-#: setupwizard.cpp:437
+#: setupwizard.cpp:438
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "Amaierako URLa (CardDav)"
 
-#: setupwizard.cpp:442
+#: setupwizard.cpp:443
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "Amaierako URLa (GroupDav)"
 
-#: setupwizard.cpp:506 setupwizard.cpp:512
+#: setupwizard.cpp:507 setupwizard.cpp:513
 #, kde-format
 msgid "Test Connection"
 msgstr "Probako konexioa"
 
-#: setupwizard.cpp:507
+#: setupwizard.cpp:508
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -671,12 +671,12 @@ msgstr ""
 "Talde-lanerako zerbitzaria uneko konfigurazioarekin atzi daitekeen proba "
 "dezakezu orain"
 
-#: setupwizard.cpp:552
+#: setupwizard.cpp:553
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Errore bat gertatu da: %1"
 
-#: setupwizard.cpp:555
+#: setupwizard.cpp:556
 #, kde-format
 msgid "Connected successfully"
 msgstr "Konexio arrakastatsua"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-01-13 00:57+0000\n"
+"POT-Creation-Date: 2023-10-05 02:26+0000\n"
 "PO-Revision-Date: 2011-12-21 11:31+0700\n"
 "Last-Translator: Seng Sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <supprot@khmeros.info>\n"
@@ -663,27 +663,27 @@ msgstr "ផ្លូវ​ដំឡើង"
 msgid "Use secure connection"
 msgstr "ប្រើ​ការ​តភ្ជាប់​សុវត្ថិភាព"
 
-#: setupwizard.cpp:432
+#: setupwizard.cpp:433
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "URL ចុងក្រោយ (CalDav)"
 
-#: setupwizard.cpp:437
+#: setupwizard.cpp:438
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "URL ចុងក្រោយ (CardDav)"
 
-#: setupwizard.cpp:442
+#: setupwizard.cpp:443
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "URL ចុងក្រោយ​ (GroupDav)"
 
-#: setupwizard.cpp:506 setupwizard.cpp:512
+#: setupwizard.cpp:507 setupwizard.cpp:513
 #, kde-format
 msgid "Test Connection"
 msgstr "សាកល្បង​ការ​តភ្ជាប់"
 
-#: setupwizard.cpp:507
+#: setupwizard.cpp:508
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -692,13 +692,13 @@ msgstr ""
 "អ្នក​អាច​សាកល្បង​ឥឡូវ​ថាតើ​កម៉ាស៊ីនបម្រើ groupware អាច​ត្រូវ​បាន​ចូល​ដំណើរការ​ជា​មួយ​នឹង​ការ​កំណត់​"
 "រចនាសម្ព័ន្ធ​បច្ចុប្បន្ន​ដែរ​ឬទេ"
 
-#: setupwizard.cpp:552
+#: setupwizard.cpp:553
 #, fuzzy, kde-format
 #| msgid "An error occurred: "
 msgid "An error occurred: %1"
 msgstr "កំហុស​បានកើត​ឡើង ៖"
 
-#: setupwizard.cpp:555
+#: setupwizard.cpp:556
 #, kde-format
 msgid "Connected successfully"
 msgstr "បានតភ្ជាប់ដោយ​ជោគជ័យ"

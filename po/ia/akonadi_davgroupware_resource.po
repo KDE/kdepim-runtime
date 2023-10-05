@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-01-13 00:57+0000\n"
+"POT-Creation-Date: 2023-10-05 02:26+0000\n"
 "PO-Revision-Date: 2021-08-31 18:28+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -645,27 +645,27 @@ msgstr "Percurso de installation"
 msgid "Use secure connection"
 msgstr "Usa connexion secure"
 
-#: setupwizard.cpp:432
+#: setupwizard.cpp:433
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "URL final (CalDAV)"
 
-#: setupwizard.cpp:437
+#: setupwizard.cpp:438
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "URL final (CardDav)"
 
-#: setupwizard.cpp:442
+#: setupwizard.cpp:443
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "URL final (GroupDav)"
 
-#: setupwizard.cpp:506 setupwizard.cpp:512
+#: setupwizard.cpp:507 setupwizard.cpp:513
 #, kde-format
 msgid "Test Connection"
 msgstr "Essaya connexion"
 
-#: setupwizard.cpp:507
+#: setupwizard.cpp:508
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -674,12 +674,12 @@ msgstr ""
 "Tu nunc pote essayar si le servitor de groupware pote esser accedite con le "
 "configuration currente"
 
-#: setupwizard.cpp:552
+#: setupwizard.cpp:553
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Un error occurreva: %1"
 
-#: setupwizard.cpp:555
+#: setupwizard.cpp:556
 #, kde-format
 msgid "Connected successfully"
 msgstr "Connecteva con successo"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-01-13 00:57+0000\n"
+"POT-Creation-Date: 2023-10-05 02:26+0000\n"
 "PO-Revision-Date: 2013-09-08 07:05+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -614,40 +614,40 @@ msgstr ""
 msgid "Use secure connection"
 msgstr "بىخەتەر باغلىنىش ئىشلەت"
 
-#: setupwizard.cpp:432
+#: setupwizard.cpp:433
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "ئەڭ ئاخىرقى تور ئادرېسى(URL)(CalDav)"
 
-#: setupwizard.cpp:437
+#: setupwizard.cpp:438
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "ئەڭ ئاخىرقى تور ئادرېسى(URL)(CardDav)"
 
-#: setupwizard.cpp:442
+#: setupwizard.cpp:443
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "ئەڭ ئاخىرقى تور ئادرېسى(URL)(GroupDav)"
 
-#: setupwizard.cpp:506 setupwizard.cpp:512
+#: setupwizard.cpp:507 setupwizard.cpp:513
 #, kde-format
 msgid "Test Connection"
 msgstr "ئۇلىنىشنى سىنا"
 
-#: setupwizard.cpp:507
+#: setupwizard.cpp:508
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
 "current configuration"
 msgstr ""
 
-#: setupwizard.cpp:552
+#: setupwizard.cpp:553
 #, fuzzy, kde-format
 #| msgid "An error occurred: "
 msgid "An error occurred: %1"
 msgstr "خاتالىق كۆرۈلدى: "
 
-#: setupwizard.cpp:555
+#: setupwizard.cpp:556
 #, kde-format
 msgid "Connected successfully"
 msgstr "باغلىنىش مۇۋەپپەقىيەتلىك بولدى"
