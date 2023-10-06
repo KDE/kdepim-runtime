@@ -36,8 +36,8 @@ public:
      */
     ~StoreResultJob() override;
 
-    Q_REQUIRED_RESULT bool success() const;
-    Q_REQUIRED_RESULT QString message() const;
+    [[nodiscard]] bool success() const;
+    [[nodiscard]] QString message() const;
 
 protected:
     // reimpl from TransactionSequence

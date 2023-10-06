@@ -34,9 +34,9 @@ public:
 
     bool accept(Visitor *visitor) override;
 
-    Q_REQUIRED_RESULT Item::List changedItems() const;
+    [[nodiscard]] Item::List changedItems() const;
 
-    Q_REQUIRED_RESULT Collection::List changedCollections() const;
+    [[nodiscard]] Collection::List changedCollections() const;
 
 Q_SIGNALS:
     void collectionsChanged(const Akonadi::Collection::List &collections);

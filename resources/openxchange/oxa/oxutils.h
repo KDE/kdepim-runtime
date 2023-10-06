@@ -15,18 +15,18 @@ namespace OXA
 {
 namespace OXUtils
 {
-Q_REQUIRED_RESULT QString writeBoolean(bool value);
-Q_REQUIRED_RESULT QString writeNumber(qlonglong value);
-Q_REQUIRED_RESULT QString writeString(const QString &value);
-Q_REQUIRED_RESULT QString writeName(const QString &value);
-Q_REQUIRED_RESULT QString writeDateTime(const QDateTime &value);
-Q_REQUIRED_RESULT QString writeDate(QDate value);
+[[nodiscard]] QString writeBoolean(bool value);
+[[nodiscard]] QString writeNumber(qlonglong value);
+[[nodiscard]] QString writeString(const QString &value);
+[[nodiscard]] QString writeName(const QString &value);
+[[nodiscard]] QString writeDateTime(const QDateTime &value);
+[[nodiscard]] QString writeDate(QDate value);
 
-Q_REQUIRED_RESULT bool readBoolean(const QString &text);
-Q_REQUIRED_RESULT qlonglong readNumber(const QString &text);
-Q_REQUIRED_RESULT QString readString(const QString &text);
-Q_REQUIRED_RESULT QString readName(const QString &text);
-Q_REQUIRED_RESULT QDateTime readDateTime(const QString &text);
-Q_REQUIRED_RESULT QDate readDate(const QString &text);
+[[nodiscard]] bool readBoolean(const QString &text);
+[[nodiscard]] qlonglong readNumber(const QString &text);
+[[nodiscard]] QString readString(const QString &text);
+[[nodiscard]] QString readName(const QString &text);
+[[nodiscard]] QDateTime readDateTime(const QString &text);
+[[nodiscard]] QDate readDate(const QString &text);
 }
 }

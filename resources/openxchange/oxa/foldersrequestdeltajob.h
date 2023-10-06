@@ -41,12 +41,12 @@ public:
     /**
      * Returns the list of all added and modified folders.
      */
-    Q_REQUIRED_RESULT Folder::List modifiedFolders() const;
+    [[nodiscard]] Folder::List modifiedFolders() const;
 
     /**
      * Returns the list of all deleted folders.
      */
-    Q_REQUIRED_RESULT Folder::List deletedFolders() const;
+    [[nodiscard]] Folder::List deletedFolders() const;
 
 private:
     void fetchModifiedJobFinished(KJob *);

@@ -36,14 +36,14 @@ public:
     ~NewMailNotifierAgent() override;
 
     void setEnableAgent(bool b);
-    Q_REQUIRED_RESULT bool enabledAgent() const;
+    [[nodiscard]] bool enabledAgent() const;
 
     void printDebug();
 
     void showNotNotificationHistoryDialog(qlonglong windowId = 0);
 
     void setVerboseMailNotification(bool b);
-    Q_REQUIRED_RESULT bool verboseMailNotification() const;
+    [[nodiscard]] bool verboseMailNotification() const;
 
 protected:
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
@@ -63,11 +63,11 @@ private:
     void slotSay(const QString &message);
     void addEmailInfoNotificationHistory(const QPixmap &pixmap, const QString &message, const NewMailNotificationHistoryManager::HistoryMailInfo &info);
     void addFoldersInfoNotificationHistory(const QString &message, const QList<NewMailNotificationHistoryManager::HistoryFolderInfo> &infos);
-    Q_REQUIRED_RESULT bool excludeAgentType(const Akonadi::AgentInstance &instance);
-    Q_REQUIRED_RESULT bool ignoreStatusMail(const Akonadi::Item &item);
-    Q_REQUIRED_RESULT bool isActive() const;
+    [[nodiscard]] bool excludeAgentType(const Akonadi::AgentInstance &instance);
+    [[nodiscard]] bool ignoreStatusMail(const Akonadi::Item &item);
+    [[nodiscard]] bool isActive() const;
     void clearAll();
-    Q_REQUIRED_RESULT bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
+    [[nodiscard]] bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
     void slotReloadConfiguration();
     QString mDefaultIconName;
     QStringList mListEmails;

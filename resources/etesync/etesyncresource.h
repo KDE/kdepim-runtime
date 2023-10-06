@@ -44,10 +44,10 @@ protected:
 
     void initialise();
 
-    Q_REQUIRED_RESULT Akonadi::Collection createRootCollection();
+    [[nodiscard]] Akonadi::Collection createRootCollection();
 
     void initialiseDirectory(const QString &path) const;
-    Q_REQUIRED_RESULT QString baseDirectoryPath() const;
+    [[nodiscard]] QString baseDirectoryPath() const;
 
     bool handleError();
     bool handleError(const int errorCode, const QString &errorMessage);

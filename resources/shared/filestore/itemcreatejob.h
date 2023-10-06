@@ -33,9 +33,9 @@ public:
 
     ~ItemCreateJob() override;
 
-    Q_REQUIRED_RESULT Collection collection() const;
+    [[nodiscard]] Collection collection() const;
 
-    Q_REQUIRED_RESULT Item item() const;
+    [[nodiscard]] Item item() const;
 
     bool accept(Visitor *visitor) override;
 

@@ -132,37 +132,37 @@ public:
     Folder();
 
     void setObjectStatus(ObjectStatus status);
-    Q_REQUIRED_RESULT ObjectStatus objectStatus() const;
+    [[nodiscard]] ObjectStatus objectStatus() const;
 
     void setTitle(const QString &title);
-    Q_REQUIRED_RESULT QString title() const;
+    [[nodiscard]] QString title() const;
 
     void setType(Type type);
-    Q_REQUIRED_RESULT Type type() const;
+    [[nodiscard]] Type type() const;
 
     void setModule(Module module);
-    Q_REQUIRED_RESULT Module module() const;
+    [[nodiscard]] Module module() const;
 
     void setObjectId(qlonglong id);
-    Q_REQUIRED_RESULT qlonglong objectId() const;
+    [[nodiscard]] qlonglong objectId() const;
 
     void setFolderId(qlonglong id);
-    Q_REQUIRED_RESULT qlonglong folderId() const;
+    [[nodiscard]] qlonglong folderId() const;
 
     void setIsDefaultFolder(bool value);
-    Q_REQUIRED_RESULT bool isDefaultFolder() const;
+    [[nodiscard]] bool isDefaultFolder() const;
 
     void setOwner(qlonglong id);
-    Q_REQUIRED_RESULT qlonglong owner() const;
+    [[nodiscard]] qlonglong owner() const;
 
     void setLastModified(const QString &timeStamp);
-    Q_REQUIRED_RESULT QString lastModified() const;
+    [[nodiscard]] QString lastModified() const;
 
     void setUserPermissions(const UserPermissions &permissions);
-    Q_REQUIRED_RESULT UserPermissions userPermissions() const;
+    [[nodiscard]] UserPermissions userPermissions() const;
 
     void setGroupPermissions(const GroupPermissions &permissions);
-    Q_REQUIRED_RESULT GroupPermissions groupPermissions() const;
+    [[nodiscard]] GroupPermissions groupPermissions() const;
 
 private:
     ObjectStatus mObjectStatus;

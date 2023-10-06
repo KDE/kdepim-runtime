@@ -42,17 +42,17 @@ public:
     /**
      * Returns whether the queue is empty.
      */
-    Q_REQUIRED_RESULT bool isEmpty() const;
+    [[nodiscard]] bool isEmpty() const;
 
     /**
      * Returns the number of items in the queue.
      */
-    Q_REQUIRED_RESULT int count() const;
+    [[nodiscard]] int count() const;
 
     /**
      * Returns the size (in bytes) of all items in the queue.
      */
-    Q_REQUIRED_RESULT qulonglong totalSize() const;
+    [[nodiscard]] qulonglong totalSize() const;
 
     /**
      * Fetches an item and emits itemReady() when done.

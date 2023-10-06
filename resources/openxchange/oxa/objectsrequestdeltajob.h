@@ -42,12 +42,12 @@ public:
     /**
      * Returns the list of all added and modified objects.
      */
-    Q_REQUIRED_RESULT Object::List modifiedObjects() const;
+    [[nodiscard]] Object::List modifiedObjects() const;
 
     /**
      * Returns the list of all deleted objects.
      */
-    Q_REQUIRED_RESULT Object::List deletedObjects() const;
+    [[nodiscard]] Object::List deletedObjects() const;
 
 private:
     void fetchModifiedJobFinished(KJob *);

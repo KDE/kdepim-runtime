@@ -57,9 +57,9 @@ public:
     }
 
     bool accessIsPossible(bool createMissingFolders = true);
-    Q_REQUIRED_RESULT bool canAccess(const QString &path) const;
+    [[nodiscard]] bool canAccess(const QString &path) const;
 
-    Q_REQUIRED_RESULT QStringList subPaths() const
+    [[nodiscard]] QStringList subPaths() const
     {
         QStringList paths;
         paths << path + QLatin1String("/cur");
@@ -68,21 +68,21 @@ public:
         return paths;
     }
 
-    Q_REQUIRED_RESULT QStringList listNew() const
+    [[nodiscard]] QStringList listNew() const
     {
         QDir d(path + QLatin1String("/new"));
         d.setSorting(QDir::NoSort);
         return d.entryList(QDir::Files);
     }
 
-    Q_REQUIRED_RESULT QStringList listCurrent() const
+    [[nodiscard]] QStringList listCurrent() const
     {
         QDir d(path + QLatin1String("/cur"));
         d.setSorting(QDir::NoSort);
         return d.entryList(QDir::Files);
     }
 
-    Q_REQUIRED_RESULT QString findRealKey(const QString &key) const
+    [[nodiscard]] QString findRealKey(const QString &key) const
     {
         KeyCache *keyCache = KeyCache::self();
         if (keyCache->isNewKey(path, key)) {
@@ -122,7 +122,7 @@ public:
         return QStringLiteral(".%1.directory").arg(folderName);
     }
 
-    Q_REQUIRED_RESULT QString subDirPath() const
+    [[nodiscard]] QString subDirPath() const
     {
         QDir dir(path);
         return subDirNameForFolderName(dir.dirName());

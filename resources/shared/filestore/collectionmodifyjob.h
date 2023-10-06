@@ -33,7 +33,7 @@ public:
 
     ~CollectionModifyJob() override;
 
-    Q_REQUIRED_RESULT Collection collection() const;
+    [[nodiscard]] Collection collection() const;
 
     bool accept(Visitor *visitor) override;
 

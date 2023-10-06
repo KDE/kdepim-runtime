@@ -29,7 +29,7 @@ public:
 
     static NewMailNotificationHistoryManager *self();
 
-    Q_REQUIRED_RESULT QStringList history() const;
+    [[nodiscard]] QStringList history() const;
     void setHistory(const QStringList &newHistory);
 
     void clear();
@@ -38,14 +38,14 @@ public:
     void addFoldersInfoNotificationHistory(const QList<NewMailNotificationHistoryManager::HistoryFolderInfo> &infos);
 
     void setTestModeEnabled(bool test);
-    Q_REQUIRED_RESULT QString joinHistory() const;
+    [[nodiscard]] QString joinHistory() const;
 
 Q_SIGNALS:
     void historyAdded(const QString &str);
 
 private:
-    Q_REQUIRED_RESULT static NEWMAILNOTIFIER_NO_EXPORT QString generateOpenMailStr(Akonadi::Item::Id id);
-    Q_REQUIRED_RESULT static NEWMAILNOTIFIER_NO_EXPORT QString generateOpenFolderStr(Akonadi::Collection::Id id);
+    [[nodiscard]] static NEWMAILNOTIFIER_NO_EXPORT QString generateOpenMailStr(Akonadi::Item::Id id);
+    [[nodiscard]] static NEWMAILNOTIFIER_NO_EXPORT QString generateOpenFolderStr(Akonadi::Collection::Id id);
     NEWMAILNOTIFIER_NO_EXPORT void addHeader();
     QStringList mHistory;
     // Only for autotest

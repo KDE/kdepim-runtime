@@ -27,7 +27,7 @@ public:
         mWidget->load(mSettings.data());
     }
 
-    Q_REQUIRED_RESULT bool save() const override
+    [[nodiscard]] bool save() const override
     {
         mWidget->save(mSettings.data());
         mSettings->save();

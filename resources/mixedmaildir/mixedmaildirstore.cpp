@@ -71,7 +71,7 @@ public:
     {
     }
 
-    Q_REQUIRED_RESULT QString fileName() const
+    [[nodiscard]] QString fileName() const
     {
         return mMBox.fileName();
     }
@@ -98,12 +98,12 @@ public:
         return mMBox.load(fileName);
     }
 
-    Q_REQUIRED_RESULT QDateTime modificationTime() const
+    [[nodiscard]] QDateTime modificationTime() const
     {
         return mModificationTime;
     }
 
-    Q_REQUIRED_RESULT KMBox::MBoxEntry::List entryList() const
+    [[nodiscard]] KMBox::MBoxEntry::List entryList() const
     {
         KMBox::MBoxEntry::List result;
         result.reserve(mMBox.entries().count());
@@ -142,7 +142,7 @@ public:
         mDeletedOffsets << offset;
     }
 
-    Q_REQUIRED_RESULT bool isValidOffset(quint64 offset) const
+    [[nodiscard]] bool isValidOffset(quint64 offset) const
     {
         if (mDeletedOffsets.contains(offset)) {
             return false;
@@ -209,19 +209,19 @@ public:
         return mMBox;
     }
 
-    Q_REQUIRED_RESULT const MBox &mbox() const
+    [[nodiscard]] const MBox &mbox() const
     {
         return mMBox;
     }
 
-    Q_REQUIRED_RESULT bool hasDeletedOffsets() const
+    [[nodiscard]] bool hasDeletedOffsets() const
     {
         return !mDeletedOffsets.isEmpty();
     }
 
     void readIndexData();
 
-    Q_REQUIRED_RESULT KMIndexDataPtr indexData(quint64 offset) const
+    [[nodiscard]] KMIndexDataPtr indexData(quint64 offset) const
     {
         if (mHasIndexData) {
             if (!mDeletedOffsets.contains(offset)) {
@@ -235,7 +235,7 @@ public:
         return {};
     }
 
-    Q_REQUIRED_RESULT bool hasIndexData() const
+    [[nodiscard]] bool hasIndexData() const
     {
         return mHasIndexData;
     }
@@ -320,7 +320,7 @@ public:
     {
     }
 
-    Q_REQUIRED_RESULT QStringList entryList() const
+    [[nodiscard]] QStringList entryList() const
     {
         return mMaildir.entryList();
     }
@@ -376,12 +376,12 @@ public:
         return result;
     }
 
-    Q_REQUIRED_RESULT QByteArray readEntryHeaders(const QString &key) const
+    [[nodiscard]] QByteArray readEntryHeaders(const QString &key) const
     {
         return mMaildir.readEntryHeaders(key);
     }
 
-    Q_REQUIRED_RESULT QByteArray readEntry(const QString &key) const
+    [[nodiscard]] QByteArray readEntry(const QString &key) const
     {
         return mMaildir.readEntry(key);
     }
@@ -395,14 +395,14 @@ public:
         return result;
     }
 
-    Q_REQUIRED_RESULT bool isValidEntry(const QString &entry) const
+    [[nodiscard]] bool isValidEntry(const QString &entry) const
     {
         return !mMaildir.findRealKey(entry).isEmpty();
     }
 
     void readIndexData();
 
-    Q_REQUIRED_RESULT KMIndexDataPtr indexData(const QString &fileName) const
+    [[nodiscard]] KMIndexDataPtr indexData(const QString &fileName) const
     {
         if (mHasIndexData) {
             IndexDataHash::const_iterator it = mIndexData.constFind(fileName);
@@ -414,7 +414,7 @@ public:
         return {};
     }
 
-    Q_REQUIRED_RESULT bool hasIndexData() const
+    [[nodiscard]] bool hasIndexData() const
     {
         return mHasIndexData;
     }
@@ -424,7 +424,7 @@ public:
         mMaildir = Maildir(newPath, mMaildir.isRoot());
     }
 
-    Q_REQUIRED_RESULT const Maildir &maildir() const
+    [[nodiscard]] const Maildir &maildir() const
     {
         return mMaildir;
     }

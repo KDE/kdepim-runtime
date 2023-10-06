@@ -58,16 +58,16 @@ public:
 
     void setClientId(const QByteArray &clientId);
 
-    Q_REQUIRED_RESULT bool isConnected() const;
+    [[nodiscard]] bool isConnected() const;
     bool connect(ImapAccount *account);
     void disconnect(SessionTermination termination = LogoutSession);
 
-    Q_REQUIRED_RESULT qint64 requestSession();
+    [[nodiscard]] qint64 requestSession();
     void cancelSessionRequest(qint64 id);
     void releaseSession(KIMAP::Session *session);
 
     ImapAccount *account() const;
-    Q_REQUIRED_RESULT QStringList serverCapabilities() const;
+    [[nodiscard]] QStringList serverCapabilities() const;
     QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
     enum Namespace {
         Personal,

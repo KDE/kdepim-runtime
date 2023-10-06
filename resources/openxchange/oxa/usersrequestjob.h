@@ -23,7 +23,7 @@ public:
 
     void start() override;
 
-    Q_REQUIRED_RESULT User::List users() const;
+    [[nodiscard]] User::List users() const;
 
 private:
     void davJobFinished(KJob *);

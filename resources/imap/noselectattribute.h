@@ -13,10 +13,10 @@ class NoSelectAttribute : public Akonadi::Attribute
 public:
     explicit NoSelectAttribute(bool noSelect = false);
     void setNoSelect(bool noSelect);
-    Q_REQUIRED_RESULT bool noSelect() const;
-    Q_REQUIRED_RESULT QByteArray type() const override;
+    [[nodiscard]] bool noSelect() const;
+    [[nodiscard]] QByteArray type() const override;
     Attribute *clone() const override;
-    Q_REQUIRED_RESULT QByteArray serialized() const override;
+    [[nodiscard]] QByteArray serialized() const override;
     void deserialize(const QByteArray &data) override;
 
 private:

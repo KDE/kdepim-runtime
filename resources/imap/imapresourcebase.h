@@ -92,7 +92,7 @@ protected:
 
     void doSetOnline(bool online) override;
 
-    Q_REQUIRED_RESULT QChar separatorCharacter() const;
+    [[nodiscard]] QChar separatorCharacter() const;
     void setSeparatorCharacter(QChar separator);
 
     void aboutToQuit() override;

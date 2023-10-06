@@ -38,31 +38,31 @@ public:
     Object();
 
     void setObjectStatus(ObjectStatus status);
-    Q_REQUIRED_RESULT ObjectStatus objectStatus() const;
+    [[nodiscard]] ObjectStatus objectStatus() const;
 
     void setObjectId(qlonglong id);
-    Q_REQUIRED_RESULT qlonglong objectId() const;
+    [[nodiscard]] qlonglong objectId() const;
 
     void setFolderId(qlonglong id);
-    Q_REQUIRED_RESULT qlonglong folderId() const;
+    [[nodiscard]] qlonglong folderId() const;
 
     void setLastModified(const QString &timeStamp);
-    Q_REQUIRED_RESULT QString lastModified() const;
+    [[nodiscard]] QString lastModified() const;
 
     void setModule(Folder::Module module);
-    Q_REQUIRED_RESULT Folder::Module module() const;
+    [[nodiscard]] Folder::Module module() const;
 
     void setContact(const KContacts::Addressee &contact);
-    Q_REQUIRED_RESULT KContacts::Addressee contact() const;
+    [[nodiscard]] KContacts::Addressee contact() const;
 
     void setContactGroup(const KContacts::ContactGroup &group);
-    Q_REQUIRED_RESULT KContacts::ContactGroup contactGroup() const;
+    [[nodiscard]] KContacts::ContactGroup contactGroup() const;
 
     void setEvent(const KCalendarCore::Incidence::Ptr &event);
-    Q_REQUIRED_RESULT KCalendarCore::Incidence::Ptr event() const;
+    [[nodiscard]] KCalendarCore::Incidence::Ptr event() const;
 
     void setTask(const KCalendarCore::Incidence::Ptr &task);
-    Q_REQUIRED_RESULT KCalendarCore::Incidence::Ptr task() const;
+    [[nodiscard]] KCalendarCore::Incidence::Ptr task() const;
 
 private:
     ObjectStatus mObjectStatus = Created;

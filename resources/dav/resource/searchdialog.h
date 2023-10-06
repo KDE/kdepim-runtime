@@ -21,15 +21,15 @@ public:
     explicit SearchDialog(QWidget *parent = nullptr);
     ~SearchDialog() override;
 
-    Q_REQUIRED_RESULT bool useDefaultCredentials() const;
+    [[nodiscard]] bool useDefaultCredentials() const;
 
     void setUsername(const QString &user);
-    Q_REQUIRED_RESULT QString username() const;
+    [[nodiscard]] QString username() const;
 
     void setPassword(const QString &password);
-    Q_REQUIRED_RESULT QString password() const;
+    [[nodiscard]] QString password() const;
 
-    Q_REQUIRED_RESULT QStringList selection() const;
+    [[nodiscard]] QStringList selection() const;
 
 private:
     void checkUserInput();

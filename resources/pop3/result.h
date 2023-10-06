@@ -16,7 +16,7 @@
  * error conditions that could be represented by returning a bool, or
  * when the contextual error string can only be correctly constructed
  * inside the function. When using the Result type always mark the
- * function Q_REQUIRED_RESULT to enforce handling of the Result.
+ * function [[nodiscard]] to enforce handling of the Result.
  */
 struct Result {
     bool success;

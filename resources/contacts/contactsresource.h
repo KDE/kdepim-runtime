@@ -54,12 +54,12 @@ protected:
 
 private:
     void slotReloadConfig();
-    Q_REQUIRED_RESULT Akonadi::Collection::List createCollectionsForDirectory(const QDir &parentDirectory, const Akonadi::Collection &parentCollection) const;
-    Q_REQUIRED_RESULT QString baseDirectoryPath() const;
+    [[nodiscard]] Akonadi::Collection::List createCollectionsForDirectory(const QDir &parentDirectory, const Akonadi::Collection &parentCollection) const;
+    [[nodiscard]] QString baseDirectoryPath() const;
     void initializeDirectory(const QString &path) const;
-    Q_REQUIRED_RESULT Akonadi::Collection::Rights supportedRights(bool isResourceCollection) const;
-    Q_REQUIRED_RESULT QString directoryForCollection(const Akonadi::Collection &collection) const;
-    Q_REQUIRED_RESULT bool doRetrieveItem(Akonadi::Item &item);
+    [[nodiscard]] Akonadi::Collection::Rights supportedRights(bool isResourceCollection) const;
+    [[nodiscard]] QString directoryForCollection(const Akonadi::Collection &collection) const;
+    [[nodiscard]] bool doRetrieveItem(Akonadi::Item &item);
 
 private:
     QStringList mSupportedMimeTypes;

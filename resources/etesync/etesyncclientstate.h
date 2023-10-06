@@ -48,17 +48,17 @@ public:
         return mAccount.get();
     }
 
-    Q_REQUIRED_RESULT QString username() const
+    [[nodiscard]] QString username() const
     {
         return mUsername;
     }
 
-    Q_REQUIRED_RESULT QString serverUrl() const
+    [[nodiscard]] QString serverUrl() const
     {
         return mServerUrl;
     }
 
-    Q_REQUIRED_RESULT bool isInitialized() const
+    [[nodiscard]] bool isInitialized() const
     {
         return !mServerUrl.isEmpty();
     }

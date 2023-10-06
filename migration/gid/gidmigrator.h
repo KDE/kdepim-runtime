@@ -16,12 +16,12 @@ public:
     explicit GidMigrator(const QString &mimeType);
     ~GidMigrator() override;
 
-    Q_REQUIRED_RESULT QString displayName() const override;
-    Q_REQUIRED_RESULT QString description() const override;
+    [[nodiscard]] QString displayName() const override;
+    [[nodiscard]] QString description() const override;
 
-    Q_REQUIRED_RESULT bool canStart() override;
+    [[nodiscard]] bool canStart() override;
 
-    Q_REQUIRED_RESULT bool shouldAutostart() const override;
+    [[nodiscard]] bool shouldAutostart() const override;
 
 protected:
     void startWork() override;

@@ -41,7 +41,7 @@ public:
 
     void start() override;
 
-    Q_REQUIRED_RESULT Object::List objects() const;
+    [[nodiscard]] Object::List objects() const;
 
 private:
     void davJobFinished(KJob *);

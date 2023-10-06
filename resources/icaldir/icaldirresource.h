@@ -40,8 +40,8 @@ protected:
     void collectionChanged(const Akonadi::Collection &collection) override;
 
 private:
-    Q_REQUIRED_RESULT bool loadIncidences();
-    Q_REQUIRED_RESULT QString iCalDirectoryName() const;
+    [[nodiscard]] bool loadIncidences();
+    [[nodiscard]] QString iCalDirectoryName() const;
     QString iCalDirectoryFileName(const QString &file) const;
     void initializeICalDirectory() const;
     void slotReloadConfig();

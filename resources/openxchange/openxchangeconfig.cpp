@@ -27,7 +27,7 @@ public:
         mWidget->load();
     }
 
-    Q_REQUIRED_RESULT bool save() const override
+    [[nodiscard]] bool save() const override
     {
         mWidget->save();
         return Akonadi::AgentConfigurationBase::save();

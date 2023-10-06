@@ -27,17 +27,17 @@ public:
 
     void start() override;
 
-    Q_REQUIRED_RESULT Akonadi::Item::List items() const
+    [[nodiscard]] Akonadi::Item::List items() const
     {
         return mItems;
     }
 
-    Q_REQUIRED_RESULT Akonadi::Item::List removedItems() const
+    [[nodiscard]] Akonadi::Item::List removedItems() const
     {
         return mRemovedItems;
     }
 
-    Q_REQUIRED_RESULT Akonadi::Collection collection() const
+    [[nodiscard]] Akonadi::Collection collection() const
     {
         return mCollection;
     }

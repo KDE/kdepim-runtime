@@ -24,10 +24,10 @@ public:
     const QUrl &resultUri() const;
     void start() override;
 
-    Q_REQUIRED_RESULT QString getAuthHeader();
+    [[nodiscard]] QString getAuthHeader();
 
 private:
-    Q_REQUIRED_RESULT QByteArray buildAuthResponse(const QMap<QString, QString> &params);
+    [[nodiscard]] QByteArray buildAuthResponse(const QMap<QString, QString> &params);
     void sendAuthRequest(const QByteArray &respToken, const QUrl &submitUrl, const QString &context);
     void authRequestFinished();
 

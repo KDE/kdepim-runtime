@@ -41,9 +41,9 @@ private:
     void addPendingEvent(const KCalendarCore::Event::Ptr &event, const QString &remoteId);
     void checkForUnknownCategories(const QString &categoryToCheck, KCalendarCore::Event::Ptr &event);
 
-    Q_REQUIRED_RESULT KCalendarCore::Event::Ptr createBirthday(const KContacts::Addressee &contact, Akonadi::Item::Id itemId);
-    Q_REQUIRED_RESULT KCalendarCore::Event::Ptr createAnniversary(const KContacts::Addressee &contact, Akonadi::Item::Id itemId);
-    Q_REQUIRED_RESULT KCalendarCore::Event::Ptr createEvent(QDate date);
+    [[nodiscard]] KCalendarCore::Event::Ptr createBirthday(const KContacts::Addressee &contact, Akonadi::Item::Id itemId);
+    [[nodiscard]] KCalendarCore::Event::Ptr createAnniversary(const KContacts::Addressee &contact, Akonadi::Item::Id itemId);
+    [[nodiscard]] KCalendarCore::Event::Ptr createEvent(QDate date);
 
 private Q_SLOTS:
     void doFullSearch();

@@ -26,7 +26,7 @@ public:
 
     void init(const QString &identifier);
 
-    Q_REQUIRED_RESULT qlonglong currentUserId() const;
+    [[nodiscard]] qlonglong currentUserId() const;
 
     User lookupUid(qlonglong uid) const;
     User lookupEmail(const QString &email) const;

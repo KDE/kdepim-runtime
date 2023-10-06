@@ -47,7 +47,7 @@ public:
     /**
      * Attempt to initiate a POP3 connection via a TCP socket.
      */
-    Q_REQUIRED_RESULT Result openConnection();
+    [[nodiscard]] Result openConnection();
 
     /**
      *  Attempt to properly shut down the POP3 connection by sending
@@ -59,7 +59,7 @@ public:
      * Entry point for all features
      * TODO: this could be split up!
      */
-    Q_REQUIRED_RESULT Result get(const QString &command);
+    [[nodiscard]] Result get(const QString &command);
 
     /**
      * Sets whether to continue or abort after a SSL error
@@ -115,19 +115,19 @@ private:
     /**
      * Authenticate via APOP
      */
-    Q_REQUIRED_RESULT Result loginAPOP(const char *challenge);
+    [[nodiscard]] Result loginAPOP(const char *challenge);
 
     bool saslInteract(void *in);
     /**
      * Authenticate via SASL
      */
-    Q_REQUIRED_RESULT Result loginSASL();
+    [[nodiscard]] Result loginSASL();
     /**
      * Authenticate via traditional USER/PASS
      */
-    Q_REQUIRED_RESULT Result loginPASS();
+    [[nodiscard]] Result loginPASS();
 
-    Q_REQUIRED_RESULT Result startSsl();
+    [[nodiscard]] Result startSsl();
 
     const Settings &mSettings;
     QSslSocket *const mSocket;

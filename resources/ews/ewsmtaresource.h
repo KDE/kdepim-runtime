@@ -29,7 +29,7 @@ protected Q_SLOTS:
 
 private:
     void messageSent(const QString &id, const QString &error);
-    Q_REQUIRED_RESULT bool connectEws();
+    [[nodiscard]] bool connectEws();
 
     OrgKdeAkonadiEwsResourceInterface *mEwsResource = nullptr;
     QHash<QString, Akonadi::Item> mItemHash;

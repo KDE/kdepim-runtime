@@ -21,7 +21,7 @@ public:
 
     void start() override;
 
-    Q_REQUIRED_RESULT qlonglong userId() const;
+    [[nodiscard]] qlonglong userId() const;
 
 private:
     void davJobFinished(KJob *);

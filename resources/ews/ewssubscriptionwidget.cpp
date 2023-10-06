@@ -33,10 +33,10 @@ public Q_SLOTS:
     void setFilterSelected(bool enabled);
 
 protected:
-    Q_REQUIRED_RESULT bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
+    [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 
 private:
-    Q_REQUIRED_RESULT bool hasCheckedChildren(const QModelIndex &index) const;
+    [[nodiscard]] bool hasCheckedChildren(const QModelIndex &index) const;
     bool mFilterSelected;
 };
 

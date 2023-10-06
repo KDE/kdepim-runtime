@@ -19,10 +19,10 @@ class GoogleResourceMigrator : public MigratorBase
 public:
     explicit GoogleResourceMigrator();
 
-    Q_REQUIRED_RESULT QString displayName() const override;
-    Q_REQUIRED_RESULT QString description() const override;
+    [[nodiscard]] QString displayName() const override;
+    [[nodiscard]] QString description() const override;
 
-    Q_REQUIRED_RESULT bool shouldAutostart() const override;
+    [[nodiscard]] bool shouldAutostart() const override;
 
 protected:
     void startWork() override;
@@ -49,10 +49,10 @@ private:
         T contacts{};
     };
 
-    Q_REQUIRED_RESULT bool migrateAccount(const QString &account, const Instances &oldInstances, const Akonadi::AgentInstance &newInstance);
+    [[nodiscard]] bool migrateAccount(const QString &account, const Instances &oldInstances, const Akonadi::AgentInstance &newInstance);
     void removeLegacyInstances(const QString &account, const Instances &instances);
-    Q_REQUIRED_RESULT QString mergeAccountNames(const ResourceValues<QString> &accountName, const Instances &oldInstances) const;
-    Q_REQUIRED_RESULT int mergeAccountIds(ResourceValues<int> accountId, const Instances &oldInstances) const;
+    [[nodiscard]] QString mergeAccountNames(const ResourceValues<QString> &accountName, const Instances &oldInstances) const;
+    [[nodiscard]] int mergeAccountIds(ResourceValues<int> accountId, const Instances &oldInstances) const;
 
     QMap<QString, Instances> mMigrations;
     int mMigrationCount = 0;

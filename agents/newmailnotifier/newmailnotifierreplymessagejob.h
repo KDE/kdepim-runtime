@@ -18,7 +18,7 @@ public:
 
     void start() override;
 
-    Q_REQUIRED_RESULT bool replyToAll() const;
+    [[nodiscard]] bool replyToAll() const;
     void setReplyToAll(bool newReplyToAll);
 
 private:

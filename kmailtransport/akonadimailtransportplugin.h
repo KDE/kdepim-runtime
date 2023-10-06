@@ -20,8 +20,8 @@ public:
     explicit AkonadiMailTransportPlugin(QObject *parent = nullptr, const QList<QVariant> & = {});
     ~AkonadiMailTransportPlugin() override;
 
-    Q_REQUIRED_RESULT QList<MailTransport::TransportAbstractPluginInfo> names() const override;
-    Q_REQUIRED_RESULT bool configureTransport(const QString &identifier, MailTransport::Transport *transport, QWidget *parent) override;
+    [[nodiscard]] QList<MailTransport::TransportAbstractPluginInfo> names() const override;
+    [[nodiscard]] bool configureTransport(const QString &identifier, MailTransport::Transport *transport, QWidget *parent) override;
 
     void cleanUp(MailTransport::Transport *t) override;
     MailTransport::TransportJob *createTransportJob(MailTransport::Transport *t, const QString &identifier) override;

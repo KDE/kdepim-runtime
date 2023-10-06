@@ -73,7 +73,7 @@ public:
 
     ~EwsOAuthReplyHandler() override = default;
 
-    Q_REQUIRED_RESULT QString callback() const override
+    [[nodiscard]] QString callback() const override
     {
         return mReturnUri;
     }

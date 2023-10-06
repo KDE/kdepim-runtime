@@ -28,17 +28,17 @@ public:
 
     void setRemoteId(const QString &remoteId);
 
-    Q_REQUIRED_RESULT QString remoteId() const;
+    [[nodiscard]] QString remoteId() const;
 
     void setRemoteRevision(const QString &remoteRev);
 
-    Q_REQUIRED_RESULT QString remoteRevision() const;
+    [[nodiscard]] QString remoteRevision() const;
 
-    Q_REQUIRED_RESULT QByteArray type() const override;
+    [[nodiscard]] QByteArray type() const override;
 
     EntityCompactChangeAttribute *clone() const override;
 
-    Q_REQUIRED_RESULT QByteArray serialized() const override;
+    [[nodiscard]] QByteArray serialized() const override;
 
     void deserialize(const QByteArray &data) override;
 

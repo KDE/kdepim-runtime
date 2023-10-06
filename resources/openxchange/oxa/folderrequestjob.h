@@ -42,7 +42,7 @@ public:
     /**
      * Returns the requested folder.
      */
-    Q_REQUIRED_RESULT Folder folder() const;
+    [[nodiscard]] Folder folder() const;
 
 private:
     void davJobFinished(KJob *);

@@ -34,9 +34,9 @@ public:
 
     ~ItemMoveJob() override;
 
-    Q_REQUIRED_RESULT Collection targetParent() const;
+    [[nodiscard]] Collection targetParent() const;
 
-    Q_REQUIRED_RESULT Item item() const;
+    [[nodiscard]] Item item() const;
 
     bool accept(Visitor *visitor) override;
 

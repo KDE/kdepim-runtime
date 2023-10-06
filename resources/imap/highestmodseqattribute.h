@@ -14,12 +14,12 @@ class HighestModSeqAttribute : public Akonadi::Attribute
 public:
     explicit HighestModSeqAttribute(qint64 highestModSequence = -1);
     void setHighestModSeq(qint64 highestModSequence);
-    Q_REQUIRED_RESULT qint64 highestModSequence() const;
+    [[nodiscard]] qint64 highestModSequence() const;
 
     void deserialize(const QByteArray &data) override;
-    Q_REQUIRED_RESULT QByteArray serialized() const override;
+    [[nodiscard]] QByteArray serialized() const override;
     Akonadi::Attribute *clone() const override;
-    Q_REQUIRED_RESULT QByteArray type() const override;
+    [[nodiscard]] QByteArray type() const override;
 
 private:
     qint64 m_highestModSeq;

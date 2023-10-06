@@ -38,7 +38,7 @@ protected:
     void itemRemoved(const Akonadi::Item &item) override;
 
 private:
-    Q_REQUIRED_RESULT bool doRetrieveItem(Akonadi::Item &item);
+    [[nodiscard]] bool doRetrieveItem(Akonadi::Item &item);
 
 private:
     QMap<QString, KContacts::Addressee> mAddressees;

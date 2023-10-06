@@ -39,9 +39,9 @@ public:
 
     ~ItemFetchJob() override;
 
-    Q_REQUIRED_RESULT Collection collection() const;
+    [[nodiscard]] Collection collection() const;
 
-    Q_REQUIRED_RESULT Item item() const;
+    [[nodiscard]] Item item() const;
 
     Item::List requestedItems() const;
 
@@ -49,7 +49,7 @@ public:
 
     ItemFetchScope &fetchScope();
 
-    Q_REQUIRED_RESULT Item::List items() const;
+    [[nodiscard]] Item::List items() const;
 
     bool accept(Visitor *visitor) override;
 

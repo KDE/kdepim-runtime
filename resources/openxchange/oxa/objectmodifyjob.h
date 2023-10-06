@@ -23,7 +23,7 @@ public:
 
     void start() override;
 
-    Q_REQUIRED_RESULT Object object() const;
+    [[nodiscard]] Object object() const;
 
 private:
     void preloadingJobFinished(KJob *);

@@ -69,7 +69,7 @@ private:
     void doPostJob(bool transportSuccess, const QString &transportMessage);
     void storeResult(bool success, const QString &message = QString());
     void abortPostJob();
-    Q_REQUIRED_RESULT bool filterItem(int filterset);
+    [[nodiscard]] bool filterItem(int filterset);
 
     // slots
     void doTransport();

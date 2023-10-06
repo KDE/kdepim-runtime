@@ -38,7 +38,7 @@ protected:
     bool readFromFile(const QString &fileName) override;
     bool writeToFile(const QString &fileName) override;
 
-    Q_REQUIRED_RESULT Akonadi::Collection rootCollection() const override;
+    [[nodiscard]] Akonadi::Collection rootCollection() const override;
 
 private:
     void onCollectionFetch(KJob *job);

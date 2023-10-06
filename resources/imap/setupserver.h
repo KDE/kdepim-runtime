@@ -54,7 +54,7 @@ public:
      */
     ~SetupServer() override;
 
-    Q_REQUIRED_RESULT bool shouldClearCache() const;
+    [[nodiscard]] bool shouldClearCache() const;
 
 private:
     /**

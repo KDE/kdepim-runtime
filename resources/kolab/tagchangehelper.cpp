@@ -41,7 +41,7 @@ KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const A
 struct TagMerger : public Merger {
     ~TagMerger() override = default;
 
-    Q_REQUIRED_RESULT KMime::Message::Ptr merge(const KMime::Message::Ptr &newMessage, const QList<KMime::Message::Ptr> &conflictingMessages) const override
+    [[nodiscard]] KMime::Message::Ptr merge(const KMime::Message::Ptr &newMessage, const QList<KMime::Message::Ptr> &conflictingMessages) const override
     {
         qCDebug(KOLABRESOURCE_LOG) << "Got " << conflictingMessages.size() << " conflicting relation configuration objects. Overwriting with local version.";
         return newMessage;

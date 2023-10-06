@@ -20,25 +20,25 @@ public:
     ~ImapAccount();
 
     void setServer(const QString &server);
-    Q_REQUIRED_RESULT QString server() const;
+    [[nodiscard]] QString server() const;
 
     void setPort(quint16 port);
-    Q_REQUIRED_RESULT quint16 port() const;
+    [[nodiscard]] quint16 port() const;
 
     void setUserName(const QString &userName);
-    Q_REQUIRED_RESULT QString userName() const;
+    [[nodiscard]] QString userName() const;
 
     void setEncryptionMode(KIMAP::LoginJob::EncryptionMode mode);
-    Q_REQUIRED_RESULT KIMAP::LoginJob::EncryptionMode encryptionMode() const;
+    [[nodiscard]] KIMAP::LoginJob::EncryptionMode encryptionMode() const;
 
     void setAuthenticationMode(KIMAP::LoginJob::AuthenticationMode mode);
-    Q_REQUIRED_RESULT KIMAP::LoginJob::AuthenticationMode authenticationMode() const;
+    [[nodiscard]] KIMAP::LoginJob::AuthenticationMode authenticationMode() const;
 
     void setSubscriptionEnabled(bool enabled);
-    Q_REQUIRED_RESULT bool isSubscriptionEnabled() const;
+    [[nodiscard]] bool isSubscriptionEnabled() const;
 
     void setTimeout(int timeout);
-    Q_REQUIRED_RESULT int timeout() const;
+    [[nodiscard]] int timeout() const;
 
     void setUseNetworkProxy(bool useProxy);
     bool useNetworkProxy() const;

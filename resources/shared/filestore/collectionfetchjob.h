@@ -40,15 +40,15 @@ public:
 
     ~CollectionFetchJob() override;
 
-    Q_REQUIRED_RESULT Type type() const;
+    [[nodiscard]] Type type() const;
 
-    Q_REQUIRED_RESULT Collection collection() const;
+    [[nodiscard]] Collection collection() const;
 
     void setFetchScope(const CollectionFetchScope &fetchScope);
 
     CollectionFetchScope &fetchScope();
 
-    Q_REQUIRED_RESULT Collection::List collections() const;
+    [[nodiscard]] Collection::List collections() const;
 
     bool accept(Visitor *visitor) override;
 

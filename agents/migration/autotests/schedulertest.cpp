@@ -25,7 +25,7 @@ public:
     {
     }
 
-    Q_REQUIRED_RESULT QString displayName() const override
+    [[nodiscard]] QString displayName() const override
     {
         return QStringLiteral("name");
     }
@@ -44,7 +44,7 @@ public:
         setMigrationState(Complete);
     }
 
-    Q_REQUIRED_RESULT bool shouldAutostart() const override
+    [[nodiscard]] bool shouldAutostart() const override
     {
         return mAutostart;
     }

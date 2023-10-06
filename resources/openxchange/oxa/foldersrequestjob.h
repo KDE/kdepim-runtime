@@ -50,7 +50,7 @@ public:
     /**
      * Returns the list of all requested folders.
      */
-    Q_REQUIRED_RESULT Folder::List folders() const;
+    [[nodiscard]] Folder::List folders() const;
 
 private:
     void davJobFinished(KJob *);
