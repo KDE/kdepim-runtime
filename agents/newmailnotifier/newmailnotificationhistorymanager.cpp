@@ -47,7 +47,7 @@ void NewMailNotificationHistoryManager::addEmailInfoNotificationHistory(const Ne
     addHeader();
     const QString messageInfo = info.message;
     const QString message = messageInfo + generateOpenMailStr(info.identifier);
-    mHistory += message;
+    mHistory += message + QStringLiteral("<br>");
     Q_EMIT historyAdded(joinHistory());
 }
 
@@ -63,6 +63,7 @@ void NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory(const 
         const QString messageInfo = info.message;
         messages += messageInfo + generateOpenFolderStr(info.identifier);
     }
+    messages += QStringLiteral("<br>");
     mHistory += messages;
     Q_EMIT historyAdded(joinHistory());
 }
