@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-04-23 00:50+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2022-07-19 22:18+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -136,64 +136,64 @@ msgstr "Интервал на автозапис (в минути)."
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr "Избиране на интервал на автозапис на данните на ресурса  (в минути)."
 
-#: singlefileresource.h:65
+#: singlefileresource.h:66
 #, kde-format
 msgid "No file selected."
 msgstr "Не е избран файл."
 
-#: singlefileresource.h:67
+#: singlefileresource.h:68
 #, kde-format
 msgid "The resource not configured yet"
 msgstr "Ресурсът не  е конфигуриран."
 
-#: singlefileresource.h:98 singlefileresource.h:127 singlefileresource.h:212
+#: singlefileresource.h:99 singlefileresource.h:128 singlefileresource.h:213
 #: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Готово"
 
-#: singlefileresource.h:100
+#: singlefileresource.h:101
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "Не може да се създаде файл : \"%1\"."
 
-#: singlefileresource.h:114
+#: singlefileresource.h:115
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "Файлът \"%1\" не може да бъде прочетен"
 
-#: singlefileresource.h:130
+#: singlefileresource.h:131
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Друго изтегляне все още е в процес на изпълнение."
 
-#: singlefileresource.h:140 singlefileresource.h:226
+#: singlefileresource.h:141 singlefileresource.h:227
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Друго качване на файл все още е в процес на изпълнение."
 
-#: singlefileresource.h:156
+#: singlefileresource.h:157
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Изтегляне на отдалечен файл."
 
-#: singlefileresource.h:176
+#: singlefileresource.h:177
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Опит за запис във файл само за четене: \"%1\"."
 
-#: singlefileresource.h:188
+#: singlefileresource.h:189
 #, kde-format
 msgid "No file specified."
 msgstr "Няма посочен файл."
 
-#: singlefileresource.h:216
+#: singlefileresource.h:217
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Друго изтегляне все още е в процес на изпълнение."
 
-#: singlefileresource.h:256
+#: singlefileresource.h:257
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Качване на кеширан файл на отдалечено местоположение."
@@ -226,19 +226,16 @@ msgstr "Файл"
 #. i18n: ectx: property (text), widget (QLabel, filenameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:47
 #, kde-format
-msgid "File Name:"
-msgstr "Име на файл:"
+msgid "File or URL:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
 #, kde-format
 msgid ""
-"Select a file. A new file will be created if it doesn't exist. You can also "
-"use a URL, but in that case, monitoring for file changes is not possible."
+"Select a local file or a remote URL to download a file from. A new local "
+"file will be created if it doesn't exist."
 msgstr ""
-"Изберете файл. Ще бъде създаден нов файл, ако не съществува. Можете също "
-"така да използвате URL адрес, но в този случай не е възможно да се следи за "
-"промени във файла."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
@@ -248,11 +245,15 @@ msgstr "Показвано име:"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "When read-only mode is enabled, no changes will be written. Read-only "
+#| "mode is automatically enabled when the selected file does not support "
+#| "write access."
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
-"access."
+"access or when displaying a calendar from remote URL."
 msgstr ""
 "Когато е активиран режим само за четене, няма да се записват никакви "
 "промени. Режимът само за четене се активира автоматично, когато избраният "
@@ -261,22 +262,61 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
 #, kde-format
-msgid "Enable file &monitoring"
-msgstr "Активиране на &следене на файлове"
+msgid "Monitor for &changes"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "Changes made by other applications will reload the file when monitoring "
+#| "is enabled. Backups will be created to avoid conflicts when possible."
 msgid ""
 "Changes made by other applications will reload the file when monitoring is "
-"enabled. Backups will be created to avoid conflicts when possible."
+"enabled. Backups will be created to avoid conflicts when possible. "
+"Monitoring is not available for remote URLs."
 msgstr ""
 "Промените, направени от други приложения, ще презаредят файла, когато  "
 "следенето е активирано. Ще бъдат създадени резервни копия, за да се избегнат "
 "конфликти, когато е възможно."
 
-#: singlefileresourceconfigwidgetbase.cpp:126
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
+#: singlefileresourceconfigwidget_desktop.ui:149
+#, kde-format
+msgid "Automatically &update every"
+msgstr ""
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
+#: singlefileresourceconfigwidget_desktop.ui:159
+#, kde-format
+msgid " minutes"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, periodicUpdateLabel)
+#: singlefileresourceconfigwidget_desktop.ui:193
+#, kde-format
+msgid ""
+"Periodically updates the file. Can be used when monitoring is not available "
+"(e.g. for remote calendars)."
+msgstr ""
+
+#: singlefileresourceconfigwidgetbase.cpp:128
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information..."
 msgstr "Проверка на файловата информация..."
+
+#~ msgid "File Name:"
+#~ msgstr "Име на файл:"
+
+#~ msgid ""
+#~ "Select a file. A new file will be created if it doesn't exist. You can "
+#~ "also use a URL, but in that case, monitoring for file changes is not "
+#~ "possible."
+#~ msgstr ""
+#~ "Изберете файл. Ще бъде създаден нов файл, ако не съществува. Можете също "
+#~ "така да използвате URL адрес, но в този случай не е възможно да се следи "
+#~ "за промени във файла."
+
+#~ msgid "Enable file &monitoring"
+#~ msgstr "Активиране на &следене на файлове"

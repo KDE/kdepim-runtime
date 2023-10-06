@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2011-08-20 23:55+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -41,6 +41,19 @@ msgstr "Ne mijenjaj zaista pozadinske podatke."
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "Nadgledaj fajl za izmenama."
+
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: icalresource.kcfg:26 notes/notesresource.kcfg:30
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: icalresource.kcfg:30 notes/notesresource.kcfg:34
+#, fuzzy, kde-format
+#| msgid "Autosave interval time (in minutes)."
+msgid "Automatic update period in minutes."
+msgstr "Period automatskog upisivanja (u minutima)."
 
 #. i18n: ectx: label, entry (AutosaveInterval), group (General)
 #: notes/notesresource.kcfg:22

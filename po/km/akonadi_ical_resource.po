@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2010-12-20 16:16+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -38,6 +38,19 @@ msgstr "មិនអាច​ផ្លាស់ប្ដូរ​ទិន្ន
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "គ្រប់គ្រង​ឯកសារ​សម្រាប់​ការ​ផ្លាស់ប្ដូរ ។"
+
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: icalresource.kcfg:26 notes/notesresource.kcfg:30
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: icalresource.kcfg:30 notes/notesresource.kcfg:34
+#, fuzzy, kde-format
+#| msgid "Autosave interval time (in minutes)."
+msgid "Automatic update period in minutes."
+msgstr "ចន្លោះ​ពេល​រក្សាទុក​ស្វ័យប្រវត្តិ (គិត​ជា​នាទី) ។"
 
 #. i18n: ectx: label, entry (AutosaveInterval), group (General)
 #: notes/notesresource.kcfg:22

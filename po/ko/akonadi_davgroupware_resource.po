@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2022-05-07 02:06+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -90,7 +90,7 @@ msgstr "사용자 이름:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:108 setupwizard.cpp:222 urlconfigurationdialog.ui:127
+#: configdialog.ui:108 setupwizard.cpp:219 urlconfigurationdialog.ui:127
 #, kde-format
 msgid "Password:"
 msgstr "암호:"
@@ -533,43 +533,43 @@ msgstr "사용자 %1의 암호가 필요함"
 msgid "Password: "
 msgstr "암호:"
 
-#: setupwizard.cpp:140
+#: setupwizard.cpp:137
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "DAV 그룹웨어 설정 마법사"
 
-#: setupwizard.cpp:213
+#: setupwizard.cpp:210
 #, kde-format
 msgid "Login Credentials"
 msgstr "로그인 자격 증명"
 
-#: setupwizard.cpp:214
+#: setupwizard.cpp:211
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "그룹웨어 서버에 연결하려면 자격 증명을 입력하십시오"
 
-#: setupwizard.cpp:218
+#: setupwizard.cpp:215
 #, kde-format
 msgid "User:"
 msgstr "사용자:"
 
-#: setupwizard.cpp:257
+#: setupwizard.cpp:254
 #, kde-format
 msgid "No, choose another server"
 msgstr "아니요, 다른 서버를 선택합니다"
 
-#: setupwizard.cpp:259
+#: setupwizard.cpp:256
 #, kde-format
 msgid "Predefined provider found"
 msgstr "미리 정의된 공급자를 찾았음"
 
-#: setupwizard.cpp:260
+#: setupwizard.cpp:257
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "미리 정의된 공급자를 사용하려면 선택하십시오"
 
-#: setupwizard.cpp:279
+#: setupwizard.cpp:276
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -580,77 +580,77 @@ msgstr ""
 "%1 서비스에 사용하는 계정을 자동으로 설정할 수 있습니다.\n"
 "계속 진행하시겠습니까?"
 
-#: setupwizard.cpp:284
+#: setupwizard.cpp:281
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "예, %1을(를) 공급자로 사용합니다"
 
-#: setupwizard.cpp:310
+#: setupwizard.cpp:307
 #, kde-format
 msgid "Groupware Server"
 msgstr "그룹웨어 서버"
 
-#: setupwizard.cpp:311
+#: setupwizard.cpp:308
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "리소스를 구성할 그룹웨어 서버 선택"
 
-#: setupwizard.cpp:340
+#: setupwizard.cpp:337
 #, kde-format
 msgid "Use one of those servers:"
 msgstr "다음 서버 중 하나 사용:"
 
-#: setupwizard.cpp:349
+#: setupwizard.cpp:346
 #, kde-format
 msgid "Configure the resource manually"
 msgstr "리소스를 수동으로 설정"
 
-#: setupwizard.cpp:383
+#: setupwizard.cpp:380
 #, kde-format
 msgid "Connection"
 msgstr "연결"
 
-#: setupwizard.cpp:384
+#: setupwizard.cpp:381
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "그룹웨어 서버 연결 정보 입력"
 
-#: setupwizard.cpp:391
+#: setupwizard.cpp:388
 #, kde-format
 msgid "Host"
 msgstr "호스트"
 
-#: setupwizard.cpp:394
+#: setupwizard.cpp:391
 #, kde-format
 msgid "Installation path"
 msgstr "설치 경로"
 
-#: setupwizard.cpp:397
+#: setupwizard.cpp:394
 #, kde-format
 msgid "Use secure connection"
 msgstr "보안 연결 사용"
 
-#: setupwizard.cpp:425
+#: setupwizard.cpp:422
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "최종 URL (CalDav)"
 
-#: setupwizard.cpp:430
+#: setupwizard.cpp:427
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "최종 URL (CardDav)"
 
-#: setupwizard.cpp:435
+#: setupwizard.cpp:432
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "최종 URL (GroupDav)"
 
-#: setupwizard.cpp:499 setupwizard.cpp:505
+#: setupwizard.cpp:496 setupwizard.cpp:502
 #, kde-format
 msgid "Test Connection"
 msgstr "연결 시험"
 
-#: setupwizard.cpp:500
+#: setupwizard.cpp:497
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -658,12 +658,12 @@ msgid ""
 msgstr ""
 "현재 설정으로 그룹웨어 서비스에 접근할 수 있는지 테스트해 볼 수 있습니다"
 
-#: setupwizard.cpp:545
+#: setupwizard.cpp:542
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "오류 발생: %1"
 
-#: setupwizard.cpp:548
+#: setupwizard.cpp:545
 #, kde-format
 msgid "Connected successfully"
 msgstr "성공적으로 연결됨"

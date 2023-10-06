@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2018-09-16 22:19+0800\n"
 "Last-Translator: pan93412 <pan93412@gmail.com>\n"
 "Language-Team: Chinese <zh-l10n@lists.linux.org.tw>\n"
@@ -94,7 +94,7 @@ msgstr "使用者名稱："
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:108 setupwizard.cpp:222 urlconfigurationdialog.ui:127
+#: configdialog.ui:108 setupwizard.cpp:219 urlconfigurationdialog.ui:127
 #, kde-format
 msgid "Password:"
 msgstr "密碼："
@@ -535,44 +535,44 @@ msgstr "使用者 %1 需要密碼"
 msgid "Password: "
 msgstr "密碼："
 
-#: setupwizard.cpp:140
+#: setupwizard.cpp:137
 #, fuzzy, kde-format
 #| msgid "DAV groupware configuration wizard"
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "DAV 群組設定精靈"
 
-#: setupwizard.cpp:213
+#: setupwizard.cpp:210
 #, kde-format
 msgid "Login Credentials"
 msgstr "登入憑證"
 
-#: setupwizard.cpp:214
+#: setupwizard.cpp:211
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "輸入您的憑證以登入群組伺服器"
 
-#: setupwizard.cpp:218
+#: setupwizard.cpp:215
 #, kde-format
 msgid "User:"
 msgstr "使用者："
 
-#: setupwizard.cpp:257
+#: setupwizard.cpp:254
 #, kde-format
 msgid "No, choose another server"
 msgstr "不要，選擇另外的伺服器"
 
-#: setupwizard.cpp:259
+#: setupwizard.cpp:256
 #, kde-format
 msgid "Predefined provider found"
 msgstr "找到預先定義的提供者"
 
-#: setupwizard.cpp:260
+#: setupwizard.cpp:257
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "若您要用自動偵測提供者功能則選擇此項"
 
-#: setupwizard.cpp:279
+#: setupwizard.cpp:276
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -582,89 +582,89 @@ msgstr ""
 "用您使用的電子郵件地址做登入帳號，此精靈可以自動設定 %1 個服務的帳號。\n"
 "您要這樣做嗎？"
 
-#: setupwizard.cpp:284
+#: setupwizard.cpp:281
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "是的，使用 %1 做為提供者"
 
-#: setupwizard.cpp:310
+#: setupwizard.cpp:307
 #, kde-format
 msgid "Groupware Server"
 msgstr "群組伺服器"
 
-#: setupwizard.cpp:311
+#: setupwizard.cpp:308
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "選擇資源要設定的群組伺服器"
 
-#: setupwizard.cpp:340
+#: setupwizard.cpp:337
 #, kde-format
 msgid "Use one of those servers:"
 msgstr "使用這些伺服器的其中之一："
 
-#: setupwizard.cpp:349
+#: setupwizard.cpp:346
 #, kde-format
 msgid "Configure the resource manually"
 msgstr "手動設定資源"
 
-#: setupwizard.cpp:383
+#: setupwizard.cpp:380
 #, kde-format
 msgid "Connection"
 msgstr "連線"
 
-#: setupwizard.cpp:384
+#: setupwizard.cpp:381
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "輸入群組伺服器的連線資訊"
 
-#: setupwizard.cpp:391
+#: setupwizard.cpp:388
 #, kde-format
 msgid "Host"
 msgstr "主機"
 
-#: setupwizard.cpp:394
+#: setupwizard.cpp:391
 #, kde-format
 msgid "Installation path"
 msgstr "安裝路徑"
 
-#: setupwizard.cpp:397
+#: setupwizard.cpp:394
 #, kde-format
 msgid "Use secure connection"
 msgstr "使用安全連線"
 
-#: setupwizard.cpp:425
+#: setupwizard.cpp:422
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "最終網址（CalDav）"
 
-#: setupwizard.cpp:430
+#: setupwizard.cpp:427
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "最終網址（CardDav）"
 
-#: setupwizard.cpp:435
+#: setupwizard.cpp:432
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "最終網址（GroupDav）"
 
-#: setupwizard.cpp:499 setupwizard.cpp:505
+#: setupwizard.cpp:496 setupwizard.cpp:502
 #, kde-format
 msgid "Test Connection"
 msgstr "測試連線"
 
-#: setupwizard.cpp:500
+#: setupwizard.cpp:497
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
 "current configuration"
 msgstr "您現在可以測試是否能以目前的設定存取群組伺服器"
 
-#: setupwizard.cpp:545
+#: setupwizard.cpp:542
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "發生錯誤：%1"
 
-#: setupwizard.cpp:548
+#: setupwizard.cpp:545
 #, kde-format
 msgid "Connected successfully"
 msgstr "已成功連線"

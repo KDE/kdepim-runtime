@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2021-01-11 16:43+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@neuf.fr>\n"
 "Language-Team: French <kde-francophone@kde.org>\n"
@@ -63,6 +63,18 @@ msgstr "Ne pas modifier les données actuelles du moteur."
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "Surveiller les modifications de fichiers."
+
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: vcardresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: vcardresource.kcfg:30
+#, kde-format
+msgid "Automatic update period in minutes."
+msgstr ""
 
 #~ msgid "Filename:"
 #~ msgstr "Nom de fichier :"

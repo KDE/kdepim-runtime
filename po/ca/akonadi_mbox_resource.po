@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2023-03-24 10:47+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -320,14 +320,26 @@ msgstr "No es canvien les dades reals del dorsal."
 msgid "Monitor file for changes."
 msgstr "Controla els canvis al fitxer."
 
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: mboxresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: mboxresource.kcfg:30
+#, kde-format
+msgid "Automatic update period in minutes."
+msgstr ""
+
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
-#: mboxresource.kcfg:37
+#: mboxresource.kcfg:45
 #, kde-format
 msgid "Lockfile"
 msgstr "Fitxer de bloqueig"
 
 #. i18n: ectx: label, entry (MessageCount), group (Compacting)
-#: mboxresource.kcfg:50
+#: mboxresource.kcfg:58
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Nombre de missatges suprimits abans d'iniciar una purga."

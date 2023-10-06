@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2023-03-26 14:30+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
@@ -314,14 +314,27 @@ msgstr "Do not change the actual backend data."
 msgid "Monitor file for changes."
 msgstr "Monitor file for changes."
 
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: mboxresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: mboxresource.kcfg:30
+#, fuzzy, kde-format
+#| msgid "Autosave interval time (in minutes)."
+msgid "Automatic update period in minutes."
+msgstr "Autosave interval time (in minutes)."
+
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
-#: mboxresource.kcfg:37
+#: mboxresource.kcfg:45
 #, kde-format
 msgid "Lockfile"
 msgstr "Lockfile"
 
 #. i18n: ectx: label, entry (MessageCount), group (Compacting)
-#: mboxresource.kcfg:50
+#: mboxresource.kcfg:58
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Number of deleted messages before a purge is started."
@@ -338,9 +351,6 @@ msgstr "Number of deleted messages before a purge is started."
 #~ msgstr ""
 #~ "The MBox file was changed by another program, deleted messages that where "
 #~ "not purged will reappear."
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Autosave interval time (in minutes)."
 
 #, fuzzy
 #~| msgid "Procmail lockfile"

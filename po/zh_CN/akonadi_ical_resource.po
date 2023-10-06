@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2023-09-16 10:08\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -41,6 +41,19 @@ msgstr "不更改实际后端数据。"
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "监视文件更改。"
+
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: icalresource.kcfg:26 notes/notesresource.kcfg:30
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: icalresource.kcfg:30 notes/notesresource.kcfg:34
+#, fuzzy, kde-format
+#| msgid "Autosave interval time (in minutes)."
+msgid "Automatic update period in minutes."
+msgstr "自动保存间隔时间(分钟)。"
 
 #. i18n: ectx: label, entry (AutosaveInterval), group (General)
 #: notes/notesresource.kcfg:22

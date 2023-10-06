@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-04-23 00:50+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2023-09-16 10:08\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -125,64 +125,64 @@ msgstr "自动保存的间隔(按分钟计)。"
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr "选择资源数据的自动保存间隔时间 (分钟)。"
 
-#: singlefileresource.h:65
+#: singlefileresource.h:66
 #, kde-format
 msgid "No file selected."
 msgstr "未选择文件。"
 
-#: singlefileresource.h:67
+#: singlefileresource.h:68
 #, kde-format
 msgid "The resource not configured yet"
 msgstr "资源尚未配置"
 
-#: singlefileresource.h:98 singlefileresource.h:127 singlefileresource.h:212
+#: singlefileresource.h:99 singlefileresource.h:128 singlefileresource.h:213
 #: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "就绪"
 
-#: singlefileresource.h:100
+#: singlefileresource.h:101
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "无法创建文件“%1”。"
 
-#: singlefileresource.h:114
+#: singlefileresource.h:115
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "无法读取文件“%1”"
 
-#: singlefileresource.h:130
+#: singlefileresource.h:131
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "另一个下载进程还在进行中。"
 
-#: singlefileresource.h:140 singlefileresource.h:226
+#: singlefileresource.h:141 singlefileresource.h:227
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "另一个文件上传进程还在进行中。"
 
-#: singlefileresource.h:156
+#: singlefileresource.h:157
 #, kde-format
 msgid "Downloading remote file."
 msgstr "下载远程文件。"
 
-#: singlefileresource.h:176
+#: singlefileresource.h:177
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "尝试写入只读文件：“%1”。"
 
-#: singlefileresource.h:188
+#: singlefileresource.h:189
 #, kde-format
 msgid "No file specified."
 msgstr "未指派文件。"
 
-#: singlefileresource.h:216
+#: singlefileresource.h:217
 #, kde-format
 msgid "A download is still in progress."
 msgstr "有一个下载进程还在进行中。"
 
-#: singlefileresource.h:256
+#: singlefileresource.h:257
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "上传缓存文件到远程地址。"
@@ -213,18 +213,16 @@ msgstr "文件"
 #. i18n: ectx: property (text), widget (QLabel, filenameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:47
 #, kde-format
-msgid "File Name:"
-msgstr "文件名："
+msgid "File or URL:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
 #, kde-format
 msgid ""
-"Select a file. A new file will be created if it doesn't exist. You can also "
-"use a URL, but in that case, monitoring for file changes is not possible."
+"Select a local file or a remote URL to download a file from. A new local "
+"file will be created if it doesn't exist."
 msgstr ""
-"选择一个文件。如果该文件不存在，则会自动创建一个新文件。您也可以使用 URL，但"
-"将无法检测此文件的修改。"
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
@@ -234,11 +232,15 @@ msgstr "显示名："
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "When read-only mode is enabled, no changes will be written. Read-only "
+#| "mode is automatically enabled when the selected file does not support "
+#| "write access."
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
-"access."
+"access or when displaying a calendar from remote URL."
 msgstr ""
 "当只读模式启用时，所有修改都不会被写入。如果所选文件不支持写入，只读模式就会"
 "自动打开。"
@@ -246,21 +248,59 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
 #, kde-format
-msgid "Enable file &monitoring"
-msgstr "启用文件监视(&M)"
+msgid "Monitor for &changes"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "Changes made by other applications will reload the file when monitoring "
+#| "is enabled. Backups will be created to avoid conflicts when possible."
 msgid ""
 "Changes made by other applications will reload the file when monitoring is "
-"enabled. Backups will be created to avoid conflicts when possible."
+"enabled. Backups will be created to avoid conflicts when possible. "
+"Monitoring is not available for remote URLs."
 msgstr ""
 "启用监测后，其他应用程序进行修改时都会重新加载一遍文件。本程序将尽量创建备份"
 "以避免冲突。"
 
-#: singlefileresourceconfigwidgetbase.cpp:126
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
+#: singlefileresourceconfigwidget_desktop.ui:149
+#, kde-format
+msgid "Automatically &update every"
+msgstr ""
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
+#: singlefileresourceconfigwidget_desktop.ui:159
+#, kde-format
+msgid " minutes"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, periodicUpdateLabel)
+#: singlefileresourceconfigwidget_desktop.ui:193
+#, kde-format
+msgid ""
+"Periodically updates the file. Can be used when monitoring is not available "
+"(e.g. for remote calendars)."
+msgstr ""
+
+#: singlefileresourceconfigwidgetbase.cpp:128
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information..."
 msgstr "正在检查文件信息..."
+
+#~ msgid "File Name:"
+#~ msgstr "文件名："
+
+#~ msgid ""
+#~ "Select a file. A new file will be created if it doesn't exist. You can "
+#~ "also use a URL, but in that case, monitoring for file changes is not "
+#~ "possible."
+#~ msgstr ""
+#~ "选择一个文件。如果该文件不存在，则会自动创建一个新文件。您也可以使用 URL，"
+#~ "但将无法检测此文件的修改。"
+
+#~ msgid "Enable file &monitoring"
+#~ msgstr "启用文件监视(&M)"

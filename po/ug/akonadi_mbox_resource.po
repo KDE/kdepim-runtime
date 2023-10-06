@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2013-09-08 07:05+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -263,14 +263,26 @@ msgstr "ئەمەلىي ئارقا ئۇچ سانلىق-مەلۇماتىنى ئۆ�
 msgid "Monitor file for changes."
 msgstr "ھۆججەت ئۆزگىرىشلىرىنى كۆزىتىدۇ."
 
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: mboxresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: mboxresource.kcfg:30
+#, kde-format
+msgid "Automatic update period in minutes."
+msgstr ""
+
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
-#: mboxresource.kcfg:37
+#: mboxresource.kcfg:45
 #, kde-format
 msgid "Lockfile"
 msgstr ""
 
 #. i18n: ectx: label, entry (MessageCount), group (Compacting)
-#: mboxresource.kcfg:50
+#: mboxresource.kcfg:58
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr ""

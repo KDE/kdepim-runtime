@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-04-23 00:50+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2022-04-05 13:17+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -137,64 +137,64 @@ msgstr "Otomatik kaydetme zaman aralığı (dakika)."
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr "Özkaynak verisi için otomatik kaydetme aralığı seçin (dakika)."
 
-#: singlefileresource.h:65
+#: singlefileresource.h:66
 #, kde-format
 msgid "No file selected."
 msgstr "Dosya seçilmedi."
 
-#: singlefileresource.h:67
+#: singlefileresource.h:68
 #, kde-format
 msgid "The resource not configured yet"
 msgstr "Kaynak henüz yapılandırılmamış"
 
-#: singlefileresource.h:98 singlefileresource.h:127 singlefileresource.h:212
+#: singlefileresource.h:99 singlefileresource.h:128 singlefileresource.h:213
 #: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Hazır"
 
-#: singlefileresource.h:100
+#: singlefileresource.h:101
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "'%1' dosyası oluşturulamadı."
 
-#: singlefileresource.h:114
+#: singlefileresource.h:115
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "'%1' dosyası okunamadı"
 
-#: singlefileresource.h:130
+#: singlefileresource.h:131
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Başka bir indirme işlemi sürüyor."
 
-#: singlefileresource.h:140 singlefileresource.h:226
+#: singlefileresource.h:141 singlefileresource.h:227
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Başka bir gönderme işlemi sürüyor."
 
-#: singlefileresource.h:156
+#: singlefileresource.h:157
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Uzaktaki dosya indiriliyor."
 
-#: singlefileresource.h:176
+#: singlefileresource.h:177
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Saltokunur bir dosyaya yazılmaya çalışılıyor: '%1'."
 
-#: singlefileresource.h:188
+#: singlefileresource.h:189
 #, kde-format
 msgid "No file specified."
 msgstr "Bir dosya belirtilmedi."
 
-#: singlefileresource.h:216
+#: singlefileresource.h:217
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Bir indirme işlemi sürüyor."
 
-#: singlefileresource.h:256
+#: singlefileresource.h:257
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Önbelleğe alınan dosya uzak konuma yükleniyor."
@@ -227,18 +227,16 @@ msgstr "Dosya"
 #. i18n: ectx: property (text), widget (QLabel, filenameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:47
 #, kde-format
-msgid "File Name:"
-msgstr "&Dosya Adı:"
+msgid "File or URL:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
 #, kde-format
 msgid ""
-"Select a file. A new file will be created if it doesn't exist. You can also "
-"use a URL, but in that case, monitoring for file changes is not possible."
+"Select a local file or a remote URL to download a file from. A new local "
+"file will be created if it doesn't exist."
 msgstr ""
-"Bir dosya seçin. Yoksa yeni bir dosya oluşturulacaktır. Bir URL de "
-"kullanabilirsiniz; ancak bu durumda dosyadaki değişiklikler izlenemez."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
@@ -248,11 +246,15 @@ msgstr "Görünen Ad:"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "When read-only mode is enabled, no changes will be written. Read-only "
+#| "mode is automatically enabled when the selected file does not support "
+#| "write access."
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
-"access."
+"access or when displaying a calendar from remote URL."
 msgstr ""
 "Saltokunur kipi etkinse herhangi bir değişiklik yapılmayacaktır. Dosyaya "
 "yazma erişiminiz yoksa ve bu dosyaya yazma erişimi yoksa saltokunur kipi "
@@ -261,22 +263,60 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
 #, kde-format
-msgid "Enable file &monitoring"
-msgstr "Dosya izlemeyi &etkinleştir"
+msgid "Monitor for &changes"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "Changes made by other applications will reload the file when monitoring "
+#| "is enabled. Backups will be created to avoid conflicts when possible."
 msgid ""
 "Changes made by other applications will reload the file when monitoring is "
-"enabled. Backups will be created to avoid conflicts when possible."
+"enabled. Backups will be created to avoid conflicts when possible. "
+"Monitoring is not available for remote URLs."
 msgstr ""
 "İzleme etkinleştirildiğinde, diğer uygulamalar tarafından yapılacak "
 "değişiklikler dosyayı yeniden yükleyecektir. Olabildiğince, çakışmaları "
 "önlemek için yedekler oluşturulacaktır."
 
-#: singlefileresourceconfigwidgetbase.cpp:126
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
+#: singlefileresourceconfigwidget_desktop.ui:149
+#, kde-format
+msgid "Automatically &update every"
+msgstr ""
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
+#: singlefileresourceconfigwidget_desktop.ui:159
+#, kde-format
+msgid " minutes"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, periodicUpdateLabel)
+#: singlefileresourceconfigwidget_desktop.ui:193
+#, kde-format
+msgid ""
+"Periodically updates the file. Can be used when monitoring is not available "
+"(e.g. for remote calendars)."
+msgstr ""
+
+#: singlefileresourceconfigwidgetbase.cpp:128
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information..."
 msgstr "Dosya bilgileri denetleniyor..."
+
+#~ msgid "File Name:"
+#~ msgstr "&Dosya Adı:"
+
+#~ msgid ""
+#~ "Select a file. A new file will be created if it doesn't exist. You can "
+#~ "also use a URL, but in that case, monitoring for file changes is not "
+#~ "possible."
+#~ msgstr ""
+#~ "Bir dosya seçin. Yoksa yeni bir dosya oluşturulacaktır. Bir URL de "
+#~ "kullanabilirsiniz; ancak bu durumda dosyadaki değişiklikler izlenemez."
+
+#~ msgid "Enable file &monitoring"
+#~ msgstr "Dosya izlemeyi &etkinleştir"

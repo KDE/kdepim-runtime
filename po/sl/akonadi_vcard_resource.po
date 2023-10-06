@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2020-08-29 10:16+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -59,6 +59,18 @@ msgstr "Ne spremeni dejanskih podatkov zaledja."
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "Nadziraj spremembe datoteke."
+
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: vcardresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: vcardresource.kcfg:30
+#, kde-format
+msgid "Automatic update period in minutes."
+msgstr ""
 
 #~ msgid "Filename:"
 #~ msgstr "Ime datoteke:"

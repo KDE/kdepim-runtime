@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2014-06-27 21:17+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -57,11 +57,21 @@ msgstr "Non modificare i dati attuali del motore."
 msgid "Monitor file for changes."
 msgstr "Controlla le modifiche apportate al file."
 
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: vcardresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: vcardresource.kcfg:30
+#, fuzzy, kde-format
+#| msgid "Autosave interval time (in minutes)."
+msgid "Automatic update period in minutes."
+msgstr "Intervallo del salvataggio automatico (in minuti)."
+
 #~ msgid "Filename:"
 #~ msgstr "Nome file:"
 
 #~ msgid "Select Address Book"
 #~ msgstr "Scegli rubrica"
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Intervallo del salvataggio automatico (in minuti)."

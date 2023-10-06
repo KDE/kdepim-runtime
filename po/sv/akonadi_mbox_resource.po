@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2023-07-25 09:25+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -314,14 +314,27 @@ msgstr "Ändra inte gränssnittets verkliga data."
 msgid "Monitor file for changes."
 msgstr "Övervaka om filen ändras."
 
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: mboxresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: mboxresource.kcfg:30
+#, fuzzy, kde-format
+#| msgid "Autosave interval time (in minutes)."
+msgid "Automatic update period in minutes."
+msgstr "Intervalltid för spara automatiskt (i minuter)."
+
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
-#: mboxresource.kcfg:37
+#: mboxresource.kcfg:45
 #, kde-format
 msgid "Lockfile"
 msgstr "Låsfil"
 
 #. i18n: ectx: label, entry (MessageCount), group (Compacting)
-#: mboxresource.kcfg:50
+#: mboxresource.kcfg:58
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Antal borttagna brev innan en rensning startas."
@@ -338,9 +351,6 @@ msgstr "Antal borttagna brev innan en rensning startas."
 #~ msgstr ""
 #~ "Mbox-filen ändrades av ett annat program, borttagna brev som inte rensats "
 #~ "kommer åter att dyka upp."
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Intervalltid för spara automatiskt (i minuter)."
 
 #~ msgid "&KDE lockfile"
 #~ msgstr "&KDE-låsfil"

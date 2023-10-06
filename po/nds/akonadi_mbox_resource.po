@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2014-04-02 22:38+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -357,14 +357,27 @@ msgstr "Bitte de aktuellen Hülpprogramm-Daten nich ännern."
 msgid "Monitor file for changes."
 msgstr "Datei op Ännern beluern"
 
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: mboxresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: mboxresource.kcfg:30
+#, fuzzy, kde-format
+#| msgid "Autosave interval time (in minutes)."
+msgid "Automatic update period in minutes."
+msgstr "Töövtiet för't automaatsche Sekern (in Minuten)"
+
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
-#: mboxresource.kcfg:37
+#: mboxresource.kcfg:45
 #, kde-format
 msgid "Lockfile"
 msgstr "Slottdatei"
 
 #. i18n: ectx: label, entry (MessageCount), group (Compacting)
-#: mboxresource.kcfg:50
+#: mboxresource.kcfg:58
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Tall vun wegdaan Nettbreven, ehr dat Oprümen anfangt"
@@ -381,9 +394,6 @@ msgstr "Tall vun wegdaan Nettbreven, ehr dat Oprümen anfangt"
 #~ msgstr ""
 #~ "En anner Programm hett de MBox-Datei ännert. Nu dukt wegdaan Narichten, "
 #~ "de noch nich utrüümt weern, wedder op."
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Töövtiet för't automaatsche Sekern (in Minuten)"
 
 #, fuzzy
 #~| msgid "Procmail lockfile"

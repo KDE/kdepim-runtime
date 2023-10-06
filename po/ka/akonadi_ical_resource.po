@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2022-06-25 05:22+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -41,6 +41,19 @@ msgstr "უკანაბოლოს მონაცემების შე�
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "ფაილის ცვლილებების თვალყურის დევნება."
+
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: icalresource.kcfg:26 notes/notesresource.kcfg:30
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: icalresource.kcfg:30 notes/notesresource.kcfg:34
+#, fuzzy, kde-format
+#| msgid "Autosave interval time (in minutes)."
+msgid "Automatic update period in minutes."
+msgstr "ავტომატური შენახვის ინტერვალი (წუთები)."
 
 #. i18n: ectx: label, entry (AutosaveInterval), group (General)
 #: notes/notesresource.kcfg:22

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-04-23 00:50+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2013-09-08 07:05+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -122,64 +122,64 @@ msgstr ""
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr ""
 
-#: singlefileresource.h:65
+#: singlefileresource.h:66
 #, kde-format
 msgid "No file selected."
 msgstr ""
 
-#: singlefileresource.h:67
+#: singlefileresource.h:68
 #, kde-format
 msgid "The resource not configured yet"
 msgstr ""
 
-#: singlefileresource.h:98 singlefileresource.h:127 singlefileresource.h:212
+#: singlefileresource.h:99 singlefileresource.h:128 singlefileresource.h:213
 #: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "تەييار"
 
-#: singlefileresource.h:100
+#: singlefileresource.h:101
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr ""
 
-#: singlefileresource.h:114
+#: singlefileresource.h:115
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "ھۆججەت '%1' ئوقۇغىلى بولمىدى"
 
-#: singlefileresource.h:130
+#: singlefileresource.h:131
 #, kde-format
 msgid "Another download is still in progress."
 msgstr ""
 
-#: singlefileresource.h:140 singlefileresource.h:226
+#: singlefileresource.h:141 singlefileresource.h:227
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr ""
 
-#: singlefileresource.h:156
+#: singlefileresource.h:157
 #, kde-format
 msgid "Downloading remote file."
 msgstr ""
 
-#: singlefileresource.h:176
+#: singlefileresource.h:177
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr ""
 
-#: singlefileresource.h:188
+#: singlefileresource.h:189
 #, kde-format
 msgid "No file specified."
 msgstr ""
 
-#: singlefileresource.h:216
+#: singlefileresource.h:217
 #, kde-format
 msgid "A download is still in progress."
 msgstr ""
 
-#: singlefileresource.h:256
+#: singlefileresource.h:257
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr ""
@@ -209,17 +209,16 @@ msgstr "ھۆججەت"
 
 #. i18n: ectx: property (text), widget (QLabel, filenameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:47
-#, fuzzy, kde-format
-#| msgid "&Filename:"
-msgid "File Name:"
-msgstr "ھۆججەت ئاتى(&F):"
+#, kde-format
+msgid "File or URL:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
 #, kde-format
 msgid ""
-"Select a file. A new file will be created if it doesn't exist. You can also "
-"use a URL, but in that case, monitoring for file changes is not possible."
+"Select a local file or a remote URL to download a file from. A new local "
+"file will be created if it doesn't exist."
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
@@ -235,28 +234,60 @@ msgstr "كۆرسىتىش ئىسمى"
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
-"access."
+"access or when displaying a calendar from remote URL."
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
-#, kde-format
-msgid "Enable file &monitoring"
-msgstr "ھۆججەت كۆزىتىشنى ئىناۋەتلىك قىل(&M)"
+#, fuzzy, kde-format
+#| msgid "Monitoring"
+msgid "Monitor for &changes"
+msgstr "كۆزەت"
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
 #, kde-format
 msgid ""
 "Changes made by other applications will reload the file when monitoring is "
-"enabled. Backups will be created to avoid conflicts when possible."
+"enabled. Backups will be created to avoid conflicts when possible. "
+"Monitoring is not available for remote URLs."
 msgstr ""
 
-#: singlefileresourceconfigwidgetbase.cpp:126
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
+#: singlefileresourceconfigwidget_desktop.ui:149
+#, kde-format
+msgid "Automatically &update every"
+msgstr ""
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
+#: singlefileresourceconfigwidget_desktop.ui:159
+#, fuzzy, kde-format
+#| msgid " minute"
+#| msgid_plural " minutes"
+msgid " minutes"
+msgstr " مىنۇت"
+
+#. i18n: ectx: property (text), widget (QLabel, periodicUpdateLabel)
+#: singlefileresourceconfigwidget_desktop.ui:193
+#, kde-format
+msgid ""
+"Periodically updates the file. Can be used when monitoring is not available "
+"(e.g. for remote calendars)."
+msgstr ""
+
+#: singlefileresourceconfigwidgetbase.cpp:128
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information..."
 msgstr ""
+
+#, fuzzy
+#~| msgid "&Filename:"
+#~ msgid "File Name:"
+#~ msgstr "ھۆججەت ئاتى(&F):"
+
+#~ msgid "Enable file &monitoring"
+#~ msgstr "ھۆججەت كۆزىتىشنى ئىناۋەتلىك قىل(&M)"
 
 #~ msgid "Filename"
 #~ msgstr "ھۆججەت ئاتى"
@@ -267,9 +298,6 @@ msgstr ""
 #~ msgid "&Name:"
 #~ msgstr "ئاتى(&N):"
 
-#~ msgid "Monitoring"
-#~ msgstr "كۆزەت"
-
 #, fuzzy
 #~| msgid "Could not read file '%1'"
 #~ msgid "Could not find credentials"
@@ -277,7 +305,3 @@ msgstr ""
 
 #~ msgid "&Display name:"
 #~ msgstr "كۆرسىتىش ئاتى(&D):"
-
-#~ msgid " minute"
-#~ msgid_plural " minutes"
-#~ msgstr[0] " مىنۇت"

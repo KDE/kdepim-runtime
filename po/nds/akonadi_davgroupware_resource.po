@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2014-08-15 15:50+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -94,7 +94,7 @@ msgstr "Brukernaam:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:108 setupwizard.cpp:222 urlconfigurationdialog.ui:127
+#: configdialog.ui:108 setupwizard.cpp:219 urlconfigurationdialog.ui:127
 #, kde-format
 msgid "Password:"
 msgstr "Passwoort:"
@@ -566,45 +566,45 @@ msgstr "För Bruker %1 deit en Passwoort noot."
 msgid "Password: "
 msgstr "Passwoort: "
 
-#: setupwizard.cpp:140
+#: setupwizard.cpp:137
 #, fuzzy, kde-format
 #| msgid "DAV groupware configuration wizard"
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "Instellenhölper för DAV-Arbeitkoppel"
 
-#: setupwizard.cpp:213
+#: setupwizard.cpp:210
 #, kde-format
 msgid "Login Credentials"
 msgstr "Anmelldaten"
 
-#: setupwizard.cpp:214
+#: setupwizard.cpp:211
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "Giff hier Dien Anmelldaten för den Arbeitkoppel-Server in"
 
-#: setupwizard.cpp:218
+#: setupwizard.cpp:215
 #, fuzzy, kde-format
 #| msgid "User"
 msgid "User:"
 msgstr "Bruker"
 
-#: setupwizard.cpp:257
+#: setupwizard.cpp:254
 #, kde-format
 msgid "No, choose another server"
 msgstr "Nee, en annern Server bruken"
 
-#: setupwizard.cpp:259
+#: setupwizard.cpp:256
 #, kde-format
 msgid "Predefined provider found"
 msgstr "Vörinstellt Anbeder funnen"
 
-#: setupwizard.cpp:260
+#: setupwizard.cpp:257
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "Maak dit an, wenn Du den automaatsch opdeckt Anbeder bruken wullt."
 
-#: setupwizard.cpp:279
+#: setupwizard.cpp:276
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -615,78 +615,78 @@ msgstr ""
 "hest, automaatsch en Konto för %1 inrichten.\n"
 "Wullt Du dat doon?"
 
-#: setupwizard.cpp:284
+#: setupwizard.cpp:281
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Jo, %1 as Anbeder bruken"
 
-#: setupwizard.cpp:310
+#: setupwizard.cpp:307
 #, kde-format
 msgid "Groupware Server"
 msgstr "Arbeitkoppel-Server"
 
-#: setupwizard.cpp:311
+#: setupwizard.cpp:308
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr ""
 "Söök den Arbeitkoppel-Server ut, för den Du de Ressource instellen wullt."
 
-#: setupwizard.cpp:340
+#: setupwizard.cpp:337
 #, kde-format
 msgid "Use one of those servers:"
 msgstr "Een vun disse Servers bruken:"
 
-#: setupwizard.cpp:349
+#: setupwizard.cpp:346
 #, kde-format
 msgid "Configure the resource manually"
 msgstr "De Ressource vun Hand instellen"
 
-#: setupwizard.cpp:383
+#: setupwizard.cpp:380
 #, kde-format
 msgid "Connection"
 msgstr "Verbinnen"
 
-#: setupwizard.cpp:384
+#: setupwizard.cpp:381
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Giff hier de Tokoppeldaten för den Arbeitkoppel-Server in."
 
-#: setupwizard.cpp:391
+#: setupwizard.cpp:388
 #, kde-format
 msgid "Host"
 msgstr "Reekner"
 
-#: setupwizard.cpp:394
+#: setupwizard.cpp:391
 #, kde-format
 msgid "Installation path"
 msgstr "Installatschoonpadd"
 
-#: setupwizard.cpp:397
+#: setupwizard.cpp:394
 #, kde-format
 msgid "Use secure connection"
 msgstr "Seker Verbinnen bruken"
 
-#: setupwizard.cpp:425
+#: setupwizard.cpp:422
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "Redig Adress (CalDav)"
 
-#: setupwizard.cpp:430
+#: setupwizard.cpp:427
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "Redig Adress (CardDav)"
 
-#: setupwizard.cpp:435
+#: setupwizard.cpp:432
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "Redig Adress (GroupDav)"
 
-#: setupwizard.cpp:499 setupwizard.cpp:505
+#: setupwizard.cpp:496 setupwizard.cpp:502
 #, kde-format
 msgid "Test Connection"
 msgstr "Verbinnen utproberen"
 
-#: setupwizard.cpp:500
+#: setupwizard.cpp:497
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -695,12 +695,12 @@ msgstr ""
 "Hier kannst Du utproberen, wat Du mit disse Instellen Togriep op den Server "
 "hest."
 
-#: setupwizard.cpp:545
+#: setupwizard.cpp:542
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Dat geev en Fehler: %1"
 
-#: setupwizard.cpp:548
+#: setupwizard.cpp:545
 #, kde-format
 msgid "Connected successfully"
 msgstr "Mit Spood tokoppelt"

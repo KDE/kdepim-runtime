@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2023-09-16 10:08\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -91,7 +91,7 @@ msgstr "用户名："
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:108 setupwizard.cpp:222 urlconfigurationdialog.ui:127
+#: configdialog.ui:108 setupwizard.cpp:219 urlconfigurationdialog.ui:127
 #, kde-format
 msgid "Password:"
 msgstr "密码："
@@ -531,43 +531,43 @@ msgstr "需要用户 %1 的密码"
 msgid "Password: "
 msgstr "密码："
 
-#: setupwizard.cpp:140
+#: setupwizard.cpp:137
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "DAV 群件配置向导"
 
-#: setupwizard.cpp:213
+#: setupwizard.cpp:210
 #, kde-format
 msgid "Login Credentials"
 msgstr "登录身份"
 
-#: setupwizard.cpp:214
+#: setupwizard.cpp:211
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "输入群件服务器的登录身份"
 
-#: setupwizard.cpp:218
+#: setupwizard.cpp:215
 #, kde-format
 msgid "User:"
 msgstr "用户："
 
-#: setupwizard.cpp:257
+#: setupwizard.cpp:254
 #, kde-format
 msgid "No, choose another server"
 msgstr "不，选择另一个服务器"
 
-#: setupwizard.cpp:259
+#: setupwizard.cpp:256
 #, kde-format
 msgid "Predefined provider found"
 msgstr "发现预定义的提供方"
 
-#: setupwizard.cpp:260
+#: setupwizard.cpp:257
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "选择您是否想使用自动检测的提供方"
 
-#: setupwizard.cpp:279
+#: setupwizard.cpp:276
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -578,89 +578,89 @@ msgstr ""
 "本向导程序可以为 %1 个服务自动配置账户。\n"
 "您想要自动配置吗？"
 
-#: setupwizard.cpp:284
+#: setupwizard.cpp:281
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "是的，使用 %1 作为提供方"
 
-#: setupwizard.cpp:310
+#: setupwizard.cpp:307
 #, kde-format
 msgid "Groupware Server"
 msgstr "群件服务器"
 
-#: setupwizard.cpp:311
+#: setupwizard.cpp:308
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "选择资源要配置的群件服务器"
 
-#: setupwizard.cpp:340
+#: setupwizard.cpp:337
 #, kde-format
 msgid "Use one of those servers:"
 msgstr "使用以下服务器之一："
 
-#: setupwizard.cpp:349
+#: setupwizard.cpp:346
 #, kde-format
 msgid "Configure the resource manually"
 msgstr "手动配置资源"
 
-#: setupwizard.cpp:383
+#: setupwizard.cpp:380
 #, kde-format
 msgid "Connection"
 msgstr "连接"
 
-#: setupwizard.cpp:384
+#: setupwizard.cpp:381
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "输入群件服务器的连接信息"
 
-#: setupwizard.cpp:391
+#: setupwizard.cpp:388
 #, kde-format
 msgid "Host"
 msgstr "主机"
 
-#: setupwizard.cpp:394
+#: setupwizard.cpp:391
 #, kde-format
 msgid "Installation path"
 msgstr "安装路径"
 
-#: setupwizard.cpp:397
+#: setupwizard.cpp:394
 #, kde-format
 msgid "Use secure connection"
 msgstr "使用安全连接"
 
-#: setupwizard.cpp:425
+#: setupwizard.cpp:422
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "最终 URL (CalDav)"
 
-#: setupwizard.cpp:430
+#: setupwizard.cpp:427
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "最终 URL (CardDav)"
 
-#: setupwizard.cpp:435
+#: setupwizard.cpp:432
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "最终 URL (GroupDav)"
 
-#: setupwizard.cpp:499 setupwizard.cpp:505
+#: setupwizard.cpp:496 setupwizard.cpp:502
 #, kde-format
 msgid "Test Connection"
 msgstr "测试连接"
 
-#: setupwizard.cpp:500
+#: setupwizard.cpp:497
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
 "current configuration"
 msgstr "您现在可以测试是否能以当前配置访问群件服务器"
 
-#: setupwizard.cpp:545
+#: setupwizard.cpp:542
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "出错：%1"
 
-#: setupwizard.cpp:548
+#: setupwizard.cpp:545
 #, kde-format
 msgid "Connected successfully"
 msgstr "连接成功"

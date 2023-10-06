@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2023-03-24 08:41+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -322,14 +322,27 @@ msgstr "Не змінювати справжні дані сервера."
 msgid "Monitor file for changes."
 msgstr "Слідкувати за змінами у файлі."
 
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: mboxresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: mboxresource.kcfg:30
+#, fuzzy, kde-format
+#| msgid "Autosave interval time (in minutes)."
+msgid "Automatic update period in minutes."
+msgstr "Проміжок автозбереження (у хвилинах)."
+
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
-#: mboxresource.kcfg:37
+#: mboxresource.kcfg:45
 #, kde-format
 msgid "Lockfile"
 msgstr "Файл блокування"
 
 #. i18n: ectx: label, entry (MessageCount), group (Compacting)
-#: mboxresource.kcfg:50
+#: mboxresource.kcfg:58
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Кількість вилучених повідомлень, потрібна для запуску очищення."
@@ -346,9 +359,6 @@ msgstr "Кількість вилучених повідомлень, потрі
 #~ msgstr ""
 #~ "Вміст файла MBox було змінено сторонньою програмою, вилучені "
 #~ "повідомлення, які не було витерто, з’являться у списку знову."
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Проміжок автозбереження (у хвилинах)."
 
 #~ msgid "&KDE lockfile"
 #~ msgstr "Файл блокува&ння KDE"

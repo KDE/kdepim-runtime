@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2020-07-31 19:05+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -353,14 +353,27 @@ msgstr "Ændr ikke de faktiske motor-data."
 msgid "Monitor file for changes."
 msgstr "Overvåg fil for ændringer."
 
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: mboxresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: mboxresource.kcfg:30
+#, fuzzy, kde-format
+#| msgid "Autosave interval time (in minutes)."
+msgid "Automatic update period in minutes."
+msgstr "Tidsinterval for autogem (i minutter)."
+
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
-#: mboxresource.kcfg:37
+#: mboxresource.kcfg:45
 #, kde-format
 msgid "Lockfile"
 msgstr "Lock-fil"
 
 #. i18n: ectx: label, entry (MessageCount), group (Compacting)
-#: mboxresource.kcfg:50
+#: mboxresource.kcfg:58
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Antal slettede beskeder før tømning startes."
@@ -370,9 +383,6 @@ msgstr "Antal slettede beskeder før tømning startes."
 
 #~ msgid "Non&e (Use with care)"
 #~ msgstr "Ing&en (brug med omtanke)"
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Tidsinterval for autogem (i minutter)."
 
 #~ msgid "&KDE lockfile"
 #~ msgstr "&KDE lock-fil"

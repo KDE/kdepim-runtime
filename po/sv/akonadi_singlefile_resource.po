@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-04-23 00:50+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2021-07-07 15:02+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -134,64 +134,64 @@ msgstr "Intervall för spara automatiskt (i minuter)."
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr "Välj tidsintervall för att spara resursdata automatiskt (i minuter)."
 
-#: singlefileresource.h:65
+#: singlefileresource.h:66
 #, kde-format
 msgid "No file selected."
 msgstr "Ingen fil markerad."
 
-#: singlefileresource.h:67
+#: singlefileresource.h:68
 #, kde-format
 msgid "The resource not configured yet"
 msgstr "Resursen är ännu inte inställd"
 
-#: singlefileresource.h:98 singlefileresource.h:127 singlefileresource.h:212
+#: singlefileresource.h:99 singlefileresource.h:128 singlefileresource.h:213
 #: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Klar"
 
-#: singlefileresource.h:100
+#: singlefileresource.h:101
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "Kunde inte skapa filen '%1'."
 
-#: singlefileresource.h:114
+#: singlefileresource.h:115
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "Kunde inte läsa filen '%1'."
 
-#: singlefileresource.h:130
+#: singlefileresource.h:131
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "En annan nerladdning pågår fortfarande."
 
-#: singlefileresource.h:140 singlefileresource.h:226
+#: singlefileresource.h:141 singlefileresource.h:227
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "En annan filuppladdning pågår fortfarande."
 
-#: singlefileresource.h:156
+#: singlefileresource.h:157
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Laddar ner fjärrfil."
 
-#: singlefileresource.h:176
+#: singlefileresource.h:177
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Försök att skriva till en skrivskyddad fil: '%1'."
 
-#: singlefileresource.h:188
+#: singlefileresource.h:189
 #, kde-format
 msgid "No file specified."
 msgstr "Ingen fil angiven."
 
-#: singlefileresource.h:216
+#: singlefileresource.h:217
 #, kde-format
 msgid "A download is still in progress."
 msgstr "En nerladdning pågår fortfarande."
 
-#: singlefileresource.h:256
+#: singlefileresource.h:257
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Laddar upp fil lagrad i cache till fjärrplats."
@@ -224,18 +224,16 @@ msgstr "Fil"
 #. i18n: ectx: property (text), widget (QLabel, filenameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:47
 #, kde-format
-msgid "File Name:"
-msgstr "Filnamn:"
+msgid "File or URL:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
 #, kde-format
 msgid ""
-"Select a file. A new file will be created if it doesn't exist. You can also "
-"use a URL, but in that case, monitoring for file changes is not possible."
+"Select a local file or a remote URL to download a file from. A new local "
+"file will be created if it doesn't exist."
 msgstr ""
-"Välj en fil. En ny fil skapas om den inte finns. Du kan också använda en "
-"webbadress, men i detta fall är det inte möjligt att övervaka filändringar."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
@@ -245,36 +243,82 @@ msgstr "Namn som visas:"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "When read-only mode is enabled, no changes will be written. Read-only "
+#| "mode is automatically enabled when the selected file does not support "
+#| "write access."
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
-"access."
+"access or when displaying a calendar from remote URL."
 msgstr ""
 "När skrivskydd är aktiverat, kommer inga ändringar att skrivas. Skrivskydd "
 "aktiveras automatiskt om du inte har skrivrättigheter till filen."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
-#, kde-format
-msgid "Enable file &monitoring"
-msgstr "Aktivera filö&vervakning"
+#, fuzzy, kde-format
+#| msgid "Monitoring"
+msgid "Monitor for &changes"
+msgstr "Övervakning"
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "Changes made by other applications will reload the file when monitoring "
+#| "is enabled. Backups will be created to avoid conflicts when possible."
 msgid ""
 "Changes made by other applications will reload the file when monitoring is "
-"enabled. Backups will be created to avoid conflicts when possible."
+"enabled. Backups will be created to avoid conflicts when possible. "
+"Monitoring is not available for remote URLs."
 msgstr ""
 "Ändringar gjorda av andra filer läser in filen igen när övervakning är "
 "aktiverad. Säkerhetskopior skapas för att undvika konflikter om möjligt."
 
-#: singlefileresourceconfigwidgetbase.cpp:126
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
+#: singlefileresourceconfigwidget_desktop.ui:149
+#, kde-format
+msgid "Automatically &update every"
+msgstr ""
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
+#: singlefileresourceconfigwidget_desktop.ui:159
+#, fuzzy, kde-format
+#| msgid " minute"
+#| msgid_plural " minutes"
+msgid " minutes"
+msgstr " minut"
+
+#. i18n: ectx: property (text), widget (QLabel, periodicUpdateLabel)
+#: singlefileresourceconfigwidget_desktop.ui:193
+#, kde-format
+msgid ""
+"Periodically updates the file. Can be used when monitoring is not available "
+"(e.g. for remote calendars)."
+msgstr ""
+
+#: singlefileresourceconfigwidgetbase.cpp:128
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information..."
 msgstr "Kontrollerar filinformation..."
+
+#~ msgid "File Name:"
+#~ msgstr "Filnamn:"
+
+#~ msgid ""
+#~ "Select a file. A new file will be created if it doesn't exist. You can "
+#~ "also use a URL, but in that case, monitoring for file changes is not "
+#~ "possible."
+#~ msgstr ""
+#~ "Välj en fil. En ny fil skapas om den inte finns. Du kan också använda en "
+#~ "webbadress, men i detta fall är det inte möjligt att övervaka "
+#~ "filändringar."
+
+#~ msgid "Enable file &monitoring"
+#~ msgstr "Aktivera filö&vervakning"
 
 #~ msgid "Filename"
 #~ msgstr "Filnamn"
@@ -302,9 +346,6 @@ msgstr "Kontrollerar filinformation..."
 #~ msgstr ""
 #~ "Ange namnet som används för att identifiera resursen där den visas. Om "
 #~ "det inte anges, kommer filnamnet att användas."
-
-#~ msgid "Monitoring"
-#~ msgstr "Övervakning"
 
 #~ msgid ""
 #~ "If file monitoring is enabled the resource will reload the file when "
@@ -433,11 +474,6 @@ msgstr "Kontrollerar filinformation..."
 
 #~ msgid "&Display name:"
 #~ msgstr "Namn som &visas:"
-
-#~ msgid " minute"
-#~ msgid_plural " minutes"
-#~ msgstr[0] " minut"
-#~ msgstr[1] " minuter"
 
 #~ msgid "min"
 #~ msgstr "min"

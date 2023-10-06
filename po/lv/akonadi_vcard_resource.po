@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2009-06-10 20:25+0300\n"
 "Last-Translator: Nauris Kibilds <mreloads@yahoo.co.uk>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -58,8 +58,18 @@ msgstr "Nemainiet aizmugures datus."
 msgid "Monitor file for changes."
 msgstr "Vērot faila izmaiņas."
 
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: vcardresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: vcardresource.kcfg:30
+#, fuzzy, kde-format
+#| msgid "Autosave interval time (in minutes)."
+msgid "Automatic update period in minutes."
+msgstr "Automātiskās saglabāšanas intervāls (minūtēs)."
+
 #~ msgid "Select Address Book"
 #~ msgstr "Izvēlieties adrešu grāmatu"
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Automātiskās saglabāšanas intervāls (minūtēs)."

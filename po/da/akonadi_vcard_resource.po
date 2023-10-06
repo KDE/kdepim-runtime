@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2014-07-23 21:16+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -57,11 +57,21 @@ msgstr "Ændr ikke de faktiske motor-data."
 msgid "Monitor file for changes."
 msgstr "Overvåg fil for ændringer."
 
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: vcardresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: vcardresource.kcfg:30
+#, fuzzy, kde-format
+#| msgid "Autosave interval time (in minutes)."
+msgid "Automatic update period in minutes."
+msgstr "Tidsinterval for autogem (i minutter)."
+
 #~ msgid "Filename:"
 #~ msgstr "Filnavn:"
 
 #~ msgid "Select Address Book"
 #~ msgstr "Vælg adressebog"
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Tidsinterval for autogem (i minutter)."

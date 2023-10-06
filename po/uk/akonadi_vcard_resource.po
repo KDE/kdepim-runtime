@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2014-04-02 08:49+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -60,11 +60,21 @@ msgstr "Не змінювати справжні дані сервера."
 msgid "Monitor file for changes."
 msgstr "Слідкувати за змінами у файлі."
 
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: vcardresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: vcardresource.kcfg:30
+#, fuzzy, kde-format
+#| msgid "Autosave interval time (in minutes)."
+msgid "Automatic update period in minutes."
+msgstr "Проміжок автозбереження (у хвилинах)."
+
 #~ msgid "Filename:"
 #~ msgstr "Назва файла:"
 
 #~ msgid "Select Address Book"
 #~ msgstr "Виберіть адресну книгу"
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Проміжок автозбереження (у хвилинах)."

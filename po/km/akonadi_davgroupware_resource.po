@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2011-12-21 11:31+0700\n"
 "Last-Translator: Seng Sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <supprot@khmeros.info>\n"
@@ -96,7 +96,7 @@ msgstr "ឈ្មោះ​អ្នក​ប្រើ"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:108 setupwizard.cpp:222 urlconfigurationdialog.ui:127
+#: configdialog.ui:108 setupwizard.cpp:219 urlconfigurationdialog.ui:127
 #, fuzzy, kde-format
 #| msgid "Password: "
 msgid "Password:"
@@ -564,45 +564,45 @@ msgstr "ទាមទារ​ពាក្យសម្ងាត់​សម្រ
 msgid "Password: "
 msgstr "ពាក្យ​សម្ងាត់ ៖"
 
-#: setupwizard.cpp:140
+#: setupwizard.cpp:137
 #, fuzzy, kde-format
 #| msgid "DAV groupware configuration wizard"
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "អ្នក​ជំនួយ​ការ​កំណត់​រនាសម្ព័ន្ធ​​របស់ DAV groupware"
 
-#: setupwizard.cpp:213
+#: setupwizard.cpp:210
 #, kde-format
 msgid "Login Credentials"
 msgstr "ចូលដោយ​សម្ងាត់"
 
-#: setupwizard.cpp:214
+#: setupwizard.cpp:211
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "បញ្ចូល​ភាព​សម្ងាត់​របស់​អ្នក ដើម្បី​ចូល​ក្នុង​ម៉ាស៊ីនបម្រើ groupware"
 
-#: setupwizard.cpp:218
+#: setupwizard.cpp:215
 #, fuzzy, kde-format
 #| msgid "User"
 msgid "User:"
 msgstr "អ្នកប្រើ"
 
-#: setupwizard.cpp:257
+#: setupwizard.cpp:254
 #, kde-format
 msgid "No, choose another server"
 msgstr "ទេ ជ្រើស​ម៉ាស៊ីន​បម្រើ​ផ្សេង"
 
-#: setupwizard.cpp:259
+#: setupwizard.cpp:256
 #, kde-format
 msgid "Predefined provider found"
 msgstr "រក​ឃើញ​ក្រុមហ៊ុន​ផ្ដល់ដែលបាន​កំណត់​​ជា​មុន"
 
-#: setupwizard.cpp:260
+#: setupwizard.cpp:257
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "ជ្រើស​ប្រសិនបើ​អ្នក​ចង់​ប្រើក្រុមហ៊ុន​ផ្ដល់​ដែល​រកឃើញ​ដោយ​ស្វ័យ​ប្រវត្តិ"
 
-#: setupwizard.cpp:279
+#: setupwizard.cpp:276
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -613,77 +613,77 @@ msgstr ""
 "ប្រវត្តិ​ សម្រាប់​សេវា %1 ។\n"
 "តើ​អ្នក​ចង់​ធ្វើ​ដូច្នេះ​ដែរឬទេ ?"
 
-#: setupwizard.cpp:284
+#: setupwizard.cpp:281
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "បាទ/ចាស ប្រើ %1 ដូច​របស់​ក្រុមហ៊ុន​ផ្ដល់"
 
-#: setupwizard.cpp:310
+#: setupwizard.cpp:307
 #, kde-format
 msgid "Groupware Server"
 msgstr "ម៉ាស៊ីន​បម្រើ Groupware"
 
-#: setupwizard.cpp:311
+#: setupwizard.cpp:308
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "ជ្រើស​ម៉ាស៊ីន​បម្រើ groupware ដែល​ធនធាន​នឹង​​ត្រូវ​បាន​កំណត់​រចនាសម្ព័ន្ធ"
 
-#: setupwizard.cpp:340
+#: setupwizard.cpp:337
 #, kde-format
 msgid "Use one of those servers:"
 msgstr "ប្រើ​មួយ​របស់​ម៉ាស៊ីនបម្រើ​ទាំងនោះ ៖"
 
-#: setupwizard.cpp:349
+#: setupwizard.cpp:346
 #, kde-format
 msgid "Configure the resource manually"
 msgstr "កំណត់​រចនាសម្ព័ន្ធ​ធនធាន​ដោយ​ដៃ"
 
-#: setupwizard.cpp:383
+#: setupwizard.cpp:380
 #, kde-format
 msgid "Connection"
 msgstr "ការ​តភ្ជាប់"
 
-#: setupwizard.cpp:384
+#: setupwizard.cpp:381
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "បញ្ចូល​ព័ត៌មាន​តភ្ជាប់​សម្រាប់​ម៉ាស៊ីន​បម្រើ groupware"
 
-#: setupwizard.cpp:391
+#: setupwizard.cpp:388
 #, kde-format
 msgid "Host"
 msgstr "ម៉ាស៊ីន"
 
-#: setupwizard.cpp:394
+#: setupwizard.cpp:391
 #, kde-format
 msgid "Installation path"
 msgstr "ផ្លូវ​ដំឡើង"
 
-#: setupwizard.cpp:397
+#: setupwizard.cpp:394
 #, kde-format
 msgid "Use secure connection"
 msgstr "ប្រើ​ការ​តភ្ជាប់​សុវត្ថិភាព"
 
-#: setupwizard.cpp:425
+#: setupwizard.cpp:422
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "URL ចុងក្រោយ (CalDav)"
 
-#: setupwizard.cpp:430
+#: setupwizard.cpp:427
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "URL ចុងក្រោយ (CardDav)"
 
-#: setupwizard.cpp:435
+#: setupwizard.cpp:432
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "URL ចុងក្រោយ​ (GroupDav)"
 
-#: setupwizard.cpp:499 setupwizard.cpp:505
+#: setupwizard.cpp:496 setupwizard.cpp:502
 #, kde-format
 msgid "Test Connection"
 msgstr "សាកល្បង​ការ​តភ្ជាប់"
 
-#: setupwizard.cpp:500
+#: setupwizard.cpp:497
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -692,13 +692,13 @@ msgstr ""
 "អ្នក​អាច​សាកល្បង​ឥឡូវ​ថាតើ​កម៉ាស៊ីនបម្រើ groupware អាច​ត្រូវ​បាន​ចូល​ដំណើរការ​ជា​មួយ​នឹង​ការ​កំណត់​"
 "រចនាសម្ព័ន្ធ​បច្ចុប្បន្ន​ដែរ​ឬទេ"
 
-#: setupwizard.cpp:545
+#: setupwizard.cpp:542
 #, fuzzy, kde-format
 #| msgid "An error occurred: "
 msgid "An error occurred: %1"
 msgstr "កំហុស​បានកើត​ឡើង ៖"
 
-#: setupwizard.cpp:548
+#: setupwizard.cpp:545
 #, kde-format
 msgid "Connected successfully"
 msgstr "បានតភ្ជាប់ដោយ​ជោគជ័យ"

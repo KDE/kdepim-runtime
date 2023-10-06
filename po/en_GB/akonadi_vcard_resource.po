@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-10-06 01:41+0000\n"
 "PO-Revision-Date: 2014-06-30 23:15+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English <kde-l10n-en_gb@kde.org>\n"
@@ -58,11 +58,21 @@ msgstr "Do not change the actual backend data."
 msgid "Monitor file for changes."
 msgstr "Monitor file for changes."
 
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: vcardresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: vcardresource.kcfg:30
+#, fuzzy, kde-format
+#| msgid "Autosave interval time (in minutes)."
+msgid "Automatic update period in minutes."
+msgstr "Autosave interval time (in minutes)."
+
 #~ msgid "Filename:"
 #~ msgstr "Filename:"
 
 #~ msgid "Select Address Book"
 #~ msgstr "Select Address Book"
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Autosave interval time (in minutes)."
