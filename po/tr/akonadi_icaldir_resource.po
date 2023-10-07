@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Emir SARI <emir_sari@icloud.com>, 2022.
+# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-08-25 02:27+0000\n"
-"PO-Revision-Date: 2022-04-05 13:20+0300\n"
+"PO-Revision-Date: 2023-10-06 05:44+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -15,13 +15,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 23.11.70\n"
 "X-POOTLE-MTIME: 1502203052.000000\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
 msgid "Incidence with uid '%1' not found."
-msgstr "Kullanıcı kimliği '%1' olan olay bulunamadı."
+msgstr "'%1' kullanıcı kimliğine sahip olay bulunamadı."
 
 #: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
 #, kde-format
@@ -43,13 +43,13 @@ msgstr "iCal dizininin yolu"
 #: icaldirresource.kcfg:14
 #, kde-format
 msgid "Autosave interval time (in minutes)."
-msgstr "Dakika türünden otomatik kaydetme aralığı."
+msgstr "Dakika türünden kendiliğinden kaydetme aralığı."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: icaldirresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "Güncel arka uç verilerini değiştirme."
+msgstr "Gerçek arka uç verisini değiştirmeyin."
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: icaldirsagentsettingswidget.ui:33
@@ -105,14 +105,14 @@ msgid ""
 "with changing anything here, the defaults are good enough in most cases."
 msgstr ""
 "Bu sayfadaki seçenekler veri güvenliği ve tutarlılığı arasındaki dengeyi "
-"sağlayan parametreleri değiştirmenize izin verir. Öntanımlı seçenekler çoğu "
-"durumda yeterince iyidir ve değiştirmeniz önerilmez."
+"sağlayan parametreleri değiştirmenize olanak tanır. Öntanımlı seçenekler "
+"çoğu durumda yeterince iyidir ve değiştirmeniz önerilmez."
 
 #. i18n: ectx: property (text), widget (QLabel, autosaveLabel)
 #: icaldirsagentsettingswidget.ui:124
 #, kde-format
 msgid "Autosave delay:"
-msgstr "Otomatik kaydetme gecikmesi:"
+msgstr "Kendiliğinden kaydetme gecikmesi:"
 
 #: icaldirsettingswidget.cpp:36
 #, kde-format

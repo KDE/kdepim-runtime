@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-05-09 00:49+0000\n"
-"PO-Revision-Date: 2023-08-22 23:05+0300\n"
+"PO-Revision-Date: 2023-10-06 05:33+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -641,7 +641,7 @@ msgstr "POP Ayarları"
 #: popsettings.ui:239
 #, kde-format
 msgid "If checked the message is not deleted from the mail server"
-msgstr "İşaretlenir ise, ileti posta sunucusundan silinmez"
+msgstr "İşaretliyse ileti posta sunucusundan silinmez"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, leaveOnServerCheck)
 #: popsettings.ui:242
@@ -706,14 +706,14 @@ msgid ""
 "If active, most recent messages are kept until the quota is reached and "
 "oldest messages are deleted."
 msgstr ""
-"Etkin ise, en yeni iletiler kotaya ulaşılana kadar tutulur ve en eski "
-"iletiler silinir."
+"Etkinse en yeni iletiler kotaya ulaşılana kadar tutulur ve en eski iletiler "
+"silinir."
 
 #. i18n: ectx: property (text), widget (QCheckBox, leaveOnServerSizeCheck)
 #: popsettings.ui:319
 #, kde-format
 msgid "Maximum megabytes to keep:"
-msgstr "Saklanacak azami boyut (MB):"
+msgstr "Saklanacak en büyük boyut (MB):"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, leaveOnServerSizeSpin)
 #: popsettings.ui:329
@@ -731,7 +731,7 @@ msgstr "E-postaları daha hızlı indirmek için veriyolu &kullan"
 #: popsettings.ui:365
 #, kde-format
 msgid "Destination folder:"
-msgstr "Hedef dizin:"
+msgstr "Hedef klasör:"
 
 #. i18n: ectx: property (text), widget (QLabel, preCommandLabel)
 #: popsettings.ui:375
@@ -743,7 +743,7 @@ msgstr "Ön ko&mut:"
 #: popsettings.ui:391
 #, kde-format
 msgid "Command that is executed before checking mail"
-msgstr "E-posta denetimi yapmadan önce çalıştırılan komut"
+msgstr "E-posta denetimi yapmadan önce yürütülen komut"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget_2)
 #: popsettings.ui:403
@@ -767,7 +767,7 @@ msgstr "Şifreleme:"
 #: popsettings.ui:433
 #, kde-format
 msgid "None"
-msgstr "Hiçbiri"
+msgstr "Yok"
 
 #. i18n: ectx: property (text), widget (QRadioButton, encryptionSSL)
 #: popsettings.ui:443
@@ -834,13 +834,13 @@ msgstr ""
 #: popsettings.ui:472
 #, kde-format
 msgid "Port:"
-msgstr "Port:"
+msgstr "Kapı:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_12)
 #: popsettings.ui:492
 #, kde-format
 msgid "Authentication:"
-msgstr "Kimlik Doğrulama:"
+msgstr "Kimlik doğrulama:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, proxyCheck)
 #: popsettings.ui:502
@@ -849,7 +849,7 @@ msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
 msgstr ""
-"İmlenmişse posta sunucusuna bağlanırken sistem vekil ayarları "
+"İşaretlenmişse posta sunucusuna bağlanırken sistem vekil ayarları "
 "kullanılacaktır."
 
 #. i18n: ectx: property (text), widget (QCheckBox, proxyCheck)

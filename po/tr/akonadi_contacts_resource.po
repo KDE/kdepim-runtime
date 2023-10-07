@@ -7,13 +7,13 @@
 # obsoleteman <tulliana@gmail.com>, 2009,2012.
 # Volkan Gezer <volkangezer@gmail.com>, 2013, 2017.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# Emir SARI <emir_sari@icloud.com>, 2022.
+# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2021-09-18 00:17+0000\n"
-"PO-Revision-Date: 2022-04-05 13:21+0300\n"
+"PO-Revision-Date: 2023-10-06 05:37+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 23.11.70\n"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: contactsagentsettingswidget.ui:29
@@ -110,7 +110,7 @@ msgstr "Saltokunur bir dizine yazılmaya çalışılıyor: '%1'"
 #: contactsresource.cpp:313
 #, kde-format
 msgid "Unable to write to file '%1': %2"
-msgstr "'%1' dosyasına yazılamadı: %2"
+msgstr "'%1' dosyasına yazılamıyor: %2"
 
 #: contactsresource.cpp:285 contactsresource.cpp:333
 #, kde-format
@@ -125,17 +125,17 @@ msgstr "%1 bilinmeyen veri içeren öge alındı"
 #: contactsresource.cpp:348
 #, kde-format
 msgid "Unable to remove file '%1'"
-msgstr "'%1' dosyası silinemedi"
+msgstr "'%1' dosyası kaldırılamıyor"
 
 #: contactsresource.cpp:365
 #, kde-format
 msgid "Unable to create folder '%1'."
-msgstr "'%1' dizini oluşturulamadı."
+msgstr "'%1' klasörü oluşturulamıyor."
 
 #: contactsresource.cpp:400
 #, kde-format
 msgid "Unable to rename folder '%1'."
-msgstr "'%1' dizini yeniden adlandırılamadı."
+msgstr "'%1' klasörü yeniden adlandırılamıyor."
 
 #: contactsresource.cpp:418
 #, kde-format
@@ -145,17 +145,17 @@ msgstr "Silinecek bilinmeyen klasör."
 #: contactsresource.cpp:422
 #, kde-format
 msgid "Unable to delete folder '%1'."
-msgstr "'%1' dizini silinemedi."
+msgstr "'%1' klasörü silinemiyor."
 
 #: contactsresource.cpp:437
 #, kde-format
 msgid "Unable to move file '%1' to '%2', '%2' already exists."
-msgstr "'%1' dosyası '%2' konumuna taşınamadı, '%2' zaten mevcut."
+msgstr "'%1' dosyası '%2' konumuna taşınamıyor, '%2' halihazırda var."
 
 #: contactsresource.cpp:451
 #, kde-format
 msgid "Unable to move directory '%1' to '%2', '%2' already exists."
-msgstr "'%1' dizini '%2' konumuna taşınamadı, '%2' zaten mevcut."
+msgstr "'%1' dizini '%2' konumuna taşınamıyor, '%2' halihazırda var."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: contactsresource.kcfg:10
@@ -167,7 +167,7 @@ msgstr "Kişiler dizininin yolu"
 #: contactsresource.kcfg:14
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "Güncel arka uç verilerini değiştirme."
+msgstr "Gerçek arka uç verisi değiştirmeyin."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: wizard/contactswizard.ui:19

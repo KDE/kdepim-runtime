@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-05 02:26+0000\n"
-"PO-Revision-Date: 2023-05-24 01:19+0300\n"
+"PO-Revision-Date: 2023-10-06 05:42+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.07.70\n"
+"X-Generator: Lokalize 23.11.70\n"
 "X-POOTLE-MTIME: 1413102278.000000\n"
 
 #: configdialog.cpp:33
@@ -178,7 +178,7 @@ msgid ""
 "There was a problem with the request.\n"
 "%1 (%2)."
 msgstr ""
-"İstekle ilgili bir problem vardı.\n"
+"İstekle ilgili bir sorun oluştu.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:41
@@ -201,7 +201,7 @@ msgid ""
 "from the server.\n"
 "%1 (%2)."
 msgstr ""
-"İsteğinizle ilgili bir problem vardı. Koleksiyon henüz sunucudan silinmedi.\n"
+"İstekle ilgili bir sorun oluştu. Koleksiyon henüz sunucudan silinmedi.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:54
@@ -226,14 +226,14 @@ msgid ""
 "on the server.\n"
 "%1 (%2)."
 msgstr ""
-"İsteğinizle ilgili bir problem oluştu. Koleksiyon sunucu üzerinde henüz "
+"İstekle ilgili bir sorun oluştu. Koleksiyon sunucu üzerinde henüz "
 "değiştirilmedi.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:70
 #, kde-format
 msgid "No properties to change or remove"
-msgstr "Değiştirmek ya da kaldırmak için özellik yok"
+msgstr "Değiştirilecek veya kaldırılacak özellik yok"
 
 #: daverror-kdepim-runtime.cpp:73
 #, kde-format
@@ -258,7 +258,7 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"İstekte bir problem vardı. Öge sunucu üzerinde henüz oluşturulmadı.\n"
+"İstekle ilgili bir sorun oluştu. Öge sunucu üzerinde henüz oluşturulmadı.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:87
@@ -268,7 +268,7 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"İstekte bir problem vardı. Öge sunucudan henüz silinmedi.\n"
+"İstekle ilglii bir sorun oluştu. Öge sunucudan henüz silinmedi.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:94
@@ -278,20 +278,20 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"İstekte bir problem vardı. Öge sunucu üzerinde henüz değiştirilmedi.\n"
+"İstekle ilgili bir sorun oluştu. Öge sunucu üzerinde henüz değiştirilmedi.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:100
 #, kde-format
 msgid "There was a problem with the request."
-msgstr "İstekle ilgili bir problem oluştu."
+msgstr "İstekle ilgili bir sorun oluştu."
 
 #: daverror-kdepim-runtime.cpp:104
 #, kde-format
 msgid ""
 "There was a problem with the request. The requested MIME types are not "
 "supported."
-msgstr "İstekte bir problem oluştu. İstenen MIME türleri desteklenmiyor."
+msgstr "İstekle ilgili bir sorun oluştu. İstenen MIME türleri desteklenmiyor."
 
 #: davfreebusyhandler.cpp:57
 #, kde-format
@@ -306,12 +306,12 @@ msgstr "Sunucudan geçersiz yanıt"
 #: davfreebusyhandler.cpp:208
 #, kde-format
 msgid "Unable to parse free-busy data received"
-msgstr "Alınan serbest-meşgul verisi ayrıştırılamadı"
+msgstr "Alınan uygun-meşgul verisi ayrıştırılamıyor"
 
 #: davgroupwareresource.cpp:163
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
-msgstr "Çevrim dışıyken serbest-meşgul bilgiyi alamıyor"
+msgstr "Çevrimdışıyken uygun-meşgul bilgisi alınamıyor"
 
 #: davgroupwareresource.cpp:246
 #, kde-format
@@ -331,50 +331,50 @@ msgstr "%1 ögesi için geçersiz koleksiyon."
 #: davgroupwareresource.cpp:608
 #, kde-format
 msgid "Unable to modify collection: %1"
-msgstr "Koleksiyon değiştirilemedi: %1"
+msgstr "Koleksiyon değiştirilemiyor: %1"
 
 #: davgroupwareresource.cpp:677
 #, kde-format
 msgid "Unable to remove collection: %1"
-msgstr "Koleksiyon silinemedi: %1"
+msgstr "Koleksiyon kaldırılamıyor: %1"
 
 #: davgroupwareresource.cpp:697
 #, kde-format
 msgid "Unable to retrieve collections: %1"
-msgstr "Koleksiyonlar getirilemedi: %1"
+msgstr "Koleksiyonlar alınamıyor: %1"
 
 #: davgroupwareresource.cpp:830 davgroupwareresource.cpp:929
 #, kde-format
 msgid "Unable to retrieve items: %1"
-msgstr "Ögeler getirilemedi: %1"
+msgstr "Ögeler alınamıyor: %1"
 
 #: davgroupwareresource.cpp:1009
 #, kde-format
 msgid "Unable to retrieve item: %1"
-msgstr "Öge getirilemedi: %1"
+msgstr "Öge alınamıyor: %1"
 
 #: davgroupwareresource.cpp:1029
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
-msgstr "Öge alınamadı: Öge verisi ayrıştırılamadı. Silinmiş olabilir."
+msgstr "Öge alınamıyor: Öge verisi ayrıştırılamadı. Silinmiş olabilir."
 
 #: davgroupwareresource.cpp:1066
 #, kde-format
 msgid "Unable to add item: %1"
-msgstr "Öge eklenemedi: %1"
+msgstr "Öge eklenemiyor: %1"
 
 #: davgroupwareresource.cpp:1110 davgroupwareresource.cpp:1223
 #: davgroupwareresource.cpp:1235
 #, kde-format
 msgid "Unable to change item: %1"
-msgstr "Öge değiştirilemedi: %1"
+msgstr "Öge değiştirilemiyor: %1"
 
 #: davgroupwareresource.cpp:1197 davgroupwareresource.cpp:1254
 #, kde-format
 msgid "Unable to remove item: %1"
-msgstr "Öge silinemedi: %1"
+msgstr "Öge kaldırılamıyor: %1"
 
 #: davgroupwareresource.cpp:1341 davgroupwareresource.cpp:1342
 #, kde-format

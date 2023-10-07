@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-03-24 00:49+0000\n"
-"PO-Revision-Date: 2023-03-24 13:56+0300\n"
+"PO-Revision-Date: 2023-10-06 05:52+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 23.11.70\n"
 "X-POOTLE-MTIME: 1413102278.000000\n"
 
 #: compactpage.cpp:71
@@ -33,7 +33,7 @@ msgstr[1] "(%1 ileti silinmek üzere işaretlendi)"
 #: compactpage.cpp:78
 #, kde-format
 msgid "Failed to fetch the collection."
-msgstr "Koleksiyon alınamadı."
+msgstr "Koleksiyon getirilemedi."
 
 #: compactpage.cpp:94
 #, kde-format
@@ -121,7 +121,7 @@ msgstr "&Asla otomatik olarak sıkıştırma"
 #: compactpage.ui:86
 #, kde-format
 msgid "C&ompact every"
-msgstr "&Sıkıştır"
+msgstr "Her birini s&ıkıştır"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_MessageCount)
 #: compactpage.ui:96
@@ -198,7 +198,7 @@ msgstr "M&utt dotlock ayrıcalıklı"
 #: lockfilepage.ui:67
 #, kde-format
 msgid "Non&e"
-msgstr "Hiç&biri"
+msgstr "&Yok"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_Lockfile)
 #: lockfilepage.ui:84
@@ -216,10 +216,10 @@ msgid ""
 "this is the case, the resource and the other programs must all use the same "
 "locking method."
 msgstr ""
-"Öntanımlı yapılandırma olan Hiçbiri çoğu durum için güvenli olacaktır.  Yine "
-"de Akonadi kullanmayan programların mbox dosyasına erişimleri durumunda "
-"onlar için uygun bir kilitleme yöntemi uygulamanız gerekecektir. Böyle bir "
-"durum olduğunda kaynağın ve diğer tüm programların aynı kilitleme yöntemini "
+"Öntanımlı yapılandırma olan Yok çoğu durum için güvenli olacaktır.  Yine de "
+"Akonadi kullanmayan programların mbox dosyasına erişimleri durumunda onlar "
+"için uygun bir kilitleme yöntemi uygulamanız gerekecektir. Böyle bir durum "
+"olduğunda kaynağın ve diğer tüm programların aynı kilitleme yöntemini "
 "kullanmaları gerektiğini unutmayın."
 
 #: mboxconfig.cpp:20
@@ -242,7 +242,7 @@ msgstr "Kilitleme yöntemi"
 #, kde-format
 msgctxt "@info:status"
 msgid "MBox not configured."
-msgstr "MBox yapılandırılmamış."
+msgstr "MBox yapılandırılmadı."
 
 #: mboxresource.cpp:136 mboxresource.cpp:175
 #, kde-format
@@ -310,13 +310,13 @@ msgstr "Adı görüntüleyin."
 #: mboxresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "Güncel arka uç verilerini değiştirmeyin."
+msgstr "Gerçek arka uç verisini değiştirmeyin."
 
 #. i18n: ectx: label, entry (MonitorFile), group (General)
 #: mboxresource.kcfg:22
 #, kde-format
 msgid "Monitor file for changes."
-msgstr "Dosyadaki değişiklikleri izle."
+msgstr "Dosyadaki değişiklikleri izleyin."
 
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
 #: mboxresource.kcfg:37

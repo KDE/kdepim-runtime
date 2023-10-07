@@ -6,13 +6,13 @@
 # obsoleteman <tulliana@gmail.com>, 2009,2012.
 # Volkan Gezer <volkangezer@gmail.com>, 2013, 2014, 2015, 2017.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# Emir SARI <emir_sari@icloud.com>, 2022.
+# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-03-02 00:55+0000\n"
-"PO-Revision-Date: 2022-04-05 13:18+0300\n"
+"PO-Revision-Date: 2023-10-06 05:51+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -20,38 +20,38 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 23.11.70\n"
 "X-POOTLE-MTIME: 1413102275.000000\n"
 
 #: configwidget.cpp:30
 #, kde-format
 msgid "Archive Folder"
-msgstr "Arşiv Dizini"
+msgstr "Arşiv Klasörü"
 
 #: configwidget.cpp:45
 #, kde-format
 msgid "The selected path is empty."
-msgstr "Seçilen yol boş."
+msgstr "Seçili yol boş."
 
 #: configwidget.cpp:58
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
-msgstr "Seçilen yol geçerli Maildir dizinleri içeriyor."
+msgstr "Seçili yol geçerli Maildir klasörlerini içeriyor."
 
 #: configwidget.cpp:65
 #, kde-format
 msgid "The selected path is a valid Maildir."
-msgstr "Seçilen yol geçersiz bir Maildir yolu."
+msgstr "Seçili yol geçersiz bir Maildir yolu."
 
 #: configwidget.cpp:71
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
-msgstr "Seçilen yol henüz oluşturulmamış, yeni bir Maildir oluşturulacak."
+msgstr "Seçili yol henüz oluşturulmadı, yeni bir Maildir oluşturulacak."
 
 #: configwidget.cpp:75
 #, kde-format
 msgid "The selected path does not exist."
-msgstr "Seçilen yol oluşturulmamış."
+msgstr "Seçili yol oluşturulmadı."
 
 #: libmaildir/maildir.cpp:214 libmaildir/maildir.cpp:219
 #, kde-format
@@ -73,28 +73,27 @@ msgstr ""
 #: libmaildir/maildir.cpp:630 libmaildir/maildir.cpp:780
 #, kde-format
 msgid "Cannot locate mail file %1."
-msgstr "%1 posta dosyası konumlandırılamadı."
+msgstr "%1 posta dosyası konumlandırılamıyor."
 
 #: libmaildir/maildir.cpp:458 libmaildir/maildir.cpp:480
 #, kde-format
 msgid "Cannot open mail file %1."
-msgstr "%1 posta dosyasını açamıyor."
+msgstr "%1 posta dosyası açılamıyor"
 
 #: libmaildir/maildir.cpp:563 libmaildir/maildir.cpp:590
 #, kde-format
 msgid "Cannot write to mail file %1."
-msgstr "%1 posta dosyasına yazamıyor."
+msgstr "%1 posta dosyasına yazılamıyor"
 
 #: libmaildir/maildir.cpp:604
 #, kde-format
 msgid "Failed to create mail file %1. The error was: %2"
-msgstr "%1 posta dosyasını oluşturma işlemi başarız. Hata: %2"
+msgstr "%1 posta dosyası oluşturulamadı. Hata: %2"
 
 #: libmaildir/maildir.cpp:698
 #, kde-format
 msgid "Failed to update the file name %1 to %2 on the disk. The error was: %3."
-msgstr ""
-"%1 isimli dosyayı %2 olarak güncelleme işlemi diskte başarız. Hata: %3."
+msgstr "%1 adlı dosyayı %2 olarak güncelleme işlemi diskte başarız. Hata: %3."
 
 #: maildirresource.cpp:122 maildirresource.cpp:254 maildirresource.cpp:293
 #: maildirresource.cpp:387 maildirresource.cpp:428 maildirresource.cpp:548
@@ -106,12 +105,12 @@ msgstr "Kullanılamaz yapılandırma."
 #: maildirresource.cpp:187
 #, kde-format
 msgid "Unable to fetch item: The maildir folder \"%1\" is not valid."
-msgstr "Öge getirilemedi: Maildir dizini \"%1\" geçerli değil."
+msgstr "Öge getirilemedi: Maildir klasörü \"%1\" geçerli değil."
 
 #: maildirresource.cpp:265
 #, kde-format
 msgid "Error: Unsupported type."
-msgstr "Hata: Desteklenmeyen biçim."
+msgstr "Hata: Desteklenmeyen tür."
 
 #: maildirresource.cpp:331
 #, kde-format
@@ -126,12 +125,12 @@ msgstr "Maildir kaynağı e-posta olmayan bir içeriğe sahip."
 #: maildirresource.cpp:393
 #, kde-format
 msgid "Source folder is invalid: '%1'."
-msgstr "Kaynak dizin geçersiz: '%1'."
+msgstr "Kaynak klasör geçersiz: '%1'."
 
 #: maildirresource.cpp:399
 #, kde-format
 msgid "Destination folder is invalid: '%1'."
-msgstr "Hedef dizin geçersiz: '%1'."
+msgstr "Hedef klasör geçersiz: '%1'."
 
 #: maildirresource.cpp:416
 #, kde-format
@@ -151,37 +150,37 @@ msgstr "'%2' koleksiyonu için '%1' Maildir geçersiz."
 #: maildirresource.cpp:606
 #, kde-format
 msgid "Unable to rename maildir folder '%1'."
-msgstr "'%1' maildir dizini oluşturulamadı."
+msgstr "'%1' maildir klasörü yeniden adlandırılamıyor."
 
 #: maildirresource.cpp:627
 #, kde-format
 msgid "Cannot move root maildir folder '%1'."
-msgstr "Kök maildir dizini '%1' oluşturulamadı."
+msgstr "'%1' kök maildir klasörü taşınamıyor."
 
 #: maildirresource.cpp:642
 #, kde-format
 msgid "Unable to move maildir folder '%1' from '%2' to '%3'."
-msgstr "'%1' maildir dizini '%2' konumundan '%3' konumuna taşınamadı."
+msgstr "'%1' maildir klasörü '%2' konumundan '%3' konumuna taşınamıyor."
 
 #: maildirresource.cpp:660
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
-msgstr "En üst düzey maildir dizini '%1' silinemez."
+msgstr "En üst düzey maildir klasörü '%1' silinemiyor."
 
 #: maildirresource.cpp:669
 #, kde-format
 msgid "Failed to delete sub-folder '%1'."
-msgstr "'%1' alt-dizini silinemedi."
+msgstr "'%1' alt klasörü silinemedi."
 
 #: maildirresource.cpp:683
 #, kde-format
 msgid "Unable to create maildir '%1'."
-msgstr "'%1' maildir oluşturulamadı."
+msgstr "'%1' maildir oluşturulamıyor."
 
 #: maildirresource.cpp:693
 #, kde-format
 msgid "No usable storage location configured."
-msgstr "Kullanılabilir depolama konumu yapılandırılmamış."
+msgstr "Kullanılabilir depolama konumu yapılandırılmadı."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: maildirresource.kcfg:10
@@ -194,19 +193,19 @@ msgstr "Maildir yolu"
 #, kde-format
 msgid ""
 "Path points to a folder containing Maildirs instead of to a maildir itself."
-msgstr "Yol maildir'in yerine Maildirs içeren dizini işaret ediyor."
+msgstr "Yol maildir'in yerine Maildirs içeren klasöre işaret ediyor."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: maildirresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "Güncel arka uç verilerini değiştirme."
+msgstr "Gerçek arka uç verisini değiştirmeyin."
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, ConfigWidget)
 #: settings.ui:15
 #, kde-format
 msgid "Mail Directory Settings"
-msgstr "E-posta Dizini Ayarları"
+msgstr "Posta Dizini Ayarları"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: settings.ui:37
@@ -218,7 +217,7 @@ msgstr "Maildir"
 #: settings.ui:43
 #, kde-format
 msgid "Select the folder containing the maildir information:"
-msgstr "Maildir bilgilerini içeren dizini seçin:"
+msgstr "Maildir bilgilerini içeren klasörü seç:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: settings.ui:53
