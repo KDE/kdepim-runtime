@@ -11,17 +11,17 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2021-07-08 08:37+0200\n"
+"PO-Revision-Date: 2023-10-06 09:19+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Lokalize 20.12.2\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
+"Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -231,7 +231,7 @@ msgstr "Datoteka"
 #: singlefileresourceconfigwidget_desktop.ui:47
 #, kde-format
 msgid "File or URL:"
-msgstr ""
+msgstr "Datoteka ali URL:"
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
@@ -240,6 +240,8 @@ msgid ""
 "Select a local file or a remote URL to download a file from. A new local "
 "file will be created if it doesn't exist."
 msgstr ""
+"Izberite lokalno datoteko ali oddaljeni URL za prenos datoteke. Če ne "
+"obstaja, bo ustvarjena nova lokalna datoteka."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
@@ -249,55 +251,45 @@ msgstr "Ime za prikaz:"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
-#, fuzzy, kde-format
-#| msgid ""
-#| "When read-only mode is enabled, no changes will be written. Read-only "
-#| "mode is automatically enabled when the selected file does not support "
-#| "write access."
+#, kde-format
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
 "access or when displaying a calendar from remote URL."
 msgstr ""
 "Če je izbran način samo za branje, ne bo zapisana nobena sprememba. Način "
-"samo za branje bo samodejno omogočen, če na izbrani datoteki ni podprt "
-"dostop za pisanje."
+"samo za branje je samodejno omogočen, ko izbrana datoteka ne podpira dostopa "
+"za pisanje ali ko je prikazan koledar z oddaljenega URL-ja."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
-#, fuzzy, kde-format
-#| msgid "Monitoring"
+#, kde-format
 msgid "Monitor for &changes"
-msgstr "Nadzorovanje"
+msgstr "Spremljaj spremembe"
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
-#, fuzzy, kde-format
-#| msgid ""
-#| "Changes made by other applications will reload the file when monitoring "
-#| "is enabled. Backups will be created to avoid conflicts when possible."
+#, kde-format
 msgid ""
 "Changes made by other applications will reload the file when monitoring is "
 "enabled. Backups will be created to avoid conflicts when possible. "
 "Monitoring is not available for remote URLs."
 msgstr ""
-"Spremembe zaradi drugih aplikacij bodo datoteko znova naložile, ko bo "
-"omogočen nadzor. Ustvarjene bodo varnostne kopije, da se izognejo "
-"konfliktom, kadar je to mogoče."
+"Spremembe drugih aplikacij bodo znova naložile datoteko, ko bo nadzor "
+"omogočen. Varnostne kopije bodo ustvarjene, da se izognemo sporom, kadar je "
+"to mogoče. Spremljanje ni na voljo za oddaljene URL-je."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
 #: singlefileresourceconfigwidget_desktop.ui:149
 #, kde-format
 msgid "Automatically &update every"
-msgstr ""
+msgstr "Samodejno posodobi vsakih"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
 #: singlefileresourceconfigwidget_desktop.ui:159
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid " minutes"
-msgstr " minuta"
+msgstr " minut"
 
 #. i18n: ectx: property (text), widget (QLabel, periodicUpdateLabel)
 #: singlefileresourceconfigwidget_desktop.ui:193
@@ -306,6 +298,8 @@ msgid ""
 "Periodically updates the file. Can be used when monitoring is not available "
 "(e.g. for remote calendars)."
 msgstr ""
+"Periodično posodablja datoteko. Lahko se uporablja, ko spremljanje ni na "
+"voljo (npr. za oddaljene koledarje)."
 
 #: singlefileresourceconfigwidgetbase.cpp:128
 #, kde-format

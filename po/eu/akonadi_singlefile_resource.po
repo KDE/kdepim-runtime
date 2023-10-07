@@ -1,16 +1,16 @@
 # Translation for akonadi_singlefile_resource.po to Euskara/Basque (eu).
-# Copyright (C) 2022 This file is copyright:
+# Copyright (C) 2022-2023 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
-# KDE euskaratzeko proiektuko arduraduna <xalba@ni.eus>.
+# SPDX-FileCopyrightText: 2023 KDE euskaratzeko proiektuko arduraduna <xalba@ni.eus>
 #
 # Translators:
-# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022.
+# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022-2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2022-08-29 22:22+0200\n"
+"PO-Revision-Date: 2023-10-06 07:05+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 22.04.3\n"
+"X-Generator: Lokalize 23.08.1\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -228,7 +228,7 @@ msgstr "Fitxategia"
 #: singlefileresourceconfigwidget_desktop.ui:47
 #, kde-format
 msgid "File or URL:"
-msgstr ""
+msgstr "Fitxategia edo URL:"
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
@@ -237,6 +237,8 @@ msgid ""
 "Select a local file or a remote URL to download a file from. A new local "
 "file will be created if it doesn't exist."
 msgstr ""
+"Aukeratu fitxategi lokal bat edo fitxategi bat zama-jaisteko urrutiko URL "
+"bat. Fitxategi lokal berri bat sortuko da hura existitzen ez bada."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
@@ -246,11 +248,7 @@ msgstr "Azaldu beharreko izena:"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
-#, fuzzy, kde-format
-#| msgid ""
-#| "When read-only mode is enabled, no changes will be written. Read-only "
-#| "mode is automatically enabled when the selected file does not support "
-#| "write access."
+#, kde-format
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
@@ -258,20 +256,18 @@ msgid ""
 msgstr ""
 "Soilik irakurtzeko modua gaituta dagoenean, ez da aldaketarik idatziko. "
 "Soilik irakurtzeko modua automatikoki gaitzen da hautatutako fitxategiak ez "
-"duenean idazteko sarrerarik onartzen."
+"duenean idazteko sarrerarik onartzen edo egutegi bat urrutiko URL batetik "
+"azaltzean."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
 #, kde-format
 msgid "Monitor for &changes"
-msgstr ""
+msgstr "Gainbegiratu alda&keta bila"
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
-#, fuzzy, kde-format
-#| msgid ""
-#| "Changes made by other applications will reload the file when monitoring "
-#| "is enabled. Backups will be created to avoid conflicts when possible."
+#, kde-format
 msgid ""
 "Changes made by other applications will reload the file when monitoring is "
 "enabled. Backups will be created to avoid conflicts when possible. "
@@ -279,19 +275,20 @@ msgid ""
 msgstr ""
 "Beste aplikazioek egindako aldaketek, gainbegiratzea gaituta dagoenean, "
 "fitxategia birzamatzea eragingo dute. Gatazkak saihesteko, ahal denean, "
-"babes-kopiak sortuko dira."
+"babes-kopiak sortuko dira. Gainbegiratzea ez dago erabilgarri urrutiko "
+"URLetarako."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
 #: singlefileresourceconfigwidget_desktop.ui:149
 #, kde-format
 msgid "Automatically &update every"
-msgstr ""
+msgstr "Automatikoki eg&uneratu hainbestero"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
 #: singlefileresourceconfigwidget_desktop.ui:159
 #, kde-format
 msgid " minutes"
-msgstr ""
+msgstr " minutu"
 
 #. i18n: ectx: property (text), widget (QLabel, periodicUpdateLabel)
 #: singlefileresourceconfigwidget_desktop.ui:193
@@ -300,6 +297,8 @@ msgid ""
 "Periodically updates the file. Can be used when monitoring is not available "
 "(e.g. for remote calendars)."
 msgstr ""
+"Fitxategia aldizka eguneratzen du. Gainbegiratzekoa erabilgarri ez dagoenean "
+"erabili daiteke (adib. urrutiko egutegietarako)."
 
 #: singlefileresourceconfigwidgetbase.cpp:128
 #, kde-format

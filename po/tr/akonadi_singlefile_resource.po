@@ -6,13 +6,13 @@
 # obsoleteman <tulliana@gmail.com>, 2009.
 # Volkan Gezer <volkangezer@gmail.com>, 2013, 2015, 2017.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# Emir SARI <emir_sari@icloud.com>, 2022.
+# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2022-04-05 13:17+0300\n"
+"PO-Revision-Date: 2023-10-06 05:19+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 23.11.70\n"
 "X-POOTLE-MTIME: 1413102277.000000\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
@@ -62,8 +62,8 @@ msgid ""
 "Select the directory whose contents should be represented by this resource. "
 "If the directory does not exist, it will be created."
 msgstr ""
-"Bu kaynak tarafından sunulacak içeriğe sahip dizin seçin. Dizin mevcut "
-"değilse oluşturulacaktır."
+"Bu kaynak tarafından sunulacak içeriğe sahip dizini seçin. Dizin yoksa "
+"oluşturulacaktır."
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: settingsdialog.ui:81
@@ -78,7 +78,7 @@ msgid ""
 "If read-only mode is enabled, no changes will be written to the directory "
 "selected above."
 msgstr ""
-"Saltokunur kipi etkinse yukarıda seçili dizinde hiçbir bir değişiklik "
+"Saltokunur kip etkinse yukarıda seçili dizinde hiçbir bir değişiklik "
 "yazılmayacaktır."
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_ReadOnly)
@@ -90,9 +90,9 @@ msgid ""
 "selected above. Read-only mode will be automatically enabled if you do not "
 "have write access to the directory."
 msgstr ""
-"Saltokunur kipi etkinse yukarıda seçili dizinde hiçbir bir değişiklik "
-"yazılmayacaktır. Bu dizine yazma erişiminiz yoksa saltokunur kipi otomatik "
-"olarak etkinleştirilecektir."
+"Saltokunur kip etkinse yukarıda seçili dizinde hiçbir bir değişiklik "
+"yazılmayacaktır. Bu dizine yazma erişiminiz yoksa saltokunur kip "
+"kendiliğinden etkinleştirilecektir."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: settingsdialog.ui:93 singlefileresourceconfigwidget_desktop.ui:92
@@ -115,37 +115,37 @@ msgid ""
 "with changing anything here, the defaults are good enough in most cases."
 msgstr ""
 "Bu sayfadaki seçenekler veri güvenliği ve tutarlılığı arasındaki dengeyi "
-"sağlayan parametreleri değiştirmenize izin verir. Buradaki herhangi bir şeyi "
-"değiştirmede genelde dikkatli olmalısınız, birçok durumda öntanımlılar "
+"sağlayan parametreleri değiştirmenize olanak tanır. Buradaki herhangi bir "
+"şeyi değiştirmede genelde dikkatli olmalısınız, birçok durumda öntanımlılar "
 "yeteri kadar iyidir."
 
 #. i18n: ectx: property (text), widget (QLabel, autosaveLabel)
 #: settingsdialog.ui:145
 #, kde-format
 msgid "Autosave delay:"
-msgstr "Otomatik kaydetme gecikmesi:"
+msgstr "Kendiliğinden kaydetme gecikmesi:"
 
 #. i18n: ectx: property (toolTip), widget (KPluralHandlingSpinBox, kcfg_AutosaveInterval)
 #: settingsdialog.ui:152
 #, kde-format
 msgid "Autosave interval time (in minutes)."
-msgstr "Otomatik kaydetme zaman aralığı (dakika)."
+msgstr "Kendiliğinden kaydetme zaman aralığı (dakika)."
 
 #. i18n: ectx: property (whatsThis), widget (KPluralHandlingSpinBox, kcfg_AutosaveInterval)
 #: settingsdialog.ui:155
 #, kde-format
 msgid "Select autosave interval time for the resource data (in minutes)."
-msgstr "Özkaynak verisi için otomatik kaydetme aralığı seçin (dakika)."
+msgstr "Özkaynak verisi için kendiliğinden kaydetme aralığını seçin (dakika)."
 
 #: singlefileresource.h:66
 #, kde-format
 msgid "No file selected."
-msgstr "Dosya seçilmedi."
+msgstr "Seçili dosya yok."
 
 #: singlefileresource.h:68
 #, kde-format
 msgid "The resource not configured yet"
-msgstr "Kaynak henüz yapılandırılmamış"
+msgstr "Özkaynak henüz yapılandırılmadı"
 
 #: singlefileresource.h:99 singlefileresource.h:128 singlefileresource.h:213
 #: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
@@ -172,12 +172,12 @@ msgstr "Başka bir indirme işlemi sürüyor."
 #: singlefileresource.h:141 singlefileresource.h:227
 #, kde-format
 msgid "Another file upload is still in progress."
-msgstr "Başka bir gönderme işlemi sürüyor."
+msgstr "Başka bir yükleme işlemi sürüyor."
 
 #: singlefileresource.h:157
 #, kde-format
 msgid "Downloading remote file."
-msgstr "Uzaktaki dosya indiriliyor."
+msgstr "Uzak dosya indiriliyor."
 
 #: singlefileresource.h:177
 #, kde-format
@@ -187,12 +187,12 @@ msgstr "Saltokunur bir dosyaya yazılmaya çalışılıyor: '%1'."
 #: singlefileresource.h:189
 #, kde-format
 msgid "No file specified."
-msgstr "Bir dosya belirtilmedi."
+msgstr "Belirtilen dosya yok."
 
 #: singlefileresource.h:217
 #, kde-format
 msgid "A download is still in progress."
-msgstr "Bir indirme işlemi sürüyor."
+msgstr "Bir indirme işlemi hâlâ sürüyor."
 
 #: singlefileresource.h:257
 #, kde-format
@@ -228,7 +228,7 @@ msgstr "Dosya"
 #: singlefileresourceconfigwidget_desktop.ui:47
 #, kde-format
 msgid "File or URL:"
-msgstr ""
+msgstr "Dosya veya URL:"
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
@@ -237,61 +237,57 @@ msgid ""
 "Select a local file or a remote URL to download a file from. A new local "
 "file will be created if it doesn't exist."
 msgstr ""
+"Dosyanın indirileceği yerel bir dosya veya uzak bir URL seçin. Yoksa yeni "
+"bir yerel dosya oluşturulacaktır."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
 #, kde-format
 msgid "Display Name:"
-msgstr "Görünen Ad:"
+msgstr "Görünen ad:"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
-#, fuzzy, kde-format
-#| msgid ""
-#| "When read-only mode is enabled, no changes will be written. Read-only "
-#| "mode is automatically enabled when the selected file does not support "
-#| "write access."
+#, kde-format
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
 "access or when displaying a calendar from remote URL."
 msgstr ""
-"Saltokunur kipi etkinse herhangi bir değişiklik yapılmayacaktır. Dosyaya "
-"yazma erişiminiz yoksa ve bu dosyaya yazma erişimi yoksa saltokunur kipi "
-"otomatik olarak etkinleştirilecektir."
+"Saltokunur kip etkinse hiçbir değişiklik yazılmayacaktır. Seçilen dosya "
+"yazma erişimini desteklemediğinde veya uzak URL'den bir takvim "
+"görüntülenirken saltokunur kip kendiliğinden etkinleştirilir."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
 #, kde-format
 msgid "Monitor for &changes"
-msgstr ""
+msgstr "&Değişiklikleri izle"
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
-#, fuzzy, kde-format
-#| msgid ""
-#| "Changes made by other applications will reload the file when monitoring "
-#| "is enabled. Backups will be created to avoid conflicts when possible."
+#, kde-format
 msgid ""
 "Changes made by other applications will reload the file when monitoring is "
 "enabled. Backups will be created to avoid conflicts when possible. "
 "Monitoring is not available for remote URLs."
 msgstr ""
-"İzleme etkinleştirildiğinde, diğer uygulamalar tarafından yapılacak "
-"değişiklikler dosyayı yeniden yükleyecektir. Olabildiğince, çakışmaları "
-"önlemek için yedekler oluşturulacaktır."
+"Diğer uygulamalar tarafından yapılan değişiklikler, izleme "
+"etkinleştirildiğinde dosyayı yeniden yükler. Olanaklı olduğunda çakışmaları "
+"önlemek için yedekler oluşturulacaktır. Uzak URL'ler için izleme olanaklı "
+"değildir."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
 #: singlefileresourceconfigwidget_desktop.ui:149
 #, kde-format
 msgid "Automatically &update every"
-msgstr ""
+msgstr "Kendiliğinden &güncelleme aralığı"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
 #: singlefileresourceconfigwidget_desktop.ui:159
 #, kde-format
 msgid " minutes"
-msgstr ""
+msgstr " dakika"
 
 #. i18n: ectx: property (text), widget (QLabel, periodicUpdateLabel)
 #: singlefileresourceconfigwidget_desktop.ui:193
@@ -300,12 +296,14 @@ msgid ""
 "Periodically updates the file. Can be used when monitoring is not available "
 "(e.g. for remote calendars)."
 msgstr ""
+"Dosyayı periyodik olarak günceller. İzleme olanaklı olmadığında "
+"kullanılabilir (örneğin uzak takvimler için)."
 
 #: singlefileresourceconfigwidgetbase.cpp:128
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information..."
-msgstr "Dosya bilgileri denetleniyor..."
+msgstr "Dosya bilgisi denetleniyor..."
 
 #~ msgid "File Name:"
 #~ msgstr "&Dosya Adı:"

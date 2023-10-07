@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-03-24 00:45+0000\n"
-"PO-Revision-Date: 2023-03-07 20:22+0300\n"
+"PO-Revision-Date: 2023-10-06 05:34+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 23.11.70\n"
 "X-POOTLE-MTIME: 1413102277.000000\n"
 
 #: configwidget.cpp:25
@@ -122,22 +122,22 @@ msgstr "Open-Xchange"
 #: openxchangeresource.cpp:278
 #, kde-format
 msgid "Private Folder"
-msgstr "Özel Dizin"
+msgstr "Özel Klasör"
 
 #: openxchangeresource.cpp:286
 #, kde-format
 msgid "Public Folder"
-msgstr "Genel Dizin"
+msgstr "Genel Klasör"
 
 #: openxchangeresource.cpp:294
 #, kde-format
 msgid "Shared Folder"
-msgstr "Paylaşılan Dizin"
+msgstr "Paylaşılan Klasör"
 
 #: openxchangeresource.cpp:302
 #, kde-format
 msgid "System Folder"
-msgstr "Sistem Dizini"
+msgstr "Sistem Klasörü"
 
 #: openxchangeresource.cpp:617
 #, kde-format
@@ -171,8 +171,8 @@ msgid ""
 "A conflict detected. Please check if there are other objects in conflict "
 "with this one."
 msgstr ""
-"Çakışma tespit edildi. Lütfen bununla çakışan diğer nesnelerin var olup "
-"olmadığını kontrol edin."
+"Çakışma algılandı. Lütfen bununla çakışan diğer nesnelerin var olup "
+"olmadığını denetleyin."
 
 #: openxchangeresource.cpp:817
 #, kde-format
@@ -180,7 +180,7 @@ msgid ""
 "A mandatory data field is missing. Please check. Otherwise contact your "
 "administrator."
 msgstr ""
-"Bir zorunlu veri alanı eksik. Lütfen kontrol edin. Aksi halde yöneticinizle "
+"Bir zorunlu veri alanı eksik. Lütfen denetleyin. Aksi halde yöneticinizle "
 "bağlantı kurun."
 
 #: openxchangeresource.cpp:820
@@ -190,7 +190,7 @@ msgid ""
 "Please check if there are other appointments in conflict with this one."
 msgstr ""
 "Bir atama çakışması algılandı.\n"
-"Lütfen bununla çakışan diğer atamaların var olup olmadığını kontrol edin."
+"Lütfen bununla çakışan diğer atamaların var olup olmadığını denetleyin."
 
 #: openxchangeresource.cpp:823
 #, kde-format
@@ -220,7 +220,7 @@ msgstr "Parola"
 #: openxchangeresource.kcfg:26
 #, kde-format
 msgid "Use incremental updates"
-msgstr "Artan güncellemeler kullan"
+msgstr "Artımlı güncellemeler kullan"
 
 #. i18n: ectx: tooltip, entry (UseIncrementalUpdates), group (General)
 #. i18n: ectx: whatsthis, entry (UseIncrementalUpdates), group (General)
@@ -230,7 +230,7 @@ msgid ""
 "Use incremental updates instead of reloading all data from the server each "
 "time"
 msgstr ""
-"Her zaman sunucudan tüm verileri yeniden yüklemek yerine artan "
+"Her zaman sunucudan tüm verileri yeniden yüklemek yerine artımlı "
 "güncellenemeler kullan"
 
 #~ msgid "Connection"

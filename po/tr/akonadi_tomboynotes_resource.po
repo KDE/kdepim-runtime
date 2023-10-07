@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Emir SARI <emir_sari@icloud.com>, 2022.
+# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_tomboynotes_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-05-26 00:47+0000\n"
-"PO-Revision-Date: 2022-04-05 13:13+0300\n"
+"PO-Revision-Date: 2023-10-06 05:27+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -15,12 +15,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 23.11.70\n"
 
 #: tomboyitemuploadjob.cpp:107 tomboyitemuploadjob.cpp:113
 #, kde-format
 msgid "Sync error. Server status not as expected."
-msgstr "Eşitleme hatası. Sunucu durumu beklenilen gibi değil."
+msgstr "Eşzamanlama hatası. Sunucu durumu beklenilen gibi değil."
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, TomboyNotesAgentConfigWidget)
 #: tomboynotesagentconfigwidget.ui:14
@@ -44,7 +44,7 @@ msgstr "Görünen ad:"
 #: tomboynotesagentconfigwidget.ui:56
 #, kde-format
 msgid "Type in the server URL:"
-msgstr "Sunucu URL'sini girin:"
+msgstr "Sunucu URL'sini gir:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, kcfg_ServerURL)
 #: tomboynotesagentconfigwidget.ui:63

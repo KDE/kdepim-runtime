@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2023-03-24 08:41+0200\n"
+"PO-Revision-Date: 2023-10-06 08:42+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -326,14 +326,13 @@ msgstr "Слідкувати за змінами у файлі."
 #: mboxresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "Періодично оновлювати файл."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: mboxresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Autosave interval time (in minutes)."
+#, kde-format
 msgid "Automatic update period in minutes."
-msgstr "Проміжок автозбереження (у хвилинах)."
+msgstr "Проміжок автоматичного оновлення у хвилинах."
 
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
 #: mboxresource.kcfg:45

@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-09-26 00:46+0000\n"
-"PO-Revision-Date: 2023-01-10 21:20+0300\n"
+"PO-Revision-Date: 2023-10-06 06:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,33 +19,33 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.12.0\n"
+"X-Generator: Lokalize 23.11.70\n"
 "X-POOTLE-MTIME: 1413102277.000000\n"
 
 #: configwidget.cpp:28
 #, kde-format
 msgid "The selected path is empty."
-msgstr "Seçilen yol boş."
+msgstr "Seçili yol boş."
 
 #: configwidget.cpp:41
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
-msgstr "Seçilen yol geçerli Maildir dizinleri içeriyor."
+msgstr "Seçili yol geçerli Maildir klasörleri içeriyor."
 
 #: configwidget.cpp:48
 #, kde-format
 msgid "The selected path is a valid Maildir."
-msgstr "Seçilen yol geçersiz bir Maildir yolu."
+msgstr "Seçili yol geçersiz bir Maildir yolu."
 
 #: configwidget.cpp:54
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
-msgstr "Seçilen yol henüz oluşturulmamış, yeni bir Maildir oluşturulacak."
+msgstr "Seçili yol henüz yok, yeni bir Maildir oluşturulacak."
 
 #: configwidget.cpp:57
 #, kde-format
 msgid "The selected path does not exist."
-msgstr "Seçilen yol oluşturulmamış."
+msgstr "Seçili yol yok."
 
 #: mixedmaildirresource.cpp:102 mixedmaildirresource.cpp:117
 #: mixedmaildirresource.cpp:148 mixedmaildirresource.cpp:178
@@ -83,12 +83,12 @@ msgstr "%1 e-posta klasörü eşzamanlanıyor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move root maildir folder '%1'."
-msgstr "Kök maildir dizini '%1' oluşturulamadı."
+msgstr "Kök maildir klasörü '%1' oluşturulamadı."
 
 #: mixedmaildirresource.cpp:346
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
-msgstr "En üst düzey maildir dizini '%1' silinemez."
+msgstr "En üst düzey klasörü dizini '%1' silinemiyor."
 
 #: mixedmaildirresource.cpp:360
 #, kde-format
@@ -100,32 +100,32 @@ msgstr "'%1' maildir oluşturulamadı."
 #, kde-format
 msgctxt "@info:status"
 msgid "No usable storage location configured."
-msgstr "Kullanılabilir depolama konumu yapılandırılmamış."
+msgstr "Kullanılabilir depolama konumu yapılandırılmadı."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: mixedmaildirresource.kcfg:10
 #, kde-format
 msgid "Path to KMail mail folder"
-msgstr "K Posta e-posta dizini yolu"
+msgstr "K Posta e-posta klasörü yolu"
 
 #. i18n: ectx: label, entry (TopLevelIsContainer), group (General)
 #: mixedmaildirresource.kcfg:14
 #, kde-format
 msgid ""
 "Path points to a folder containing Maildirs instead of to a maildir itself."
-msgstr "Konum maildir'in yerine Maildirs içeren klasörü işaret ediyor."
+msgstr "Konum maildir'in yerine Maildirs içeren klasöre işaret ediyor."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: mixedmaildirresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "Güncel arka uç verilerini değiştirme."
+msgstr "Gerçek arka uç verisini değiştirmeyin."
 
 #: mixedmaildirstore.cpp:550
 #, kde-format
 msgctxt "@info:status"
 msgid "Given folder name is empty"
-msgstr "Verilen dizin adı boş"
+msgstr "Verilen klasör adı boş"
 
 #: mixedmaildirstore.cpp:585 mixedmaildirstore.cpp:604
 #, kde-format
@@ -145,20 +145,20 @@ msgstr "İşlenemeyen işlem %1"
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot create folder %1 inside folder %2"
-msgstr "%2 klasörü içerisinde %1 klasörü oluşturulamaz"
+msgstr "%2 klasörü içinde %1 klasörü oluşturulamıyor"
 
 #: mixedmaildirstore.cpp:1053 mixedmaildirstore.cpp:1062
 #: mixedmaildirstore.cpp:1070 mixedmaildirstore.cpp:1077
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot remove folder %1 from folder %2"
-msgstr "%2 klasöründen %1 klasörü silinemez"
+msgstr "%2 klasöründen %1 klasörü kaldırılamıyor"
 
 #: mixedmaildirstore.cpp:1113 mixedmaildirstore.cpp:1652
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to load MBox folder %1"
-msgstr "MBox %1 klasörünü yükleme başarısız"
+msgstr "MBox klasörü %1 yüklenemedi"
 
 #: mixedmaildirstore.cpp:1177 mixedmaildirstore.cpp:1193
 #: mixedmaildirstore.cpp:1228 mixedmaildirstore.cpp:1236
@@ -173,7 +173,7 @@ msgstr "%1 klasörü yeniden adlandırılamıyor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move folder %1 from folder %2 to folder %3"
-msgstr "%1 klasörü %2 klasöründen %3 klasörüne taşınamaz"
+msgstr "%1 klasörü %2 klasöründen %3 klasörüne taşınamıyor"
 
 #: mixedmaildirstore.cpp:1463 mixedmaildirstore.cpp:1477
 #: mixedmaildirstore.cpp:1502 mixedmaildirstore.cpp:1532
@@ -187,7 +187,7 @@ msgstr "E-postalar %1 klasörüne eklenemiyor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot remove emails from folder %1"
-msgstr "E-postalar %1 klasöründen çıkarılamıyor"
+msgstr "E-postalar %1 klasöründen kaldırılamıyor"
 
 #: mixedmaildirstore.cpp:1679 mixedmaildirstore.cpp:1719
 #, kde-format
@@ -199,7 +199,7 @@ msgstr "Postaları %1 klasöründen okurken hata oluştu"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to load Maildirs folder %1"
-msgstr "%1 Maildir dizinine yüklenemedi"
+msgstr "%1 Maildir klasörü yüklenemedi"
 
 #: mixedmaildirstore.cpp:1759 mixedmaildirstore.cpp:1771
 #: mixedmaildirstore.cpp:1785 mixedmaildirstore.cpp:1819
@@ -213,14 +213,14 @@ msgstr "%1 klasöründeki e-posta değiştirilemiyor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot modify emails in folder %1. %2"
-msgstr "%1 dizinindeki e-postalar düzenlenemez. %2"
+msgstr "%1 klasöründeki e-postalar değiştirilemiyor. %2"
 
 #: mixedmaildirstore.cpp:1899 mixedmaildirstore.cpp:1930
 #: mixedmaildirstore.cpp:1954
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move emails from folder %1"
-msgstr "%1 klasöründen e-postalar taşınamaz"
+msgstr "%1 klasöründen e-postalar taşınamıyor"
 
 #: mixedmaildirstore.cpp:1913 mixedmaildirstore.cpp:1941
 #: mixedmaildirstore.cpp:1986 mixedmaildirstore.cpp:2010
@@ -229,39 +229,38 @@ msgstr "%1 klasöründen e-postalar taşınamaz"
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move emails to folder %1"
-msgstr "%1 klasörüne e-postalar taşınamaz"
+msgstr "%1 klasörüne e-postalar taşınamıyor"
 
 #: mixedmaildirstore.cpp:1962 mixedmaildirstore.cpp:2062
 #: mixedmaildirstore.cpp:2084
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move email from folder %1"
-msgstr "%1 klasöründen e-posta kaydırılamaz"
+msgstr "%1 klasöründen e-posta taşınamıyor"
 
 #: mixedmaildirstore.cpp:2040 mixedmaildirstore.cpp:2145
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move email from folder %1 to folder %2"
-msgstr "%1 klasöründen %2 klasörüne e-posta kaydıralamaz"
+msgstr "%1 klasöründen %2 klasörüne e-posta taşınamıyor"
 
 #: mixedmaildirstore.cpp:2298
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move folder %1 into one of its own subfolder tree"
-msgstr "%1 klasörü kendi alt klasör ağacından birinin içine kaydırılamaz"
+msgstr "%1 klasörü kendi alt klasör ağacından birinin içine taşınamıyor"
 
 #: mixedmaildirstore.cpp:2310
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot add email to folder %1 because there is no email content"
-msgstr "E-posta %1 klasörüne eklenemez çünkü e-posta içeriği yok"
+msgstr "%1 klasörüne e-posta eklenemiyor; çünkü e-posta içeriği yok"
 
 #: mixedmaildirstore.cpp:2318
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot modify email in folder %1 because there is no email content"
-msgstr ""
-"%1 klasöründeki e-postalarda değişiklik yapılamıyor çünkü e-posta içeriği yok"
+msgstr "%1 klasöründeki e-postalar değiştirilemiyor; çünkü e-posta içeriği yok"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, ConfigWidget)
 #: settings.ui:15
@@ -273,7 +272,7 @@ msgstr "E-posta Dizini Ayarları"
 #: settings.ui:21
 #, kde-format
 msgid "Select the folder containing the maildir information:"
-msgstr "Maildir bilgilerini içeren dizini seçin:"
+msgstr "Maildir bilgilerini içeren klasörü seç:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: settings.ui:31

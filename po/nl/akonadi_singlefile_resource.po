@@ -2,21 +2,21 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Freek de Kruijf <freekdekruijf@kde.nl>, 2009.
+# SPDX-FileCopyrightText: 2009, 2023 Freek de Kruijf <freekdekruijf@kde.nl>
 # Freek de Kruijf <freekdekruijf@kde.nl>, 2010, 2011, 2012, 2014, 2016, 2017, 2018, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2021-07-07 15:13+0200\n"
+"PO-Revision-Date: 2023-10-06 11:50+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
-"Language-Team: Dutch <kde-i18n-nl@kde.org>\n"
+"Language-Team: \n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 21.04.2\n"
+"X-Generator: Lokalize 23.08.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
@@ -228,7 +228,7 @@ msgstr "Bestand"
 #: singlefileresourceconfigwidget_desktop.ui:47
 #, kde-format
 msgid "File or URL:"
-msgstr ""
+msgstr "Bestand of URL:"
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
@@ -237,6 +237,9 @@ msgid ""
 "Select a local file or a remote URL to download a file from. A new local "
 "file will be created if it doesn't exist."
 msgstr ""
+"Selecteer een lokaal bestand of een URL op afstand om een bestand van te "
+"downloaden. Een nieuw lokaal bestand zal aangemaakt worden als het niet "
+"bestaat."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
@@ -246,11 +249,7 @@ msgstr "Schermnaam:"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
-#, fuzzy, kde-format
-#| msgid ""
-#| "When read-only mode is enabled, no changes will be written. Read-only "
-#| "mode is automatically enabled when the selected file does not support "
-#| "write access."
+#, kde-format
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
@@ -258,21 +257,18 @@ msgid ""
 msgstr ""
 "Als alleen-lezen is geactiveerd, zullen er geen wijzigingen geschreven "
 "worden. Modus alleen-lezen is automatisch ingeschakeld wanneer het "
-"geselecteerde bestand geen schrijftoegang ondersteunt."
+"geselecteerde bestand geen schrijftoegang ondersteunt of bij tonen van een "
+"agenda van een URL op afstand."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
-#, fuzzy, kde-format
-#| msgid "Monitoring"
+#, kde-format
 msgid "Monitor for &changes"
-msgstr "Monitoren"
+msgstr "Monitor voor &wijzigingen"
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
-#, fuzzy, kde-format
-#| msgid ""
-#| "Changes made by other applications will reload the file when monitoring "
-#| "is enabled. Backups will be created to avoid conflicts when possible."
+#, kde-format
 msgid ""
 "Changes made by other applications will reload the file when monitoring is "
 "enabled. Backups will be created to avoid conflicts when possible. "
@@ -280,21 +276,20 @@ msgid ""
 msgstr ""
 "Wijzigingen gemaakt door andere toepassingen zullen he bestand opnieuw laden "
 "wanneer monitoren is ingeschakeld. Reservekopieën zullen gemaakt worden om "
-"conflicten, indien mogelijk, te vermijden."
+"conflicten, indien mogelijk, te vermijden. Monitoren is niet beschikbaar "
+"voor URL's op afstand"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
 #: singlefileresourceconfigwidget_desktop.ui:149
 #, kde-format
 msgid "Automatically &update every"
-msgstr ""
+msgstr "Automatisch &bijwerken elke"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
 #: singlefileresourceconfigwidget_desktop.ui:159
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid " minutes"
-msgstr " minuut"
+msgstr " minuten"
 
 #. i18n: ectx: property (text), widget (QLabel, periodicUpdateLabel)
 #: singlefileresourceconfigwidget_desktop.ui:193
@@ -303,6 +298,8 @@ msgid ""
 "Periodically updates the file. Can be used when monitoring is not available "
 "(e.g. for remote calendars)."
 msgstr ""
+"Het bestand periodiek bijwerken. Kan gebruikt worden wanneer monitoren niet "
+"beschikbaar is (bijv. voor agenda's op afstand)."
 
 #: singlefileresourceconfigwidgetbase.cpp:128
 #, kde-format

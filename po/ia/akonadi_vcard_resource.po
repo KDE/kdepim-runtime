@@ -1,20 +1,20 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# g.sora <g.sora@tiscali.it>, 2011, 2015.
+# SPDX-FileCopyrightText: 2011, 2015, 2023 g.sora <g.sora@tiscali.it>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2015-06-12 10:25+0200\n"
-"Last-Translator: Giovanni Sora <g.sora@tiscali.it>\n"
+"PO-Revision-Date: 2023-10-06 17:58+0200\n"
+"Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 23.08.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: vcardconfig.cpp:16
@@ -61,13 +61,13 @@ msgstr "Controla file pro modificationes."
 #: vcardresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "Actualisa periodicamente le file."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: vcardresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
-msgstr ""
+msgstr "Periodo de actualisation automatic in minutas."
 
 #~ msgid "Filename:"
 #~ msgstr "Nomine de file:"

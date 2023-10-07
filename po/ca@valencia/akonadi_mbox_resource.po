@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2023-03-24 10:47+0100\n"
+"PO-Revision-Date: 2023-10-06 10:32+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
-"X-Generator: Lokalize 20.12.0\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: compactpage.cpp:71
 #, kde-format
@@ -323,13 +323,13 @@ msgstr "Controla els canvis en el fitxer."
 #: mboxresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "Actualitza periòdicament el fitxer."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: mboxresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
-msgstr ""
+msgstr "Període d'actualització automàtica, en minuts."
 
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
 #: mboxresource.kcfg:45
@@ -342,6 +342,3 @@ msgstr "Fitxer de bloqueig"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Nombre de missatges suprimits abans d'iniciar una purga."
-
-#~ msgid "URL:"
-#~ msgstr "URL:"

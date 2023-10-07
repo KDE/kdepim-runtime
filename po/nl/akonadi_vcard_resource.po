@@ -2,21 +2,21 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Freek de Kruijf <f.de.kruijf@hetnet.nl>, 2009.
+# SPDX-FileCopyrightText: 2009, 2023 Freek de Kruijf <f.de.kruijf@hetnet.nl>
 # Freek de Kruijf <freekdekruijf@kde.nl>, 2010, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2014-04-06 15:24+0200\n"
+"PO-Revision-Date: 2023-10-06 11:50+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
-"Language-Team: Dutch <kde-i18n-nl@kde.org>\n"
+"Language-Team: \n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 23.08.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: vcardconfig.cpp:16
@@ -63,14 +63,13 @@ msgstr "Bestand monitoren op wijzigingen."
 #: vcardresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "Het bestand periodiek bijwerken."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: vcardresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Autosave interval time (in minutes)."
+#, kde-format
 msgid "Automatic update period in minutes."
-msgstr "Tijd tussen automatisch opslaan (in minuten)."
+msgstr "Automatische bijwerkperiode in minuten."
 
 #~ msgid "Filename:"
 #~ msgstr "Bestandsnaam:"
