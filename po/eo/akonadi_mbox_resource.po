@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2023-05-29 07:34+0100\n"
+"PO-Revision-Date: 2023-10-07 23:20+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -319,13 +319,13 @@ msgstr "Monitori dosieron por ŝanĝoj."
 #: mboxresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "Periode ĝisdatigi la dosieron."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: mboxresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
-msgstr ""
+msgstr "Intervalo de aŭtomata ĝisdatigo en minutoj."
 
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
 #: mboxresource.kcfg:45
@@ -338,6 +338,3 @@ msgstr "Ŝlosildosiero"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Nombro da forigitaj mesaĝoj antaŭ ol purigado komenciĝas."
-
-#~ msgid "URL:"
-#~ msgstr "URL:"

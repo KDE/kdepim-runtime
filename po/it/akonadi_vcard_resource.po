@@ -1,14 +1,14 @@
 # translation of akonadi_vcard_resource.po to Italian
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the akonadi_vcard_resource package.
+# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2010, 2014, 2023.
 #
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2010, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2014-06-27 21:17+0200\n"
+"PO-Revision-Date: 2023-10-08 01:07+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: vcardconfig.cpp:16
 #, kde-format
@@ -61,14 +62,13 @@ msgstr "Controlla le modifiche apportate al file."
 #: vcardresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "Aggiorna il file periodicamente."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: vcardresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Autosave interval time (in minutes)."
+#, kde-format
 msgid "Automatic update period in minutes."
-msgstr "Intervallo del salvataggio automatico (in minuti)."
+msgstr "Periodo di aggiornamento automatico in minuti."
 
 #~ msgid "Filename:"
 #~ msgstr "Nome file:"
