@@ -1,8 +1,8 @@
 # translation of akonadi_vcard_resource.po to Italian
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the akonadi_vcard_resource package.
+# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2010, 2014, 2023.
 #
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2010, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: vcardconfig.cpp:16
 #, kde-format

@@ -1,22 +1,23 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Xosé <xosecalvo@gmail.com>, 2009, 2010.
 # Adrian Chaves Fernandez <adriyetichaves@gmail.com>, 2013, 2017.
-# Adrián Chaves (Gallaecio) <adrian@chaves.io>, 2017, 2018, 2019.
+# SPDX-FileCopyrightText: 2023 Adrián Chaves (Gallaecio)
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-10-08 00:48+0000\n"
-"PO-Revision-Date: 2019-02-14 15:56+0100\n"
+"PO-Revision-Date: 2023-10-07 12:24+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
-"Language-Team: Galician <kde-i18n-doc@kde.org>\n"
+"Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 23.08.1\n"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icalresource.kcfg:10 notes/notesresource.kcfg:10
@@ -28,7 +29,7 @@ msgstr "Ruta do ficheiro iCal."
 #: icalresource.kcfg:14 notes/notesresource.kcfg:14
 #, kde-format
 msgid "Display name."
-msgstr "Nome para amosar."
+msgstr "Nome visual."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: icalresource.kcfg:18 notes/notesresource.kcfg:18
@@ -78,7 +79,7 @@ msgstr "Non é posíbel recuperar o elemento modificado %1."
 #: wizard/icalwizard.ui:19
 #, kde-format
 msgid "Filename:"
-msgstr "Ruta do ficheiro:"
+msgstr "Nome do ficheiro:"
 
 #~ msgid "Select Calendar"
 #~ msgstr "Seleccionar o calendario"

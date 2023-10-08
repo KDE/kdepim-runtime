@@ -1,14 +1,14 @@
 # translation of akonadi_singlefile_resource.po to Italian
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2010, 2011, 2012, 2014, 2016, 2017, 2018, 2021.
+# Luigi Toscano <luigi.toscano@tiscali.it>, 2010, 2011, 2012, 2014, 2016, 2017, 2018, 2021, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-04-23 00:50+0000\n"
-"PO-Revision-Date: 2021-07-10 00:20+0200\n"
+"PO-Revision-Date: 2023-10-08 01:17+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 20.12.0\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -262,7 +262,7 @@ msgstr ""
 #: singlefileresourceconfigwidget_desktop.ui:121
 #, kde-format
 msgid "Enable file &monitoring"
-msgstr "Abilita co&ntrollo dei file"
+msgstr "Abilita mo&nitoraggio dei file"
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
@@ -273,7 +273,7 @@ msgid ""
 msgstr ""
 "Le modifiche effettuate da altre applicazioni faranno sì che il file sia "
 "ricaricato quando il monitoraggio è abilitato. Delle copie di sicurezza "
-"verrano create per evitare conflitti quando possibile."
+"verranno create per evitare conflitti quando possibile."
 
 #: singlefileresourceconfigwidgetbase.cpp:126
 #, kde-format
