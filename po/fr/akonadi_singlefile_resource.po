@@ -6,7 +6,7 @@
 # Joëlle Cornavin <jcornavin@laposte.net>, 2010.
 # Anne-Marie Mahfouf <annemarie.mahfouf@free.fr>, 2010.
 # Geoffray Levasseur <geoffray.levasseurbrandin@numericable.fr>, 2012, 2013, 2014.
-# xavier <xavier.besnard@neuf.fr>, 2013, 2021.
+# SPDX-FileCopyrightText: 2013, 2021, 2023 xavier <xavier.besnard@neuf.fr>
 # Vincent Pinon <vpinon@kde.org>, 2017.
 # Simon Depiets <sdepiets@gmail.com>, 2018, 2020.
 #
@@ -15,15 +15,15 @@ msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2021-07-08 08:55+0200\n"
-"Last-Translator: Xavier Besnard <xavier.besnard@neuf.fr>\n"
-"Language-Team: French <kde-francophone@kde.org>\n"
+"PO-Revision-Date: 2023-10-07 16:45+0200\n"
+"Last-Translator: Xavier BESNARD <xavier.besnard@neuf.fr>\n"
+"Language-Team: fr\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 21.04.2\n"
+"X-Generator: Lokalize 23.08.1\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -238,7 +238,7 @@ msgstr "Fichier"
 #: singlefileresourceconfigwidget_desktop.ui:47
 #, kde-format
 msgid "File or URL:"
-msgstr ""
+msgstr "Fichier ou URL :"
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
@@ -247,6 +247,8 @@ msgid ""
 "Select a local file or a remote URL to download a file from. A new local "
 "file will be created if it doesn't exist."
 msgstr ""
+"Sélectionnez un fichier local ou une URL distante à partir de laquelle "
+"télécharger un fichier. Un nouveau fichier local sera créé s’il n’existe pas."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
@@ -256,55 +258,47 @@ msgstr "Nom de l'affichage :"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
-#, fuzzy, kde-format
-#| msgid ""
-#| "When read-only mode is enabled, no changes will be written. Read-only "
-#| "mode is automatically enabled when the selected file does not support "
-#| "write access."
+#, kde-format
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
 "access or when displaying a calendar from remote URL."
 msgstr ""
-"Si le mode « Lecture seule » est activé, aucun changement ne sera écrit. Ce "
-"mode sera automatiquement activé lorsque le fichier sélectionné ne prend pas "
-"en charge l'accès en écriture."
+"Si le mode « Lecture seule » est activé, aucune modification ne sera "
+"effectuée. Ce mode sera automatiquement activé lorsque le fichier "
+"sélectionné ne prend pas en charge l'accès en écriture ou lors de "
+"l'affichage d'un agenda à partir d'une URL."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
-#, fuzzy, kde-format
-#| msgid "Monitoring"
+#, kde-format
 msgid "Monitor for &changes"
-msgstr "Surveillance"
+msgstr "Surveillance des modifi&cations"
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
-#, fuzzy, kde-format
-#| msgid ""
-#| "Changes made by other applications will reload the file when monitoring "
-#| "is enabled. Backups will be created to avoid conflicts when possible."
+#, kde-format
 msgid ""
 "Changes made by other applications will reload the file when monitoring is "
 "enabled. Backups will be created to avoid conflicts when possible. "
 "Monitoring is not available for remote URLs."
 msgstr ""
 "Les modifications apportées par d'autres applications rechargeront le "
-"fichier lorsque la surveillance sera activée. Des sauvegardes seront créées "
-"pour éviter les conflits lorsque cela est possible."
+"fichier lorsque la surveillance est activée. Des sauvegardes seront créées "
+"pour éviter les conflits lorsque cela est possible. La surveillance est "
+"indisponible pour les URL."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
 #: singlefileresourceconfigwidget_desktop.ui:149
 #, kde-format
 msgid "Automatically &update every"
-msgstr ""
+msgstr "Mettre à jo&ur automatiquement chaque"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
 #: singlefileresourceconfigwidget_desktop.ui:159
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid " minutes"
-msgstr " minute"
+msgstr " minutes"
 
 #. i18n: ectx: property (text), widget (QLabel, periodicUpdateLabel)
 #: singlefileresourceconfigwidget_desktop.ui:193
@@ -313,6 +307,9 @@ msgid ""
 "Periodically updates the file. Can be used when monitoring is not available "
 "(e.g. for remote calendars)."
 msgstr ""
+"Met à jour périodiquement le fichier. Peut être utilisé lorsque la "
+"surveillance n’est pas disponible (Par exemple pour les calendriers à "
+"distance)."
 
 #: singlefileresourceconfigwidgetbase.cpp:128
 #, kde-format

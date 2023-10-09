@@ -283,6 +283,3 @@ msgstr ""
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr ""
-
-#~ msgid "URL:"
-#~ msgstr "URL:"

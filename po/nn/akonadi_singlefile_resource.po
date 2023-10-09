@@ -292,6 +292,3 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Checking file information..."
 msgstr "Sjekkar filinformasjonen …"
-
-#~ msgid "Enable file &monitoring"
-#~ msgstr "Ta i bruk fil&overvaking"

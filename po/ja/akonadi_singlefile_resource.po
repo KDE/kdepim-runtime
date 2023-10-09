@@ -324,11 +324,3 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Checking file information..."
 msgstr "ファイルの情報をチェック中..."
-
-#, fuzzy
-#~| msgid "&Filename:"
-#~ msgid "File Name:"
-#~ msgstr "ファイル名(&F):"
-
-#~ msgid "Enable file &monitoring"
-#~ msgstr "ファイルの変更を監視する(&M)"

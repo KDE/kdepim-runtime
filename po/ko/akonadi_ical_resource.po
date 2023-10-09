@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# Shinjo Park <kde@peremen.name>, 2010, 2011, 2020.
+# Shinjo Park <kde@peremen.name>, 2010, 2011, 2020, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2020-04-05 12:55+0200\n"
+"PO-Revision-Date: 2023-10-08 23:04+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 19.04.3\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icalresource.kcfg:10 notes/notesresource.kcfg:10
@@ -45,14 +45,13 @@ msgstr "파일 변경 사항을 감시합니다."
 #: icalresource.kcfg:26 notes/notesresource.kcfg:30
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "파일을 주기적으로 업데이트합니다."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: icalresource.kcfg:30 notes/notesresource.kcfg:34
-#, fuzzy, kde-format
-#| msgid "Autosave interval time (in minutes)."
+#, kde-format
 msgid "Automatic update period in minutes."
-msgstr "분 단위의 자동 저장 간격입니다."
+msgstr "분 단위의 자동 업데이트 간격입니다."
 
 #. i18n: ectx: label, entry (AutosaveInterval), group (General)
 #: notes/notesresource.kcfg:22
