@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-05-18 00:49+0000\n"
-"PO-Revision-Date: 2023-10-04 18:48+0200\n"
+"PO-Revision-Date: 2023-10-08 06:35+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -788,6 +788,9 @@ msgid ""
 "a specific encryption scheme, you can add \":port\" to indicate that. For "
 "example: \"imap.foo.com:144\"."
 msgstr ""
+"მიუთითეთ IMAP სერვერი. თუ გნებავთ არასტანდარტულ პორტზე, სპეციფიკური "
+"დაშიფვრის სქემით მიერთება, შეიძლიათ, ამისთვის \":port\" დაამატოთ. მაგ: "
+"\"imap.foo.com:144\"."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: setupserverview_desktop.ui:60

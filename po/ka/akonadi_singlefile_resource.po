@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-04-23 00:50+0000\n"
-"PO-Revision-Date: 2023-10-04 18:48+0200\n"
+"PO-Revision-Date: 2023-10-08 06:38+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -269,6 +269,9 @@ msgid ""
 "Changes made by other applications will reload the file when monitoring is "
 "enabled. Backups will be created to avoid conflicts when possible."
 msgstr ""
+"სხვა აპლიკაციის მიერ შეტანილი ცვლილებები ფაილს თავიდან ჩატვირთავს, თუ ფაილის "
+"მონიტორინგი ჩართულია. როცა შესაძლებელია, კონფლიქტების თავიდან ასაცილებლად, "
+"მარქაფებიც შეიქმნება."
 
 #: singlefileresourceconfigwidgetbase.cpp:126
 #, kde-format
