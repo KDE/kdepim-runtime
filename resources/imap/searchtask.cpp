@@ -86,12 +86,12 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
             switch (term.condition()) {
             case Akonadi::SearchTerm::CondGreaterOrEqual:
                 value--;
-                Q_FALLTHROUGH();
+                [[fallthrough]];
             case Akonadi::SearchTerm::CondGreaterThan:
                 return KIMAP::Term(KIMAP::Term::Larger, value).setNegated(term.isNegated());
             case Akonadi::SearchTerm::CondLessOrEqual:
                 value++;
-                Q_FALLTHROUGH();
+                [[fallthrough]];
             case Akonadi::SearchTerm::CondLessThan:
                 return KIMAP::Term(KIMAP::Term::Smaller, value).setNegated(term.isNegated());
             case Akonadi::SearchTerm::CondEqual:
@@ -110,12 +110,12 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
             switch (term.condition()) {
             case Akonadi::SearchTerm::CondGreaterOrEqual:
                 value = value.addDays(-1);
-                Q_FALLTHROUGH();
+                [[fallthrough]];
             case Akonadi::SearchTerm::CondGreaterThan:
                 return KIMAP::Term(KIMAP::Term::SentSince, value).setNegated(term.isNegated());
             case Akonadi::SearchTerm::CondLessOrEqual:
                 value = value.addDays(1);
-                Q_FALLTHROUGH();
+                [[fallthrough]];
             case Akonadi::SearchTerm::CondLessThan:
                 return KIMAP::Term(KIMAP::Term::SentBefore, value).setNegated(term.isNegated());
             case Akonadi::SearchTerm::CondEqual:
