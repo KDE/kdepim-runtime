@@ -41,7 +41,7 @@ msgid ""
 "Failed to subscribe to the folder '%1' on the IMAP server. It will disappear "
 "on next sync. Use the subscription dialog to overcome that"
 msgstr ""
-"No s'ha pogut subscriure's a la carpeta «%1» en el servidor IMAP. "
+"No s'ha pogut subscriure a la carpeta «%1» en el servidor IMAP. "
 "Desapareixerà en la propera sincronització. Utilitzeu el diàleg de "
 "subscripció per a previndre-ho"
 
