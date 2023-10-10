@@ -427,15 +427,3 @@ msgstr "Промяна на списъка със задачи \"%1\""
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "Премахване на списъка със задачи \"%1\""
-
-#~ msgid "Waiting for KWallet..."
-#~ msgstr "Изчакване на KWallet..."
-
-#~ msgid "Can't access KWallet"
-#~ msgstr "Няма достъп до KWallet"
-
-#~ msgctxt "@info:status"
-#~ msgid "Retrieving %1 contact photo for group '%2'"
-#~ msgid_plural "Retrieving %1 contact photos for group '%2'"
-#~ msgstr[0] "Извличане на %1 снимка за контакт за група \"%2\""
-#~ msgstr[1] "Извличане на %1 Снимки за контакт за група \"%2\""

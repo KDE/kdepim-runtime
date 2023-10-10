@@ -369,8 +369,8 @@ msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
-"No s'ha pogut recuperar l'element: ha fallat en analitzar les dades de "
-"l'element. Potser ja s'ha suprimit."
+"No s'ha pogut recuperar l'element: ha fallat en l'anàlisi sintàctica de les "
+"dades de l'element. Potser ja s'ha suprimit."
 
 #: davgroupwareresource.cpp:1066
 #, kde-format
