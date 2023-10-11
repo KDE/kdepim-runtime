@@ -1,16 +1,16 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Xosé <xosecalvo@gmail.com>, 2009, 2010.
 # Xosé <xosecalvo@edu.xunta.es>, 2009.
 # Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2015, 2017.
-# Adrián Chaves (Gallaecio) <adrian@chaves.io>, 2017, 2018, 2019.
+# SPDX-FileCopyrightText: 2023 Adrián Chaves (Gallaecio)
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-03-24 00:49+0000\n"
-"PO-Revision-Date: 2019-08-11 16:52+0200\n"
+"PO-Revision-Date: 2023-10-10 15:34+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 19.04.1\n"
+"X-Generator: Lokalize 23.08.1\n"
 
 #: compactpage.cpp:71
 #, kde-format
@@ -56,29 +56,7 @@ msgstr "Compactouse o ficheiro de mBox."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: compactpage.ui:23
-#, fuzzy, kde-format
-#| msgid ""
-#| "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#| "REC-html40/strict.dtd\">\n"
-#| "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#| "css\">\n"
-#| "p, li { white-space: pre-wrap; }\n"
-#| "</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; "
-#| "font-weight:400; font-style:normal;\">\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\">The only way to fully "
-#| "remove a mail from an mbox file is by removing it from the actual file. "
-#| "As this can be a rather expensive operation, the mbox resource keeps a "
-#| "list of deleted messages. Once in a while these messages are really "
-#| "removed from the file.</p>\n"
-#| "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
-#| "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
-#| "\"></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "weight:600;\">Note:</span> The downside of this is that if the file is "
-#| "changed by another program, the list of deleted messages cannot be "
-#| "trusted any longer and deleted messages might reappear.</p></body></html>"
+#, kde-format
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -107,8 +85,8 @@ msgstr ""
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
 "\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; font-"
-"weight:400; font-style:normal;\">\n"
+"</style></head><body style=\"font-size:10pt; font-weight:400; font-style:"
+"normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\">O único xeito de retirar "
 "completamente unha mensaxe dun ficheiro mbox é retirala do propio ficheiro. "
@@ -121,7 +99,7 @@ msgstr ""
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "weight:600;\">Nota</span>: A parte negativa é que se outro programa cambia o "
-"ficheiro xa non se pode confiar na lista de mensaxes eliminadas e as "
+"ficheiro xa non é posíbel confiar na lista de mensaxes eliminadas e as "
 "mensaxes eliminadas poden reaparecer.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QPushButton, compactButton)
@@ -156,25 +134,7 @@ msgstr "Configuración de MBox"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: lockfilepage.ui:27
-#, fuzzy, kde-format
-#| msgid ""
-#| "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#| "REC-html40/strict.dtd\">\n"
-#| "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#| "css\">\n"
-#| "p, li { white-space: pre-wrap; }\n"
-#| "</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; "
-#| "font-weight:400; font-style:normal;\">\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\">Select a method to lock "
-#| "the mbox file when data is read from or written to the file.</p>\n"
-#| "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
-#| "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
-#| "\"></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "weight:600;\">Note</span>: For some methods you might need to install "
-#| "additional software before they can be used.</p></body></html>"
+#, kde-format
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -199,8 +159,8 @@ msgstr ""
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
 "\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; font-"
-"weight:400; font-style:normal;\">\n"
+"</style></head><body style=\"font-size:10pt; font-weight:400; font-style:"
+"normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\">Seleccione un método para "
 "bloquear o ficheiro mbox cando se lean ou escriban datos no ficheiro.</p>\n"
@@ -209,14 +169,14 @@ msgstr ""
 "p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"weight:600;\">Nota</span>: Nalgúns casos podería haber que instalar software "
-"adicional antes de poder empregar o método.</p></body></html>"
+"weight:600;\">Nota</span>: Nalgúns casos podería haber que instalar soporte "
+"lóxico adicional antes de poder usar o método.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, procmail)
 #: lockfilepage.ui:43
 #, kde-format
 msgid "Procmail loc&kfile"
-msgstr "Ficheiro de blo&queo do procmail"
+msgstr "Ficheiro de blo&queo de Procmail"
 
 #. i18n: ectx: property (text), widget (QRadioButton, mutt_dotlock)
 #: lockfilepage.ui:53
@@ -254,7 +214,7 @@ msgid ""
 msgstr ""
 "Ningún, o que se configura de maneira predeterminada, debería ser seguro na "
 "maioría dos casos. Porén, se tamén hai programas que non usen Akonadi que "
-"accedan ao ficheiro mbox configurado, haberá que designar un método de "
+"accedan ao ficheiro mbox configurado, haberá que definir un método de "
 "bloqueo axeitado. Lembre que, de ser o caso, o recurso e os demais programas "
 "teñen que usar todos o mesmo método de bloqueo."
 
@@ -342,7 +302,7 @@ msgstr "Ruta do ficheiro mbox."
 #: mboxresource.kcfg:14
 #, kde-format
 msgid "Display name."
-msgstr "Nome para amosar."
+msgstr "Nome visual."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: mboxresource.kcfg:18
