@@ -240,18 +240,12 @@ msgstr "Zobrazované jméno:"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
-#, fuzzy, kde-format
-#| msgid ""
-#| "When read-only mode is enabled, no changes will be written. Read-only "
-#| "mode is automatically enabled when the selected file does not support "
-#| "write access."
+#, kde-format
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
 "access or when displaying a calendar from remote URL."
 msgstr ""
-"Pokud je zapnut režim pouze ke čtení, nebudou zapisovány změny. Režim pouze "
-"pro čtení bude automaticky zapnut, pokud tento soubor nepodporuje zápis."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
@@ -261,18 +255,12 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
-#, fuzzy, kde-format
-#| msgid ""
-#| "Changes made by other applications will reload the file when monitoring "
-#| "is enabled. Backups will be created to avoid conflicts when possible."
+#, kde-format
 msgid ""
 "Changes made by other applications will reload the file when monitoring is "
 "enabled. Backups will be created to avoid conflicts when possible. "
 "Monitoring is not available for remote URLs."
 msgstr ""
-"Pokud je monitorování povoleno, povedou změny provedené jinými aplikacemi k "
-"opětovnému načtení. Pro předejití konfliktů budou vytvářeny zálohy pokud to "
-"půjde."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
 #: singlefileresourceconfigwidget_desktop.ui:149
@@ -284,7 +272,7 @@ msgstr ""
 #: singlefileresourceconfigwidget_desktop.ui:159
 #, kde-format
 msgid " minutes"
-msgstr ""
+msgstr " minut"
 
 #. i18n: ectx: property (text), widget (QLabel, periodicUpdateLabel)
 #: singlefileresourceconfigwidget_desktop.ui:193
@@ -299,17 +287,3 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Checking file information..."
 msgstr "Kontroluji informace..."
-
-#~ msgid "File Name:"
-#~ msgstr "Název souboru:"
-
-#~ msgid ""
-#~ "Select a file. A new file will be created if it doesn't exist. You can "
-#~ "also use a URL, but in that case, monitoring for file changes is not "
-#~ "possible."
-#~ msgstr ""
-#~ "Vyberte soubor. Pokud neexistuje, bude vytvořen nový soubor. Taky můžete "
-#~ "použít URL, ale v takovém případě není možné monitorovat změny souboru."
-
-#~ msgid "Enable file &monitoring"
-#~ msgstr "Povolit &monitorování souboru"

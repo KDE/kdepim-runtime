@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2023-09-16 10:08\n"
+"PO-Revision-Date: 2023-10-10 14:25\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -14,9 +14,9 @@ msgstr ""
 "X-Crowdin-Project: kdeorg\n"
 "X-Crowdin-Project-ID: 269464\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf5-trunk/messages/kdepim-runtime/"
+"X-Crowdin-File: /kf6-trunk/messages/kdepim-runtime/"
 "akonadi_singlefile_resource.pot\n"
-"X-Crowdin-File-ID: 4078\n"
+"X-Crowdin-File-ID: 45219\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -232,18 +232,12 @@ msgstr "显示名："
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
-#, fuzzy, kde-format
-#| msgid ""
-#| "When read-only mode is enabled, no changes will be written. Read-only "
-#| "mode is automatically enabled when the selected file does not support "
-#| "write access."
+#, kde-format
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
 "access or when displaying a calendar from remote URL."
 msgstr ""
-"当只读模式启用时，所有修改都不会被写入。如果所选文件不支持写入，只读模式就会"
-"自动打开。"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
@@ -253,17 +247,12 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
-#, fuzzy, kde-format
-#| msgid ""
-#| "Changes made by other applications will reload the file when monitoring "
-#| "is enabled. Backups will be created to avoid conflicts when possible."
+#, kde-format
 msgid ""
 "Changes made by other applications will reload the file when monitoring is "
 "enabled. Backups will be created to avoid conflicts when possible. "
 "Monitoring is not available for remote URLs."
 msgstr ""
-"启用监测后，其他应用程序进行修改时都会重新加载一遍文件。本程序将尽量创建备份"
-"以避免冲突。"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
 #: singlefileresourceconfigwidget_desktop.ui:149
@@ -290,17 +279,3 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Checking file information..."
 msgstr "正在检查文件信息..."
-
-#~ msgid "File Name:"
-#~ msgstr "文件名："
-
-#~ msgid ""
-#~ "Select a file. A new file will be created if it doesn't exist. You can "
-#~ "also use a URL, but in that case, monitoring for file changes is not "
-#~ "possible."
-#~ msgstr ""
-#~ "选择一个文件。如果该文件不存在，则会自动创建一个新文件。您也可以使用 URL，"
-#~ "但将无法检测此文件的修改。"
-
-#~ msgid "Enable file &monitoring"
-#~ msgstr "启用文件监视(&M)"
