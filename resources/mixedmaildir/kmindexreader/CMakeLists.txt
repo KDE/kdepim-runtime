@@ -6,7 +6,7 @@ endif()
 
 include(CheckIncludeFileCXX)
 check_include_file_CXX(byteswap.h HAVE_BYTESWAP_H)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/kmindexreader-config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kmindexreader-config.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/kmindexreader-config.h.in ${CMAKE_CURRENT_BINARY_DIR}/kmindexreader-config.h)
 
 set(kmindexreader_LIB_SRCS
  kmindexreader.cpp kmindexreader.h

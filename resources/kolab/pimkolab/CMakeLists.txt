@@ -18,7 +18,7 @@ include_directories(
     ./
     )
 
-configure_file(libkolab-version.h.cmake "${CMAKE_CURRENT_BINARY_DIR}/libkolab-version.h" @ONLY)
+configure_file(libkolab-version.h.in "${CMAKE_CURRENT_BINARY_DIR}/libkolab-version.h" @ONLY)
 
 add_subdirectory(utils)
 

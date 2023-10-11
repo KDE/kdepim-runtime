@@ -1,7 +1,7 @@
 
 include_directories(${kdepim-runtime_BINARY_DIR})
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_newmailnotifier_agent\")
-configure_file(config-newmailnotifier.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-newmailnotifier.h)
+configure_file(config-newmailnotifier.h.in ${CMAKE_CURRENT_BINARY_DIR}/config-newmailnotifier.h)
 
 
 add_library(newmailnotifier)

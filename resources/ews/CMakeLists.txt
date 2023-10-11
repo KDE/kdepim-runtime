@@ -11,7 +11,7 @@ set(AKONADI_EWS_VERSION ${KDEPIM_RUNTIME_VERSION})
 
 add_subdirectory(ewsclient)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ewsconfig.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/ewsconfig.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ewsconfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/ewsconfig.h)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ewsclient)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/ewsclient)
