@@ -25,7 +25,7 @@ msgstr "Configuración persoal"
 #: imapwizard.ui:20
 #, kde-format
 msgid "Username:"
-msgstr "Nome de usuario:"
+msgstr "Nome de usuaria:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: imapwizard.ui:33

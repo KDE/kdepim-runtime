@@ -90,7 +90,7 @@ msgstr "minutos"
 #: configdialog.ui:80 urlconfigurationdialog.ui:111
 #, kde-format
 msgid "Username:"
-msgstr "Nome de usuario:"
+msgstr "Nome de usuaria:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
@@ -154,7 +154,7 @@ msgstr "Editar"
 #: daverror-kdepim-runtime.cpp:26
 #, kde-format
 msgid "Invalid username/password"
-msgstr "O nome de usuario ou o contrasinal son incorrectos"
+msgstr "O nome de usuaria ou o contrasinal son incorrectos"
 
 #: daverror-kdepim-runtime.cpp:28
 #, kde-format
@@ -414,7 +414,7 @@ msgstr "URL remotos"
 #: davgroupwareresource.kcfg:26
 #, kde-format
 msgid "User name"
-msgstr "Nome de usuario"
+msgstr "Nome de usuaria"
 
 #. i18n: ectx: label, entry (limitSyncRange), group (General)
 #: davgroupwareresource.kcfg:30
@@ -504,7 +504,7 @@ msgstr "Credenciais"
 #: searchdialog.ui:61
 #, kde-format
 msgid "Username"
-msgstr "Nome de usuario"
+msgstr "Nome de usuaria"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: searchdialog.ui:77

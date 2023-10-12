@@ -307,7 +307,7 @@ msgstr "Cancelouse manualmente a comprobación do correo."
 #: pop3resource.cpp:133
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
-msgstr "Insira o nome de usuario e o contrasinal da conta «%1»."
+msgstr "Insira o nome de usuaria e o contrasinal da conta «%1»."
 
 #: pop3resource.cpp:150
 #, kde-format
@@ -323,7 +323,7 @@ msgstr "Conta:"
 #: pop3resource.cpp:183
 #, kde-format
 msgid "No username and password supplied."
-msgstr "Non se forneceu nin nome de usuario nin contrasinal."
+msgstr "Non se forneceu nin nome de usuaria nin contrasinal."
 
 #: pop3resource.cpp:202
 #, kde-format
@@ -343,7 +343,7 @@ msgstr "Pídeselle aquí porque o acceso anterior non tivo éxito."
 #: pop3resource.cpp:250
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
-msgstr "Pídeselle aquí porque o nome de usuario que indicou está baleiro."
+msgstr "Pídeselle aquí porque o nome de usuaria que indicou está baleiro."
 
 #: pop3resource.cpp:277
 #, kde-format
@@ -524,7 +524,7 @@ msgid ""
 "to authenticate you with their servers. It usually is the first part of your "
 "email address (the part before <em>@</em>)."
 msgstr ""
-"O seu fornecedor de Internet deulle un <em>nome de usuario</em>, que é "
+"O seu fornecedor de Internet deulle un <em>nome de usuaria</em>, que é "
 "preciso para a autenticación nos servidores. Xeralmente adoita ser a "
 "primeira parte do seu enderezo de correo (a parte que precede a <em>@</em>)."
 
@@ -578,7 +578,7 @@ msgstr "Nome de usua&rio:"
 #: popsettings.ui:127
 #, kde-format
 msgid "The username that identifies you against the mail server"
-msgstr "O nome de usuario que o identifica no servidor de correo"
+msgstr "O nome de usuaria que o identifica no servidor de correo"
 
 #. i18n: ectx: property (text), widget (QLabel, passwordLabel)
 #: popsettings.ui:137
