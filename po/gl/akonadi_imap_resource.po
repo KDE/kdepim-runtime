@@ -120,7 +120,7 @@ msgstr "Define o porto no que se executa o servizo de IMAP"
 #: imapresource.kcfg:17
 #, kde-format
 msgid "Username"
-msgstr "Nome de usuario"
+msgstr "Nome de usuaria"
 
 #. i18n: ectx: label, entry (Safety), group (network)
 #: imapresource.kcfg:20
@@ -636,7 +636,7 @@ msgid ""
 "\n"
 "%1"
 msgstr ""
-"O servidor para a conta «%2» rexeitou o nome de usuario e contrasinal "
+"O servidor para a conta «%2» rexeitou o nome de usuaria e contrasinal "
 "fornecidos.\n"
 "Quere ir á configuración, volver intentar identificarse, ou non facer nada?\n"
 "\n"
@@ -729,7 +729,7 @@ msgid ""
 "account as before we will have to re-download all your emails from this "
 "account again. Are you sure you want to proceed?"
 msgstr ""
-"Vostede cambiou o seu nome de usuario. Aínda que o nome de usuario "
+"Vostede cambiou o seu nome de usuaria. Aínda que o nome de usuaria "
 "corresponda á mesma conta que o anterior, é necesario descargar de novo "
 "todas as mensaxes de correo electrónico da conta. Seguro que quere continuar?"
 
@@ -824,7 +824,7 @@ msgstr "Servidor de I&MAP:"
 #: setupserverview_desktop.ui:74
 #, kde-format
 msgid "The username."
-msgstr "O nome de usuario."
+msgstr "O nome de usuaria."
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: setupserverview_desktop.ui:77
@@ -935,13 +935,13 @@ msgstr "Nome de &usuario e contrasinal"
 #: setupserverview_desktop.ui:257
 #, kde-format
 msgid "I&MAP Username and Password"
-msgstr "Nome de usuario e contrasinal de I&MAP"
+msgstr "Nome de usuaria e contrasinal de I&MAP"
 
 #. i18n: ectx: property (text), widget (QLabel, label_12)
 #: setupserverview_desktop.ui:277
 #, kde-format
 msgid "Username:"
-msgstr "Nome de usuario:"
+msgstr "Nome de usuaria:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_15)
 #. i18n: ectx: property (text), widget (QLabel, label_10)
