@@ -128,6 +128,8 @@ typedef enum { EwsItemSensitivityNormal, EwsItemSensitivityPersonal, EwsItemSens
  *  The list is based on the XSD schema and contains duplicates, which were commented out.
  */
 typedef enum {
+    EwsItemFieldInvalid = -1,
+
     // Folder
     EwsFolderFieldFolderId,
     EwsFolderFieldParentFolderId,
