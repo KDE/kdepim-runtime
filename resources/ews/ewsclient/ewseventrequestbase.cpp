@@ -9,6 +9,7 @@
 #include "ewsxml.h"
 
 enum NotificationElementType {
+    InvalidNotificationElement = -1,
     SubscriptionId,
     PreviousWatermark,
     MoreEvents,
@@ -17,6 +18,7 @@ enum NotificationElementType {
 typedef EwsXml<NotificationElementType> NotificationReader;
 
 enum EventElementType {
+    InvalidEventElement = -1,
     Watermark,
     Timestamp,
     ItemId,

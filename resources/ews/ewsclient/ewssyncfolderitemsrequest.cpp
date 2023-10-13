@@ -14,12 +14,14 @@
 #include "ewsxml.h"
 
 enum SyncFolderItemsResponseElementType {
+    SyncFolderItemsResponseElementInvalid = -1,
     SyncState,
     IncludesLastItemInRange,
     Changes,
 };
 
 enum SyncFolderItemsChangeElementType {
+    SyncFolderITemsChangeElemnentInvalid = -1,
     Item,
     ItemId,
     IsRead,

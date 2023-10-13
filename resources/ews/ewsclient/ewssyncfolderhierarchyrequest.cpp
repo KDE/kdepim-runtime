@@ -14,12 +14,14 @@
 #include "ewsxml.h"
 
 enum SyncFolderHierarchyResponseElementType {
+    SyncFolderHierarchyResponseElementInvalid = -1,
     SyncState,
     IncludesLastFolderInRange,
     Changes,
 };
 
 enum SyncFolderHierarchyChangeElementType {
+    SyncFolderHierarchyChangeElementInvalid = -1,
     Folder,
     FolderId,
     IsRead,
