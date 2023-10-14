@@ -203,8 +203,8 @@ msgstr "Camí cap al directori de correu"
 msgid ""
 "Path points to a folder containing Maildirs instead of to a maildir itself."
 msgstr ""
-"El camí apunta a una carpeta que conté alguns directoris de correu en lloc "
-"d'un sol directori de correu."
+"El camí apunta cap a una carpeta que conté alguns directoris de correu en "
+"lloc d'un sol directori de correu."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: maildirresource.kcfg:18
