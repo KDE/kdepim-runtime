@@ -1,17 +1,17 @@
 # Translation of akonadi_etesync_resource.po to Catalan
-# Copyright (C) 2020-2021 This_file_is_part_of_KDE
+# Copyright (C) 2020-2023 This_file_is_part_of_KDE
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# Josep M. Ferrer <txemaq@gmail.com>, 2020, 2021.
+# Josep M. Ferrer <txemaq@gmail.com>, 2020, 2021, 2023.
 # Antoni Bella Pérez <antonibella5@yahoo.com>, 2020, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-10-08 00:48+0000\n"
-"PO-Revision-Date: 2021-10-29 16:58+0200\n"
-"Last-Translator: Antoni Bella Pérez <antonibella5@yahoo.com>\n"
+"PO-Revision-Date: 2023-10-18 22:02+0200\n"
+"Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
-"X-Generator: Lokalize 21.08.2\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: etesyncresource.cpp:49
 #, kde-format
@@ -57,7 +57,7 @@ msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
 "credentials."
 msgstr ""
-"S'han canviat les vostres credencials d'EteSync. Feu clic a D'acord per "
+"S'han canviat les vostres credencials d'EteSync. Feu clic a D'acord per a "
 "tornar a introduir les credencials."
 
 #: etesyncresource.cpp:222
@@ -124,7 +124,7 @@ msgstr "Nom d'usuari"
 #: etesyncresource.kcfg:16 etesyncresource.kcfg:17
 #, kde-format
 msgid "The username that is used to log into the EteSync server"
-msgstr "El nom d'usuari que s'usa per accedir al servidor EteSync"
+msgstr "El nom d'usuari que s'usa per a accedir al servidor EteSync"
 
 #. i18n: ectx: label, entry (BasePath), group (General)
 #: etesyncresource.kcfg:20
@@ -146,7 +146,7 @@ msgstr "Credencials d'inici de sessió"
 #: setupwizard.cpp:67
 #, kde-format
 msgid "Enter your credentials to login to the EteSync server"
-msgstr "Introduïu les credencials per iniciar la sessió al servidor EteSync"
+msgstr "Introduïu les credencials per a iniciar la sessió al servidor EteSync"
 
 #: setupwizard.cpp:76
 #, kde-format
@@ -201,80 +201,3 @@ msgid "EteSync server not found. Please ensure that the server URL is correct."
 msgstr ""
 "No s'ha trobat el servidor EteSync. Assegureu-vos que l'URL del servidor "
 "sigui correcte."
-
-#~ msgid "Could not get journal"
-#~ msgstr "No s'ha pogut recuperar el diari"
-
-#~ msgid "Received item with unknown payload %1"
-#~ msgstr "S'ha rebut un element amb contingut desconegut %1"
-
-#~ msgid "Received item of different type"
-#~ msgstr "S'ha rebut un element d'un tipus diferent"
-
-#~ msgid "Could not get local calendar"
-#~ msgstr "No s'ha pogut obtenir el calendari local"
-
-#~ msgid "Could not set journal info"
-#~ msgstr "No s'ha pogut establir la informació del diari"
-
-#~ msgid "Could not create vcard from payload"
-#~ msgstr "No s'han pogut crear la vCard a partir de la càrrega útil"
-
-#~ msgid "Could not create vcard from content"
-#~ msgstr "No s'han pogut crear la vCard a partir del contingut"
-
-#~ msgid "Could not get local contact"
-#~ msgstr "No s'ha pogut obtenir el contacte local"
-
-#~ msgid "My Calendar"
-#~ msgstr "El meu calendari"
-
-#~ msgid "My Contacts"
-#~ msgstr "Els meus contactes"
-
-#~ msgid "My Tasks"
-#~ msgstr "Les meves tasques"
-
-#~ msgid "Invalid payload type"
-#~ msgstr "Tipus no vàlid de càrrega útil"
-
-#~ msgid "Unknown collection mimetype"
-#~ msgstr "Tipus MIME de la col·lecció desconegut"
-
-#~ msgid "Password"
-#~ msgstr "Contrasenya"
-
-#~ msgid "The password that is used to log into the EteSync server"
-#~ msgstr "La contrasenya que s'usa per accedir al servidor EteSync"
-
-#~ msgid "Encryption Password"
-#~ msgstr "Contrasenya d'encriptatge"
-
-#~ msgid "Encryption password for your EteSync account"
-#~ msgstr "Contrasenya d'encriptatge del compte EteSync"
-
-#~ msgid "Email:"
-#~ msgstr "Correu electrònic:"
-
-#~ msgid "Incorrect login credentials. Please try again."
-#~ msgstr "Credencials incorrectes d'inici de sessió. Torneu a provar-ho."
-
-#~ msgid "Encryption password"
-#~ msgstr "Contrasenya d'encriptatge"
-
-#~ msgid "Enter the encryption password for your EteSync account"
-#~ msgstr "Introduïu la contrasenya d'encriptatge del compte EteSync"
-
-#~ msgid "Encryption Password:"
-#~ msgstr "Contrasenya d'encriptatge:"
-
-#~ msgid ""
-#~ "Welcome to EteSync! Please set your encryption password below, and make "
-#~ "sure you got it right, as it can't be recovered if lost!"
-#~ msgstr ""
-#~ "Us donem la benvinguda a l'EteSync! Establiu a sota la vostra contrasenya "
-#~ "d'encriptatge, i assegureu-vos que és correcta, ja que no es pot "
-#~ "recuperar si es perd!"
-
-#~ msgid "Incorrect encryption password. Please try again."
-#~ msgstr "Contrasenya incorrecta d'encriptatge. Torneu a provar-ho."
