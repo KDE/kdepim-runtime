@@ -3,20 +3,21 @@
 #
 # Franklin Weng <franklin at goodhorse dot idv dot tw>, 2013, 2015.
 # Jeff Huang <s8321414@gmail.com>, 2016.
+# Kisaragi Hiu <mail@kisaragi-hiu.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-09-15 00:45+0000\n"
-"PO-Revision-Date: 2016-11-14 21:34+0800\n"
-"Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
-"Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
+"PO-Revision-Date: 2023-10-21 18:41+0900\n"
+"Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
+"Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 23.11.70\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -26,7 +27,7 @@ msgstr "Franklin Weng, Jeff Huang"
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "franklin@nospam_goodhorse.idv.tw"
+msgstr "franklin@nospam_goodhorse.idv.tw, s8321414@gmail.com"
 
 #: ../kmigratorbase.cpp:116
 #, kde-format
@@ -144,10 +145,9 @@ msgid "Migration of Akonadi Items to support GID"
 msgstr "將 Akonadi 項目移植到支援 GID"
 
 #: main.cpp:30
-#, fuzzy, kde-format
-#| msgid "(c) 2013-2016 the Akonadi developers"
+#, kde-format
 msgid "(c) 2013-2022 the Akonadi developers"
-msgstr "(c) 2013-2016 Akonadi 開發團隊"
+msgstr "(c) 2013-2022 Akonadi 開發團隊"
 
 #: main.cpp:33
 #, kde-format
