@@ -140,16 +140,16 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
             return KIMAP::Term(KIMAP::Term::Bcc, term.value().toString()).setNegated(term.isNegated());
         case Akonadi::EmailSearchTerm::MessageStatus: {
             const QString termStr = term.value().toString();
-            if (termStr == QString::fromLatin1(Akonadi::MessageFlags::Flagged)) {
+            if (termStr == QLatin1StringView(Akonadi::MessageFlags::Flagged)) {
                 return KIMAP::Term(KIMAP::Term::Flagged).setNegated(term.isNegated());
             }
-            if (termStr == QString::fromLatin1(Akonadi::MessageFlags::Deleted)) {
+            if (termStr == QLatin1StringView(Akonadi::MessageFlags::Deleted)) {
                 return KIMAP::Term(KIMAP::Term::Deleted).setNegated(term.isNegated());
             }
-            if (termStr == QString::fromLatin1(Akonadi::MessageFlags::Replied)) {
+            if (termStr == QLatin1StringView(Akonadi::MessageFlags::Replied)) {
                 return KIMAP::Term(KIMAP::Term::Answered).setNegated(term.isNegated());
             }
-            if (termStr == QString::fromLatin1(Akonadi::MessageFlags::Seen)) {
+            if (termStr == QLatin1StringView(Akonadi::MessageFlags::Seen)) {
                 return KIMAP::Term(KIMAP::Term::Seen).setNegated(term.isNegated());
             }
             break;
