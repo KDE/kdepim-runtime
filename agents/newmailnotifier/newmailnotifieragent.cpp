@@ -46,7 +46,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     : AgentBase(id)
 {
     connect(this, &Akonadi::AgentBase::reloadConfiguration, this, &NewMailNotifierAgent::slotReloadConfiguration);
-    KLocalizedString::setApplicationDomain("akonadi_newmailnotifier_agent");
+    KLocalizedString::setApplicationDomain(QByteArrayLiteral("akonadi_newmailnotifier_agent"));
     Akonadi::AttributeFactory::registerAttribute<Akonadi::NewMailNotifierAttribute>();
     new NewMailNotifierAdaptor(this);
 

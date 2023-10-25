@@ -25,7 +25,7 @@ MigrationAgent::MigrationAgent(const QString &id)
     : AgentBase(id)
     , mScheduler(new KUiServerJobTracker)
 {
-    KLocalizedString::setApplicationDomain("akonadi_migration_agent");
+    KLocalizedString::setApplicationDomain(QByteArrayLiteral("akonadi_migration_agent"));
     mScheduler.addMigrator(QSharedPointer<GidMigrator>::create(KContacts::Addressee::mimeType()));
     mScheduler.addMigrator(QSharedPointer<GoogleResourceMigrator>::create());
 }

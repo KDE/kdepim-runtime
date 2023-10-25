@@ -21,7 +21,7 @@
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-    KLocalizedString::setApplicationDomain("gid-migrator");
+    KLocalizedString::setApplicationDomain(QByteArrayLiteral("gid-migrator"));
     KAboutData aboutData(QStringLiteral("gid-migrator"),
                          i18n("GID Migration Tool"),
                          QStringLiteral("0.1"),
