@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2023-10-07 16:45+0200\n"
+"PO-Revision-Date: 2023-10-24 20:12+0200\n"
 "Last-Translator: Xavier BESNARD <xavier.besnard@neuf.fr>\n"
 "Language-Team: fr\n"
 "Language: fr\n"
@@ -248,7 +248,7 @@ msgid ""
 "file will be created if it doesn't exist."
 msgstr ""
 "Sélectionnez un fichier local ou une URL distante à partir de laquelle "
-"télécharger un fichier. Un nouveau fichier local sera créé s’il n’existe pas."
+"télécharger un fichier. Un nouveau fichier local sera créé s'il n'existe pas."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
@@ -308,7 +308,7 @@ msgid ""
 "(e.g. for remote calendars)."
 msgstr ""
 "Met à jour périodiquement le fichier. Peut être utilisé lorsque la "
-"surveillance n’est pas disponible (Par exemple pour les calendriers à "
+"surveillance n'est pas disponible (Par exemple pour les calendriers à "
 "distance)."
 
 #: singlefileresourceconfigwidgetbase.cpp:128
