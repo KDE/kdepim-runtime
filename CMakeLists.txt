@@ -91,11 +91,6 @@ find_package(KF6Notifications ${KF_MIN_VERSION} CONFIG REQUIRED) # pop3, ews
 find_package(KF6KCMUtils ${KF_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF6DAV ${KF_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF6Wallet ${KF_MIN_VERSION} CONFIG REQUIRED)
-find_package(KF6DocTools ${KF_MIN_VERSION})
-set_package_properties(KF6DocTools PROPERTIES DESCRIPTION
-    "Tools to generate documentation"
-    TYPE OPTIONAL
-)
 
 find_package(KF6TextCustomEditor ${KTEXTADDONS_MIN_VERSION} CONFIG REQUIRED)
 
@@ -158,10 +153,6 @@ ecm_qt_install_logging_categories(
 
 kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
 ki18n_install(po)
-if(KF6DocTools_FOUND)
-    kdoctools_install(po)
-    add_subdirectory(doc)
-endif()
 
 feature_summary(WHAT ALL
                 INCLUDE_QUIET_PACKAGES

@@ -32,6 +32,5 @@ Dependencies:
     'frameworks/knotifications': '@latest-kf6'
     'frameworks/kcmutils': '@latest-kf6'
     'frameworks/kdav': '@latest-kf6'
-    'frameworks/kdoctools': '@latest-kf6'
     'third-party/qtkeychain': '@latest-kf6'
     'libraries/ktextaddons': '@latest-kf6'
