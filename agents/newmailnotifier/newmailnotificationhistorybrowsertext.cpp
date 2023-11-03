@@ -38,9 +38,11 @@ void NewMailNotificationHistoryBrowserText::doSetSource(const QUrl &url, QTextDo
 void NewMailNotificationHistoryBrowserText::addExtraMenuEntry(QMenu *menu, QPoint pos)
 {
     Q_UNUSED(pos)
-    QAction *clearAllAction = KStandardAction::clear(this, &NewMailNotificationHistoryBrowserText::clearHistory, menu);
-    menu->addSeparator();
-    menu->addAction(clearAllAction);
+    if (!toPlainText().isEmpty()) {
+        QAction *clearAllAction = KStandardAction::clear(this, &NewMailNotificationHistoryBrowserText::clearHistory, menu);
+        menu->addSeparator();
+        menu->addAction(clearAllAction);
+    }
 }
 
 void NewMailNotificationHistoryBrowserText::slotOpenMail(const QString &identifier)
