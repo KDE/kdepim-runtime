@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-28 01:40+0000\n"
+"POT-Creation-Date: 2023-11-04 16:52+0000\n"
 "PO-Revision-Date: 2023-09-24 18:46+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -147,12 +147,12 @@ msgstr "Показувати кнопки дій"
 msgid "Reply Mail"
 msgstr "Відповісти на повідомлення"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:151
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:161
 #, kde-format
 msgid "Reply to Author"
 msgstr "Відповісти автору"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:154
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:164
 #, kde-format
 msgid "Reply to All"
 msgstr "Відповісти всім"
@@ -244,17 +244,17 @@ msgstr "У %1"
 msgid "In: %1 (%2)"
 msgstr "У %1 (%2)"
 
-#: specialnotifierjob.cpp:147
+#: specialnotifierjob.cpp:148
 #, kde-format
 msgid "Show mail..."
 msgstr "Показати пошту…"
 
-#: specialnotifierjob.cpp:147
+#: specialnotifierjob.cpp:151
 #, kde-format
 msgid "Mark As Read"
 msgstr "Позначити як прочитане"
 
-#: specialnotifierjob.cpp:147
+#: specialnotifierjob.cpp:154
 #, kde-format
 msgid "Delete"
 msgstr "Вилучити"

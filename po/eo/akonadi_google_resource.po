@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtimeReport-Msgid-Bugs-To: https://bugs.kde."
 "org\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-11-04 16:52+0000\n"
 "PO-Revision-Date: 2023-05-28 19:19+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -161,7 +161,7 @@ msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 bezonas vian atenton."
 
-#: googleresource.cpp:212
+#: googleresource.cpp:213
 #, kde-format
 msgctxt "@action"
 msgid "Log in"

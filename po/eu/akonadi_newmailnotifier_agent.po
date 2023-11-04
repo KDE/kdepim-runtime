@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-28 01:40+0000\n"
+"POT-Creation-Date: 2023-11-04 16:52+0000\n"
 "PO-Revision-Date: 2023-09-24 09:40+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -143,12 +143,12 @@ msgstr "Erakutsi ekintza-botoiak"
 msgid "Reply Mail"
 msgstr "Erantzun postari"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:151
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:161
 #, kde-format
 msgid "Reply to Author"
 msgstr "Erantzun egileari"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:154
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:164
 #, kde-format
 msgid "Reply to All"
 msgstr "Erantzun denei"
@@ -240,17 +240,17 @@ msgstr "Non: %1"
 msgid "In: %1 (%2)"
 msgstr "Non: %1 (%2)"
 
-#: specialnotifierjob.cpp:147
+#: specialnotifierjob.cpp:148
 #, kde-format
 msgid "Show mail..."
 msgstr "Erakutsi posta..."
 
-#: specialnotifierjob.cpp:147
+#: specialnotifierjob.cpp:151
 #, kde-format
 msgid "Mark As Read"
 msgstr "Markatu irakurritako gisa"
 
-#: specialnotifierjob.cpp:147
+#: specialnotifierjob.cpp:154
 #, kde-format
 msgid "Delete"
 msgstr "Ezabatu"

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-11-04 16:52+0000\n"
 "PO-Revision-Date: 2023-10-26 20:51+0200\n"
 "Last-Translator: Xavier BESNARD <xavier.besnard@neuf.fr>\n"
 "Language-Team: fr\n"
@@ -1080,19 +1080,19 @@ msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Impossible de traiter la requête de réception des étiquettes globales"
 
-#: ewsresource.cpp:1386
+#: ewsresource.cpp:1392
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Authentification"
 
-#: ewsresource.cpp:1400 ewsresource.cpp:1415
+#: ewsresource.cpp:1402 ewsresource.cpp:1417
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "L'authentification a échoué"
 
-#: ewsresource.cpp:1423
+#: ewsresource.cpp:1425
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-11-04 16:52+0000\n"
 "PO-Revision-Date: 2023-05-21 14:55+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
@@ -157,7 +157,7 @@ msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 needs your attention."
 
-#: googleresource.cpp:212
+#: googleresource.cpp:213
 #, kde-format
 msgctxt "@action"
 msgid "Log in"

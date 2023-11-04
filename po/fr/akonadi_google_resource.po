@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-11-04 16:52+0000\n"
 "PO-Revision-Date: 2023-10-25 16:15+0200\n"
 "Last-Translator: Xavier BESNARD <xavier.besnard@neuf.fr>\n"
 "Language-Team: fr\n"
@@ -168,7 +168,7 @@ msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 requière votre attention."
 
-#: googleresource.cpp:212
+#: googleresource.cpp:213
 #, kde-format
 msgctxt "@action"
 msgid "Log in"

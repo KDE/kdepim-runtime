@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-28 01:40+0000\n"
+"POT-Creation-Date: 2023-11-04 16:52+0000\n"
 "PO-Revision-Date: 2023-09-23 07:35+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -143,12 +143,12 @@ msgstr "ქმედების ღილაკების ჩვენებ�
 msgid "Reply Mail"
 msgstr "პასუხი"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:151
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:161
 #, kde-format
 msgid "Reply to Author"
 msgstr "ავტორისთვის პასუხი"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:154
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:164
 #, kde-format
 msgid "Reply to All"
 msgstr "ყველასთვის პასუხი"
@@ -240,17 +240,17 @@ msgstr "თარიღი: %1"
 msgid "In: %1 (%2)"
 msgstr "თარიღი: %1  | ~%2%"
 
-#: specialnotifierjob.cpp:147
+#: specialnotifierjob.cpp:148
 #, kde-format
 msgid "Show mail..."
 msgstr "ელფოსტის ჩვენება..."
 
-#: specialnotifierjob.cpp:147
+#: specialnotifierjob.cpp:151
 #, kde-format
 msgid "Mark As Read"
 msgstr "წაკითხულად მონიშვნა"
 
-#: specialnotifierjob.cpp:147
+#: specialnotifierjob.cpp:154
 #, kde-format
 msgid "Delete"
 msgstr "წაშლა"

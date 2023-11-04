@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-28 01:40+0000\n"
+"POT-Creation-Date: 2023-11-04 16:52+0000\n"
 "PO-Revision-Date: 2023-09-24 08:09+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -143,12 +143,12 @@ msgstr "Pokaż przyciski działań"
 msgid "Reply Mail"
 msgstr "Odpowiedz na wiadomość"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:151
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:161
 #, kde-format
 msgid "Reply to Author"
 msgstr "Odpowiedz autorowi"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:154
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:164
 #, kde-format
 msgid "Reply to All"
 msgstr "Odpowiedz wszystkim"
@@ -240,17 +240,17 @@ msgstr "W: %1"
 msgid "In: %1 (%2)"
 msgstr "W: %1 (%2)"
 
-#: specialnotifierjob.cpp:147
+#: specialnotifierjob.cpp:148
 #, kde-format
 msgid "Show mail..."
 msgstr "Pokaż pocztę..."
 
-#: specialnotifierjob.cpp:147
+#: specialnotifierjob.cpp:151
 #, kde-format
 msgid "Mark As Read"
 msgstr "Oznacz jako przeczytaną"
 
-#: specialnotifierjob.cpp:147
+#: specialnotifierjob.cpp:154
 #, kde-format
 msgid "Delete"
 msgstr "Usuń"

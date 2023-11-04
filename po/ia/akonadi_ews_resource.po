@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-11-04 16:52+0000\n"
 "PO-Revision-Date: 2023-09-21 10:23+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -1063,19 +1063,19 @@ msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Falleva a processar requesta de recuperar etiquettas global"
 
-#: ewsresource.cpp:1386
+#: ewsresource.cpp:1392
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Authentica"
 
-#: ewsresource.cpp:1400 ewsresource.cpp:1415
+#: ewsresource.cpp:1402 ewsresource.cpp:1417
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Authentication falleva"
 
-#: ewsresource.cpp:1423
+#: ewsresource.cpp:1425
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"
