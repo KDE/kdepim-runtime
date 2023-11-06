@@ -145,14 +145,14 @@ void SingleFileResourceBase::handleHashChange()
 
 QByteArray SingleFileResourceBase::loadHash() const
 {
-    KConfigGroup generalGroup(runtimeConfig(), QLatin1String("General"));
+    KConfigGroup generalGroup(runtimeConfig(), QStringLiteral("General"));
     return QByteArray::fromHex(generalGroup.readEntry<QByteArray>("hash", QByteArray()));
 }
 
 void SingleFileResourceBase::saveHash(const QByteArray &hash) const
 {
     KSharedConfig::Ptr config = runtimeConfig();
-    KConfigGroup generalGroup(config, QLatin1String("General"));
+    KConfigGroup generalGroup(config, QStringLiteral("General"));
     generalGroup.writeEntry("hash", hash.toHex());
     config->sync();
 }

@@ -47,7 +47,7 @@ void FolderArchiveAccountInfoTest::shouldRestoreFromSettings()
     info.setEnabled(true);
     info.setKeepExistingStructure(true);
 
-    KConfigGroup grp(KSharedConfig::openConfig(), QLatin1String("testsettings"));
+    KConfigGroup grp(KSharedConfig::openConfig(), QStringLiteral("testsettings"));
     info.writeConfig(grp);
 
     FolderArchiveAccountInfo restoreInfo(grp);

@@ -55,14 +55,14 @@ bool TomboyNotesConfigWidget::save() const
 
 QSize TomboyNotesConfigWidget::restoreDialogSize() const
 {
-    auto group = config()->group(QLatin1String("TomboyNotesConfigWidget"));
+    auto group = config()->group(QStringLiteral("TomboyNotesConfigWidget"));
     const QSize size = group.readEntry("Size", QSize(600, 400));
     return size;
 }
 
 void TomboyNotesConfigWidget::saveDialogSize(const QSize &size)
 {
-    auto group = config()->group(QLatin1String("TomboyNotesConfigWidget"));
+    auto group = config()->group(QStringLiteral("TomboyNotesConfigWidget"));
     group.writeEntry("Size", size);
 }
 

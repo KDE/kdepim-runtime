@@ -98,7 +98,7 @@ void KMigratorBase::setMigrationState(const QString &identifier, MigrationState 
     cfg.writeEntry("ResourceIdentifier", resId);
     cfg.sync();
 
-    cfg = KConfigGroup(KSharedConfig::openConfig(), QLatin1String("Bridged"));
+    cfg = KConfigGroup(KSharedConfig::openConfig(), QStringLiteral("Bridged"));
     QStringList bridgedResources = cfg.readEntry(type + QLatin1String("Resources"), QStringList());
     if (state == Bridged) {
         if (!bridgedResources.contains(identifier)) {
