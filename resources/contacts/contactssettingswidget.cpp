@@ -77,14 +77,14 @@ bool ContactsSettingsWidget::save() const
 
 QSize ContactsSettingsWidget::restoreDialogSize() const
 {
-    auto group = config()->group(myConfigGroupName);
+    auto group = config()->group(QLatin1String(myConfigGroupName));
     const QSize size = group.readEntry("Size", QSize(600, 400));
     return size;
 }
 
 void ContactsSettingsWidget::saveDialogSize(const QSize &size)
 {
-    auto group = config()->group(myConfigGroupName);
+    auto group = config()->group(QLatin1String(myConfigGroupName));
     group.writeEntry("Size", size);
 }
 

@@ -54,14 +54,14 @@ bool BirthdaysConfigAgentWidget::save() const
 
 QSize BirthdaysConfigAgentWidget::restoreDialogSize() const
 {
-    const auto group = config()->group(myConfigGroupName);
+    const auto group = config()->group(QLatin1String(myConfigGroupName));
     const QSize size = group.readEntry("Size", QSize(600, 400));
     return size;
 }
 
 void BirthdaysConfigAgentWidget::saveDialogSize(const QSize &size)
 {
-    auto group = config()->group(myConfigGroupName);
+    auto group = config()->group(QLatin1String(myConfigGroupName));
     group.writeEntry("Size", size);
 }
 

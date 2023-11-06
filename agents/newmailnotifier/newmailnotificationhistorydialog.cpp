@@ -46,14 +46,14 @@ void NewMailNotificationHistoryDialog::readConfig()
 {
     create(); // ensure a window is created
     windowHandle()->resize(QSize(800, 300));
-    KConfigGroup group(KSharedConfig::openStateConfig(), myConfigNewMailHistoryNotificationDialogGroupName);
+    KConfigGroup group(KSharedConfig::openStateConfig(), QLatin1String(myConfigNewMailHistoryNotificationDialogGroupName));
     KWindowConfig::restoreWindowSize(windowHandle(), group);
     resize(windowHandle()->size()); // workaround for QTBUG-40584
 }
 
 void NewMailNotificationHistoryDialog::writeConfig()
 {
-    KConfigGroup group(KSharedConfig::openStateConfig(), myConfigNewMailHistoryNotificationDialogGroupName);
+    KConfigGroup group(KSharedConfig::openStateConfig(), QLatin1String(myConfigNewMailHistoryNotificationDialogGroupName));
     KWindowConfig::saveWindowSize(windowHandle(), group);
 }
 

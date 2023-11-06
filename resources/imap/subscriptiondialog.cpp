@@ -111,14 +111,14 @@ void SubscriptionDialog::readConfig()
 {
     create(); // ensure a window is created
     windowHandle()->resize(QSize(500, 300));
-    KConfigGroup group(KSharedConfig::openStateConfig(), "SubscriptionDialog");
+    KConfigGroup group(KSharedConfig::openStateConfig(), QLatin1String("SubscriptionDialog"));
     KWindowConfig::restoreWindowSize(windowHandle(), group);
     resize(windowHandle()->size()); // workaround for QTBUG-40584
 }
 
 void SubscriptionDialog::writeConfig()
 {
-    KConfigGroup group(KSharedConfig::openStateConfig(), "SubscriptionDialog");
+    KConfigGroup group(KSharedConfig::openStateConfig(), QLatin1String("SubscriptionDialog"));
     KWindowConfig::saveWindowSize(windowHandle(), group);
     group.sync();
 }
