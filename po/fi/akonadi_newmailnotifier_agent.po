@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-04 16:52+0000\n"
-"PO-Revision-Date: 2023-07-25 19:52+0300\n"
+"PO-Revision-Date: 2023-09-26 10:47+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -26,16 +26,14 @@ msgid "Notification History"
 msgstr "Ilmoitushistoria"
 
 #: newmailnotificationhistorymanager.cpp:31
-#, fuzzy, kde-format
-#| msgid "Folders"
+#, kde-format
 msgid "[Open Folder]"
-msgstr "Kansiot"
+msgstr "[Avaa kansio]"
 
 #: newmailnotificationhistorymanager.cpp:41
-#, fuzzy, kde-format
-#| msgid "Show mail..."
+#, kde-format
 msgid "[Show Mail]"
-msgstr "Näytä viesti…"
+msgstr "[Näytä viesti]"
 
 #: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:111
@@ -240,10 +238,9 @@ msgid "In: %1"
 msgstr "Kansio: %1"
 
 #: specialnotifierjob.cpp:123
-#, fuzzy, kde-format
-#| msgid "In: %1"
+#, kde-format
 msgid "In: %1 (%2)"
-msgstr "Kansio: %1"
+msgstr "Kansiossa: %1 (%2)"
 
 #: specialnotifierjob.cpp:148
 #, kde-format
