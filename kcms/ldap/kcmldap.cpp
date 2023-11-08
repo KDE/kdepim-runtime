@@ -26,7 +26,7 @@ KCMLdap::KCMLdap(QObject *parent, const KPluginMetaData &data)
     layout->setContentsMargins({});
 
     layout->addWidget(mLdapConfigureWidget);
-    connect(mLdapConfigureWidget, &KLDAPWidgets::LdapConfigureWidget::changed, this, &KCMLdap::markAsChanged);
+    connect(mLdapConfigureWidget, &KLDAPWidgets::LdapConfigureWidget::changed, this, &KCMLdap::setNeedsSave);
 }
 
 KCMLdap::~KCMLdap() = default;
