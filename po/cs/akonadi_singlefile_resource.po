@@ -1,6 +1,6 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Vít Pelčák <vit@pelcak.org>, 2010, 2011, 2014, 2016, 2017, 2019.
+# SPDX-FileCopyrightText: 2010, 2011, 2014, 2016, 2017, 2019, 2023 Vít Pelčák <vit@pelcak.org>
 # Tomáš Chvátal <tomas.chvatal@gmail.com>, 2012.
 # Vit Pelcak <vit@pelcak.org>, 2021, 2023.
 #
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2023-06-22 11:05+0200\n"
+"PO-Revision-Date: 2023-11-06 11:34+0100\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 23.04.2\n"
+"X-Generator: Lokalize 23.08.2\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -222,7 +222,7 @@ msgstr "Soubor"
 #: singlefileresourceconfigwidget_desktop.ui:47
 #, kde-format
 msgid "File or URL:"
-msgstr ""
+msgstr "Soubor nebo URL:"
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
@@ -246,12 +246,15 @@ msgid ""
 "is automatically enabled when the selected file does not support write "
 "access or when displaying a calendar from remote URL."
 msgstr ""
+" Pokud je zapnut režim pouze ke čtení, nebudou zapisovány změny. Režim pouze "
+"pro čtení bude automaticky zapnut, pokud tento soubor nepodporuje zápis nebo "
+"při zobrazení kalendáře ze vzdálené URL."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
 #, kde-format
 msgid "Monitor for &changes"
-msgstr ""
+msgstr "Sledovat z&měny."
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
@@ -261,12 +264,15 @@ msgid ""
 "enabled. Backups will be created to avoid conflicts when possible. "
 "Monitoring is not available for remote URLs."
 msgstr ""
+"Pokud je monitorování povoleno, povedou změny provedené jinými aplikacemi k "
+"opětovnému načtení. Pro předejití konfliktů budou vytvářeny zálohy pokud to "
+"půjde. Sledování není dostupné pro vzdálené URL."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
 #: singlefileresourceconfigwidget_desktop.ui:149
 #, kde-format
 msgid "Automatically &update every"
-msgstr ""
+msgstr "Automaticky akt&ualizovat každých"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
 #: singlefileresourceconfigwidget_desktop.ui:159

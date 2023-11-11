@@ -1,6 +1,6 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Vít Pelčák <vit@pelcak.org>, 2010, 2011, 2012, 2013, 2014, 2019, 2023.
+# SPDX-FileCopyrightText: 2010, 2011, 2012, 2013, 2014, 2019, 2023 Vít Pelčák <vit@pelcak.org>
 # Lukáš Tinkl <lukas@kde.org>, 2011.
 #
 msgid ""
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2019-09-09 15:55+0200\n"
+"PO-Revision-Date: 2023-11-06 14:45+0100\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 23.08.2\n"
 
 #: compactpage.cpp:71
 #, kde-format
@@ -273,13 +273,13 @@ msgstr "Sledovat změny souboru."
 #: mboxresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "Pravidelně soubor aktualizovat."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: mboxresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
-msgstr ""
+msgstr "Interval automatické aktualizace v minutách."
 
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
 #: mboxresource.kcfg:45
