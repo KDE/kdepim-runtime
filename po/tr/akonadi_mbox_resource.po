@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2023-10-06 05:52+0300\n"
+"PO-Revision-Date: 2023-11-11 23:31+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -115,7 +115,7 @@ msgstr "&Şimdi sıkıştır"
 #: compactpage.ui:79
 #, kde-format
 msgid "&Never compact automatically"
-msgstr "&Asla otomatik olarak sıkıştırma"
+msgstr "&Asla kendiliğinden sıkıştırma"
 
 #. i18n: ectx: property (text), widget (QRadioButton, per_x_messages)
 #: compactpage.ui:86
