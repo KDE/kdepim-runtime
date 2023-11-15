@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-05-09 00:49+0000\n"
-"PO-Revision-Date: 2023-10-06 05:33+0300\n"
+"PO-Revision-Date: 2023-11-14 19:45+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -465,14 +465,14 @@ msgstr "İletiler sunucudan silinemedi."
 #: pop3resource.cpp:807
 #, kde-format
 msgid "Finished mail check, no message downloaded."
-msgstr "E-posta denetimi tamamlandı, hiç ileti indirilmedi."
+msgstr "E-posta denetimi bitti, indirilen ileti yok."
 
 #: pop3resource.cpp:809
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
-msgstr[0] "E-posta denetimi tamamlandı, 1 ileti indirildi."
-msgstr[1] "E-posta denetimi tamamlandı, %1 ileti indirildi."
+msgstr[0] "E-posta denetimi bitti, 1 ileti indirildi."
+msgstr[1] "E-posta denetimi bitti, %1 ileti indirildi."
 
 #: pop3resource.cpp:823
 #, kde-format
