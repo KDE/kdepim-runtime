@@ -3,21 +3,21 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2009, 2010, 2014.
-# Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2010.
+# Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2010, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2014-04-02 23:15-0300\n"
-"Last-Translator: André Marcelo Alvarenga <alvarenga@kde.org>\n"
-"Language-Team: Brazilian Portuguese <kde-i18n-pt_br@kde.org>\n"
+"PO-Revision-Date: 2023-11-14 13:32-0300\n"
+"Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
+"Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: vcardconfig.cpp:16
 #, kde-format
@@ -63,13 +63,13 @@ msgstr "Monitorar as alterações no arquivo."
 #: vcardresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "Atualizar periodicamente o arquivo."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: vcardresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
-msgstr ""
+msgstr "Período de atualização automática em minutos."
 
 #~ msgid "Filename:"
 #~ msgstr "Nome do arquivo:"

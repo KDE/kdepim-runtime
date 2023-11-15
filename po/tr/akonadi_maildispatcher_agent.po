@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2023-09-03 20:56+0300\n"
+"PO-Revision-Date: 2023-11-14 19:45+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -39,7 +39,7 @@ msgstr "Gönderme iptal edildi."
 #: maildispatcheragent.cpp:97
 #, kde-format
 msgid "Finished sending messages."
-msgstr "İletilerin gönderilmesi tamamlandı."
+msgstr "İletilerin gönderilmesi bitti."
 
 #: maildispatcheragent.cpp:103
 #, kde-format
