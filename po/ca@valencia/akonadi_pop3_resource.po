@@ -631,7 +631,7 @@ msgstr "Opcions de comprovació del correu"
 msgid ""
 "If active, the POP3 account will be checked for new mail every x minutes"
 msgstr ""
-"Si està activada, es comprovarà el correu nou del compte POP3 cada x minuts"
+"Si se selecciona, es comprovarà el correu nou del compte POP3 cada x minuts"
 
 #. i18n: ectx: property (text), widget (QCheckBox, intervalCheck)
 #: popsettings.ui:167
@@ -661,7 +661,7 @@ msgstr "Configuració POP"
 #: popsettings.ui:239
 #, kde-format
 msgid "If checked the message is not deleted from the mail server"
-msgstr "Si està marcada, el missatge no se suprimirà del servidor de correu"
+msgstr "Si se selecciona, el missatge no se suprimirà del servidor de correu"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, leaveOnServerCheck)
 #: popsettings.ui:242
@@ -670,8 +670,8 @@ msgid ""
 "Check this option if you want to fetch only copies of the mails and leave "
 "the original mails on the server."
 msgstr ""
-"Marqueu esta opció si voleu recuperar només còpies dels correus i deixar els "
-"correus originals en el servidor."
+"Seleccioneu esta opció si voleu recuperar només còpies dels correus i deixar "
+"els correus originals en el servidor."
 
 #. i18n: ectx: property (text), widget (QCheckBox, leaveOnServerCheck)
 #: popsettings.ui:245
@@ -704,8 +704,8 @@ msgid ""
 "Check this option if you want to only keep the x most recent messages on the "
 "server and delete all older."
 msgstr ""
-"Marqueu esta opció si només voleu conservar els x missatges més recents del "
-"servidor i suprimir tots els més antics."
+"Seleccioneu esta opció si només voleu conservar els x missatges més recents "
+"del servidor i suprimir tots els més antics."
 
 #. i18n: ectx: property (text), widget (QCheckBox, leaveOnServerCountCheck)
 #: popsettings.ui:290
@@ -728,8 +728,8 @@ msgid ""
 "If active, most recent messages are kept until the quota is reached and "
 "oldest messages are deleted."
 msgstr ""
-"Si està activada, els missatges més recents es mantenen fins que s'ocupa la "
-"quota i després se suprimixen els més antics."
+"Si se selecciona, els missatges més recents es mantindran fins que s'ocupe "
+"la quota i després se suprimiran els més antics."
 
 #. i18n: ectx: property (text), widget (QCheckBox, leaveOnServerSizeCheck)
 #: popsettings.ui:319
@@ -871,7 +871,7 @@ msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
 msgstr ""
-"Si està marcada, s'utilitzarà la configuració del sistema per a connectar "
+"Si se selecciona, s'utilitzarà la configuració del sistema per a connectar "
 "amb el servidor de correu."
 
 #. i18n: ectx: property (text), widget (QCheckBox, proxyCheck)
