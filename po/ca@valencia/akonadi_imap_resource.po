@@ -161,7 +161,7 @@ msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
 msgstr ""
-"Si està marcada, s'utilitzarà la configuració del sistema per a connectar "
+"Si se selecciona, s'utilitzarà la configuració del sistema per a connectar "
 "amb el servidor de correu."
 
 #. i18n: ectx: label, entry (DisconnectedModeEnabled), group (cache)
@@ -750,9 +750,9 @@ msgid ""
 "below, but note that you will be prompted for your password when needed."
 msgstr ""
 "No podeu accedir a KWallet. Si voleu emmagatzemar la contrasenya "
-"permanentment, heu d'activar-ho. Si no voleu utilitzar KWallet, activeu la "
-"casella de davall, però teniu en compte que se vos preguntarà per la vostra "
-"contrasenya quan siga necessari."
+"permanentment, heu d'activar-ho. Si no voleu utilitzar KWallet, seleccioneu "
+"la casella de davall, però teniu en compte que se vos preguntarà per la "
+"vostra contrasenya quan siga necessari."
 
 #: setupserver.cpp:429 setupserver.cpp:485
 #, kde-format
