@@ -482,6 +482,6 @@ QDateTime KolabBase::localToUTC(const QDateTime &time) const
 QDateTime KolabBase::utcToLocal(const QDateTime &time) const
 {
     QDateTime dt = time;
-    dt.setTimeSpec(Qt::UTC);
+    dt.setTimeZone(QTimeZone::utc());
     return dt;
 }

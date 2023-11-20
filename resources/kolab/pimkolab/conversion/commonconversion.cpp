@@ -57,7 +57,7 @@ QDateTime toDate(const Kolab::cDateTime &dt)
         date.setDate(QDate(dt.year(), dt.month(), dt.day()));
         date.setTime(QTime(dt.hour(), dt.minute(), dt.second()));
         if (dt.isUTC()) {
-            date.setTimeSpec(Qt::UTC);
+            date.setTimeZone(QTimeZone::utc());
         } else {
             date.setTimeZone(getTimeZone(dt.timezone()));
         }

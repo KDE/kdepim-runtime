@@ -9,6 +9,8 @@
 
 #include <Akonadi/NoteUtils>
 
+#include <QTimeZone>
+
 namespace Kolab
 {
 namespace Conversion
@@ -20,12 +22,12 @@ Note fromNote(const KMime::Message::Ptr &m)
     n.setSummary(toStdString(note.title()));
     n.setDescription(toStdString(note.text()));
     QDateTime created = QDateTime(note.creationDate());
-    created.setTimeSpec(Qt::UTC);
+    created.setTimeZone(QTimeZone::utc());
     n.setCreated(fromDate(created, false));
 
     n.setUid(toStdString(note.uid()));
     QDateTime lastModified = note.lastModifiedDate();
-    lastModified.setTimeSpec(Qt::UTC);
+    lastModified.setTimeZone(QTimeZone::utc());
     n.setLastModified(fromDate(lastModified, false));
 
     switch (note.classification()) {
