@@ -104,7 +104,7 @@ bool GoogleSettingsWidget::handleError(KGAPI2::Job *job)
 void GoogleSettingsWidget::accountChanged()
 {
     if (!m_account) {
-        accountLabel->setText(i18n("<b>not configured</b>"));
+        accountLabel->setText(i18n("<b>Not configured</b>"));
         calendarsList->setDisabled(true);
         reloadCalendarsBtn->setDisabled(true);
         calendarsList->clear();

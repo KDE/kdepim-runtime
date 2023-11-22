@@ -140,7 +140,7 @@ QList<QUrl> GoogleResource::scopes() const
 void GoogleResource::updateResourceName()
 {
     const QString accountName = m_settings.account();
-    setName(i18nc("%1 is account name (user@gmail.com)", "Google Groupware (%1)", accountName.isEmpty() ? i18n("not configured") : accountName));
+    setName(i18nc("%1 is account name (user@gmail.com)", "Google Groupware (%1)", accountName.isEmpty() ? i18n("Not configured") : accountName));
 }
 
 void GoogleResource::reloadConfig()
