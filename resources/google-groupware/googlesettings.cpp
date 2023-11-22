@@ -42,6 +42,14 @@ GoogleSettings::GoogleSettings(const KSharedConfigPtr &config, Options options)
 
 void GoogleSettings::init()
 {
+    if (account().isEmpty()) {
+        qCWarning(GOOGLE_LOG) << Q_FUNC_INFO << "No username set";
+        Q_EMIT accountReady(false);
+        return;
+    }
+
+    qCWarning(GOOGLE_LOG) << "Trying to read password for" << account();
+
     // First read from QtKeyChain
     auto job = new QKeychain::ReadPasswordJob(googleWalletFolder, this);
     job->setKey(account());
@@ -53,11 +61,9 @@ void GoogleSettings::init()
         }
 
         // Found something with QtKeyChain
-        if (!account().isEmpty()) {
-            m_account = fetchAccountFromKeychain(account(), job);
-            m_isReady = true;
-            Q_EMIT accountReady(true);
-        }
+        m_account = fetchAccountFromKeychain(account(), job);
+        m_isReady = true;
+        Q_EMIT accountReady(true);
     });
     job->start();
 }
