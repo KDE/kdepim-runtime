@@ -265,6 +265,7 @@ void GoogleResource::slotAuthJobFinished(KGAPI2::Job *job)
             otherJob->restart();
         }
     });
+    writeJob->start();
 }
 
 int GoogleResource::accountId() const

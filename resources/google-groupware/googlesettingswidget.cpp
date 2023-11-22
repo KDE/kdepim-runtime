@@ -204,6 +204,14 @@ void GoogleSettingsWidget::saveSettings()
         m_settings.setTaskLists(taskLists);
         m_settings.save();
     });
+
+    // Ideally we should have an async API
+    // This ensure the config dialog is not destroyed before the password
+    // is saved;
+    QEventLoop loop;
+    connect(writeJob, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
+    writeJob->start();
+    loop.exec();
 }
 
 void GoogleSettingsWidget::slotReloadCalendars()

@@ -120,7 +120,6 @@ WritePasswordJob *GoogleSettings::storeAccount(AccountPtr account)
     auto writeJob = new WritePasswordJob(googleWalletFolder, this);
     writeJob->setKey(m_account->accountName());
     writeJob->setBinaryData(mapData);
-    writeJob->start();
 
     connect(writeJob, &WritePasswordJob::finished, this, [this, writeJob]() {
         if (writeJob->error()) {
