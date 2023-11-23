@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-04 16:52+0000\n"
+"POT-Creation-Date: 2023-11-23 01:38+0000\n"
 "PO-Revision-Date: 2014-03-12 23:37+0100\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -116,8 +116,9 @@ msgid "Ready"
 msgstr "Praat"
 
 #: googleresource.cpp:143
-#, kde-format
-msgid "not configured"
+#, fuzzy, kde-format
+#| msgid "not configured"
+msgid "Not configured"
 msgstr "nich instellt"
 
 #: googleresource.cpp:143
@@ -196,7 +197,7 @@ msgstr[1] " Minuten"
 #: googlesettingswidget.cpp:107 googlesettingswidget.ui:30
 #, fuzzy, kde-format
 #| msgid "not configured"
-msgid "<b>not configured</b>"
+msgid "<b>Not configured</b>"
 msgstr "nich instellt"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)

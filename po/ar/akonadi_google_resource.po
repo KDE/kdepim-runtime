@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-04 16:52+0000\n"
+"POT-Creation-Date: 2023-11-23 01:38+0000\n"
 "PO-Revision-Date: 2022-08-16 20:47+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: Arabic <kde-l10n-ar@kde.org>\n"
@@ -123,8 +123,9 @@ msgid "Ready"
 msgstr "جاهز"
 
 #: googleresource.cpp:143
-#, kde-format
-msgid "not configured"
+#, fuzzy, kde-format
+#| msgid "not configured"
+msgid "Not configured"
 msgstr "غير مضبوط"
 
 #: googleresource.cpp:143
@@ -205,8 +206,9 @@ msgstr[5] " دقيقة"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:107 googlesettingswidget.ui:30
-#, kde-format
-msgid "<b>not configured</b>"
+#, fuzzy, kde-format
+#| msgid "<b>not configured</b>"
+msgid "<b>Not configured</b>"
 msgstr "<b>غير مضبوط</b>"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-04 16:52+0000\n"
+"POT-Creation-Date: 2023-11-23 01:38+0000\n"
 "PO-Revision-Date: 2012-05-03 20:51-0700\n"
 "Last-Translator: Japanese KDE translation team <kde-jp@kde.org>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -109,7 +109,7 @@ msgstr ""
 
 #: googleresource.cpp:143
 #, kde-format
-msgid "not configured"
+msgid "Not configured"
 msgstr ""
 
 #: googleresource.cpp:143
@@ -185,7 +185,7 @@ msgstr[0] ""
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:107 googlesettingswidget.ui:30
 #, kde-format
-msgid "<b>not configured</b>"
+msgid "<b>Not configured</b>"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)

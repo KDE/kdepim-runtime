@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_googlecalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-04 16:52+0000\n"
+"POT-Creation-Date: 2023-11-23 01:38+0000\n"
 "PO-Revision-Date: 2023-05-31 14:24-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -115,8 +115,9 @@ msgid "Ready"
 msgstr "Pronto"
 
 #: googleresource.cpp:143
-#, kde-format
-msgid "not configured"
+#, fuzzy, kde-format
+#| msgid "not configured"
+msgid "Not configured"
 msgstr "não configurado"
 
 #: googleresource.cpp:143
@@ -196,8 +197,9 @@ msgstr[1] " minutos"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:107 googlesettingswidget.ui:30
-#, kde-format
-msgid "<b>not configured</b>"
+#, fuzzy, kde-format
+#| msgid "<b>not configured</b>"
+msgid "<b>Not configured</b>"
 msgstr "<b>não configurado</b>"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-04 16:52+0000\n"
+"POT-Creation-Date: 2023-11-23 01:38+0000\n"
 "PO-Revision-Date: 2017-04-20 16:16+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -123,8 +123,9 @@ msgid "Ready"
 msgstr "Έτοιμο"
 
 #: googleresource.cpp:143
-#, kde-format
-msgid "not configured"
+#, fuzzy, kde-format
+#| msgid "not configured"
+msgid "Not configured"
 msgstr "αδιαμόρφωτο"
 
 #: googleresource.cpp:143
@@ -205,7 +206,7 @@ msgstr[1] " λεπτά"
 #: googlesettingswidget.cpp:107 googlesettingswidget.ui:30
 #, fuzzy, kde-format
 #| msgid "not configured"
-msgid "<b>not configured</b>"
+msgid "<b>Not configured</b>"
 msgstr "αδιαμόρφωτο"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)
