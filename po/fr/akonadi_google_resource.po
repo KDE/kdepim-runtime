@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-20 02:27+0000\n"
+"POT-Creation-Date: 2023-11-23 02:29+0000\n"
 "PO-Revision-Date: 2023-10-25 16:15+0200\n"
 "Last-Translator: Xavier BESNARD <xavier.besnard@neuf.fr>\n"
 "Language-Team: fr\n"
@@ -132,17 +132,12 @@ msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Logiciel « Google Groupware » (%1)"
 
-#: googleresource.cpp:156
-#, kde-format
-msgid "Configured account does not exist"
-msgstr "Le compte configuré n'existe pas"
-
-#: googleresource.cpp:204
+#: googleresource.cpp:198
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Le compte a été déconnecté"
 
-#: googleresource.cpp:207
+#: googleresource.cpp:201
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -152,7 +147,7 @@ msgstr ""
 "vous connecter pour activer de nouveau la synchronisation de « Google "
 "Contacts » et « Google Calendar »."
 
-#: googleresource.cpp:208
+#: googleresource.cpp:202
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -162,36 +157,36 @@ msgstr ""
 "Veuillez vous connecter pour activer de nouveau la synchronisation de "
 "« Google Contacts » et « Google Calendar »."
 
-#: googleresource.cpp:212
+#: googleresource.cpp:206
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 requière votre attention."
 
-#: googleresource.cpp:217
+#: googleresource.cpp:211
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Se connecter"
 
-#: googleresource.cpp:231 googleresource.cpp:232
+#: googleresource.cpp:225 googleresource.cpp:226
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "La ressource n'est pas configurée"
 
-#: googleresource.cpp:247
+#: googleresource.cpp:241
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Il est impossible de rafraîchir les jetons"
 
-#: googleresource.cpp:435 googleresource.cpp:449 googleresource.cpp:463
-#: googleresource.cpp:478 googleresource.cpp:492 googleresource.cpp:506
+#: googleresource.cpp:430 googleresource.cpp:444 googleresource.cpp:458
+#: googleresource.cpp:473 googleresource.cpp:487 googleresource.cpp:501
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Type non valable de données utiles"
 
-#: googleresource.cpp:520 googleresource.cpp:534 googleresource.cpp:548
+#: googleresource.cpp:515 googleresource.cpp:529 googleresource.cpp:543
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Type MIME de collection inconnu"
@@ -437,6 +432,9 @@ msgstr "Modification la liste de tâches « %1 »"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "Suppression de la liste de tâches « %1 »"
+
+#~ msgid "Configured account does not exist"
+#~ msgstr "Le compte configuré n'existe pas"
 
 #~ msgid "Waiting for KWallet..."
 #~ msgstr "En attente de KWallet..."

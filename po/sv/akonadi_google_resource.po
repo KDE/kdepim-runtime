@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-20 02:27+0000\n"
+"POT-Creation-Date: 2023-11-23 02:29+0000\n"
 "PO-Revision-Date: 2023-07-25 09:25+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -123,17 +123,12 @@ msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google grupprogram (%1)"
 
-#: googleresource.cpp:156
-#, kde-format
-msgid "Configured account does not exist"
-msgstr "Inställt konto finns inte"
-
-#: googleresource.cpp:204
+#: googleresource.cpp:198
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Kontot har loggats ut."
 
-#: googleresource.cpp:207
+#: googleresource.cpp:201
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -142,7 +137,7 @@ msgstr ""
 "Google grupprogram har loggats ut från ditt konto. Logga in igen för att "
 "aktivera synkronisering av Google kontakter och kalender igen."
 
-#: googleresource.cpp:208
+#: googleresource.cpp:202
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -151,36 +146,36 @@ msgstr ""
 "Google grupprogram har loggats ut från kontot %1. Logga in igen för att "
 "aktivera synkronisering av Google kontakter och kalender igen."
 
-#: googleresource.cpp:212
+#: googleresource.cpp:206
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 behöver din uppmärksamhet."
 
-#: googleresource.cpp:217
+#: googleresource.cpp:211
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Logga in"
 
-#: googleresource.cpp:231 googleresource.cpp:232
+#: googleresource.cpp:225 googleresource.cpp:226
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Resursen är inte inställd"
 
-#: googleresource.cpp:247
+#: googleresource.cpp:241
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Misslyckades uppdatera symboler"
 
-#: googleresource.cpp:435 googleresource.cpp:449 googleresource.cpp:463
-#: googleresource.cpp:478 googleresource.cpp:492 googleresource.cpp:506
+#: googleresource.cpp:430 googleresource.cpp:444 googleresource.cpp:458
+#: googleresource.cpp:473 googleresource.cpp:487 googleresource.cpp:501
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Ogiltig typ av nyttolast"
 
-#: googleresource.cpp:520 googleresource.cpp:534 googleresource.cpp:548
+#: googleresource.cpp:515 googleresource.cpp:529 googleresource.cpp:543
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Okänd Mime-typ för samling"
@@ -425,6 +420,9 @@ msgstr "Ändrar uppgiftslista '%1'"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "Ta bort uppgiftslista '%1'"
+
+#~ msgid "Configured account does not exist"
+#~ msgstr "Inställt konto finns inte"
 
 #~ msgid "Waiting for KWallet..."
 #~ msgstr "Väntar på plånboken..."

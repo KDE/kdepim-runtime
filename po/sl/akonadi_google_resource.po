@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-20 02:27+0000\n"
+"POT-Creation-Date: 2023-11-23 02:29+0000\n"
 "PO-Revision-Date: 2023-05-07 08:42+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -131,17 +131,12 @@ msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google Groupware (%1)"
 
-#: googleresource.cpp:156
-#, kde-format
-msgid "Configured account does not exist"
-msgstr "Nastavljen račun ne obstaja"
-
-#: googleresource.cpp:204
+#: googleresource.cpp:198
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Račun je bil odjavljen."
 
-#: googleresource.cpp:207
+#: googleresource.cpp:201
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -150,7 +145,7 @@ msgstr ""
 "Google Groupware je bil odjavljen iz vašega računa. Znova se prijavite, da "
 "omogočite ponovno sinhronizacijo Google Contacts in Koledarja."
 
-#: googleresource.cpp:208
+#: googleresource.cpp:202
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -159,36 +154,36 @@ msgstr ""
 "Google Groupware je bil odjavljen iz računa %1. Znova se prijavite, da "
 "omogočite ponovno sinhronizacijo Google Contacts in Koledarja."
 
-#: googleresource.cpp:212
+#: googleresource.cpp:206
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 potrebuje vaša pozornost."
 
-#: googleresource.cpp:217
+#: googleresource.cpp:211
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Prijavite se"
 
-#: googleresource.cpp:231 googleresource.cpp:232
+#: googleresource.cpp:225 googleresource.cpp:226
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Vir ni nastavljen"
 
-#: googleresource.cpp:247
+#: googleresource.cpp:241
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Žetonov ni bilo mogoče osvežiti"
 
-#: googleresource.cpp:435 googleresource.cpp:449 googleresource.cpp:463
-#: googleresource.cpp:478 googleresource.cpp:492 googleresource.cpp:506
+#: googleresource.cpp:430 googleresource.cpp:444 googleresource.cpp:458
+#: googleresource.cpp:473 googleresource.cpp:487 googleresource.cpp:501
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Neveljavna vrsta vsebine"
 
-#: googleresource.cpp:520 googleresource.cpp:534 googleresource.cpp:548
+#: googleresource.cpp:515 googleresource.cpp:529 googleresource.cpp:543
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Neznana vrsta MIME zbirke"
@@ -445,6 +440,9 @@ msgstr "Spreminjanje seznama opravil '%1'"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "Odstranjevanje seznama opravil '%1'"
+
+#~ msgid "Configured account does not exist"
+#~ msgstr "Nastavljen račun ne obstaja"
 
 #~ msgid "Waiting for KWallet..."
 #~ msgstr "Čakanje na KWallet..."
