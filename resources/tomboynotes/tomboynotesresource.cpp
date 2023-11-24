@@ -34,7 +34,7 @@ TomboyNotesResource::TomboyNotesResource(const QString &id)
     // Status message stuff
     mStatusMessageTimer = new QTimer(this);
     mStatusMessageTimer->setSingleShot(true);
-    connect(mStatusMessageTimer, &QTimer::timeout, [=]() {
+    connect(mStatusMessageTimer, &QTimer::timeout, [this]() {
         Q_EMIT status(Akonadi::AgentBase::Idle, QString());
     });
     connect(this, &AgentBase::error, this, &TomboyNotesResource::showError);

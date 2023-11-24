@@ -596,7 +596,7 @@ void DavGroupwareResource::collectionChanged(const Collection &collection)
     if (color.isValid()) {
         job->setProperty(QStringLiteral("calendar-color"), color.name(), QStringLiteral("http://apple.com/ns/ical/"));
     }
-    connect(job, &KDAV::DavCollectionModifyJob::result, this, [=](KJob *job) {
+    connect(job, &KDAV::DavCollectionModifyJob::result, this, [this, collection](KJob *job) {
         onCollectionChangedFinished(job, collection);
     });
     job->start();

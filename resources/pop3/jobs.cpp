@@ -61,7 +61,7 @@ void POPSession::abortCurrentJob()
 
 void POPSession::closeSession()
 {
-    QMetaObject::invokeMethod(mProtocol.get(), [=]() {
+    QMetaObject::invokeMethod(mProtocol.get(), [this]() {
         Q_ASSERT(QThread::currentThread() != qApp->thread());
         mProtocol->closeConnection();
     });
@@ -109,7 +109,7 @@ void BaseJob::startJob(const QString &path)
     POP3Protocol *protocol = mPOPSession->getProtocol();
     connect(protocol, &POP3Protocol::data, this, &BaseJob::slotData);
     // Important: copy the arguments into the lambda, it'll crash if you capture by reference
-    QMetaObject::invokeMethod(protocol, [=]() {
+    QMetaObject::invokeMethod(protocol, [this, path, protocol]() {
         Q_ASSERT(QThread::currentThread() != qApp->thread());
         const Result result = protocol->get(path);
         disconnect(protocol, &POP3Protocol::data, this, &BaseJob::slotData);
@@ -148,7 +148,7 @@ void LoginJob::start()
 
     Q_ASSERT(QThread::currentThread() == qApp->thread());
     POP3Protocol *protocol = mPOPSession->getProtocol();
-    QMetaObject::invokeMethod(protocol, [=]() {
+    QMetaObject::invokeMethod(protocol, [this, protocol]() {
         Q_ASSERT(QThread::currentThread() != qApp->thread());
         const Result result = protocol->openConnection();
         Q_EMIT jobDone(result);
