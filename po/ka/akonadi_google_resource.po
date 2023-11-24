@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-23 01:38+0000\n"
-"PO-Revision-Date: 2023-08-05 09:52+0200\n"
+"PO-Revision-Date: 2023-11-23 06:49+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -114,8 +114,7 @@ msgid "Ready"
 msgstr "მზადაა"
 
 #: googleresource.cpp:143
-#, fuzzy, kde-format
-#| msgid "not configured"
+#, kde-format
 msgid "Not configured"
 msgstr "მორგებული არაა"
 
@@ -196,8 +195,7 @@ msgstr[1] " წუთი"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:107 googlesettingswidget.ui:30
-#, fuzzy, kde-format
-#| msgid "<b>not configured</b>"
+#, kde-format
 msgid "<b>Not configured</b>"
 msgstr "<b>მორგებული არაა</b>"
 

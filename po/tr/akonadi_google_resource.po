@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-23 01:38+0000\n"
-"PO-Revision-Date: 2023-05-07 13:49+0300\n"
+"PO-Revision-Date: 2023-11-23 12:44+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.03.70\n"
+"X-Generator: Lokalize 23.11.70\n"
 
 #: calendarhandler.cpp:90
 #, kde-format
@@ -117,10 +117,9 @@ msgid "Ready"
 msgstr "Hazır"
 
 #: googleresource.cpp:143
-#, fuzzy, kde-format
-#| msgid "not configured"
+#, kde-format
 msgid "Not configured"
-msgstr "yapılandırılmamış"
+msgstr "Yapılandırılmadı"
 
 #: googleresource.cpp:143
 #, kde-format
@@ -199,10 +198,9 @@ msgstr[1] " dakika"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:107 googlesettingswidget.ui:30
-#, fuzzy, kde-format
-#| msgid "<b>not configured</b>"
+#, kde-format
 msgid "<b>Not configured</b>"
-msgstr "<b>yapılandırılmamış</b>"
+msgstr "<b>Yapılandırılmadı</b>"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)
 #: googlesettingswidget.ui:23

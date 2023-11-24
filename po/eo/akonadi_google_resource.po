@@ -11,7 +11,7 @@ msgstr ""
 "org\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-23 01:38+0000\n"
-"PO-Revision-Date: 2023-05-28 19:19+0100\n"
+"PO-Revision-Date: 2023-11-23 20:47+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -117,10 +117,9 @@ msgid "Ready"
 msgstr "Preta"
 
 #: googleresource.cpp:143
-#, fuzzy, kde-format
-#| msgid "not configured"
+#, kde-format
 msgid "Not configured"
-msgstr "ne agordita"
+msgstr "Ne agordita"
 
 #: googleresource.cpp:143
 #, kde-format
@@ -199,10 +198,9 @@ msgstr[1] " minutoj"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:107 googlesettingswidget.ui:30
-#, fuzzy, kde-format
-#| msgid "<b>not configured</b>"
+#, kde-format
 msgid "<b>Not configured</b>"
-msgstr "<b>ne agordita</b>"
+msgstr "<b>Ne agordita</b>"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)
 #: googlesettingswidget.ui:23
