@@ -366,7 +366,7 @@ void EwsOAuthPrivate::authorizeWithBrowser(const QUrl &url)
     mRequestInterceptor.setPKeyAuthInputArguments(q->mPKeyCertFile, q->mPKeyKeyFile, mPKeyPassword);
 
     mWebDialog = new QDialog(q->mAuthParentWidget);
-    mWebDialog->setObjectName(QStringLiteral("Akonadi EWS Resource - Authentication"));
+    mWebDialog->setObjectName(QLatin1StringView("Akonadi EWS Resource - Authentication"));
     mWebDialog->setWindowIcon(QIcon(QStringLiteral("akonadi-ews")));
     mWebDialog->resize(400, 500);
     auto layout = new QHBoxLayout(mWebDialog);

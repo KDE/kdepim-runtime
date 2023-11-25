@@ -22,12 +22,12 @@ NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *pare
     , mEnabledHistory(new QCheckBox(i18n("Enabled"), this))
 {
     auto mainLayout = new QVBoxLayout(this);
-    mainLayout->setObjectName(QStringLiteral("mainLayout"));
+    mainLayout->setObjectName(QLatin1StringView("mainLayout"));
     mainLayout->setContentsMargins({});
 
-    mEnabledHistory->setObjectName(QStringLiteral("mEnabledHistory"));
+    mEnabledHistory->setObjectName(QLatin1StringView("mEnabledHistory"));
 
-    mTextBrowser->setObjectName(QStringLiteral("mTextBrowser"));
+    mTextBrowser->setObjectName(QLatin1StringView("mTextBrowser"));
     mainLayout->addWidget(mTextBrowser);
 
     mainLayout->addWidget(mEnabledHistory);

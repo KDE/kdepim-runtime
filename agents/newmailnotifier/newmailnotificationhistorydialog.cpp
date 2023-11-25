@@ -23,13 +23,13 @@ NewMailNotificationHistoryDialog::NewMailNotificationHistoryDialog(QWidget *pare
 {
     setWindowTitle(i18nc("@title:window", "Notification History"));
     auto mainLayout = new QVBoxLayout(this);
-    mainLayout->setObjectName(QStringLiteral("mainLayout"));
+    mainLayout->setObjectName(QLatin1StringView("mainLayout"));
 
-    mNewHistoryNotificationWidget->setObjectName(QStringLiteral("mNewHistoryNotificationWidget"));
+    mNewHistoryNotificationWidget->setObjectName(QLatin1StringView("mNewHistoryNotificationWidget"));
     mainLayout->addWidget(mNewHistoryNotificationWidget);
 
     auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, this);
-    buttonBox->setObjectName(QStringLiteral("buttonBox"));
+    buttonBox->setObjectName(QLatin1StringView("buttonBox"));
     mainLayout->addWidget(buttonBox);
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &NewMailNotificationHistoryDialog::accept);
