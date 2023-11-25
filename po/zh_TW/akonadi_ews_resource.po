@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-04 16:52+0000\n"
+"POT-Creation-Date: 2023-11-25 01:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -343,7 +343,7 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_AutoDiscovery)
 #. i18n: ectx: label, entry (AutoDiscovery), group (General)
-#: ewsconfigdialog.ui:288 ewsresource.kcfg:34
+#: ewsconfigdialog.ui:288 ewsresource.kcfg:35
 #, kde-format
 msgid "Server Autodiscovery"
 msgstr ""
@@ -414,7 +414,7 @@ msgstr ""
 
 #. i18n: ectx: property (title), widget (QGroupBox, retrievalMethodGroupBox)
 #. i18n: ectx: label, entry (RetrievalMethod), group (General)
-#: ewsconfigdialog.ui:407 ewsresource.kcfg:44
+#: ewsconfigdialog.ui:407 ewsresource.kcfg:45
 #, kde-format
 msgid "Retrieval"
 msgstr ""
@@ -997,7 +997,7 @@ msgstr ""
 
 #. i18n: ectx: tooltip, entry (BaseUrl), group (General)
 #. i18n: ectx: whatsthis, entry (BaseUrl), group (General)
-#: ewsresource.kcfg:11 ewsresource.kcfg:12
+#: ewsresource.kcfg:12 ewsresource.kcfg:13
 #, kde-format
 msgid ""
 "The URL of the Microsoft Exchange server, should be something like https://"
@@ -1005,7 +1005,7 @@ msgid ""
 msgstr ""
 
 #. i18n: ectx: label, entry (Username), group (General)
-#: ewsresource.kcfg:15
+#: ewsresource.kcfg:16
 #, kde-format
 msgctxt "The username to login into the server"
 msgid "Username"
@@ -1013,32 +1013,32 @@ msgstr ""
 
 #. i18n: ectx: tooltip, entry (Username), group (General)
 #. i18n: ectx: whatsthis, entry (Username), group (General)
-#: ewsresource.kcfg:16 ewsresource.kcfg:17
+#: ewsresource.kcfg:17 ewsresource.kcfg:18
 #, kde-format
 msgid "The username that is used to log into the Microsoft Exchange server"
 msgstr ""
 
 #. i18n: ectx: label, entry (Domain), group (General)
-#: ewsresource.kcfg:20
+#: ewsresource.kcfg:21
 #, kde-format
 msgid "Domain"
 msgstr ""
 
 #. i18n: ectx: tooltip, entry (Domain), group (General)
 #. i18n: ectx: whatsthis, entry (Domain), group (General)
-#: ewsresource.kcfg:21 ewsresource.kcfg:22
+#: ewsresource.kcfg:22 ewsresource.kcfg:23
 #, kde-format
 msgid "The Active Directory domain the user belongs to"
 msgstr ""
 
 #. i18n: ectx: label, entry (HasDomain), group (General)
-#: ewsresource.kcfg:25
+#: ewsresource.kcfg:26
 #, kde-format
 msgid "Use a domain name during authentication"
 msgstr ""
 
 #. i18n: ectx: label, entry (Email), group (General)
-#: ewsresource.kcfg:29
+#: ewsresource.kcfg:30
 #, kde-format
 msgctxt "Account e-mail address"
 msgid "E-mail"
@@ -1046,19 +1046,19 @@ msgstr ""
 
 #. i18n: ectx: tooltip, entry (Email), group (General)
 #. i18n: ectx: whatsthis, entry (Email), group (General)
-#: ewsresource.kcfg:30 ewsresource.kcfg:31
+#: ewsresource.kcfg:31 ewsresource.kcfg:32
 #, kde-format
 msgid "The primary e-mail address of this account"
 msgstr ""
 
 #. i18n: ectx: tooltip, entry (AutoDiscovery), group (General)
-#: ewsresource.kcfg:35
+#: ewsresource.kcfg:36
 #, kde-format
 msgid "Attempt to automatically discover Exchange server address"
 msgstr ""
 
 #. i18n: ectx: whatsthis, entry (AutoDiscovery), group (General)
-#: ewsresource.kcfg:36
+#: ewsresource.kcfg:37
 #, kde-format
 msgid ""
 "Attempts to find out the Microsoft Exchange server address relevant to the "
@@ -1066,67 +1066,67 @@ msgid ""
 msgstr ""
 
 #. i18n: ectx: label, entry (PollInterval), group (General)
-#: ewsresource.kcfg:39
+#: ewsresource.kcfg:40
 #, kde-format
 msgid "Poll Interval"
 msgstr ""
 
 #. i18n: ectx: tooltip, entry (PollInterval), group (General)
-#: ewsresource.kcfg:40
+#: ewsresource.kcfg:41
 #, kde-format
 msgid "Sets the interval for checking for new mail"
 msgstr ""
 
 #. i18n: ectx: whatsthis, entry (PollInterval), group (General)
-#: ewsresource.kcfg:41
+#: ewsresource.kcfg:42
 #, kde-format
 msgid "Sets the interval for checking for new mail."
 msgstr ""
 
 #. i18n: ectx: label, entry (ServerSubscription), group (General)
-#: ewsresource.kcfg:47
+#: ewsresource.kcfg:48
 #, kde-format
 msgid "Enable Server-Side Subscriptions"
 msgstr ""
 
 #. i18n: ectx: label, entry (ServerSubscriptionList), group (General)
-#: ewsresource.kcfg:50
+#: ewsresource.kcfg:51
 #, kde-format
 msgid "List of folders to subscribe to"
 msgstr ""
 
 #. i18n: ectx: label, entry (EnableNTLMv2), group (General)
-#: ewsresource.kcfg:54
+#: ewsresource.kcfg:55
 #, kde-format
 msgid "Enable NTLMv2 authentication"
 msgstr ""
 
 #. i18n: ectx: label, entry (UserAgent), group (General)
-#: ewsresource.kcfg:58
+#: ewsresource.kcfg:59
 #, kde-format
 msgid "Forces a non-default User-Agent string"
 msgstr ""
 
 #. i18n: ectx: label, entry (OAuth2AppId), group (General)
-#: ewsresource.kcfg:64
+#: ewsresource.kcfg:65
 #, kde-format
 msgid "OAuth2 application identifier"
 msgstr ""
 
 #. i18n: ectx: label, entry (OAuth2ReturnUri), group (General)
-#: ewsresource.kcfg:68
+#: ewsresource.kcfg:69
 #, kde-format
 msgid "OAuth2 return URI"
 msgstr ""
 
 #. i18n: ectx: label, entry (PKeyCert), group (General)
-#: ewsresource.kcfg:72
+#: ewsresource.kcfg:73
 #, kde-format
 msgid "Path to PKey authentication PEM certificate"
 msgstr ""
 
 #. i18n: ectx: label, entry (PKeyKey), group (General)
-#: ewsresource.kcfg:75
+#: ewsresource.kcfg:76
 #, kde-format
 msgid "Path to PKey authentication PEM private key"
 msgstr ""
