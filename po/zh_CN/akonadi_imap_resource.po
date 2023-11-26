@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2023-11-19 03:37\n"
+"PO-Revision-Date: 2023-11-25 02:26\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -223,7 +223,7 @@ msgstr "要查看其改动的信箱的 RID 路径"
 #: imapresource.kcfg:92
 #, kde-format
 msgid "Define if server supports sieve"
-msgstr "定义服务器是否支持筛选"
+msgstr "定义服务器是否支持过滤"
 
 #. i18n: ectx: label, entry (SieveReuseConfig), group (siever)
 #: imapresource.kcfg:96
@@ -235,7 +235,7 @@ msgstr "定义是否重用主机和登录配置"
 #: imapresource.kcfg:100
 #, kde-format
 msgid "Define sieve port"
-msgstr "定义筛选服务端口"
+msgstr "定义过滤服务端口"
 
 #. i18n: ectx: label, entry (SieveAlternateUrl), group (siever)
 #: imapresource.kcfg:104
@@ -253,19 +253,19 @@ msgstr "定义备用服务器要使用的验证类型"
 #: imapresource.kcfg:111
 #, kde-format
 msgid "Define default sieve vacation filename"
-msgstr "定义默认筛选配置文件名"
+msgstr "定义默认过滤配置文件名"
 
 #. i18n: ectx: label, entry (SieveCustomUsername), group (siever)
 #: imapresource.kcfg:115
 #, kde-format
 msgid "Define username used from custom server sieve url"
-msgstr "定义自定义筛选服务器 url 使用的用户名"
+msgstr "定义自定义过滤服务器 URL 使用的用户名"
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
 #: imapresource.kcfg:119
 #, kde-format
 msgid "Defines the type of identification used by custom sieve server"
-msgstr "定义自定义筛选服务器的要使用的身份类型"
+msgstr "定义自定义过滤服务器的要使用的身份类型"
 
 #: imapresourcebase.cpp:212
 #, kde-format
@@ -828,7 +828,7 @@ msgstr "过滤"
 #: setupserverview_desktop.ui:166
 #, kde-format
 msgid "Server supports Sieve"
-msgstr "服务器支持筛选"
+msgstr "服务器支持过滤"
 
 #. i18n: ectx: property (text), widget (QCheckBox, sameConfigCheck)
 #: setupserverview_desktop.ui:173
@@ -851,7 +851,7 @@ msgstr ""
 #: setupserverview_desktop.ui:192
 #, kde-format
 msgid "Managesieve port:"
-msgstr "筛选管理端口："
+msgstr "过滤管理端口："
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: setupserverview_desktop.ui:210
