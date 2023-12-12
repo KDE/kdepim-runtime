@@ -1,18 +1,18 @@
 # translation of akonadi_googlecalendar_resource.po to Slovak
-# Roman Paholik <wizzardsk@gmail.com>, 2012, 2013, 2014, 2016.
+# SPDX-FileCopyrightText: 2012, 2013, 2014, 2016, 2023 Roman Paholik <wizzardsk@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_googlecalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-23 02:29+0000\n"
-"PO-Revision-Date: 2016-12-19 22:15+0100\n"
+"PO-Revision-Date: 2023-12-11 19:04+0100\n"
 "Last-Translator: Roman Paholik <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 23.08.3\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: calendarhandler.cpp:90
@@ -94,10 +94,9 @@ msgid "Ready"
 msgstr "Pripravený"
 
 #: generichandler.h:65 generichandler.h:77
-#, fuzzy, kde-format
-#| msgid "Invalid item payload."
+#, kde-format
 msgid "Invalid item."
-msgstr "Neplatná položka nákladov."
+msgstr "Neplatná položka."
 
 #: googleresource.cpp:87
 #, kde-format
@@ -156,7 +155,7 @@ msgstr ""
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
-msgstr ""
+msgstr "Prihlásenie"
 
 #: googleresource.cpp:225 googleresource.cpp:226
 #, kde-format
@@ -200,14 +199,14 @@ msgstr "nenastavené"
 #, fuzzy, kde-format
 #| msgid "Accounts"
 msgid "Account:"
-msgstr "Účty"
+msgstr "Účet:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
 #, fuzzy, kde-format
 #| msgid "not configured"
 msgid "Configure..."
-msgstr "nenastavené"
+msgstr "Nastaviť..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49
@@ -260,13 +259,13 @@ msgstr ""
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Friends"
-msgstr ""
+msgstr "Priatelia"
 
 #: personhandler.cpp:92
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Family"
-msgstr ""
+msgstr "Rodina"
 
 #: personhandler.cpp:94
 #, kde-format
