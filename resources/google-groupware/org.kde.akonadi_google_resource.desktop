@@ -31,6 +31,7 @@ Name[tr]=Google Groupware
 Name[uk]=Групова робота у Google
 Name[x-test]=xxGoogle Groupwarexx
 Name[zh_CN]=Google 协作套件
+Name[zh_TW]=Google 協作工具
 NoDisplay=true
 Exec=akonadi_google_resource
 Icon=im-google

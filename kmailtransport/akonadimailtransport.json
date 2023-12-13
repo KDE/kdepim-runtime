@@ -27,6 +27,7 @@
         "Name[uk]": "Надсилання пошти Akonadi",
         "Name[x-test]": "xxAkonadi Mail Transportxx",
         "Name[zh_CN]": "Akonadi 邮件传输",
+        "Name[zh_TW]": "Akonadi 郵件傳輸",
         "Version": "1.0"
     }
 }
