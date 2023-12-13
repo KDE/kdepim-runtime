@@ -2,39 +2,40 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Frank Weng (a.k.a. Franklin) <franklin at goodhorse dot idv dot tw>, 2009, 2010, 2013, 2014.
+# SPDX-FileCopyrightText: 2023 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcarddir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2014-04-22 15:29+0800\n"
-"Last-Translator: Franklin Weng <franklin at goodhorse dot idv dot tw>\n"
-"Language-Team: Chinese Traditional <kde-tw@googlegroups.com>\n"
+"PO-Revision-Date: 2023-12-13 05:41+0900\n"
+"Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
+"Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "dot tw>\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 23.08.4\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: vcarddiragentsettingswidget.ui:33
 #, kde-format
 msgid "Directory"
-msgstr ""
+msgstr "目錄"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: vcarddiragentsettingswidget.ui:39
 #, kde-format
 msgid "Directory Name"
-msgstr ""
+msgstr "目錄名稱"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: vcarddiragentsettingswidget.ui:47
 #, kde-format
 msgid "Di&rectory:"
-msgstr ""
+msgstr "目錄(&R)："
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: vcarddiragentsettingswidget.ui:62
@@ -42,19 +43,19 @@ msgstr ""
 msgid ""
 "Select the directory whose contents should be represented by this resource. "
 "If the directory does not exist, it will be created."
-msgstr ""
+msgstr "選擇內容要被這個資源代表的目錄。如果目錄不存在，它將會被建立。"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: vcarddiragentsettingswidget.ui:75
 #, kde-format
 msgid "Access Rights"
-msgstr ""
+msgstr "存取權"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: vcarddiragentsettingswidget.ui:81
 #, kde-format
 msgid "Read only"
-msgstr ""
+msgstr "唯讀"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: vcarddiragentsettingswidget.ui:88
@@ -64,12 +65,14 @@ msgid ""
 "selected above. Read-only mode will be automatically enabled if you do not "
 "have write access to the directory."
 msgstr ""
+"若啟用唯讀模式，不會寫入任何變更到以上選取的目錄。沒有該目錄寫入權限時將會自"
+"動啟用唯讀模式。"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
 #: vcarddiragentsettingswidget.ui:115
 #, kde-format
 msgid "Tuning"
-msgstr ""
+msgstr "微調"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: vcarddiragentsettingswidget.ui:121
@@ -79,12 +82,14 @@ msgid ""
 "safety and consistency against performance. In general you should be careful "
 "with changing anything here, the defaults are good enough in most cases."
 msgstr ""
+"這個頁面的選項讓您調整參數來改變資料安全和效能的平衡。基本上您在變更這裡任何"
+"選項都應該要小心，預設值大部分時候都夠好了。"
 
 #. i18n: ectx: property (text), widget (QLabel, autosaveLabel)
 #: vcarddiragentsettingswidget.ui:133
 #, kde-format
 msgid "Autosave delay:"
-msgstr ""
+msgstr "自動儲存間隔："
 
 #: vcarddirresource.cpp:122
 #, kde-format

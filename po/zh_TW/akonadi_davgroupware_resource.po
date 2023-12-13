@@ -5,27 +5,27 @@
 # Franklin Weng <franklin@goodhorse.idv.tw>, 2011, 2013, 2014, 2015.
 # Jeff Huang <s8321414@gmail.com>, 2016, 2017.
 # pan93412 <pan93412@gmail.com>, 2018.
+# SPDX-FileCopyrightText: 2023 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2018-09-16 22:19+0800\n"
-"Last-Translator: pan93412 <pan93412@gmail.com>\n"
-"Language-Team: Chinese <zh-l10n@lists.linux.org.tw>\n"
+"PO-Revision-Date: 2023-12-13 05:31+0900\n"
+"Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
+"Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 23.08.4\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: configdialog.cpp:33
-#, fuzzy, kde-format
-#| msgid "DAV groupware configuration wizard"
+#, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
-msgstr "DAV 群組設定精靈"
+msgstr "DAV 資源設定"
 
 #: configdialog.cpp:46
 #, kde-format
@@ -121,10 +121,9 @@ msgstr "僅同步活動近於"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
 #: configdialog.ui:190
-#, fuzzy, kde-format
-#| msgid "Server Configuration"
+#, kde-format
 msgid "Server Configuration:"
-msgstr "伺服器設定"
+msgstr "伺服器設定："
 
 #. i18n: ectx: property (text), widget (QPushButton, addButton)
 #: configdialog.ui:204
@@ -323,10 +322,9 @@ msgid "Invalid collection for item %1."
 msgstr "項目 %1 不合法的收藏。"
 
 #: davgroupwareresource.cpp:608
-#, fuzzy, kde-format
-#| msgid "Unable to remove collection: %1"
+#, kde-format
 msgid "Unable to modify collection: %1"
-msgstr "無法移除收藏：%1"
+msgstr "無法修改收藏：%1"
 
 #: davgroupwareresource.cpp:677
 #, kde-format
@@ -353,7 +351,7 @@ msgstr "無法取得項目：%1"
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
-msgstr ""
+msgstr "無法取得項目：剖析項目資料失敗。或許它已經被刪除了。"
 
 #: davgroupwareresource.cpp:1066
 #, kde-format
@@ -451,8 +449,7 @@ msgid "Account enabled services"
 msgstr "帳號開通服務"
 
 #: searchdialog.cpp:26
-#, fuzzy, kde-format
-#| msgid "Search"
+#, kde-format
 msgctxt "@title:window"
 msgid "Search"
 msgstr "搜尋"
@@ -536,8 +533,7 @@ msgid "Password: "
 msgstr "密碼："
 
 #: setupwizard.cpp:137
-#, fuzzy, kde-format
-#| msgid "DAV groupware configuration wizard"
+#, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "DAV 群組設定精靈"
@@ -678,7 +674,7 @@ msgstr "顯示名稱"
 #: urlconfigurationdialog.ui:35
 #, kde-format
 msgid "Access protocol:"
-msgstr ""
+msgstr "存取協定："
 
 #. i18n: ectx: property (text), widget (QRadioButton, caldav)
 #: urlconfigurationdialog.ui:42
@@ -708,14 +704,13 @@ msgstr "遠端網址："
 #: urlconfigurationdialog.ui:76
 #, kde-format
 msgid "Access:"
-msgstr ""
+msgstr "存取："
 
 #. i18n: ectx: property (text), widget (QLabel, collectionsLabel)
 #: urlconfigurationdialog.ui:146
-#, fuzzy, kde-format
-#| msgid "Discovered collections"
+#, kde-format
 msgid "Discovered collections:"
-msgstr "發現的收藏"
+msgstr "發現的收藏："
 
 #. i18n: ectx: property (text), widget (QPushButton, fetchButton)
 #: urlconfigurationdialog.ui:174

@@ -6,19 +6,20 @@
 # pan93412 <pan93412@gmail.com>, 2018.
 #
 # Frank Weng (a.k.a. Franklin) <franklin at goodhorse dot idv dot tw>, 2009, 2010.
+# SPDX-FileCopyrightText: 2023 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2018-07-10 14:33+0800\n"
-"Last-Translator: pan93412 <pan93412@gmail.com>\n"
-"Language-Team: Chinese <zh-l10n@lists.linux.org.tw>\n"
+"PO-Revision-Date: 2023-12-13 05:19+0900\n"
+"Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
+"Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 23.08.4\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: addcollectiontask.cpp:33
@@ -88,8 +89,7 @@ msgid "IMAP Account"
 msgstr "IMAP 帳號"
 
 #: imapresource.cpp:62
-#, fuzzy, kde-format
-#| msgid "IMAP Account Settings"
+#, kde-format
 msgctxt "@title:window"
 msgid "IMAP Account Settings"
 msgstr "IMAP 帳號設定"
@@ -141,7 +141,7 @@ msgstr "定義伺服器端的訂閱是否已開啟"
 #: imapresource.kcfg:38 setupserverview_desktop.ui:560
 #, kde-format
 msgid "Connect using the system proxy settings"
-msgstr ""
+msgstr "使用系統的代理伺服器設定進行連線"
 
 #. i18n: ectx: whatsthis, entry (UseProxy), group (network)
 #: imapresource.kcfg:39
@@ -149,7 +149,7 @@ msgstr ""
 msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
-msgstr ""
+msgstr "若核取此功能，則將使用系統的代理伺服器設定來連線郵件伺服器。"
 
 #. i18n: ectx: label, entry (DisconnectedModeEnabled), group (cache)
 #: imapresource.kcfg:45
@@ -589,13 +589,7 @@ msgid "Disconnected during login."
 msgstr "在登入時斷線。"
 
 #: settingspasswordrequester.cpp:53
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and password. "
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The server for account \"%2\" refused the supplied username and password.\n"
 "Do you want to go to the settings, have another attempt at logging in, or do "
@@ -603,14 +597,13 @@ msgid ""
 "\n"
 "%1"
 msgstr ""
-"伺服器拒絕提供帳號 %2 的使用者名稱與密碼。您要去設定，重新登入，還是什麼都不"
-"做？\n"
+"帳號 \"%2\" 的伺服器拒絕所提供的使用者名稱與密碼。\n"
+"您要去設定，再次嘗試登入，還是什麼都不做？\n"
 "\n"
 "%1"
 
 #: settingspasswordrequester.cpp:60
-#, fuzzy, kde-format
-#| msgid "Could Not Authenticate"
+#, kde-format
 msgctxt "@title:window"
 msgid "Could Not Authenticate"
 msgstr "無法認證"
