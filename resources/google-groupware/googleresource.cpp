@@ -145,16 +145,10 @@ void GoogleResource::updateResourceName()
 
 void GoogleResource::reloadConfig()
 {
+    m_settings.load();
+    m_settings.init();
+
     updateResourceName();
-
-    const AccountPtr account = m_settings.accountPtr();
-    if (account.isNull() || account->accountName().isEmpty()) {
-        Q_EMIT status(NotConfigured, i18n("Configured account does not exist"));
-        return;
-    }
-
-    emitReadyStatus();
-    synchronize();
 }
 
 bool GoogleResource::handleError(KGAPI2::Job *job, bool _cancelTask)
@@ -259,6 +253,7 @@ void GoogleResource::slotAuthJobFinished(KGAPI2::Job *job)
             otherJob->restart();
         }
     });
+    writeJob->start();
 }
 
 int GoogleResource::accountId() const
