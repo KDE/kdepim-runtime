@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-23 01:38+0000\n"
+"POT-Creation-Date: 2023-12-15 01:36+0000\n"
 "PO-Revision-Date: 2023-07-26 00:36+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -124,17 +124,12 @@ msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google 그룹웨어(%1)"
 
-#: googleresource.cpp:152
-#, kde-format
-msgid "Configured account does not exist"
-msgstr "설정된 계정이 없음"
-
-#: googleresource.cpp:200
+#: googleresource.cpp:194
 #, kde-format
 msgid "Account has been logged out."
 msgstr "계정에서 로그아웃되었습니다."
 
-#: googleresource.cpp:203
+#: googleresource.cpp:197
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -143,7 +138,7 @@ msgstr ""
 "계정에서 Google 그룹웨어가 로그아웃되었습니다. Google 연락처 및 캘린더를 다"
 "시 동기화하려면 로그인하십시오."
 
-#: googleresource.cpp:204
+#: googleresource.cpp:198
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -152,48 +147,48 @@ msgstr ""
 "%1 계정에서 Google 그룹웨어가 로그아웃되었습니다. Google 연락처 및 캘린더를 "
 "다시 동기화하려면 로그인하십시오."
 
-#: googleresource.cpp:208
+#: googleresource.cpp:202
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1에서 작업이 필요합니다."
 
-#: googleresource.cpp:213
+#: googleresource.cpp:207
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "로그인"
 
-#: googleresource.cpp:225 googleresource.cpp:226
+#: googleresource.cpp:219 googleresource.cpp:220
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "리소스가 설정되지 않음"
 
-#: googleresource.cpp:241
+#: googleresource.cpp:235
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "토큰을 새로 고칠 수 없음"
 
-#: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
-#: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
+#: googleresource.cpp:424 googleresource.cpp:438 googleresource.cpp:452
+#: googleresource.cpp:467 googleresource.cpp:481 googleresource.cpp:495
 #, kde-format
 msgid "Invalid payload type"
 msgstr "잘못된 페이로드 형식"
 
-#: googleresource.cpp:514 googleresource.cpp:528 googleresource.cpp:542
+#: googleresource.cpp:509 googleresource.cpp:523 googleresource.cpp:537
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "알 수 없는 모음집 MIME 형식"
 
-#: googlesettingswidget.cpp:45
+#: googlesettingswidget.cpp:41
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " 분"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:107 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
 #, fuzzy, kde-format
 #| msgid "<b>not configured</b>"
 msgid "<b>Not configured</b>"
@@ -423,6 +418,9 @@ msgstr "할 일 목록 '%1' 변경 중"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "할 일 목록 '%1' 삭제 중"
+
+#~ msgid "Configured account does not exist"
+#~ msgstr "설정된 계정이 없음"
 
 #~ msgid "Waiting for KWallet..."
 #~ msgstr "KWallet 대기 중..."

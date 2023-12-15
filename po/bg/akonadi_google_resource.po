@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-23 01:38+0000\n"
+"POT-Creation-Date: 2023-12-15 01:36+0000\n"
 "PO-Revision-Date: 2023-11-28 19:55+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -125,17 +125,12 @@ msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google Groupware (%1)"
 
-#: googleresource.cpp:152
-#, kde-format
-msgid "Configured account does not exist"
-msgstr "Конфигурираният акаунт не съществува"
-
-#: googleresource.cpp:200
+#: googleresource.cpp:194
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Акаунтът е излязъл."
 
-#: googleresource.cpp:203
+#: googleresource.cpp:197
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -144,7 +139,7 @@ msgstr ""
 "Google Groupware е излязъл от профила ви. Моля, влезте в профила си, за да "
 "активирате отново синхронизирането на контактите и календара на Google."
 
-#: googleresource.cpp:204
+#: googleresource.cpp:198
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -153,41 +148,41 @@ msgstr ""
 "Google Groupware е излязъл от акаунт %1. Моля, влезте в профила си, за да "
 "активирате отново синхронизирането на контактите и календара на Google."
 
-#: googleresource.cpp:208
+#: googleresource.cpp:202
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 се нуждае от вашето внимание."
 
-#: googleresource.cpp:213
+#: googleresource.cpp:207
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Вход"
 
-#: googleresource.cpp:225 googleresource.cpp:226
+#: googleresource.cpp:219 googleresource.cpp:220
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Ресурсът не е конфигуриран"
 
-#: googleresource.cpp:241
+#: googleresource.cpp:235
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Неуспешно опресняване на токени"
 
-#: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
-#: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
+#: googleresource.cpp:424 googleresource.cpp:438 googleresource.cpp:452
+#: googleresource.cpp:467 googleresource.cpp:481 googleresource.cpp:495
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Невалиден тип съдържание"
 
-#: googleresource.cpp:514 googleresource.cpp:528 googleresource.cpp:542
+#: googleresource.cpp:509 googleresource.cpp:523 googleresource.cpp:537
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Неизвестна колекция mimetype"
 
-#: googlesettingswidget.cpp:45
+#: googlesettingswidget.cpp:41
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -195,7 +190,7 @@ msgstr[0] " минута"
 msgstr[1] " минути"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:107 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>Not configured</b>"
 msgstr "<b>Не е конфигуриран</b>"
@@ -427,3 +422,6 @@ msgstr "Промяна на списъка със задачи \"%1\""
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "Премахване на списъка със задачи \"%1\""
+
+#~ msgid "Configured account does not exist"
+#~ msgstr "Конфигурираният акаунт не съществува"
