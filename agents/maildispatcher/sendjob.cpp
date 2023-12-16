@@ -53,8 +53,8 @@ void SendJob::doTransport()
 
     // Is it an Akonadi transport or a traditional one?
     const TransportAttribute *transportAttribute = mItem.attribute<TransportAttribute>();
-    const auto transport = TransportManager::self()->transportById(transportAttribute->transportId(), false);
     Q_ASSERT(transportAttribute);
+    const auto transport = TransportManager::self()->transportById(transportAttribute->transportId(), false);
     if (!transport) {
         storeResult(false, i18n("Could not initiate message transport. Possibly invalid transport."));
         return;
