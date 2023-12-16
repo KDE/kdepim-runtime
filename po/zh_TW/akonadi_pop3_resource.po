@@ -1,18 +1,19 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
+# SPDX-FileCopyrightText: 2023 Kisaragi Hiu <mail@kisaragi-hiu.com>
 # Frank Weng (a.k.a. Franklin) <franklin at goodhorse dot idv dot tw>, 2009, 2010.
 # Frank Weng (a.k.a. Franklin) <franklin@goodhorse.idv.tw>, 2011.
 # Franklin Weng <franklin@goodhorse.idv.tw>, 2011, 2012.
 # Jeff Huang <s8321414@gmail.com>, 2016.
 # pan93412 <pan93412@gmail.com>, 2018.
-# SPDX-FileCopyrightText: 2023 Kisaragi Hiu <mail@kisaragi-hiu.com>
+# Kisaragi Hiu <mail@kisaragi-hiu.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2023-12-13 05:41+0900\n"
+"PO-Revision-Date: 2023-12-15 18:47+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -20,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 23.08.4\n"
+"X-Generator: Lokalize 24.01.80\n"
 
 #: accountwidget.cpp:88
 #, kde-format
@@ -52,17 +53,7 @@ msgstr ""
 "功能打開。"
 
 #: accountwidget.cpp:257
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that this feature can cause some POP3 servers that do not "
-#| "support pipelining to send corrupted mail;\n"
-#| "this is configurable, though, because some servers support pipelining but "
-#| "do not announce their capabilities. To check whether your POP3 server "
-#| "announces pipelining support use the \"Auto Detect\" button at the bottom "
-#| "of the dialog;\n"
-#| "if your server does not announce it, but you want more speed, then you "
-#| "should do some testing first by sending yourself a batch of mail and "
-#| "downloading it."
+#, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
 "support pipelining to send corrupted mail;\n"
@@ -141,12 +132,12 @@ msgstr "無法初始化 SASL，中止檢查郵件。"
 #: pop3protocol.cpp:189
 #, kde-format
 msgid "The server said: \"%1\""
-msgstr ""
+msgstr "伺服器回傳：\"%1\""
 
 #: pop3protocol.cpp:211
 #, kde-format
 msgid "The server terminated the connection."
-msgstr ""
+msgstr "伺服器終止了連線。"
 
 #: pop3protocol.cpp:213
 #, kde-format
@@ -154,11 +145,13 @@ msgid ""
 "Invalid response from server:\n"
 "\"%1\""
 msgstr ""
+"從伺服器傳來無效的回應：\n"
+"\"%1\""
 
 #: pop3protocol.cpp:251 pop3protocol.cpp:255
 #, kde-format
 msgid "Could not send to server.\n"
-msgstr ""
+msgstr "無法傳送予伺服器。\n"
 
 #: pop3protocol.cpp:352
 #, kde-format
@@ -168,11 +161,15 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
+"透過 APOP 登入失敗。伺服器 %1 可能不支援 APOP（雖然它宣稱支援），或者密碼可能"
+"是錯的。\n"
+"\n"
+"%2"
 
 #: pop3protocol.cpp:402
 #, kde-format
 msgid "An error occurred during authentication: %1"
-msgstr ""
+msgstr "認證時發生錯誤：%1"
 
 #: pop3protocol.cpp:496
 #, kde-format
@@ -182,6 +179,9 @@ msgid ""
 "\n"
 "%3"
 msgstr ""
+"透過 SASL (%1) 登入失敗。伺服器可能不支援 %2，或者密碼可能是錯的。\n"
+"\n"
+"%3"
 
 #: pop3protocol.cpp:507
 #, kde-format
@@ -189,6 +189,8 @@ msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
 "Choose a different authentication method."
 msgstr ""
+"您的 POP3 伺服器 (%1) 不支援 SASL。\n"
+"請選取另一個認證方法。"
 
 #: pop3protocol.cpp:524 pop3protocol.cpp:613
 #, kde-format
@@ -196,6 +198,8 @@ msgid ""
 "Could not login to %1.\n"
 "\n"
 msgstr ""
+"無法登入 %1。\n"
+"\n"
 
 #: pop3protocol.cpp:532
 #, kde-format
@@ -204,21 +208,24 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
+"無法登入 %1。密碼可能是錯的。\n"
+"\n"
+"%2"
 
 #: pop3protocol.cpp:564
 #, kde-format
 msgid "SSL/TLS error: %1"
-msgstr ""
+msgstr "SSL/TLS 錯誤：%1"
 
 #: pop3protocol.cpp:595
 #, kde-format
 msgid "%1: %2"
-msgstr ""
+msgstr "%1: %2"
 
 #: pop3protocol.cpp:614
 #, kde-format
 msgid "The server terminated the connection immediately."
-msgstr ""
+msgstr "伺服器立即終止了連線。"
 
 #: pop3protocol.cpp:615
 #, kde-format
@@ -226,6 +233,8 @@ msgid ""
 "Server does not respond properly:\n"
 "%1\n"
 msgstr ""
+"伺服器未正確回應：\n"
+"%1\n"
 
 #: pop3protocol.cpp:639
 #, kde-format
@@ -233,6 +242,8 @@ msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
 "Choose a different authentication method."
 msgstr ""
+"您的 POP3 伺服器 (%1) 不支援 APOP。\n"
+"請選取另一個認證方法。"
 
 #: pop3protocol.cpp:649
 #, kde-format
@@ -240,43 +251,45 @@ msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
 "You can disable TLS in the POP account settings dialog."
 msgstr ""
+"您的 POP3 伺服器宣稱支援 TLS，但協調失敗了。\n"
+"您可以在 POP 帳號設定對話框中停用 TLS。"
 
 #: pop3protocol.cpp:734
 #, kde-format
 msgid "Internal error: missing argument for command %1"
-msgstr ""
+msgstr "內部錯誤：命令 %1 缺乏引數"
 
 #: pop3protocol.cpp:790
 #, kde-format
 msgid "Internal error: missing item"
-msgstr ""
+msgstr "內部錯誤：缺乏項目"
 
 #: pop3protocol.cpp:817
 #, kde-format
 msgid "Timeout from POP3 server %1"
-msgstr ""
+msgstr "POP3 伺服器 %1 逾時"
 
 #: pop3protocol.cpp:819
 #, kde-format
 msgid "Connection broken from POP3 server %1"
-msgstr ""
+msgstr "與 POP3 伺服器 %1 的連線斷開"
 
 #: pop3protocol.cpp:880
 #, kde-format
 msgid ""
 "Error during communication with the POP3 server while trying to download "
 "mail: %1"
-msgstr ""
+msgstr "嘗試下載郵件時與 POP3 伺服器聯繫時失敗：%1"
 
 #: pop3protocol.cpp:890
 #, kde-format
 msgid "Internal error, number expected: %1"
-msgstr ""
+msgstr "內部錯誤，預期了數字：%1"
 
 #: pop3protocol.cpp:910
 #, kde-format
 msgid "Unexpected response from POP3 server."
-msgstr ""
+msgstr "非預期的 POP3 伺服器回應。"
 
 #: pop3resource.cpp:95
 #, kde-format
@@ -745,30 +758,7 @@ msgstr "STARTTLS(&R)"
 
 #. i18n: ectx: property (text), widget (QLabel, imapInfo)
 #: popsettings.ui:465
-#, fuzzy, kde-format
-#| msgid ""
-#| "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#| "REC-html40/strict.dtd\">\n"
-#| "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#| "css\">\n"
-#| "p, li { white-space: pre-wrap; }\n"
-#| "</style></head><body style=\" font-family:'HandelGotDLig'; font-"
-#| "size:10pt; font-weight:400; font-style:normal;\">\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "family:'Sans Serif'; font-weight:600;\">SSL/TLS</span><span style=\" font-"
-#| "family:'Sans Serif';\"> is safe IMAP over port 993;</span></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "family:'Sans Serif'; font-weight:600;\">STARTTLS</span><span style=\" "
-#| "font-family:'Sans Serif';\"> will operate on port 143 and switch to a "
-#| "secure connection directly after connecting;</span></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "family:'Sans Serif'; font-weight:600;\">None</span><span style=\" font-"
-#| "family:'Sans Serif';\"> will connect to port 143 but not switch to a "
-#| "secure connection. This setting is not recommended.</span></p></body></"
-#| "html>"
+#, kde-format
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -797,22 +787,22 @@ msgstr ""
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
 "\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'HandelGotDLig'; font-size:10pt; "
-"font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; font-"
+"weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">SSL/TLS</span><span style=\" font-"
-"family:'Sans Serif';\">：直接使用連接埠 993；</span></p>\n"
+"family:'Sans Serif';\">：是安全的 POP，使用連接埠 995；</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">STARTTLS</span><span style=\" font-"
-"family:'Sans Serif';\">：會先連線到 143，並且連線後切換到一個安全連線中；</"
-"span></p>\n"
+"family:'Sans Serif';\">：會先連線到連接埠 110，並且連線後切換到一個安全連線"
+"中；</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">None</span><span style=\" font-"
-"family:'Sans Serif';\">：會連線到 143，但不會切換到安全頻道。不建議使用。</"
-"span></p></body></html>"
+"family:'Sans Serif';\">：會連線到連接埠 110，但不會切換到安全連線。不建議使"
+"用。</span></p></body></html>"
 
 #. i18n: ectx: property (text), widget (QLabel, label_13)
 #: popsettings.ui:472

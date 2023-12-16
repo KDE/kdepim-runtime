@@ -1,31 +1,31 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Kisaragi Hiu <mail@kisaragi-hiu.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-25 01:34+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
+"PO-Revision-Date: 2023-12-15 19:23+0900\n"
+"Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
+"Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 24.01.80\n"
 
 #: ewsautodiscoveryjob.cpp:44 ewsautodiscoveryjob.cpp:51
 #, kde-format
 msgid "Incorrect email address"
-msgstr ""
+msgstr "不正確的電子郵件地址"
 
 #: ewsautodiscoveryjob.cpp:114
 #, kde-format
 msgid "Exchange protocol information not found"
-msgstr ""
+msgstr "找不到 Exchange 協定資訊"
 
 #: ewsclient/auth/ewsoauth.cpp:513
 #, kde-kuit-format
@@ -42,6 +42,8 @@ msgid ""
 "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
 "Please update it in the account settings page."
 msgstr ""
+"取得 Microsoft Exchange 帳號 <b>%1</b> 認證資訊時失敗。請在帳號設定頁面更新認"
+"證資訊。"
 
 #: ewsclient/auth/ewspasswordauth.cpp:57
 #, kde-format
@@ -50,47 +52,49 @@ msgid ""
 "The username/password for the Microsoft Exchange EWS account <b>%1</b> is "
 "not valid. Please update it in the account settings page."
 msgstr ""
+"Microsoft Exchange EWS 帳號 <b>%1</b> 的使用者/密碼是無效的。請在帳號設定頁面"
+"中更新它。"
 
 #: ewsconfigdialog.cpp:76
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
-msgstr ""
+msgstr "Microsoft Exchange 設定"
 
 #: ewsconfigdialog.cpp:101
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
-msgstr ""
+msgstr "確定"
 
 #: ewsconfigdialog.cpp:121 ewsconfigdialog.cpp:123
 #, kde-format
 msgid "PEM file"
-msgstr ""
+msgstr "PEM 檔"
 
 #: ewsconfigdialog.cpp:141
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
-msgstr ""
+msgstr "自訂"
 
 #: ewsconfigdialog.cpp:152
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
-msgstr ""
+msgstr "Microsoft Exchange 網路服務 (EWS) 用的 Akonadi 資源"
 
 #: ewsconfigdialog.cpp:153
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
-msgstr ""
+msgstr "Copyright (c) Krzysztof Nowicki 2015-2020"
 
 #: ewsconfigdialog.cpp:154
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
-msgstr ""
+msgstr "版本 %1"
 
 #: ewsconfigdialog.cpp:155
 #, kde-format
@@ -104,112 +108,112 @@ msgstr ""
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
-msgstr ""
+msgstr "自動探索失敗"
 
 #: ewsconfigdialog.cpp:265
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
-msgstr ""
+msgstr "連線失敗"
 
 #: ewsconfigdialog.cpp:266 ewsconfigdialog.cpp:424
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
-msgstr ""
+msgstr "失敗"
 
 #: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:425
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
-msgstr ""
+msgstr "未知"
 
 #: ewsconfigdialog.cpp:270 ewsconfigdialog.cpp:429
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
-msgstr ""
+msgstr "確定"
 
 #: ewsconfigdialog.cpp:340
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
 "still want to save your settings?"
-msgstr ""
+msgstr "自動探索失敗。這可能是參數錯誤所造成的。您還是要儲存設定嗎？"
 
 #: ewsconfigdialog.cpp:341
 #, kde-format
 msgid "Exchange server autodiscovery"
-msgstr ""
+msgstr "Exchange 伺服器自動探索"
 
 #: ewsconfigdialog.cpp:371
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
 "Do you still want to save your settings?"
-msgstr ""
+msgstr "連線至 Exchange 時失敗。這可能是參數錯誤所造成的。您還是要儲存設定嗎？"
 
 #: ewsconfigdialog.cpp:372
 #, kde-format
 msgid "Exchange server connection"
-msgstr ""
+msgstr "Exchange 伺服器連線"
 
 #: ewsconfigdialog.cpp:426
 #, kde-format
 msgid "Connection failed"
-msgstr ""
+msgstr "連線失敗"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, SetupServerView)
 #: ewsconfigdialog.ui:14
 #, kde-format
 msgid "EWS Configuration"
-msgstr ""
+msgstr "EWS 設定"
 
 #. i18n: ectx: attribute (title), widget (QWidget, generalTab)
 #: ewsconfigdialog.ui:24
 #, kde-format
 msgctxt "General settings tab"
 msgid "General"
-msgstr ""
+msgstr "一般"
 
 #. i18n: ectx: property (title), widget (QGroupBox, accountInfoGroupBox)
 #: ewsconfigdialog.ui:45
 #, kde-format
 msgid "Account Information"
-msgstr ""
+msgstr "帳號資訊"
 
 #. i18n: ectx: property (text), widget (QLabel, accountNameLabel)
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: ewsconfigdialog.ui:57 ewsmtaconfigdialog.ui:32
 #, kde-format
 msgid "Account Name:"
-msgstr ""
+msgstr "帳號名稱："
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, accountName)
 #: ewsconfigdialog.ui:64
 #, kde-format
 msgid "This is the account name that will appear in all Akonadi applications"
-msgstr ""
+msgstr "這是在所有 Akonadi 應用程式中顯示的帳號名稱"
 
 #. i18n: ectx: property (text), widget (QLabel, emailLabel)
 #: ewsconfigdialog.ui:71
 #, kde-format
 msgctxt "Exchange account e-mail address"
 msgid "Email:"
-msgstr ""
+msgstr "電子郵件："
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Email)
 #: ewsconfigdialog.ui:78
 #, kde-format
 msgid "The e-mail address of this account"
-msgstr ""
+msgstr "這個帳號的電子郵件地址"
 
 #. i18n: ectx: property (title), widget (QGroupBox, authenticationGroupBox)
 #. i18n: ectx: property (title), widget (QGroupBox, advAuthenticationGroupBox)
 #: ewsconfigdialog.ui:88 ewsconfigdialog.ui:486
 #, kde-format
 msgid "Authentication"
-msgstr ""
+msgstr "認證"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, authUsernameRadioButton)
 #: ewsconfigdialog.ui:94
@@ -228,7 +232,7 @@ msgstr ""
 #, kde-format
 msgctxt "authentication type"
 msgid "&Username/Password"
-msgstr ""
+msgstr "使用者名稱/密碼(&U)"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_HasDomain)
 #: ewsconfigdialog.ui:143
@@ -249,26 +253,26 @@ msgstr ""
 #: ewsconfigdialog.ui:146
 #, kde-format
 msgid "Domain:"
-msgstr ""
+msgstr "網域："
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Domain)
 #: ewsconfigdialog.ui:156
 #, kde-format
 msgid "The Active Directory domain the user belongs to."
-msgstr ""
+msgstr "使用者所屬的 Active Directory 網域。"
 
 #. i18n: ectx: property (text), widget (QLabel, usernameLabel)
 #: ewsconfigdialog.ui:169
 #, kde-format
 msgctxt "Exchange account username/login"
 msgid "Username:"
-msgstr ""
+msgstr "使用者名稱："
 
 #. i18n: ectx: property (text), widget (QLabel, passwordLabel)
 #: ewsconfigdialog.ui:179
 #, kde-format
 msgid "Password:"
-msgstr ""
+msgstr "密碼："
 
 #. i18n: ectx: property (whatsThis), widget (KPasswordLineEdit, passwordEdit)
 #: ewsconfigdialog.ui:186
@@ -313,19 +317,19 @@ msgstr ""
 #: ewsconfigdialog.ui:225
 #, kde-format
 msgid "OAuth&2 (Office 365)"
-msgstr ""
+msgstr "OAuth&2 (Office 365)"
 
 #. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "EWS Settings"
-msgstr ""
+msgstr "EWS 設定"
 
 #. i18n: ectx: property (text), widget (QLabel, serverUrlLabel)
 #: ewsconfigdialog.ui:250
 #, kde-format
 msgid "EWS URL:"
-msgstr ""
+msgstr "EWS 網址："
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_BaseUrl)
 #: ewsconfigdialog.ui:263
@@ -346,19 +350,19 @@ msgstr ""
 #: ewsconfigdialog.ui:288 ewsresource.kcfg:35
 #, kde-format
 msgid "Server Autodiscovery"
-msgstr ""
+msgstr "伺服器自動探索"
 
 #. i18n: ectx: property (text), widget (QPushButton, autodiscoverButton)
 #: ewsconfigdialog.ui:298
 #, kde-format
 msgid "Perform"
-msgstr ""
+msgstr "執行"
 
 #. i18n: ectx: property (text), widget (QPushButton, tryConnectButton)
 #: ewsconfigdialog.ui:308
 #, kde-format
 msgid "Try connect"
-msgstr ""
+msgstr "嘗試連線"
 
 #. i18n: ectx: property (whatsThis), widget (QGroupBox, pkeyAuthGroupBox)
 #: ewsconfigdialog.ui:324
@@ -379,45 +383,45 @@ msgstr ""
 #: ewsconfigdialog.ui:327
 #, kde-format
 msgid "Private Key (PKey) Authentication (Office 365)"
-msgstr ""
+msgstr "私鑰認證 (PKey) (Office 365)"
 
 #. i18n: ectx: property (text), widget (QLabel, pkeyAuthCertLabel)
 #: ewsconfigdialog.ui:339
 #, kde-format
 msgid "Certificate:"
-msgstr ""
+msgstr "憑證："
 
 #. i18n: ectx: property (text), widget (QLabel, pkeyAuthKeyLabel)
 #: ewsconfigdialog.ui:353
 #, kde-format
 msgid "Private key:"
-msgstr ""
+msgstr "私鑰："
 
 #. i18n: ectx: property (text), widget (QLabel, pkeyAuthPasswordLabel)
 #: ewsconfigdialog.ui:364
 #, kde-format
 msgid "Key password:"
-msgstr ""
+msgstr "金鑰密碼："
 
 #. i18n: ectx: attribute (title), widget (QWidget, subscriptionTab)
 #: ewsconfigdialog.ui:395
 #, kde-format
 msgid "Subscriptions"
-msgstr ""
+msgstr "訂閱"
 
 #. i18n: ectx: attribute (title), widget (QWidget, advancedTab)
 #: ewsconfigdialog.ui:401
 #, kde-format
 msgctxt "Advanced settings tab"
 msgid "Advanced"
-msgstr ""
+msgstr "進階"
 
 #. i18n: ectx: property (title), widget (QGroupBox, retrievalMethodGroupBox)
 #. i18n: ectx: label, entry (RetrievalMethod), group (General)
 #: ewsconfigdialog.ui:407 ewsresource.kcfg:45
 #, kde-format
 msgid "Retrieval"
-msgstr ""
+msgstr "收取"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, pollRadioButton)
 #: ewsconfigdialog.ui:413
@@ -431,19 +435,19 @@ msgstr ""
 #: ewsconfigdialog.ui:416
 #, kde-format
 msgid "Po&ll for new messages"
-msgstr ""
+msgstr "拉取新信件(&L)"
 
 #. i18n: ectx: property (suffix), widget (QDoubleSpinBox, kcfg_PollInterval)
 #: ewsconfigdialog.ui:441
 #, kde-format
 msgid " minutes"
-msgstr ""
+msgstr " 分鐘"
 
 #. i18n: ectx: property (text), widget (QLabel, pollIntervalLabel)
 #: ewsconfigdialog.ui:460
 #, kde-format
 msgid "Interval"
-msgstr ""
+msgstr "間隔"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, streamingRadioButton)
 #: ewsconfigdialog.ui:470
@@ -459,7 +463,7 @@ msgstr ""
 #: ewsconfigdialog.ui:473
 #, kde-format
 msgid "&Use streaming notifications"
-msgstr ""
+msgstr "使用串流通知(&U)"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_EnableNTLMv2)
 #: ewsconfigdialog.ui:492
@@ -476,7 +480,7 @@ msgstr ""
 #: ewsconfigdialog.ui:495
 #, kde-format
 msgid "Enable NTLMv2"
-msgstr ""
+msgstr "啟用 NTLMv2"
 
 #. i18n: ectx: property (whatsThis), widget (QGroupBox, userAgentGroupBox)
 #: ewsconfigdialog.ui:505
@@ -495,13 +499,13 @@ msgstr ""
 #: ewsconfigdialog.ui:508
 #, kde-format
 msgid "Use custo&m User Agent"
-msgstr ""
+msgstr "使用自訂使用者代理(&M)"
 
 #. i18n: ectx: property (title), widget (QGroupBox, clearSyncStateGroupBox)
 #: ewsconfigdialog.ui:533
 #, kde-format
 msgid "Clear Synchronization State"
-msgstr ""
+msgstr "清除同步狀態"
 
 #. i18n: ectx: property (text), widget (QLabel, clearSyncStateLabel)
 #: ewsconfigdialog.ui:539
@@ -515,124 +519,124 @@ msgstr ""
 #: ewsconfigdialog.ui:564
 #, kde-format
 msgid "Clear Folder Tree State"
-msgstr ""
+msgstr "清除資料夾樹狀態"
 
 #. i18n: ectx: property (text), widget (QPushButton, clearFolderItemSyncStateButton)
 #: ewsconfigdialog.ui:571
 #, kde-format
 msgid "Clear Folder Item State"
-msgstr ""
+msgstr "清除資料夾項目狀態"
 
 #. i18n: ectx: attribute (title), widget (QWidget, statusTab)
 #: ewsconfigdialog.ui:598
 #, kde-format
 msgid "Status"
-msgstr ""
+msgstr "狀態"
 
 #. i18n: ectx: property (title), widget (QGroupBox, serverStatusGroupBox)
 #: ewsconfigdialog.ui:604
 #, kde-format
 msgid "Server Status"
-msgstr ""
+msgstr "伺服器狀態"
 
 #. i18n: ectx: property (text), widget (QLabel, serverStatusLabel)
 #: ewsconfigdialog.ui:610
 #, kde-format
 msgid "Status:"
-msgstr ""
+msgstr "狀態："
 
 #. i18n: ectx: property (text), widget (QLabel, serverStatusText)
 #: ewsconfigdialog.ui:617
 #, kde-format
 msgctxt "Unknown server status"
 msgid "Unknown"
-msgstr ""
+msgstr "未知"
 
 #. i18n: ectx: property (text), widget (QLabel, serverVersionLabel)
 #: ewsconfigdialog.ui:627
 #, kde-format
 msgid "Version:"
-msgstr ""
+msgstr "版本："
 
 #. i18n: ectx: property (text), widget (QLabel, serverVersionText)
 #: ewsconfigdialog.ui:634
 #, kde-format
 msgctxt "Unknown server version"
 msgid "Unknown"
-msgstr ""
+msgstr "未知"
 
 #. i18n: ectx: attribute (title), widget (QWidget, aboutTab)
 #: ewsconfigdialog.ui:658
 #, kde-format
 msgid "About"
-msgstr ""
+msgstr "關於"
 
 #: ewsfetchitempayloadjob.cpp:63
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
-msgstr ""
+msgstr "無法處理項目取得請求"
 
 #: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
 #: ewsresource.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
-msgstr ""
+msgstr "取得項目失敗"
 
 #: ewsfetchitempayloadjob.cpp:78
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - incorrect number of responses"
-msgstr ""
+msgstr "取得項目失敗 - 不正確的回應數量"
 
 #: ewsfetchitempayloadjob.cpp:91
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Akonadi item not found for item %1"
-msgstr ""
+msgstr "取得項目失敗 - 找不到項目 %1 的 Akonadi 項目"
 
 #: ewsfetchitempayloadjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Unknown item type for item %1"
-msgstr ""
+msgstr "取得項目失敗 - 項目 %1 的型態未知"
 
 #: ewsfetchitempayloadjob.cpp:104
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to fetch item payload"
-msgstr ""
+msgstr "抓取項目負載 (payload) 時失敗"
 
 #: ewsfetchitemsjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list"
-msgstr ""
+msgstr "取得 %1 項目列表中"
 
 #: ewsfetchitemsjob.cpp:214
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
-msgstr ""
+msgstr "取得 %1 項目列表中（%2 個項目）"
 
 #: ewsfetchitemsjob.cpp:399
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"
-msgstr ""
+msgstr "取得 %1 個項目中"
 
 #: ewsmtaconfigdialog.cpp:45
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Mail Transport Configuration"
-msgstr ""
+msgstr "Microsoft Exchange 郵件傳輸設定"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, SetupServerView)
 #: ewsmtaconfigdialog.ui:14
 #, kde-format
 msgid "EWS Mail Transport Configuration"
-msgstr ""
+msgstr "EWS 郵件傳輸設定"
 
 #. i18n: ectx: property (text), widget (QLabel, recourceLabel)
 #: ewsmtaconfigdialog.ui:42
@@ -643,13 +647,13 @@ msgstr ""
 #: ewsmtaresource.cpp:57
 #, kde-format
 msgid "Unable to connect to master EWS resource"
-msgstr ""
+msgstr "無法連線到主 EWS 資源"
 
 #. i18n: ectx: label, entry (EwsResource), group (General)
 #: ewsmtaresource.kcfg:10
 #, kde-format
 msgid "Ews Resource"
-msgstr ""
+msgstr "EWS 資源"
 
 #. i18n: ectx: tooltip, entry (EwsResource), group (General)
 #. i18n: ectx: whatsthis, entry (EwsResource), group (General)
@@ -661,78 +665,78 @@ msgstr ""
 #: ewsprogressdialog.cpp:34
 #, kde-format
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 #: ewsprogressdialog.cpp:48
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
-msgstr ""
+msgstr "Exchange 伺服器自動探索"
 
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery..."
-msgstr ""
+msgstr "正在進行 Microsoft Exchange 伺服器自動探索..."
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
 msgctxt "@title:window"
 msgid "Connecting to Exchange"
-msgstr ""
+msgstr "正在連線到 Exchange"
 
 #: ewsprogressdialog.cpp:53
 #, kde-format
 msgid "Connecting to Microsoft Exchange server..."
-msgstr ""
+msgstr "正在連線到 Microsoft Exchange 伺服器..."
 
 #: ewsresource.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
-msgstr ""
+msgstr "正在連線到 Exchange 伺服器"
 
 #: ewsresource.cpp:161 ewsresource.cpp:168 ewsresource.cpp:175
 #: ewsresource.cpp:313
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
-msgstr ""
+msgstr "無法連線到 Exchange 伺服器"
 
 #: ewsresource.cpp:253
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
-msgstr ""
+msgstr "根資料夾 ID 不明。"
 
 #: ewsresource.cpp:257
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
-msgstr ""
+msgstr "取得收藏樹中"
 
 #: ewsresource.cpp:406
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
-msgstr ""
+msgstr "取得項目中"
 
 #: ewsresource.cpp:428 ewsresource.cpp:514
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
-msgstr ""
+msgstr "取得項目失敗 - 內部錯誤"
 
 #: ewsresource.cpp:462
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
-msgstr ""
+msgstr "取得資料夾失敗 - 內部錯誤"
 
 #: ewsresource.cpp:468
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
-msgstr ""
+msgstr "無法處理資料夾取得請求"
 
 #: ewsresource.cpp:485
 #, kde-format
@@ -744,256 +748,256 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
-msgstr ""
+msgstr "不支援變更該項目型態"
 
 #: ewsresource.cpp:561
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
-msgstr ""
+msgstr "正在更新項目旗標"
 
 #: ewsresource.cpp:573
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
-msgstr ""
+msgstr "無法處理項目旗標更新請求"
 
 #: ewsresource.cpp:580
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
-msgstr ""
+msgstr "更新項目旗標失敗 - 內部錯誤"
 
 #: ewsresource.cpp:594
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
-msgstr ""
+msgstr "無法處理項目更新請求"
 
 #: ewsresource.cpp:601
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
-msgstr ""
+msgstr "更新項目失敗 - 內部錯誤"
 
 #: ewsresource.cpp:636
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
-msgstr ""
+msgstr "無法處理項目移動請求"
 
 #: ewsresource.cpp:643
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
-msgstr ""
+msgstr "移動項目失敗 - 內部錯誤"
 
 #: ewsresource.cpp:650
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
-msgstr ""
+msgstr "移動項目失敗 - 從伺服器收到了無效的回應數量"
 
 #: ewsresource.cpp:720
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
-msgstr ""
+msgstr "無法處理項目刪除請求"
 
 #: ewsresource.cpp:727
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
-msgstr ""
+msgstr "刪除項目失敗 - 內部錯誤"
 
 #: ewsresource.cpp:734
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
-msgstr ""
+msgstr "刪除項目失敗 - 從伺服器收到了無效的回應數量"
 
 #: ewsresource.cpp:779 ewsresource.cpp:992
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
-msgstr ""
+msgstr "不支援建立該項目型態"
 
 #: ewsresource.cpp:790
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
-msgstr ""
+msgstr "無法處理項目建立請求"
 
 #: ewsresource.cpp:796
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
-msgstr ""
+msgstr "建立項目失敗 - 內部錯誤"
 
 #: ewsresource.cpp:817
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
-msgstr ""
+msgstr "新增收藏失敗 - 無法辨別 EWS 資料夾型態"
 
 #: ewsresource.cpp:836
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
-msgstr ""
+msgstr "無法處理資料夾建立請求"
 
 #: ewsresource.cpp:842
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
-msgstr ""
+msgstr "建立資料夾失敗 - 內部錯誤"
 
 #: ewsresource.cpp:854
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
-msgstr ""
+msgstr "建立資料夾失敗"
 
 #: ewsresource.cpp:877
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
-msgstr ""
+msgstr "無法處理資料夾移動請求"
 
 #: ewsresource.cpp:883
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
-msgstr ""
+msgstr "移動資料夾失敗 - 內部錯誤"
 
 #: ewsresource.cpp:889
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
-msgstr ""
+msgstr "移動資料夾失敗 - 從伺服器收到了無效的回應數量"
 
 #: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
-msgstr ""
+msgstr "移動資料夾失敗"
 
 #: ewsresource.cpp:928
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
-msgstr ""
+msgstr "無法處理資料夾更新請求"
 
 #: ewsresource.cpp:934
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
-msgstr ""
+msgstr "更新資料夾失敗 - 內部錯誤"
 
 #: ewsresource.cpp:940
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
-msgstr ""
+msgstr "更新資料夾失敗 - 從伺服器收到了無效的回應數量"
 
 #: ewsresource.cpp:951
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
-msgstr ""
+msgstr "更新資料夾失敗"
 
 #: ewsresource.cpp:968
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
-msgstr ""
+msgstr "無法處理資料夾刪除請求"
 
 #: ewsresource.cpp:974
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
-msgstr ""
+msgstr "刪除資料夾失敗 - 內部錯誤"
 
 #: ewsresource.cpp:982
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
-msgstr ""
+msgstr "刪除資料夾失敗"
 
 #: ewsresource.cpp:1006 ewsresource.cpp:1040
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
-msgstr ""
+msgstr "無法處理項目傳送請求"
 
 #: ewsresource.cpp:1012 ewsresource.cpp:1046
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
-msgstr ""
+msgstr "傳送項目失敗 - 內部錯誤"
 
 #: ewsresource.cpp:1051
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
-msgstr ""
+msgstr "從伺服器收到了無效的回應數量"
 
 #: ewsresource.cpp:1243
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
-msgstr ""
+msgstr "正在更新項目標籤"
 
 #: ewsresource.cpp:1256
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
-msgstr ""
+msgstr "無法處理項目標籤更新請求"
 
 #: ewsresource.cpp:1262
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
-msgstr ""
+msgstr "更新項目標籤失敗 - 內部錯誤"
 
 #: ewsresource.cpp:1299
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
-msgstr ""
+msgstr "無法處理全域標籤更新請求"
 
 #: ewsresource.cpp:1315
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
-msgstr ""
+msgstr "無法處理全域標籤取得請求"
 
 #: ewsresource.cpp:1392
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
-msgstr ""
+msgstr "認證"
 
 #: ewsresource.cpp:1402 ewsresource.cpp:1417
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
-msgstr ""
+msgstr "認證失敗"
 
 #: ewsresource.cpp:1425
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"
-msgstr ""
+msgstr "已就緒"
 
 #. i18n: ectx: label, entry (BaseUrl), group (General)
 #: ewsresource.kcfg:10
 #, kde-format
 msgid "Server URL"
-msgstr ""
+msgstr "伺服器網址"
 
 #. i18n: ectx: tooltip, entry (BaseUrl), group (General)
 #. i18n: ectx: whatsthis, entry (BaseUrl), group (General)
@@ -1003,59 +1007,61 @@ msgid ""
 "The URL of the Microsoft Exchange server, should be something like https://"
 "myserver.org/EWS/Exchange.asmx"
 msgstr ""
+"Microsoft Exchange 伺服器的網址，應該是像 https://myserver.org/EWS/Exchange."
+"asmx"
 
 #. i18n: ectx: label, entry (Username), group (General)
 #: ewsresource.kcfg:16
 #, kde-format
 msgctxt "The username to login into the server"
 msgid "Username"
-msgstr ""
+msgstr "使用者名稱"
 
 #. i18n: ectx: tooltip, entry (Username), group (General)
 #. i18n: ectx: whatsthis, entry (Username), group (General)
 #: ewsresource.kcfg:17 ewsresource.kcfg:18
 #, kde-format
 msgid "The username that is used to log into the Microsoft Exchange server"
-msgstr ""
+msgstr "用於登入 Microsoft Exchange 伺服器的使用者名稱"
 
 #. i18n: ectx: label, entry (Domain), group (General)
 #: ewsresource.kcfg:21
 #, kde-format
 msgid "Domain"
-msgstr ""
+msgstr "網域"
 
 #. i18n: ectx: tooltip, entry (Domain), group (General)
 #. i18n: ectx: whatsthis, entry (Domain), group (General)
 #: ewsresource.kcfg:22 ewsresource.kcfg:23
 #, kde-format
 msgid "The Active Directory domain the user belongs to"
-msgstr ""
+msgstr "使用者所屬的 Active Directory 網域"
 
 #. i18n: ectx: label, entry (HasDomain), group (General)
 #: ewsresource.kcfg:26
 #, kde-format
 msgid "Use a domain name during authentication"
-msgstr ""
+msgstr "認證時使用網域名稱"
 
 #. i18n: ectx: label, entry (Email), group (General)
 #: ewsresource.kcfg:30
 #, kde-format
 msgctxt "Account e-mail address"
 msgid "E-mail"
-msgstr ""
+msgstr "電子郵件"
 
 #. i18n: ectx: tooltip, entry (Email), group (General)
 #. i18n: ectx: whatsthis, entry (Email), group (General)
 #: ewsresource.kcfg:31 ewsresource.kcfg:32
 #, kde-format
 msgid "The primary e-mail address of this account"
-msgstr ""
+msgstr "這個帳號的主要電子郵件地址"
 
 #. i18n: ectx: tooltip, entry (AutoDiscovery), group (General)
 #: ewsresource.kcfg:36
 #, kde-format
 msgid "Attempt to automatically discover Exchange server address"
-msgstr ""
+msgstr "嘗試自動探索 Exchange 伺服器位址"
 
 #. i18n: ectx: whatsthis, entry (AutoDiscovery), group (General)
 #: ewsresource.kcfg:37
@@ -1069,49 +1075,49 @@ msgstr ""
 #: ewsresource.kcfg:40
 #, kde-format
 msgid "Poll Interval"
-msgstr ""
+msgstr "拉取間隔"
 
 #. i18n: ectx: tooltip, entry (PollInterval), group (General)
 #: ewsresource.kcfg:41
 #, kde-format
 msgid "Sets the interval for checking for new mail"
-msgstr ""
+msgstr "設定檢查新郵件的間隔"
 
 #. i18n: ectx: whatsthis, entry (PollInterval), group (General)
 #: ewsresource.kcfg:42
 #, kde-format
 msgid "Sets the interval for checking for new mail."
-msgstr ""
+msgstr "設定檢查新郵件的間隔。"
 
 #. i18n: ectx: label, entry (ServerSubscription), group (General)
 #: ewsresource.kcfg:48
 #, kde-format
 msgid "Enable Server-Side Subscriptions"
-msgstr ""
+msgstr "開啟伺服器端訂閱"
 
 #. i18n: ectx: label, entry (ServerSubscriptionList), group (General)
 #: ewsresource.kcfg:51
 #, kde-format
 msgid "List of folders to subscribe to"
-msgstr ""
+msgstr "要訂閱的資料夾列表"
 
 #. i18n: ectx: label, entry (EnableNTLMv2), group (General)
 #: ewsresource.kcfg:55
 #, kde-format
 msgid "Enable NTLMv2 authentication"
-msgstr ""
+msgstr "啟用 NTLMv2 認證"
 
 #. i18n: ectx: label, entry (UserAgent), group (General)
 #: ewsresource.kcfg:59
 #, kde-format
 msgid "Forces a non-default User-Agent string"
-msgstr ""
+msgstr "強制使用非預設的 User-Agent 字串"
 
 #. i18n: ectx: label, entry (OAuth2AppId), group (General)
 #: ewsresource.kcfg:65
 #, kde-format
 msgid "OAuth2 application identifier"
-msgstr ""
+msgstr "OAuth2 應用程式識別子"
 
 #. i18n: ectx: label, entry (OAuth2ReturnUri), group (General)
 #: ewsresource.kcfg:69
@@ -1123,70 +1129,70 @@ msgstr ""
 #: ewsresource.kcfg:73
 #, kde-format
 msgid "Path to PKey authentication PEM certificate"
-msgstr ""
+msgstr "私鑰 (PKey) 認證 PEM 憑證檔案路徑"
 
 #. i18n: ectx: label, entry (PKeyKey), group (General)
 #: ewsresource.kcfg:76
 #, kde-format
 msgid "Path to PKey authentication PEM private key"
-msgstr ""
+msgstr "私鑰 (PKey) 認證 PEM 私鑰檔案路徑"
 
 #: ewssubscriptionwidget.cpp:171
 #, kde-format
 msgctxt "@info"
 msgid "Exchange server not configured."
-msgstr ""
+msgstr "尚未設定 Exchange 伺服器。"
 
 #: ewssubscriptionwidget.cpp:180 ewssubscriptionwidget.cpp:201
 #, kde-format
 msgctxt "@info"
 msgid "Failed to retrieve folder list."
-msgstr ""
+msgstr "取得資料夾清單失敗。"
 
 #: ewssubscriptionwidget.cpp:286
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
-msgstr ""
+msgstr "開啟伺服器端訂閱"
 
 #: ewssubscriptionwidget.cpp:294
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Filter folders"
-msgstr ""
+msgstr "過濾資料夾"
 
 #: ewssubscriptionwidget.cpp:314
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
-msgstr ""
+msgstr "重新載入清單(&L)"
 
 #: ewssubscriptionwidget.cpp:317
 #, kde-format
 msgctxt "@action:button"
 msgid "&Reset"
-msgstr ""
+msgstr "重設(&R)"
 
 #: ewssubscriptionwidget.cpp:326
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"
-msgstr ""
+msgstr "僅已訂閱的"
 
 #: mail/ewscreatemailjob.cpp:148 mail/ewscreatemailjob.cpp:185
 #: mail/ewscreatemailjob.cpp:218
 #, kde-format
 msgid "Failed to create mail item"
-msgstr ""
+msgstr "建立郵件項目失敗"
 
 #: mail/ewsmodifymailjob.cpp:92
 #, kde-format
 msgctxt "@info:status"
 msgid "Item update failed: "
-msgstr ""
+msgstr "項目更新失敗："
 
 #: mail/ewsmodifymailjob.cpp:103
-#, kde-format
+#, fuzzy, kde-format
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
-msgstr ""
+msgstr "處理更新項目回應時項目順序不正確。"
