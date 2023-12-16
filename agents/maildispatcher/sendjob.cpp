@@ -115,6 +115,7 @@ void SendJob::doAkonadiTransport()
 void SendJob::doTraditionalTransport()
 {
     const TransportAttribute *transportAttribute = mItem.attribute<TransportAttribute>();
+    Q_ASSERT(transportAttribute);
     TransportJob *job = TransportManager::self()->createTransportJob(transportAttribute->transportId());
 
     Q_ASSERT(job);
