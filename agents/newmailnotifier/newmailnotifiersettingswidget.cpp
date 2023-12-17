@@ -11,6 +11,7 @@
 #include "kdepim-runtime-version.h"
 
 #include <KAboutData>
+#include <KLineEditEventHandler>
 #include <KLocalizedString>
 #include <KNotifyConfigWidget>
 #include <QLineEdit>
@@ -127,6 +128,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     mTextToSpeakSetting = new QLineEdit(parent);
     mTextToSpeakSetting->setObjectName(QLatin1StringView("mTextToSpeakSetting"));
     mTextToSpeakSetting->setClearButtonEnabled(true);
+    KLineEditEventHandler::catchReturnKey(mTextToSpeakSetting);
 
     mTextToSpeakSetting->setWhatsThis(textToSpeakMessage.toString());
     textToSpeakLayout->addWidget(mTextToSpeakSetting);

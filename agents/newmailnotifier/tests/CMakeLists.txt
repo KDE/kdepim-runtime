@@ -11,4 +11,6 @@ target_link_libraries(newmailnotifierselectcollectionwidgettest
     KPim6::AkonadiCore
     KPim6::Mime
     KF6::Completion
-    KPim6::AkonadiMime)
+    KPim6::AkonadiMime
+    KF6::WidgetsAddons
+)

@@ -14,6 +14,7 @@
 
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/EntityTreeModel>
+#include <KLineEditEventHandler>
 #include <KMime/Message>
 
 #include "newmailnotifier_debug.h"
@@ -122,6 +123,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     mCollectionFilter->setSortLocaleAware(true);
 
     auto searchLine = new KLineEdit(this);
+    KLineEditEventHandler::catchReturnKey(searchLine);
     searchLine->setPlaceholderText(i18n("Search..."));
     searchLine->setClearButtonEnabled(true);
     connect(searchLine, &QLineEdit::textChanged, this, &NewMailNotifierSelectCollectionWidget::slotSetCollectionFilter);
