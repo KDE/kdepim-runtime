@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-12-17 01:36+0000\n"
 "PO-Revision-Date: 2012-10-19 12:33+0800\n"
 "Last-Translator: Franklin Weng <franklin at goodhorse dot idv dot tw>\n"
 "Language-Team: Chinese Traditional <kde-tw@googlegroups.com>\n"
@@ -120,43 +120,43 @@ msgstr "無法取得資源 %1 的 D-Bus 介面。"
 msgid "Invalid D-Bus reply from resource %1."
 msgstr "從資源 %1 得到不合法的 D-Bus 回覆。"
 
-#: sendjob.cpp:228
+#: sendjob.cpp:229
 #, kde-format
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr "無法取得預設的寄件備份資料夾。信件將保留在寄件匣中。"
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Message transport aborted."
 msgstr "信件傳輸已中止。"
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Failed to transport message."
 msgstr "傳送信件失敗。"
 
-#: sendjob.cpp:282
+#: sendjob.cpp:283
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr "無法取得郵件過濾代理的 D-Bus 介面。"
 
-#: sendjob.cpp:289
+#: sendjob.cpp:290
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr "從郵件過濾代理得到不合法的 D-Bus 回覆。"
 
-#: sendjob.cpp:331
+#: sendjob.cpp:332
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr "傳送成功，但是在將信件從寄件匣中移除時發生錯誤。"
 
-#: sendjob.cpp:334
+#: sendjob.cpp:335
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
 msgstr "傳送成功，但是在將信件移動到寄件備份時發生錯誤。"
 
-#: sendjob.cpp:370
+#: sendjob.cpp:371
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "儲存結果時失敗。"

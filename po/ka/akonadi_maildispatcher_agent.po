@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-12-17 01:36+0000\n"
 "PO-Revision-Date: 2022-09-12 09:41+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -123,41 +123,41 @@ msgstr "D-Bus ინტერფეისის მიღების შეც�
 msgid "Invalid D-Bus reply from resource %1."
 msgstr "D-Bus-ის არასწორი პასუხი რესურსისთვის: %1."
 
-#: sendjob.cpp:228
+#: sendjob.cpp:229
 #, kde-format
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr ""
 "გაგზავნილი ელფოსტების საქაღალდე მიუწვდომელია. შეტყობინებები შემოსულებში "
 "იქნება შენახული."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Message transport aborted."
 msgstr "შეტყობინების ტრანსპორტის შეცდომა."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Failed to transport message."
 msgstr "შეტყობინების გადაცემის შეცდომა."
 
-#: sendjob.cpp:282
+#: sendjob.cpp:283
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr "Mailfilteragent-ის D-Bus ინტერფეისის მიღების შეცდომა."
 
-#: sendjob.cpp:289
+#: sendjob.cpp:290
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr "არასწორი D-Bus პასუხი mailfilteragent-დან"
 
-#: sendjob.cpp:331
+#: sendjob.cpp:332
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr ""
 "გაგზავნა წარმატებულია, მაგრამ გასაგზავნი საქაღალდიდან შეტყობინება ვერ "
 "წავშალე."
 
-#: sendjob.cpp:334
+#: sendjob.cpp:335
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
@@ -165,7 +165,7 @@ msgstr ""
 "გაგზავნა წარმატებულია, მაგრამ შეტყობინება გაგზავნილების საქაღალდეში ვერ "
 "გადავიტანე."
 
-#: sendjob.cpp:370
+#: sendjob.cpp:371
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "შედეგის ელემენტში შენახვის შეცდომა."

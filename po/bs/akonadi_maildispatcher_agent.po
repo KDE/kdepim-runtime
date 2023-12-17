@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-12-17 01:36+0000\n"
 "PO-Revision-Date: 2013-01-14 19:17+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -124,46 +124,46 @@ msgstr "Neuspjeh u dobijanju D-Bus interfejsa za resurs %1."
 msgid "Invalid D-Bus reply from resource %1."
 msgstr "Nevažeći D-Bus odgovor od resursa %1."
 
-#: sendjob.cpp:228
+#: sendjob.cpp:229
 #, kde-format
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr ""
 "Podrazumijevana fascilka za poslanu poštu nije dostupna. Poruka ostaje u "
 "fascikli izlazne pošte."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Message transport aborted."
 msgstr "Prijenos poruke prekinut."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Failed to transport message."
 msgstr "Neuspjeh u prijenosu poruke."
 
-#: sendjob.cpp:282
+#: sendjob.cpp:283
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr "Neuspjelo dobavljanje D-Bus interfejsa za mailfilteragent."
 
-#: sendjob.cpp:289
+#: sendjob.cpp:290
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr "Loš D-Bus odgovor mailfilteragent"
 
-#: sendjob.cpp:331
+#: sendjob.cpp:332
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr "Slanje uspjelo, ali nije uspjelo da uklonite poruku iz Outbok-a."
 
-#: sendjob.cpp:334
+#: sendjob.cpp:335
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
 msgstr ""
 "Slanje uspjelo, ali nije uspjelo da premjestite poruku u poslati mail-folder."
 
-#: sendjob.cpp:370
+#: sendjob.cpp:371
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "Neuspješno pohranjen rezultat u objekt."

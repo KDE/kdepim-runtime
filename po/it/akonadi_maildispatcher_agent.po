@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-12-17 01:36+0000\n"
 "PO-Revision-Date: 2012-12-08 01:23+0100\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -122,41 +122,41 @@ msgstr "Impossibile recuperare l'interfaccia D-Bus della risorsa %1."
 msgid "Invalid D-Bus reply from resource %1."
 msgstr "Risposta D-Bus non valida dalla risorsa %1."
 
-#: sendjob.cpp:228
+#: sendjob.cpp:229
 #, kde-format
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr ""
 "La cartella predefinita per la posta inviata non è disponibile. Il messaggio "
 "rimane nella posta in uscita."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Message transport aborted."
 msgstr "Il trasporto del messaggio è stato interrotto."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Failed to transport message."
 msgstr "Trasporto del messaggio non riuscito."
 
-#: sendjob.cpp:282
+#: sendjob.cpp:283
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr "Impossibile recuperare l'interfaccia D-Bus del mailfilteragent."
 
-#: sendjob.cpp:289
+#: sendjob.cpp:290
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr "Risposta D-Bus non valida dal mailfilteragent"
 
-#: sendjob.cpp:331
+#: sendjob.cpp:332
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr ""
 "Invio riuscito, ma la rimozione del messaggio dalla cartella di posta in "
 "uscita non è andata a buon fine."
 
-#: sendjob.cpp:334
+#: sendjob.cpp:335
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
@@ -164,7 +164,7 @@ msgstr ""
 "Invio riuscito, ma lo spostamento del messaggio nella cartella della posta "
 "inviata non è andato a buon fine."
 
-#: sendjob.cpp:370
+#: sendjob.cpp:371
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "Salvataggio non riuscito dei risultati nell'elemento."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-12-17 01:36+0000\n"
 "PO-Revision-Date: 2012-10-16 18:46+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -121,38 +121,38 @@ msgstr "Misslyckades erhålla D-Bus gränssnitt för resursen %1."
 msgid "Invalid D-Bus reply from resource %1."
 msgstr "Ogiltigt D-Bus svar från resursen %1."
 
-#: sendjob.cpp:228
+#: sendjob.cpp:229
 #, kde-format
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr ""
 "Standardkorg för skickade brev ej tillgänglig. Behåller brevet i utkorgen."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Message transport aborted."
 msgstr "Brevöverföring avbruten."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Failed to transport message."
 msgstr "Misslyckades överföra brev."
 
-#: sendjob.cpp:282
+#: sendjob.cpp:283
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr "Misslyckades erhålla D-Bus gränssnitt för e-postfiltreringsmodulen."
 
-#: sendjob.cpp:289
+#: sendjob.cpp:290
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr "Ogiltigt D-Bus svar från e-postfiltreringsmodulen."
 
-#: sendjob.cpp:331
+#: sendjob.cpp:332
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr "Lyckades skicka, men misslyckades ta bort brevet från utkorgen."
 
-#: sendjob.cpp:334
+#: sendjob.cpp:335
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
@@ -160,7 +160,7 @@ msgstr ""
 "Lyckades skicka, men misslyckades flytta brevet till korgen för skickade "
 "brev."
 
-#: sendjob.cpp:370
+#: sendjob.cpp:371
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "Misslyckades lagra resultat i objekt."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-12-17 01:36+0000\n"
 "PO-Revision-Date: 2019-01-20 07:47+0100\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -125,41 +125,41 @@ msgstr "Pobieranie interfejsu D-Bus zasobu %1 nie powiodło się."
 msgid "Invalid D-Bus reply from resource %1."
 msgstr "Niepoprawna odpowiedź D-Bus z zasobu %1."
 
-#: sendjob.cpp:228
+#: sendjob.cpp:229
 #, kde-format
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr ""
 "Domyślny katalog poczty wysłanej jest niedostępny. Przetrzymywanie "
 "wiadomości w skrzynce wyjściowej."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Message transport aborted."
 msgstr "Porzucono transport wiadomości."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Failed to transport message."
 msgstr "Nie można wysłać wiadomości."
 
-#: sendjob.cpp:282
+#: sendjob.cpp:283
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr "Nieudane uzyskanie interfejsu D-Bus dla agenta filtrującego pocztę."
 
-#: sendjob.cpp:289
+#: sendjob.cpp:290
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr "Nieprawidłowa odpowiedź D-Bus od agenta filtrującego pocztę"
 
-#: sendjob.cpp:331
+#: sendjob.cpp:332
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr ""
 "Wysyłanie powiodło się, lecz nie udało się usunięcie wiadomości ze skrzynki "
 "wychodzących."
 
-#: sendjob.cpp:334
+#: sendjob.cpp:335
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
@@ -167,7 +167,7 @@ msgstr ""
 "Wysyłanie powiodło się, lecz nie udało się przeniesienia wiadomości do "
 "skrzynki wysłanej poczty."
 
-#: sendjob.cpp:370
+#: sendjob.cpp:371
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "Zapisanie wyniku w elemencie nie powiodło się."

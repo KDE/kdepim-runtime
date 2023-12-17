@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-12-17 01:36+0000\n"
 "PO-Revision-Date: 2022-08-27 18:30+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -123,40 +123,40 @@ msgstr "%1 baliabidearen D-Bus interfazea lortzea huts egin du."
 msgid "Invalid D-Bus reply from resource %1."
 msgstr "%1 baliabidearen D-Bus erantzun baliogabea."
 
-#: sendjob.cpp:228
+#: sendjob.cpp:229
 #, kde-format
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr ""
 "Bidalitako-posta karpeta lehenetsia eskuraezin. Mantendu mezua irteerako-"
 "ontzian."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Message transport aborted."
 msgstr "Mezu-garraioa galarazi da."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Failed to transport message."
 msgstr "Mezua garraiatzea huts egin du."
 
-#: sendjob.cpp:282
+#: sendjob.cpp:283
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr "«mailfilteragent»aren D-Bus interfazea lortzea huts egin du."
 
-#: sendjob.cpp:289
+#: sendjob.cpp:290
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr "«mailfilteragent»aren D-Bus erantzun baliogabea"
 
-#: sendjob.cpp:331
+#: sendjob.cpp:332
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr ""
 "Bidaltzea ondo egin da, baina mezua irteera-ontzitik kentzea huts egin du."
 
-#: sendjob.cpp:334
+#: sendjob.cpp:335
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
@@ -164,7 +164,7 @@ msgstr ""
 "Bidaltzea ondo egin da, baina mezua bidalitako-posta karpetara eramatea huts "
 "egin du."
 
-#: sendjob.cpp:370
+#: sendjob.cpp:371
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "Elementuan emaitza gordetzea huts egin du."

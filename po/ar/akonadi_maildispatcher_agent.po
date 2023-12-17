@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-12-17 01:36+0000\n"
 "PO-Revision-Date: 2018-01-24 17:31+0300\n"
 "Last-Translator: Safa Alfulaij <safa1996alfulaij@gmail.com>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -125,43 +125,43 @@ msgstr "فشل جلب واجهة D-Bus للمورد %1."
 msgid "Invalid D-Bus reply from resource %1."
 msgstr "ردّ D-Bus غير صالح من المورد %1."
 
-#: sendjob.cpp:228
+#: sendjob.cpp:229
 #, kde-format
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr "مجلّد ”البريد المرسل“ المبدئيّ غير متوفّر. سأٌبقي الرّسالة في صندوق الصّادر."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Message transport aborted."
 msgstr "أُجهض نقل الرّسالة."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Failed to transport message."
 msgstr "فشل نقل الرّسالة."
 
-#: sendjob.cpp:282
+#: sendjob.cpp:283
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr "فشل جلب واجهة D-Bus لعميل ترشيح البريد."
 
-#: sendjob.cpp:289
+#: sendjob.cpp:290
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr "ردّ D-Bus غير صالح من عميل ترشيح البريد."
 
-#: sendjob.cpp:331
+#: sendjob.cpp:332
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr "نجح الإرسال، ولكن فشلت إزالة الرّسالة من صندوق الصّادر."
 
-#: sendjob.cpp:334
+#: sendjob.cpp:335
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
 msgstr "نجح الإرسال، ولكن فشل نقل الرّسالة إلى مجلّد ”البريد المرسل“."
 
-#: sendjob.cpp:370
+#: sendjob.cpp:371
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "فشل تخزين النّتيجة في عنصر."

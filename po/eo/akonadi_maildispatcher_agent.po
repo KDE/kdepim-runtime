@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2023-12-17 01:36+0000\n"
 "PO-Revision-Date: 2023-05-29 07:34+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -122,39 +122,39 @@ msgstr "Malsukcesis akiri D-Bus-interfacon de rimedo %1."
 msgid "Invalid D-Bus reply from resource %1."
 msgstr "Nevalida D-Bus-respondo de rimedo %1."
 
-#: sendjob.cpp:228
+#: sendjob.cpp:229
 #, kde-format
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr ""
 "Defaŭlta sendita retpoŝta dosierujo nedisponebla. Konservado de mesaĝo en "
 "elirkesto."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Message transport aborted."
 msgstr "Mesaĝtransporto ĉesigita."
 
-#: sendjob.cpp:240
+#: sendjob.cpp:241
 #, kde-format
 msgid "Failed to transport message."
 msgstr "Malsukcesis transporti mesaĝon."
 
-#: sendjob.cpp:282
+#: sendjob.cpp:283
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr "Malsukcesis akiri D-Bus-interfacon de mailfilteragent."
 
-#: sendjob.cpp:289
+#: sendjob.cpp:290
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr "Nevalida D-Bus-respondo de mailfilteragent"
 
-#: sendjob.cpp:331
+#: sendjob.cpp:332
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr "Sendado sukcesis, sed ne sukcesis forigi la mesaĝon el la elirkesto."
 
-#: sendjob.cpp:334
+#: sendjob.cpp:335
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
@@ -162,7 +162,7 @@ msgstr ""
 "Sendado sukcesis, sed ne sukcesis movi la mesaĝon al la sendita retpoŝta "
 "dosierujo."
 
-#: sendjob.cpp:370
+#: sendjob.cpp:371
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "Malsukcesis konservi rezulton en elemento."
