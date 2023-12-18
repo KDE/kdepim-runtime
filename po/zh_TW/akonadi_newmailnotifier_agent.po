@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-04 16:52+0000\n"
+"POT-Creation-Date: 2023-12-18 01:58+0000\n"
 "PO-Revision-Date: 2023-12-13 05:21+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -38,7 +38,7 @@ msgid "[Show Mail]"
 msgstr "[顯示郵件]"
 
 #: newmailnotificationhistorywidget.cpp:22
-#: newmailnotifiersettingswidget.cpp:111
+#: newmailnotifiersettingswidget.cpp:112
 #, kde-format
 msgid "Enabled"
 msgstr "已開啟"
@@ -69,27 +69,27 @@ msgstr "已從 %f 取得信件"
 msgid "Unable to start KMail application."
 msgstr "無法啟動 KMail 應用程式。"
 
-#: newmailnotifierselectcollectionwidget.cpp:95
+#: newmailnotifierselectcollectionwidget.cpp:96
 #, kde-format
 msgid "Select which folders to monitor for new message notifications:"
 msgstr "選擇新信件通知監視的資料夾："
 
-#: newmailnotifierselectcollectionwidget.cpp:125
+#: newmailnotifierselectcollectionwidget.cpp:127
 #, kde-format
 msgid "Search..."
 msgstr "搜尋..."
 
-#: newmailnotifierselectcollectionwidget.cpp:140
+#: newmailnotifierselectcollectionwidget.cpp:142
 #, kde-format
 msgid "&Select All"
 msgstr "全部選取(&S)"
 
-#: newmailnotifierselectcollectionwidget.cpp:144
+#: newmailnotifierselectcollectionwidget.cpp:146
 #, kde-format
 msgid "&Unselect All"
 msgstr "全部取消選取(&U)"
 
-#: newmailnotifiersettingswidget.cpp:31
+#: newmailnotifiersettingswidget.cpp:32
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
@@ -98,123 +98,123 @@ msgstr ""
 "<qt><p>您可以在此定義信件。您可以用：</p><ul><li>%s 設定主旨</li><li>%f 設定"
 "寄件者</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:52
+#: newmailnotifiersettingswidget.cpp:53
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "選擇要顯示哪些欄位："
 
-#: newmailnotifiersettingswidget.cpp:57
+#: newmailnotifiersettingswidget.cpp:58
 #, kde-format
 msgid "Show Photo"
 msgstr "顯示相片"
 
-#: newmailnotifiersettingswidget.cpp:61
+#: newmailnotifiersettingswidget.cpp:62
 #, kde-format
 msgid "Show From"
 msgstr "顯示寄件者"
 
-#: newmailnotifiersettingswidget.cpp:65
+#: newmailnotifiersettingswidget.cpp:66
 #, kde-format
 msgid "Show Subject"
 msgstr "顯示主旨"
 
-#: newmailnotifiersettingswidget.cpp:69
+#: newmailnotifiersettingswidget.cpp:70
 #, kde-format
 msgid "Show Folders"
 msgstr "顯示資料夾"
 
-#: newmailnotifiersettingswidget.cpp:73
+#: newmailnotifiersettingswidget.cpp:74
 #, kde-format
 msgid "Do not notify when email was sent by me"
 msgstr "我寄出的郵件不用通知"
 
-#: newmailnotifiersettingswidget.cpp:77
+#: newmailnotifiersettingswidget.cpp:78
 #, kde-format
 msgid "Keep Persistent Notification"
 msgstr "保持持續通知"
 
-#: newmailnotifiersettingswidget.cpp:81
+#: newmailnotifiersettingswidget.cpp:82
 #, kde-format
 msgid "Show Action Buttons"
 msgstr "顯示動作按鈕"
 
-#: newmailnotifiersettingswidget.cpp:89
+#: newmailnotifiersettingswidget.cpp:90
 #, kde-format
 msgid "Reply Mail"
 msgstr "回覆郵件"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:161
+#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:161
 #, kde-format
 msgid "Reply to Author"
 msgstr "回覆給原作者"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:164
+#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:164
 #, kde-format
 msgid "Reply to All"
 msgstr "全部回覆"
 
-#: newmailnotifiersettingswidget.cpp:106
+#: newmailnotifiersettingswidget.cpp:107
 #, kde-format
 msgid "Display"
 msgstr "顯示"
 
-#: newmailnotifiersettingswidget.cpp:115
+#: newmailnotifiersettingswidget.cpp:116
 #, kde-format
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">這是怎麼運作的？</a>"
 
-#: newmailnotifiersettingswidget.cpp:124
+#: newmailnotifiersettingswidget.cpp:125
 #, kde-format
 msgid "Message:"
 msgstr "訊息："
 
-#: newmailnotifiersettingswidget.cpp:135
+#: newmailnotifiersettingswidget.cpp:137
 #, kde-format
 msgid "Text to Speak"
 msgstr "要唸的文字"
 
-#: newmailnotifiersettingswidget.cpp:141
+#: newmailnotifiersettingswidget.cpp:143
 #, kde-format
 msgid "Notify"
 msgstr "通知"
 
-#: newmailnotifiersettingswidget.cpp:144
+#: newmailnotifiersettingswidget.cpp:146
 #, kde-format
 msgid "Folders"
 msgstr "資料夾"
 
-#: newmailnotifiersettingswidget.cpp:147
+#: newmailnotifiersettingswidget.cpp:149
 #, kde-format
 msgid "New Mail Notifier Agent"
 msgstr "新信件通知代理程式"
 
-#: newmailnotifiersettingswidget.cpp:149
+#: newmailnotifiersettingswidget.cpp:151
 #, kde-format
 msgid "Notify about new mails."
 msgstr "新郵件通知。"
 
-#: newmailnotifiersettingswidget.cpp:151
+#: newmailnotifiersettingswidget.cpp:153
 #, kde-format
 msgid "Copyright (C) 2013-%1 Laurent Montel"
 msgstr "Copyright (C) 2013-%1 Laurent Montel"
 
-#: newmailnotifiersettingswidget.cpp:154
+#: newmailnotifiersettingswidget.cpp:156
 #, kde-format
 msgid "Laurent Montel"
 msgstr "Laurent Montel"
 
-#: newmailnotifiersettingswidget.cpp:154
+#: newmailnotifiersettingswidget.cpp:156
 #, kde-format
 msgid "Maintainer"
 msgstr "維護者"
 
-#: newmailnotifiersettingswidget.cpp:155
+#: newmailnotifiersettingswidget.cpp:157
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "Franklin Weng"
 
-#: newmailnotifiersettingswidget.cpp:155
+#: newmailnotifiersettingswidget.cpp:157
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"

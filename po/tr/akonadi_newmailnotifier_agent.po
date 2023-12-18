@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-04 16:52+0000\n"
+"POT-Creation-Date: 2023-12-18 01:58+0000\n"
 "PO-Revision-Date: 2023-12-09 22:15+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -41,7 +41,7 @@ msgid "[Show Mail]"
 msgstr "[Postayı Göster]"
 
 #: newmailnotificationhistorywidget.cpp:22
-#: newmailnotifiersettingswidget.cpp:111
+#: newmailnotifiersettingswidget.cpp:112
 #, kde-format
 msgid "Enabled"
 msgstr "Etkin"
@@ -73,27 +73,27 @@ msgstr "%f aracısından bir ileti alındı"
 msgid "Unable to start KMail application."
 msgstr "K Posta uygulaması başlatılamıyor."
 
-#: newmailnotifierselectcollectionwidget.cpp:95
+#: newmailnotifierselectcollectionwidget.cpp:96
 #, kde-format
 msgid "Select which folders to monitor for new message notifications:"
 msgstr "Yeni ileti bildirimlerinin izleneceği klasörleri seçin:"
 
-#: newmailnotifierselectcollectionwidget.cpp:125
+#: newmailnotifierselectcollectionwidget.cpp:127
 #, kde-format
 msgid "Search..."
 msgstr "Ara..."
 
-#: newmailnotifierselectcollectionwidget.cpp:140
+#: newmailnotifierselectcollectionwidget.cpp:142
 #, kde-format
 msgid "&Select All"
 msgstr "&Tümünü Seç"
 
-#: newmailnotifierselectcollectionwidget.cpp:144
+#: newmailnotifierselectcollectionwidget.cpp:146
 #, kde-format
 msgid "&Unselect All"
 msgstr "&Seçimleri Kaldır"
 
-#: newmailnotifiersettingswidget.cpp:31
+#: newmailnotifiersettingswidget.cpp:32
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
@@ -102,123 +102,123 @@ msgstr ""
 "<qt><p>Burada iletiyi tanımlayabilirsiniz. Kullanabilecekleriniz:</p><ul><li>"
 "%s konuyu ayarla</li><li>%f kimden kısmını ayarla</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:52
+#: newmailnotifiersettingswidget.cpp:53
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "Gösterilecek alanları seç:"
 
-#: newmailnotifiersettingswidget.cpp:57
+#: newmailnotifiersettingswidget.cpp:58
 #, kde-format
 msgid "Show Photo"
 msgstr "Fotoğrafı Göster"
 
-#: newmailnotifiersettingswidget.cpp:61
+#: newmailnotifiersettingswidget.cpp:62
 #, kde-format
 msgid "Show From"
 msgstr "Kimden Olduğunu Göster"
 
-#: newmailnotifiersettingswidget.cpp:65
+#: newmailnotifiersettingswidget.cpp:66
 #, kde-format
 msgid "Show Subject"
 msgstr "Konuyu Göster"
 
-#: newmailnotifiersettingswidget.cpp:69
+#: newmailnotifiersettingswidget.cpp:70
 #, kde-format
 msgid "Show Folders"
 msgstr "Klasörleri Göster"
 
-#: newmailnotifiersettingswidget.cpp:73
+#: newmailnotifiersettingswidget.cpp:74
 #, kde-format
 msgid "Do not notify when email was sent by me"
 msgstr "Kendi gönderdiğim e-postaları bildirme"
 
-#: newmailnotifiersettingswidget.cpp:77
+#: newmailnotifiersettingswidget.cpp:78
 #, kde-format
 msgid "Keep Persistent Notification"
 msgstr "Sürekli Bildirimleri Sakla"
 
-#: newmailnotifiersettingswidget.cpp:81
+#: newmailnotifiersettingswidget.cpp:82
 #, kde-format
 msgid "Show Action Buttons"
 msgstr "Eylem Düğmelerini Göster"
 
-#: newmailnotifiersettingswidget.cpp:89
+#: newmailnotifiersettingswidget.cpp:90
 #, kde-format
 msgid "Reply Mail"
 msgstr "Postayı Yanıtla"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:161
+#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:161
 #, kde-format
 msgid "Reply to Author"
 msgstr "Yazanı Yanıtla"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:164
+#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:164
 #, kde-format
 msgid "Reply to All"
 msgstr "Tümünü Yanıtla"
 
-#: newmailnotifiersettingswidget.cpp:106
+#: newmailnotifiersettingswidget.cpp:107
 #, kde-format
 msgid "Display"
 msgstr "Görüntü"
 
-#: newmailnotifiersettingswidget.cpp:115
+#: newmailnotifiersettingswidget.cpp:116
 #, kde-format
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Bu nasıl çalışır?</a>"
 
-#: newmailnotifiersettingswidget.cpp:124
+#: newmailnotifiersettingswidget.cpp:125
 #, kde-format
 msgid "Message:"
 msgstr "İleti:"
 
-#: newmailnotifiersettingswidget.cpp:135
+#: newmailnotifiersettingswidget.cpp:137
 #, kde-format
 msgid "Text to Speak"
 msgstr "Konuşulacak Metin"
 
-#: newmailnotifiersettingswidget.cpp:141
+#: newmailnotifiersettingswidget.cpp:143
 #, kde-format
 msgid "Notify"
 msgstr "Bildir"
 
-#: newmailnotifiersettingswidget.cpp:144
+#: newmailnotifiersettingswidget.cpp:146
 #, kde-format
 msgid "Folders"
 msgstr "Klasörler"
 
-#: newmailnotifiersettingswidget.cpp:147
+#: newmailnotifiersettingswidget.cpp:149
 #, kde-format
 msgid "New Mail Notifier Agent"
 msgstr "Yeni Posta Bildirici Yardımcısı"
 
-#: newmailnotifiersettingswidget.cpp:149
+#: newmailnotifiersettingswidget.cpp:151
 #, kde-format
 msgid "Notify about new mails."
 msgstr "Yeni postaları bildir."
 
-#: newmailnotifiersettingswidget.cpp:151
+#: newmailnotifiersettingswidget.cpp:153
 #, kde-format
 msgid "Copyright (C) 2013-%1 Laurent Montel"
 msgstr "Telif Hakkı (C) 2013-%1 Laurent Montel"
 
-#: newmailnotifiersettingswidget.cpp:154
+#: newmailnotifiersettingswidget.cpp:156
 #, kde-format
 msgid "Laurent Montel"
 msgstr "Laurent Montel"
 
-#: newmailnotifiersettingswidget.cpp:154
+#: newmailnotifiersettingswidget.cpp:156
 #, kde-format
 msgid "Maintainer"
 msgstr "Bakımcı"
 
-#: newmailnotifiersettingswidget.cpp:155
+#: newmailnotifiersettingswidget.cpp:157
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "Volkan Gezer"
 
-#: newmailnotifiersettingswidget.cpp:155
+#: newmailnotifiersettingswidget.cpp:157
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
