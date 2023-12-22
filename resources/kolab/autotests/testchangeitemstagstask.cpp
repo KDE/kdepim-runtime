@@ -8,7 +8,7 @@ namespace Akonadi
 class Tag;
 }
 
-unsigned int qHash(const Akonadi::Tag &tag);
+#include <stddef.h>
 
 #include "imaptestbase.h"
 

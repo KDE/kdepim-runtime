@@ -480,9 +480,9 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
     return true;
 }
 
-uint qHash(const EwsPropertyField &prop, uint seed)
+size_t qHash(const EwsPropertyField &prop, size_t seed) noexcept
 {
-    return prop.d->mHasTag ^ seed;
+    return qHash(prop.d->mHasTag, seed);
 }
 
 QDebug operator<<(QDebug debug, const EwsPropertyField &prop)

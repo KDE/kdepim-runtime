@@ -104,7 +104,7 @@ private:
     EwsDistinguishedId mDid;
 };
 
-uint qHash(const EwsId &id, uint seed);
+size_t qHash(const EwsId &id, size_t seed = 0) noexcept;
 
 QDebug operator<<(QDebug debug, const EwsId &id);
 

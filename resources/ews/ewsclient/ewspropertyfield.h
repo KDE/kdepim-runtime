@@ -8,6 +8,7 @@
 
 #include <QSharedDataPointer>
 #include <QXmlStreamWriter>
+#include <cstddef>
 
 #include "ewstypes.h"
 
@@ -53,10 +54,10 @@ public:
 private:
     QSharedDataPointer<EwsPropertyFieldPrivate> d;
 
-    friend uint qHash(const EwsPropertyField &prop, uint seed);
+    friend size_t qHash(const EwsPropertyField &prop, size_t seed) noexcept;
     friend QDebug operator<<(QDebug debug, const EwsPropertyField &prop);
 };
 
-uint qHash(const EwsPropertyField &prop, uint seed);
+size_t qHash(const EwsPropertyField &prop, size_t seed = 0) noexcept;
 
 QDebug operator<<(QDebug debug, const EwsPropertyField &prop);
