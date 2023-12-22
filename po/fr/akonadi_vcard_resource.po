@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Joëlle Cornavin <jcornavi@club-internet.fr>, 2009.
 # Joëlle Cornavin <jcornavin@laposte.net>, 2010.
-# SPDX-FileCopyrightText: 2013, 2021, 2023 xavier <xavier.besnard@neuf.fr>
+# SPDX-FileCopyrightText: 2013, 2021, 2023 Xavier Besnard <xavier.besnard@kde.org>
 # Geoffray Levasseur <geoffray.levasseurbrandin@numericable.fr>, 2014.
 #
 msgid ""

@@ -116,10 +116,9 @@ msgid "Ready"
 msgstr "Připraven"
 
 #: googleresource.cpp:143
-#, fuzzy, kde-format
-#| msgid "not configured"
+#, kde-format
 msgid "Not configured"
-msgstr "nenastaveno"
+msgstr "Nenastaveno"
 
 #: googleresource.cpp:143
 #, kde-format

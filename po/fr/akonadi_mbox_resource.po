@@ -4,9 +4,9 @@
 # Joëlle Cornavin <jcornavi@club-internet.fr>, 2009.
 # Geoffray Levasseur <geoffray.levasseurbrandin@numericable.fr>, 2009, 2014.
 # Joëlle Cornavin <jcornavin@laposte.net>, 2010.
-# SPDX-FileCopyrightText: 2013, 2021, 2023 xavier <xavier.besnard@neuf.fr>
+# SPDX-FileCopyrightText: 2013, 2021, 2023 Xavier Besnard <xavier.besnard@kde.org>
 # Simon Depiets <sdepiets@gmail.com>, 2019.
-# Xavier BESNARD <xavier.besnard@neuf.fr>, 2023.
+# Xavier Besnard <xavier.besnard@kde.org>, 2023.
 #
 msgid ""
 msgstr ""
