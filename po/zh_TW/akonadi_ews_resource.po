@@ -1,13 +1,13 @@
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2023 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# Kisaragi Hiu <mail@kisaragi-hiu.com>, 2023.
+# SPDX-FileCopyrightText: 2023 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-25 01:34+0000\n"
-"PO-Revision-Date: 2023-12-15 19:23+0900\n"
+"PO-Revision-Date: 2023-12-25 02:07+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 24.01.80\n"
+"X-Generator: Lokalize 23.08.4\n"
 
 #: ewsautodiscoveryjob.cpp:44 ewsautodiscoveryjob.cpp:51
 #, kde-format
@@ -34,6 +34,8 @@ msgid ""
 "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
 "valid. You need to authenticate in order to continue using it."
 msgstr ""
+"帳號 <b>%1</b> 的 Microsoft Exchange 登入資訊不再有效。您必須重新認證才能繼續"
+"使用它。"
 
 #: ewsclient/auth/ewsoauth.cpp:522
 #, kde-kuit-format
@@ -102,7 +104,7 @@ msgctxt "@info"
 msgid ""
 "Distributed under the GNU Library General Public License version 2.0 or "
 "later."
-msgstr ""
+msgstr "以 GNU 通用公共授權第二版或更新發佈。"
 
 #: ewsconfigdialog.cpp:250
 #, kde-format
@@ -335,7 +337,7 @@ msgstr "EWS 網址："
 #: ewsconfigdialog.ui:263
 #, kde-format
 msgid "The Microsoft Exchange server URL used to send EWS requests."
-msgstr ""
+msgstr "用來傳送 EWS 請求的 Microsoft Exchange 伺服器網址。"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_AutoDiscovery)
 #: ewsconfigdialog.ui:285
@@ -514,6 +516,8 @@ msgid ""
 "Resets synchronization state between Exchange and Akonadi. Use in case some "
 "items or folders are not showing up despite existing in Exchange."
 msgstr ""
+"重設 Exchange 與 Akonadi 之間的同步狀態。如果有某些項目或資料夾存在於 "
+"Exchange 中卻不在 Akonadi 中顯示時可以使用。"
 
 #. i18n: ectx: property (text), widget (QPushButton, clearFolderTreeSyncStateButton)
 #: ewsconfigdialog.ui:564
@@ -642,7 +646,7 @@ msgstr "EWS 郵件傳輸設定"
 #: ewsmtaconfigdialog.ui:42
 #, kde-format
 msgid "Parent Exchange account:"
-msgstr ""
+msgstr "親 Exchange 帳號："
 
 #: ewsmtaresource.cpp:57
 #, kde-format
@@ -742,7 +746,7 @@ msgstr "無法處理資料夾取得請求"
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
-msgstr ""
+msgstr "無效的漸進資料夾取得請求工作物件"
 
 #: ewsresource.cpp:548
 #, kde-format
@@ -1069,7 +1073,7 @@ msgstr "嘗試自動探索 Exchange 伺服器位址"
 msgid ""
 "Attempts to find out the Microsoft Exchange server address relevant to the "
 "supplied e-mail address."
-msgstr ""
+msgstr "會嘗試找出提供的電子郵件地址所對應的 Microsoft Exchange 伺服器位址。"
 
 #. i18n: ectx: label, entry (PollInterval), group (General)
 #: ewsresource.kcfg:40
@@ -1123,7 +1127,7 @@ msgstr "OAuth2 應用程式識別子"
 #: ewsresource.kcfg:69
 #, kde-format
 msgid "OAuth2 return URI"
-msgstr ""
+msgstr "OAuth2 回傳 URI"
 
 #. i18n: ectx: label, entry (PKeyCert), group (General)
 #: ewsresource.kcfg:73
@@ -1192,7 +1196,7 @@ msgid "Item update failed: "
 msgstr "項目更新失敗："
 
 #: mail/ewsmodifymailjob.cpp:103
-#, fuzzy, kde-format
+#, kde-format
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "處理更新項目回應時項目順序不正確。"
