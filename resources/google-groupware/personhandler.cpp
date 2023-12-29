@@ -27,23 +27,21 @@
 #include <kgapicore_export.h>
 
 #include <KGAPI/Account>
+#include <KGAPI/People/ContactGroup>
+#include <KGAPI/People/ContactGroupCreateJob>
+#include <KGAPI/People/ContactGroupDeleteJob>
+#include <KGAPI/People/ContactGroupFetchJob>
+#include <KGAPI/People/ContactGroupMembership>
+#include <KGAPI/People/ContactGroupModifyJob>
 #include <KGAPI/People/Membership>
-#include <KGAPI/People/Person>
-#include <KGAPI/People/PersonMetadata>
 #include <KGAPI/People/PersonCreateJob>
 #include <KGAPI/People/PersonDeleteJob>
 #include <KGAPI/People/PersonFetchJob>
+#include <KGAPI/People/PersonMetadata>
 #include <KGAPI/People/PersonModifyJob>
 #include <KGAPI/People/PersonPhotoDeleteJob>
 #include <KGAPI/People/PersonPhotoUpdateJob>
 #include <KGAPI/People/Photo>
-#include <KGAPI/People/ContactGroup>
-#include <KGAPI/People/ContactGroupMembership>
-#include <KGAPI/People/ContactGroupCreateJob>
-#include <KGAPI/People/ContactGroupDeleteJob>
-#include <KGAPI/People/ContactGroupFetchJob>
-#include <KGAPI/People/ContactGroupModifyJob>
-
 
 using namespace KGAPI2;
 using namespace Akonadi;

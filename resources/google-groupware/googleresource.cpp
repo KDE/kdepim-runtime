@@ -10,7 +10,6 @@
 #include "googleresource_debug.h"
 #include "googleresourcestate.h"
 #include "googlescopes.h"
-#include "googlesettings.h"
 #include "settingsadaptor.h"
 
 #include "personhandler.h"

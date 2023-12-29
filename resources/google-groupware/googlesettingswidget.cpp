@@ -9,7 +9,6 @@
 #include "googleresource.h"
 #include "googleresource_debug.h"
 #include "googlescopes.h"
-#include "googlesettings.h"
 
 #include <QDialogButtonBox>
 

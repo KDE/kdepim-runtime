@@ -11,7 +11,6 @@
 
 #include <KGAPI/People/ContactGroupMembership>
 #include <KGAPI/People/Membership>
-#include <KGAPI/People/Person>
 
 #include "googlepeople_debug.h"
 
