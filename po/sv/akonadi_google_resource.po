@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-15 01:36+0000\n"
+"POT-Creation-Date: 2023-12-30 01:38+0000\n"
 "PO-Revision-Date: 2023-07-31 08:32+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -96,40 +96,40 @@ msgstr "Klar"
 msgid "Invalid item."
 msgstr "Ogiltigt objekt."
 
-#: googleresource.cpp:83
+#: googleresource.cpp:82
 #, kde-format
 msgid "Fetching password..."
 msgstr "Hämtar lösenord..."
 
-#: googleresource.cpp:90
+#: googleresource.cpp:89
 #, kde-format
 msgid "Can't fetch password"
 msgstr "Kan inte hämta lösenord"
 
-#: googleresource.cpp:131
+#: googleresource.cpp:130
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Klar"
 
-#: googleresource.cpp:143
+#: googleresource.cpp:142
 #, fuzzy, kde-format
 #| msgid "not configured"
 msgid "Not configured"
 msgstr "inte inställd"
 
-#: googleresource.cpp:143
+#: googleresource.cpp:142
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google grupprogram (%1)"
 
-#: googleresource.cpp:194
+#: googleresource.cpp:193
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Kontot har loggats ut."
 
-#: googleresource.cpp:197
+#: googleresource.cpp:196
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -138,7 +138,7 @@ msgstr ""
 "Google grupprogram har loggats ut från ditt konto. Logga in igen för att "
 "aktivera synkronisering av Google kontakter och kalender igen."
 
-#: googleresource.cpp:198
+#: googleresource.cpp:197
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -147,41 +147,41 @@ msgstr ""
 "Google grupprogram har loggats ut från kontot %1. Logga in igen för att "
 "aktivera synkronisering av Google kontakter och kalender igen."
 
-#: googleresource.cpp:202
+#: googleresource.cpp:201
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 behöver din uppmärksamhet."
 
-#: googleresource.cpp:207
+#: googleresource.cpp:206
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Logga in"
 
-#: googleresource.cpp:219 googleresource.cpp:220
+#: googleresource.cpp:218 googleresource.cpp:219
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Resursen är inte inställd"
 
-#: googleresource.cpp:235
+#: googleresource.cpp:234
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Misslyckades uppdatera symboler"
 
-#: googleresource.cpp:424 googleresource.cpp:438 googleresource.cpp:452
-#: googleresource.cpp:467 googleresource.cpp:481 googleresource.cpp:495
+#: googleresource.cpp:423 googleresource.cpp:437 googleresource.cpp:451
+#: googleresource.cpp:466 googleresource.cpp:480 googleresource.cpp:494
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Ogiltig typ av nyttolast"
 
-#: googleresource.cpp:509 googleresource.cpp:523 googleresource.cpp:537
+#: googleresource.cpp:508 googleresource.cpp:522 googleresource.cpp:536
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Okänd Mime-typ för samling"
 
-#: googlesettingswidget.cpp:41
+#: googlesettingswidget.cpp:40
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -189,7 +189,7 @@ msgstr[0] " minut"
 msgstr[1] " minuter"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:102 googlesettingswidget.ui:30
 #, fuzzy, kde-format
 #| msgid "<b>not configured</b>"
 msgid "<b>Not configured</b>"
@@ -244,60 +244,60 @@ msgstr "Uppdatera"
 msgid "Enabled Tasklists:"
 msgstr "Aktivera uppgiftslistor:"
 
-#: personhandler.cpp:88
+#: personhandler.cpp:86
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Coworkers"
 msgstr "Medarbetare"
 
-#: personhandler.cpp:90
+#: personhandler.cpp:88
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Friends"
 msgstr "Vänner"
 
-#: personhandler.cpp:92
+#: personhandler.cpp:90
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Family"
 msgstr "Familj"
 
-#: personhandler.cpp:94
+#: personhandler.cpp:92
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "My Contacts"
 msgstr "Mina kontakter"
 
-#: personhandler.cpp:118
+#: personhandler.cpp:116
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts groups"
 msgstr "Hämtar kontaktgrupper"
 
-#: personhandler.cpp:125 personhandler.cpp:131
+#: personhandler.cpp:123 personhandler.cpp:129
 #, kde-format
 msgid "Other Contacts"
 msgstr "Övriga kontakter"
 
-#: personhandler.cpp:172
+#: personhandler.cpp:170
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts for group '%1'"
 msgstr "Tar bort kontakter för grupp '%1'"
 
-#: personhandler.cpp:376
+#: personhandler.cpp:374
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding contact to group '%1'"
 msgstr "Lägger till kontakt i grupp '%1'"
 
-#: personhandler.cpp:410
+#: personhandler.cpp:408
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact"
 msgstr "Ändrar kontakt"
 
-#: personhandler.cpp:424
+#: personhandler.cpp:422
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 contact"
@@ -305,12 +305,12 @@ msgid_plural "Removing %1 contacts"
 msgstr[0] "Tar bort %1 kontakt"
 msgstr[1] "Tar bort %1 kontakter"
 
-#: personhandler.cpp:444
+#: personhandler.cpp:442
 #, kde-format
 msgid "Invalid source or destination collection"
 msgstr "Ogiltig käll- eller målsamling"
 
-#: personhandler.cpp:450
+#: personhandler.cpp:448
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 contact from group '%2' to '%3'"
@@ -318,7 +318,7 @@ msgid_plural "Moving %1 contacts from group '%2' to '%3'"
 msgstr[0] "Flyttar %1 kontakt från grupp '%2' till '%3'"
 msgstr[1] "Flyttar %1 kontakter från grupp '%2' till '%3'"
 
-#: personhandler.cpp:467
+#: personhandler.cpp:465
 #, kde-format
 msgctxt "@info:status"
 msgid "Linking %1 contact"
@@ -326,7 +326,7 @@ msgid_plural "Linking %1 contacts"
 msgstr[0] "Länkar till %1 kontakt"
 msgstr[1] "Länkar till %1 kontakter"
 
-#: personhandler.cpp:481
+#: personhandler.cpp:479
 #, kde-format
 msgctxt "@info:status"
 msgid "Unlinking %1 contact"
@@ -334,19 +334,19 @@ msgid_plural "Unlinking %1 contacts"
 msgstr[0] "Tar bort länk till %1 kontakt"
 msgstr[1] "Tar bort länkar till %1 kontakter"
 
-#: personhandler.cpp:514
+#: personhandler.cpp:512
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new contact group '%1'"
 msgstr "Skapar ny kontaktgrupp '%1'"
 
-#: personhandler.cpp:535
+#: personhandler.cpp:533
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact group '%1'"
 msgstr "Ändrar kontaktgrupp '%1'"
 
-#: personhandler.cpp:560
+#: personhandler.cpp:558
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing contact group '%1'"

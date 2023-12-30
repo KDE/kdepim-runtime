@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-15 01:36+0000\n"
+"POT-Creation-Date: 2023-12-30 01:38+0000\n"
 "PO-Revision-Date: 2023-12-13 05:30+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -96,39 +96,39 @@ msgstr "已就緒"
 msgid "Invalid item."
 msgstr "無效的項目。"
 
-#: googleresource.cpp:83
+#: googleresource.cpp:82
 #, kde-format
 msgid "Fetching password..."
 msgstr "正在抓取密碼..."
 
-#: googleresource.cpp:90
+#: googleresource.cpp:89
 #, kde-format
 msgid "Can't fetch password"
 msgstr "無法抓取密碼"
 
-#: googleresource.cpp:131
+#: googleresource.cpp:130
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "已就緒"
 
-#: googleresource.cpp:143
+#: googleresource.cpp:142
 #, kde-format
 msgid "Not configured"
 msgstr "未設定"
 
-#: googleresource.cpp:143
+#: googleresource.cpp:142
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google 協作工具 (%1)"
 
-#: googleresource.cpp:194
+#: googleresource.cpp:193
 #, kde-format
 msgid "Account has been logged out."
 msgstr "帳號已被登出。"
 
-#: googleresource.cpp:197
+#: googleresource.cpp:196
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -136,7 +136,7 @@ msgid ""
 msgstr ""
 "Google 協作工具已從您的帳號登出。請登入來重新啟用 Google 聯絡人與行事曆同步。"
 
-#: googleresource.cpp:198
+#: googleresource.cpp:197
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -144,48 +144,48 @@ msgid ""
 msgstr ""
 "Google 協作工具已從帳號 %1 登出。請登入來重新啟用 Google 聯絡人與行事曆同步。"
 
-#: googleresource.cpp:202
+#: googleresource.cpp:201
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 需要您的注意。"
 
-#: googleresource.cpp:207
+#: googleresource.cpp:206
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "登入"
 
-#: googleresource.cpp:219 googleresource.cpp:220
+#: googleresource.cpp:218 googleresource.cpp:219
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "資源未設定"
 
-#: googleresource.cpp:235
+#: googleresource.cpp:234
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "刷新標記時失敗"
 
-#: googleresource.cpp:424 googleresource.cpp:438 googleresource.cpp:452
-#: googleresource.cpp:467 googleresource.cpp:481 googleresource.cpp:495
+#: googleresource.cpp:423 googleresource.cpp:437 googleresource.cpp:451
+#: googleresource.cpp:466 googleresource.cpp:480 googleresource.cpp:494
 #, kde-format
 msgid "Invalid payload type"
 msgstr "無效的資料（payload）型態"
 
-#: googleresource.cpp:509 googleresource.cpp:523 googleresource.cpp:537
+#: googleresource.cpp:508 googleresource.cpp:522 googleresource.cpp:536
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "未知的收藏 MIME 型態"
 
-#: googlesettingswidget.cpp:41
+#: googlesettingswidget.cpp:40
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " 分鐘"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:102 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>Not configured</b>"
 msgstr "<b>未設定</b>"
@@ -239,105 +239,105 @@ msgstr "重新載入"
 msgid "Enabled Tasklists:"
 msgstr "已啟用的工作清單："
 
-#: personhandler.cpp:88
+#: personhandler.cpp:86
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Coworkers"
 msgstr "同事"
 
-#: personhandler.cpp:90
+#: personhandler.cpp:88
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Friends"
 msgstr "朋友"
 
-#: personhandler.cpp:92
+#: personhandler.cpp:90
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Family"
 msgstr "家人"
 
-#: personhandler.cpp:94
+#: personhandler.cpp:92
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "My Contacts"
 msgstr "我的聯絡人"
 
-#: personhandler.cpp:118
+#: personhandler.cpp:116
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts groups"
 msgstr "正在取得聯絡人群組"
 
-#: personhandler.cpp:125 personhandler.cpp:131
+#: personhandler.cpp:123 personhandler.cpp:129
 #, kde-format
 msgid "Other Contacts"
 msgstr "其他聯絡人"
 
-#: personhandler.cpp:172
+#: personhandler.cpp:170
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts for group '%1'"
 msgstr "正在取得群組 '%1' 的聯絡人"
 
-#: personhandler.cpp:376
+#: personhandler.cpp:374
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding contact to group '%1'"
 msgstr "正在新增聯絡人到群組 '%1'"
 
-#: personhandler.cpp:410
+#: personhandler.cpp:408
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact"
 msgstr "正在變更聯絡人"
 
-#: personhandler.cpp:424
+#: personhandler.cpp:422
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 contact"
 msgid_plural "Removing %1 contacts"
 msgstr[0] "正在移除 %1 個聯絡人"
 
-#: personhandler.cpp:444
+#: personhandler.cpp:442
 #, kde-format
 msgid "Invalid source or destination collection"
 msgstr "無效的來源或目的地收藏"
 
-#: personhandler.cpp:450
+#: personhandler.cpp:448
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 contact from group '%2' to '%3'"
 msgid_plural "Moving %1 contacts from group '%2' to '%3'"
 msgstr[0] "正在從群組 '%2' 移動 %1 個聯絡人到群組 '%3'"
 
-#: personhandler.cpp:467
+#: personhandler.cpp:465
 #, kde-format
 msgctxt "@info:status"
 msgid "Linking %1 contact"
 msgid_plural "Linking %1 contacts"
 msgstr[0] "正在連結 %1 個聯絡人"
 
-#: personhandler.cpp:481
+#: personhandler.cpp:479
 #, kde-format
 msgctxt "@info:status"
 msgid "Unlinking %1 contact"
 msgid_plural "Unlinking %1 contacts"
 msgstr[0] "正在解除 %1 個聯絡人的連結"
 
-#: personhandler.cpp:514
+#: personhandler.cpp:512
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new contact group '%1'"
 msgstr "正在建立新聯絡人群組 '%1'"
 
-#: personhandler.cpp:535
+#: personhandler.cpp:533
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact group '%1'"
 msgstr "正在變更聯絡人群組 '%1'"
 
-#: personhandler.cpp:560
+#: personhandler.cpp:558
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing contact group '%1'"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bosnianuniversetranslation\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-15 01:36+0000\n"
+"POT-Creation-Date: 2023-12-30 01:38+0000\n"
 "PO-Revision-Date: 2014-02-09 17:00+0100\n"
 "Last-Translator: Samir Ribić <megaribi@epn.ba>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -109,29 +109,29 @@ msgstr "Spreman"
 msgid "Invalid item."
 msgstr "Nevažeća korisna informacija stavke"
 
-#: googleresource.cpp:83
+#: googleresource.cpp:82
 #, kde-format
 msgid "Fetching password..."
 msgstr ""
 
-#: googleresource.cpp:90
+#: googleresource.cpp:89
 #, kde-format
 msgid "Can't fetch password"
 msgstr ""
 
-#: googleresource.cpp:131
+#: googleresource.cpp:130
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Spreman"
 
-#: googleresource.cpp:143
+#: googleresource.cpp:142
 #, fuzzy, kde-format
 #| msgid "not configured"
 msgid "Not configured"
 msgstr "nije konfigurisano"
 
-#: googleresource.cpp:143
+#: googleresource.cpp:142
 #, fuzzy, kde-format
 #| msgctxt "%1 is account name (user@gmail.com)"
 #| msgid "Google Contacts (%1)"
@@ -139,61 +139,61 @@ msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google kontakti (%1)"
 
-#: googleresource.cpp:194
+#: googleresource.cpp:193
 #, fuzzy, kde-format
 #| msgid "Configured account has been removed"
 msgid "Account has been logged out."
 msgstr "Konfigurisani nalog je uklonjen"
 
-#: googleresource.cpp:197
+#: googleresource.cpp:196
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
 
-#: googleresource.cpp:198
+#: googleresource.cpp:197
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
 
-#: googleresource.cpp:202
+#: googleresource.cpp:201
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr ""
 
-#: googleresource.cpp:207
+#: googleresource.cpp:206
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr ""
 
-#: googleresource.cpp:219 googleresource.cpp:220
+#: googleresource.cpp:218 googleresource.cpp:219
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Resurs nije konfigurisan"
 
-#: googleresource.cpp:235
+#: googleresource.cpp:234
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Neuspjelo osvježenje tokena"
 
-#: googleresource.cpp:424 googleresource.cpp:438 googleresource.cpp:452
-#: googleresource.cpp:467 googleresource.cpp:481 googleresource.cpp:495
+#: googleresource.cpp:423 googleresource.cpp:437 googleresource.cpp:451
+#: googleresource.cpp:466 googleresource.cpp:480 googleresource.cpp:494
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Nevažećavrsta korisne informacije"
 
-#: googleresource.cpp:509 googleresource.cpp:523 googleresource.cpp:537
+#: googleresource.cpp:508 googleresource.cpp:522 googleresource.cpp:536
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Nepoznat mime tip kolekcije"
 
-#: googlesettingswidget.cpp:41
+#: googlesettingswidget.cpp:40
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -202,7 +202,7 @@ msgstr[1] "minute"
 msgstr[2] "minuta"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:102 googlesettingswidget.ui:30
 #, fuzzy, kde-format
 #| msgid "not configured"
 msgid "<b>Not configured</b>"
@@ -263,32 +263,32 @@ msgstr "Ponovo učitaj"
 msgid "Enabled Tasklists:"
 msgstr "Lista dužnosti"
 
-#: personhandler.cpp:88
+#: personhandler.cpp:86
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Coworkers"
 msgstr "Saradnici"
 
-#: personhandler.cpp:90
+#: personhandler.cpp:88
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Friends"
 msgstr "Prijatelji"
 
-#: personhandler.cpp:92
+#: personhandler.cpp:90
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Family"
 msgstr "Porodica"
 
-#: personhandler.cpp:94
+#: personhandler.cpp:92
 #, fuzzy, kde-format
 #| msgid "My Contacts"
 msgctxt "Name of a group of contacts"
 msgid "My Contacts"
 msgstr "Moji kontakti"
 
-#: personhandler.cpp:118
+#: personhandler.cpp:116
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Retrieving photos"
@@ -296,24 +296,24 @@ msgctxt "@info:status"
 msgid "Retrieving contacts groups"
 msgstr "Preuzimam fotografije"
 
-#: personhandler.cpp:125 personhandler.cpp:131
+#: personhandler.cpp:123 personhandler.cpp:129
 #, kde-format
 msgid "Other Contacts"
 msgstr "Drugi kontakti"
 
-#: personhandler.cpp:172
+#: personhandler.cpp:170
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts for group '%1'"
 msgstr ""
 
-#: personhandler.cpp:376
+#: personhandler.cpp:374
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding contact to group '%1'"
 msgstr ""
 
-#: personhandler.cpp:410
+#: personhandler.cpp:408
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Removing contact"
@@ -321,7 +321,7 @@ msgctxt "@info:status"
 msgid "Changing contact"
 msgstr "Brisanje kontakta"
 
-#: personhandler.cpp:424
+#: personhandler.cpp:422
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Removing contact"
@@ -332,12 +332,12 @@ msgstr[0] "Brisanje kontakta"
 msgstr[1] "Brisanje kontakta"
 msgstr[2] "Brisanje kontakta"
 
-#: personhandler.cpp:444
+#: personhandler.cpp:442
 #, kde-format
 msgid "Invalid source or destination collection"
 msgstr "Nevažeći izvor ili odredište zbirke"
 
-#: personhandler.cpp:450
+#: personhandler.cpp:448
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Removing contact"
@@ -348,7 +348,7 @@ msgstr[0] "Brisanje kontakta"
 msgstr[1] "Brisanje kontakta"
 msgstr[2] "Brisanje kontakta"
 
-#: personhandler.cpp:467
+#: personhandler.cpp:465
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Removing contact"
@@ -359,7 +359,7 @@ msgstr[0] "Brisanje kontakta"
 msgstr[1] "Brisanje kontakta"
 msgstr[2] "Brisanje kontakta"
 
-#: personhandler.cpp:481
+#: personhandler.cpp:479
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Removing contact"
@@ -370,19 +370,19 @@ msgstr[0] "Brisanje kontakta"
 msgstr[1] "Brisanje kontakta"
 msgstr[2] "Brisanje kontakta"
 
-#: personhandler.cpp:514
+#: personhandler.cpp:512
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new contact group '%1'"
 msgstr ""
 
-#: personhandler.cpp:535
+#: personhandler.cpp:533
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact group '%1'"
 msgstr ""
 
-#: personhandler.cpp:560
+#: personhandler.cpp:558
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Removing contact"
