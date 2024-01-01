@@ -2,7 +2,7 @@
   This file is part of libkldap.
 
   SPDX-FileCopyrightText: 2002-2009 Tobias Koenig <tokoe@kde.org>
-  SPDX-FileCopyrightText: 2013-2023 Laurent Montel <montel@kde.org>
+  SPDX-FileCopyrightText: 2013-2024 Laurent Montel <montel@kde.org>
 
   SPDX-License-Identifier: LGPL-2.0-or-later
 */
