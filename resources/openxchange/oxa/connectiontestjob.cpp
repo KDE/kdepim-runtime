@@ -9,6 +9,7 @@
 #include "connectiontestjob.h"
 
 #include <KIO/Job>
+#include <KIO/StoredTransferJob>
 
 #include <QJsonDocument>
 #include <QJsonObject>

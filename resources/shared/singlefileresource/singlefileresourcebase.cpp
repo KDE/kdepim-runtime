@@ -15,6 +15,7 @@
 #include <KIO/Job>
 #include <KLocalizedString>
 #include <QDebug>
+#include <kio/global.h>
 
 #include <KConfigGroup>
 

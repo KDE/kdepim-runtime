@@ -9,6 +9,7 @@
 #include "singlefileresourceconfigwidgetbase.h"
 
 #include <KIO/Job>
+#include <KIO/StatJob>
 #include <QTimer>
 
 #include <KConfigDialogManager>

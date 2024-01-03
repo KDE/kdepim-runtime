@@ -14,6 +14,7 @@
 #include <Akonadi/EntityDisplayAttribute>
 
 #include <KDirWatch>
+#include <KIO/FileCopyJob>
 #include <KIO/Job>
 #include <KLocalizedString>
 

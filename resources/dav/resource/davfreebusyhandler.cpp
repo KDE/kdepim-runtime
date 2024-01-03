@@ -14,6 +14,7 @@
 #include "davresource_debug.h"
 #include <KCalendarCore/ICalFormat>
 #include <KIO/Job>
+#include <KIO/StoredTransferJob>
 #include <KLocalizedString>
 
 static QDomElement firstChildElementNS(const QDomElement &parent, const QString &namespaceUri, const QString &tagName)
