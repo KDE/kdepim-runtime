@@ -23,9 +23,10 @@ void FolderArchiveAccountInfoTest::shouldHaveDefaultValue()
     QVERIFY(info.instanceName().isEmpty());
     QCOMPARE(info.archiveTopLevel(), Akonadi::Collection(-1).id());
     QCOMPARE(info.folderArchiveType(), FolderArchiveAccountInfo::UniqueFolder);
-    QCOMPARE(info.enabled(), false);
-    QCOMPARE(info.keepExistingStructure(), false);
-    QCOMPARE(info.isValid(), false);
+    QVERIFY(!info.enabled());
+    QVERIFY(!info.keepExistingStructure());
+    QVERIFY(!info.isValid());
+    QVERIFY(!info.useDateFromMessage());
 }
 
 void FolderArchiveAccountInfoTest::shouldBeValid()
