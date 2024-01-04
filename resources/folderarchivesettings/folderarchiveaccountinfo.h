@@ -44,10 +44,14 @@ public:
 
     [[nodiscard]] bool operator==(const FolderArchiveAccountInfo &other) const;
 
+    [[nodiscard]] bool useDateFromMessage() const;
+    void setUseDateFromMessage(bool newUseDateFromMessage);
+
 private:
     FolderArchiveAccountInfo::FolderArchiveType mArchiveType = UniqueFolder;
     Akonadi::Collection::Id mArchiveTopLevelCollectionId = -1;
     QString mInstanceName;
+    bool mUseDateFromMessage = false;
     bool mEnabled = false;
     bool mKeepExistingStructure = false;
 };

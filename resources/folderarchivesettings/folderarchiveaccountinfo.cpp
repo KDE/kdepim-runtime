@@ -96,5 +96,15 @@ void FolderArchiveAccountInfo::writeConfig(KConfigGroup &config)
 bool FolderArchiveAccountInfo::operator==(const FolderArchiveAccountInfo &other) const
 {
     return (mInstanceName == other.instanceName()) && (mArchiveTopLevelCollectionId == other.archiveTopLevel()) && (mArchiveType == other.folderArchiveType())
-        && (mEnabled == other.enabled()) && (mKeepExistingStructure == other.keepExistingStructure());
+        && (mEnabled == other.enabled()) && (mKeepExistingStructure == other.keepExistingStructure()) && (mUseDateFromMessage == other.useDateFromMessage());
+}
+
+bool FolderArchiveAccountInfo::useDateFromMessage() const
+{
+    return mUseDateFromMessage;
+}
+
+void FolderArchiveAccountInfo::setUseDateFromMessage(bool newUseDateFromMessage)
+{
+    mUseDateFromMessage = newUseDateFromMessage;
 }
