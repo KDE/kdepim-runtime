@@ -11,7 +11,7 @@ namespace FolderArchive
 {
 namespace FolderArchiveUtil
 {
-QString groupConfigPattern();
-QString configFileName();
+[[nodiscard]] QString groupConfigPattern();
+[[nodiscard]] QString configFileName();
 }
 }

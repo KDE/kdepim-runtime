@@ -25,7 +25,7 @@ public:
     ~FolderArchiveComboBox() override;
 
     void setType(FolderArchiveAccountInfo::FolderArchiveType type);
-    FolderArchiveAccountInfo::FolderArchiveType type() const;
+    [[nodiscard]] FolderArchiveAccountInfo::FolderArchiveType type() const;
 
 private:
     void initialize();
@@ -43,7 +43,7 @@ public:
     void writeSettings();
 
 private:
-    void slotEnableChanged(bool enabled);
+    FOLDERARCHIVESETTINGS_NO_EXPORT void slotEnableChanged(bool enabled);
     const QString mInstanceName;
     QCheckBox *const mEnabled;
     FolderArchiveComboBox *mArchiveNamed = nullptr;
