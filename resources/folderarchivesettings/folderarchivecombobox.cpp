@@ -36,3 +36,5 @@ FolderArchiveAccountInfo::FolderArchiveType FolderArchiveComboBox::type() const
 {
     return static_cast<FolderArchiveAccountInfo::FolderArchiveType>(itemData(currentIndex()).toInt());
 }
+
+#include "moc_folderarchivecombobox.cpp"
