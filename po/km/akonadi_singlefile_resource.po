@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-01-04 01:34+0000\n"
 "PO-Revision-Date: 2010-11-29 09:24+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -153,69 +153,69 @@ msgstr ""
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr ""
 
-#: singlefileresource.h:66
+#: singlefileresource.h:67
 #, kde-format
 msgid "No file selected."
 msgstr "គ្មាន​ឯកសារ​ដែល​បាន​ជ្រើស ។"
 
-#: singlefileresource.h:68
+#: singlefileresource.h:69
 #, kde-format
 msgid "The resource not configured yet"
 msgstr ""
 
-#: singlefileresource.h:99 singlefileresource.h:128 singlefileresource.h:213
-#: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
+#: singlefileresource.h:100 singlefileresource.h:129 singlefileresource.h:214
+#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "រួចរាល់"
 
-#: singlefileresource.h:101
+#: singlefileresource.h:102
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "មិនអាច​បង្កើត​ឯកសារ '%1' ។"
 
-#: singlefileresource.h:115
+#: singlefileresource.h:116
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "មិនអាច​អាន​ឯកសារ '%1' បាន​ទេ"
 
-#: singlefileresource.h:131
+#: singlefileresource.h:132
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "ការ​ទាញយក​ផ្សេងទៀត​គឺ​កំពុង​ដំណើរការ ។"
 
-#: singlefileresource.h:141 singlefileresource.h:227
+#: singlefileresource.h:142 singlefileresource.h:228
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "ការ​ផ្ទុក​ឡើង​ផ្សេង គឺ​កំពុង​ដំណើរការ ។"
 
-#: singlefileresource.h:157
+#: singlefileresource.h:158
 #, kde-format
 msgid "Downloading remote file."
 msgstr "កំពុង​ទាញយក​ឯកសារ​ពី​ចម្ងាយ"
 
-#: singlefileresource.h:177
+#: singlefileresource.h:178
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "ព្យាយាម​សរសេរ​ទៅកាន់​ឯកសារ​បានតែ​អាន ៖ '%1' ។"
 
-#: singlefileresource.h:189
+#: singlefileresource.h:190
 #, kde-format
 msgid "No file specified."
 msgstr "គ្មាន​ឯកសារ​ដែល​បាន​បញ្ជាក់​ទេ ។"
 
-#: singlefileresource.h:217
+#: singlefileresource.h:218
 #, kde-format
 msgid "A download is still in progress."
 msgstr "ការ​ទាញយក​គឺ​កំពុង​ដំណើរការ ។"
 
-#: singlefileresource.h:257
+#: singlefileresource.h:258
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "កំពុង​ផ្ទុក​ឡើង​ឯកសារ​ដែល​បាន​ដាក់​ក្នុង​ឃ្លាំងទៅកាន់​ទីតាំង​ពី​ចម្ងាយ ។"
 
-#: singlefileresourcebase.cpp:240
+#: singlefileresourcebase.cpp:241
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -224,12 +224,12 @@ msgstr ""
 "ឯកសារ '%1' ត្រូវ​បាន​ផ្លាស់ប្ដូរ​នៅ​លើ​ថាស ។ ជា​ការ​ប្រុងប្រយ័ត្ន បម្រុងទុក​នៃ​មាតិកា​មុន​របស់​វា​ត្រូវ​បាន​"
 "បង្កើត​នៅ​ '%2' ។"
 
-#: singlefileresourcebase.cpp:264
+#: singlefileresourcebase.cpp:265
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "មិនអាច​ផ្ទុក​ឯកសារ '%1' ។"
 
-#: singlefileresourcebase.cpp:283
+#: singlefileresourcebase.cpp:284
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "មិនអាច​រក្សាទុក​ឯកសារ '%1' ។"
@@ -314,7 +314,7 @@ msgid ""
 "(e.g. for remote calendars)."
 msgstr ""
 
-#: singlefileresourceconfigwidgetbase.cpp:128
+#: singlefileresourceconfigwidgetbase.cpp:129
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information..."

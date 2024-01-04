@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-01-04 01:34+0000\n"
 "PO-Revision-Date: 2023-11-11 23:31+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -293,17 +293,17 @@ msgid ""
 "supported."
 msgstr "İstekle ilgili bir sorun oluştu. İstenen MIME türleri desteklenmiyor."
 
-#: davfreebusyhandler.cpp:57
+#: davfreebusyhandler.cpp:58
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "%1 için giden kutusu programı bulunamadı"
 
-#: davfreebusyhandler.cpp:186 davfreebusyhandler.cpp:197
+#: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Sunucudan geçersiz yanıt"
 
-#: davfreebusyhandler.cpp:208
+#: davfreebusyhandler.cpp:209
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Alınan uygun-meşgul verisi ayrıştırılamıyor"

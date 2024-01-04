@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2023-11-12 16:39+0100\n"
+"PO-Revision-Date: 2024-01-03 14:17+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -507,7 +507,7 @@ msgstr "Kontotipo: POP-konto"
 #: popsettings.ui:61
 #, kde-format
 msgid "General"
-msgstr "Ĝeneralo"
+msgstr "Ĝenerala"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget_4)
 #: popsettings.ui:67

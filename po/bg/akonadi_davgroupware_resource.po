@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-01-04 01:34+0000\n"
 "PO-Revision-Date: 2023-01-21 20:10+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -289,17 +289,17 @@ msgid ""
 "supported."
 msgstr "Имаше проблем със заявката. Исканите MIME типове не се поддържат."
 
-#: davfreebusyhandler.cpp:57
+#: davfreebusyhandler.cpp:58
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "Не е намерена кутия планувани-изходящи за %1"
 
-#: davfreebusyhandler.cpp:186 davfreebusyhandler.cpp:197
+#: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Невалиден отговор от сървъра"
 
-#: davfreebusyhandler.cpp:208
+#: davfreebusyhandler.cpp:209
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Невъзможно е да се анализират получените данни за free-busy"

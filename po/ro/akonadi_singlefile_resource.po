@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-01-04 01:34+0000\n"
 "PO-Revision-Date: 2009-08-04 10:29+0300\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -142,82 +142,82 @@ msgstr ""
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr ""
 
-#: singlefileresource.h:66
+#: singlefileresource.h:67
 #, kde-format
 msgid "No file selected."
 msgstr "Niciun fișier ales."
 
-#: singlefileresource.h:68
+#: singlefileresource.h:69
 #, kde-format
 msgid "The resource not configured yet"
 msgstr ""
 
-#: singlefileresource.h:99 singlefileresource.h:128 singlefileresource.h:213
-#: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
+#: singlefileresource.h:100 singlefileresource.h:129 singlefileresource.h:214
+#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Pregătit"
 
-#: singlefileresource.h:101
+#: singlefileresource.h:102
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "Imposibil de creat fișierul „%1”."
 
-#: singlefileresource.h:115
+#: singlefileresource.h:116
 #, fuzzy, kde-format
 #| msgid "Could not create file '%1'."
 msgid "Could not read file '%1'"
 msgstr "Imposibil de creat fișierul „%1”."
 
-#: singlefileresource.h:131
+#: singlefileresource.h:132
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Altă descărcare este în curs."
 
-#: singlefileresource.h:141 singlefileresource.h:227
+#: singlefileresource.h:142 singlefileresource.h:228
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Altă încărcare de fișiere este în curs."
 
-#: singlefileresource.h:157
+#: singlefileresource.h:158
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Se descarcă fișierul distant."
 
-#: singlefileresource.h:177
+#: singlefileresource.h:178
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Încercare de scriere într-un fișier numai-citire: „%1”."
 
-#: singlefileresource.h:189
+#: singlefileresource.h:190
 #, kde-format
 msgid "No file specified."
 msgstr "Niciun fișier specificat."
 
-#: singlefileresource.h:217
+#: singlefileresource.h:218
 #, kde-format
 msgid "A download is still in progress."
 msgstr "O descărcare este în curs."
 
-#: singlefileresource.h:257
+#: singlefileresource.h:258
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "se încarcă fișierul prestocat către locația distantă."
 
-#: singlefileresourcebase.cpp:240
+#: singlefileresourcebase.cpp:241
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
 "contents has been created at '%2'."
 msgstr ""
 
-#: singlefileresourcebase.cpp:264
+#: singlefileresourcebase.cpp:265
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Fișierul „%1” nu poate fi încărcat."
 
-#: singlefileresourcebase.cpp:283
+#: singlefileresourcebase.cpp:284
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Fișierul „%1” nu a putut fi salvat."
@@ -293,7 +293,7 @@ msgid ""
 "(e.g. for remote calendars)."
 msgstr ""
 
-#: singlefileresourceconfigwidgetbase.cpp:128
+#: singlefileresourceconfigwidgetbase.cpp:129
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information..."

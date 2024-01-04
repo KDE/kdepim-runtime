@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-01-04 01:34+0000\n"
 "PO-Revision-Date: 2013-01-15 03:14+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -157,69 +157,69 @@ msgstr ""
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr ""
 
-#: singlefileresource.h:66
+#: singlefileresource.h:67
 #, kde-format
 msgid "No file selected."
 msgstr "Файл таңдалмаған."
 
-#: singlefileresource.h:68
+#: singlefileresource.h:69
 #, kde-format
 msgid "The resource not configured yet"
 msgstr ""
 
-#: singlefileresource.h:99 singlefileresource.h:128 singlefileresource.h:213
-#: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
+#: singlefileresource.h:100 singlefileresource.h:129 singlefileresource.h:214
+#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Дайын"
 
-#: singlefileresource.h:101
+#: singlefileresource.h:102
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "'%1' файлы құрылмады."
 
-#: singlefileresource.h:115
+#: singlefileresource.h:116
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "'%1' файлы оықлмады."
 
-#: singlefileresource.h:131
+#: singlefileresource.h:132
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Басқа жүктеп алу әлі бітпеген."
 
-#: singlefileresource.h:141 singlefileresource.h:227
+#: singlefileresource.h:142 singlefileresource.h:228
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Басқа жүктеп беру әлі бітпеген."
 
-#: singlefileresource.h:157
+#: singlefileresource.h:158
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Қашықтан жүктеп жатыр."
 
-#: singlefileresource.h:177
+#: singlefileresource.h:178
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Тек оқу үшін файлға жазу талпынысы: '%1'"
 
-#: singlefileresource.h:189
+#: singlefileresource.h:190
 #, kde-format
 msgid "No file specified."
 msgstr "файл келтірілмеген."
 
-#: singlefileresource.h:217
+#: singlefileresource.h:218
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Бір жүктеп алу әлі бітпеген."
 
-#: singlefileresource.h:257
+#: singlefileresource.h:258
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Қашыққа кэштелген файл беріліп жатыр."
 
-#: singlefileresourcebase.cpp:240
+#: singlefileresourcebase.cpp:241
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -228,12 +228,12 @@ msgstr ""
 "'%1' файлы діскіде өзгеріске ұшрады. Дерек жоғалмауы үшін оның алдында "
 "болған мазмұны '%2' деген сақтық көшірмесіне сақталды."
 
-#: singlefileresourcebase.cpp:264
+#: singlefileresourcebase.cpp:265
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "'%1' файлы жүктелмеді."
 
-#: singlefileresourcebase.cpp:283
+#: singlefileresourcebase.cpp:284
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "'%1' файлы сақталмады."
@@ -321,7 +321,7 @@ msgid ""
 "(e.g. for remote calendars)."
 msgstr ""
 
-#: singlefileresourceconfigwidgetbase.cpp:128
+#: singlefileresourceconfigwidgetbase.cpp:129
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information..."

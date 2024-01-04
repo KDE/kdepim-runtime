@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-01-04 01:34+0000\n"
 "PO-Revision-Date: 2022-02-06 14:21+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian\n"
@@ -334,17 +334,17 @@ msgid ""
 msgstr ""
 "A apărut o problemă cu cererea. Tipurile MIME cerute nu sunt susținute."
 
-#: davfreebusyhandler.cpp:57
+#: davfreebusyhandler.cpp:58
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr ""
 
-#: davfreebusyhandler.cpp:186 davfreebusyhandler.cpp:197
+#: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Răspuns nevalid de la server"
 
-#: davfreebusyhandler.cpp:208
+#: davfreebusyhandler.cpp:209
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr ""

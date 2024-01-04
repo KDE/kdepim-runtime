@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-01-04 01:34+0000\n"
 "PO-Revision-Date: 2023-10-06 09:19+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -140,69 +140,69 @@ msgstr ""
 "Izberite časovni interval samodejnega shranjevanja podatkov o virih (v "
 "minutah)."
 
-#: singlefileresource.h:66
+#: singlefileresource.h:67
 #, kde-format
 msgid "No file selected."
 msgstr "Ni izbranih datotek."
 
-#: singlefileresource.h:68
+#: singlefileresource.h:69
 #, kde-format
 msgid "The resource not configured yet"
 msgstr "Vir še ni nastavljen"
 
-#: singlefileresource.h:99 singlefileresource.h:128 singlefileresource.h:213
-#: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
+#: singlefileresource.h:100 singlefileresource.h:129 singlefileresource.h:214
+#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Pripravljen"
 
-#: singlefileresource.h:101
+#: singlefileresource.h:102
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "Ni bilo mogoče ustvariti datoteke »%1«."
 
-#: singlefileresource.h:115
+#: singlefileresource.h:116
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "Ni bilo mogoče prebrati datoteke »%1«."
 
-#: singlefileresource.h:131
+#: singlefileresource.h:132
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Drugo prejemanje še vedno poteka."
 
-#: singlefileresource.h:141 singlefileresource.h:227
+#: singlefileresource.h:142 singlefileresource.h:228
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Drugo pošiljanje še vedno poteka."
 
-#: singlefileresource.h:157
+#: singlefileresource.h:158
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Prejemanje oddaljene datoteke."
 
-#: singlefileresource.h:177
+#: singlefileresource.h:178
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Poskus pisanja v datoteko, ki je samo za branje: »%1«."
 
-#: singlefileresource.h:189
+#: singlefileresource.h:190
 #, kde-format
 msgid "No file specified."
 msgstr "Podana ni nobena datoteka."
 
-#: singlefileresource.h:217
+#: singlefileresource.h:218
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Prejemanje še vedno poteka."
 
-#: singlefileresource.h:257
+#: singlefileresource.h:258
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Pošiljanje predpomnjene datoteke na oddaljeno mesto."
 
-#: singlefileresourcebase.cpp:240
+#: singlefileresourcebase.cpp:241
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -211,12 +211,12 @@ msgstr ""
 "Datoteka »%1« je bila spremenjena na disku. Iz previdnosti je bila v »%2« "
 "ustvarjena varnostna kopija njene prejšnje vsebine."
 
-#: singlefileresourcebase.cpp:264
+#: singlefileresourcebase.cpp:265
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Ni bilo mogoče naložiti datoteke »%1«."
 
-#: singlefileresourcebase.cpp:283
+#: singlefileresourcebase.cpp:284
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Ni bilo mogoče shraniti datoteke »%1«."
@@ -301,7 +301,7 @@ msgstr ""
 "Periodično posodablja datoteko. Lahko se uporablja, ko spremljanje ni na "
 "voljo (npr. za oddaljene koledarje)."
 
-#: singlefileresourceconfigwidgetbase.cpp:128
+#: singlefileresourceconfigwidgetbase.cpp:129
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information..."

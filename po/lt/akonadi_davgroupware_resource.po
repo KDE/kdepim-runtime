@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-01-04 01:34+0000\n"
 "PO-Revision-Date: 2015-12-29 21:05+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -316,17 +316,17 @@ msgstr ""
 "Problema su užklausa Serveryje elementas nebuvo sukurtas.\n"
 "%1 (%2)."
 
-#: davfreebusyhandler.cpp:57
+#: davfreebusyhandler.cpp:58
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "Nėra planuotos siuntos %1"
 
-#: davfreebusyhandler.cpp:186 davfreebusyhandler.cpp:197
+#: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Neteisingas atsakymas iš serverio"
 
-#: davfreebusyhandler.cpp:208
+#: davfreebusyhandler.cpp:209
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Negalima analizuoti gautų laisvas-užimtas duomenų"

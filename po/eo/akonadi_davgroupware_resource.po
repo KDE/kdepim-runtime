@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-01-04 01:34+0000\n"
 "PO-Revision-Date: 2023-11-12 16:39+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -289,17 +289,17 @@ msgid ""
 "supported."
 msgstr "Estis problemo kun la peto. La petitaj MIME-tipoj ne estas subtenataj."
 
-#: davfreebusyhandler.cpp:57
+#: davfreebusyhandler.cpp:58
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "Neniu horaro-elirejo trovita por %1"
 
-#: davfreebusyhandler.cpp:186 davfreebusyhandler.cpp:197
+#: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Nevalida respondo de la servilo"
 
-#: davfreebusyhandler.cpp:208
+#: davfreebusyhandler.cpp:209
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Ne eblas analizi liberokupajn datumojn ricevitajn"
