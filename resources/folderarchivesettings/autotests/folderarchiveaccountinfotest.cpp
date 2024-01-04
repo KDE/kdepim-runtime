@@ -5,14 +5,17 @@
 */
 
 #include "folderarchiveaccountinfotest.h"
-#include "../folderarchiveaccountinfo.h"
+#include "folderarchiveaccountinfo.h"
 #include <Akonadi/Collection>
 #include <KSharedConfig>
+#include <QStandardPaths>
 #include <QTest>
+QTEST_MAIN(FolderArchiveAccountInfoTest)
 
 FolderArchiveAccountInfoTest::FolderArchiveAccountInfoTest(QObject *parent)
     : QObject(parent)
 {
+    QStandardPaths::setTestModeEnabled(true);
 }
 
 FolderArchiveAccountInfoTest::~FolderArchiveAccountInfoTest() = default;
@@ -54,7 +57,5 @@ void FolderArchiveAccountInfoTest::shouldRestoreFromSettings()
     FolderArchiveAccountInfo restoreInfo(grp);
     QCOMPARE(info, restoreInfo);
 }
-
-QTEST_MAIN(FolderArchiveAccountInfoTest)
 
 #include "moc_folderarchiveaccountinfotest.cpp"

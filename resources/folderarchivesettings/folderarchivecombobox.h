@@ -7,10 +7,11 @@
 #pragma once
 
 #include "folderarchiveaccountinfo.h"
+#include "folderarchivesettings_private_export.h"
 
 #include <QComboBox>
 
-class FolderArchiveComboBox : public QComboBox
+class FOLDERARCHIVESETTINGS_TESTS_EXPORT FolderArchiveComboBox : public QComboBox
 {
     Q_OBJECT
 public:

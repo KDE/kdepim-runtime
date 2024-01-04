@@ -6,10 +6,11 @@
 
 #pragma once
 
+#include "folderarchivesettings_private_export.h"
 #include <Akonadi/Collection>
 #include <KConfigGroup>
 
-class FolderArchiveAccountInfo
+class FOLDERARCHIVESETTINGS_TESTS_EXPORT FolderArchiveAccountInfo
 {
 public:
     FolderArchiveAccountInfo();

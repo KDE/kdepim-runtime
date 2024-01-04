@@ -77,6 +77,7 @@ void FolderArchiveAccountInfo::readConfig(const KConfigGroup &config)
     mArchiveType = static_cast<FolderArchiveType>(config.readEntry("folderArchiveType", (int)UniqueFolder));
     mEnabled = config.readEntry("enabled", false);
     mKeepExistingStructure = config.readEntry("keepExistingStructure", false);
+    mUseDateFromMessage = config.readEntry("useDateFromMessage", false);
 }
 
 void FolderArchiveAccountInfo::writeConfig(KConfigGroup &config)
@@ -91,6 +92,7 @@ void FolderArchiveAccountInfo::writeConfig(KConfigGroup &config)
     config.writeEntry(QStringLiteral("folderArchiveType"), (int)mArchiveType);
     config.writeEntry(QStringLiteral("enabled"), mEnabled);
     config.writeEntry("keepExistingStructure", mKeepExistingStructure);
+    config.writeEntry("useDateFromMessage", mUseDateFromMessage);
 }
 
 bool FolderArchiveAccountInfo::operator==(const FolderArchiveAccountInfo &other) const

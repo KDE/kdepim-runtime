@@ -13,6 +13,8 @@ target_sources(folderarchivesettings PRIVATE
 
    folderarchivecombobox.h
    folderarchivecombobox.cpp
+
+   folderarchivesettings_private_export.h
 )
 
 generate_export_header(folderarchivesettings BASE_NAME folderarchivesettings)

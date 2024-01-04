@@ -134,6 +134,9 @@ if (USE_UNITY_CMAKE_SUPPORT)
     add_definitions(-DCOMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 
+if(BUILD_TESTING)
+   add_definitions(-DBUILD_TESTING)
+endif()
 
 add_subdirectory(resources)
 add_subdirectory(agents)
