@@ -1,6 +1,5 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"libfolderarchivesettings\")
 
-
 add_library(folderarchivesettings)
 target_sources(folderarchivesettings PRIVATE
    folderarchivesettingpage.cpp
@@ -9,6 +8,8 @@ target_sources(folderarchivesettings PRIVATE
    folderarchivesettingpage.h
    folderarchiveutil.h
    folderarchiveaccountinfo.h
+   folderarchivecombobox.h
+   folderarchivecombobox.cpp
 )
 
 generate_export_header(folderarchivesettings BASE_NAME folderarchivesettings)

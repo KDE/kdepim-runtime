@@ -17,21 +17,8 @@ namespace Akonadi
 class CollectionRequester;
 }
 
-class FolderArchiveComboBox : public QComboBox
-{
-    Q_OBJECT
-public:
-    explicit FolderArchiveComboBox(QWidget *parent = nullptr);
-    ~FolderArchiveComboBox() override;
-
-    void setType(FolderArchiveAccountInfo::FolderArchiveType type);
-    [[nodiscard]] FolderArchiveAccountInfo::FolderArchiveType type() const;
-
-private:
-    void initialize();
-};
-
 class FolderArchiveAccountInfo;
+class FolderArchiveComboBox;
 class FOLDERARCHIVESETTINGS_EXPORT FolderArchiveSettingPage : public QWidget
 {
     Q_OBJECT
