@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-05-10 00:46+0000\n"
+"POT-Creation-Date: 2024-01-05 01:35+0000\n"
 "PO-Revision-Date: 2023-12-30 13:38\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -18,36 +18,36 @@ msgstr ""
 "pot\n"
 "X-Crowdin-File-ID: 45409\n"
 
-#: folderarchivesettingpage.cpp:33
+#: folderarchivecombobox.cpp:20
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Unique"
 msgstr "唯一"
 
-#: folderarchivesettingpage.cpp:34
+#: folderarchivecombobox.cpp:21
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Month and year"
 msgstr "年和月"
 
-#: folderarchivesettingpage.cpp:35
+#: folderarchivecombobox.cpp:22
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Year"
 msgstr "年份"
 
-#: folderarchivesettingpage.cpp:56
+#: folderarchivesettingpage.cpp:27
 #, kde-format
 msgid "Enable"
 msgstr "启用"
 
-#: folderarchivesettingpage.cpp:65
+#: folderarchivesettingpage.cpp:36
 #, kde-format
 msgctxt "@label:chooser for the folder that messages will be archived under"
 msgid "Archive into:"
 msgstr "归档至："
 
-#: folderarchivesettingpage.cpp:67
+#: folderarchivesettingpage.cpp:38
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Archive folder name:"

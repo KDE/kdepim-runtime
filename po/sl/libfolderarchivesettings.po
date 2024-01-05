@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-05-10 00:46+0000\n"
+"POT-Creation-Date: 2024-01-05 01:35+0000\n"
 "PO-Revision-Date: 2014-08-21 14:41+0200\n"
 "Last-Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -18,36 +18,36 @@ msgstr ""
 "%100==4 ? 3 : 0);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: folderarchivesettingpage.cpp:33
+#: folderarchivecombobox.cpp:20
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Unique"
 msgstr "Edinstveno"
 
-#: folderarchivesettingpage.cpp:34
+#: folderarchivecombobox.cpp:21
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Month and year"
 msgstr "Mesec in leto"
 
-#: folderarchivesettingpage.cpp:35
+#: folderarchivecombobox.cpp:22
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Year"
 msgstr "Leto"
 
-#: folderarchivesettingpage.cpp:56
+#: folderarchivesettingpage.cpp:27
 #, kde-format
 msgid "Enable"
 msgstr "Omogoči"
 
-#: folderarchivesettingpage.cpp:65
+#: folderarchivesettingpage.cpp:36
 #, kde-format
 msgctxt "@label:chooser for the folder that messages will be archived under"
 msgid "Archive into:"
 msgstr "Arhiviraj v:"
 
-#: folderarchivesettingpage.cpp:67
+#: folderarchivesettingpage.cpp:38
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Archive folder name:"

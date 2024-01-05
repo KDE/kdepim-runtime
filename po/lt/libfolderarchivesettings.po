@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: l 10n\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-05-10 00:46+0000\n"
+"POT-Creation-Date: 2024-01-05 01:35+0000\n"
 "PO-Revision-Date: 2014-03-15 01:38+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: lt\n"
@@ -18,36 +18,36 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
 
-#: folderarchivesettingpage.cpp:33
+#: folderarchivecombobox.cpp:20
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Unique"
 msgstr ""
 
-#: folderarchivesettingpage.cpp:34
+#: folderarchivecombobox.cpp:21
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Month and year"
 msgstr ""
 
-#: folderarchivesettingpage.cpp:35
+#: folderarchivecombobox.cpp:22
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Year"
 msgstr ""
 
-#: folderarchivesettingpage.cpp:56
+#: folderarchivesettingpage.cpp:27
 #, kde-format
 msgid "Enable"
 msgstr ""
 
-#: folderarchivesettingpage.cpp:65
+#: folderarchivesettingpage.cpp:36
 #, kde-format
 msgctxt "@label:chooser for the folder that messages will be archived under"
 msgid "Archive into:"
 msgstr ""
 
-#: folderarchivesettingpage.cpp:67
+#: folderarchivesettingpage.cpp:38
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Archive folder name:"

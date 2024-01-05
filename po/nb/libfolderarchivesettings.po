@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-05-10 00:46+0000\n"
+"POT-Creation-Date: 2024-01-05 01:35+0000\n"
 "PO-Revision-Date: 2014-03-16 17:59+0100\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -19,36 +19,36 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: folderarchivesettingpage.cpp:33
+#: folderarchivecombobox.cpp:20
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Unique"
 msgstr "Unik"
 
-#: folderarchivesettingpage.cpp:34
+#: folderarchivecombobox.cpp:21
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Month and year"
 msgstr "Måned og år"
 
-#: folderarchivesettingpage.cpp:35
+#: folderarchivecombobox.cpp:22
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Year"
 msgstr "År"
 
-#: folderarchivesettingpage.cpp:56
+#: folderarchivesettingpage.cpp:27
 #, kde-format
 msgid "Enable"
 msgstr "Slå på"
 
-#: folderarchivesettingpage.cpp:65
+#: folderarchivesettingpage.cpp:36
 #, kde-format
 msgctxt "@label:chooser for the folder that messages will be archived under"
 msgid "Archive into:"
 msgstr "Arkiver i:"
 
-#: folderarchivesettingpage.cpp:67
+#: folderarchivesettingpage.cpp:38
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Archive folder name:"

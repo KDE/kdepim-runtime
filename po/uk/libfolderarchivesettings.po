@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libfolderarchivesettings\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-05-10 00:46+0000\n"
+"POT-Creation-Date: 2024-01-05 01:35+0000\n"
 "PO-Revision-Date: 2014-02-12 08:19+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -20,36 +20,36 @@ msgstr ""
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: folderarchivesettingpage.cpp:33
+#: folderarchivecombobox.cpp:20
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Unique"
 msgstr "Унікальна"
 
-#: folderarchivesettingpage.cpp:34
+#: folderarchivecombobox.cpp:21
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Month and year"
 msgstr "Місяць і рік"
 
-#: folderarchivesettingpage.cpp:35
+#: folderarchivecombobox.cpp:22
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Year"
 msgstr "Рік"
 
-#: folderarchivesettingpage.cpp:56
+#: folderarchivesettingpage.cpp:27
 #, kde-format
 msgid "Enable"
 msgstr "Увімкнути"
 
-#: folderarchivesettingpage.cpp:65
+#: folderarchivesettingpage.cpp:36
 #, kde-format
 msgctxt "@label:chooser for the folder that messages will be archived under"
 msgid "Archive into:"
 msgstr "Архівувати до:"
 
-#: folderarchivesettingpage.cpp:67
+#: folderarchivesettingpage.cpp:38
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Archive folder name:"
