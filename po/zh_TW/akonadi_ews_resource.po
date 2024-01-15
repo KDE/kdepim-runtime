@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-25 01:34+0000\n"
-"PO-Revision-Date: 2024-01-05 02:24+0900\n"
+"PO-Revision-Date: 2024-01-14 23:32+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 23.08.4\n"
+"X-Generator: Lokalize 24.01.90\n"
 
 #: ewsautodiscoveryjob.cpp:44 ewsautodiscoveryjob.cpp:51
 #, kde-format
@@ -254,6 +254,13 @@ msgid ""
 "will cause the server to set the domain to the default one its configured "
 "with.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>讓您為該使用者指定 Active Directory 網域。</p><p><span "
+"style=\" font-weight:600;\">注意：</span>&quot;空白網域&quot; 和 &quot;沒有網"
+"域&quot; 類似但是還是有差別。</p><p>使用空白網域時（勾選網域方塊，而在編輯框"
+"裡將網域留空）EWS 資源在傳遞使用者名稱時會加上明確空白的網域（&quot;"
+"\\username&quot;）。</p><p>沒有網域時（不勾選網域方塊），傳遞使用者名稱時不會"
+"加上網域（&quot;username&quot;），讓伺服器將網域設為它所設定的預設網域。</"
+"p></body></html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_HasDomain)
 #: ewsconfigdialog.ui:146
@@ -398,6 +405,12 @@ msgid ""
 "requirements for strong authentication, in which case entering the MFA code "
 "is not required.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>私鑰 (PKey) 驗證是基於 OAuth2 的認證之外的另一個認證步"
+"驟。它會使用一個 X.509 憑證，以及用來辨識透過「加入工作空間」（Workplace "
+"Join）加入 Azure 目錄的信任裝置的私鑰。</p><p>某些管理員會要求在從企業內網外"
+"部連線到 Office 365 時必須使用私鑰認證。其他情況下，如果有設定多步驟驗證，私"
+"鑰驗證也會能夠符合安全認證的要求，因此不需要再輸入多步驟驗證的一次性密碼。</"
+"p></body></html>"
 
 #. i18n: ectx: property (title), widget (QGroupBox, pkeyAuthGroupBox)
 #: ewsconfigdialog.ui:327
@@ -478,6 +491,9 @@ msgid ""
 "delivered instantly.</p><p><br/></p><p>This option requires Exchange server "
 "version 2010 SP1 or later.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>串流通知的行為與推送模式類似：會持續維持一個連線，而項"
+"目變更的通知會立即傳遞。</p><p><br/></p><p>這個選項需要 Exchange 伺服器版本高"
+"於 Exchange 2010 SP1。</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, streamingRadioButton)
 #: ewsconfigdialog.ui:473
@@ -518,6 +534,12 @@ msgid ""
 "advised that bypassing company policies may result in personal consequences."
 "</p></body></html>"
 msgstr ""
+"<html><head/><body><p>某些組織會限制只有某些用戶端，例如 Microsoft Outlook，"
+"才能存取郵件。這個限制在伺服器上的實作方式是透過分析用戶端所傳送的使用者代理 "
+"(User-Agent) 字串，並只在字串符合准許的用戶端時才允許存取。</p><p>這個設定讓"
+"您能向伺服器端宣稱是別的常見的用戶端，或是指定完全自訂的使用者代理字串。</"
+"p><p>請小心，這可能會被當作是在繞過公司的政策而造成對個人的影響。</p></"
+"body></html>"
 
 #. i18n: ectx: property (title), widget (QGroupBox, userAgentGroupBox)
 #: ewsconfigdialog.ui:508
