@@ -427,6 +427,3 @@ msgstr "S'està canviant la llista de tasques «%1»"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "S'està eliminant la llista de tasques «%1»"
-
-#~ msgid "Configured account does not exist"
-#~ msgstr "El compte configurat no existix"
