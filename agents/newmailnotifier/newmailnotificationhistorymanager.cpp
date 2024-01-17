@@ -7,6 +7,7 @@
 #include "newmailnotificationhistorymanager.h"
 #include <KLocalizedString>
 #include <QDateTime>
+#include <QLocale>
 
 NewMailNotificationHistoryManager::NewMailNotificationHistoryManager(QObject *parent)
     : QObject{parent}
@@ -81,7 +82,7 @@ void NewMailNotificationHistoryManager::addHeader()
     if (mTestEnabled) { // Only for test
         mHistory += QStringLiteral("<b> %1 </b>").arg(QDate::currentDate().toString());
     } else {
-        mHistory += QStringLiteral("<b> %1 </b>").arg(QDateTime::currentDateTime().toString());
+        mHistory += QStringLiteral("<b> %1 </b>").arg(QLocale().toString(QDateTime::currentDateTime()));
     }
 }
 
