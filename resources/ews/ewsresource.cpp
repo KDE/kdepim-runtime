@@ -698,19 +698,42 @@ void EwsResource::itemMoveRequestFinished(KJob *job)
 void EwsResource::itemsRemoved(const Item::List &items)
 {
     qCDebugNC(EWSRES_AGENTIF_LOG) << "itemsRemoved: start" << items;
+    if (items.isEmpty())
+        return;
 
+    EwsDeleteItemRequest *lastReq = nullptr;
     EwsId::List ids;
-    ids.reserve(items.count());
+    ids.reserve(100);
     for (const Item &item : items) {
         EwsId id(item.remoteId(), item.remoteRevision());
         ids.append(id);
+        if (ids.count() >= 100) {
+            auto *req = new EwsDeleteItemRequest(mEwsClient, this);
+            req->setItemIds(ids);
+            req->setProperty("items", QVariant::fromValue<Item::List>(items));
+            connect(req, &EwsDeleteItemRequest::result, [this,lastReq](KJob *job) {
+                itemDeleteRequestFinished(job);
+                if (lastReq && !job->error())
+                    lastReq->start();
+            });
+            lastReq = req;
+            ids.clear();
+            ids.reserve(100);
+        }
     }
-
-    auto req = new EwsDeleteItemRequest(mEwsClient, this);
-    req->setItemIds(ids);
-    req->setProperty("items", QVariant::fromValue<Item::List>(items));
-    connect(req, &EwsDeleteItemRequest::result, this, &EwsResource::itemDeleteRequestFinished);
-    req->start();
+    if (!ids.isEmpty()) {
+        auto *req = new EwsDeleteItemRequest(mEwsClient, this);
+        req->setItemIds(ids);
+        req->setProperty("items", QVariant::fromValue<Item::List>(items));
+        connect(req, &EwsDeleteItemRequest::result, [this,lastReq](KJob *job) {
+            itemDeleteRequestFinished(job);
+            if (lastReq && !job->error())
+                lastReq->start();
+        });
+        lastReq = req;
+    }
+    if (lastReq)
+        lastReq->start();
 }
 
 void EwsResource::itemDeleteRequestFinished(KJob *job)
