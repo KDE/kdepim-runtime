@@ -167,6 +167,3 @@ msgstr "Camí cap al directori de contactes"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "No es canvien les dades reals del dorsal."
-
-#~ msgid "Filename:"
-#~ msgstr "Nom de fitxer:"
