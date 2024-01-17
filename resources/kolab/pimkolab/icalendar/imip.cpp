@@ -94,7 +94,7 @@ KMime::Message::Ptr createMessage(const QString &from,
         bodyMessage->contentType()->setCharset("utf-8");
         bodyMessage->contentTransferEncoding()->setEncoding(KMime::Headers::CEquPr);
         bodyMessage->setBody(KMime::CRLFtoLF(body.toUtf8()));
-        message->addContent(bodyMessage);
+        message->appendContent(bodyMessage);
 
         // Set the sedcond multipart, the attachment.
         if (!attachment.isEmpty()) {
@@ -108,7 +108,7 @@ KMime::Message::Ptr createMessage(const QString &from,
             attachMessage->setHeader(attachDisposition);
             attachMessage->contentTransferEncoding()->setEncoding(KMime::Headers::CEquPr);
             attachMessage->setBody(KMime::CRLFtoLF(attachment.toUtf8()));
-            message->addContent(attachMessage);
+            message->appendContent(attachMessage);
         }
     }
 

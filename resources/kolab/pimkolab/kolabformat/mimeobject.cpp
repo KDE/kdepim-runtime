@@ -519,10 +519,10 @@ static void addAttachments(KMime::Message::Ptr msg, const std::vector<Attachment
     for (const Attachment &attachment : attachments) {
         const std::string data = attachment.data();
         const std::string cid = attachmentCids.empty() ? attachment.uri() : attachmentCids.at(index);
-        msg->addContent(Mime::createAttachmentPart(Mime::fromCid(QString::fromStdString(cid.c_str())).toLatin1(),
-                                                   QByteArray(attachment.mimetype().c_str()),
-                                                   QString::fromStdString(attachment.label()),
-                                                   QByteArray(data.c_str(), data.size())));
+        msg->appendContent(Mime::createAttachmentPart(Mime::fromCid(QString::fromStdString(cid.c_str())).toLatin1(),
+                                                      QByteArray(attachment.mimetype().c_str()),
+                                                      QString::fromStdString(attachment.label()),
+                                                      QByteArray(data.c_str(), data.size())));
         index++;
     }
 }

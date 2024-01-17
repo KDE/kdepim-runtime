@@ -103,7 +103,7 @@ KMime::Message::Ptr createMessage(const QByteArray &mimetype,
         mb.setAddress(fromEmail);
         message->from()->addAddress(mb);
     }
-    message->addContent(createMainPart(mimetype, xml));
+    message->appendContent(createMainPart(mimetype, xml));
     return message;
 }
 
@@ -135,7 +135,7 @@ createMessage(const QString &subject, const QString &mimetype, const QString &xK
     }
 
     KMime::Content *content = createMainPart(mimetype.toLatin1(), xml);
-    message->addContent(content);
+    message->appendContent(content);
 
     message->assemble();
     return message;
@@ -171,7 +171,7 @@ KMime::Message::Ptr createMessage(const QByteArray &xKolabType, bool v3, const Q
     message->userAgent()->from7BitString(prodid);
     message->contentType()->setMimeType("multipart/mixed");
     message->contentType()->setBoundary(KMime::multiPartBoundary());
-    message->addContent(createExplanationPart(v3));
+    message->appendContent(createExplanationPart(v3));
     return message;
 }
 

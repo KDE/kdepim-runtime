@@ -150,25 +150,25 @@ KMime::Message::Ptr contactToKolabFormat(const KolabV2::Contact &contact, const 
     message->from()->fromUnicodeString(contact.fullEmail(), "utf-8");
 
     KMime::Content *content = Mime::createMainPart(KOLAB_TYPE_CONTACT, contact.saveXML().toUtf8());
-    message->addContent(content);
+    message->appendContent(content);
 
     if (!contact.picture().isNull()) {
         QByteArray type;
         const QByteArray &pic = createPicture(contact.picture(), contact.pictureFormat(), type);
         content = Mime::createAttachmentPart(QByteArray(), type, /*"kolab-picture.png"*/ contact.pictureAttachmentName(), pic);
-        message->addContent(content);
+        message->appendContent(content);
     }
 
     if (!contact.logo().isNull()) {
         QByteArray type;
         const QByteArray &pic = createPicture(contact.logo(), contact.logoFormat(), type);
         content = Mime::createAttachmentPart(QByteArray(), type, /*"kolab-logo.png"*/ contact.logoAttachmentName(), pic);
-        message->addContent(content);
+        message->appendContent(content);
     }
 
     if (!contact.sound().isEmpty()) {
         content = Mime::createAttachmentPart(QByteArray(), "audio/unknown", /*"sound"*/ contact.soundAttachmentName(), contact.sound());
-        message->addContent(content);
+        message->appendContent(content);
     }
 
     message->assemble();
@@ -195,7 +195,7 @@ KMime::Message::Ptr distListToKolabFormat(const KolabV2::DistributionList &distL
     message->from()->fromUnicodeString(distList.uid(), "utf-8");
 
     KMime::Content *content = Mime::createMainPart(KOLAB_TYPE_DISTLIST_V2, distList.saveXML().toUtf8());
-    message->addContent(content);
+    message->appendContent(content);
 
     message->assemble();
     return message;
