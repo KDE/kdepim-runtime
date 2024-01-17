@@ -152,7 +152,7 @@ msgstr "Modifica"
 #: daverror-kdepim-runtime.cpp:26
 #, kde-format
 msgid "Invalid username/password"
-msgstr "Nome utente o password non validi"
+msgstr "Username o password non validi"
 
 #: daverror-kdepim-runtime.cpp:28
 #, kde-format
@@ -188,9 +188,7 @@ msgstr "Il protocollo della collezione non supporta MULTIGET"
 msgid ""
 "The server encountered an error that prevented it from completing your "
 "request: %1 (%2)"
-msgstr ""
-"Il server ha riscontrato un errore che gli ha impedito di completare la tua "
-"richiesta:: %1 (%2)"
+msgstr "Errore nel server. Impossibile completare la richiesta: %1 (%2)"
 
 #: daverror-kdepim-runtime.cpp:48
 #, kde-format
@@ -199,19 +197,18 @@ msgid ""
 "from the server.\n"
 "%1 (%2)."
 msgstr ""
-"Si è verificato un problema con la richiesta. La collezione non è stata "
-"eliminata dal server.\n"
+"Problema con la richiesta. La collezione non è stata eliminata dal server.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:54
 #, kde-format
 msgid "Invalid responses from backend"
-msgstr "Risposta non valida dal motore"
+msgstr "Risposta non valida dal backend"
 
 #: daverror-kdepim-runtime.cpp:57
 #, kde-format
 msgid "Error setting focus for XQuery"
-msgstr "Errore durante l'impostazione del fuoco su XQuery"
+msgstr "Errore impostando il fuoco su XQuery"
 
 #: daverror-kdepim-runtime.cpp:60
 #, kde-format
@@ -225,8 +222,7 @@ msgid ""
 "on the server.\n"
 "%1 (%2)."
 msgstr ""
-"Si è verificato un problema con la richiesta. La collezione non è stata "
-"modificata sul server.\n"
+"Problema con la richiesta. La collezione non è stata modificata sul server.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:70
@@ -237,7 +233,7 @@ msgstr "Nessuna proprietà da cambiare o rimuovere"
 #: daverror-kdepim-runtime.cpp:73
 #, kde-format
 msgid "There was an error when modifying the properties"
-msgstr "Si è verificato un errore durante la modifica delle proprietà"
+msgstr "Errore nella modifica delle proprietà"
 
 #: daverror-kdepim-runtime.cpp:75
 #, kde-format
@@ -257,8 +253,7 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"Su è verificato un problema con la richiesta. L'elemento non è stato creato "
-"sul server.\n"
+"Problema con la richiesta. L'elemento non è stato creato sul server.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:87
@@ -268,8 +263,7 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"Su è verificato un problema con la richiesta. L'elemento non è stato "
-"eliminato dal server.\n"
+"Problema con la richiesta. L'elemento non è stato eliminato dal server.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:94
@@ -279,23 +273,20 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"Su è verificato un problema con la richiesta. L'elemento non è stato "
-"modificato sul server.\n"
+"Problema con la richiesta. L'elemento non è stato modificato sul server.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:100
 #, kde-format
 msgid "There was a problem with the request."
-msgstr "Su è verificato un problema con la richiesta."
+msgstr "Problema con la richiesta."
 
 #: daverror-kdepim-runtime.cpp:104
 #, kde-format
 msgid ""
 "There was a problem with the request. The requested MIME types are not "
 "supported."
-msgstr ""
-"Su è verificato un problema con la richiesta. I tipi MIME richiesti non sono "
-"supportati."
+msgstr "Problema con la richiesta. I tipi MIME richiesti non sono supportati."
 
 # CHECK AGAIN
 #: davfreebusyhandler.cpp:58
