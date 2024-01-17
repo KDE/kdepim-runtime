@@ -275,7 +275,7 @@ void CollectionFetchTest::testMixedTree()
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
-    QVERIFY(spy->count() > 0);
+    QVERIFY(!spy->isEmpty());
 
     collections = collectionsFromSpy(spy);
     QCOMPARE(collections.count(), firstLevelNames.count());
@@ -301,7 +301,7 @@ void CollectionFetchTest::testMixedTree()
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
-    QVERIFY(spy->count() > 0);
+    QVERIFY(!spy->isEmpty());
 
     collections = collectionsFromSpy(spy);
     QCOMPARE(collections.count(), firstLevelNames.count() + secondLevelNames.count() + thirdLevelNames.count());

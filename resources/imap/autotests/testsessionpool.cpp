@@ -173,7 +173,7 @@ private Q_SLOTS:
         QVERIFY(pool.connect(account));
 
         QTest::qWait(200);
-        QVERIFY(requesterSpy.count() > 0);
+        QVERIFY(!requesterSpy.isEmpty());
         if (requesterSpy.count() == 1) {
             QCOMPARE(requesterSpy.at(0).at(0).toInt(), 0);
             QCOMPARE(requesterSpy.at(0).at(1).toString(), password);
