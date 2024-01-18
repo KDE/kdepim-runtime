@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-18 01:58+0000\n"
+"POT-Creation-Date: 2024-01-18 00:37+0000\n"
 "PO-Revision-Date: 2023-09-26 10:10+0200\n"
 "Last-Translator: Xavier BESNARD <xavier.besnard@neuf.fr>\n"
 "Language-Team: fr\n"
@@ -32,12 +32,12 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Historique de notifications"
 
-#: newmailnotificationhistorymanager.cpp:31
+#: newmailnotificationhistorymanager.cpp:32
 #, kde-format
 msgid "[Open Folder]"
 msgstr "[Ouvrir un dossier]"
 
-#: newmailnotificationhistorymanager.cpp:41
+#: newmailnotificationhistorymanager.cpp:42
 #, kde-format
 msgid "[Show Mail]"
 msgstr "[Afficher un courriel]"

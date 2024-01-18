@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-25 01:34+0000\n"
+"POT-Creation-Date: 2024-01-18 00:37+0000\n"
 "PO-Revision-Date: 2024-01-14 23:32+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -846,196 +846,196 @@ msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
 msgstr "移動項目失敗 - 從伺服器收到了無效的回應數量"
 
-#: ewsresource.cpp:720
+#: ewsresource.cpp:743
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
 msgstr "無法處理項目刪除請求"
 
-#: ewsresource.cpp:727
+#: ewsresource.cpp:750
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
 msgstr "刪除項目失敗 - 內部錯誤"
 
-#: ewsresource.cpp:734
+#: ewsresource.cpp:757
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
 msgstr "刪除項目失敗 - 從伺服器收到了無效的回應數量"
 
-#: ewsresource.cpp:779 ewsresource.cpp:992
+#: ewsresource.cpp:802 ewsresource.cpp:1015
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
 msgstr "不支援建立該項目型態"
 
-#: ewsresource.cpp:790
+#: ewsresource.cpp:813
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
 msgstr "無法處理項目建立請求"
 
-#: ewsresource.cpp:796
+#: ewsresource.cpp:819
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
 msgstr "建立項目失敗 - 內部錯誤"
 
-#: ewsresource.cpp:817
+#: ewsresource.cpp:840
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr "新增收藏失敗 - 無法辨別 EWS 資料夾型態"
 
-#: ewsresource.cpp:836
+#: ewsresource.cpp:859
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
 msgstr "無法處理資料夾建立請求"
 
-#: ewsresource.cpp:842
+#: ewsresource.cpp:865
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
 msgstr "建立資料夾失敗 - 內部錯誤"
 
-#: ewsresource.cpp:854
+#: ewsresource.cpp:877
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
 msgstr "建立資料夾失敗"
 
-#: ewsresource.cpp:877
+#: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
 msgstr "無法處理資料夾移動請求"
 
-#: ewsresource.cpp:883
+#: ewsresource.cpp:906
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
 msgstr "移動資料夾失敗 - 內部錯誤"
 
-#: ewsresource.cpp:889
+#: ewsresource.cpp:912
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
 msgstr "移動資料夾失敗 - 從伺服器收到了無效的回應數量"
 
-#: ewsresource.cpp:900
+#: ewsresource.cpp:923
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
 msgstr "移動資料夾失敗"
 
-#: ewsresource.cpp:928
+#: ewsresource.cpp:951
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
 msgstr "無法處理資料夾更新請求"
 
-#: ewsresource.cpp:934
+#: ewsresource.cpp:957
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
 msgstr "更新資料夾失敗 - 內部錯誤"
 
-#: ewsresource.cpp:940
+#: ewsresource.cpp:963
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
 msgstr "更新資料夾失敗 - 從伺服器收到了無效的回應數量"
 
-#: ewsresource.cpp:951
+#: ewsresource.cpp:974
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
 msgstr "更新資料夾失敗"
 
-#: ewsresource.cpp:968
+#: ewsresource.cpp:991
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
 msgstr "無法處理資料夾刪除請求"
 
-#: ewsresource.cpp:974
+#: ewsresource.cpp:997
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
 msgstr "刪除資料夾失敗 - 內部錯誤"
 
-#: ewsresource.cpp:982
+#: ewsresource.cpp:1005
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
 msgstr "刪除資料夾失敗"
 
-#: ewsresource.cpp:1006 ewsresource.cpp:1040
+#: ewsresource.cpp:1029 ewsresource.cpp:1063
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
 msgstr "無法處理項目傳送請求"
 
-#: ewsresource.cpp:1012 ewsresource.cpp:1046
+#: ewsresource.cpp:1035 ewsresource.cpp:1069
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
 msgstr "傳送項目失敗 - 內部錯誤"
 
-#: ewsresource.cpp:1051
+#: ewsresource.cpp:1074
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "從伺服器收到了無效的回應數量"
 
-#: ewsresource.cpp:1243
+#: ewsresource.cpp:1266
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "正在更新項目標籤"
 
-#: ewsresource.cpp:1256
+#: ewsresource.cpp:1279
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr "無法處理項目標籤更新請求"
 
-#: ewsresource.cpp:1262
+#: ewsresource.cpp:1285
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "更新項目標籤失敗 - 內部錯誤"
 
-#: ewsresource.cpp:1299
+#: ewsresource.cpp:1322
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr "無法處理全域標籤更新請求"
 
-#: ewsresource.cpp:1315
+#: ewsresource.cpp:1338
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "無法處理全域標籤取得請求"
 
-#: ewsresource.cpp:1392
+#: ewsresource.cpp:1415
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "認證"
 
-#: ewsresource.cpp:1402 ewsresource.cpp:1417
+#: ewsresource.cpp:1425 ewsresource.cpp:1440
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "認證失敗"
 
-#: ewsresource.cpp:1425
+#: ewsresource.cpp:1448
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"

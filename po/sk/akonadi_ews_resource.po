@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-25 01:34+0000\n"
+"POT-Creation-Date: 2024-01-18 00:37+0000\n"
 "PO-Revision-Date: 2019-11-05 19:58+0100\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -830,19 +830,19 @@ msgid "Failed to move item - invalid number of responses received from server"
 msgstr ""
 "Nepodarilo sa presunúť položku - neplatný počet odpovedí prijatých zo servera"
 
-#: ewsresource.cpp:720
+#: ewsresource.cpp:743
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
 msgstr "Žiadosť o odstránenie položky zlyhala"
 
-#: ewsresource.cpp:727
+#: ewsresource.cpp:750
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
 msgstr "Odstránenie položky zlyhalo - interná chyba"
 
-#: ewsresource.cpp:734
+#: ewsresource.cpp:757
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -850,61 +850,61 @@ msgid ""
 msgstr ""
 "Odstránenie položky zlyhalo - neplatný počet odpovedí prijatých zo servera"
 
-#: ewsresource.cpp:779 ewsresource.cpp:992
+#: ewsresource.cpp:802 ewsresource.cpp:1015
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
 msgstr "Vytvorenie typu položky nie je podporované"
 
-#: ewsresource.cpp:790
+#: ewsresource.cpp:813
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
 msgstr "Žiadosť o vytvorenie položky zlyhala"
 
-#: ewsresource.cpp:796
+#: ewsresource.cpp:819
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
 msgstr "Nepodarilo sa vytvoriť položku - interná chyba"
 
-#: ewsresource.cpp:817
+#: ewsresource.cpp:840
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr "Nepodarilo sa pridať kolekciu - nie je možné určiť typ priečinka EWS"
 
-#: ewsresource.cpp:836
+#: ewsresource.cpp:859
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
 msgstr "Žiadosť o vytvorenie priečinka zlyhala"
 
-#: ewsresource.cpp:842
+#: ewsresource.cpp:865
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
 msgstr "Nepodarilo sa vytvoriť priečinok - interná chyba"
 
-#: ewsresource.cpp:854
+#: ewsresource.cpp:877
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
 msgstr "Nepodarilo sa vytvoriť priečinok"
 
-#: ewsresource.cpp:877
+#: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
 msgstr "Žiadosť o presun priečinka zlyhala"
 
-#: ewsresource.cpp:883
+#: ewsresource.cpp:906
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
 msgstr "Nepodarilo sa presunúť priečinok - interná chyba"
 
-#: ewsresource.cpp:889
+#: ewsresource.cpp:912
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -913,25 +913,25 @@ msgstr ""
 "Nepodarilo sa presunúť priečinok - neplatný počet odpovedí prijatých zo "
 "servera"
 
-#: ewsresource.cpp:900
+#: ewsresource.cpp:923
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
 msgstr "Nepodarilo sa presunúť priečinok"
 
-#: ewsresource.cpp:928
+#: ewsresource.cpp:951
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
 msgstr "Žiadosť o aktualizáciu priečinka zlyhala"
 
-#: ewsresource.cpp:934
+#: ewsresource.cpp:957
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
 msgstr "Aktualizácia priečinka zlyhala - interná chyba"
 
-#: ewsresource.cpp:940
+#: ewsresource.cpp:963
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -939,91 +939,91 @@ msgid ""
 msgstr ""
 "Aktualizácia priečinka zlyhala - neplatný počet odpovedí prijatých zo servera"
 
-#: ewsresource.cpp:951
+#: ewsresource.cpp:974
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
 msgstr "Aktualizácia priečinka zlyhala"
 
-#: ewsresource.cpp:968
+#: ewsresource.cpp:991
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
 msgstr "Žiadosť o odstránenie priečinka zlyhala"
 
-#: ewsresource.cpp:974
+#: ewsresource.cpp:997
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
 msgstr "Nepodarilo sa odstrániť priečinok - interná chyba"
 
-#: ewsresource.cpp:982
+#: ewsresource.cpp:1005
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
 msgstr "Priečinok sa nepodarilo odstrániť"
 
-#: ewsresource.cpp:1006 ewsresource.cpp:1040
+#: ewsresource.cpp:1029 ewsresource.cpp:1063
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
 msgstr "Žiadosť o odoslanie položky zlyhala"
 
-#: ewsresource.cpp:1012 ewsresource.cpp:1046
+#: ewsresource.cpp:1035 ewsresource.cpp:1069
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
 msgstr "Nepodarilo sa odoslať položku - interná chyba"
 
-#: ewsresource.cpp:1051
+#: ewsresource.cpp:1074
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "Neplatný počet odpovedí prijatých zo servera"
 
-#: ewsresource.cpp:1243
+#: ewsresource.cpp:1266
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr ""
 
-#: ewsresource.cpp:1256
+#: ewsresource.cpp:1279
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr "Žiadosť o aktualizáciu značiek položiek sa nepodarilo spracovať"
 
-#: ewsresource.cpp:1262
+#: ewsresource.cpp:1285
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "Aktualizácia značiek položiek zlyhala - interná chyba"
 
-#: ewsresource.cpp:1299
+#: ewsresource.cpp:1322
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr "Žiadosť o aktualizáciu globálnej značky sa nepodarilo spracovať"
 
-#: ewsresource.cpp:1315
+#: ewsresource.cpp:1338
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Žiadosť o načítanie globálnych značiek zlyhala"
 
-#: ewsresource.cpp:1392
+#: ewsresource.cpp:1415
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Overiť"
 
-#: ewsresource.cpp:1402 ewsresource.cpp:1417
+#: ewsresource.cpp:1425 ewsresource.cpp:1440
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Overenie zlyhalo"
 
-#: ewsresource.cpp:1425
+#: ewsresource.cpp:1448
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"

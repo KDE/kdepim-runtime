@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-18 01:58+0000\n"
+"POT-Creation-Date: 2024-01-18 00:37+0000\n"
 "PO-Revision-Date: 2022-01-04 14:18+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -26,13 +26,13 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr "أبقِ الإخطارات مستمرّة"
 
-#: newmailnotificationhistorymanager.cpp:31
+#: newmailnotificationhistorymanager.cpp:32
 #, fuzzy, kde-format
 #| msgid "Folders"
 msgid "[Open Folder]"
 msgstr "المجلّدات"
 
-#: newmailnotificationhistorymanager.cpp:41
+#: newmailnotificationhistorymanager.cpp:42
 #, fuzzy, kde-format
 #| msgid "Show mail..."
 msgid "[Show Mail]"

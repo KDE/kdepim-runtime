@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-18 01:58+0000\n"
+"POT-Creation-Date: 2024-01-18 00:37+0000\n"
 "PO-Revision-Date: 2015-12-29 20:26+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -28,13 +28,13 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr ""
 
-#: newmailnotificationhistorymanager.cpp:31
+#: newmailnotificationhistorymanager.cpp:32
 #, fuzzy, kde-format
 #| msgid "Folders"
 msgid "[Open Folder]"
 msgstr "Aplankai"
 
-#: newmailnotificationhistorymanager.cpp:41
+#: newmailnotificationhistorymanager.cpp:42
 #, kde-format
 msgid "[Show Mail]"
 msgstr ""
