@@ -303,18 +303,3 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Checking file information..."
 msgstr "Проверка на файловата информация..."
-
-#~ msgid "File Name:"
-#~ msgstr "Име на файл:"
-
-#~ msgid ""
-#~ "Select a file. A new file will be created if it doesn't exist. You can "
-#~ "also use a URL, but in that case, monitoring for file changes is not "
-#~ "possible."
-#~ msgstr ""
-#~ "Изберете файл. Ще бъде създаден нов файл, ако не съществува. Можете също "
-#~ "така да използвате URL адрес, но в този случай не е възможно да се следи "
-#~ "за промени във файла."
-
-#~ msgid "Enable file &monitoring"
-#~ msgstr "Активиране на &следене на файлове"
