@@ -84,7 +84,6 @@ KMime::Message::Ptr createMessage(const QString &from,
         KMime::Headers::ContentType *ct = message->contentType();
         ct->setMimeType("multipart/mixed");
         ct->setBoundary(KMime::multiPartBoundary());
-        ct->setCategory(KMime::Headers::CCcontainer);
 
         // Set the first multipart, the body message.
         auto bodyMessage = new KMime::Content;
