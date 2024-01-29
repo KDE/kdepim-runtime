@@ -79,21 +79,21 @@ private Q_SLOTS:
         QTRY_COMPARE(state->calls().count(), 1);
 
         QString command = QString::fromUtf8(state->calls().first().first);
-        if (command == QLatin1String("cancelTask") && callName != QLatin1String("cancelTask")) {
+        if (command == QLatin1StringView("cancelTask") && callName != QLatin1String("cancelTask")) {
             qDebug() << "Got a cancel:" << state->calls().first().second.toString();
         }
         QCOMPARE(command, callName);
 
         QVariant parameter = state->calls().first().second;
 
-        if (callName == QLatin1String("itemRetrieved")) {
+        if (callName == QLatin1StringView("itemRetrieved")) {
             QCOMPARE(parameter.value<Akonadi::Item>().id(), item.id());
             QCOMPARE(parameter.value<Akonadi::Item>().remoteId(), item.remoteId());
 
             QString payload = QString::fromUtf8(parameter.value<Akonadi::Item>().payload<KMime::Message::Ptr>()->encodedContent());
 
             QCOMPARE(payload, message);
-        } else if (callName == QLatin1String("cancelTask")) {
+        } else if (callName == QLatin1StringView("cancelTask")) {
             QVERIFY(!parameter.toString().isEmpty());
         } else {
             QFAIL(QStringLiteral("Unexpected call type: %1").arg(callName).toUtf8().constData());

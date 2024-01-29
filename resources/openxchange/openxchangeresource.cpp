@@ -101,11 +101,11 @@ private:
         OXA::Folder::Module module = OXA::Folder::Unbound;
 
         if (!parts.isEmpty()) {
-            if (parts.at(0) == QLatin1String("calendar")) {
+            if (parts.at(0) == QLatin1StringView("calendar")) {
                 module = OXA::Folder::Calendar;
-            } else if (parts.at(0) == QLatin1String("contacts")) {
+            } else if (parts.at(0) == QLatin1StringView("contacts")) {
                 module = OXA::Folder::Contacts;
-            } else if (parts.at(0) == QLatin1String("tasks")) {
+            } else if (parts.at(0) == QLatin1StringView("tasks")) {
                 module = OXA::Folder::Tasks;
             } else {
                 module = OXA::Folder::Unbound;

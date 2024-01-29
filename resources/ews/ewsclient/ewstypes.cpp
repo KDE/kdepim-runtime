@@ -25,8 +25,8 @@ const QList<QString> ewsItemTypeNames = {
     QStringLiteral("Task"),
 };
 
-static const QMap<QString, EwsResponseCode> ewsResponseCodeMapping = {{QLatin1String("NoError"), EwsResponseCodeNoError},
-                                                                      {QLatin1String("ErrorServerBusy"), EwsResponseCodeErrorServerBusy}};
+static const QMap<QString, EwsResponseCode> ewsResponseCodeMapping = {{QLatin1StringView("NoError"), EwsResponseCodeNoError},
+                                                                      {QLatin1StringView("ErrorServerBusy"), EwsResponseCodeErrorServerBusy}};
 
 EwsResponseCode decodeEwsResponseCode(const QString &code)
 {

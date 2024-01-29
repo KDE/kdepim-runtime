@@ -125,7 +125,7 @@ void TemplateMethodsTest::testSetTopLevelCollection()
     QCOMPARE(collection.rights(), Collection::CanCreateCollection | Collection::CanChangeCollection | Collection::CanDeleteCollection);
     const CachePolicy cachePolicy = collection.cachePolicy();
     QVERIFY(!cachePolicy.inheritFromParent());
-    QCOMPARE(cachePolicy.localParts(), QStringList() << QLatin1String(MessagePart::Envelope));
+    QCOMPARE(cachePolicy.localParts(), QStringList() << QLatin1StringView(MessagePart::Envelope));
     QVERIFY(cachePolicy.syncOnDemand());
 }
 

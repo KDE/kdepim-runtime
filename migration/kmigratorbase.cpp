@@ -48,7 +48,7 @@ QString messageTypeToString(KMigratorBase::MessageType type)
 KMigratorBase::KMigratorBase()
 {
     const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName()
-        + QLatin1String("/migration.log");
+        + QLatin1StringView("/migration.log");
     QFileInfo fileInfo(logFileName);
     QDir().mkpath(fileInfo.absolutePath());
 
@@ -93,13 +93,13 @@ void KMigratorBase::setMigrationState(const QString &identifier, MigrationState 
 {
     KConfigGroup cfg(KSharedConfig::openConfig(), QStringLiteral("Resource ") + identifier);
     QMetaEnum e = metaObject()->enumerator(metaObject()->indexOfEnumerator("MigrationState"));
-    const QString stateStr = QLatin1String(e.valueToKey(state));
+    const QString stateStr = QLatin1StringView(e.valueToKey(state));
     cfg.writeEntry("MigrationState", stateStr);
     cfg.writeEntry("ResourceIdentifier", resId);
     cfg.sync();
 
     cfg = KConfigGroup(KSharedConfig::openConfig(), QStringLiteral("Bridged"));
-    QStringList bridgedResources = cfg.readEntry(type + QLatin1String("Resources"), QStringList());
+    QStringList bridgedResources = cfg.readEntry(type + QLatin1StringView("Resources"), QStringList());
     if (state == Bridged) {
         if (!bridgedResources.contains(identifier)) {
             bridgedResources << identifier;
@@ -107,7 +107,7 @@ void KMigratorBase::setMigrationState(const QString &identifier, MigrationState 
     } else {
         bridgedResources.removeAll(identifier);
     }
-    cfg.writeEntry(type + QLatin1String("Resources"), bridgedResources);
+    cfg.writeEntry(type + QLatin1StringView("Resources"), bridgedResources);
     cfg.sync();
 }
 
@@ -125,8 +125,8 @@ KJob *KMigratorBase::createAgentInstance(const QString &typeId, QObject *receive
 void KMigratorBase::logMessage(KMigratorBase::MessageType type, const QString &msg)
 {
     if (m_logFile) {
-        m_logFile->write(QString(QLatin1Char('[') + QDateTime::currentDateTime().toString() + QLatin1String("] ") + messageTypeToString(type)
-                                 + QLatin1String(": ") + msg + QLatin1Char('\n'))
+        m_logFile->write(QString(QLatin1Char('[') + QDateTime::currentDateTime().toString() + QLatin1StringView("] ") + messageTypeToString(type)
+                                 + QLatin1StringView(": ") + msg + QLatin1Char('\n'))
                              .toUtf8());
         m_logFile->flush();
     }

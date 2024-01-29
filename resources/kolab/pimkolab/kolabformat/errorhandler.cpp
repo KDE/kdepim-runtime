@@ -52,7 +52,7 @@ ErrorHandler::ErrorHandler()
 QDebug ErrorHandler::debugStream(ErrorHandler::Severity severity, int line, const char *file)
 {
     QMutexLocker locker(&mutex);
-    ErrorHandler::instance().m_debugStream->m_location = QString(QLatin1String(file) + QLatin1Char('(') + QString::number(line) + QLatin1Char(')'));
+    ErrorHandler::instance().m_debugStream->m_location = QString(QLatin1StringView(file) + QLatin1Char('(') + QString::number(line) + QLatin1Char(')'));
     ErrorHandler::instance().m_debugStream->m_severity = severity;
     return QDebug(ErrorHandler::instance().m_debugStream.data());
 }
@@ -65,7 +65,7 @@ void ErrorHandler::addError(ErrorHandler::Severity s, const QString &message, co
     if (!lst.isEmpty()) {
         filename = lst.last();
     }
-    const QString output = QTime::currentTime().toString(QStringLiteral("(hh:mm:ss) ")) + filename + QLatin1String(":\t") + message;
+    const QString output = QTime::currentTime().toString(QStringLiteral("(hh:mm:ss) ")) + filename + QLatin1StringView(":\t") + message;
     std::cout << output.toStdString() << std::endl;
     if (s == Debug) {
         return;

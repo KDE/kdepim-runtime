@@ -256,7 +256,7 @@ void Settings::newUrlConfiguration(Settings::UrlConfiguration *urlConfig)
     }
 
     mUrls[key] = urlConfig;
-    if (urlConfig->mUser != QLatin1String("$default$")) {
+    if (urlConfig->mUser != QLatin1StringView("$default$")) {
         savePassword(key, urlConfig->mUser, urlConfig->mPassword);
     }
     updateRemoteUrls();
@@ -300,7 +300,7 @@ QString Settings::username(KDAV::Protocol proto, const QString &url) const
     const QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
 
     if (mUrls.contains(key)) {
-        if (mUrls[key]->mUser == QLatin1String("$default$")) {
+        if (mUrls[key]->mUser == QLatin1StringView("$default$")) {
             return defaultUsername();
         } else {
             return mUrls[key]->mUser;
@@ -315,7 +315,7 @@ QString Settings::password(KDAV::Protocol proto, const QString &url)
     const QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
 
     if (mUrls.contains(key)) {
-        if (mUrls[key]->mUser == QLatin1String("$default$")) {
+        if (mUrls[key]->mUser == QLatin1StringView("$default$")) {
             return defaultPassword();
         } else {
             return mUrls[key]->mPassword;
@@ -415,7 +415,7 @@ QString Settings::loadPassword(const QString &key, const QString &user)
     QString entry;
     QString pass;
 
-    if (user == QLatin1String("$default$")) {
+    if (user == QLatin1StringView("$default$")) {
         entry = mResourceIdentifier + QLatin1Char(',') + user;
     } else {
         entry = key + QLatin1Char(',') + user;
@@ -436,7 +436,7 @@ QString Settings::loadPassword(const QString &key, const QString &user)
     if (job.error() == QKeychain::Error::EntryNotFound) {
         pass = promptForPassword(user);
         if (!pass.isEmpty()) {
-            if (user == QLatin1String("$default$")) {
+            if (user == QLatin1StringView("$default$")) {
                 savePassword(mResourceIdentifier, user, pass);
             } else {
                 savePassword(key, user, pass);
@@ -474,7 +474,7 @@ QString Settings::promptForPassword(const QString &user)
     mainLayout->addWidget(buttonBox);
     auto vLayout = new QVBoxLayout();
     mainWidget->setLayout(vLayout);
-    auto label = new QLabel(i18n("A password is required for user %1", (user == QLatin1String("$default$") ? defaultUsername() : user)), mainWidget);
+    auto label = new QLabel(i18n("A password is required for user %1", (user == QLatin1StringView("$default$") ? defaultUsername() : user)), mainWidget);
     vLayout->addWidget(label);
     auto hLayout = new QHBoxLayout();
     label = new QLabel(i18n("Password: "), mainWidget);

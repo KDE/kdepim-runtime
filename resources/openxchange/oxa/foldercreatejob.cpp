@@ -72,9 +72,9 @@ void FolderCreateJob::davJobFinished(KJob *job)
 
     QDomElement element = prop.firstChildElement();
     while (!element.isNull()) {
-        if (element.tagName() == QLatin1String("object_id")) {
+        if (element.tagName() == QLatin1StringView("object_id")) {
             mFolder.setObjectId(OXUtils::readNumber(element.text()));
-        } else if (element.tagName() == QLatin1String("last_modified")) {
+        } else if (element.tagName() == QLatin1StringView("last_modified")) {
             mFolder.setLastModified(OXUtils::readString(element.text()));
         }
 

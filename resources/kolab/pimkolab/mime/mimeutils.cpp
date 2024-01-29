@@ -80,7 +80,7 @@ QList<QByteArray> getContentMimeTypeList(const KMime::Message::Ptr &data)
 
 QString fromCid(const QString &cid)
 {
-    if (cid.left(4) != QLatin1String("cid:")) { // Don't set if not a cid, happens when serializing format v2
+    if (cid.left(4) != QLatin1StringView("cid:")) { // Don't set if not a cid, happens when serializing format v2
         return {};
     }
     return cid.right(cid.size() - 4);
@@ -204,7 +204,7 @@ KMime::Content *createAttachmentPart(const QByteArray &cid, const QByteArray &mi
 
 Kolab::Attachment getAttachment(const std::string &id, const KMime::Message::Ptr &mimeData)
 {
-    if (!QString::fromStdString(id).contains(QLatin1String("cid:"))) {
+    if (!QString::fromStdString(id).contains(QLatin1StringView("cid:"))) {
         qCCritical(PIMKOLAB_LOG) << "not a cid reference";
         return {};
     }

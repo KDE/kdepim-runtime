@@ -72,9 +72,9 @@ bool Journal::loadAttribute(QDomElement &element)
 {
     const QString tagName = element.tagName();
 
-    if (tagName == QLatin1String("summary")) {
+    if (tagName == QLatin1StringView("summary")) {
         setSummary(element.text());
-    } else if (tagName == QLatin1String("start-date")) {
+    } else if (tagName == QLatin1StringView("start-date")) {
         const auto t = element.text();
         setStartDate(stringToDateTime(t));
         mDateOnly = t.size() <= 10;
@@ -106,7 +106,7 @@ bool Journal::loadXML(const QDomDocument &document)
 {
     QDomElement top = document.documentElement();
 
-    if (top.tagName() != QLatin1String("journal")) {
+    if (top.tagName() != QLatin1StringView("journal")) {
         qCWarning(PIMKOLAB_LOG) << QStringLiteral("XML error: Top tag was %1 instead of the expected Journal").arg(top.tagName());
         return false;
     }
@@ -160,5 +160,5 @@ void Journal::setFields(const KCalendarCore::Journal::Ptr &journal)
 
 QString Journal::productID() const
 {
-    return QLatin1String(LIBKOLAB_LIB_VERSION_STRING) + QLatin1String(", Kolab resource");
+    return QLatin1StringView(LIBKOLAB_LIB_VERSION_STRING) + QLatin1String(", Kolab resource");
 }

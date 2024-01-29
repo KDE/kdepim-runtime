@@ -78,11 +78,11 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
         return;
     }
     const QStringView readerName = reader.name();
-    if (readerName == QLatin1String("ItemAttachment")) {
+    if (readerName == QLatin1StringView("ItemAttachment")) {
         d->mType = ItemAttachment;
-    } else if (readerName == QLatin1String("FileAttachment")) {
+    } else if (readerName == QLatin1StringView("FileAttachment")) {
         d->mType = FileAttachment;
-    } else if (readerName == QLatin1String("ReferenceAttachment")) {
+    } else if (readerName == QLatin1StringView("ReferenceAttachment")) {
         d->mType = ReferenceAttachment;
     } else {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Unknown attachment type %1").arg(readerName.toString());
@@ -106,7 +106,7 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
         }
 
         const QString elmName = reader.name().toString();
-        if (elmName == QLatin1String("AttachmentId")) {
+        if (elmName == QLatin1StringView("AttachmentId")) {
             QXmlStreamAttributes attrs = reader.attributes();
             if (!attrs.hasAttribute(QStringLiteral("Id"))) {
                 qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - missing Id in AttachmentId element.").arg(QStringLiteral("Attachment"));
@@ -117,40 +117,41 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
                 d->mValidFields.setBit(EwsAttachmentPrivate::Id);
             }
             reader.skipCurrentElement();
-        } else if (elmName == QLatin1String("Name")) {
+        } else if (elmName == QLatin1StringView("Name")) {
             d->mName = readXmlElementValue<QString>(reader, ok, QStringLiteral("Attachment"));
             d->mValidFields.setBit(EwsAttachmentPrivate::Name, ok);
-        } else if (elmName == QLatin1String("ContentType")) {
+        } else if (elmName == QLatin1StringView("ContentType")) {
             d->mContentType = readXmlElementValue<QString>(reader, ok, QStringLiteral("Attachment"));
             d->mValidFields.setBit(EwsAttachmentPrivate::ContentType, ok);
-        } else if (elmName == QLatin1String("ContentId")) {
+        } else if (elmName == QLatin1StringView("ContentId")) {
             d->mContentId = readXmlElementValue<QString>(reader, ok, QStringLiteral("Attachment"));
             d->mValidFields.setBit(EwsAttachmentPrivate::ContentId, ok);
-        } else if (elmName == QLatin1String("ContentLocation")) {
+        } else if (elmName == QLatin1StringView("ContentLocation")) {
             d->mContentLocation = readXmlElementValue<QString>(reader, ok, QStringLiteral("Attachment"));
             d->mValidFields.setBit(EwsAttachmentPrivate::ContentLocation, ok);
-        } else if (elmName == QLatin1String("AttachmentOriginalUrl")) {
+        } else if (elmName == QLatin1StringView("AttachmentOriginalUrl")) {
             // Ignore
             reader.skipCurrentElement();
-        } else if (elmName == QLatin1String("Size")) {
+        } else if (elmName == QLatin1StringView("Size")) {
             d->mSize = readXmlElementValue<long>(reader, ok, QStringLiteral("Attachment"));
             d->mValidFields.setBit(EwsAttachmentPrivate::Size, ok);
-        } else if (elmName == QLatin1String("LastModifiedTime")) {
+        } else if (elmName == QLatin1StringView("LastModifiedTime")) {
             d->mLastModifiedTime = readXmlElementValue<QDateTime>(reader, ok, QStringLiteral("Attachment"));
             d->mValidFields.setBit(EwsAttachmentPrivate::LastModifiedTime, ok);
-        } else if (elmName == QLatin1String("IsInline")) {
+        } else if (elmName == QLatin1StringView("IsInline")) {
             d->mIsInline = readXmlElementValue<bool>(reader, ok, QStringLiteral("Attachment"));
             d->mValidFields.setBit(EwsAttachmentPrivate::IsInline, ok);
-        } else if (d->mType == FileAttachment && elmName == QLatin1String("IsContactPhoto")) {
+        } else if (d->mType == FileAttachment && elmName == QLatin1StringView("IsContactPhoto")) {
             d->mIsContactPhoto = readXmlElementValue<bool>(reader, ok, QStringLiteral("Attachment"));
             d->mValidFields.setBit(EwsAttachmentPrivate::IsContactPhoto, ok);
-        } else if (d->mType == FileAttachment && elmName == QLatin1String("Content")) {
+        } else if (d->mType == FileAttachment && elmName == QLatin1StringView("Content")) {
             d->mContent = readXmlElementValue<QByteArray>(reader, ok, QStringLiteral("Attachment"));
             d->mValidFields.setBit(EwsAttachmentPrivate::Content, ok);
         } else if (d->mType == ItemAttachment
-                   && (elmName == QLatin1String("Item") || elmName == QLatin1String("Message") || elmName == QLatin1String("CalendarItem")
-                       || elmName == QLatin1String("Contact") || elmName == QLatin1String("MeetingMessage") || elmName == QLatin1String("MeetingRequest")
-                       || elmName == QLatin1String("MeetingResponse") || elmName == QLatin1String("MeetingCancellation") || elmName == QLatin1String("Task"))) {
+                   && (elmName == QLatin1StringView("Item") || elmName == QLatin1String("Message") || elmName == QLatin1String("CalendarItem")
+                       || elmName == QLatin1StringView("Contact") || elmName == QLatin1String("MeetingMessage") || elmName == QLatin1String("MeetingRequest")
+                       || elmName == QLatin1StringView("MeetingResponse") || elmName == QLatin1String("MeetingCancellation")
+                       || elmName == QLatin1String("Task"))) {
             d->mItem = EwsItem(reader);
             if (!d->mItem.isValid()) {
                 qCWarningNC(EWSCLI_LOG)

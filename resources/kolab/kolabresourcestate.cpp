@@ -40,8 +40,8 @@ static Akonadi::Collection processAnnotations(const Akonadi::Collection &collect
             // Groupware data always requires the full message, because it cannot translate without the body
             Akonadi::CachePolicy cachePolicy = col.cachePolicy();
             QStringList localParts = cachePolicy.localParts();
-            if (!localParts.contains(QLatin1String(Akonadi::MessagePart::Body))) {
-                localParts << QLatin1String(Akonadi::MessagePart::Body);
+            if (!localParts.contains(QLatin1StringView(Akonadi::MessagePart::Body))) {
+                localParts << QLatin1StringView(Akonadi::MessagePart::Body);
                 cachePolicy.setLocalParts(localParts);
                 cachePolicy.setCacheTimeout(-1);
                 cachePolicy.setInheritFromParent(false);

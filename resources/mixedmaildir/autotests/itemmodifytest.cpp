@@ -95,8 +95,8 @@ void ItemModifyTest::testExpectedFail()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QStringLiteral("collection2")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
@@ -180,8 +180,8 @@ void ItemModifyTest::testIgnorePayload()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QStringLiteral("collection2")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
@@ -256,8 +256,8 @@ void ItemModifyTest::testModifyPayload()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QStringLiteral("collection2")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
@@ -383,8 +383,8 @@ void ItemModifyTest::testModifyFlags()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QStringLiteral("collection2")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
@@ -548,8 +548,8 @@ void ItemModifyTest::testModifyFlagsAndPayload()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QStringLiteral("collection2")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 

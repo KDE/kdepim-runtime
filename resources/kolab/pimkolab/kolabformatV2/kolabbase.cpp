@@ -274,9 +274,9 @@ bool KolabBase::loadEmailAttribute(QDomElement &element, Email &email)
             QDomElement e = n.toElement();
             const QString tagName = e.tagName();
 
-            if (tagName == QLatin1String("display-name")) {
+            if (tagName == QLatin1StringView("display-name")) {
                 email.displayName = e.text();
-            } else if (tagName == QLatin1String("smtp-address")) {
+            } else if (tagName == QLatin1StringView("smtp-address")) {
                 email.smtpAddress = e.text();
             } else {
                 // TODO: Unhandled tag - save for later storage
@@ -303,48 +303,48 @@ bool KolabBase::loadAttribute(QDomElement &element)
     const QString tagName = element.tagName();
     switch (tagName[0].toLatin1()) {
     case 'u':
-        if (tagName == QLatin1String("uid")) {
+        if (tagName == QLatin1StringView("uid")) {
             setUid(element.text());
             return true;
         }
         break;
     case 'b':
-        if (tagName == QLatin1String("body")) {
+        if (tagName == QLatin1StringView("body")) {
             setBody(element.text());
             return true;
         }
         break;
     case 'c':
-        if (tagName == QLatin1String("categories")) {
+        if (tagName == QLatin1StringView("categories")) {
             setCategories(element.text());
             return true;
         }
-        if (tagName == QLatin1String("creation-date")) {
+        if (tagName == QLatin1StringView("creation-date")) {
             setCreationDate(stringToDateTime(element.text()));
             return true;
         }
         break;
     case 'l':
-        if (tagName == QLatin1String("last-modification-date")) {
+        if (tagName == QLatin1StringView("last-modification-date")) {
             setLastModified(stringToDateTime(element.text()));
             return true;
         }
         break;
     case 's':
-        if (tagName == QLatin1String("sensitivity")) {
+        if (tagName == QLatin1StringView("sensitivity")) {
             setSensitivity(stringToSensitivity(element.text()));
             return true;
         }
         break;
     case 'p':
-        if (tagName == QLatin1String("product-id")) {
+        if (tagName == QLatin1StringView("product-id")) {
             return true; // ignore this field
         }
-        if (tagName == QLatin1String("pilot-sync-id")) {
+        if (tagName == QLatin1StringView("pilot-sync-id")) {
             setPilotSyncId(element.text().toULong());
             return true;
         }
-        if (tagName == QLatin1String("pilot-sync-status")) {
+        if (tagName == QLatin1StringView("pilot-sync-status")) {
             setPilotSyncStatus(element.text().toInt());
             return true;
         }
@@ -444,10 +444,10 @@ QString KolabBase::sensitivityToString(Sensitivity s)
 
 KolabBase::Sensitivity KolabBase::stringToSensitivity(const QString &s)
 {
-    if (s == QLatin1String("private")) {
+    if (s == QLatin1StringView("private")) {
         return Private;
     }
-    if (s == QLatin1String("confidential")) {
+    if (s == QLatin1StringView("confidential")) {
         return Confidential;
     }
     return Public;

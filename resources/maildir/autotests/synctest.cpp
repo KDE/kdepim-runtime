@@ -33,7 +33,7 @@ void SyncTest::initTestCase()
     QVERIFY(agentCreateJob->exec());
     mMaildirIdentifier = agentCreateJob->instance().identifier();
 
-    QString service = QLatin1String("org.freedesktop.Akonadi.Resource.") + mMaildirIdentifier;
+    QString service = QLatin1StringView("org.freedesktop.Akonadi.Resource.") + mMaildirIdentifier;
     if (Akonadi::ServerManager::hasInstanceIdentifier()) {
         service += QLatin1Char('.') + Akonadi::ServerManager::instanceIdentifier();
     }

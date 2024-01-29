@@ -27,8 +27,8 @@ ConnectionTestJob::ConnectionTestJob(const QString &url, const QString &user, co
 
 void ConnectionTestJob::start()
 {
-    if (!mUrl.startsWith(QLatin1String("https://"))) {
-        mUrl = QLatin1String("https://") + mUrl;
+    if (!mUrl.startsWith(QLatin1StringView("https://"))) {
+        mUrl = QLatin1StringView("https://") + mUrl;
     }
     const QUrl url(mUrl + QStringLiteral("/ajax/login?action=login&name=%1&password=%2").arg(mUser, mPassword));
 
@@ -52,7 +52,7 @@ void ConnectionTestJob::httpJobFinished(KJob *job)
 
     // on success data contains something like: {"session":"e530578bca504aa89738fadde9e44b3d","random":"ac9090d2cc284fed926fa3c7e316c43b"}
     // on failure data contains something like: {"category":1,"error_params":[],"error":"Invalid credentials.","error_id":"-1529642166-37","code":"LGI-0006"}
-    if (data.contains(QLatin1String("error"))) {
+    if (data.contains(QLatin1StringView("error"))) {
         const QString errorText = data[QStringLiteral("error")].toString();
 
         setError(UserDefinedError);

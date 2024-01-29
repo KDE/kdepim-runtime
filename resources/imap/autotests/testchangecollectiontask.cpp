@@ -204,16 +204,16 @@ private Q_SLOTS:
             QString command = QString::fromUtf8(state->calls().at(i).first);
             QVariant parameter = state->calls().at(i).second;
 
-            if (command == QLatin1String("cancelTask") && callNames[i] != QLatin1String("cancelTask")) {
+            if (command == QLatin1StringView("cancelTask") && callNames[i] != QLatin1String("cancelTask")) {
                 qDebug() << "Got a cancel:" << parameter.toString();
             }
 
             QCOMPARE(command, callNames[i]);
 
-            if (command == QLatin1String("cancelTask")) {
+            if (command == QLatin1StringView("cancelTask")) {
                 QVERIFY(!parameter.toString().isEmpty());
             }
-            if (command == QLatin1String("collectionChangeCommitted")) {
+            if (command == QLatin1StringView("collectionChangeCommitted")) {
                 QCOMPARE(parameter.value<Akonadi::Collection>().name(), collectionName);
                 QCOMPARE(parameter.value<Akonadi::Collection>().remoteId().right(collectionName.length()), collectionName);
             }

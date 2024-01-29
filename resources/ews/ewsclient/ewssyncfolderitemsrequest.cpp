@@ -211,13 +211,13 @@ EwsSyncFolderItemsRequest::Change::Change(QXmlStreamReader &reader)
 
     EwsXml<SyncFolderItemsChangeElementType> ewsReader(staticReader);
 
-    if (reader.name() == QLatin1String("Create")) {
+    if (reader.name() == QLatin1StringView("Create")) {
         mType = Create;
-    } else if (reader.name() == QLatin1String("Update")) {
+    } else if (reader.name() == QLatin1StringView("Update")) {
         mType = Update;
-    } else if (reader.name() == QLatin1String("Delete")) {
+    } else if (reader.name() == QLatin1StringView("Delete")) {
         mType = Delete;
-    } else if (reader.name() == QLatin1String("ReadFlagChange")) {
+    } else if (reader.name() == QLatin1StringView("ReadFlagChange")) {
         mType = ReadFlagChange;
     }
     if (!ewsReader.readItems(reader, ewsTypeNsUri)) {

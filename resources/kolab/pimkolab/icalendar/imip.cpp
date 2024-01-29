@@ -157,7 +157,7 @@ QByteArray mailAttendees(const KCalendarCore::IncidenceBase::Ptr &incidence,
         // ignore the return value from extractEmailAddressAndName() because
         // it will always be false since tusername does not contain "@domain".
         KEmailAddress::extractEmailAddressAndName(username, temail /*byref*/, tname /*byref*/);
-        tname += QLatin1String(" <") + email + QLatin1Char('>');
+        tname += QLatin1StringView(" <") + email + QLatin1Char('>');
 
         // Optional Participants and Non-Participants are copied on the email
         if (a.role() == KCalendarCore::Attendee::OptParticipant || a.role() == KCalendarCore::Attendee::NonParticipant) {
@@ -173,11 +173,11 @@ QByteArray mailAttendees(const KCalendarCore::IncidenceBase::Ptr &incidence,
     }
     QString to;
     if (!toList.isEmpty()) {
-        to = toList.join(QLatin1String(", "));
+        to = toList.join(QLatin1StringView(", "));
     }
     QString cc;
     if (!ccList.isEmpty()) {
-        cc = ccList.join(QLatin1String(", "));
+        cc = ccList.join(QLatin1StringView(", "));
     }
 
     QString subject;

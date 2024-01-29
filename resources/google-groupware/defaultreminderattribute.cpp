@@ -43,9 +43,9 @@ void DefaultReminderAttribute::deserialize(const QByteArray &data)
         KGAPI2::ReminderPtr rem(new KGAPI2::Reminder);
 
         const QString reminderType = reminder[QStringLiteral("type")].toString();
-        if (reminderType == QLatin1String("display")) {
+        if (reminderType == QLatin1StringView("display")) {
             rem->setType(KCalendarCore::Alarm::Display);
-        } else if (reminderType == QLatin1String("email")) {
+        } else if (reminderType == QLatin1StringView("email")) {
             rem->setType(KCalendarCore::Alarm::Email);
         }
 
@@ -65,9 +65,9 @@ QByteArray DefaultReminderAttribute::serialized() const
         QVariantMap reminder;
 
         if (rem->type() == KCalendarCore::Alarm::Display) {
-            reminder[QStringLiteral("type")] = QLatin1String("display");
+            reminder[QStringLiteral("type")] = QLatin1StringView("display");
         } else if (rem->type() == KCalendarCore::Alarm::Email) {
-            reminder[QStringLiteral("type")] = QLatin1String("email");
+            reminder[QStringLiteral("type")] = QLatin1StringView("email");
         }
 
         reminder[QStringLiteral("time")] = rem->startOffset().asSeconds();

@@ -43,19 +43,19 @@ EwsMailbox::EwsMailbox(QXmlStreamReader &reader)
             return;
         }
         const QStringView readerName = reader.name();
-        if (readerName == QLatin1String("Name")) {
+        if (readerName == QLatin1StringView("Name")) {
             d->mName = reader.readElementText();
             if (reader.error() != QXmlStreamReader::NoError) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid mailbox Name element.");
                 return;
             }
-        } else if (readerName == QLatin1String("EmailAddress")) {
+        } else if (readerName == QLatin1StringView("EmailAddress")) {
             d->mEmail = reader.readElementText();
             if (reader.error() != QXmlStreamReader::NoError) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid mailbox EmailAddress element.");
                 return;
             }
-        } else if (readerName == QLatin1String("RoutingType") || readerName == QLatin1String("MailboxType") || readerName == QLatin1String("ItemId")) {
+        } else if (readerName == QLatin1StringView("RoutingType") || readerName == QLatin1String("MailboxType") || readerName == QLatin1String("ItemId")) {
             // Unsupported - ignore
             // qCWarningNC(EWSCLIENT_LOG) << QStringLiteral("Unsupported mailbox element %1").arg(reader.name().toString());
             reader.skipCurrentElement();

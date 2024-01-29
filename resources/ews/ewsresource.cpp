@@ -198,7 +198,7 @@ void EwsResource::rootFolderFetchFinished(KJob *job)
         job->setProperty("inboxId", id.id());
         connect(job, &CollectionFetchJob::result, this, &EwsResource::adjustInboxRemoteIdFetchFinished);
 
-        int inboxIdx = mSettings->serverSubscriptionList().indexOf(QLatin1String("INBOX"));
+        int inboxIdx = mSettings->serverSubscriptionList().indexOf(QLatin1StringView("INBOX"));
         if (inboxIdx >= 0) {
             QStringList subList = mSettings->serverSubscriptionList();
             subList[inboxIdx] = id.id();

@@ -78,9 +78,9 @@ void ItemCreateTest::testExpectedFail()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("data")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QStringLiteral("data")));
     QDir dataDir = topDir;
-    QVERIFY(dataDir.cd(QLatin1String("data")));
+    QVERIFY(dataDir.cd(QLatin1StringView("data")));
     KPIM::Maildir dataMd(dataDir.path(), false);
     QVERIFY(dataMd.isValid());
 
@@ -89,8 +89,8 @@ void ItemCreateTest::testExpectedFail()
     KMime::Message::Ptr msgPtr(new KMime::Message);
     msgPtr->setContent(KMime::CRLFtoLF(dataMd.readEntry(dataEntryList.first())));
 
-    QVERIFY(topDir.mkdir(QLatin1String("store")));
-    QVERIFY(topDir.cd(QLatin1String("store")));
+    QVERIFY(topDir.mkdir(QLatin1StringView("store")));
+    QVERIFY(topDir.cd(QLatin1StringView("store")));
     mStore->setPath(topDir.path());
 
     FileStore::ItemCreateJob *job = nullptr;
@@ -121,9 +121,9 @@ void ItemCreateTest::testMBox()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("data")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QStringLiteral("data")));
     QDir dataDir = topDir;
-    QVERIFY(dataDir.cd(QLatin1String("data")));
+    QVERIFY(dataDir.cd(QLatin1StringView("data")));
     KPIM::Maildir dataMd(dataDir.path(), false);
     QVERIFY(dataMd.isValid());
 
@@ -134,10 +134,10 @@ void ItemCreateTest::testMBox()
     KMime::Message::Ptr msgPtr2(new KMime::Message);
     msgPtr2->setContent(KMime::CRLFtoLF(dataMd.readEntry(dataEntryList.last())));
 
-    QVERIFY(topDir.mkdir(QLatin1String("store")));
-    QVERIFY(topDir.cd(QLatin1String("store")));
+    QVERIFY(topDir.mkdir(QLatin1StringView("store")));
+    QVERIFY(topDir.cd(QLatin1StringView("store")));
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QStringLiteral("collection1")));
 
     QFileInfo fileInfo1(topDir.path(), QStringLiteral("collection1"));
     KMBox::MBox mbox1;
@@ -318,9 +318,9 @@ void ItemCreateTest::testMaildir()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("data")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QStringLiteral("data")));
     QDir dataDir = topDir;
-    QVERIFY(dataDir.cd(QLatin1String("data")));
+    QVERIFY(dataDir.cd(QLatin1StringView("data")));
     KPIM::Maildir dataMd(dataDir.path(), false);
     QVERIFY(dataMd.isValid());
 
@@ -331,10 +331,10 @@ void ItemCreateTest::testMaildir()
     KMime::Message::Ptr msgPtr2(new KMime::Message);
     msgPtr2->setContent(KMime::CRLFtoLF(dataMd.readEntry(dataEntryList.last())));
 
-    QVERIFY(topDir.mkdir(QLatin1String("store")));
-    QVERIFY(topDir.cd(QLatin1String("store")));
+    QVERIFY(topDir.mkdir(QLatin1StringView("store")));
+    QVERIFY(topDir.cd(QLatin1StringView("store")));
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QStringLiteral("collection1")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
     KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));

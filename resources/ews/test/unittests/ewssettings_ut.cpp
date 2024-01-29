@@ -408,7 +408,7 @@ void UtEwsSettings::readTimeoutInterrupted()
 
     QVERIFY(loop.exec() == 0);
 
-    QVERIFY(password == QLatin1String("foo"));
+    QVERIFY(password == QLatin1StringView("foo"));
     QVERIFY(!hasFolderCalled);
 
     // Check for second passwordRequestFinished signal
@@ -477,7 +477,7 @@ void UtEwsSettings::readValidPassword()
 
     QVERIFY(loop.exec() == 0);
 
-    QVERIFY(password == QLatin1String("foo"));
+    QVERIFY(password == QLatin1StringView("foo"));
     QVERIFY(hasFolderCalled);
     QVERIFY(setFolderCalled);
 }
@@ -690,7 +690,7 @@ void UtEwsSettings::writeValidPassword()
 
     QVERIFY(loop.exec() == 0);
 
-    QVERIFY(password == QLatin1String("foo"));
+    QVERIFY(password == QLatin1StringView("foo"));
     QVERIFY(hasFolderCalled);
     QVERIFY(setFolderCalled);
     QVERIFY(createFolderCalled);

@@ -23,17 +23,17 @@ Object OXA::ObjectUtils::parseObject(const QDomElement &propElement, Folder::Mod
 
     QDomElement element = propElement.firstChildElement();
     while (!element.isNull()) {
-        if (element.tagName() == QLatin1String("last_modified")) {
+        if (element.tagName() == QLatin1StringView("last_modified")) {
             object.setLastModified(OXUtils::readString(element.text()));
-        } else if (element.tagName() == QLatin1String("object_id")) {
+        } else if (element.tagName() == QLatin1StringView("object_id")) {
             object.setObjectId(OXUtils::readNumber(element.text()));
-        } else if (element.tagName() == QLatin1String("folder_id")) {
+        } else if (element.tagName() == QLatin1StringView("folder_id")) {
             object.setFolderId(OXUtils::readNumber(element.text()));
-        } else if (element.tagName() == QLatin1String("object_status")) {
+        } else if (element.tagName() == QLatin1StringView("object_status")) {
             const QString content = OXUtils::readString(element.text());
-            if (content == QLatin1String("CREATE")) {
+            if (content == QLatin1StringView("CREATE")) {
                 object.setObjectStatus(Object::Created);
-            } else if (content == QLatin1String("DELETE")) {
+            } else if (content == QLatin1StringView("DELETE")) {
                 object.setObjectStatus(Object::Deleted);
             } else {
                 Q_ASSERT(false);

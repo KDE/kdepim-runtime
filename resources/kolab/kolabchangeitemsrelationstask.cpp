@@ -125,7 +125,7 @@ void KolabChangeItemsRelationsTask::onItemsFetched(KJob *job)
     members.reserve(2);
     members << left << right;
 
-    const QLatin1String productId("Akonadi-Kolab-Resource");
+    const QLatin1StringView productId("Akonadi-Kolab-Resource");
     const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeRelation(relation, members, Kolab::KolabV3, productId);
 
     auto appendJob = new KIMAP::AppendJob(mSession);

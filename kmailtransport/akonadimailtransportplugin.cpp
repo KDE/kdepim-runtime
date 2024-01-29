@@ -30,7 +30,7 @@ AkonadiMailTransportPlugin::~AkonadiMailTransportPlugin() = default;
 
 void AkonadiMailTransportPlugin::slotUpdatePluginList(const Akonadi::AgentType &type)
 {
-    if (type.capabilities().contains(QLatin1String("MailTransport"))) {
+    if (type.capabilities().contains(QLatin1StringView("MailTransport"))) {
         Q_EMIT updatePluginList();
     }
 }
@@ -52,7 +52,7 @@ QList<MailTransport::TransportAbstractPluginInfo> AkonadiMailTransportPlugin::na
     for (const AgentType &atype : types) {
         // TODO probably the string "MailTransport" should be #defined somewhere
         // and used like that in the resources (?)
-        if (atype.capabilities().contains(QLatin1String("MailTransport"))) {
+        if (atype.capabilities().contains(QLatin1StringView("MailTransport"))) {
             MailTransport::TransportAbstractPluginInfo info;
             info.name = atype.name();
             info.description = atype.description();

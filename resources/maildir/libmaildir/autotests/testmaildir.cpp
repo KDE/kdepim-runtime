@@ -28,7 +28,7 @@ static const char *testStringHeaders = "From: theDukeOfMonmouth@uk.gov\n \nTo: t
 
 void MaildirTest::init()
 {
-    QString tmpPath(QDir::tempPath() + QLatin1Char('/') + QLatin1String(testDir));
+    QString tmpPath(QDir::tempPath() + QLatin1Char('/') + QLatin1StringView(testDir));
     QDir().mkpath(tmpPath);
     m_temp = new QTemporaryDir(tmpPath);
 
@@ -36,11 +36,11 @@ void MaildirTest::init()
     QVERIFY(temp.exists());
 
     temp.mkdir(QStringLiteral("new"));
-    QVERIFY(temp.exists(QLatin1String("new")));
+    QVERIFY(temp.exists(QLatin1StringView("new")));
     temp.mkdir(QStringLiteral("cur"));
-    QVERIFY(temp.exists(QLatin1String("cur")));
+    QVERIFY(temp.exists(QLatin1StringView("cur")));
     temp.mkdir(QStringLiteral("tmp"));
-    QVERIFY(temp.exists(QLatin1String("tmp")));
+    QVERIFY(temp.exists(QLatin1StringView("tmp")));
 }
 
 void MaildirTest::cleanup()
@@ -59,7 +59,7 @@ void MaildirTest::fillDirectory(const QString &name, int limit)
     QFile file;
     QDir::setCurrent(m_temp->path() + QLatin1Char('/') + name);
     for (int i = 0; i < limit; i++) {
-        file.setFileName(QLatin1String("testmail-") + QString::number(i));
+        file.setFileName(QLatin1StringView("testmail-") + QString::number(i));
         file.open(QIODevice::WriteOnly);
         file.write(testString);
         file.flush();
@@ -98,8 +98,8 @@ void MaildirTest::testMaildirInstantiation()
     QVERIFY(d == d2);
     QVERIFY(d3 == d2);
     QVERIFY(d == d3);
-    QCOMPARE(d.path(), QString(QLatin1String("/foo/bar/Mail")));
-    QCOMPARE(d.name(), QString(QLatin1String("Mail")));
+    QCOMPARE(d.path(), QString(QLatin1StringView("/foo/bar/Mail")));
+    QCOMPARE(d.name(), QString(QLatin1StringView("Mail")));
 
     QVERIFY(!d.isValid(false));
 
@@ -241,7 +241,7 @@ void MaildirTest::testMaildirRemoveSubfolder()
 
     QString folderPath = d.addSubFolder(QStringLiteral("subFolderTest"));
     QVERIFY(!folderPath.isEmpty());
-    QVERIFY(folderPath.endsWith(QLatin1String(".directory/subFolderTest")));
+    QVERIFY(folderPath.endsWith(QLatin1StringView(".directory/subFolderTest")));
     bool removingWorked = d.removeSubFolder(QStringLiteral("subFolderTest"));
     QVERIFY(removingWorked);
 }
@@ -256,16 +256,16 @@ void MaildirTest::testMaildirRename()
 
     Maildir d2(folderPath);
     QVERIFY(d2.isValid(false));
-    QVERIFY(d2.rename(QLatin1String("renamed")));
-    QCOMPARE(d2.name(), QString(QLatin1String("renamed")));
+    QVERIFY(d2.rename(QLatin1StringView("renamed")));
+    QCOMPARE(d2.name(), QString(QLatin1StringView("renamed")));
 
     // same again, should not fail
-    QVERIFY(d2.rename(QLatin1String("renamed")));
-    QCOMPARE(d2.name(), QString(QLatin1String("renamed")));
+    QVERIFY(d2.rename(QLatin1StringView("renamed")));
+    QCOMPARE(d2.name(), QString(QLatin1StringView("renamed")));
 
     // already existing name
-    QVERIFY(!d.addSubFolder(QLatin1String("this name is already taken")).isEmpty());
-    QVERIFY(!d2.rename(QLatin1String("this name is already taken")));
+    QVERIFY(!d.addSubFolder(QLatin1StringView("this name is already taken")).isEmpty());
+    QVERIFY(!d2.rename(QLatin1StringView("this name is already taken")));
 }
 
 void MaildirTest::testMaildirMoveTo()
@@ -327,13 +327,13 @@ void MaildirTest::testMaildirFlagsReading()
                                               << QStringLiteral("FPRS");
     QDir::setCurrent(m_temp->path() + QStringLiteral("/cur"));
     for (int i = 0; i < 6; i++) {
-        QString fileName = QLatin1String("testmail-") + QString::number(i);
+        QString fileName = QLatin1StringView("testmail-") + QString::number(i);
         if (i < 5) {
             fileName +=
 #ifdef Q_OS_WIN
-                QLatin1String("!2,")
+                QLatin1StringView("!2,")
 #else
-                QLatin1String(":2,")
+                QLatin1StringView(":2,")
 #endif
                 + markers[i];
         }
@@ -419,11 +419,11 @@ void MaildirTest::testMaildirFlagsWriting()
     // and it's the right file
     QCOMPARE(d.readEntry(newKey), QByteArray(testString));
     // now check the file name
-    QVERIFY(newKey.endsWith(QLatin1String("2,S")));
+    QVERIFY(newKey.endsWith(QLatin1StringView("2,S")));
     // and more flags
     const QString newKey2 = d.changeEntryFlags(newKey, Akonadi::Item::Flags() << Akonadi::MessageFlags::Seen << Akonadi::MessageFlags::Replied);
     // check the file name, and the sorting of markers
-    QVERIFY(newKey2.endsWith(QLatin1String("2,RS")));
+    QVERIFY(newKey2.endsWith(QLatin1StringView("2,RS")));
     QVERIFY(QFile::exists(QStringLiteral("cur/") + newKey2));
 }
 

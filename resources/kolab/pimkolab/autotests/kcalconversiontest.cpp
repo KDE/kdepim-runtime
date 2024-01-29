@@ -200,7 +200,7 @@ void KCalConversionTest::testConversion_data()
         kcal.setNonKDECustomProperty("X-KOLAB-key1", QStringLiteral("value1"));
         kcal.setNonKDECustomProperty("X-KOLAB-key2", QStringLiteral("value2"));
         kcal.setCustomProperty("SOMEOTHERAPP", "key2", QStringLiteral("value2"));
-        Q_ASSERT(kcal.nonKDECustomProperty("X-KOLAB-key1") == QLatin1String("value1"));
+        Q_ASSERT(kcal.nonKDECustomProperty("X-KOLAB-key1") == QLatin1StringView("value1"));
 
         Kolab::Event kolab;
         kolab.setUid("uid");
@@ -562,8 +562,8 @@ void KCalConversionTest::testContactConversion()
     QCOMPARE(e.preferredEmail(), kcal.preferredEmail());
     const auto mails{e.emails()};
     for (const QString &mail : mails) {
-        QCOMPARE(e.custom(QLatin1String("KOLAB"), QString::fromLatin1("EmailTypes%1").arg(mail)),
-                 kcal.custom(QLatin1String("KOLAB"), QString::fromLatin1("EmailTypes%1").arg(mail)));
+        QCOMPARE(e.custom(QLatin1StringView("KOLAB"), QString::fromLatin1("EmailTypes%1").arg(mail)),
+                 kcal.custom(QLatin1StringView("KOLAB"), QString::fromLatin1("EmailTypes%1").arg(mail)));
     }
     QCOMPARE(e.birthday(), kcal.birthday());
 

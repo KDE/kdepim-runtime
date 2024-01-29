@@ -257,7 +257,7 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
         Q_ASSERT(item.hasPayload<KMime::Message::Ptr>());
         return item;
     }
-    const QLatin1String productId("Akonadi-Kolab-Resource");
+    const QLatin1StringView productId("Akonadi-Kolab-Resource");
     // Everything stays the same, except mime type and payload
     Akonadi::Item imapItem = item;
     imapItem.setMimeType(QStringLiteral("message/rfc822"));
@@ -320,8 +320,8 @@ QByteArray KolabHelpers::kolabTypeForMimeType(const QStringList &contentMimeType
         return QByteArrayLiteral("task");
     } else if (contentMimeTypes.contains(KCalendarCore::Journal::journalMimeType())) {
         return QByteArrayLiteral("journal");
-    } else if (contentMimeTypes.contains(QLatin1String("application/x-vnd.akonadi.note"))
-               || contentMimeTypes.contains(QLatin1String("text/x-vnd.akonadi.note"))) {
+    } else if (contentMimeTypes.contains(QLatin1StringView("application/x-vnd.akonadi.note"))
+               || contentMimeTypes.contains(QLatin1StringView("text/x-vnd.akonadi.note"))) {
         return QByteArrayLiteral("note");
     }
     return {};
@@ -339,7 +339,7 @@ Kolab::ObjectType KolabHelpers::getKolabTypeFromMimeType(const QString &type)
         return Kolab::ContactObject;
     } else if (type == KContacts::ContactGroup::mimeType()) {
         return Kolab::DistlistObject;
-    } else if (type == QLatin1String("text/x-vnd.akonadi.note") || type == QLatin1String("application/x-vnd.akonadi.note")) {
+    } else if (type == QLatin1StringView("text/x-vnd.akonadi.note") || type == QLatin1String("application/x-vnd.akonadi.note")) {
         return Kolab::NoteObject;
     }
     return Kolab::InvalidObject;

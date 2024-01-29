@@ -461,17 +461,17 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
                                    "some mandatory capabilities are missing: %2. "
                                    "Please ask your sysadmin to upgrade the server.",
                                    m_account->server(),
-                                   missing.join(QLatin1String(", "))));
+                                   missing.join(QLatin1StringView(", "))));
         return;
     }
 
     // If the extension is supported, grab the namespaces from the server
-    if (m_capabilities.contains(QLatin1String("NAMESPACE"))) {
+    if (m_capabilities.contains(QLatin1StringView("NAMESPACE"))) {
         auto nsJob = new KIMAP::NamespaceJob(capJob->session());
         QObject::connect(nsJob, &KIMAP::NamespaceJob::result, this, &SessionPool::onNamespacesTestDone);
         nsJob->start();
         return;
-    } else if (m_capabilities.contains(QLatin1String("ID"))) {
+    } else if (m_capabilities.contains(QLatin1StringView("ID"))) {
         auto idJob = new KIMAP::IdJob(capJob->session());
         idJob->setField("name", m_clientId);
         QObject::connect(idJob, &KIMAP::IdJob::result, this, &SessionPool::onIdDone);
@@ -513,7 +513,7 @@ void SessionPool::onNamespacesTestDone(KJob *job)
         m_namespaces = nsJob->personalNamespaces() + nsJob->userNamespaces() + nsJob->sharedNamespaces();
     }
 
-    if (m_capabilities.contains(QLatin1String("ID"))) {
+    if (m_capabilities.contains(QLatin1StringView("ID"))) {
         auto idJob = new KIMAP::IdJob(nsJob->session());
         idJob->setField("name", m_clientId);
         QObject::connect(idJob, &KIMAP::IdJob::result, this, &SessionPool::onIdDone);

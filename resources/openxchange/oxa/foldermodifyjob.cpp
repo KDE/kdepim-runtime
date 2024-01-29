@@ -74,7 +74,7 @@ void FolderModifyJob::davJobFinished(KJob *job)
 
     QDomElement element = prop.firstChildElement();
     while (!element.isNull()) {
-        if (element.tagName() == QLatin1String("last_modified")) {
+        if (element.tagName() == QLatin1StringView("last_modified")) {
             mFolder.setLastModified(OXUtils::readString(element.text()));
         }
 

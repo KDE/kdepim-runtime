@@ -486,7 +486,7 @@ void EwsFetchFoldersIncrJobPrivate::updateFolderCollection(Collection &collectio
         mimeTypes.append(KCalendarCore::Todo::todoMimeType());
         break;
     case EwsFolderTypeMail:
-        if (contClass == QLatin1String("IPF.Note") || contClass.isEmpty()) {
+        if (contClass == QLatin1StringView("IPF.Note") || contClass.isEmpty()) {
             mimeTypes.append(KMime::Message::mimeType());
         }
         break;

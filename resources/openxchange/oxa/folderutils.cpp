@@ -56,7 +56,7 @@ static void parseFolderPermissions(const QDomElement &permissions, Folder &folde
 
     QDomElement element = permissions.firstChildElement();
     while (!element.isNull()) {
-        if (element.tagName() == QLatin1String("user")) {
+        if (element.tagName() == QLatin1StringView("user")) {
             Folder::Permissions permissions;
             permissions.setFolderPermission(
                 (Folder::Permissions::FolderPermission)OXUtils::readNumber(element.attribute(QStringLiteral("folderpermission"), QStringLiteral("0"))));
@@ -69,7 +69,7 @@ static void parseFolderPermissions(const QDomElement &permissions, Folder &folde
             permissions.setAdminFlag(OXUtils::readBoolean(element.attribute(QStringLiteral("admin_flag"), QStringLiteral("false"))));
 
             userPermissions.insert(OXUtils::readNumber(element.text()), permissions);
-        } else if (element.tagName() == QLatin1String("group")) {
+        } else if (element.tagName() == QLatin1StringView("group")) {
             Folder::Permissions permissions;
             permissions.setFolderPermission(
                 (Folder::Permissions::FolderPermission)OXUtils::readNumber(element.attribute(QStringLiteral("folderpermission"), QStringLiteral("0"))));
@@ -97,48 +97,48 @@ Folder OXA::FolderUtils::parseFolder(const QDomElement &propElement)
 
     QDomElement element = propElement.firstChildElement();
     while (!element.isNull()) {
-        if (element.tagName() == QLatin1String("object_status")) {
+        if (element.tagName() == QLatin1StringView("object_status")) {
             const QString content = OXUtils::readString(element.text());
-            if (content == QLatin1String("CREATE")) {
+            if (content == QLatin1StringView("CREATE")) {
                 folder.setObjectStatus(Folder::Created);
-            } else if (content == QLatin1String("DELETE")) {
+            } else if (content == QLatin1StringView("DELETE")) {
                 folder.setObjectStatus(Folder::Deleted);
             } else {
                 Q_ASSERT(false);
             }
-        } else if (element.tagName() == QLatin1String("title")) {
+        } else if (element.tagName() == QLatin1StringView("title")) {
             folder.setTitle(OXUtils::readString(element.text()));
-        } else if (element.tagName() == QLatin1String("owner")) {
+        } else if (element.tagName() == QLatin1StringView("owner")) {
             folder.setOwner(OXUtils::readNumber(element.text()));
-        } else if (element.tagName() == QLatin1String("module")) {
+        } else if (element.tagName() == QLatin1StringView("module")) {
             const QString content = OXUtils::readString(element.text());
-            if (content == QLatin1String("calendar")) {
+            if (content == QLatin1StringView("calendar")) {
                 folder.setModule(Folder::Calendar);
-            } else if (content == QLatin1String("contact")) {
+            } else if (content == QLatin1StringView("contact")) {
                 folder.setModule(Folder::Contacts);
-            } else if (content == QLatin1String("task")) {
+            } else if (content == QLatin1StringView("task")) {
                 folder.setModule(Folder::Tasks);
             } else {
                 folder.setModule(Folder::Unbound);
             }
-        } else if (element.tagName() == QLatin1String("type")) {
+        } else if (element.tagName() == QLatin1StringView("type")) {
             const QString content = OXUtils::readString(element.text());
-            if (content == QLatin1String("public")) {
+            if (content == QLatin1StringView("public")) {
                 folder.setType(Folder::Public);
-            } else if (content == QLatin1String("private")) {
+            } else if (content == QLatin1StringView("private")) {
                 folder.setType(Folder::Private);
             } else {
                 Q_ASSERT(false);
             }
-        } else if (element.tagName() == QLatin1String("defaultfolder")) {
+        } else if (element.tagName() == QLatin1StringView("defaultfolder")) {
             folder.setIsDefaultFolder(OXUtils::readBoolean(element.text()));
-        } else if (element.tagName() == QLatin1String("last_modified")) {
+        } else if (element.tagName() == QLatin1StringView("last_modified")) {
             folder.setLastModified(OXUtils::readString(element.text()));
-        } else if (element.tagName() == QLatin1String("object_id")) {
+        } else if (element.tagName() == QLatin1StringView("object_id")) {
             folder.setObjectId(OXUtils::readNumber(element.text()));
-        } else if (element.tagName() == QLatin1String("folder_id")) {
+        } else if (element.tagName() == QLatin1StringView("folder_id")) {
             folder.setFolderId(OXUtils::readNumber(element.text()));
-        } else if (element.tagName() == QLatin1String("permissions")) {
+        } else if (element.tagName() == QLatin1StringView("permissions")) {
             parseFolderPermissions(element, folder);
         }
 

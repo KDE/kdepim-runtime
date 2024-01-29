@@ -82,13 +82,13 @@ Collection PersonHandler::collectionFromContactGroup(const People::ContactGroupP
     const auto isSystemGroup = group->groupType() == People::ContactGroup::GroupType::SYSTEM_CONTACT_GROUP;
     auto realName = group->formattedName();
     if (isSystemGroup) {
-        if (realName.contains(QLatin1String("Coworkers"))) {
+        if (realName.contains(QLatin1StringView("Coworkers"))) {
             realName = i18nc("Name of a group of contacts", "Coworkers");
-        } else if (realName.contains(QLatin1String("Friends"))) {
+        } else if (realName.contains(QLatin1StringView("Friends"))) {
             realName = i18nc("Name of a group of contacts", "Friends");
-        } else if (realName.contains(QLatin1String("Family"))) {
+        } else if (realName.contains(QLatin1StringView("Family"))) {
             realName = i18nc("Name of a group of contacts", "Family");
-        } else if (realName.contains(QLatin1String("My Contacts"))) {
+        } else if (realName.contains(QLatin1StringView("My Contacts"))) {
             realName = i18nc("Name of a group of contacts", "My Contacts");
         }
     }

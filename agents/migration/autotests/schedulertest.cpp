@@ -20,7 +20,7 @@ class Testmigrator : public MigratorBase
     Q_OBJECT
 public:
     explicit Testmigrator(const QString &identifier, QObject *parent = nullptr)
-        : MigratorBase(QLatin1String("testmigrator") + identifier, QString(), QString(), parent)
+        : MigratorBase(QLatin1StringView("testmigrator") + identifier, QString(), QString(), parent)
         , mAutostart(false)
     {
     }

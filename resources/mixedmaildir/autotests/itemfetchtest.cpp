@@ -77,7 +77,7 @@ public:
         : QObject()
         , mStore(0)
         , mDir(0)
-        , mIndexFilePattern(QLatin1String(".%1.index"))
+        , mIndexFilePattern(QLatin1StringView(".%1.index"))
     {
         // for monitoring signals
         qRegisterMetaType<Akonadi::Collection::List>();
@@ -136,15 +136,15 @@ void ItemFetchTest::testListingMaildir()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection2")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir-tagged"), topDir.path(), QLatin1String("collection3")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("dimap"), topDir.path(), QLatin1String("collection4")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir-tagged"), topDir.path(), QLatin1String("collection5")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QLatin1String("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QLatin1String("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir-tagged"), topDir.path(), QLatin1String("collection3")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("dimap"), topDir.path(), QLatin1String("collection4")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir-tagged"), topDir.path(), QLatin1String("collection5")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
-    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1StringView("collection1"));
     const QStringList md1EntryList = md1.entryList();
     QSet<QString> entrySet1(md1EntryList.cbegin().md1EntryList.cend());
     QCOMPARE((int)entrySet1.count(), 4);
@@ -152,22 +152,22 @@ void ItemFetchTest::testListingMaildir()
     QFileInfo indexFileInfo1(indexFile(QFileInfo(md1.path())));
     QVERIFY(QFile::remove(indexFileInfo1.absoluteFilePath()));
 
-    KPIM::Maildir md2 = topLevelMd.subFolder(QLatin1String("collection2"));
+    KPIM::Maildir md2 = topLevelMd.subFolder(QLatin1StringView("collection2"));
     const QStringList md2EntryList = md2.entryList();
     QSet<QString> entrySet2(md2EntryList.cbegin(), md2EntryList.cend());
     QCOMPARE((int)entrySet2.count(), 4);
 
-    KPIM::Maildir md3 = topLevelMd.subFolder(QLatin1String("collection3"));
+    KPIM::Maildir md3 = topLevelMd.subFolder(QLatin1StringView("collection3"));
     const QStringList md3EntryList = md3.entryList();
     QSet<QString> entrySet3(md3EntryList.cbegin(), md3EntryList.cend());
     QCOMPARE((int)entrySet3.count(), 4);
 
-    KPIM::Maildir md4 = topLevelMd.subFolder(QLatin1String("collection4"));
+    KPIM::Maildir md4 = topLevelMd.subFolder(QLatin1StringView("collection4"));
     const QStringList md4EntryList = md4.entryList();
     QSet<QString> entrySet4(md4EntryList.cbegin(), md4EntryList.cend());
     QCOMPARE((int)entrySet4.count(), 4);
 
-    KPIM::Maildir md5 = topLevelMd.subFolder(QLatin1String("collection5"));
+    KPIM::Maildir md5 = topLevelMd.subFolder(QLatin1StringView("collection5"));
     const QStringList md5EntryList = md5.entryList();
     QSet<QString> entrySet5(md5EntryList.cbegin(), md5EntryList.cend());
     QCOMPARE((int)entrySet5.count(), 4);
@@ -191,8 +191,8 @@ void ItemFetchTest::testListingMaildir()
 
     // test listing maildir without index
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QLatin1StringView("collection1"));
+    collection1.setRemoteId(QLatin1StringView("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->fetchItems(collection1);
@@ -261,8 +261,8 @@ void ItemFetchTest::testListingMaildir()
 
     // test listing maildir with index
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setName(QLatin1StringView("collection2"));
+    collection2.setRemoteId(QLatin1StringView("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->fetchItems(collection2);
@@ -329,8 +329,8 @@ void ItemFetchTest::testListingMaildir()
 
     // test listing maildir with index which has tags
     Collection collection3;
-    collection3.setName(QLatin1String("collection3"));
-    collection3.setRemoteId(QLatin1String("collection3"));
+    collection3.setName(QLatin1StringView("collection3"));
+    collection3.setRemoteId(QLatin1StringView("collection3"));
     collection3.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->fetchItems(collection3);
@@ -391,8 +391,8 @@ void ItemFetchTest::testListingMaildir()
 
     // test listing maildir with index which contains IMAP UIDs (dimap cache directory)
     Collection collection4;
-    collection4.setName(QLatin1String("collection4"));
-    collection4.setRemoteId(QLatin1String("collection4"));
+    collection4.setName(QLatin1StringView("collection4"));
+    collection4.setRemoteId(QLatin1StringView("collection4"));
     collection4.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->fetchItems(collection4);
@@ -461,13 +461,13 @@ void ItemFetchTest::testListingMaildir()
     entrySet = QSet<QString>(md5EntryList.cbegin(), md5EntryList.cend());
     entrySet.remove(newRemoteId);
     QCOMPARE(entrySet, entrySet5);
-    QFileInfo fileInfo5(md5.path(), QLatin1String("new"));
+    QFileInfo fileInfo5(md5.path(), QLatin1StringView("new"));
     QFileInfo indexFileInfo5 = indexFile(QFileInfo(md5.path()));
     QVERIFY(fileInfo5.lastModified() > indexFileInfo5.lastModified());
 
     Collection collection5;
-    collection5.setName(QLatin1String("collection5"));
-    collection5.setRemoteId(QLatin1String("collection5"));
+    collection5.setName(QLatin1StringView("collection5"));
+    collection5.setRemoteId(QLatin1StringView("collection5"));
     collection5.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->fetchItems(collection5);
@@ -516,13 +516,13 @@ void ItemFetchTest::testListingMBox()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection2")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox-tagged"), topDir.path(), QLatin1String("collection3")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox-unpurged"), topDir.path(), QLatin1String("collection4")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox-tagged"), topDir.path(), QLatin1String("collection5")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QLatin1String("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QLatin1String("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox-tagged"), topDir.path(), QLatin1String("collection3")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox-unpurged"), topDir.path(), QLatin1String("collection4")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox-tagged"), topDir.path(), QLatin1String("collection5")));
 
-    QFileInfo fileInfo1(topDir.path(), QLatin1String("collection1"));
+    QFileInfo fileInfo1(topDir.path(), QLatin1StringView("collection1"));
     MBox mbox1;
     QVERIFY(mbox1.load(fileInfo1.absoluteFilePath()));
     MBoxEntry::List entryList1 = mbox1.entries();
@@ -531,25 +531,25 @@ void ItemFetchTest::testListingMBox()
     QFileInfo indexFileInfo1 = indexFile(fileInfo1);
     QVERIFY(QFile::remove(indexFileInfo1.absoluteFilePath()));
 
-    QFileInfo fileInfo2(topDir.path(), QLatin1String("collection2"));
+    QFileInfo fileInfo2(topDir.path(), QLatin1StringView("collection2"));
     MBox mbox2;
     QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
     MBoxEntry::List entryList2 = mbox2.entries();
     QCOMPARE((int)entryList2.count(), 4);
 
-    QFileInfo fileInfo3(topDir.path(), QLatin1String("collection3"));
+    QFileInfo fileInfo3(topDir.path(), QLatin1StringView("collection3"));
     MBox mbox3;
     QVERIFY(mbox3.load(fileInfo3.absoluteFilePath()));
     MBoxEntry::List entryList3 = mbox3.entries();
     QCOMPARE((int)entryList3.count(), 4);
 
-    QFileInfo fileInfo4(topDir.path(), QLatin1String("collection4"));
+    QFileInfo fileInfo4(topDir.path(), QLatin1StringView("collection4"));
     MBox mbox4;
     QVERIFY(mbox4.load(fileInfo4.absoluteFilePath()));
     MBoxEntry::List entryList4 = mbox4.entries();
     QCOMPARE((int)entryList4.count(), 4);
 
-    QFileInfo fileInfo5(topDir.path(), QLatin1String("collection5"));
+    QFileInfo fileInfo5(topDir.path(), QLatin1StringView("collection5"));
     MBox mbox5;
     QVERIFY(mbox5.load(fileInfo5.absoluteFilePath()));
     MBoxEntry::List entryList5 = mbox5.entries();
@@ -569,8 +569,8 @@ void ItemFetchTest::testListingMBox()
 
     // test listing mbox without index
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QLatin1StringView("collection1"));
+    collection1.setRemoteId(QLatin1StringView("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->fetchItems(collection1);
@@ -629,8 +629,8 @@ void ItemFetchTest::testListingMBox()
 
     // test listing mbox with index
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setName(QLatin1StringView("collection2"));
+    collection2.setRemoteId(QLatin1StringView("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->fetchItems(collection2);
@@ -694,8 +694,8 @@ void ItemFetchTest::testListingMBox()
 
     // test listing mbox with index which has tags
     Collection collection3;
-    collection3.setName(QLatin1String("collection3"));
-    collection3.setRemoteId(QLatin1String("collection3"));
+    collection3.setName(QLatin1StringView("collection3"));
+    collection3.setRemoteId(QLatin1StringView("collection3"));
     collection3.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->fetchItems(collection3);
@@ -746,8 +746,8 @@ void ItemFetchTest::testListingMBox()
 
     // test listing mbox with index and unpurged messages (in mbox but not in index)
     Collection collection4;
-    collection4.setName(QLatin1String("collection4"));
-    collection4.setRemoteId(QLatin1String("collection4"));
+    collection4.setName(QLatin1StringView("collection4"));
+    collection4.setRemoteId(QLatin1StringView("collection4"));
     collection4.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->fetchItems(collection4);
@@ -803,8 +803,8 @@ void ItemFetchTest::testListingMBox()
     QVERIFY(fileInfo5.lastModified() > indexFileInfo5.lastModified());
 
     Collection collection5;
-    collection5.setName(QLatin1String("collection5"));
-    collection5.setRemoteId(QLatin1String("collection5"));
+    collection5.setName(QLatin1StringView("collection5"));
+    collection5.setRemoteId(QLatin1StringView("collection5"));
     collection5.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->fetchItems(collection5);
@@ -905,11 +905,11 @@ void ItemFetchTest::testSingleItemFetchMaildir()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QLatin1String("collection1")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
-    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1StringView("collection1"));
     QStringList entryList1 = md1.entryList();
     QCOMPARE((int)entryList1.count(), 4);
 
@@ -927,8 +927,8 @@ void ItemFetchTest::testSingleItemFetchMaildir()
 
     // test fetching from maildir, headers only
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QLatin1StringView("collection1"));
+    collection1.setRemoteId(QLatin1StringView("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     for (const QString &entry : std::as_const(randomList1)) {
@@ -1034,11 +1034,11 @@ void ItemFetchTest::testSingleItemFetchMBox()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QLatin1String("collection1")));
     // one message has no body
     const QByteArray messageIdOfEmptyBodyMsg = "201007241551.37547.kevin.krammer@demo.kolab.org";
 
-    QFileInfo fileInfo1(topDir.path(), QLatin1String("collection1"));
+    QFileInfo fileInfo1(topDir.path(), QLatin1StringView("collection1"));
     MBox mbox1;
     QVERIFY(mbox1.load(fileInfo1.absoluteFilePath()));
     MBoxEntry::List entryList1 = mbox1.entries();
@@ -1058,8 +1058,8 @@ void ItemFetchTest::testSingleItemFetchMBox()
 
     // test fetching from mbox, headers only
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QLatin1StringView("collection1"));
+    collection1.setRemoteId(QLatin1StringView("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     for (const QString &entry : std::as_const(randomList1)) {

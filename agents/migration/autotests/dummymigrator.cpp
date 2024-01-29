@@ -13,7 +13,7 @@
 using namespace std::chrono_literals;
 
 DummyMigrator::DummyMigrator(const QString &identifier)
-    : MigratorBase(QLatin1String("dummymigrator") + identifier, QString(), QString())
+    : MigratorBase(QLatin1StringView("dummymigrator") + identifier, QString(), QString())
 {
 }
 

@@ -156,7 +156,7 @@ EwsFindItemResponse::EwsFindItemResponse(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QLatin1String("RootFolder")) {
+        if (reader.name() == QLatin1StringView("RootFolder")) {
             if (!parseRootFolder(reader)) {
                 return;
             }
@@ -169,7 +169,7 @@ EwsFindItemResponse::EwsFindItemResponse(QXmlStreamReader &reader)
 
 bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
 {
-    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1String("RootFolder")) {
+    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1StringView("RootFolder")) {
         return setErrorMsg(
             QStringLiteral("Failed to read EWS request - expected %1 element (got %2).").arg(QStringLiteral("RootFolder"), reader.qualifiedName().toString()));
     }
@@ -183,7 +183,7 @@ bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
     if (!ok) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - failed to read %1 attribute.").arg(QStringLiteral("TotalItemsInView")));
     }
-    mIncludesLastItem = attrs.value(QStringLiteral("IncludesLastItemInRange")) == QLatin1String("true");
+    mIncludesLastItem = attrs.value(QStringLiteral("IncludesLastItemInRange")) == QLatin1StringView("true");
 
     if (attrs.hasAttribute(QStringLiteral("IndexedPagingOffset"))) {
         mNextOffset = attrs.value(QStringLiteral("IndexedPagingOffset")).toInt(&ok);
@@ -210,7 +210,7 @@ bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected a child element in %1 element.").arg(QStringLiteral("RootFolder")));
     }
 
-    if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != QLatin1String("Items")) {
+    if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != QLatin1StringView("Items")) {
         return setErrorMsg(
             QStringLiteral("Failed to read EWS request - expected %1 element (got %2).").arg(QStringLiteral("Items"), reader.qualifiedName().toString()));
     }
@@ -245,10 +245,10 @@ EwsItem *EwsFindItemResponse::readItem(QXmlStreamReader &reader)
 {
     EwsItem *item = nullptr;
     const QStringView readerName = reader.name();
-    if (readerName == QLatin1String("Item") || readerName == QLatin1String("Message") || readerName == QLatin1String("CalendarItem")
-        || readerName == QLatin1String("Contact") || readerName == QLatin1String("DistributionList") || readerName == QLatin1String("MeetingMessage")
-        || readerName == QLatin1String("MeetingRequest") || readerName == QLatin1String("MeetingResponse") || readerName == QLatin1String("MeetingCancellation")
-        || readerName == QLatin1String("Task")) {
+    if (readerName == QLatin1StringView("Item") || readerName == QLatin1String("Message") || readerName == QLatin1String("CalendarItem")
+        || readerName == QLatin1StringView("Contact") || readerName == QLatin1String("DistributionList") || readerName == QLatin1String("MeetingMessage")
+        || readerName == QLatin1StringView("MeetingRequest") || readerName == QLatin1String("MeetingResponse")
+        || readerName == QLatin1String("MeetingCancellation") || readerName == QLatin1StringView("Task")) {
         qCDebug(EWSCLI_LOG).noquote() << QStringLiteral("Processing %1").arg(readerName.toString());
         item = new EwsItem(reader);
         if (!item->isValid()) {

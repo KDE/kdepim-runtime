@@ -121,14 +121,14 @@ EwsSubscribeRequest::Response::Response(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QLatin1String("SubscriptionId")) {
+        if (reader.name() == QLatin1StringView("SubscriptionId")) {
             mId = reader.readElementText();
 
             if (reader.error() != QXmlStreamReader::NoError) {
                 setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.").arg(QStringLiteral("SubscriptionId")));
                 return;
             }
-        } else if (reader.name() == QLatin1String("Watermark")) {
+        } else if (reader.name() == QLatin1StringView("Watermark")) {
             mWatermark = reader.readElementText();
 
             if (reader.error() != QXmlStreamReader::NoError) {

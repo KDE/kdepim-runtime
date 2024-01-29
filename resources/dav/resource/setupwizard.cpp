@@ -67,12 +67,12 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
     const QString username = wizard->field(QStringLiteral("credentialsUserName")).toString();
     QString localPart(username);
     localPart.remove(QRegularExpression(QStringLiteral("@.*$")));
-    pathPattern.replace(QLatin1String("$user$"), username);
-    pathPattern.replace(QLatin1String("$localpart$"), localPart);
+    pathPattern.replace(QLatin1StringView("$user$"), username);
+    pathPattern.replace(QLatin1StringView("$localpart$"), localPart);
     QString providerName = service->property<QString>(QStringLiteral("X-DavGroupware-Provider"));
     const QString localPath = wizard->field(QStringLiteral("installationPath")).toString();
     if (!localPath.isEmpty()) {
-        if (providerName == QLatin1String("davical")) {
+        if (providerName == QLatin1StringView("davical")) {
             if (!localPath.endsWith(QLatin1Char('/'))) {
                 pathPattern.append(localPath + QLatin1Char('/'));
             } else {
@@ -176,11 +176,11 @@ SetupWizard::Url::List SetupWizard::urls() const
     for (const QString &protocol : supportedProtocols) {
         Url url;
 
-        if (protocol == QLatin1String("CalDav")) {
+        if (protocol == QLatin1StringView("CalDav")) {
             url.protocol = KDAV::CalDav;
-        } else if (protocol == QLatin1String("CardDav")) {
+        } else if (protocol == QLatin1StringView("CardDav")) {
             url.protocol = KDAV::CardDav;
-        } else if (protocol == QLatin1String("GroupDav")) {
+        } else if (protocol == QLatin1StringView("GroupDav")) {
             url.protocol = KDAV::GroupDav;
         } else {
             return urls;
@@ -223,7 +223,7 @@ CredentialsPage::CredentialsPage(QWidget *parent)
 int CredentialsPage::nextId() const
 {
     QString userName = field(QStringLiteral("credentialsUserName")).toString();
-    if (userName.endsWith(QLatin1String("@yahoo.com"))) {
+    if (userName.endsWith(QLatin1StringView("@yahoo.com"))) {
         const QString maybeYahooFile =
             QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("akonadi/davgroupware-providers/yahoo.desktop"));
 
@@ -418,17 +418,17 @@ void ConnectionPage::initializePage()
     mPreviewLayout = new QFormLayout;
     mLayout->addRow(mPreviewLayout);
 
-    if (supportedProtocols.contains(QLatin1String("CalDav"))) {
+    if (supportedProtocols.contains(QLatin1StringView("CalDav"))) {
         mCalDavUrlLabel = new QLabel(i18n("Final URL (CalDav)"));
         mCalDavUrlPreview = new QLabel;
         mPreviewLayout->addRow(mCalDavUrlLabel, mCalDavUrlPreview);
     }
-    if (supportedProtocols.contains(QLatin1String("CardDav"))) {
+    if (supportedProtocols.contains(QLatin1StringView("CardDav"))) {
         mCardDavUrlLabel = new QLabel(i18n("Final URL (CardDav)"));
         mCardDavUrlPreview = new QLabel;
         mPreviewLayout->addRow(mCardDavUrlLabel, mCardDavUrlPreview);
     }
-    if (supportedProtocols.contains(QLatin1String("GroupDav"))) {
+    if (supportedProtocols.contains(QLatin1StringView("GroupDav"))) {
         mGroupDavUrlLabel = new QLabel(i18n("Final URL (GroupDav)"));
         mGroupDavUrlPreview = new QLabel;
         mPreviewLayout->addRow(mGroupDavUrlLabel, mGroupDavUrlPreview);

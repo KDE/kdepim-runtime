@@ -54,9 +54,9 @@ bool EwsEffectiveRightsPrivate::readRight(QXmlStreamReader &reader, Right right)
     }
 
     const QString text = reader.readElementText();
-    if (text == QLatin1String("true")) {
+    if (text == QLatin1StringView("true")) {
         mRights.setBit(right);
-    } else if (text == QLatin1String("false")) {
+    } else if (text == QLatin1StringView("false")) {
         mRights.clearBit(right);
     } else {
         qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element value: %3.").arg(QStringLiteral("EffectiveRights"), elm, text);
@@ -80,31 +80,31 @@ EwsEffectiveRights::EwsEffectiveRights(QXmlStreamReader &reader)
             return;
         }
         const QStringView readerName = reader.name();
-        if (readerName == QLatin1String("CreateAssociated")) {
+        if (readerName == QLatin1StringView("CreateAssociated")) {
             if (!d->readRight(reader, EwsEffectiveRightsPrivate::CreateAssociated)) {
                 return;
             }
-        } else if (readerName == QLatin1String("CreateContents")) {
+        } else if (readerName == QLatin1StringView("CreateContents")) {
             if (!d->readRight(reader, EwsEffectiveRightsPrivate::CreateContents)) {
                 return;
             }
-        } else if (readerName == QLatin1String("CreateHierarchy")) {
+        } else if (readerName == QLatin1StringView("CreateHierarchy")) {
             if (!d->readRight(reader, EwsEffectiveRightsPrivate::CreateHierarchy)) {
                 return;
             }
-        } else if (readerName == QLatin1String("Delete")) {
+        } else if (readerName == QLatin1StringView("Delete")) {
             if (!d->readRight(reader, EwsEffectiveRightsPrivate::Delete)) {
                 return;
             }
-        } else if (readerName == QLatin1String("Modify")) {
+        } else if (readerName == QLatin1StringView("Modify")) {
             if (!d->readRight(reader, EwsEffectiveRightsPrivate::Modify)) {
                 return;
             }
-        } else if (readerName == QLatin1String("Read")) {
+        } else if (readerName == QLatin1StringView("Read")) {
             if (!d->readRight(reader, EwsEffectiveRightsPrivate::Read)) {
                 return;
             }
-        } else if (readerName == QLatin1String("ViewPrivateItems")) {
+        } else if (readerName == QLatin1StringView("ViewPrivateItems")) {
             if (!d->readRight(reader, EwsEffectiveRightsPrivate::ViewPrivateItems)) {
                 return;
             }

@@ -54,7 +54,7 @@ void RetrieveItemsJob::localListDone(KJob *job)
         }
     }
 
-    m_listingPath = m_maildir.path() + QLatin1String("/new/");
+    m_listingPath = m_maildir.path() + QLatin1StringView("/new/");
     delete m_entryIterator;
     m_entryIterator = new QDirIterator(m_maildir.pathToNew(), QDir::Files);
     m_previousMtime = m_collection.remoteRevision().toLongLong();
@@ -66,9 +66,9 @@ void RetrieveItemsJob::processEntry()
 {
     Akonadi::TransactionSequence *lastTrx = nullptr;
 
-    while (m_entryIterator->hasNext() || m_listingPath.endsWith(QLatin1String("/new/"))) {
+    while (m_entryIterator->hasNext() || m_listingPath.endsWith(QLatin1StringView("/new/"))) {
         if (!m_entryIterator->hasNext()) {
-            m_listingPath = m_maildir.path() + QLatin1String("/cur/");
+            m_listingPath = m_maildir.path() + QLatin1StringView("/cur/");
             delete m_entryIterator;
             m_entryIterator = new QDirIterator(m_maildir.pathToCurrent(), QDir::Files);
             if (!m_entryIterator->hasNext()) {

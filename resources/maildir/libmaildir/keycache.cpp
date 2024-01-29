@@ -61,7 +61,7 @@ bool KeyCache::isNewKey(const QString &dir, const QString &key) const
 QSet<QString> KeyCache::listNew(const QString &dir) const
 {
     QSet<QString> keys;
-    QDirIterator d(dir + QLatin1String("/new"), QDir::Files);
+    QDirIterator d(dir + QLatin1StringView("/new"), QDir::Files);
     while (d.hasNext()) {
         d.next();
         keys.insert(d.fileName());
@@ -72,7 +72,7 @@ QSet<QString> KeyCache::listNew(const QString &dir) const
 QSet<QString> KeyCache::listCurrent(const QString &dir) const
 {
     QSet<QString> keys;
-    QDirIterator d(dir + QLatin1String("/cur"), QDir::Files);
+    QDirIterator d(dir + QLatin1StringView("/cur"), QDir::Files);
     while (d.hasNext()) {
         d.next();
         keys.insert(d.fileName());

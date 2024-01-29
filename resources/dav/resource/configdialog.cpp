@@ -56,9 +56,9 @@ ConfigDialog::ConfigDialog(QWidget *parent)
         addModelRow(Utils::translatedProtocolName(url.protocol()), displayUrl.toDisplayString());
     }
 
-    mUi.syncRangeStartType->addItem(i18n("Days"), QVariant(QLatin1String("D")));
-    mUi.syncRangeStartType->addItem(i18n("Months"), QVariant(QLatin1String("M")));
-    mUi.syncRangeStartType->addItem(i18n("Years"), QVariant(QLatin1String("Y")));
+    mUi.syncRangeStartType->addItem(i18n("Days"), QVariant(QLatin1StringView("D")));
+    mUi.syncRangeStartType->addItem(i18n("Months"), QVariant(QLatin1StringView("M")));
+    mUi.syncRangeStartType->addItem(i18n("Years"), QVariant(QLatin1StringView("Y")));
 
     mManager = new KConfigDialogManager(this, Settings::self());
     mManager->updateWidgets();
@@ -233,7 +233,7 @@ void ConfigDialog::onEditButtonClicked()
     dlg->setRemoteUrl(urlConfig->mUrl);
     dlg->setProtocol(KDAV::Protocol(urlConfig->mProtocol));
 
-    if (urlConfig->mUser == QLatin1String("$default$")) {
+    if (urlConfig->mUser == QLatin1StringView("$default$")) {
         dlg->setUseDefaultCredentials(true);
     } else {
         dlg->setUseDefaultCredentials(false);

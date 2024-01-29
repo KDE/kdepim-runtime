@@ -46,7 +46,7 @@ ServerInfoDialog::~ServerInfoDialog()
 
 void ServerInfoDialog::writeConfig()
 {
-    KConfigGroup group(KSharedConfig::openStateConfig(), QLatin1String(myServerInfoDialogConfigGroupName));
+    KConfigGroup group(KSharedConfig::openStateConfig(), QLatin1StringView(myServerInfoDialogConfigGroupName));
     KWindowConfig::saveWindowSize(windowHandle(), group);
 }
 
@@ -54,7 +54,7 @@ void ServerInfoDialog::readConfig()
 {
     create(); // ensure a window is created
     windowHandle()->resize(QSize(500, 300));
-    KConfigGroup group(KSharedConfig::openStateConfig(), QLatin1String(myServerInfoDialogConfigGroupName));
+    KConfigGroup group(KSharedConfig::openStateConfig(), QLatin1StringView(myServerInfoDialogConfigGroupName));
     KWindowConfig::restoreWindowSize(windowHandle(), group);
     resize(windowHandle()->size()); // workaround for QTBUG-40584
 }

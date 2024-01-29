@@ -178,7 +178,7 @@ void ImapResourceBase::updateResourceName()
     if (name() == identifier()) {
         const QString agentType = AgentManager::self()->instance(identifier()).type().identifier();
         const QString agentsrcFile =
-            QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QLatin1Char('/') + QLatin1String("akonadi/agentsrc");
+            QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QLatin1Char('/') + QLatin1StringView("akonadi/agentsrc");
 
         const QSettings agentsrc(agentsrcFile, QSettings::IniFormat);
         const int instanceCounter = agentsrc.value(QStringLiteral("InstanceCounters/%1/InstanceCounter").arg(agentType), -1).toInt();
@@ -519,7 +519,7 @@ bool ImapResourceBase::needsNetwork() const
 {
     const QString hostName = settings()->imapServer().section(QLatin1Char(':'), 0, 0);
     // ### is there a better way to do this?
-    if (hostName == QLatin1String("127.0.0.1") || hostName == QLatin1String("localhost") || hostName == QHostInfo::localHostName()) {
+    if (hostName == QLatin1StringView("127.0.0.1") || hostName == QLatin1String("localhost") || hostName == QHostInfo::localHostName()) {
         return false;
     }
     return true;
@@ -546,7 +546,7 @@ void ImapResourceBase::startIdle()
     delete m_idle;
     m_idle = nullptr;
 
-    if (!m_pool->serverCapabilities().contains(QLatin1String("IDLE"))) {
+    if (!m_pool->serverCapabilities().contains(QLatin1StringView("IDLE"))) {
         return;
     }
 
@@ -681,11 +681,11 @@ QString ImapResourceBase::dumpResourceToString() const
     QString ret;
     for (ResourceTask *task : std::as_const(m_taskList)) {
         if (!ret.isEmpty()) {
-            ret += QLatin1String(", ");
+            ret += QLatin1StringView(", ");
         }
-        ret += QLatin1String(task->metaObject()->className());
+        ret += QLatin1StringView(task->metaObject()->className());
     }
-    return QLatin1String("IMAP tasks: ") + ret;
+    return QLatin1StringView("IMAP tasks: ") + ret;
 }
 
 void ImapResourceBase::showError(const QString &message)

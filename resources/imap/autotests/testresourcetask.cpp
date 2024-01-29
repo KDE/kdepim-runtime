@@ -55,7 +55,7 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("cancelTask");
         QTest::newRow("normal case") << state << scenario << true << false << ResourceTask::DeferIfNoSession << callNames
-                                     << QVariant(QLatin1String("Dummy task"));
+                                     << QVariant(QLatin1StringView("Dummy task"));
 
         state = DummyResourceState::Ptr(new DummyResourceState);
         callNames.clear();
@@ -130,7 +130,7 @@ private Q_SLOTS:
             QCOMPARE(command, callNames[i]);
         }
 
-        if (firstCallParameter.toString() == QLatin1String("Dummy task")) {
+        if (firstCallParameter.toString() == QLatin1StringView("Dummy task")) {
             QCOMPARE(state->calls().first().second, firstCallParameter);
         }
 

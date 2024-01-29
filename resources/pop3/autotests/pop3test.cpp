@@ -69,12 +69,12 @@ void Pop3Test::initTestCase()
     //
     // Configure the maildir resource
     //
-    QString maildirRootPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("tester");
-    mMaildirPath = maildirRootPath + QLatin1String("/new");
+    QString maildirRootPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1StringView("tester");
+    mMaildirPath = maildirRootPath + QLatin1StringView("/new");
     QDir::current().mkpath(mMaildirPath);
-    QDir::current().mkpath(maildirRootPath + QLatin1String("/tmp"));
+    QDir::current().mkpath(maildirRootPath + QLatin1StringView("/tmp"));
 
-    QString service = QLatin1String("org.freedesktop.Akonadi.Resource.") + mMaildirIdentifier;
+    QString service = QLatin1StringView("org.freedesktop.Akonadi.Resource.") + mMaildirIdentifier;
     if (Akonadi::ServerManager::hasInstanceIdentifier()) {
         service += QLatin1Char('.') + Akonadi::ServerManager::instanceIdentifier();
     }
@@ -141,20 +141,20 @@ void Pop3Test::initTestCase()
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<QString> reply2 = mPOP3SettingsInterface->host();
     QVERIFY(reply2.isValid());
-    QCOMPARE(reply2.value(), QLatin1String("localhost"));
+    QCOMPARE(reply2.value(), QLatin1StringView("localhost"));
     mPOP3SettingsInterface->setLogin(QStringLiteral("HansWurst")).waitForFinished();
     mPOP3SettingsInterface->save();
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<QString> reply3 = mPOP3SettingsInterface->login();
     QVERIFY(reply3.isValid());
-    QCOMPARE(reply3.value(), QLatin1String("HansWurst"));
+    QCOMPARE(reply3.value(), QLatin1StringView("HansWurst"));
 
     mPOP3SettingsInterface->setUnitTestPassword(QStringLiteral("Geheim")).waitForFinished();
     mPOP3SettingsInterface->save();
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<QString> reply4 = mPOP3SettingsInterface->unitTestPassword();
     QVERIFY(reply4.isValid());
-    QCOMPARE(reply4.value(), QLatin1String("Geheim"));
+    QCOMPARE(reply4.value(), QLatin1StringView("Geheim"));
 
     mPOP3SettingsInterface->setTargetCollection(mMaildirCollection.id()).waitForFinished();
     mPOP3SettingsInterface->save();
@@ -398,7 +398,7 @@ QString Pop3Test::retrieveSequence(const QList<QByteArray> &mails, const QList<i
     QString result;
     for (int i = 1; i <= mails.size(); i++) {
         if (!exceptions.contains(i)) {
-            result += QLatin1String(
+            result += QLatin1StringView(
                 "C: RETR %RETR%\r\n"
                 "S: +OK Here is your spam\r\n"
                 "%MAIL%\r\n"
@@ -412,7 +412,7 @@ QString Pop3Test::deleteSequence(int numToDelete) const
 {
     QString result;
     for (int i = 0; i < numToDelete; i++) {
-        result += QLatin1String(
+        result += QLatin1StringView(
             "C: DELE %DELE%\r\n"
             "S: +OK message sent to /dev/null\r\n");
     }
@@ -434,7 +434,7 @@ QString Pop3Test::listSequence(const QList<QByteArray> &mails) const
     for (int i = 1; i <= mails.size(); i++) {
         result += QStringLiteral("%1 %MAILSIZE%\r\n").arg(i);
     }
-    result += QLatin1String(".\r\n");
+    result += QLatin1StringView(".\r\n");
     return result;
 }
 
@@ -446,7 +446,7 @@ QString Pop3Test::uidSequence(const QStringList &uids) const
     for (int i = 1; i <= uids.size(); i++) {
         result += QStringLiteral("%1 %2\r\n").arg(i).arg(uids[i - 1]);
     }
-    result += QLatin1String(".\r\n");
+    result += QLatin1StringView(".\r\n");
     return result;
 }
 
@@ -759,12 +759,12 @@ void Pop3Test::testSizeBasedLeaveRule()
     mFakeServerThread->server()->setAllowedRetrieves(QString());
     mFakeServerThread->server()->setAllowedDeletions(QStringLiteral("1,3"));
     mFakeServerThread->server()->setNextConversation(loginSequence()
-                                                     + QLatin1String("C: LIST\r\n"
-                                                                     "S: +OK You got new spam\r\n"
-                                                                     "1 7340032\r\n"
-                                                                     "2 7340032\r\n"
-                                                                     "3 7340032\r\n"
-                                                                     ".\r\n")
+                                                     + QLatin1StringView("C: LIST\r\n"
+                                                                         "S: +OK You got new spam\r\n"
+                                                                         "1 7340032\r\n"
+                                                                         "2 7340032\r\n"
+                                                                         "3 7340032\r\n"
+                                                                         ".\r\n")
                                                      + uidSequence(uids) + deleteSequence(2) + quitSequence());
 
     syncAndWaitForFinish();
@@ -830,19 +830,19 @@ void Pop3Test::testMixedLeaveRules()
     mFakeServerThread->server()->setAllowedRetrieves(QString());
     mFakeServerThread->server()->setAllowedDeletions(QStringLiteral("4,5,6,7,8,9,10"));
     mFakeServerThread->server()->setNextConversation(loginSequence()
-                                                     + QLatin1String("C: LIST\r\n"
-                                                                     "S: +OK You got new spam\r\n"
-                                                                     "1 7340032\r\n"
-                                                                     "2 7340032\r\n"
-                                                                     "3 7340032\r\n"
-                                                                     "4 7340032\r\n"
-                                                                     "5 7340032\r\n"
-                                                                     "6 7340032\r\n"
-                                                                     "7 7340032\r\n"
-                                                                     "8 7340032\r\n"
-                                                                     "9 7340032\r\n"
-                                                                     "10 7340032\r\n"
-                                                                     ".\r\n")
+                                                     + QLatin1StringView("C: LIST\r\n"
+                                                                         "S: +OK You got new spam\r\n"
+                                                                         "1 7340032\r\n"
+                                                                         "2 7340032\r\n"
+                                                                         "3 7340032\r\n"
+                                                                         "4 7340032\r\n"
+                                                                         "5 7340032\r\n"
+                                                                         "6 7340032\r\n"
+                                                                         "7 7340032\r\n"
+                                                                         "8 7340032\r\n"
+                                                                         "9 7340032\r\n"
+                                                                         "10 7340032\r\n"
+                                                                         ".\r\n")
                                                      + uidSequence(uids) + deleteSequence(7) + quitSequence());
 
     syncAndWaitForFinish();

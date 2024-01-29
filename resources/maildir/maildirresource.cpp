@@ -92,7 +92,7 @@ MaildirResource::MaildirResource(const QString &id)
     // we cannot be sure that a config file is existing
     // the MaildirResource will always be build
     // look for a resource of this name
-    QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, id + QLatin1String("rc"));
+    QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, id + QLatin1StringView("rc"));
     // if not present, create it
     if (configFile.isEmpty()) {
         // check if the resource was used before
@@ -135,7 +135,7 @@ void MaildirResource::attemptConfigRestoring(KJob *job)
     }
     // we cannot be sure that a config file is existing
     const QString id = identifier();
-    const QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, id + QLatin1String("rc"));
+    const QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, id + QLatin1StringView("rc"));
     // we test it again, to be sure
     if (configFile.isEmpty()) {
         // it is still empty, create it
@@ -463,7 +463,7 @@ Collection::List MaildirResource::listRecursive(const Collection &root, const Ma
         c.setRemoteId(sub);
         c.setParentCollection(root);
         c.setContentMimeTypes(mimeTypes);
-        if (sub.compare(QLatin1String("inbox"), Qt::CaseInsensitive) == 0) {
+        if (sub.compare(QLatin1StringView("inbox"), Qt::CaseInsensitive) == 0) {
             c.attribute<SpecialCollectionAttribute>(Collection::AddIfMissing)->setCollectionType("inbox");
         }
 
@@ -504,7 +504,7 @@ void MaildirResource::retrieveCollections()
     CachePolicy policy;
     policy.setInheritFromParent(false);
     policy.setSyncOnDemand(true);
-    policy.setLocalParts(QStringList() << QLatin1String(MessagePart::Envelope));
+    policy.setLocalParts(QStringList() << QLatin1StringView(MessagePart::Envelope));
     policy.setCacheTimeout(1);
     policy.setIntervalCheckTime(-1);
     root.setCachePolicy(policy);
@@ -711,7 +711,7 @@ void MaildirResource::slotDirChanged(const QString &dir)
         return;
     }
 
-    if (dir.endsWith(QLatin1String(".directory"))) {
+    if (dir.endsWith(QLatin1StringView(".directory"))) {
         synchronizeCollectionTree(); // might be too much, but this is not a common case anyway
         return;
     }
@@ -760,9 +760,9 @@ void MaildirResource::slotFileChanged(const QFileInfo &fileInfo)
     }
 
     QString path = fileInfo.path();
-    if (path.endsWith(QLatin1String("/new"))) {
+    if (path.endsWith(QLatin1StringView("/new"))) {
         path.remove(path.length() - 4, 4);
-    } else if (path.endsWith(QLatin1String("/cur"))) {
+    } else if (path.endsWith(QLatin1StringView("/cur"))) {
         path.remove(path.length() - 4, 4);
     }
 
@@ -849,15 +849,15 @@ QString MaildirResource::maildirPathForCollection(const Collection &collection) 
 void MaildirResource::stopMaildirScan(const Maildir &maildir)
 {
     const QString path = maildir.path();
-    mFsWatcher->removeDir(path + QLatin1String("/new"));
-    mFsWatcher->removeDir(path + QLatin1String("/cur"));
+    mFsWatcher->removeDir(path + QLatin1StringView("/new"));
+    mFsWatcher->removeDir(path + QLatin1StringView("/cur"));
 }
 
 void MaildirResource::restartMaildirScan(const Maildir &maildir)
 {
     const QString path = maildir.path();
-    mFsWatcher->addDir(path + QLatin1String("/new"));
-    mFsWatcher->addDir(path + QLatin1String("/cur"));
+    mFsWatcher->addDir(path + QLatin1StringView("/new"));
+    mFsWatcher->addDir(path + QLatin1StringView("/cur"));
 }
 
 void MaildirResource::changedCleaner()

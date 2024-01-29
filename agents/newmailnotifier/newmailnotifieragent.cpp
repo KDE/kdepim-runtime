@@ -396,7 +396,7 @@ void NewMailNotifierAgent::slotShowNotifications()
             mNewMails.clear();
             return;
         } else {
-            message = texts.join(QLatin1String("<br>"));
+            message = texts.join(QLatin1StringView("<br>"));
         }
     } else {
         message = i18n("New mail arrived");
@@ -489,8 +489,8 @@ bool NewMailNotifierAgent::excludeAgentType(const Akonadi::AgentInstance &instan
 {
     if (instance.type().mimeTypes().contains(KMime::Message::mimeType())) {
         const QStringList capabilities(instance.type().capabilities());
-        if (capabilities.contains(QLatin1String("Resource")) && !capabilities.contains(QLatin1String("Virtual"))
-            && !capabilities.contains(QLatin1String("MailTransport"))) {
+        if (capabilities.contains(QLatin1StringView("Resource")) && !capabilities.contains(QLatin1String("Virtual"))
+            && !capabilities.contains(QLatin1StringView("MailTransport"))) {
             return false;
         } else {
             return true;

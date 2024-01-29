@@ -25,23 +25,24 @@ void UpgradeTest::testIncidence_data()
 
     //     QTest::newRow( "v2contactSimple" ) << Kolab::KolabV2 << Kolab::ContactObject << TESTFILEDIR+QString::fromLatin1("v2/contacts/simple.vcf") <<
     //     TESTFILEDIR+QString::fromLatin1("v2/contacts/simple.vcf.mime");
-    QTest::newRow("v2eventSimple") << Kolab::EventObject << TESTFILEDIR + QLatin1String("v2/event/simple.ics.mime") << false;
-    QTest::newRow("v2eventComplex") << Kolab::EventObject << TESTFILEDIR + QLatin1String("v2/event/complex.ics.mime") << false;
-    QTest::newRow("v2eventAllday") << Kolab::EventObject << TESTFILEDIR + QLatin1String("v2/event/allday.ics.mime") << false;
-    QTest::newRow("v2eventAttachment") << Kolab::EventObject << TESTFILEDIR + QLatin1String("v2/event/attachment.ics.mime") << false;
-    QTest::newRow("v2eventHorde") << Kolab::EventObject << TESTFILEDIR + QLatin1String("v2/event/horde.ics.mime") << false;
+    QTest::newRow("v2eventSimple") << Kolab::EventObject << TESTFILEDIR + QLatin1StringView("v2/event/simple.ics.mime") << false;
+    QTest::newRow("v2eventComplex") << Kolab::EventObject << TESTFILEDIR + QLatin1StringView("v2/event/complex.ics.mime") << false;
+    QTest::newRow("v2eventAllday") << Kolab::EventObject << TESTFILEDIR + QLatin1StringView("v2/event/allday.ics.mime") << false;
+    QTest::newRow("v2eventAttachment") << Kolab::EventObject << TESTFILEDIR + QLatin1StringView("v2/event/attachment.ics.mime") << false;
+    QTest::newRow("v2eventHorde") << Kolab::EventObject << TESTFILEDIR + QLatin1StringView("v2/event/horde.ics.mime") << false;
 
     // Still broken, although it seems that rather the event comparison is implemented wrong (not using equals)
-    QTest::newRow("v2taskSimple") << Kolab::TodoObject << TESTFILEDIR + QLatin1String("v2/task/simple.ics.mime") << false;
-    QTest::newRow("v2taskComplex") << Kolab::TodoObject << TESTFILEDIR + QLatin1String("v2/task/complex.ics.mime") << false;
-    QTest::newRow("v2taskPrio1") << Kolab::TodoObject << TESTFILEDIR + QLatin1String("v2/task/prioritytest1.ics.mime") << false;
-    QTest::newRow("v2taskPrio2") << Kolab::TodoObject << TESTFILEDIR + QLatin1String("v2/task/prioritytest2.ics.mime") << false;
+    QTest::newRow("v2taskSimple") << Kolab::TodoObject << TESTFILEDIR + QLatin1StringView("v2/task/simple.ics.mime") << false;
+    QTest::newRow("v2taskComplex") << Kolab::TodoObject << TESTFILEDIR + QLatin1StringView("v2/task/complex.ics.mime") << false;
+    QTest::newRow("v2taskPrio1") << Kolab::TodoObject << TESTFILEDIR + QLatin1StringView("v2/task/prioritytest1.ics.mime") << false;
+    QTest::newRow("v2taskPrio2") << Kolab::TodoObject << TESTFILEDIR + QLatin1StringView("v2/task/prioritytest2.ics.mime") << false;
 
-    QTest::newRow("v2journalSimple") << Kolab::JournalObject << TESTFILEDIR + QLatin1String("v2/journal/simple.ics.mime") << false;
-    QTest::newRow("v2journalComplex") << Kolab::JournalObject << TESTFILEDIR + QLatin1String("v2/journal/complex.ics.mime") << false;
+    QTest::newRow("v2journalSimple") << Kolab::JournalObject << TESTFILEDIR + QLatin1StringView("v2/journal/simple.ics.mime") << false;
+    QTest::newRow("v2journalComplex") << Kolab::JournalObject << TESTFILEDIR + QLatin1StringView("v2/journal/complex.ics.mime") << false;
 
-    QTest::newRow("v2eventSimple_missingTypeHeader") << Kolab::EventObject << TESTFILEDIR + QLatin1String("v2/event/simple_missingTypeHeader.ics.mime") << true;
-    QTest::newRow("v2eventis8859-1") << Kolab::EventObject << TESTFILEDIR + QLatin1String("v2/event/iso8859-1.mime") << false;
+    QTest::newRow("v2eventSimple_missingTypeHeader") << Kolab::EventObject << TESTFILEDIR + QLatin1StringView("v2/event/simple_missingTypeHeader.ics.mime")
+                                                     << true;
+    QTest::newRow("v2eventis8859-1") << Kolab::EventObject << TESTFILEDIR + QLatin1StringView("v2/event/iso8859-1.mime") << false;
 }
 
 void UpgradeTest::testIncidence()
@@ -116,15 +117,15 @@ void UpgradeTest::testContact_data()
     QTest::addColumn<Kolab::ObjectType>("type");
     QTest::addColumn<QString>("filename");
 
-    QTest::newRow("v2contactSimple") << Kolab::ContactObject << TESTFILEDIR + QLatin1String("v2/contacts/simple.vcf.mime");
-    QTest::newRow("v2contactComplex") << Kolab::ContactObject << TESTFILEDIR + QLatin1String("v2/contacts/complex.vcf.mime");
-    QTest::newRow("v2contactAddress") << Kolab::ContactObject << TESTFILEDIR + QLatin1String("v2/contacts/address.vcf.mime");
-    QTest::newRow("v2contactBug238996") << Kolab::ContactObject << TESTFILEDIR + QLatin1String("v2/contacts/bug238996.vcf.mime");
-    QTest::newRow("v2contactDisplayname") << Kolab::ContactObject << TESTFILEDIR + QLatin1String("v2/contacts/displayname.vcf.mime");
-    QTest::newRow("v2contactEmails") << Kolab::ContactObject << TESTFILEDIR + QLatin1String("v2/contacts/emails.vcf.mime");
-    QTest::newRow("v2contactPhonenumber") << Kolab::ContactObject << TESTFILEDIR + QLatin1String("v2/contacts/phonenumbers.vcf.mime");
-    QTest::newRow("v2contactPicture") << Kolab::ContactObject << TESTFILEDIR + QLatin1String("v2/contacts/picture.vcf.mime");
-    QTest::newRow("v2iso8859-1") << Kolab::ContactObject << TESTFILEDIR + QLatin1String("v2/contacts/iso8859-1.mime");
+    QTest::newRow("v2contactSimple") << Kolab::ContactObject << TESTFILEDIR + QLatin1StringView("v2/contacts/simple.vcf.mime");
+    QTest::newRow("v2contactComplex") << Kolab::ContactObject << TESTFILEDIR + QLatin1StringView("v2/contacts/complex.vcf.mime");
+    QTest::newRow("v2contactAddress") << Kolab::ContactObject << TESTFILEDIR + QLatin1StringView("v2/contacts/address.vcf.mime");
+    QTest::newRow("v2contactBug238996") << Kolab::ContactObject << TESTFILEDIR + QLatin1StringView("v2/contacts/bug238996.vcf.mime");
+    QTest::newRow("v2contactDisplayname") << Kolab::ContactObject << TESTFILEDIR + QLatin1StringView("v2/contacts/displayname.vcf.mime");
+    QTest::newRow("v2contactEmails") << Kolab::ContactObject << TESTFILEDIR + QLatin1StringView("v2/contacts/emails.vcf.mime");
+    QTest::newRow("v2contactPhonenumber") << Kolab::ContactObject << TESTFILEDIR + QLatin1StringView("v2/contacts/phonenumbers.vcf.mime");
+    QTest::newRow("v2contactPicture") << Kolab::ContactObject << TESTFILEDIR + QLatin1StringView("v2/contacts/picture.vcf.mime");
+    QTest::newRow("v2iso8859-1") << Kolab::ContactObject << TESTFILEDIR + QLatin1StringView("v2/contacts/iso8859-1.mime");
 }
 
 void UpgradeTest::testContact()

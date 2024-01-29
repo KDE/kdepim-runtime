@@ -188,7 +188,7 @@ void Settings::setSieveCustomPassword(const QString &password)
             wallet->createFolder(QStringLiteral("imap"));
         }
         wallet->setFolder(QStringLiteral("imap"));
-        wallet->writePassword(QLatin1String("custom_sieve_") + config()->name(), password);
+        wallet->writePassword(QLatin1StringView("custom_sieve_") + config()->name(), password);
         qCDebug(IMAPRESOURCE_LOG) << "Wallet save: " << wallet->sync();
     }
     delete wallet;
@@ -229,9 +229,9 @@ void Settings::loadAccount(ImapAccount *account) const
     account->setUseNetworkProxy(useProxy());
 
     const QString encryption = safety();
-    if (encryption == QLatin1String("SSL")) {
+    if (encryption == QLatin1StringView("SSL")) {
         account->setEncryptionMode(KIMAP::LoginJob::SSLorTLS);
-    } else if (encryption == QLatin1String("STARTTLS")) {
+    } else if (encryption == QLatin1StringView("STARTTLS")) {
         account->setEncryptionMode(KIMAP::LoginJob::STARTTLS);
     } else {
         account->setEncryptionMode(KIMAP::LoginJob::Unencrypted);
@@ -243,17 +243,17 @@ void Settings::loadAccount(ImapAccount *account) const
     const QString overrideEncryptionMode = overrideEncryption();
     if (!overrideEncryptionMode.isEmpty()) {
         qCWarning(IMAPRESOURCE_LOG) << "Overriding encryption mode with: " << overrideEncryptionMode;
-        if (overrideEncryptionMode == QLatin1String("SSLV2")) {
+        if (overrideEncryptionMode == QLatin1StringView("SSLV2")) {
             account->setEncryptionMode(KIMAP::LoginJob::SSLorTLS);
-        } else if (overrideEncryptionMode == QLatin1String("SSLV3")) {
+        } else if (overrideEncryptionMode == QLatin1StringView("SSLV3")) {
             account->setEncryptionMode(KIMAP::LoginJob::SSLorTLS);
-        } else if (overrideEncryptionMode == QLatin1String("TLSV1")) {
+        } else if (overrideEncryptionMode == QLatin1StringView("TLSV1")) {
             account->setEncryptionMode(KIMAP::LoginJob::SSLorTLS);
-        } else if (overrideEncryptionMode == QLatin1String("SSL")) {
+        } else if (overrideEncryptionMode == QLatin1StringView("SSL")) {
             account->setEncryptionMode(KIMAP::LoginJob::SSLorTLS);
-        } else if (overrideEncryptionMode == QLatin1String("STARTTLS")) {
+        } else if (overrideEncryptionMode == QLatin1StringView("STARTTLS")) {
             account->setEncryptionMode(KIMAP::LoginJob::STARTTLS);
-        } else if (overrideEncryptionMode == QLatin1String("UNENCRYPTED")) {
+        } else if (overrideEncryptionMode == QLatin1StringView("UNENCRYPTED")) {
             account->setEncryptionMode(KIMAP::LoginJob::Unencrypted);
         } else {
             qCWarning(IMAPRESOURCE_LOG) << "Tried to force invalid encryption mode: " << overrideEncryptionMode;

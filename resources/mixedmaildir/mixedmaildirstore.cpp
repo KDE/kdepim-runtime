@@ -639,7 +639,7 @@ MaildirPtr MixedMaildirStorePrivate::getOrCreateMaildirPtr(const QString &path, 
 void MixedMaildirStorePrivate::fillMBoxCollectionDetails(const MBoxPtr &mbox, Collection &collection)
 {
     collection.setContentMimeTypes(QStringList() << Collection::mimeType() << KMime::Message::mimeType());
-    if (collection.name().compare(QLatin1String("inbox"), Qt::CaseInsensitive) == 0) {
+    if (collection.name().compare(QLatin1StringView("inbox"), Qt::CaseInsensitive) == 0) {
         collection.attribute<Akonadi::SpecialCollectionAttribute>(Collection::AddIfMissing)->setCollectionType("inbox");
     }
     const QFileInfo fileInfo(mbox->fileName());
@@ -658,7 +658,7 @@ void MixedMaildirStorePrivate::fillMBoxCollectionDetails(const MBoxPtr &mbox, Co
 void MixedMaildirStorePrivate::fillMaildirCollectionDetails(const Maildir &md, Collection &collection)
 {
     collection.setContentMimeTypes(QStringList() << Collection::mimeType() << KMime::Message::mimeType());
-    if (collection.name().compare(QLatin1String("inbox"), Qt::CaseInsensitive) == 0) {
+    if (collection.name().compare(QLatin1StringView("inbox"), Qt::CaseInsensitive) == 0) {
         collection.attribute<Akonadi::SpecialCollectionAttribute>(Collection::AddIfMissing)->setCollectionType("inbox");
     }
 
@@ -970,7 +970,7 @@ void MixedMaildirStorePrivate::updateContextHashes(const QString &oldPath, const
 
 bool MixedMaildirStorePrivate::visit(FileStore::Job *job)
 {
-    const QString message = i18nc("@info:status", "Unhandled operation %1", QLatin1String(job->metaObject()->className()));
+    const QString message = i18nc("@info:status", "Unhandled operation %1", QLatin1StringView(job->metaObject()->className()));
     qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
     q->notifyError(FileStore::Job::InvalidJobContext, message);
     return false;
@@ -2254,7 +2254,7 @@ void MixedMaildirStore::setTopLevelCollection(const Collection &collection)
 
     CachePolicy cachePolicy;
     cachePolicy.setInheritFromParent(false);
-    cachePolicy.setLocalParts(QStringList() << QLatin1String(MessagePart::Envelope));
+    cachePolicy.setLocalParts(QStringList() << QLatin1StringView(MessagePart::Envelope));
     cachePolicy.setSyncOnDemand(true);
     cachePolicy.setCacheTimeout(1);
 

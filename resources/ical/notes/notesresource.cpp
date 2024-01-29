@@ -14,14 +14,14 @@
 using namespace Akonadi;
 using namespace KCalendarCore;
 
-static const QLatin1String sNotesType("application/x-vnd.kde.notes");
+static const QLatin1StringView sNotesType("application/x-vnd.kde.notes");
 
 NotesResource::NotesResource(const QString &id)
     : ICalResource(id, allMimeTypes(), QStringLiteral("knotes"))
 {
     KConfigSkeleton::ItemPath *item = static_cast<KConfigSkeleton::ItemPath *>(mSettings->findItem(QStringLiteral("Path")));
     if (item) {
-        item->setDefaultValue(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("knotes/"));
+        item->setDefaultValue(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1StringView("knotes/"));
     }
 }
 

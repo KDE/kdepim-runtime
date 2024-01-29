@@ -84,7 +84,7 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
         const auto contact = item.payload<KContacts::Addressee>();
         const QString fileName = createUniqueId();
 
-        url = QUrl::fromUserInput(basePath + fileName + QLatin1String(".vcf"));
+        url = QUrl::fromUserInput(basePath + fileName + QLatin1StringView(".vcf"));
 
         const auto protoAttr = collection.attribute<DavProtocolAttribute>();
         if (protoAttr) {
@@ -105,7 +105,7 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
 
         const QString fileName = createUniqueId();
 
-        url = QUrl::fromUserInput(basePath + fileName + QLatin1String(".ics"));
+        url = QUrl::fromUserInput(basePath + fileName + QLatin1StringView(".ics"));
         mimeType = QStringLiteral("text/calendar");
 
         KCalendarCore::ICalFormat formatter;
@@ -174,7 +174,7 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
                 // The exception remote id will contain a fragment pointing to
                 // its instance identifier to distinguish it from the main
                 // event.
-                const QString rid = target.remoteId() + QLatin1String("#") + exception->instanceIdentifier();
+                const QString rid = target.remoteId() + QLatin1StringView("#") + exception->instanceIdentifier();
                 qCDebug(DAVRESOURCE_LOG) << "Extra incidence at" << rid;
                 Akonadi::Item extraItem = target;
                 extraItem.setRemoteId(rid);
@@ -191,7 +191,7 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
 
         /*
         for ( const IncidencePtr &incidence : incidences ) {
-          QString rid = item.remoteId() + QLatin1String( "#" ) + incidence->instanceIdentifier();
+          QString rid = item.remoteId() + QLatin1StringView( "#" ) + incidence->instanceIdentifier();
           Akonadi::Item extraItem = item;
           extraItem.setRemoteId( rid );
           extraItem.setRemoteRevision( davItem.etag() );

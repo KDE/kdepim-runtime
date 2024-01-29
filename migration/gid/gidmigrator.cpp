@@ -10,7 +10,7 @@
 #include <KLocalizedString>
 
 GidMigrator::GidMigrator(const QString &mimeType)
-    : MigratorBase(QLatin1String("gidmigrator") + mimeType)
+    : MigratorBase(QLatin1StringView("gidmigrator") + mimeType)
     , mMimeType(mimeType)
 {
 }

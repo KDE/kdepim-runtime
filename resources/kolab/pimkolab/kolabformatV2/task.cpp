@@ -133,34 +133,34 @@ bool Task::loadAttribute(QDomElement &element)
 {
     QString tagName = element.tagName();
 
-    if (tagName == QLatin1String("completed")) {
+    if (tagName == QLatin1StringView("completed")) {
         bool ok;
         int percent = element.text().toInt(&ok);
         if (!ok || percent < 0 || percent > 100) {
             percent = 0;
         }
         setPercentCompleted(percent);
-    } else if (tagName == QLatin1String("status")) {
-        if (element.text() == QLatin1String("in-progress")) {
+    } else if (tagName == QLatin1StringView("status")) {
+        if (element.text() == QLatin1StringView("in-progress")) {
             setStatus(KCalendarCore::Incidence::StatusInProcess);
-        } else if (element.text() == QLatin1String("completed")) {
+        } else if (element.text() == QLatin1StringView("completed")) {
             setStatus(KCalendarCore::Incidence::StatusCompleted);
-        } else if (element.text() == QLatin1String("waiting-on-someone-else")) {
+        } else if (element.text() == QLatin1StringView("waiting-on-someone-else")) {
             setStatus(KCalendarCore::Incidence::StatusNeedsAction);
-        } else if (element.text() == QLatin1String("deferred")) {
+        } else if (element.text() == QLatin1StringView("deferred")) {
             // Guessing a status here
             setStatus(KCalendarCore::Incidence::StatusCanceled);
         } else {
             // Default
             setStatus(KCalendarCore::Incidence::StatusNone);
         }
-    } else if (tagName == QLatin1String("due-date")) {
+    } else if (tagName == QLatin1StringView("due-date")) {
         setDueDate(element.text());
-    } else if (tagName == QLatin1String("parent")) {
+    } else if (tagName == QLatin1StringView("parent")) {
         setParent(element.text());
-    } else if (tagName == QLatin1String("x-completed-date")) {
+    } else if (tagName == QLatin1StringView("x-completed-date")) {
         setCompletedDate(stringToDateTime(element.text()));
-    } else if (tagName == QLatin1String("start-date")) {
+    } else if (tagName == QLatin1StringView("start-date")) {
         setHasStartDate(true);
         setStartDate(element.text());
     } else {
@@ -227,7 +227,7 @@ bool Task::loadXML(const QDomDocument &document)
 {
     QDomElement top = document.documentElement();
 
-    if (top.tagName() != QLatin1String("task")) {
+    if (top.tagName() != QLatin1StringView("task")) {
         qCWarning(PIMKOLAB_LOG) << QStringLiteral("XML error: Top tag was %1 instead of the expected task").arg(top.tagName());
         return false;
     }

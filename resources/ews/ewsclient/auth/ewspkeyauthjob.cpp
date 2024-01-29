@@ -116,7 +116,7 @@ QByteArray EwsPKeyAuthJob::buildAuthResponse(const QMap<QString, QString> &param
         return QByteArray();
     }
 
-    if (params[QStringLiteral("version")] != QLatin1String("1.0")) {
+    if (params[QStringLiteral("version")] != QLatin1StringView("1.0")) {
         setErrorMsg(QStringLiteral("Unknown version of PKey Authentication: %1").arg(params[QStringLiteral("version")]));
         return QByteArray();
     }
@@ -187,7 +187,7 @@ QString EwsPKeyAuthJob::getAuthHeader()
         const auto respToken = buildAuthResponse(params);
 
         if (!respToken.isEmpty()) {
-            return QLatin1String("PKeyAuth AuthToken=\"%1\",Context=\"%2\",Version=\"1.0\"")
+            return QLatin1StringView("PKeyAuth AuthToken=\"%1\",Context=\"%2\",Version=\"1.0\"")
                 .arg(QString::fromLatin1(respToken), params[QStringLiteral("context")]);
         } else {
             return {};

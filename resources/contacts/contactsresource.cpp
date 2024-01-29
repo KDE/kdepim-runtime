@@ -40,7 +40,7 @@ ContactsResource::ContactsResource(const QString &id)
 
     mSupportedMimeTypes << KContacts::Addressee::mimeType() << KContacts::ContactGroup::mimeType() << Collection::mimeType();
 
-    if (name().startsWith(QLatin1String("akonadi_contacts_resource"))) {
+    if (name().startsWith(QLatin1StringView("akonadi_contacts_resource"))) {
         setName(i18n("Personal Contacts"));
     }
 
@@ -133,16 +133,16 @@ void ContactsResource::retrieveItems(const Akonadi::Collection &collection)
 
     for (const QFileInfo &entry : entries) {
         const QString entryFileName = entry.fileName();
-        if (entryFileName == QLatin1String("WARNING_README.txt")) {
+        if (entryFileName == QLatin1StringView("WARNING_README.txt")) {
             continue;
         }
 
         Item item;
         item.setRemoteId(entryFileName);
 
-        if (entryFileName.endsWith(QLatin1String(".vcf"))) {
+        if (entryFileName.endsWith(QLatin1StringView(".vcf"))) {
             item.setMimeType(KContacts::Addressee::mimeType());
-        } else if (entryFileName.endsWith(QLatin1String(".ctg"))) {
+        } else if (entryFileName.endsWith(QLatin1StringView(".ctg"))) {
             item.setMimeType(KContacts::ContactGroup::mimeType());
         } else {
             cancelTask(i18n("Found file of unknown format: '%1'", entry.absoluteFilePath()));
@@ -198,7 +198,7 @@ bool ContactsResource::doRetrieveItem(Akonadi::Item &item)
         return false;
     }
 
-    if (filePath.endsWith(QLatin1String(".vcf"))) {
+    if (filePath.endsWith(QLatin1StringView(".vcf"))) {
         KContacts::VCardConverter converter;
 
         const QByteArray content = file.readAll();
@@ -209,7 +209,7 @@ bool ContactsResource::doRetrieveItem(Akonadi::Item &item)
         }
 
         item.setPayload<KContacts::Addressee>(contact);
-    } else if (filePath.endsWith(QLatin1String(".ctg"))) {
+    } else if (filePath.endsWith(QLatin1StringView(".ctg"))) {
         KContacts::ContactGroup group;
         QString errorMessage;
 
@@ -271,7 +271,7 @@ void ContactsResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
 
         file.close();
 
-        newItem.setRemoteId(group.id() + QLatin1String(".ctg"));
+        newItem.setRemoteId(group.id() + QLatin1StringView(".ctg"));
     } else {
         qCWarning(CONTACTSRESOURCES_LOG) << "got item without (usable) payload, ignoring it";
     }

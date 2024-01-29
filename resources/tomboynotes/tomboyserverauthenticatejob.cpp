@@ -86,7 +86,7 @@ void TomboyServerAuthenticateJob::onApiRequestFinished()
     // Parse received data as JSON and get user-href
     const QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), nullptr);
     const QJsonObject jo = document.object();
-    mUserURL = jo[QLatin1String("user-ref")].toObject()[QLatin1String("api-ref")].toString();
+    mUserURL = jo[QLatin1StringView("user-ref")].toObject()[QLatin1String("api-ref")].toString();
 
     QNetworkRequest request = QNetworkRequest(QUrl(mUserURL));
     mReply = mRequestor->get(request, QList<O0RequestParameter>());
@@ -107,7 +107,7 @@ void TomboyServerAuthenticateJob::onUserRequestFinished()
     // Parse received data as JSON and get contentURL
     QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), nullptr);
     QJsonObject jo = document.object();
-    mContentURL = jo[QLatin1String("notes-ref")].toObject()[QLatin1String("api-ref")].toString();
+    mContentURL = jo[QLatin1StringView("notes-ref")].toObject()[QLatin1String("api-ref")].toString();
 
     setError(TomboyJobError::NoError);
     emitResult();

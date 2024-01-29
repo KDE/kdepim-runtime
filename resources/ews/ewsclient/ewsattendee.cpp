@@ -53,20 +53,20 @@ EwsAttendee::EwsAttendee(QXmlStreamReader &reader)
             return;
         }
         const QStringView readerName = reader.name();
-        if (readerName == QLatin1String("Mailbox")) {
+        if (readerName == QLatin1StringView("Mailbox")) {
             d->mMailbox = EwsMailbox(reader);
             if (!d->mMailbox.isValid()) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid attendee %1 element.").arg(readerName.toString());
                 return;
             }
-        } else if (readerName == QLatin1String("ResponseType")) {
+        } else if (readerName == QLatin1StringView("ResponseType")) {
             bool ok;
             d->mResponse = decodeEnumString<EwsEventResponseType>(reader.readElementText(), responseTypeNames, responseTypeNameCount, &ok);
             if (reader.error() != QXmlStreamReader::NoError || !ok) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid attendee %1 element.").arg(readerName.toString());
                 return;
             }
-        } else if (readerName == QLatin1String("LastResponseTime")) {
+        } else if (readerName == QLatin1StringView("LastResponseTime")) {
             // Unsupported - ignore
             // qCWarningNC(EWSCLIENT_LOG) << QStringLiteral("Unsupported mailbox element %1").arg(reader.name().toString());
             reader.skipCurrentElement();

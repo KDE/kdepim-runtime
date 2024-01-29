@@ -198,7 +198,7 @@ void AbstractLocalStoreTest::init()
 void AbstractLocalStoreTest::testSetPath()
 {
     const QString file = KRandom::randomString(10);
-    const QString path = QLatin1String("/tmp/test/") + file;
+    const QString path = QLatin1StringView("/tmp/test/") + file;
 
     // check that setTopLevelCollection() has been called
     mStore->setPath(path);
@@ -220,7 +220,7 @@ void AbstractLocalStoreTest::testSetPath()
 
     // check that calling with a different path works like the first call
     const QString file2 = KRandom::randomString(10);
-    const QString path2 = QLatin1String("/tmp/test2/") + file2;
+    const QString path2 = QLatin1StringView("/tmp/test2/") + file2;
 
     mStore->setPath(path2);
     QCOMPARE(mStore->mTopLevelCollection.remoteId(), path2);

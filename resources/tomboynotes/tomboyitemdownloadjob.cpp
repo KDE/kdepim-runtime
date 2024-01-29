@@ -49,23 +49,23 @@ void TomboyItemDownloadJob::onRequestFinished()
 
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemDownloadJob: JSON note: " << jsonNote;
 
-    mResultItem.setRemoteRevision(QString::number(jsonNote[QLatin1String("last-sync-revision")].toInt()));
+    mResultItem.setRemoteRevision(QString::number(jsonNote[QLatin1StringView("last-sync-revision")].toInt()));
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemDownloadJob: Sync revision " << mResultItem.remoteRevision();
 
     // Set timestamp
-    const QString timeStampJson = jsonNote[QLatin1String("last-change-date")].toString();
+    const QString timeStampJson = jsonNote[QLatin1StringView("last-change-date")].toString();
     const QDateTime modificationTime = QDateTime::fromString(timeStampJson, Qt::ISODate);
     mResultItem.setModificationTime(modificationTime);
 
     // Set note title
     auto akonadiNote = KMime::Message::Ptr::create();
-    akonadiNote->subject(true)->fromUnicodeString(jsonNote[QLatin1String("title")].toString(), "utf-8");
+    akonadiNote->subject(true)->fromUnicodeString(jsonNote[QLatin1StringView("title")].toString(), "utf-8");
 
     // Set note content
     akonadiNote->contentType()->setMimeType("text/html");
     akonadiNote->contentType()->setCharset("utf-8");
     akonadiNote->contentTransferEncoding(true)->setEncoding(KMime::Headers::CEquPr);
-    akonadiNote->mainBodyPart()->fromUnicodeString(jsonNote[QLatin1String("note-content")].toString());
+    akonadiNote->mainBodyPart()->fromUnicodeString(jsonNote[QLatin1StringView("note-content")].toString());
 
     // Add title and content to Akonadi::Item
     akonadiNote->assemble();

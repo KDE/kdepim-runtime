@@ -286,15 +286,15 @@ private Q_SLOTS:
             QString command = QString::fromUtf8(state->calls().at(i).first);
             QVariant parameter = state->calls().at(i).second;
 
-            if (command == QLatin1String("cancelTask") && callNames[i] != QLatin1String("cancelTask")) {
+            if (command == QLatin1StringView("cancelTask") && callNames[i] != QLatin1String("cancelTask")) {
                 qDebug() << "Got a cancel:" << parameter.toString();
             }
 
             QCOMPARE(command, callNames[i]);
 
-            if (command == QLatin1String("cancelTask")) {
+            if (command == QLatin1StringView("cancelTask")) {
                 QVERIFY(!parameter.toString().isEmpty());
-            } else if (command == QLatin1String("collectionsRetrieved")) {
+            } else if (command == QLatin1StringView("collectionsRetrieved")) {
                 collections += parameter.value<Akonadi::Collection::List>();
             }
         }
@@ -326,11 +326,11 @@ private:
         policy.setSyncOnDemand(true);
 
         if (isDisconnectedImap) {
-            policy.setLocalParts(QStringList() << QLatin1String(Akonadi::MessagePart::Envelope) << QLatin1String(Akonadi::MessagePart::Header)
-                                               << QLatin1String(Akonadi::MessagePart::Body));
+            policy.setLocalParts(QStringList() << QLatin1StringView(Akonadi::MessagePart::Envelope) << QLatin1String(Akonadi::MessagePart::Header)
+                                               << QLatin1StringView(Akonadi::MessagePart::Body));
             policy.setCacheTimeout(-1);
         } else {
-            policy.setLocalParts(QStringList() << QLatin1String(Akonadi::MessagePart::Envelope) << QLatin1String(Akonadi::MessagePart::Header));
+            policy.setLocalParts(QStringList() << QLatin1StringView(Akonadi::MessagePart::Envelope) << QLatin1String(Akonadi::MessagePart::Header));
             policy.setCacheTimeout(60);
         }
 
@@ -365,7 +365,7 @@ private:
         collection.setContentMimeTypes(QStringList() << QStringLiteral("message/rfc822") << Akonadi::Collection::mimeType());
 
         // If the folder is the Inbox, make some special settings.
-        if (pathPart.compare(QLatin1String("INBOX"), Qt::CaseInsensitive) == 0) {
+        if (pathPart.compare(QLatin1StringView("INBOX"), Qt::CaseInsensitive) == 0) {
             auto attr = new Akonadi::EntityDisplayAttribute;
             attr->setDisplayName(QStringLiteral("Inbox"));
             attr->setIconName(QStringLiteral("mail-folder-inbox"));
@@ -373,7 +373,7 @@ private:
         }
 
         // If the folder is the user top-level folder, mark it as well, even although it is not officially noted in the RFC
-        if ((pathPart.compare(QLatin1String("user"), Qt::CaseInsensitive) == 0) && isNoSelect) {
+        if ((pathPart.compare(QLatin1StringView("user"), Qt::CaseInsensitive) == 0) && isNoSelect) {
             auto attr = new Akonadi::EntityDisplayAttribute;
             attr->setDisplayName(QStringLiteral("Shared Folders"));
             attr->setIconName(QStringLiteral("x-mail-distribution-list"));

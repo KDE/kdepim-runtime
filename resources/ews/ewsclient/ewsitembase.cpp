@@ -55,16 +55,16 @@ bool EwsItemBasePrivate::extendedPropertyReader(QXmlStreamReader &reader, QVaria
             return false;
         }
 
-        if (reader.name() == QLatin1String("FieldURI") || reader.name() == QLatin1String("IndexedFieldURI")
-            || reader.name() == QLatin1String("ExtendedFieldURI")) {
+        if (reader.name() == QLatin1StringView("FieldURI") || reader.name() == QLatin1String("IndexedFieldURI")
+            || reader.name() == QLatin1StringView("ExtendedFieldURI")) {
             if (!prop.read(reader)) {
                 reader.skipCurrentElement();
                 return false;
             }
             reader.skipCurrentElement();
-        } else if (reader.name() == QLatin1String("Value")) {
+        } else if (reader.name() == QLatin1StringView("Value")) {
             value = reader.readElementText();
-        } else if (reader.name() == QLatin1String("Values")) {
+        } else if (reader.name() == QLatin1StringView("Values")) {
             QStringList values;
             while (reader.readNextStartElement()) {
                 if (reader.namespaceUri() != ewsTypeNsUri) {
@@ -74,7 +74,7 @@ bool EwsItemBasePrivate::extendedPropertyReader(QXmlStreamReader &reader, QVaria
                     return false;
                 }
 
-                if (reader.name() == QLatin1String("Value")) {
+                if (reader.name() == QLatin1StringView("Value")) {
                     values.append(reader.readElementText());
                 }
             }

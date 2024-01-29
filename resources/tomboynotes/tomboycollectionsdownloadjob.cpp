@@ -49,7 +49,7 @@ void TomboyCollectionsDownloadJob::onRequestFinished()
 
     const QJsonObject jo = document.object();
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyCollectionsDownloadJob: " << jo;
-    const QJsonValue collectionRevision = jo[QLatin1String("latest-sync-revision")];
+    const QJsonValue collectionRevision = jo[QLatin1StringView("latest-sync-revision")];
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyCollectionsDownloadJob: " << collectionRevision;
 
     Akonadi::Collection c;

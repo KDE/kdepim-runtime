@@ -104,7 +104,7 @@ EwsFindFolderResponse::EwsFindFolderResponse(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QLatin1String("RootFolder")) {
+        if (reader.name() == QLatin1StringView("RootFolder")) {
             if (!parseRootFolder(reader)) {
                 return;
             }
@@ -117,7 +117,7 @@ EwsFindFolderResponse::EwsFindFolderResponse(QXmlStreamReader &reader)
 
 bool EwsFindFolderResponse::parseRootFolder(QXmlStreamReader &reader)
 {
-    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1String("RootFolder")) {
+    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1StringView("RootFolder")) {
         return setErrorMsg(
             QStringLiteral("Failed to read EWS request - expected %1 element (got %2).").arg(QStringLiteral("RootFolder"), reader.qualifiedName().toString()));
     }
@@ -135,7 +135,7 @@ bool EwsFindFolderResponse::parseRootFolder(QXmlStreamReader &reader)
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected a child element in %1 element.").arg(QStringLiteral("RootFolder")));
     }
 
-    if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != QLatin1String("Folders")) {
+    if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != QLatin1StringView("Folders")) {
         return setErrorMsg(
             QStringLiteral("Failed to read EWS request - expected %1 element (got %2).").arg(QStringLiteral("Folders"), reader.qualifiedName().toString()));
     }
@@ -180,8 +180,8 @@ EwsFolder *EwsFindFolderResponse::readFolder(QXmlStreamReader &reader)
 {
     EwsFolder *folder = nullptr;
     const QStringView readerName = reader.name();
-    if (readerName == QLatin1String("Folder") || readerName == QLatin1String("CalendarFolder") || readerName == QLatin1String("ContactsFolder")
-        || readerName == QLatin1String("TasksFolder") || readerName == QLatin1String("SearchFolder")) {
+    if (readerName == QLatin1StringView("Folder") || readerName == QLatin1String("CalendarFolder") || readerName == QLatin1String("ContactsFolder")
+        || readerName == QLatin1StringView("TasksFolder") || readerName == QLatin1String("SearchFolder")) {
         folder = new EwsFolder(reader);
         if (!folder->isValid()) {
             setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.").arg(QStringLiteral("Folder")));

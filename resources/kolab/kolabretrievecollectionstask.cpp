@@ -75,7 +75,7 @@ void RetrieveMetadataJob::start()
         mMetadata.insert(mailbox, QMap<QByteArray, QByteArray>());
     }
 
-    if (mServerCapabilities.contains(QLatin1String("METADATA")) || mServerCapabilities.contains(QLatin1String("ANNOTATEMORE"))) {
+    if (mServerCapabilities.contains(QLatin1StringView("METADATA")) || mServerCapabilities.contains(QLatin1String("ANNOTATEMORE"))) {
         QSet<QString> toplevelMailboxes;
         for (const QString &mailbox : std::as_const(mMailboxes)) {
             const QStringList parts = mailbox.split(mSeparator);
@@ -94,8 +94,8 @@ void RetrieveMetadataJob::start()
         // TODO perhaps exclude the shared and other users namespaces by listing only toplevel (with %), and then only getting metadata of the toplevel folders.
         for (const QString &mailbox : std::as_const(toplevelMailboxes)) {
             auto meta = new KIMAP::GetMetaDataJob(mSession);
-            meta->setMailBox(mailbox + QLatin1String("*"));
-            if (mServerCapabilities.contains(QLatin1String("METADATA"))) {
+            meta->setMailBox(mailbox + QLatin1StringView("*"));
+            if (mServerCapabilities.contains(QLatin1StringView("METADATA"))) {
                 meta->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
             } else {
                 meta->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);
@@ -111,7 +111,7 @@ void RetrieveMetadataJob::start()
     }
 
     // Get the ACLs from the mailbox if it's supported
-    if (mServerCapabilities.contains(QLatin1String("ACL"))) {
+    if (mServerCapabilities.contains(QLatin1StringView("ACL"))) {
         for (const QString &mailbox : std::as_const(mMailboxes)) {
             // "Shared Folders" is not a valid mailbox, so we have to skip the ACL request for this folder
             if (isNamespaceFolder(mailbox, mSharedNamespace, true)) {
@@ -213,13 +213,13 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
     policy.setSyncOnDemand(true);
 
     QStringList localParts;
-    localParts << QLatin1String(Akonadi::MessagePart::Envelope) << QLatin1String(Akonadi::MessagePart::Header);
+    localParts << QLatin1StringView(Akonadi::MessagePart::Envelope) << QLatin1String(Akonadi::MessagePart::Header);
     int cacheTimeout = 60;
 
     if (isDisconnectedModeEnabled()) {
         // For disconnected mode we also cache the body
         // and we keep all data indefinitely
-        localParts << QLatin1String(Akonadi::MessagePart::Body);
+        localParts << QLatin1StringView(Akonadi::MessagePart::Body);
         cacheTimeout = -1;
     }
 
@@ -354,7 +354,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     c.setKeepLocalChanges(cDefaultKeepLocalChanges);
 
     // assume LRS, until myrights is executed
-    if (serverCapabilities().contains(QLatin1String("ACL"))) {
+    if (serverCapabilities().contains(QLatin1StringView("ACL"))) {
         c.setRights(Akonadi::Collection::ReadOnly);
     } else {
         c.setRights(Akonadi::Collection::AllRights);
@@ -363,7 +363,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     setAttributes(c, pathParts, mailbox);
 
     // If the folder is the Inbox, make some special settings.
-    if (pathParts.size() == 1 && pathPart.compare(QLatin1String("inbox"), Qt::CaseInsensitive) == 0) {
+    if (pathParts.size() == 1 && pathPart.compare(QLatin1StringView("inbox"), Qt::CaseInsensitive) == 0) {
         auto attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setDisplayName(i18n("Inbox"));
         attr->setIconName(QStringLiteral("mail-folder-inbox"));

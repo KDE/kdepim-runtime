@@ -163,7 +163,7 @@ void FakeEwsConnection::dataAvailable()
 
             if (resp == FakeEwsServer::EmptyResponse) {
                 qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Returning default response 500.");
-                resp = {QLatin1String(""), 500};
+                resp = {QLatin1StringView(""), 500};
             }
 
             QByteArray buffer;
@@ -206,7 +206,7 @@ void FakeEwsConnection::sendError(const QString &msg, ushort code)
 
 void FakeEwsConnection::dataTimeout()
 {
-    qCWarning(EWSFAKE_LOG) << QLatin1String("Timeout waiting for content.");
+    qCWarning(EWSFAKE_LOG) << QLatin1StringView("Timeout waiting for content.");
     sendError(QStringLiteral("Timeout waiting for content."));
 }
 
@@ -316,8 +316,8 @@ FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::handleGetEventsReque
         return {errorResp, 200};
     }
 
-    resp += QLatin1String("<SubscriptionId>") + match.captured(QStringLiteral("subid")) + QLatin1String("<SubscriptionId>");
-    resp += QLatin1String("<PreviousWatermark>") + match.captured(QStringLiteral("watermark")) + QLatin1String("<PreviousWatermark>");
+    resp += QLatin1StringView("<SubscriptionId>") + match.captured(QStringLiteral("subid")) + QLatin1String("<SubscriptionId>");
+    resp += QLatin1StringView("<PreviousWatermark>") + match.captured(QStringLiteral("watermark")) + QLatin1String("<PreviousWatermark>");
     resp += QStringLiteral("<MoreEvents>false<MoreEvents>");
 
     auto server = qobject_cast<FakeEwsServer *>(parent());
@@ -354,7 +354,7 @@ QString FakeEwsConnection::prepareEventsResponse(const QStringList &events)
         "<m:ConnectionStatus>OK</m:ConnectionStatus>");
 
     if (!events.isEmpty()) {
-        resp += QLatin1String("<m:Notifications><m:Notification><SubscriptionId>") + mStreamingSubId + QLatin1String("<SubscriptionId>");
+        resp += QLatin1StringView("<m:Notifications><m:Notification><SubscriptionId>") + mStreamingSubId + QLatin1String("<SubscriptionId>");
 
         qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Returning %1 events.").arg(events.size());
         for (const QString &eventXml : std::as_const(events)) {

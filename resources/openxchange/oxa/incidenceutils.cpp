@@ -29,7 +29,7 @@ static void parseMembersAttribute(const QDomElement &element, const KCalendarCor
     incidence->clearAttendees();
 
     for (QDomElement child = element.firstChildElement(); !child.isNull(); child = child.nextSiblingElement()) {
-        if (child.tagName() == QLatin1String("user")) {
+        if (child.tagName() == QLatin1StringView("user")) {
             const QString uid = child.text();
 
             const User user = Users::self()->lookupUid(uid.toLongLong());
@@ -60,9 +60,9 @@ static void parseMembersAttribute(const QDomElement &element, const KCalendarCor
 
             const QString status = child.attribute(QStringLiteral("confirm"));
             if (!status.isEmpty()) {
-                if (status == QLatin1String("accept")) {
+                if (status == QLatin1StringView("accept")) {
                     attendee.setStatus(KCalendarCore::Attendee::Accepted);
-                } else if (status == QLatin1String("decline")) {
+                } else if (status == QLatin1StringView("decline")) {
                     attendee.setStatus(KCalendarCore::Attendee::Declined);
                 } else {
                     attendee.setStatus(KCalendarCore::Attendee::NeedsAction);
@@ -77,11 +77,11 @@ static void parseIncidenceAttribute(const QDomElement &element, const KCalendarC
     const QString tagName = element.tagName();
     const QString text = OXUtils::readString(element.text());
 
-    if (tagName == QLatin1String("title")) {
+    if (tagName == QLatin1StringView("title")) {
         incidence->setSummary(text);
-    } else if (tagName == QLatin1String("note")) {
+    } else if (tagName == QLatin1StringView("note")) {
         incidence->setDescription(text);
-    } else if (tagName == QLatin1String("alarm")) {
+    } else if (tagName == QLatin1StringView("alarm")) {
         const int minutes = OXUtils::readNumber(element.text());
         if (minutes != 0) {
             KCalendarCore::Alarm::List alarms = incidence->alarms();
@@ -103,18 +103,18 @@ static void parseIncidenceAttribute(const QDomElement &element, const KCalendarC
             // 0 reminder -> disable alarm
             incidence->clearAlarms();
         }
-    } else if (tagName == QLatin1String("created_by")) {
+    } else if (tagName == QLatin1StringView("created_by")) {
         const User user = Users::self()->lookupUid(OXUtils::readNumber(element.text()));
         incidence->setOrganizer(KCalendarCore::Person(user.name(), user.email()));
-    } else if (tagName == QLatin1String("participants")) {
+    } else if (tagName == QLatin1StringView("participants")) {
         parseMembersAttribute(element, incidence);
-    } else if (tagName == QLatin1String("private_flag")) {
+    } else if (tagName == QLatin1StringView("private_flag")) {
         if (OXUtils::readBoolean(element.text()) == true) {
             incidence->setSecrecy(KCalendarCore::Incidence::SecrecyPrivate);
         } else {
             incidence->setSecrecy(KCalendarCore::Incidence::SecrecyPublic);
         }
-    } else if (tagName == QLatin1String("categories")) {
+    } else if (tagName == QLatin1StringView("categories")) {
         incidence->setCategories(text.split(QRegularExpression(QStringLiteral(",\\s*"))));
     }
 }
@@ -124,17 +124,17 @@ static void parseEventAttribute(const QDomElement &element, const KCalendarCore:
     const QString tagName = element.tagName();
     const QString text = OXUtils::readString(element.text());
 
-    if (tagName == QLatin1String("start_date")) {
+    if (tagName == QLatin1StringView("start_date")) {
         QDateTime dateTime = OXUtils::readDateTime(element.text());
         event->setDtStart(dateTime);
-    } else if (tagName == QLatin1String("end_date")) {
+    } else if (tagName == QLatin1StringView("end_date")) {
         QDateTime dateTime = OXUtils::readDateTime(element.text());
         if (event->allDay()) {
             dateTime = dateTime.addSecs(-1);
         }
 
         event->setDtEnd(dateTime);
-    } else if (tagName == QLatin1String("location")) {
+    } else if (tagName == QLatin1StringView("location")) {
         event->setLocation(text);
     }
 }
@@ -144,17 +144,17 @@ static void parseTodoAttribute(const QDomElement &element, const KCalendarCore::
     const QString tagName = element.tagName();
     const QString text = OXUtils::readString(element.text());
 
-    if (tagName == QLatin1String("start_date")) {
+    if (tagName == QLatin1StringView("start_date")) {
         const QDateTime dateTime = OXUtils::readDateTime(element.text());
         if (dateTime.isValid()) {
             todo->setDtStart(dateTime);
         }
-    } else if (tagName == QLatin1String("end_date")) {
+    } else if (tagName == QLatin1StringView("end_date")) {
         const QDateTime dateTime = OXUtils::readDateTime(element.text());
         if (dateTime.isValid()) {
             todo->setDtDue(dateTime);
         }
-    } else if (tagName == QLatin1String("priority")) {
+    } else if (tagName == QLatin1StringView("priority")) {
         const int priorityNumber = OXUtils::readNumber(element.text());
         if (priorityNumber < 1 || priorityNumber > 3) {
             qDebug() << "Unknown priority:" << text;
@@ -173,7 +173,7 @@ static void parseTodoAttribute(const QDomElement &element, const KCalendarCore::
             }
             todo->setPriority(priority);
         }
-    } else if (tagName == QLatin1String("percent_completed")) {
+    } else if (tagName == QLatin1StringView("percent_completed")) {
         todo->setPercentComplete(OXUtils::readNumber(element.text()));
     }
 }
@@ -208,14 +208,14 @@ static void parseRecurrence(const QDomElement &element, const KCalendarCore::Inc
         const QString tagName = child.tagName();
         const QString text = OXUtils::readString(child.text());
 
-        if (tagName == QLatin1String("recurrence_type")) {
+        if (tagName == QLatin1StringView("recurrence_type")) {
             type = text;
-        } else if (tagName == QLatin1String("interval")) {
+        } else if (tagName == QLatin1StringView("interval")) {
             dailyValue = text.toInt();
             weeklyValue = text.toInt();
             monthlyValueMonth = text.toInt();
             monthly2ValueMonth = text.toInt();
-        } else if (tagName == QLatin1String("days")) {
+        } else if (tagName == QLatin1StringView("days")) {
             int tmp = text.toInt(); // OX encodes days binary: 1=Su, 2=Mo, 4=Tu, ...
             for (int i = 0; i < 7; ++i) {
                 if (tmp & (1 << i)) {
@@ -223,47 +223,47 @@ static void parseRecurrence(const QDomElement &element, const KCalendarCore::Inc
                 }
             }
             daysSet = true;
-        } else if (tagName == QLatin1String("day_in_month")) {
+        } else if (tagName == QLatin1StringView("day_in_month")) {
             monthlyValueDay = text.toInt();
             monthly2Recurrency = text.toInt();
             yearlyValueDay = text.toInt();
             yearly2Recurrency = text.toInt();
-        } else if (tagName == QLatin1String("month")) {
+        } else if (tagName == QLatin1StringView("month")) {
             yearlyMonth = text.toInt() + 1; // starts at 0
             yearly2Month = text.toInt() + 1;
-        } else if ((tagName == QLatin1String("deleteexceptions")) || (tagName == QLatin1String("changeexceptions"))) {
+        } else if ((tagName == QLatin1StringView("deleteexceptions")) || (tagName == QLatin1String("changeexceptions"))) {
             const QStringList exceptionDates = text.split(QLatin1Char(','));
             deleteExceptions.reserve(exceptionDates.count());
             for (const QString &date : exceptionDates) {
                 deleteExceptions.append(OXUtils::readDate(date));
             }
-        } else if (tagName == QLatin1String("until")) {
+        } else if (tagName == QLatin1StringView("until")) {
             endDate = OXUtils::readDateTime(child.text());
         }
         // TODO: notification
     }
 
-    if (daysSet && type == QLatin1String("monthly")) {
+    if (daysSet && type == QLatin1StringView("monthly")) {
         type = QStringLiteral("monthly2"); // HACK: OX doesn't cleanly distinguish between monthly and monthly2
     }
-    if (daysSet && type == QLatin1String("yearly")) {
+    if (daysSet && type == QLatin1StringView("yearly")) {
         type = QStringLiteral("yearly2");
     }
 
     KCalendarCore::Recurrence *recurrence = incidence->recurrence();
 
-    if (type == QLatin1String("daily")) {
+    if (type == QLatin1StringView("daily")) {
         recurrence->setDaily(dailyValue);
-    } else if (type == QLatin1String("weekly")) {
+    } else if (type == QLatin1StringView("weekly")) {
         recurrence->setWeekly(weeklyValue, days);
-    } else if (type == QLatin1String("monthly")) {
+    } else if (type == QLatin1StringView("monthly")) {
         recurrence->setMonthly(monthlyValueMonth);
         recurrence->addMonthlyDate(monthlyValueDay);
-    } else if (type == QLatin1String("yearly")) {
+    } else if (type == QLatin1StringView("yearly")) {
         recurrence->setYearly(1);
         recurrence->addYearlyDate(yearlyValueDay);
         recurrence->addYearlyMonth(yearlyMonth);
-    } else if (type == QLatin1String("monthly2")) {
+    } else if (type == QLatin1StringView("monthly2")) {
         recurrence->setMonthly(monthly2ValueMonth);
         QBitArray _days(7);
         if (daysSet) {
@@ -272,7 +272,7 @@ static void parseRecurrence(const QDomElement &element, const KCalendarCore::Inc
             _days.setBit(incidence->dtStart().date().dayOfWeek());
         }
         recurrence->addMonthlyPos(monthly2Recurrency, _days);
-    } else if (type == QLatin1String("yearly2")) {
+    } else if (type == QLatin1StringView("yearly2")) {
         recurrence->setYearly(1);
         recurrence->addYearlyMonth(yearly2Month);
         QBitArray _days(7);
@@ -341,7 +341,7 @@ static void createIncidenceAttributes(QDomDocument &document, QDomElement &paren
     }
 
     // categories
-    DAVUtils::addOxElement(document, parent, QStringLiteral("categories"), OXUtils::writeString(incidence->categories().join(QLatin1String(", "))));
+    DAVUtils::addOxElement(document, parent, QStringLiteral("categories"), OXUtils::writeString(incidence->categories().join(QLatin1StringView(", "))));
 }
 
 static void createEventAttributes(QDomDocument &document, QDomElement &parent, const KCalendarCore::Event::Ptr &event)
@@ -513,7 +513,7 @@ void OXA::IncidenceUtils::parseEvent(const QDomElement &propElement, Object &obj
 
     bool doesRecur = false;
     const QDomElement recurrenceTypeElement = propElement.firstChildElement(QStringLiteral("recurrence_type"));
-    if (!recurrenceTypeElement.isNull() && recurrenceTypeElement.text() != QLatin1String("none")) {
+    if (!recurrenceTypeElement.isNull() && recurrenceTypeElement.text() != QLatin1StringView("none")) {
         doesRecur = true;
     }
 
@@ -541,7 +541,7 @@ void OXA::IncidenceUtils::parseTask(const QDomElement &propElement, Object &obje
 
     bool doesRecur = false;
     const QDomElement recurrenceTypeElement = propElement.firstChildElement(QStringLiteral("recurrence_type"));
-    if (!recurrenceTypeElement.isNull() && recurrenceTypeElement.text() != QLatin1String("none")) {
+    if (!recurrenceTypeElement.isNull() && recurrenceTypeElement.text() != QLatin1StringView("none")) {
         doesRecur = true;
     }
 

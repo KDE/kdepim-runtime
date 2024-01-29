@@ -371,19 +371,19 @@ bool Contact::loadNameAttribute(QDomElement &element)
             QDomElement e = n.toElement();
             QString tagName = e.tagName();
 
-            if (tagName == QLatin1String("given-name")) {
+            if (tagName == QLatin1StringView("given-name")) {
                 setGivenName(e.text());
-            } else if (tagName == QLatin1String("middle-names")) {
+            } else if (tagName == QLatin1StringView("middle-names")) {
                 setMiddleNames(e.text());
-            } else if (tagName == QLatin1String("last-name")) {
+            } else if (tagName == QLatin1StringView("last-name")) {
                 setLastName(e.text());
-            } else if (tagName == QLatin1String("full-name")) {
+            } else if (tagName == QLatin1StringView("full-name")) {
                 setFullName(e.text());
-            } else if (tagName == QLatin1String("initials")) {
+            } else if (tagName == QLatin1StringView("initials")) {
                 setInitials(e.text());
-            } else if (tagName == QLatin1String("prefix")) {
+            } else if (tagName == QLatin1StringView("prefix")) {
                 setPrefix(e.text());
-            } else if (tagName == QLatin1String("suffix")) {
+            } else if (tagName == QLatin1StringView("suffix")) {
                 setSuffix(e.text());
             } else {
                 // TODO: Unhandled tag - save for later storage
@@ -422,9 +422,9 @@ bool Contact::loadPhoneAttribute(QDomElement &element)
             QDomElement e = n.toElement();
             QString tagName = e.tagName();
 
-            if (tagName == QLatin1String("type")) {
+            if (tagName == QLatin1StringView("type")) {
                 number.type = e.text();
-            } else if (tagName == QLatin1String("number")) {
+            } else if (tagName == QLatin1StringView("number")) {
                 number.number = e.text();
             } else {
                 // TODO: Unhandled tag - save for later storage
@@ -501,21 +501,21 @@ bool Contact::loadAddressAttribute(QDomElement &element)
             QDomElement e = n.toElement();
             QString tagName = e.tagName();
 
-            if (tagName == QLatin1String("type")) {
+            if (tagName == QLatin1StringView("type")) {
                 address.type = e.text();
-            } else if (tagName == QLatin1String("x-kde-type")) {
+            } else if (tagName == QLatin1StringView("x-kde-type")) {
                 address.kdeAddressType = e.text().toInt();
-            } else if (tagName == QLatin1String("street")) {
+            } else if (tagName == QLatin1StringView("street")) {
                 address.street = e.text();
-            } else if (tagName == QLatin1String("pobox")) {
+            } else if (tagName == QLatin1StringView("pobox")) {
                 address.pobox = e.text();
-            } else if (tagName == QLatin1String("locality")) {
+            } else if (tagName == QLatin1StringView("locality")) {
                 address.locality = e.text();
-            } else if (tagName == QLatin1String("region")) {
+            } else if (tagName == QLatin1StringView("region")) {
                 address.region = e.text();
-            } else if (tagName == QLatin1String("postal-code")) {
+            } else if (tagName == QLatin1StringView("postal-code")) {
                 address.postalCode = e.text();
-            } else if (tagName == QLatin1String("country")) {
+            } else if (tagName == QLatin1StringView("country")) {
                 address.country = e.text();
             } else {
                 // TODO: Unhandled tag - save for later storage
@@ -566,14 +566,14 @@ bool Contact::loadAttribute(QDomElement &element)
     const QString tagName = element.tagName();
     switch (tagName[0].toLatin1()) {
     case 'a':
-        if (tagName == QLatin1String("address")) {
+        if (tagName == QLatin1StringView("address")) {
             return loadAddressAttribute(element);
         }
-        if (tagName == QLatin1String("assistant")) {
+        if (tagName == QLatin1StringView("assistant")) {
             setAssistant(element.text());
             return true;
         }
-        if (tagName == QLatin1String("anniversary")) {
+        if (tagName == QLatin1StringView("anniversary")) {
             if (!element.text().isEmpty()) {
                 setAnniversary(stringToDate(element.text()));
             }
@@ -581,7 +581,7 @@ bool Contact::loadAttribute(QDomElement &element)
         }
         break;
     case 'b':
-        if (tagName == QLatin1String("birthday")) {
+        if (tagName == QLatin1StringView("birthday")) {
             if (!element.text().isEmpty()) {
                 setBirthday(stringToDate(element.text()));
             }
@@ -589,19 +589,19 @@ bool Contact::loadAttribute(QDomElement &element)
         }
         break;
     case 'c':
-        if (tagName == QLatin1String("children")) {
+        if (tagName == QLatin1StringView("children")) {
             setChildren(element.text());
             return true;
         }
         break;
     case 'd':
-        if (tagName == QLatin1String("department")) {
+        if (tagName == QLatin1StringView("department")) {
             setDepartment(element.text());
             return true;
         }
         break;
     case 'e':
-        if (tagName == QLatin1String("email")) {
+        if (tagName == QLatin1StringView("email")) {
             Email email;
             if (loadEmailAttribute(element, email)) {
                 addEmail(email);
@@ -612,119 +612,119 @@ bool Contact::loadAttribute(QDomElement &element)
         }
         break;
     case 'f':
-        if (tagName == QLatin1String("free-busy-url")) {
+        if (tagName == QLatin1StringView("free-busy-url")) {
             setFreeBusyUrl(element.text());
             return true;
         }
         break;
     case 'g':
-        if (tagName == QLatin1String("gender")) {
+        if (tagName == QLatin1StringView("gender")) {
             setGender(element.text());
             return true;
         }
         break;
     case 'i':
-        if (tagName == QLatin1String("im-address")) {
+        if (tagName == QLatin1StringView("im-address")) {
             setIMAddress(element.text());
             return true;
         }
         break;
     case 'j':
-        if (tagName == QLatin1String("job-title")) {
+        if (tagName == QLatin1StringView("job-title")) {
             // see saveAttributes: <job-title> is mapped to the Role field
             setTitle(element.text());
             return true;
         }
         break;
     case 'l':
-        if (tagName == QLatin1String("language")) {
+        if (tagName == QLatin1StringView("language")) {
             setLanguage(element.text());
             return true;
         }
-        if (tagName == QLatin1String("latitude")) {
+        if (tagName == QLatin1StringView("latitude")) {
             setLatitude(element.text().toFloat());
             mHasGeo = true;
             return true;
         }
-        if (tagName == QLatin1String("longitude")) {
+        if (tagName == QLatin1StringView("longitude")) {
             setLongitude(element.text().toFloat());
             mHasGeo = true;
         }
         break;
     case 'm':
-        if (tagName == QLatin1String("manager-name")) {
+        if (tagName == QLatin1StringView("manager-name")) {
             setManagerName(element.text());
             return true;
         }
         break;
     case 'n':
-        if (tagName == QLatin1String("name")) {
+        if (tagName == QLatin1StringView("name")) {
             return loadNameAttribute(element);
         }
-        if (tagName == QLatin1String("nick-name")) {
+        if (tagName == QLatin1StringView("nick-name")) {
             setNickName(element.text());
             return true;
         }
         break;
     case 'o':
-        if (tagName == QLatin1String("organization")) {
+        if (tagName == QLatin1StringView("organization")) {
             setOrganization(element.text());
             return true;
         }
-        if (tagName == QLatin1String("office-location")) {
+        if (tagName == QLatin1StringView("office-location")) {
             setOfficeLocation(element.text());
             return true;
         }
         break;
     case 'p':
-        if (tagName == QLatin1String("profession")) {
+        if (tagName == QLatin1StringView("profession")) {
             setProfession(element.text());
             return true;
         }
-        if (tagName == QLatin1String("picture")) {
+        if (tagName == QLatin1StringView("picture")) {
             mPictureAttachmentName = element.text();
             return true;
         }
-        if (tagName == QLatin1String("phone")) {
+        if (tagName == QLatin1StringView("phone")) {
             return loadPhoneAttribute(element);
         }
-        if (tagName == QLatin1String("preferred-address")) {
+        if (tagName == QLatin1StringView("preferred-address")) {
             setPreferredAddress(element.text());
             return true;
         }
         break;
     case 'r':
-        if (tagName == QLatin1String("role")) {
+        if (tagName == QLatin1StringView("role")) {
             setRole(element.text());
             return true;
         }
         break;
     case 's':
-        if (tagName == QLatin1String("spouse-name")) {
+        if (tagName == QLatin1StringView("spouse-name")) {
             setSpouseName(element.text());
             return true;
         }
         break;
     case 'x':
-        if (tagName == QLatin1String("x-logo")) {
+        if (tagName == QLatin1StringView("x-logo")) {
             mLogoAttachmentName = element.text();
             return true;
         }
-        if (tagName == QLatin1String("x-sound")) {
+        if (tagName == QLatin1StringView("x-sound")) {
             mSoundAttachmentName = element.text();
             return true;
         }
-        if (tagName == QLatin1String("x-custom")) {
+        if (tagName == QLatin1StringView("x-custom")) {
             loadCustomAttributes(element);
             return true;
         }
-        if (tagName == QLatin1String("x-title")) {
+        if (tagName == QLatin1StringView("x-title")) {
             setTitle(element.text());
             return true;
         }
         break;
     case 'w':
-        if (tagName == QLatin1String("web-page")) {
+        if (tagName == QLatin1StringView("web-page")) {
             setWebPage(element.text());
             return true;
         }
@@ -784,7 +784,7 @@ bool Contact::loadXML(const QDomDocument &document)
 {
     QDomElement top = document.documentElement();
 
-    if (top.tagName() != QLatin1String("contact")) {
+    if (top.tagName() != QLatin1StringView("contact")) {
         qCWarning(PIMKOLAB_LOG) << QStringLiteral("XML error: Top tag was %1 instead of the expected contact").arg(top.tagName());
         return false;
     }
@@ -835,10 +835,10 @@ static QString addressTypeToString(int /*KContacts::Address::Type*/ type)
 
 static int addressTypeFromString(const QString &type)
 {
-    if (type == QLatin1String("home")) {
+    if (type == QLatin1StringView("home")) {
         return KContacts::Address::Home;
     }
-    if (type == QLatin1String("business")) {
+    if (type == QLatin1StringView("business")) {
         return KContacts::Address::Work;
     }
     // well, this shows "other" in the editor, which is what we want...
@@ -918,55 +918,55 @@ static QStringList phoneTypeToString(KContacts::PhoneNumber::Type type)
 
 static KContacts::PhoneNumber::Type phoneTypeFromString(const QString &type)
 {
-    if (type == QLatin1String("homefax")) {
+    if (type == QLatin1StringView("homefax")) {
         return KContacts::PhoneNumber::Home | KContacts::PhoneNumber::Fax;
     }
-    if (type == QLatin1String("businessfax")) {
+    if (type == QLatin1StringView("businessfax")) {
         return KContacts::PhoneNumber::Work | KContacts::PhoneNumber::Fax;
     }
-    if (type == QLatin1String("business1")) {
+    if (type == QLatin1StringView("business1")) {
         return KContacts::PhoneNumber::Work | KContacts::PhoneNumber::Pref;
     }
-    if (type == QLatin1String("business2")) {
+    if (type == QLatin1StringView("business2")) {
         return KContacts::PhoneNumber::Work;
     }
-    if (type == QLatin1String("home1")) {
+    if (type == QLatin1StringView("home1")) {
         return KContacts::PhoneNumber::Home | KContacts::PhoneNumber::Pref;
     }
-    if (type == QLatin1String("home2")) {
+    if (type == QLatin1StringView("home2")) {
         return KContacts::PhoneNumber::Home;
     }
-    if (type == QLatin1String("company")) {
+    if (type == QLatin1StringView("company")) {
         return KContacts::PhoneNumber::Msg;
     }
-    if (type == QLatin1String("primary")) {
+    if (type == QLatin1StringView("primary")) {
         return KContacts::PhoneNumber::Pref;
     }
-    if (type == QLatin1String("callback")) {
+    if (type == QLatin1StringView("callback")) {
         return KContacts::PhoneNumber::Voice;
     }
-    if (type == QLatin1String("mobile")) {
+    if (type == QLatin1StringView("mobile")) {
         return KContacts::PhoneNumber::Cell;
     }
-    if (type == QLatin1String("radio")) {
+    if (type == QLatin1StringView("radio")) {
         return KContacts::PhoneNumber::Video;
     }
-    if (type == QLatin1String("ttytdd")) {
+    if (type == QLatin1StringView("ttytdd")) {
         return KContacts::PhoneNumber::Bbs;
     }
-    if (type == QLatin1String("telex")) {
+    if (type == QLatin1StringView("telex")) {
         return KContacts::PhoneNumber::Modem;
     }
-    if (type == QLatin1String("car")) {
+    if (type == QLatin1StringView("car")) {
         return KContacts::PhoneNumber::Car;
     }
-    if (type == QLatin1String("isdn")) {
+    if (type == QLatin1StringView("isdn")) {
         return KContacts::PhoneNumber::Isdn;
     }
-    if (type == QLatin1String("assistant")) {
+    if (type == QLatin1StringView("assistant")) {
         return KContacts::PhoneNumber::Pcs;
     }
-    if (type == QLatin1String("pager")) {
+    if (type == QLatin1StringView("pager")) {
         return KContacts::PhoneNumber::Pager;
     }
     return KContacts::PhoneNumber::Home; // whatever
@@ -1093,7 +1093,7 @@ void Contact::setFields(const KContacts::Addressee *addressee)
             continue;
         }
         QString app = (*it).left(pos);
-        if (app == QLatin1String("KOLAB")) {
+        if (app == QLatin1StringView("KOLAB")) {
             continue;
         }
         QString name = (*it).mid(pos + 1);
@@ -1106,7 +1106,7 @@ void Contact::setFields(const KContacts::Addressee *addressee)
         if (!knownCustoms.contains(name)) {
             // qCDebug(PIMKOLAB_LOG) <<"app=" << app <<" name=" << name <<" value=" << value;
             Custom c;
-            if (app != QLatin1String("KADDRESSBOOK")) { // that's the default
+            if (app != QLatin1StringView("KADDRESSBOOK")) { // that's the default
                 c.app = app;
             }
             c.name = name;

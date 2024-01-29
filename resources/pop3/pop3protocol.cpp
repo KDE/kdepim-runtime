@@ -52,8 +52,8 @@ bool POP3Protocol::initSASL() // static
 {
 #ifdef Q_OS_WIN32 // krazy:exclude=cpp
 #if 0
-    QByteArray libInstallPath(QFile::encodeName(QDir::toNativeSeparators(KGlobal::dirs()->installPath("lib") + QLatin1String("sasl2"))));
-    QByteArray configPath(QFile::encodeName(QDir::toNativeSeparators(KGlobal::dirs()->installPath("config") + QLatin1String("sasl2"))));
+    QByteArray libInstallPath(QFile::encodeName(QDir::toNativeSeparators(KGlobal::dirs()->installPath("lib") + QLatin1StringView("sasl2"))));
+    QByteArray configPath(QFile::encodeName(QDir::toNativeSeparators(KGlobal::dirs()->installPath("config") + QLatin1StringView("sasl2"))));
     if (sasl_set_path(SASL_PATH_TYPE_PLUGIN, libInstallPath.data()) != SASL_OK
         || sasl_set_path(SASL_PATH_TYPE_CONFIG, configPath.data()) != SASL_OK) {
         fprintf(stderr, "SASL path initialization failed!\n");
@@ -210,7 +210,7 @@ POP3Protocol::Resp POP3Protocol::getResponse(char *r_buf, unsigned int r_len)
         if (!*buf) {
             m_sError = i18n("The server terminated the connection.");
         } else {
-            m_sError = i18n("Invalid response from server:\n\"%1\"", QLatin1String(buf));
+            m_sError = i18n("Invalid response from server:\n\"%1\"", QLatin1StringView(buf));
         }
 
         delete[] buf;
@@ -426,7 +426,7 @@ Result POP3Protocol::loginSASL()
                 // sanders, changed -2 to -1 below
                 buf[strlen(buf) - 2] = '\0';
 
-                sasl_list.append(QLatin1String(buf));
+                sasl_list.append(QLatin1StringView(buf));
             }
         }
 
@@ -451,7 +451,7 @@ Result POP3Protocol::loginSASL()
 
         QByteArray msg, tmp;
 
-        QString firstCommand = QLatin1String("AUTH ") + QString::fromLatin1(mechusing);
+        QString firstCommand = QLatin1StringView("AUTH ") + QString::fromLatin1(mechusing);
         msg = QByteArray::fromRawData(out, outlen).toBase64();
         if (!msg.isEmpty()) {
             firstCommand += QLatin1Char(' ');
@@ -494,8 +494,8 @@ Result POP3Protocol::loginSASL()
         if (useSASL(mSettings)) {
             closeConnection();
             const QString errorString = i18n("Login via SASL (%1) failed. The server may not support %2, or the password may be wrong.\n\n%3",
-                                             QLatin1String(mechusing),
-                                             QLatin1String(mechusing),
+                                             QLatin1StringView(mechusing),
+                                             QLatin1StringView(mechusing),
                                              m_sError);
             return Result::fail(ERR_CANNOT_LOGIN, errorString);
         }
@@ -612,13 +612,13 @@ Result POP3Protocol::openConnection()
         if (getResponse(greeting_buf, GREETING_BUF_LEN) != Ok) {
             const QString errorString = i18n("Could not login to %1.\n\n", m_sServer)
                 + ((!greeting_buf || !*greeting_buf) ? i18n("The server terminated the connection immediately.")
-                                                     : i18n("Server does not respond properly:\n%1\n", QLatin1String(greeting_buf)));
+                                                     : i18n("Server does not respond properly:\n%1\n", QLatin1StringView(greeting_buf)));
             delete[] greeting_buf;
             closeConnection();
             // we've got major problems, and possibly the wrong port
             return Result::fail(ERR_CANNOT_LOGIN, errorString);
         }
-        QString greeting = QLatin1String(greeting_buf);
+        QString greeting = QLatin1StringView(greeting_buf);
         delete[] greeting_buf;
 
         if (!greeting.isEmpty()) {
@@ -729,8 +729,8 @@ Result POP3Protocol::get(const QString &_commandString)
     char destbuf[MAX_PACKET_LEN];
     const int maxCommands = mSettings.pipelining() ? MAX_COMMANDS : 1;
 
-    if (((commandString.indexOf(QLatin1Char('/')) == -1) && (commandString != QLatin1String("index")) && (commandString != QLatin1String("uidl"))
-         && (commandString != QLatin1String("quit")))) {
+    if (((commandString.indexOf(QLatin1Char('/')) == -1) && (commandString != QLatin1StringView("index")) && (commandString != QLatin1String("uidl"))
+         && (commandString != QLatin1StringView("quit")))) {
         return Result::fail(ERR_INTERNAL, i18n("Internal error: missing argument for command %1", commandString));
     }
 
@@ -738,9 +738,9 @@ Result POP3Protocol::get(const QString &_commandString)
     const QString cmd = commandString.left(slashPos);
     const QString path = commandString.mid(slashPos + 1);
 
-    if ((cmd == QLatin1String("index")) || (cmd == QLatin1String("uidl"))) {
+    if ((cmd == QLatin1StringView("index")) || (cmd == QLatin1String("uidl"))) {
         bool result;
-        if (cmd == QLatin1String("index")) {
+        if (cmd == QLatin1StringView("index")) {
             result = (command("LIST") == Ok);
         } else {
             result = (command("UIDL") == Ok);
@@ -769,20 +769,20 @@ Result POP3Protocol::get(const QString &_commandString)
             }
         }
         qCDebug(POP3_LOG) << "Finishing up list";
-    } else if (cmd == QLatin1String("remove")) {
+    } else if (cmd == QLatin1StringView("remove")) {
         const QStringList waitingCommands = path.split(QLatin1Char(','));
         int activeCommands = 0;
         QStringList::ConstIterator it = waitingCommands.begin();
         while (it != waitingCommands.end() || activeCommands > 0) {
             while (activeCommands < maxCommands && it != waitingCommands.end()) {
-                sendCommand((QLatin1String("DELE ") + *it).toLatin1());
+                sendCommand((QLatin1StringView("DELE ") + *it).toLatin1());
                 activeCommands++;
                 it++;
             }
             getResponse(buf, sizeof(buf) - 1);
             activeCommands--;
         }
-    } else if (cmd == QLatin1String("download") || cmd == QLatin1String("headers")) {
+    } else if (cmd == QLatin1StringView("download") || cmd == QLatin1String("headers")) {
         const QStringList waitingCommands = path.split(QLatin1Char(','), Qt::SkipEmptyParts);
         if (waitingCommands.isEmpty()) {
             qCDebug(POP3_LOG) << "tried to request" << cmd << "for" << path << "with no specific item to get";
@@ -795,8 +795,8 @@ Result POP3Protocol::get(const QString &_commandString)
         QStringList::ConstIterator it = waitingCommands.begin();
         while (it != waitingCommands.end() || activeCommands > 0) {
             while (activeCommands < maxCommands && it != waitingCommands.end()) {
-                sendCommand(QString((cmd == QLatin1String("headers")) ? QString(QLatin1String("TOP ") + *it + QLatin1String(" 0"))
-                                                                      : QString(QLatin1String("RETR ") + *it))
+                sendCommand(QString((cmd == QLatin1StringView("headers")) ? QString(QLatin1String("TOP ") + *it + QLatin1String(" 0"))
+                                                                          : QString(QLatin1StringView("RETR ") + *it))
                                 .toLatin1());
                 activeCommands++;
                 it++;
@@ -883,7 +883,7 @@ Result POP3Protocol::get(const QString &_commandString)
             }
         }
         qCDebug(POP3_LOG) << "Finishing up";
-    } else if ((cmd == QLatin1String("uid")) || (cmd == QLatin1String("list"))) {
+    } else if ((cmd == QLatin1StringView("uid")) || (cmd == QLatin1String("list"))) {
         bool ok = true;
         (void)path.toInt(&ok);
         if (!ok) {
@@ -891,10 +891,10 @@ Result POP3Protocol::get(const QString &_commandString)
         }
 
         QString commandStr;
-        if (cmd == QLatin1String("uid")) {
-            commandStr = QLatin1String("UIDL ") + path;
+        if (cmd == QLatin1StringView("uid")) {
+            commandStr = QLatin1StringView("UIDL ") + path;
         } else {
-            commandStr = QLatin1String("LIST ") + path;
+            commandStr = QLatin1StringView("LIST ") + path;
         }
 
         memset(buf, 0, sizeof(buf));
@@ -909,7 +909,7 @@ Result POP3Protocol::get(const QString &_commandString)
             closeConnection();
             return Result::fail(ERR_PROTOCOL, i18n("Unexpected response from POP3 server."));
         }
-    } else if (cmd == QLatin1String("quit")) {
+    } else if (cmd == QLatin1StringView("quit")) {
         qCDebug(POP3_LOG) << "Issued QUIT";
         closeConnection();
     }

@@ -16,7 +16,7 @@ void KolabObjectTest::preserveLatin1()
     KCalendarCore::Event::Ptr event(new KCalendarCore::Event());
     event->setDtStart(QDateTime(QDate(2014, 1, 1), {}));
     event->setAllDay(true);
-    const QString summary(QLatin1String("äöü%@$£é¤¼²°"));
+    const QString summary(QLatin1StringView("äöü%@$£é¤¼²°"));
     event->setSummary(summary);
     QCOMPARE(event->summary(), summary);
     // std::cout << event->summary().toStdString() << std::endl;
@@ -81,7 +81,7 @@ void KolabObjectTest::parseRelationMembers()
 
         QString result = Kolab::generateMemberUrl(member);
         qDebug() << result;
-        result.replace(QLatin1String("%20"), QLatin1String("+"));
+        result.replace(QLatin1StringView("%20"), QLatin1String("+"));
         QEXPECT_FAIL("", "This is currently failing, probably a bug in the recent changes regarding the encoding.", Continue);
         QCOMPARE(result, memberString);
     }

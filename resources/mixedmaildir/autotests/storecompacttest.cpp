@@ -126,10 +126,10 @@ void StoreCompactTest::testCompact()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection3")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection4")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QStringLiteral("collection3")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QStringLiteral("collection4")));
 
     QFileInfo fileInfo1(topDir.path(), QStringLiteral("collection1"));
     MBox mbox1;

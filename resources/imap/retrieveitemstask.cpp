@@ -76,7 +76,8 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
     }
 
     if (m_fetchMissingBodies
-        && col.cachePolicy().localParts().contains(QLatin1String(Akonadi::MessagePart::Body))) { // disconnected mode, make sure we really have the body cached
+        && col.cachePolicy().localParts().contains(
+            QLatin1StringView(Akonadi::MessagePart::Body))) { // disconnected mode, make sure we really have the body cached
         auto session = new Akonadi::Session(resourceName().toLatin1() + "_body_checker", this);
         auto fetchJob = new Akonadi::ItemFetchJob(col, session);
         fetchJob->fetchScope().setCheckForCachedPayloadPartsOnly();
@@ -136,7 +137,7 @@ void RetrieveItemsTask::startRetrievalTasks()
     m_time.start();
 
     // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
-    const bool hasACL = serverCapabilities().contains(QLatin1String("ACL"));
+    const bool hasACL = serverCapabilities().contains(QLatin1StringView("ACL"));
     const KIMAP::Acl::Rights rights = myRights(collection());
     if (isAutomaticExpungeEnabled() && (!hasACL || (rights & KIMAP::Acl::Expunge) || (rights & KIMAP::Acl::Delete))) {
         if (m_session->selectedMailBox() != mailBox) {
@@ -352,7 +353,7 @@ void RetrieveItemsTask::prepareRetrieval()
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::FullHeaders;
 
-    if (col.cachePolicy().localParts().contains(QLatin1String(Akonadi::MessagePart::Body))) {
+    if (col.cachePolicy().localParts().contains(QLatin1StringView(Akonadi::MessagePart::Body))) {
         scope.mode = KIMAP::FetchJob::FetchScope::Full;
     }
 

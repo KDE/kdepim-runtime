@@ -62,22 +62,22 @@ public:
     [[nodiscard]] QStringList subPaths() const
     {
         QStringList paths;
-        paths << path + QLatin1String("/cur");
-        paths << path + QLatin1String("/new");
-        paths << path + QLatin1String("/tmp");
+        paths << path + QLatin1StringView("/cur");
+        paths << path + QLatin1StringView("/new");
+        paths << path + QLatin1StringView("/tmp");
         return paths;
     }
 
     [[nodiscard]] QStringList listNew() const
     {
-        QDir d(path + QLatin1String("/new"));
+        QDir d(path + QLatin1StringView("/new"));
         d.setSorting(QDir::NoSort);
         return d.entryList(QDir::Files);
     }
 
     [[nodiscard]] QStringList listCurrent() const
     {
-        QDir d(path + QLatin1String("/cur"));
+        QDir d(path + QLatin1StringView("/cur"));
         d.setSorting(QDir::NoSort);
         return d.entryList(QDir::Files);
     }
@@ -91,7 +91,7 @@ public:
                 qCDebug(LIBMAILDIR_LOG) << "WARNING: key is in cache, but the file is gone: " << path + QString::fromLatin1("/new/") + key;
             }
 #endif
-            return path + QLatin1String("/new/") + key;
+            return path + QLatin1StringView("/new/") + key;
         }
         if (keyCache->isCurKey(path, key)) {
 #ifdef DEBUG_KEYCACHE_CONSITENCY
@@ -99,14 +99,14 @@ public:
                 qCDebug(LIBMAILDIR_LOG) << "WARNING: key is in cache, but the file is gone: " << path + QString::fromLatin1("/cur/") + key;
             }
 #endif
-            return path + QLatin1String("/cur/") + key;
+            return path + QLatin1StringView("/cur/") + key;
         }
-        QString realKey = path + QLatin1String("/new/") + key;
+        QString realKey = path + QLatin1StringView("/new/") + key;
 
         if (QFileInfo::exists(realKey)) {
             keyCache->addNewKey(path, key);
         } else { // not in "new", search in "cur"
-            realKey = path + QLatin1String("/cur/") + key;
+            realKey = path + QLatin1StringView("/cur/") + key;
             if (QFileInfo::exists(realKey)) {
                 keyCache->addCurKey(path, key);
             } else {
@@ -356,7 +356,7 @@ Maildir Maildir::parent() const
     }
     QDir dir(d->path);
     dir.cdUp();
-    if (!dir.dirName().startsWith(QLatin1Char('.')) || !dir.dirName().endsWith(QLatin1String(".directory"))) {
+    if (!dir.dirName().startsWith(QLatin1Char('.')) || !dir.dirName().endsWith(QLatin1StringView(".directory"))) {
         return Maildir();
     }
     const QString parentName = dir.dirName().mid(1, dir.dirName().size() - 11);
@@ -401,7 +401,7 @@ QStringList Maildir::listNew() const
 QString Maildir::pathToNew() const
 {
     if (isValid()) {
-        return d->path + QLatin1String("/new");
+        return d->path + QLatin1StringView("/new");
     }
     return {};
 }
@@ -409,7 +409,7 @@ QString Maildir::pathToNew() const
 QString Maildir::pathToCurrent() const
 {
     if (isValid()) {
-        return d->path + QLatin1String("/cur");
+        return d->path + QLatin1StringView("/cur");
     }
     return {};
 }
@@ -539,7 +539,7 @@ static QString createUniqueFileName()
 {
     const qint64 time = QDateTime::currentMSecsSinceEpoch();
     const int r = QRandomGenerator::global()->bounded(1000);
-    const QString identifier = QLatin1String("R") + QString::number(r);
+    const QString identifier = QLatin1StringView("R") + QString::number(r);
 
     QString fileName = QString::number(time) + QLatin1Char('.') + identifier + QLatin1Char('.');
 
@@ -577,9 +577,9 @@ QString Maildir::addEntry(const QByteArray &data)
     // get one that doesn't exists yet
     do {
         uniqueKey = createUniqueFileName() + d->hostName;
-        key = d->path + QLatin1String("/tmp/") + uniqueKey;
-        finalKey = d->path + QLatin1String("/new/") + uniqueKey;
-        curKey = d->path + QLatin1String("/cur/") + uniqueKey;
+        key = d->path + QLatin1StringView("/tmp/") + uniqueKey;
+        finalKey = d->path + QLatin1StringView("/new/") + uniqueKey;
+        curKey = d->path + QLatin1StringView("/cur/") + uniqueKey;
     } while (QFile::exists(key) || QFile::exists(finalKey) || QFile::exists(curKey));
 
     QFile f(key);
@@ -651,14 +651,14 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
     mailDirFlags.sort();
     if (!mailDirFlags.isEmpty()) {
 #ifdef Q_OS_WIN
-        finalKey.append(QLatin1String("!2,") + mailDirFlags.join(QString()));
+        finalKey.append(QLatin1StringView("!2,") + mailDirFlags.join(QString()));
 #else
-        finalKey.append(QLatin1String(":2,") + mailDirFlags.join(QString()));
+        finalKey.append(QLatin1StringView(":2,") + mailDirFlags.join(QString()));
 #endif
     }
 
     const QString newUniqueKey = finalKey; // key without path
-    finalKey.prepend(d->path + QLatin1String("/cur/"));
+    finalKey.prepend(d->path + QLatin1StringView("/cur/"));
 
     if (realKey == finalKey) {
         // Somehow it already is named this way (e.g. migration bug -> wrong status in akonadi)
@@ -680,9 +680,9 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
         }
 
         if (destContent != sourceContent) {
-            QString newFinalKey = QLatin1String("1-") + newUniqueKey;
+            QString newFinalKey = QLatin1StringView("1-") + newUniqueKey;
             int i = 1;
-            const QString currentPath = d->path + QLatin1String("/cur/");
+            const QString currentPath = d->path + QLatin1StringView("/cur/");
             while (QFile::exists(currentPath + newFinalKey)) {
                 i++;
                 newFinalKey = QString::number(i) + QLatin1Char('-') + newUniqueKey;

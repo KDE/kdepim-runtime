@@ -110,7 +110,7 @@ EwsCreateItemRequest::Response::Response(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QLatin1String("Items")) {
+        if (reader.name() == QLatin1StringView("Items")) {
             if (reader.readNextStartElement()) {
                 EwsItem item(reader);
                 if (!item.isValid()) {

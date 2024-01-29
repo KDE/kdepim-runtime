@@ -794,7 +794,7 @@ void UtEwsFakeSrvTest::xqueryResultsInCallback()
                                                               qDebug() << "XQuery XML node is NULL.";
                                                               return FakeEwsServer::EmptyResponse;
                                                           }
-                                                          if (index.model()->stringValue(index) != QLatin1String("test")) {
+                                                          if (index.model()->stringValue(index) != QLatin1StringView("test")) {
                                                               qDebug() << "Unexpected item value:" << index.model()->stringValue(index);
                                                               return FakeEwsServer::EmptyResponse;
                                                           }

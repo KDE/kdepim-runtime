@@ -44,28 +44,28 @@ void TomboyItemUploadJob::start()
 {
     // Convert note to JSON
     QJsonObject jsonNote;
-    jsonNote[QLatin1String("guid")] = mSourceItem.remoteId();
+    jsonNote[QLatin1StringView("guid")] = mSourceItem.remoteId();
     switch (mJobType) {
     case JobType::DeleteItem:
-        jsonNote[QLatin1String("command")] = QStringLiteral("delete");
+        jsonNote[QLatin1StringView("command")] = QStringLiteral("delete");
         break;
     case JobType::AddItem:
-        jsonNote[QLatin1String("create-date")] = getCurrentISOTime();
+        jsonNote[QLatin1StringView("create-date")] = getCurrentISOTime();
         // Missing break is intended
         [[fallthrough]];
     case JobType::ModifyItem:
-        jsonNote[QLatin1String("title")] = mNoteContent->headerByType("subject")->asUnicodeString();
-        jsonNote[QLatin1String("note-content")] = mNoteContent->mainBodyPart()->decodedText();
-        jsonNote[QLatin1String("note-content-version")] = QStringLiteral("1");
-        jsonNote[QLatin1String("last-change-date")] = getCurrentISOTime();
+        jsonNote[QLatin1StringView("title")] = mNoteContent->headerByType("subject")->asUnicodeString();
+        jsonNote[QLatin1StringView("note-content")] = mNoteContent->mainBodyPart()->decodedText();
+        jsonNote[QLatin1StringView("note-content-version")] = QStringLiteral("1");
+        jsonNote[QLatin1StringView("last-change-date")] = getCurrentISOTime();
     }
 
     // Create the full JSON object
     QJsonArray noteChanges;
     noteChanges.append(jsonNote);
     QJsonObject postJson;
-    postJson[QLatin1String("note-changes")] = noteChanges;
-    postJson[QLatin1String("latest-sync-revision")] = QString::number(++mRemoteRevision);
+    postJson[QLatin1StringView("note-changes")] = noteChanges;
+    postJson[QLatin1StringView("latest-sync-revision")] = QString::number(++mRemoteRevision);
     QJsonDocument postData;
     postData.setObject(postJson);
 
@@ -92,12 +92,12 @@ void TomboyItemUploadJob::onRequestFinished()
     const QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), nullptr);
 
     const QJsonObject jo = document.object();
-    const QJsonArray notes = jo[QLatin1String("notes")].toArray();
+    const QJsonArray notes = jo[QLatin1StringView("notes")].toArray();
 
     // Check if server status is as expected
     bool found = false;
     for (const auto &note : notes) {
-        found = (note.toObject()[QLatin1String("guid")].toString() == mSourceItem.remoteId());
+        found = (note.toObject()[QLatin1StringView("guid")].toString() == mSourceItem.remoteId());
         if (found) {
             break;
         }

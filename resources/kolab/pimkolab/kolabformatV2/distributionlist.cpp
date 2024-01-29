@@ -53,11 +53,11 @@ void KolabV2::DistributionList::loadDistrListMember(const QDomElement &element)
         if (n.isElement()) {
             QDomElement e = n.toElement();
             const QString tagName = e.tagName();
-            if (tagName == QLatin1String("display-name")) {
+            if (tagName == QLatin1StringView("display-name")) {
                 member.displayName = e.text();
-            } else if (tagName == QLatin1String("smtp-address")) {
+            } else if (tagName == QLatin1StringView("smtp-address")) {
                 member.email = e.text();
-            } else if (tagName == QLatin1String("uid")) {
+            } else if (tagName == QLatin1StringView("uid")) {
                 member.uid = e.text();
             }
         }
@@ -87,13 +87,13 @@ bool DistributionList::loadAttribute(QDomElement &element)
     const QString tagName = element.tagName();
     switch (tagName[0].toLatin1()) {
     case 'd':
-        if (tagName == QLatin1String("display-name")) {
+        if (tagName == QLatin1StringView("display-name")) {
             setName(element.text());
             return true;
         }
         break;
     case 'm':
-        if (tagName == QLatin1String("member")) {
+        if (tagName == QLatin1StringView("member")) {
             loadDistrListMember(element);
             return true;
         }
@@ -118,7 +118,7 @@ bool DistributionList::loadXML(const QDomDocument &document)
 {
     QDomElement top = document.documentElement();
 
-    if (top.tagName() != QLatin1String("distribution-list")) {
+    if (top.tagName() != QLatin1StringView("distribution-list")) {
         qCWarning(PIMKOLAB_LOG) << QStringLiteral("XML error: Top tag was %1 instead of the expected distribution-list").arg(top.tagName());
         return false;
     }

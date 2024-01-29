@@ -24,11 +24,11 @@ void NewMailNotificationHistoryBrowserText::doSetSource(const QUrl &url, QTextDo
     Q_UNUSED(type);
     QString uri = url.toString();
     // qDebug() << " uri " << uri;
-    if (uri.startsWith(QLatin1String("openmail:"))) {
+    if (uri.startsWith(QLatin1StringView("openmail:"))) {
         uri.remove(QStringLiteral("openmail:"));
         // qDebug() << "openMail uri " << uri;
         Q_EMIT openMail(uri);
-    } else if (uri.startsWith(QLatin1String("openfolder:"))) {
+    } else if (uri.startsWith(QLatin1StringView("openfolder:"))) {
         uri.remove(QStringLiteral("openfolder:"));
         // qDebug() << "openFolder uri " << uri;
         Q_EMIT openFolder(uri);

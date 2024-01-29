@@ -38,15 +38,15 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
             const QString tagName = element.tagName();
             const QString text = OXUtils::readString(element.text());
 
-            if (tagName == QLatin1String("displayname")) {
+            if (tagName == QLatin1StringView("displayname")) {
                 contactGroup.setName(text);
-            } else if (tagName == QLatin1String("distributionlist")) {
+            } else if (tagName == QLatin1StringView("distributionlist")) {
                 QDomElement emailElement = element.firstChildElement();
                 while (!emailElement.isNull()) {
                     const QString tagName = emailElement.tagName();
                     const QString text = OXUtils::readString(emailElement.text());
 
-                    if (tagName == QLatin1String("email")) {
+                    if (tagName == QLatin1StringView("email")) {
                         const int emailField = OXUtils::readNumber(emailElement.attribute(QStringLiteral("emailfield")));
                         if (emailField == 0) { // internal data
                             KContacts::ContactGroup::Data data;
@@ -92,61 +92,61 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
             const QString text = OXUtils::readString(element.text());
 
             // name
-            if (tagName == QLatin1String("title")) {
+            if (tagName == QLatin1StringView("title")) {
                 contact.setTitle(text);
-            } else if (tagName == QLatin1String("first_name")) {
+            } else if (tagName == QLatin1StringView("first_name")) {
                 contact.setGivenName(text);
-            } else if (tagName == QLatin1String("second_name")) {
+            } else if (tagName == QLatin1StringView("second_name")) {
                 contact.setAdditionalName(text);
-            } else if (tagName == QLatin1String("last_name")) {
+            } else if (tagName == QLatin1StringView("last_name")) {
                 contact.setFamilyName(text);
-            } else if (tagName == QLatin1String("suffix")) {
+            } else if (tagName == QLatin1StringView("suffix")) {
                 contact.setSuffix(text);
-            } else if (tagName == QLatin1String("displayname")) {
+            } else if (tagName == QLatin1StringView("displayname")) {
                 contact.setFormattedName(text);
-            } else if (tagName == QLatin1String("nickname")) {
+            } else if (tagName == QLatin1StringView("nickname")) {
                 contact.setNickName(text);
                 // dates
-            } else if (tagName == QLatin1String("birthday")) {
+            } else if (tagName == QLatin1StringView("birthday")) {
                 contact.setBirthday(OXUtils::readDateTime(element.text()));
-            } else if (tagName == QLatin1String("anniversary")) {
+            } else if (tagName == QLatin1StringView("anniversary")) {
                 contact.insertCustom(QStringLiteral("KADDRESSBOOK"),
                                      QStringLiteral("X-Anniversary"),
                                      OXUtils::readDateTime(element.text()).toString(Qt::ISODate));
-            } else if (tagName == QLatin1String("spouse_name")) {
+            } else if (tagName == QLatin1StringView("spouse_name")) {
                 contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-SpousesName"), text);
                 // addresses
-            } else if (tagName == QLatin1String("street")) {
+            } else if (tagName == QLatin1StringView("street")) {
                 homeAddress.setStreet(text);
-            } else if (tagName == QLatin1String("postal_code")) {
+            } else if (tagName == QLatin1StringView("postal_code")) {
                 homeAddress.setPostalCode(text);
-            } else if (tagName == QLatin1String("city")) {
+            } else if (tagName == QLatin1StringView("city")) {
                 homeAddress.setLocality(text);
-            } else if (tagName == QLatin1String("country")) {
+            } else if (tagName == QLatin1StringView("country")) {
                 homeAddress.setCountry(text);
-            } else if (tagName == QLatin1String("state")) {
+            } else if (tagName == QLatin1StringView("state")) {
                 homeAddress.setRegion(text);
-            } else if (tagName == QLatin1String("business_street")) {
+            } else if (tagName == QLatin1StringView("business_street")) {
                 workAddress.setStreet(text);
-            } else if (tagName == QLatin1String("business_postal_code")) {
+            } else if (tagName == QLatin1StringView("business_postal_code")) {
                 workAddress.setPostalCode(text);
-            } else if (tagName == QLatin1String("business_city")) {
+            } else if (tagName == QLatin1StringView("business_city")) {
                 workAddress.setLocality(text);
-            } else if (tagName == QLatin1String("business_country")) {
+            } else if (tagName == QLatin1StringView("business_country")) {
                 workAddress.setCountry(text);
-            } else if (tagName == QLatin1String("business_state")) {
+            } else if (tagName == QLatin1StringView("business_state")) {
                 workAddress.setRegion(text);
-            } else if (tagName == QLatin1String("second_street")) {
+            } else if (tagName == QLatin1StringView("second_street")) {
                 otherAddress.setStreet(text);
-            } else if (tagName == QLatin1String("second_postal_code")) {
+            } else if (tagName == QLatin1StringView("second_postal_code")) {
                 otherAddress.setPostalCode(text);
-            } else if (tagName == QLatin1String("second_city")) {
+            } else if (tagName == QLatin1StringView("second_city")) {
                 otherAddress.setLocality(text);
-            } else if (tagName == QLatin1String("second_country")) {
+            } else if (tagName == QLatin1StringView("second_country")) {
                 otherAddress.setCountry(text);
-            } else if (tagName == QLatin1String("second_state")) {
+            } else if (tagName == QLatin1StringView("second_state")) {
                 otherAddress.setRegion(text);
-            } else if (tagName == QLatin1String("defaultaddress")) {
+            } else if (tagName == QLatin1StringView("defaultaddress")) {
                 const int number = text.toInt();
                 if (number == 1) {
                     workAddress.setType(workAddress.type() | KContacts::Address::Pref);
@@ -156,57 +156,57 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
                     otherAddress.setType(otherAddress.type() | KContacts::Address::Pref);
                 }
                 // further information
-            } else if (tagName == QLatin1String("note")) {
+            } else if (tagName == QLatin1StringView("note")) {
                 contact.setNote(text);
-            } else if (tagName == QLatin1String("url")) {
+            } else if (tagName == QLatin1StringView("url")) {
                 KContacts::ResourceLocatorUrl url;
                 url.setUrl(QUrl(text));
                 contact.setUrl(url);
-            } else if (tagName == QLatin1String("image1")) {
+            } else if (tagName == QLatin1StringView("image1")) {
                 const QByteArray data = text.toUtf8();
                 contact.setPhoto(KContacts::Picture(QImage::fromData(QByteArray::fromBase64(data))));
                 // company information
-            } else if (tagName == QLatin1String("company")) {
+            } else if (tagName == QLatin1StringView("company")) {
                 contact.setOrganization(text);
-            } else if (tagName == QLatin1String("department")) {
+            } else if (tagName == QLatin1StringView("department")) {
                 contact.setDepartment(text);
-            } else if (tagName == QLatin1String("assistants_name")) {
+            } else if (tagName == QLatin1StringView("assistants_name")) {
                 contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-AssistantsName"), text);
-            } else if (tagName == QLatin1String("managers_name")) {
+            } else if (tagName == QLatin1StringView("managers_name")) {
                 contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-ManagersName"), text);
-            } else if (tagName == QLatin1String("position")) {
+            } else if (tagName == QLatin1StringView("position")) {
                 contact.setRole(text);
-            } else if (tagName == QLatin1String("profession")) {
+            } else if (tagName == QLatin1StringView("profession")) {
                 contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Profession"), text);
-            } else if (tagName == QLatin1String("room_number")) {
+            } else if (tagName == QLatin1StringView("room_number")) {
                 contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Office"), text);
                 // communication
-            } else if (tagName == QLatin1String("email1")) {
+            } else if (tagName == QLatin1StringView("email1")) {
                 KContacts::Email email(text);
                 email.setPreferred(true);
                 contact.addEmail(email);
-            } else if (tagName == QLatin1String("email2") || tagName == QLatin1String("email3")) {
+            } else if (tagName == QLatin1StringView("email2") || tagName == QLatin1String("email3")) {
                 KContacts::Email email(text);
                 contact.addEmail(email);
-            } else if (tagName == QLatin1String("mobile1")) {
+            } else if (tagName == QLatin1StringView("mobile1")) {
                 contact.insertPhoneNumber(KContacts::PhoneNumber(text, KContacts::PhoneNumber::Cell));
-            } else if (tagName == QLatin1String("instant_messenger")) {
+            } else if (tagName == QLatin1StringView("instant_messenger")) {
                 contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-IMAddress"), text);
-            } else if (tagName.startsWith(QLatin1String("phone_"))) {
+            } else if (tagName.startsWith(QLatin1StringView("phone_"))) {
                 KContacts::PhoneNumber number;
                 number.setNumber(text);
                 bool supportedType = false;
 
-                if (tagName.endsWith(QLatin1String("_business"))) {
+                if (tagName.endsWith(QLatin1StringView("_business"))) {
                     number.setType(KContacts::PhoneNumber::Work);
                     supportedType = true;
-                } else if (tagName.endsWith(QLatin1String("_home"))) {
+                } else if (tagName.endsWith(QLatin1StringView("_home"))) {
                     number.setType(KContacts::PhoneNumber::Home);
                     supportedType = true;
-                } else if (tagName.endsWith(QLatin1String("_other"))) {
+                } else if (tagName.endsWith(QLatin1StringView("_other"))) {
                     number.setType(KContacts::PhoneNumber::Voice);
                     supportedType = true;
-                } else if (tagName.endsWith(QLatin1String("_car"))) {
+                } else if (tagName.endsWith(QLatin1StringView("_car"))) {
                     number.setType(KContacts::PhoneNumber::Car);
                     supportedType = true;
                 }
@@ -214,18 +214,18 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
                 if (supportedType) {
                     contact.insertPhoneNumber(number);
                 }
-            } else if (tagName.startsWith(QLatin1String("fax_"))) {
+            } else if (tagName.startsWith(QLatin1StringView("fax_"))) {
                 KContacts::PhoneNumber number;
                 number.setNumber(text);
                 bool supportedType = false;
 
-                if (tagName.endsWith(QLatin1String("_business"))) {
+                if (tagName.endsWith(QLatin1StringView("_business"))) {
                     number.setType(KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Work);
                     supportedType = true;
-                } else if (tagName.endsWith(QLatin1String("_home"))) {
+                } else if (tagName.endsWith(QLatin1StringView("_home"))) {
                     number.setType(KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Home);
                     supportedType = true;
-                } else if (tagName.endsWith(QLatin1String("_other"))) {
+                } else if (tagName.endsWith(QLatin1StringView("_other"))) {
                     number.setType(KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Voice);
                     supportedType = true;
                 }
@@ -233,9 +233,9 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
                 if (supportedType) {
                     contact.insertPhoneNumber(number);
                 }
-            } else if (tagName == QLatin1String("pager")) {
+            } else if (tagName == QLatin1StringView("pager")) {
                 contact.insertPhoneNumber(KContacts::PhoneNumber(text, KContacts::PhoneNumber::Pager));
-            } else if (tagName == QLatin1String("categories")) {
+            } else if (tagName == QLatin1StringView("categories")) {
                 contact.setCategories(text.split(QRegularExpression(QStringLiteral(",\\s*"))));
             }
 

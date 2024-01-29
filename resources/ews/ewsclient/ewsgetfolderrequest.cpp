@@ -100,7 +100,7 @@ EwsGetFolderRequest::Response::Response(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QLatin1String("Folders")) {
+        if (reader.name() == QLatin1StringView("Folders")) {
             if (responseClass() == EwsResponseError) {
                 // Skip empty folders element
                 reader.skipCurrentElement();
@@ -116,7 +116,7 @@ EwsGetFolderRequest::Response::Response(QXmlStreamReader &reader)
 
 bool EwsGetFolderRequest::Response::parseFolders(QXmlStreamReader &reader)
 {
-    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1String("Folders")) {
+    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1StringView("Folders")) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected Folders element (got %1).").arg(reader.qualifiedName().toString()));
     }
 

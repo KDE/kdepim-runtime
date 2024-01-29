@@ -55,7 +55,7 @@ void SingleFileResourceBase::applyConfigurationChanges()
 
 KSharedConfig::Ptr SingleFileResourceBase::runtimeConfig() const
 {
-    return KSharedConfig::openConfig(name() + QLatin1String("rc"), KConfig::SimpleConfig, QStandardPaths::CacheLocation);
+    return KSharedConfig::openConfig(name() + QLatin1StringView("rc"), KConfig::SimpleConfig, QStandardPaths::CacheLocation);
 }
 
 bool SingleFileResourceBase::readLocalFile(const QString &fileName)

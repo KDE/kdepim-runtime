@@ -33,7 +33,7 @@ KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const A
     }
 
     // save message to the server.
-    const QLatin1String productId("Akonadi-Kolab-Resource");
+    const QLatin1StringView productId("Akonadi-Kolab-Resource");
     const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeTag(tag, itemRemoteIds, Kolab::KolabV3, productId);
     return message;
 }

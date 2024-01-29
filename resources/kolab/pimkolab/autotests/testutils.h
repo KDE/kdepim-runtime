@@ -119,7 +119,7 @@ void normalizeMimemessage(QString &content)
     // The sort order of the attributes in kolabV2 is unpredictable
     content.replace(QRegularExpression(QStringLiteral("<x-custom.*/>")), QStringLiteral("<x-custom/>"));
     // quoted-printable encoding changes where the linebreaks are every now and then (an all are valid), so we remove the linebreaks
-    content.remove(QLatin1String("=\n"));
+    content.remove(QLatin1StringView("=\n"));
 }
 
 QString normalizeVCardMessage(QString content)

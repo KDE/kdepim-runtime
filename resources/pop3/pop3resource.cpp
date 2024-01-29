@@ -127,7 +127,7 @@ bool POP3Resource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray
 
 QString POP3Resource::buildLabelForPasswordDialog(const QString &detailedError) const
 {
-    const QString queryText = i18n("Please enter the username and password for account '%1'.", agentName()) + QLatin1String("<br>") + detailedError;
+    const QString queryText = i18n("Please enter the username and password for account '%1'.", agentName()) + QLatin1StringView("<br>") + detailedError;
     return queryText;
 }
 

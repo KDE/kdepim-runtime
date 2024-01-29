@@ -129,9 +129,9 @@ bool EwsItemPrivate::bodyReader(QXmlStreamReader &reader, QVariant &val)
         return false;
     }
     bool isHtml;
-    if (bodyType == QLatin1String("HTML")) {
+    if (bodyType == QLatin1StringView("HTML")) {
         isHtml = true;
-    } else if (bodyType == QLatin1String("Text")) {
+    } else if (bodyType == QLatin1StringView("Text")) {
         isHtml = false;
     } else {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read Body element- unknown body type");
@@ -157,7 +157,7 @@ bool EwsItemPrivate::messageHeadersReader(QXmlStreamReader &reader, QVariant &va
             return false;
         }
 
-        if (reader.name() == QLatin1String("InternetMessageHeader")) {
+        if (reader.name() == QLatin1StringView("InternetMessageHeader")) {
             auto nameRef = reader.attributes().value(QStringLiteral("HeaderName"));
             if (nameRef.isNull()) {
                 qCWarningNC(EWSCLI_LOG) << QStringLiteral("Missing HeaderName attribute in InternetMessageHeader element.");
@@ -303,7 +303,7 @@ bool EwsItemPrivate::categoriesReader(QXmlStreamReader &reader, QVariant &val)
             return false;
         }
 
-        if (reader.name() == QLatin1String("String")) {
+        if (reader.name() == QLatin1StringView("String")) {
             categories.append(reader.readElementText());
             if (reader.error() != QXmlStreamReader::NoError) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid %1 element.").arg(QStringLiteral("Categories/Value"));
@@ -385,35 +385,35 @@ EwsItem::EwsItem(QXmlStreamReader &reader)
 
     // Check what item type are we
     const auto elmName = reader.name();
-    if (elmName == QLatin1String("Item")) {
+    if (elmName == QLatin1StringView("Item")) {
         d->mType = EwsItemTypeItem;
         const auto subtype = reader.attributes().value(QStringLiteral("xsi:type"));
         if (!subtype.isEmpty()) {
             auto tokens = subtype.split(QLatin1Char(':'));
             const auto type = tokens.size() == 1 ? tokens[0] : tokens[1];
-            if (type == QLatin1String("AbchPersonItemType")) {
+            if (type == QLatin1StringView("AbchPersonItemType")) {
                 d->mType = EwsItemTypeAbchPerson;
             }
         }
-    } else if (elmName == QLatin1String("Message")) {
+    } else if (elmName == QLatin1StringView("Message")) {
         d->mType = EwsItemTypeMessage;
-    } else if (elmName == QLatin1String("CalendarItem")) {
+    } else if (elmName == QLatin1StringView("CalendarItem")) {
         d->mType = EwsItemTypeCalendarItem;
-    } else if (elmName == QLatin1String("Contact")) {
+    } else if (elmName == QLatin1StringView("Contact")) {
         d->mType = EwsItemTypeContact;
-    } else if (elmName == QLatin1String("DistributionList")) {
+    } else if (elmName == QLatin1StringView("DistributionList")) {
         d->mType = EwsItemTypeDistributionList;
-    } else if (elmName == QLatin1String("MeetingMessage")) {
+    } else if (elmName == QLatin1StringView("MeetingMessage")) {
         d->mType = EwsItemTypeMeetingMessage;
-    } else if (elmName == QLatin1String("MeetingRequest")) {
+    } else if (elmName == QLatin1StringView("MeetingRequest")) {
         d->mType = EwsItemTypeMeetingRequest;
-    } else if (elmName == QLatin1String("MeetingResponse")) {
+    } else if (elmName == QLatin1StringView("MeetingResponse")) {
         d->mType = EwsItemTypeMeetingResponse;
-    } else if (elmName == QLatin1String("MeetingCancellation")) {
+    } else if (elmName == QLatin1StringView("MeetingCancellation")) {
         d->mType = EwsItemTypeMeetingCancellation;
-    } else if (elmName == QLatin1String("PostItem")) {
+    } else if (elmName == QLatin1StringView("PostItem")) {
         d->mType = EwsItemTypePostItem;
-    } else if (elmName == QLatin1String("Task")) {
+    } else if (elmName == QLatin1StringView("Task")) {
         d->mType = EwsItemTypeTask;
     } else {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Unknown item type: %1").arg(elmName);

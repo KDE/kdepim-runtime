@@ -319,7 +319,7 @@ void setIncidence(KCalendarCore::Incidence &i, const T &e)
     for (const Kolab::CustomProperty &prop : customProperties) {
         QString key;
         if (prop.identifier.compare(0, 5, "X-KDE")) {
-            key.append(QLatin1String("X-KOLAB-"));
+            key.append(QLatin1StringView("X-KOLAB-"));
         }
         key.append(fromStdString(prop.identifier));
         props.insert(key.toLatin1(), fromStdString(prop.value));
@@ -386,7 +386,7 @@ void getIncidence(T &i, const I &e)
     const QMap<QByteArray, QString> &props = e.customProperties();
     for (QMap<QByteArray, QString>::const_iterator it = props.cbegin(), end(props.cend()); it != end; ++it) {
         QString key(QString::fromUtf8(it.key()));
-        if (key == QLatin1String(CUSTOM_KOLAB_URL)) {
+        if (key == QLatin1StringView(CUSTOM_KOLAB_URL)) {
             continue;
         }
         customProperties.push_back(Kolab::CustomProperty(toStdString(key.remove(QStringLiteral("X-KOLAB-"))), toStdString(it.value())));

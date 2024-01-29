@@ -98,7 +98,7 @@ void EwsCreateMailJob::doStart()
                  * Until that the code below needs to manually translate the field names into
                  * EwsItemField enum items.
                  */
-                if (it.key().uri() == QLatin1String("message:IsRead")) {
+                if (it.key().uri() == QLatin1StringView("message:IsRead")) {
                     item.setField(EwsItemFieldIsRead, it.value());
                 }
             }

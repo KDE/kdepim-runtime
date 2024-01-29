@@ -98,7 +98,7 @@ EwsGetItemRequest::Response::Response(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QLatin1String("Items")) {
+        if (reader.name() == QLatin1StringView("Items")) {
             if (!parseItems(reader)) {
                 return;
             }
@@ -111,7 +111,7 @@ EwsGetItemRequest::Response::Response(QXmlStreamReader &reader)
 
 bool EwsGetItemRequest::Response::parseItems(QXmlStreamReader &reader)
 {
-    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1String("Items")) {
+    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1StringView("Items")) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected Items element (got %1).").arg(reader.qualifiedName().toString()));
     }
 

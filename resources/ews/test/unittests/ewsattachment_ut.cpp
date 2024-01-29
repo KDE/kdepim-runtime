@@ -27,12 +27,12 @@ static const QString xmlMsgNsUri = QStringLiteral("http://schemas.microsoft.com/
 static const QString xmlTypeNsUri = QStringLiteral("http://schemas.microsoft.com/exchange/services/2006/types");
 
 static const QString xmlHead = QStringLiteral("<?xml version=\"1.0\"?>");
-static const QString xmlDocHead = xmlHead + QLatin1String("<Test xmlns=\"") + xmlTypeNsUri + QLatin1String("\">");
+static const QString xmlDocHead = xmlHead + QLatin1StringView("<Test xmlns=\"") + xmlTypeNsUri + QLatin1String("\">");
 static const QString xmlDocTail = QStringLiteral("</Test><Test2/>");
 static const QString xmlItemAttHead = xmlDocHead + QStringLiteral("<ItemAttachment>");
-static const QString xmlItemAttTail = QLatin1String("</ItemAttachment>") + xmlDocTail;
+static const QString xmlItemAttTail = QLatin1StringView("</ItemAttachment>") + xmlDocTail;
 static const QString xmlFileAttHead = xmlDocHead + QStringLiteral("<FileAttachment>");
-static const QString xmlFileAttTail = QLatin1String("</FileAttachment>") + xmlDocTail;
+static const QString xmlFileAttTail = QLatin1StringView("</FileAttachment>") + xmlDocTail;
 
 void UtEwsAttachment::read()
 {
@@ -178,8 +178,8 @@ void UtEwsAttachment::read_data()
     QTest::addColumn<bool>("hasItem");
     QTest::addColumn<EwsItem>("item");
 
-    QTest::newRow("invalid namespace") << xmlDocHead + QLatin1String("<FileAttachment xmlns=\"") + xmlMsgNsUri + QLatin1String("\" />") + xmlDocTail << false
-                                       << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString() << false
+    QTest::newRow("invalid namespace") << xmlDocHead + QLatin1StringView("<FileAttachment xmlns=\"") + xmlMsgNsUri + QLatin1String("\" />") + xmlDocTail
+                                       << false << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString() << false
                                        << QString() << false << QString() << false << 0l << false << QDateTime() << false << false << false << false << false
                                        << QByteArray() << false << EwsItem();
 

@@ -251,7 +251,7 @@ QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString
 
     QDomElement top = xmlDoc.documentElement();
 
-    if (top.tagName() != QLatin1String("configuration")) {
+    if (top.tagName() != QLatin1StringView("configuration")) {
         qCWarning(PIMKOLAB_LOG) << QStringLiteral("XML error: Top tag was %1 instead of the expected configuration").arg(top.tagName());
         return {};
     }
@@ -262,7 +262,7 @@ QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString
         }
         const QDomElement e = n.toElement();
         const QString tagName = e.tagName();
-        if (tagName == QLatin1String("language")) {
+        if (tagName == QLatin1StringView("language")) {
             language = e.text();
         } else if (tagName == QLatin1Char('e')) {
             dictionary.append(e.text());

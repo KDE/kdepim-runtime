@@ -12,7 +12,7 @@ using namespace OXA;
 
 QDomElement DAVUtils::addDavElement(QDomDocument &document, QDomNode &parentNode, const QString &tag)
 {
-    const QDomElement element = document.createElementNS(QStringLiteral("DAV:"), QLatin1String("D:") + tag);
+    const QDomElement element = document.createElementNS(QStringLiteral("DAV:"), QLatin1StringView("D:") + tag);
     parentNode.appendChild(element);
 
     return element;
@@ -20,7 +20,7 @@ QDomElement DAVUtils::addDavElement(QDomDocument &document, QDomNode &parentNode
 
 QDomElement DAVUtils::addOxElement(QDomDocument &document, QDomNode &parentNode, const QString &tag, const QString &text)
 {
-    QDomElement element = document.createElementNS(QStringLiteral("http://www.open-xchange.org"), QLatin1String("ox:") + tag);
+    QDomElement element = document.createElementNS(QStringLiteral("http://www.open-xchange.org"), QLatin1StringView("ox:") + tag);
 
     if (!text.isEmpty()) {
         const QDomText textNode = document.createTextNode(text);
@@ -47,7 +47,7 @@ bool DAVUtils::davErrorOccurred(const QDomDocument &document, QString &errorText
         const QDomElement status = propStat.firstChildElement(QStringLiteral("status"));
         const QDomElement description = propStat.firstChildElement(QStringLiteral("responsedescription"));
 
-        if (status.text() != QLatin1String("200")) {
+        if (status.text() != QLatin1StringView("200")) {
             errorText = description.text();
             errorStatus = status.text();
             return true;

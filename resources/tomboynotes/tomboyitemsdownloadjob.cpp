@@ -46,11 +46,11 @@ void TomboyItemsDownloadJob::onRequestFinished()
     const QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), nullptr);
 
     const QJsonObject jo = document.object();
-    const QJsonArray notes = jo[QLatin1String("notes")].toArray();
+    const QJsonArray notes = jo[QLatin1StringView("notes")].toArray();
 
     for (const auto &note : notes) {
         Akonadi::Item item(Akonadi::NoteUtils::noteMimeType());
-        item.setRemoteId(note.toObject()[QLatin1String("guid")].toString());
+        item.setRemoteId(note.toObject()[QLatin1StringView("guid")].toString());
         mResultItems << item;
         qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemsDownloadJob: Retrieving note with id" << item.remoteId();
     }

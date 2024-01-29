@@ -117,7 +117,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
             const auto annotationKeys{annotations.keys()};
             for (const QByteArray &entry : annotationKeys) {
                 auto job = new KIMAP::SetMetaDataJob(session);
-                if (serverCapabilities().contains(QLatin1String("METADATA"))) {
+                if (serverCapabilities().contains(QLatin1StringView("METADATA"))) {
                     job->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
                 } else {
                     job->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);

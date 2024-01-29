@@ -23,7 +23,7 @@ void TimezoneTest::testFromName()
 {
     TimezoneConverter converter;
     const QString timezone = converter.normalizeTimezone(QStringLiteral("(GMT+01.00) Sarajevo/Warsaw/Zagreb"));
-    QCOMPARE(timezone, QLatin1String("Europe/Sarajevo"));
+    QCOMPARE(timezone, QLatin1StringView("Europe/Sarajevo"));
 }
 
 void TimezoneTest::testFromHardcodedList_data()

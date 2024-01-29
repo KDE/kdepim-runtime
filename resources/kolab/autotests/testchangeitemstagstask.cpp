@@ -53,10 +53,10 @@ private slots:
 
     void testRetrieveTags_data()
     {
-        Akonadi::VirtualResource *resource = new Akonadi::VirtualResource(QLatin1String("akonadi_knut_resource_0"), this);
+        Akonadi::VirtualResource *resource = new Akonadi::VirtualResource(QLatin1StringView("akonadi_knut_resource_0"), this);
 
         Akonadi::Collection root;
-        root.setName(QLatin1String("akonadi_knut_resource_0"));
+        root.setName(QLatin1StringView("akonadi_knut_resource_0"));
         root.setContentMimeTypes(QStringList() << Akonadi::Collection::mimeType());
         root.setParentCollection(Akonadi::Collection::root());
         root.setRemoteId("root-id");
@@ -211,10 +211,10 @@ private slots:
         msg->messageID(true)->from7BitString("<messageid@example.com>");
         msg->date(true)->setDateTime(QDateTime(QDate(2014, 12, 10), QTime(9, 8, 7)));
         item.setPayload<KMime::Message::Ptr>(msg);
-        item.setRemoteId(QLatin1String("20"));
+        item.setRemoteId(QLatin1StringView("20"));
         item.setParentCollection(createCollectionChain("/INBOX"));
-        const QString member = KolabHelpers::createMemberUrl(item, QLatin1String("localuser@localhost"));
-        const QString expected = QLatin1String(
+        const QString member = KolabHelpers::createMemberUrl(item, QLatin1StringView("localuser@localhost"));
+        const QString expected = QLatin1StringView(
             "imap:///user/localuser%40localhost/INBOX/"
             "20?message-id=%3Cmessageid%40example.com%3E&subject=subject&date=Wed%2C%2010%20Dec%202014%2009%3A08%3A07%20%2B0000");
         QCOMPARE(member, expected);

@@ -150,24 +150,24 @@ bool Incidence::loadAttendeeAttribute(QDomElement &element, Attendee &attendee)
             QDomElement e = n.toElement();
             const QString tagName = e.tagName();
 
-            if (tagName == QLatin1String("display-name")) {
+            if (tagName == QLatin1StringView("display-name")) {
                 attendee.displayName = e.text();
-            } else if (tagName == QLatin1String("smtp-address")) {
+            } else if (tagName == QLatin1StringView("smtp-address")) {
                 attendee.smtpAddress = e.text();
-            } else if (tagName == QLatin1String("status")) {
+            } else if (tagName == QLatin1StringView("status")) {
                 attendee.status = e.text();
-            } else if (tagName == QLatin1String("request-response")) {
+            } else if (tagName == QLatin1StringView("request-response")) {
                 // This sets reqResp to false, if the text is "false". Otherwise it
                 // sets it to true. This means the default setting is true.
-                attendee.requestResponse = (e.text().toLower() != QLatin1String("false"));
-            } else if (tagName == QLatin1String("invitation-sent")) {
+                attendee.requestResponse = (e.text().toLower() != QLatin1StringView("false"));
+            } else if (tagName == QLatin1StringView("invitation-sent")) {
                 // Like above, only this defaults to false
-                attendee.invitationSent = (e.text().toLower() != QLatin1String("true"));
-            } else if (tagName == QLatin1String("role")) {
+                attendee.invitationSent = (e.text().toLower() != QLatin1StringView("true"));
+            } else if (tagName == QLatin1StringView("role")) {
                 attendee.role = e.text();
-            } else if (tagName == QLatin1String("delegated-to")) {
+            } else if (tagName == QLatin1StringView("delegated-to")) {
                 attendee.delegate = e.text();
-            } else if (tagName == QLatin1String("delegated-from")) {
+            } else if (tagName == QLatin1StringView("delegated-from")) {
                 attendee.delegator = e.text();
             } else {
                 // TODO: Unhandled tag - save for later storage
@@ -322,23 +322,23 @@ void Incidence::loadRecurrence(const QDomElement &element)
         if (n.isElement()) {
             QDomElement e = n.toElement();
             QString tagName = e.tagName();
-            if (tagName == QLatin1String("interval")) {
+            if (tagName == QLatin1StringView("interval")) {
                 // kolab/issue4229, sometimes  the interval value can be empty
                 if (e.text().isEmpty() || e.text().toInt() <= 0) {
                     mRecurrence.interval = 1;
                 } else {
                     mRecurrence.interval = e.text().toInt();
                 }
-            } else if (tagName == QLatin1String("day")) { // can be present multiple times
+            } else if (tagName == QLatin1StringView("day")) { // can be present multiple times
                 mRecurrence.days.append(e.text());
-            } else if (tagName == QLatin1String("daynumber")) {
+            } else if (tagName == QLatin1StringView("daynumber")) {
                 mRecurrence.dayNumber = e.text();
-            } else if (tagName == QLatin1String("month")) {
+            } else if (tagName == QLatin1StringView("month")) {
                 mRecurrence.month = e.text();
-            } else if (tagName == QLatin1String("range")) {
+            } else if (tagName == QLatin1StringView("range")) {
                 mRecurrence.rangeType = e.attribute(QStringLiteral("type"));
                 mRecurrence.range = e.text();
-            } else if (tagName == QLatin1String("exclusion")) {
+            } else if (tagName == QLatin1StringView("exclusion")) {
                 mRecurrence.exclusions.append(stringToDate(e.text()));
             } else {
                 // TODO: Unhandled tag - save for later storage
@@ -358,7 +358,7 @@ static void loadAddressesHelper(const QDomElement &element, const KCalendarCore:
             QDomElement e = n.toElement();
             QString tagName = e.tagName();
 
-            if (tagName == QLatin1String("address")) {
+            if (tagName == QLatin1StringView("address")) {
                 a->addMailAddress(KCalendarCore::Person::fromFullName(e.text()));
             } else {
                 qCWarning(PIMKOLAB_LOG) << "Unhandled tag" << tagName;
@@ -377,7 +377,7 @@ static void loadAttachmentsHelper(const QDomElement &element, const KCalendarCor
             QDomElement e = n.toElement();
             QString tagName = e.tagName();
 
-            if (tagName == QLatin1String("attachment")) {
+            if (tagName == QLatin1StringView("attachment")) {
                 a->addMailAttachment(e.text());
             } else {
                 qCWarning(PIMKOLAB_LOG) << "Unhandled tag" << tagName;
@@ -396,31 +396,31 @@ static void loadAlarmHelper(const QDomElement &element, const KCalendarCore::Ala
             QDomElement e = n.toElement();
             QString tagName = e.tagName();
 
-            if (tagName == QLatin1String("start-offset")) {
+            if (tagName == QLatin1StringView("start-offset")) {
                 a->setStartOffset(e.text().toInt() * 60);
-            } else if (tagName == QLatin1String("end-offset")) {
+            } else if (tagName == QLatin1StringView("end-offset")) {
                 a->setEndOffset(e.text().toInt() * 60);
-            } else if (tagName == QLatin1String("repeat-count")) {
+            } else if (tagName == QLatin1StringView("repeat-count")) {
                 a->setRepeatCount(e.text().toInt());
-            } else if (tagName == QLatin1String("repeat-interval")) {
+            } else if (tagName == QLatin1StringView("repeat-interval")) {
                 a->setSnoozeTime(e.text().toInt());
-            } else if (tagName == QLatin1String("text")) {
+            } else if (tagName == QLatin1StringView("text")) {
                 a->setText(e.text());
-            } else if (tagName == QLatin1String("program")) {
+            } else if (tagName == QLatin1StringView("program")) {
                 a->setProgramFile(e.text());
-            } else if (tagName == QLatin1String("arguments")) {
+            } else if (tagName == QLatin1StringView("arguments")) {
                 a->setProgramArguments(e.text());
-            } else if (tagName == QLatin1String("addresses")) {
+            } else if (tagName == QLatin1StringView("addresses")) {
                 loadAddressesHelper(e, a);
-            } else if (tagName == QLatin1String("subject")) {
+            } else if (tagName == QLatin1StringView("subject")) {
                 a->setMailSubject(e.text());
-            } else if (tagName == QLatin1String("mail-text")) {
+            } else if (tagName == QLatin1StringView("mail-text")) {
                 a->setMailText(e.text());
-            } else if (tagName == QLatin1String("attachments")) {
+            } else if (tagName == QLatin1StringView("attachments")) {
                 loadAttachmentsHelper(e, a);
-            } else if (tagName == QLatin1String("file")) {
+            } else if (tagName == QLatin1StringView("file")) {
                 a->setAudioFile(e.text());
-            } else if (tagName == QLatin1String("enabled")) {
+            } else if (tagName == QLatin1StringView("enabled")) {
                 a->setEnabled(e.text().toInt() != 0);
             } else {
                 qCWarning(PIMKOLAB_LOG) << "Unhandled tag" << tagName;
@@ -439,17 +439,17 @@ void Incidence::loadAlarms(const QDomElement &element)
             QDomElement e = n.toElement();
             QString tagName = e.tagName();
 
-            if (tagName == QLatin1String("alarm")) {
+            if (tagName == QLatin1StringView("alarm")) {
                 KCalendarCore::Alarm::Ptr a = KCalendarCore::Alarm::Ptr(new KCalendarCore::Alarm(nullptr));
                 a->setEnabled(true); // default to enabled, unless some XML attribute says otherwise.
                 QString type = e.attribute(QStringLiteral("type"));
-                if (type == QLatin1String("display")) {
+                if (type == QLatin1StringView("display")) {
                     a->setType(KCalendarCore::Alarm::Display);
-                } else if (type == QLatin1String("procedure")) {
+                } else if (type == QLatin1StringView("procedure")) {
                     a->setType(KCalendarCore::Alarm::Procedure);
-                } else if (type == QLatin1String("email")) {
+                } else if (type == QLatin1StringView("email")) {
                     a->setType(KCalendarCore::Alarm::Email);
-                } else if (type == QLatin1String("audio")) {
+                } else if (type == QLatin1StringView("audio")) {
                     a->setType(KCalendarCore::Alarm::Audio);
                 } else {
                     qCWarning(PIMKOLAB_LOG) << "Unhandled alarm type:" << type;
@@ -468,7 +468,7 @@ bool Incidence::loadAttribute(QDomElement &element)
 {
     QString tagName = element.tagName();
 
-    if (tagName == QLatin1String("priority")) {
+    if (tagName == QLatin1StringView("priority")) {
         bool ok;
         int p = element.text().toInt(&ok);
         if (!ok || p < 1 || p > 9) {
@@ -476,7 +476,7 @@ bool Incidence::loadAttribute(QDomElement &element)
         } else {
             setPriority(p);
         }
-    } else if (tagName == QLatin1String("x-kcal-priority")) { // for backwards compat
+    } else if (tagName == QLatin1StringView("x-kcal-priority")) { // for backwards compat
         bool ok;
         int p = element.text().toInt(&ok);
         if (!ok || p < 0 || p > 9) {
@@ -486,11 +486,11 @@ bool Incidence::loadAttribute(QDomElement &element)
                 setPriority(p);
             }
         }
-    } else if (tagName == QLatin1String("summary")) {
+    } else if (tagName == QLatin1StringView("summary")) {
         setSummary(element.text());
-    } else if (tagName == QLatin1String("location")) {
+    } else if (tagName == QLatin1StringView("location")) {
         setLocation(element.text());
-    } else if (tagName == QLatin1String("organizer")) {
+    } else if (tagName == QLatin1StringView("organizer")) {
         Email email;
         if (loadEmailAttribute(element, email)) {
             setOrganizer(email);
@@ -498,11 +498,11 @@ bool Incidence::loadAttribute(QDomElement &element)
         } else {
             return false;
         }
-    } else if (tagName == QLatin1String("start-date")) {
+    } else if (tagName == QLatin1StringView("start-date")) {
         setStartDate(element.text());
-    } else if (tagName == QLatin1String("recurrence")) {
+    } else if (tagName == QLatin1StringView("recurrence")) {
         loadRecurrence(element);
-    } else if (tagName == QLatin1String("attendee")) {
+    } else if (tagName == QLatin1StringView("attendee")) {
         Attendee attendee;
         if (loadAttendeeAttribute(element, attendee)) {
             addAttendee(attendee);
@@ -510,18 +510,18 @@ bool Incidence::loadAttribute(QDomElement &element)
         } else {
             return false;
         }
-    } else if (tagName == QLatin1String("link-attachment")) {
+    } else if (tagName == QLatin1StringView("link-attachment")) {
         mAttachments.push_back(KCalendarCore::Attachment(element.text()));
-    } else if (tagName == QLatin1String("alarm")) {
+    } else if (tagName == QLatin1StringView("alarm")) {
         // Alarms should be minutes before. Libkcal uses event time + alarm time
         setAlarm(-element.text().toInt());
-    } else if (tagName == QLatin1String("advanced-alarms")) {
+    } else if (tagName == QLatin1StringView("advanced-alarms")) {
         loadAlarms(element);
-    } else if (tagName == QLatin1String("x-kde-internaluid")) {
+    } else if (tagName == QLatin1StringView("x-kde-internaluid")) {
         setInternalUID(element.text());
-    } else if (tagName == QLatin1String("x-custom")) {
+    } else if (tagName == QLatin1StringView("x-custom")) {
         loadCustomAttributes(element);
-    } else if (tagName == QLatin1String("inline-attachment")) {
+    } else if (tagName == QLatin1StringView("inline-attachment")) {
         // we handle that separately later on, so no need to create a KolabUnhandled entry for it
     } else {
         bool ok = KolabBase::loadAttribute(element);
@@ -576,7 +576,7 @@ void Incidence::saveCustomAttributes(QDomElement &element) const
     for (const Custom &custom : std::as_const(mCustomList)) {
         QString key(QString::fromUtf8(custom.key));
         Q_ASSERT(!key.isEmpty());
-        if (key.startsWith(QLatin1String("X-KDE-KolabUnhandled-"))) {
+        if (key.startsWith(QLatin1StringView("X-KDE-KolabUnhandled-"))) {
             key = key.mid(strlen("X-KDE-KolabUnhandled-"));
             writeString(element, key, custom.value);
         } else {
@@ -599,16 +599,16 @@ void Incidence::loadCustomAttributes(QDomElement &element)
 
 static KCalendarCore::Attendee::PartStat attendeeStringToStatus(const QString &s)
 {
-    if (s == QLatin1String("none")) {
+    if (s == QLatin1StringView("none")) {
         return KCalendarCore::Attendee::NeedsAction;
     }
-    if (s == QLatin1String("tentative")) {
+    if (s == QLatin1StringView("tentative")) {
         return KCalendarCore::Attendee::Tentative;
     }
-    if (s == QLatin1String("declined")) {
+    if (s == QLatin1StringView("declined")) {
         return KCalendarCore::Attendee::Declined;
     }
-    if (s == QLatin1String("delegated")) {
+    if (s == QLatin1StringView("delegated")) {
         return KCalendarCore::Attendee::Delegated;
     }
 
@@ -641,10 +641,10 @@ static QString attendeeStatusToString(KCalendarCore::Attendee::PartStat status)
 
 static KCalendarCore::Attendee::Role attendeeStringToRole(const QString &s)
 {
-    if (s == QLatin1String("optional")) {
+    if (s == QLatin1StringView("optional")) {
         return KCalendarCore::Attendee::OptParticipant;
     }
-    if (s == QLatin1String("resource")) {
+    if (s == QLatin1StringView("resource")) {
         return KCalendarCore::Attendee::NonParticipant;
     }
     return KCalendarCore::Attendee::ReqParticipant;
@@ -897,7 +897,7 @@ static QBitArray daysListToBitArray(const QStringList &days)
     arr.fill(false);
     for (const QString &day : days) {
         for (int i = 0; i < 7; ++i) {
-            if (day == QLatin1String(s_weekDayName[i])) {
+            if (day == QLatin1StringView(s_weekDayName[i])) {
                 arr.setBit(i, true);
             }
         }
@@ -958,38 +958,38 @@ void Incidence::saveTo(const KCalendarCore::Incidence::Ptr &incidence)
     if (!mRecurrence.cycle.isEmpty()) {
         KCalendarCore::Recurrence *recur = incidence->recurrence(); // yeah, this creates it
         // done below recur->setFrequency( mRecurrence.interval );
-        if (mRecurrence.cycle == QLatin1String("minutely")) {
+        if (mRecurrence.cycle == QLatin1StringView("minutely")) {
             recur->setMinutely(mRecurrence.interval);
-        } else if (mRecurrence.cycle == QLatin1String("hourly")) {
+        } else if (mRecurrence.cycle == QLatin1StringView("hourly")) {
             recur->setHourly(mRecurrence.interval);
-        } else if (mRecurrence.cycle == QLatin1String("daily")) {
+        } else if (mRecurrence.cycle == QLatin1StringView("daily")) {
             recur->setDaily(mRecurrence.interval);
-        } else if (mRecurrence.cycle == QLatin1String("weekly")) {
+        } else if (mRecurrence.cycle == QLatin1StringView("weekly")) {
             QBitArray rDays = daysListToBitArray(mRecurrence.days);
             recur->setWeekly(mRecurrence.interval, rDays);
-        } else if (mRecurrence.cycle == QLatin1String("monthly")) {
+        } else if (mRecurrence.cycle == QLatin1StringView("monthly")) {
             recur->setMonthly(mRecurrence.interval);
-            if (mRecurrence.type == QLatin1String("weekday")) {
+            if (mRecurrence.type == QLatin1StringView("weekday")) {
                 recur->addMonthlyPos(mRecurrence.dayNumber.toInt(), daysListToBitArray(mRecurrence.days));
-            } else if (mRecurrence.type == QLatin1String("daynumber")) {
+            } else if (mRecurrence.type == QLatin1StringView("daynumber")) {
                 recur->addMonthlyDate(mRecurrence.dayNumber.toInt());
             } else {
                 qCWarning(PIMKOLAB_LOG) << "Unhandled monthly recurrence type" << mRecurrence.type;
             }
-        } else if (mRecurrence.cycle == QLatin1String("yearly")) {
+        } else if (mRecurrence.cycle == QLatin1StringView("yearly")) {
             recur->setYearly(mRecurrence.interval);
-            if (mRecurrence.type == QLatin1String("monthday")) {
+            if (mRecurrence.type == QLatin1StringView("monthday")) {
                 recur->addYearlyDate(mRecurrence.dayNumber.toInt());
                 for (int i = 0; i < 12; ++i) {
-                    if (QLatin1String(s_monthName[i]) == mRecurrence.month) {
+                    if (QLatin1StringView(s_monthName[i]) == mRecurrence.month) {
                         recur->addYearlyMonth(i + 1);
                     }
                 }
-            } else if (mRecurrence.type == QLatin1String("yearday")) {
+            } else if (mRecurrence.type == QLatin1StringView("yearday")) {
                 recur->addYearlyDay(mRecurrence.dayNumber.toInt());
-            } else if (mRecurrence.type == QLatin1String("weekday")) {
+            } else if (mRecurrence.type == QLatin1StringView("weekday")) {
                 for (int i = 0; i < 12; ++i) {
-                    if (QLatin1String(s_monthName[i]) == mRecurrence.month) {
+                    if (QLatin1StringView(s_monthName[i]) == mRecurrence.month) {
                         recur->addYearlyMonth(i + 1);
                     }
                 }
@@ -1001,9 +1001,9 @@ void Incidence::saveTo(const KCalendarCore::Incidence::Ptr &incidence)
             qCWarning(PIMKOLAB_LOG) << "Unhandled recurrence cycle" << mRecurrence.cycle;
         }
 
-        if (mRecurrence.rangeType == QLatin1String("number")) {
+        if (mRecurrence.rangeType == QLatin1StringView("number")) {
             recur->setDuration(mRecurrence.range.toInt());
-        } else if (mRecurrence.rangeType == QLatin1String("date")) {
+        } else if (mRecurrence.rangeType == QLatin1StringView("date")) {
             recur->setEndDate(stringToDate(mRecurrence.range));
         } // "none" is default since tje set*ly methods set infinite recurrence
 

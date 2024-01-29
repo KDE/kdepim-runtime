@@ -70,11 +70,11 @@ void UsersRequestJob::davJobFinished(KJob *job)
 
         QDomElement element = userElement.firstChildElement();
         while (!element.isNull()) {
-            if (element.tagName() == QLatin1String("uid")) {
+            if (element.tagName() == QLatin1StringView("uid")) {
                 user.setUid(OXUtils::readNumber(element.text()));
-            } else if (element.tagName() == QLatin1String("email1")) {
+            } else if (element.tagName() == QLatin1StringView("email1")) {
                 user.setEmail(OXUtils::readString(element.text()));
-            } else if (element.tagName() == QLatin1String("displayname")) {
+            } else if (element.tagName() == QLatin1StringView("displayname")) {
                 user.setName(OXUtils::readString(element.text()));
             }
 

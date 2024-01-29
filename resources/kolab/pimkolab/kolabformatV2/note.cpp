@@ -80,14 +80,14 @@ bool Note::richText() const
 bool Note::loadAttribute(QDomElement &element)
 {
     const QString tagName = element.tagName();
-    if (tagName == QLatin1String("summary")) {
+    if (tagName == QLatin1StringView("summary")) {
         setSummary(element.text());
-    } else if (tagName == QLatin1String("foreground-color")) {
+    } else if (tagName == QLatin1StringView("foreground-color")) {
         setForegroundColor(stringToColor(element.text()));
-    } else if (tagName == QLatin1String("background-color")) {
+    } else if (tagName == QLatin1StringView("background-color")) {
         setBackgroundColor(stringToColor(element.text()));
-    } else if (tagName == QLatin1String("knotes-richtext")) {
-        mRichText = (element.text() == QLatin1String("true"));
+    } else if (tagName == QLatin1StringView("knotes-richtext")) {
+        mRichText = (element.text() == QLatin1StringView("true"));
     } else {
         return KolabBase::loadAttribute(element);
     }
@@ -123,7 +123,7 @@ bool Note::loadXML(const QDomDocument &document)
 {
     QDomElement top = document.documentElement();
 
-    if (top.tagName() != QLatin1String("note")) {
+    if (top.tagName() != QLatin1StringView("note")) {
         qCWarning(PIMKOLAB_LOG) << QStringLiteral("XML error: Top tag was %1 instead of the expected note").arg(top.tagName());
         return false;
     }
@@ -178,7 +178,7 @@ void Note::setFields(const KCalendarCore::Journal::Ptr &journal)
 
     property = journal->customProperty("KNotes", "RichText");
     if (!property.isEmpty()) {
-        setRichText(property == QLatin1String("true") ? true : false);
+        setRichText(property == QLatin1StringView("true") ? true : false);
     } else {
         setRichText(false);
     }
@@ -201,5 +201,5 @@ void Note::saveTo(const KCalendarCore::Journal::Ptr &journal) const
 
 QString Note::productID() const
 {
-    return QStringLiteral("KNotes %1, Kolab resource").arg(QLatin1String(LIBKOLAB_LIB_VERSION_STRING));
+    return QStringLiteral("KNotes %1, Kolab resource").arg(QLatin1StringView(LIBKOLAB_LIB_VERSION_STRING));
 }

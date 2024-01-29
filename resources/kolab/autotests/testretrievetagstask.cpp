@@ -34,10 +34,10 @@ private slots:
 
     void testRetrieveTags_data()
     {
-        Akonadi::VirtualResource *resource = new Akonadi::VirtualResource(QLatin1String("akonadi_knut_resource_0"), this);
+        Akonadi::VirtualResource *resource = new Akonadi::VirtualResource(QLatin1StringView("akonadi_knut_resource_0"), this);
 
         Akonadi::Collection root;
-        root.setName(QLatin1String("akonadi_knut_resource_0"));
+        root.setName(QLatin1StringView("akonadi_knut_resource_0"));
         root.setContentMimeTypes(QStringList() << Akonadi::Collection::mimeType());
         root.setParentCollection(Akonadi::Collection::root());
         root.setRemoteId("root-id");
@@ -71,7 +71,7 @@ private slots:
         tag.setName("tagname");
         Kolab::KolabObjectWriter writer;
         QStringList members;
-        members << QLatin1String(
+        members << QLatin1StringView(
             "imap:///user/john.doe%40example.org/INBOX/"
             "20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200&subject=Re%3A+test");
         KMime::Message::Ptr msg = writer.writeTag(tag, members);

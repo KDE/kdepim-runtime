@@ -263,7 +263,7 @@ void DeleteJob::setDeleteIds(const QList<int> &ids)
 void DeleteJob::start()
 {
     qCDebug(POP3RESOURCE_LOG) << "================= DeleteJob::start. =============================";
-    startJob(QLatin1String("/remove/") + intListToString(mIdsToDelete));
+    startJob(QLatin1StringView("/remove/") + intListToString(mIdsToDelete));
 }
 
 QList<int> DeleteJob::deletedIDs() const
@@ -300,7 +300,7 @@ void FetchJob::start()
 {
     setTotalAmount(KJob::Bytes, mTotalBytesToDownload);
     connect(mPOPSession->getProtocol(), &POP3Protocol::messageComplete, this, &FetchJob::slotMessageComplete);
-    startJob(QLatin1String("/download/") + intListToString(mIdsPendingDownload));
+    startJob(QLatin1StringView("/download/") + intListToString(mIdsPendingDownload));
 }
 
 void FetchJob::slotData(const QByteArray &data)

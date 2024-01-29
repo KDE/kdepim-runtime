@@ -214,7 +214,7 @@ void FakeServer::setNextConversation(const QString &conversation, const QList<in
 
     mGotDisconnected = false;
     const QStringList lines = conversation.split(QStringLiteral("\r\n"), Qt::SkipEmptyParts);
-    Q_ASSERT(lines.first().startsWith(QLatin1String("C:")));
+    Q_ASSERT(lines.first().startsWith(QLatin1StringView("C:")));
 
     enum Mode {
         Client,
@@ -245,7 +245,7 @@ void FakeServer::setNextConversation(const QString &conversation, const QList<in
         if (lineData.startsWith("S: ")) {
             mWriteData.append(lineData.mid(3) + "\r\n");
             mode = Server;
-        } else if (line.startsWith(QLatin1String("C: "))) {
+        } else if (line.startsWith(QLatin1StringView("C: "))) {
             mReadData.append(lineData.mid(3) + "\r\n");
             mode = Client;
         } else {

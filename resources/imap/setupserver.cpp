@@ -272,11 +272,11 @@ void SetupServer::applySettings()
 
     const MailTransport::Transport::EnumAuthenticationType authtype = getCurrentAuthMode(m_ui->authenticationCombo);
     if (!m_ui->userName->text().contains(QLatin1Char('@')) && authtype == MailTransport::Transport::EnumAuthenticationType::XOAUTH2
-        && m_ui->imapServer->text().contains(QLatin1String("gmail.com"))) {
+        && m_ui->imapServer->text().contains(QLatin1StringView("gmail.com"))) {
         // Normalize gmail username so that it matches the JSON account info returned by GMail authentication.
         // If we don't do this, we will look up cached auth without @gmail.com and save it with @gmail.com => very frequent auth dialog popping up.
         qCDebug(IMAPRESOURCE_LOG) << "Fixing up username" << m_ui->userName->text() << "by adding @gmail.com";
-        m_ui->userName->setText(m_ui->userName->text() + QLatin1String("@gmail.com"));
+        m_ui->userName->setText(m_ui->userName->text() + QLatin1StringView("@gmail.com"));
     }
 
     m_parentResource->setName(m_ui->accountName->text());
@@ -379,9 +379,9 @@ void SetupServer::readSettings()
 
     const QString safety = m_parentResource->settings()->safety();
     int i = 0;
-    if (safety == QLatin1String("SSL")) {
+    if (safety == QLatin1StringView("SSL")) {
         i = KIMAP::LoginJob::SSLorTLS;
-    } else if (safety == QLatin1String("STARTTLS")) {
+    } else if (safety == QLatin1StringView("STARTTLS")) {
         i = KIMAP::LoginJob::STARTTLS;
     } else {
         i = KIMAP::LoginJob::Unencrypted;
@@ -473,11 +473,11 @@ void SetupServer::readSettings()
     }
 
     const QString sieverCustomAuth(m_parentResource->settings()->sieveCustomAuthentification());
-    if (sieverCustomAuth == QLatin1String("ImapUserPassword")) {
+    if (sieverCustomAuth == QLatin1StringView("ImapUserPassword")) {
         m_ui->imapUserPassword->setChecked(true);
-    } else if (sieverCustomAuth == QLatin1String("NoAuthentification")) {
+    } else if (sieverCustomAuth == QLatin1StringView("NoAuthentification")) {
         m_ui->noAuthentification->setChecked(true);
-    } else if (sieverCustomAuth == QLatin1String("CustomUserPassword")) {
+    } else if (sieverCustomAuth == QLatin1StringView("CustomUserPassword")) {
         m_ui->customUserPassword->setChecked(true);
     }
 

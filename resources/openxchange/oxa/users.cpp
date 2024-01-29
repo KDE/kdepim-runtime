@@ -65,7 +65,7 @@ User Users::lookupEmail(const QString &email) const
 
 QString Users::cacheFilePath() const
 {
-    return QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("openxchangeresource_") + mIdentifier;
+    return QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1StringView("openxchangeresource_") + mIdentifier;
 }
 
 void Users::setCurrentUserId(qlonglong id)

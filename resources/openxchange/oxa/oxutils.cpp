@@ -53,7 +53,7 @@ QString OXUtils::writeDateTime(const QDateTime &value)
         result = QString::number(value.toUTC().toSecsSinceEpoch());
     }
 
-    return QString(result + QLatin1String("000"));
+    return QString(result + QLatin1StringView("000"));
 }
 
 QString OXUtils::writeDate(QDate value)
@@ -63,9 +63,9 @@ QString OXUtils::writeDate(QDate value)
 
 bool OXUtils::readBoolean(const QString &text)
 {
-    if (text == QLatin1String("true")) {
+    if (text == QLatin1StringView("true")) {
         return true;
-    } else if (text == QLatin1String("false")) {
+    } else if (text == QLatin1StringView("false")) {
         return false;
     } else {
         Q_ASSERT(false);
@@ -81,8 +81,8 @@ qlonglong OXUtils::readNumber(const QString &text)
 QString OXUtils::readString(const QString &text)
 {
     QString value(text);
-    value.replace(QLatin1String("\\\""), QLatin1String("\""));
-    value.replace(QLatin1String("\\\\"), QLatin1String("\\"));
+    value.replace(QLatin1StringView("\\\""), QLatin1String("\""));
+    value.replace(QLatin1StringView("\\\\"), QLatin1String("\\"));
 
     return value;
 }

@@ -360,14 +360,14 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
     bool ok;
 
     // First check the property type
-    if (reader.name() == QLatin1String("FieldURI")) {
+    if (reader.name() == QLatin1StringView("FieldURI")) {
         if (!attrs.hasAttribute(QStringLiteral("FieldURI"))) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - missing %1 attribute.").arg(QStringLiteral("FieldURI"));
             return false;
         }
         d->mPropType = Field;
         d->mUri = attrs.value(QStringLiteral("FieldURI")).toString();
-    } else if (reader.name() == QLatin1String("IndexedFieldURI")) {
+    } else if (reader.name() == QLatin1StringView("IndexedFieldURI")) {
         if (!attrs.hasAttribute(QStringLiteral("FieldURI"))) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - missing %1 attribute.").arg(QStringLiteral("FieldURI"));
             return false;
@@ -391,7 +391,7 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
         d->mPropType = IndexedField;
         d->mUri = uri;
         d->mIndex = index;
-    } else if (reader.name() == QLatin1String("ExtendedFieldURI")) {
+    } else if (reader.name() == QLatin1StringView("ExtendedFieldURI")) {
         if (!attrs.hasAttribute(QStringLiteral("PropertyType"))) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - missing %1 attribute.").arg(QStringLiteral("PropertyType"));
             return false;
