@@ -17,7 +17,7 @@ namespace KGAPI2
 class AccountPromise;
 }
 
-class GmailPasswordRequester : public PasswordRequesterInterface
+class GmailPasswordRequester : public XOAuthPasswordRequester
 {
     Q_OBJECT
 public:

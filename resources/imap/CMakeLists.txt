@@ -139,6 +139,7 @@ target_sources( akonadi_imap_resource PRIVATE
   serverinfodialog.cpp
   passwordrequester.cpp
   gmailpasswordrequester.cpp
+  outlookpasswordrequester.cpp
 
   imapresource.h
   resourcestate.h
@@ -147,6 +148,7 @@ target_sources( akonadi_imap_resource PRIVATE
   serverinfodialog.h
   passwordrequester.h
   gmailpasswordrequester.h
+  outlookpasswordrequester.h
   )
 
 install( FILES imapresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )

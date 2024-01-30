@@ -16,7 +16,7 @@
 #define GOOGLE_API_SECRET QStringLiteral("mdT1DjzohxN3npUUzkENT0gO")
 
 GmailPasswordRequester::GmailPasswordRequester(ImapResourceBase *resource, QObject *parent)
-    : PasswordRequesterInterface(parent)
+    : XOAuthPasswordRequester(parent)
     , mResource(resource)
 {
 }

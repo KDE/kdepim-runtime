@@ -76,7 +76,7 @@ static QString authenticationModeString(MailTransport::Transport::EnumAuthentica
     case MailTransport::Transport::EnumAuthenticationType::ANONYMOUS:
         return i18nc("Authentication method", "Anonymous");
     case MailTransport::Transport::EnumAuthenticationType::XOAUTH2:
-        return i18nc("Authentication method", "Gmail");
+        return i18nc("Authentication method", "XOAuth");
     default:
         break;
     }

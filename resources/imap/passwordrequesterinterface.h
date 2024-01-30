@@ -37,3 +37,10 @@ public:
 Q_SIGNALS:
     void done(int resultType, const QString &password = QString());
 };
+
+class XOAuthPasswordRequester : public PasswordRequesterInterface
+{
+    Q_OBJECT
+public:
+    using PasswordRequesterInterface::PasswordRequesterInterface;
+};
