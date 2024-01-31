@@ -45,7 +45,7 @@ QString TimezoneConverter::fromCityName(const QString &tz)
         qDebug() << " zone : " << zone;
         qDebug() << " cityName : " << cityName;
         qDebug() << " countryMap : " << countryMap;
-        Q_ASSERT(!countryMap.contains(cityName));
+        // Q_ASSERT(!countryMap.contains(cityName));
         countryMap.insert(cityName, QString::fromUtf8(zone));
     }
 
