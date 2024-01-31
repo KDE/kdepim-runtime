@@ -183,7 +183,7 @@ public:
                                      .toString(QUrl::FullyEncoded)
                                      .toUtf8());
         connect(reply, &QNetworkReply::finished, this, [this, reply]() {
-            handleTokenResponse(reply);
+            handleTokenResponse(reply, true);
         });
     }
 
@@ -279,7 +279,7 @@ private:
         qCDebug(IMAPRESOURCE_LOG) << "Requested Outlook OAuth2 access token, waiting for response...";
     }
 
-    void handleTokenResponse(QNetworkReply *reply)
+    void handleTokenResponse(QNetworkReply *reply, bool isTokenRefresh = false)
     {
         const auto responseData = reply->readAll();
         reply->deleteLater();
@@ -295,7 +295,13 @@ private:
             const auto error = response[QStringView{u"error"}].toString();
             const auto errorDescription = response[QStringView{u"error_description"}].toString();
             qCWarning(IMAPRESOURCE_LOG) << "Outlook OAuth2 authorization server returned error:" << error << errorDescription;
-            Q_EMIT finished({-1, i18nc("@status", "Authorization server returned error: %1", errorDescription)});
+
+            if (isTokenRefresh && error == u"invalid_grant") {
+                qCDebug(IMAPRESOURCE_LOG) << "Outlook OAuth2 refresh token is invalid, requesting new token...";
+                requestToken();
+            } else {
+                Q_EMIT finished({-1, i18nc("@status", "Authorization server returned error: %1", errorDescription)});
+            }
             return;
         }
 

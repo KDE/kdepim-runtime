@@ -20,10 +20,10 @@ namespace
 XOAuthPasswordRequester *createXOAuthPasswordRequester(ImapResourceBase *resource, QObject *parent)
 {
     static const auto isGmail = [](QStringView server) {
-        return server.endsWith(u".gmail.com");
+        return server.endsWith(u".gmail.com") || server.endsWith(u".googlemail.com");
     };
     static const auto isOutlook = [](QStringView server) {
-        return server.endsWith(u".outlook.com") || server.endsWith(u".hotmail.com");
+        return server.endsWith(u".outlook.com") || server.endsWith(u".office365.com") || server.endsWith(u".hotmail.com");
     };
 
     const auto imapServer = resource->settings()->imapServer();
