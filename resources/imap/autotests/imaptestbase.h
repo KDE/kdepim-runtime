@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <kimaptest/fakeserver.h>
+#include "kimaptest/fakeserver.h"
 
 #include "dummypasswordrequester.h"
 #include "dummyresourcestate.h"

@@ -6,9 +6,9 @@
 */
 
 #include "kolabremovetagtask.h"
+#include "imapflags.h"
 #include "kolabresource_debug.h"
 #include "kolabresource_trace.h"
-#include <imapflags.h>
 
 #include <KIMAP/SelectJob>
 #include <KIMAP/Session>

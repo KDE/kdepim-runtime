@@ -8,8 +8,8 @@
 
 #include <QTest>
 
+#include "kolabformat/errorhandler.h"
 #include "kolabformat/kolabobject.h"
-#include <kolabformat/errorhandler.h>
 
 void KolabObjectTest::preserveLatin1()
 {

@@ -10,9 +10,9 @@
 #include <QObject>
 #include <QStringList>
 
+#include "kimap/sessionuiproxy.h"
 #include <KIMAP/ListJob>
 #include <KIMAP/Session>
-#include <kimap/sessionuiproxy.h>
 
 namespace KIMAP
 {

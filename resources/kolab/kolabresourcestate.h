@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <resourcestate.h>
+#include "resourcestate.h"
 
 class ImapResource;
 

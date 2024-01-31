@@ -11,7 +11,7 @@
 #include <QTest>
 
 #include "../migrationscheduler.h"
-#include <migration/migratorbase.h>
+#include "migration/migratorbase.h"
 
 Q_DECLARE_METATYPE(QModelIndex)
 

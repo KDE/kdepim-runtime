@@ -12,12 +12,12 @@
 
 #include <KMime/Message>
 
+#include "conversion/commonconversion.h"
+#include "conversion/kcalconversion.h"
+#include "mime/mimeutils.h"
 #include <KCalendarCore/Event>
 #include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/MemoryCalendar>
-#include <conversion/commonconversion.h>
-#include <conversion/kcalconversion.h>
-#include <mime/mimeutils.h>
 
 #include <KLocalizedString>
 

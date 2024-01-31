@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <resourcetask.h>
+#include "resourcetask.h"
 
 class KolabRelationResourceTask : public ResourceTask
 {

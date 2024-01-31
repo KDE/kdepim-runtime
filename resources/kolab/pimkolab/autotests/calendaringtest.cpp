@@ -6,10 +6,10 @@
 
 #include "calendaringtest.h"
 
+#include "calendaring/calendaring.h"
+#include "calendaring/datetimeutils.h"
+#include "calendaring/event.h"
 #include <QTest>
-#include <calendaring/calendaring.h>
-#include <calendaring/datetimeutils.h>
-#include <calendaring/event.h>
 #include <iostream>
 #include <kolabevent.h>
 

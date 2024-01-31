@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include "messagehelper.h"
 #include <Akonadi/Collection>
-#include <messagehelper.h>
 
 class KolabMessageHelper : public MessageHelper
 {

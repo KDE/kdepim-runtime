@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <kolab_export.h>
+#include "kolab_export.h"
 
 #include <Akonadi/Item>
 #include <Akonadi/Relation>

@@ -7,7 +7,7 @@
 #pragma once
 
 #include "imapresourcebase.h"
-#include <resourcestate.h>
+#include "resourcestate.h"
 
 class KolabResource : public ImapResourceBase
 {

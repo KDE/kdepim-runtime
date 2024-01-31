@@ -21,24 +21,24 @@
 #include <KContacts/Addressee>
 #include <KLocalizedString>
 
+#include "oxa/davmanager.h"
+#include "oxa/foldercreatejob.h"
+#include "oxa/folderdeletejob.h"
+#include "oxa/foldermodifyjob.h"
+#include "oxa/foldermovejob.h"
+#include "oxa/foldersrequestdeltajob.h"
+#include "oxa/foldersrequestjob.h"
+#include "oxa/objectcreatejob.h"
+#include "oxa/objectdeletejob.h"
+#include "oxa/objectmodifyjob.h"
+#include "oxa/objectmovejob.h"
+#include "oxa/objectrequestjob.h"
+#include "oxa/objectsrequestdeltajob.h"
+#include "oxa/objectsrequestjob.h"
+#include "oxa/oxerrors.h"
+#include "oxa/updateusersjob.h"
+#include "oxa/users.h"
 #include <QStandardPaths>
-#include <oxa/davmanager.h>
-#include <oxa/foldercreatejob.h>
-#include <oxa/folderdeletejob.h>
-#include <oxa/foldermodifyjob.h>
-#include <oxa/foldermovejob.h>
-#include <oxa/foldersrequestdeltajob.h>
-#include <oxa/foldersrequestjob.h>
-#include <oxa/objectcreatejob.h>
-#include <oxa/objectdeletejob.h>
-#include <oxa/objectmodifyjob.h>
-#include <oxa/objectmovejob.h>
-#include <oxa/objectrequestjob.h>
-#include <oxa/objectsrequestdeltajob.h>
-#include <oxa/objectsrequestjob.h>
-#include <oxa/oxerrors.h>
-#include <oxa/updateusersjob.h>
-#include <oxa/users.h>
 
 using namespace Akonadi;
 

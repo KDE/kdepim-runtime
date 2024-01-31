@@ -12,13 +12,13 @@
 #include "kolabresource_debug.h"
 #include "kolabresource_trace.h"
 
+#include "collectionmetadatahelper.h"
+#include "imapaclattribute.h"
+#include "noinferiorsattribute.h"
+#include "noselectattribute.h"
 #include <Akonadi/CollectionAnnotationsAttribute>
 #include <KIMAP/GetMetaDataJob>
 #include <KIMAP/MyRightsJob>
-#include <collectionmetadatahelper.h>
-#include <imapaclattribute.h>
-#include <noinferiorsattribute.h>
-#include <noselectattribute.h>
 
 #include <Akonadi/MessageParts>
 

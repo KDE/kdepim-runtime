@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include <imapresourcebase.h>
+#include "imapresourcebase.h"
 
 class ImapResource : public ImapResourceBase
 {

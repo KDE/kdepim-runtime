@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <resourcetask.h>
+#include "resourcetask.h"
 
 #include <Akonadi/Collection>
 

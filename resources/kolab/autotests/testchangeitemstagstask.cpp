@@ -20,8 +20,8 @@ unsigned int qHash(const Akonadi::Tag &tag);
 #include <Akonadi/ServerManager>
 #include <akonadi/qtest_akonadi.h>
 //#include <AkonadiCore/virtualresource.h>
+#include "kolabobject.h"
 #include <Akonadi/TagCreateJob>
-#include <kolabobject.h>
 
 #include "kolabchangeitemstagstask.h"
 #include "kolabhelpers.h"

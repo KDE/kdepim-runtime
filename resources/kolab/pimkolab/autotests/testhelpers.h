@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <contact.h>
+#include "contact.h"
 
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Journal>

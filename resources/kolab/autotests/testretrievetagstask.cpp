@@ -7,6 +7,7 @@
 
 #include "kolabretrievetagstask.h"
 
+#include "kolab/kolabobject.h"
 #include "kolabhelpers.h"
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionCreateJob>
@@ -14,7 +15,6 @@
 #include <Akonadi/ServerManager>
 #include <akonadi/qtest_akonadi.h>
 #include <akonadi/virtualresource.h>
-#include <kolab/kolabobject.h>
 
 typedef QHash<QString, Akonadi::Item::List> Members;
 

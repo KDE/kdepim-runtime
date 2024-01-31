@@ -8,7 +8,7 @@
 
 #include <KCompositeJob>
 
-#include <ewstypes.h>
+#include "ewstypes.h"
 
 class EwsJob : public KCompositeJob
 {

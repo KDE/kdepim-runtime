@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <migration/migratorbase.h>
+#include "migration/migratorbase.h"
 
 /**
  * Dummy migrator that simply completes after 10s and always autostarts.

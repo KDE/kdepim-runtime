@@ -8,7 +8,7 @@
 #include "resources/folderarchivesettings/folderarchivesettingpage.h"
 #include "settings.h"
 
-#include <maildir.h>
+#include "maildir.h"
 
 #include <KConfigDialogManager>
 #include <KLineEdit>

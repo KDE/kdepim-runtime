@@ -8,13 +8,13 @@
 #include "kolabhelpers.h"
 #include "kolabmessagehelper.h"
 
-#include <imapresource.h>
+#include "imapresource.h"
 
+#include "noselectattribute.h"
 #include <Akonadi/CachePolicy>
 #include <Akonadi/CollectionAnnotationsAttribute>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/MessageParts>
-#include <noselectattribute.h>
 
 KolabResourceState::KolabResourceState(ImapResourceBase *resource, const TaskArguments &arguments)
     : ResourceState(resource, arguments)

@@ -5,7 +5,7 @@
 */
 
 #include "collectionmetadatahelper.h"
-#include <imapaclattribute.h>
+#include "imapaclattribute.h"
 
 Akonadi::Collection::Rights CollectionMetadataHelper::convertRights(const KIMAP::Acl::Rights imapRights, KIMAP::Acl::Rights parentRights)
 {

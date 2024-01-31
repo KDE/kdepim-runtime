@@ -7,10 +7,10 @@
 
 #include "imaptestbase.h"
 
+#include "highestmodseqattribute.h"
 #include "retrieveitemstask.h"
 #include "uidnextattribute.h"
-#include <highestmodseqattribute.h>
-#include <uidvalidityattribute.h>
+#include "uidvalidityattribute.h"
 
 #include <Akonadi/MessageParts>
 

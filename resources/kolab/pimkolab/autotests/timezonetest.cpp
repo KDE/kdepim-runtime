@@ -5,11 +5,11 @@
  */
 
 #include "timezonetest.h"
+#include "conversion/commonconversion.h"
+#include "conversion/timezoneconverter.h"
+#include "kolabformat/errorhandler.h"
+#include "kolabformat/kolabobject.h"
 #include "testutils.h"
-#include <conversion/commonconversion.h>
-#include <conversion/timezoneconverter.h>
-#include <kolabformat/errorhandler.h>
-#include <kolabformat/kolabobject.h>
 
 #include <KCalendarCore/Event>
 #include <KCalendarCore/ICalFormat>

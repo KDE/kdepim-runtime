@@ -7,10 +7,10 @@
 
 #pragma once
 
+#include "migration/migratorbase.h"
 #include <KJob>
 #include <QQueue>
 #include <QSharedPointer>
-#include <migration/migratorbase.h>
 
 /**
  * An executor can contain multiple jobs that are scheduled by the executor.

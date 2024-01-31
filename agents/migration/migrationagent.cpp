@@ -8,8 +8,8 @@
 
 #include "migrationstatuswidget.h"
 
-#include <migration/gid/gidmigrator.h>
-#include <migration/googlegroupware/googleresourcemigrator.h>
+#include "migration/gid/gidmigrator.h"
+#include "migration/googlegroupware/googleresourcemigrator.h"
 
 #include <KContacts/Addressee>
 #include <KLocalizedString>

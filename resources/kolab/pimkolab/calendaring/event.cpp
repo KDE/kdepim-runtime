@@ -5,9 +5,9 @@
  */
 
 #include "event.h"
-#include <conversion/commonconversion.h>
-#include <conversion/kcalconversion.h>
-#include <kolabformat/kolabobject.h>
+#include "conversion/commonconversion.h"
+#include "conversion/kcalconversion.h"
+#include "kolabformat/kolabobject.h"
 
 #include <iostream>
 #include <kolabevent_p.h>

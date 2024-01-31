@@ -11,15 +11,15 @@
 #include "kolabresource_debug.h"
 #include "updatemessagejob.h"
 
-#include <imapflags.h>
-#include <uidnextattribute.h>
+#include "imapflags.h"
+#include "uidnextattribute.h"
 
 #include "pimkolab/kolabformat/kolabobject.h"
 
+#include "replacemessagejob.h"
 #include <Akonadi/TagModifyJob>
 #include <KIMAP/SearchJob>
 #include <KIMAP/Session>
-#include <replacemessagejob.h>
 
 KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items, const QString &username)
 {

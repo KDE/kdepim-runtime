@@ -9,7 +9,7 @@
 
 #include <qtest_kde.h>
 
-#include <kimaptest/fakeserver.h>
+#include "kimaptest/fakeserver.h"
 
 #include "dummypasswordrequester.h"
 #include "dummyresourcestate.h"

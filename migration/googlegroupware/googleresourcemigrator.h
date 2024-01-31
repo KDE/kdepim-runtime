@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include "migratorbase.h"
 #include <Akonadi/AgentManager>
-#include <migratorbase.h>
 
 #include <Akonadi/AgentInstance>
 

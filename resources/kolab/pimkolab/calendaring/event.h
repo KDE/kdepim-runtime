@@ -7,8 +7,8 @@
 #pragma once
 #include <kolabevent.h>
 
+#include "icalendar/icalendar.h"
 #include "kolab_export.h"
-#include <icalendar/icalendar.h>
 
 namespace Kolab
 {

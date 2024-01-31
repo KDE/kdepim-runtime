@@ -18,10 +18,10 @@
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionColorAttribute>
 
+#include "changecollectiontask.h"
+#include "resourcestateinterface.h"
+#include "retrieveitemstask.h"
 #include <Akonadi/CollectionAnnotationsAttribute>
-#include <changecollectiontask.h>
-#include <resourcestateinterface.h>
-#include <retrieveitemstask.h>
 
 #include <KLocalizedString>
 #include <KWindowSystem>

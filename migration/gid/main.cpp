@@ -9,12 +9,12 @@
 
 #include <KLocalizedString>
 
+#include "infodialog.h"
 #include "migration_debug.h"
 #include <QApplication>
 #include <QCommandLineOption>
 #include <QCommandLineParser>
 #include <QIcon>
-#include <infodialog.h>
 
 #include "gidmigrator.h"
 

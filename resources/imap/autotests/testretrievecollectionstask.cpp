@@ -7,9 +7,9 @@
 
 #include "imaptestbase.h"
 
+#include "noinferiorsattribute.h"
 #include "noselectattribute.h"
 #include "retrievecollectionstask.h"
-#include <noinferiorsattribute.h>
 
 #include <Akonadi/MessageParts>
 

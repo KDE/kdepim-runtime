@@ -11,19 +11,19 @@
 
 #include <Akonadi/NoteUtils>
 
-#include <conversion/commonconversion.h>
-#include <conversion/kabcconversion.h>
-#include <conversion/kcalconversion.h>
-#include <conversion/kolabconversion.h>
+#include "conversion/commonconversion.h"
+#include "conversion/kabcconversion.h"
+#include "conversion/kcalconversion.h"
+#include "conversion/kolabconversion.h"
+#include "kolabformat/mimeobject.h"
+#include "kolabformatV2/contact.h"
+#include "kolabformatV2/distributionlist.h"
+#include "kolabformatV2/event.h"
+#include "kolabformatV2/journal.h"
+#include "kolabformatV2/note.h"
+#include "kolabformatV2/task.h"
+#include "mime/mimeutils.h"
 #include <kolabformat.h>
-#include <kolabformat/mimeobject.h>
-#include <kolabformatV2/contact.h>
-#include <kolabformatV2/distributionlist.h>
-#include <kolabformatV2/event.h>
-#include <kolabformatV2/journal.h>
-#include <kolabformatV2/note.h>
-#include <kolabformatV2/task.h>
-#include <mime/mimeutils.h>
 
 #include <QUrlQuery>
 

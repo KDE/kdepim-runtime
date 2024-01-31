@@ -6,16 +6,16 @@
 
 #include "upgradetest.h"
 
+#include "kolabformat/errorhandler.h"
 #include <QTest>
 #include <kolabcontainers.h>
 #include <kolabformat.h>
-#include <kolabformat/errorhandler.h>
 
+#include "conversion/commonconversion.h"
 #include "kolabformat/kolabobject.h"
 #include "testutils.h"
 #include <KCalendarCore/ICalFormat>
 #include <KContacts/VCardConverter>
-#include <conversion/commonconversion.h>
 
 void UpgradeTest::testIncidence_data()
 {

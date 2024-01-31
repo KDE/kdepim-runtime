@@ -5,7 +5,7 @@
  */
 
 #include "kcalconversiontest.h"
-#include <contact.h>
+#include "contact.h"
 
 #include <KCalendarCore/Recurrence>
 #include <KContacts/Addressee>

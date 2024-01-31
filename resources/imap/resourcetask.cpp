@@ -14,9 +14,9 @@
 #include <KLocalizedString>
 
 #include "collectionflagsattribute.h"
+#include "imapaclattribute.h"
 #include "imapflags.h"
 #include "sessionpool.h"
-#include <imapaclattribute.h>
 
 ResourceTask::ResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent)
     : QObject(parent)
