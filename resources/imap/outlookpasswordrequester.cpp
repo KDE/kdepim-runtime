@@ -34,7 +34,7 @@
 #include <qstringliteral.h>
 
 static const char16_t *tenantId = u"common";
-static const char16_t *clientId = u"0f27e206-74db-4104-bedf-1340cde98ef0";
+static const char16_t *clientId = u"18da2bc3-146a-4581-8c92-27dc7b9954a0";
 static const char16_t *scope = u"https://outlook.office.com/IMAP.AccessAsUser.All offline_access";
 
 class TokenResult
