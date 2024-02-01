@@ -148,10 +148,10 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
             d->mContent = readXmlElementValue<QByteArray>(reader, ok, QStringLiteral("Attachment"));
             d->mValidFields.setBit(EwsAttachmentPrivate::Content, ok);
         } else if (d->mType == ItemAttachment
-                   && (elmName == QLatin1StringView("Item") || elmName == QLatin1String("Message") || elmName == QLatin1String("CalendarItem")
-                       || elmName == QLatin1StringView("Contact") || elmName == QLatin1String("MeetingMessage") || elmName == QLatin1String("MeetingRequest")
-                       || elmName == QLatin1StringView("MeetingResponse") || elmName == QLatin1String("MeetingCancellation")
-                       || elmName == QLatin1String("Task"))) {
+                   && (elmName == QLatin1StringView("Item") || elmName == QLatin1StringView("Message") || elmName == QLatin1StringView("CalendarItem")
+                       || elmName == QLatin1StringView("Contact") || elmName == QLatin1StringView("MeetingMessage")
+                       || elmName == QLatin1StringView("MeetingRequest") || elmName == QLatin1StringView("MeetingResponse")
+                       || elmName == QLatin1StringView("MeetingCancellation") || elmName == QLatin1StringView("Task"))) {
             d->mItem = EwsItem(reader);
             if (!d->mItem.isValid()) {
                 qCWarningNC(EWSCLI_LOG)

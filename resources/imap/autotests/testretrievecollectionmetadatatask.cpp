@@ -350,7 +350,7 @@ private Q_SLOTS:
             QString command = QString::fromUtf8(state->calls().at(i).first);
             QVariant parameter = state->calls().at(i).second;
 
-            if (command == QLatin1StringView("cancelTask") && callNames[i] != QLatin1String("cancelTask")) {
+            if (command == QLatin1StringView("cancelTask") && callNames[i] != QLatin1StringView("cancelTask")) {
                 qDebug() << "Got a cancel:" << parameter.toString();
             }
 

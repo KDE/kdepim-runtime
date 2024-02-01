@@ -75,7 +75,7 @@ void RetrieveMetadataJob::start()
         mMetadata.insert(mailbox, QMap<QByteArray, QByteArray>());
     }
 
-    if (mServerCapabilities.contains(QLatin1StringView("METADATA")) || mServerCapabilities.contains(QLatin1String("ANNOTATEMORE"))) {
+    if (mServerCapabilities.contains(QLatin1StringView("METADATA")) || mServerCapabilities.contains(QLatin1StringView("ANNOTATEMORE"))) {
         QSet<QString> toplevelMailboxes;
         for (const QString &mailbox : std::as_const(mMailboxes)) {
             const QStringList parts = mailbox.split(mSeparator);
@@ -213,7 +213,7 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
     policy.setSyncOnDemand(true);
 
     QStringList localParts;
-    localParts << QLatin1StringView(Akonadi::MessagePart::Envelope) << QLatin1String(Akonadi::MessagePart::Header);
+    localParts << QLatin1StringView(Akonadi::MessagePart::Envelope) << QLatin1StringView(Akonadi::MessagePart::Header);
     int cacheTimeout = 60;
 
     if (isDisconnectedModeEnabled()) {

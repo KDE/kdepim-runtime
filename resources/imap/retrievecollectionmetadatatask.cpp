@@ -54,7 +54,7 @@ void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
     m_pendingMetaDataJobs = 0;
 
     // First get the annotations from the mailbox if it's supported
-    if (capabilities.contains(QLatin1StringView("METADATA")) || capabilities.contains(QLatin1String("ANNOTATEMORE"))) {
+    if (capabilities.contains(QLatin1StringView("METADATA")) || capabilities.contains(QLatin1StringView("ANNOTATEMORE"))) {
         auto meta = new KIMAP::GetMetaDataJob(session);
         meta->setMailBox(mailBox);
         if (capabilities.contains(QLatin1StringView("METADATA"))) {

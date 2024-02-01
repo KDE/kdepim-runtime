@@ -185,7 +185,7 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
                 KContacts::Email email(text);
                 email.setPreferred(true);
                 contact.addEmail(email);
-            } else if (tagName == QLatin1StringView("email2") || tagName == QLatin1String("email3")) {
+            } else if (tagName == QLatin1StringView("email2") || tagName == QLatin1StringView("email3")) {
                 KContacts::Email email(text);
                 contact.addEmail(email);
             } else if (tagName == QLatin1StringView("mobile1")) {

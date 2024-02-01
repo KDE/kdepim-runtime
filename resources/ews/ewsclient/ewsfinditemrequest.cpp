@@ -245,10 +245,11 @@ EwsItem *EwsFindItemResponse::readItem(QXmlStreamReader &reader)
 {
     EwsItem *item = nullptr;
     const QStringView readerName = reader.name();
-    if (readerName == QLatin1StringView("Item") || readerName == QLatin1String("Message") || readerName == QLatin1String("CalendarItem")
-        || readerName == QLatin1StringView("Contact") || readerName == QLatin1String("DistributionList") || readerName == QLatin1String("MeetingMessage")
-        || readerName == QLatin1StringView("MeetingRequest") || readerName == QLatin1String("MeetingResponse")
-        || readerName == QLatin1String("MeetingCancellation") || readerName == QLatin1StringView("Task")) {
+    if (readerName == QLatin1StringView("Item") || readerName == QLatin1StringView("Message") || readerName == QLatin1StringView("CalendarItem")
+        || readerName == QLatin1StringView("Contact") || readerName == QLatin1StringView("DistributionList")
+        || readerName == QLatin1StringView("MeetingMessage") || readerName == QLatin1StringView("MeetingRequest")
+        || readerName == QLatin1StringView("MeetingResponse") || readerName == QLatin1StringView("MeetingCancellation")
+        || readerName == QLatin1StringView("Task")) {
         qCDebug(EWSCLI_LOG).noquote() << QStringLiteral("Processing %1").arg(readerName.toString());
         item = new EwsItem(reader);
         if (!item->isValid()) {

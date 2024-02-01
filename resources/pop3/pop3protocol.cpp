@@ -729,7 +729,7 @@ Result POP3Protocol::get(const QString &_commandString)
     char destbuf[MAX_PACKET_LEN];
     const int maxCommands = mSettings.pipelining() ? MAX_COMMANDS : 1;
 
-    if (((commandString.indexOf(QLatin1Char('/')) == -1) && (commandString != QLatin1StringView("index")) && (commandString != QLatin1String("uidl"))
+    if (((commandString.indexOf(QLatin1Char('/')) == -1) && (commandString != QLatin1StringView("index")) && (commandString != QLatin1StringView("uidl"))
          && (commandString != QLatin1StringView("quit")))) {
         return Result::fail(ERR_INTERNAL, i18n("Internal error: missing argument for command %1", commandString));
     }
@@ -738,7 +738,7 @@ Result POP3Protocol::get(const QString &_commandString)
     const QString cmd = commandString.left(slashPos);
     const QString path = commandString.mid(slashPos + 1);
 
-    if ((cmd == QLatin1StringView("index")) || (cmd == QLatin1String("uidl"))) {
+    if ((cmd == QLatin1StringView("index")) || (cmd == QLatin1StringView("uidl"))) {
         bool result;
         if (cmd == QLatin1StringView("index")) {
             result = (command("LIST") == Ok);
@@ -782,7 +782,7 @@ Result POP3Protocol::get(const QString &_commandString)
             getResponse(buf, sizeof(buf) - 1);
             activeCommands--;
         }
-    } else if (cmd == QLatin1StringView("download") || cmd == QLatin1String("headers")) {
+    } else if (cmd == QLatin1StringView("download") || cmd == QLatin1StringView("headers")) {
         const QStringList waitingCommands = path.split(QLatin1Char(','), Qt::SkipEmptyParts);
         if (waitingCommands.isEmpty()) {
             qCDebug(POP3_LOG) << "tried to request" << cmd << "for" << path << "with no specific item to get";
@@ -795,7 +795,7 @@ Result POP3Protocol::get(const QString &_commandString)
         QStringList::ConstIterator it = waitingCommands.begin();
         while (it != waitingCommands.end() || activeCommands > 0) {
             while (activeCommands < maxCommands && it != waitingCommands.end()) {
-                sendCommand(QString((cmd == QLatin1StringView("headers")) ? QString(QLatin1String("TOP ") + *it + QLatin1String(" 0"))
+                sendCommand(QString((cmd == QLatin1StringView("headers")) ? QString(QLatin1StringView("TOP ") + *it + QLatin1StringView(" 0"))
                                                                           : QString(QLatin1StringView("RETR ") + *it))
                                 .toLatin1());
                 activeCommands++;
@@ -883,7 +883,7 @@ Result POP3Protocol::get(const QString &_commandString)
             }
         }
         qCDebug(POP3_LOG) << "Finishing up";
-    } else if ((cmd == QLatin1StringView("uid")) || (cmd == QLatin1String("list"))) {
+    } else if ((cmd == QLatin1StringView("uid")) || (cmd == QLatin1StringView("list"))) {
         bool ok = true;
         (void)path.toInt(&ok);
         if (!ok) {

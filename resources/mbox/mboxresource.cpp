@@ -114,7 +114,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
         mail->parse();
 
         Item item;
-        item.setRemoteId(colId + QLatin1StringView("::") + colRid + QLatin1String("::") + QString::number(entry.messageOffset()));
+        item.setRemoteId(colId + QLatin1StringView("::") + colRid + QLatin1StringView("::") + QString::number(entry.messageOffset()));
         item.setMimeType(QStringLiteral("message/rfc822"));
         item.setSize(entry.messageSize());
         item.setPayload(KMime::Message::Ptr(mail));
@@ -194,7 +194,7 @@ void MboxResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collectio
 
     scheduleWrite();
     const QString rid =
-        QString::number(collection.id()) + QLatin1StringView("::") + collection.remoteId() + QLatin1String("::") + QString::number(entry.messageOffset());
+        QString::number(collection.id()) + QLatin1StringView("::") + collection.remoteId() + QLatin1StringView("::") + QString::number(entry.messageOffset());
 
     Item i(item);
     i.setRemoteId(rid);

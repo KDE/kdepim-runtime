@@ -489,7 +489,7 @@ bool NewMailNotifierAgent::excludeAgentType(const Akonadi::AgentInstance &instan
 {
     if (instance.type().mimeTypes().contains(KMime::Message::mimeType())) {
         const QStringList capabilities(instance.type().capabilities());
-        if (capabilities.contains(QLatin1StringView("Resource")) && !capabilities.contains(QLatin1String("Virtual"))
+        if (capabilities.contains(QLatin1StringView("Resource")) && !capabilities.contains(QLatin1StringView("Virtual"))
             && !capabilities.contains(QLatin1StringView("MailTransport"))) {
             return false;
         } else {

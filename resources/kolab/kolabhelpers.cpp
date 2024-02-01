@@ -339,7 +339,7 @@ Kolab::ObjectType KolabHelpers::getKolabTypeFromMimeType(const QString &type)
         return Kolab::ContactObject;
     } else if (type == KContacts::ContactGroup::mimeType()) {
         return Kolab::DistlistObject;
-    } else if (type == QLatin1StringView("text/x-vnd.akonadi.note") || type == QLatin1String("application/x-vnd.akonadi.note")) {
+    } else if (type == QLatin1StringView("text/x-vnd.akonadi.note") || type == QLatin1StringView("application/x-vnd.akonadi.note")) {
         return Kolab::NoteObject;
     }
     return Kolab::InvalidObject;

@@ -81,8 +81,8 @@ qlonglong OXUtils::readNumber(const QString &text)
 QString OXUtils::readString(const QString &text)
 {
     QString value(text);
-    value.replace(QLatin1StringView("\\\""), QLatin1String("\""));
-    value.replace(QLatin1StringView("\\\\"), QLatin1String("\\"));
+    value.replace(QLatin1StringView("\\\""), QLatin1StringView("\""));
+    value.replace(QLatin1StringView("\\\\"), QLatin1StringView("\\"));
 
     return value;
 }

@@ -81,7 +81,7 @@ void KolabObjectTest::parseRelationMembers()
 
         QString result = Kolab::generateMemberUrl(member);
         qDebug() << result;
-        result.replace(QLatin1StringView("%20"), QLatin1String("+"));
+        result.replace(QLatin1StringView("%20"), QLatin1StringView("+"));
         QEXPECT_FAIL("", "This is currently failing, probably a bug in the recent changes regarding the encoding.", Continue);
         QCOMPARE(result, memberString);
     }

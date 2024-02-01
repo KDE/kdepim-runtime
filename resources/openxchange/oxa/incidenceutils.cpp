@@ -231,7 +231,7 @@ static void parseRecurrence(const QDomElement &element, const KCalendarCore::Inc
         } else if (tagName == QLatin1StringView("month")) {
             yearlyMonth = text.toInt() + 1; // starts at 0
             yearly2Month = text.toInt() + 1;
-        } else if ((tagName == QLatin1StringView("deleteexceptions")) || (tagName == QLatin1String("changeexceptions"))) {
+        } else if ((tagName == QLatin1StringView("deleteexceptions")) || (tagName == QLatin1StringView("changeexceptions"))) {
             const QStringList exceptionDates = text.split(QLatin1Char(','));
             deleteExceptions.reserve(exceptionDates.count());
             for (const QString &date : exceptionDates) {

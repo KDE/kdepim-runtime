@@ -180,8 +180,8 @@ EwsFolder *EwsFindFolderResponse::readFolder(QXmlStreamReader &reader)
 {
     EwsFolder *folder = nullptr;
     const QStringView readerName = reader.name();
-    if (readerName == QLatin1StringView("Folder") || readerName == QLatin1String("CalendarFolder") || readerName == QLatin1String("ContactsFolder")
-        || readerName == QLatin1StringView("TasksFolder") || readerName == QLatin1String("SearchFolder")) {
+    if (readerName == QLatin1StringView("Folder") || readerName == QLatin1StringView("CalendarFolder") || readerName == QLatin1StringView("ContactsFolder")
+        || readerName == QLatin1StringView("TasksFolder") || readerName == QLatin1StringView("SearchFolder")) {
         folder = new EwsFolder(reader);
         if (!folder->isValid()) {
             setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.").arg(QStringLiteral("Folder")));

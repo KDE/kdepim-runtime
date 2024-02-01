@@ -99,7 +99,7 @@ private Q_SLOTS:
         QTest::newRow("retrieval from read-only mailbox (no expunge)") << collection << scenario << callNames;
 
         Akonadi::CachePolicy policy;
-        policy.setLocalParts(QStringList() << QLatin1StringView(Akonadi::MessagePart::Envelope) << QLatin1String(Akonadi::MessagePart::Header)
+        policy.setLocalParts(QStringList() << QLatin1StringView(Akonadi::MessagePart::Envelope) << QLatin1StringView(Akonadi::MessagePart::Header)
                                            << QLatin1StringView(Akonadi::MessagePart::Body));
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
@@ -601,7 +601,7 @@ private Q_SLOTS:
             QString command = QString::fromUtf8(state->calls().at(i).first);
             QVariant parameter = state->calls().at(i).second;
 
-            if (command == QLatin1StringView("cancelTask") && callNames[i] != QLatin1String("cancelTask")) {
+            if (command == QLatin1StringView("cancelTask") && callNames[i] != QLatin1StringView("cancelTask")) {
                 qDebug() << "Got a cancel:" << parameter.toString();
             }
 

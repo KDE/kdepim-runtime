@@ -136,11 +136,11 @@ void ItemFetchTest::testListingMaildir()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QLatin1String("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QLatin1String("collection2")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir-tagged"), topDir.path(), QLatin1String("collection3")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("dimap"), topDir.path(), QLatin1String("collection4")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir-tagged"), topDir.path(), QLatin1String("collection5")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QLatin1StringView("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QLatin1StringView("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir-tagged"), topDir.path(), QLatin1StringView("collection3")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("dimap"), topDir.path(), QLatin1StringView("collection4")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir-tagged"), topDir.path(), QLatin1StringView("collection5")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
@@ -516,11 +516,11 @@ void ItemFetchTest::testListingMBox()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QLatin1String("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QLatin1String("collection2")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox-tagged"), topDir.path(), QLatin1String("collection3")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox-unpurged"), topDir.path(), QLatin1String("collection4")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox-tagged"), topDir.path(), QLatin1String("collection5")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QLatin1StringView("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QLatin1StringView("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox-tagged"), topDir.path(), QLatin1StringView("collection3")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox-unpurged"), topDir.path(), QLatin1StringView("collection4")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox-tagged"), topDir.path(), QLatin1StringView("collection5")));
 
     QFileInfo fileInfo1(topDir.path(), QLatin1StringView("collection1"));
     MBox mbox1;
@@ -905,7 +905,7 @@ void ItemFetchTest::testSingleItemFetchMaildir()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QLatin1String("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("maildir"), topDir.path(), QLatin1StringView("collection1")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
@@ -1034,7 +1034,7 @@ void ItemFetchTest::testSingleItemFetchMBox()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QLatin1String("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1StringView("mbox"), topDir.path(), QLatin1StringView("collection1")));
     // one message has no body
     const QByteArray messageIdOfEmptyBodyMsg = "201007241551.37547.kevin.krammer@demo.kolab.org";
 

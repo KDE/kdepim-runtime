@@ -519,7 +519,7 @@ bool ImapResourceBase::needsNetwork() const
 {
     const QString hostName = settings()->imapServer().section(QLatin1Char(':'), 0, 0);
     // ### is there a better way to do this?
-    if (hostName == QLatin1StringView("127.0.0.1") || hostName == QLatin1String("localhost") || hostName == QHostInfo::localHostName()) {
+    if (hostName == QLatin1StringView("127.0.0.1") || hostName == QLatin1StringView("localhost") || hostName == QHostInfo::localHostName()) {
         return false;
     }
     return true;

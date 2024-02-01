@@ -79,7 +79,7 @@ private Q_SLOTS:
         QTRY_COMPARE(state->calls().count(), 1);
 
         QString command = QString::fromUtf8(state->calls().first().first);
-        if (command == QLatin1StringView("cancelTask") && callName != QLatin1String("cancelTask")) {
+        if (command == QLatin1StringView("cancelTask") && callName != QLatin1StringView("cancelTask")) {
             qDebug() << "Got a cancel:" << state->calls().first().second.toString();
         }
         QCOMPARE(command, callName);

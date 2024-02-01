@@ -388,7 +388,7 @@ void O1::onTokenExchangeFinished()
     // Get access token and secret
     QByteArray data = reply->readAll();
     QMap<QString, QString> response = parseResponse(data);
-    if (response.contains(QLatin1StringView(O2_OAUTH_TOKEN)) && response.contains(QLatin1String(O2_OAUTH_TOKEN_SECRET))) {
+    if (response.contains(QLatin1StringView(O2_OAUTH_TOKEN)) && response.contains(QLatin1StringView(O2_OAUTH_TOKEN_SECRET))) {
         setToken(response.take(QLatin1StringView(O2_OAUTH_TOKEN)));
         setTokenSecret(response.take(QLatin1StringView(O2_OAUTH_TOKEN_SECRET)));
         // Set extra tokens if any

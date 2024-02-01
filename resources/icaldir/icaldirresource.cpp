@@ -102,7 +102,7 @@ bool ICalDirResource::loadIncidences()
     QDirIterator it(iCalDirectoryName());
     while (it.hasNext()) {
         it.next();
-        if (it.fileName() != QLatin1StringView(".") && it.fileName() != QLatin1String("..") && it.fileName() != QLatin1String("WARNING_README.txt")) {
+        if (it.fileName() != QLatin1StringView(".") && it.fileName() != QLatin1StringView("..") && it.fileName() != QLatin1StringView("WARNING_README.txt")) {
             const KCalendarCore::Incidence::Ptr incidence = readFromFile(it.filePath(), it.fileName());
             if (incidence) {
                 mIncidences.insert(incidence->instanceIdentifier(), incidence);

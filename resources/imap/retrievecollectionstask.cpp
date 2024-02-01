@@ -49,7 +49,7 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
     }
 
     QStringList localParts;
-    localParts << QLatin1StringView(Akonadi::MessagePart::Envelope) << QLatin1String(Akonadi::MessagePart::Header);
+    localParts << QLatin1StringView(Akonadi::MessagePart::Envelope) << QLatin1StringView(Akonadi::MessagePart::Header);
     int cacheTimeout = 60;
 
     if (isDisconnectedModeEnabled()) {

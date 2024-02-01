@@ -27,7 +27,7 @@ static const QString xmlMsgNsUri = QStringLiteral("http://schemas.microsoft.com/
 static const QString xmlTypeNsUri = QStringLiteral("http://schemas.microsoft.com/exchange/services/2006/types");
 
 static const QString xmlHead = QStringLiteral("<?xml version=\"1.0\"?>");
-static const QString xmlDocHead = xmlHead + QLatin1StringView("<Test xmlns=\"") + xmlTypeNsUri + QLatin1String("\">");
+static const QString xmlDocHead = xmlHead + QLatin1StringView("<Test xmlns=\"") + xmlTypeNsUri + QLatin1StringView("\">");
 static const QString xmlDocTail = QStringLiteral("</Test><Test2/>");
 static const QString xmlItemAttHead = xmlDocHead + QStringLiteral("<ItemAttachment>");
 static const QString xmlItemAttTail = QLatin1StringView("</ItemAttachment>") + xmlDocTail;
@@ -178,7 +178,7 @@ void UtEwsAttachment::read_data()
     QTest::addColumn<bool>("hasItem");
     QTest::addColumn<EwsItem>("item");
 
-    QTest::newRow("invalid namespace") << xmlDocHead + QLatin1StringView("<FileAttachment xmlns=\"") + xmlMsgNsUri + QLatin1String("\" />") + xmlDocTail
+    QTest::newRow("invalid namespace") << xmlDocHead + QLatin1StringView("<FileAttachment xmlns=\"") + xmlMsgNsUri + QLatin1StringView("\" />") + xmlDocTail
                                        << false << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString() << false
                                        << QString() << false << QString() << false << 0l << false << QDateTime() << false << false << false << false << false
                                        << QByteArray() << false << EwsItem();
