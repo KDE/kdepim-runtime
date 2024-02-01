@@ -78,7 +78,8 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     mUi = new Ui::SetupServerView;
     mUi->setupUi(mainWidget);
     mUi->accountName->setText(parentResource->name());
-    mUi->passwordEdit->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
+    mUi->passwordEdit->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
+                                                                                                                : KPassword::RevealMode::Never);
 
     mSubWidget = new EwsSubscriptionWidget(client, mSettings.data(), this);
     mUi->subscriptionTabLayout->addWidget(mSubWidget);

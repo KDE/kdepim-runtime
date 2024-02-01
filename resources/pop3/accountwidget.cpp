@@ -80,7 +80,8 @@ void AccountWidget::setupWidgets()
 
     setupUi(page);
 
-    passwordEdit->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
+    passwordEdit->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
+                                                                                                           : KPassword::RevealMode::Never);
 
     // only letters, digits, '-', '.', ':' (IPv6) and '_' (for Windows
     // compatibility) are allowed

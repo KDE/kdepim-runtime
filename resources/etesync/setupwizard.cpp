@@ -77,7 +77,8 @@ LoginPage::LoginPage(QWidget *parent)
     registerField(QStringLiteral("credentialsUserName*"), mUserName);
 
     mPassword = new KPasswordLineEdit(this);
-    mPassword->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
+    mPassword->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
+                                                                                                        : KPassword::RevealMode::Never);
     layout->addRow(i18n("Password:"), mPassword);
     registerField(QStringLiteral("credentialsPassword*"), mPassword, "password", SIGNAL(passwordChanged(QString)));
 

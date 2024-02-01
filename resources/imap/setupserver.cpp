@@ -128,8 +128,10 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     mainLayout->addWidget(buttonBox);
 
     m_ui->setupUi(mainWidget);
-    m_ui->password->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
-    m_ui->customPassword->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
+    m_ui->password->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
+                                                                                                             : KPassword::RevealMode::Never);
+    m_ui->customPassword->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
+                                                                                                                   : KPassword::RevealMode::Never);
     KLineEditEventHandler::catchReturnKey(m_ui->accountName);
     KLineEditEventHandler::catchReturnKey(m_ui->imapServer);
     KLineEditEventHandler::catchReturnKey(m_ui->userName);

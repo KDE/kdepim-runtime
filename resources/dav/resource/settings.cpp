@@ -480,7 +480,8 @@ QString Settings::promptForPassword(const QString &user)
     label = new QLabel(i18n("Password: "), mainWidget);
     hLayout->addWidget(label);
     auto lineEdit = new KPasswordLineEdit();
-    lineEdit->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
+    lineEdit->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
+                                                                                                       : KPassword::RevealMode::Never);
     hLayout->addWidget(lineEdit);
     vLayout->addLayout(hLayout);
     lineEdit->setFocus();
