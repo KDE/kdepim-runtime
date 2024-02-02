@@ -152,27 +152,34 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: daverror-kdepim-runtime.cpp:26
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Invalid username/password"
 msgid "Invalid username/password"
 msgstr "Ungültiger Benutzername/Passwort"
 
 #: daverror-kdepim-runtime.cpp:28
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Access forbidden"
 msgid "Access forbidden"
 msgstr "Zugriff unzulässig"
 
 #: daverror-kdepim-runtime.cpp:30
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Resource not found"
 msgid "Resource not found"
 msgstr "Die Ressource wurde nicht gefunden"
 
 #: daverror-kdepim-runtime.cpp:32
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "HTTP error"
 msgid "HTTP error"
 msgstr "HTTP-Fehler"
 
 #: daverror-kdepim-runtime.cpp:35
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "There was a problem with the request.\n"
+#| "%1 (%2)."
 msgid ""
 "There was a problem with the request.\n"
 "%1 (%2)."
@@ -181,12 +188,16 @@ msgstr ""
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:41
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Protocol for the collection does not support MULTIGET"
 msgid "Protocol for the collection does not support MULTIGET"
 msgstr "Das Protokoll für die Sammlung unterstützt MULTIGET nicht."
 
 #: daverror-kdepim-runtime.cpp:44
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server encountered an error that prevented it from completing your "
+#| "request: %1 (%2)"
 msgid ""
 "The server encountered an error that prevented it from completing your "
 "request: %1 (%2)"
@@ -195,7 +206,11 @@ msgstr ""
 "Abfrage verhindert: %1 (%2)"
 
 #: daverror-kdepim-runtime.cpp:48
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "There was a problem with the request. The collection has not been deleted "
+#| "from the server.\n"
+#| "%1 (%2)."
 msgid ""
 "There was a problem with the request. The collection has not been deleted "
 "from the server.\n"
@@ -206,22 +221,29 @@ msgstr ""
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:54
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Invalid responses from backend"
 msgid "Invalid responses from backend"
 msgstr "Ungültige Antwort des Treibers"
 
 #: daverror-kdepim-runtime.cpp:57
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Error setting focus for XQuery"
 msgid "Error setting focus for XQuery"
 msgstr "Fehler beim Bestimmen des Fokus für XQuery"
 
 #: daverror-kdepim-runtime.cpp:60
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Invalid XQuery submitted by DAV implementation"
 msgid "Invalid XQuery submitted by DAV implementation"
 msgstr "DAV-Implementation hat ungültige XQuery übermittelt"
 
 #: daverror-kdepim-runtime.cpp:64
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "There was a problem with the request. The collection has not been "
+#| "modified on the server.\n"
+#| "%1 (%2)."
 msgid ""
 "There was a problem with the request. The collection has not been modified "
 "on the server.\n"
@@ -232,18 +254,24 @@ msgstr ""
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:70
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No properties to change or remove"
 msgid "No properties to change or remove"
 msgstr ""
 "Keine Eigenschaften vorhanden, die verändert oder gelöscht werden können."
 
 #: daverror-kdepim-runtime.cpp:73
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "There was an error when modifying the properties"
 msgid "There was an error when modifying the properties"
 msgstr "Problem beim Anpassen der Eigenschaften"
 
 #: daverror-kdepim-runtime.cpp:75
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "\n"
+#| "The server returned more information:\n"
+#| "%1"
 msgid ""
 "\n"
 "The server returned more information:\n"
@@ -254,7 +282,11 @@ msgstr ""
 "%1"
 
 #: daverror-kdepim-runtime.cpp:80
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "There was a problem with the request. The item has not been created on "
+#| "the server.\n"
+#| "%1 (%2)."
 msgid ""
 "There was a problem with the request. The item has not been created on the "
 "server.\n"
@@ -265,7 +297,11 @@ msgstr ""
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:87
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "There was a problem with the request. The item has not been deleted from "
+#| "the server.\n"
+#| "%1 (%2)."
 msgid ""
 "There was a problem with the request. The item has not been deleted from the "
 "server.\n"
@@ -276,7 +312,11 @@ msgstr ""
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:94
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "There was a problem with the request. The item was not modified on the "
+#| "server.\n"
+#| "%1 (%2)."
 msgid ""
 "There was a problem with the request. The item was not modified on the "
 "server.\n"
@@ -287,12 +327,16 @@ msgstr ""
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:100
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "There was a problem with the request."
 msgid "There was a problem with the request."
 msgstr "Bei der Abfrage ist ein Problem aufgetreten"
 
 #: daverror-kdepim-runtime.cpp:104
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "There was a problem with the request. The requested MIME types are not "
+#| "supported."
 msgid ""
 "There was a problem with the request. The requested MIME types are not "
 "supported."
