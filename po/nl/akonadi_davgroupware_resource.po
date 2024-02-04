@@ -4,7 +4,7 @@
 #
 # Freek de Kruijf <freekdekruijf@kde.nl>, 2009, 2010, 2011.
 # Hannie Lafeber-Dumoleyn <hannie@kde.nl>, 2010.
-# Freek de Kruijf <f.de.kruijf@gmail.com>, 2011, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021.
+# Freek de Kruijf <freekdekruijf@kde.nl>, 2011, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
