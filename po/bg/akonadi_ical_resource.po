@@ -86,6 +86,3 @@ msgstr "Невъзможно извличане на добавен елемен
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Невъзможно извличане на променен елемент %1."
-
-#~ msgid "Filename:"
-#~ msgstr "Име на файл:"

@@ -422,6 +422,3 @@ msgstr "Промяна на списъка със задачи \"%1\""
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "Премахване на списъка със задачи \"%1\""
-
-#~ msgid "Configured account does not exist"
-#~ msgstr "Конфигурираният акаунт не съществува"

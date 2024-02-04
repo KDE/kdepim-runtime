@@ -165,6 +165,3 @@ msgstr "Път до директорията с контакти"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Без промяна на действителните данни на бекенда."
-
-#~ msgid "Filename:"
-#~ msgstr "Име на файл:"

@@ -340,6 +340,3 @@ msgstr "Заключващ файл"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Брой на изтритите съобщения, преди да се започне прочистване."
-
-#~ msgid "URL:"
-#~ msgstr "URL-адрес:"

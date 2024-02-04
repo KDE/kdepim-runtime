@@ -70,6 +70,3 @@ msgstr "Периодично актуализиране на файла."
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "Интервал на автоматично обновяване в минути."
-
-#~ msgid "Filename:"
-#~ msgstr "Име на файл:"
