@@ -1,33 +1,32 @@
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+#
+# SPDX-FileCopyrightText: 2024 Kristof Kiszel <ulysses@fsf.hu>
 msgid ""
 msgstr ""
-"Project-Id-Version: kdeorg\n"
+"Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-05-26 00:47+0000\n"
-"PO-Revision-Date: 2024-02-05 11:37\n"
-"Last-Translator: \n"
-"Language-Team: Chinese Simplified\n"
-"Language: zh_CN\n"
+"PO-Revision-Date: 2024-02-05 22:33+0100\n"
+"Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
+"Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
+"Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: kdeorg\n"
-"X-Crowdin-Project-ID: 269464\n"
-"X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf6-trunk/messages/kdepim-runtime/"
-"akonadi_tomboynotes_resource.pot\n"
-"X-Crowdin-File-ID: 45519\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 23.08.4\n"
 
 #: tomboyitemuploadjob.cpp:107 tomboyitemuploadjob.cpp:113
 #, kde-format
 msgid "Sync error. Server status not as expected."
-msgstr "同步错误。意料之外的服务器状态。"
+msgstr "Szinkronizálási hiba. A kiszolgáló állapota nem a vártnak megfelelő."
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, TomboyNotesAgentConfigWidget)
 #: tomboynotesagentconfigwidget.ui:14
 #, kde-format
 msgid "Tomboy Server Settings"
-msgstr "Tomboy 服务器设置"
+msgstr "Tomboy kiszolgáló beállításai"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: tomboynotesagentconfigwidget.ui:36
@@ -39,122 +38,122 @@ msgstr "Tomboy"
 #: tomboynotesagentconfigwidget.ui:42
 #, kde-format
 msgid "Display name:"
-msgstr "显示名："
+msgstr "Megjelenített név:"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: tomboynotesagentconfigwidget.ui:56
 #, kde-format
 msgid "Type in the server URL:"
-msgstr "输入服务器 URL："
+msgstr "Írja be a kiszolgáló URL-címét:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, kcfg_ServerURL)
 #: tomboynotesagentconfigwidget.ui:63
 #, kde-format
 msgid "This value is not changeable after first setup"
-msgstr "此值一旦设置，就无法再修改"
+msgstr "Ez az érték nem változtatható meg a kezdeti beállítás után"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: tomboynotesagentconfigwidget.ui:76
 #, kde-format
 msgid "Update interval:"
-msgstr "更新间隔："
+msgstr "Frissítési időköz:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: tomboynotesagentconfigwidget.ui:86
 #, kde-format
 msgid "minutes"
-msgstr "分"
+msgstr "perc"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: tomboynotesagentconfigwidget.ui:96
 #, kde-format
 msgid "Open in read-only mode"
-msgstr "以只读模式打开"
+msgstr "Megnyitás csak olvasható módban"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ignoreSslErrors)
 #: tomboynotesagentconfigwidget.ui:103
 #, kde-format
 msgid "Ignore SSL errors"
-msgstr "忽略 SSL 错误"
+msgstr "SSL-hibák figyelmen kívül hagyása"
 
 #: tomboynotesconfigwidget.cpp:48
 #, kde-format
 msgid "Tomboy Notes %1"
-msgstr "Tomboy 笔记 %1"
+msgstr "Tomboy jegyzetek %1"
 
 #: tomboynotesresource.cpp:61 tomboynotesresource.cpp:82
 #: tomboynotesresource.cpp:101
 #, kde-format
 msgid "Resource configuration is not valid"
-msgstr "资源配置无效"
+msgstr "Az erőforrás beállítás nem érvényes"
 
 #: tomboynotesresource.cpp:227 tomboynotesresource.cpp:248
 #: tomboynotesresource.cpp:268
 #, kde-format
 msgid "Resource is read-only"
-msgstr "资源是只读的"
+msgstr "Az erőforrás csak olvasható"
 
 #. i18n: ectx: label, entry (collectionName), group (General)
 #: tomboynotesresource.kcfg:10
 #, kde-format
 msgid "The display name of this resource"
-msgstr "资源的显示名称"
+msgstr "Az erőforrás megjelenített neve"
 
 #. i18n: ectx: label, entry (ServerURL), group (General)
 #: tomboynotesresource.kcfg:14
 #, kde-format
 msgid "The URL to the Tomboy sync server"
-msgstr "Tomboy 同步服务器 URL"
+msgstr "A Tomboy szinkronizációs kiszolgáló URL-címe"
 
 #. i18n: ectx: label, entry (contentURL), group (General)
 #: tomboynotesresource.kcfg:18
 #, kde-format
 msgid "The URL to the notes on the Tomboy sync server"
-msgstr "Tomboy 同步服务器上的笔记的 URL"
+msgstr "A jegyzetek URL-címe a Tomboy szinkronizációs kiszolgálón"
 
 #. i18n: ectx: label, entry (userURL), group (General)
 #: tomboynotesresource.kcfg:22
 #, kde-format
 msgid "The URL to the user data on the Tomboy sync server"
-msgstr "Tomboy 同步服务器上的用户数据的 URL"
+msgstr "A felhasználói adatok URL-címe a Tomboy szinkronizációs kiszolgálón"
 
 #. i18n: ectx: label, entry (requestToken), group (General)
 #: tomboynotesresource.kcfg:26
 #, kde-format
 msgid "The request token to the Tomboy sync server"
-msgstr "Tomboy 同步服务器的请求令牌"
+msgstr "A kérelemtoken a Tomboy szinkronizációs kiszolgálóhoz"
 
 #. i18n: ectx: label, entry (requestTokenSecret), group (General)
 #: tomboynotesresource.kcfg:30
 #, kde-format
 msgid "The request token secret to the Tomboy sync server"
-msgstr "Tomboy 同步服务器的请求令牌密钥"
+msgstr "A kérelemtoken titkos értéke a Tomboy szinkronizációs kiszolgálóhoz"
 
 #. i18n: ectx: label, entry (ConflictHandling), group (General)
 #: tomboynotesresource.kcfg:34
 #, kde-format
 msgid "The way how conflicts should be handled"
-msgstr "如何处理冲突"
+msgstr "A konfliktusok kezelési módja"
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: tomboynotesresource.kcfg:38
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "不更改实际后端数据。"
+msgstr "A jelenlegi háttérprogramadat változatlanul hagyása."
 
 #. i18n: ectx: label, entry (ignoreSslErrors), group (General)
 #: tomboynotesresource.kcfg:42
 #, kde-format
 msgid "Ignore SSL errors."
-msgstr "忽略 SSL 错误。"
+msgstr "SSL-hibák figyelmen kívül hagyása."
 
 #. i18n: ectx: label, entry (refreshInterval), group (General)
 #: tomboynotesresource.kcfg:46
 #, kde-format
 msgid "Refresh every"
-msgstr "刷新间隔"
+msgstr "Frissítési időköz"
 
 #: tomboyserverauthenticatejob.cpp:58
 #, kde-format
 msgid "Authorization failed. It could be an SSL error."
-msgstr "身份验证失败。可能是 SSL 错误。"
+msgstr "Sikertelen hitelesítés. Lehet egy SSL-hiba is."
