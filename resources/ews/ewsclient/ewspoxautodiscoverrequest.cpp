@@ -46,6 +46,7 @@ void EwsPoxAutodiscoverRequest::prepare(const QString &body)
     KIO::TransferJob *job = KIO::http_post(mUrl, body.toUtf8(), KIO::HideProgressInfo);
     job->addMetaData(QStringLiteral("content-type"), QStringLiteral("text/xml"));
     job->addMetaData(QStringLiteral("no-auth-prompt"), QStringLiteral("true"));
+    job->addMetaData(QStringLiteral("HttpVersion"), QStringLiteral("http1"));
     if (mUseNTLMv2) {
         job->addMetaData(QStringLiteral("EnableNTLMv2Auth"), QStringLiteral("true"));
     }
