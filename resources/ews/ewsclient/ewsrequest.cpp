@@ -77,6 +77,7 @@ void EwsRequest::prepare(const QString &body)
 
     KIO::TransferJob *job = KIO::http_post(url, body.toUtf8(), KIO::HideProgressInfo);
     job->addMetaData(QStringLiteral("content-type"), QStringLiteral("text/xml"));
+    job->addMetaData(QStringLiteral("HttpVersion"), QStringLiteral("http1"));
     if (!mClient.userAgent().isEmpty()) {
         job->addMetaData(QStringLiteral("UserAgent"), mClient.userAgent());
     }
