@@ -9,6 +9,7 @@
 #include "ewspoxautodiscoverrequest.h"
 #include "ewsresource_debug.h"
 
+#include <KIO/Global>
 #include <KLocalizedString>
 
 EwsAutodiscoveryJob::EwsAutodiscoveryJob(const QString &email,
@@ -87,7 +88,8 @@ void EwsAutodiscoveryJob::autodiscoveryRequestFinished(KJob *job)
     }
 
     if (req->error()) {
-        if (req->error() == 401 && !mUsedCreds && req->lastHttpUrl().scheme() != QLatin1String("http")) { // Don't try authentication over HTTP
+        if (req->error() == KIO::ERR_ACCESS_DENIED && !mUsedCreds
+            && req->lastHttpUrl().scheme() != QLatin1StringView("http")) { // Don't try authentication over HTTP
             /* The 401 error may have come from an URL different to the original one (due to
              * redirections). When the original URL is retried with credentials KIO HTTP will issue
              * a warning that an authenticated request is made to a host that never asked for it.
