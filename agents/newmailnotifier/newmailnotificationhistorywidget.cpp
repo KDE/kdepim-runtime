@@ -26,12 +26,11 @@ NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *pare
     mainLayout->setContentsMargins({});
 
     mEnabledHistory->setObjectName(QLatin1StringView("mEnabledHistory"));
+    mainLayout->addWidget(mEnabledHistory);
+    connect(mEnabledHistory, &QCheckBox::clicked, this, &NewMailNotificationHistoryWidget::slotEnableChanged);
 
     mTextBrowser->setObjectName(QLatin1StringView("mTextBrowser"));
     mainLayout->addWidget(mTextBrowser);
-
-    mainLayout->addWidget(mEnabledHistory);
-    connect(mEnabledHistory, &QCheckBox::clicked, this, &NewMailNotificationHistoryWidget::slotEnableChanged);
 
     connect(NewMailNotificationHistoryManager::self(),
             &NewMailNotificationHistoryManager::historyAdded,
