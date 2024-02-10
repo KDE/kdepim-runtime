@@ -7,13 +7,13 @@
 # obsoleteman <tulliana@gmail.com>, 2009,2012.
 # Volkan Gezer <volkangezer@gmail.com>, 2013-2014, 2015.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
+# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2023-11-14 19:45+0300\n"
+"PO-Revision-Date: 2024-02-09 17:46+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.11.70\n"
+"X-Generator: Lokalize 24.01.95\n"
 "X-POOTLE-MTIME: 1413104452.000000\n"
 
 #: accountwidget.cpp:88
@@ -266,7 +266,7 @@ msgid ""
 msgstr ""
 "POP3 sunucunuz TLS desteklediğini iddia ediyor; ancak pazarlık başarısız "
 "oldu.\n"
-"POP hesap ayarları penceresinde TLS'yi devre dışı bırakabilirsiniz."
+"POP hesap ayarları penceresinde TLS’yi devre dışı bırakabilirsiniz."
 
 #: pop3protocol.cpp:734
 #, kde-format
@@ -812,21 +812,21 @@ msgstr ""
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
 "\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; font-"
+"</style></head><body style=\" font-family:’Noto Sans’; font-size:10pt; font-"
 "weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"family:'Sans Serif'; font-weight:600;\">SSL/TLS</span><span style=\" font-"
-"family:'Sans Serif';\">, 995 numaralı kapıdan güvenli POP'tur;</span></p>\n"
+"family:’Sans Serif’; font-weight:600;\">SSL/TLS</span><span style=\" font-"
+"family:’Sans Serif’;\">, 995 numaralı kapıdan güvenli POP’tur;</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"family:'Sans Serif'; font-weight:600;\">STARTTLS</span><span style=\" font-"
-"family:'Sans Serif';\">, 110 numaralı kapıdan işleyecektir ve bağlantıdan "
+"family:’Sans Serif’; font-weight:600;\">STARTTLS</span><span style=\" font-"
+"family:’Sans Serif’;\">, 110 numaralı kapıdan işleyecektir ve bağlantıdan "
 "sonra güvenli bir bağlantıya geçer;</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"family:'Sans Serif'; font-weight:600;\">Hiçbiri</span><span style=\" font-"
-"family:'Sans Serif';\">, 110 numaralı kapıya bağlanacaktır; ancak "
+"family:’Sans Serif’; font-weight:600;\">Hiçbiri</span><span style=\" font-"
+"family:’Sans Serif’;\">, 110 numaralı kapıya bağlanacaktır; ancak "
 "bağlantıdan sonra güvenli bir bağlantıya geçmez. Bu ayar önerilmez.</span></"
 "p></body></html>"
 

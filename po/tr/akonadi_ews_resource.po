@@ -1,13 +1,13 @@
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
+# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-01-18 00:37+0000\n"
-"PO-Revision-Date: 2023-02-08 19:15+0300\n"
+"PO-Revision-Date: 2024-02-09 17:46+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.12.2\n"
+"X-Generator: Lokalize 24.01.95\n"
 
 #: ewsautodiscoveryjob.cpp:44 ewsautodiscoveryjob.cpp:51
 #, kde-format
@@ -366,13 +366,13 @@ msgstr "EWS Ayarları"
 #: ewsconfigdialog.ui:250
 #, kde-format
 msgid "EWS URL:"
-msgstr "EWS URL'si:"
+msgstr "EWS URL’si:"
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_BaseUrl)
 #: ewsconfigdialog.ui:263
 #, kde-format
 msgid "The Microsoft Exchange server URL used to send EWS requests."
-msgstr "EWS istekleri göndermede kullanılan Microsoft Exchange sunucu URL'si."
+msgstr "EWS istekleri göndermede kullanılan Microsoft Exchange sunucu URL’si."
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_AutoDiscovery)
 #: ewsconfigdialog.ui:285
@@ -420,8 +420,8 @@ msgstr ""
 "<html><head/><body><p>Özel Anahtar (PKey) Kimlik Doğrulaması, OAuth2 tabanlı "
 "kimlik doğrulamaya ek olarak kullanılan bir kimilk doğrulama yöntemidir. "
 "Güvenilir aygıtları tanımlayan ve bir Workplace Join kullanarak Azure "
-"Directory'e katılmış bir X.509 sertifikası kullanır.</p><p>Bazı yöneticiler, "
-"kurumsal ağın dışından Office 365'e bağlanırken PKey kimlik doğrulama "
+"Directory’e katılmış bir X.509 sertifikası kullanır.</p><p>Bazı yöneticiler, "
+"kurumsal ağın dışından Office 365’e bağlanırken PKey kimlik doğrulama "
 "yönteminin kullanılmasını zorunlu tutabilirler. Diğer durumlarda, çok adımlı "
 "kimlik doğrulama ayarlanmışsa PKey kimlik doğrulaması güçlü kimlik doğrulama "
 "gereksinimlerini yerine getirebilir; bu durumda çok aşamalı kimlik doğrulama "
@@ -540,7 +540,7 @@ msgstr ""
 #: ewsconfigdialog.ui:495
 #, kde-format
 msgid "Enable NTLMv2"
-msgstr "NTLMv2'yi etkinleştir"
+msgstr "NTLMv2’yi etkinleştir"
 
 #. i18n: ectx: property (whatsThis), widget (QGroupBox, userAgentGroupBox)
 #: ewsconfigdialog.ui:505
@@ -582,7 +582,7 @@ msgid ""
 "items or folders are not showing up despite existing in Exchange."
 msgstr ""
 "Exchange ve Akonadi arasındaki eşzamanlama durumunu sıfırlar. Kimi ögelerin "
-"veya dizinlerin, Exchange'de görünmesine karşın kayıp olması durumunda "
+"veya dizinlerin, Exchange’de görünmesine karşın kayıp olması durumunda "
 "kullanın."
 
 #. i18n: ectx: property (text), widget (QPushButton, clearFolderTreeSyncStateButton)
@@ -752,7 +752,7 @@ msgstr "Microsoft Exchange sunucusu otomatik algılaması gerçekleştiriliyor..
 #, kde-format
 msgctxt "@title:window"
 msgid "Connecting to Exchange"
-msgstr "Exchange'a Bağlanıyor"
+msgstr "Exchange’a Bağlanıyor"
 
 #: ewsprogressdialog.cpp:53
 #, kde-format
@@ -1067,7 +1067,7 @@ msgstr "Hazır"
 #: ewsresource.kcfg:10
 #, kde-format
 msgid "Server URL"
-msgstr "Sunucu URL'si"
+msgstr "Sunucu URL’si"
 
 #. i18n: ectx: tooltip, entry (BaseUrl), group (General)
 #. i18n: ectx: whatsthis, entry (BaseUrl), group (General)
@@ -1077,7 +1077,7 @@ msgid ""
 "The URL of the Microsoft Exchange server, should be something like https://"
 "myserver.org/EWS/Exchange.asmx"
 msgstr ""
-"Microsoft Exchange sunucusunun URL'si; şunun gibi bir şey olmalıdır: https://"
+"Microsoft Exchange sunucusunun URL’si; şunun gibi bir şey olmalıdır: https://"
 "myserver.org/EWS/Exchange.asmx"
 
 #. i18n: ectx: label, entry (Username), group (General)
@@ -1196,7 +1196,7 @@ msgstr "OAuth2 uygulama tanımlayıcısı"
 #: ewsresource.kcfg:69
 #, kde-format
 msgid "OAuth2 return URI"
-msgstr "OAuth2 dönüş URI'si"
+msgstr "OAuth2 dönüş URI’si"
 
 #. i18n: ectx: label, entry (PKeyCert), group (General)
 #: ewsresource.kcfg:73

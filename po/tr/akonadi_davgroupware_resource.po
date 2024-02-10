@@ -5,13 +5,13 @@
 # obsoleteman <tulliana@gmail.com>, 2009,2012.
 # Volkan Gezer <volkangezer@gmail.com>, 2014, 2015, 2017.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
+# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-01-04 01:34+0000\n"
-"PO-Revision-Date: 2023-11-11 23:31+0300\n"
+"PO-Revision-Date: 2024-02-09 17:46+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.11.70\n"
+"X-Generator: Lokalize 24.01.95\n"
 "X-POOTLE-MTIME: 1413102278.000000\n"
 
 #: configdialog.cpp:33
@@ -184,7 +184,7 @@ msgstr ""
 #: daverror-kdepim-runtime.cpp:41
 #, kde-format
 msgid "Protocol for the collection does not support MULTIGET"
-msgstr "Koleksiyon için olan protokol MULTIGET'i desteklemiyor"
+msgstr "Koleksiyon için olan protokol MULTIGET’i desteklemiyor"
 
 #: daverror-kdepim-runtime.cpp:44
 #, kde-format
@@ -403,7 +403,7 @@ msgstr "Yenileme sıklığı"
 #: davgroupwareresource.kcfg:22
 #, kde-format
 msgid "Remote URLs"
-msgstr "Uzak URL'ler"
+msgstr "Uzak URL’ler"
 
 #. i18n: ectx: label, entry (defaultUsername), group (General)
 #: davgroupwareresource.kcfg:26
@@ -436,7 +436,7 @@ msgid ""
 "String representation of the mappings between discovered collections and "
 "configured URLs"
 msgstr ""
-"Keşfedilmiş koleksiyonlar ve yapılandırılmış URL'ler arasında eşlemelerin "
+"Keşfedilmiş koleksiyonlar ve yapılandırılmış URL’ler arasında eşlemelerin "
 "dizi gösterimi"
 
 #. i18n: ectx: label, entry (readOnly), group (General)

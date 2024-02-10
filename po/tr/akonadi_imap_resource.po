@@ -5,13 +5,13 @@
 # H. İbrahim Güngör <ibrahim@pardus.org.tr>, 2011.
 # Volkan Gezer <volkangezer@gmail.com>, 2013, 2014, 2015, 2017.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
+# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-01-30 00:37+0000\n"
-"PO-Revision-Date: 2023-11-11 23:31+0300\n"
+"PO-Revision-Date: 2024-02-09 20:03+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.11.70\n"
+"X-Generator: Lokalize 24.01.95\n"
 "X-POOTLE-MTIME: 1413102275.000000\n"
 
 #: addcollectiontask.cpp:33
@@ -64,7 +64,7 @@ msgid ""
 "ACLs for '%1' need to be retrieved from the IMAP server first. Skipping ACL "
 "change"
 msgstr ""
-"'%1' için ACL'lerin önce IMAP sunucusundan alınması gerekmektedir. ACL "
+"‘%1’ için ACL’lerin önce IMAP sunucusundan alınması gerekmektedir. ACL "
 "değişimi atlanıyor"
 
 #: changecollectiontask.cpp:237
@@ -85,7 +85,7 @@ msgstr ""
 #: changecollectiontask.cpp:267
 #, kde-format
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
-msgstr "IMAP sunucusundaki '%1' için bazı ACL'ler yazılamadı. %2"
+msgstr "IMAP sunucusundaki ‘%1’ için bazı ACL’ler yazılamadı. %2"
 
 #: imapresource.cpp:49
 #, kde-format
@@ -184,7 +184,7 @@ msgid ""
 "             also be retrieved when the mailboxes get listed."
 msgstr ""
 "Posta kutuları listelendiğinde, posta kutularının ek açıklamalarının, "
-"ACL'lerinin\n"
+"ACL’lerinin\n"
 "             ve kota bilgilerinin de alınıp alınmayacağını tanımlar."
 
 #. i18n: ectx: label, entry (AutomaticExpungeEnabled), group (cache)
@@ -276,7 +276,7 @@ msgstr "Öntanımlı sieve tatil dosyasının adını tanımla"
 #: imapresource.kcfg:115
 #, kde-format
 msgid "Define username used from custom server sieve url"
-msgstr "Özel sunucu sieve url'sinden kullanılan kullanıcı adını tanımla"
+msgstr "Özel sunucu sieve url’sinden kullanılan kullanıcı adını tanımla"
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
 #: imapresource.kcfg:119
@@ -724,14 +724,14 @@ msgid ""
 "you have to activate it. If you do not want to use KWallet, check the box "
 "below, but note that you will be prompted for your password when needed."
 msgstr ""
-"K Cüzdan'a erişilemedi. Parolayı kalıcı olarak saklamak istiyorsanız onu "
+"K Cüzdan’a erişilemedi. Parolayı kalıcı olarak saklamak istiyorsanız onu "
 "etkinleştirmeniz gerekir. K Cüzdan kullanmak istemiyorsanız aşağıdaki kutuyu "
 "işaretleyin; ancak gerektiğinde şifrenizin isteneceğini unutmayın."
 
 #: setupserver.cpp:413 setupserver.cpp:469
 #, kde-format
 msgid "Do not use KWallet"
-msgstr "K Cüzdan'ı Kullanma"
+msgstr "K Cüzdan’ı Kullanma"
 
 #: setupserver.cpp:534
 #, kde-format

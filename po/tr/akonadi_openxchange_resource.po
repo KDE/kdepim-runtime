@@ -5,13 +5,13 @@
 # H. İbrahim Güngör <ibrahim@pardus.org.tr>, 2011.
 # obsoleteman <tulliana@gmail.com>, 2012.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
+# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-03-24 00:45+0000\n"
-"PO-Revision-Date: 2023-10-06 05:34+0300\n"
+"PO-Revision-Date: 2024-02-09 17:46+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,13 +19,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.11.70\n"
+"X-Generator: Lokalize 24.01.95\n"
 "X-POOTLE-MTIME: 1413102277.000000\n"
 
 #: configwidget.cpp:25
 #, kde-format
 msgid "Enter the http or https URL to your Open-Xchange installation here."
-msgstr "Open-Xchange kurulumunuza http ya da https URL'si girin."
+msgstr "Open-Xchange kurulumunuza http ya da https URL’si girin."
 
 #: configwidget.cpp:26
 #, kde-format
@@ -61,7 +61,7 @@ msgstr "Bağlantı başarılı"
 #: configwidget.ui:29
 #, kde-format
 msgid "Server URL:"
-msgstr "Sunucu URL'si:"
+msgstr "Sunucu URL’si:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, kcfg_BaseUrl)
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_BaseUrl)
@@ -74,7 +74,7 @@ msgid ""
 "The URL of the Open-Xchange server, should be something like https://"
 "myserver.org/"
 msgstr ""
-"Open-Xchange sunucusunun URL'si https://sunucum.org/ gibi bir şey olmalı"
+"Open-Xchange sunucusunun URL’si https://sunucum.org/ gibi bir şey olmalı"
 
 #. i18n: ectx: property (text), widget (QLabel, label_Username)
 #: configwidget.ui:52
@@ -201,7 +201,7 @@ msgstr "Dahili sunucu hatası. Lütfen yöneticinizle balantı kurun."
 #: openxchangeresource.kcfg:10
 #, kde-format
 msgid "Server URL"
-msgstr "Sunucu URL'si"
+msgstr "Sunucu URL’si"
 
 #. i18n: ectx: label, entry (Username), group (General)
 #: openxchangeresource.kcfg:15

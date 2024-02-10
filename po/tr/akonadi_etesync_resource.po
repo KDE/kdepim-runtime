@@ -1,13 +1,13 @@
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
+# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-10-08 00:48+0000\n"
-"PO-Revision-Date: 2023-02-08 19:15+0300\n"
+"PO-Revision-Date: 2024-02-09 17:46+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.12.2\n"
+"X-Generator: Lokalize 24.01.95\n"
 
 #: etesyncresource.cpp:49
 #, kde-format
@@ -54,7 +54,7 @@ msgid ""
 "credentials."
 msgstr ""
 "EteSync kimlik bilgileriniz değiştrilmiş. Bilgilerinizi yeniden girmek için "
-"Tamam'a tıklayın."
+"Tamam’a tıklayın."
 
 #: etesyncresource.cpp:222
 #, kde-format
@@ -96,7 +96,7 @@ msgstr "Bir şeyler ters gitti"
 #: etesyncresource.kcfg:10
 #, kde-format
 msgid "Server URL"
-msgstr "Sunucu URL'si"
+msgstr "Sunucu URL’si"
 
 #. i18n: ectx: tooltip, entry (BaseUrl), group (General)
 #. i18n: ectx: whatsthis, entry (BaseUrl), group (General)
@@ -105,7 +105,7 @@ msgstr "Sunucu URL'si"
 msgid ""
 "The URL of the EteSync server, should be something like https://myserver.org/"
 msgstr ""
-"EteSync sunucusunun URL'si https://myserver.org/ gibi bir şey olmalıdır"
+"EteSync sunucusunun URL’si https://myserver.org/ gibi bir şey olmalıdır"
 
 #. i18n: ectx: label, entry (Username), group (General)
 #: etesyncresource.kcfg:15
@@ -178,7 +178,7 @@ msgid ""
 "Please ensure that the server URL is correct. The URL should start with "
 "http:// or https://."
 msgstr ""
-"Sunucu URL'sinin doğru olduğundan emin olun. URL, http:// veya https:// ile "
+"Sunucu URL’sinin doğru olduğundan emin olun. URL, http:// veya https:// ile "
 "başlamalıdır."
 
 #: setupwizard.cpp:136
@@ -186,10 +186,10 @@ msgstr ""
 msgid ""
 "Could not connect to the server. Please ensure that the server URL is "
 "correct."
-msgstr "Sunucuya bağlanamadı. Sunucu URL'sinin doğru olduğundan emin olun."
+msgstr "Sunucuya bağlanamadı. Sunucu URL’sinin doğru olduğundan emin olun."
 
 #: setupwizard.cpp:138
 #, kde-format
 msgid "EteSync server not found. Please ensure that the server URL is correct."
 msgstr ""
-"EteSync sunucusu bulunamadı. Sunucu URL'sinin doğru olduğundan emin olun."
+"EteSync sunucusu bulunamadı. Sunucu URL’sinin doğru olduğundan emin olun."

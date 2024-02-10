@@ -6,13 +6,13 @@
 # obsoleteman <tulliana@gmail.com>, 2009.
 # Volkan Gezer <volkangezer@gmail.com>, 2013, 2015, 2017.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
+# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-01-04 01:34+0000\n"
-"PO-Revision-Date: 2023-10-06 05:19+0300\n"
+"PO-Revision-Date: 2024-02-09 17:46+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.11.70\n"
+"X-Generator: Lokalize 24.01.95\n"
 "X-POOTLE-MTIME: 1413102277.000000\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
@@ -255,7 +255,7 @@ msgid ""
 "access or when displaying a calendar from remote URL."
 msgstr ""
 "Saltokunur kip etkinse hiçbir değişiklik yazılmayacaktır. Seçilen dosya "
-"yazma erişimini desteklemediğinde veya uzak URL'den bir takvim "
+"yazma erişimini desteklemediğinde veya uzak URL’den bir takvim "
 "görüntülenirken saltokunur kip kendiliğinden etkinleştirilir."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
@@ -274,7 +274,7 @@ msgid ""
 msgstr ""
 "Diğer uygulamalar tarafından yapılan değişiklikler, izleme "
 "etkinleştirildiğinde dosyayı yeniden yükler. Olanaklı olduğunda çakışmaları "
-"önlemek için yedekler oluşturulacaktır. Uzak URL'ler için izleme olanaklı "
+"önlemek için yedekler oluşturulacaktır. Uzak URL’ler için izleme olanaklı "
 "değildir."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
