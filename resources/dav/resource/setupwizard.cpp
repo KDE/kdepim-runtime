@@ -5,6 +5,7 @@
 */
 
 #include "setupwizard.h"
+#include <kwidgetsaddons_version.h>
 
 #include <KAuthorized>
 #include <KDAV/DavCollectionsMultiFetchJob>
@@ -215,7 +216,12 @@ CredentialsPage::CredentialsPage(QWidget *parent)
     layout->addRow(i18n("User:"), mUserName);
     registerField(QStringLiteral("credentialsUserName*"), mUserName);
 
+#if KWIDGETSADDONS_VERSION < QT_VERSION_CHECK(5, 249, 0)
     mPassword->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
+#else
+    mPassword->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
+                                                                                                        : KPassword::RevealMode::Never);
+#endif
     layout->addRow(i18n("Password:"), mPassword);
     registerField(QStringLiteral("credentialsPassword*"), mPassword, "password", SIGNAL(passwordChanged(QString)));
 }

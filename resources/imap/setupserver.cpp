@@ -18,6 +18,8 @@
 #include "setupserver.h"
 #include "folderarchivesettingpage.h"
 #include "imapresource.h"
+#include <kwidgetsaddons_version.h>
+
 #include "serverinfodialog.h"
 #include "settings.h"
 #include <config-imap.h>
@@ -128,8 +130,18 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     mainLayout->addWidget(buttonBox);
 
     m_ui->setupUi(mainWidget);
+#if KWIDGETSADDONS_VERSION < QT_VERSION_CHECK(5, 249, 0)
     m_ui->password->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
+#else
+    m_ui->password->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
+                                                                                                             : KPassword::RevealMode::Never);
+#endif
+#if KWIDGETSADDONS_VERSION < QT_VERSION_CHECK(5, 249, 0)
     m_ui->customPassword->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
+#else
+    m_ui->customPassword->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
+                                                                                                                   : KPassword::RevealMode::Never);
+#endif
     KLineEditEventHandler::catchReturnKey(m_ui->accountName);
     KLineEditEventHandler::catchReturnKey(m_ui->imapServer);
     KLineEditEventHandler::catchReturnKey(m_ui->userName);

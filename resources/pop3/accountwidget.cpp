@@ -10,6 +10,8 @@
 
 // Local includes
 #include "accountwidget.h"
+#include <kwidgetsaddons_version.h>
+
 #include "settings.h"
 #include "settingsadaptor.h"
 
@@ -80,7 +82,12 @@ void AccountWidget::setupWidgets()
 
     setupUi(page);
 
+#if KWIDGETSADDONS_VERSION < QT_VERSION_CHECK(5, 249, 0)
     passwordEdit->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
+#else
+    passwordEdit->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
+                                                                                                           : KPassword::RevealMode::Never);
+#endif
 
     // only letters, digits, '-', '.', ':' (IPv6) and '_' (for Windows
     // compatibility) are allowed

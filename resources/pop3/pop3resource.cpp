@@ -7,6 +7,7 @@
 #include "pop3resource.h"
 #include "jobs.h"
 #include "pop3protocol.h"
+#include <kwidgetsaddons_version.h>
 
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionFetchJob>
@@ -154,7 +155,12 @@ void POP3Resource::walletOpenedForLoading(QKeychain::Job *baseJob)
 void POP3Resource::showPasswordDialog(const QString &queryText)
 {
     QPointer<KPasswordDialog> dlg = new KPasswordDialog(nullptr, KPasswordDialog::ShowUsernameLine);
+#if KWIDGETSADDONS_VERSION < QT_VERSION_CHECK(5, 249, 0)
     dlg->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
+#else
+    dlg->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
+                                                                                                  : KPassword::RevealMode::Never);
+#endif
     dlg->setModal(true);
     dlg->setUsername(mSettings.login());
     dlg->setPassword(mPassword);

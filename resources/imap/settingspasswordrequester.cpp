@@ -6,6 +6,7 @@
 */
 
 #include "settingspasswordrequester.h"
+#include <kwidgetsaddons_version.h>
 
 #include <KLocalizedString>
 #include <KMessageBox>
@@ -149,7 +150,12 @@ QString SettingsPasswordRequester::requestManualAuth(bool *userRejected)
     dlg->setModal(true);
     dlg->setPrompt(i18n("Please enter password for user '%1' on IMAP server '%2'.", m_resource->settings()->userName(), m_resource->settings()->imapServer()));
     dlg->setPassword(m_resource->settings()->password());
+#if KWIDGETSADDONS_VERSION < QT_VERSION_CHECK(5, 249, 0)
     dlg->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
+#else
+    dlg->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
+                                                                                                  : KPassword::RevealMode::Never);
+#endif
     if (dlg->exec()) {
         if (userRejected) {
             *userRejected = false;
