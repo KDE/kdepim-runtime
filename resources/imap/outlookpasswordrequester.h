@@ -13,9 +13,13 @@ namespace KWallet
 class Wallet;
 } // namespace KWallet
 
-class ImapResourceBase;
+namespace MailTransport
+{
 class OutlookOAuthTokenRequester;
 class TokenResult;
+}
+
+class ImapResourceBase;
 
 class OutlookPasswordRequester : public XOAuthPasswordRequester
 {
@@ -28,10 +32,11 @@ public:
     void cancelPasswordRequests() override;
 
 private:
-    void onTokenRequestFinished(KWallet::Wallet *wallet, const TokenResult &result);
-    void storeResultToWallet(KWallet::Wallet *wallet, const TokenResult &result);
+    void onTokenRequestFinished(KWallet::Wallet *wallet, const MailTransport::TokenResult &result);
+    void storeResultToWallet(KWallet::Wallet *wallet, const MailTransport::TokenResult &result);
     QString loadTokenFromKWallet(KWallet::Wallet *wallet, const QString &tokenType);
 
     ImapResourceBase *const mResource;
-    std::unique_ptr<OutlookOAuthTokenRequester> mTokenRequester;
+    std::unique_ptr<MailTransport::OutlookOAuthTokenRequester> mTokenRequester;
+    bool mRequestInProgress = false;
 };

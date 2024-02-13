@@ -50,7 +50,7 @@ PasswordRequester::~PasswordRequester() = default;
 PasswordRequesterInterface *PasswordRequester::requesterImpl()
 {
     const bool isXOAuth = mResource->settings()->authentication() == MailTransport::Transport::EnumAuthenticationType::XOAUTH2;
-    if (!mImpl || (isXOAuth != !!qobject_cast<XOAuthPasswordRequester *>(mImpl))) {
+    if (!mImpl || (isXOAuth && (qobject_cast<XOAuthPasswordRequester *>(mImpl) == nullptr))) {
         if (mImpl) {
             mImpl->disconnect(this);
             mImpl->deleteLater();
