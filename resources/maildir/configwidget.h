@@ -38,5 +38,4 @@ private:
     FolderArchiveSettingPage *mFolderArchiveSettingPage = nullptr;
     Akonadi_Maildir_Resource::MaildirSettings *mSettings = nullptr;
     bool mToplevelIsContainer = false;
-    QPushButton *mOkButton = nullptr;
 };
