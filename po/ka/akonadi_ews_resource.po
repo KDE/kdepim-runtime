@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-18 00:37+0000\n"
+"POT-Creation-Date: 2024-02-13 00:38+0000\n"
 "PO-Revision-Date: 2023-09-24 05:03+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -58,48 +58,48 @@ msgstr ""
 "მომხმარებელი და პაროლი Microsoft Exchange EWS-ის ანგარიშისთვის <b>%1</b> "
 "სწორი არაა. განაახლეთ ის ანგარიშის მორგების გვერდზე."
 
-#: ewsconfigdialog.cpp:76
+#: ewsconfigdialog.cpp:77
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
 msgstr "Microsoft Exchange-ის მორგება"
 
-#: ewsconfigdialog.cpp:101
+#: ewsconfigdialog.cpp:107
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
 msgstr "დიახ"
 
-#: ewsconfigdialog.cpp:121 ewsconfigdialog.cpp:123
+#: ewsconfigdialog.cpp:127 ewsconfigdialog.cpp:129
 #, kde-format
 msgid "PEM file"
 msgstr "PEM ფაილი"
 
-#: ewsconfigdialog.cpp:141
+#: ewsconfigdialog.cpp:147
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "ხელით"
 
-#: ewsconfigdialog.cpp:152
+#: ewsconfigdialog.cpp:158
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Akonadi-ის რესურსი Microsoft Exchange Web Services (EWS)-სთვის"
 
-#: ewsconfigdialog.cpp:153
+#: ewsconfigdialog.cpp:159
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "(c) Krzysztof Nowicki 2015-2020, ყველა უფლება დაცულია"
 
-#: ewsconfigdialog.cpp:154
+#: ewsconfigdialog.cpp:160
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "ვერსია %1"
 
-#: ewsconfigdialog.cpp:155
+#: ewsconfigdialog.cpp:161
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -109,37 +109,37 @@ msgstr ""
 "ვრცელდება GNU-ის ბიბლიოთეკების ზოგადი საჯარო ლიცენზიის 2.0 ან უფრო ახალი "
 "ვერსიით."
 
-#: ewsconfigdialog.cpp:250
+#: ewsconfigdialog.cpp:256
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "ავტომატური აღმოჩენის შეცდომა"
 
-#: ewsconfigdialog.cpp:265
+#: ewsconfigdialog.cpp:271
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "დაკავშირება ვერ მოხერხდა"
 
-#: ewsconfigdialog.cpp:266 ewsconfigdialog.cpp:424
+#: ewsconfigdialog.cpp:272 ewsconfigdialog.cpp:430
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "შეცდომა"
 
-#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:425
+#: ewsconfigdialog.cpp:273 ewsconfigdialog.cpp:431
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "უცნობია"
 
-#: ewsconfigdialog.cpp:270 ewsconfigdialog.cpp:429
+#: ewsconfigdialog.cpp:276 ewsconfigdialog.cpp:435
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "დიახ"
 
-#: ewsconfigdialog.cpp:340
+#: ewsconfigdialog.cpp:346
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -148,12 +148,12 @@ msgstr ""
 "ავტომატური აღმოჩენის პრობლემა. ეს შეიძლება არასწორმა პარამეტრებმა "
 "გამოიწვიონ. მაინც გნებავთ პარამეტრების შენახვა?"
 
-#: ewsconfigdialog.cpp:341
+#: ewsconfigdialog.cpp:347
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "Exchange-ის სერვერის ავტომატური აღმოჩენა"
 
-#: ewsconfigdialog.cpp:371
+#: ewsconfigdialog.cpp:377
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -162,12 +162,12 @@ msgstr ""
 "Exchange სერვერთან მიერთების პრობლემა. ეს შეიძლება არასწორმა პარამეტრებმა "
 "გამოიწვიონ. მაინც გნებავთ პარამეტრების შენახვა?"
 
-#: ewsconfigdialog.cpp:372
+#: ewsconfigdialog.cpp:378
 #, kde-format
 msgid "Exchange server connection"
 msgstr "Exchange-ის სერვერთან მიერთება"
 
-#: ewsconfigdialog.cpp:426
+#: ewsconfigdialog.cpp:432
 #, kde-format
 msgid "Connection failed"
 msgstr "დაკავშირება ვერ მოხერხდა"

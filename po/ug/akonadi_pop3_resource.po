@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2024-02-13 00:38+0000\n"
 "PO-Revision-Date: 2013-09-08 07:05+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -17,23 +17,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: accountwidget.cpp:88
+#: accountwidget.cpp:95
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " مىنۇت"
 
-#: accountwidget.cpp:125 pop3resource.cpp:46
+#: accountwidget.cpp:132 pop3resource.cpp:47
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 ھېسابات"
 
-#: accountwidget.cpp:192
+#: accountwidget.cpp:199
 #, kde-format
 msgid "Unable to open wallet"
 msgstr ""
 
-#: accountwidget.cpp:242
+#: accountwidget.cpp:249
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -42,7 +42,7 @@ msgid ""
 "have the possibility to turn leaving fetched messages on the server on."
 msgstr ""
 
-#: accountwidget.cpp:257
+#: accountwidget.cpp:264
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -56,17 +56,17 @@ msgid ""
 "of mail and downloading it."
 msgstr ""
 
-#: accountwidget.cpp:290
+#: accountwidget.cpp:297
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr ""
 
-#: accountwidget.cpp:323
+#: accountwidget.cpp:330
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "مۇلازىمېتىرغا باغلىنالمىدى. مۇلازىمېتىر  ئادرېسىنى تەكشۈرۈڭ."
 
-#: accountwidget.cpp:367
+#: accountwidget.cpp:374
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -79,7 +79,7 @@ msgid ""
 "which you all download in one go from the POP server."
 msgstr ""
 
-#: accountwidget.cpp:387
+#: accountwidget.cpp:394
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -89,13 +89,13 @@ msgid ""
 "have the possibility to turn leaving fetched messages on the server on."
 msgstr ""
 
-#: accountwidget.cpp:419
+#: accountwidget.cpp:426
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " كۈن"
 
-#: accountwidget.cpp:424
+#: accountwidget.cpp:431
 #, kde-format
 msgid " message"
 msgid_plural " messages"
@@ -246,78 +246,78 @@ msgstr ""
 msgid "Unexpected response from POP3 server."
 msgstr ""
 
-#: pop3resource.cpp:95
+#: pop3resource.cpp:96
 #, kde-format
 msgid "Mail check aborted."
 msgstr ""
 
-#: pop3resource.cpp:102
+#: pop3resource.cpp:103
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr ""
 
-#: pop3resource.cpp:130
+#: pop3resource.cpp:131
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr ""
 
-#: pop3resource.cpp:147
+#: pop3resource.cpp:148
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr ""
 
-#: pop3resource.cpp:163
+#: pop3resource.cpp:169
 #, kde-format
 msgid "Account:"
 msgstr "ھېسابات:"
 
-#: pop3resource.cpp:180
+#: pop3resource.cpp:186
 #, kde-format
 msgid "No username and password supplied."
 msgstr ""
 
-#: pop3resource.cpp:199
+#: pop3resource.cpp:205
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr ""
 
-#: pop3resource.cpp:220
+#: pop3resource.cpp:226
 #, kde-format
 msgid "Executing precommand."
 msgstr ""
 
-#: pop3resource.cpp:245
+#: pop3resource.cpp:251
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr ""
 
-#: pop3resource.cpp:247
+#: pop3resource.cpp:253
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr ""
 
-#: pop3resource.cpp:274
+#: pop3resource.cpp:280
 #, kde-format
 msgid "Fetching mail listing."
 msgstr ""
 
-#: pop3resource.cpp:330
+#: pop3resource.cpp:336
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr ""
 
-#: pop3resource.cpp:348
+#: pop3resource.cpp:354
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr ""
 
-#: pop3resource.cpp:390
+#: pop3resource.cpp:396
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
 
-#: pop3resource.cpp:397
+#: pop3resource.cpp:403
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -325,38 +325,38 @@ msgid ""
 "reset to the main Inbox folder.</qt>"
 msgstr ""
 
-#: pop3resource.cpp:418
+#: pop3resource.cpp:424
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr ""
 
-#: pop3resource.cpp:431
+#: pop3resource.cpp:437
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr ""
 
-#: pop3resource.cpp:442
+#: pop3resource.cpp:448
 #, kde-format
 msgid "Error while executing precommand."
 msgstr ""
 
-#: pop3resource.cpp:456
+#: pop3resource.cpp:462
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr ""
 
-#: pop3resource.cpp:465
+#: pop3resource.cpp:471
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr ""
 
-#: pop3resource.cpp:479
+#: pop3resource.cpp:485
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr ""
 
-#: pop3resource.cpp:492
+#: pop3resource.cpp:498
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -366,64 +366,64 @@ msgid ""
 "properly."
 msgstr ""
 
-#: pop3resource.cpp:507
+#: pop3resource.cpp:513
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr ""
 
-#: pop3resource.cpp:567
+#: pop3resource.cpp:573
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
 msgstr ""
 
-#: pop3resource.cpp:576
+#: pop3resource.cpp:582
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr ""
 
-#: pop3resource.cpp:599
+#: pop3resource.cpp:605
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr ""
 
-#: pop3resource.cpp:747
+#: pop3resource.cpp:753
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr ""
 
-#: pop3resource.cpp:803
+#: pop3resource.cpp:809
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr ""
 
-#: pop3resource.cpp:805
+#: pop3resource.cpp:811
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] ""
 
-#: pop3resource.cpp:819
+#: pop3resource.cpp:825
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr ""
 
-#: pop3resource.cpp:953
+#: pop3resource.cpp:959
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr ""
 
-#: pop3resource.cpp:974
+#: pop3resource.cpp:980
 #, kde-format
 msgid "Ready"
 msgstr "تەييار"
 
-#: pop3resource.cpp:977
+#: pop3resource.cpp:983
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr ""
 
-#: pop3resource.cpp:979
+#: pop3resource.cpp:985
 #, kde-format
 msgid "Offline"
 msgstr "توردا يوق"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2024-02-13 00:38+0000\n"
 "PO-Revision-Date: 2020-11-19 08:33+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -128,43 +128,43 @@ msgstr "Uporabniško ime, ki se uporablja za prijavo v strežnik EteSync"
 msgid "Path to base directory"
 msgstr "Pot do osnovnega direktorija"
 
-#: setupwizard.cpp:28
+#: setupwizard.cpp:29
 #, kde-format
 msgctxt "@title:window"
 msgid "EteSync configuration wizard"
 msgstr "Nastavitveni čarovnik za EteSync"
 
-#: setupwizard.cpp:66
+#: setupwizard.cpp:67
 #, kde-format
 msgid "Login Credentials"
 msgstr "Poverilnice za prijavo"
 
-#: setupwizard.cpp:67
+#: setupwizard.cpp:68
 #, kde-format
 msgid "Enter your credentials to login to the EteSync server"
 msgstr "Vnesite svoje poverilnice za prijavo na strežnik EteSync"
 
-#: setupwizard.cpp:76
+#: setupwizard.cpp:77
 #, kde-format
 msgid "Username:"
 msgstr "Uporabniško ime:"
 
-#: setupwizard.cpp:81
+#: setupwizard.cpp:87
 #, kde-format
 msgid "Password:"
 msgstr "Geslo:"
 
-#: setupwizard.cpp:84
+#: setupwizard.cpp:90
 #, kde-format
 msgid "Advanced settings"
 msgstr "Napredne nastavitve"
 
-#: setupwizard.cpp:89
+#: setupwizard.cpp:95
 #, kde-format
 msgid "Server:"
 msgstr "Strežnik:"
 
-#: setupwizard.cpp:102
+#: setupwizard.cpp:108
 #, kde-format
 msgid ""
 "🛈 The password field is empty because EteSync does not store it for security "
@@ -172,7 +172,7 @@ msgid ""
 msgstr ""
 "🛈 Geslo je prazno, ker EteSync zaradi varnostnih razlogov ne shranjuje gesel."
 
-#: setupwizard.cpp:134
+#: setupwizard.cpp:140
 #, kde-format
 msgid ""
 "Please ensure that the server URL is correct. The URL should start with "
@@ -181,7 +181,7 @@ msgstr ""
 "Zagotovite, da je URL strežnika pravilen. URL se mora začeti s http:// ali "
 "https://."
 
-#: setupwizard.cpp:136
+#: setupwizard.cpp:142
 #, kde-format
 msgid ""
 "Could not connect to the server. Please ensure that the server URL is "
@@ -190,7 +190,7 @@ msgstr ""
 "Ni bilo mogoče vzpostaviti povezave s strežnikom. Prepričajte se, da je URL "
 "strežnika pravilen."
 
-#: setupwizard.cpp:138
+#: setupwizard.cpp:144
 #, kde-format
 msgid "EteSync server not found. Please ensure that the server URL is correct."
 msgstr ""

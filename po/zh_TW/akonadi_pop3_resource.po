@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2024-02-13 00:38+0000\n"
 "PO-Revision-Date: 2023-12-15 18:47+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -23,23 +23,23 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 24.01.80\n"
 
-#: accountwidget.cpp:88
+#: accountwidget.cpp:95
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " 分鐘"
 
-#: accountwidget.cpp:125 pop3resource.cpp:46
+#: accountwidget.cpp:132 pop3resource.cpp:47
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 帳號"
 
-#: accountwidget.cpp:192
+#: accountwidget.cpp:199
 #, kde-format
 msgid "Unable to open wallet"
 msgstr "無法開啟錢包"
 
-#: accountwidget.cpp:242
+#: accountwidget.cpp:249
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -52,7 +52,7 @@ msgstr ""
 "不過有些伺服器可能也搞不清楚它們到底有沒有支援這個功能，您還是可以試試將這個"
 "功能打開。"
 
-#: accountwidget.cpp:257
+#: accountwidget.cpp:264
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -72,17 +72,17 @@ msgstr ""
 "若您的伺服器沒有公告它，但您想要更多速度，您應該先寄送一批郵件並下載它來測"
 "試。"
 
-#: accountwidget.cpp:290
+#: accountwidget.cpp:297
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "請先在「一般」頁中指定伺服器與連接埠號。"
 
-#: accountwidget.cpp:323
+#: accountwidget.cpp:330
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "無法連線到伺服器，請檢查伺服器位址。"
 
-#: accountwidget.cpp:367
+#: accountwidget.cpp:374
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -98,7 +98,7 @@ msgstr ""
 "不過有些伺服器可能也搞不清楚它們到底有沒有支援這個功能，您還是可以試試將這個"
 "功能打開。只是建議您先送一些測試信件來確保不會發生問題。"
 
-#: accountwidget.cpp:387
+#: accountwidget.cpp:394
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -112,13 +112,13 @@ msgstr ""
 "不過有些伺服器可能也搞不清楚它們到底有沒有支援這個功能，您還是可以試試將這個"
 "功能打開。"
 
-#: accountwidget.cpp:419
+#: accountwidget.cpp:426
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " 天"
 
-#: accountwidget.cpp:424
+#: accountwidget.cpp:431
 #, kde-format
 msgid " message"
 msgid_plural " messages"
@@ -291,78 +291,78 @@ msgstr "內部錯誤，預期了數字：%1"
 msgid "Unexpected response from POP3 server."
 msgstr "非預期的 POP3 伺服器回應。"
 
-#: pop3resource.cpp:95
+#: pop3resource.cpp:96
 #, kde-format
 msgid "Mail check aborted."
 msgstr "郵件檢查已中止。"
 
-#: pop3resource.cpp:102
+#: pop3resource.cpp:103
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "郵件檢查已手動取消。"
 
-#: pop3resource.cpp:130
+#: pop3resource.cpp:131
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "請輸入帳號 %1 的使用者名稱與密碼。"
 
-#: pop3resource.cpp:147
+#: pop3resource.cpp:148
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "您被詢問的原因是因為無法從錢包中取得密碼。"
 
-#: pop3resource.cpp:163
+#: pop3resource.cpp:169
 #, kde-format
 msgid "Account:"
 msgstr "帳號："
 
-#: pop3resource.cpp:180
+#: pop3resource.cpp:186
 #, kde-format
 msgid "No username and password supplied."
 msgstr "沒有提供使用者名稱與密碼。"
 
-#: pop3resource.cpp:199
+#: pop3resource.cpp:205
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "準備從 %1 傳輸。"
 
-#: pop3resource.cpp:220
+#: pop3resource.cpp:226
 #, kde-format
 msgid "Executing precommand."
 msgstr "執行前置命令。"
 
-#: pop3resource.cpp:245
+#: pop3resource.cpp:251
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "您被詢問的原因是因為前一次登入未成功。"
 
-#: pop3resource.cpp:247
+#: pop3resource.cpp:253
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "您被詢問的原因是因為您提供的使用者名稱是空的。"
 
-#: pop3resource.cpp:274
+#: pop3resource.cpp:280
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "取得郵件清單。"
 
-#: pop3resource.cpp:330
+#: pop3resource.cpp:336
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "儲存已下載的信件。"
 
-#: pop3resource.cpp:348
+#: pop3resource.cpp:354
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "在錢包內儲存密碼。"
 
-#: pop3resource.cpp:390
+#: pop3resource.cpp:396
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr "取得本地端信箱資料夾時發生錯誤，中止郵件檢查。"
 
-#: pop3resource.cpp:397
+#: pop3resource.cpp:403
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -372,38 +372,38 @@ msgstr ""
 "<qt>您刪除的資料夾是帳號 <b>%1</b> 所設定的收件匣。刪除後這個帳號將會改用預設"
 "的收件匣。</qt>"
 
-#: pop3resource.cpp:418
+#: pop3resource.cpp:424
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr "取得收信資料夾時發生錯誤，中止郵件檢查。"
 
-#: pop3resource.cpp:431
+#: pop3resource.cpp:437
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr "找不到收信資料夾。中止郵件檢查。"
 
-#: pop3resource.cpp:442
+#: pop3resource.cpp:448
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "執行前置命令時發生錯誤。"
 
-#: pop3resource.cpp:456
+#: pop3resource.cpp:462
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr "無法登入伺服器 \"%1\"。"
 
-#: pop3resource.cpp:465
+#: pop3resource.cpp:471
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "從伺服器上取得信件清單時發生錯誤。"
 
-#: pop3resource.cpp:479
+#: pop3resource.cpp:485
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr "從伺服器上取得信件的識別碼清單時發生錯誤。"
 
-#: pop3resource.cpp:492
+#: pop3resource.cpp:498
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -416,12 +416,12 @@ msgstr ""
 "過伺服器上哪些信件。\n"
 "因此「將信件保留在伺服器上」的功能有可能無法正常運作。"
 
-#: pop3resource.cpp:507
+#: pop3resource.cpp:513
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "從伺服器上取得郵件時發生錯誤。"
 
-#: pop3resource.cpp:567
+#: pop3resource.cpp:573
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
@@ -429,53 +429,53 @@ msgstr ""
 "取得 %5 的信件中... 已取得 %1 封，共 %2 封（%3 KB，共有 %4 KB，ˇ還有 %6 KB 在"
 "伺服器上）。"
 
-#: pop3resource.cpp:576
+#: pop3resource.cpp:582
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "取得 %5 的信件中... 已傳送 %1 封，共 %2 封（%3 KB，共 %4 KB）。"
 
-#: pop3resource.cpp:599
+#: pop3resource.cpp:605
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "無法儲存下載的郵件。"
 
-#: pop3resource.cpp:747
+#: pop3resource.cpp:753
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "從伺服器上刪除信件失敗。"
 
-#: pop3resource.cpp:803
+#: pop3resource.cpp:809
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "已完成信件檢查，沒有下載任何信件。"
 
-#: pop3resource.cpp:805
+#: pop3resource.cpp:811
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "已完成信件檢查，下載了 %1 封信件。"
 
-#: pop3resource.cpp:819
+#: pop3resource.cpp:825
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "無法完成郵件抓取。"
 
-#: pop3resource.cpp:953
+#: pop3resource.cpp:959
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "郵件檢查已在進行中，無法再次進行檢查。"
 
-#: pop3resource.cpp:974
+#: pop3resource.cpp:980
 #, kde-format
 msgid "Ready"
 msgstr "已就緒"
 
-#: pop3resource.cpp:977
+#: pop3resource.cpp:983
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "郵件檢查因離線而中止。"
 
-#: pop3resource.cpp:979
+#: pop3resource.cpp:985
 #, kde-format
 msgid "Offline"
 msgstr "離線"

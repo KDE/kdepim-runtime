@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2024-02-13 00:38+0000\n"
 "PO-Revision-Date: 2023-12-15 19:11+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -127,64 +127,64 @@ msgstr "用於登入 EteSync 伺服器的使用者名稱"
 msgid "Path to base directory"
 msgstr "基礎目錄路徑"
 
-#: setupwizard.cpp:28
+#: setupwizard.cpp:29
 #, kde-format
 msgctxt "@title:window"
 msgid "EteSync configuration wizard"
 msgstr "EteSync 設定精靈"
 
-#: setupwizard.cpp:66
+#: setupwizard.cpp:67
 #, kde-format
 msgid "Login Credentials"
 msgstr "登入認證資訊"
 
-#: setupwizard.cpp:67
+#: setupwizard.cpp:68
 #, kde-format
 msgid "Enter your credentials to login to the EteSync server"
 msgstr "輸入您的認證資訊來登入 EteSync 伺服器"
 
-#: setupwizard.cpp:76
+#: setupwizard.cpp:77
 #, kde-format
 msgid "Username:"
 msgstr "使用者名稱："
 
-#: setupwizard.cpp:81
+#: setupwizard.cpp:87
 #, kde-format
 msgid "Password:"
 msgstr "密碼："
 
-#: setupwizard.cpp:84
+#: setupwizard.cpp:90
 #, kde-format
 msgid "Advanced settings"
 msgstr "進階設定"
 
-#: setupwizard.cpp:89
+#: setupwizard.cpp:95
 #, kde-format
 msgid "Server:"
 msgstr "伺服器："
 
-#: setupwizard.cpp:102
+#: setupwizard.cpp:108
 #, kde-format
 msgid ""
 "🛈 The password field is empty because EteSync does not store it for security "
 "reasons."
 msgstr "🛈 密碼欄位是空的，這是因為 EteSync 為了安全性而不儲存它。"
 
-#: setupwizard.cpp:134
+#: setupwizard.cpp:140
 #, kde-format
 msgid ""
 "Please ensure that the server URL is correct. The URL should start with "
 "http:// or https://."
 msgstr "請確認伺服器網址是正確的。網址應該由 http:// 或 https:// 開頭。"
 
-#: setupwizard.cpp:136
+#: setupwizard.cpp:142
 #, kde-format
 msgid ""
 "Could not connect to the server. Please ensure that the server URL is "
 "correct."
 msgstr "無法連線到伺服器。請確認伺服器網址是正確的。"
 
-#: setupwizard.cpp:138
+#: setupwizard.cpp:144
 #, kde-format
 msgid "EteSync server not found. Please ensure that the server URL is correct."
 msgstr "找不到 EteSync 伺服器。請確認伺服器網址是正確的。"

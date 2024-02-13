@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-18 00:37+0000\n"
+"POT-Creation-Date: 2024-02-13 00:38+0000\n"
 "PO-Revision-Date: 2019-11-05 19:58+0100\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -56,37 +56,37 @@ msgstr ""
 "Používateľské meno/heslo pre účet Microsoft Exchange EWS <b>%1</b> "
 "jeneplatný. Aktualizujte ho na stránke s nastaveniami účtu."
 
-#: ewsconfigdialog.cpp:76
+#: ewsconfigdialog.cpp:77
 #, fuzzy, kde-format
 #| msgid "Microsoft Exchange Configuration"
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
 msgstr "Konfigurácia Microsoft Exchange"
 
-#: ewsconfigdialog.cpp:101
+#: ewsconfigdialog.cpp:107
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:121 ewsconfigdialog.cpp:123
+#: ewsconfigdialog.cpp:127 ewsconfigdialog.cpp:129
 #, kde-format
 msgid "PEM file"
 msgstr ""
 
-#: ewsconfigdialog.cpp:141
+#: ewsconfigdialog.cpp:147
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "Vlastné"
 
-#: ewsconfigdialog.cpp:152
+#: ewsconfigdialog.cpp:158
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Zdroj Akonadi pre webové služby Microsoft Exchange (EWS)"
 
-#: ewsconfigdialog.cpp:153
+#: ewsconfigdialog.cpp:159
 #, fuzzy, kde-format
 #| msgctxt "@info"
 #| msgid "Copyright (c) Krzysztof Nowicki 2015-2017"
@@ -94,13 +94,13 @@ msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "Copyright (c) Krzysztof Nowicki 2015-2017"
 
-#: ewsconfigdialog.cpp:154
+#: ewsconfigdialog.cpp:160
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "Verzia %1"
 
-#: ewsconfigdialog.cpp:155
+#: ewsconfigdialog.cpp:161
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -109,37 +109,37 @@ msgid ""
 msgstr ""
 "Distribuované pod GNU Library General Public License verzie 2.0 alebo novšej."
 
-#: ewsconfigdialog.cpp:250
+#: ewsconfigdialog.cpp:256
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "Automatické objavenie zlyhalo"
 
-#: ewsconfigdialog.cpp:265
+#: ewsconfigdialog.cpp:271
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Spojenie zlyhalo"
 
-#: ewsconfigdialog.cpp:266 ewsconfigdialog.cpp:424
+#: ewsconfigdialog.cpp:272 ewsconfigdialog.cpp:430
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Zlyhalo"
 
-#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:425
+#: ewsconfigdialog.cpp:273 ewsconfigdialog.cpp:431
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Neznáme"
 
-#: ewsconfigdialog.cpp:270 ewsconfigdialog.cpp:429
+#: ewsconfigdialog.cpp:276 ewsconfigdialog.cpp:435
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:340
+#: ewsconfigdialog.cpp:346
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -148,12 +148,12 @@ msgstr ""
 "Automatické objavenie zlyhalo. Môže to byť spôsobené nesprávnymi "
 "parametrami. Naozaj chcete uložiť svoje nastavenia?"
 
-#: ewsconfigdialog.cpp:341
+#: ewsconfigdialog.cpp:347
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "Automatické objavenie servera Exchange"
 
-#: ewsconfigdialog.cpp:371
+#: ewsconfigdialog.cpp:377
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -162,12 +162,12 @@ msgstr ""
 "Pripojenie k serveru Exchange zlyhalo. Môže to byť spôsobené nesprávnymi "
 "parametrami.Naozaj chcete uložiť svoje nastavenia?"
 
-#: ewsconfigdialog.cpp:372
+#: ewsconfigdialog.cpp:378
 #, kde-format
 msgid "Exchange server connection"
 msgstr "Pripojenie na server Exchange"
 
-#: ewsconfigdialog.cpp:426
+#: ewsconfigdialog.cpp:432
 #, kde-format
 msgid "Connection failed"
 msgstr "Spojenie zlyhalo"

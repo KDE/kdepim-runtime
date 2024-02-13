@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-18 00:37+0000\n"
+"POT-Creation-Date: 2024-02-13 00:38+0000\n"
 "PO-Revision-Date: 2021-08-25 16:52+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -58,48 +58,48 @@ msgstr ""
 "Användarnamn och/eller lösenord för Microsoft Exchange EWS-kontot <b>%1</b> "
 "är inte giltigt. Uppdatera det på kontoinställningssidan."
 
-#: ewsconfigdialog.cpp:76
+#: ewsconfigdialog.cpp:77
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
 msgstr "Microsoft Exchange-inställning"
 
-#: ewsconfigdialog.cpp:101
+#: ewsconfigdialog.cpp:107
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
 msgstr "Ok"
 
-#: ewsconfigdialog.cpp:121 ewsconfigdialog.cpp:123
+#: ewsconfigdialog.cpp:127 ewsconfigdialog.cpp:129
 #, kde-format
 msgid "PEM file"
 msgstr ""
 
-#: ewsconfigdialog.cpp:141
+#: ewsconfigdialog.cpp:147
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "Egen"
 
-#: ewsconfigdialog.cpp:152
+#: ewsconfigdialog.cpp:158
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Akonadi-resurs för Microsoft Exchange-webbtjänster (EWS)"
 
-#: ewsconfigdialog.cpp:153
+#: ewsconfigdialog.cpp:159
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "Copyright © Krzysztof Nowicki 2015-2020"
 
-#: ewsconfigdialog.cpp:154
+#: ewsconfigdialog.cpp:160
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "Version %1"
 
-#: ewsconfigdialog.cpp:155
+#: ewsconfigdialog.cpp:161
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -107,37 +107,37 @@ msgid ""
 "later."
 msgstr "Distribuerad enligt GNU General Public License version 2 eller senare."
 
-#: ewsconfigdialog.cpp:250
+#: ewsconfigdialog.cpp:256
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "Automatisk upptäckt misslyckades"
 
-#: ewsconfigdialog.cpp:265
+#: ewsconfigdialog.cpp:271
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Anslutning misslyckades"
 
-#: ewsconfigdialog.cpp:266 ewsconfigdialog.cpp:424
+#: ewsconfigdialog.cpp:272 ewsconfigdialog.cpp:430
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Misslyckades"
 
-#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:425
+#: ewsconfigdialog.cpp:273 ewsconfigdialog.cpp:431
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Okänd"
 
-#: ewsconfigdialog.cpp:270 ewsconfigdialog.cpp:429
+#: ewsconfigdialog.cpp:276 ewsconfigdialog.cpp:435
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "Ok"
 
-#: ewsconfigdialog.cpp:340
+#: ewsconfigdialog.cpp:346
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -146,12 +146,12 @@ msgstr ""
 "Automatisk upptäckt misslyckades. Det kan orsakas av felaktiga parametrar. "
 "Vill du ändå spara inställningarna?"
 
-#: ewsconfigdialog.cpp:341
+#: ewsconfigdialog.cpp:347
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "Automatisk upptäckt av Exchange-server"
 
-#: ewsconfigdialog.cpp:371
+#: ewsconfigdialog.cpp:377
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -160,12 +160,12 @@ msgstr ""
 "Anslutning till Exchange misslyckades. Det kan orsakas av felaktiga "
 "parametrar. Vill du ändå spara inställningarna?"
 
-#: ewsconfigdialog.cpp:372
+#: ewsconfigdialog.cpp:378
 #, kde-format
 msgid "Exchange server connection"
 msgstr "Exchange-serveranslutning"
 
-#: ewsconfigdialog.cpp:426
+#: ewsconfigdialog.cpp:432
 #, kde-format
 msgid "Connection failed"
 msgstr "Anslutning misslyckades"

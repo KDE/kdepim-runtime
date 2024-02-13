@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2024-02-13 00:38+0000\n"
 "PO-Revision-Date: 2020-11-10 10:17+0000\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -124,43 +124,43 @@ msgstr "O utilizador usado para se autenticar no servidor de EteSync"
 msgid "Path to base directory"
 msgstr "Localização da pasta de base"
 
-#: setupwizard.cpp:28
+#: setupwizard.cpp:29
 #, kde-format
 msgctxt "@title:window"
 msgid "EteSync configuration wizard"
 msgstr "Assistente de configuração do EteSync"
 
-#: setupwizard.cpp:66
+#: setupwizard.cpp:67
 #, kde-format
 msgid "Login Credentials"
 msgstr "Credenciais da Conta"
 
-#: setupwizard.cpp:67
+#: setupwizard.cpp:68
 #, kde-format
 msgid "Enter your credentials to login to the EteSync server"
 msgstr "Indique as suas credenciais para se autenticar no servidor do EteSync"
 
-#: setupwizard.cpp:76
+#: setupwizard.cpp:77
 #, kde-format
 msgid "Username:"
 msgstr "Utilizador:"
 
-#: setupwizard.cpp:81
+#: setupwizard.cpp:87
 #, kde-format
 msgid "Password:"
 msgstr "Senha:"
 
-#: setupwizard.cpp:84
+#: setupwizard.cpp:90
 #, kde-format
 msgid "Advanced settings"
 msgstr "Configuração avançada"
 
-#: setupwizard.cpp:89
+#: setupwizard.cpp:95
 #, kde-format
 msgid "Server:"
 msgstr "Servidor:"
 
-#: setupwizard.cpp:102
+#: setupwizard.cpp:108
 #, kde-format
 msgid ""
 "🛈 The password field is empty because EteSync does not store it for security "
@@ -169,7 +169,7 @@ msgstr ""
 "🛈 O campo da senha está vazio porque o EteSync não o guarda, por motivos de "
 "segurança."
 
-#: setupwizard.cpp:134
+#: setupwizard.cpp:140
 #, kde-format
 msgid ""
 "Please ensure that the server URL is correct. The URL should start with "
@@ -178,7 +178,7 @@ msgstr ""
 "Certifique-se por favor que o URL do servidor está correcto. O URL deverá "
 "começar por http:// ou https://."
 
-#: setupwizard.cpp:136
+#: setupwizard.cpp:142
 #, kde-format
 msgid ""
 "Could not connect to the server. Please ensure that the server URL is "
@@ -187,7 +187,7 @@ msgstr ""
 "Não foi possível contactar o servidor. Certifique-se por favor que o URL do "
 "servidor está correcto."
 
-#: setupwizard.cpp:138
+#: setupwizard.cpp:144
 #, kde-format
 msgid "EteSync server not found. Please ensure that the server URL is correct."
 msgstr ""

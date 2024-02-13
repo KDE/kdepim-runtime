@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-30 00:37+0000\n"
+"POT-Creation-Date: 2024-02-13 00:38+0000\n"
 "PO-Revision-Date: 2022-09-23 13:26+0200\n"
 "Last-Translator: Antoni Bella Pérez <antonibella5@yahoo.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -297,7 +297,7 @@ msgstr ""
 msgid "No server configured yet."
 msgstr "Encara no s'ha configurat cap servidor."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:647
+#: imapresourcebase.cpp:245 setupserver.cpp:659
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -626,7 +626,7 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Heu desconnectat durant l'inici de la sessió."
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:54
 #, kde-format
 msgid ""
 "The server for account \"%2\" refused the supplied username and password.\n"
@@ -642,31 +642,31 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:60
+#: settingspasswordrequester.cpp:61
 #, kde-format
 msgctxt "@title:window"
 msgid "Could Not Authenticate"
 msgstr "No es pot autenticar"
 
-#: settingspasswordrequester.cpp:64
+#: settingspasswordrequester.cpp:65
 #, kde-format
 msgid "Account Settings"
 msgstr "Configuració del compte"
 
-#: settingspasswordrequester.cpp:65
+#: settingspasswordrequester.cpp:66
 #, kde-format
 msgctxt "Input username/password manually and not store them"
 msgid "Try Again"
 msgstr "Torneu-ho a intentar"
 
-#: settingspasswordrequester.cpp:150
+#: settingspasswordrequester.cpp:151
 #, kde-format
 msgid "Please enter password for user '%1' on IMAP server '%2'."
 msgstr "Introduïu la contrasenya per a l'usuari «%1» en el servidor IMAP «%2»."
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:73 setupserverview_desktop.ui:294
+#: setupserver.cpp:75 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -675,37 +675,37 @@ msgstr "Text en clar"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:75 setupserverview_desktop.ui:329
+#: setupserver.cpp:77 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Anònim"
 
-#: setupserver.cpp:77
+#: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
 msgid "Gmail"
 msgstr "Gmail"
 
-#: setupserver.cpp:140
+#: setupserver.cpp:152
 #, kde-format
 msgid "Archive Folder"
 msgstr "Arxiva la carpeta"
 
-#: setupserver.cpp:152
+#: setupserver.cpp:164
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " minut"
 msgstr[1] " minuts"
 
-#: setupserver.cpp:167
+#: setupserver.cpp:179
 #, kde-format
 msgid "Identity:"
 msgstr "Identitat:"
 
-#: setupserver.cpp:250
+#: setupserver.cpp:262
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -716,12 +716,12 @@ msgstr ""
 "abans, cal tornar a baixar tots els vostres correus des d'aquest compte. "
 "Esteu segur que voleu continuar?"
 
-#: setupserver.cpp:253
+#: setupserver.cpp:265
 #, kde-format
 msgid "Server address change"
 msgstr "Canvi de l'adreça del servidor"
 
-#: setupserver.cpp:260
+#: setupserver.cpp:272
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -732,12 +732,12 @@ msgstr ""
 "compte que abans, cal tornar a baixar tots els vostres correus des d'aquest "
 "compte. Esteu segur que voleu continuar?"
 
-#: setupserver.cpp:263
+#: setupserver.cpp:275
 #, kde-format
 msgid "User name change"
 msgstr "Canvi del nom d'usuari"
 
-#: setupserver.cpp:408 setupserver.cpp:464
+#: setupserver.cpp:420 setupserver.cpp:476
 #, kde-format
 msgid ""
 "Could not access KWallet. If you want to store the password permanently then "
@@ -749,27 +749,27 @@ msgstr ""
 "casella de sota, però teniu en compte que se us preguntarà per la vostra "
 "contrasenya quan sigui necessari."
 
-#: setupserver.cpp:413 setupserver.cpp:469
+#: setupserver.cpp:425 setupserver.cpp:481
 #, kde-format
 msgid "Do not use KWallet"
 msgstr "No usis KWallet"
 
-#: setupserver.cpp:534
+#: setupserver.cpp:546
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "No s'ha pogut connectar amb el servidor, verifiqueu la seva adreça."
 
-#: setupserver.cpp:546
+#: setupserver.cpp:558
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS està acceptat i recomanat.</b></qt>"
 
-#: setupserver.cpp:549
+#: setupserver.cpp:561
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS està acceptat i recomanat.</b></qt>"
 
-#: setupserver.cpp:553
+#: setupserver.cpp:565
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -778,7 +778,7 @@ msgstr ""
 "<qt><b>No està acceptat cap mètode de seguretat. No és recomanable connectar "
 "amb aquest servidor.</b></qt>"
 
-#: setupserver.cpp:556
+#: setupserver.cpp:568
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>No és possible usar aquest servidor.</b></qt>"

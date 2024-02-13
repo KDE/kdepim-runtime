@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2024-02-13 00:38+0000\n"
 "PO-Revision-Date: 2012-07-12 22:31+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "2);\n"
 "X-Generator: Lokalize 1.4\n"
 
-#: accountwidget.cpp:88
+#: accountwidget.cpp:95
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -26,17 +26,17 @@ msgstr[0] " minūte"
 msgstr[1] " minūtes"
 msgstr[2] " minūšu"
 
-#: accountwidget.cpp:125 pop3resource.cpp:46
+#: accountwidget.cpp:132 pop3resource.cpp:47
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 konts"
 
-#: accountwidget.cpp:192
+#: accountwidget.cpp:199
 #, kde-format
 msgid "Unable to open wallet"
 msgstr "Neizdevās atvērt maku"
 
-#: accountwidget.cpp:242
+#: accountwidget.cpp:249
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -49,7 +49,7 @@ msgstr ""
 "Tā kā daži serveri pareizi nepaziņo par to iespējām, jums vēl joprojām ir ir "
 "iespēja ieslēgt saņemto vēstuļu atstāšanu uz servera."
 
-#: accountwidget.cpp:257
+#: accountwidget.cpp:264
 #, fuzzy, kde-format
 #| msgid ""
 #| "Please note that this feature can cause some POP3 servers that do not "
@@ -83,17 +83,17 @@ msgstr ""
 "nelielu pārbaudi, vispirms nosūtot sev lielu daudzumu vēstuļu un tad tās "
 "lejupielādējot."
 
-#: accountwidget.cpp:290
+#: accountwidget.cpp:297
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Lūdzu, vispirms cilnē 'Vispārīgi' norādiet serveri un portu."
 
-#: accountwidget.cpp:323
+#: accountwidget.cpp:330
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Neizdevās pieslēgties serverim, lūdzu, pārbaudiet servera adresi."
 
-#: accountwidget.cpp:367
+#: accountwidget.cpp:374
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -114,7 +114,7 @@ msgstr ""
 "jāveic pārbaude, nosūtot sev lielu skaitu testa vēstuļu, kuras pēc tam no "
 "POP servera ar vienu paņēmienu lejupielādē."
 
-#: accountwidget.cpp:387
+#: accountwidget.cpp:394
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -129,7 +129,7 @@ msgstr ""
 "Tā kā daži serveri pareizi nepaziņo par to iespējām, jums vēl joprojām ir ir "
 "iespēja ieslēgt saņemto vēstuļu atstāšanu uz servera."
 
-#: accountwidget.cpp:419
+#: accountwidget.cpp:426
 #, kde-format
 msgid " day"
 msgid_plural " days"
@@ -137,7 +137,7 @@ msgstr[0] " diena"
 msgstr[1] " dienas"
 msgstr[2] " dienu"
 
-#: accountwidget.cpp:424
+#: accountwidget.cpp:431
 #, kde-format
 msgid " message"
 msgid_plural " messages"
@@ -292,79 +292,79 @@ msgstr ""
 msgid "Unexpected response from POP3 server."
 msgstr "Dzēš vēstules no servera."
 
-#: pop3resource.cpp:95
+#: pop3resource.cpp:96
 #, kde-format
 msgid "Mail check aborted."
 msgstr "Pasta pārbaude pārtraukta."
 
-#: pop3resource.cpp:102
+#: pop3resource.cpp:103
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "Pasta pārbaude tika atcelta pašrocīgi."
 
-#: pop3resource.cpp:130
+#: pop3resource.cpp:131
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "Lūdzu, ievadiet konta '%1' lietotājvārdu un paroli."
 
-#: pop3resource.cpp:147
+#: pop3resource.cpp:148
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "Jums tiek vaicāts šeit, jo paroli neizdevās ielādēt no maka."
 
-#: pop3resource.cpp:163
+#: pop3resource.cpp:169
 #, kde-format
 msgid "Account:"
 msgstr "Konts:"
 
-#: pop3resource.cpp:180
+#: pop3resource.cpp:186
 #, kde-format
 msgid "No username and password supplied."
 msgstr "Lietotājvārds un parole netika norādīta."
 
-#: pop3resource.cpp:199
+#: pop3resource.cpp:205
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "Sagatavo pārsūtīšanu no \"%1\"."
 
-#: pop3resource.cpp:220
+#: pop3resource.cpp:226
 #, kde-format
 msgid "Executing precommand."
 msgstr "Izpilda pirmskomandu."
 
-#: pop3resource.cpp:245
+#: pop3resource.cpp:251
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "Jums tiek vaicāts šeit, jo iepriekšējā pieteikšanās bija neveiksmīga."
 
-#: pop3resource.cpp:247
+#: pop3resource.cpp:253
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "Jums tiek vaicāts šeit, jo jūsu ievadītais lietotājvārds ir tukšs."
 
-#: pop3resource.cpp:274
+#: pop3resource.cpp:280
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "Saņem e-pastu sarakstu."
 
-#: pop3resource.cpp:330
+#: pop3resource.cpp:336
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "Saglabā lejupielādētās vēstules."
 
-#: pop3resource.cpp:348
+#: pop3resource.cpp:354
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "Saglabā paroli makā."
 
-#: pop3resource.cpp:390
+#: pop3resource.cpp:396
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
 "Radās kļūda, mēģinot saņemt vietējo iesūtnes mapi, pasta pārbaude pārtraukta."
 
-#: pop3resource.cpp:397
+#: pop3resource.cpp:403
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -375,41 +375,41 @@ msgstr ""
 "saglabāja vēstules. Mape, kurā konts saglabā jaunās vēstules, tika atstatīta "
 "uz galveno iesūtnes mapi</qt>"
 
-#: pop3resource.cpp:418
+#: pop3resource.cpp:424
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr ""
 "Radās kļūda, mēģinot saņemt ienākošā pasta mapi, pasta pārbaude pārtraukta."
 
-#: pop3resource.cpp:431
+#: pop3resource.cpp:437
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr "Neizdevās atrast ienākošā pasta mapi, pasta pārbaude pārtraukta."
 
-#: pop3resource.cpp:442
+#: pop3resource.cpp:448
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "Kļūda izpildot pirmskomandu."
 
-#: pop3resource.cpp:456
+#: pop3resource.cpp:462
 #, fuzzy, kde-format
 #| msgid "Unable to login to the server %1."
 msgid "Unable to login to the server \"%1\"."
 msgstr "Neizdevās pietiekties serverī %1."
 
-#: pop3resource.cpp:465
+#: pop3resource.cpp:471
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "Radās kļūda, saņemot serverī esošo vēstuļu sarakstu."
 
-#: pop3resource.cpp:479
+#: pop3resource.cpp:485
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr ""
 "Radās kļūda, saņemot serverī esošo unikālo pasta identifikatoru sarakstu."
 
-#: pop3resource.cpp:492
+#: pop3resource.cpp:498
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -423,39 +423,39 @@ msgstr ""
 "jau ir redzējis pirms tam;\n"
 "līdz ar to e-pastu atstāšana serverī nedarbosies pareizi."
 
-#: pop3resource.cpp:507
+#: pop3resource.cpp:513
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "Radās kļūda, saņemot e-pastus no servera."
 
-#: pop3resource.cpp:567
+#: pop3resource.cpp:573
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
 msgstr ""
 "Saņem ziņojumu %1 no %2 (%3 no %4 KB) priekš %5 (serverī paliek %6 KB)."
 
-#: pop3resource.cpp:576
+#: pop3resource.cpp:582
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "Saņem ziņojumu %1 no %2 (%3 no %4 KB) priekš %5"
 
-#: pop3resource.cpp:599
+#: pop3resource.cpp:605
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "Neizdevās saglabāt lejupielādētos e-pastus."
 
-#: pop3resource.cpp:747
+#: pop3resource.cpp:753
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "Neizdevās dzēst vēstules no servera."
 
-#: pop3resource.cpp:803
+#: pop3resource.cpp:809
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "Pasta pārbaude pabeigta, netika lejupielādēta neviena vēstule."
 
-#: pop3resource.cpp:805
+#: pop3resource.cpp:811
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
@@ -463,27 +463,27 @@ msgstr[0] "Pasta pārbaude pabeigta, lejupielādēta %1 vēstule."
 msgstr[1] "Pasta pārbaude pabeigta, lejupielādētas %1 vēstules."
 msgstr[2] "Pasta pārbaude pabeigta, lejupielādēts %1 vēstuļu."
 
-#: pop3resource.cpp:819
+#: pop3resource.cpp:825
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "Neizdevās pabeigt pasta saņemšanu."
 
-#: pop3resource.cpp:953
+#: pop3resource.cpp:959
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "Pasta pārbaude jau notiek, neizdevās palaist otro pārbaudi."
 
-#: pop3resource.cpp:974
+#: pop3resource.cpp:980
 #, kde-format
 msgid "Ready"
 msgstr "Gatavs"
 
-#: pop3resource.cpp:977
+#: pop3resource.cpp:983
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "Pēc pāriešanas nesaistes režīmā pasta pārbaude pārtraukta."
 
-#: pop3resource.cpp:979
+#: pop3resource.cpp:985
 #, kde-format
 msgid "Offline"
 msgstr "Nesaistē"
