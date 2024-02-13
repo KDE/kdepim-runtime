@@ -42,9 +42,9 @@ QString TimezoneConverter::fromCityName(const QString &tz)
     QHash<QString, QString> countryMap;
     for (const auto &zone : zones) {
         const QString cityName = QString::fromUtf8(zone.split('/').last());
-        qDebug() << " zone : " << zone;
-        qDebug() << " cityName : " << cityName;
-        qDebug() << " countryMap : " << countryMap;
+        // qDebug() << " zone : " << zone;
+        // qDebug() << " cityName : " << cityName;
+        // qDebug() << " countryMap : " << countryMap;
         // Q_ASSERT(!countryMap.contains(cityName));
         countryMap.insert(cityName, QString::fromUtf8(zone));
     }
