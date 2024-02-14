@@ -82,7 +82,7 @@ void AccountWidget::setupWidgets()
 
     setupUi(page);
 
-#if KWIDGETSADDONS_VERSION < QT_VERSION_CHECK(5, 249, 0)
+#if KWIDGETSADDONS_VERSION <= QT_VERSION_CHECK(5, 249, 0)
     passwordEdit->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
 #else
     passwordEdit->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew

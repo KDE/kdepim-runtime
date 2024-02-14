@@ -79,7 +79,7 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     mUi = new Ui::SetupServerView;
     mUi->setupUi(mainWidget);
     mUi->accountName->setText(parentResource->name());
-#if KWIDGETSADDONS_VERSION < QT_VERSION_CHECK(5, 249, 0)
+#if KWIDGETSADDONS_VERSION <= QT_VERSION_CHECK(5, 249, 0)
     mUi->passwordEdit->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
 #else
     mUi->passwordEdit->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew

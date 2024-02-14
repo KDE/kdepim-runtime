@@ -33,7 +33,7 @@ UrlConfigurationDialog::UrlConfigurationDialog(QWidget *parent)
     mainLayout->addWidget(mainWidget);
     mUi.setupUi(mainWidget);
     mUi.credentialsGroup->setVisible(false);
-#if KWIDGETSADDONS_VERSION < QT_VERSION_CHECK(5, 249, 0)
+#if KWIDGETSADDONS_VERSION <= QT_VERSION_CHECK(5, 249, 0)
     mUi.password->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
 #else
     mUi.password->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew

@@ -481,7 +481,7 @@ QString Settings::promptForPassword(const QString &user)
     label = new QLabel(i18n("Password: "), mainWidget);
     hLayout->addWidget(label);
     auto lineEdit = new KPasswordLineEdit();
-#if KWIDGETSADDONS_VERSION < QT_VERSION_CHECK(5, 249, 0)
+#if KWIDGETSADDONS_VERSION <= QT_VERSION_CHECK(5, 249, 0)
     lineEdit->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
 #else
     lineEdit->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
