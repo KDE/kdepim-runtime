@@ -711,7 +711,7 @@ void EwsResource::itemsRemoved(const Item::List &items)
             auto *req = new EwsDeleteItemRequest(mEwsClient, this);
             req->setItemIds(ids);
             req->setProperty("items", QVariant::fromValue<Item::List>(items));
-            connect(req, &EwsDeleteItemRequest::result, [this,lastReq](KJob *job) {
+            connect(req, &EwsDeleteItemRequest::result, [this, lastReq](KJob *job) {
                 itemDeleteRequestFinished(job);
                 if (lastReq && !job->error())
                     lastReq->start();
@@ -725,7 +725,7 @@ void EwsResource::itemsRemoved(const Item::List &items)
         auto *req = new EwsDeleteItemRequest(mEwsClient, this);
         req->setItemIds(ids);
         req->setProperty("items", QVariant::fromValue<Item::List>(items));
-        connect(req, &EwsDeleteItemRequest::result, [this,lastReq](KJob *job) {
+        connect(req, &EwsDeleteItemRequest::result, [this, lastReq](KJob *job) {
             itemDeleteRequestFinished(job);
             if (lastReq && !job->error())
                 lastReq->start();

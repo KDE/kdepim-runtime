@@ -14,14 +14,13 @@ unsigned int qHash(const Akonadi::Tag &tag);
 
 #include <Akonadi/Tag>
 
+#include "kolabobject.h"
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionCreateJob>
 #include <Akonadi/CollectionQuotaAttribute>
 #include <Akonadi/ServerManager>
-#include <akonadi/qtest_akonadi.h>
-//#include <AkonadiCore/virtualresource.h>
-#include "kolabobject.h"
 #include <Akonadi/TagCreateJob>
+#include <akonadi/qtest_akonadi.h>
 
 #include "kolabchangeitemstagstask.h"
 #include "kolabhelpers.h"

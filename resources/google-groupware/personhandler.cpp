@@ -7,9 +7,9 @@
 */
 
 #include "personhandler.h"
-#include "peopleconversionjob.h"
 #include "googleresource.h"
 #include "googlesettings.h"
+#include "peopleconversionjob.h"
 
 #include "googlepeople_debug.h"
 
@@ -46,9 +46,10 @@
 using namespace KGAPI2;
 using namespace Akonadi;
 
-namespace {
-    constexpr auto myContactsResourceName = "contactGroups/myContacts";
-    constexpr auto otherContactsResourceName = "contactGroups/otherContacts";
+namespace
+{
+constexpr auto myContactsResourceName = "contactGroups/myContacts";
+constexpr auto otherContactsResourceName = "contactGroups/otherContacts";
 }
 
 QString PersonHandler::mimeType()
@@ -161,8 +162,7 @@ void PersonHandler::retrieveCollections(const Collection &rootCollection)
 void PersonHandler::retrieveItems(const Collection &collection)
 {
     // Contacts are stored inside "My Contacts" and "Other Contacts" only
-    if ((collection.remoteId() != QString::fromUtf8(otherContactsResourceName)) &&
-        (collection.remoteId() != QString::fromUtf8(myContactsResourceName))) {
+    if ((collection.remoteId() != QString::fromUtf8(otherContactsResourceName)) && (collection.remoteId() != QString::fromUtf8(myContactsResourceName))) {
         m_iface->itemsRetrievalDone();
         return;
     }
@@ -206,9 +206,8 @@ void PersonHandler::slotItemsRetrieved(KGAPI2::Job *job)
         item.setRemoteRevision(person->etag());
         item.setPayload<KContacts::Addressee>(addressee);
 
-        if (person->metadata().deleted() ||
-            (collection.remoteId() == QString::fromUtf8(otherContactsResourceName) && !person->memberships().isEmpty()) ||
-            (collection.remoteId() == QString::fromUtf8(myContactsResourceName) && person->memberships().isEmpty())) {
+        if (person->metadata().deleted() || (collection.remoteId() == QString::fromUtf8(otherContactsResourceName) && !person->memberships().isEmpty())
+            || (collection.remoteId() == QString::fromUtf8(myContactsResourceName) && person->memberships().isEmpty())) {
             qCDebug(GOOGLE_PEOPLE_LOG) << " - removed" << person->resourceName();
             removedItems << item;
         } else {
@@ -334,13 +333,11 @@ void PersonHandler::updatePersonItem(const Akonadi::Item &originalItem, const Pe
     }
 
     if (m_pendingPeoplePhotoUpdate.contains(personResourceName)) {
-        qCDebug(GOOGLE_PEOPLE_LOG) << "Received updated person response from photo update."
-                                     << personResourceName;
+        qCDebug(GOOGLE_PEOPLE_LOG) << "Received updated person response from photo update." << personResourceName;
         m_pendingPeoplePhotoUpdate.remove(personResourceName);
     } else if (const auto originalAddressee = originalItem.payload<KContacts::Addressee>();
                !originalAddressee.photo().isEmpty() && !originalAddressee.photo().rawData().isEmpty()) {
-        qCDebug(GOOGLE_PEOPLE_LOG) << "Person to update requires a photo update. Sending off photo update job."
-                                     << personResourceName;
+        qCDebug(GOOGLE_PEOPLE_LOG) << "Person to update requires a photo update. Sending off photo update job." << personResourceName;
 
         m_pendingPeoplePhotoUpdate.insert(personResourceName);
         const auto addresseePicture = originalAddressee.photo();
@@ -349,8 +346,7 @@ void PersonHandler::updatePersonItem(const Akonadi::Item &originalItem, const Pe
         job->setProperty(ITEM_PROPERTY, QVariant::fromValue(originalItem));
         connect(job, &People::PersonPhotoUpdateJob::finished, this, &PersonHandler::slotKGAPIModifyJobFinished);
     } else if (originalAddressee.photo().isEmpty() && !person->photos().isEmpty()) {
-        qCDebug(GOOGLE_PEOPLE_LOG) << "Person to update needs photo deleted. Sending off photo delete job."
-                                     << personResourceName;
+        qCDebug(GOOGLE_PEOPLE_LOG) << "Person to update needs photo deleted. Sending off photo delete job." << personResourceName;
 
         m_pendingPeoplePhotoUpdate.insert(personResourceName);
         auto job = new People::PersonPhotoDeleteJob(personResourceName, m_settings->accountPtr(), this);
@@ -437,8 +433,8 @@ void PersonHandler::itemsMoved(const Item::List &items, const Collection &collec
     const auto destinationRemoteId = collectionDestination.remoteId();
     qCDebug(GOOGLE_PEOPLE_LOG) << "Moving people from" << sourceRemoteId << "to" << destinationRemoteId;
 
-    if (!(((sourceRemoteId == QString::fromUtf8(myContactsResourceName)) && (destinationRemoteId == QString::fromUtf8(otherContactsResourceName))) ||
-          ((sourceRemoteId == QString::fromUtf8(otherContactsResourceName)) && (destinationRemoteId == QString::fromUtf8(myContactsResourceName))))) {
+    if (!(((sourceRemoteId == QString::fromUtf8(myContactsResourceName)) && (destinationRemoteId == QString::fromUtf8(otherContactsResourceName)))
+          || ((sourceRemoteId == QString::fromUtf8(otherContactsResourceName)) && (destinationRemoteId == QString::fromUtf8(myContactsResourceName))))) {
         m_iface->cancelTask(i18n("Invalid source or destination collection"));
         return;
     }

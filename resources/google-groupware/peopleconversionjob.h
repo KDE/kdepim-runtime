@@ -11,7 +11,8 @@
 
 #pragma once
 
-namespace KGAPI2::People {
+namespace KGAPI2::People
+{
 class Membership;
 }
 
@@ -22,8 +23,10 @@ class PeopleConversionJob : public QObject
 
     Q_PROPERTY(KGAPI2::People::PersonList people READ people NOTIFY peopleChanged)
     Q_PROPERTY(QString reparentCollectionRemoteId READ reparentCollectionRemoteId WRITE setReparentCollectionRemoteId NOTIFY reparentCollectionRemoteIdChanged)
-    Q_PROPERTY(QString newLinkedCollectionRemoteId READ newLinkedCollectionRemoteId WRITE setNewLinkedCollectionRemoteId NOTIFY newLinkedCollectionRemoteIdChanged)
-    Q_PROPERTY(QString linkedCollectionToRemoveRemoteId READ linkedCollectionToRemoveRemoteId WRITE setLinkedCollectionToRemoveRemoteId NOTIFY linkedCollectionToRemoveRemoteIdChanged)
+    Q_PROPERTY(
+        QString newLinkedCollectionRemoteId READ newLinkedCollectionRemoteId WRITE setNewLinkedCollectionRemoteId NOTIFY newLinkedCollectionRemoteIdChanged)
+    Q_PROPERTY(QString linkedCollectionToRemoveRemoteId READ linkedCollectionToRemoveRemoteId WRITE setLinkedCollectionToRemoveRemoteId NOTIFY
+                   linkedCollectionToRemoveRemoteIdChanged)
 
 public:
     explicit PeopleConversionJob(const Akonadi::Item::List &peopleItems, QObject *parent = nullptr);

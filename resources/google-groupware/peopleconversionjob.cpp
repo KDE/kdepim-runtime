@@ -148,8 +148,7 @@ void PeopleConversionJob::processItems()
         person->setEtag(item.remoteRevision());
 
         // TODO: Domain membership?
-        const auto parentCollectionRemoteId = m_reparentCollectionRemoteId.isEmpty() ?
-            item.parentCollection().remoteId() : m_reparentCollectionRemoteId;
+        const auto parentCollectionRemoteId = m_reparentCollectionRemoteId.isEmpty() ? item.parentCollection().remoteId() : m_reparentCollectionRemoteId;
         People::ContactGroupMembership contactGroupMembership;
         contactGroupMembership.setContactGroupResourceName(parentCollectionRemoteId);
 
@@ -158,7 +157,6 @@ void PeopleConversionJob::processItems()
         memberships.append(membership);
 
         for (const auto &virtualCollection : item.virtualReferences()) {
-
             const auto virtualCollectionId = virtualCollection.id();
             if (!m_localToRemoteIdHash.contains(virtualCollectionId)) {
                 qCWarning(GOOGLE_PEOPLE_LOG) << "Fetched virtual collections do not contain collection with ID:" << virtualCollectionId;
