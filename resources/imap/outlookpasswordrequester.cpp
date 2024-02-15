@@ -128,3 +128,5 @@ void OutlookPasswordRequester::onTokenRequestFinished(KWallet::Wallet *wallet, c
         Q_EMIT done(PasswordRetrieved, result.accessToken());
     }
 }
+
+#include "moc_outlookpasswordrequester.cpp"
