@@ -117,7 +117,7 @@ void EwsPoxAutodiscoverRequest::requestResult(KJob *job)
     auto trJob = qobject_cast<KIO::TransferJob *>(job);
     int resp = trJob->metaData()[QStringLiteral("responsecode")].toUInt();
 
-    if (job->error() != 0) {
+    if (job->error() != KJob::NoError) {
         setErrorMsg(QStringLiteral("Failed to process EWS request: ") + job->errorString());
         setError(job->error());
     } else if (resp >= 300) {
