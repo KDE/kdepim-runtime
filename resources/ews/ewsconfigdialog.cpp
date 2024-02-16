@@ -309,7 +309,7 @@ void EwsConfigDialog::setAutoDiscoveryNeeded()
 
     /* Enable the OK button when at least the e-mail and username fields are set. Additionally if
      * autodiscovery is disabled, enable the OK button only if the base URL is set. */
-    bool okEnabled = !mUi->kcfg_Username->text().isEmpty() && !mUi->kcfg_Email->text().isEmpty();
+    bool okEnabled = !mUi->kcfg_Username->text().isEmpty() || !mUi->kcfg_Email->text().isEmpty();
     if (!mUi->kcfg_AutoDiscovery->isChecked() && mUi->kcfg_BaseUrl->text().isEmpty()) {
         okEnabled = false;
     }
