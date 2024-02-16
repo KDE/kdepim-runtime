@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-30 01:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2023-12-12 00:59+0100\n"
 "Last-Translator: Enol P. <enolp@softastur.org>\n"
 "Language-Team: Asturian <alministradores@softastur.org>\n"
@@ -238,37 +238,37 @@ msgstr ""
 msgid "Enabled Tasklists:"
 msgstr ""
 
-#: personhandler.cpp:86
+#: personhandler.cpp:87
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Coworkers"
 msgstr ""
 
-#: personhandler.cpp:88
+#: personhandler.cpp:89
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Friends"
 msgstr ""
 
-#: personhandler.cpp:90
+#: personhandler.cpp:91
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Family"
 msgstr ""
 
-#: personhandler.cpp:92
+#: personhandler.cpp:93
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "My Contacts"
 msgstr ""
 
-#: personhandler.cpp:116
+#: personhandler.cpp:117
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts groups"
 msgstr ""
 
-#: personhandler.cpp:123 personhandler.cpp:129
+#: personhandler.cpp:124 personhandler.cpp:130
 #, kde-format
 msgid "Other Contacts"
 msgstr ""
@@ -279,19 +279,19 @@ msgctxt "@info:status"
 msgid "Retrieving contacts for group '%1'"
 msgstr ""
 
-#: personhandler.cpp:374
+#: personhandler.cpp:370
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding contact to group '%1'"
 msgstr ""
 
-#: personhandler.cpp:408
+#: personhandler.cpp:404
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact"
 msgstr ""
 
-#: personhandler.cpp:422
+#: personhandler.cpp:418
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 contact"
@@ -299,12 +299,12 @@ msgid_plural "Removing %1 contacts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: personhandler.cpp:442
+#: personhandler.cpp:438
 #, kde-format
 msgid "Invalid source or destination collection"
 msgstr ""
 
-#: personhandler.cpp:448
+#: personhandler.cpp:444
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 contact from group '%2' to '%3'"
@@ -312,7 +312,7 @@ msgid_plural "Moving %1 contacts from group '%2' to '%3'"
 msgstr[0] ""
 msgstr[1] ""
 
-#: personhandler.cpp:465
+#: personhandler.cpp:461
 #, kde-format
 msgctxt "@info:status"
 msgid "Linking %1 contact"
@@ -320,7 +320,7 @@ msgid_plural "Linking %1 contacts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: personhandler.cpp:479
+#: personhandler.cpp:475
 #, kde-format
 msgctxt "@info:status"
 msgid "Unlinking %1 contact"
@@ -328,19 +328,19 @@ msgid_plural "Unlinking %1 contacts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: personhandler.cpp:512
+#: personhandler.cpp:508
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new contact group '%1'"
 msgstr ""
 
-#: personhandler.cpp:533
+#: personhandler.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact group '%1'"
 msgstr ""
 
-#: personhandler.cpp:558
+#: personhandler.cpp:554
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing contact group '%1'"

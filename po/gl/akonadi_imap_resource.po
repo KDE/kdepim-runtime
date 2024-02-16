@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2023-06-22 08:43+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
@@ -442,6 +442,13 @@ msgstr ""
 "Non foi posíbel marcar para eliminar a mensaxe de «%1» no servidor de IMAP. "
 "Reaparecerá na vindeira sincronización."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Failed to connect to server"
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Houbo un erro ao conectar co servidor"
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -685,8 +692,8 @@ msgstr "Anónimo"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Gmail"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
@@ -1161,6 +1168,10 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Só os subscritos."
 
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
+
 #~ msgid "Identity Settings"
 #~ msgstr "Configuración da identidade"
 
@@ -1309,11 +1320,6 @@ msgstr "Só os subscritos."
 
 #~ msgid "Anonymous"
 #~ msgstr "Anónima"
-
-#, fuzzy
-#~| msgid "Failed to connect to server"
-#~ msgid "Failed to collect metadata."
-#~ msgstr "Houbo un erro ao conectar co servidor"
 
 #~ msgid " minutes"
 #~ msgstr " minutos"

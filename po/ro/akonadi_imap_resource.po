@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2020-09-08 19:21+0100\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian\n"
@@ -413,6 +413,13 @@ msgid ""
 "will reappear on next sync."
 msgstr "Crearea dosarului a eșuat, se restabilește lista dosarelor."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Failed to connect to server"
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Conectarea la server a eșuat"
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -670,8 +677,8 @@ msgstr "Anonim"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Gmail"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, fuzzy, kde-format
@@ -1164,6 +1171,10 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Numai abonate"
 
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
+
 #~ msgid "Identity Settings"
 #~ msgstr "Configurări identitate"
 
@@ -1313,11 +1324,6 @@ msgstr "Numai abonate"
 
 #~ msgid "Anonymous"
 #~ msgstr "Anonim"
-
-#, fuzzy
-#~| msgid "Failed to connect to server"
-#~ msgid "Failed to collect metadata."
-#~ msgstr "Conectarea la server a eșuat"
 
 #~ msgid " minutes"
 #~ msgstr " minute"

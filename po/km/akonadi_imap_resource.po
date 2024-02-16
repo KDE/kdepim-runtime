@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2012-06-11 16:03+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -419,6 +419,13 @@ msgstr ""
 "បាន​បរាជ័យ​ក្នុង​ការ​សម្គាល់​សារ​ពី '%1' សម្រាប់​លុប​នៅ​លើ​ម៉ាស៊ីន​បម្រើ IMAP ។ វា​នឹង​បង្ហាញ​ឡើង​វិញ​នៅ​​ពេល​"
 "ធ្វើសមកាលកម្ម​បន្ទាប់ ។"
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Failed to connect to server"
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "បាន​បរាជ័យ​ក្នុងការ​តភ្ជាប់​ទៅ​ម៉ាស៊ីន​បម្រើ"
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -676,7 +683,7 @@ msgstr "អានាមិក"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
+msgid "XOAuth"
 msgstr ""
 
 #: setupserver.cpp:152
@@ -1305,11 +1312,6 @@ msgstr "តែ​អ្វីដែលបាន​ជាវ​ប៉ុណ្ណ
 
 #~ msgid "Anonymous"
 #~ msgstr "អានាមិក"
-
-#, fuzzy
-#~| msgid "Failed to connect to server"
-#~ msgid "Failed to collect metadata."
-#~ msgstr "បាន​បរាជ័យ​ក្នុងការ​តភ្ជាប់​ទៅ​ម៉ាស៊ីន​បម្រើ"
 
 #~ msgid " minutes"
 #~ msgstr " នាទី"

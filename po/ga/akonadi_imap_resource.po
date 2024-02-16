@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2009-12-24 06:59-0500\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -417,6 +417,13 @@ msgid ""
 "will reappear on next sync."
 msgstr ""
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Do not use KWallet"
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Ná húsáid KWallet"
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -648,7 +655,7 @@ msgstr "Gan ainm"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
+msgid "XOAuth"
 msgstr ""
 
 #: setupserver.cpp:152

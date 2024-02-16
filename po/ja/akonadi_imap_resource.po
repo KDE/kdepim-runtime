@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2010-10-22 23:55-0700\n"
 "Last-Translator: Fumiaki Okushi <okushi@kde.gr.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -413,6 +413,13 @@ msgstr ""
 "IMAP サーバ上で、メッセージを “%1” から削除するよう指定できませんでした。次の"
 "同期で再び現れます。"
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Do not use KWallet"
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "KWallet を使用しない"
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -681,7 +688,7 @@ msgstr "匿名"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
+msgid "XOAuth"
 msgstr ""
 
 #: setupserver.cpp:152

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2023-12-13 05:19+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -409,6 +409,13 @@ msgid ""
 msgstr ""
 "在 IMAP 伺服器上標記刪除從 %1 來的信件失敗。下次同步時這些信件會再出現。"
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Do not use KWallet"
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "不使用 KWallet"
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -645,8 +652,8 @@ msgstr "匿名"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Gmail"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
@@ -1107,6 +1114,10 @@ msgstr "搜尋："
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "只有訂閱的群組"
+
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
 
 #~ msgid "Identity Settings"
 #~ msgstr "身份設定"

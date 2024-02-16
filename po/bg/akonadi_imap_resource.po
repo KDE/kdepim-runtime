@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2022-07-20 19:28+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -434,6 +434,13 @@ msgstr ""
 "Неуспешно маркиране на съобщението от „%1“ за изтриване на IMAP сървъра. Той "
 "ще се появи отново при следващо синхронизиране."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Do not use KWallet"
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Без използване на KWallet"
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -672,8 +679,8 @@ msgstr "Анонимен"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Gmail"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
@@ -1145,3 +1152,7 @@ msgstr "Търсене:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "&Само абонирани"
+
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Gmail"

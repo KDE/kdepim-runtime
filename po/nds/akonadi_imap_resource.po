@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2014-07-13 18:25+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -436,6 +436,13 @@ msgstr ""
 "De Naricht ut \"%1\" lett sik op den IMAP-Server nich för't Wegdoon "
 "markeren. Se dukt bi de nakamen Synkroniseren wedder op."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Failed to collect metadata."
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Sammeln vun Metadaten nich mööglich."
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -693,7 +700,7 @@ msgstr "Anonüm"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
+msgid "XOAuth"
 msgstr ""
 
 #: setupserver.cpp:152
@@ -1330,9 +1337,6 @@ msgstr "Bloots bestellte"
 
 #~ msgid "Anonymous"
 #~ msgstr "Anonüm"
-
-#~ msgid "Failed to collect metadata."
-#~ msgstr "Sammeln vun Metadaten nich mööglich."
 
 #~ msgid "Failed to retrieve items."
 #~ msgstr "Indrääg laat sik nich halen."

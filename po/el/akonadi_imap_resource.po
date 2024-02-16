@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2017-04-20 16:28+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -450,6 +450,13 @@ msgstr ""
 "Αποτυχία σημείωσης του μηνύματος από το '%1' για διαγραφή στον εξυπηρετητή "
 "IMAP. Το μήνυμα θα επανεμφανιστεί στον επόμενο συγχρονισμό."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Failed to connect to server"
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Αδυναμία σύνδεσης με τον εξυπηρετητή"
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -706,8 +713,8 @@ msgstr "Ανώνυμο"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Gmail"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
@@ -1184,6 +1191,10 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Με εγγραφή μόνο"
 
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
+
 #~ msgid "Identity Settings"
 #~ msgstr "Ρυθμίσεις ταυτότητας"
 
@@ -1333,11 +1344,6 @@ msgstr "Με εγγραφή μόνο"
 
 #~ msgid "Anonymous"
 #~ msgstr "Ανώνυμο"
-
-#, fuzzy
-#~| msgid "Failed to connect to server"
-#~ msgid "Failed to collect metadata."
-#~ msgstr "Αδυναμία σύνδεσης με τον εξυπηρετητή"
 
 #~ msgid " minutes"
 #~ msgstr " λεπτά"

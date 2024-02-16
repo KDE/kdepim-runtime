@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2013-11-18 04:31+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -423,6 +423,13 @@ msgstr ""
 "IMAP серверіндегі '%1' дегендегі хабарламаны өшірілетін деп белгіленбеді. Ол "
 "келесі қадамдастыруда қайта пайда болады."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Failed to connect to server"
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Серверіне қосылу болмады"
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -677,7 +684,7 @@ msgstr "Анонимді"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
+msgid "XOAuth"
 msgstr ""
 
 #: setupserver.cpp:152
@@ -1306,11 +1313,6 @@ msgstr "Тек жазылғанның арасынан"
 
 #~ msgid "Anonymous"
 #~ msgstr "Анонимді"
-
-#, fuzzy
-#~| msgid "Failed to connect to server"
-#~ msgid "Failed to collect metadata."
-#~ msgstr "Серверіне қосылу болмады"
 
 #~ msgid " minutes"
 #~ msgstr " минут"

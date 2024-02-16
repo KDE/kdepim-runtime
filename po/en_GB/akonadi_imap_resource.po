@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2020-10-11 15:00+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English <kde-l10n-en_gb@kde.org>\n"
@@ -417,6 +417,13 @@ msgstr ""
 "Failed to mark the message from '%1' for deletion on the IMAP server. It "
 "will reappear on next sync."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Failed to collect metadata."
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Failed to collect metadata."
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -657,8 +664,8 @@ msgstr "Anonymous"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Gmail"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
@@ -1128,6 +1135,10 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Subscribed only"
 
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
+
 #~ msgid "Identity Settings"
 #~ msgstr "Identity Settings"
 
@@ -1263,9 +1274,6 @@ msgstr "Subscribed only"
 
 #~ msgid "Anonymous"
 #~ msgstr "Anonymous"
-
-#~ msgid "Failed to collect metadata."
-#~ msgstr "Failed to collect metadata."
 
 #~ msgid "Failed to retrieve items."
 #~ msgstr "Failed to retrieve items."

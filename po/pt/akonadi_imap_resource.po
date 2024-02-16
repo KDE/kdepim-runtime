@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2020-11-11 12:55+0000\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -434,6 +434,13 @@ msgstr ""
 "Não foi possível marcar a mensagem de '%1' para remoção no servidor IMAP. "
 "Irá aparecer de novo na sincronização seguinte."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Do not use KWallet"
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Não usar a KWallet"
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -676,8 +683,8 @@ msgstr "Anónimo"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Gmail"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
@@ -1145,6 +1152,10 @@ msgstr "Procurar:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Apenas os subscritos"
+
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
 
 #~ msgid "Identity Settings"
 #~ msgstr "Configuração da Identidade"

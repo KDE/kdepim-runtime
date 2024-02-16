@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2012-07-07 22:46+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -429,6 +429,13 @@ msgstr ""
 "Neizdevās atzīmēt vēstuli no '%1' dzēšanai IMAP serverī. Tā atkal parādīsies "
 "nākamreiz sinhronizējoties."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Failed to connect to server"
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Neizdevās pieslēgties serverim"
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -688,7 +695,7 @@ msgstr "Anonīms"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
+msgid "XOAuth"
 msgstr ""
 
 #: setupserver.cpp:152
@@ -1318,11 +1325,6 @@ msgstr "Tikai pierakstītie"
 
 #~ msgid "Anonymous"
 #~ msgstr "Anonīms"
-
-#, fuzzy
-#~| msgid "Failed to connect to server"
-#~ msgid "Failed to collect metadata."
-#~ msgstr "Neizdevās pieslēgties serverim"
 
 #~ msgid " minutes"
 #~ msgstr " minūtes"

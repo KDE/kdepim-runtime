@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2019-07-07 16:50+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -423,6 +423,13 @@ msgstr ""
 "Nepavyko pažymėti laiško „%1“ aplanke pašalinimui iš IMAP serverio. Jis vėl "
 "atsiras sekantį kartą, sinchronizuojant."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Do not use KWallet"
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Nenaudoti KWallet"
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -678,8 +685,8 @@ msgstr "Anonimas"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Gmail"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, fuzzy, kde-format
@@ -1147,6 +1154,10 @@ msgstr "Ieškoti:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Tik užsakyti"
+
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
 
 #~ msgid "Identity Settings"
 #~ msgstr "Tapatumo nuostatos"

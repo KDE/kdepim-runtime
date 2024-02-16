@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2020-02-12 16:23+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-it@kde.org>\n"
@@ -431,6 +431,13 @@ msgstr ""
 "Falleva a marcar le message ex '%1' per deletion sur le servitor IMAP. Il "
 "reapparera al proxime synchronisation."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Failed to connect to server"
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Falleva a connecter a servitor"
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -673,8 +680,8 @@ msgstr "Anonyme"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Gmail"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
@@ -1149,6 +1156,10 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Solmente subscribite"
 
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
+
 #~ msgid "Identity Settings"
 #~ msgstr "Preferentias de identitate"
 
@@ -1299,11 +1310,6 @@ msgstr "Solmente subscribite"
 
 #~ msgid "Anonymous"
 #~ msgstr "Anonyme"
-
-#, fuzzy
-#~| msgid "Failed to connect to server"
-#~ msgid "Failed to collect metadata."
-#~ msgstr "Falleva a connecter a servitor"
 
 #~ msgid " minutes"
 #~ msgstr " minutas"

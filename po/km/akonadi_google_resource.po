@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-30 01:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2012-06-12 09:59+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -249,39 +249,39 @@ msgstr "ផ្ទុក​ឡើងវិញ"
 msgid "Enabled Tasklists:"
 msgstr "បញ្ជី​ភារកិច្ច"
 
-#: personhandler.cpp:86
+#: personhandler.cpp:87
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Coworkers"
 msgstr ""
 
-#: personhandler.cpp:88
+#: personhandler.cpp:89
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Friends"
 msgstr ""
 
-#: personhandler.cpp:90
+#: personhandler.cpp:91
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Family"
 msgstr ""
 
-#: personhandler.cpp:92
+#: personhandler.cpp:93
 #, fuzzy, kde-format
 #| msgid "My Contacts"
 msgctxt "Name of a group of contacts"
 msgid "My Contacts"
 msgstr "ទំនាក់ទំនង​របស់​ខ្ញុំ"
 
-#: personhandler.cpp:116
+#: personhandler.cpp:117
 #, fuzzy, kde-format
 #| msgid "Failed to remove contact"
 msgctxt "@info:status"
 msgid "Retrieving contacts groups"
 msgstr "បាន​បរាជ័យ​ក្នុង​ការ​យក​ទំនាក់ទំនង​ចេញ"
 
-#: personhandler.cpp:123 personhandler.cpp:129
+#: personhandler.cpp:124 personhandler.cpp:130
 #, kde-format
 msgid "Other Contacts"
 msgstr "ទំនាក់ទំនង​ផ្សេង​ទៀត"
@@ -292,20 +292,20 @@ msgctxt "@info:status"
 msgid "Retrieving contacts for group '%1'"
 msgstr ""
 
-#: personhandler.cpp:374
+#: personhandler.cpp:370
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding contact to group '%1'"
 msgstr ""
 
-#: personhandler.cpp:408
+#: personhandler.cpp:404
 #, fuzzy, kde-format
 #| msgid "Failed to remove contact"
 msgctxt "@info:status"
 msgid "Changing contact"
 msgstr "បាន​បរាជ័យ​ក្នុង​ការ​យក​ទំនាក់ទំនង​ចេញ"
 
-#: personhandler.cpp:422
+#: personhandler.cpp:418
 #, fuzzy, kde-format
 #| msgid "Failed to remove contact"
 msgctxt "@info:status"
@@ -313,12 +313,12 @@ msgid "Removing %1 contact"
 msgid_plural "Removing %1 contacts"
 msgstr[0] "បាន​បរាជ័យ​ក្នុង​ការ​យក​ទំនាក់ទំនង​ចេញ"
 
-#: personhandler.cpp:442
+#: personhandler.cpp:438
 #, kde-format
 msgid "Invalid source or destination collection"
 msgstr "សម្រាំង​ទិសដៅ ឬ​ប្រភព​មិន​ត្រឹមត្រូវ"
 
-#: personhandler.cpp:448
+#: personhandler.cpp:444
 #, fuzzy, kde-format
 #| msgid "Failed to remove contact"
 msgctxt "@info:status"
@@ -326,7 +326,7 @@ msgid "Moving %1 contact from group '%2' to '%3'"
 msgid_plural "Moving %1 contacts from group '%2' to '%3'"
 msgstr[0] "បាន​បរាជ័យ​ក្នុង​ការ​យក​ទំនាក់ទំនង​ចេញ"
 
-#: personhandler.cpp:465
+#: personhandler.cpp:461
 #, fuzzy, kde-format
 #| msgid "Failed to remove contact"
 msgctxt "@info:status"
@@ -334,7 +334,7 @@ msgid "Linking %1 contact"
 msgid_plural "Linking %1 contacts"
 msgstr[0] "បាន​បរាជ័យ​ក្នុង​ការ​យក​ទំនាក់ទំនង​ចេញ"
 
-#: personhandler.cpp:479
+#: personhandler.cpp:475
 #, fuzzy, kde-format
 #| msgid "Failed to remove contact"
 msgctxt "@info:status"
@@ -342,19 +342,19 @@ msgid "Unlinking %1 contact"
 msgid_plural "Unlinking %1 contacts"
 msgstr[0] "បាន​បរាជ័យ​ក្នុង​ការ​យក​ទំនាក់ទំនង​ចេញ"
 
-#: personhandler.cpp:512
+#: personhandler.cpp:508
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new contact group '%1'"
 msgstr ""
 
-#: personhandler.cpp:533
+#: personhandler.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact group '%1'"
 msgstr ""
 
-#: personhandler.cpp:558
+#: personhandler.cpp:554
 #, fuzzy, kde-format
 #| msgid "Failed to remove contact"
 msgctxt "@info:status"

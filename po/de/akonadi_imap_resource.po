@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2020-01-08 08:39+0100\n"
 "Last-Translator: Burkhard Lück <lueck@hube-lueck.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -450,6 +450,13 @@ msgstr ""
 "Die Nachricht kann nicht zum Löschen aus „%1“ auf dem IMAP-Server markiert "
 "werden. Sie wird beim nächsten Abgleich wieder erscheinen."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Failed to collect metadata."
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Fehler beim Zusammenstellen der Metadaten."
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -703,8 +710,8 @@ msgstr "Anonym"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Gmail"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
@@ -1183,6 +1190,10 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Nur abonnierte"
 
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
+
 #~ msgid "Identity Settings"
 #~ msgstr "Einstellungen zur Identität"
 
@@ -1337,9 +1348,6 @@ msgstr "Nur abonnierte"
 
 #~ msgid "Anonymous"
 #~ msgstr "Anonym"
-
-#~ msgid "Failed to collect metadata."
-#~ msgstr "Fehler beim Zusammenstellen der Metadaten."
 
 #~ msgid "Failed to retrieve items."
 #~ msgstr "Die Elemente können nicht geladen werden."

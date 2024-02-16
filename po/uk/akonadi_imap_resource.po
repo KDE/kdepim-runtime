@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2020-10-10 08:34+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -439,6 +439,13 @@ msgstr ""
 "Не вдалося позначити для вилучення повідомлення від «%1» на сервері IMAP. Це "
 "повідомлення знову з’явиться під час наступної синхронізації."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Failed to collect metadata."
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Не вдалося зібрати метадані."
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -681,8 +688,8 @@ msgstr "Анонімний"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Gmail"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
@@ -1163,6 +1170,10 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Тільки підписані"
 
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
+
 #~ msgid "Identity Settings"
 #~ msgstr "Параметри профілю"
 
@@ -1300,9 +1311,6 @@ msgstr "Тільки підписані"
 
 #~ msgid "Anonymous"
 #~ msgstr "Анонімний"
-
-#~ msgid "Failed to collect metadata."
-#~ msgstr "Не вдалося зібрати метадані."
 
 #~ msgid "Failed to retrieve items."
 #~ msgstr "Не вдалося отримати записи."

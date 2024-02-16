@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-30 01:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2024-02-10 00:32+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -241,37 +241,37 @@ msgstr "새로 고침"
 msgid "Enabled Tasklists:"
 msgstr "활성화된 작업 목록:"
 
-#: personhandler.cpp:86
+#: personhandler.cpp:87
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Coworkers"
 msgstr "직장 동료"
 
-#: personhandler.cpp:88
+#: personhandler.cpp:89
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Friends"
 msgstr "친구"
 
-#: personhandler.cpp:90
+#: personhandler.cpp:91
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Family"
 msgstr "가족"
 
-#: personhandler.cpp:92
+#: personhandler.cpp:93
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "My Contacts"
 msgstr "내 연락처"
 
-#: personhandler.cpp:116
+#: personhandler.cpp:117
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts groups"
 msgstr "연락처 그룹 가져오는 중"
 
-#: personhandler.cpp:123 personhandler.cpp:129
+#: personhandler.cpp:124 personhandler.cpp:130
 #, kde-format
 msgid "Other Contacts"
 msgstr "다른 연락처"
@@ -282,31 +282,31 @@ msgctxt "@info:status"
 msgid "Retrieving contacts for group '%1'"
 msgstr "그룹 '%1'의 연락처 가져오는 중"
 
-#: personhandler.cpp:374
+#: personhandler.cpp:370
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding contact to group '%1'"
 msgstr "그룹 '%1'에 연락처 추가 중"
 
-#: personhandler.cpp:408
+#: personhandler.cpp:404
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact"
 msgstr "연락처 변경 중"
 
-#: personhandler.cpp:422
+#: personhandler.cpp:418
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 contact"
 msgid_plural "Removing %1 contacts"
 msgstr[0] "연락처 %1개 삭제 중"
 
-#: personhandler.cpp:442
+#: personhandler.cpp:438
 #, kde-format
 msgid "Invalid source or destination collection"
 msgstr "잘못된 원본 및 대상 모음집"
 
-#: personhandler.cpp:448
+#: personhandler.cpp:444
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 contact from group '%2' to '%3'"
@@ -315,33 +315,33 @@ msgstr[0] ""
 "연락처 %1개를 그룹 '%2'에서 '%3'(으)로 이동하는 중|/|연락처 %1개를 그룹 "
 "'%2'에서 '%3'$[으 %3]로 이동하는 중"
 
-#: personhandler.cpp:465
+#: personhandler.cpp:461
 #, kde-format
 msgctxt "@info:status"
 msgid "Linking %1 contact"
 msgid_plural "Linking %1 contacts"
 msgstr[0] "연락처 %1개 연결 중"
 
-#: personhandler.cpp:479
+#: personhandler.cpp:475
 #, kde-format
 msgctxt "@info:status"
 msgid "Unlinking %1 contact"
 msgid_plural "Unlinking %1 contacts"
 msgstr[0] "연락처 %1개 연결 해제 중"
 
-#: personhandler.cpp:512
+#: personhandler.cpp:508
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new contact group '%1'"
 msgstr "새 연락처 그룹 '%1' 생성 중"
 
-#: personhandler.cpp:533
+#: personhandler.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact group '%1'"
 msgstr "연락처 그룹 '%1' 변경 중"
 
-#: personhandler.cpp:558
+#: personhandler.cpp:554
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing contact group '%1'"

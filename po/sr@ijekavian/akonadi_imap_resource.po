@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2017-09-28 18:00+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -417,6 +417,13 @@ msgstr ""
 "Не могу да означим поруку из „%1“ за брисање на ИМАП серверу. Поново ће се "
 "појавити по наредној синхронизацији."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Do not use KWallet"
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Не користи К‑новчаник"
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -670,12 +677,11 @@ msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "анонимно"
 
-# >> @item
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Г‑мејл"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
@@ -1135,6 +1141,11 @@ msgstr "Тражи:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Само у претплаћеним"
+
+# >> @item
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Г‑мејл"
 
 #~ msgid "Identity Settings"
 #~ msgstr "Поставке идентитета"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2020-09-08 19:07+0200\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -416,6 +416,13 @@ msgstr ""
 "Zlyhalo označenie správy z '%1' na vymazanie na IMAP serveri. Objavi sa "
 "znova pri ďalšej synchronizácii."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Failed to collect metadata."
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Zlyhalo zozbieranie metadát."
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -662,8 +669,8 @@ msgstr "Anonym"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Gmail"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
@@ -1134,6 +1141,10 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Iba podpísané"
 
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
+
 #~ msgid "Identity Settings"
 #~ msgstr "Nastavenie identity"
 
@@ -1282,9 +1293,6 @@ msgstr "Iba podpísané"
 
 #~ msgid "Anonymous"
 #~ msgstr "Anonym"
-
-#~ msgid "Failed to collect metadata."
-#~ msgstr "Zlyhalo zozbieranie metadát."
 
 #~ msgid "Failed to retrieve items."
 #~ msgstr "Zlyhalo obnovenie položiek."

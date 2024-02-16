@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2021-11-01 10:38+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -437,6 +437,13 @@ msgstr ""
 "Markeren van het bericht uit '%1' op de IMAP-server voor verwijdering is "
 "mislukt. Het zal bij de volgende synchronisatie opnieuw verschijnen."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Failed to collect metadata."
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Verzamelen van metagegevens is mislukt."
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -681,8 +688,8 @@ msgstr "Anoniem"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Gmail"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
@@ -1157,6 +1164,10 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Alleen ingeschreven"
 
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
+
 #~ msgid "Identity Settings"
 #~ msgstr "Identiteitsinstellingen"
 
@@ -1293,9 +1304,6 @@ msgstr "Alleen ingeschreven"
 
 #~ msgid "Anonymous"
 #~ msgstr "Anoniem"
-
-#~ msgid "Failed to collect metadata."
-#~ msgstr "Verzamelen van metagegevens is mislukt."
 
 #~ msgid "Failed to retrieve items."
 #~ msgstr "Ophalen van items is mislukt"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-16 00:38+0000\n"
 "PO-Revision-Date: 2020-01-01 12:42+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -438,6 +438,13 @@ msgstr ""
 "Kansion ”%1” viestiä ei onnistuttu merkitsemään poistettavaksi IMAP-tilillä. "
 "Se palaa näkyviin seuraavassa synkronoinnissa."
 
+#: outlookpasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Failed to collect metadata."
+msgctxt "@status"
+msgid "Failed to open KWallet"
+msgstr "Metatietojen kerääminen epäonnistui."
+
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
@@ -678,8 +685,8 @@ msgstr "Nimetön"
 #: setupserver.cpp:79
 #, kde-format
 msgctxt "Authentication method"
-msgid "Gmail"
-msgstr "Gmail"
+msgid "XOAuth"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
@@ -1151,6 +1158,10 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Vain tilatut"
 
+#~ msgctxt "Authentication method"
+#~ msgid "Gmail"
+#~ msgstr "Gmail"
+
 #~ msgid "Identity Settings"
 #~ msgstr "Henkilöysasetukset"
 
@@ -1299,9 +1310,6 @@ msgstr "Vain tilatut"
 
 #~ msgid "Anonymous"
 #~ msgstr "Nimetön"
-
-#~ msgid "Failed to collect metadata."
-#~ msgstr "Metatietojen kerääminen epäonnistui."
 
 #~ msgid "Failed to retrieve items."
 #~ msgstr "Tietueiden noutaminen epäonnistui."
