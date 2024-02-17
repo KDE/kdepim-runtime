@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-02-17 00:38+0000\n"
 "PO-Revision-Date: 2017-10-04 13:39-0700\n"
 "Last-Translator: Japanese KDE translation team <kde-jp@kde.org>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -14,12 +14,12 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: ewsautodiscoveryjob.cpp:44 ewsautodiscoveryjob.cpp:51
+#: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
 msgid "Incorrect email address"
 msgstr ""
 
-#: ewsautodiscoveryjob.cpp:114
+#: ewsautodiscoveryjob.cpp:116
 #, kde-format
 msgid "Exchange protocol information not found"
 msgstr ""

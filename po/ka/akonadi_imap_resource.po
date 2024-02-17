@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-02-16 00:38+0000\n"
-"PO-Revision-Date: 2023-09-23 07:26+0200\n"
+"PO-Revision-Date: 2024-02-16 08:12+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -424,11 +424,10 @@ msgstr ""
 "შეუძლებელია. ის შემდეგ სინქზე თავიდან გაჩნდება."
 
 #: outlookpasswordrequester.cpp:64
-#, fuzzy, kde-format
-#| msgid "Do not use KWallet"
+#, kde-format
 msgctxt "@status"
 msgid "Failed to open KWallet"
-msgstr "არ გამოიყენო KWallet"
+msgstr "KWallet-ის გახსნის შეცდომა"
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -673,7 +672,7 @@ msgstr "ანონიმურად"
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
-msgstr ""
+msgstr "XOAuth"
 
 #: setupserver.cpp:152
 #, kde-format
