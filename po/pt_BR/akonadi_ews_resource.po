@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-25 01:34+0000\n"
+"POT-Creation-Date: 2024-02-17 02:27+0000\n"
 "PO-Revision-Date: 2023-10-05 18:27-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -19,12 +19,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 22.12.3\n"
 
-#: ewsautodiscoveryjob.cpp:44 ewsautodiscoveryjob.cpp:51
+#: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
 msgid "Incorrect email address"
 msgstr "Endereço de e-mail incorreto"
 
-#: ewsautodiscoveryjob.cpp:114
+#: ewsautodiscoveryjob.cpp:116
 #, kde-format
 msgid "Exchange protocol information not found"
 msgstr "Informação do protocolo do Exchange não encontrada"

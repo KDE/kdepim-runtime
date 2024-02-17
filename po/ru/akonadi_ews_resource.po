@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-25 01:34+0000\n"
+"POT-Creation-Date: 2024-02-17 02:27+0000\n"
 "PO-Revision-Date: 2024-02-10 13:29+0300\n"
 "Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -20,12 +20,12 @@ msgstr ""
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Lokalize 24.01.95\n"
 
-#: ewsautodiscoveryjob.cpp:44 ewsautodiscoveryjob.cpp:51
+#: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
 msgid "Incorrect email address"
 msgstr "Неверный адрес эл. почты"
 
-#: ewsautodiscoveryjob.cpp:114
+#: ewsautodiscoveryjob.cpp:116
 #, kde-format
 msgid "Exchange protocol information not found"
 msgstr "Не найдены сведения о протоколе Exchange"
