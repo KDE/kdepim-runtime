@@ -55,6 +55,7 @@ set(AKONADINOTE_LIB_VERSION "6.0.40")
 set(KGAPI_LIB_VERSION "6.0.40")
 set(KLDAP_LIB_VERSION "6.0.40")
 set(KTEXTADDONS_MIN_VERSION "1.5.3")
+set(QT6KEYCHAIN_LIB_VERSION "0.14.1")
 
 set( SharedMimeInfo_MINIMUM_VERSION "1.3" )
 find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
@@ -112,8 +113,7 @@ find_package(KPim6AkonadiCalendar ${AKONADICALENDAR_LIB_VERSION} CONFIG REQUIRED
 find_package(KPim6GAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
 find_package(KPim6LdapWidgets ${KLDAP_LIB_VERSION} CONFIG REQUIRED)
 
-#it will replace kwallet support
-find_package(Qt6Keychain CONFIG)
+find_package(Qt6Keychain ${QT6KEYCHAIN_LIB_VERSION} CONFIG)
 set_package_properties(Qt6Keychain PROPERTIES
                                    DESCRIPTION "Provides support for secure credentials storage"
                                    URL "https://github.com/frankosterfeld/qtkeychain"
