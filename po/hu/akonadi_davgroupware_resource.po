@@ -3,19 +3,20 @@
 #
 # Kristóf Kiszel <ulysses@kubuntu.org>, 2011, 2014.
 # Balázs Úr <urbalazs@gmail.com>, 2013, 2014.
+# SPDX-FileCopyrightText: 2024 Kristof Kiszel <ulysses@fsf.hu>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-02-13 00:38+0000\n"
-"PO-Revision-Date: 2014-09-04 15:56+0200\n"
-"Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
+"PO-Revision-Date: 2024-02-17 17:46+0100\n"
+"Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 23.08.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: configdialog.cpp:33
@@ -474,8 +475,7 @@ msgid "Account enabled services"
 msgstr "A fiók szolgáltatásokat engedélyezett"
 
 #: searchdialog.cpp:26
-#, fuzzy, kde-format
-#| msgid "Search"
+#, kde-format
 msgctxt "@title:window"
 msgid "Search"
 msgstr "Keresés"

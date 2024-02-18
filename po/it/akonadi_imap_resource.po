@@ -1,7 +1,7 @@
 # translation of akonadi_imap_resource.po to Italian
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the akonadi_imap_resource package.
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2024.
 # Federico Zenith <federico.zenith@member.fsf.org>, 2009.
 #
 msgid ""
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-02-16 00:38+0000\n"
-"PO-Revision-Date: 2019-12-24 21:19+0100\n"
+"PO-Revision-Date: 2024-02-16 21:14+0100\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 20.08.2\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -439,11 +439,10 @@ msgstr ""
 "server IMAP. Riapparirà alla prossima sincronizzazione."
 
 #: outlookpasswordrequester.cpp:64
-#, fuzzy, kde-format
-#| msgid "Failed to collect metadata."
+#, kde-format
 msgctxt "@status"
 msgid "Failed to open KWallet"
-msgstr "Impossibile raccogliere i metadati."
+msgstr "Impossibile aprire KWallet"
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -691,7 +690,7 @@ msgstr "Anonimo"
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
-msgstr ""
+msgstr "XOAuth"
 
 #: setupserver.cpp:152
 #, kde-format
