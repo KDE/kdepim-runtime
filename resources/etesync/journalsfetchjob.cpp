@@ -12,7 +12,7 @@
 #include <KCalendarCore/Todo>
 #include <KContacts/Addressee>
 #include <KContacts/ContactGroup>
-#include <QtConcurrent>
+#include <QtConcurrentRun>
 
 #include "etesync_debug.h"
 

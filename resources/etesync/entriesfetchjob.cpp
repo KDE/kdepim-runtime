@@ -10,7 +10,7 @@
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
 #include <KContacts/Addressee>
-#include <QtConcurrent>
+#include <QtConcurrentRun>
 
 #include "etesync_debug.h"
 #include "settings.h"

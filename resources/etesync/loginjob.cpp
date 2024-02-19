@@ -6,7 +6,7 @@
 
 #include "loginjob.h"
 
-#include <QtConcurrent>
+#include <QtConcurrentRun>
 
 #include "etesync_debug.h"
 
