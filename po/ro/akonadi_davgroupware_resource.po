@@ -167,8 +167,7 @@ msgid "Resource not found"
 msgstr "Resursa nu a fost găsită"
 
 #: daverror-kdepim-runtime.cpp:32
-#, fuzzy, kde-format
-#| msgid "HTTP error"
+#, kde-format
 msgid "HTTP error"
 msgstr "Eroare HTTP"
 
@@ -249,10 +248,9 @@ msgstr ""
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:70
-#, fuzzy, kde-format
-#| msgid "No properties to change or remove"
+#, kde-format
 msgid "No properties to change or remove"
-msgstr "Nu sunt proprietăți de schimbat sau eliminat"
+msgstr "Nu sunt proprietăți de modificat sau eliminat"
 
 #: daverror-kdepim-runtime.cpp:73
 #, fuzzy, kde-format
