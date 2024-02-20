@@ -87,7 +87,7 @@ EwsResource::EwsResource(const QString &id)
     , mTagsRetrieved(false)
     , mReconnectTimeout(InitialReconnectTimeout)
     , mInitialReconnectTimeout(InitialReconnectTimeout)
-    , mSettings(new EwsSettings(winIdForDialogs()))
+    , mSettings(new EwsSettings(this))
 {
     AttributeFactory::registerAttribute<EwsSyncStateAttribute>();
 

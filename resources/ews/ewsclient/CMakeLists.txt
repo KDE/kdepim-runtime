@@ -146,7 +146,8 @@ target_link_libraries(ewsclient
     KF6::Codecs
     KF6::I18n
     KPim6::Mime
-    KF6::CalendarCore)
+    KF6::CalendarCore
+    qt6keychain)
 
 if (TARGET Qt::NetworkAuth)
     target_link_libraries(ewsclient

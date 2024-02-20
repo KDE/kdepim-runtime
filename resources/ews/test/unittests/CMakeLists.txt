@@ -34,7 +34,6 @@ target_link_libraries(ewssettings_ut
   KF6::ConfigCore
   KF6::ConfigGui
   KF6::CoreAddons
-  KF6::Wallet
   )
 target_compile_definitions(ewssettings_ut PUBLIC -DEWSSETTINGS_UNITTEST)
 

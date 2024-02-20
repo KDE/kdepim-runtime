@@ -5,4 +5,5 @@ ItemAccessors=true
 SetUserTexts=true
 Singleton=false
 GlobalEnums=true
+ParentInConstructor=true
 TranslationSystem=kde

@@ -14,195 +14,75 @@
 
 #include "ewsresource_debug.h"
 #include <KAuthorized>
+#include <qt6keychain/keychain.h>
+
+using namespace QKeychain;
 
 static const QString ewsWalletFolder = QStringLiteral("akonadi-ews");
 
-// Allow unittest to override this to shorten test execution
-#ifdef EWSSETTINGS_UNITTEST
-constexpr int walletTimeout = 2000;
-#else
-constexpr int walletTimeout = 30000;
-#endif
-
-using namespace KWallet;
-
-EwsSettings::EwsSettings(WId windowId)
-    : EwsSettingsBase()
-    , mWindowId(windowId)
-    , mWalletTimer(this)
+EwsSettings::EwsSettings(QObject *parent)
+    : EwsSettingsBase(parent)
 {
-    mWalletTimer.setInterval(walletTimeout);
-    mWalletTimer.setSingleShot(true);
-    connect(&mWalletTimer, &QTimer::timeout, this, [this]() {
-        qCWarning(EWSRES_LOG) << "Timeout waiting for wallet open";
-        onWalletOpened(false);
-    });
 }
 
 EwsSettings::~EwsSettings() = default;
 
-bool EwsSettings::requestWalletOpen()
-{
-    if (!mWallet) {
-        mWallet = Wallet::openWallet(Wallet::NetworkWallet(), mWindowId, Wallet::Asynchronous);
-        if (mWallet) {
-            connect(mWallet.data(), &Wallet::walletOpened, this, &EwsSettings::onWalletOpened);
-            mWalletTimer.start();
-            return true;
-        } else {
-            qCWarning(EWSRES_LOG) << "Failed to open wallet";
-        }
-    }
-    return false;
-}
-
 void EwsSettings::requestPassword()
 {
-    bool status = false;
-
-    qCDebug(EWSRES_LOG) << "requestPassword: start";
-    if (!mPassword.isNull()) {
-        qCDebug(EWSRES_LOG) << "requestPassword: password already set";
+    if (!mPassword.isEmpty()) {
         Q_EMIT passwordRequestFinished(mPassword);
-        return;
     }
 
-    if (requestWalletOpen()) {
-        mPasswordReadPending = true;
-        return;
-    }
+    auto readJob = new ReadPasswordJob(ewsWalletFolder, this);
+    readJob->setKey(config()->name());
+    connect(readJob, &ReadPasswordJob::finished, this, [this, readJob]() {
+        if (readJob->error() != QKeychain::Error::NoError) {
+            qCDebug(EWSRES_LOG) << "requestPassword: Failed to read password";
+            return;
+        }
+        Q_EMIT passwordRequestFinished(readJob->textData());
+    });
 
-    if (mWallet && mWallet->isOpen()) {
-        mPassword = readPassword();
-        mWallet.clear();
-        status = true;
-    }
-
-    if (!status) {
-        qCDebug(EWSRES_LOG) << "requestPassword: Failed to read password";
-    }
-
-    Q_EMIT passwordRequestFinished(mPassword);
+    readJob->start();
 }
 
 void EwsSettings::requestMap()
 {
     qCDebug(EWSRES_LOG) << "requestMap: start";
-    if (!mMap.isEmpty()) {
-        qCDebug(EWSRES_LOG) << "requestMap: already set";
-        Q_EMIT mapRequestFinished(mMap);
-        return;
-    }
 
-    if (requestWalletOpen()) {
-        mMapReadPending = true;
-        return;
-    }
+    auto readJob = new ReadPasswordJob(ewsWalletFolder, this);
+    readJob->setKey(config()->name());
 
-    if (mWallet && mWallet->isOpen()) {
-        mMap = readMap();
-        mWallet.clear();
-    }
+    connect(readJob, &ReadPasswordJob::finished, this, [this, readJob]() {
+        QMap<QString, QString> map;
+        if (readJob->error() != QKeychain::Error::NoError) {
+            qCDebug(EWSRES_LOG) << "requestPassword: Failed to read map";
 
-    Q_EMIT mapRequestFinished(mMap);
-}
+            // TODO remove me in 2025, this is a fallback to read password stored
+            // in KWallet and store it back in QtKeychain.
+            auto wallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(), 0, KWallet::Wallet::Synchronous);
+            if (wallet->hasFolder(ewsWalletFolder)) {
+                wallet->setFolder(ewsWalletFolder);
+                QMap<QString, QString> map;
+                wallet->readMap(config()->name(), map);
+                wallet->removeEntry(config()->name());
+                Q_EMIT mapRequestFinished(map);
 
-QString EwsSettings::readPassword() const
-{
-    QString password;
-    if (mWallet->hasFolder(ewsWalletFolder)) {
-        mWallet->setFolder(ewsWalletFolder);
-        mWallet->readPassword(config()->name(), password);
-    } else {
-        mWallet->createFolder(ewsWalletFolder);
-    }
-    return password;
-}
-
-QMap<QString, QString> EwsSettings::readMap() const
-{
-    QMap<QString, QString> map;
-    if (mWallet->hasFolder(ewsWalletFolder)) {
-        mWallet->setFolder(ewsWalletFolder);
-        mWallet->readMap(config()->name(), map);
-    } else {
-        mWallet->createFolder(ewsWalletFolder);
-    }
-    return map;
-}
-
-void EwsSettings::satisfyPasswordReadRequest(bool success)
-{
-    if (success) {
-        if (mPassword.isNull()) {
-            mPassword = readPassword();
+                setMap(map);
+                return;
+            }
         }
-        qCDebug(EWSRES_LOG) << "satisfyPasswordReadRequest: got password";
-        Q_EMIT passwordRequestFinished(mPassword);
-    } else {
-        qCDebug(EWSRES_LOG) << "satisfyPasswordReadRequest: failed to retrieve password";
-        Q_EMIT passwordRequestFinished(QString());
-    }
-    mPasswordReadPending = false;
-}
 
-void EwsSettings::satisfyPasswordWriteRequest(bool success)
-{
-    if (success) {
-        if (!mWallet->hasFolder(ewsWalletFolder)) {
-            mWallet->createFolder(ewsWalletFolder);
+        const auto value = readJob->binaryData();
+        if (value.isEmpty()) {
+            Q_EMIT mapRequestFinished(map);
+            return;
         }
-        mWallet->setFolder(ewsWalletFolder);
-        mWallet->writePassword(config()->name(), mPassword);
-    }
-    mPasswordWritePending = false;
-}
-
-void EwsSettings::satisfyMapReadRequest(bool success)
-{
-    if (success) {
-        if (mMap.isEmpty()) {
-            mMap = readMap();
-        }
-        qCDebug(EWSRES_LOG) << "satisfyMapReadRequest: got map";
-        Q_EMIT mapRequestFinished(mMap);
-    } else {
-        qCDebug(EWSRES_LOG) << "satisfyTokensReadRequest: failed to retrieve map";
-        Q_EMIT mapRequestFinished(QMap<QString, QString>());
-    }
-    mMapReadPending = false;
-}
-
-void EwsSettings::satisfyMapWriteRequest(bool success)
-{
-    if (success) {
-        if (!mWallet->hasFolder(ewsWalletFolder)) {
-            mWallet->createFolder(ewsWalletFolder);
-        }
-        mWallet->setFolder(ewsWalletFolder);
-        mWallet->writeMap(config()->name(), mMap);
-    }
-    mMapWritePending = false;
-}
-
-void EwsSettings::onWalletOpened(bool success)
-{
-    mWalletTimer.stop();
-    if (mWallet) {
-        if (mPasswordReadPending) {
-            satisfyPasswordReadRequest(success);
-        }
-        if (mPasswordWritePending) {
-            satisfyPasswordWriteRequest(success);
-        }
-        if (mMapReadPending) {
-            satisfyMapReadRequest(success);
-        }
-        if (mMapWritePending) {
-            satisfyMapWriteRequest(success);
-        }
-        mWallet.clear();
-    }
+        QDataStream ds(value);
+        ds >> map;
+        Q_EMIT mapRequestFinished(map);
+    });
+    readJob->start();
 }
 
 void EwsSettings::setPassword(const QString &password)
@@ -214,14 +94,17 @@ void EwsSettings::setPassword(const QString &password)
 
     mPassword = password;
 
-    /* If a pending password request is running, satisfy it. */
-    if (mWallet && mPasswordReadPending) {
-        satisfyPasswordReadRequest(true);
-    }
+    auto writeJob = new WritePasswordJob(ewsWalletFolder, this);
+    writeJob->setKey(config()->name());
+    writeJob->setTextData(mPassword);
 
-    if (requestWalletOpen()) {
-        mPasswordWritePending = true;
-    }
+    connect(writeJob, &WritePasswordJob::finished, this, [writeJob]() {
+        if (writeJob->error() != QKeychain::Error::NoError) {
+            qCDebug(EWSRES_LOG) << "requestPassword: Failed to write password";
+            return;
+        }
+    });
+    writeJob->start();
 }
 
 void EwsSettings::setMap(const QMap<QString, QString> &map)
@@ -231,31 +114,21 @@ void EwsSettings::setMap(const QMap<QString, QString> &map)
         return;
     }
 
-    for (auto it = map.begin(); it != map.end(); ++it) {
-        qCDebug(EWSRES_LOG) << "setMap:" << it.key();
-        if (!it.value().isNull()) {
-            mMap[it.key()] = it.value();
-        } else {
-            mMap.remove(it.key());
+    QByteArray mapData;
+    QDataStream ds(&mapData, QIODevice::WriteOnly);
+    ds << map;
+
+    auto writeJob = new WritePasswordJob(ewsWalletFolder, this);
+    writeJob->setKey(config()->name());
+    writeJob->setBinaryData(mapData);
+
+    connect(writeJob, &WritePasswordJob::finished, this, [writeJob]() {
+        if (writeJob->error() != QKeychain::Error::NoError) {
+            qCDebug(EWSRES_LOG) << "requestPassword: Failed to write map";
+            return;
         }
-    }
-
-    /* Remote items with null value - this is a way to remove
-       unwanted items from the map. */
-    for (auto it = mMap.begin(); it != mMap.end(); ++it) {
-        while (it->isNull()) {
-            it = mMap.erase(it);
-        }
-    }
-
-    /* If a pending password request is running, satisfy it. */
-    if (mWallet && mMapReadPending) {
-        satisfyMapReadRequest(true);
-    }
-
-    if (requestWalletOpen()) {
-        mMapWritePending = true;
-    }
+    });
+    writeJob->start();
 }
 
 void EwsSettings::setTestPassword(const QString &password)
@@ -266,9 +139,7 @@ void EwsSettings::setTestPassword(const QString &password)
     }
 
     mPassword = password;
-    if (mWallet) {
-        satisfyPasswordReadRequest(true);
-    }
+    Q_EMIT passwordRequestFinished(mPassword);
 }
 
 /* Not needed for unittests - exclude to avoid excess link-time dependencies. */
