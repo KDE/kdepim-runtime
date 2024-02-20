@@ -1407,13 +1407,16 @@ void EwsResource::reauthenticate()
 
             mReauthNotification->setText(reauthPrompt.arg(name()));
             mReauthNotification->setComponentName(QStringLiteral("akonadi_ews_resource"));
-            auto acceptedFn = std::bind(&EwsResource::reauthNotificationDismissed, this, true);
-            auto rejectedFn = std::bind(&EwsResource::reauthNotificationDismissed, this, false);
-            connect(mReauthNotification.data(), &KNotification::closed, this, rejectedFn);
-            connect(mReauthNotification.data(), &KNotification::ignored, this, rejectedFn);
-
+            connect(mReauthNotification.data(), &KNotification::closed, this, [this]() {
+                reauthNotificationDismissed(false);
+            });
+            connect(mReauthNotification.data(), &KNotification::ignored, this, [this]() {
+                reauthNotificationDismissed(false);
+            });
             auto authenticateAction = mReauthNotification->addAction(i18nc("@action:button", "Authenticate"));
-            connect(authenticateAction, &KNotificationAction::activated, this, acceptedFn);
+            connect(authenticateAction, &KNotificationAction::activated, this, [this]() {
+                reauthNotificationDismissed(true);
+            });
 
             mReauthNotification->sendEvent();
             break;
