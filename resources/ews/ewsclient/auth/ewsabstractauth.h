@@ -55,7 +55,7 @@ public:
     explicit EwsAbstractAuth(QObject *parent = nullptr);
     ~EwsAbstractAuth() override = default;
     virtual void init() = 0;
-    virtual bool getAuthData(QString &username, QString &password, QStringList &customHeaders) = 0;
+    virtual bool getAuthData(QString &username, QString &password, QHash<QByteArray, QByteArray> &customHeaders) = 0;
     virtual void notifyRequestAuthFailed();
     virtual bool authenticate(bool interactive) = 0;
     virtual const QString &reauthPrompt() const = 0;

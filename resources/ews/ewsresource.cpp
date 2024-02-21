@@ -1001,13 +1001,13 @@ void EwsResource::sendItem(const Akonadi::Item &item)
 
 void EwsResource::itemSendRequestFinished(KJob *job)
 {
-    Item item = job->property("item").value<Item>();
-    if (job->error()) {
+    const Item item = job->property("item").value<Item>();
+    if (job->error() != KJob::NoError) {
         itemSent(item, TransportFailed, i18nc("@info:status", "Failed to process item send request"));
         return;
     }
 
-    auto req = qobject_cast<EwsCreateItemJob *>(job);
+    const auto req = qobject_cast<EwsCreateItemJob *>(job);
     if (!req) {
         itemSent(item, TransportFailed, i18nc("@info:status", "Failed to send item - internal error"));
         return;
@@ -1035,13 +1035,13 @@ void EwsResource::sendMessage(const QString &id, const QByteArray &content)
 #if HAVE_SEPARATE_MTA_RESOURCE
 void EwsResource::messageSendRequestFinished(KJob *job)
 {
-    QString id = job->property("requestId").toString();
-    if (job->error()) {
+    const auto id = job->property("requestId").toString();
+    if (job->error() != KJob::NoError) {
         Q_EMIT messageSent(id, i18nc("@info:status", "Failed to process item send request"));
         return;
     }
 
-    auto req = qobject_cast<EwsCreateItemRequest *>(job);
+    const auto req = qobject_cast<EwsCreateItemRequest *>(job);
     if (!req) {
         Q_EMIT messageSent(id, i18nc("@info:status", "Failed to send item - internal error"));
         return;

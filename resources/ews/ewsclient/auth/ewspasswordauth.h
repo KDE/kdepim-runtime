@@ -15,7 +15,7 @@ public:
     ~EwsPasswordAuth() override = default;
 
     void init() override;
-    bool getAuthData(QString &username, QString &password, QStringList &customHeaders) override;
+    bool getAuthData(QString &username, QString &password, QHash<QByteArray, QByteArray> &customHeaders) override;
     void notifyRequestAuthFailed() override;
     bool authenticate(bool interactive) override;
     const QString &reauthPrompt() const override;

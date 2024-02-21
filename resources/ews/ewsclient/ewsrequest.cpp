@@ -6,10 +6,12 @@
 
 #include "ewsrequest.h"
 
+#include <QNetworkReply>
 #include <QTemporaryFile>
 
 #include "auth/ewsabstractauth.h"
 #include "ewsclient_debug.h"
+#include "transferjob.h"
 
 EwsRequest::EwsRequest(EwsClient &client, QObject *parent)
     : EwsJob(parent)
@@ -64,7 +66,7 @@ void EwsRequest::prepare(const QString &body)
     mBody = body;
 
     QString username, password;
-    QStringList customHeaders;
+    QHash<QByteArray, QByteArray> customHeaders;
     if (mClient.auth()) {
         if (!mClient.auth()->getAuthData(username, password, customHeaders)) {
             setErrorMsg(QStringLiteral("Failed to retrieve authentication data"));
@@ -75,63 +77,66 @@ void EwsRequest::prepare(const QString &body)
     url.setUserName(username);
     url.setPassword(password);
 
-    KIO::TransferJob *job = KIO::http_post(url, body.toUtf8(), KIO::HideProgressInfo);
-    job->addMetaData(QStringLiteral("content-type"), QStringLiteral("text/xml"));
-    job->addMetaData(QStringLiteral("HttpVersion"), QStringLiteral("http1"));
-    if (!mClient.userAgent().isEmpty()) {
-        job->addMetaData(QStringLiteral("UserAgent"), mClient.userAgent());
-    }
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("text/xml"));
+    request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false);
 
-    job->addMetaData(mMd);
+    if (!mClient.userAgent().isEmpty()) {
+        request.setHeader(QNetworkRequest::UserAgentHeader, mClient.userAgent());
+    }
 
     if (!customHeaders.isEmpty()) {
-        job->addMetaData(QStringLiteral("customHTTPHeader"), customHeaders.join(QLatin1String("\r\n")));
+        for (const auto &[key, header] : customHeaders.asKeyValueRange()) {
+            request.setRawHeader(key, header);
+        }
     }
 
-    job->addMetaData(QStringLiteral("no-auth-prompt"), QStringLiteral("true"));
     if (mClient.isNTLMv2Enabled()) {
-        job->addMetaData(QStringLiteral("EnableNTLMv2Auth"), QStringLiteral("true"));
+        // TODO
     }
 
+    auto job = new TransferJob(request, body.toUtf8());
     connect(job, &KIO::TransferJob::result, this, &EwsRequest::requestResult);
-    connect(job, &KIO::TransferJob::data, this, &EwsRequest::requestData);
-
+    connect(job, &KIO::TransferJob::percentChanged, this, [this](KJob *job, unsigned long) {
+        requestProgress(job);
+    });
     addSubjob(job);
 }
 
-void EwsRequest::setMetaData(const KIO::MetaData &md)
+void EwsRequest::requestProgress(KJob *)
 {
-    mMd = md;
-}
-
-void EwsRequest::addMetaData(const QString &key, const QString &value)
-{
-    mMd.insert(key, value);
 }
 
 void EwsRequest::requestResult(KJob *job)
 {
+    auto trJob = qobject_cast<TransferJob *>(job);
+    Q_ASSERT(trJob);
+
+    auto reply = trJob->reply();
+    Q_ASSERT(reply);
+
+    mResponseData = trJob->reply()->readAll();
+
     if (EWSCLI_PROTO_LOG().isDebugEnabled()) {
         ewsLogDir.setAutoRemove(false);
         if (ewsLogDir.isValid()) {
             QTemporaryFile dumpFile(ewsLogDir.path() + QStringLiteral("/ews_xmldump_XXXXXXX.xml"));
             dumpFile.open();
             dumpFile.setAutoRemove(false);
-            dumpFile.write(mResponseData.toUtf8());
+            dumpFile.write(mResponseData);
             qCDebug(EWSCLI_PROTO_LOG) << "response dumped to" << dumpFile.fileName();
             dumpFile.close();
         }
     }
 
-    auto trJob = qobject_cast<KIO::TransferJob *>(job);
-    int resp = trJob->metaData()[QStringLiteral("responsecode")].toUInt();
+    const int resp = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toUInt();
 
     if (resp == 401 && mClient.auth()) {
         mClient.auth()->notifyRequestAuthFailed();
         setEwsResponseCode(EwsResponseCodeUnauthorized);
     }
 
-    if (job->error() != 0) {
+    if (reply->error() != QNetworkReply::NoError) {
         setErrorMsg(QStringLiteral("Failed to process EWS request: ") + job->errorString(), job->error());
     }
     /* Don't attempt to parse the response in case of a HTTP error. The only exception is
@@ -244,14 +249,6 @@ bool EwsRequest::readSoapFault(QXmlStreamReader &reader)
     }
 
     return false;
-}
-
-void EwsRequest::requestData(KIO::Job *job, const QByteArray &data)
-{
-    Q_UNUSED(job)
-
-    qCDebug(EWSCLI_PROTO_LOG) << "data" << job << data;
-    mResponseData += QString::fromUtf8(data);
 }
 
 bool EwsRequest::parseResponseMessage(QXmlStreamReader &reader, const QString &reqName, ContentReaderFn contentReader)
@@ -372,7 +369,7 @@ void EwsRequest::dump() const
         QTemporaryFile resDumpFile(ewsLogDir.path() + QStringLiteral("/ews_xmlresdump_XXXXXXX.xml"));
         resDumpFile.open();
         resDumpFile.setAutoRemove(false);
-        resDumpFile.write(mResponseData.toUtf8());
+        resDumpFile.write(mResponseData);
         resDumpFile.close();
         qCDebug(EWSCLI_LOG) << "request  dumped to" << reqDumpFile.fileName();
         qCDebug(EWSCLI_LOG) << "response dumped to" << resDumpFile.fileName();
