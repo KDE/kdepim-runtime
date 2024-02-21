@@ -55,13 +55,12 @@ void EwsGetStreamingEventsRequest::start()
     doSend();
 }
 
-void EwsGetStreamingEventsRequest::requestData(KIO::Job *job, const QByteArray &data)
+void EwsGetStreamingEventsRequest::requestProgress(KJob *job)
 {
     Q_UNUSED(job)
 
     mRespTimer.stop();
-    qCDebug(EWSCLI_PROTO_LOG) << "data" << job << data;
-    mResponseData += QString::fromUtf8(data);
+    qCDebug(EWSCLI_PROTO_LOG) << "progress" << job;
     mRespTimer.start();
 }
 
@@ -76,7 +75,7 @@ void EwsGetStreamingEventsRequest::requestDataTimeout()
             QTemporaryFile dumpFile(ewsLogDir.path() + QStringLiteral("/ews_xmldump_XXXXXXX.xml"));
             dumpFile.open();
             dumpFile.setAutoRemove(false);
-            dumpFile.write(mResponseData.toUtf8());
+            dumpFile.write(mResponseData);
             qCDebug(EWSCLI_PROTO_LOG) << "response dumped to" << dumpFile.fileName();
             dumpFile.close();
         }

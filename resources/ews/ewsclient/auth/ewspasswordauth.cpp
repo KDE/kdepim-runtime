@@ -21,7 +21,7 @@ void EwsPasswordAuth::init()
     Q_EMIT requestWalletPassword(false);
 }
 
-bool EwsPasswordAuth::getAuthData(QString &username, QString &password, QStringList &customHeaders)
+bool EwsPasswordAuth::getAuthData(QString &username, QString &password, QHash<QByteArray, QByteArray> &customHeaders)
 {
     Q_UNUSED(customHeaders)
 

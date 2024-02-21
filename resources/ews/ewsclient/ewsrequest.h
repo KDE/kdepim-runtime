@@ -61,9 +61,6 @@ public:
     EwsRequest(EwsClient &client, QObject *parent);
     ~EwsRequest() override;
 
-    void setMetaData(const KIO::MetaData &md);
-    void addMetaData(const QString &key, const QString &value);
-
     void setServerVersion(const EwsServerVersion &version);
     const EwsServerVersion &serverVersion() const
     {
@@ -83,11 +80,10 @@ protected:
     bool parseResponseMessage(QXmlStreamReader &reader, const QString &reqName, ContentReaderFn contentReader);
     bool readResponse(QXmlStreamReader &reader);
 
-    KIO::MetaData mMd;
-    QString mResponseData;
+    QByteArray mResponseData;
 protected Q_SLOTS:
     void requestResult(KJob *job);
-    virtual void requestData(KIO::Job *job, const QByteArray &data);
+    virtual void requestProgress(KJob *job);
 
 private:
     bool readSoapBody(QXmlStreamReader &reader);

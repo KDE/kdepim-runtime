@@ -474,7 +474,7 @@ void EwsOAuth::init()
     Q_EMIT requestWalletMap();
 }
 
-bool EwsOAuth::getAuthData(QString &username, QString &password, QStringList &customHeaders)
+bool EwsOAuth::getAuthData(QString &username, QString &password, QHash<QByteArray, QByteArray> &customHeaders)
 {
     Q_D(const EwsOAuth);
 
@@ -482,7 +482,7 @@ bool EwsOAuth::getAuthData(QString &username, QString &password, QStringList &cu
     Q_UNUSED(password)
 
     if (d->mAuthenticated) {
-        customHeaders.append(QStringLiteral("Authorization: Bearer ") + d->mOAuth2.token());
+        customHeaders["Authorization"] = "Bearer " + d->mOAuth2.token().toUtf8();
         return true;
     } else {
         return false;

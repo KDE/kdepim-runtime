@@ -88,7 +88,8 @@ set(EWSCLIENT_SRCS
     ewsupdatefolderrequest.h
     ewsupdateitemrequest.h
     ewsxml.h
-
+    transferjob.h
+    transferjob.cpp
 
     )
 

@@ -31,7 +31,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void eventsReceived(KJob *job);
 protected Q_SLOTS:
-    void requestData(KIO::Job *job, const QByteArray &data) override;
+    void requestProgress(KJob *job) override;
     void requestDataTimeout();
 
 protected:
