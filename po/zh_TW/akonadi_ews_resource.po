@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-17 00:38+0000\n"
+"POT-Creation-Date: 2024-02-22 00:38+0000\n"
 "PO-Revision-Date: 2024-01-14 23:32+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -1023,19 +1023,19 @@ msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "無法處理全域標籤取得請求"
 
-#: ewsresource.cpp:1415
+#: ewsresource.cpp:1416
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "認證"
 
-#: ewsresource.cpp:1425 ewsresource.cpp:1440
+#: ewsresource.cpp:1428 ewsresource.cpp:1443
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "認證失敗"
 
-#: ewsresource.cpp:1448
+#: ewsresource.cpp:1451
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"

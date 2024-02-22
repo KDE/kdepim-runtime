@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-17 00:38+0000\n"
+"POT-Creation-Date: 2024-02-22 00:38+0000\n"
 "PO-Revision-Date: 2023-09-21 18:18+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -1061,19 +1061,19 @@ msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Verzoek om globale tag op te halen is mislukt"
 
-#: ewsresource.cpp:1415
+#: ewsresource.cpp:1416
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Authenticeren"
 
-#: ewsresource.cpp:1425 ewsresource.cpp:1440
+#: ewsresource.cpp:1428 ewsresource.cpp:1443
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Authenticatie is mislukt"
 
-#: ewsresource.cpp:1448
+#: ewsresource.cpp:1451
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"

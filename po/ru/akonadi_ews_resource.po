@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-17 00:38+0000\n"
+"POT-Creation-Date: 2024-02-22 00:38+0000\n"
 "PO-Revision-Date: 2024-02-09 22:48+0300\n"
 "Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -1074,19 +1074,19 @@ msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Не удалось обработать глобальный запрос на получение меток"
 
-#: ewsresource.cpp:1415
+#: ewsresource.cpp:1416
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Выполнить вход"
 
-#: ewsresource.cpp:1425 ewsresource.cpp:1440
+#: ewsresource.cpp:1428 ewsresource.cpp:1443
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Ошибка идентификации"
 
-#: ewsresource.cpp:1448
+#: ewsresource.cpp:1451
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"
