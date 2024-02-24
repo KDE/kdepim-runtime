@@ -24,6 +24,7 @@
 #include <QDir>
 #include <QEventLoopLocker>
 #include <QFile>
+#include <QPromise>
 
 Q_DECLARE_METATYPE(QEventLoopLocker *)
 
@@ -57,7 +58,7 @@ public:
     /**
      * Read changes from the backend file.
      */
-    void readFile(bool taskContext = false) override
+    QFuture<bool> readFile(bool taskContext = false) override
     {
         if (KDirWatch::self()->contains(mCurrentUrl.toLocalFile())) {
             KDirWatch::self()->removeFile(mCurrentUrl.toLocalFile());
@@ -70,7 +71,7 @@ public:
             if (taskContext) {
                 cancelTask();
             }
-            return;
+            return QtFuture::makeReadyValueFuture(false);
         }
 
         mCurrentUrl = QUrl::fromUserInput(mSettings->path()); // the string contains the scheme if remote, doesn't if local path
@@ -81,6 +82,7 @@ public:
             mCurrentHash = loadHash();
         }
 
+        QFuture<bool> future;
         if (mCurrentUrl.isLocalFile()) {
             if (mSettings->displayName().isEmpty() && (name().isEmpty() || name() == identifier()) && !mCurrentUrl.isEmpty()) {
                 setName(mCurrentUrl.fileName());
@@ -106,7 +108,7 @@ public:
                     if (taskContext) {
                         cancelTask();
                     }
-                    return;
+                    return QtFuture::makeReadyValueFuture(false);
                 }
             }
 
@@ -119,7 +121,7 @@ public:
                 if (taskContext) {
                     cancelTask();
                 }
-                return;
+                return QtFuture::makeReadyValueFuture(false);
             }
 
             if (mSettings->monitorFile()) {
@@ -127,6 +129,7 @@ public:
             }
 
             Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
+            future = QtFuture::makeReadyValueFuture(true);
         } else { // !mCurrentUrl.isLocalFile()
             if (mDownloadJob) {
                 const QString message = i18n("Another download is still in progress.");
@@ -135,7 +138,7 @@ public:
                 if (taskContext) {
                     cancelTask();
                 }
-                return;
+                return QtFuture::makeReadyValueFuture(false);
             }
 
             if (mUploadJob) {
@@ -145,23 +148,28 @@ public:
                 if (taskContext) {
                     cancelTask();
                 }
-                return;
+                return QtFuture::makeReadyValueFuture(false);
             }
 
             auto ref = new QEventLoopLocker();
+            auto promise = new QPromise<bool>();
             // NOTE: Test what happens with remotefile -> save, close before save is finished.
             mDownloadJob = KIO::file_copy(mCurrentUrl, QUrl::fromLocalFile(cacheFile()), -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo);
             mDownloadJob->setProperty("QEventLoopLocker", QVariant::fromValue(ref));
+            mDownloadJob->setProperty("QPromise", QVariant::fromValue(promise));
             connect(mDownloadJob, &KJob::result, this, &SingleFileResource<Settings>::slotDownloadJobResult);
             connect(mDownloadJob, SIGNAL(percent(KJob *, ulong)), SLOT(handleProgress(KJob *, ulong)));
 
             Q_EMIT status(Running, i18n("Downloading remote file."));
+            future = promise->future();
         }
 
         const QString display = mSettings->displayName();
         if (!display.isEmpty()) {
             setName(display);
         }
+
+        return future;
     }
 
     void writeFile(const QVariant &task_context) override

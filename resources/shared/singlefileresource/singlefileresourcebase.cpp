@@ -21,6 +21,8 @@
 
 #include <QCryptographicHash>
 #include <QDir>
+#include <QFutureWatcher>
+#include <QPromise>
 #include <QStandardPaths>
 #include <QTimer>
 
@@ -33,11 +35,11 @@ SingleFileResourceBase::SingleFileResourceBase(const QString &id)
 {
     connect(this, &SingleFileResourceBase::reloadConfiguration, this, [this]() {
         applyConfigurationChanges();
-        reloadFile();
+        [[maybe_unused]] const auto future = reloadFile();
         synchronizeCollectionTree();
     });
     QTimer::singleShot(0, this, [this]() {
-        readFile();
+        [[maybe_unused]] const auto future = readFile();
     });
 
     changeRecorder()->itemFetchScope().fetchFullPayload();
@@ -80,13 +82,6 @@ bool SingleFileResourceBase::readLocalFile(const QString &fileName)
             // read only resources).
             saveHash(newHash);
         }
-
-        // Only synchronize when the contents of the file have changed wrt to
-        // the last time this file was read. Before we synchronize first
-        // clearCache is called to make sure that the cached items get the
-        // actual values as present in the file.
-        invalidateCache(rootCollection());
-        synchronize();
     } else {
         // The hash didn't change, notify implementing resources about the
         // actual file name that should be used when reading the file is
@@ -181,7 +176,7 @@ void SingleFileResourceBase::collectionChanged(const Akonadi::Collection &collec
     changeCommitted(collection);
 }
 
-void SingleFileResourceBase::reloadFile()
+QFuture<bool> SingleFileResourceBase::reloadFile()
 {
     // Update the network setting.
     setNeedsNetwork(!mCurrentUrl.isEmpty() && !mCurrentUrl.isLocalFile());
@@ -192,10 +187,13 @@ void SingleFileResourceBase::reloadFile()
         writeFile();
     }
 
-    readFile();
-
-    // name or rights could have changed
-    synchronizeCollectionTree();
+    auto future = readFile();
+    return future.then(this, [this](bool ok) {
+        if (ok) {
+            synchronizeCollectionTree();
+        }
+        return ok;
+    });
 }
 
 void SingleFileResourceBase::handleProgress(KJob *, unsigned long pct)
@@ -245,13 +243,14 @@ void SingleFileResourceBase::fileChanged(const QString &fileName)
         Q_EMIT warning(message);
     }
 
-    readFile();
-
-    // Notify resources, so that information bound to the file like indexes etc.
-    // can be updated.
-    handleHashChange();
-    invalidateCache(rootCollection());
-    synchronize();
+    readFile().then(this, [this](bool ok) {
+        Q_UNUSED(ok);
+        // Notify resources, so that information bound to the file like indexes etc.
+        // can be updated.
+        handleHashChange();
+        invalidateCache(rootCollection());
+        synchronize();
+    });
 }
 
 void SingleFileResourceBase::scheduleWrite()
@@ -261,21 +260,25 @@ void SingleFileResourceBase::scheduleWrite()
 
 void SingleFileResourceBase::slotDownloadJobResult(KJob *job)
 {
-    if (job->error() && job->error() != KIO::ERR_DOES_NOT_EXIST) {
-        const QString message = i18n("Could not load file '%1'.", mCurrentUrl.toDisplayString());
-        qWarning() << message;
-        Q_EMIT status(Broken, message);
-    } else {
-        readLocalFile(QUrl::fromLocalFile(cacheFile()).toLocalFile());
-    }
-
     mDownloadJob = nullptr;
     auto ref = job->property("QEventLoopLocker").value<QEventLoopLocker *>();
     if (ref) {
         delete ref;
     }
+    auto promise = job->property("QPromise").value<QPromise<bool> *>();
+
+    if (job->error() && job->error() != KIO::ERR_DOES_NOT_EXIST) {
+        const QString message = i18n("Could not load file '%1'.", mCurrentUrl.toDisplayString());
+        qWarning() << message;
+        Q_EMIT status(Broken, message);
+        promise->addResult(false);
+    } else {
+        const bool ok = readLocalFile(QUrl::fromLocalFile(cacheFile()).toLocalFile());
+        promise->addResult(ok);
+    }
 
     Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
+    promise->finish();
 }
 
 void SingleFileResourceBase::slotUploadJobResult(KJob *job)

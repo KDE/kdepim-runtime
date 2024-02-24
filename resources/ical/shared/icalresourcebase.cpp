@@ -108,12 +108,21 @@ void ICalResourceBase::itemRemoved(const Akonadi::Item &item)
 
 void ICalResourceBase::retrieveItems(const Akonadi::Collection &col)
 {
-    reloadFile();
-    if (mCalendar) {
-        doRetrieveItems(col);
-    } else {
-        qCritical() << "akonadi_ical_resource: retrieveItems(): mCalendar is 0!";
-    }
+    reloadFile().then(this, [this, col](bool success) {
+        qInfo() << "Reload file success:" << success;
+        if (success) {
+            if (mCalendar) {
+                doRetrieveItems(col);
+            } else {
+                qCritical() << "akonadi_ical_resource: retrieveItems(): mCalendar is 0!";
+            }
+        } else {
+            qInfo() << "Reload file failed, not syncing items.";
+            // Pretend nothing has changed
+            itemsRetrievedIncremental({}, {});
+            itemsRetrievalDone();
+        }
+    });
 }
 
 bool ICalResourceBase::writeToFile(const QString &fileName)

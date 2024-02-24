@@ -9,6 +9,7 @@
 #include "akonadi-singlefileresource_export.h"
 #include <Akonadi/ResourceBase>
 
+#include <QFuture>
 #include <QStringList>
 #include <QUrl>
 
@@ -38,15 +39,20 @@ public:
     void collectionChanged(const Akonadi::Collection &collection) override;
 
 public Q_SLOTS:
-    void reloadFile();
+    [[nodiscard]] QFuture<bool> reloadFile();
 
     /*
      * Read the current state from a file. This can happen
      * from direct callers, or as part of a scheduled task.
      * @p taskContext specifies whether the method is being
      * called from within a task or not.
+     *
+     * @return Returns a QFuture that will be fufilled once the
+     * file has been read. The boolean value indicates whether
+     * the file was read successfully (@p true) or whenther an
+     * error has occured (@p false).
      */
-    virtual void readFile(bool taskContext = false) = 0;
+    [[nodiscard]] virtual QFuture<bool> readFile(bool taskContext = false) = 0;
     /*
      * Writes the current state out to a file. This can happen
      * from direct callers, or as part of a scheduled task.
