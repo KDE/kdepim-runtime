@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Safa Alfulaij <safa1996alfulaij@gmail.com>, 2018.
-# Zayed Al-Saidi <zayed.alsaidi@gmail.com>, 2022.
+# SPDX-FileCopyrightText: 2022, 2024 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-02-17 02:27+0000\n"
-"PO-Revision-Date: 2022-01-04 14:29+0400\n"
+"PO-Revision-Date: 2024-02-23 18:11+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Lokalize 21.07.70\n"
+"X-Generator: Lokalize 23.08.1\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -231,12 +231,10 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, authUsernameRadioButton)
 #: ewsconfigdialog.ui:97
-#, fuzzy, kde-format
-#| msgctxt "The username to login into the server"
-#| msgid "Username"
+#, kde-format
 msgctxt "authentication type"
 msgid "&Username/Password"
-msgstr "اسم المستخدم"
+msgstr "ا&سم المستخدم/كلمة السّرّ"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_HasDomain)
 #: ewsconfigdialog.ui:143
@@ -510,15 +508,7 @@ msgstr "فعّل NTLM الإصدارة الثّانية"
 
 #. i18n: ectx: property (whatsThis), widget (QGroupBox, userAgentGroupBox)
 #: ewsconfigdialog.ui:505
-#, fuzzy, kde-format
-#| msgid ""
-#| "<html><head/><body><p>Some organizations restrict access to mail only to "
-#| "approved clients, such as Microsoft Outlook. On the server-side this is "
-#| "implemented by analyzing the User-Agent string and only allowing a list "
-#| "of approved clients.</p><p>This setting allows to emulate some well known "
-#| "clients as well as providing a custom User-Agent string.</p><p>Please be "
-#| "advised that bypasing company policies may result in personal "
-#| "consequences.</p></body></html>"
+#, kde-format
 msgid ""
 "<html><head/><body><p>Some organizations restrict access to mail only to "
 "approved clients, such as Microsoft Outlook. On the server-side this is "
@@ -673,8 +663,7 @@ msgid "Retrieving %1 items"
 msgstr "يجلب %1 من العناصر"
 
 #: ewsmtaconfigdialog.cpp:45
-#, fuzzy, kde-format
-#| msgid "Microsoft Exchange Mail Transport Configuration"
+#, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Mail Transport Configuration"
 msgstr "ضبط نقل البريد لِ‍«مايكروسوفت إكسچينج»"
@@ -726,8 +715,7 @@ msgid "Performing Microsoft Exchange server autodiscovery..."
 msgstr "يجري الكشف الآليّ عن خادوم «مايكروسوفت إكسچينج»..."
 
 #: ewsprogressdialog.cpp:52
-#, fuzzy, kde-format
-#| msgid "Connecting to Exchange"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connecting to Exchange"
 msgstr "يتّصل بِ‍«إكسچينج»"

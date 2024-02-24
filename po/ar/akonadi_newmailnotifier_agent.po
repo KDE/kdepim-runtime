@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Safa Alfulaij <safa1996alfulaij@gmail.com>, 2018.
-# Zayed Al-Saidi <zayed.alsaidi@gmail.com>, 2022.
+# SPDX-FileCopyrightText: 2022, 2024 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-01-18 02:23+0000\n"
-"PO-Revision-Date: 2022-01-04 14:18+0400\n"
+"PO-Revision-Date: 2024-02-23 18:06+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -17,26 +17,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Lokalize 21.07.70\n"
+"X-Generator: Lokalize 23.08.1\n"
 
 #: newmailnotificationhistorydialog.cpp:24
-#, fuzzy, kde-format
-#| msgid "Keep Persistent Notification"
+#, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
-msgstr "أبقِ الإخطارات مستمرّة"
+msgstr "تاريخ الإخطارات"
 
 #: newmailnotificationhistorymanager.cpp:32
-#, fuzzy, kde-format
-#| msgid "Folders"
+#, kde-format
 msgid "[Open Folder]"
-msgstr "المجلّدات"
+msgstr "[افتح مجلّدًا]"
 
 #: newmailnotificationhistorymanager.cpp:42
-#, fuzzy, kde-format
-#| msgid "Show mail..."
+#, kde-format
 msgid "[Show Mail]"
-msgstr "اعرض البريد..."
+msgstr "[اعرض البريد]"
 
 #: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:112
@@ -242,10 +239,9 @@ msgid "In: %1"
 msgstr "في: %1"
 
 #: specialnotifierjob.cpp:123
-#, fuzzy, kde-format
-#| msgid "In: %1"
+#, kde-format
 msgid "In: %1 (%2)"
-msgstr "في: %1"
+msgstr "في: %1 (%2)"
 
 #: specialnotifierjob.cpp:148
 #, kde-format

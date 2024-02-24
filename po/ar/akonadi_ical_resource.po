@@ -1,23 +1,23 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 # ahmed <kebomix@gmail.com>, 2009.
-# Zayed Al-Saidi <zayed.alsaidi@gmail.com>, 2009.
+# SPDX-FileCopyrightText: 2009, 2024 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 # Safa Alfulaij <safa1996alfulaij@gmail.com>, 2018.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2018-01-23 13:02+0300\n"
-"Last-Translator: Safa Alfulaij <safa1996alfulaij@gmail.com>\n"
-"Language-Team: Arabic <doc@arabeyes.org>\n"
+"PO-Revision-Date: 2024-02-23 18:02+0400\n"
+"Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
+"Language-Team: ar\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 23.08.1\n"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icalresource.kcfg:10 notes/notesresource.kcfg:10
@@ -47,14 +47,13 @@ msgstr "راقِب تغييرات الملفّ."
 #: icalresource.kcfg:26 notes/notesresource.kcfg:30
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "حدث الملف بشكل دوري."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: icalresource.kcfg:30 notes/notesresource.kcfg:34
-#, fuzzy, kde-format
-#| msgid "Autosave interval time (in minutes)."
+#, kde-format
 msgid "Automatic update period in minutes."
-msgstr "فترة الحفظ الآليّ (بالدّقيقة)."
+msgstr "فترة التحديث الآليّ بالدّقيقة."
 
 #. i18n: ectx: label, entry (AutosaveInterval), group (General)
 #: notes/notesresource.kcfg:22
