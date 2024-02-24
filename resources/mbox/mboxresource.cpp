@@ -88,44 +88,51 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
         return;
     }
 
-    reloadFile();
+    reloadFile().then(this, [this, col](bool success) {
+        if (!success) {
+            qInfo("Failed to reload file, not syncing changes");
+            itemsRetrievedIncremental({}, {});
+            itemsRetrievalDone();
+            return;
+        }
 
-    KMBox::MBoxEntry::List entryList;
-    if (const auto attr = col.attribute<DeletedItemsAttribute>()) {
-        entryList = mMBox->entries(attr->deletedItemEntries());
-    } else { // No deleted items (yet)
-        entryList = mMBox->entries();
-    }
-    mMBox->lock(); // Lock the file so that it doesn't get locked for every
-    // readEntryHeaders() call.
+        KMBox::MBoxEntry::List entryList;
+        if (const auto attr = col.attribute<DeletedItemsAttribute>()) {
+            entryList = mMBox->entries(attr->deletedItemEntries());
+        } else { // No deleted items (yet)
+            entryList = mMBox->entries();
+        }
+        mMBox->lock(); // Lock the file so that it doesn't get locked for every
+        // readEntryHeaders() call.
 
-    Item::List items;
-    const QString colId = QString::number(col.id());
-    const QString colRid = col.remoteId();
-    double count = 1;
-    const int entryListSize(entryList.size());
-    items.reserve(entryListSize);
-    for (const KMBox::MBoxEntry &entry : std::as_const(entryList)) {
-        // TODO: Use cache policy to see what actually has to been set as payload.
-        //       Currently most views need a minimal amount of information so the
-        //       Items get Envelopes as payload.
-        auto mail = new KMime::Message();
-        mail->setHead(KMime::CRLFtoLF(mMBox->readMessageHeaders(entry)));
-        mail->parse();
+        Item::List items;
+        const QString colId = QString::number(col.id());
+        const QString colRid = col.remoteId();
+        double count = 1;
+        const int entryListSize(entryList.size());
+        items.reserve(entryListSize);
+        for (const KMBox::MBoxEntry &entry : std::as_const(entryList)) {
+            // TODO: Use cache policy to see what actually has to been set as payload.
+            //       Currently most views need a minimal amount of information so the
+            //       Items get Envelopes as payload.
+            auto mail = new KMime::Message();
+            mail->setHead(KMime::CRLFtoLF(mMBox->readMessageHeaders(entry)));
+            mail->parse();
 
-        Item item;
-        item.setRemoteId(colId + QLatin1String("::") + colRid + QLatin1String("::") + QString::number(entry.messageOffset()));
-        item.setMimeType(QStringLiteral("message/rfc822"));
-        item.setSize(entry.messageSize());
-        item.setPayload(KMime::Message::Ptr(mail));
-        Akonadi::MessageFlags::copyMessageFlags(*mail, item);
-        Q_EMIT percent(count++ / entryListSize);
-        items << item;
-    }
+            Item item;
+            item.setRemoteId(colId + QLatin1String("::") + colRid + QLatin1String("::") + QString::number(entry.messageOffset()));
+            item.setMimeType(QStringLiteral("message/rfc822"));
+            item.setSize(entry.messageSize());
+            item.setPayload(KMime::Message::Ptr(mail));
+            Akonadi::MessageFlags::copyMessageFlags(*mail, item);
+            Q_EMIT percent(count++ / entryListSize);
+            items << item;
+        }
 
-    mMBox->unlock(); // Now we have the items, unlock
+        mMBox->unlock(); // Now we have the items, unlock
 
-    itemsRetrieved(items);
+        itemsRetrieved(items);
+    });
 }
 
 bool MboxResource::retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)

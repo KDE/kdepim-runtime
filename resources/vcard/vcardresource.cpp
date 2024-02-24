@@ -137,22 +137,26 @@ void VCardResource::retrieveItems(const Akonadi::Collection &col)
     // vCard does not support folders so we can safely ignore the collection
     Q_UNUSED(col)
 
-    Item::List items;
-    items.reserve(mAddressees.count());
+    readFile().then(this, [this](bool success) {
+        if (!success) {
+            itemsRetrievedIncremental({}, {});
+            itemsRetrievalDone();
+            return;
+        }
 
-    // FIXME: Check if the KIO::Job is done and was successful, if so send the
-    // items, otherwise set a bool and in the result slot of the job send the
-    // items if the bool is set.
+        Item::List items;
+        items.reserve(mAddressees.count());
 
-    for (const KContacts::Addressee &addressee : std::as_const(mAddressees)) {
-        Item item;
-        item.setRemoteId(addressee.uid());
-        item.setMimeType(KContacts::Addressee::mimeType());
-        item.setPayload(addressee);
-        items.append(item);
-    }
+        for (const KContacts::Addressee &addressee : std::as_const(mAddressees)) {
+            Item item;
+            item.setRemoteId(addressee.uid());
+            item.setMimeType(KContacts::Addressee::mimeType());
+            item.setPayload(addressee);
+            items.append(item);
+        }
 
-    itemsRetrieved(items);
+        itemsRetrieved(items);
+    });
 }
 
 bool VCardResource::readFromFile(const QString &fileName)
