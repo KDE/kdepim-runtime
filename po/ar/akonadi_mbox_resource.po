@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Safa Alfulaij <safa1996alfulaij@gmail.com>, 2018.
-# Zayed Al-Saidi <zayed.alsaidi@gmail.com>, 2022.
+# SPDX-FileCopyrightText: 2022, 2024 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-06 01:41+0000\n"
-"PO-Revision-Date: 2022-01-04 14:19+0400\n"
+"PO-Revision-Date: 2024-02-23 18:06+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Lokalize 21.07.70\n"
+"X-Generator: Lokalize 23.08.1\n"
 
 #: compactpage.cpp:71
 #, kde-format
@@ -63,29 +63,7 @@ msgstr "ضُمَّ ملفّ MBox."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: compactpage.ui:23
-#, fuzzy, kde-format
-#| msgid ""
-#| "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#| "REC-html40/strict.dtd\">\n"
-#| "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#| "css\">\n"
-#| "p, li { white-space: pre-wrap; }\n"
-#| "</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; "
-#| "font-weight:400; font-style:normal;\">\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\">The only way to fully "
-#| "remove a mail from an mbox file is by removing it from the actual file. "
-#| "As this can be a rather expensive operation, the mbox resource keeps a "
-#| "list of deleted messages. Once in a while these messages are really "
-#| "removed from the file.</p>\n"
-#| "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
-#| "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
-#| "\"></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "weight:600;\">Note:</span> The downside of this is that if the file is "
-#| "changed by another program, the list of deleted messages cannot be "
-#| "trusted any longer and deleted messages might reappear.</p></body></html>"
+#, kde-format
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -109,11 +87,26 @@ msgid ""
 "changed by another program, the list of deleted messages cannot be trusted "
 "any longer and deleted messages might reappear.</p></body></html>"
 msgstr ""
-"<html dir=\"rtl\"><p>الطّريقة الوحدية لإزالة البريد تمامًا من ملفّ MBox هي "
-"بإزالته من الملفّ الفعليّ. لكون هذه عمليّة خطرة، يُبقي مورد MBox قائمة بالرّسائل "
-"المحذوفة. في كلّ فترة تُزال هذه الرّسائل من الملفّ فعليًّا.</p><p><b>لاحظ:</b> "
-"الجانب السّلبيّ من هذه العمليّة هي أنّه لو غيّر برنامج آخر الملفّ، لن يمكن الوثوق "
-"بقائمة الرّسائل المحذوفة وقد تظهر الرّسائل المحذوفة هذه ثانيةً.</p></html>"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-size:10pt; font-weight:400; font-style:"
+"normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">الطّريقة الوحيدة لإزالة "
+"البريد تمامًا من ملفّ mbox هي بإزالته من الملفّ الفعليّ. لكون هذه عمليّة خطرة، "
+"يُبقي مورد mbox قائمة بالرّسائل المحذوفة. في كلّ فترة تُزال هذه الرّسائل من الملفّ "
+"فعليًّا.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></"
+"p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">لاحظ:</span> الجانب السّلبيّ من هذه العمليّة هي أنّه لو غيّر برنامج "
+"آخر الملفّ، فلن يمكن الوثوق بقائمة الرّسائل المحذوفة وقد تظهر الرّسائل المحذوفة "
+"هذه ثانيةً.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QPushButton, compactButton)
 #: compactpage.ui:49
@@ -147,25 +140,7 @@ msgstr "إعدادات MBox"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: lockfilepage.ui:27
-#, fuzzy, kde-format
-#| msgid ""
-#| "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#| "REC-html40/strict.dtd\">\n"
-#| "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#| "css\">\n"
-#| "p, li { white-space: pre-wrap; }\n"
-#| "</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; "
-#| "font-weight:400; font-style:normal;\">\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\">Select a method to lock "
-#| "the mbox file when data is read from or written to the file.</p>\n"
-#| "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
-#| "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
-#| "\"></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "weight:600;\">Note</span>: For some methods you might need to install "
-#| "additional software before they can be used.</p></body></html>"
+#, kde-format
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -185,9 +160,23 @@ msgid ""
 "weight:600;\">Note</span>: For some methods you might need to install "
 "additional software before they can be used.</p></body></html>"
 msgstr ""
-"<html dir=\"rtl\"><p>اختر الطّريقة لقفل ملفّ MBox بها عند قراءة البيانات من "
-"الملفّ أو كتابتها فيه.</p><p><b>لاحظ:</b> قد تحتاج (لبعض الطُّرق) تثبيت برمجيّات "
-"إضافيّة قبل استخدامها.</p></html>"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-size:10pt; font-weight:400; font-style:"
+"normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">اختر الطّريقة لقفل ملفّ mbox "
+"بها عند قراءة البيانات من الملفّ أو كتابتها فيه.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></"
+"p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">لاحظ:</span> قد تحتاج (لبعض الطُّرق) تثبيت برمجيّات إضافيّة قبل "
+"استخدامها.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, procmail)
 #: lockfilepage.ui:43
@@ -333,13 +322,13 @@ msgstr "راقِب تغييرات الملفّ."
 #: mboxresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "حدث الملف بشكل دوري."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: mboxresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
-msgstr ""
+msgstr "فترة التحديث الآليّ بالدّقيقة."
 
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
 #: mboxresource.kcfg:45
