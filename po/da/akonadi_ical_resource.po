@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 02:27+0000\n"
 "PO-Revision-Date: 2011-04-23 14:11+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -71,7 +71,7 @@ msgstr "Instans med uid \"%1\" ikke fundet."
 msgid "Calendar not loaded."
 msgstr "Kalender ikke indlæst."
 
-#: shared/icalresourcebase.cpp:134
+#: shared/icalresourcebase.cpp:143
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Gemning af kalenderfil til %1 mislykkedes"

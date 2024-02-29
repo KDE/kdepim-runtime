@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 02:27+0000\n"
 "PO-Revision-Date: 2010-12-20 05:09+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan(at)computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -28,7 +28,7 @@ msgstr "vCard адрестік кітапша файлы"
 msgid "Contact with uid '%1' not found."
 msgstr "UID-і '%1' контакт табылған жоқ."
 
-#: vcardresource.cpp:164 vcardresource.cpp:184
+#: vcardresource.cpp:168 vcardresource.cpp:188
 #, kde-format
 msgid "Unable to open vCard file '%1'."
 msgstr "'%1' vCard файлы ашылмайды."

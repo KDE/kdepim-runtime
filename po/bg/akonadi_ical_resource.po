@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 02:27+0000\n"
 "PO-Revision-Date: 2023-10-09 16:09+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: \n"
@@ -72,7 +72,7 @@ msgstr "Не е намерено събитие с uid \"%1\"."
 msgid "Calendar not loaded."
 msgstr "Календарът не е зареден."
 
-#: shared/icalresourcebase.cpp:134
+#: shared/icalresourcebase.cpp:143
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Неуспех при запис на календарния файл в %1"

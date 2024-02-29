@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 02:27+0000\n"
 "PO-Revision-Date: 2009-11-04 21:02+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Albanian <sq@li.org>\n"
@@ -30,7 +30,7 @@ msgstr "vCard Address Book File"
 msgid "Contact with uid '%1' not found."
 msgstr ""
 
-#: vcardresource.cpp:164 vcardresource.cpp:184
+#: vcardresource.cpp:168 vcardresource.cpp:188
 #, kde-format
 msgid "Unable to open vCard file '%1'."
 msgstr "Unable to open vCard file '%1'."

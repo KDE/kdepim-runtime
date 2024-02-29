@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 02:27+0000\n"
 "PO-Revision-Date: 2010-12-27 12:43+0100\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -73,7 +73,7 @@ msgstr "Fant ikke innslag med uid «%1»."
 msgid "Calendar not loaded."
 msgstr "Kalender ikke lastet inn."
 
-#: shared/icalresourcebase.cpp:134
+#: shared/icalresourcebase.cpp:143
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Klarte ikke å lagre kalenderfila til %1"

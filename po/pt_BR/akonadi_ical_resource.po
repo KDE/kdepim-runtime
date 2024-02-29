@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 02:27+0000\n"
 "PO-Revision-Date: 2023-11-14 13:32-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -72,7 +72,7 @@ msgstr "A incidência com UID '%1' não foi encontrada."
 msgid "Calendar not loaded."
 msgstr "O calendário não foi carregado."
 
-#: shared/icalresourcebase.cpp:134
+#: shared/icalresourcebase.cpp:143
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Falha na gravação do arquivo de calendário em %1"

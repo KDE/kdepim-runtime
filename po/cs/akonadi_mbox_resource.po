@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 02:27+0000\n"
 "PO-Revision-Date: 2023-11-06 14:45+0100\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -191,38 +191,38 @@ msgstr "Frekvence komprimování"
 msgid "Lock method"
 msgstr "Metoda uzamykání"
 
-#: mboxresource.cpp:87 mboxresource.cpp:140 mboxresource.cpp:179
+#: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format
 msgctxt "@info:status"
 msgid "MBox not configured."
 msgstr "MBox není nastaven."
 
-#: mboxresource.cpp:136 mboxresource.cpp:175
+#: mboxresource.cpp:143 mboxresource.cpp:182
 #, kde-format
 msgid "MBox not loaded."
 msgstr "MBox nenačten."
 
-#: mboxresource.cpp:151
+#: mboxresource.cpp:158
 #, kde-format
 msgid "Failed to read message with uid '%1'."
 msgstr "Nelze přečíst zprávu s UID '%1'."
 
-#: mboxresource.cpp:185
+#: mboxresource.cpp:192
 #, kde-format
 msgid "Only email messages can be added to the MBox resource."
 msgstr "Do MBox zdroje lze přidat pouze emailové zprávy."
 
-#: mboxresource.cpp:191
+#: mboxresource.cpp:198
 #, kde-format
 msgid "Mail message not added to the MBox."
 msgstr "Emailová zpráva nepřidána do MBoxu."
 
-#: mboxresource.cpp:230
+#: mboxresource.cpp:237
 #, kde-format
 msgid "Could not fetch the collection: %1"
 msgstr "Nepovedlo se stáhnout sbírku: %1"
 
-#: mboxresource.cpp:259
+#: mboxresource.cpp:266
 #, kde-format
 msgid ""
 "The MBox file was changed by another program. A copy of the new file was "
@@ -231,12 +231,12 @@ msgid ""
 "the same locking method."
 msgstr ""
 
-#: mboxresource.cpp:290
+#: mboxresource.cpp:297
 #, kde-format
 msgid "Failed to save mbox file to %1"
 msgstr "Selhalo uložení MBoxu do souboru %1"
 
-#: mboxresource.cpp:349
+#: mboxresource.cpp:356
 #, kde-format
 msgid ""
 "Failed to update the changed item because the old item could not be deleted "

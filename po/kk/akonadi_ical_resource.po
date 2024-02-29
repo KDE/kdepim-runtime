@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 02:27+0000\n"
 "PO-Revision-Date: 2012-05-02 04:19+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -71,7 +71,7 @@ msgstr "uid '%1' дегенмен ештеңе жоқ.."
 msgid "Calendar not loaded."
 msgstr "Күнтізбе жүктелген жоқ."
 
-#: shared/icalresourcebase.cpp:134
+#: shared/icalresourcebase.cpp:143
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Күнтізбе файлы %1 дегенге сақталмады"

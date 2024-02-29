@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-04 01:34+0000\n"
+"POT-Creation-Date: 2024-02-29 02:27+0000\n"
 "PO-Revision-Date: 2023-10-06 05:19+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -137,69 +137,69 @@ msgstr "Kendiliğinden kaydetme zaman aralığı (dakika)."
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr "Özkaynak verisi için kendiliğinden kaydetme aralığını seçin (dakika)."
 
-#: singlefileresource.h:67
+#: singlefileresource.h:68
 #, kde-format
 msgid "No file selected."
 msgstr "Seçili dosya yok."
 
-#: singlefileresource.h:69
+#: singlefileresource.h:70
 #, kde-format
 msgid "The resource not configured yet"
 msgstr "Özkaynak henüz yapılandırılmadı"
 
-#: singlefileresource.h:100 singlefileresource.h:129 singlefileresource.h:214
-#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Hazır"
 
-#: singlefileresource.h:102
+#: singlefileresource.h:104
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "'%1' dosyası oluşturulamadı."
 
-#: singlefileresource.h:116
+#: singlefileresource.h:118
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "'%1' dosyası okunamadı"
 
-#: singlefileresource.h:132
+#: singlefileresource.h:135
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Başka bir indirme işlemi sürüyor."
 
-#: singlefileresource.h:142 singlefileresource.h:228
+#: singlefileresource.h:145 singlefileresource.h:236
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Başka bir yükleme işlemi sürüyor."
 
-#: singlefileresource.h:158
+#: singlefileresource.h:163
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Uzak dosya indiriliyor."
 
-#: singlefileresource.h:178
+#: singlefileresource.h:186
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Saltokunur bir dosyaya yazılmaya çalışılıyor: '%1'."
 
-#: singlefileresource.h:190
+#: singlefileresource.h:198
 #, kde-format
 msgid "No file specified."
 msgstr "Belirtilen dosya yok."
 
-#: singlefileresource.h:218
+#: singlefileresource.h:226
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Bir indirme işlemi hâlâ sürüyor."
 
-#: singlefileresource.h:258
+#: singlefileresource.h:266
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Önbelleğe alınan dosya uzak konuma yükleniyor."
 
-#: singlefileresourcebase.cpp:241
+#: singlefileresourcebase.cpp:239
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -208,12 +208,12 @@ msgstr ""
 "'%1' dosyası diskte değişti. Veri kaybı yaşamamak için değişikliklerin bir "
 "yedeği '%2' olarak oluşturuldu."
 
-#: singlefileresourcebase.cpp:265
+#: singlefileresourcebase.cpp:271
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "'%1' dosyası yüklenemedi."
 
-#: singlefileresourcebase.cpp:284
+#: singlefileresourcebase.cpp:287
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "'%1' dosyası kaydedilemedi."

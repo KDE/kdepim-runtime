@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 02:27+0000\n"
 "PO-Revision-Date: 2023-10-07 23:20+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -30,7 +30,7 @@ msgstr "vCard Adreslibra Dosiero"
 msgid "Contact with uid '%1' not found."
 msgstr "Kontakto kun uid '%1' ne trovita."
 
-#: vcardresource.cpp:164 vcardresource.cpp:184
+#: vcardresource.cpp:168 vcardresource.cpp:188
 #, kde-format
 msgid "Unable to open vCard file '%1'."
 msgstr "Neebla malfermi vCard-dosieron '%1'."

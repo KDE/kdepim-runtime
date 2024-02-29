@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-04 01:34+0000\n"
+"POT-Creation-Date: 2024-02-29 02:27+0000\n"
 "PO-Revision-Date: 2019-11-16 16:37+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -131,69 +131,69 @@ msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr ""
 "Ressursi andmete automaatse salvestamise intervalli valimine (minutites)."
 
-#: singlefileresource.h:67
+#: singlefileresource.h:68
 #, kde-format
 msgid "No file selected."
 msgstr "Faili pole valitud"
 
-#: singlefileresource.h:69
+#: singlefileresource.h:70
 #, kde-format
 msgid "The resource not configured yet"
 msgstr "Ressurss pole veel seadistatud"
 
-#: singlefileresource.h:100 singlefileresource.h:129 singlefileresource.h:214
-#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Valmis"
 
-#: singlefileresource.h:102
+#: singlefileresource.h:104
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "Faili '%1' loomine nurjus."
 
-#: singlefileresource.h:116
+#: singlefileresource.h:118
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "Faili '%1' lugemine nurjus"
 
-#: singlefileresource.h:132
+#: singlefileresource.h:135
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Üks allalaadimine veel käib."
 
-#: singlefileresource.h:142 singlefileresource.h:228
+#: singlefileresource.h:145 singlefileresource.h:236
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Üks üleslaadimine veel käib."
 
-#: singlefileresource.h:158
+#: singlefileresource.h:163
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Võrgufaili allalaadimine."
 
-#: singlefileresource.h:178
+#: singlefileresource.h:186
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Püüti kirjutada kirjutuskaitstud faili: '%1'."
 
-#: singlefileresource.h:190
+#: singlefileresource.h:198
 #, kde-format
 msgid "No file specified."
 msgstr "Faili pole määratud."
 
-#: singlefileresource.h:218
+#: singlefileresource.h:226
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Allalaadimine veel käib."
 
-#: singlefileresource.h:258
+#: singlefileresource.h:266
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Puhverdatud faili üleslaadimine võrguasukohta."
 
-#: singlefileresourcebase.cpp:241
+#: singlefileresourcebase.cpp:239
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -202,12 +202,12 @@ msgstr ""
 "Faili '%1' on kettal muudetud. Andmekao vältimiseks loodi senisest sisust "
 "varukoopia asukohta '%2'."
 
-#: singlefileresourcebase.cpp:265
+#: singlefileresourcebase.cpp:271
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Faili '%1' laadimine nurjus."
 
-#: singlefileresourcebase.cpp:284
+#: singlefileresourcebase.cpp:287
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Faili '%1' salvestamine nurjus."

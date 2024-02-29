@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 02:27+0000\n"
 "PO-Revision-Date: 2024-01-06 03:32\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -29,7 +29,7 @@ msgstr "vCard 地址簿文件"
 msgid "Contact with uid '%1' not found."
 msgstr "uid 为“%1”的联系人未找到。"
 
-#: vcardresource.cpp:164 vcardresource.cpp:184
+#: vcardresource.cpp:168 vcardresource.cpp:188
 #, kde-format
 msgid "Unable to open vCard file '%1'."
 msgstr "无法打开 vCard 文件“%1”。"

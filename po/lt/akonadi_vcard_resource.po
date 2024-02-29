@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 02:27+0000\n"
 "PO-Revision-Date: 2011-07-28 09:21+0300\n"
 "Last-Translator: Jonas Česnauskas <upynas@gmail.com>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -29,7 +29,7 @@ msgstr "vCard adresų knygos failas"
 msgid "Contact with uid '%1' not found."
 msgstr "Adresatas su uid „%1“ nerastas."
 
-#: vcardresource.cpp:164 vcardresource.cpp:184
+#: vcardresource.cpp:168 vcardresource.cpp:188
 #, kde-format
 msgid "Unable to open vCard file '%1'."
 msgstr "Nepavyko atverti vCard failo „%1“."

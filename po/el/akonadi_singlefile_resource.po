@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-04 01:34+0000\n"
+"POT-Creation-Date: 2024-02-29 02:27+0000\n"
 "PO-Revision-Date: 2017-04-20 16:56+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -145,69 +145,69 @@ msgstr ""
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr ""
 
-#: singlefileresource.h:67
+#: singlefileresource.h:68
 #, kde-format
 msgid "No file selected."
 msgstr "Δεν επιλέχθηκε αρχείο."
 
-#: singlefileresource.h:69
+#: singlefileresource.h:70
 #, kde-format
 msgid "The resource not configured yet"
 msgstr "Ο πόρος δεν έχει διαμορφωθεί ακόμη"
 
-#: singlefileresource.h:100 singlefileresource.h:129 singlefileresource.h:214
-#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Έτοιμο"
 
-#: singlefileresource.h:102
+#: singlefileresource.h:104
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "Αδυναμία δημιουργίας του αρχείου '%1'."
 
-#: singlefileresource.h:116
+#: singlefileresource.h:118
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "Αδυναμία ανάγνωσης του αρχείου '%1'."
 
-#: singlefileresource.h:132
+#: singlefileresource.h:135
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Μία άλλη λήψη είναι σε εξέλιξη."
 
-#: singlefileresource.h:142 singlefileresource.h:228
+#: singlefileresource.h:145 singlefileresource.h:236
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Μία άλλη αποστολή αρχείου είναι σε εξέλιξη."
 
-#: singlefileresource.h:158
+#: singlefileresource.h:163
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Λήψη απομακρυσμένου αρχείου."
 
-#: singlefileresource.h:178
+#: singlefileresource.h:186
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Προσπάθεια εγγραφής σε αρχείο μόνο ανάγνωσης: '%1'."
 
-#: singlefileresource.h:190
+#: singlefileresource.h:198
 #, kde-format
 msgid "No file specified."
 msgstr "Δεν καθορίστηκε αρχείο."
 
-#: singlefileresource.h:218
+#: singlefileresource.h:226
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Μία λήψη είναι ακόμη σε εξέλιξη."
 
-#: singlefileresource.h:258
+#: singlefileresource.h:266
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Αποστολή αρχείου λανθάνουσας μνήμης σε απομακρυσμένη τοποθεσία."
 
-#: singlefileresourcebase.cpp:241
+#: singlefileresourcebase.cpp:239
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -216,12 +216,12 @@ msgstr ""
 "Το αρχείο '%1' τροποποιήθηκε στο δίσκο. Ως μέτρο προφύλαξης, ένα εφεδρικό "
 "αντίγραφο με το προηγούμενο περιεχόμενο δημιουργήθηκε στο '%2'."
 
-#: singlefileresourcebase.cpp:265
+#: singlefileresourcebase.cpp:271
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Αδυναμία φόρτωσης του αρχείου '%1'"
 
-#: singlefileresourcebase.cpp:284
+#: singlefileresourcebase.cpp:287
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Αδυναμία αποθήκευσης του αρχείου '%1'."
