@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-04 01:34+0000\n"
+"POT-Creation-Date: 2024-02-29 00:38+0000\n"
 "PO-Revision-Date: 2024-02-05 11:37\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -125,81 +125,81 @@ msgstr "自动保存的间隔(按分钟计)。"
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr "选择资源数据的自动保存间隔时间 (分钟)。"
 
-#: singlefileresource.h:67
+#: singlefileresource.h:68
 #, kde-format
 msgid "No file selected."
 msgstr "未选择文件。"
 
-#: singlefileresource.h:69
+#: singlefileresource.h:70
 #, kde-format
 msgid "The resource not configured yet"
 msgstr "资源尚未配置"
 
-#: singlefileresource.h:100 singlefileresource.h:129 singlefileresource.h:214
-#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "就绪"
 
-#: singlefileresource.h:102
+#: singlefileresource.h:104
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "无法创建文件“%1”。"
 
-#: singlefileresource.h:116
+#: singlefileresource.h:118
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "无法读取文件“%1”"
 
-#: singlefileresource.h:132
+#: singlefileresource.h:135
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "另一个下载进程还在进行中。"
 
-#: singlefileresource.h:142 singlefileresource.h:228
+#: singlefileresource.h:145 singlefileresource.h:236
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "另一个文件上传进程还在进行中。"
 
-#: singlefileresource.h:158
+#: singlefileresource.h:163
 #, kde-format
 msgid "Downloading remote file."
 msgstr "下载远程文件。"
 
-#: singlefileresource.h:178
+#: singlefileresource.h:186
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "尝试写入只读文件：“%1”。"
 
-#: singlefileresource.h:190
+#: singlefileresource.h:198
 #, kde-format
 msgid "No file specified."
 msgstr "未指派文件。"
 
-#: singlefileresource.h:218
+#: singlefileresource.h:226
 #, kde-format
 msgid "A download is still in progress."
 msgstr "有一个下载进程还在进行中。"
 
-#: singlefileresource.h:258
+#: singlefileresource.h:266
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "上传缓存文件到远程地址。"
 
-#: singlefileresourcebase.cpp:241
+#: singlefileresourcebase.cpp:239
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
 "contents has been created at '%2'."
 msgstr "文件“%1”已在磁盘上修改。以防万一，之前内容的备份创建为“%2”。"
 
-#: singlefileresourcebase.cpp:265
+#: singlefileresourcebase.cpp:271
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "无法加载文件“%1”。"
 
-#: singlefileresourcebase.cpp:284
+#: singlefileresourcebase.cpp:287
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "无法保存文件“%1”。"

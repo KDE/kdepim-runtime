@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-04 01:34+0000\n"
+"POT-Creation-Date: 2024-02-29 00:38+0000\n"
 "PO-Revision-Date: 2014-09-04 15:51+0200\n"
 "Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -143,69 +143,69 @@ msgstr ""
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr ""
 
-#: singlefileresource.h:67
+#: singlefileresource.h:68
 #, kde-format
 msgid "No file selected."
 msgstr "Nincs kijelölve fájl."
 
-#: singlefileresource.h:69
+#: singlefileresource.h:70
 #, kde-format
 msgid "The resource not configured yet"
 msgstr "Az erőforrás még nincs beállítva"
 
-#: singlefileresource.h:100 singlefileresource.h:129 singlefileresource.h:214
-#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Kész"
 
-#: singlefileresource.h:102
+#: singlefileresource.h:104
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "Nem sikerült létrehozni a(z) „%1” fájlt."
 
-#: singlefileresource.h:116
+#: singlefileresource.h:118
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "Nem sikerült olvasni a(z) „%1” fájlt"
 
-#: singlefileresource.h:132
+#: singlefileresource.h:135
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Egy másik letöltés már folyamatban van."
 
-#: singlefileresource.h:142 singlefileresource.h:228
+#: singlefileresource.h:145 singlefileresource.h:236
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Egy másik fájlfeltöltés már folyamatban van."
 
-#: singlefileresource.h:158
+#: singlefileresource.h:163
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Távoli fájl letöltése."
 
-#: singlefileresource.h:178
+#: singlefileresource.h:186
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Csak olvasható fájl írásának kísérlete: „%1”."
 
-#: singlefileresource.h:190
+#: singlefileresource.h:198
 #, kde-format
 msgid "No file specified."
 msgstr "Nincs megadva fájl."
 
-#: singlefileresource.h:218
+#: singlefileresource.h:226
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Egy letöltés már folyamatban van."
 
-#: singlefileresource.h:258
+#: singlefileresource.h:266
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Gyorsítótárazott fájl feltöltése a távoli helyre."
 
-#: singlefileresourcebase.cpp:241
+#: singlefileresourcebase.cpp:239
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -214,12 +214,12 @@ msgstr ""
 "A(z) „%1” fájl megváltozott a lemezen. Elővigyázatképp egy biztonsági mentés "
 "készült a korábbi tartalommal itt: „%2”."
 
-#: singlefileresourcebase.cpp:265
+#: singlefileresourcebase.cpp:271
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Nem sikerült betölteni a(z) „%1” fájlt ."
 
-#: singlefileresourcebase.cpp:284
+#: singlefileresourcebase.cpp:287
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Nem sikerült menteni a(z) „%1” fájlt."

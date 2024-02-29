@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 00:38+0000\n"
 "PO-Revision-Date: 2010-11-29 09:29+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -26,7 +26,7 @@ msgstr "ឯកសារ​សៀវភៅ​អាសយដ្ឋាន vCard"
 msgid "Contact with uid '%1' not found."
 msgstr "រក​មិនឃើញ​ទំនាក់ទំនង​ជា​មួយ uid '%1' នោះ​ទេ ។"
 
-#: vcardresource.cpp:164 vcardresource.cpp:184
+#: vcardresource.cpp:168 vcardresource.cpp:188
 #, kde-format
 msgid "Unable to open vCard file '%1'."
 msgstr "មិនអាច​បើក​​ឯកសារ vCard '%1' បានទេ ។"

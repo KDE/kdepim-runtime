@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 00:38+0000\n"
 "PO-Revision-Date: 2010-01-16 08:46+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: ਪੰਜਾਬੀ <punjabi-users@lists.sf.net>\n"
@@ -188,39 +188,39 @@ msgstr ""
 msgid "Lock method"
 msgstr ""
 
-#: mboxresource.cpp:87 mboxresource.cpp:140 mboxresource.cpp:179
+#: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, fuzzy, kde-format
 #| msgid "MBox not loaded."
 msgctxt "@info:status"
 msgid "MBox not configured."
 msgstr "MBox ਲੋਡ ਨਹੀਂ ਹੈ।"
 
-#: mboxresource.cpp:136 mboxresource.cpp:175
+#: mboxresource.cpp:143 mboxresource.cpp:182
 #, kde-format
 msgid "MBox not loaded."
 msgstr "MBox ਲੋਡ ਨਹੀਂ ਹੈ।"
 
-#: mboxresource.cpp:151
+#: mboxresource.cpp:158
 #, kde-format
 msgid "Failed to read message with uid '%1'."
 msgstr ""
 
-#: mboxresource.cpp:185
+#: mboxresource.cpp:192
 #, kde-format
 msgid "Only email messages can be added to the MBox resource."
 msgstr ""
 
-#: mboxresource.cpp:191
+#: mboxresource.cpp:198
 #, kde-format
 msgid "Mail message not added to the MBox."
 msgstr ""
 
-#: mboxresource.cpp:230
+#: mboxresource.cpp:237
 #, kde-format
 msgid "Could not fetch the collection: %1"
 msgstr ""
 
-#: mboxresource.cpp:259
+#: mboxresource.cpp:266
 #, kde-format
 msgid ""
 "The MBox file was changed by another program. A copy of the new file was "
@@ -229,12 +229,12 @@ msgid ""
 "the same locking method."
 msgstr ""
 
-#: mboxresource.cpp:290
+#: mboxresource.cpp:297
 #, kde-format
 msgid "Failed to save mbox file to %1"
 msgstr ""
 
-#: mboxresource.cpp:349
+#: mboxresource.cpp:356
 #, kde-format
 msgid ""
 "Failed to update the changed item because the old item could not be deleted "

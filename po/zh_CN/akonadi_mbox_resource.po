@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 00:38+0000\n"
 "PO-Revision-Date: 2024-02-05 11:37\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -190,38 +190,38 @@ msgstr "整理频率"
 msgid "Lock method"
 msgstr "锁定模式"
 
-#: mboxresource.cpp:87 mboxresource.cpp:140 mboxresource.cpp:179
+#: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format
 msgctxt "@info:status"
 msgid "MBox not configured."
 msgstr "MBox 未配置"
 
-#: mboxresource.cpp:136 mboxresource.cpp:175
+#: mboxresource.cpp:143 mboxresource.cpp:182
 #, kde-format
 msgid "MBox not loaded."
 msgstr "未加载 MBox 文件。"
 
-#: mboxresource.cpp:151
+#: mboxresource.cpp:158
 #, kde-format
 msgid "Failed to read message with uid '%1'."
 msgstr "以 UID“%1” 身份读取信件失败。"
 
-#: mboxresource.cpp:185
+#: mboxresource.cpp:192
 #, kde-format
 msgid "Only email messages can be added to the MBox resource."
 msgstr "只有电子邮件能被添加到 MBox 资源。"
 
-#: mboxresource.cpp:191
+#: mboxresource.cpp:198
 #, kde-format
 msgid "Mail message not added to the MBox."
 msgstr "邮件未添加到 MBox。"
 
-#: mboxresource.cpp:230
+#: mboxresource.cpp:237
 #, kde-format
 msgid "Could not fetch the collection: %1"
 msgstr "无法获取收藏：%1"
 
-#: mboxresource.cpp:259
+#: mboxresource.cpp:266
 #, kde-format
 msgid ""
 "The MBox file was changed by another program. A copy of the new file was "
@@ -233,12 +233,12 @@ msgstr ""
 "追加到副本内。为避免再次发生此问题，请使用锁机制并确保所有访问 mbox 的程序都"
 "使用相同的锁机制。"
 
-#: mboxresource.cpp:290
+#: mboxresource.cpp:297
 #, kde-format
 msgid "Failed to save mbox file to %1"
 msgstr "保存 mbox 文件到 %1 失败"
 
-#: mboxresource.cpp:349
+#: mboxresource.cpp:356
 #, kde-format
 msgid ""
 "Failed to update the changed item because the old item could not be deleted "

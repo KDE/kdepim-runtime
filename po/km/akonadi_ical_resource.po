@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-10-06 01:41+0000\n"
+"POT-Creation-Date: 2024-02-29 00:38+0000\n"
 "PO-Revision-Date: 2010-12-20 16:16+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -69,7 +69,7 @@ msgstr "រក​មិន​ឃើញ uid '%1' ទេ ។"
 msgid "Calendar not loaded."
 msgstr "មិន​បាន​ផ្ទុក​ប្រតិទិន​ទេ ។"
 
-#: shared/icalresourcebase.cpp:134
+#: shared/icalresourcebase.cpp:143
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "បរាជ័យ​ក្នុងការ​រក្សាទុក​ឯកសារ​ទៅកាន់ %1"
