@@ -160,6 +160,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
 
     m_ui->testInfo->hide();
     m_ui->testProgress->hide();
+    m_ui->testProgress->setFormat(i18nc("Percent value; %p is the value, % is the percent sign", "%p%"));
     m_ui->accountName->setFocus();
     m_ui->checkInterval->setSuffix(ki18np(" minute", " minutes"));
     m_ui->checkInterval->setMinimum(Akonadi::ResourceSettings::self()->minimumCheckInterval());

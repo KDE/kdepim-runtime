@@ -7,11 +7,13 @@
 #include "infodialog.h"
 
 #include "migration_debug.h"
-#include <QIcon>
+
+#include <KLocalizedString>
 
 #include <QApplication>
 #include <QDialogButtonBox>
 #include <QHBoxLayout>
+#include <QIcon>
 #include <QLabel>
 #include <QListWidget>
 #include <QProgressBar>
@@ -48,6 +50,7 @@ InfoDialog::InfoDialog(bool closeWhenDone)
 
     mProgressBar->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
     mProgressBar->setMinimumWidth(200);
+    mProgressBar->setFormat(i18nc("Percent value; %p is the value, % is the percent sign", "%p%"));
     statusLayout->addWidget(mProgressBar);
 
     connect(mButtonBox, &QDialogButtonBox::accepted, this, &InfoDialog::accept);

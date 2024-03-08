@@ -12,21 +12,19 @@
 #include "accountwidget.h"
 #include <kwidgetsaddons_version.h>
 
+#include "pop3resource_debug.h"
 #include "settings.h"
-#include "settingsadaptor.h"
 
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/ResourceSettings>
 #include <Akonadi/SpecialMailCollections>
 #include <Akonadi/SpecialMailCollectionsRequestJob>
-#include <KLineEditEventHandler>
-#include <MailTransport/ServerTest>
-
-#include "pop3resource_debug.h"
 #include <KAuthorized>
+#include <KLineEditEventHandler>
 #include <KMessageBox>
 #include <KUser>
+#include <MailTransport/ServerTest>
 
 #include <QButtonGroup>
 #include <QPushButton>
@@ -81,6 +79,8 @@ void AccountWidget::setupWidgets()
     mainLayout->addWidget(page);
 
     setupUi(page);
+
+    checkCapabilitiesProgress->setFormat(i18nc("Percent value; %p is the value, % is the percent sign", "%p%"));
 
 #if KWIDGETSADDONS_VERSION <= QT_VERSION_CHECK(5, 249, 0)
     passwordEdit->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
