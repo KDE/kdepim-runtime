@@ -7,13 +7,13 @@
 # obsoleteman <tulliana@gmail.com>, 2009,2012.
 # Volkan Gezer <volkangezer@gmail.com>, 2013.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# Emir SARI <emir_sari@icloud.com>, 2023.
+# SPDX-FileCopyrightText: 2023, 2024 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-12-17 01:36+0000\n"
-"PO-Revision-Date: 2023-11-14 19:45+0300\n"
+"PO-Revision-Date: 2024-03-08 16:52+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -21,15 +21,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.11.70\n"
+"X-Generator: Lokalize 24.02.0\n"
 "X-POOTLE-MTIME: 1413131131.000000\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
 #, kde-format
 msgid "Sending messages (1 item in queue)..."
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "İletiler gönderiliyor (kuyrukta 1 ileti var)..."
-msgstr[1] "İletiler gönderiliyor (kuyrukta %1 ileti var)..."
+msgstr[0] "İletiler gönderiliyor (kuyrukta 1 ileti var)…"
+msgstr[1] "İletiler gönderiliyor (kuyrukta %1 ileti var)…"
 
 #: maildispatcheragent.cpp:90
 #, kde-format
@@ -45,7 +45,7 @@ msgstr "İletilerin gönderilmesi bitti."
 #, kde-format
 msgctxt "Notification title when email was sent"
 msgid "E-Mail Successfully Sent"
-msgstr "E-posta başarıyla gönderildi"
+msgstr "E-posta Başarıyla Gönderildi"
 
 #: maildispatcheragent.cpp:104
 #, kde-format
@@ -56,17 +56,17 @@ msgstr "E-Posta adresini başarılı bir şekilde gönderildi."
 #: maildispatcheragent.cpp:110
 #, kde-format
 msgid "No items in queue."
-msgstr "Kuyrukta hiçbir öge yok."
+msgstr "Kuyrukta bir şey yok."
 
 #: maildispatcheragent.cpp:155
 #, kde-format
 msgid "Online, sending messages in queue."
-msgstr "Çevrimiçi, kuyruktaki iletiler gönderiliyor."
+msgstr "Çevrimiçi; kuyruktaki iletiler gönderiliyor."
 
 #: maildispatcheragent.cpp:159
 #, kde-format
 msgid "Offline, message sending suspended."
-msgstr "Çevrimdışı, ileti gönderme işlemi askıya alındı."
+msgstr "Çevrimdışı; ileti gönderme işlemi askıya alındı."
 
 #: maildispatcheragent.cpp:184
 #, kde-format
@@ -83,7 +83,7 @@ msgstr "E-Posta Gönderme Başarısız"
 #: maildispatcheragent.cpp:282
 #, kde-format
 msgid "Ready to dispatch messages."
-msgstr "İletileri yönetmeye hazır."
+msgstr "İletiler yollanmaya hazır."
 
 #. i18n: ectx: label, entry (Outbox), group (General)
 #: maildispatcheragent.kcfg:10
@@ -120,19 +120,18 @@ msgstr "İleti gönderilemedi. Geçersiz taşıma."
 #: sendjob.cpp:97
 #, kde-format
 msgid "Failed to get D-Bus interface of resource %1."
-msgstr "%1 kaynağı için D-Bus arayüzü edinilemedi."
+msgstr "%1 özkaynağı için D-Bus arayüzü edinilemedi."
 
 #: sendjob.cpp:110
 #, kde-format
 msgid "Invalid D-Bus reply from resource %1."
-msgstr "%1 kaynağından geçersiz D-Bus yanıtı."
+msgstr "%1 özkaynağından geçersiz D-Bus yanıtı."
 
 #: sendjob.cpp:229
 #, kde-format
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr ""
-"Öntanımlı gönderilmiş posta(sent-mail) dizini yok. İleti giden kutusunda "
-"(outbox) saklanıyor."
+"Öntanımlı gönderilen klasörü kullanılamıyor. İleti giden kutusunda tutulacak."
 
 #: sendjob.cpp:241
 #, kde-format
@@ -157,16 +156,13 @@ msgstr "Posta süzme aracından geçersiz D-Bus yanıtı"
 #: sendjob.cpp:332
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
-msgstr ""
-"Gönderme başarılı oldu, ama iletiyi giden kutusundan kaldırma başarısız oldu."
+msgstr "Gönderme başarılı oldu; ancak ileti giden kutusundan kaldırılamadı."
 
 #: sendjob.cpp:335
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
-msgstr ""
-"Gönderme başarılı oldu, ama iletiyi gönderilmiş posta dizinine taşıma "
-"başarısız oldu."
+msgstr "Gönderme başarılı oldu; ancak ileti gönderilen klasörüne taşınamadı."
 
 #: sendjob.cpp:371
 #, kde-format

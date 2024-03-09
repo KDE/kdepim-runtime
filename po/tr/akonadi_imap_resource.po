@@ -5,13 +5,13 @@
 # H. İbrahim Güngör <ibrahim@pardus.org.tr>, 2011.
 # Volkan Gezer <volkangezer@gmail.com>, 2013, 2014, 2015, 2017.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
+# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2023-11-11 23:31+0300\n"
+"PO-Revision-Date: 2024-03-08 16:27+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.11.70\n"
+"X-Generator: Lokalize 24.02.0\n"
 "X-POOTLE-MTIME: 1413102275.000000\n"
 
 #: addcollectiontask.cpp:33
@@ -80,7 +80,7 @@ msgid ""
 msgstr ""
 "IMAP sunucusu üzerinde yeniden adlandırılmış dosyaya abone olma başarısız "
 "'%1'. Bir sonraki eşzamanlamada dosya kaybolacak. Bunun üstesinden gelmek "
-"için abonelik iletişim penceresini kullan"
+"için abonelik iletişim penceresini kullanın."
 
 #: changecollectiontask.cpp:267
 #, kde-format
@@ -138,7 +138,7 @@ msgstr "Kullanılacak kimlik doğrulama türünü tanımlar"
 #: imapresource.kcfg:31
 #, kde-format
 msgid "Defines if the server side subscription is enabled"
-msgstr "Sunucu taraflı üyeliğin etkin olup olmadığını belirler"
+msgstr "Sunucu taraflı aboneliğin etkin olup olmadığını belirler"
 
 #. i18n: ectx: property (text), widget (QCheckBox, useProxyCheck)
 #. i18n: ectx: label, entry (UseProxy), group (network)
@@ -778,7 +778,7 @@ msgstr "Hesap Bilgisi"
 #: setupserverview_desktop.ui:46
 #, kde-format
 msgid "Account Name:"
-msgstr "Hesap Adı:"
+msgstr "Hesap adı:"
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label)
 #: setupserverview_desktop.ui:57
@@ -887,7 +887,7 @@ msgstr "Managesieve kapısı:"
 #: setupserverview_desktop.ui:210
 #, kde-format
 msgid "Alternate Server:"
-msgstr "Alternatif Sunucu:"
+msgstr "Alternatif sunucu:"
 
 #. i18n: ectx: property (title), widget (QGroupBox, authentication)
 #: setupserverview_desktop.ui:223
@@ -924,7 +924,7 @@ msgstr "Kullanıcı adı:"
 #: setupserverview_desktop.ui:286 setupserverview_desktop.ui:509
 #, kde-format
 msgid "Authentication:"
-msgstr "Kimlik Doğrulama:"
+msgstr "Kimlik doğrulaması:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -990,7 +990,7 @@ msgstr "IMAP Ayarları"
 #: setupserverview_desktop.ui:371
 #, kde-format
 msgid "Enable server-side subscriptions"
-msgstr "Sunucu tarafında üyelikleri etkinleştir"
+msgstr "Sunucu tarafındaki abonelikleri etkinleştir"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
@@ -1020,7 +1020,7 @@ msgstr "Bağlantı Ayarları"
 #: setupserverview_desktop.ui:416
 #, kde-format
 msgid "Auto Detect"
-msgstr "Otomatik Algıla"
+msgstr "Kendiliğinden Algıla"
 
 #. i18n: ectx: property (text), widget (QPushButton, showServerInfo)
 #: setupserverview_desktop.ui:423
@@ -1105,7 +1105,7 @@ msgstr ""
 #: setupserverview_desktop.ui:489
 #, kde-format
 msgid "Port:"
-msgstr "Port:"
+msgstr "Kapı:"
 
 #. i18n: ectx: property (text), widget (QLabel, testInfo)
 #: setupserverview_desktop.ui:573
