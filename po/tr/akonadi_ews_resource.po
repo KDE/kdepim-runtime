@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-02-22 00:38+0000\n"
-"PO-Revision-Date: 2024-02-09 17:46+0300\n"
+"PO-Revision-Date: 2024-03-08 16:23+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.01.95\n"
+"X-Generator: Lokalize 24.02.0\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -110,7 +110,7 @@ msgstr "GNU Kitaplığı Genel Kamu Lisansı sürüm 2.0 veya sonrası ile dağ�
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
-msgstr "Otomatik algılama başarısız oldu"
+msgstr "Kendiliğinden algılama başarısız oldu"
 
 #: ewsconfigdialog.cpp:271
 #, kde-format
@@ -142,13 +142,13 @@ msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
 "still want to save your settings?"
 msgstr ""
-"Otomatik algılama başarısız oldu. Yanlış ayarlardan dolayı böyle olabilir. "
-"Ayarlarınızı yine de kaydetmek istiyor musunuz?"
+"Kendiliğinden algılama başarısız oldu. Yanlış ayarlardan dolayı böyle "
+"olabilir. Ayarlarınızı yine de kaydetmek istiyor musunuz?"
 
 #: ewsconfigdialog.cpp:347
 #, kde-format
 msgid "Exchange server autodiscovery"
-msgstr "Exchange sunucusu otomatik algılama"
+msgstr "Exchange sunucusunu kendiliğinden algıla"
 
 #: ewsconfigdialog.cpp:377
 #, kde-format
@@ -389,7 +389,7 @@ msgstr ""
 #: ewsconfigdialog.ui:288 ewsresource.kcfg:35
 #, kde-format
 msgid "Server Autodiscovery"
-msgstr "Sunucu Otomatik Algılaması"
+msgstr "Sunucu Kendiliğinden Algılaması"
 
 #. i18n: ectx: property (text), widget (QPushButton, autodiscoverButton)
 #: ewsconfigdialog.ui:298
@@ -741,12 +741,12 @@ msgstr "İptal"
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
-msgstr "Exchange sunucusu otomatik algılaması"
+msgstr "Exchange sunucusunu kendiliğinden algıla"
 
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery..."
-msgstr "Microsoft Exchange sunucusu otomatik algılaması gerçekleştiriliyor..."
+msgstr "Microsoft Exchange sunucusu kendiliğinden algılanıyor..."
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -1132,7 +1132,7 @@ msgstr "Bu hesabın birincil e-posta adresi"
 #: ewsresource.kcfg:36
 #, kde-format
 msgid "Attempt to automatically discover Exchange server address"
-msgstr "Exchange sunucu adresinin kendiliğinden algılamaya çalış"
+msgstr "Exchange sunucu adresini kendiliğinden algılamaya çalış"
 
 #. i18n: ectx: whatsthis, entry (AutoDiscovery), group (General)
 #: ewsresource.kcfg:37
