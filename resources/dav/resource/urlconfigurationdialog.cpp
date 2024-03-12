@@ -5,7 +5,6 @@
 */
 
 #include "urlconfigurationdialog.h"
-#include <kwidgetsaddons_version.h>
 
 #include <KDAV/DavCollectionModifyJob>
 #include <KDAV/DavCollectionsFetchJob>
@@ -33,12 +32,8 @@ UrlConfigurationDialog::UrlConfigurationDialog(QWidget *parent)
     mainLayout->addWidget(mainWidget);
     mUi.setupUi(mainWidget);
     mUi.credentialsGroup->setVisible(false);
-#if KWIDGETSADDONS_VERSION <= QT_VERSION_CHECK(5, 249, 0)
-    mUi.password->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
-#else
     mUi.password->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
                                                                                                            : KPassword::RevealMode::Never);
-#endif
 
     auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
