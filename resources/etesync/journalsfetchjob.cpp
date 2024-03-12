@@ -12,6 +12,7 @@
 #include <KCalendarCore/Todo>
 #include <KContacts/Addressee>
 #include <KContacts/ContactGroup>
+#include <QFutureWatcher>
 #include <QtConcurrentRun>
 
 #include "etesync_debug.h"
@@ -36,7 +37,7 @@ void JournalsFetchJob::start()
         qCDebug(ETESYNC_LOG) << "emitResult from JournalsFetchJob";
         emitResult();
     });
-    QFuture<void> fetchJournalsFuture = QtConcurrent::run(this, &JournalsFetchJob::fetchJournals);
+    QFuture<void> fetchJournalsFuture = QtConcurrent::run(&JournalsFetchJob::fetchJournals, this);
     watcher->setFuture(fetchJournalsFuture);
 }
 
