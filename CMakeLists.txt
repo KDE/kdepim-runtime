@@ -66,7 +66,7 @@ set_package_properties(Qca-qt6 PROPERTIES DESCRIPTION "Qt Cryptographic Architec
                    URL "https://invent.kde.org/libraries/qca" TYPE REQUIRED
                    PURPOSE "Needed for ews resource.")
 option(KDEPIM_RUN_AKONADI_TEST "Enable autotest based on Akonadi." TRUE)
-# QT5 package
+# QT package
 find_package(Qt6TextToSpeech ${QT_REQUIRED_VERSION} CONFIG)
 set_package_properties(Qt6TextToSpeech PROPERTIES DESCRIPTION
     "Add support for texttospeech"
@@ -75,7 +75,7 @@ set_package_properties(Qt6TextToSpeech PROPERTIES DESCRIPTION
 if(Qt6TextToSpeech_FOUND)
 set(HAVE_TEXT_TO_SPEECH_SUPPORT TRUE)
 endif()
-find_package(Qt6 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test DBus NetworkAuth)
+find_package(Qt6 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test DBus NetworkAuth Concurrent)
 find_package(Qt6WebEngineWidgets ${QT_REQUIRED_VERSION} CONFIG)
 
 # KF6 package

@@ -6,7 +6,8 @@
 
 #include "loginjob.h"
 
-#include <QtConcurrent>
+#include <QFutureWatcher>
+#include <QtConcurrentRun>
 
 #include "etesync_debug.h"
 
@@ -32,7 +33,7 @@ void LoginJob::start()
         qCDebug(ETESYNC_LOG) << "emitResult from LoginJob";
         emitResult();
     });
-    QFuture<void> loginFuture = QtConcurrent::run(this, &LoginJob::login);
+    QFuture<void> loginFuture = QtConcurrent::run(&LoginJob::login, this);
     watcher->setFuture(loginFuture);
 }
 

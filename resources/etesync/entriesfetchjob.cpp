@@ -10,7 +10,8 @@
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
 #include <KContacts/Addressee>
-#include <QtConcurrent>
+#include <QFutureWatcher>
+#include <QtConcurrentRun>
 
 #include "etesync_debug.h"
 #include "settings.h"
@@ -39,7 +40,7 @@ void EntriesFetchJob::start()
         qCDebug(ETESYNC_LOG) << "emitResult from EntriesFetchJob";
         emitResult();
     });
-    QFuture<void> fetchEntriesFuture = QtConcurrent::run(this, &EntriesFetchJob::fetchEntries);
+    QFuture<void> fetchEntriesFuture = QtConcurrent::run(&EntriesFetchJob::fetchEntries, this);
     watcher->setFuture(fetchEntriesFuture);
 }
 
