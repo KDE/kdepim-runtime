@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: LGPL-2.0-or-later
 
 #include "transferjob.h"
+#include <QAuthenticator>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
@@ -29,10 +30,20 @@ void TransferJob::start()
         if (mReply != reply) {
             return;
         }
+        if (!mUsername.isEmpty() && !mPassword.isEmpty()) {
+            authenticator->setPassword(mPassword);
+            authenticator->setUser(mUsername);
+        }
     });
 }
 
 QNetworkReply *TransferJob::reply() const
 {
     return mReply;
+}
+
+void TransferJob::setNTLM(const QString &username, const QString &password)
+{
+    mUsername = username;
+    mPassword = password;
 }
