@@ -91,11 +91,10 @@ void EwsRequest::prepare(const QString &body)
         }
     }
 
-    if (mClient.isNTLMv2Enabled()) {
-        // TODO
-    }
-
     auto job = new TransferJob(request, body.toUtf8());
+    if (mClient.isNTLMv2Enabled()) {
+        job->setNTLM(username, password);
+    }
     connect(job, &KIO::TransferJob::result, this, &EwsRequest::requestResult);
     connect(job, &KIO::TransferJob::percentChanged, this, [this](KJob *job, unsigned long) {
         requestProgress(job);

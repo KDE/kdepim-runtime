@@ -20,6 +20,9 @@ public:
 
     void start() override;
 
+    /// Set username and password for a NTLMv2 authentification.
+    void setNTLM(const QString &username, const QString &password);
+
     /// Return the reply or null if the request wasn't sent.
     QNetworkReply *reply() const;
 
@@ -27,4 +30,6 @@ private:
     QNetworkRequest mRequest;
     const QByteArray mBody;
     QNetworkReply *mReply = nullptr;
+    QString mUsername;
+    QString mPassword;
 };
