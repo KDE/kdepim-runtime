@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-22 00:38+0000\n"
+"POT-Creation-Date: 2024-03-13 00:38+0000\n"
 "PO-Revision-Date: 2023-09-21 15:11+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -61,48 +61,48 @@ msgstr ""
 "Exchange no són vàlids. Actualitzeu-los a la pàgina de configuració del "
 "compte."
 
-#: ewsconfigdialog.cpp:77
+#: ewsconfigdialog.cpp:76
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
 msgstr "Configuració del Microsoft Exchange"
 
-#: ewsconfigdialog.cpp:107
+#: ewsconfigdialog.cpp:102
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
 msgstr "D'acord"
 
-#: ewsconfigdialog.cpp:127 ewsconfigdialog.cpp:129
+#: ewsconfigdialog.cpp:122 ewsconfigdialog.cpp:124
 #, kde-format
 msgid "PEM file"
 msgstr "Fitxer PEM"
 
-#: ewsconfigdialog.cpp:147
+#: ewsconfigdialog.cpp:142
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "A mida"
 
-#: ewsconfigdialog.cpp:158
+#: ewsconfigdialog.cpp:153
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Recurs Akonadi per als serveis web de Microsoft Exchange (EWS)"
 
-#: ewsconfigdialog.cpp:159
+#: ewsconfigdialog.cpp:154
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "Copyright (c) Krzysztof Nowicki 2015-2020"
 
-#: ewsconfigdialog.cpp:160
+#: ewsconfigdialog.cpp:155
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "Versió %1"
 
-#: ewsconfigdialog.cpp:161
+#: ewsconfigdialog.cpp:156
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -112,37 +112,37 @@ msgstr ""
 "Distribuït segons la Llicència pública general de biblioteques de GNU versió "
 "2.0 o posterior."
 
-#: ewsconfigdialog.cpp:256
+#: ewsconfigdialog.cpp:251
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "Ha fallat el descobriment automàtic"
 
-#: ewsconfigdialog.cpp:271
+#: ewsconfigdialog.cpp:266
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Ha fallat la connexió"
 
-#: ewsconfigdialog.cpp:272 ewsconfigdialog.cpp:430
+#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:425
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Ha fallat"
 
-#: ewsconfigdialog.cpp:273 ewsconfigdialog.cpp:431
+#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:426
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Desconeguda"
 
-#: ewsconfigdialog.cpp:276 ewsconfigdialog.cpp:435
+#: ewsconfigdialog.cpp:271 ewsconfigdialog.cpp:430
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "D'acord"
 
-#: ewsconfigdialog.cpp:346
+#: ewsconfigdialog.cpp:341
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -151,12 +151,12 @@ msgstr ""
 "Ha fallat el descobriment automàtic. Això pot ser causat per paràmetres "
 "incorrectes. Voleu desar la configuració?"
 
-#: ewsconfigdialog.cpp:347
+#: ewsconfigdialog.cpp:342
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "Descobriment automàtic del servidor Exchange"
 
-#: ewsconfigdialog.cpp:377
+#: ewsconfigdialog.cpp:372
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -165,12 +165,12 @@ msgstr ""
 "Ha fallat en connectar amb Exchange. Això pot ser causat per paràmetres "
 "incorrectes. Voleu desar la configuració?"
 
-#: ewsconfigdialog.cpp:378
+#: ewsconfigdialog.cpp:373
 #, kde-format
 msgid "Exchange server connection"
 msgstr "Connexió amb el servidor Exchange"
 
-#: ewsconfigdialog.cpp:432
+#: ewsconfigdialog.cpp:427
 #, kde-format
 msgid "Connection failed"
 msgstr "Ha fallat la connexió"

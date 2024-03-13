@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-03-13 00:38+0000\n"
 "PO-Revision-Date: 2017-09-28 18:00+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,7 +18,13 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: accountwidget.cpp:95
+#: accountwidget.cpp:82
+#, kde-format
+msgctxt "Percent value; %p is the value, % is the percent sign"
+msgid "%p%"
+msgstr ""
+
+#: accountwidget.cpp:90
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -27,17 +33,17 @@ msgstr[1] " minuta"
 msgstr[2] " minuta"
 msgstr[3] " minut"
 
-#: accountwidget.cpp:132 pop3resource.cpp:47
+#: accountwidget.cpp:127 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 nalog"
 
-#: accountwidget.cpp:199
+#: accountwidget.cpp:194
 #, kde-format
 msgid "Unable to open wallet"
 msgstr "Ne mogu da otvorim novčanik"
 
-#: accountwidget.cpp:249
+#: accountwidget.cpp:244
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -50,7 +56,7 @@ msgstr ""
 "Pošto neki serveri pogrešno prijavljuju svoje mogućnosti, i dalje možete "
 "uključiti ostavljanje dobavljenih poruka na serveru."
 
-#: accountwidget.cpp:264
+#: accountwidget.cpp:259
 #, fuzzy, kde-format
 #| msgid ""
 #| "Please note that this feature can cause some POP3 servers that do not "
@@ -82,17 +88,17 @@ msgstr ""
 "ako ne prijavljuje podršku, a ipak želite veću brzinu, izvršite nekoliko "
 "proba tako što prvo pošaljete sebi veći broj poruka pa ih preuzmete."
 
-#: accountwidget.cpp:297
+#: accountwidget.cpp:292
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Prvo zadajte server i port pod jezičkom „Opšte“."
 
-#: accountwidget.cpp:330
+#: accountwidget.cpp:325
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Ne mogu da se povežem sa serverom, proverite adresu servera."
 
-#: accountwidget.cpp:374
+#: accountwidget.cpp:369
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -112,7 +118,7 @@ msgstr ""
 "isprobajte tako što prvo pošaljete sebi veći broj poruka a onda ih odjednom "
 "sve preuzmete sa POP servera."
 
-#: accountwidget.cpp:394
+#: accountwidget.cpp:389
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -126,7 +132,7 @@ msgstr ""
 "Pošto neki serveri pogrešno prijavljuju svoje mogućnosti, i dalje možete "
 "uključiti ostavljanje dobavljenih poruka na serveru."
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:421
 #, kde-format
 msgid " day"
 msgid_plural " days"
@@ -135,7 +141,7 @@ msgstr[1] " dana"
 msgstr[2] " dana"
 msgstr[3] " dan"
 
-#: accountwidget.cpp:431
+#: accountwidget.cpp:426
 #, kde-format
 msgid " message"
 msgid_plural " messages"
@@ -290,80 +296,80 @@ msgstr ""
 msgid "Unexpected response from POP3 server."
 msgstr ""
 
-#: pop3resource.cpp:96
+#: pop3resource.cpp:95
 #, kde-format
 msgid "Mail check aborted."
 msgstr "Provera pošte obustavljena."
 
-#: pop3resource.cpp:103
+#: pop3resource.cpp:102
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "Provera pošte je ručno obustavljena."
 
-#: pop3resource.cpp:131
+#: pop3resource.cpp:130
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "Unesite korisničko ime i lozinku za nalog „%1“."
 
-#: pop3resource.cpp:148
+#: pop3resource.cpp:147
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "Ovo vam se traži zato što lozinka ne može da se učita iz novčanika."
 
-#: pop3resource.cpp:169
+#: pop3resource.cpp:164
 #, kde-format
 msgid "Account:"
 msgstr "Nalog:"
 
-#: pop3resource.cpp:186
+#: pop3resource.cpp:181
 #, kde-format
 msgid "No username and password supplied."
 msgstr "Nije zadato korisničko ime i lozinka."
 
-#: pop3resource.cpp:205
+#: pop3resource.cpp:200
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "Spremam prenos sa „%1“."
 
-#: pop3resource.cpp:226
+#: pop3resource.cpp:221
 #, kde-format
 msgid "Executing precommand."
 msgstr "Izvršavam prednaredbu."
 
-#: pop3resource.cpp:251
+#: pop3resource.cpp:246
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "Ovo vam se traži zato što prethodna prijava nije bila uspešna."
 
-#: pop3resource.cpp:253
+#: pop3resource.cpp:248
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "Ovo vam se traži zato što ste uneli prazno korisničko ime."
 
-#: pop3resource.cpp:280
+#: pop3resource.cpp:275
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "Dobavljam spisak poruka."
 
-#: pop3resource.cpp:336
+#: pop3resource.cpp:331
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "Upisujem preuzete poruke."
 
-#: pop3resource.cpp:354
+#: pop3resource.cpp:349
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "Upisujem lozinku u novčanik."
 
-#: pop3resource.cpp:396
+#: pop3resource.cpp:391
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
 "Greška pri pokušaju dobavljanja fascikle lokalnog prijemnog sandučeta, "
 "obustavljam proveru pošte."
 
-#: pop3resource.cpp:403
+#: pop3resource.cpp:398
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -374,7 +380,7 @@ msgstr ""
 "isporuku pošte u nju. Zato je fascikla za isporuku za ovaj nalog resetovana "
 "na fasciklu glavnog prijemnog sandučeta.</qt>"
 
-#: pop3resource.cpp:424
+#: pop3resource.cpp:419
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
@@ -382,35 +388,35 @@ msgstr ""
 "Greška pri pokušaju dobavljanja fascikle za pristiglu poštu, obustavljam "
 "proveru pošte."
 
-#: pop3resource.cpp:437
+#: pop3resource.cpp:432
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr ""
 "Ne mogu da nađem fasciklu za pristiglu poštu, obustavljam proveru pošte."
 
-#: pop3resource.cpp:448
+#: pop3resource.cpp:443
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "Greška pri izvršavanju prednaredbe."
 
-#: pop3resource.cpp:462
+#: pop3resource.cpp:457
 #, fuzzy, kde-format
 #| msgid "Unable to login to the server %1."
 msgid "Unable to login to the server \"%1\"."
 msgstr "Ne mogu da se prijavim na server %1."
 
-#: pop3resource.cpp:471
+#: pop3resource.cpp:466
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "Greška pri dobavljanju spiska poruka sa servera."
 
-#: pop3resource.cpp:485
+#: pop3resource.cpp:480
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr ""
 "Greška pri dobavljanju spiska jedinstvenih identifikatora pošte sa servera."
 
-#: pop3resource.cpp:498
+#: pop3resource.cpp:493
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -424,39 +430,39 @@ msgstr ""
 "videla.\n"
 "Zbog ovoga, mogućnost ostavljanja pošte na serveru neće raditi ispravno."
 
-#: pop3resource.cpp:513
+#: pop3resource.cpp:508
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "Greška pri dobavljanju poruka sa servera."
 
-#: pop3resource.cpp:573
+#: pop3resource.cpp:568
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
 msgstr ""
 "Dobavljam poruku %1 od %2 (%3 od %4 kB) za %5 (%6 kB ostaje na serveru)."
 
-#: pop3resource.cpp:582
+#: pop3resource.cpp:577
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "Dobavljam poruku %1 od %2 (%3 od %4 kB) za %5"
 
-#: pop3resource.cpp:605
+#: pop3resource.cpp:600
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "Ne mogu da skladištim preuzete poruke."
 
-#: pop3resource.cpp:753
+#: pop3resource.cpp:748
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "Ne mogu oda obrišem poruke na serveru."
 
-#: pop3resource.cpp:809
+#: pop3resource.cpp:804
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "Provera pošte završena, nema preuzetih poruka."
 
-#: pop3resource.cpp:811
+#: pop3resource.cpp:806
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
@@ -465,27 +471,27 @@ msgstr[1] "Provera pošte završena, preuzete %1 poruke."
 msgstr[2] "Provera pošte završena, preuzeto %1 poruka."
 msgstr[3] "Provera pošte završena, preuzeta %1 poruka."
 
-#: pop3resource.cpp:825
+#: pop3resource.cpp:820
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "Ne mogu da dovršim dobavljanje pošte."
 
-#: pop3resource.cpp:959
+#: pop3resource.cpp:954
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "Provera pošte je već u toku, ne mogu da pokrenem drugu proveru."
 
-#: pop3resource.cpp:980
+#: pop3resource.cpp:975
 #, kde-format
 msgid "Ready"
 msgstr "Spreman"
 
-#: pop3resource.cpp:983
+#: pop3resource.cpp:978
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "Provera pošte obustavljena po odlasku van veze."
 
-#: pop3resource.cpp:985
+#: pop3resource.cpp:980
 #, kde-format
 msgid "Offline"
 msgstr "Van veze"

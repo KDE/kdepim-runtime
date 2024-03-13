@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-03-13 00:38+0000\n"
 "PO-Revision-Date: 2024-02-24 22:29+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -33,7 +33,7 @@ msgstr "DAV Özkaynak Yapılandırması"
 msgid "Protocol"
 msgstr "Protokol"
 
-#: configdialog.cpp:46 urlconfigurationdialog.cpp:272
+#: configdialog.cpp:46 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "URL"
@@ -95,7 +95,7 @@ msgstr "Kullanıcı adı:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:108 setupwizard.cpp:225 urlconfigurationdialog.ui:127
+#: configdialog.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:127
 #, kde-format
 msgid "Password:"
 msgstr "Parola:"
@@ -531,53 +531,53 @@ msgstr "adlandırılmış bir kişi"
 msgid "a contact with email"
 msgstr "e-posta ile bir bağlantı"
 
-#: settings.cpp:478
+#: settings.cpp:477
 #, kde-format
 msgid "A password is required for user %1"
 msgstr "%1 kullanıcısı için bir parola gerekli"
 
-#: settings.cpp:481
+#: settings.cpp:480
 #, kde-format
 msgid "Password: "
 msgstr "Parola:"
 
-#: setupwizard.cpp:138
+#: setupwizard.cpp:137
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "DAV grup yazılımı yapılandırma sihirbazı"
 
-#: setupwizard.cpp:211
+#: setupwizard.cpp:210
 #, kde-format
 msgid "Login Credentials"
 msgstr "Oturum açma bilgileri"
 
-#: setupwizard.cpp:212
+#: setupwizard.cpp:211
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "Grup yazılımı sunucusuna oturum açmak için kimlik bilgilerini girin"
 
-#: setupwizard.cpp:216
+#: setupwizard.cpp:215
 #, kde-format
 msgid "User:"
 msgstr "Kullanıcı:"
 
-#: setupwizard.cpp:260
+#: setupwizard.cpp:255
 #, kde-format
 msgid "No, choose another server"
 msgstr "Hayır, başka bir sunucu seç"
 
-#: setupwizard.cpp:262
+#: setupwizard.cpp:257
 #, kde-format
 msgid "Predefined provider found"
 msgstr "Önceden tanımlanmış sağlayıcı bulundu"
 
-#: setupwizard.cpp:263
+#: setupwizard.cpp:258
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "Otomatik tespit sağlayıcıyı kullanmak istiyorsanız seçin"
 
-#: setupwizard.cpp:282
+#: setupwizard.cpp:277
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -588,77 +588,77 @@ msgstr ""
 "%1 hizmetleri için kendiliğinden bir hesap yapılandırabilir.\n"
 "Böyle yapılmasını ister misiniz?"
 
-#: setupwizard.cpp:287
+#: setupwizard.cpp:282
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Evet, %1 sağlayıcı olarak kullan"
 
-#: setupwizard.cpp:313
+#: setupwizard.cpp:308
 #, kde-format
 msgid "Groupware Server"
 msgstr "Groupware Sunucu"
 
-#: setupwizard.cpp:314
+#: setupwizard.cpp:309
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "Kaynağın yapılandırılacağı grup çalışması sunucusunu seçin"
 
-#: setupwizard.cpp:343
+#: setupwizard.cpp:338
 #, kde-format
 msgid "Use one of those servers:"
 msgstr "Bu sunuculardan birini kullan:"
 
-#: setupwizard.cpp:352
+#: setupwizard.cpp:347
 #, kde-format
 msgid "Configure the resource manually"
 msgstr "Kaynakları elle yapılandır"
 
-#: setupwizard.cpp:386
+#: setupwizard.cpp:381
 #, kde-format
 msgid "Connection"
 msgstr "Bağlantı"
 
-#: setupwizard.cpp:387
+#: setupwizard.cpp:382
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Grup yazılım sunucusu için bağlantı bilgileri girin"
 
-#: setupwizard.cpp:394
+#: setupwizard.cpp:389
 #, kde-format
 msgid "Host"
 msgstr "Makine"
 
-#: setupwizard.cpp:397
+#: setupwizard.cpp:392
 #, kde-format
 msgid "Installation path"
 msgstr "Kurulum yolu"
 
-#: setupwizard.cpp:400
+#: setupwizard.cpp:395
 #, kde-format
 msgid "Use secure connection"
 msgstr "Güvenli bağlantı kullan"
 
-#: setupwizard.cpp:428
+#: setupwizard.cpp:423
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "Son URL (CalDav)"
 
-#: setupwizard.cpp:433
+#: setupwizard.cpp:428
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "Son URL (CardDav)"
 
-#: setupwizard.cpp:438
+#: setupwizard.cpp:433
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "Son URL (GroupDav)"
 
-#: setupwizard.cpp:502 setupwizard.cpp:508
+#: setupwizard.cpp:497 setupwizard.cpp:503
 #, kde-format
 msgid "Test Connection"
 msgstr "Bağlantıyı Sına"
 
-#: setupwizard.cpp:503
+#: setupwizard.cpp:498
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -667,17 +667,17 @@ msgstr ""
 "Grup yazılımı sunucusuna şu anki yapılandırma dosyası ile erişebilirliğini "
 "şimdi test edebilirsiniz"
 
-#: setupwizard.cpp:548
+#: setupwizard.cpp:543
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Bir hata oluştu: %1"
 
-#: setupwizard.cpp:551
+#: setupwizard.cpp:546
 #, kde-format
 msgid "Connected successfully"
 msgstr "Başarılı bir şekilde bağlanıldı"
 
-#: urlconfigurationdialog.cpp:272
+#: urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "Display Name"
 msgstr "Görünen Ad"

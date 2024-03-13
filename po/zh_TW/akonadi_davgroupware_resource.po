@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-03-13 00:38+0000\n"
 "PO-Revision-Date: 2023-12-15 19:10+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -33,7 +33,7 @@ msgstr "DAV 資源設定"
 msgid "Protocol"
 msgstr "協定"
 
-#: configdialog.cpp:46 urlconfigurationdialog.cpp:272
+#: configdialog.cpp:46 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "網址"
@@ -95,7 +95,7 @@ msgstr "使用者名稱："
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:108 setupwizard.cpp:225 urlconfigurationdialog.ui:127
+#: configdialog.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:127
 #, kde-format
 msgid "Password:"
 msgstr "密碼："
@@ -523,53 +523,53 @@ msgstr "人名"
 msgid "a contact with email"
 msgstr "電子郵件地址"
 
-#: settings.cpp:478
+#: settings.cpp:477
 #, kde-format
 msgid "A password is required for user %1"
 msgstr "使用者 %1 需要密碼"
 
-#: settings.cpp:481
+#: settings.cpp:480
 #, kde-format
 msgid "Password: "
 msgstr "密碼："
 
-#: setupwizard.cpp:138
+#: setupwizard.cpp:137
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "DAV 群組設定精靈"
 
-#: setupwizard.cpp:211
+#: setupwizard.cpp:210
 #, kde-format
 msgid "Login Credentials"
 msgstr "登入認證資訊"
 
-#: setupwizard.cpp:212
+#: setupwizard.cpp:211
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "輸入您的認證資訊以登入群組伺服器"
 
-#: setupwizard.cpp:216
+#: setupwizard.cpp:215
 #, kde-format
 msgid "User:"
 msgstr "使用者："
 
-#: setupwizard.cpp:260
+#: setupwizard.cpp:255
 #, kde-format
 msgid "No, choose another server"
 msgstr "不要，選擇另外的伺服器"
 
-#: setupwizard.cpp:262
+#: setupwizard.cpp:257
 #, kde-format
 msgid "Predefined provider found"
 msgstr "找到預先定義的提供者"
 
-#: setupwizard.cpp:263
+#: setupwizard.cpp:258
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "若您要用自動偵測提供者功能則選擇此項"
 
-#: setupwizard.cpp:282
+#: setupwizard.cpp:277
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -579,94 +579,94 @@ msgstr ""
 "用您使用的電子郵件地址做登入帳號，此精靈可以自動設定 %1 個服務的帳號。\n"
 "您要這樣做嗎？"
 
-#: setupwizard.cpp:287
+#: setupwizard.cpp:282
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "是的，使用 %1 做為提供者"
 
-#: setupwizard.cpp:313
+#: setupwizard.cpp:308
 #, kde-format
 msgid "Groupware Server"
 msgstr "群組伺服器"
 
-#: setupwizard.cpp:314
+#: setupwizard.cpp:309
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "選擇資源要設定的群組伺服器"
 
-#: setupwizard.cpp:343
+#: setupwizard.cpp:338
 #, kde-format
 msgid "Use one of those servers:"
 msgstr "使用這些伺服器的其中之一："
 
-#: setupwizard.cpp:352
+#: setupwizard.cpp:347
 #, kde-format
 msgid "Configure the resource manually"
 msgstr "手動設定資源"
 
-#: setupwizard.cpp:386
+#: setupwizard.cpp:381
 #, kde-format
 msgid "Connection"
 msgstr "連線"
 
-#: setupwizard.cpp:387
+#: setupwizard.cpp:382
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "輸入群組伺服器的連線資訊"
 
-#: setupwizard.cpp:394
+#: setupwizard.cpp:389
 #, kde-format
 msgid "Host"
 msgstr "主機"
 
-#: setupwizard.cpp:397
+#: setupwizard.cpp:392
 #, kde-format
 msgid "Installation path"
 msgstr "安裝路徑"
 
-#: setupwizard.cpp:400
+#: setupwizard.cpp:395
 #, kde-format
 msgid "Use secure connection"
 msgstr "使用安全連線"
 
-#: setupwizard.cpp:428
+#: setupwizard.cpp:423
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "最終網址（CalDav）"
 
-#: setupwizard.cpp:433
+#: setupwizard.cpp:428
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "最終網址（CardDav）"
 
-#: setupwizard.cpp:438
+#: setupwizard.cpp:433
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "最終網址（GroupDav）"
 
-#: setupwizard.cpp:502 setupwizard.cpp:508
+#: setupwizard.cpp:497 setupwizard.cpp:503
 #, kde-format
 msgid "Test Connection"
 msgstr "測試連線"
 
-#: setupwizard.cpp:503
+#: setupwizard.cpp:498
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
 "current configuration"
 msgstr "您現在可以測試是否能以目前的設定存取群組伺服器"
 
-#: setupwizard.cpp:548
+#: setupwizard.cpp:543
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "發生錯誤：%1"
 
-#: setupwizard.cpp:551
+#: setupwizard.cpp:546
 #, kde-format
 msgid "Connected successfully"
 msgstr "已成功連線"
 
-#: urlconfigurationdialog.cpp:272
+#: urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "Display Name"
 msgstr "顯示名稱"

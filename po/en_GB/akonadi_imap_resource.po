@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-16 00:38+0000\n"
+"POT-Creation-Date: 2024-03-13 00:38+0000\n"
 "PO-Revision-Date: 2020-10-11 15:00+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English <kde-l10n-en_gb@kde.org>\n"
@@ -281,7 +281,7 @@ msgstr "Defines the type of identification used by custom sieve server"
 msgid "No server configured yet."
 msgstr "No server configured yet."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:659
+#: imapresourcebase.cpp:245 setupserver.cpp:651
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -606,7 +606,7 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Disconnected during login."
 
-#: settingspasswordrequester.cpp:54
+#: settingspasswordrequester.cpp:53
 #, kde-format
 msgid ""
 "The server for account \"%2\" refused the supplied username and password.\n"
@@ -621,31 +621,31 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:61
+#: settingspasswordrequester.cpp:60
 #, kde-format
 msgctxt "@title:window"
 msgid "Could Not Authenticate"
 msgstr "Could Not Authenticate"
 
-#: settingspasswordrequester.cpp:65
+#: settingspasswordrequester.cpp:64
 #, kde-format
 msgid "Account Settings"
 msgstr "Account Settings"
 
-#: settingspasswordrequester.cpp:66
+#: settingspasswordrequester.cpp:65
 #, kde-format
 msgctxt "Input username/password manually and not store them"
 msgid "Try Again"
 msgstr "Try Again"
 
-#: settingspasswordrequester.cpp:151
+#: settingspasswordrequester.cpp:150
 #, kde-format
 msgid "Please enter password for user '%1' on IMAP server '%2'."
 msgstr "Please enter password for user '%1' on IMAP server '%2'."
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:75 setupserverview_desktop.ui:294
+#: setupserver.cpp:74 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -654,37 +654,43 @@ msgstr "Clear text"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:77 setupserverview_desktop.ui:329
+#: setupserver.cpp:76 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Anonymous"
 
-#: setupserver.cpp:79
+#: setupserver.cpp:78
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr ""
 
-#: setupserver.cpp:152
+#: setupserver.cpp:143
 #, kde-format
 msgid "Archive Folder"
 msgstr "Archive Folder"
 
-#: setupserver.cpp:164
+#: setupserver.cpp:154
+#, kde-format
+msgctxt "Percent value; %p is the value, % is the percent sign"
+msgid "%p%"
+msgstr ""
+
+#: setupserver.cpp:156
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " minute"
 msgstr[1] " minutes"
 
-#: setupserver.cpp:179
+#: setupserver.cpp:171
 #, kde-format
 msgid "Identity:"
 msgstr "Identity:"
 
-#: setupserver.cpp:262
+#: setupserver.cpp:254
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -695,12 +701,12 @@ msgstr ""
 "as before we will have to re-download all your emails from this account "
 "again. Are you sure you want to proceed?"
 
-#: setupserver.cpp:265
+#: setupserver.cpp:257
 #, kde-format
 msgid "Server address change"
 msgstr "Server address change"
 
-#: setupserver.cpp:272
+#: setupserver.cpp:264
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -711,12 +717,12 @@ msgstr ""
 "account as before we will have to re-download all your emails from this "
 "account again. Are you sure you want to proceed?"
 
-#: setupserver.cpp:275
+#: setupserver.cpp:267
 #, kde-format
 msgid "User name change"
 msgstr "User name change"
 
-#: setupserver.cpp:420 setupserver.cpp:476
+#: setupserver.cpp:412 setupserver.cpp:468
 #, kde-format
 msgid ""
 "Could not access KWallet. If you want to store the password permanently then "
@@ -727,27 +733,27 @@ msgstr ""
 "you have to activate it. If you do not want to use KWallet, tick the box "
 "below, but note that you will be prompted for your password when needed."
 
-#: setupserver.cpp:425 setupserver.cpp:481
+#: setupserver.cpp:417 setupserver.cpp:473
 #, kde-format
 msgid "Do not use KWallet"
 msgstr "Do not use KWallet"
 
-#: setupserver.cpp:546
+#: setupserver.cpp:538
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Unable to connect to the server, please verify the server address."
 
-#: setupserver.cpp:558
+#: setupserver.cpp:550
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 
-#: setupserver.cpp:561
+#: setupserver.cpp:553
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 
-#: setupserver.cpp:565
+#: setupserver.cpp:557
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -756,7 +762,7 @@ msgstr ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
 
-#: setupserver.cpp:568
+#: setupserver.cpp:560
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>It is not possible to use this server.</b></qt>"

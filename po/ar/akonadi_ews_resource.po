@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-22 00:38+0000\n"
+"POT-Creation-Date: 2024-03-13 00:38+0000\n"
 "PO-Revision-Date: 2024-02-23 18:11+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -53,48 +53,48 @@ msgid ""
 "not valid. Please update it in the account settings page."
 msgstr ""
 
-#: ewsconfigdialog.cpp:77
+#: ewsconfigdialog.cpp:76
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
 msgstr "ضبط «مايكروسوفت إكسچينج»"
 
-#: ewsconfigdialog.cpp:107
+#: ewsconfigdialog.cpp:102
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
 msgstr "جيّد"
 
-#: ewsconfigdialog.cpp:127 ewsconfigdialog.cpp:129
+#: ewsconfigdialog.cpp:122 ewsconfigdialog.cpp:124
 #, kde-format
 msgid "PEM file"
 msgstr ""
 
-#: ewsconfigdialog.cpp:147
+#: ewsconfigdialog.cpp:142
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "مخصّص"
 
-#: ewsconfigdialog.cpp:158
+#: ewsconfigdialog.cpp:153
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "مورد «أكونادي» لخدمات وبّ «مايكروسوفت إكسچينج» (EWS)"
 
-#: ewsconfigdialog.cpp:159
+#: ewsconfigdialog.cpp:154
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "الحقوق محفوظة © 2015-2020 لِ‍ Krzysztof Nowicki"
 
-#: ewsconfigdialog.cpp:160
+#: ewsconfigdialog.cpp:155
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "الإصدارة %1"
 
-#: ewsconfigdialog.cpp:161
+#: ewsconfigdialog.cpp:156
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -102,37 +102,37 @@ msgid ""
 "later."
 msgstr "مُوزّع برخصة گنو العموميّة المكتبيّة إصدارة 2٫0 أو أحدث."
 
-#: ewsconfigdialog.cpp:256
+#: ewsconfigdialog.cpp:251
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "فشل الاكتشاف الآليّ"
 
-#: ewsconfigdialog.cpp:271
+#: ewsconfigdialog.cpp:266
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "فشل الاتّصال"
 
-#: ewsconfigdialog.cpp:272 ewsconfigdialog.cpp:430
+#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:425
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "فشل"
 
-#: ewsconfigdialog.cpp:273 ewsconfigdialog.cpp:431
+#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:426
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "مجهولة"
 
-#: ewsconfigdialog.cpp:276 ewsconfigdialog.cpp:435
+#: ewsconfigdialog.cpp:271 ewsconfigdialog.cpp:430
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "جيّد"
 
-#: ewsconfigdialog.cpp:346
+#: ewsconfigdialog.cpp:341
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -141,12 +141,12 @@ msgstr ""
 "فشل الاكتشاف الآليّ. قد يكون السّبب هو معاملات غير صحيحة. أما زلت تريد حفظ "
 "الإعدادات؟"
 
-#: ewsconfigdialog.cpp:347
+#: ewsconfigdialog.cpp:342
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "الكشف الآليّ عن خادوم «إكسچينج»"
 
-#: ewsconfigdialog.cpp:377
+#: ewsconfigdialog.cpp:372
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -155,12 +155,12 @@ msgstr ""
 "فشل الاتّصال بِ‍«إكسچينج». قد يكون السّبب هو معاملات غير صحيحة. أما زلت تريد حفظ "
 "الإعدادات؟"
 
-#: ewsconfigdialog.cpp:378
+#: ewsconfigdialog.cpp:373
 #, kde-format
 msgid "Exchange server connection"
 msgstr "الاتّصال بخادوم «إكسچينج»"
 
-#: ewsconfigdialog.cpp:432
+#: ewsconfigdialog.cpp:427
 #, kde-format
 msgid "Connection failed"
 msgstr "فشل الاتّصال"

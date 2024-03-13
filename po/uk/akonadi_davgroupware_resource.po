@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-03-13 00:38+0000\n"
 "PO-Revision-Date: 2021-08-23 11:51+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -31,7 +31,7 @@ msgstr "Налаштовування ресурсів DAV"
 msgid "Protocol"
 msgstr "Протокол"
 
-#: configdialog.cpp:46 urlconfigurationdialog.cpp:272
+#: configdialog.cpp:46 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "Адреса"
@@ -94,7 +94,7 @@ msgstr "Користувач:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:108 setupwizard.cpp:225 urlconfigurationdialog.ui:127
+#: configdialog.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:127
 #, kde-format
 msgid "Password:"
 msgstr "Пароль:"
@@ -539,53 +539,53 @@ msgstr "особу з ім’ям"
 msgid "a contact with email"
 msgstr "контакт з адресою ел. пошти"
 
-#: settings.cpp:478
+#: settings.cpp:477
 #, kde-format
 msgid "A password is required for user %1"
 msgstr "Потрібен пароль до облікового запису користувача %1"
 
-#: settings.cpp:481
+#: settings.cpp:480
 #, kde-format
 msgid "Password: "
 msgstr "Пароль: "
 
-#: setupwizard.cpp:138
+#: setupwizard.cpp:137
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "Майстер налаштування групової роботи у DAV"
 
-#: setupwizard.cpp:211
+#: setupwizard.cpp:210
 #, kde-format
 msgid "Login Credentials"
 msgstr "Реєстраційні дані"
 
-#: setupwizard.cpp:212
+#: setupwizard.cpp:211
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "Введіть ваші реєстраційні дані на сервері групової роботи"
 
-#: setupwizard.cpp:216
+#: setupwizard.cpp:215
 #, kde-format
 msgid "User:"
 msgstr "Користувач:"
 
-#: setupwizard.cpp:260
+#: setupwizard.cpp:255
 #, kde-format
 msgid "No, choose another server"
 msgstr "Ні, вибрати інший сервер"
 
-#: setupwizard.cpp:262
+#: setupwizard.cpp:257
 #, kde-format
 msgid "Predefined provider found"
 msgstr "Знайдено попередньо визначеного надавача послуг"
 
-#: setupwizard.cpp:263
+#: setupwizard.cpp:258
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "Позначте, якщо ви бажаєте використати автоматично визначеного надавача"
 
-#: setupwizard.cpp:282
+#: setupwizard.cpp:277
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -596,77 +596,77 @@ msgstr ""
 "цей майстер може автоматично налаштувати обліковий запис для служб %1.\n"
 "Бажаєте, щоб таке автоматичне налаштування було виконано?"
 
-#: setupwizard.cpp:287
+#: setupwizard.cpp:282
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Так, використати %1 як надавача"
 
-#: setupwizard.cpp:313
+#: setupwizard.cpp:308
 #, kde-format
 msgid "Groupware Server"
 msgstr "Сервер групової роботи"
 
-#: setupwizard.cpp:314
+#: setupwizard.cpp:309
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "Виберіть сервер групової роботи, на який слід налаштовувати ресурс"
 
-#: setupwizard.cpp:343
+#: setupwizard.cpp:338
 #, kde-format
 msgid "Use one of those servers:"
 msgstr "Використати один з цих серверів:"
 
-#: setupwizard.cpp:352
+#: setupwizard.cpp:347
 #, kde-format
 msgid "Configure the resource manually"
 msgstr "Налаштувати ресурс вручну"
 
-#: setupwizard.cpp:386
+#: setupwizard.cpp:381
 #, kde-format
 msgid "Connection"
 msgstr "З'єднання"
 
-#: setupwizard.cpp:387
+#: setupwizard.cpp:382
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Введіть дані з’єднання з сервером групової роботи"
 
-#: setupwizard.cpp:394
+#: setupwizard.cpp:389
 #, kde-format
 msgid "Host"
 msgstr "Вузол"
 
-#: setupwizard.cpp:397
+#: setupwizard.cpp:392
 #, kde-format
 msgid "Installation path"
 msgstr "Каталог для встановлення"
 
-#: setupwizard.cpp:400
+#: setupwizard.cpp:395
 #, kde-format
 msgid "Use secure connection"
 msgstr "Використовувати безпечне з’єднання"
 
-#: setupwizard.cpp:428
+#: setupwizard.cpp:423
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "Остаточна адреса (CalDav)"
 
-#: setupwizard.cpp:433
+#: setupwizard.cpp:428
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "Остаточна адреса (CardDav)"
 
-#: setupwizard.cpp:438
+#: setupwizard.cpp:433
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "Остаточна адреса (GroupDav)"
 
-#: setupwizard.cpp:502 setupwizard.cpp:508
+#: setupwizard.cpp:497 setupwizard.cpp:503
 #, kde-format
 msgid "Test Connection"
 msgstr "Перевірка з'єднання"
 
-#: setupwizard.cpp:503
+#: setupwizard.cpp:498
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -675,17 +675,17 @@ msgstr ""
 "Тепер ви можете перевірити, чи можна отримати доступ до сервера групової "
 "роботи за поточних налаштувань"
 
-#: setupwizard.cpp:548
+#: setupwizard.cpp:543
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Сталася помилка: %1"
 
-#: setupwizard.cpp:551
+#: setupwizard.cpp:546
 #, kde-format
 msgid "Connected successfully"
 msgstr "З’єднання встановлено"
 
-#: urlconfigurationdialog.cpp:272
+#: urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "Display Name"
 msgstr "Показана назва"

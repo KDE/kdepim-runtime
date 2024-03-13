@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-16 00:38+0000\n"
+"POT-Creation-Date: 2024-03-13 00:38+0000\n"
 "PO-Revision-Date: 2017-09-28 18:00+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -281,7 +281,7 @@ msgstr "Дефинише тип идентификације посебног с
 msgid "No server configured yet."
 msgstr "Још није подешен ниједан сервер."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:659
+#: imapresourcebase.cpp:245 setupserver.cpp:651
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -612,7 +612,7 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Прекинута веза током пријављивања."
 
-#: settingspasswordrequester.cpp:54
+#: settingspasswordrequester.cpp:53
 #, fuzzy, kde-format
 #| msgid ""
 #| "The server for account \"%2\" refused the supplied username and password. "
@@ -634,25 +634,25 @@ msgstr ""
 "%1"
 
 # rewrite-msgid: /Authenticate/Authentication/
-#: settingspasswordrequester.cpp:61
+#: settingspasswordrequester.cpp:60
 #, fuzzy, kde-format
 #| msgid "Could Not Authenticate"
 msgctxt "@title:window"
 msgid "Could Not Authenticate"
 msgstr "Аутентификација није прошла"
 
-#: settingspasswordrequester.cpp:65
+#: settingspasswordrequester.cpp:64
 #, kde-format
 msgid "Account Settings"
 msgstr "Поставке налога"
 
-#: settingspasswordrequester.cpp:66
+#: settingspasswordrequester.cpp:65
 #, kde-format
 msgctxt "Input username/password manually and not store them"
 msgid "Try Again"
 msgstr "Покушај поново"
 
-#: settingspasswordrequester.cpp:151
+#: settingspasswordrequester.cpp:150
 #, kde-format
 msgid "Please enter password for user '%1' on IMAP server '%2'."
 msgstr "Унесите лозинку корисника „%1“ на ИМАП серверу „%2“."
@@ -660,7 +660,7 @@ msgstr "Унесите лозинку корисника „%1“ на ИМАП 
 # >> @item
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:75 setupserverview_desktop.ui:294
+#: setupserver.cpp:74 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -670,26 +670,32 @@ msgstr "чисти текст"
 # >> @item
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:77 setupserverview_desktop.ui:329
+#: setupserver.cpp:76 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "анонимно"
 
-#: setupserver.cpp:79
+#: setupserver.cpp:78
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr ""
 
-#: setupserver.cpp:152
+#: setupserver.cpp:143
 #, kde-format
 msgid "Archive Folder"
 msgstr "Архивска фасцикла"
 
+#: setupserver.cpp:154
+#, kde-format
+msgctxt "Percent value; %p is the value, % is the percent sign"
+msgid "%p%"
+msgstr ""
+
 # >> @item:inlistbox continuation, e.g. is between 2 and 5 minutes
-#: setupserver.cpp:164
+#: setupserver.cpp:156
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -698,12 +704,12 @@ msgstr[1] " минута"
 msgstr[2] " минута"
 msgstr[3] " минут"
 
-#: setupserver.cpp:179
+#: setupserver.cpp:171
 #, kde-format
 msgid "Identity:"
 msgstr "Идентитет:"
 
-#: setupserver.cpp:262
+#: setupserver.cpp:254
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -715,12 +721,12 @@ msgstr ""
 "наставите?"
 
 # >> @title:window
-#: setupserver.cpp:265
+#: setupserver.cpp:257
 #, kde-format
 msgid "Server address change"
 msgstr "Промена адресе сервера"
 
-#: setupserver.cpp:272
+#: setupserver.cpp:264
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -732,12 +738,12 @@ msgstr ""
 "заиста да наставите?"
 
 # >> @title:window
-#: setupserver.cpp:275
+#: setupserver.cpp:267
 #, kde-format
 msgid "User name change"
 msgstr "Промена корисничког имена"
 
-#: setupserver.cpp:420 setupserver.cpp:476
+#: setupserver.cpp:412 setupserver.cpp:468
 #, kde-format
 msgid ""
 "Could not access KWallet. If you want to store the password permanently then "
@@ -749,29 +755,29 @@ msgstr ""
 "користите К‑новчаник, али имајте на уму да ће вам онда лозинка бити тражена "
 "кад год затреба."
 
-#: setupserver.cpp:425 setupserver.cpp:481
+#: setupserver.cpp:417 setupserver.cpp:473
 #, kde-format
 msgid "Do not use KWallet"
 msgstr "Не користи К‑новчаник"
 
-#: setupserver.cpp:546
+#: setupserver.cpp:538
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Не могу да се повежем са сервером, проверите адресу сервера."
 
-#: setupserver.cpp:558
+#: setupserver.cpp:550
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>ТЛС је подржан и препоручен.</b></qt>"
 
-#: setupserver.cpp:561
+#: setupserver.cpp:553
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>ТЛС је подржан и препоручен.</b></qt>"
 
-#: setupserver.cpp:565
+#: setupserver.cpp:557
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -780,7 +786,7 @@ msgstr ""
 "<qt><b>Није подржана ниједна опција безбедности. Не препоручујемо повезивање "
 "са овим сервером.</b></qt>"
 
-#: setupserver.cpp:568
+#: setupserver.cpp:560
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Овај сервер не може да се користи.</b></qt>"

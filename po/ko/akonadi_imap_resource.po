@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-16 00:38+0000\n"
+"POT-Creation-Date: 2024-03-13 00:38+0000\n"
 "PO-Revision-Date: 2024-02-17 12:43+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -273,7 +273,7 @@ msgstr "사용자 정의 Sieve 서버에 사용되는 인증 종류 정의"
 msgid "No server configured yet."
 msgstr "서버가 설정되지 않았습니다."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:659
+#: imapresourcebase.cpp:245 setupserver.cpp:651
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -598,7 +598,7 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "로그인 중 연결이 종료되었습니다."
 
-#: settingspasswordrequester.cpp:54
+#: settingspasswordrequester.cpp:53
 #, kde-format
 msgid ""
 "The server for account \"%2\" refused the supplied username and password.\n"
@@ -612,31 +612,31 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:61
+#: settingspasswordrequester.cpp:60
 #, kde-format
 msgctxt "@title:window"
 msgid "Could Not Authenticate"
 msgstr "인증할 수 없음"
 
-#: settingspasswordrequester.cpp:65
+#: settingspasswordrequester.cpp:64
 #, kde-format
 msgid "Account Settings"
 msgstr "계정 설정"
 
-#: settingspasswordrequester.cpp:66
+#: settingspasswordrequester.cpp:65
 #, kde-format
 msgctxt "Input username/password manually and not store them"
 msgid "Try Again"
 msgstr "다시 시도"
 
-#: settingspasswordrequester.cpp:151
+#: settingspasswordrequester.cpp:150
 #, kde-format
 msgid "Please enter password for user '%1' on IMAP server '%2'."
 msgstr "IMAP 서버 '%2'의 사용자 '%1'의 암호를 입력하십시오."
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:75 setupserverview_desktop.ui:294
+#: setupserver.cpp:74 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -645,36 +645,42 @@ msgstr "평문 텍스트"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:77 setupserverview_desktop.ui:329
+#: setupserver.cpp:76 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "익명"
 
-#: setupserver.cpp:79
+#: setupserver.cpp:78
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr "XOAuth"
 
-#: setupserver.cpp:152
+#: setupserver.cpp:143
 #, kde-format
 msgid "Archive Folder"
 msgstr "폴더 아카이브"
 
-#: setupserver.cpp:164
+#: setupserver.cpp:154
+#, kde-format
+msgctxt "Percent value; %p is the value, % is the percent sign"
+msgid "%p%"
+msgstr ""
+
+#: setupserver.cpp:156
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] "분"
 
-#: setupserver.cpp:179
+#: setupserver.cpp:171
 #, kde-format
 msgid "Identity:"
 msgstr "프로필:"
 
-#: setupserver.cpp:262
+#: setupserver.cpp:254
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -684,12 +690,12 @@ msgstr ""
 "서버 주소를 변경했습니다. 이전 서버와 같은 서버여도 이 계정의 모든 이메일을 "
 "다시 다운로드해야 합니다. 계속 진행하시겠습니까?"
 
-#: setupserver.cpp:265
+#: setupserver.cpp:257
 #, kde-format
 msgid "Server address change"
 msgstr "서버 주소 변경"
 
-#: setupserver.cpp:272
+#: setupserver.cpp:264
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -699,12 +705,12 @@ msgstr ""
 "사용자 이름을 변경했습니다. 이전 사용자 이름과 같은 사용자여도 이 계정의 모"
 "든 이메일을 다시 다운로드해야 합니다. 계속 진행하시겠습니까?"
 
-#: setupserver.cpp:275
+#: setupserver.cpp:267
 #, kde-format
 msgid "User name change"
 msgstr "사용자 이름 변경"
 
-#: setupserver.cpp:420 setupserver.cpp:476
+#: setupserver.cpp:412 setupserver.cpp:468
 #, kde-format
 msgid ""
 "Could not access KWallet. If you want to store the password permanently then "
@@ -715,27 +721,27 @@ msgstr ""
 "다. KWallet을 사용하지 않으려면 아래 체크 상자를 해제하면 되지만, 필요할 때마"
 "다 암호를 물어봅니다."
 
-#: setupserver.cpp:425 setupserver.cpp:481
+#: setupserver.cpp:417 setupserver.cpp:473
 #, kde-format
 msgid "Do not use KWallet"
 msgstr "KWallet을 사용하지 않음"
 
-#: setupserver.cpp:546
+#: setupserver.cpp:538
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "서버에 연결할 수 없습니다. 서버 주소를 확인하십시오."
 
-#: setupserver.cpp:558
+#: setupserver.cpp:550
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS가 지원되며 추천합니다.</b></qt>"
 
-#: setupserver.cpp:561
+#: setupserver.cpp:553
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS가 지원되며 추천합니다.</b></qt>"
 
-#: setupserver.cpp:565
+#: setupserver.cpp:557
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -744,7 +750,7 @@ msgstr ""
 "<qt><b>보안 기능이 지원되지 않습니다. 이 서버에 연결하지 않는 것을 추천합니"
 "다.</b></qt>"
 
-#: setupserver.cpp:568
+#: setupserver.cpp:560
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>이 서버를 사용할 수 없습니다.</b></qt>"

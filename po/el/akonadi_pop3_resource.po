@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-03-13 00:38+0000\n"
 "PO-Revision-Date: 2016-05-24 16:38+0200\n"
 "Last-Translator: Petros Vidalis <pvidalis@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -19,24 +19,30 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: accountwidget.cpp:95
+#: accountwidget.cpp:82
+#, kde-format
+msgctxt "Percent value; %p is the value, % is the percent sign"
+msgid "%p%"
+msgstr ""
+
+#: accountwidget.cpp:90
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " λεπτό"
 msgstr[1] " λεπτά"
 
-#: accountwidget.cpp:132 pop3resource.cpp:47
+#: accountwidget.cpp:127 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "Λογαριασμός POP3"
 
-#: accountwidget.cpp:199
+#: accountwidget.cpp:194
 #, kde-format
 msgid "Unable to open wallet"
 msgstr "Αδυναμία ανοίγματος πορτοφολιού"
 
-#: accountwidget.cpp:249
+#: accountwidget.cpp:244
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -50,7 +56,7 @@ msgstr ""
 "τους, μπορείτε να ενεργοποιήσετε την παραμονή των προσκομισθέντων αντιγράφων "
 "μηνυμάτων στον εξυπηρετητή."
 
-#: accountwidget.cpp:264
+#: accountwidget.cpp:259
 #, fuzzy, kde-format
 #| msgid ""
 #| "Please note that this feature can cause some POP3 servers that do not "
@@ -85,17 +91,17 @@ msgstr ""
 "θα πρέπει να κάνετε κάποιες δοκιμές με την αποστολή στον εαυτό σας μιας "
 "δέσμης μηνυμάτων και της λήψης αυτών."
 
-#: accountwidget.cpp:297
+#: accountwidget.cpp:292
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Δηλώστε πρώτα έναν εξυπηρετητή και μια θύρα στη καρτέλα Γενικά."
 
-#: accountwidget.cpp:330
+#: accountwidget.cpp:325
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Αδυναμία σύνδεσης με τον εξυπηρετητή, ελέγξτε τη διεύθυνση."
 
-#: accountwidget.cpp:374
+#: accountwidget.cpp:369
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -118,7 +124,7 @@ msgstr ""
 "μηνυμάτων τα οποία θα κατεβάσετε με την πρώτη προσπάθεια από τον εξυπηρετητή "
 "POP."
 
-#: accountwidget.cpp:394
+#: accountwidget.cpp:389
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -134,14 +140,14 @@ msgstr ""
 "αλλά εσείς μπορείτε να ενεργοποιήσετε την παραμονή των προσκομισθέντων "
 "μηνυμάτων στον εξυπηρετητή."
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:421
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " ημέρα"
 msgstr[1] " ημέρες"
 
-#: accountwidget.cpp:431
+#: accountwidget.cpp:426
 #, kde-format
 msgid " message"
 msgid_plural " messages"
@@ -295,81 +301,81 @@ msgstr ""
 msgid "Unexpected response from POP3 server."
 msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή."
 
-#: pop3resource.cpp:96
+#: pop3resource.cpp:95
 #, kde-format
 msgid "Mail check aborted."
 msgstr "Ο έλεγχος μηνυμάτων εγκαταλείφθηκε."
 
-#: pop3resource.cpp:103
+#: pop3resource.cpp:102
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "Ο έλεγχος μηνυμάτων ακυρώθηκε χειροκίνητα."
 
-#: pop3resource.cpp:131
+#: pop3resource.cpp:130
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "Δώστε όνομα χρήστη και κωδικό για τον λογαριασμό '%1'."
 
-#: pop3resource.cpp:148
+#: pop3resource.cpp:147
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "Σας ζητείται ο κωδικός επειδή δεν μπορεί να φορτωθεί από το πορτοφόλι."
 
-#: pop3resource.cpp:169
+#: pop3resource.cpp:164
 #, kde-format
 msgid "Account:"
 msgstr "Λογαριασμός:"
 
-#: pop3resource.cpp:186
+#: pop3resource.cpp:181
 #, kde-format
 msgid "No username and password supplied."
 msgstr "Δεν δόθηκε όνομα χρήστη και κωδικός."
 
-#: pop3resource.cpp:205
+#: pop3resource.cpp:200
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "Προετοιμασία μετάδοσης από \"%1\"."
 
-#: pop3resource.cpp:226
+#: pop3resource.cpp:221
 #, kde-format
 msgid "Executing precommand."
 msgstr "Εκτέλεση προ-εντολής."
 
-#: pop3resource.cpp:251
+#: pop3resource.cpp:246
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr ""
 "Σας ζητούνται στοιχεία επειδή η προηγούμενη απόπειρα εισόδου ήταν ανεπιτυχής."
 
-#: pop3resource.cpp:253
+#: pop3resource.cpp:248
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "Σας ζητείται όνομα χρήστη επειδή αυτό που δώσατε είναι κενό."
 
-#: pop3resource.cpp:280
+#: pop3resource.cpp:275
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "Προσκόμιση λίστας μηνυμάτων."
 
-#: pop3resource.cpp:336
+#: pop3resource.cpp:331
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "Αποθήκευση προσκομισθέντων μηνυμάτων."
 
-#: pop3resource.cpp:354
+#: pop3resource.cpp:349
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "Αποθήκευση κωδικού στο πορτοφόλι."
 
-#: pop3resource.cpp:396
+#: pop3resource.cpp:391
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
 "Σφάλμα κατά την προσπάθεια πρόσβασης στον τοπικό φάκελο εισερχομένων, "
 "εγκατάλειψη ελέγχου μηνυμάτων."
 
-#: pop3resource.cpp:403
+#: pop3resource.cpp:398
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -380,41 +386,41 @@ msgstr ""
 "παραδίδει μηνύματα σε αυτόν. Ο κύριος φάκελος εισερχομένων ορίστηκε ως ο "
 "φάκελος στον οποίο ο λογαριασμός θα παραδίδει νέα μηνύματα.</qt>"
 
-#: pop3resource.cpp:424
+#: pop3resource.cpp:419
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr ""
 "Σφάλμα κατά την πρόσβαση στον φάκελο εισερχομένων, εγκατάλειψη ελέγχου."
 
-#: pop3resource.cpp:437
+#: pop3resource.cpp:432
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr "Δεν βρέθηκε ο φάκελος εισερχομένων, εγκατάλειψη ελέγχου μηνυμάτων."
 
-#: pop3resource.cpp:448
+#: pop3resource.cpp:443
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "Σφάλμα κατά την εκτέλεση προ-εντολής."
 
-#: pop3resource.cpp:462
+#: pop3resource.cpp:457
 #, fuzzy, kde-format
 #| msgid "Unable to login to the server %1."
 msgid "Unable to login to the server \"%1\"."
 msgstr "Αδυναμία εισόδου στον εξυπηρετητή %1."
 
-#: pop3resource.cpp:471
+#: pop3resource.cpp:466
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "Σφάλμα κατά την πρόσβαση στη λίστα μηνυμάτων στον εξυπηρετητή."
 
-#: pop3resource.cpp:485
+#: pop3resource.cpp:480
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr ""
 "Σφάλμα κατά τη λήψη μοναδικών αναγνωριστικών μηνυμάτων από τον εξυπηρετητή."
 
-#: pop3resource.cpp:498
+#: pop3resource.cpp:493
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -429,12 +435,12 @@ msgstr ""
 "συνεπώς το χαρακτηριστικό της παραμονής των μηνυμάτων στον εξυπηρετητή δεν "
 "θα λειτουργεί σωστά."
 
-#: pop3resource.cpp:513
+#: pop3resource.cpp:508
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "Σφάλμα κατά την προσκόμιση μηνυμάτων από τον εξυπηρετητή."
 
-#: pop3resource.cpp:573
+#: pop3resource.cpp:568
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
@@ -442,55 +448,55 @@ msgstr ""
 "Προσκόμιση μηνύματος %1 από %2 (%3 από %4 KB) για %5 (%6 ΚΒ παραμένουν στον "
 "εξυπηρετητή)."
 
-#: pop3resource.cpp:582
+#: pop3resource.cpp:577
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "Προσκόμιση μηνύματος %1 από %2 (%3 από %4 KB) για %5"
 
-#: pop3resource.cpp:605
+#: pop3resource.cpp:600
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "Αδυναμία αποθήκευσης ληφθέντων μηνυμάτων."
 
-#: pop3resource.cpp:753
+#: pop3resource.cpp:748
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "Αποτυχία διαγραφής μηνυμάτων από τον εξυπηρετητή."
 
-#: pop3resource.cpp:809
+#: pop3resource.cpp:804
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "Ολοκλήρωση ελέγχου, δεν έγινε λήψη μηνυμάτων."
 
-#: pop3resource.cpp:811
+#: pop3resource.cpp:806
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "Ολοκλήρωση ελέγχου, 1 μήνυμα ελήφθη."
 msgstr[1] "Ολοκλήρωση ελέγχου, %1 μηνύματα ελήφθησαν."
 
-#: pop3resource.cpp:825
+#: pop3resource.cpp:820
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "Αδυναμία ολοκλήρωσης προσκόμισης μηνυμάτων."
 
-#: pop3resource.cpp:959
+#: pop3resource.cpp:954
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "Έλεγχος σε εξέλιξη, αδύνατη η έναρξη δεύτερου ελέγχου."
 
-#: pop3resource.cpp:980
+#: pop3resource.cpp:975
 #, kde-format
 msgid "Ready"
 msgstr "Έτοιμο"
 
-#: pop3resource.cpp:983
+#: pop3resource.cpp:978
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr ""
 "Ο έλεγχος μηνυμάτων εγκαταλείφθηκε μετά από τη μετάβαση εκτός σύνδεσης."
 
-#: pop3resource.cpp:985
+#: pop3resource.cpp:980
 #, kde-format
 msgid "Offline"
 msgstr "Εκτός σύνδεσης"

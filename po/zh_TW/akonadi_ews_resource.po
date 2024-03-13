@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-22 00:38+0000\n"
+"POT-Creation-Date: 2024-03-13 00:38+0000\n"
 "PO-Revision-Date: 2024-01-14 23:32+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -57,48 +57,48 @@ msgstr ""
 "Microsoft Exchange EWS 帳號 <b>%1</b> 的使用者/密碼是無效的。請在帳號設定頁面"
 "中更新它。"
 
-#: ewsconfigdialog.cpp:77
+#: ewsconfigdialog.cpp:76
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
 msgstr "Microsoft Exchange 設定"
 
-#: ewsconfigdialog.cpp:107
+#: ewsconfigdialog.cpp:102
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
 msgstr "確定"
 
-#: ewsconfigdialog.cpp:127 ewsconfigdialog.cpp:129
+#: ewsconfigdialog.cpp:122 ewsconfigdialog.cpp:124
 #, kde-format
 msgid "PEM file"
 msgstr "PEM 檔"
 
-#: ewsconfigdialog.cpp:147
+#: ewsconfigdialog.cpp:142
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "自訂"
 
-#: ewsconfigdialog.cpp:158
+#: ewsconfigdialog.cpp:153
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Microsoft Exchange 網路服務 (EWS) 用的 Akonadi 資源"
 
-#: ewsconfigdialog.cpp:159
+#: ewsconfigdialog.cpp:154
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "Copyright (c) Krzysztof Nowicki 2015-2020"
 
-#: ewsconfigdialog.cpp:160
+#: ewsconfigdialog.cpp:155
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "版本 %1"
 
-#: ewsconfigdialog.cpp:161
+#: ewsconfigdialog.cpp:156
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -106,61 +106,61 @@ msgid ""
 "later."
 msgstr "以 GNU 通用公共授權第二版或更新發佈。"
 
-#: ewsconfigdialog.cpp:256
+#: ewsconfigdialog.cpp:251
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "自動探索失敗"
 
-#: ewsconfigdialog.cpp:271
+#: ewsconfigdialog.cpp:266
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "連線失敗"
 
-#: ewsconfigdialog.cpp:272 ewsconfigdialog.cpp:430
+#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:425
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "失敗"
 
-#: ewsconfigdialog.cpp:273 ewsconfigdialog.cpp:431
+#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:426
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "未知"
 
-#: ewsconfigdialog.cpp:276 ewsconfigdialog.cpp:435
+#: ewsconfigdialog.cpp:271 ewsconfigdialog.cpp:430
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "確定"
 
-#: ewsconfigdialog.cpp:346
+#: ewsconfigdialog.cpp:341
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
 "still want to save your settings?"
 msgstr "自動探索失敗。這可能是參數錯誤所造成的。您還是要儲存設定嗎？"
 
-#: ewsconfigdialog.cpp:347
+#: ewsconfigdialog.cpp:342
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "Exchange 伺服器自動探索"
 
-#: ewsconfigdialog.cpp:377
+#: ewsconfigdialog.cpp:372
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
 "Do you still want to save your settings?"
 msgstr "連線至 Exchange 時失敗。這可能是參數錯誤所造成的。您還是要儲存設定嗎？"
 
-#: ewsconfigdialog.cpp:378
+#: ewsconfigdialog.cpp:373
 #, kde-format
 msgid "Exchange server connection"
 msgstr "Exchange 伺服器連線"
 
-#: ewsconfigdialog.cpp:432
+#: ewsconfigdialog.cpp:427
 #, kde-format
 msgid "Connection failed"
 msgstr "連線失敗"
