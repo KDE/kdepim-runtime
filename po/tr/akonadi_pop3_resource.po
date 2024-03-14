@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2024-03-08 16:23+0300\n"
+"PO-Revision-Date: 2024-03-13 14:08+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -72,7 +72,7 @@ msgstr ""
 "çünkü bazı sunucular veriyolu yapmayı destekler; ancak bunu\n"
 "belgelemezler. POP3 sunucunuzun veriyolu yapmayı destekleyip\n"
 "desteklemediğini denetlemek için pencerenin alt kısmındaki\n"
-"\"Kendiliğinden Algıla\" düğmesini kullanın; sunucunuz bunu duyurmazsa;\n"
+"‘Kendiliğinden Algıla’ düğmesini kullanın; sunucunuz bunu duyurmazsa;\n"
 "ancak daha fazla hız istiyorsanız önce kendinize toplu birkaç posta\n"
 "gönderip indirerek bunu sınamalısınız."
 
@@ -144,7 +144,7 @@ msgstr "SASL ilklendirilemedi, posta denetimi iptal ediliyor."
 #: pop3protocol.cpp:189
 #, kde-format
 msgid "The server said: \"%1\""
-msgstr "Sunucu dedi ki: \"%1\""
+msgstr "Sunucu dedi ki: “%1”"
 
 #: pop3protocol.cpp:211
 #, kde-format
@@ -158,7 +158,7 @@ msgid ""
 "\"%1\""
 msgstr ""
 "Sunucudan geçersiz yanıt:\n"
-"\"%1\""
+"“%1”"
 
 #: pop3protocol.cpp:251 pop3protocol.cpp:255
 #, kde-format
@@ -318,7 +318,7 @@ msgstr "E-posta denetimi el ile iptal edildi."
 #: pop3resource.cpp:130
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
-msgstr "Lütfen '%1' hesabı için kullanıcı adı ve parola girin."
+msgstr "Lütfen “%1” hesabı için kullanıcı adı ve parola girin."
 
 #: pop3resource.cpp:147
 #, kde-format
@@ -339,7 +339,7 @@ msgstr "Kullanıcı adı ve parola sağlanmadı."
 #: pop3resource.cpp:199
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
-msgstr "\"%1\" adresi ile iletişime hazırlanılıyor."
+msgstr "“%1” adresi ile iletişime hazırlanılıyor."
 
 #: pop3resource.cpp:220
 #, kde-format
@@ -407,7 +407,7 @@ msgstr "Ön komut çalıştırılırken bir hata oluştu."
 #: pop3resource.cpp:456
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
-msgstr "\"%1\" sunucusuna oturum açılamadı."
+msgstr "“%1” sunucusuna oturum açılamadı."
 
 #: pop3resource.cpp:465
 #, kde-format

@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2024-03-08 16:27+0300\n"
+"PO-Revision-Date: 2024-03-13 14:07+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -25,12 +25,12 @@ msgstr ""
 #: addcollectiontask.cpp:33
 #, kde-format
 msgid "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'."
-msgstr "'%1' IMAP klasörü var olmayan üst klasör '%2' için eklenemez."
+msgstr "Var olmayan “%2” üst klasörü için “%1” IMAP klasörü eklenemez."
 
 #: addcollectiontask.cpp:67
 #, kde-format
 msgid "Failed to create the folder '%1' on the IMAP server. "
-msgstr "IMAP sunucusu üzerinde '%1' klasörünü oluşturma başarısız. "
+msgstr "IMAP sunucusu üzerinde “%1” klasörü oluşturulamadı. "
 
 #: addcollectiontask.cpp:87 movecollectiontask.cpp:119
 #, kde-format
@@ -38,14 +38,14 @@ msgid ""
 "Failed to subscribe to the folder '%1' on the IMAP server. It will disappear "
 "on next sync. Use the subscription dialog to overcome that"
 msgstr ""
-"'%1' klasörüne IMAP sunucusunda abone olma başarısız oldu. Klasör bir "
+"IMAP sunucusundaki “%1” klasörüne abone olma başarısız oldu. Klasör bir "
 "sonraki eşzamanlamada kaybolacak. Bunun üstesinden gelebilmek için abone "
-"olma iletişim penceresini kullanın"
+"olma iletişim kutusunu kullanın"
 
 #: addcollectiontask.cpp:130 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
-msgstr "IMAP sunucusunda '%1' için bazı açıklamaları yazma başarısız oldu. %2"
+msgstr "IMAP sunucusunda “%1” için bazı açıklamaları yazma başarısız oldu. %2"
 
 #: additemtask.cpp:115 changeitemtask.cpp:181 changeitemtask.cpp:205
 #: moveitemstask.cpp:255
@@ -56,7 +56,7 @@ msgstr "Yeni üretilmiş ileti için kullanıcı kimliği sunucuda belirlenemedi
 #: changecollectiontask.cpp:39
 #, kde-format
 msgid "Cannot modify IMAP folder '%1', it does not exist on the server."
-msgstr "'%1' IMAP klasörü değiştirilemiyor, sunucu üzerinde yok."
+msgstr "IMAP klasörü “%1” değiştirilemiyor, sunucu üzerinde yok."
 
 #: changecollectiontask.cpp:51
 #, kde-format
@@ -78,9 +78,9 @@ msgid ""
 "Failed to subscribe to the renamed folder '%1' on the IMAP server. It will "
 "disappear on next sync. Use the subscription dialog to overcome that"
 msgstr ""
-"IMAP sunucusu üzerinde yeniden adlandırılmış dosyaya abone olma başarısız "
-"'%1'. Bir sonraki eşzamanlamada dosya kaybolacak. Bunun üstesinden gelmek "
-"için abonelik iletişim penceresini kullanın."
+"IMAP sunucusu üzerinde yeniden adlandırılmış “%1” klasörüne abone olunamadı. "
+"Bir sonraki eşzamanlamada dosya kaybolacak. Bunun üstesinden gelmek için "
+"abonelik iletişim kutusunu kullanın."
 
 #: changecollectiontask.cpp:267
 #, kde-format
@@ -309,13 +309,13 @@ msgstr "Sunucu kullanılabilir değil."
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
-msgstr "'%1' içerisine öge ekleniyor"
+msgstr "“%1” içerisine öge ekleniyor"
 
 #: imapresourcebase.cpp:344
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
-msgstr "'%1' konumundaki öge güncelleniyor"
+msgstr "“%1” konumundaki öge güncelleniyor"
 
 #: imapresourcebase.cpp:351
 #, kde-format
@@ -333,7 +333,7 @@ msgstr "Ögeler kaldırılıyor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
-msgstr "Ögeler '%1' konumundan '%2' konumuna taşınıyor"
+msgstr "Ögeler “%1” konumundan “%2” konumuna taşınıyor"
 
 #: imapresourcebase.cpp:390
 #, kde-format
@@ -345,31 +345,31 @@ msgstr "Klasörler alınıyor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
-msgstr "'%1' için fazladan klasör bilgisi alınıyor"
+msgstr "“%1” için ek klasör bilgisi alınıyor"
 
 #: imapresourcebase.cpp:415
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
-msgstr "'%1' klasörü oluşturuluyor"
+msgstr "“%1” klasörü oluşturuluyor"
 
 #: imapresourcebase.cpp:421
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
-msgstr "'%1' klasörü güncelleniyor"
+msgstr "“%1” klasörü güncelleniyor"
 
 #: imapresourcebase.cpp:434
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
-msgstr "'%1' klasörü kaldırılıyor"
+msgstr "“%1” klasörü kaldırılıyor"
 
 #: imapresourcebase.cpp:441
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
-msgstr "'%1' klasörü '%2' konumundan '%3' konumuna taşınıyor"
+msgstr "“%1” klasörü “%2” konumundan “%3” konumuna taşınıyor"
 
 #: imapresourcebase.cpp:471
 #, kde-format
@@ -380,21 +380,19 @@ msgstr "Aranıyor..."
 #: movecollectiontask.cpp:29
 #, kde-format
 msgid "Cannot move IMAP folder '%1', it does not exist on the server."
-msgstr "'%1' IMAP klasörünü taşıyamazsınız, sunucuda yok."
+msgstr "IMAP klasörü “%1” taşınamıyor, sunucuda yok."
 
 #: movecollectiontask.cpp:35
 #, kde-format
 msgid ""
 "Cannot move IMAP folder '%1' out of '%2', '%2' does not exist on the server."
-msgstr ""
-"'%1' IMAP klasörünü '%2' dışına taşıyamazsınız, '%2' sunucu üzerinde yok."
+msgstr "IMAP klasörü “%1”, “%2” dışına taşınamıyor, “%2” sunucu üzerinde yok."
 
 #: movecollectiontask.cpp:41
 #, kde-format
 msgid ""
 "Cannot move IMAP folder '%1' to '%2', '%2' does not exist on the server."
-msgstr ""
-"'%1' IMAP klasörünü '%2' dışına taşıyamazsınız, '%2' sunucu üzerinde yok."
+msgstr "IMAP klasörü “%1”, “%2” dışına taşınamıyor, “%2” sunucu üzerinde yok."
 
 #: moveitemstask.cpp:41
 #, kde-format
@@ -404,12 +402,12 @@ msgstr "İleti taşınamıyor, sunucuda yok."
 #: moveitemstask.cpp:48
 #, kde-format
 msgid "Cannot move message out of '%1', '%1' does not exist on the server."
-msgstr "İleti '%1' dışına taşınamıyor, \"%1' sunucuda yok."
+msgstr "İleti “%1” dışına taşınamıyor, “%1” sunucuda yok."
 
 #: moveitemstask.cpp:55
 #, kde-format
 msgid "Cannot move message to '%1', '%1' does not exist on the server."
-msgstr "İletiyi '%1' konumuna taşıyamazsınız, '%1' sunucu üzerinde yok."
+msgstr "İleti “%1” konumuna taşınamıyor, “%1” sunucu üzerinde yok."
 
 #: moveitemstask.cpp:113
 #, kde-format
@@ -422,8 +420,8 @@ msgid ""
 "Failed to mark the message from '%1' for deletion on the IMAP server. It "
 "will reappear on next sync."
 msgstr ""
-"IMAP sunucusu üzerinde '%1' konumundan ileti silme için işaretleme işlemi "
-"başarısız. İşaretleme bir sonraki senkronizasyonda yeniden görünecek."
+"IMAP sunucusu üzerinde “%1” konumundan iletiyi silme için imleme işlemi "
+"başarısız. İmleme, bir sonraki eşzamanlamada yeniden görünecek."
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -545,7 +543,7 @@ msgstr "Oturum açma sırasında sunucuyla bağlantı kesildi."
 #: sessionpool.cpp:303
 #, kde-format
 msgid "Could not create another extra connection to the IMAP-server %1."
-msgstr "IMAP-sunucusu %1 üzerinde fazladan başka bir bağlantı oluşturulamadı."
+msgstr "IMAP sunucusu %1 üzerinde fazladan başka bir bağlantı oluşturulamadı."
 
 #: sessionpool.cpp:332
 #, kde-format
@@ -573,7 +571,7 @@ msgid ""
 "%1"
 msgstr ""
 "IMAP sunucusuna bağlanılamadı.\n"
-"'%1'"
+"“%1”"
 
 #: sessionpool.cpp:432
 #, kde-format
@@ -616,7 +614,7 @@ msgid ""
 "\n"
 "%1"
 msgstr ""
-"\"%2\" hesabı için olan sunucu sağlanan kullanıcı adı ve parolayı reddetti.\n"
+"“%2” hesabı için olan sunucu sağlanan kullanıcı adı ve parolayı reddetti.\n"
 "Başka bir oturum açma girişimi için ayarlara gitmek mi yoksa bir şey "
 "yapmamak mı istersiniz?\n"
 "\n"
@@ -642,7 +640,8 @@ msgstr "Yeniden Dene"
 #: settingspasswordrequester.cpp:150
 #, kde-format
 msgid "Please enter password for user '%1' on IMAP server '%2'."
-msgstr "Lütfen '%1' kullanıcısı için '%2' IMAP sunucusuna parola girin."
+msgstr ""
+"Lütfen “%2” IMAP sunucusundaki “%1” kullanıcısı için olan parolayı girin."
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -789,8 +788,8 @@ msgid ""
 "example: \"imap.foo.com:144\"."
 msgstr ""
 "IMAP sunucusunu belirtin. Özel bir şifreleme şeması için standart olmayan "
-"bir kapıya bağlanmak istiyorsanız onu \":kapı\" şeklinde ekleyebilirsiniz. "
-"Örneğin: \"\"imap.foo.com:144\"."
+"bir kapıya bağlanmak istiyorsanız onu ‘:kapı’ şeklinde ekleyebilirsiniz. "
+"Örneğin: ‘imap.foo.com:144’."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: setupserverview_desktop.ui:60
@@ -1092,12 +1091,12 @@ msgstr ""
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">STARTTLS</span><span style=\" font-"
-"family:'Sans Serif';\"> kapı 143 üzerinden çalışacak ve bağlantının hemen "
+"family:'Sans Serif';\"> 143. kapı üzerinden çalışacak ve bağlantının hemen "
 "ardından güvenli bağlantıya geçecektir;</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"family:'Sans Serif'; font-weight:600;\">Hiçbiri</span><span style=\" font-"
-"family:'Sans Serif';\"> kapı 143 üzerinde bağlantıya geçecek ve güvenli "
+"family:'Sans Serif'; font-weight:600;\">Yok</span><span style=\" font-"
+"family:'Sans Serif';\"> 143. kapı üzerinde bağlantıya geçecek ve güvenli "
 "bağlantıya değiştirilmeyecektir. Bu bağlantı türü önerilmemektedir.</span></"
 "p></body></html>"
 

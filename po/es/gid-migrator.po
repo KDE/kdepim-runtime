@@ -3,13 +3,13 @@
 #
 # Javier Viñal <francisco-javie.vinal@seg-social.es>, 2013.
 # Javier Vinal <fjvinal@gmail.com>, 2013, 2014, 2015, 2016.
-# Eloy Cuadra <ecuadra@eloihr.net>, 2020, 2022.
+# SPDX-FileCopyrightText: 2020, 2022, 2024 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-09-15 00:45+0000\n"
-"PO-Revision-Date: 2022-09-15 20:27+0200\n"
+"PO-Revision-Date: 2024-03-13 11:51+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -17,17 +17,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 22.08.1\n"
+"X-Generator: Lokalize 23.08.4\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "Javier Viñal"
+msgstr "Eloy Cuadra,Javier Viñal"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "fjvinal@gmail.com"
+msgstr "ecuadra@eloihr.net,fjvinal@gmail.com"
 
 #: ../kmigratorbase.cpp:116
 #, kde-format
