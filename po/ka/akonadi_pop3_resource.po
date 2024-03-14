@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-03-13 00:38+0000\n"
 "PO-Revision-Date: 2023-09-24 04:50+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -18,24 +18,30 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.3.2\n"
 
-#: accountwidget.cpp:95
+#: accountwidget.cpp:82
+#, kde-format
+msgctxt "Percent value; %p is the value, % is the percent sign"
+msgid "%p%"
+msgstr ""
+
+#: accountwidget.cpp:90
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " წუთი"
 msgstr[1] " წუთი"
 
-#: accountwidget.cpp:132 pop3resource.cpp:47
+#: accountwidget.cpp:127 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 ანგარიში"
 
-#: accountwidget.cpp:199
+#: accountwidget.cpp:194
 #, kde-format
 msgid "Unable to open wallet"
 msgstr "საფულის გახსნის შეცდომა"
 
-#: accountwidget.cpp:249
+#: accountwidget.cpp:244
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -48,7 +54,7 @@ msgstr ""
 "რადგან ზოგიერთი სერვერი თავის შესაძლებლობებს არ აცხადებს, გამოთხოვნილი "
 "შეტყობინებების სერვერზე დატოვება ხელით უნდა ჩართოთ."
 
-#: accountwidget.cpp:264
+#: accountwidget.cpp:259
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -73,17 +79,17 @@ msgstr ""
 "მაშინ ჯერ უნდა დატესტოთ ის თქვენივე თავისთვის ბევრი ელფოსტის გაგზავნის,\n"
 "შემდეგ კი გადმოწერის გზით."
 
-#: accountwidget.cpp:297
+#: accountwidget.cpp:292
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "გთხოვთ ჯერ \"ზოგადი\" გვერდზე სერვერის ტიპი და პორტი მიუთითოთ."
 
-#: accountwidget.cpp:330
+#: accountwidget.cpp:325
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "სერვერთან მიერთება შეუძლებელია. შეამოწმეთ სერვერის სახელი."
 
-#: accountwidget.cpp:374
+#: accountwidget.cpp:369
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -104,7 +110,7 @@ msgstr ""
 "მნიშვნელოვან ელფოსტაზე გამოიყენებთ, ჯერ დატესტეთ ეს ფუნქცია თქვენივე "
 "თავისთვის ბევრი ელფოსტის გაგზავნით, შემდეგ კი მათი ერთდროული გადმოწერის გზით."
 
-#: accountwidget.cpp:394
+#: accountwidget.cpp:389
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -119,14 +125,14 @@ msgstr ""
 "იმის გამო, რომ ზოგიერთ სერვერი თავის შესაძლებლობებს არასწორად გადმოგვცემს, "
 "შესაძლებლობა, გამოთხოვილი შეტყობინებები სერვერზე დატოვოთ, ჯერ კიდევ გაქვთ."
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:421
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " დღე"
 msgstr[1] " დღე"
 
-#: accountwidget.cpp:431
+#: accountwidget.cpp:426
 #, kde-format
 msgid " message"
 msgid_plural " messages"
@@ -302,78 +308,78 @@ msgstr "შიდა შეცდომა: მოველოდი რიც�
 msgid "Unexpected response from POP3 server."
 msgstr "POP3 სერვერის მოულოდნელი პასუხი."
 
-#: pop3resource.cpp:96
+#: pop3resource.cpp:95
 #, kde-format
 msgid "Mail check aborted."
 msgstr "ელფოსტის შემოწმება გაუქმდა."
 
-#: pop3resource.cpp:103
+#: pop3resource.cpp:102
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "ელფოსტის შემოწმება ხელით გაუქმდა."
 
-#: pop3resource.cpp:131
+#: pop3resource.cpp:130
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "შეიყვანეთ ანგარიშის (%1) მომხმარებელი და პაროლი."
 
-#: pop3resource.cpp:148
+#: pop3resource.cpp:147
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "პაროლი იმიტომ გკითხეთ, რომ მისი საფულიდან წაკითხვა შეუძლებელია."
 
-#: pop3resource.cpp:169
+#: pop3resource.cpp:164
 #, kde-format
 msgid "Account:"
 msgstr "ანგარიში:"
 
-#: pop3resource.cpp:186
+#: pop3resource.cpp:181
 #, kde-format
 msgid "No username and password supplied."
 msgstr "მომხმარებელი და პაროლი მითითებული არაა."
 
-#: pop3resource.cpp:205
+#: pop3resource.cpp:200
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "\"%1\"-დან გადმოცემისთვის მომზადება."
 
-#: pop3resource.cpp:226
+#: pop3resource.cpp:221
 #, kde-format
 msgid "Executing precommand."
 msgstr "პრე-ბრძანების შესრულება."
 
-#: pop3resource.cpp:251
+#: pop3resource.cpp:246
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "იმიტომ გკითხეთ, რომ შესვლის წინა მცდელობა წარუმატებელი იყო."
 
-#: pop3resource.cpp:253
+#: pop3resource.cpp:248
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "იმიტომ გკითხეთ, რომ მომხმარებლის სახელი, რომელიც მიუთითეთ, ცარიელია."
 
-#: pop3resource.cpp:280
+#: pop3resource.cpp:275
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "ელფოსტის სიის გამოთხოვა."
 
-#: pop3resource.cpp:336
+#: pop3resource.cpp:331
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "გადმოწერილი შეტყობინებების შენახვა."
 
-#: pop3resource.cpp:354
+#: pop3resource.cpp:349
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "პაროლების საფულეში შენახვა."
 
-#: pop3resource.cpp:396
+#: pop3resource.cpp:391
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr "ლოკალური საფოსტო ყუთის მიღების შეცდომა. ელფოსტა არ შემოწმდება."
 
-#: pop3resource.cpp:403
+#: pop3resource.cpp:398
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -384,43 +390,43 @@ msgstr ""
 "რომელიც ელფოსტას მასში წერდა. საქაღალდე, რომელშიც ანგარიში ახალ ელფოსტას "
 "მიიღებს, მთავარ შემომავალ საქაღალდეზე დაბრუნდა</qt>"
 
-#: pop3resource.cpp:424
+#: pop3resource.cpp:419
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr ""
 "შემომავალი ელფოსტისთვის საქაღალდის მიღების შეცდომა. ელფოსტა არ შემოწმდება."
 
-#: pop3resource.cpp:437
+#: pop3resource.cpp:432
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr ""
 "საქაღალდე შემომავალი ფოსტისთვის აღმოჩენილი არაა. ელფოსტის შემოწმება "
 "გაუქმდება."
 
-#: pop3resource.cpp:448
+#: pop3resource.cpp:443
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "შეცდომა პრე-ბრძანების შესრულებისას."
 
-#: pop3resource.cpp:462
+#: pop3resource.cpp:457
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr "სერვერზე შესვლის შეცდომა: %1."
 
-#: pop3resource.cpp:471
+#: pop3resource.cpp:466
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "სერვერიდან შეტყობინებების სიის მიღების შეცდომა."
 
-#: pop3resource.cpp:485
+#: pop3resource.cpp:480
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr ""
 "შეცდომა სერვერიდან უნიკალური ელფოსტის შეტყობინებების იდენტიფიკატორების სიის "
 "გამოთხოვისას."
 
-#: pop3resource.cpp:498
+#: pop3resource.cpp:493
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -434,12 +440,12 @@ msgstr ""
 "რომელი ელფოსტა აქვს ნანახი;\n"
 "ეს თვისება ელფოსტას სერვერზე ტოვებს, ამიტომ, მან შეიძლება სწორად არ იმუშაოს."
 
-#: pop3resource.cpp:513
+#: pop3resource.cpp:508
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "სერვერიდან ელფოსტების გამოთხოვის შეცდომა."
 
-#: pop3resource.cpp:573
+#: pop3resource.cpp:568
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
@@ -447,54 +453,54 @@ msgstr ""
 "შეტყობინების მოთხოვნა %1 %2-დან (%3 %4-დან კბ) %5-სთვის (%6 კბ ჯერ კიდევ "
 "სერვერზეა)."
 
-#: pop3resource.cpp:582
+#: pop3resource.cpp:577
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "შეტყობინების გამოთხოვა %1 %2-დან (%3 %4-დან კბ) %5-სთვის"
 
-#: pop3resource.cpp:605
+#: pop3resource.cpp:600
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "გადმოწერილი ელფოსტების შენახვის შეცდომა."
 
-#: pop3resource.cpp:753
+#: pop3resource.cpp:748
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "სერვერზე შეტყობინებების წაშლის შეცდომა."
 
-#: pop3resource.cpp:809
+#: pop3resource.cpp:804
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "ელფოსტა შემოწმდა. შეტყობინებები არ გადმოწერილა."
 
-#: pop3resource.cpp:811
+#: pop3resource.cpp:806
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "ელფოსტა შემოწმდა. გადმოწერილია 1 შეტყობინება."
 msgstr[1] "ელფოსტა შემოწმდა. გადმოწერილია %1 შეტყობინება."
 
-#: pop3resource.cpp:825
+#: pop3resource.cpp:820
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "ელფოსტის გამოთხოვის დასრულების შეცდომა."
 
-#: pop3resource.cpp:959
+#: pop3resource.cpp:954
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "ელფოსტის შემოწმება უკვე მიმდინარეობს. მეორე შემოწმებას ვერ გაუშვებთ."
 
-#: pop3resource.cpp:980
+#: pop3resource.cpp:975
 #, kde-format
 msgid "Ready"
 msgstr "მზადაა"
 
-#: pop3resource.cpp:983
+#: pop3resource.cpp:978
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "ოფლაინში ყოფნისას ელფოსტას ვერ შეამოწმებთ."
 
-#: pop3resource.cpp:985
+#: pop3resource.cpp:980
 #, kde-format
 msgid "Offline"
 msgstr "გათიშული"
