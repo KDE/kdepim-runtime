@@ -1,16 +1,17 @@
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
 # Andrej Vernekar <andrej.vernekar@gmail.com>, 2012.
 # Andrej Mernik <andrejm@ubuntu.si>, 2014, 2015, 2016, 2017, 2018.
 # Matjaž Jeran <matjaz.jeran@amis.net>, 2019, 2020, 2021, 2022.
+# SPDX-FileCopyrightText: 2024 Jure Repinc <jlp@holodeck1.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-01-18 02:23+0000\n"
-"PO-Revision-Date: 2023-09-23 09:30+0200\n"
-"Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
+"PO-Revision-Date: 2024-03-15 17:45+0100\n"
+"Last-Translator: Jure Repinc <jlp@holodeck1.com>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Lokalize 24.04.70\n"
 
 #: newmailnotificationhistorydialog.cpp:24
 #, kde-format
@@ -50,10 +51,10 @@ msgctxt ""
 "user named it)"
 msgid "One new email in %2 from \"%3\""
 msgid_plural "%1 new emails in %2 from \"%3\""
-msgstr[0] "%1 novo sporočilo v %2 od \"%3\""
-msgstr[1] "%1 novi sporočili v %2 od \"%3\""
-msgstr[2] "%1 nova sporočila v %2 od \"%3\""
-msgstr[3] "%1 novih sporočil v %2 od \"%3\""
+msgstr[0] "%1 novih sporočil v %2 od »%3«"
+msgstr[1] "%1 novo sporočilo v %2 od »%3«"
+msgstr[2] "%1 novi sporočili v %2 od »%3«"
+msgstr[3] "%1 nova sporočila v %2 od »%3«"
 
 #: newmailnotifieragent.cpp:402
 #, kde-format
@@ -86,12 +87,12 @@ msgstr "Poišči ..."
 #: newmailnotifierselectcollectionwidget.cpp:142
 #, kde-format
 msgid "&Select All"
-msgstr "Izberi vse"
+msgstr "&Izberi vse"
 
 #: newmailnotifierselectcollectionwidget.cpp:146
 #, kde-format
 msgid "&Unselect All"
-msgstr "Odstrani izbiro"
+msgstr "&Odstrani izbiro"
 
 #: newmailnotifiersettingswidget.cpp:32
 #, c-format
@@ -140,7 +141,7 @@ msgstr "Ohrani trajno obvestilo"
 #: newmailnotifiersettingswidget.cpp:82
 #, kde-format
 msgid "Show Action Buttons"
-msgstr "Pokaži gumbe za akcijo"
+msgstr "Pokaži gumbe za dejanja"
 
 #: newmailnotifiersettingswidget.cpp:90
 #, kde-format
@@ -200,7 +201,7 @@ msgstr "Obvesti o novi pošti."
 #: newmailnotifiersettingswidget.cpp:153
 #, kde-format
 msgid "Copyright (C) 2013-%1 Laurent Montel"
-msgstr "Copyright (C) 2013-%1 Laurent Montel"
+msgstr "Avtorske pravice © 2013–%1 Laurent Montel"
 
 #: newmailnotifiersettingswidget.cpp:156
 #, kde-format
@@ -216,13 +217,13 @@ msgstr "Vzdrževalec"
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "Andrej Mernik"
+msgstr "Jure Repinc,Andrej Mernik"
 
 #: newmailnotifiersettingswidget.cpp:157
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "andrejm@ubuntu.si"
+msgstr "jlp@holodeck1.com,andrejm@ubuntu.si"
 
 #: specialnotifierjob.cpp:109
 #, kde-format
@@ -257,4 +258,4 @@ msgstr "Označi kot prebrano"
 #: specialnotifierjob.cpp:154
 #, kde-format
 msgid "Delete"
-msgstr "Zbriši"
+msgstr "Izbriši"
