@@ -24,6 +24,7 @@
 #include "imapaccount.h"
 #include "sessionuiproxy.h"
 #include <KConfigGroup>
+#include <KLineEditEventHandler>
 #include <QDialogButtonBox>
 #include <QPushButton>
 
@@ -71,6 +72,7 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
 
     m_lineEdit = new QLineEdit(mainWidget);
     m_lineEdit->setClearButtonEnabled(true);
+    KLineEditEventHandler::catchReturnKey(m_lineEdit);
     connect(m_lineEdit, &QLineEdit::textChanged, this, &SubscriptionDialog::slotSearchPattern);
     filterBarLayout->addWidget(m_lineEdit);
     m_lineEdit->setFocus();
