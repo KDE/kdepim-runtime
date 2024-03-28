@@ -52,7 +52,7 @@ void KCalConversionTest::testDate_data()
     QTest::newRow("datetime with tz") << Kolab::cDateTime("Europe/Zurich", 2006, 1, 8, 12, 0, 0)
                                       << QDateTime(QDate(2006, 1, 8), QTime(12, 0, 0), QTimeZone("Europe/Zurich"));
     QTest::newRow("floating datetime") << Kolab::cDateTime(2006, 1, 8, 12, 0, 0, false) << QDateTime(QDate(2006, 1, 8), QTime(12, 0, 0));
-    QTest::newRow("utc datetime") << Kolab::cDateTime(2006, 1, 8, 12, 0, 0, true) << QDateTime(QDate(2006, 1, 8), QTime(12, 0, 0), Qt::UTC);
+    QTest::newRow("utc datetime") << Kolab::cDateTime(2006, 1, 8, 12, 0, 0, true) << QDateTime(QDate(2006, 1, 8), QTime(12, 0, 0), QTimeZone::UTC);
     QTest::newRow("date only") << Kolab::cDateTime(2006, 1, 8) << QDateTime(QDate(2006, 1, 8), {});
 }
 
