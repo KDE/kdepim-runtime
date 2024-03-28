@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-03-28 00:39+0000\n"
 "PO-Revision-Date: 2013-03-13 11:09+0530\n"
 "Last-Translator: Chetan Khona <chetan@kompkin.com>\n"
 "Language-Team: Marathi <kde-i18n-doc@kde.org>\n"
@@ -1052,25 +1052,25 @@ msgstr "पोर्ट :"
 msgid "Empty"
 msgstr "रिकामी"
 
-#: subscriptiondialog.cpp:49
+#: subscriptiondialog.cpp:50
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
 msgstr "यादी पुन्हा दाखल करा (&L)"
 
-#: subscriptiondialog.cpp:64
+#: subscriptiondialog.cpp:65
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
 msgstr ""
 
-#: subscriptiondialog.cpp:70
+#: subscriptiondialog.cpp:71
 #, kde-format
 msgctxt "@label search for a subscription"
 msgid "Search:"
 msgstr "शोधा :"
 
-#: subscriptiondialog.cpp:78
+#: subscriptiondialog.cpp:80
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"

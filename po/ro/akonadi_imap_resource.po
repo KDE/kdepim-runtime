@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-03-28 00:39+0000\n"
 "PO-Revision-Date: 2020-09-08 19:21+0100\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian\n"
@@ -1149,28 +1149,28 @@ msgstr "Port:"
 msgid "Empty"
 msgstr "Gol"
 
-#: subscriptiondialog.cpp:49
+#: subscriptiondialog.cpp:50
 #, fuzzy, kde-format
 #| msgid "Reload &List"
 msgctxt "@action:button"
 msgid "Reload &List"
 msgstr "Reîncarcă &lista"
 
-#: subscriptiondialog.cpp:64
+#: subscriptiondialog.cpp:65
 #, fuzzy, kde-format
 #| msgid "Enable server-side subscriptions"
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
 msgstr "Activează abonarea rezidentă pe server"
 
-#: subscriptiondialog.cpp:70
+#: subscriptiondialog.cpp:71
 #, fuzzy, kde-format
 #| msgid "Search:"
 msgctxt "@label search for a subscription"
 msgid "Search:"
 msgstr "Caută:"
 
-#: subscriptiondialog.cpp:78
+#: subscriptiondialog.cpp:80
 #, fuzzy, kde-format
 #| msgid "Subscribed only"
 msgctxt "@option:check"

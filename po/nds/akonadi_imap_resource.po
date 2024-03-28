@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-03-28 00:39+0000\n"
 "PO-Revision-Date: 2014-07-13 18:25+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -1164,25 +1164,25 @@ msgstr "Port:"
 msgid "Empty"
 msgstr "Leddig"
 
-#: subscriptiondialog.cpp:49
+#: subscriptiondialog.cpp:50
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
 msgstr "&List nieg laden"
 
-#: subscriptiondialog.cpp:64
+#: subscriptiondialog.cpp:65
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
 msgstr "Bestellen op Server-Siet anmaken"
 
-#: subscriptiondialog.cpp:70
+#: subscriptiondialog.cpp:71
 #, kde-format
 msgctxt "@label search for a subscription"
 msgid "Search:"
 msgstr "Söken:"
 
-#: subscriptiondialog.cpp:78
+#: subscriptiondialog.cpp:80
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"

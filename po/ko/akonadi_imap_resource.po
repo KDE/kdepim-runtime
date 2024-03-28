@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-03-28 00:39+0000\n"
 "PO-Revision-Date: 2024-02-17 12:43+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -1104,25 +1104,25 @@ msgstr "포트:"
 msgid "Empty"
 msgstr "비어 있음"
 
-#: subscriptiondialog.cpp:49
+#: subscriptiondialog.cpp:50
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
 msgstr "목록 새로 고침(&L)"
 
-#: subscriptiondialog.cpp:64
+#: subscriptiondialog.cpp:65
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
 msgstr "서버 측 구독 사용"
 
-#: subscriptiondialog.cpp:70
+#: subscriptiondialog.cpp:71
 #, kde-format
 msgctxt "@label search for a subscription"
 msgid "Search:"
 msgstr "찾기:"
 
-#: subscriptiondialog.cpp:78
+#: subscriptiondialog.cpp:80
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"

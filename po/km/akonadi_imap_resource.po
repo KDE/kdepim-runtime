@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-03-28 00:39+0000\n"
 "PO-Revision-Date: 2012-06-11 16:03+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -1141,28 +1141,28 @@ msgstr "ច្រក ៖"
 msgid "Empty"
 msgstr "ទទេ"
 
-#: subscriptiondialog.cpp:49
+#: subscriptiondialog.cpp:50
 #, fuzzy, kde-format
 #| msgid "Reload &List"
 msgctxt "@action:button"
 msgid "Reload &List"
 msgstr "ផ្ទុក​បញ្ជី​ឡើង​វិញ"
 
-#: subscriptiondialog.cpp:64
+#: subscriptiondialog.cpp:65
 #, fuzzy, kde-format
 #| msgid "Enable server-side subscriptions"
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
 msgstr "បើក​ការ​ជាវ​ខាង​ម៉ាស៊ីនបម្រើ"
 
-#: subscriptiondialog.cpp:70
+#: subscriptiondialog.cpp:71
 #, fuzzy, kde-format
 #| msgid "Search:"
 msgctxt "@label search for a subscription"
 msgid "Search:"
 msgstr "ស្វែងរក ៖"
 
-#: subscriptiondialog.cpp:78
+#: subscriptiondialog.cpp:80
 #, fuzzy, kde-format
 #| msgid "Subscribed only"
 msgctxt "@option:check"
