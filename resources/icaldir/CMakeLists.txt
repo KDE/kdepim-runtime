@@ -44,6 +44,8 @@ target_link_libraries(akonadi_icaldir_resource
 
 install(TARGETS akonadi_icaldir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
+akonadi_install_systemd_unit(RESOURCE TARGET akonadi_icaldir_resource DESCRIPTION "Akonadi iCal Directory Resource")
+
 ############################## Config plugin ################################
 kcoreaddons_add_plugin(icaldirconfig
     INSTALL_NAMESPACE "pim6/akonadi/config"

@@ -2,7 +2,7 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_openxchange_resource\")
 
 set(openxchange_common_SRCS)
-kconfig_add_kcfg_files(openxchange_common_SRCS settings.kcfgc)    
+kconfig_add_kcfg_files(openxchange_common_SRCS settings.kcfgc)
 
 ################################ Resource ##################################
 
@@ -109,6 +109,11 @@ install(TARGETS akonadi_openxchange_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
 install(
     FILES org.kde.akonadi_openxchange_resource.desktop
     DESTINATION ${KDE_INSTALL_APPDIR}
+)
+
+akonadi_install_systemd_unit(
+    RESOURCE TARGET akonadi_openxchange_resource
+    NAME "Akonadi OpenXChange Resource"
 )
 
 add_subdirectory(icons)

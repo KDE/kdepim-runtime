@@ -66,6 +66,11 @@ target_link_libraries(akonadi_mbox_resource
     )
 
 install(TARGETS akonadi_mbox_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+akonadi_install_systemd_unit(
+    RESOURCE TARGET akonadi_mbox_resource
+    NAME "Akonadi MBox Resource"
+)
+
 if (BUILD_TESTING)
     add_subdirectory(autotests)
 endif()

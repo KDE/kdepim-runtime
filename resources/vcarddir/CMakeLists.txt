@@ -57,6 +57,11 @@ install(
     DESTINATION ${KDE_INSTALL_APPDIR}
 )
 
+akonadi_install_systemd_unit(
+    RESOURCE TARGET akonadi_vcarddir_resource
+    DESCRIPTION "Akonadi vCard Directory Resource"
+)
+
 ############################## Config plugin ################################
 kcoreaddons_add_plugin(vcarddirconfig
     INSTALL_NAMESPACE "pim6/akonadi/config"

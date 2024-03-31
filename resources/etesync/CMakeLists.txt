@@ -18,7 +18,7 @@ set(etesyncresource_SRCS
     etesyncclientstate.cpp etesyncclientstate.h
     journalsfetchjob.cpp journalsfetchjob.h
     entriesfetchjob.cpp entriesfetchjob.h
-    loginjob.cpp loginjob.h 
+    loginjob.cpp loginjob.h
     setupwizard.cpp
 
     ${etesyncconfig_SRCS}
@@ -82,3 +82,4 @@ install(TARGETS akonadi_etesync_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES etesyncresource.desktop
     DESTINATION ${KDE_INSTALL_DATAROOTDIR}/akonadi/agents
 )
+akonadi_install_systemd_unit(RESOURCE TARGET akonadi_etesync_resource DESCRIPTION "Akonadi EteSync Resource")

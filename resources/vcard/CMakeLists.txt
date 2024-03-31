@@ -43,6 +43,12 @@ install(
     DESTINATION ${KDE_INSTALL_APPDIR}
 )
 
+akonadi_install_systemd_unit(
+    RESOURCE TARGET akonadi_vcard_resource
+    NAME "Akonadi vCard Resource"
+)
+
+
 ############################# Config plugin #################################
 
 kcoreaddons_add_plugin(vcardconfig

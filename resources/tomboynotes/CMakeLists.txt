@@ -103,6 +103,10 @@ install(FILES tomboynotesresource.desktop
     DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents"
     )
 
+akonadi_install_systemd_unit(
+    RESOURCE TARGET akonadi_tomboynotes_resource
+    NAME "Akonadi Tomboy Notes Resource"
+)
 ############################# Config plugin ################################
 kcoreaddons_add_plugin(tomboynotesconfig
     INSTALL_NAMESPACE "pim6/akonadi/config"

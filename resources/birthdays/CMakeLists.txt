@@ -50,7 +50,7 @@ target_link_libraries(akonadi_birthdays_resource
 
 install( TARGETS akonadi_birthdays_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
 install( FILES birthdaysresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
-
+akonadi_install_systemd_unit(UNIQUE RESOURCE TARGET akonadi_birthdays_resource DESCRIPTION "Akonadi Birthdays Resource")
 
 ############################# Config plugin ################################
 kcoreaddons_add_plugin(birthdaysconfig

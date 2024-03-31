@@ -72,6 +72,10 @@ endif()
 install(TARGETS akonadi_pop3_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES akonadi_pop3_resource.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR})
 
+akonadi_install_systemd_unit(
+    RESOURCE TARGET akonadi_pop3_resource
+    NAME "Akonadi POP3 Resource"
+)
 
 ################################## Config plugin ##############################
 kcoreaddons_add_plugin(pop3config

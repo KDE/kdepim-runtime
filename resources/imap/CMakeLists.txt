@@ -190,6 +190,8 @@ install(
 
 install(TARGETS akonadi_imap_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
+akonadi_install_systemd_unit(RESOURCE TARGET akonadi_imap_resource DESCRIPTION "Akonadi IMAP Resource")
+
 if(BUILD_TESTING)
     add_subdirectory( autotests )
     add_subdirectory( tests )

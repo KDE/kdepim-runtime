@@ -77,6 +77,10 @@ endif()
 install(TARGETS akonadi_mixedmaildir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MixedMaildir.Settings.xml
     DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})
+akonadi_install_systemd_unit(
+    RESOURCE TARGET akonadi_mixedmaildir_resource
+    NAME "Akonadi Mixed MailDir Resource"
+)
 
 # unit tests
 if (BUILD_TESTING)

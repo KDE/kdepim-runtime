@@ -95,4 +95,4 @@ target_link_libraries(akonadi_davgroupware_resource
     )
 
 install(TARGETS akonadi_davgroupware_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-
+akonadi_install_systemd_unit(RESOURCE TARGET akonadi_davgroupware_resource DESCRIPTION "Akonadi DAV Resource")

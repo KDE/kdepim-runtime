@@ -242,3 +242,5 @@ install(
     FILES org.kde.akonadi_ews_resource.desktop
     DESTINATION ${KDE_INSTALL_APPDIR}
 )
+
+akonadi_install_systemd_unit(RESOURCE TARGET akonadi_ews_resource DESCRIPTION "Akonadi EWS Resource")

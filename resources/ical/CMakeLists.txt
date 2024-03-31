@@ -51,6 +51,7 @@ if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_ical_resource PROPERTIES UNITY_BUILD ON)
 endif()
 install(TARGETS akonadi_ical_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+akonadi_install_systemd_unit(RESOURCE TARGET akonadi_ical_resource DESCRIPTION "Akonadi iCal Resource")
 
 ################################ Config plugin ###############################
 

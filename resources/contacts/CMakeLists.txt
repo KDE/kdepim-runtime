@@ -50,6 +50,8 @@ install(
     DESTINATION ${KDE_INSTALL_APPDIR}
 )
 
+akonadi_install_systemd_unit(RESOURCE TARGET akonadi_contacts_resource DESCRIPTION "Akonadi Contacts Resource")
+
 ############################## Config plugin ################################
 kcoreaddons_add_plugin(contactsconfig
     INSTALL_NAMESPACE "pim6/akonadi/config"

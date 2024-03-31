@@ -49,6 +49,7 @@ target_link_libraries(akonadi_akonotes_resource
 )
 
 install(TARGETS akonadi_akonotes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+akonadi_install_systemd_unit(RESOURCE TARGET akonadi_akonotes_resource DESCRIPTION "Akonadi Akonotes Resource")
 
 ############################### Config plugin #################################
 
@@ -78,3 +79,4 @@ target_link_libraries(akonotesconfig
     maildir
     folderarchivesettings
 )
+

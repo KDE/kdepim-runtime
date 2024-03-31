@@ -59,7 +59,10 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml
         DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})
 
 install( FILES maildirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
-
+akonadi_install_systemd_unit(
+    RESOURCE TARGET akonadi_maildir_resource
+    DESCRIPTION "Akonadi MailDir Resource"
+)
 ############################# Config plugin ###############################
 kcoreaddons_add_plugin(maildirconfig
     INSTALL_NAMESPACE "pim6/akonadi/config"

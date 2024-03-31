@@ -113,6 +113,7 @@ install(TARGETS akonadi_newmailnotifier_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS
 
 install(FILES newmailnotifieragent.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR} )
+akonadi_install_systemd_unit(AGENT TARGET akonadi_newmailnotifier_agent DESCRIPTION "Akonadi New Mail Notifier Agent")
 
 ########################## Config plugin #################################
 
@@ -139,3 +140,4 @@ target_link_libraries(newmailnotifierconfig
     KPim6::Mime
     KF6::Completion
 )
+

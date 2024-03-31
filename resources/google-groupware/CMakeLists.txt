@@ -118,6 +118,8 @@ install(
   DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR}
 )
 
+akonadi_install_systemd_unit(RESOURCE TARGET akonadi_google_resource DESCRIPTION "Akonadi Google Resource")
+
 ################################ Config plugin ###############################
 
 kcoreaddons_add_plugin(googleconfig
