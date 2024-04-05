@@ -55,7 +55,7 @@ set(AKONADINOTE_LIB_VERSION "6.0.40")
 set(KGAPI_LIB_VERSION "6.0.40")
 set(KLDAP_LIB_VERSION "6.0.40")
 set(KTEXTADDONS_MIN_VERSION "1.5.4")
-set(QT6KEYCHAIN_LIB_VERSION "0.14.1")
+set(QT6KEYCHAIN_LIB_VERSION "0.14.2")
 
 set( SharedMimeInfo_MINIMUM_VERSION "1.3" )
 find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
@@ -118,10 +118,6 @@ set_package_properties(Qt6Keychain PROPERTIES
                                    DESCRIPTION "Provides support for secure credentials storage"
                                    URL "https://github.com/frankosterfeld/qtkeychain"
                                    TYPE REQUIRED)
-
-if (Qt6Keychain_VERSION VERSION_LESS 0.14.2)
-     MESSAGE(STATUS "Qt6KeyChain version is less 0.14.2. It will not support KWallet 6... It will not able to load password. Please update it.")
-endif()
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 ecm_set_disabled_deprecation_versions(QT 6.6.1 KF 6.1.0)
