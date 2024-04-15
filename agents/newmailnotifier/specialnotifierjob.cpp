@@ -5,6 +5,8 @@
 */
 
 #include "specialnotifierjob.h"
+using namespace Qt::Literals::StringLiterals;
+
 #include "newmailnotifieragentsettings.h"
 #include "newmailnotifierreplymessagejob.h"
 #include "newmailnotifiershowmessagejob.h"
@@ -127,8 +129,8 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
     if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
         if (!NewMailNotifierAgentSettings::textToSpeak().isEmpty()) {
             QString message = NewMailNotifierAgentSettings::textToSpeak();
-            message.replace(QLatin1StringView("%s"), mSubject.toHtmlEscaped());
-            message.replace(QLatin1StringView("%f"), mFrom.toHtmlEscaped());
+            message.replace("%s"_L1, mSubject.toHtmlEscaped());
+            message.replace("%f"_L1, mFrom.toHtmlEscaped());
             Q_EMIT say(message);
         }
     }

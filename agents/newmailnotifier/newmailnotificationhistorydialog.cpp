@@ -4,6 +4,8 @@
 */
 
 #include "newmailnotificationhistorydialog.h"
+using namespace Qt::Literals::StringLiterals;
+
 #include "newmailnotificationhistorywidget.h"
 #include <KConfigGroup>
 #include <KLocalizedString>
@@ -23,13 +25,13 @@ NewMailNotificationHistoryDialog::NewMailNotificationHistoryDialog(QWidget *pare
 {
     setWindowTitle(i18nc("@title:window", "Notification History"));
     auto mainLayout = new QVBoxLayout(this);
-    mainLayout->setObjectName(QLatin1StringView("mainLayout"));
+    mainLayout->setObjectName("mainLayout"_L1);
 
-    mNewHistoryNotificationWidget->setObjectName(QLatin1StringView("mNewHistoryNotificationWidget"));
+    mNewHistoryNotificationWidget->setObjectName("mNewHistoryNotificationWidget"_L1);
     mainLayout->addWidget(mNewHistoryNotificationWidget);
 
     auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, this);
-    buttonBox->setObjectName(QLatin1StringView("buttonBox"));
+    buttonBox->setObjectName("buttonBox"_L1);
     mainLayout->addWidget(buttonBox);
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &NewMailNotificationHistoryDialog::accept);

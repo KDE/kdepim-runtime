@@ -6,6 +6,8 @@
  */
 
 #include <KJobTrackerInterface>
+using namespace Qt::Literals::StringLiterals;
+
 #include <QDebug>
 #include <QSignalSpy>
 #include <QTest>
@@ -20,7 +22,7 @@ class Testmigrator : public MigratorBase
     Q_OBJECT
 public:
     explicit Testmigrator(const QString &identifier, QObject *parent = nullptr)
-        : MigratorBase(QLatin1StringView("testmigrator") + identifier, QString(), QString(), parent)
+        : MigratorBase("testmigrator"_L1 + identifier, QString(), QString(), parent)
         , mAutostart(false)
     {
     }

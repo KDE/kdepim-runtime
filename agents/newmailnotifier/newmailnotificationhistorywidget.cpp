@@ -4,6 +4,8 @@
 */
 
 #include "newmailnotificationhistorywidget.h"
+using namespace Qt::Literals::StringLiterals;
+
 #include "newmailnotificationhistorybrowsertext.h"
 #include "newmailnotificationhistorybrowsertextwidget.h"
 #include "newmailnotificationhistorymanager.h"
@@ -22,14 +24,14 @@ NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *pare
     , mEnabledHistory(new QCheckBox(i18n("Enabled"), this))
 {
     auto mainLayout = new QVBoxLayout(this);
-    mainLayout->setObjectName(QLatin1StringView("mainLayout"));
+    mainLayout->setObjectName("mainLayout"_L1);
     mainLayout->setContentsMargins({});
 
-    mEnabledHistory->setObjectName(QLatin1StringView("mEnabledHistory"));
+    mEnabledHistory->setObjectName("mEnabledHistory"_L1);
     mainLayout->addWidget(mEnabledHistory);
     connect(mEnabledHistory, &QCheckBox::clicked, this, &NewMailNotificationHistoryWidget::slotEnableChanged);
 
-    mTextBrowser->setObjectName(QLatin1StringView("mTextBrowser"));
+    mTextBrowser->setObjectName("mTextBrowser"_L1);
     mainLayout->addWidget(mTextBrowser);
 
     connect(NewMailNotificationHistoryManager::self(),

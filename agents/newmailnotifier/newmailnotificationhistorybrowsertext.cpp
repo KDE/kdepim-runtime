@@ -4,6 +4,8 @@
 */
 
 #include "newmailnotificationhistorybrowsertext.h"
+using namespace Qt::Literals::StringLiterals;
+
 #include "newmailnotifier_debug.h"
 #include "newmailnotifieropenfolderjob.h"
 #include "newmailnotifiershowmessagejob.h"
@@ -25,11 +27,11 @@ void NewMailNotificationHistoryBrowserText::doSetSource(const QUrl &url, QTextDo
     Q_UNUSED(type);
     QString uri = url.toString();
     qCDebug(NEWMAILNOTIFIER_LOG) << " uri " << uri;
-    if (uri.startsWith(QLatin1StringView("openmail:"))) {
+    if (uri.startsWith("openmail:"_L1)) {
         uri.remove(QStringLiteral("openmail:"));
         qCDebug(NEWMAILNOTIFIER_LOG) << "openMail uri " << uri;
         Q_EMIT openMail(uri);
-    } else if (uri.startsWith(QLatin1StringView("openfolder:"))) {
+    } else if (uri.startsWith("openfolder:"_L1)) {
         uri.remove(QStringLiteral("openfolder:"));
         qCDebug(NEWMAILNOTIFIER_LOG) << "openFolder uri " << uri;
         Q_EMIT openFolder(uri);

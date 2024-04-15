@@ -6,6 +6,8 @@
  */
 
 #include "dummymigrator.h"
+using namespace Qt::Literals::StringLiterals;
+
 #include <QDebug>
 #include <QTimer>
 #include <chrono>
@@ -13,7 +15,7 @@
 using namespace std::chrono_literals;
 
 DummyMigrator::DummyMigrator(const QString &identifier)
-    : MigratorBase(QLatin1StringView("dummymigrator") + identifier, QString(), QString())
+    : MigratorBase("dummymigrator"_L1 + identifier, QString(), QString())
 {
 }
 

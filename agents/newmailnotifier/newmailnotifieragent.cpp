@@ -41,7 +41,7 @@ using namespace std::chrono_literals;
 #include <chrono>
 
 using namespace Akonadi;
-
+using namespace Qt::Literals::StringLiterals;
 NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     : AgentBase(id)
 {
@@ -396,7 +396,7 @@ void NewMailNotifierAgent::slotShowNotifications()
             mNewMails.clear();
             return;
         } else {
-            message = texts.join(QLatin1StringView("<br>"));
+            message = texts.join("<br>"_L1);
         }
     } else {
         message = i18n("New mail arrived");
@@ -489,8 +489,7 @@ bool NewMailNotifierAgent::excludeAgentType(const Akonadi::AgentInstance &instan
 {
     if (instance.type().mimeTypes().contains(KMime::Message::mimeType())) {
         const QStringList capabilities(instance.type().capabilities());
-        if (capabilities.contains(QLatin1StringView("Resource")) && !capabilities.contains(QLatin1StringView("Virtual"))
-            && !capabilities.contains(QLatin1StringView("MailTransport"))) {
+        if (capabilities.contains("Resource"_L1) && !capabilities.contains("Virtual"_L1) && !capabilities.contains("MailTransport"_L1)) {
             return false;
         } else {
             return true;
