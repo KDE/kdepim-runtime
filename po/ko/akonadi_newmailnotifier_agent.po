@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-18 00:37+0000\n"
+"POT-Creation-Date: 2024-04-16 00:38+0000\n"
 "PO-Revision-Date: 2023-10-08 23:05+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 22.12.3\n"
 
-#: newmailnotificationhistorydialog.cpp:24
+#: newmailnotificationhistorydialog.cpp:26
 #, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
@@ -33,8 +33,8 @@ msgstr "[폴더 열기]"
 msgid "[Show Mail]"
 msgstr "[메일 보기]"
 
-#: newmailnotificationhistorywidget.cpp:22
-#: newmailnotifiersettingswidget.cpp:112
+#: newmailnotificationhistorywidget.cpp:24
+#: newmailnotifiersettingswidget.cpp:114
 #, kde-format
 msgid "Enabled"
 msgstr "활성화됨"
@@ -85,7 +85,7 @@ msgstr "모두 선택(&S)"
 msgid "&Unselect All"
 msgstr "모두 선택 해제(&U)"
 
-#: newmailnotifiersettingswidget.cpp:32
+#: newmailnotifiersettingswidget.cpp:34
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
@@ -94,159 +94,159 @@ msgstr ""
 "<qt><p>메시지를 정의할 수 있습니다. 다음 자리비움자를 사용할 수 있습니다:</"
 "p> <ul><li>%s: 제목</li><li>%f: 보낸 사람</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:53
+#: newmailnotifiersettingswidget.cpp:55
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "표시할 필드 선택:"
 
-#: newmailnotifiersettingswidget.cpp:58
+#: newmailnotifiersettingswidget.cpp:60
 #, kde-format
 msgid "Show Photo"
 msgstr "사진 표시"
 
-#: newmailnotifiersettingswidget.cpp:62
+#: newmailnotifiersettingswidget.cpp:64
 #, kde-format
 msgid "Show From"
 msgstr "보낸 사람 표시"
 
-#: newmailnotifiersettingswidget.cpp:66
+#: newmailnotifiersettingswidget.cpp:68
 #, kde-format
 msgid "Show Subject"
 msgstr "제목 표시"
 
-#: newmailnotifiersettingswidget.cpp:70
+#: newmailnotifiersettingswidget.cpp:72
 #, kde-format
 msgid "Show Folders"
 msgstr "폴더 표시"
 
-#: newmailnotifiersettingswidget.cpp:74
+#: newmailnotifiersettingswidget.cpp:76
 #, kde-format
 msgid "Do not notify when email was sent by me"
 msgstr "내가 보낸 이메일 알리지 않음"
 
-#: newmailnotifiersettingswidget.cpp:78
+#: newmailnotifiersettingswidget.cpp:80
 #, kde-format
 msgid "Keep Persistent Notification"
 msgstr "알림 닫지 않기"
 
-#: newmailnotifiersettingswidget.cpp:82
+#: newmailnotifiersettingswidget.cpp:84
 #, kde-format
 msgid "Show Action Buttons"
 msgstr "동작 단추 표시"
 
-#: newmailnotifiersettingswidget.cpp:90
+#: newmailnotifiersettingswidget.cpp:92
 #, kde-format
 msgid "Reply Mail"
 msgstr "이메일에 답장"
 
-#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:161
+#: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:163
 #, kde-format
 msgid "Reply to Author"
 msgstr "작성자에게 답장"
 
-#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:164
+#: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:166
 #, kde-format
 msgid "Reply to All"
 msgstr "전체 답장"
 
-#: newmailnotifiersettingswidget.cpp:107
+#: newmailnotifiersettingswidget.cpp:109
 #, kde-format
 msgid "Display"
 msgstr "표시"
 
-#: newmailnotifiersettingswidget.cpp:116
+#: newmailnotifiersettingswidget.cpp:118
 #, kde-format
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">어떻게 작동하나요?</a>"
 
-#: newmailnotifiersettingswidget.cpp:125
+#: newmailnotifiersettingswidget.cpp:127
 #, kde-format
 msgid "Message:"
 msgstr "메시지:"
 
-#: newmailnotifiersettingswidget.cpp:137
+#: newmailnotifiersettingswidget.cpp:139
 #, kde-format
 msgid "Text to Speak"
 msgstr "말할 텍스트"
 
-#: newmailnotifiersettingswidget.cpp:143
+#: newmailnotifiersettingswidget.cpp:145
 #, kde-format
 msgid "Notify"
 msgstr "알림"
 
-#: newmailnotifiersettingswidget.cpp:146
+#: newmailnotifiersettingswidget.cpp:148
 #, kde-format
 msgid "Folders"
 msgstr "폴더"
 
-#: newmailnotifiersettingswidget.cpp:149
+#: newmailnotifiersettingswidget.cpp:151
 #, kde-format
 msgid "New Mail Notifier Agent"
 msgstr "새 메일 알림이 에이전트"
 
-#: newmailnotifiersettingswidget.cpp:151
+#: newmailnotifiersettingswidget.cpp:153
 #, kde-format
 msgid "Notify about new mails."
 msgstr "새 메일을 알려 줍니다."
 
-#: newmailnotifiersettingswidget.cpp:153
+#: newmailnotifiersettingswidget.cpp:155
 #, kde-format
 msgid "Copyright (C) 2013-%1 Laurent Montel"
 msgstr "Copyright (C) 2013-%1 Laurent Montel"
 
-#: newmailnotifiersettingswidget.cpp:156
+#: newmailnotifiersettingswidget.cpp:158
 #, kde-format
 msgid "Laurent Montel"
 msgstr "Laurent Montel"
 
-#: newmailnotifiersettingswidget.cpp:156
+#: newmailnotifiersettingswidget.cpp:158
 #, kde-format
 msgid "Maintainer"
 msgstr "관리자"
 
-#: newmailnotifiersettingswidget.cpp:157
+#: newmailnotifiersettingswidget.cpp:159
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "박신조"
 
-#: newmailnotifiersettingswidget.cpp:157
+#: newmailnotifiersettingswidget.cpp:159
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "kde@peremen.name"
 
-#: specialnotifierjob.cpp:109
+#: specialnotifierjob.cpp:111
 #, kde-format
 msgid "From: %1"
 msgstr "보낸 사람: %1"
 
-#: specialnotifierjob.cpp:117
+#: specialnotifierjob.cpp:119
 #, kde-format
 msgid "Subject: %1"
 msgstr "제목: %1"
 
-#: specialnotifierjob.cpp:121
+#: specialnotifierjob.cpp:123
 #, kde-format
 msgid "In: %1"
 msgstr "위치: %1"
 
-#: specialnotifierjob.cpp:123
+#: specialnotifierjob.cpp:125
 #, kde-format
 msgid "In: %1 (%2)"
 msgstr "위치: %1(%2)"
 
-#: specialnotifierjob.cpp:148
+#: specialnotifierjob.cpp:150
 #, kde-format
 msgid "Show mail..."
 msgstr "메일 보기..."
 
-#: specialnotifierjob.cpp:151
+#: specialnotifierjob.cpp:153
 #, kde-format
 msgid "Mark As Read"
 msgstr "읽은 것으로 표시"
 
-#: specialnotifierjob.cpp:154
+#: specialnotifierjob.cpp:156
 #, kde-format
 msgid "Delete"
 msgstr "삭제"

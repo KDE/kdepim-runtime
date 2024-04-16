@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-18 00:37+0000\n"
+"POT-Creation-Date: 2024-04-16 00:38+0000\n"
 "PO-Revision-Date: 2023-09-24 09:40+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 23.08.1\n"
 
-#: newmailnotificationhistorydialog.cpp:24
+#: newmailnotificationhistorydialog.cpp:26
 #, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
@@ -36,8 +36,8 @@ msgstr "[Ireki karpeta]"
 msgid "[Show Mail]"
 msgstr "[Erakutsi posta]"
 
-#: newmailnotificationhistorywidget.cpp:22
-#: newmailnotifiersettingswidget.cpp:112
+#: newmailnotificationhistorywidget.cpp:24
+#: newmailnotifiersettingswidget.cpp:114
 #, kde-format
 msgid "Enabled"
 msgstr "Gaituta"
@@ -89,7 +89,7 @@ msgstr "&Hautatu dena"
 msgid "&Unselect All"
 msgstr "&Desautatu dena"
 
-#: newmailnotifiersettingswidget.cpp:32
+#: newmailnotifiersettingswidget.cpp:34
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
@@ -98,159 +98,159 @@ msgstr ""
 "<qt><p>Hemen mezua definitu dezakezu. Erabil dezakezu:</p><ul><li>%s ezarri "
 "gaia</li><li>%f ezarri nork</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:53
+#: newmailnotifiersettingswidget.cpp:55
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "Hautatu erakutsi beharreko eremuak:"
 
-#: newmailnotifiersettingswidget.cpp:58
+#: newmailnotifiersettingswidget.cpp:60
 #, kde-format
 msgid "Show Photo"
 msgstr "Erakutsi argazkia"
 
-#: newmailnotifiersettingswidget.cpp:62
+#: newmailnotifiersettingswidget.cpp:64
 #, kde-format
 msgid "Show From"
 msgstr "Erakutsi Nork"
 
-#: newmailnotifiersettingswidget.cpp:66
+#: newmailnotifiersettingswidget.cpp:68
 #, kde-format
 msgid "Show Subject"
 msgstr "Erakutsi Gaia"
 
-#: newmailnotifiersettingswidget.cpp:70
+#: newmailnotifiersettingswidget.cpp:72
 #, kde-format
 msgid "Show Folders"
 msgstr "Erakutsi Karpetak"
 
-#: newmailnotifiersettingswidget.cpp:74
+#: newmailnotifiersettingswidget.cpp:76
 #, kde-format
 msgid "Do not notify when email was sent by me"
 msgstr "Ez jakinarazi e-posta nik bidali dudanean"
 
-#: newmailnotifiersettingswidget.cpp:78
+#: newmailnotifiersettingswidget.cpp:80
 #, kde-format
 msgid "Keep Persistent Notification"
 msgstr "Mantendu jakinarazpen iraunkorra"
 
-#: newmailnotifiersettingswidget.cpp:82
+#: newmailnotifiersettingswidget.cpp:84
 #, kde-format
 msgid "Show Action Buttons"
 msgstr "Erakutsi ekintza-botoiak"
 
-#: newmailnotifiersettingswidget.cpp:90
+#: newmailnotifiersettingswidget.cpp:92
 #, kde-format
 msgid "Reply Mail"
 msgstr "Erantzun postari"
 
-#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:161
+#: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:163
 #, kde-format
 msgid "Reply to Author"
 msgstr "Erantzun egileari"
 
-#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:164
+#: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:166
 #, kde-format
 msgid "Reply to All"
 msgstr "Erantzun denei"
 
-#: newmailnotifiersettingswidget.cpp:107
+#: newmailnotifiersettingswidget.cpp:109
 #, kde-format
 msgid "Display"
 msgstr "Azaldu"
 
-#: newmailnotifiersettingswidget.cpp:116
+#: newmailnotifiersettingswidget.cpp:118
 #, kde-format
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Hori nola dabil?</a>"
 
-#: newmailnotifiersettingswidget.cpp:125
+#: newmailnotifiersettingswidget.cpp:127
 #, kde-format
 msgid "Message:"
 msgstr "Mezua:"
 
-#: newmailnotifiersettingswidget.cpp:137
+#: newmailnotifiersettingswidget.cpp:139
 #, kde-format
 msgid "Text to Speak"
 msgstr "Esan beharreko testua"
 
-#: newmailnotifiersettingswidget.cpp:143
+#: newmailnotifiersettingswidget.cpp:145
 #, kde-format
 msgid "Notify"
 msgstr "Jakinarazi"
 
-#: newmailnotifiersettingswidget.cpp:146
+#: newmailnotifiersettingswidget.cpp:148
 #, kde-format
 msgid "Folders"
 msgstr "Karpetak"
 
-#: newmailnotifiersettingswidget.cpp:149
+#: newmailnotifiersettingswidget.cpp:151
 #, kde-format
 msgid "New Mail Notifier Agent"
 msgstr "Posta berriak jakinarazteko agentea"
 
-#: newmailnotifiersettingswidget.cpp:151
+#: newmailnotifiersettingswidget.cpp:153
 #, kde-format
 msgid "Notify about new mails."
 msgstr "Posta berrien berri eman."
 
-#: newmailnotifiersettingswidget.cpp:153
+#: newmailnotifiersettingswidget.cpp:155
 #, kde-format
 msgid "Copyright (C) 2013-%1 Laurent Montel"
 msgstr "Copyright (C) 2013-%1 Laurent Montel"
 
-#: newmailnotifiersettingswidget.cpp:156
+#: newmailnotifiersettingswidget.cpp:158
 #, kde-format
 msgid "Laurent Montel"
 msgstr "Laurent Montel"
 
-#: newmailnotifiersettingswidget.cpp:156
+#: newmailnotifiersettingswidget.cpp:158
 #, kde-format
 msgid "Maintainer"
 msgstr "Mantentzailea"
 
-#: newmailnotifiersettingswidget.cpp:157
+#: newmailnotifiersettingswidget.cpp:159
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "Iñigo Salvador Azurmendi"
 
-#: newmailnotifiersettingswidget.cpp:157
+#: newmailnotifiersettingswidget.cpp:159
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "xalba@ni.eus"
 
-#: specialnotifierjob.cpp:109
+#: specialnotifierjob.cpp:111
 #, kde-format
 msgid "From: %1"
 msgstr "Nork: %1"
 
-#: specialnotifierjob.cpp:117
+#: specialnotifierjob.cpp:119
 #, kde-format
 msgid "Subject: %1"
 msgstr "Gaia: %1"
 
-#: specialnotifierjob.cpp:121
+#: specialnotifierjob.cpp:123
 #, kde-format
 msgid "In: %1"
 msgstr "Non: %1"
 
-#: specialnotifierjob.cpp:123
+#: specialnotifierjob.cpp:125
 #, kde-format
 msgid "In: %1 (%2)"
 msgstr "Non: %1 (%2)"
 
-#: specialnotifierjob.cpp:148
+#: specialnotifierjob.cpp:150
 #, kde-format
 msgid "Show mail..."
 msgstr "Erakutsi posta..."
 
-#: specialnotifierjob.cpp:151
+#: specialnotifierjob.cpp:153
 #, kde-format
 msgid "Mark As Read"
 msgstr "Markatu irakurritako gisa"
 
-#: specialnotifierjob.cpp:154
+#: specialnotifierjob.cpp:156
 #, kde-format
 msgid "Delete"
 msgstr "Ezabatu"
