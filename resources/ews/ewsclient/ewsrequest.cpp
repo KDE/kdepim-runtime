@@ -284,11 +284,11 @@ void EwsRequest::setServerVersion(const EwsServerVersion &version)
 
 EwsRequest::Response::Response(QXmlStreamReader &reader)
 {
-    static const QString respClasses[] = {
-        QStringLiteral("Success"),
-        QStringLiteral("Warning"),
-        QStringLiteral("Error"),
-    };
+    static constexpr auto respClasses = std::to_array({
+        QLatin1StringView("Success"),
+        QLatin1StringView("Warning"),
+        QLatin1StringView("Error"),
+    });
 
     auto respClassRef = reader.attributes().value(QStringLiteral("ResponseClass"));
     if (respClassRef.isNull()) {
@@ -297,12 +297,13 @@ EwsRequest::Response::Response(QXmlStreamReader &reader)
         return;
     }
 
-    unsigned i;
-    for (i = 0; i < sizeof(respClasses) / sizeof(respClasses[0]); ++i) {
-        if (respClassRef == respClasses[i]) {
+    unsigned i = 0;
+    for (const auto &respClass : respClasses) {
+        if (respClass == respClassRef) {
             mClass = static_cast<EwsResponseClass>(i);
             break;
         }
+        i++;
     }
 }
 

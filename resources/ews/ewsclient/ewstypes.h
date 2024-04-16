@@ -102,7 +102,12 @@ typedef enum {
     EwsPropTypeStringArray
 } EwsPropertyType;
 
-typedef enum { EwsTraversalShallow = 0, EwsTraversalDeep, EwsTraversalSoftDeleted, EwsTraversalAssociated } EwsTraversalType;
+typedef enum {
+    EwsTraversalShallow = 0,
+    EwsTraversalDeep,
+    EwsTraversalSoftDeleted,
+    EwsTraversalAssociated,
+} EwsTraversalType;
 
 typedef enum {
     EwsItemTypeItem = 0,
@@ -463,19 +468,19 @@ typedef enum {
     EwsResponseCodeUnknown,
 } EwsResponseCode;
 
-template<typename T>
-T decodeEnumString(const QString &str, const QString *table, unsigned count, bool *ok)
+template<typename T, std::size_t SIZE>
+T decodeEnumString(const QString &str, const std::array<QLatin1StringView, SIZE> &table, bool *ok)
 {
-    unsigned i;
-    T enumVal = T();
-    for (i = 0; i < count; i++) {
-        if (str == table[i]) {
-            enumVal = static_cast<T>(i);
-            break;
+    unsigned i = 0;
+    for (const auto &value : table) {
+        if (str == value) {
+            *ok = true;
+            return static_cast<T>(i);
         }
+        i++;
     }
-    *ok = (i < count);
-    return enumVal;
+    *ok = false;
+    return T();
 }
 
 inline bool isEwsMessageItemType(EwsItemType type)

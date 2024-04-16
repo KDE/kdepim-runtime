@@ -6,11 +6,11 @@
 
 #include "ewsfoldershape.h"
 
-static const QString shapeNames[] = {
-    QStringLiteral("IdOnly"),
-    QStringLiteral("Default"),
-    QStringLiteral("AllProperties"),
-};
+static constexpr auto shapeNames = std::to_array({
+    QLatin1StringView("IdOnly"),
+    QLatin1StringView("Default"),
+    QLatin1StringView("AllProperties"),
+});
 
 void EwsFolderShape::write(QXmlStreamWriter &writer) const
 {

@@ -25,13 +25,14 @@ public:
     QDateTime mResponseTime;
 };
 
-static const QString responseTypeNames[] = {QStringLiteral("Unknown"),
-                                            QStringLiteral("Organizer"),
-                                            QStringLiteral("Tentative"),
-                                            QStringLiteral("Accept"),
-                                            QStringLiteral("Decline"),
-                                            QStringLiteral("NoResponseReceived")};
-constexpr unsigned responseTypeNameCount = sizeof(responseTypeNames) / sizeof(responseTypeNames[0]);
+static constexpr auto responseTypeNames = std::to_array({
+    QLatin1StringView("Unknown"),
+    QLatin1StringView("Organizer"),
+    QLatin1StringView("Tentative"),
+    QLatin1StringView("Accept"),
+    QLatin1StringView("Decline"),
+    QLatin1StringView("NoResponseReceived"),
+});
 
 EwsAttendeePrivate::EwsAttendeePrivate()
     : mValid(false)
@@ -61,7 +62,7 @@ EwsAttendee::EwsAttendee(QXmlStreamReader &reader)
             }
         } else if (readerName == QLatin1StringView("ResponseType")) {
             bool ok;
-            d->mResponse = decodeEnumString<EwsEventResponseType>(reader.readElementText(), responseTypeNames, responseTypeNameCount, &ok);
+            d->mResponse = decodeEnumString<EwsEventResponseType>(reader.readElementText(), responseTypeNames, &ok);
             if (reader.error() != QXmlStreamReader::NoError || !ok) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid attendee %1 element.").arg(readerName.toString());
                 return;

@@ -42,9 +42,9 @@ bool GoogleResourceMigrator::shouldAutostart() const
 
 namespace
 {
-static const QStringView akonadiGoogleCalendarResource = {u"akonadi_googlecalendar_resource"};
-static const QStringView akonadiGoogleContactsResource = {u"akonadi_googlecontacts_resource"};
-static const QStringView akonadiGoogleGroupwareResource = {u"akonadi_google_resource"};
+static constexpr QLatin1StringView akonadiGoogleCalendarResource{"akonadi_googlecalendar_resource"};
+static constexpr QLatin1StringView akonadiGoogleContactsResource{"akonadi_googlecontacts_resource"};
+static constexpr QLatin1StringView akonadiGoogleGroupwareResource{"akonadi_google_resource"};
 
 bool isLegacyGoogleResource(const Akonadi::AgentInstance &instance)
 {

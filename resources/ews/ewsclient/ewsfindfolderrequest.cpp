@@ -12,11 +12,11 @@
 
 #include "ewsclient_debug.h"
 
-static const QString traversalTypeNames[] = {
-    QStringLiteral("Shallow"),
-    QStringLiteral("Deep"),
-    QStringLiteral("SoftDeleted"),
-};
+static constexpr auto traversalTypeNames = std::to_array({
+    QLatin1StringView("Shallow"),
+    QLatin1StringView("Deep"),
+    QLatin1StringView("SoftDeleted"),
+});
 
 class EwsFindFolderResponse : public EwsRequest::Response
 {

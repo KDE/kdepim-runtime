@@ -35,16 +35,16 @@ using namespace Mock;
 
 static const auto o365AuthorizationUrl = QUrl(QStringLiteral("https://login.microsoftonline.com/common/oauth2/authorize"));
 static const auto o365AccessTokenUrl = QUrl(QStringLiteral("https://login.microsoftonline.com/common/oauth2/token"));
-static const auto o365FakeUserAgent =
-    QStringLiteral("Mozilla/5.0 (Linux; Android 7.0; SM-G930V Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36");
-static const auto o365Resource = QStringLiteral("https%3A%2F%2Foutlook.office365.com%2F");
+static constexpr QLatin1StringView o365FakeUserAgent(
+    "Mozilla/5.0 (Linux; Android 7.0; SM-G930V Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36");
+static constexpr QLatin1StringView o365Resource("https%3A%2F%2Foutlook.office365.com%2F");
 
-static const auto pkeyAuthSuffix = QStringLiteral(" PKeyAuth/1.0");
-static const auto pkeyRedirectUri = QStringLiteral("urn:http-auth:PKeyAuth");
-static const QString pkeyPasswordMapKey = QStringLiteral("pkey-password");
+static constexpr QLatin1StringView pkeyAuthSuffix(" PKeyAuth/1.0");
+static constexpr QLatin1StringView pkeyRedirectUri("urn:http-auth:PKeyAuth");
+static constexpr QLatin1StringView pkeyPasswordMapKey("pkey-password");
 
-static const QString accessTokenMapKey = QStringLiteral("access-token");
-static const QString refreshTokenMapKey = QStringLiteral("refresh-token");
+static constexpr QLatin1StringView accessTokenMapKey("access-token");
+static constexpr QLatin1StringView refreshTokenMapKey("refresh-token");
 
 class EwsOAuthUrlSchemeHandler final : public QWebEngineUrlSchemeHandler
 {
@@ -354,7 +354,7 @@ void EwsOAuthPrivate::authorizeWithBrowser(const QUrl &url)
      * is one thing, but blocking unsupported browsers completely is just wrong.
      * Fortunately enough this can be worked around by faking the user agent to something "supported".
      */
-    auto userAgent = o365FakeUserAgent;
+    QString userAgent = o365FakeUserAgent;
     if (!q->mPKeyCertFile.isNull() && !q->mPKeyKeyFile.isNull()) {
         qCInfoNC(EWSCLI_LOG) << QStringLiteral("Found PKeyAuth certificates");
         userAgent += pkeyAuthSuffix;

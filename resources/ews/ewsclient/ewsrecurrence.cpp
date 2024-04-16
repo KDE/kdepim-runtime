@@ -15,44 +15,41 @@
 
 using namespace KCalendarCore;
 
-static const QString dayOfWeekNames[] = {
-    QStringLiteral("Monday"),
-    QStringLiteral("Tuesday"),
-    QStringLiteral("Wednesday"),
-    QStringLiteral("Thursday"),
-    QStringLiteral("Friday"),
-    QStringLiteral("Saturday"),
-    QStringLiteral("Sunday"),
-    QStringLiteral("Day"),
-    QStringLiteral("Weekday"),
-    QStringLiteral("WeekendDay"),
-};
-constexpr unsigned dayOfWeekNameCount = sizeof(dayOfWeekNames) / sizeof(dayOfWeekNames[0]);
+static constexpr auto dayOfWeekNames = std::to_array({
+    QLatin1StringView("Monday"),
+    QLatin1StringView("Tuesday"),
+    QLatin1StringView("Wednesday"),
+    QLatin1StringView("Thursday"),
+    QLatin1StringView("Friday"),
+    QLatin1StringView("Saturday"),
+    QLatin1StringView("Sunday"),
+    QLatin1StringView("Day"),
+    QLatin1StringView("Weekday"),
+    QLatin1StringView("WeekendDay"),
+});
 
-static const QString dayOfWeekIndexNames[] = {
-    QStringLiteral("First"),
-    QStringLiteral("Second"),
-    QStringLiteral("Third"),
-    QStringLiteral("Fourth"),
-    QStringLiteral("Last"),
-};
-constexpr unsigned dayOfWeekIndexNameCount = sizeof(dayOfWeekIndexNames) / sizeof(dayOfWeekIndexNames[0]);
+static constexpr auto dayOfWeekIndexNames = std::to_array({
+    QLatin1StringView("First"),
+    QLatin1StringView("Second"),
+    QLatin1StringView("Third"),
+    QLatin1StringView("Fourth"),
+    QLatin1StringView("Last"),
+});
 
-static const QString monthNames[] = {
-    QStringLiteral("January"),
-    QStringLiteral("February"),
-    QStringLiteral("March"),
-    QStringLiteral("April"),
-    QStringLiteral("May"),
-    QStringLiteral("June"),
-    QStringLiteral("July"),
-    QStringLiteral("August"),
-    QStringLiteral("September"),
-    QStringLiteral("October"),
-    QStringLiteral("November"),
-    QStringLiteral("December"),
-};
-constexpr unsigned monthNameCount = sizeof(monthNames) / sizeof(monthNames[0]);
+static constexpr auto monthNames = std::to_array({
+    QLatin1StringView("January"),
+    QLatin1StringView("February"),
+    QLatin1StringView("March"),
+    QLatin1StringView("April"),
+    QLatin1StringView("May"),
+    QLatin1StringView("June"),
+    QLatin1StringView("July"),
+    QLatin1StringView("August"),
+    QLatin1StringView("September"),
+    QLatin1StringView("October"),
+    QLatin1StringView("November"),
+    QLatin1StringView("December"),
+});
 
 EwsRecurrence::EwsRecurrence()
     : Recurrence()
@@ -139,7 +136,7 @@ bool EwsRecurrence::readRelativeYearlyRecurrence(QXmlStreamReader &reader)
         } else if (elmName == QLatin1StringView("DayOfWeekIndex")) {
             bool ok;
             QString text = reader.readElementText();
-            dowWeekIndex = decodeEnumString<short>(text, dayOfWeekIndexNames, dayOfWeekIndexNameCount, &ok);
+            dowWeekIndex = decodeEnumString<short>(text, dayOfWeekIndexNames, &ok);
             if (reader.error() != QXmlStreamReader::NoError || !ok) {
                 qCWarning(EWSCLI_LOG)
                     << QStringLiteral("Failed to read EWS request - invalid %1 element (value: %2).").arg(QStringLiteral("DayOfWeekIndex").arg(text));
@@ -152,7 +149,7 @@ bool EwsRecurrence::readRelativeYearlyRecurrence(QXmlStreamReader &reader)
         } else if (elmName == QLatin1StringView("Month")) {
             bool ok;
             QString text = reader.readElementText();
-            month = decodeEnumString<short>(text, monthNames, monthNameCount, &ok);
+            month = decodeEnumString<short>(text, monthNames, &ok);
             if (reader.error() != QXmlStreamReader::NoError || !ok) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid %1 element (value: %2).").arg(QStringLiteral("Month"), text);
                 return false;
@@ -203,7 +200,7 @@ bool EwsRecurrence::readAbsoluteYearlyRecurrence(QXmlStreamReader &reader)
         } else if (elmName == QLatin1StringView("Month")) {
             bool ok;
             QString text = reader.readElementText();
-            month = decodeEnumString<short>(text, monthNames, monthNameCount, &ok);
+            month = decodeEnumString<short>(text, monthNames, &ok);
             if (reader.error() != QXmlStreamReader::NoError || !ok) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid %1 element (value: %2).").arg(QStringLiteral("Month").arg(text));
                 return false;
@@ -267,7 +264,7 @@ bool EwsRecurrence::readRelativeMonthlyRecurrence(QXmlStreamReader &reader)
         } else if (elmName == QLatin1StringView("DayOfWeekIndex")) {
             bool ok;
             QString text = reader.readElementText();
-            dowWeekIndex = decodeEnumString<short>(text, dayOfWeekIndexNames, dayOfWeekIndexNameCount, &ok);
+            dowWeekIndex = decodeEnumString<short>(text, dayOfWeekIndexNames, &ok);
             if (reader.error() != QXmlStreamReader::NoError || !ok) {
                 qCWarning(EWSCLI_LOG)
                     << QStringLiteral("Failed to read EWS request - invalid %1 element (value: %2).").arg(QStringLiteral("DayOfWeekIndex").arg(text));
@@ -379,7 +376,7 @@ bool EwsRecurrence::readWeeklyRecurrence(QXmlStreamReader &reader)
         } else if (elmName == QLatin1StringView("FirstDayOfWeek")) {
             bool ok;
             QString text = reader.readElementText();
-            weekStart = decodeEnumString<int>(text, dayOfWeekNames, dayOfWeekNameCount, &ok) + 1;
+            weekStart = decodeEnumString<int>(text, dayOfWeekNames, &ok) + 1;
             if (reader.error() != QXmlStreamReader::NoError || !ok) {
                 qCWarningNC(EWSCLI_LOG)
                     << QStringLiteral("Failed to read EWS request - invalid %1 element (value: %2).").arg(QStringLiteral("FirstDayOfWeek").arg(text));
@@ -513,7 +510,7 @@ bool EwsRecurrence::readDow(QXmlStreamReader &reader, QBitArray &dow)
     QString text = reader.readElementText();
     const QStringList days = text.split(QLatin1Char(' '));
     for (const QString &day : days) {
-        auto dowIndex = decodeEnumString<short>(day, dayOfWeekNames, dayOfWeekNameCount, &ok);
+        auto dowIndex = decodeEnumString<short>(day, dayOfWeekNames, &ok);
         if (reader.error() != QXmlStreamReader::NoError || !ok) {
             qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid %1 element (value: %2).").arg(QStringLiteral("DaysOfWeek").arg(day));
             return false;

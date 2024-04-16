@@ -17,11 +17,14 @@
 
 #include <memory>
 
-static const QString clientId = QStringLiteral("18da2bc3-146a-4581-8c92-27dc7b9954a0");
-static const QString tenantId = QStringLiteral("common");
-static const QStringList scopes = {QStringLiteral("https://outlook.office.com/IMAP.AccessAsUser.All"), QStringLiteral("offline_access")};
+static constexpr QLatin1StringView clientId{"18da2bc3-146a-4581-8c92-27dc7b9954a0"};
+static constexpr QLatin1StringView tenantId{"common"};
+static const QStringList scopes{
+    QLatin1StringView("https://outlook.office.com/IMAP.AccessAsUser.All"),
+    QLatin1StringView("offline_access"),
+};
 
-static const QString kwalletFolder = QStringLiteral("imap");
+static constexpr QLatin1StringView kwalletFolder = QLatin1StringView("imap");
 
 OutlookPasswordRequester::OutlookPasswordRequester(ImapResourceBase *resource, QObject *parent)
     : XOAuthPasswordRequester(parent)

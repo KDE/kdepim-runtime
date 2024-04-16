@@ -12,38 +12,42 @@
 #include "ewsid.h"
 #include "ewsitem.h"
 
-static const QList<QString> messageSensitivityNames = {
-    QStringLiteral("Normal"),
-    QStringLiteral("Personal"),
-    QStringLiteral("Private"),
-    QStringLiteral("Confidential"),
-};
+static constexpr auto messageSensitivityNames = std::to_array<QLatin1StringView>({
+    QLatin1StringView("Normal"),
+    QLatin1StringView("Personal"),
+    QLatin1StringView("Private"),
+    QLatin1StringView("Confidential"),
+});
 
-static const QList<QString> messageImportanceNames = {QStringLiteral("Low"), QStringLiteral("Normal"), QStringLiteral("High")};
+static constexpr auto messageImportanceNames = std::to_array<QLatin1StringView>({
+    QLatin1StringView("Low"),
+    QLatin1StringView("Normal"),
+    QLatin1StringView("High"),
+});
 
-static const QList<QString> calendarItemTypeNames = {
-    QStringLiteral("Single"),
-    QStringLiteral("Occurrence"),
-    QStringLiteral("Exception"),
-    QStringLiteral("RecurringMaster"),
-};
+static constexpr auto calendarItemTypeNames = std::to_array<QLatin1StringView>({
+    QLatin1StringView("Single"),
+    QLatin1StringView("Occurrence"),
+    QLatin1StringView("Exception"),
+    QLatin1StringView("RecurringMaster"),
+});
 
-static const QList<QString> legacyFreeBusyStatusNames = {
-    QStringLiteral("Free"),
-    QStringLiteral("Tentative"),
-    QStringLiteral("Busy"),
-    QStringLiteral("OOF"),
-    QStringLiteral("NoData"),
-};
+static constexpr auto legacyFreeBusyStatusNames = std::to_array<QLatin1StringView>({
+    QLatin1StringView("Free"),
+    QLatin1StringView("Tentative"),
+    QLatin1StringView("Busy"),
+    QLatin1StringView("OOF"),
+    QLatin1StringView("NoData"),
+});
 
-static const QList<QString> responseTypeNames = {
-    QStringLiteral("Unknown"),
-    QStringLiteral("Organizer"),
-    QStringLiteral("Tentative"),
-    QStringLiteral("Accept"),
-    QStringLiteral("Decline"),
-    QStringLiteral("NoResponseReceived"),
-};
+static constexpr auto responseTypeNames = std::to_array<QLatin1StringView>({
+    QLatin1StringView("Unknown"),
+    QLatin1StringView("Organizer"),
+    QLatin1StringView("Tentative"),
+    QLatin1StringView("Accept"),
+    QLatin1StringView("Decline"),
+    QLatin1StringView("NoResponseReceived"),
+});
 
 bool ewsXmlBoolReader(QXmlStreamReader &reader, QVariant &val)
 {
@@ -194,7 +198,8 @@ bool ewsXmlFolderReader(QXmlStreamReader &reader, QVariant &val)
     return true;
 }
 
-bool ewsXmlEnumReader(QXmlStreamReader &reader, QVariant &val, const QList<QString> &items)
+template<std::size_t SIZE>
+bool ewsXmlEnumReader(QXmlStreamReader &reader, QVariant &val, const std::array<QLatin1StringView, SIZE> &items)
 {
     const QString elmName = reader.name().toString();
     QString text = reader.readElementText();
@@ -204,8 +209,8 @@ bool ewsXmlEnumReader(QXmlStreamReader &reader, QVariant &val, const QList<QStri
         return false;
     }
     int i = 0;
-    QList<QString>::const_iterator it;
-    for (it = items.cbegin(); it != items.cend(); ++it, i++) {
+    auto it = items.cbegin();
+    for (; it != items.cend(); ++it, i++) {
         if (text == *it) {
             val = i;
             break;

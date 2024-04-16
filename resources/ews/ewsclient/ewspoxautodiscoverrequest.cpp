@@ -14,9 +14,9 @@
 
 #include "ewsclient_debug.h"
 
-static const QString poxAdOuReqNsUri = QStringLiteral("http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006");
-static const QString poxAdRespNsUri = QStringLiteral("http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006");
-static const QString poxAdOuRespNsUri = QStringLiteral("http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a");
+static constexpr QLatin1StringView poxAdOuReqNsUri = QLatin1StringView("http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006");
+static constexpr QLatin1StringView poxAdRespNsUri = QLatin1StringView("http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006");
+static constexpr QLatin1StringView poxAdOuRespNsUri = QLatin1StringView("http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a");
 
 EwsPoxAutodiscoverRequest::EwsPoxAutodiscoverRequest(const QUrl &url, const QString &email, const QString &userAgent, bool useNTLMv2, QObject *parent)
     : EwsJob(parent)
