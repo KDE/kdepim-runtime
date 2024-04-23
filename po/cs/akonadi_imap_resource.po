@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-28 00:39+0000\n"
+"POT-Creation-Date: 2024-04-23 00:38+0000\n"
 "PO-Revision-Date: 2021-08-19 16:07+0200\n"
 "Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -410,7 +410,7 @@ msgstr ""
 "Označení zprávy z '%1' pro smazání z IMAP serveru selhalo. Objeví se znovu "
 "při následující synchronizaci."
 
-#: outlookpasswordrequester.cpp:64
+#: outlookpasswordrequester.cpp:67
 #, kde-format
 msgctxt "@status"
 msgid "Failed to open KWallet"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-28 00:39+0000\n"
+"POT-Creation-Date: 2024-04-23 00:38+0000\n"
 "PO-Revision-Date: 2012-06-11 16:03+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -419,7 +419,7 @@ msgstr ""
 "បាន​បរាជ័យ​ក្នុង​ការ​សម្គាល់​សារ​ពី '%1' សម្រាប់​លុប​នៅ​លើ​ម៉ាស៊ីន​បម្រើ IMAP ។ វា​នឹង​បង្ហាញ​ឡើង​វិញ​នៅ​​ពេល​"
 "ធ្វើសមកាលកម្ម​បន្ទាប់ ។"
 
-#: outlookpasswordrequester.cpp:64
+#: outlookpasswordrequester.cpp:67
 #, fuzzy, kde-format
 #| msgid "Failed to connect to server"
 msgctxt "@status"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-28 00:39+0000\n"
+"POT-Creation-Date: 2024-04-23 00:38+0000\n"
 "PO-Revision-Date: 2013-11-18 04:31+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -423,7 +423,7 @@ msgstr ""
 "IMAP серверіндегі '%1' дегендегі хабарламаны өшірілетін деп белгіленбеді. Ол "
 "келесі қадамдастыруда қайта пайда болады."
 
-#: outlookpasswordrequester.cpp:64
+#: outlookpasswordrequester.cpp:67
 #, fuzzy, kde-format
 #| msgid "Failed to connect to server"
 msgctxt "@status"

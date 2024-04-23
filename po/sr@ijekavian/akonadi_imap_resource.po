@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-28 00:39+0000\n"
+"POT-Creation-Date: 2024-04-23 00:38+0000\n"
 "PO-Revision-Date: 2017-09-28 18:00+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -417,7 +417,7 @@ msgstr ""
 "Не могу да означим поруку из „%1“ за брисање на ИМАП серверу. Поново ће се "
 "појавити по наредној синхронизацији."
 
-#: outlookpasswordrequester.cpp:64
+#: outlookpasswordrequester.cpp:67
 #, fuzzy, kde-format
 #| msgid "Do not use KWallet"
 msgctxt "@status"

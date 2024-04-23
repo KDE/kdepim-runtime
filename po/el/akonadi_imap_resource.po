@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-28 00:39+0000\n"
+"POT-Creation-Date: 2024-04-23 00:38+0000\n"
 "PO-Revision-Date: 2017-04-20 16:28+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -450,7 +450,7 @@ msgstr ""
 "Αποτυχία σημείωσης του μηνύματος από το '%1' για διαγραφή στον εξυπηρετητή "
 "IMAP. Το μήνυμα θα επανεμφανιστεί στον επόμενο συγχρονισμό."
 
-#: outlookpasswordrequester.cpp:64
+#: outlookpasswordrequester.cpp:67
 #, fuzzy, kde-format
 #| msgid "Failed to connect to server"
 msgctxt "@status"
