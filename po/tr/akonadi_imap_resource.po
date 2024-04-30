@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-04-23 00:38+0000\n"
-"PO-Revision-Date: 2024-03-13 14:07+0300\n"
+"PO-Revision-Date: 2024-04-30 00:20+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.02.0\n"
+"X-Generator: Lokalize 24.07.70\n"
 "X-POOTLE-MTIME: 1413102275.000000\n"
 
 #: addcollectiontask.cpp:33
@@ -64,7 +64,7 @@ msgid ""
 "ACLs for '%1' need to be retrieved from the IMAP server first. Skipping ACL "
 "change"
 msgstr ""
-"‘%1’ için ACL’lerin önce IMAP sunucusundan alınması gerekmektedir. ACL "
+"“%1” için ACL’lerin önce IMAP sunucusundan alınması gerekmektedir. ACL "
 "değişimi atlanıyor"
 
 #: changecollectiontask.cpp:237
@@ -85,7 +85,7 @@ msgstr ""
 #: changecollectiontask.cpp:267
 #, kde-format
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
-msgstr "IMAP sunucusundaki ‘%1’ için bazı ACL’ler yazılamadı. %2"
+msgstr "IMAP sunucusundaki “%1” için bazı ACL’ler yazılamadı. %2"
 
 #: imapresource.cpp:49
 #, kde-format

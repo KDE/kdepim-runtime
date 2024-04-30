@@ -1,3 +1,4 @@
+# SPDX-FileCopyrightText: 2024 Johannes Obermayr <johannesobermayr@gmx.de>
 # Burkhard Lück <lueck@hube-lueck.de>, 2009, 2012, 2014, 2017, 2018.
 # Thomas Reitelbach <tr@erdfunkstelle.de>, 2009.
 # Markus Slopianka <markus.s@kdemail.net>, 2010.
@@ -9,15 +10,15 @@ msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-02-29 00:38+0000\n"
-"PO-Revision-Date: 2022-11-09 17:19+0100\n"
-"Last-Translator: Alois Spitzbart <spitz234@hotmail.com>\n"
+"PO-Revision-Date: 2024-04-28 20:07+0200\n"
+"Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 22.08.2\n"
+"X-Generator: Lokalize 24.02.2\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -230,7 +231,7 @@ msgstr "Datei"
 #: singlefileresourceconfigwidget_desktop.ui:47
 #, kde-format
 msgid "File or URL:"
-msgstr ""
+msgstr "Datei oder Adresse:"
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
@@ -248,11 +249,7 @@ msgstr "Anzeigename:"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
-#, fuzzy, kde-format
-#| msgid ""
-#| "When read-only mode is enabled, no changes will be written. Read-only "
-#| "mode is automatically enabled when the selected file does not support "
-#| "write access."
+#, kde-format
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
@@ -260,21 +257,18 @@ msgid ""
 msgstr ""
 "Wenn Sie den Nur-Lesen-Modus aktiviert haben, werden keine Änderungen "
 "gespeichert. Der Nur-Lesen-Modus ist automatisch aktiviert, wenn die "
-"ausgewählte Datei keinen Schreibzugriff unterstützt."
+"ausgewählte Datei keinen Schreibzugriff unterstützt oder ein Kalender einer "
+"entfernten Adresse angezeigt wird."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
-#, fuzzy, kde-format
-#| msgid "Monitoring"
+#, kde-format
 msgid "Monitor for &changes"
-msgstr "Überwachung"
+msgstr "Auf Änderungen über&wachen"
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
-#, fuzzy, kde-format
-#| msgid ""
-#| "Changes made by other applications will reload the file when monitoring "
-#| "is enabled. Backups will be created to avoid conflicts when possible."
+#, kde-format
 msgid ""
 "Changes made by other applications will reload the file when monitoring is "
 "enabled. Backups will be created to avoid conflicts when possible. "
@@ -282,7 +276,8 @@ msgid ""
 msgstr ""
 "Änderungen, die von anderen Anwendungen vorgenommen werden, lösen ein "
 "Neuladen der Datei aus, wenn die Überwachung aktiviert ist. Zur Vermeidung "
-"von Konflikten werden nach Möglichkeit Sicherungskopien erstellt."
+"von Konflikten werden nach Möglichkeit Sicherungskopien erstellt. Das "
+"Überwachen entfernter Adressen wird nicht unterstützt."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
 #: singlefileresourceconfigwidget_desktop.ui:149
@@ -292,11 +287,9 @@ msgstr ""
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
 #: singlefileresourceconfigwidget_desktop.ui:159
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid " minutes"
-msgstr " Minute"
+msgstr " Minuten"
 
 #. i18n: ectx: property (text), widget (QLabel, periodicUpdateLabel)
 #: singlefileresourceconfigwidget_desktop.ui:193
