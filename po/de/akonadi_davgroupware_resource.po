@@ -1,3 +1,4 @@
+# SPDX-FileCopyrightText: 2024 Johannes Obermayr <johannesobermayr@gmx.de>
 # Burkhard Lück <lueck@hube-lueck.de>, 2009, 2011, 2013, 2014, 2015, 2017, 2018, 2020, 2021.
 # Frederik Schwarzer <schwarzer@kde.org>, 2010, 2011, 2016, 2020, 2022.
 # Panagiotis Papadopoulos <pano_90@gmx.net>, 2010.
@@ -10,15 +11,15 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-03-13 00:38+0000\n"
-"PO-Revision-Date: 2022-10-01 11:35+0200\n"
-"Last-Translator: Alois Spitzbart <spitz234@hotmail.com>\n"
+"PO-Revision-Date: 2024-04-28 20:10+0200\n"
+"Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 22.08.0\n"
+"X-Generator: Lokalize 24.02.2\n"
 
 #: configdialog.cpp:33
 #, kde-format
@@ -152,34 +153,27 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: daverror-kdepim-runtime.cpp:26
-#, fuzzy, kde-format
-#| msgid "Invalid username/password"
+#, kde-format
 msgid "Invalid username/password"
 msgstr "Ungültiger Benutzername/Passwort"
 
 #: daverror-kdepim-runtime.cpp:28
-#, fuzzy, kde-format
-#| msgid "Access forbidden"
+#, kde-format
 msgid "Access forbidden"
 msgstr "Zugriff unzulässig"
 
 #: daverror-kdepim-runtime.cpp:30
-#, fuzzy, kde-format
-#| msgid "Resource not found"
+#, kde-format
 msgid "Resource not found"
-msgstr "Die Ressource wurde nicht gefunden"
+msgstr "Resource nicht gefunden"
 
 #: daverror-kdepim-runtime.cpp:32
-#, fuzzy, kde-format
-#| msgid "HTTP error"
+#, kde-format
 msgid "HTTP error"
 msgstr "HTTP-Fehler"
 
 #: daverror-kdepim-runtime.cpp:35
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request.\n"
-#| "%1 (%2)."
+#, kde-format
 msgid ""
 "There was a problem with the request.\n"
 "%1 (%2)."
@@ -188,16 +182,12 @@ msgstr ""
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:41
-#, fuzzy, kde-format
-#| msgid "Protocol for the collection does not support MULTIGET"
+#, kde-format
 msgid "Protocol for the collection does not support MULTIGET"
 msgstr "Das Protokoll für die Sammlung unterstützt MULTIGET nicht."
 
 #: daverror-kdepim-runtime.cpp:44
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server encountered an error that prevented it from completing your "
-#| "request: %1 (%2)"
+#, kde-format
 msgid ""
 "The server encountered an error that prevented it from completing your "
 "request: %1 (%2)"
@@ -206,11 +196,7 @@ msgstr ""
 "Abfrage verhindert: %1 (%2)"
 
 #: daverror-kdepim-runtime.cpp:48
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The collection has not been deleted "
-#| "from the server.\n"
-#| "%1 (%2)."
+#, kde-format
 msgid ""
 "There was a problem with the request. The collection has not been deleted "
 "from the server.\n"
@@ -221,29 +207,22 @@ msgstr ""
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:54
-#, fuzzy, kde-format
-#| msgid "Invalid responses from backend"
+#, kde-format
 msgid "Invalid responses from backend"
 msgstr "Ungültige Antwort des Treibers"
 
 #: daverror-kdepim-runtime.cpp:57
-#, fuzzy, kde-format
-#| msgid "Error setting focus for XQuery"
+#, kde-format
 msgid "Error setting focus for XQuery"
 msgstr "Fehler beim Bestimmen des Fokus für XQuery"
 
 #: daverror-kdepim-runtime.cpp:60
-#, fuzzy, kde-format
-#| msgid "Invalid XQuery submitted by DAV implementation"
+#, kde-format
 msgid "Invalid XQuery submitted by DAV implementation"
 msgstr "DAV-Implementation hat ungültige XQuery übermittelt"
 
 #: daverror-kdepim-runtime.cpp:64
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The collection has not been "
-#| "modified on the server.\n"
-#| "%1 (%2)."
+#, kde-format
 msgid ""
 "There was a problem with the request. The collection has not been modified "
 "on the server.\n"
@@ -254,24 +233,18 @@ msgstr ""
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:70
-#, fuzzy, kde-format
-#| msgid "No properties to change or remove"
+#, kde-format
 msgid "No properties to change or remove"
 msgstr ""
 "Keine Eigenschaften vorhanden, die verändert oder gelöscht werden können."
 
 #: daverror-kdepim-runtime.cpp:73
-#, fuzzy, kde-format
-#| msgid "There was an error when modifying the properties"
+#, kde-format
 msgid "There was an error when modifying the properties"
 msgstr "Problem beim Anpassen der Eigenschaften"
 
 #: daverror-kdepim-runtime.cpp:75
-#, fuzzy, kde-format
-#| msgid ""
-#| "\n"
-#| "The server returned more information:\n"
-#| "%1"
+#, kde-format
 msgid ""
 "\n"
 "The server returned more information:\n"
@@ -282,11 +255,7 @@ msgstr ""
 "%1"
 
 #: daverror-kdepim-runtime.cpp:80
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The item has not been created on "
-#| "the server.\n"
-#| "%1 (%2)."
+#, kde-format
 msgid ""
 "There was a problem with the request. The item has not been created on the "
 "server.\n"
@@ -297,11 +266,7 @@ msgstr ""
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:87
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The item has not been deleted from "
-#| "the server.\n"
-#| "%1 (%2)."
+#, kde-format
 msgid ""
 "There was a problem with the request. The item has not been deleted from the "
 "server.\n"
@@ -312,11 +277,7 @@ msgstr ""
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:94
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The item was not modified on the "
-#| "server.\n"
-#| "%1 (%2)."
+#, kde-format
 msgid ""
 "There was a problem with the request. The item was not modified on the "
 "server.\n"
@@ -327,16 +288,12 @@ msgstr ""
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:100
-#, fuzzy, kde-format
-#| msgid "There was a problem with the request."
+#, kde-format
 msgid "There was a problem with the request."
 msgstr "Bei der Abfrage ist ein Problem aufgetreten"
 
 #: daverror-kdepim-runtime.cpp:104
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The requested MIME types are not "
-#| "supported."
+#, kde-format
 msgid ""
 "There was a problem with the request. The requested MIME types are not "
 "supported."
