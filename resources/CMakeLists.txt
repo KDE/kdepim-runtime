@@ -1,7 +1,3 @@
-# Libkolabxml
-find_package(Libkolabxml 1.1 CONFIG)
-set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
-
 # Etebase library
 find_package(Etebase CONFIG)
 set_package_properties(Etebase PROPERTIES URL "https://github.com/etesync/libetebase/releases" TYPE OPTIONAL PURPOSE "The Etebase library is required to build the EteSync Groupware Resource")
@@ -40,13 +36,7 @@ add_subdirectory(contacts)
 add_subdirectory(dav)
 add_subdirectory(ical)
 add_subdirectory(imap)
-if(Libkolabxml_FOUND)
-    # The boost-provided CMake files are unreliable
-    set(Boost_NO_BOOST_CMAKE ON)
-    find_package(Boost MODULE REQUIRED COMPONENTS atomic thread)
-    unset(Boost_NO_BOOST_CMAKE)
-    add_subdirectory(kolab)
-endif()
+add_subdirectory(kolab)
 
 if(Etebase_FOUND)
     add_subdirectory(etesync)

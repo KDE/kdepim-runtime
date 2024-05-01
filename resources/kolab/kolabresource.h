@@ -6,46 +6,19 @@
 
 #pragma once
 
-#include "imapresourcebase.h"
-#include "resourcestate.h"
+#include <Akonadi/ResourceBase>
 
-class KolabResource : public ImapResourceBase, public Akonadi::AgentBase::TagObserver
+class KolabResource : public Akonadi::ResourceBase
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Imap.Resource")
-
-    using Akonadi::AgentBase::Observer::collectionChanged;
+    Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Kolab.Resource")
 
 public:
     explicit KolabResource(const QString &id);
     ~KolabResource() override;
 
-    Settings *settings() const override;
-
 protected Q_SLOTS:
     void retrieveCollections() override;
-    void delayedInit();
-
-protected:
-    ResourceStateInterface::Ptr createResourceState(const TaskArguments &) override;
-
-    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
-    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
-    void itemsMoved(const Akonadi::Item::List &item, const Akonadi::Collection &source, const Akonadi::Collection &destination) override;
-    // itemsRemoved and itemsFlags changed do not require translation, because they don't use the payload
-
-    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
-    void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts) override;
-    // collectionRemoved & collectionMoved do not require adjustments since they don't change the annotations
-
-    void tagAdded(const Akonadi::Tag &tag) override;
-    void tagChanged(const Akonadi::Tag &tag) override;
-    void tagRemoved(const Akonadi::Tag &tag) override;
-    void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags) override;
-
-    QString defaultName() const override;
-    QByteArray clientId() const override;
-
-private Q_SLOTS:
-    void retrieveTags() override;
+    void retrieveItems(const Akonadi::Collection &collection) override;
+    bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
 };

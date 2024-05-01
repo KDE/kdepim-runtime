@@ -1,0 +1,11 @@
+[Global]
+IconName=network-server
+Name=Kolab Resource
+Comment=Access your Kolab resources from KDE
+
+[Event/deprecated]
+Name=Deprecation of the resource
+Comment=Deprecation notice.
+Urgency=Normal
+Action=Popup
+
