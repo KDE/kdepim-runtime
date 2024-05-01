@@ -6,227 +6,56 @@
 
 #include "kolabresource.h"
 
-#include "kolabresource_debug.h"
-#include "kolabresource_trace.h"
-#include "sessionpool.h"
-#include "sessionuiproxy.h"
-#include "settingspasswordrequester.h"
-#include "setupserver.h"
-
-#include <Akonadi/BlockAlarmsAttribute>
-
-#include <Akonadi/AttributeFactory>
-#include <Akonadi/CollectionColorAttribute>
-
-#include "changecollectiontask.h"
-#include "resourcestateinterface.h"
-#include "retrieveitemstask.h"
-#include <Akonadi/CollectionAnnotationsAttribute>
-
+#include <KConfigGroup>
 #include <KLocalizedString>
+#include <KNotification>
+#include <KSharedConfig>
+#include <QIcon>
 
-#include "kolabaddtagtask.h"
-#include "kolabchangeitemstagstask.h"
-#include "kolabchangetagtask.h"
-#include "kolabhelpers.h"
-#include "kolabremovetagtask.h"
-#include "kolabresourcestate.h"
-#include "kolabretrievecollectionstask.h"
-#include "kolabretrievetagstask.h"
-#include "kolabsettings.h"
+using namespace Akonadi;
+using namespace Qt::StringLiterals;
 
 KolabResource::KolabResource(const QString &id)
-    : ImapResourceBase(id)
+    : ResourceBase(id)
 {
-    m_pool->setPasswordRequester(new SettingsPasswordRequester(this, m_pool));
-    m_pool->setSessionUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));
-    m_pool->setClientId(clientId());
+    auto config = KSharedConfig::openStateConfig();
+    auto group = config->group(u"General"_s);
+    auto show = group.readEntry<bool>(u"ShowNotification-"_s + id, true);
+    if (show) {
+        auto ntf = KNotification::event(QStringLiteral("deprecated"),
+                                        i18nc("@title",
+                                              "The Kolab support in KMail was removed. Please migrate your account to "
+                                              "use the standard IMAP and WebDAV module."),
+                                        {},
+                                        KNotification::Persistent | KNotification::SkipGrouping);
+        ntf->setComponentName(QStringLiteral("akonadi_kolab_resource"));
+        connect(ntf, &KNotification::ignored, ntf, &KNotification::close);
+        ntf->sendEvent();
 
-    Akonadi::AttributeFactory::registerAttribute<Akonadi::CollectionColorAttribute>();
-    // Ensure we have up-to date metadata before attempting to sync folder
-    setScheduleAttributeSyncBeforeItemSync(true);
-    setKeepLocalCollectionChanges(QSet<QByteArray>() << "ENTITYDISPLAY" << Akonadi::BlockAlarmsAttribute().type());
+        group.writeEntry(u"ShowNotification-"_s + id, false);
+        config->sync();
+    }
 
-    settings(); // make sure the D-Bus settings interface is up
-    init();
+    setAgentName(i18nc("@title", "Kolab Resource (obsolete)"));
+    setNeedsNetwork(false);
+    Q_EMIT status(NotConfigured, i18nc("@info", "The Kolab resource in KMail was removed."));
 }
 
 KolabResource::~KolabResource() = default;
 
-Settings *KolabResource::settings() const
-{
-    if (!m_settings) {
-        m_settings = new KolabSettings;
-    }
-
-    return m_settings;
-}
-
-void KolabResource::delayedInit()
-{
-    ImapResourceBase::delayedInit();
-    settings()->setRetrieveMetadataOnFolderListing(false);
-    Q_ASSERT(!settings()->retrieveMetadataOnFolderListing());
-}
-
-QString KolabResource::defaultName() const
-{
-    return i18n("Kolab Resource");
-}
-
-QByteArray KolabResource::clientId() const
-{
-    return QByteArrayLiteral("Kontact Kolab Resource 5/KOLAB");
-}
-
-ResourceStateInterface::Ptr KolabResource::createResourceState(const TaskArguments &args)
-{
-    return ResourceStateInterface::Ptr(new KolabResourceState(this, args));
-}
-
 void KolabResource::retrieveCollections()
 {
-    qCDebug(KOLABRESOURCE_TRACE);
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving folders"));
-
-    startTask(new KolabRetrieveCollectionsTask(createResourceState(TaskArguments()), this));
-    synchronizeTags();
 }
 
-void KolabResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
+void KolabResource::retrieveItems(const Collection &collection)
 {
-    qCDebug(KOLABRESOURCE_TRACE) << item.id() << collection.id();
-    bool ok = true;
-    const Akonadi::Item imapItem = KolabHelpers::translateToImap(item, ok);
-    if (!ok) {
-        qCWarning(KOLABRESOURCE_LOG) << "Failed to convert item";
-        cancelTask();
-        return;
-    }
-    ImapResourceBase::itemAdded(imapItem, collection);
 }
 
-void KolabResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts)
+bool KolabResource::retrieveItems(const Item::List &items, const QSet<QByteArray> &parts)
 {
-    qCDebug(KOLABRESOURCE_TRACE) << item.id() << parts;
-    bool ok = true;
-    const Akonadi::Item imapItem = KolabHelpers::translateToImap(item, ok);
-    if (!ok) {
-        qCWarning(KOLABRESOURCE_LOG) << "Failed to convert item";
-        cancelTask();
-        return;
-    }
-    ImapResourceBase::itemChanged(imapItem, parts);
+    return true;
 }
 
-void KolabResource::itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &source, const Akonadi::Collection &destination)
-{
-    qCDebug(KOLABRESOURCE_TRACE) << items.size() << source.id() << destination.id();
-    bool ok = true;
-    const Akonadi::Item::List imapItems = KolabHelpers::translateToImap(items, ok);
-    if (!ok) {
-        qCWarning(KOLABRESOURCE_LOG) << "Failed to convert item";
-        cancelTask();
-        return;
-    }
-    ImapResourceBase::itemsMoved(imapItems, source, destination);
-}
-
-static Akonadi::Collection updateAnnotations(const Akonadi::Collection &collection)
-{
-    qCDebug(KOLABRESOURCE_TRACE) << collection.id();
-    // Set the annotations on new folders
-    const QByteArray kolabType = KolabHelpers::kolabTypeForMimeType(collection.contentMimeTypes());
-    Akonadi::Collection col = collection;
-    auto attr = col.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
-    QMap<QByteArray, QByteArray> annotations = attr->annotations();
-
-    bool changed = false;
-    auto colorAttribute = col.attribute<Akonadi::CollectionColorAttribute>();
-    if (colorAttribute) {
-        const QColor color = colorAttribute->color();
-        if (color.isValid()) {
-            KolabHelpers::setFolderColor(annotations, color);
-            changed = true;
-        }
-    }
-
-    if (!kolabType.isEmpty()) {
-        KolabHelpers::setFolderTypeAnnotation(annotations, kolabType);
-        changed = true;
-    }
-
-    if (changed) {
-        attr->setAnnotations(annotations);
-        return col;
-    }
-    return collection;
-}
-
-void KolabResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
-{
-    qCDebug(KOLABRESOURCE_TRACE) << collection.id() << parent.id();
-    // Set the annotations on new folders
-    const Akonadi::Collection col = updateAnnotations(collection);
-    // TODO we need to save the collections as well if the annotations have changed
-    // or we simply don't have the annotations locally, which perhaps is also not required?
-    ImapResourceBase::collectionAdded(col, parent);
-}
-
-void KolabResource::collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts)
-{
-    qCDebug(KOLABRESOURCE_TRACE) << collection.id() << parts;
-    QSet<QByteArray> p = parts;
-    // Update annotations if necessary
-    // FIXME col ?????
-    const Akonadi::Collection col = updateAnnotations(collection);
-    if (parts.contains(Akonadi::CollectionColorAttribute().type())) {
-        p << Akonadi::CollectionAnnotationsAttribute().type();
-    }
-
-    // TODO we need to save the collections as well if the annotations have changed
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Updating folder '%1'", collection.name()));
-    auto task = new ChangeCollectionTask(createResourceState(TaskArguments(collection, p)), this);
-    task->syncEnabledState(true);
-    startTask(task);
-}
-
-void KolabResource::tagAdded(const Akonadi::Tag &tag)
-{
-    qCDebug(KOLABRESOURCE_TRACE) << tag.id();
-    auto task = new KolabAddTagTask(createResourceState(TaskArguments(tag)), this);
-    startTask(task);
-}
-
-void KolabResource::tagChanged(const Akonadi::Tag &tag)
-{
-    qCDebug(KOLABRESOURCE_TRACE) << tag.id();
-    auto task = new KolabChangeTagTask(createResourceState(TaskArguments(tag)), QSharedPointer<TagConverter>(new TagConverter), this);
-    startTask(task);
-}
-
-void KolabResource::tagRemoved(const Akonadi::Tag &tag)
-{
-    qCDebug(KOLABRESOURCE_TRACE) << tag.id();
-    auto task = new KolabRemoveTagTask(createResourceState(TaskArguments(tag)), this);
-    startTask(task);
-}
-
-void KolabResource::itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags)
-{
-    qCDebug(KOLABRESOURCE_TRACE) << items.size() << addedTags.size() << removedTags.size();
-    auto task =
-        new KolabChangeItemsTagsTask(createResourceState(TaskArguments(items, addedTags, removedTags)), QSharedPointer<TagConverter>(new TagConverter), this);
-    startTask(task);
-}
-
-void KolabResource::retrieveTags()
-{
-    qCDebug(KOLABRESOURCE_TRACE);
-    auto task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), KolabRetrieveTagTask::RetrieveTags, this);
-    startTask(task);
-}
-
-AKONADI_RESOURCE_MAIN(KolabResource)
+AKONADI_RESOURCE_CORE_MAIN(KolabResource)
 
 #include "moc_kolabresource.cpp"
