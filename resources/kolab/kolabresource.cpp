@@ -24,6 +24,7 @@
 #include <Akonadi/CollectionAnnotationsAttribute>
 
 #include <KLocalizedString>
+#include <KNotification>
 #include <KWindowSystem>
 #include <QIcon>
 
@@ -69,6 +70,17 @@ void KolabResource::delayedInit()
     ImapResourceBase::delayedInit();
     settings()->setRetrieveMetadataOnFolderListing(false);
     Q_ASSERT(!settings()->retrieveMetadataOnFolderListing());
+
+    auto ntf = KNotification::event(QStringLiteral("deprecated"),
+                                    i18nc("@title",
+                                          "The Kolab resource in KMail is deprecated and will be removed in the next version. Please migrate your account to "
+                                          "use the standard IMAP and WebDAV module."),
+                                    msg,
+                                    QStringLiteral("network-server"),
+                                    KNotification::Persistent | KNotification::SkipGrouping);
+    ntf->setComponentName(QStringLiteral("akonadi_kolab_resource"));
+    connect(ntf, &KNotification::ignored, ntf, &KNotification::close);
+    ntf->sendEvent();
 }
 
 QString KolabResource::defaultName() const

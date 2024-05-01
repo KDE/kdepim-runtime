@@ -89,11 +89,17 @@ target_link_libraries(akonadi_kolab_resource
     akonadi-singlefileresource
     KF6::TextWidgets
     KF6::I18n
+    KF6::Notifications
     )
 
 install(FILES kolabresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 install(TARGETS akonadi_kolab_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install( FILES org.kde.akonadi_kolab_resource.desktop DESTINATION ${KDE_INSTALL_APPDIR} )
+
+install(
+    FILES akonadi_kolab_resource.notifyrc
+    DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR}
+)
 
 if (BUILD_TESTING)
     #add_subdirectory(autotests)
