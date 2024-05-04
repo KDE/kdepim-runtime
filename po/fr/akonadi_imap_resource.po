@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-04-23 00:38+0000\n"
-"PO-Revision-Date: 2024-03-14 09:02+0100\n"
-"Last-Translator: xavier <xavier.besnard@kde.org>\n"
+"PO-Revision-Date: 2024-04-26 16:50+0200\n"
+"Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -257,7 +257,7 @@ msgstr ""
 #: imapresource.kcfg:92
 #, kde-format
 msgid "Define if server supports sieve"
-msgstr "Définir si le serveur prend en charge le protocole « sieve »"
+msgstr "Définir si le serveur prend en charge le protocole Sieve."
 
 #. i18n: ectx: label, entry (SieveReuseConfig), group (siever)
 #: imapresource.kcfg:96
@@ -271,7 +271,7 @@ msgstr ""
 #: imapresource.kcfg:100
 #, kde-format
 msgid "Define sieve port"
-msgstr "Définir le port « sieve »"
+msgstr "Définir le port « Sieve »"
 
 #. i18n: ectx: label, entry (SieveAlternateUrl), group (siever)
 #: imapresource.kcfg:104
@@ -290,7 +290,7 @@ msgstr ""
 #: imapresource.kcfg:111
 #, kde-format
 msgid "Define default sieve vacation filename"
-msgstr "Définir le nom de fichier « sieve » d'absences par défaut"
+msgstr "Définir le nom de fichier « Sieve » d'absences par défaut"
 
 #. i18n: ectx: label, entry (SieveCustomUsername), group (siever)
 #: imapresource.kcfg:115
@@ -917,7 +917,7 @@ msgstr "Filtrage"
 #: setupserverview_desktop.ui:166
 #, kde-format
 msgid "Server supports Sieve"
-msgstr "Le serveur prend en charge le protocole « sieve »"
+msgstr "Le serveur prend en charge le protocole « Sieve »"
 
 #. i18n: ectx: property (text), widget (QCheckBox, sameConfigCheck)
 #: setupserverview_desktop.ui:173
@@ -942,7 +942,7 @@ msgstr ""
 #: setupserverview_desktop.ui:192
 #, kde-format
 msgid "Managesieve port:"
-msgstr "Port de « Managesieve » :"
+msgstr "Portage de « Managesieve » :"
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: setupserverview_desktop.ui:210
@@ -1150,8 +1150,8 @@ msgstr ""
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">SSL/TLS</span><span style=\" font-"
-"family:'Sans Serif';\"> est un protocole IMAP sécurisé sur le port 993;</"
-"span></p>\n"
+"family:'Sans Serif';\"> est un protocole « IMAP » sécurisé sur le port 993 ; "
+"</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">STARTTLS</span><span style=\" font-"
