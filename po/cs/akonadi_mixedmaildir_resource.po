@@ -2,21 +2,21 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Vít Pelčák <vit@pelcak.org>, 2010, 2011, 2013, 2014.
 # Lukáš Tinkl <lukas@kde.org>, 2012.
-# Vit Pelcak <vit@pelcak.org>, 2021.
+# SPDX-FileCopyrightText: 2021, 2024 Vit Pelcak <vit@pelcak.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-09-26 00:46+0000\n"
-"PO-Revision-Date: 2021-08-19 16:06+0200\n"
+"PO-Revision-Date: 2024-04-26 11:02+0200\n"
 "Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 21.08.0\n"
+"X-Generator: Lokalize 24.02.2\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: configwidget.cpp:28
@@ -177,14 +177,14 @@ msgstr "Nelze přesunout složku %1 z %2 do %3"
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot add emails to folder %1"
-msgstr "Není možné přidat zprávy do složky %1"
+msgstr "Nelze přidat zprávy do složky %1"
 
 #: mixedmaildirstore.cpp:1555 mixedmaildirstore.cpp:1567
 #: mixedmaildirstore.cpp:1581 mixedmaildirstore.cpp:1613
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot remove emails from folder %1"
-msgstr "Není možné odstranit zprávy ze složky %1"
+msgstr "Nelze odstranit zprávy ze složky %1"
 
 #: mixedmaildirstore.cpp:1679 mixedmaildirstore.cpp:1719
 #, kde-format
@@ -204,20 +204,20 @@ msgstr "Selhalo načtení maildir složky %1"
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot modify emails in folder %1"
-msgstr "Není možné měnit zprávy ve složce %1"
+msgstr "Nelze měnit zprávy ve složce %1"
 
 #: mixedmaildirstore.cpp:1874
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot modify emails in folder %1. %2"
-msgstr "Není možné měnit zprávy ve složce %1. %2"
+msgstr "Nelze měnit zprávy ve složce %1. %2"
 
 #: mixedmaildirstore.cpp:1899 mixedmaildirstore.cpp:1930
 #: mixedmaildirstore.cpp:1954
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move emails from folder %1"
-msgstr "Není možné přesunout zprávy ze složky %1"
+msgstr "Nelze přesunout zprávy ze složky %1"
 
 #: mixedmaildirstore.cpp:1913 mixedmaildirstore.cpp:1941
 #: mixedmaildirstore.cpp:1986 mixedmaildirstore.cpp:2010
@@ -226,20 +226,20 @@ msgstr "Není možné přesunout zprávy ze složky %1"
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move emails to folder %1"
-msgstr "Není možné přesunout zprávy do složky %1"
+msgstr "Nelze přesunout zprávy do složky %1"
 
 #: mixedmaildirstore.cpp:1962 mixedmaildirstore.cpp:2062
 #: mixedmaildirstore.cpp:2084
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move email from folder %1"
-msgstr "Není možné přesunout zprávu ze složky %1"
+msgstr "Nelze přesunout zprávu ze složky %1"
 
 #: mixedmaildirstore.cpp:2040 mixedmaildirstore.cpp:2145
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move email from folder %1 to folder %2"
-msgstr "Není možné přesunout zprávu ze složky %1 do složky %2"
+msgstr "Nelze přesunout zprávu ze složky %1 do složky %2"
 
 #: mixedmaildirstore.cpp:2298
 #, kde-format
@@ -251,7 +251,7 @@ msgstr "Nelze přesunout složku %1 do vlastní podsložky "
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot add email to folder %1 because there is no email content"
-msgstr "Není možné přidat zprávu do složky %1, protože nic neobsahuje"
+msgstr "Nelze přidat zprávu do složky %1, protože nic neobsahuje"
 
 #: mixedmaildirstore.cpp:2318
 #, kde-format
