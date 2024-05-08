@@ -1171,7 +1171,3 @@ msgstr "Cerca:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Només els subscrits"
-
-#~ msgctxt "Authentication method"
-#~ msgid "Gmail"
-#~ msgstr "Gmail"

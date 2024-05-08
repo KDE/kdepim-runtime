@@ -765,8 +765,7 @@ msgstr "Descobriment automàtic del servidor Exchange"
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery..."
 msgstr ""
-"S'està realitzant el descobriment automàtic del servidor Microsoft "
-"Exchange..."
+"S'està realitzant el descobriment automàtic del servidor Microsoft Exchange…"
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -777,7 +776,7 @@ msgstr "Connexió amb Exchange"
 #: ewsprogressdialog.cpp:53
 #, kde-format
 msgid "Connecting to Microsoft Exchange server..."
-msgstr "S'està connectant amb el servidor Microsoft Exchange..."
+msgstr "S'està connectant amb el servidor Microsoft Exchange…"
 
 #: ewsresource.cpp:143
 #, kde-format

@@ -161,7 +161,7 @@ msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
 msgstr ""
-"Si se selecciona, s'utilitzarà la configuració del sistema per a connectar "
+"Si està marcada, s'utilitzarà la configuració del sistema per a connectar "
 "amb el servidor de correu."
 
 #. i18n: ectx: label, entry (DisconnectedModeEnabled), group (cache)
@@ -389,7 +389,7 @@ msgstr "S'està movent la carpeta «%1» des de «%2» a «%3»"
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching..."
-msgstr "S'està buscant..."
+msgstr "S'està buscant…"
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -762,9 +762,9 @@ msgid ""
 "below, but note that you will be prompted for your password when needed."
 msgstr ""
 "No podeu accedir a KWallet. Si voleu emmagatzemar la contrasenya "
-"permanentment, heu d'activar-ho. Si no voleu utilitzar KWallet, seleccioneu "
-"la casella de davall, però teniu en compte que se vos preguntarà per la "
-"vostra contrasenya quan siga necessari."
+"permanentment, heu d'activar-ho. Si no voleu utilitzar KWallet, marqueu la "
+"casella de davall, però teniu en compte que se vos preguntarà per la vostra "
+"contrasenya quan siga necessari."
 
 #: setupserver.cpp:417 setupserver.cpp:473
 #, kde-format
@@ -1036,7 +1036,7 @@ msgstr "Habilita les subscripcions de la banda del servidor"
 #: setupserverview_desktop.ui:381
 #, kde-format
 msgid "Serverside Subscription..."
-msgstr "Subscripció de la banda del servidor..."
+msgstr "Subscripció de la banda del servidor…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390

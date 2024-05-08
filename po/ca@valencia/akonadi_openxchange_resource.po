@@ -114,7 +114,7 @@ msgstr "La contrasenya que s'utilitza per a accedir al servidor Open-Xchange"
 #: configwidget.ui:98
 #, kde-format
 msgid "Test Connection..."
-msgstr "Prova de connexió..."
+msgstr "Prova de connexió…"
 
 #: openxchangeresource.cpp:250
 #, kde-format

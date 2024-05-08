@@ -104,7 +104,7 @@ msgstr "Element no vàlid."
 #: googleresource.cpp:82
 #, kde-format
 msgid "Fetching password..."
-msgstr "S'està recuperant la contrasenya..."
+msgstr "S'està recuperant la contrasenya…"
 
 #: googleresource.cpp:89
 #, kde-format
@@ -210,7 +210,7 @@ msgstr "Compte:"
 #: googlesettingswidget.ui:42
 #, kde-format
 msgid "Configure..."
-msgstr "Configura..."
+msgstr "Configura…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49
@@ -427,6 +427,3 @@ msgstr "S'està canviant la llista de tasques «%1»"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "S'està eliminant la llista de tasques «%1»"
-
-#~ msgid "Configured account does not exist"
-#~ msgstr "El compte configurat no existix"
