@@ -35,8 +35,9 @@ SingleFileResourceBase::SingleFileResourceBase(const QString &id)
 {
     connect(this, &SingleFileResourceBase::reloadConfiguration, this, [this]() {
         applyConfigurationChanges();
-        [[maybe_unused]] const auto future = reloadFile();
-        synchronizeCollectionTree();
+        reloadFile().then([this](bool) {
+            synchronize();
+        });
     });
     QTimer::singleShot(0, this, [this]() {
         [[maybe_unused]] const auto future = readFile();
