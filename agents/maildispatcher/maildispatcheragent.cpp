@@ -77,7 +77,7 @@ void MailDispatcherAgent::dispatch()
             mSentItemsSize = 0;
             Q_EMIT percent(0);
         }
-        Q_EMIT status(AgentBase::Running, i18np("Sending messages (1 item in queue)...", "Sending messages (%1 items in queue)...", mQueue->count()));
+        Q_EMIT status(AgentBase::Running, i18np("Sending messages (1 item in queue)…", "Sending messages (%1 items in queue)...", mQueue->count()));
         qCDebug(MAILDISPATCHER_LOG) << "Attempting to dispatch the next message.";
         mSendingInProgress = true;
         mQueue->fetchOne(); // will trigger itemFetched
@@ -221,7 +221,7 @@ void MailDispatcherAgent::sendPercent(KJob *job, unsigned long)
     }
 
     // It is possible that the number of queued messages has changed.
-    Q_EMIT status(AgentBase::Running, i18np("Sending messages (1 item in queue)...", "Sending messages (%1 items in queue)...", 1 + mQueue->count()));
+    Q_EMIT status(AgentBase::Running, i18np("Sending messages (1 item in queue)…", "Sending messages (%1 items in queue)...", 1 + mQueue->count()));
 }
 
 void MailDispatcherAgent::sendResult(KJob *job)

@@ -114,7 +114,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         QString subject = mSubject.simplified();
         if (subject.length() > 80) {
             subject.truncate(80);
-            subject += QStringLiteral("...");
+            subject += QStringLiteral("…");
         }
         result << i18n("Subject: %1", subject.toHtmlEscaped());
     }
@@ -147,7 +147,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
             notification->setPixmap(pixmap);
         }
 
-        auto showMailAction = notification->addAction(i18n("Show mail..."));
+        auto showMailAction = notification->addAction(i18n("Show mail…"));
         connect(showMailAction, &KNotificationAction::activated, this, &SpecialNotifierJob::slotOpenMail);
 
         auto markAsReadAction = notification->addAction(i18n("Mark As Read"));

@@ -126,7 +126,7 @@ void SingleFileResourceConfigWidgetBase::validate()
 
         ui.kcfg_MonitorFile->setChecked(false);
         ui.kcfg_MonitorFile->setEnabled(false);
-        ui.statusLabel->setText(i18nc("@info:status", "Checking file information..."));
+        ui.statusLabel->setText(i18nc("@info:status", "Checking file information…"));
         ui.statusLabel->setVisible(true);
 
         if (mStatJob) {

@@ -38,11 +38,11 @@ void MigrationExecutor::executeNext()
         migrator = mCurrentMigrator.toStrongRef();
     }
     if (migrator) {
-        Q_EMIT infoMessage(this, i18nc("PIM-Maintenance is in progress.", "In progress..."));
+        Q_EMIT infoMessage(this, i18nc("PIM-Maintenance is in progress.", "In progress…"));
         connect(migrator.data(), &MigratorBase::stoppedProcessing, this, &MigrationExecutor::onStoppedProcessing);
         migrator->start();
     } else {
-        // Reset the notification status, otherwise we get notification "In progress...[finished]"
+        // Reset the notification status, otherwise we get notification "In progress…[finished]"
         // without any description that it's related to PIM-Maintenance
         Q_EMIT infoMessage(this, i18n("PIM Maintenance"));
         emitResult();

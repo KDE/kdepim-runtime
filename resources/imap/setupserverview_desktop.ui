@@ -378,7 +378,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Serverside Subscription...</string>
+            <string>Serverside Subscription…</string>
            </property>
           </widget>
          </item>

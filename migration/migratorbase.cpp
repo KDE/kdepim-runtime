@@ -144,7 +144,7 @@ void MigratorBase::start()
     }
     // TODO acquire dbus lock
     logMessage(Info, displayName());
-    Q_EMIT message(Info, i18n("Starting migration..."));
+    Q_EMIT message(Info, i18n("Starting migration…"));
     setMigrationState(InProgress);
     setProgress(0);
     startWork();
@@ -269,7 +269,7 @@ QString MigratorBase::status() const
     case None:
         return i18nc("@info:status", "Not started");
     case InProgress:
-        return i18nc("@info:status", "Running...");
+        return i18nc("@info:status", "Running…");
     case Complete:
         return i18nc("@info:status", "Complete");
     case Aborted:

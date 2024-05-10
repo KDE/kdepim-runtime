@@ -79,7 +79,7 @@ GoogleResource::GoogleResource(const QString &id)
     changeRecorder()->fetchCollection(true);
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::All);
 
-    Q_EMIT status(NotConfigured, i18n("Fetching password..."));
+    Q_EMIT status(NotConfigured, i18n("Fetching password…"));
 
     connect(&m_settings, &GoogleSettings::accountReady, this, [this](bool ready) {
         if (accountId() > 0) {

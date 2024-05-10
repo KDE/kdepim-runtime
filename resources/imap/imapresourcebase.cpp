@@ -468,7 +468,7 @@ void ImapResourceBase::doSearch(const QVariant &arg)
     const QString query = map[QStringLiteral("query")].toString();
     const auto collection = map[QStringLiteral("collection")].value<Collection>();
 
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Searching..."));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Searching…"));
     startTask(new SearchTask(createResourceState(TaskArguments(collection)), query, this));
 }
 

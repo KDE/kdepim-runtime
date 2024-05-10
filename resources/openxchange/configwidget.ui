@@ -95,7 +95,7 @@
       <bool>false</bool>
      </property>
      <property name="text">
-      <string>Test Connection...</string>
+      <string>Test Connection…</string>
      </property>
     </widget>
    </item>
