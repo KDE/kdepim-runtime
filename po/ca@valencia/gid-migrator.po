@@ -55,7 +55,7 @@ msgstr "No s'ha pogut iniciar la migració perquè el migrador no està llest"
 #: ../migratorbase.cpp:147
 #, kde-format
 msgid "Starting migration..."
-msgstr "S'està iniciant la migració..."
+msgstr "S'està iniciant la migració…"
 
 #: ../migratorbase.cpp:189
 #, kde-format
@@ -92,7 +92,7 @@ msgstr "No iniciada"
 #, kde-format
 msgctxt "@info:status"
 msgid "Running..."
-msgstr "En execució..."
+msgstr "En execució…"
 
 #: ../migratorbase.cpp:274
 #, kde-format

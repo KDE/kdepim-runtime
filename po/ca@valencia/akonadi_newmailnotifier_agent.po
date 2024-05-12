@@ -79,7 +79,7 @@ msgstr ""
 #: newmailnotifierselectcollectionwidget.cpp:127
 #, kde-format
 msgid "Search..."
-msgstr "Busca..."
+msgstr "Busca…"
 
 #: newmailnotifierselectcollectionwidget.cpp:142
 #, kde-format
@@ -245,7 +245,7 @@ msgstr "A: %1 (%2)"
 #: specialnotifierjob.cpp:150
 #, kde-format
 msgid "Show mail..."
-msgstr "Mostra el correu..."
+msgstr "Mostra el correu…"
 
 #: specialnotifierjob.cpp:153
 #, kde-format

@@ -307,4 +307,4 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information..."
-msgstr "S'està comprovant la informació del fitxer..."
+msgstr "S'està comprovant la informació del fitxer…"

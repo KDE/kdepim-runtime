@@ -27,8 +27,8 @@ msgstr ""
 #, kde-format
 msgid "Sending messages (1 item in queue)..."
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "S'està enviant el missatge (1 element en la cua)..."
-msgstr[1] "S'estan enviant els missatges (%1 elements en la cua)..."
+msgstr[0] "S'està enviant el missatge (1 element en la cua)…"
+msgstr[1] "S'estan enviant els missatges (%1 elements en la cua)…"
 
 #: maildispatcheragent.cpp:90
 #, kde-format
