@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-04-23 19:24\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -355,9 +355,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "正在将文件夹“%1”从“%2”移至“%3”"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "正在搜索..."
 
 #: movecollectiontask.cpp:29
@@ -976,9 +978,11 @@ msgstr "启用服务器端订阅"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "服务器端订阅..."
+#, fuzzy, kde-format
+#| msgctxt "@title:window"
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "服务器端订阅"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1117,3 +1121,6 @@ msgstr "搜索："
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "只显示已订阅的"
+
+#~ msgid "Serverside Subscription..."
+#~ msgstr "服务器端订阅..."

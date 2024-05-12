@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2023-10-08 23:06+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -291,9 +291,11 @@ msgstr ""
 "(예: 원격 캘린더)."
 
 #: singlefileresourceconfigwidgetbase.cpp:129
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Checking file information..."
 msgctxt "@info:status"
-msgid "Checking file information..."
+msgid "Checking file information…"
 msgstr "파일 정보 검사 중..."
 
 #~ msgid "File Name:"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2023-05-31 09:53+0200\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -100,8 +100,9 @@ msgid "Invalid item."
 msgstr "Neplatná položka."
 
 #: googleresource.cpp:82
-#, kde-format
-msgid "Fetching password..."
+#, fuzzy, kde-format
+#| msgid "Fetching password..."
+msgid "Fetching password…"
 msgstr "Získávám heslo..."
 
 #: googleresource.cpp:89
@@ -201,8 +202,9 @@ msgstr "Účet:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, kde-format
-msgid "Configure..."
+#, fuzzy, kde-format
+#| msgid "Configure..."
+msgid "Configure…"
 msgstr "Nastavit..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)

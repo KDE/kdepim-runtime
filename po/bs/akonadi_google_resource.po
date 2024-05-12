@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bosnianuniversetranslation\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2014-02-09 17:00+0100\n"
 "Last-Translator: Samir Ribić <megaribi@epn.ba>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -111,7 +111,7 @@ msgstr "Nevažeća korisna informacija stavke"
 
 #: googleresource.cpp:82
 #, kde-format
-msgid "Fetching password..."
+msgid "Fetching password…"
 msgstr ""
 
 #: googleresource.cpp:89
@@ -219,7 +219,7 @@ msgstr "Nalozi"
 #: googlesettingswidget.ui:42
 #, fuzzy, kde-format
 #| msgid "not configured"
-msgid "Configure..."
+msgid "Configure…"
 msgstr "nije konfigurisano"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)

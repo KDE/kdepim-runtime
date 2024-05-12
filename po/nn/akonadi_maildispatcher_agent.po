@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-17 01:36+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2010-02-02 17:39+0100\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
@@ -20,8 +20,10 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
-#, kde-format
-msgid "Sending messages (1 item in queue)..."
+#, fuzzy, kde-format
+#| msgid "Sending messages (1 item in queue)..."
+#| msgid_plural "Sending messages (%1 items in queue)..."
+msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
 msgstr[0] "Sender meldingar (1 i køen) …"
 msgstr[1] "Sender meldingar (%1 i køen) …"

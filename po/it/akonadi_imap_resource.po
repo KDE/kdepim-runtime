@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-03-14 21:57+0100\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -380,9 +380,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Spostamento cartella «%1» da «%2» a «%3»"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Ricerca in corso..."
 
 #: movecollectiontask.cpp:29
@@ -1026,9 +1028,10 @@ msgstr "Abilita sottoscrizioni lato server"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Sottoscrizioni lato server..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Sottoscrizioni lato server"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1169,6 +1172,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Solo sottoscrizioni"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Sottoscrizioni lato server..."
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1228,9 +1234,6 @@ msgstr "Solo sottoscrizioni"
 #~ msgstr ""
 #~ "Impossibile collegarsi al server IMAP.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Sottoscrizioni lato server"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSL è supportato ed il suo uso consigliato.</b></qt>"

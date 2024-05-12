@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-03-24 00:45+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2018-01-19 19:44+0100\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Galician <kde-i18n-doc@kde.org>\n"
@@ -107,8 +107,9 @@ msgstr "O contrasinal empregado para acceder ao servidor de Open-Xchange"
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
-#, kde-format
-msgid "Test Connection..."
+#, fuzzy, kde-format
+#| msgid "Test Connection..."
+msgid "Test Connection…"
 msgstr "Probar a conexión…"
 
 #: openxchangeresource.cpp:250

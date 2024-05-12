@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2020-07-31 19:09+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -104,7 +104,7 @@ msgstr "Ugyldig elementladning."
 
 #: googleresource.cpp:82
 #, kde-format
-msgid "Fetching password..."
+msgid "Fetching password…"
 msgstr ""
 
 #: googleresource.cpp:89
@@ -208,8 +208,9 @@ msgstr "Konto:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, kde-format
-msgid "Configure..."
+#, fuzzy, kde-format
+#| msgid "Configure..."
+msgid "Configure…"
 msgstr "Indstil..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)

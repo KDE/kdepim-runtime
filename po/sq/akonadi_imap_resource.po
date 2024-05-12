@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2009-08-13 12:37+0000\n"
 "Last-Translator: Vilson Gjeci <vilsongjeci@gmail.com>\n"
 "Language-Team: Albanian <sq@li.org>\n"
@@ -357,7 +357,7 @@ msgstr ""
 #: imapresourcebase.cpp:471
 #, kde-format
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr ""
 
 #: movecollectiontask.cpp:29
@@ -972,8 +972,9 @@ msgstr "Serverside Subscription..."
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription..."
+msgid "Serverside Subscription…"
 msgstr "Serverside Subscription..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
@@ -1134,15 +1135,13 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr ""
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Serverside Subscription..."
+
 #, fuzzy
 #~| msgid "Settings"
 #~ msgid "Identity Settings"
 #~ msgstr "Parametrat"
-
-#, fuzzy
-#~| msgid "Serverside Subscription..."
-#~ msgid "Serverside Subscription"
-#~ msgstr "Serverside Subscription..."
 
 #, fuzzy
 #~| msgid "Username"

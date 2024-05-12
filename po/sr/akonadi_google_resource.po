@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_googlecalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2016-12-26 13:16+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -106,7 +106,7 @@ msgstr "Лош тип товара"
 
 #: googleresource.cpp:82
 #, kde-format
-msgid "Fetching password..."
+msgid "Fetching password…"
 msgstr ""
 
 #: googleresource.cpp:89
@@ -212,7 +212,7 @@ msgstr "Налози"
 #: googlesettingswidget.ui:42
 #, fuzzy, kde-format
 #| msgid "not configured"
-msgid "Configure..."
+msgid "Configure…"
 msgstr "није подешено"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)

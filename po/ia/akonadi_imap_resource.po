@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-03-15 18:38+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -376,9 +376,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Movente dossier '%1' ex '%2' a '%3'"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Cercante..."
 
 #: movecollectiontask.cpp:29
@@ -1018,9 +1020,10 @@ msgstr "Habilita subscriptiones le latere servitor"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Subscriptiones de latere servitor"
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Subscriptiones de latere servitor (Serverside)"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1161,6 +1164,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Solmente subscribite"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Subscriptiones de latere servitor"
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1220,9 +1226,6 @@ msgstr "Solmente subscribite"
 #~ msgstr ""
 #~ "Non pote connecter al servitor IMAP.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Subscriptiones de latere servitor (Serverside)"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSL es supportate e recommendate.</b></qt>"

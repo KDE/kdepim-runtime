@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2023-11-23 08:29+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -104,8 +104,9 @@ msgid "Invalid item."
 msgstr "Некоректний запис."
 
 #: googleresource.cpp:82
-#, kde-format
-msgid "Fetching password..."
+#, fuzzy, kde-format
+#| msgid "Fetching password..."
+msgid "Fetching password…"
 msgstr "Отримуємо пароль…"
 
 #: googleresource.cpp:89
@@ -212,8 +213,9 @@ msgstr "Обліковий запис:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, kde-format
-msgid "Configure..."
+#, fuzzy, kde-format
+#| msgid "Configure..."
+msgid "Configure…"
 msgstr "Налаштувати…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)

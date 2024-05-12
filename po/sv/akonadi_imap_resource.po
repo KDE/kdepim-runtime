@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2020-10-10 07:06+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -371,9 +371,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Flyttar korg '%1' från '%2' till '%3'"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Söker..."
 
 #: movecollectiontask.cpp:29
@@ -1006,9 +1008,10 @@ msgstr "Aktivera prenumerationer på serversidan"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Prenumeration på serversidan..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Prenumeration på serversidan"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1148,6 +1151,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Endast prenumerationer"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Prenumeration på serversidan..."
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1194,9 +1200,6 @@ msgstr "Endast prenumerationer"
 #~ msgstr ""
 #~ "Kunde inte skicka klientidentifikation till IMAP-servern.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Prenumeration på serversidan"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSL stöds och rekommenderas.</b></qt>"

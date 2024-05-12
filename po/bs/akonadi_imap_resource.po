@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2015-02-04 15:19+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -371,7 +371,7 @@ msgstr "Premlještam direktorij '%1' sa '%2' na '%3'"
 #: imapresourcebase.cpp:471
 #, fuzzy, kde-format
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Traži:"
 
 #: movecollectiontask.cpp:29
@@ -1027,9 +1027,10 @@ msgstr "Omogući pretplate na serverskoj strni"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Pretplate na serverskoj strani..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Pretplata na serverskoj strani"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1169,6 +1170,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Samo potpisani"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Pretplate na serverskoj strani..."
+
 #~ msgid "Identity Settings"
 #~ msgstr "Podešavanja identiteta"
 
@@ -1224,9 +1228,6 @@ msgstr "Samo potpisani"
 #~ msgstr ""
 #~ "Ne mogu se povezati na IMAP server.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Pretplata na serverskoj strani"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSLje podržan i preporučen.</b></qt>"

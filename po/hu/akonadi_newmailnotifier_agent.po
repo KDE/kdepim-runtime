@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2014-09-04 15:55+0200\n"
 "Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -79,8 +79,9 @@ msgid "Select which folders to monitor for new message notifications:"
 msgstr "Válassza ki, mely mappákat figyelje új üzenetek értesítéséhez:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, kde-format
-msgid "Search..."
+#, fuzzy, kde-format
+#| msgid "Search..."
+msgid "Search…"
 msgstr "Keresés…"
 
 #: newmailnotifierselectcollectionwidget.cpp:142
@@ -249,8 +250,9 @@ msgid "In: %1 (%2)"
 msgstr "Ebben: %1"
 
 #: specialnotifierjob.cpp:150
-#, kde-format
-msgid "Show mail..."
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "Show mail…"
 msgstr "Levél megjelenítése…"
 
 #: specialnotifierjob.cpp:153

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2014-07-13 18:25+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -374,9 +374,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Orner \"%1\" warrt vun \"%2\" na \"%3\" verschaven"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Bi to söken..."
 
 #: movecollectiontask.cpp:29
@@ -1046,9 +1048,10 @@ msgstr "Bestellen op Server-Siet anmaken"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Bestellen op Server-Siet..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Bestellen op Server-Siet"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1188,6 +1191,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Bloots bestellte"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Bestellen op Server-Siet..."
+
 #~ msgid "Identity Settings"
 #~ msgstr "Identiteet instellen"
 
@@ -1248,9 +1254,6 @@ msgstr "Bloots bestellte"
 #~ msgstr ""
 #~ "Tokoppeln na IMAP-Server nich mööglich.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Bestellen op Server-Siet"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSL warrt ünnerstütt un anraadt.</b></qt>"

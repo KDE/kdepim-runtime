@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-03-24 00:45+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2014-08-20 19:39+0200\n"
 "Last-Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -106,8 +106,9 @@ msgstr "Geslo, ki se uporablja za prijavo na strežnik Open-Xchange"
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
-#, kde-format
-msgid "Test Connection..."
+#, fuzzy, kde-format
+#| msgid "Test Connection..."
+msgid "Test Connection…"
 msgstr "Preizkusi povezavo ..."
 
 #: openxchangeresource.cpp:250

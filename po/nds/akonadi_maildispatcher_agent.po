@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-17 01:36+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2014-03-12 01:06+0100\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -19,8 +19,10 @@ msgstr ""
 "X-Generator: Lokalize 1.5\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
-#, kde-format
-msgid "Sending messages (1 item in queue)..."
+#, fuzzy, kde-format
+#| msgid "Sending messages (1 item in queue)..."
+#| msgid_plural "Sending messages (%1 items in queue)..."
+msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
 msgstr[0] "Narichten warrt loosstüert (1 Indrag binnen Reeg)..."
 msgstr[1] "Narichten warrt loosstüert (%1 Indrääg binnen Reeg)..."

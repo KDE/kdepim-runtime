@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2019-12-18 18:35+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -760,8 +760,9 @@ msgid "Exchange server autodiscovery"
 msgstr "Exchange'i serveri automaatne tuvastamine"
 
 #: ewsprogressdialog.cpp:49
-#, kde-format
-msgid "Performing Microsoft Exchange server autodiscovery..."
+#, fuzzy, kde-format
+#| msgid "Performing Microsoft Exchange server autodiscovery..."
+msgid "Performing Microsoft Exchange server autodiscovery…"
 msgstr "Microsoft Exchange'i serveri automaatne tuvastamine ..."
 
 #: ewsprogressdialog.cpp:52
@@ -771,8 +772,9 @@ msgid "Connecting to Exchange"
 msgstr "Ühendumine Exchange'iga"
 
 #: ewsprogressdialog.cpp:53
-#, kde-format
-msgid "Connecting to Microsoft Exchange server..."
+#, fuzzy, kde-format
+#| msgid "Connecting to Microsoft Exchange server..."
+msgid "Connecting to Microsoft Exchange server…"
 msgstr "Ühendumine Microsoft Exchange'i serveriga ..."
 
 #: ewsresource.cpp:143

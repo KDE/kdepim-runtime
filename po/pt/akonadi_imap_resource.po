@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2020-11-11 12:55+0000\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -374,9 +374,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "A mover a pasta '%1' de '%2' para '%3'"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "A procurar..."
 
 #: movecollectiontask.cpp:29
@@ -1020,9 +1022,11 @@ msgstr "Activar as subscrições no servidor"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Subscrição no Servidor..."
+#, fuzzy, kde-format
+#| msgctxt "@title:window"
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Subscrição no Servidor"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1158,6 +1162,9 @@ msgstr "Procurar:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Apenas os subscritos"
+
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Subscrição no Servidor..."
 
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"

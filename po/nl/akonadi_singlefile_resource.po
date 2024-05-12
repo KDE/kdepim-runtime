@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2023-10-06 11:50+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -302,9 +302,11 @@ msgstr ""
 "beschikbaar is (bijv. voor agenda's op afstand)."
 
 #: singlefileresourceconfigwidgetbase.cpp:129
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Checking file information..."
 msgctxt "@info:status"
-msgid "Checking file information..."
+msgid "Checking file information…"
 msgstr "De bestandsinformatie wordt gecontroleerd..."
 
 #~ msgid "File Name:"

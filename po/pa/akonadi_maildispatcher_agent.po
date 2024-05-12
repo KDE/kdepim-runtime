@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-17 01:36+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2011-06-29 23:16+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
@@ -18,8 +18,10 @@ msgstr ""
 "X-Generator: Lokalize 1.2\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
-#, kde-format
-msgid "Sending messages (1 item in queue)..."
+#, fuzzy, kde-format
+#| msgid "Sending messages (1 item in queue)..."
+#| msgid_plural "Sending messages (%1 items in queue)..."
+msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
 msgstr[0] "ਸੁਨੇਹੇ ਭੇਜੇ ਜਾ ਰਹੇ ਹਨ (ਕਤਾਰ 'ਚ 1 ਆਈਟਮ)..."
 msgstr[1] "ਸੁਨੇਹੇ ਭੇਜੇ ਜਾ ਰਹੇ ਹਨ (%1 ਸੁਨੇਹੇ ਕਤਾਰ 'ਚ)..."

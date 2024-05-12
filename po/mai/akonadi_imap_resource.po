@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2010-09-24 16:25+0530\n"
 "Last-Translator: Rajesh Ranjan <rajesh672@gmail.com>\n"
 "Language-Team: Maithili <bhashaghar@googlegroups.com>\n"
@@ -355,7 +355,7 @@ msgstr ""
 #, fuzzy, kde-format
 #| msgid "Search:"
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "खोजू:"
 
 #: movecollectiontask.cpp:29
@@ -955,7 +955,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
 #, kde-format
-msgid "Serverside Subscription..."
+msgid "Serverside Subscription…"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)

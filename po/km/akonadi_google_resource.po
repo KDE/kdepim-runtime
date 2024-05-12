@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2012-06-12 09:59+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -102,7 +102,7 @@ msgstr "payload មិន​ត្រឹមត្រូវ"
 
 #: googleresource.cpp:82
 #, kde-format
-msgid "Fetching password..."
+msgid "Fetching password…"
 msgstr ""
 
 #: googleresource.cpp:89
@@ -204,7 +204,7 @@ msgstr "គណនី"
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
 #, kde-format
-msgid "Configure..."
+msgid "Configure…"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)

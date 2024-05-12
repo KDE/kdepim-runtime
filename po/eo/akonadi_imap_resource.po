@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
-"PO-Revision-Date: 2024-03-17 05:34+0100\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"PO-Revision-Date: 2024-05-10 11:33+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -364,9 +364,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Movante dosierujon '%1' de '%2' al '%3'"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Serĉante..."
 
 #: movecollectiontask.cpp:29
@@ -407,7 +409,7 @@ msgstr "Ne povas movi mesaĝon al '%1', '%1' ne ekzistas sur la servilo."
 #, kde-format
 msgid "Failed to move item, it has no message payload. Remote id: %1"
 msgstr ""
-"Malsukcesis movi elementon, ĝi ne havas mesaĝan ŝarĝon. Fora identigilo: %1"
+"Malsukcesis movi elementon, ĝi ne havas mesaĝan ŝargaĵon. Fora identigilo: %1"
 
 #: moveitemstask.cpp:190
 #, kde-format
@@ -731,8 +733,8 @@ msgid ""
 "below, but note that you will be prompted for your password when needed."
 msgstr ""
 "Ne eblis aliri KWallet. Se vi volas konservi la pasvorton konstante, tiam vi "
-"devas aktivigi ĝin. Se vi ne volas uzi KWallet, kontrolu la skatolon sube, "
-"sed notu, ke oni petos vin por via pasvorto kiam necese."
+"devas aktivigi ĝin. Se vi ne volas uzi KWallet, marku la skatolon sube, sed "
+"notu, ke oni petos vin por via pasvorto kiam necese."
 
 #: setupserver.cpp:417 setupserver.cpp:473
 #, kde-format
@@ -743,7 +745,7 @@ msgstr "Ne uzu KWallet"
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
-"Ne eblas konektiĝi al la servilo, bonvolu kontroli la servilan adreson."
+"Ne eblas konektiĝi al la servilo, bonvolu konfirmi la servilan adreson."
 
 #: setupserver.cpp:550
 #, kde-format
@@ -834,7 +836,7 @@ msgstr "Pasvorto:"
 #: setupserverview_desktop.ui:108
 #, kde-format
 msgid "Mail Checking Options"
-msgstr "Poŝtkontrolaj Opcioj"
+msgstr "Poŝtkontrolaj Elektebloj"
 
 #. i18n: ectx: property (text), widget (QCheckBox, disconnectedModeEnabled)
 #: setupserverview_desktop.ui:115
@@ -852,7 +854,7 @@ msgstr "Ŝalti &ripetan kontrolon je nova poŝto"
 #: setupserverview_desktop.ui:129
 #, kde-format
 msgid "Check mail interval:"
-msgstr "Kontrolu poŝtintervalon:"
+msgstr "Intervalo por poŝtkontrolo:"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
 #: setupserverview_desktop.ui:160
@@ -1001,9 +1003,11 @@ msgstr "Ebligu servilflankajn abonojn"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Servila Abono..."
+#, fuzzy, kde-format
+#| msgctxt "@title:window"
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Servila Abono"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1142,3 +1146,6 @@ msgstr "Serĉi:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Nur abonita"
+
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Servila Abono..."

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2012-07-07 22:46+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -376,7 +376,7 @@ msgstr ""
 #, fuzzy, kde-format
 #| msgid "Search:"
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Meklēt:"
 
 #: movecollectiontask.cpp:29
@@ -1037,8 +1037,9 @@ msgstr "Ieslēgt servera puses pierakstīšanos"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription..."
+msgid "Serverside Subscription…"
 msgstr "Servera puses pierakstīšanās..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
@@ -1183,6 +1184,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Tikai pierakstītie"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Servera puses pierakstīšanās..."
+
 #~ msgid "Identity Settings"
 #~ msgstr "Identitātes iestatījumi"
 
@@ -1238,11 +1242,6 @@ msgstr "Tikai pierakstītie"
 #~ msgstr ""
 #~ "Neizdevās pieslēgties IMAP serverim.\n"
 #~ "%1"
-
-#, fuzzy
-#~| msgid "Serverside Subscription..."
-#~ msgid "Serverside Subscription"
-#~ msgstr "Servera puses pierakstīšanās..."
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSL ir atbalstīts un ieteicams.</b></qt>"

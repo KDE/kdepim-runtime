@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2018-01-06 09:21+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -79,8 +79,9 @@ msgid "Select which folders to monitor for new message notifications:"
 msgstr "Изаберите фасцикле за обавештења о новим порукама:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, kde-format
-msgid "Search..."
+#, fuzzy, kde-format
+#| msgid "Search..."
+msgid "Search…"
 msgstr "Тражи..."
 
 #: newmailnotifierselectcollectionwidget.cpp:142
@@ -251,8 +252,9 @@ msgid "In: %1 (%2)"
 msgstr "У: %1"
 
 #: specialnotifierjob.cpp:150
-#, kde-format
-msgid "Show mail..."
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "Show mail…"
 msgstr "Прикажи поруку..."
 
 #: specialnotifierjob.cpp:153

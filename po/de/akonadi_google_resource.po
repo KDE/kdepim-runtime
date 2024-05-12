@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-04-28 20:13+0200\n"
 "Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -97,8 +97,9 @@ msgid "Invalid item."
 msgstr "Ungültiges Element."
 
 #: googleresource.cpp:82
-#, kde-format
-msgid "Fetching password..."
+#, fuzzy, kde-format
+#| msgid "Fetching password..."
+msgid "Fetching password…"
 msgstr "Passwort wird geholt ..."
 
 #: googleresource.cpp:89
@@ -202,8 +203,9 @@ msgstr "Konto:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, kde-format
-msgid "Configure..."
+#, fuzzy, kde-format
+#| msgid "Configure..."
+msgid "Configure…"
 msgstr "Einrichten ..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)

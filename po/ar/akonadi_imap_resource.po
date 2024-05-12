@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-02-23 18:02+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -359,9 +359,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "ينقل المجلّد ’%1‘ من ’%2‘ إلى ’%3‘"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "يبحث..."
 
 #: movecollectiontask.cpp:29
@@ -987,9 +989,10 @@ msgstr "فعّل الاشتراكات من جانب الخادوم"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "الاشتراك من جانب الخادوم..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "الاشتراك من جانب الخادوم"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1112,6 +1115,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "المشترك فيها فقط"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "الاشتراك من جانب الخادوم..."
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1171,9 +1177,6 @@ msgstr "المشترك فيها فقط"
 #~ msgstr ""
 #~ "تعذّر الاتّصال بخادوم IMAP.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "الاشتراك من جانب الخادوم"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<b>‏SSL مدعوم ومستحسن.</b>"

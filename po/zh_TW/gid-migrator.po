@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-03-20 18:10+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -51,8 +51,9 @@ msgid "Failed to start migration because migrator is not ready"
 msgstr "啟動移植失敗，因為尚未就緒"
 
 #: ../migratorbase.cpp:147
-#, kde-format
-msgid "Starting migration..."
+#, fuzzy, kde-format
+#| msgid "Starting migration..."
+msgid "Starting migration…"
 msgstr "開始移植..."
 
 #: ../migratorbase.cpp:189
@@ -87,9 +88,11 @@ msgid "Not started"
 msgstr "未開始"
 
 #: ../migratorbase.cpp:272
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Running..."
 msgctxt "@info:status"
-msgid "Running..."
+msgid "Running…"
 msgstr "執行中..."
 
 #: ../migratorbase.cpp:274

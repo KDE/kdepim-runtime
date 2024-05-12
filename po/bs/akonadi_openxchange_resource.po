@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_openxchange_resource.po\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-03-24 00:45+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2013-10-18 20:18+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: bs <bs@kde.org>\n"
@@ -108,8 +108,9 @@ msgstr "Lozinka koja se koristi za prijavu na Open-Xchange server"
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
-#, kde-format
-msgid "Test Connection..."
+#, fuzzy, kde-format
+#| msgid "Test Connection..."
+msgid "Test Connection…"
 msgstr "Test konekcije..."
 
 #: openxchangeresource.cpp:250

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2014-03-19 22:25+0100\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -107,7 +107,7 @@ msgstr "Érvénytelen elemtartalom."
 
 #: googleresource.cpp:82
 #, kde-format
-msgid "Fetching password..."
+msgid "Fetching password…"
 msgstr ""
 
 #: googleresource.cpp:89
@@ -214,7 +214,7 @@ msgstr "Felhasználói fiókok"
 #: googlesettingswidget.ui:42
 #, fuzzy, kde-format
 #| msgid "not configured"
-msgid "Configure..."
+msgid "Configure…"
 msgstr "nincs beállítva"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)

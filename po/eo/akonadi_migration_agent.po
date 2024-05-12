@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtimeReport-Msgid-Bugs-To: https://bugs.kde."
 "org\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-01-27 03:07+0100\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2023-05-28 19:19+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -35,9 +35,11 @@ msgid "PIM Maintenance"
 msgstr "PIM-Funkciteno"
 
 #: migrationexecutor.cpp:41
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "PIM-Maintenance is in progress."
+#| msgid "In progress..."
 msgctxt "PIM-Maintenance is in progress."
-msgid "In progress..."
+msgid "In progress…"
 msgstr "En progreso..."
 
 #: migrationexecutor.cpp:47
@@ -64,8 +66,10 @@ msgid "Progress"
 msgstr "Progreso"
 
 #: migrationscheduler.cpp:149
-#, kde-format
-msgctxt "Current status of the migrator (done, in progress, ...)"
+#, fuzzy, kde-format
+#| msgctxt "Current status of the migrator (done, in progress, ...)"
+#| msgid "Status"
+msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "Statuso"
 

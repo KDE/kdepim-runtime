@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2019-12-18 18:36+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -364,9 +364,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Kausta \"%1\" liigutamine asukohast \"%2\" asukohta \"%3\""
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Otsimine..."
 
 #: movecollectiontask.cpp:29
@@ -1003,9 +1005,10 @@ msgstr "Serveripoolsete tellimiste lubamine"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Serveripoolne tellimine..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Serveripoolne tellimine"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1145,6 +1148,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Ainult tellitud"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Serveripoolne tellimine..."
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1209,9 +1215,6 @@ msgstr "Ainult tellitud"
 #~ msgstr ""
 #~ "Ühenduse loomine IMAP serveriga nurjus.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Serveripoolne tellimine"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSL on toetatud ja soovitatav.</b></qt>"

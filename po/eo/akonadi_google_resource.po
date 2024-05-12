@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: kdepim-runtimeReport-Msgid-Bugs-To: https://bugs.kde."
 "org\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-16 00:38+0000\n"
-"PO-Revision-Date: 2023-11-23 20:47+0100\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"PO-Revision-Date: 2024-05-10 11:33+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -101,8 +101,9 @@ msgid "Invalid item."
 msgstr "Nevalida ero."
 
 #: googleresource.cpp:82
-#, kde-format
-msgid "Fetching password..."
+#, fuzzy, kde-format
+#| msgid "Fetching password..."
+msgid "Fetching password…"
 msgstr "Prenante pasvorton..."
 
 #: googleresource.cpp:89
@@ -177,7 +178,7 @@ msgstr "Malsukcesis refreŝigi ĵetonojn"
 #: googleresource.cpp:466 googleresource.cpp:480 googleresource.cpp:494
 #, kde-format
 msgid "Invalid payload type"
-msgstr "Nevalida ŝarĝaĵa tipo"
+msgstr "Nevalida ŝargaĵa tipo"
 
 #: googleresource.cpp:508 googleresource.cpp:522 googleresource.cpp:536
 #, kde-format
@@ -205,8 +206,9 @@ msgstr "Konto:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, kde-format
-msgid "Configure..."
+#, fuzzy, kde-format
+#| msgid "Configure..."
+msgid "Configure…"
 msgstr "Agordi..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)

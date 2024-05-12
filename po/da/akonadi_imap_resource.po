@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2020-07-31 19:15+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -368,9 +368,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Flytter mappen \"%1\" fra \"%2\" til \"%3\""
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Søger..."
 
 #: movecollectiontask.cpp:29
@@ -1005,9 +1007,10 @@ msgstr "Aktivér abonnementer på serversiden"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Abonnement på serversiden..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Abonnement på serversiden"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1148,6 +1151,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Kun abonnerede"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Abonnement på serversiden..."
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1207,9 +1213,6 @@ msgstr "Kun abonnerede"
 #~ msgstr ""
 #~ "Kunne ikke forbinde til IMAP-serveren.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Abonnement på serversiden"
 
 #~ msgid "There is currently no connection to the IMAP server."
 #~ msgstr "Der er i øjeblikket ikke forbindelse til IMAP-serveren."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-03-14 03:49+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -368,9 +368,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "საქაღალდის გადატანა(%1) %2-დან %3-ში"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "ძებნა..."
 
 #: movecollectiontask.cpp:29
@@ -1006,9 +1008,11 @@ msgstr "სერვერის მხარეს გამოწერებ�
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "სერვერის მხარეს გამოწერა..."
+#, fuzzy, kde-format
+#| msgctxt "@title:window"
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "სერვერის მხარეს გამოწერა"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1147,6 +1151,9 @@ msgstr "ძებნა:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "მხოლოდ გამოწერილი"
+
+#~ msgid "Serverside Subscription..."
+#~ msgstr "სერვერის მხარეს გამოწერა..."
 
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"

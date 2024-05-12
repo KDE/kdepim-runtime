@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-12-17 01:36+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2009-12-24 06:59-0500\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -18,8 +18,10 @@ msgstr ""
 "3 : 4\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
-#, kde-format
-msgid "Sending messages (1 item in queue)..."
+#, fuzzy, kde-format
+#| msgid "Sending messages (1 item in queue)..."
+#| msgid_plural "Sending messages (%1 items in queue)..."
+msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
 msgstr[0] "Teachtaireachtaí á seoladh (mír amháin sa chiú)..."
 msgstr[1] "Teachtaireachtaí á seoladh (%1 mhír sa chiú)..."

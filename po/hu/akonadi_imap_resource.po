@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2014-09-04 16:12+0200\n"
 "Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -378,9 +378,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "A(z) „%1” mappa áthelyezése innen: „%2” ide: „%3”"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Keresés…"
 
 #: movecollectiontask.cpp:29
@@ -1051,9 +1053,10 @@ msgstr "Kiszolgáló oldali feliratkozások engedélyezése"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Kiszolgáló oldali feliratkozás…"
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Kiszolgáló oldali feliratkozás"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1193,6 +1196,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Csak feliratkozottak"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Kiszolgáló oldali feliratkozás…"
+
 #~ msgid "Identity Settings"
 #~ msgstr "Az azonosító beállításai"
 
@@ -1248,9 +1254,6 @@ msgstr "Csak feliratkozottak"
 #~ msgstr ""
 #~ "Nem sikerült csatlakozni az IMAP kiszolgálóhoz.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Kiszolgáló oldali feliratkozás"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>Az SSL támogatott és ajánlott.</b></qt>"

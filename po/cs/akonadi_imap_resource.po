@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-04-26 10:32+0200\n"
 "Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -359,9 +359,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Přesouvám složku '%1' z '%2' do '%3'"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Vyhledávám..."
 
 #: movecollectiontask.cpp:29
@@ -982,9 +984,11 @@ msgstr "Povolit předplatné na straně serveru"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Přihlášení k odběru na serveru..."
+#, fuzzy, kde-format
+#| msgctxt "@title:window"
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Přihlášení k odběru na serveru"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1123,3 +1127,6 @@ msgstr "Hledat:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Pouze přihlášené"
+
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Přihlášení k odběru na serveru..."

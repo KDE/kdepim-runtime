@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-03-24 11:24+0100\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -375,9 +375,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "'%1' karpeta '%2'(e)tik '%3'(e)ra eramaten"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Bilatzen..."
 
 #: movecollectiontask.cpp:29
@@ -1021,9 +1023,11 @@ msgstr "Gaitu zerbitzari-aldeko harpidetza"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Zerbitzari-aldeko harpidetza..."
+#, fuzzy, kde-format
+#| msgctxt "@title:window"
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Zerbitzari-aldeko harpidetza"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1163,6 +1167,9 @@ msgstr "Bilatu:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Harpidetuak bakarrik"
+
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Zerbitzari-aldeko harpidetza..."
 
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"

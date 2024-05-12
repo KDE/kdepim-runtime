@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2020-01-01 12:42+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -378,9 +378,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Siirretään kansio ”%1” kansiosta ”%2” kansioon ”%3”"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Etsitään…"
 
 #: movecollectiontask.cpp:29
@@ -1022,9 +1024,10 @@ msgstr "Salli palvelinpuolen tilaukset"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Palvelinpuolen tilaus…"
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Palvelinpuolen tilaus"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1164,6 +1167,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Vain tilatut"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Palvelinpuolen tilaus…"
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1223,9 +1229,6 @@ msgstr "Vain tilatut"
 #~ msgstr ""
 #~ "IMAP-palvelimeen ei saatu yhteyttä.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Palvelinpuolen tilaus"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSL on tuettu ja sitä suositellaan.</b></qt>"

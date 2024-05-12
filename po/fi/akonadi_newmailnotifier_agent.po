@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2023-09-26 10:47+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -75,8 +75,9 @@ msgid "Select which folders to monitor for new message notifications:"
 msgstr "Valitse kansiot, joiden uusista viesteistä ilmoitetaan:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, kde-format
-msgid "Search..."
+#, fuzzy, kde-format
+#| msgid "Search..."
+msgid "Search…"
 msgstr "Etsi…"
 
 #: newmailnotifierselectcollectionwidget.cpp:142
@@ -243,8 +244,9 @@ msgid "In: %1 (%2)"
 msgstr "Kansiossa: %1 (%2)"
 
 #: specialnotifierjob.cpp:150
-#, kde-format
-msgid "Show mail..."
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "Show mail…"
 msgstr "Näytä viesti…"
 
 #: specialnotifierjob.cpp:153

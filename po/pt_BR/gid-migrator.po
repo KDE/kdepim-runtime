@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gid-migrator\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2022-10-19 15:39-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -52,8 +52,9 @@ msgstr ""
 "Não foi possível iniciar a migração porque o aplicativo não está pronto"
 
 #: ../migratorbase.cpp:147
-#, kde-format
-msgid "Starting migration..."
+#, fuzzy, kde-format
+#| msgid "Starting migration..."
+msgid "Starting migration…"
 msgstr "Iniciando migração..."
 
 #: ../migratorbase.cpp:189
@@ -88,9 +89,11 @@ msgid "Not started"
 msgstr "Não iniciada"
 
 #: ../migratorbase.cpp:272
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Running..."
 msgctxt "@info:status"
-msgid "Running..."
+msgid "Running…"
 msgstr "Em execução..."
 
 #: ../migratorbase.cpp:274

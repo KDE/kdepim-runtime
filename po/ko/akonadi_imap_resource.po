@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-02-17 12:43+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -356,9 +356,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "폴더 '%1'을(를) '%2'에서 '%3'(으)로 이동하는 중"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "검색 중..."
 
 #: movecollectiontask.cpp:29
@@ -986,9 +988,10 @@ msgstr "서버 측 구독 사용"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "서버 측 구독..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "서버 측 구독"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1128,6 +1131,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "구독 중인 항목만"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "서버 측 구독..."
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "GMail"
@@ -1187,9 +1193,6 @@ msgstr "구독 중인 항목만"
 #~ msgstr ""
 #~ "IMAP 서버에 연결할 수 없습니다.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "서버 측 구독"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSL이 지원되며 추천합니다.</b></qt>"

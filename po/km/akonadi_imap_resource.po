@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2012-06-11 16:03+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -367,7 +367,7 @@ msgstr ""
 #, fuzzy, kde-format
 #| msgid "Search:"
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "ស្វែងរក ៖"
 
 #: movecollectiontask.cpp:29
@@ -1023,8 +1023,9 @@ msgstr "បើក​ការ​ជាវ​ខាង​ម៉ាស៊ីនប
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription..."
+msgid "Serverside Subscription…"
 msgstr "ការ​ជាវ​ជា​ប្រចាំ​នៅ​ផ្នែក​ម៉ាស៊ីន​បម្រើ..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
@@ -1169,6 +1170,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "តែ​អ្វីដែលបាន​ជាវ​ប៉ុណ្ណោះ"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "ការ​ជាវ​ជា​ប្រចាំ​នៅ​ផ្នែក​ម៉ាស៊ីន​បម្រើ..."
+
 #~ msgid "Identity Settings"
 #~ msgstr "កំណត់​អត្តសញ្ញាណ​នៃ​ការ​កំណត់"
 
@@ -1224,11 +1228,6 @@ msgstr "តែ​អ្វីដែលបាន​ជាវ​ប៉ុណ្ណ
 #~ msgstr ""
 #~ "មិន​អាច​តភ្ជាប់​ទៅ​កាន់​ម៉ាស៊ីន​បម្រើ IMAP បាន​ទេ ៖\n"
 #~ "%1"
-
-#, fuzzy
-#~| msgid "Serverside Subscription..."
-#~ msgid "Serverside Subscription"
-#~ msgstr "ការ​ជាវ​ជា​ប្រចាំ​នៅ​ផ្នែក​ម៉ាស៊ីន​បម្រើ..."
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSL គឺ​ត្រូវ​បាន​គាំទ្រ និង​ផ្ដល់​អានុសាសន៍ ។</b></qt>"

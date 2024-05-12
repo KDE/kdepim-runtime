@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2023-08-03 07:19+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -74,8 +74,9 @@ msgid "Select which folders to monitor for new message notifications:"
 msgstr "Välj vilka korgar som ska bevakas efter nya brevunderrättelser:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, kde-format
-msgid "Search..."
+#, fuzzy, kde-format
+#| msgid "Search..."
+msgid "Search…"
 msgstr "Sök..."
 
 #: newmailnotifierselectcollectionwidget.cpp:142
@@ -240,8 +241,9 @@ msgid "In: %1 (%2)"
 msgstr "In: %1 (%2)"
 
 #: specialnotifierjob.cpp:150
-#, kde-format
-msgid "Show mail..."
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "Show mail…"
 msgstr "Titta på brev..."
 
 #: specialnotifierjob.cpp:153

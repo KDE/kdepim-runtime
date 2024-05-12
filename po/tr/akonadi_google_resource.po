@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2023-11-23 12:44+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -101,8 +101,9 @@ msgid "Invalid item."
 msgstr "Geçersiz öge."
 
 #: googleresource.cpp:82
-#, kde-format
-msgid "Fetching password..."
+#, fuzzy, kde-format
+#| msgid "Fetching password..."
+msgid "Fetching password…"
 msgstr "Parola getiriliyor..."
 
 #: googleresource.cpp:89
@@ -205,8 +206,9 @@ msgstr "Hesap:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, kde-format
-msgid "Configure..."
+#, fuzzy, kde-format
+#| msgid "Configure..."
+msgid "Configure…"
 msgstr "Yapılandır..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)

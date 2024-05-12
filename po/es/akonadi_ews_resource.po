@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kde-l10n-es\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2023-09-21 16:34+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -758,8 +758,9 @@ msgid "Exchange server autodiscovery"
 msgstr "Autodescubrimiento del servidor Exchange"
 
 #: ewsprogressdialog.cpp:49
-#, kde-format
-msgid "Performing Microsoft Exchange server autodiscovery..."
+#, fuzzy, kde-format
+#| msgid "Performing Microsoft Exchange server autodiscovery..."
+msgid "Performing Microsoft Exchange server autodiscovery…"
 msgstr "Ejecutando el autodescubrimiento del servidor Microsoft Exchange..."
 
 #: ewsprogressdialog.cpp:52
@@ -769,8 +770,9 @@ msgid "Connecting to Exchange"
 msgstr "Conectando a Exchange"
 
 #: ewsprogressdialog.cpp:53
-#, kde-format
-msgid "Connecting to Microsoft Exchange server..."
+#, fuzzy, kde-format
+#| msgid "Connecting to Microsoft Exchange server..."
+msgid "Connecting to Microsoft Exchange server…"
 msgstr "Conectando al servidor Microsoft Exchange..."
 
 #: ewsresource.cpp:143

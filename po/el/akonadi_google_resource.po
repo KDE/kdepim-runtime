@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2017-04-20 16:16+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -108,7 +108,7 @@ msgstr "Μη έγκυρος φόρτος αντικειμένου."
 
 #: googleresource.cpp:82
 #, kde-format
-msgid "Fetching password..."
+msgid "Fetching password…"
 msgstr ""
 
 #: googleresource.cpp:89
@@ -215,7 +215,7 @@ msgstr "Λογαριασμοί"
 #: googlesettingswidget.ui:42
 #, fuzzy, kde-format
 #| msgid "not configured"
-msgid "Configure..."
+msgid "Configure…"
 msgstr "αδιαμόρφωτο"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)

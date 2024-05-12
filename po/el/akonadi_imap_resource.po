@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2017-04-20 16:28+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -385,9 +385,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Μετακίνηση φακέλου '%1' από το '%2' στο '%3'"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Αναζήτηση..."
 
 #: movecollectiontask.cpp:29
@@ -1055,9 +1057,10 @@ msgstr "Ενεργοποίηση εγγραφών στον εξυπηρετητ�
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Εγγραφή στον εξυπηρετητή..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Εγγραφή στον εξυπηρετητή"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1197,6 +1200,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Με εγγραφή μόνο"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Εγγραφή στον εξυπηρετητή..."
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1256,9 +1262,6 @@ msgstr "Με εγγραφή μόνο"
 #~ msgstr ""
 #~ "Αδυναμία σύνδεσης με τον εξυπηρετητή IMAP .\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Εγγραφή στον εξυπηρετητή"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>Το SSL υποστηρίζεται και συνιστάται.</b></qt>"

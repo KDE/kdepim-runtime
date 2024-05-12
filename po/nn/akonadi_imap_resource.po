@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2010-04-20 21:54+0200\n"
 "Last-Translator: Eirik U. Birkeland <eirbir@gmail.com>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
@@ -361,7 +361,7 @@ msgstr ""
 #: imapresourcebase.cpp:471
 #, kde-format
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr ""
 
 #: movecollectiontask.cpp:29
@@ -970,8 +970,9 @@ msgstr "Bruk tenarabonnement"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription..."
+msgid "Serverside Subscription…"
 msgstr "Tenarabonnement …"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2020-01-02 11:46+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -75,8 +75,9 @@ msgid "Select which folders to monitor for new message notifications:"
 msgstr "Uute kirjade märguandeid jälgitakse järgmistes kaustades:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, kde-format
-msgid "Search..."
+#, fuzzy, kde-format
+#| msgid "Search..."
+msgid "Search…"
 msgstr "Otsing..."
 
 #: newmailnotifierselectcollectionwidget.cpp:142
@@ -244,8 +245,9 @@ msgid "In: %1 (%2)"
 msgstr "Kaustas %1"
 
 #: specialnotifierjob.cpp:150
-#, kde-format
-msgid "Show mail..."
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "Show mail…"
 msgstr "Näita kirja..."
 
 #: specialnotifierjob.cpp:153

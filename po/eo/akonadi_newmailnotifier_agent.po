@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: kdepim-runtimeReport-Msgid-Bugs-To: https://bugs.kde."
 "org\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-16 00:38+0000\n"
-"PO-Revision-Date: 2023-09-23 08:20+0100\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"PO-Revision-Date: 2024-05-10 11:33+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -73,11 +73,12 @@ msgstr "Ne eblas lanĉi KMail-aplikaĵon."
 #: newmailnotifierselectcollectionwidget.cpp:96
 #, kde-format
 msgid "Select which folders to monitor for new message notifications:"
-msgstr "Elektu la dosierujojn por kontroli por novaj mesaĝaj sciigoj:"
+msgstr "Elektu la dosierujojn kontrolendajn pri novmesaĝaj sciigoj:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, kde-format
-msgid "Search..."
+#, fuzzy, kde-format
+#| msgid "Search..."
+msgid "Search…"
 msgstr "Serĉi..."
 
 #: newmailnotifierselectcollectionwidget.cpp:142
@@ -242,8 +243,9 @@ msgid "In: %1 (%2)"
 msgstr "En: %1 (%2)"
 
 #: specialnotifierjob.cpp:150
-#, kde-format
-msgid "Show mail..."
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "Show mail…"
 msgstr "Montri retpoŝton..."
 
 #: specialnotifierjob.cpp:153

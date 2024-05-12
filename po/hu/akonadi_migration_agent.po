@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-01-27 03:07+0100\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-02-05 22:34+0100\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -33,9 +33,11 @@ msgid "PIM Maintenance"
 msgstr "PIM karbantartás"
 
 #: migrationexecutor.cpp:41
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "PIM-Maintenance is in progress."
+#| msgid "In progress..."
 msgctxt "PIM-Maintenance is in progress."
-msgid "In progress..."
+msgid "In progress…"
 msgstr "Folyamatban…"
 
 #: migrationexecutor.cpp:47
@@ -62,8 +64,10 @@ msgid "Progress"
 msgstr "Folyamat"
 
 #: migrationscheduler.cpp:149
-#, kde-format
-msgctxt "Current status of the migrator (done, in progress, ...)"
+#, fuzzy, kde-format
+#| msgctxt "Current status of the migrator (done, in progress, ...)"
+#| msgid "Status"
+msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "Állapot"
 

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gid-migrator\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2016-01-07 11:15+0100\n"
 "Last-Translator: Roman Paholik <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
@@ -47,8 +47,9 @@ msgid "Failed to start migration because migrator is not ready"
 msgstr "Zlyhalo spustenie migrácie, pretože migrátor nie je pripravený"
 
 #: ../migratorbase.cpp:147
-#, kde-format
-msgid "Starting migration..."
+#, fuzzy, kde-format
+#| msgid "Starting migration..."
+msgid "Starting migration…"
 msgstr "Spúšťam migráciu..."
 
 #: ../migratorbase.cpp:189
@@ -83,9 +84,11 @@ msgid "Not started"
 msgstr "Nespustené"
 
 #: ../migratorbase.cpp:272
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Running..."
 msgctxt "@info:status"
-msgid "Running..."
+msgid "Running…"
 msgstr "Beží..."
 
 #: ../migratorbase.cpp:274

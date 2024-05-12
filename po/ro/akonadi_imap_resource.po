@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2020-09-08 19:21+0100\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian\n"
@@ -365,7 +365,7 @@ msgstr ""
 #, fuzzy, kde-format
 #| msgid "Search:"
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Caută:"
 
 #: movecollectiontask.cpp:29
@@ -1014,8 +1014,9 @@ msgstr "Activează abonarea rezidentă pe server"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription..."
+msgid "Serverside Subscription…"
 msgstr "Abonare rezidentă pe server..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
@@ -1176,3 +1177,6 @@ msgstr "Caută:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Numai abonate"
+
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Abonare rezidentă pe server..."

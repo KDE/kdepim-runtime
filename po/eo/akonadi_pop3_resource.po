@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-03-13 00:38+0000\n"
-"PO-Revision-Date: 2024-03-17 05:34+0100\n"
+"PO-Revision-Date: 2024-05-10 11:33+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -101,12 +101,13 @@ msgid ""
 "should first test it by sending yourself a larger number of test messages "
 "which you all download in one go from the POP server."
 msgstr ""
-"La servilo ne ŝajnas subteni duktadon. Tial la opcio estas neebligita.\n"
+"La servilo ne ŝajnas subteni duktadon. Tial la elekteblo estas neebligita.\n"
 "Ĉar kelkaj serviloj ne korekte publikigi ilian kapablon, vi ja povas ŝalti "
 "la duktadon. Bonvole notu, ke tio povas kaŭzi la POP-servilojn, kiuj ne "
-"subtenas duktadon, ke ili sendas malkorektajn mesaĝojn. Tial vi testu ĝin "
-"per sendo de granda nombro da mesaĝoj al vi mem, kiujn ĉiujn vi ŝarĝas per "
-"unu prenado, antaŭ vi uzas ĝin por gravaj mesaĝoj."
+"subtenas duktadon, ke ili sendas difektajn mesaĝojn. Do, antaŭ ol uzi ĉi "
+"tiun funkcion por grava poŝto, vi unue provu ĝin sendante al vi grandan "
+"nombron da testmesaĝoj, kiujn vi ĉiuj elŝutas per sola prenado de la POP-"
+"servilo."
 
 #: accountwidget.cpp:389
 #, kde-format
@@ -118,7 +119,7 @@ msgid ""
 "have the possibility to turn leaving fetched messages on the server on."
 msgstr ""
 "La servilo ne ŝajnas subteni unikan mesaĝnumerojn, sed ĉi tiu estas postulon "
-"por lasi mesaĝojn en la servilo. Tial la opcio ne estas ebligita.\n"
+"por lasi mesaĝojn en la servilo. Tial la elekteblo ne estas ebligita.\n"
 "Ĉar kelkaj serviloj ne korekte publikigi sian kapablon, vi ankoraŭ havas la "
 "eblecon ŝalti la \"Lasu la prenitajn mesaĝojn en la servilo\"."
 
@@ -608,7 +609,7 @@ msgstr "Pasvorto: La pasvorto donita al vi de via poŝta provizanto."
 #: popsettings.ui:157
 #, kde-format
 msgid "Mail Checking Options"
-msgstr "Poŝtkontrolaj Opcioj"
+msgstr "Poŝtkontrolaj Elektebloj"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, intervalCheck)
 #: popsettings.ui:164
@@ -646,7 +647,7 @@ msgstr "POP Agordoj"
 #: popsettings.ui:239
 #, kde-format
 msgid "If checked the message is not deleted from the mail server"
-msgstr "Se kontrolite, la mesaĝo ne estas forigita de la poŝtservilo"
+msgstr "Se markite, la mesaĝo ne estas forigita de la poŝtservilo"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, leaveOnServerCheck)
 #: popsettings.ui:242
@@ -655,8 +656,8 @@ msgid ""
 "Check this option if you want to fetch only copies of the mails and leave "
 "the original mails on the server."
 msgstr ""
-"Marku ĉi tiun opcion se vi volas preni nur kopiojn de la retpoŝtoj kaj lasi "
-"la originalajn retpoŝtojn sur la servilo."
+"Marku ĉi tiun elekteblon se vi volas preni nur kopiojn de la retpoŝtoj kaj "
+"lasi la originajn retpoŝtojn sur la servilo."
 
 #. i18n: ectx: property (text), widget (QCheckBox, leaveOnServerCheck)
 #: popsettings.ui:245
@@ -689,8 +690,8 @@ msgid ""
 "Check this option if you want to only keep the x most recent messages on the "
 "server and delete all older."
 msgstr ""
-"Marku ĉi tiun opcion se vi volas konservi nur la x plej freŝajn mesaĝojn sur "
-"la servilo kaj forigi ĉiujn pli malnovajn."
+"Marku ĉi tiun elekteblon se vi volas konservi nur la x plej freŝajn mesaĝojn "
+"sur la servilo kaj forigi ĉiujn pli malnovajn."
 
 #. i18n: ectx: property (text), widget (QCheckBox, leaveOnServerCountCheck)
 #: popsettings.ui:290

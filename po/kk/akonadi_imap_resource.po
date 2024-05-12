@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2013-11-18 04:31+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -369,7 +369,7 @@ msgstr "'%1' қыапшықты '%2' дегеннен '%3' дегенге жыл
 #| msgctxt "@label search for a subscription"
 #| msgid "Search:"
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Іздейтіні:"
 
 #: movecollectiontask.cpp:29
@@ -1030,9 +1030,10 @@ msgstr "Сервер жағынан жазылу рұқсат етілсін"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Сервер жақ жазылуы..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Сервер жақ жазылуы"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1172,6 +1173,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Тек жазылғанның арасынан"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Сервер жақ жазылуы..."
+
 #~ msgid "Identity Settings"
 #~ msgstr "Іс-әлпет параметрлері"
 
@@ -1227,9 +1231,6 @@ msgstr "Тек жазылғанның арасынан"
 #~ msgstr ""
 #~ "IMAP серверіне қосыла алмады:\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Сервер жақ жазылуы"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSL қолдауы бар,.және оны қолдануы жөнді.</b></qt>"

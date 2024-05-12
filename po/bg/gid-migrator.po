@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-03-20 10:41+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -52,8 +52,9 @@ msgstr ""
 "Неуспешно стартиране на миграция, защото процесът за мигриране не е готов"
 
 #: ../migratorbase.cpp:147
-#, kde-format
-msgid "Starting migration..."
+#, fuzzy, kde-format
+#| msgid "Starting migration..."
+msgid "Starting migration…"
 msgstr "Стартиране на миграция"
 
 #: ../migratorbase.cpp:189
@@ -88,9 +89,11 @@ msgid "Not started"
 msgstr "Не е стартирана"
 
 #: ../migratorbase.cpp:272
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Running..."
 msgctxt "@info:status"
-msgid "Running..."
+msgid "Running…"
 msgstr "Изпълнение..."
 
 #: ../migratorbase.cpp:274

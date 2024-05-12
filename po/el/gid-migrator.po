@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2016-05-24 16:37+0200\n"
 "Last-Translator: Petros Vidalis <pvidalis@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -52,8 +52,9 @@ msgstr ""
 "Αποτυχία έναρξης της μεταφοράς διότι το εργαλείο μεταφοράς δεν είναι έτοιμο"
 
 #: ../migratorbase.cpp:147
-#, kde-format
-msgid "Starting migration..."
+#, fuzzy, kde-format
+#| msgid "Starting migration..."
+msgid "Starting migration…"
 msgstr "Έναρξη της μεταφοράς..."
 
 #: ../migratorbase.cpp:189
@@ -88,9 +89,11 @@ msgid "Not started"
 msgstr "Δεν ξεκίνησε"
 
 #: ../migratorbase.cpp:272
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Running..."
 msgctxt "@info:status"
-msgid "Running..."
+msgid "Running…"
 msgstr "Εκτελείται..."
 
 #: ../migratorbase.cpp:274

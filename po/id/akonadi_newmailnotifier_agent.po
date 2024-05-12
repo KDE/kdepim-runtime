@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2021-05-01 10:57+0700\n"
 "Last-Translator: Wantoyo <wantoyek@gmail.com>\n"
 "Language-Team: Indonesian <kde-i18n-doc@kde.org>\n"
@@ -74,8 +74,9 @@ msgid "Select which folders to monitor for new message notifications:"
 msgstr "Pilih folder yang mana untuk memantau notifikasi pesan baru:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, kde-format
-msgid "Search..."
+#, fuzzy, kde-format
+#| msgid "Search..."
+msgid "Search…"
 msgstr "Cari..."
 
 #: newmailnotifierselectcollectionwidget.cpp:142
@@ -243,8 +244,9 @@ msgid "In: %1 (%2)"
 msgstr "Di: %1"
 
 #: specialnotifierjob.cpp:150
-#, kde-format
-msgid "Show mail..."
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "Show mail…"
 msgstr "Tampilkan mail..."
 
 #: specialnotifierjob.cpp:153

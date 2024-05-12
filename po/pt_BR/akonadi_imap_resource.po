@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2020-11-09 10:43-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -372,9 +372,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Movendo a pasta '%1' de '%2' para '%3'"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Pesquisando..."
 
 #: movecollectiontask.cpp:29
@@ -1019,9 +1021,10 @@ msgstr "Habilitar inscrições no servidor"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Inscrição no servidor..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Inscrição no servidor"
 
 # Deixar a mensagem com o menor tamanho possível para ficar totalmente visível na janela, sem necessidade de redimensionamento. (Alvarenga)
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
@@ -1163,6 +1166,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Somente inscritos"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Inscrição no servidor..."
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1209,6 +1215,3 @@ msgstr "Somente inscritos"
 #~ msgstr ""
 #~ "Não foi possível enviar o ID do cliente para o servidor IMAP.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Inscrição no servidor"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2014-08-13 00:18+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -80,8 +80,9 @@ msgid "Select which folders to monitor for new message notifications:"
 msgstr "De Ornern utsöken, de Du op Nieg-Naricht-Bescheden beluern wullt:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, kde-format
-msgid "Search..."
+#, fuzzy, kde-format
+#| msgid "Search..."
+msgid "Search…"
 msgstr "Söken..."
 
 #: newmailnotifierselectcollectionwidget.cpp:142
@@ -251,8 +252,9 @@ msgid "In: %1 (%2)"
 msgstr "Binnen: %1"
 
 #: specialnotifierjob.cpp:150
-#, kde-format
-msgid "Show mail..."
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "Show mail…"
 msgstr "Nettbreef wiesen..."
 
 #: specialnotifierjob.cpp:153

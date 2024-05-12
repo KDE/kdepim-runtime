@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2017-09-28 18:00+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -364,9 +364,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Премештам фасциклу „%1“ из „%2“ у „%3“..."
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Тражим..."
 
 #: movecollectiontask.cpp:29
@@ -1023,9 +1025,11 @@ msgstr "Претплате на страни сервера"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Претплата на страни сервера..."
+#, fuzzy, kde-format
+#| msgctxt "@title:window"
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Претплата на страни сервера"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1147,6 +1151,9 @@ msgstr "Тражи:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Само у претплаћеним"
+
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Претплата на страни сервера..."
 
 # >> @item
 #~ msgctxt "Authentication method"

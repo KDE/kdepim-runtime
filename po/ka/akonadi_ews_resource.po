@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2023-09-24 05:03+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -750,8 +750,9 @@ msgid "Exchange server autodiscovery"
 msgstr "Exchange-ის სერვერის ავტომატური აღმოჩენა"
 
 #: ewsprogressdialog.cpp:49
-#, kde-format
-msgid "Performing Microsoft Exchange server autodiscovery..."
+#, fuzzy, kde-format
+#| msgid "Performing Microsoft Exchange server autodiscovery..."
+msgid "Performing Microsoft Exchange server autodiscovery…"
 msgstr "მიმდინარეობს Microsoft Exchange-ის სერვერის ავტომატური აღმოჩენა..."
 
 #: ewsprogressdialog.cpp:52
@@ -761,8 +762,9 @@ msgid "Connecting to Exchange"
 msgstr "Exchange-სთან მიერთება"
 
 #: ewsprogressdialog.cpp:53
-#, kde-format
-msgid "Connecting to Microsoft Exchange server..."
+#, fuzzy, kde-format
+#| msgid "Connecting to Microsoft Exchange server..."
+msgid "Connecting to Microsoft Exchange server…"
 msgstr "Microsoft Exchange-ის სერვერთან მიერთება..."
 
 #: ewsresource.cpp:143

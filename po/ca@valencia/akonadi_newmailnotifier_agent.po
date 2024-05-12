@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2023-09-23 15:30+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -77,9 +77,10 @@ msgstr ""
 "Seleccioneu quines carpetes vigilar per a les notificacions de missatge nou:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, kde-format
-msgid "Search..."
-msgstr "Busca..."
+#, fuzzy, kde-format
+#| msgid "Search..."
+msgid "Search…"
+msgstr "Busca…"
 
 #: newmailnotifierselectcollectionwidget.cpp:142
 #, kde-format
@@ -243,9 +244,10 @@ msgid "In: %1 (%2)"
 msgstr "A: %1 (%2)"
 
 #: specialnotifierjob.cpp:150
-#, kde-format
-msgid "Show mail..."
-msgstr "Mostra el correu..."
+#, fuzzy, kde-format
+#| msgid "Show mail..."
+msgid "Show mail…"
+msgstr "Mostra el correu…"
 
 #: specialnotifierjob.cpp:153
 #, kde-format

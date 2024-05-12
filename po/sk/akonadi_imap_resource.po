@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2020-09-08 19:07+0200\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -362,9 +362,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Presúvam priečinok '%1' z '%2' do '%3'"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Hľadá sa..."
 
 #: movecollectiontask.cpp:29
@@ -1004,9 +1006,10 @@ msgstr "Povoliť prihlásenia na strane servera"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Prihlásenie na strane servera..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Podpísanie na strane servera"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1147,6 +1150,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Iba podpísané"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Prihlásenie na strane servera..."
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1206,9 +1212,6 @@ msgstr "Iba podpísané"
 #~ msgstr ""
 #~ "Nemôžem sa pripojiť na IMAP server %1.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Podpísanie na strane servera"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSL je podporované a odporúčané.</b></qt>"

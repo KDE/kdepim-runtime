@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-01-27 03:07+0100\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2014-10-03 11:02+0300\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -32,9 +32,11 @@ msgid "PIM Maintenance"
 msgstr ""
 
 #: migrationexecutor.cpp:41
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "PIM-Maintenance is in progress."
+#| msgid "In progress..."
 msgctxt "PIM-Maintenance is in progress."
-msgid "In progress..."
+msgid "In progress…"
 msgstr "În curs..."
 
 #: migrationexecutor.cpp:47
@@ -63,8 +65,10 @@ msgid "Progress"
 msgstr "Progres"
 
 #: migrationscheduler.cpp:149
-#, kde-format
-msgctxt "Current status of the migrator (done, in progress, ...)"
+#, fuzzy, kde-format
+#| msgctxt "Current status of the migrator (done, in progress, ...)"
+#| msgid "Status"
+msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "Stare"
 

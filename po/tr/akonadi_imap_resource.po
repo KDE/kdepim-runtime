@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-04-30 00:20+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -372,9 +372,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "“%1” klasörü “%2” konumundan “%3” konumuna taşınıyor"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Aranıyor..."
 
 #: movecollectiontask.cpp:29
@@ -1005,9 +1007,11 @@ msgstr "Sunucu tarafındaki abonelikleri etkinleştir"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Sunucu Tarafı Abonelik..."
+#, fuzzy, kde-format
+#| msgctxt "@title:window"
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Sunucu Tarafı Abonelik"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1147,6 +1151,9 @@ msgstr "Ara:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Yalnızca abone olunanlar"
+
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Sunucu Tarafı Abonelik..."
 
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"

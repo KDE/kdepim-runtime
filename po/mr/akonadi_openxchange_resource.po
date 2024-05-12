@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-03-24 00:45+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2013-03-15 11:19+0530\n"
 "Last-Translator: Chetan Khona <chetan@kompkin.com>\n"
 "Language-Team: Marathi <kde-i18n-doc@kde.org>\n"
@@ -104,9 +104,10 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
-#, kde-format
-msgid "Test Connection..."
-msgstr ""
+#, fuzzy, kde-format
+#| msgid "Connection"
+msgid "Test Connection…"
+msgstr "जुळवणी"
 
 #: openxchangeresource.cpp:250
 #, kde-format
@@ -215,9 +216,6 @@ msgid ""
 "Use incremental updates instead of reloading all data from the server each "
 "time"
 msgstr ""
-
-#~ msgid "Connection"
-#~ msgstr "जुळवणी"
 
 #~ msgctxt "NAME OF TRANSLATORS"
 #~ msgid "Your names"

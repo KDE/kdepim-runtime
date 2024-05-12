@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2019-07-07 16:50+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -369,9 +369,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Perkeliamas aplankas „%1“ iš „%2“ į „%3“"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Ieškoma..."
 
 #: movecollectiontask.cpp:29
@@ -1019,9 +1021,10 @@ msgstr "Įgalinti prenumeratą iš serverio pusės"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Serverio pusės prenumerata..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Serverio pusės prenumerata"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1161,6 +1164,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Tik užsakyti"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Serverio pusės prenumerata..."
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1220,9 +1226,6 @@ msgstr "Tik užsakyti"
 #~ msgstr ""
 #~ "Nepavyko prisijungti prie IMAP serverio.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Serverio pusės prenumerata"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSL palaikomas ir siūlomas.</b></qt>"

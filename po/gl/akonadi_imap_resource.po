@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-03-16 23:22+0100\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
@@ -382,9 +382,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Movendo o cartafol «%1» de «%2» a «%3»."
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Buscando…"
 
 #: movecollectiontask.cpp:29
@@ -1030,9 +1032,10 @@ msgstr "Activar as subscricións da parte do servidor"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Subscrición da parte do servidor…"
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Subscrición do lado do servidor"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1173,6 +1176,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Só os subscritos."
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Subscrición da parte do servidor…"
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1232,9 +1238,6 @@ msgstr "Só os subscritos."
 #~ msgstr ""
 #~ "Non se puido conectar co servidor de IMAP.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Subscrición do lado do servidor"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>Admítese, e recoméndase, SSL.</b></qt>"

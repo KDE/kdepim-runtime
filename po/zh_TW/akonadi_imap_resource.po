@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-03-20 18:10+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -359,9 +359,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "將資料夾 %1 從 %2 移動到 %3 中"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "搜尋中..."
 
 #: movecollectiontask.cpp:29
@@ -978,9 +980,10 @@ msgstr "開啟伺服器端訂閱"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "伺服器端訂閱..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "伺服器端訂閱"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1120,6 +1123,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "只有訂閱的群組"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "伺服器端訂閱..."
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1179,6 +1185,3 @@ msgstr "只有訂閱的群組"
 #~ msgstr ""
 #~ "無法連線到 IMAP 伺服器。\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "伺服器端訂閱"

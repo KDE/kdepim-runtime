@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2024-03-13 08:30+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -381,9 +381,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Пересування теки «%1» з «%2» до «%3»"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Пошук…"
 
 #: movecollectiontask.cpp:29
@@ -1031,9 +1033,10 @@ msgstr "Увімкнути підписки на сервері"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Підписка на сервері..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Підписка на сервері"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1175,6 +1178,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Тільки підписані"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Підписка на сервері..."
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1222,9 +1228,6 @@ msgstr "Тільки підписані"
 #~ msgstr ""
 #~ "Не вдалося надіслати ідентифікатор клієнта до сервера IMAP.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Підписка на сервері"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSL підтримується, рекомендуємо ним скористатися.</b></qt>"

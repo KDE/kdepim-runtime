@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2020-10-11 15:00+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English <kde-l10n-en_gb@kde.org>\n"
@@ -364,9 +364,11 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Moving folder '%1' from '%2' to '%3'"
 
 #: imapresourcebase.cpp:471
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr "Searching..."
 
 #: movecollectiontask.cpp:29
@@ -999,9 +1001,10 @@ msgstr "Enable server-side subscriptions"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
-msgstr "Serverside Subscription..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription"
+msgid "Serverside Subscription…"
+msgstr "Serverside Subscription"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1141,6 +1144,9 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Subscribed only"
 
+#~ msgid "Serverside Subscription..."
+#~ msgstr "Serverside Subscription..."
+
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
@@ -1187,9 +1193,6 @@ msgstr "Subscribed only"
 #~ msgstr ""
 #~ "Could not send client ID to the IMAP server.\n"
 #~ "%1"
-
-#~ msgid "Serverside Subscription"
-#~ msgstr "Serverside Subscription"
 
 #~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
 #~ msgstr "<qt><b>SSL is supported and recommended.</b></qt>"

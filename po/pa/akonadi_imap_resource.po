@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2010-01-16 08:40+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: ਪੰਜਾਬੀ <punjabi-users@lists.sf.net>\n"
@@ -356,7 +356,7 @@ msgstr ""
 #: imapresourcebase.cpp:471
 #, kde-format
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr ""
 
 #: movecollectiontask.cpp:29
@@ -976,7 +976,7 @@ msgstr "ਮੈਂਬਰੀ ਯੋਗ?"
 #: setupserverview_desktop.ui:381
 #, fuzzy, kde-format
 #| msgid "Enable Subscriptions?"
-msgid "Serverside Subscription..."
+msgid "Serverside Subscription…"
 msgstr "ਮੈਂਬਰੀ ਯੋਗ?"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
@@ -1101,14 +1101,14 @@ msgid "Subscribed only"
 msgstr ""
 
 #, fuzzy
+#~| msgid "Enable Subscriptions?"
+#~ msgid "Serverside Subscription..."
+#~ msgstr "ਮੈਂਬਰੀ ਯੋਗ?"
+
+#, fuzzy
 #~| msgid "Settings"
 #~ msgid "Identity Settings"
 #~ msgstr "ਸੈਟਿੰਗ"
-
-#, fuzzy
-#~| msgid "Enable Subscriptions?"
-#~ msgid "Serverside Subscription"
-#~ msgstr "ਮੈਂਬਰੀ ਯੋਗ?"
 
 #, fuzzy
 #~| msgid "Username:"
