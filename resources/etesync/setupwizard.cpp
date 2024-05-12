@@ -5,7 +5,6 @@
  */
 
 #include "setupwizard.h"
-#include <kwidgetsaddons_version.h>
 
 #include <KAuthorized>
 #include <KLocalizedString>
@@ -78,12 +77,8 @@ LoginPage::LoginPage(QWidget *parent)
     registerField(QStringLiteral("credentialsUserName*"), mUserName);
 
     mPassword = new KPasswordLineEdit(this);
-#if KWIDGETSADDONS_VERSION <= QT_VERSION_CHECK(5, 249, 0)
-    mPassword->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
-#else
     mPassword->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
                                                                                                         : KPassword::RevealMode::Never);
-#endif
     layout->addRow(i18n("Password:"), mPassword);
     registerField(QStringLiteral("credentialsPassword*"), mPassword, "password", SIGNAL(passwordChanged(QString)));
 
