@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-03-13 00:38+0000\n"
-"PO-Revision-Date: 2024-03-08 16:23+0300\n"
+"PO-Revision-Date: 2024-05-12 13:52+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.02.0\n"
+"X-Generator: Lokalize 24.07.70\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -90,7 +90,7 @@ msgstr "Microsoft Exchange Web Services için Akonadi Özkaynağı (EWS)"
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
-msgstr "Telif hakkı (c) Krzysztof Nowicki 2015-2020"
+msgstr "Telif hakkı (c) Krzysztof Nowicki 2015–2020"
 
 #: ewsconfigdialog.cpp:155
 #, kde-format
@@ -566,7 +566,7 @@ msgstr ""
 #: ewsconfigdialog.ui:508
 #, kde-format
 msgid "Use custo&m User Agent"
-msgstr "Ö&zel User-Afent dizisi kullan"
+msgstr "Ö&zel User-Agent dizisi kullan"
 
 #. i18n: ectx: property (title), widget (QGroupBox, clearSyncStateGroupBox)
 #: ewsconfigdialog.ui:533
@@ -658,19 +658,19 @@ msgstr "Ögeler alınamadı"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - incorrect number of responses"
-msgstr "Ögeler alınamadı - doğru olmayan yanıt sayısı"
+msgstr "Ögeler alınamadı — Doğru olmayan yanıt sayısı"
 
 #: ewsfetchitempayloadjob.cpp:91
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Akonadi item not found for item %1"
-msgstr "Ögeler alınamadı - %1 ögesi için Akonadi ögesi bulunamadı"
+msgstr "Ögeler alınamadı — %1 ögesi için Akonadi ögesi bulunamadı"
 
 #: ewsfetchitempayloadjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Unknown item type for item %1"
-msgstr "Ögeler alınamadı - %1 ögesi için bilinmeyen öge türü"
+msgstr "Ögeler alınamadı — %1 ögesi için bilinmeyen öge türü"
 
 #: ewsfetchitempayloadjob.cpp:104
 #, kde-format
@@ -794,13 +794,13 @@ msgstr "Ögeler alınıyor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
-msgstr "Ögeler alınamadı - iç hata"
+msgstr "Ögeler alınamadı — İç hata"
 
 #: ewsresource.cpp:462
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
-msgstr "Klasörler alınamadı - iç hata"
+msgstr "Klasörler alınamadı — İç hata"
 
 #: ewsresource.cpp:468
 #, kde-format
@@ -836,7 +836,7 @@ msgstr "Öge bayrakları güncelleme isteği işlenemedi"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
-msgstr "Öge bayrakları işlenemedi - iç hata"
+msgstr "Öge bayrakları işlenemedi — İç hata"
 
 #: ewsresource.cpp:594
 #, kde-format
@@ -848,7 +848,7 @@ msgstr "Öge güncelleme isteği işlenemedi"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
-msgstr "Öge güncellenemedi - iç hata"
+msgstr "Öge güncellenemedi — İç hata"
 
 #: ewsresource.cpp:636
 #, kde-format
@@ -860,13 +860,13 @@ msgstr "Öge taşıma isteği işlenemedi"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
-msgstr "Öge taşınamadı - iç hata"
+msgstr "Öge taşınamadı — İç hata"
 
 #: ewsresource.cpp:650
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
-msgstr "Öge taşınamadı - sunucudan alınan yanıt sayısı geçersiz"
+msgstr "Öge taşınamadı — Sunucudan alınan yanıt sayısı geçersiz"
 
 #: ewsresource.cpp:743
 #, kde-format
@@ -878,14 +878,14 @@ msgstr "Öge silme isteği işlenemedi"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
-msgstr "Öge silinemedi - iç hata"
+msgstr "Öge silinemedi — İç hata"
 
 #: ewsresource.cpp:757
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
-msgstr "Öge silinemedi - sunucudan alınan yanıt sayısı geçersiz"
+msgstr "Öge silinemedi — Sunucudan alınan yanıt sayısı geçersiz"
 
 #: ewsresource.cpp:802 ewsresource.cpp:1015
 #, kde-format
@@ -903,13 +903,13 @@ msgstr "Öge oluşturma isteği işlenemedi"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
-msgstr "Öge oluşturulamadı - iç hata"
+msgstr "Öge oluşturulamadı — İç hata"
 
 #: ewsresource.cpp:840
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
-msgstr "Koleksiyon eklenemedi - EWS klasör türü algılanamıyor"
+msgstr "Koleksiyon eklenemedi — EWS klasörü türü algılanamıyor"
 
 #: ewsresource.cpp:859
 #, kde-format
@@ -921,7 +921,7 @@ msgstr "Klasör oluşturma isteği işlenemedi"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
-msgstr "Klasör oluşturulamadı - iç hata"
+msgstr "Klasör oluşturulamadı — İç hata"
 
 #: ewsresource.cpp:877
 #, kde-format
@@ -939,14 +939,14 @@ msgstr "Klasör taşıma isteği işlenemedi"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
-msgstr "Klasör taşınamadı - iç hata"
+msgstr "Klasör taşınamadı — İç hata"
 
 #: ewsresource.cpp:912
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
-msgstr "Klasör taşınamadı - sunucudan alınan yanıt sayısı geçersiz"
+msgstr "Klasör taşınamadı — Sunucudan alınan yanıt sayısı geçersiz"
 
 #: ewsresource.cpp:923
 #, kde-format
@@ -964,14 +964,14 @@ msgstr "Klasör güncelleme isteği işlenemedi"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
-msgstr "Klasör taşınamadı - iç hata"
+msgstr "Klasör taşınamadı — İç hata"
 
 #: ewsresource.cpp:963
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
-msgstr "Klasör güncellenemedi - sunucudan alınan yanıt sayısı geçersiz"
+msgstr "Klasör güncellenemedi — Sunucudan alınan yanıt sayısı geçersiz"
 
 #: ewsresource.cpp:974
 #, kde-format
@@ -989,7 +989,7 @@ msgstr "Klasör silme isteği işlenemedi"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
-msgstr "Klasör silinemedi - iç hata"
+msgstr "Klasör silinemedi — İç hata"
 
 #: ewsresource.cpp:1005
 #, kde-format
@@ -1007,7 +1007,7 @@ msgstr "Öge gönderme isteği işlenemedi"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
-msgstr "Öge gönderilemedi - iç hata"
+msgstr "Öge gönderilemedi — İç hata"
 
 #: ewsresource.cpp:1074
 #, kde-format
@@ -1031,7 +1031,7 @@ msgstr "Öge etiketleri güncelleme isteği işlenemedi"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
-msgstr "Öge etiketleri güncellenemedi - iç hata"
+msgstr "Öge etiketleri güncellenemedi — İç hata"
 
 #: ewsresource.cpp:1322
 #, kde-format

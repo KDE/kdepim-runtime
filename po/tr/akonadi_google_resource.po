@@ -5,13 +5,13 @@
 # obsoleteman <tulliana@gmail.com>, 2012.
 # Volkan Gezer <volkangezer@gmail.com>, 2013-2014, 2017.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
+# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-02-16 00:38+0000\n"
-"PO-Revision-Date: 2023-11-23 12:44+0300\n"
+"PO-Revision-Date: 2024-05-12 13:45+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.11.70\n"
+"X-Generator: Lokalize 24.07.70\n"
 
 #: calendarhandler.cpp:90
 #, kde-format
@@ -31,19 +31,19 @@ msgstr "Takvimler alınıyor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
-msgstr "'%1' takvimi için etkinlikler alınıyor"
+msgstr "“%1” takvimi için etkinlikler alınıyor"
 
 #: calendarhandler.cpp:197 taskhandler.cpp:170
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
-msgstr "'%1' takvimine etkinlik ekleniyor"
+msgstr "“%1” takvimine etkinlik ekleniyor"
 
 #: calendarhandler.cpp:221
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing event in calendar '%1'"
-msgstr "'%1' takvimindeki etkinlikler değiştiriliyor"
+msgstr "“%1” takvimindeki etkinlikler değiştiriliyor"
 
 #: calendarhandler.cpp:232
 #, kde-format
@@ -58,26 +58,26 @@ msgstr[1] "%1 etkinlik kaldırılıyor"
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
 msgid_plural "Moving %1 events from calendar '%2' to calendar '%3'"
-msgstr[0] "%1 etkinlik, '%2' takviminden '%3' takvimine taşınıyor"
-msgstr[1] "%1 etkinlik, '%2' takviminden '%3' takvimine taşınıyor"
+msgstr[0] "%1 etkinlik, “%2” takviminden “%3” takvimine taşınıyor"
+msgstr[1] "%1 etkinlik, “%2” takviminden “%3” takvimine taşınıyor"
 
 #: calendarhandler.cpp:266
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating calendar '%1'"
-msgstr "'%1' takvimi oluşturuluyor"
+msgstr "“%1” takvimi oluşturuluyor"
 
 #: calendarhandler.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing calendar '%1'"
-msgstr "'%1' takvimi değiştiriliyor"
+msgstr "“%1” takvimi değiştiriliyor"
 
 #: calendarhandler.cpp:307
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing calendar '%1'"
-msgstr "'%1' takvimi kaldırılıyor"
+msgstr "“%1” takvimi kaldırılıyor"
 
 #: generichandler.cpp:24
 #, kde-format
@@ -285,13 +285,13 @@ msgstr "Diğer Kişiler"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts for group '%1'"
-msgstr "'%1' grubu için kişiler alınıyor"
+msgstr "“%1” grubu için kişiler alınıyor"
 
 #: personhandler.cpp:370
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding contact to group '%1'"
-msgstr "Kişi, '%1' grubuna ekleniyor"
+msgstr "Kişi, “%1” grubuna ekleniyor"
 
 #: personhandler.cpp:404
 #, kde-format
@@ -317,8 +317,8 @@ msgstr "Geçersiz kaynak veya hedef koleksiyonu"
 msgctxt "@info:status"
 msgid "Moving %1 contact from group '%2' to '%3'"
 msgid_plural "Moving %1 contacts from group '%2' to '%3'"
-msgstr[0] "%1 kişi, '%2' grubundan '%3' grubuna taşınıyor"
-msgstr[1] "%1 kişi, '%2' grubundan '%3' grubuna taşınıyor"
+msgstr[0] "%1 kişi, “%2” grubundan “%3” grubuna taşınıyor"
+msgstr[1] "%1 kişi, “%2” grubundan “%3” grubuna taşınıyor"
 
 #: personhandler.cpp:461
 #, kde-format
@@ -340,19 +340,19 @@ msgstr[1] "%1 kişinin bağlantısı kaldırılıyor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new contact group '%1'"
-msgstr "Yeni kişi grubu '%1' oluşturuluyor"
+msgstr "Yeni kişi grubu “%1” oluşturuluyor"
 
 #: personhandler.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact group '%1'"
-msgstr "Kişi grubu '%1' değiştiriliyor"
+msgstr "Kişi grubu “%1” değiştiriliyor"
 
 #: personhandler.cpp:554
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing contact group '%1'"
-msgstr "Kişi grubu '%1' kaldırılıyor"
+msgstr "Kişi grubu “%1” kaldırılıyor"
 
 #. i18n: ectx: label, entry (Calendars), group (General)
 #: settingsbase.kcfg:21
@@ -376,13 +376,13 @@ msgstr "Görev listeleri alınıyor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
-msgstr "'%1' listesi için görevler alınıyor"
+msgstr "“%1” listesi için görevler alınıyor"
 
 #: taskhandler.cpp:195
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
-msgstr "'%1' listesindeki görev değiştiriliyor"
+msgstr "“%1” listesindeki görev değiştiriliyor"
 
 #: taskhandler.cpp:215
 #, kde-format
@@ -411,19 +411,19 @@ msgstr "Görev listeleri arasında görevleri taşımak desteklenmiyor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new task list '%1'"
-msgstr "Yeni görev listesi '%1' oluşturuluyor"
+msgstr "Yeni görev listesi “%1” oluşturuluyor"
 
 #: taskhandler.cpp:322
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task list '%1'"
-msgstr "'%1' görev listesi değiştiriliyor"
+msgstr "Görev listesi “%1” değiştiriliyor"
 
 #: taskhandler.cpp:335
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
-msgstr "'%1' görev listesi kaldırılıyor"
+msgstr "Görev listesi “%1” kaldırılıyor"
 
 #~ msgid "Configured account does not exist"
 #~ msgstr "Yapılandırılmış hesap mevcut değil"
