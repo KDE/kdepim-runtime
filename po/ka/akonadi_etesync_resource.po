@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-13 00:39+0000\n"
 "PO-Revision-Date: 2022-06-24 18:07+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -127,50 +127,50 @@ msgstr "EteSync სერვერის მომხმარებელი"
 msgid "Path to base directory"
 msgstr "ბილიკი საბაზისო საქაღალდემდე"
 
-#: setupwizard.cpp:29
+#: setupwizard.cpp:28
 #, kde-format
 msgctxt "@title:window"
 msgid "EteSync configuration wizard"
 msgstr "EteSync-ის მორგება"
 
-#: setupwizard.cpp:67
+#: setupwizard.cpp:66
 #, kde-format
 msgid "Login Credentials"
 msgstr "მომხმ/პაროლი"
 
-#: setupwizard.cpp:68
+#: setupwizard.cpp:67
 #, kde-format
 msgid "Enter your credentials to login to the EteSync server"
 msgstr "შეიყვანეთ Groupware სერვერის მომხმარებელი და პაროლი"
 
-#: setupwizard.cpp:77
+#: setupwizard.cpp:76
 #, kde-format
 msgid "Username:"
 msgstr "მომხმარებელი:"
 
-#: setupwizard.cpp:87
+#: setupwizard.cpp:82
 #, kde-format
 msgid "Password:"
 msgstr "პაროლი:"
 
-#: setupwizard.cpp:90
+#: setupwizard.cpp:85
 #, kde-format
 msgid "Advanced settings"
 msgstr "დამატებითი პარამეტრები"
 
-#: setupwizard.cpp:95
+#: setupwizard.cpp:90
 #, kde-format
 msgid "Server:"
 msgstr "სერვერი:"
 
-#: setupwizard.cpp:108
+#: setupwizard.cpp:103
 #, kde-format
 msgid ""
 "🛈 The password field is empty because EteSync does not store it for security "
 "reasons."
 msgstr "🛈 პაროლის ველი ცარიელია, იმიტომ, რომ EteSync პაროლებს არ ინახავს."
 
-#: setupwizard.cpp:140
+#: setupwizard.cpp:135
 #, kde-format
 msgid ""
 "Please ensure that the server URL is correct. The URL should start with "
@@ -179,14 +179,14 @@ msgstr ""
 "დარწმუნდით, რომ სერვერის URL სწორია. ის http:// ან https://-ით უნდა "
 "იწყებოდეს."
 
-#: setupwizard.cpp:142
+#: setupwizard.cpp:137
 #, kde-format
 msgid ""
 "Could not connect to the server. Please ensure that the server URL is "
 "correct."
 msgstr "სერვერთან მიერთების პრობლემა. დარწმუნდით, რომ სერვერის URL-ი სწორია."
 
-#: setupwizard.cpp:144
+#: setupwizard.cpp:139
 #, kde-format
 msgid "EteSync server not found. Please ensure that the server URL is correct."
 msgstr "EteSync-ის სერვერი არ არსებობს. დარწმუნდით, რომ სერვერის URL-ი სწორია."

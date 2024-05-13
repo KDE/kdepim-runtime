@@ -72,10 +72,9 @@ msgid "Select which folders to monitor for new message notifications:"
 msgstr "选择新信件提醒要监视的文件夹"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, fuzzy, kde-format
-#| msgid "Search..."
+#, kde-format
 msgid "Search…"
-msgstr "搜索..."
+msgstr ""
 
 #: newmailnotifierselectcollectionwidget.cpp:142
 #, kde-format
@@ -239,10 +238,9 @@ msgid "In: %1 (%2)"
 msgstr "位于：%1 (%2)"
 
 #: specialnotifierjob.cpp:150
-#, fuzzy, kde-format
-#| msgid "Show mail..."
+#, kde-format
 msgid "Show mail…"
-msgstr "显示邮件..."
+msgstr ""
 
 #: specialnotifierjob.cpp:153
 #, kde-format

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-13 00:39+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -125,64 +125,64 @@ msgstr "用于登录 EteSync 服务器的用户名"
 msgid "Path to base directory"
 msgstr "底层目录的路径"
 
-#: setupwizard.cpp:29
+#: setupwizard.cpp:28
 #, kde-format
 msgctxt "@title:window"
 msgid "EteSync configuration wizard"
 msgstr "EteSync 配置向导"
 
-#: setupwizard.cpp:67
+#: setupwizard.cpp:66
 #, kde-format
 msgid "Login Credentials"
 msgstr "登录信息"
 
-#: setupwizard.cpp:68
+#: setupwizard.cpp:67
 #, kde-format
 msgid "Enter your credentials to login to the EteSync server"
 msgstr "输入用于登录 EteSync 服务器的账号信息"
 
-#: setupwizard.cpp:77
+#: setupwizard.cpp:76
 #, kde-format
 msgid "Username:"
 msgstr "用户名："
 
-#: setupwizard.cpp:87
+#: setupwizard.cpp:82
 #, kde-format
 msgid "Password:"
 msgstr "密码："
 
-#: setupwizard.cpp:90
+#: setupwizard.cpp:85
 #, kde-format
 msgid "Advanced settings"
 msgstr "高级设置"
 
-#: setupwizard.cpp:95
+#: setupwizard.cpp:90
 #, kde-format
 msgid "Server:"
 msgstr "服务器："
 
-#: setupwizard.cpp:108
+#: setupwizard.cpp:103
 #, kde-format
 msgid ""
 "🛈 The password field is empty because EteSync does not store it for security "
 "reasons."
 msgstr "🛈 密码输入框为空，这是因为 EteSync 出于安全目的不保存密码。"
 
-#: setupwizard.cpp:140
+#: setupwizard.cpp:135
 #, kde-format
 msgid ""
 "Please ensure that the server URL is correct. The URL should start with "
 "http:// or https://."
 msgstr "请确保服务器 URL 准确无误，URL 应以 http:// 或 https:// 开头。"
 
-#: setupwizard.cpp:142
+#: setupwizard.cpp:137
 #, kde-format
 msgid ""
 "Could not connect to the server. Please ensure that the server URL is "
 "correct."
 msgstr "无法连接至服务器，请确认服务器 URL 准确无误。"
 
-#: setupwizard.cpp:144
+#: setupwizard.cpp:139
 #, kde-format
 msgid "EteSync server not found. Please ensure that the server URL is correct."
 msgstr "无法检测到 EteSync 服务器，请确认服务器 URL 准确无误。"

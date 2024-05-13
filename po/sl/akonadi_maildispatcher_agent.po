@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2022-06-05 07:15+0200\n"
+"PO-Revision-Date: 2024-05-12 07:11+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -18,18 +18,16 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
-#, fuzzy, kde-format
-#| msgid "Sending messages (1 item in queue)..."
-#| msgid_plural "Sending messages (%1 items in queue)..."
+#, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "Pošiljanje sporočil (v vrsti je %1 predmet)..."
-msgstr[1] "Pošiljanje sporočil (v vrsti sta %1 predmeta)..."
-msgstr[2] "Pošiljanje sporočil (v vrsti so %1 predmeti)..."
-msgstr[3] "Pošiljanje sporočil (v vrsti je %1 predmetov)..."
+msgstr[0] "Pošiljanje sporočil (v vrsti je %1 predmet)…ov"
+msgstr[1] "Pošiljanje sporočil (v vrsti je %1 predmet)...…"
+msgstr[2] "Pošiljanje sporočil (v vrsti sta %1 predmeta)…"
+msgstr[3] "Pošiljanje sporočil (v vrsti so %1 predmeti)…"
 
 #: maildispatcheragent.cpp:90
 #, kde-format

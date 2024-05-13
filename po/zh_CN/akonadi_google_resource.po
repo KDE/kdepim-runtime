@@ -96,10 +96,9 @@ msgid "Invalid item."
 msgstr "无效项目。"
 
 #: googleresource.cpp:82
-#, fuzzy, kde-format
-#| msgid "Fetching password..."
+#, kde-format
 msgid "Fetching password…"
-msgstr "正在获取密码..."
+msgstr ""
 
 #: googleresource.cpp:89
 #, kde-format
@@ -200,10 +199,9 @@ msgstr "账号："
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, fuzzy, kde-format
-#| msgid "Configure..."
+#, kde-format
 msgid "Configure…"
-msgstr "配置..."
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49

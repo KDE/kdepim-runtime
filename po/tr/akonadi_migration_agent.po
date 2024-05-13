@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Emir SARI <emir_sari@icloud.com>, 2022.
+# SPDX-FileCopyrightText: 2022, 2024 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_migration_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2022-04-05 13:28+0300\n"
+"PO-Revision-Date: 2024-05-12 13:40+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 24.07.70\n"
 
 #: migrationagent.cpp:47
 #, kde-format
@@ -32,12 +32,10 @@ msgid "PIM Maintenance"
 msgstr "PIM Bakımı"
 
 #: migrationexecutor.cpp:41
-#, fuzzy, kde-format
-#| msgctxt "PIM-Maintenance is in progress."
-#| msgid "In progress..."
+#, kde-format
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress…"
-msgstr "Sürüyor..."
+msgstr "Sürüyor…"
 
 #: migrationexecutor.cpp:47
 #, kde-format
@@ -63,9 +61,7 @@ msgid "Progress"
 msgstr "İlerleme"
 
 #: migrationscheduler.cpp:149
-#, fuzzy, kde-format
-#| msgctxt "Current status of the migrator (done, in progress, ...)"
-#| msgid "Status"
+#, kde-format
 msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "Durum"
@@ -79,4 +75,4 @@ msgstr "Günlük dosyası"
 #, kde-format
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"
-msgstr "Göç bilgisi"
+msgstr "Göç Bilgisi"

@@ -11,7 +11,7 @@ msgstr ""
 "org\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-05-10 11:33+0100\n"
+"PO-Revision-Date: 2024-05-12 10:35+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -101,10 +101,9 @@ msgid "Invalid item."
 msgstr "Nevalida ero."
 
 #: googleresource.cpp:82
-#, fuzzy, kde-format
-#| msgid "Fetching password..."
+#, kde-format
 msgid "Fetching password…"
-msgstr "Prenante pasvorton..."
+msgstr "Prenante pasvorton…"
 
 #: googleresource.cpp:89
 #, kde-format
@@ -206,10 +205,9 @@ msgstr "Konto:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, fuzzy, kde-format
-#| msgid "Configure..."
+#, kde-format
 msgid "Configure…"
-msgstr "Agordi..."
+msgstr "Agordi…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49
@@ -426,6 +424,3 @@ msgstr "Ŝanĝante taskoliston '%1'"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "Forigante taskoliston '%1'"
-
-#~ msgid "Configured account does not exist"
-#~ msgstr "Agordita konto ne ekzistas"

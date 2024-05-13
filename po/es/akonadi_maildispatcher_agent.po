@@ -4,26 +4,24 @@
 # Cristina Yenyxe Gonzalez Garcia <the.blue.valkyrie@gmail.com>, 2009.
 # Javier Vinal <fjvinal@gmail.com>, 2009, 2010.
 # Javier Viñal <fjvinal@gmail.com>, 2010, 2011, 2012, 2015, 2016.
-# Eloy Cuadra <ecuadra@eloihr.net>, 2011.
+# SPDX-FileCopyrightText: 2011, 2024 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2016-01-04 12:33+0100\n"
-"Last-Translator: Javier Vinal <fjvinal@gmail.com>\n"
-"Language-Team: Spanish <l10n-kde-es@kde.org>\n"
+"PO-Revision-Date: 2024-05-12 16:06+0200\n"
+"Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
+"Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 24.02.2\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
-#, fuzzy, kde-format
-#| msgid "Sending messages (1 item in queue)..."
-#| msgid_plural "Sending messages (%1 items in queue)..."
+#, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
 msgstr[0] "Enviando mensajes (1 elemento en cola)..."
@@ -76,7 +74,7 @@ msgstr "Enviando: %1"
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
-msgstr "Falló el envío del correo"
+msgstr "El envío del correo ha fallado"
 
 #: maildispatcheragent.cpp:282
 #, kde-format
@@ -159,16 +157,16 @@ msgstr "Respuesta D-Bus no válida desde el agente de filtrado de correo"
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr ""
-"El envío se realizó con éxito, pero no se pudo eliminar el mensaje de la "
-"bandeja de salida."
+"El envío se ha realizado correctamente, pero no se ha podido eliminar el "
+"mensaje de la bandeja de salida."
 
 #: sendjob.cpp:335
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
 msgstr ""
-"El envío se realizó con éxito, pero no se pudo mover el mensaje a la carpeta "
-"de correo enviado."
+"El envío se ha realizado correctamente, pero no se ha podido mover el "
+"mensaje a la carpeta de correo enviado."
 
 #: sendjob.cpp:371
 #, kde-format

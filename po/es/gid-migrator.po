@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-03-13 11:51+0100\n"
+"PO-Revision-Date: 2024-05-12 16:14+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 23.08.4\n"
+"X-Generator: Lokalize 24.02.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -51,8 +51,7 @@ msgid "Failed to start migration because migrator is not ready"
 msgstr "Ha fallado al iniciar la migración porque el migrador no está listo"
 
 #: ../migratorbase.cpp:147
-#, fuzzy, kde-format
-#| msgid "Starting migration..."
+#, kde-format
 msgid "Starting migration…"
 msgstr "Iniciando migración..."
 
@@ -88,9 +87,7 @@ msgid "Not started"
 msgstr "No iniciada"
 
 #: ../migratorbase.cpp:272
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Running..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Running…"
 msgstr "Ejecutando..."
@@ -178,7 +175,7 @@ msgstr "Mostrar dialogo de informes"
 #: main.cpp:37
 #, kde-format
 msgid "Show report only if changes were made"
-msgstr "Mostrar informe solo si se hicieron los cambios"
+msgstr "Mostrar informe solo si se han hecho cambios"
 
 #: main.cpp:38
 #, kde-format

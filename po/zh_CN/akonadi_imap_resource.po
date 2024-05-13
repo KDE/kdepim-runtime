@@ -355,12 +355,10 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "正在将文件夹“%1”从“%2”移至“%3”"
 
 #: imapresourcebase.cpp:471
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr "正在搜索..."
+msgstr ""
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -978,11 +976,9 @@ msgstr "启用服务器端订阅"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Serverside Subscription"
+#, kde-format
 msgid "Serverside Subscription…"
-msgstr "服务器端订阅"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1121,6 +1117,3 @@ msgstr "搜索："
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "只显示已订阅的"
-
-#~ msgid "Serverside Subscription..."
-#~ msgstr "服务器端订阅..."

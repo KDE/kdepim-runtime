@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-03-15 17:45+0100\n"
-"Last-Translator: Jure Repinc <jlp@holodeck1.com>\n"
+"PO-Revision-Date: 2024-05-12 07:09+0200\n"
+"Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Lokalize 24.04.70\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -80,20 +80,19 @@ msgstr ""
 "Izberite, katere mape želite nadzirati za obvestila o novih sporočilih:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, fuzzy, kde-format
-#| msgid "Search..."
+#, kde-format
 msgid "Search…"
-msgstr "Poišči ..."
+msgstr "Išči…"
 
 #: newmailnotifierselectcollectionwidget.cpp:142
 #, kde-format
 msgid "&Select All"
-msgstr "&Izberi vse"
+msgstr "Izberi vse"
 
 #: newmailnotifierselectcollectionwidget.cpp:146
 #, kde-format
 msgid "&Unselect All"
-msgstr "&Odstrani izbiro"
+msgstr "Odstrani izbiro"
 
 #: newmailnotifiersettingswidget.cpp:34
 #, c-format
@@ -247,10 +246,9 @@ msgid "In: %1 (%2)"
 msgstr "V: %1 (%2)"
 
 #: specialnotifierjob.cpp:150
-#, fuzzy, kde-format
-#| msgid "Show mail..."
+#, kde-format
 msgid "Show mail…"
-msgstr "Pokaži pošto ..."
+msgstr "Pokaži pošto…"
 
 #: specialnotifierjob.cpp:153
 #, kde-format

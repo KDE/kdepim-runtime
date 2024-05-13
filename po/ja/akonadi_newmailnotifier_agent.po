@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-16 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2011-01-08 14:26-0800\n"
 "Last-Translator: Japanese KDE translation team <kde-jp@kde.org>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -69,7 +69,7 @@ msgstr ""
 
 #: newmailnotifierselectcollectionwidget.cpp:127
 #, kde-format
-msgid "Search..."
+msgid "Search…"
 msgstr ""
 
 #: newmailnotifierselectcollectionwidget.cpp:142
@@ -233,7 +233,7 @@ msgstr ""
 
 #: specialnotifierjob.cpp:150
 #, kde-format
-msgid "Show mail..."
+msgid "Show mail…"
 msgstr ""
 
 #: specialnotifierjob.cpp:153

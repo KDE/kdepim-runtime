@@ -7,11 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: kdepim-runtimeReport-Msgid-Bugs-To: https://bugs.kde."
-"org\n"
+"Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-03-17 05:34+0100\n"
+"PO-Revision-Date: 2024-05-12 10:35+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -53,10 +52,9 @@ msgid "Failed to start migration because migrator is not ready"
 msgstr "Malsukcesis komenci migradon ĉar migranto ne estas preta"
 
 #: ../migratorbase.cpp:147
-#, fuzzy, kde-format
-#| msgid "Starting migration..."
+#, kde-format
 msgid "Starting migration…"
-msgstr "Komencante migradon..."
+msgstr "Komencante migradon…"
 
 #: ../migratorbase.cpp:189
 #, kde-format
@@ -90,12 +88,10 @@ msgid "Not started"
 msgstr "Ne komencita"
 
 #: ../migratorbase.cpp:272
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Running..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Running…"
-msgstr "Rulante..."
+msgstr "Rulante…"
 
 #: ../migratorbase.cpp:274
 #, kde-format

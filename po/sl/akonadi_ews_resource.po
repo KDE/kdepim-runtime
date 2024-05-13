@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2023-09-21 16:12+0200\n"
+"PO-Revision-Date: 2024-05-12 07:13+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -747,10 +747,9 @@ msgid "Exchange server autodiscovery"
 msgstr "Samodejno odkrivanje strežnika Exchange"
 
 #: ewsprogressdialog.cpp:49
-#, fuzzy, kde-format
-#| msgid "Performing Microsoft Exchange server autodiscovery..."
+#, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr "Izvajanje samodejnega odkrivanja strežnika Microsoft Exchange..."
+msgstr "Izvajanje samodejnega odkrivanja strežnika Microsoft Exchange…"
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -759,10 +758,9 @@ msgid "Connecting to Exchange"
 msgstr "Povezujem se z Exchange"
 
 #: ewsprogressdialog.cpp:53
-#, fuzzy, kde-format
-#| msgid "Connecting to Microsoft Exchange server..."
+#, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "Povezujem se s strežnikom Microsoft Exchange..."
+msgstr "Povezujem se s strežnikom Microsoft Exchange…"
 
 #: ewsresource.cpp:143
 #, kde-format
@@ -1271,7 +1269,7 @@ msgstr "Ni bilo mogoče ustvariti poštnega predmeta"
 #, kde-format
 msgctxt "@info:status"
 msgid "Item update failed: "
-msgstr "Posodabljanje predmeta je spodletelo:"
+msgstr "Posodabljanje predmeta je spodletelo: "
 
 #: mail/ewsmodifymailjob.cpp:103
 #, kde-format

@@ -105,10 +105,9 @@ msgstr "用于登录到 Open-Xchange 服务器的密码"
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
-#, fuzzy, kde-format
-#| msgid "Test Connection..."
+#, kde-format
 msgid "Test Connection…"
-msgstr "测试连接..."
+msgstr ""
 
 #: openxchangeresource.cpp:250
 #, kde-format

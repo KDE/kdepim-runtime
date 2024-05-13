@@ -4,25 +4,26 @@
 # Javier, 2010.
 # Javier Vinal <fjvinalgmail.com>, 2010, 2012.
 # Javier Viñal <fjvinal@gmail.com>, 2010, 2012.
+# SPDX-FileCopyrightText: 2024 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2012-08-20 14:34+0200\n"
-"Last-Translator: Javier Vinal <fjvinalgmail.com>\n"
+"PO-Revision-Date: 2024-05-12 16:11+0200\n"
+"Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 24.02.2\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: configwidget.cpp:25
 #, kde-format
 msgid "Enter the http or https URL to your Open-Xchange installation here."
-msgstr "Introduzca aquí el URL http o https para su instalación Open-Xchange."
+msgstr "Introduzca aquí la URL http o https para su instalación Open-Xchange."
 
 #: configwidget.cpp:26
 #, kde-format
@@ -71,7 +72,7 @@ msgid ""
 "The URL of the Open-Xchange server, should be something like https://"
 "myserver.org/"
 msgstr ""
-"El URL del servidor Open-Xchange, debería ser algo como https://miservidor."
+"La URL del servidor Open-Xchange, debería ser algo como https://miservidor."
 "org/"
 
 #. i18n: ectx: property (text), widget (QLabel, label_Username)
@@ -109,8 +110,7 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
-#, fuzzy, kde-format
-#| msgid "Test Connection..."
+#, kde-format
 msgid "Test Connection…"
 msgstr "Probar conexión..."
 
@@ -149,8 +149,7 @@ msgstr "No es posible conectar al servidor"
 msgid ""
 "The object was edited by another participant in the meantime. Please check."
 msgstr ""
-"El objeto se editó por otro participante mientras tanto. Por favor, "
-"compruébelo."
+"El objeto ha sido editado por otro participante mientras tanto. Compruébelo."
 
 #: openxchangeresource.cpp:808
 #, kde-format
@@ -158,13 +157,12 @@ msgid ""
 "Object not found. Maybe it was deleted by another participant in the "
 "meantime."
 msgstr ""
-"Objeto no encontrado. Quizás se borró por otro participante mientras tanto."
+"Objeto no encontrado. Quizá lo ha borrado otro participante mientras tanto."
 
 #: openxchangeresource.cpp:811
 #, kde-format
 msgid "You don't have the permission to perform this action on this object."
-msgstr ""
-"Usted no dispone de permiso para ejecutar esta acción sobre este objeto."
+msgstr "No dispone de permiso para ejecutar esta acción sobre este objeto."
 
 #: openxchangeresource.cpp:814
 #, kde-format
@@ -172,8 +170,8 @@ msgid ""
 "A conflict detected. Please check if there are other objects in conflict "
 "with this one."
 msgstr ""
-"Se detectó un conflicto. Por favor, compruebe si hay otros objetos en "
-"conflicto con este."
+"Se ha detectado un conflicto. Compruebe si hay otros objetos en conflicto "
+"con este."
 
 #: openxchangeresource.cpp:817
 #, kde-format
@@ -181,8 +179,8 @@ msgid ""
 "A mandatory data field is missing. Please check. Otherwise contact your "
 "administrator."
 msgstr ""
-"Un campo obligatorio está perdido. Por favor, compruébelo. En otro caso, "
-"contacte con su administrador."
+"Falta un campo obligatorio. Compruébelo. En caso contrario, contacte con el "
+"administrador."
 
 #: openxchangeresource.cpp:820
 #, kde-format
@@ -190,13 +188,13 @@ msgid ""
 "An appointment conflict detected.\n"
 "Please check if there are other appointments in conflict with this one."
 msgstr ""
-"Se detectó un conflicto de citas.\n"
-"Por favor, compruebe si hay otras citas en conflicto con esta."
+"Se ha detectado un conflicto en las citas.\n"
+"Compruebe si hay otras citas en conflicto con esta."
 
 #: openxchangeresource.cpp:823
 #, kde-format
 msgid "Internal server error. Please contact your administrator."
-msgstr "Error interno del servidor. Por favor, contacte con su administrador."
+msgstr "Error interno del servidor. Contacte con el administrador."
 
 #. i18n: ectx: label, entry (BaseUrl), group (General)
 #: openxchangeresource.kcfg:10

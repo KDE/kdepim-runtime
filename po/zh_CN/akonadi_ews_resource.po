@@ -715,10 +715,9 @@ msgid "Exchange server autodiscovery"
 msgstr "自动发现 Exchange 服务器"
 
 #: ewsprogressdialog.cpp:49
-#, fuzzy, kde-format
-#| msgid "Performing Microsoft Exchange server autodiscovery..."
+#, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr "正在执行 Microsoft Exchange server 自动搜索……"
+msgstr ""
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -727,10 +726,9 @@ msgid "Connecting to Exchange"
 msgstr "连接到 Exchange"
 
 #: ewsprogressdialog.cpp:53
-#, fuzzy, kde-format
-#| msgid "Connecting to Microsoft Exchange server..."
+#, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "正在连接到 Microsoft Exchange 服务器……"
+msgstr ""
 
 #: ewsresource.cpp:143
 #, kde-format

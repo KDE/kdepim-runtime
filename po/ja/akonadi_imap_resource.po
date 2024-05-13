@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-04-23 00:38+0000\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
 "PO-Revision-Date: 2010-10-22 23:55-0700\n"
 "Last-Translator: Fumiaki Okushi <okushi@kde.gr.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -362,7 +362,7 @@ msgstr ""
 #: imapresourcebase.cpp:471
 #, kde-format
 msgctxt "@info:status"
-msgid "Searching..."
+msgid "Searching…"
 msgstr ""
 
 #: movecollectiontask.cpp:29
@@ -1028,8 +1028,9 @@ msgstr "サーバ側の購読を有効にします"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, kde-format
-msgid "Serverside Subscription..."
+#, fuzzy, kde-format
+#| msgid "Serverside Subscription..."
+msgid "Serverside Subscription…"
 msgstr "サーバ側の購読..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
@@ -1149,3 +1150,6 @@ msgstr ""
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr ""
+
+#~ msgid "Serverside Subscription..."
+#~ msgstr "サーバ側の購読..."

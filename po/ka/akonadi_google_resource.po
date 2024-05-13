@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2023-11-23 06:49+0100\n"
+"PO-Revision-Date: 2024-05-12 03:51+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -98,10 +98,9 @@ msgid "Invalid item."
 msgstr "არასწორი ელემენტი."
 
 #: googleresource.cpp:82
-#, fuzzy, kde-format
-#| msgid "Fetching password..."
+#, kde-format
 msgid "Fetching password…"
-msgstr "პაროლის გამოთხოვა..."
+msgstr "პაროლის გამოთხოვა…"
 
 #: googleresource.cpp:89
 #, kde-format
@@ -203,10 +202,9 @@ msgstr "ანგარიში:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, fuzzy, kde-format
-#| msgid "Configure..."
+#, kde-format
 msgid "Configure…"
-msgstr "მორგება..."
+msgstr "მორგება…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49

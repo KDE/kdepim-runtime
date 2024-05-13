@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-04-30 00:20+0300\n"
+"PO-Revision-Date: 2024-05-12 13:49+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -372,12 +372,10 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "“%1” klasörü “%2” konumundan “%3” konumuna taşınıyor"
 
 #: imapresourcebase.cpp:471
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr "Aranıyor..."
+msgstr "Aranıyor…"
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -622,7 +620,7 @@ msgid ""
 "\n"
 "%1"
 msgstr ""
-"“%2” hesabı için olan sunucu sağlanan kullanıcı adı ve parolayı reddetti.\n"
+"“%2” hesabı için olan sunucu sağlanan kullanıcı adını ve parolayı reddetti.\n"
 "Başka bir oturum açma girişimi için ayarlara gitmek mi yoksa bir şey "
 "yapmamak mı istersiniz?\n"
 "\n"
@@ -802,8 +800,8 @@ msgid ""
 "example: \"imap.foo.com:144\"."
 msgstr ""
 "IMAP sunucusunu belirtin. Özel bir şifreleme şeması için standart olmayan "
-"bir kapıya bağlanmak istiyorsanız onu ‘:kapı’ şeklinde ekleyebilirsiniz. "
-"Örneğin: ‘imap.foo.com:144’."
+"bir kapıya bağlanmak istiyorsanız onu “:kapı” şeklinde ekleyebilirsiniz. "
+"Örneğin: “imap.foo.com:144”."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: setupserverview_desktop.ui:60
@@ -1007,11 +1005,9 @@ msgstr "Sunucu tarafındaki abonelikleri etkinleştir"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Serverside Subscription"
+#, kde-format
 msgid "Serverside Subscription…"
-msgstr "Sunucu Tarafı Abonelik"
+msgstr "Sunucu Tarafı Abonelik…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1103,7 +1099,7 @@ msgstr ""
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">SSL/TLS</span><span style=\" font-"
-"family:'Sans Serif';\"> kapı 993 üzerinde güvenli IMAP;</span></p>\n"
+"family:'Sans Serif';\"> 993. kapı üzerinde güvenli IMAP;</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">STARTTLS</span><span style=\" font-"

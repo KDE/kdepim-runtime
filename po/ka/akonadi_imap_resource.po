@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-03-14 03:49+0100\n"
+"PO-Revision-Date: 2024-05-12 03:51+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -368,12 +368,10 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "საქაღალდის გადატანა(%1) %2-დან %3-ში"
 
 #: imapresourcebase.cpp:471
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr "ძებნა..."
+msgstr "ძებნა…"
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -1008,11 +1006,9 @@ msgstr "სერვერის მხარეს გამოწერებ�
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Serverside Subscription"
+#, kde-format
 msgid "Serverside Subscription…"
-msgstr "სერვერის მხარეს გამოწერა"
+msgstr "სერვერის მხარეს გამოწერა…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
