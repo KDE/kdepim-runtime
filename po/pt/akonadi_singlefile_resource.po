@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-05-14 00:39+0000\n"
 "PO-Revision-Date: 2021-07-07 19:01+0100\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -142,7 +142,7 @@ msgid "The resource not configured yet"
 msgstr "O recurso ainda não está configurado"
 
 #: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
-#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
+#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -193,7 +193,7 @@ msgstr "Está uma transferência ainda em curso."
 msgid "Uploading cached file to remote location."
 msgstr "A enviar o ficheiro em 'cache' para a localização remota."
 
-#: singlefileresourcebase.cpp:239
+#: singlefileresourcebase.cpp:240
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -202,12 +202,12 @@ msgstr ""
 "O ficheiro '%1' foi alterado no disco. Por precaução, foi criada uma cópia "
 "de segurança com as alterações internas em '%2'."
 
-#: singlefileresourcebase.cpp:271
+#: singlefileresourcebase.cpp:272
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Não foi possível carregar o ficheiro '%1'."
 
-#: singlefileresourcebase.cpp:287
+#: singlefileresourcebase.cpp:288
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Não foi possível gravar o ficheiro '%1'."

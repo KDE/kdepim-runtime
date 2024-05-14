@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-05-14 00:39+0000\n"
 "PO-Revision-Date: 2009-04-06 08:33-0500\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -133,7 +133,7 @@ msgid "The resource not configured yet"
 msgstr ""
 
 #: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
-#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
+#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -184,19 +184,19 @@ msgstr ""
 msgid "Uploading cached file to remote location."
 msgstr ""
 
-#: singlefileresourcebase.cpp:239
+#: singlefileresourcebase.cpp:240
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
 "contents has been created at '%2'."
 msgstr ""
 
-#: singlefileresourcebase.cpp:271
+#: singlefileresourcebase.cpp:272
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr ""
 
-#: singlefileresourcebase.cpp:287
+#: singlefileresourcebase.cpp:288
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr ""

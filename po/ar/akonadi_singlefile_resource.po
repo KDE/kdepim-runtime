@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-05-14 00:39+0000\n"
 "PO-Revision-Date: 2024-02-23 18:10+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -140,7 +140,7 @@ msgid "The resource not configured yet"
 msgstr "لم يُضبط المورد بعد"
 
 #: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
-#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
+#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -191,7 +191,7 @@ msgstr "ثمّة تنزيل يجري الآن."
 msgid "Uploading cached file to remote location."
 msgstr "يرفع الملفّ المخبّأ إلى المكان البعيد."
 
-#: singlefileresourcebase.cpp:239
+#: singlefileresourcebase.cpp:240
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -200,12 +200,12 @@ msgstr ""
 "تغيّر الملفّ ’%1‘ على القرص. أُنشئت نسخة احتياطيّة من محتواه السّابق في ’%2‘ "
 "للاحتياط."
 
-#: singlefileresourcebase.cpp:271
+#: singlefileresourcebase.cpp:272
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "تعذّر تحميل الملفّ ’%1‘."
 
-#: singlefileresourcebase.cpp:287
+#: singlefileresourcebase.cpp:288
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "تعذّر حفظ الملفّ ’%1‘."

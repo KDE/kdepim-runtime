@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-05-14 00:39+0000\n"
 "PO-Revision-Date: 2024-05-12 10:35+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -147,7 +147,7 @@ msgid "The resource not configured yet"
 msgstr "La rimedo ankoraŭ ne agordita"
 
 #: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
-#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
+#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -198,7 +198,7 @@ msgstr "Elŝuto ankoraŭ estas en progreso."
 msgid "Uploading cached file to remote location."
 msgstr "Alŝutas kaŝmemorigitan dosieron al fora loko."
 
-#: singlefileresourcebase.cpp:239
+#: singlefileresourcebase.cpp:240
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -207,12 +207,12 @@ msgstr ""
 "La dosiero '%1' estis ŝanĝita sur disko. Kiel antaŭzorgo, sekurkopio de ĝia "
 "antaŭa enhavo estis kreita ĉe '%2'."
 
-#: singlefileresourcebase.cpp:271
+#: singlefileresourcebase.cpp:272
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Ne eblis ŝargi dosieron '%1'."
 
-#: singlefileresourcebase.cpp:287
+#: singlefileresourcebase.cpp:288
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Ne eblis konservi dosieron '%1'."

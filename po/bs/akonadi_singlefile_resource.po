@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-05-14 00:39+0000\n"
 "PO-Revision-Date: 2015-02-04 14:54+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -146,7 +146,7 @@ msgid "The resource not configured yet"
 msgstr ""
 
 #: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
-#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
+#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -197,7 +197,7 @@ msgstr "Učitavanje u toku."
 msgid "Uploading cached file to remote location."
 msgstr "Šaljem privremeno pohranjenu datoteku na udaljenu lokaciju."
 
-#: singlefileresourcebase.cpp:239
+#: singlefileresourcebase.cpp:240
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -206,12 +206,12 @@ msgstr ""
 "Datoteka '%1' je promijenjena na disku. Kao mjera predostrožnosti, rezervna "
 "kopija od njenih ranijih sadržaja je kreirana na '%2'."
 
-#: singlefileresourcebase.cpp:271
+#: singlefileresourcebase.cpp:272
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Ne mogu učitati datoteku '%1'."
 
-#: singlefileresourcebase.cpp:287
+#: singlefileresourcebase.cpp:288
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Nije moguće snimiti datoteku '%1'."

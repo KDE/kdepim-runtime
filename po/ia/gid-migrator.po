@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-03-15 18:38+0100\n"
+"PO-Revision-Date: 2024-05-13 11:59+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 21.12.1\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -49,8 +49,7 @@ msgid "Failed to start migration because migrator is not ready"
 msgstr "Il falleva initiar migration proque migrator non es preste"
 
 #: ../migratorbase.cpp:147
-#, fuzzy, kde-format
-#| msgid "Starting migration..."
+#, kde-format
 msgid "Starting migration…"
 msgstr "Initiante migration..."
 
@@ -86,9 +85,7 @@ msgid "Not started"
 msgstr "Non initiate"
 
 #: ../migratorbase.cpp:272
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Running..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Running…"
 msgstr "Il es in execution..."

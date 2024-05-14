@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-03-20 10:40+0100\n"
+"PO-Revision-Date: 2024-05-13 22:47+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.02.0\n"
+"X-Generator: Lokalize 24.02.2\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -376,12 +376,10 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Преместване на папка „%1“ от „%2“ в „%3“"
 
 #: imapresourcebase.cpp:471
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr "Търсене..."
+msgstr "Търсене…"
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -1018,9 +1016,7 @@ msgstr "Активиране на абонаментите от страна н�
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Serverside Subscription"
+#, kde-format
 msgid "Serverside Subscription…"
 msgstr "Абонамент за сървъра"
 

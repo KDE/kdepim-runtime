@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-03-15 18:38+0100\n"
+"PO-Revision-Date: 2024-05-13 11:57+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 21.12.1\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -376,12 +376,10 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Movente dossier '%1' ex '%2' a '%3'"
 
 #: imapresourcebase.cpp:471
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr "Cercante..."
+msgstr "On initia cerca..."
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -1020,10 +1018,9 @@ msgstr "Habilita subscriptiones le latere servitor"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgid "Serverside Subscription"
+#, kde-format
 msgid "Serverside Subscription…"
-msgstr "Subscriptiones de latere servitor (Serverside)"
+msgstr "Subscription de latere servitor..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
