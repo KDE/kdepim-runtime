@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-05-14 02:28+0000\n"
 "PO-Revision-Date: 2023-10-08 23:06+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -140,7 +140,7 @@ msgid "The resource not configured yet"
 msgstr "리소스가 설정되지 않음"
 
 #: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
-#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
+#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -191,7 +191,7 @@ msgstr "다운로드 작업이 진행 중입니다."
 msgid "Uploading cached file to remote location."
 msgstr "원격지로 캐시된 파일을 업로드하고 있습니다."
 
-#: singlefileresourcebase.cpp:239
+#: singlefileresourcebase.cpp:240
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -200,12 +200,12 @@ msgstr ""
 "파일 '%1'이(가) 디스크에서 변경되었습니다. 데이터 손실을 방지할 수 있도록 이"
 "전 내용의 백업을 '%2'에 만들었습니다."
 
-#: singlefileresourcebase.cpp:271
+#: singlefileresourcebase.cpp:272
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "파일 '%1'을(를) 불러올 수 없습니다."
 
-#: singlefileresourcebase.cpp:287
+#: singlefileresourcebase.cpp:288
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "파일 '%1'을(를) 저장할 수 없습니다."
