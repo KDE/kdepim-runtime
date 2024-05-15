@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the akonadi-ews package.
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2017, 2018, 2019, 2020, 2021, 2023.
+# Luigi Toscano <luigi.toscano@tiscali.it>, 2017, 2018, 2019, 2020, 2021, 2023, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2023-09-21 13:32+0200\n"
+"PO-Revision-Date: 2024-05-12 17:48+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -753,10 +753,9 @@ msgid "Exchange server autodiscovery"
 msgstr "Rilevamento automatico del server Exchange"
 
 #: ewsprogressdialog.cpp:49
-#, fuzzy, kde-format
-#| msgid "Performing Microsoft Exchange server autodiscovery..."
+#, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr "Esecuzione del rilevamento automatico del server Microsoft Exchange..."
+msgstr "Esecuzione del rilevamento automatico del server Microsoft Exchange…"
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -765,10 +764,9 @@ msgid "Connecting to Exchange"
 msgstr "Connessione a Exchange"
 
 #: ewsprogressdialog.cpp:53
-#, fuzzy, kde-format
-#| msgid "Connecting to Microsoft Exchange server..."
+#, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "Connessione al server Microsoft Exchange..."
+msgstr "Connessione al server Microsoft Exchange…"
 
 #: ewsresource.cpp:143
 #, kde-format

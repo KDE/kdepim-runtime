@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: gid-migrator\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-03-14 21:59+0100\n"
+"PO-Revision-Date: 2024-05-12 17:49+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -51,10 +51,9 @@ msgstr ""
 "pronto"
 
 #: ../migratorbase.cpp:147
-#, fuzzy, kde-format
-#| msgid "Starting migration..."
+#, kde-format
 msgid "Starting migration…"
-msgstr "Inizio della migrazione..."
+msgstr "Inizio della migrazione…"
 
 #: ../migratorbase.cpp:189
 #, kde-format
@@ -88,12 +87,10 @@ msgid "Not started"
 msgstr "Non iniziata"
 
 #: ../migratorbase.cpp:272
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Running..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Running…"
-msgstr "In esecuzione..."
+msgstr "In esecuzione…"
 
 #: ../migratorbase.cpp:274
 #, kde-format

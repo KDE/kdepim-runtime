@@ -1,14 +1,14 @@
 # translation of akonadi_maildispatcher_agent.po to Italian
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the akonadi_maildispatcher_agent package.
+# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2011, 2012, 2024.
 #
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2012-12-08 01:23+0100\n"
+"PO-Revision-Date: 2024-05-12 17:48+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -16,15 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
-#, fuzzy, kde-format
-#| msgid "Sending messages (1 item in queue)..."
-#| msgid_plural "Sending messages (%1 items in queue)..."
+#, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "Invio messaggi (un elemento in coda)..."
-msgstr[1] "Invio messaggi (%1 elementi in coda)..."
+msgstr[0] "Invio messaggi (un elemento in coda)…"
+msgstr[1] "Invio messaggi (%1 elementi in coda)…"
 
 #: maildispatcheragent.cpp:90
 #, kde-format
