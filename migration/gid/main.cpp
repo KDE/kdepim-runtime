@@ -30,7 +30,7 @@ int main(int argc, char **argv)
                          i18n("(c) 2013-2022 the Akonadi developers"),
                          QStringLiteral("https://community.kde.org/KDE_PIM/Akonadi"));
     aboutData.setProductName(QByteArrayLiteral("Akonadi/Migration"));
-    aboutData.addAuthor(i18n("Christian Mollekopf"), i18n("Author"), QStringLiteral("mollekopf@kolabsys.com"));
+    aboutData.addAuthor(i18nc("@info:credit", "Christian Mollekopf"), i18n("Author"), QStringLiteral("mollekopf@kolabsys.com"));
 
     QCommandLineParser parser;
     parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("interactive"), i18n("Show reporting dialog")));
