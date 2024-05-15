@@ -1,8 +1,8 @@
 # translation of akonadi_maildispatcher_agent.po to Italian
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the akonadi_maildispatcher_agent package.
+# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2011, 2012, 2024.
 #
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
 #, kde-format
