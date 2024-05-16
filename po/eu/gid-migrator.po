@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-05-16 00:39+0000\n"
 "PO-Revision-Date: 2024-03-24 11:24+0100\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -162,7 +162,9 @@ msgid "(c) 2013-2022 the Akonadi developers"
 msgstr "(c) 2013-2022 Akonadi garatzaileak"
 
 #: main.cpp:33
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Christian Mollekopf"
+msgctxt "@info:credit"
 msgid "Christian Mollekopf"
 msgstr "Christian Mollekopf"
 

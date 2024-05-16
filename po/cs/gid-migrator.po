@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-05-16 00:39+0000\n"
 "PO-Revision-Date: 2022-10-10 16:52+0200\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -50,10 +50,9 @@ msgid "Failed to start migration because migrator is not ready"
 msgstr "Nelze spustit převod, protože převodník není připraven"
 
 #: ../migratorbase.cpp:147
-#, fuzzy, kde-format
-#| msgid "Starting migration..."
+#, kde-format
 msgid "Starting migration…"
-msgstr "Zahajuje se převod..."
+msgstr ""
 
 #: ../migratorbase.cpp:189
 #, kde-format
@@ -87,12 +86,10 @@ msgid "Not started"
 msgstr "Nespuštěn"
 
 #: ../migratorbase.cpp:272
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Running..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Running…"
-msgstr "Běží..."
+msgstr ""
 
 #: ../migratorbase.cpp:274
 #, kde-format
@@ -158,7 +155,9 @@ msgid "(c) 2013-2022 the Akonadi developers"
 msgstr "(c) 2013-2022 vývojáři Akonadi"
 
 #: main.cpp:33
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Christian Mollekopf"
+msgctxt "@info:credit"
 msgid "Christian Mollekopf"
 msgstr "Christian Mollekopf"
 

@@ -100,10 +100,9 @@ msgid "Invalid item."
 msgstr "Neplatná položka."
 
 #: googleresource.cpp:82
-#, fuzzy, kde-format
-#| msgid "Fetching password..."
+#, kde-format
 msgid "Fetching password…"
-msgstr "Získávám heslo..."
+msgstr ""
 
 #: googleresource.cpp:89
 #, kde-format
@@ -202,10 +201,9 @@ msgstr "Účet:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, fuzzy, kde-format
-#| msgid "Configure..."
+#, kde-format
 msgid "Configure…"
-msgstr "Nastavit..."
+msgstr "Nastavit…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49

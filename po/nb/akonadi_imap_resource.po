@@ -1132,6 +1132,3 @@ msgstr "Søk:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Bare abonnerte"
-
-#~ msgid "Serverside Subscription..."
-#~ msgstr "Abonnement  på tjenersiden …"

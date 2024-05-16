@@ -106,10 +106,9 @@ msgstr "Heslo pro přihlášení k serveru Open-Xchange"
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
-#, fuzzy, kde-format
-#| msgid "Test Connection..."
+#, kde-format
 msgid "Test Connection…"
-msgstr "Otestovat spojení..."
+msgstr ""
 
 #: openxchangeresource.cpp:250
 #, kde-format

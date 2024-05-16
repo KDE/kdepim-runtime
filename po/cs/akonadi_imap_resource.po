@@ -359,12 +359,10 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Přesouvám složku '%1' z '%2' do '%3'"
 
 #: imapresourcebase.cpp:471
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr "Vyhledávám..."
+msgstr ""
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -984,11 +982,9 @@ msgstr "Povolit předplatné na straně serveru"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Serverside Subscription"
+#, kde-format
 msgid "Serverside Subscription…"
-msgstr "Přihlášení k odběru na serveru"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1127,6 +1123,3 @@ msgstr "Hledat:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Pouze přihlášené"
-
-#~ msgid "Serverside Subscription..."
-#~ msgstr "Přihlášení k odběru na serveru..."

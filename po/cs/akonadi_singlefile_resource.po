@@ -289,9 +289,7 @@ msgid ""
 msgstr ""
 
 #: singlefileresourceconfigwidgetbase.cpp:129
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Checking file information..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"
-msgstr "Kontroluji informace..."
+msgstr ""

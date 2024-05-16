@@ -670,11 +670,9 @@ msgid "Exchange server autodiscovery"
 msgstr "Automatické hledání serveru Exchange"
 
 #: ewsprogressdialog.cpp:49
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Exchange server autodiscovery"
+#, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr "Automatické hledání serveru Exchange"
+msgstr ""
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -683,11 +681,9 @@ msgid "Connecting to Exchange"
 msgstr "Připojování k Exchange"
 
 #: ewsprogressdialog.cpp:53
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Connecting to Exchange"
+#, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "Připojování k Exchange"
+msgstr ""
 
 #: ewsresource.cpp:143
 #, kde-format

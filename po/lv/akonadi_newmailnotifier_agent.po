@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-05-16 00:39+0000\n"
 "PO-Revision-Date: 2012-07-13 23:05+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -199,6 +199,7 @@ msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:158
 #, kde-format
+msgctxt "@info:credit"
 msgid "Laurent Montel"
 msgstr ""
 
