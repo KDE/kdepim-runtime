@@ -2,34 +2,33 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Safa Alfulaij <safa1996alfulaij@gmail.com>, 2018.
+# SPDX-FileCopyrightText: 2024 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2018-01-24 17:31+0300\n"
-"Last-Translator: Safa Alfulaij <safa1996alfulaij@gmail.com>\n"
-"Language-Team: Arabic <doc@arabeyes.org>\n"
+"PO-Revision-Date: 2024-05-16 13:29+0400\n"
+"Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
+"Language-Team: ar\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 23.08.1\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
-#, fuzzy, kde-format
-#| msgid "Sending messages (1 item in queue)..."
-#| msgid_plural "Sending messages (%1 items in queue)..."
+#, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "لا يرسل شيئا..."
-msgstr[1] "يرسل الرّسائل (عنصر واحد في الطّابور)..."
-msgstr[2] "يرسل الرّسائل (عنصران في الطّابور)..."
-msgstr[3] "يرسل الرّسائل (%1 عناصر في الطّابور)..."
-msgstr[4] "يرسل الرّسائل (%1 عنصرًا في الطّابور)..."
-msgstr[5] "يرسل الرّسائل (%1 عنصر في الطّابور)..."
+msgstr[0] "لا يرسل شيئا…"
+msgstr[1] "يرسل الرّسائل (عنصر واحد في الطّابور)…"
+msgstr[2] "يرسل الرّسائل (عنصران في الطّابور)…"
+msgstr[3] "يرسل الرّسائل (%1 عناصر في الطّابور)…"
+msgstr[4] "يرسل الرّسائل (%1 عنصرًا في الطّابور)…"
+msgstr[5] "يرسل الرّسائل (%1 عنصر في الطّابور)…"
 
 #: maildispatcheragent.cpp:90
 #, kde-format

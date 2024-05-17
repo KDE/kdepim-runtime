@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-16 00:39+0000\n"
-"PO-Revision-Date: 2024-02-23 18:06+0400\n"
+"PO-Revision-Date: 2024-05-16 13:29+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -78,10 +78,9 @@ msgid "Select which folders to monitor for new message notifications:"
 msgstr "حدّد أيّ المجلّدات لمراقبتها لإخطارات الرّسائل الجديدة:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, fuzzy, kde-format
-#| msgid "Search..."
+#, kde-format
 msgid "Search…"
-msgstr "ابحث..."
+msgstr "ابحث…"
 
 #: newmailnotifierselectcollectionwidget.cpp:142
 #, kde-format
@@ -203,11 +202,10 @@ msgid "Copyright (C) 2013-%1 Laurent Montel"
 msgstr "الحقوق محفوظة (C) 2013-%1 ‏Laurent Montel"
 
 #: newmailnotifiersettingswidget.cpp:158
-#, fuzzy, kde-format
-#| msgid "Laurent Montel"
+#, kde-format
 msgctxt "@info:credit"
 msgid "Laurent Montel"
-msgstr "Laurent Montel"
+msgstr "لوران مونتال"
 
 #: newmailnotifiersettingswidget.cpp:158
 #, kde-format
@@ -247,10 +245,9 @@ msgid "In: %1 (%2)"
 msgstr "في: %1 (%2)"
 
 #: specialnotifierjob.cpp:150
-#, fuzzy, kde-format
-#| msgid "Show mail..."
+#, kde-format
 msgid "Show mail…"
-msgstr "اعرض البريد..."
+msgstr "اعرض البريد…"
 
 #: specialnotifierjob.cpp:153
 #, kde-format

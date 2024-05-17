@@ -154,8 +154,7 @@ msgid "(c) 2013-2022 the Akonadi developers"
 msgstr ""
 
 #: main.cpp:33
-#, fuzzy, kde-format
-#| msgid "Christian Mollekopf"
+#, kde-format
 msgctxt "@info:credit"
 msgid "Christian Mollekopf"
 msgstr "Christian Mollekopf"
