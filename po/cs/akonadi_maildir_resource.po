@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Vít Pelčák <vit@pelcak.org>, 2010, 2011, 2013, 2014.
 # Lukáš Tinkl <lukas@kde.org>, 2011.
-# Vit Pelcak <vit@pelcak.org>, 2021.
+# SPDX-FileCopyrightText: 2021, 2024 Vit Pelcak <vit@pelcak.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-03-02 00:55+0000\n"
-"PO-Revision-Date: 2021-08-19 16:05+0200\n"
+"PO-Revision-Date: 2024-04-26 11:00+0200\n"
 "Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 21.08.0\n"
+"X-Generator: Lokalize 24.02.2\n"
 
 #: configwidget.cpp:30
 #, kde-format
@@ -129,7 +129,7 @@ msgstr "Cílová složka je neplatná: '%1'."
 #: maildirresource.cpp:416
 #, kde-format
 msgid "Could not move message '%1' from '%2' to '%3'. The error was %4."
-msgstr "Není možné přesunout zprávu '%1' z '%2' do '%3'. Kvůli chybě %4."
+msgstr "Nelze přesunout zprávu '%1' z '%2' do '%3'. Kvůli chybě %4."
 
 #: maildirresource.cpp:438
 #, kde-format
