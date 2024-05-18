@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-16 00:39+0000\n"
-"PO-Revision-Date: 2024-05-12 03:53+0200\n"
+"PO-Revision-Date: 2024-05-17 04:47+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -157,11 +157,10 @@ msgid "(c) 2013-2022 the Akonadi developers"
 msgstr "(c) 2013-2020 Akonadi-ის პროგრამისტები, ყველა უფლება დაცულია"
 
 #: main.cpp:33
-#, fuzzy, kde-format
-#| msgid "Christian Mollekopf"
+#, kde-format
 msgctxt "@info:credit"
 msgid "Christian Mollekopf"
-msgstr "Georgian <kde-i18n-doc@kde.org>"
+msgstr "Christian Mollekopf"
 
 #: main.cpp:33
 #, kde-format
