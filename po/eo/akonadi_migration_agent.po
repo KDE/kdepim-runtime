@@ -1,18 +1,17 @@
 # translation of akonadi_migration_agent.pot Esperanto
 # Copyright (C) 2013 Free Software Foundation, Inc.
 # This file is distributed under the same license as the kdepim-runtime package.
-# Oliver Kellogg <okellogg@users.sourceforge.net>, 2023.
+# Oliver Kellogg <olivermkellogg@gmail.com>, 2023.
 #
 # Minuskloj: ĉ ĝ ĵ ĥ ŝ ŭ   Majuskloj: Ĉ Ĝ Ĵ Ĥ Ŝ Ŭ
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: kdepim-runtimeReport-Msgid-Bugs-To: https://bugs.kde."
-"org\n"
+"Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2021-01-27 03:07+0100\n"
-"PO-Revision-Date: 2023-05-28 19:19+0100\n"
-"Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
+"PO-Revision-Date: 2024-05-12 10:35+0100\n"
+"Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
