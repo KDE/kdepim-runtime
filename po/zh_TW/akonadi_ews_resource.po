@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-01-14 23:32+0900\n"
+"PO-Revision-Date: 2024-05-18 16:42+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 24.01.90\n"
+"X-Generator: Lokalize 24.04.70\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -722,10 +722,9 @@ msgid "Exchange server autodiscovery"
 msgstr "Exchange 伺服器自動探索"
 
 #: ewsprogressdialog.cpp:49
-#, fuzzy, kde-format
-#| msgid "Performing Microsoft Exchange server autodiscovery..."
+#, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr "正在進行 Microsoft Exchange 伺服器自動探索..."
+msgstr "正在進行 Microsoft Exchange 伺服器自動探索…"
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -734,10 +733,9 @@ msgid "Connecting to Exchange"
 msgstr "正在連線到 Exchange"
 
 #: ewsprogressdialog.cpp:53
-#, fuzzy, kde-format
-#| msgid "Connecting to Microsoft Exchange server..."
+#, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "正在連線到 Microsoft Exchange 伺服器..."
+msgstr "正在連線到 Microsoft Exchange 伺服器…"
 
 #: ewsresource.cpp:143
 #, kde-format
