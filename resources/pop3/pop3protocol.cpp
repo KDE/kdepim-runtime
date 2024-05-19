@@ -221,6 +221,8 @@ POP3Protocol::Resp POP3Protocol::getResponse(char *r_buf, unsigned int r_len)
 
 bool POP3Protocol::sendCommand(const QByteArray &cmd)
 {
+    Q_ASSERT(QThread::currentThread() != qApp->thread());
+
     /*
      *   From rfc1939:
      *
@@ -309,6 +311,8 @@ static QString saslAuthTypeString(const Settings &settings)
 
 void POP3Protocol::closeConnection()
 {
+    Q_ASSERT(QThread::currentThread() != qApp->thread());
+
     if (!mConnected) {
         return;
     }
@@ -714,7 +718,6 @@ Result POP3Protocol::get(const QString &_commandString)
     // /download/#1   RETR #1   Get message header and body
     // /list/#1       LIST #1   Get size of a message
     // /uid/#1        UIDL #1   Get UID of a message
-    // /quit          QUIT      Send QUIT, close connection
     // /headers/#1    TOP #1    Get header of message
     //
     // Notes:
@@ -729,8 +732,7 @@ Result POP3Protocol::get(const QString &_commandString)
     char destbuf[MAX_PACKET_LEN];
     const int maxCommands = mSettings.pipelining() ? MAX_COMMANDS : 1;
 
-    if (((commandString.indexOf(QLatin1Char('/')) == -1) && (commandString != QLatin1StringView("index")) && (commandString != QLatin1StringView("uidl"))
-         && (commandString != QLatin1StringView("quit")))) {
+    if (commandString.indexOf(QLatin1Char('/')) == -1 && commandString != QLatin1StringView("index") && commandString != QLatin1StringView("uidl")) {
         return Result::fail(ERR_INTERNAL, i18n("Internal error: missing argument for command %1", commandString));
     }
 
@@ -909,9 +911,6 @@ Result POP3Protocol::get(const QString &_commandString)
             closeConnection();
             return Result::fail(ERR_PROTOCOL, i18n("Unexpected response from POP3 server."));
         }
-    } else if (cmd == QLatin1StringView("quit")) {
-        qCDebug(POP3_LOG) << "Issued QUIT";
-        closeConnection();
     }
     return Result::pass();
 }

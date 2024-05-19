@@ -29,8 +29,11 @@ POPSession::POPSession(Settings &settings, const QString &password)
 
 POPSession::~POPSession()
 {
-    closeSession();
-    mThread->quit();
+    QMetaObject::invokeMethod(mProtocol.get(), [this]() {
+        Q_ASSERT(QThread::currentThread() != qApp->thread());
+        mProtocol.reset();
+        mThread->quit();
+    });
     mThread->wait();
 }
 
@@ -280,7 +283,8 @@ QuitJob::QuitJob(POPSession *popSession)
 
 void QuitJob::start()
 {
-    startJob(QStringLiteral("/quit"));
+    mPOPSession->closeSession();
+    Q_EMIT jobDone(Result::pass());
 }
 
 FetchJob::FetchJob(POPSession *session)
