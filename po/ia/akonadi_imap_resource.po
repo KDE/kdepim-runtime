@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-05-13 11:57+0200\n"
+"PO-Revision-Date: 2024-05-20 14:44+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -117,7 +117,7 @@ msgstr "Nomine usator"
 #: imapresource.kcfg:20
 #, kde-format
 msgid "Defines the encryption type to use"
-msgstr "Define le typo de encryption de usar"
+msgstr "Define le typo de cryptation de usar"
 
 #. i18n: ectx: label, entry (OverrideEncryption), group (network)
 #: imapresource.kcfg:24
@@ -812,7 +812,7 @@ msgid ""
 "example: \"imap.foo.com:144\"."
 msgstr ""
 "Indica le servitor IMAP. Si tu vole connecter a un port non standard per un "
-"schema specific de encryption, tu pote adder \":port\" pro indicar lo. Per "
+"schema specific de cryptation, tu pote adder \":port\" pro indicar lo. Per "
 "exemplo: \"imap.foo.com:144\""
 
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -1056,7 +1056,7 @@ msgstr "Info de servitor"
 #: setupserverview_desktop.ui:432
 #, kde-format
 msgid "Encryption:"
-msgstr "Encryption:"
+msgstr "Cryptation:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, tlsRadio)
 #: setupserverview_desktop.ui:441
