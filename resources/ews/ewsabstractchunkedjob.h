@@ -71,7 +71,7 @@ void EwsAbstractChunkedJob<Req, ReqItem, RespItem>::start(ReqSetupFn reqSetupFn,
 
     mItemsDone += itemsToDo;
 
-    QObject::connect(mRequest, &KJob::result, [this, reqSetupFn, respGetFn, progressFn, resultFn, itemsToDo](KJob *job) {
+    QObject::connect(mRequest, &KJob::result, mRequest, [this, reqSetupFn, respGetFn, progressFn, resultFn, itemsToDo](KJob *job) {
         if (job->error()) {
             resultFn(false, job->errorString());
             return;
