@@ -2,21 +2,21 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Andrew Coles <andrew_coles@yahoo.co.uk>, 2009, 2010, 2011.
-# Steve Allewell <steve.allewell@gmail.com>, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+# SPDX-FileCopyrightText: 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2024 Steve Allewell <steve.allewell@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2020-10-11 15:00+0100\n"
+"PO-Revision-Date: 2024-05-23 20:06+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
-"Language-Team: British English <kde-l10n-en_gb@kde.org>\n"
+"Language-Team: British English\n"
 "Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 20.08.1\n"
+"X-Generator: Lokalize 24.02.2\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -364,12 +364,10 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Moving folder '%1' from '%2' to '%3'"
 
 #: imapresourcebase.cpp:471
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr "Searching..."
+msgstr "Searching…"
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -420,11 +418,10 @@ msgstr ""
 "will reappear on next sync."
 
 #: outlookpasswordrequester.cpp:67
-#, fuzzy, kde-format
-#| msgid "Failed to collect metadata."
+#, kde-format
 msgctxt "@status"
 msgid "Failed to open KWallet"
-msgstr "Failed to collect metadata."
+msgstr "Failed to open KWallet"
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -667,7 +664,7 @@ msgstr "Anonymous"
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
-msgstr ""
+msgstr "XOAuth"
 
 #: setupserver.cpp:143
 #, kde-format
@@ -678,7 +675,7 @@ msgstr "Archive Folder"
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p%"
 
 #: setupserver.cpp:156
 #, kde-format
@@ -1001,10 +998,9 @@ msgstr "Enable server-side subscriptions"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgid "Serverside Subscription"
+#, kde-format
 msgid "Serverside Subscription…"
-msgstr "Serverside Subscription"
+msgstr "Serverside Subscription…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390

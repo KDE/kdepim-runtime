@@ -2,27 +2,27 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Andrew Coles <andrew_coles@yahoo.co.uk>, 2009, 2010.
+# SPDX-FileCopyrightText: 2024 Steve Allewell <steve.allewell@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2010-12-03 21:39+0000\n"
-"Last-Translator: Andrew Coles <andrew_coles@yahoo.co.uk>\n"
-"Language-Team: British English <kde-l10n-en_gb@kde.org>\n"
+"PO-Revision-Date: 2024-05-23 20:04+0100\n"
+"Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
+"Language-Team: British English\n"
 "Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 24.02.2\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
-#, fuzzy, kde-format
-#| msgid "Sending messages (1 item in queue)..."
-#| msgid_plural "Sending messages (%1 items in queue)..."
+#, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "Sending messages (1 item in queue)..."
+msgstr[0] "Sending messages (1 item in queue)…"
 msgstr[1] "Sending messages (%1 items in queue)..."
 
 #: maildispatcheragent.cpp:90
