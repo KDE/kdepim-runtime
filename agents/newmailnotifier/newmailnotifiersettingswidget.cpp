@@ -115,7 +115,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     mTextToSpeak->setObjectName("mTextToSpeak"_L1);
     vbox->addWidget(mTextToSpeak);
 
-    auto howIsItWork = new QLabel(i18n("<a href=\"whatsthis\">How does this work?</a>"), parent);
+    auto howIsItWork = new QLabel(i18nc("@label:textbox", "<a href=\"whatsthis\">How does this work?</a>"), parent);
     howIsItWork->setObjectName("howIsItWork"_L1);
     howIsItWork->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
     howIsItWork->setContextMenuPolicy(Qt::NoContextMenu);
@@ -124,7 +124,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
 
     auto textToSpeakLayout = new QHBoxLayout;
     textToSpeakLayout->setContentsMargins({});
-    auto lab = new QLabel(i18n("Message:"), parent);
+    auto lab = new QLabel(i18nc("@label:textbox", "Message:"), parent);
     lab->setObjectName("labmessage"_L1);
     textToSpeakLayout->addWidget(lab);
     mTextToSpeakSetting = new QLineEdit(parent);

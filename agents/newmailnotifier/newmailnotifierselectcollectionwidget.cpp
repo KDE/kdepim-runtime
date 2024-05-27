@@ -93,7 +93,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     Akonadi::AttributeFactory::registerAttribute<Akonadi::NewMailNotifierAttribute>();
     auto vbox = new QVBoxLayout(this);
 
-    auto label = new QLabel(i18n("Select which folders to monitor for new message notifications:"));
+    auto label = new QLabel(i18nc("@label:textbox", "Select which folders to monitor for new message notifications:"));
     vbox->addWidget(label);
 
     // Create a new change recorder.

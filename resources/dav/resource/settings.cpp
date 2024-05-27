@@ -474,10 +474,11 @@ QString Settings::promptForPassword(const QString &user)
     mainLayout->addWidget(buttonBox);
     auto vLayout = new QVBoxLayout();
     mainWidget->setLayout(vLayout);
-    auto label = new QLabel(i18n("A password is required for user %1", (user == QLatin1StringView("$default$") ? defaultUsername() : user)), mainWidget);
+    auto label = new QLabel(i18nc("@label:textbox", "A password is required for user %1", (user == QLatin1StringView("$default$") ? defaultUsername() : user)),
+                            mainWidget);
     vLayout->addWidget(label);
     auto hLayout = new QHBoxLayout();
-    label = new QLabel(i18n("Password: "), mainWidget);
+    label = new QLabel(i18nc("@label:textbox", "Password: "), mainWidget);
     hLayout->addWidget(label);
     auto lineEdit = new KPasswordLineEdit();
     lineEdit->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
