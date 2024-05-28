@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-28 00:38+0000\n"
 "PO-Revision-Date: 2023-11-06 00:40+0100\n"
 "Last-Translator: Enol P. <enolp@softastur.org>\n"
 "Language-Team: \n"
@@ -503,11 +503,13 @@ msgstr ""
 
 #: settings.cpp:477
 #, kde-format
+msgctxt "@label:textbox"
 msgid "A password is required for user %1"
 msgstr ""
 
-#: settings.cpp:480
+#: settings.cpp:481
 #, kde-format
+msgctxt "@label:textbox"
 msgid "Password: "
 msgstr ""
 
@@ -607,16 +609,19 @@ msgstr ""
 
 #: setupwizard.cpp:423
 #, kde-format
+msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr ""
 
 #: setupwizard.cpp:428
 #, kde-format
+msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr ""
 
 #: setupwizard.cpp:433
 #, kde-format
+msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr ""
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-28 00:38+0000\n"
 "PO-Revision-Date: 2022-01-04 14:28+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -531,12 +531,16 @@ msgid "a contact with email"
 msgstr "متراسل بريده"
 
 #: settings.cpp:477
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "A password is required for user %1"
+msgctxt "@label:textbox"
 msgid "A password is required for user %1"
 msgstr "كلمة السّرّ مطلوبة للمستخدم %1"
 
-#: settings.cpp:480
-#, kde-format
+#: settings.cpp:481
+#, fuzzy, kde-format
+#| msgid "Password: "
+msgctxt "@label:textbox"
 msgid "Password: "
 msgstr "كلمة السّرّ: "
 
@@ -638,17 +642,23 @@ msgid "Use secure connection"
 msgstr "استخدم اتّصالًا آمنًا"
 
 #: setupwizard.cpp:423
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (CalDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "المسار النّهائي (CalDav)"
 
 #: setupwizard.cpp:428
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (CardDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "المسار النّهائي (CardDav)"
 
 #: setupwizard.cpp:433
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (GroupDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "المسار النّهائي (GroupDav)"
 

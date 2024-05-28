@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-16 00:39+0000\n"
+"POT-Creation-Date: 2024-05-28 00:38+0000\n"
 "PO-Revision-Date: 2011-12-28 12:28-0500\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -73,6 +73,7 @@ msgstr ""
 
 #: newmailnotifierselectcollectionwidget.cpp:96
 #, kde-format
+msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
 msgstr ""
 
@@ -160,11 +161,13 @@ msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:118
 #, kde-format
+msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:127
 #, kde-format
+msgctxt "@label:textbox"
 msgid "Message:"
 msgstr ""
 

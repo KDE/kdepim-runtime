@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-16 00:39+0000\n"
+"POT-Creation-Date: 2024-05-28 00:38+0000\n"
 "PO-Revision-Date: 2024-05-23 20:06+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
@@ -68,7 +68,9 @@ msgid "Unable to start KMail application."
 msgstr "Unable to start KMail application."
 
 #: newmailnotifierselectcollectionwidget.cpp:96
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Select which folders to monitor for new message notifications:"
+msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
 msgstr "Select which folders to monitor for new message notifications:"
 
@@ -157,12 +159,16 @@ msgid "Display"
 msgstr "Display"
 
 #: newmailnotifiersettingswidget.cpp:118
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "<a href=\"whatsthis\">How does this work?</a>"
+msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">How does this work?</a>"
 
 #: newmailnotifiersettingswidget.cpp:127
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Message:"
+msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "Message:"
 

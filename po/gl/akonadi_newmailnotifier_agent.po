@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-16 00:39+0000\n"
+"POT-Creation-Date: 2024-05-28 00:38+0000\n"
 "PO-Revision-Date: 2024-05-17 20:58+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
@@ -69,7 +69,9 @@ msgid "Unable to start KMail application."
 msgstr "Non é posíbel iniciar a aplicación KMail."
 
 #: newmailnotifierselectcollectionwidget.cpp:96
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Select which folders to monitor for new message notifications:"
+msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
 msgstr ""
 "Escoller os cartafoles que se han monitorizar para notificar as mensaxes "
@@ -160,12 +162,16 @@ msgid "Display"
 msgstr "Visualización"
 
 #: newmailnotifiersettingswidget.cpp:118
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "<a href=\"whatsthis\">How does this work?</a>"
+msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Como funciona isto?</a>"
 
 #: newmailnotifiersettingswidget.cpp:127
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Message:"
+msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "Mensaxe:"
 

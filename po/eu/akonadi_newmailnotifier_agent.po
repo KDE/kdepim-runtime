@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-16 00:39+0000\n"
+"POT-Creation-Date: 2024-05-28 00:38+0000\n"
 "PO-Revision-Date: 2023-09-24 09:40+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -70,7 +70,9 @@ msgid "Unable to start KMail application."
 msgstr "Ez da KMail aplikazioa hasteko gai."
 
 #: newmailnotifierselectcollectionwidget.cpp:96
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Select which folders to monitor for new message notifications:"
+msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
 msgstr "Hautatu mezu berrien jakinarazpenetarako zein karpeta gainbegiratu:"
 
@@ -160,12 +162,16 @@ msgid "Display"
 msgstr "Azaldu"
 
 #: newmailnotifiersettingswidget.cpp:118
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "<a href=\"whatsthis\">How does this work?</a>"
+msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Hori nola dabil?</a>"
 
 #: newmailnotifiersettingswidget.cpp:127
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Message:"
+msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "Mezua:"
 

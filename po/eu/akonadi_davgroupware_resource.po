@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-28 00:38+0000\n"
 "PO-Revision-Date: 2022-08-31 21:07+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -535,12 +535,16 @@ msgid "a contact with email"
 msgstr "e-posta hau duen kontaktu bat"
 
 #: settings.cpp:477
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "A password is required for user %1"
+msgctxt "@label:textbox"
 msgid "A password is required for user %1"
 msgstr "%1 erabiltzailerako pasahitz bat behar da"
 
-#: settings.cpp:480
-#, kde-format
+#: settings.cpp:481
+#, fuzzy, kde-format
+#| msgid "Password: "
+msgctxt "@label:textbox"
 msgid "Password: "
 msgstr "Pasahitza:"
 
@@ -643,17 +647,23 @@ msgid "Use secure connection"
 msgstr "Erabili konexio segurua"
 
 #: setupwizard.cpp:423
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (CalDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "Amaierako URLa (CalDav)"
 
 #: setupwizard.cpp:428
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (CardDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "Amaierako URLa (CardDav)"
 
 #: setupwizard.cpp:433
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (GroupDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Amaierako URLa (GroupDav)"
 

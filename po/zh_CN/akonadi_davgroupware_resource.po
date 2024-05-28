@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-28 00:38+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -522,12 +522,16 @@ msgid "a contact with email"
 msgstr "带电子邮件...联系人"
 
 #: settings.cpp:477
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "A password is required for user %1"
+msgctxt "@label:textbox"
 msgid "A password is required for user %1"
 msgstr "需要用户 %1 的密码"
 
-#: settings.cpp:480
-#, kde-format
+#: settings.cpp:481
+#, fuzzy, kde-format
+#| msgid "Password: "
+msgctxt "@label:textbox"
 msgid "Password: "
 msgstr "密码："
 
@@ -629,17 +633,23 @@ msgid "Use secure connection"
 msgstr "使用安全连接"
 
 #: setupwizard.cpp:423
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (CalDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "最终 URL (CalDav)"
 
 #: setupwizard.cpp:428
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (CardDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "最终 URL (CardDav)"
 
 #: setupwizard.cpp:433
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (GroupDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "最终 URL (GroupDav)"
 

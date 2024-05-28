@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-28 00:38+0000\n"
 "PO-Revision-Date: 2023-11-12 16:39+0100\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -529,12 +529,16 @@ msgid "a contact with email"
 msgstr "kontakto kun retpoŝto"
 
 #: settings.cpp:477
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "A password is required for user %1"
+msgctxt "@label:textbox"
 msgid "A password is required for user %1"
 msgstr "Pasvorto estas postulata por uzanto %1"
 
-#: settings.cpp:480
-#, kde-format
+#: settings.cpp:481
+#, fuzzy, kde-format
+#| msgid "Password: "
+msgctxt "@label:textbox"
 msgid "Password: "
 msgstr "Pasvorto: "
 
@@ -636,17 +640,23 @@ msgid "Use secure connection"
 msgstr "Uzi sekuran konekton"
 
 #: setupwizard.cpp:423
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (CalDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "Fina URL (CalDav)"
 
 #: setupwizard.cpp:428
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (CardDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "Fina URL (CardDav)"
 
 #: setupwizard.cpp:433
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (GroupDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Fina URL (GroupDav)"
 

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-16 00:39+0000\n"
+"POT-Creation-Date: 2024-05-28 00:38+0000\n"
 "PO-Revision-Date: 2024-05-17 09:00+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
@@ -76,7 +76,9 @@ msgid "Unable to start KMail application."
 msgstr "Impossible de démarrer l'application KMail."
 
 #: newmailnotifierselectcollectionwidget.cpp:96
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Select which folders to monitor for new message notifications:"
+msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
 msgstr ""
 "Sélectionnez quels dossiers surveiller pour les notifications de nouveaux "
@@ -168,12 +170,16 @@ msgid "Display"
 msgstr "Afficher"
 
 #: newmailnotifiersettingswidget.cpp:118
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "<a href=\"whatsthis\">How does this work?</a>"
+msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Comment ça marche ?</a>"
 
 #: newmailnotifiersettingswidget.cpp:127
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Message:"
+msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "Message :"
 

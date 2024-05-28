@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-16 00:39+0000\n"
+"POT-Creation-Date: 2024-05-28 00:38+0000\n"
 "PO-Revision-Date: 2024-05-17 06:24+0100\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -70,7 +70,9 @@ msgid "Unable to start KMail application."
 msgstr "Ne eblas lanĉi KMail-aplikaĵon."
 
 #: newmailnotifierselectcollectionwidget.cpp:96
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Select which folders to monitor for new message notifications:"
+msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
 msgstr "Elektu la dosierujojn kontrolendajn pri novmesaĝaj sciigoj:"
 
@@ -159,12 +161,16 @@ msgid "Display"
 msgstr "Montri"
 
 #: newmailnotifiersettingswidget.cpp:118
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "<a href=\"whatsthis\">How does this work?</a>"
+msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Kiel ĉi tio funkcias?</a>"
 
 #: newmailnotifiersettingswidget.cpp:127
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Message:"
+msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "Mesaĝo:"
 
