@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-28 00:38+0000\n"
-"PO-Revision-Date: 2023-09-23 07:37+0200\n"
+"PO-Revision-Date: 2024-05-28 05:58+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -528,15 +528,13 @@ msgid "a contact with email"
 msgstr "პირი ელფოსტით"
 
 #: settings.cpp:477
-#, fuzzy, kde-format
-#| msgid "A password is required for user %1"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "A password is required for user %1"
 msgstr "საჭიროა პაროლი მომხმარებლისთვის: %1"
 
 #: settings.cpp:481
-#, fuzzy, kde-format
-#| msgid "Password: "
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Password: "
 msgstr "პაროლი: "
@@ -639,22 +637,19 @@ msgid "Use secure connection"
 msgstr "დაცული კავშირის გამოყენება"
 
 #: setupwizard.cpp:423
-#, fuzzy, kde-format
-#| msgid "Final URL (CalDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "საბოლოო URL (CalDav)"
 
 #: setupwizard.cpp:428
-#, fuzzy, kde-format
-#| msgid "Final URL (CardDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "საბოლოო URL (CardDav)"
 
 #: setupwizard.cpp:433
-#, fuzzy, kde-format
-#| msgid "Final URL (GroupDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "საბოლოო URL (GroupDav)"

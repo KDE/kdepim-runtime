@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-05-28 00:38+0000\n"
 "PO-Revision-Date: 2021-09-12 09:15+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -17,7 +17,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 20.12.1\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
 
@@ -532,12 +531,16 @@ msgid "a contact with email"
 msgstr "kontakt o e-mailu"
 
 #: settings.cpp:477
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "A password is required for user %1"
+msgctxt "@label:textbox"
 msgid "A password is required for user %1"
 msgstr "Wymagane jest hasło dla użytkownika %1"
 
-#: settings.cpp:480
-#, kde-format
+#: settings.cpp:481
+#, fuzzy, kde-format
+#| msgid "Password: "
+msgctxt "@label:textbox"
 msgid "Password: "
 msgstr "Hasło: "
 
@@ -639,17 +642,23 @@ msgid "Use secure connection"
 msgstr "Użyj bezpiecznego połączenia"
 
 #: setupwizard.cpp:423
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (CalDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "Końcowy URL (CalDav)"
 
 #: setupwizard.cpp:428
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (CardDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "Końcowy URL (CardDav)"
 
 #: setupwizard.cpp:433
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Final URL (GroupDav)"
+msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Końcowy URL (GroupDav)"
 

@@ -67,8 +67,7 @@ msgid "Unable to start KMail application."
 msgstr "无法启动 KMail 应用程序。"
 
 #: newmailnotifierselectcollectionwidget.cpp:96
-#, fuzzy, kde-format
-#| msgid "Select which folders to monitor for new message notifications:"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
 msgstr "选择新信件提醒要监视的文件夹"
@@ -158,15 +157,13 @@ msgid "Display"
 msgstr "显示"
 
 #: newmailnotifiersettingswidget.cpp:118
-#, fuzzy, kde-format
-#| msgid "<a href=\"whatsthis\">How does this work?</a>"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">工作方式解释</a>"
 
 #: newmailnotifiersettingswidget.cpp:127
-#, fuzzy, kde-format
-#| msgid "Message:"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "消息："

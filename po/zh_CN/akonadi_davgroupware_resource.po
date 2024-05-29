@@ -522,15 +522,13 @@ msgid "a contact with email"
 msgstr "带电子邮件...联系人"
 
 #: settings.cpp:477
-#, fuzzy, kde-format
-#| msgid "A password is required for user %1"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "A password is required for user %1"
 msgstr "需要用户 %1 的密码"
 
 #: settings.cpp:481
-#, fuzzy, kde-format
-#| msgid "Password: "
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Password: "
 msgstr "密码："
@@ -633,22 +631,19 @@ msgid "Use secure connection"
 msgstr "使用安全连接"
 
 #: setupwizard.cpp:423
-#, fuzzy, kde-format
-#| msgid "Final URL (CalDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "最终 URL (CalDav)"
 
 #: setupwizard.cpp:428
-#, fuzzy, kde-format
-#| msgid "Final URL (CardDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "最终 URL (CardDav)"
 
 #: setupwizard.cpp:433
-#, fuzzy, kde-format
-#| msgid "Final URL (GroupDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "最终 URL (GroupDav)"
