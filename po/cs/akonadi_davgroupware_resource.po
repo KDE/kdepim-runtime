@@ -515,11 +515,10 @@ msgid "A password is required for user %1"
 msgstr ""
 
 #: settings.cpp:481
-#, fuzzy, kde-format
-#| msgid "Password: "
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Password: "
-msgstr "Heslo: "
+msgstr ""
 
 #: setupwizard.cpp:137
 #, kde-format
@@ -616,25 +615,22 @@ msgid "Use secure connection"
 msgstr "Použít bezpečné spojení"
 
 #: setupwizard.cpp:423
-#, fuzzy, kde-format
-#| msgid "Final URL (CalDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
-msgstr "Finální URL (CalDav)"
+msgstr ""
 
 #: setupwizard.cpp:428
-#, fuzzy, kde-format
-#| msgid "Final URL (CardDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
-msgstr "Finální URL (CardDav)"
+msgstr ""
 
 #: setupwizard.cpp:433
-#, fuzzy, kde-format
-#| msgid "Final URL (GroupDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
-msgstr "Finální URL (GroupDav)"
+msgstr ""
 
 #: setupwizard.cpp:497 setupwizard.cpp:503
 #, kde-format

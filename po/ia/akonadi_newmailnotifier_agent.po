@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-28 00:38+0000\n"
-"PO-Revision-Date: 2024-05-16 10:32+0200\n"
+"PO-Revision-Date: 2024-05-29 12:26+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -68,8 +68,7 @@ msgid "Unable to start KMail application."
 msgstr "Incapace a initiar application de KMail."
 
 #: newmailnotifierselectcollectionwidget.cpp:96
-#, fuzzy, kde-format
-#| msgid "Select which folders to monitor for new message notifications:"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
 msgstr ""
@@ -160,15 +159,13 @@ msgid "Display"
 msgstr "Monstra"
 
 #: newmailnotifiersettingswidget.cpp:118
-#, fuzzy, kde-format
-#| msgid "<a href=\"whatsthis\">How does this work?</a>"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Como il functiona?</a>"
 
 #: newmailnotifiersettingswidget.cpp:127
-#, fuzzy, kde-format
-#| msgid "Message:"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "Message:"
