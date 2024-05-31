@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-05-13 22:47+0200\n"
+"PO-Revision-Date: 2024-05-30 20:40+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 24.05.0\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -481,7 +481,7 @@ msgid ""
 "longer be possible to add messages to this folder.</p>"
 msgstr ""
 "<p> Вашите права за достъп до папка <b> %1 </b> са ограничени, вече няма да "
-"е възможно да добавяте съобщения към тази папка. </p>"
+"е възможно да добавяте съобщения към тази папка.</p>"
 
 #: retrievecollectionmetadatatask.cpp:182
 #, kde-format
@@ -763,12 +763,12 @@ msgstr ""
 #: setupserver.cpp:550
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
-msgstr "<qt> <b> STARTTLS се поддържа и препоръчва. </b> </qt>"
+msgstr "<qt><b> STARTTLS се поддържа и препоръчва. </b></qt>"
 
 #: setupserver.cpp:553
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
-msgstr "<qt> <b> SSL/TLS се поддържа и препоръчва. </b> </qt>"
+msgstr "<qt><b> SSL/TLS се поддържа и препоръчва. </b></qt>"
 
 #: setupserver.cpp:557
 #, kde-format
@@ -776,13 +776,13 @@ msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
 msgstr ""
-"<qt> <b> Не се поддържа защита. Не се препоръчва да се свързвате с този "
+"<qt><b> Не се поддържа защита. Не се препоръчва да се свързвате с този "
 "сървър.</b></qt>"
 
 #: setupserver.cpp:560
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
-msgstr "<qt> <b> Не е възможно да се използва този сървър.</b></qt>"
+msgstr "<qt><b> Не е възможно да се използва този сървър.</b></qt>"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: setupserverview_desktop.ui:33
@@ -1157,10 +1157,3 @@ msgstr "Търсене:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "&Само абонирани"
-
-#~ msgid "Serverside Subscription..."
-#~ msgstr "Абонамент за сървъра..."
-
-#~ msgctxt "Authentication method"
-#~ msgid "Gmail"
-#~ msgstr "Gmail"

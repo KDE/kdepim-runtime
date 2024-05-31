@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-04-26 10:56+0200\n"
+"PO-Revision-Date: 2024-05-30 15:36+0200\n"
 "Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -22,9 +22,9 @@ msgstr ""
 #, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Odesílám zprávy (1 položka ve frontě)…"
+msgstr[1] "Odesílám zprávy (%1 položky ve frontě)..."
+msgstr[2] "Odesílám zprávy (%1 položek ve frontě)..."
 
 #: maildispatcheragent.cpp:90
 #, kde-format

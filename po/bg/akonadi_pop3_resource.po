@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-03-13 00:38+0000\n"
-"PO-Revision-Date: 2024-03-20 10:41+0100\n"
+"PO-Revision-Date: 2024-05-30 20:46+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.02.0\n"
+"X-Generator: Lokalize 24.05.0\n"
 
 #: accountwidget.cpp:82
 #, kde-format
@@ -396,9 +396,9 @@ msgid ""
 "delivered mail into it. The folder the account delivers new mail into was "
 "reset to the main Inbox folder.</qt>"
 msgstr ""
-"<qt> Папката, която изтрихте, беше свързана с акаунта <b> %1 </b>, който "
+"<qt>Папката, която изтрихте, беше свързана с акаунта <b> %1 </b>, който "
 "достави поща в него. Папката, в която акаунтът доставя нова поща, беше "
-"нулирана в основната папка „Входящи“. </qt>"
+"нулирана в основната папка „Входящи“.</qt>"
 
 #: pop3resource.cpp:419
 #, kde-format

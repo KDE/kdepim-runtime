@@ -1,6 +1,6 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# Vit Pelcak <vit@pelcak.org>, 2012, 2013, 2014, 2020, 2021, 2023.
+# SPDX-FileCopyrightText: 2012, 2013, 2014, 2020, 2021, 2023, 2024 Vit Pelcak <vit@pelcak.org>
 # Tomáš Chvátal <tomas.chvatal@gmail.com>, 2012.
 #
 msgid ""
@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2023-05-31 09:53+0200\n"
-"Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
+"PO-Revision-Date: 2024-05-30 15:35+0200\n"
+"Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 23.04.1\n"
+"X-Generator: Lokalize 24.02.2\n"
 
 #: calendarhandler.cpp:90
 #, kde-format
@@ -102,7 +102,7 @@ msgstr "Neplatná položka."
 #: googleresource.cpp:82
 #, kde-format
 msgid "Fetching password…"
-msgstr ""
+msgstr "Získávám heslo…"
 
 #: googleresource.cpp:89
 #, kde-format
@@ -191,7 +191,7 @@ msgstr[2] " minut"
 #: googlesettingswidget.cpp:102 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>Not configured</b>"
-msgstr ""
+msgstr "<b>Nenastaveno</b>"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)
 #: googlesettingswidget.ui:23

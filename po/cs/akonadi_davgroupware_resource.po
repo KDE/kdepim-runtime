@@ -2,22 +2,22 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Vít Pelčák <vit@pelcak.org>, 2010, 2011, 2013, 2016, 2017, 2018, 2020.
 # Tomáš Chvátal <tomas.chvatal@gmail.com>, 2012.
-# Vit Pelcak <vit@pelcak.org>, 2021.
+# SPDX-FileCopyrightText: 2021, 2024 Vit Pelcak <vit@pelcak.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-28 00:38+0000\n"
-"PO-Revision-Date: 2021-08-26 12:51+0200\n"
-"Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
+"PO-Revision-Date: 2024-05-30 15:34+0200\n"
+"Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 21.08.0\n"
+"X-Generator: Lokalize 24.02.2\n"
 
 #: configdialog.cpp:33
 #, kde-format
@@ -512,13 +512,13 @@ msgstr ""
 #, kde-format
 msgctxt "@label:textbox"
 msgid "A password is required for user %1"
-msgstr ""
+msgstr "Pro uživatele %1 je požadováno heslo"
 
 #: settings.cpp:481
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Password: "
-msgstr ""
+msgstr "Heslo: "
 
 #: setupwizard.cpp:137
 #, kde-format
@@ -618,19 +618,19 @@ msgstr "Použít bezpečné spojení"
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
-msgstr ""
+msgstr "Finální URL (CalDav)"
 
 #: setupwizard.cpp:428
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
-msgstr ""
+msgstr "Finální URL (CardDav)"
 
 #: setupwizard.cpp:433
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
-msgstr ""
+msgstr "Finální URL (GroupDav)"
 
 #: setupwizard.cpp:497 setupwizard.cpp:503
 #, kde-format

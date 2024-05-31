@@ -3,21 +3,21 @@
 # This file is distributed under the same license as the kdepim-runtime package.
 #
 # Automatically generated, 2022.
-# SPDX-FileCopyrightText: 2022, 2023 Mincho Kondarev <mkondarev@yahoo.de>
+# SPDX-FileCopyrightText: 2022, 2023, 2024 Mincho Kondarev <mkondarev@yahoo.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-02-29 00:38+0000\n"
-"PO-Revision-Date: 2023-10-09 16:08+0200\n"
+"PO-Revision-Date: 2024-05-30 21:11+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
-"Language-Team: \n"
+"Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 23.08.1\n"
+"X-Generator: Lokalize 24.05.0\n"
 
 #: compactpage.cpp:71
 #, kde-format
@@ -46,7 +46,7 @@ msgstr[1] "(Изтриване на %1 съобщения)"
 #: compactpage.cpp:107 compactpage.cpp:115
 #, kde-format
 msgid "Failed to compact the mbox file."
-msgstr "Неуспех при прочистване на mbox файл. "
+msgstr "Неуспех при прочистване на mbox файл."
 
 #: compactpage.cpp:117
 #, kde-format

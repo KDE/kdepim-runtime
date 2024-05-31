@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-04-26 10:32+0200\n"
+"PO-Revision-Date: 2024-05-30 15:34+0200\n"
 "Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -362,7 +362,7 @@ msgstr "Přesouvám složku '%1' z '%2' do '%3'"
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr ""
+msgstr "Hledání..."
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -414,7 +414,7 @@ msgstr ""
 #, kde-format
 msgctxt "@status"
 msgid "Failed to open KWallet"
-msgstr ""
+msgstr "Otevření KWallet selhalo"
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -656,7 +656,7 @@ msgstr "Anonymní"
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
-msgstr ""
+msgstr "XOAuth"
 
 #: setupserver.cpp:143
 #, kde-format
@@ -667,7 +667,7 @@ msgstr "Složka pro archivaci"
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p%"
 
 #: setupserver.cpp:156
 #, kde-format
@@ -984,7 +984,7 @@ msgstr "Povolit předplatné na straně serveru"
 #: setupserverview_desktop.ui:381
 #, kde-format
 msgid "Serverside Subscription…"
-msgstr ""
+msgstr "Odběr na serveru…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
