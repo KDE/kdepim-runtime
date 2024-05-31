@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-03-28 00:39+0000\n"
-"PO-Revision-Date: 2024-03-20 10:40+0100\n"
+"PO-Revision-Date: 2024-05-30 16:57+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.02.0\n"
+"X-Generator: Lokalize 24.05.0\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -763,12 +763,12 @@ msgstr ""
 #: setupserver.cpp:550
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
-msgstr "<qt> <b> STARTTLS се поддържа и препоръчва. </b> </qt>"
+msgstr "<qt><b> STARTTLS се поддържа и препоръчва. </b></qt>"
 
 #: setupserver.cpp:553
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
-msgstr "<qt> <b> SSL/TLS се поддържа и препоръчва. </b> </qt>"
+msgstr "<qt><b> SSL/TLS се поддържа и препоръчва. </b></qt>"
 
 #: setupserver.cpp:557
 #, kde-format
@@ -776,13 +776,13 @@ msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
 msgstr ""
-"<qt> <b> Не се поддържа защита. Не се препоръчва да се свързвате с този "
+"<qt><b> Не се поддържа защита. Не се препоръчва да се свързвате с този "
 "сървър.</b></qt>"
 
 #: setupserver.cpp:560
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
-msgstr "<qt> <b> Не е възможно да се използва този сървър.</b></qt>"
+msgstr "<qt><b> Не е възможно да се използва този сървър.</b></qt>"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: setupserverview_desktop.ui:33
@@ -1157,7 +1157,3 @@ msgstr "Търсене:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "&Само абонирани"
-
-#~ msgctxt "Authentication method"
-#~ msgid "Gmail"
-#~ msgstr "Gmail"

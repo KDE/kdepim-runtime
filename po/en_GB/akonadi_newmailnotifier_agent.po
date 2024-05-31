@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Andrew Coles <andrew_coles@yahoo.co.uk>, 2011.
-# Steve Allewell <steve.allewell@gmail.com>, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
+# SPDX-FileCopyrightText: 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024 Steve Allewell <steve.allewell@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-04-16 00:38+0000\n"
-"PO-Revision-Date: 2023-06-17 12:09+0100\n"
+"PO-Revision-Date: 2024-05-30 19:41+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
 "Language: en_GB\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 23.03.70\n"
+"X-Generator: Lokalize 24.02.2\n"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -25,16 +25,14 @@ msgid "Notification History"
 msgstr "Notification History"
 
 #: newmailnotificationhistorymanager.cpp:32
-#, fuzzy, kde-format
-#| msgid "Folders"
+#, kde-format
 msgid "[Open Folder]"
-msgstr "Folders"
+msgstr "[Open Folder]"
 
 #: newmailnotificationhistorymanager.cpp:42
-#, fuzzy, kde-format
-#| msgid "Show mail..."
+#, kde-format
 msgid "[Show Mail]"
-msgstr "Show mail..."
+msgstr "[Show Mail]"
 
 #: newmailnotificationhistorywidget.cpp:24
 #: newmailnotifiersettingswidget.cpp:114
@@ -236,10 +234,9 @@ msgid "In: %1"
 msgstr "In: %1"
 
 #: specialnotifierjob.cpp:125
-#, fuzzy, kde-format
-#| msgid "In: %1"
+#, kde-format
 msgid "In: %1 (%2)"
-msgstr "In: %1"
+msgstr "In: %1 (%2)"
 
 #: specialnotifierjob.cpp:150
 #, kde-format
