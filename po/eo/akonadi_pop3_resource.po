@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-03-13 00:38+0000\n"
-"PO-Revision-Date: 2024-05-10 11:33+0100\n"
+"PO-Revision-Date: 2024-05-30 07:49+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -557,7 +557,7 @@ msgstr "Kontonomo: Ĉi tio difinas la nomon montritan en la konta listo."
 #: popsettings.ui:97
 #, kde-format
 msgid "Incoming &mail server:"
-msgstr "Envenanta poŝtservilo:"
+msgstr "Enve&nanta poŝtservilo:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, hostEdit)
 #: popsettings.ui:107
