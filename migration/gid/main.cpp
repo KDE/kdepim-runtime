@@ -33,9 +33,10 @@ int main(int argc, char **argv)
     aboutData.addAuthor(i18nc("@info:credit", "Christian Mollekopf"), i18n("Author"), QStringLiteral("mollekopf@kolabsys.com"));
 
     QCommandLineParser parser;
-    parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("interactive"), i18n("Show reporting dialog")));
-    parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("interactive-on-change"), i18n("Show report only if changes were made")));
-    parser.addOption(QCommandLineOption(QStringLiteral("mimetype"), i18n("MIME type to migrate"), QStringLiteral("mimetype")));
+    parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("interactive"), i18nc("@info:shell", "Show reporting dialog")));
+    parser.addOption(
+        QCommandLineOption(QStringList() << QStringLiteral("interactive-on-change"), i18nc("@info:shell", "Show report only if changes were made")));
+    parser.addOption(QCommandLineOption(QStringLiteral("mimetype"), i18nc("@info:shell", "MIME type to migrate"), QStringLiteral("mimetype")));
 
     aboutData.setupCommandLine(&parser);
     parser.process(app);
