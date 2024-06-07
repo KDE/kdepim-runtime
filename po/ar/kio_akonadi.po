@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kio_akonadi\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-07 00:47+0000\n"
+"POT-Creation-Date: 2024-06-07 00:39+0000\n"
 "PO-Revision-Date: 2018-01-31 00:38+0300\n"
 "Last-Translator: Safa Alfulaij <safa1996alfulaij@gmail.com>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -29,12 +29,16 @@ msgid "Your emails"
 msgstr "zayed.alsaidi@gmail.com,safa1996alfulaij@gmail.com"
 
 #: akonadiworker.cpp:49
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Protocol name"
+msgctxt "@info:shell"
 msgid "Protocol name"
 msgstr "اسم الميفاق"
 
 #: akonadiworker.cpp:50 akonadiworker.cpp:51
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Socket name"
+msgctxt "@info:shell"
 msgid "Socket name"
 msgstr "اسم المقبس"
 

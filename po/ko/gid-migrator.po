@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-16 00:39+0000\n"
+"POT-Creation-Date: 2024-06-07 00:39+0000\n"
 "PO-Revision-Date: 2022-10-03 16:31+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-i18n-doc@kde.org>\n"
@@ -171,16 +171,22 @@ msgid "Author"
 msgstr "작성자"
 
 #: main.cpp:36
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show reporting dialog"
+msgctxt "@info:shell"
 msgid "Show reporting dialog"
 msgstr "보고 대화 상자 표시"
 
-#: main.cpp:37
-#, kde-format
+#: main.cpp:38
+#, fuzzy, kde-format
+#| msgid "Show report only if changes were made"
+msgctxt "@info:shell"
 msgid "Show report only if changes were made"
 msgstr "변경 사항이 있는 경우 보고 대화 상자 표시"
 
-#: main.cpp:38
-#, kde-format
+#: main.cpp:39
+#, fuzzy, kde-format
+#| msgid "MIME type to migrate"
+msgctxt "@info:shell"
 msgid "MIME type to migrate"
 msgstr "이전할 MIME 형식"

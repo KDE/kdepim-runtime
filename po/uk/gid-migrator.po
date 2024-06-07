@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gid-migrator\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-16 00:39+0000\n"
+"POT-Creation-Date: 2024-06-07 00:39+0000\n"
 "PO-Revision-Date: 2024-05-16 09:10+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian\n"
@@ -172,16 +172,22 @@ msgid "Author"
 msgstr "Автор"
 
 #: main.cpp:36
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show reporting dialog"
+msgctxt "@info:shell"
 msgid "Show reporting dialog"
 msgstr "Показати діалогове вікно звіту"
 
-#: main.cpp:37
-#, kde-format
+#: main.cpp:38
+#, fuzzy, kde-format
+#| msgid "Show report only if changes were made"
+msgctxt "@info:shell"
 msgid "Show report only if changes were made"
 msgstr "Показати звіт, лише якщо було внесено зміни"
 
-#: main.cpp:38
-#, kde-format
+#: main.cpp:39
+#, fuzzy, kde-format
+#| msgid "MIME type to migrate"
+msgctxt "@info:shell"
 msgid "MIME type to migrate"
 msgstr "Тип MIME даних, які слід перенести"

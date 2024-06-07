@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-07 00:47+0000\n"
+"POT-Creation-Date: 2024-06-07 00:39+0000\n"
 "PO-Revision-Date: 2022-08-25 17:08+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -29,12 +29,16 @@ msgid "Your emails"
 msgstr "Temuri.doghonadze@gmail.com"
 
 #: akonadiworker.cpp:49
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Protocol name"
+msgctxt "@info:shell"
 msgid "Protocol name"
 msgstr "პროტოკოლის სახელი"
 
 #: akonadiworker.cpp:50 akonadiworker.cpp:51
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Socket name"
+msgctxt "@info:shell"
 msgid "Socket name"
 msgstr "სოკეტის სახელი"
 

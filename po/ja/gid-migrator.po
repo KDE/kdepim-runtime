@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gid-migrator\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-16 00:39+0000\n"
+"POT-Creation-Date: 2024-06-07 00:39+0000\n"
 "PO-Revision-Date: 2013-09-21 11:28-0700\n"
 "Last-Translator: Japanese KDE translation team <kde-jp@kde.org>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -163,15 +163,18 @@ msgstr ""
 
 #: main.cpp:36
 #, kde-format
+msgctxt "@info:shell"
 msgid "Show reporting dialog"
-msgstr ""
-
-#: main.cpp:37
-#, kde-format
-msgid "Show report only if changes were made"
 msgstr ""
 
 #: main.cpp:38
 #, kde-format
+msgctxt "@info:shell"
+msgid "Show report only if changes were made"
+msgstr ""
+
+#: main.cpp:39
+#, kde-format
+msgctxt "@info:shell"
 msgid "MIME type to migrate"
 msgstr ""

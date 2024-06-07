@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kio_akonadi\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-07 00:47+0000\n"
+"POT-Creation-Date: 2024-06-07 00:39+0000\n"
 "PO-Revision-Date: 2018-05-27 12:33+0100\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
@@ -31,12 +31,16 @@ msgid "Your emails"
 msgstr "eirbir@gmail.com,karl@huftis.org"
 
 #: akonadiworker.cpp:49
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Protocol name"
+msgctxt "@info:shell"
 msgid "Protocol name"
 msgstr "Protokollnamn"
 
 #: akonadiworker.cpp:50 akonadiworker.cpp:51
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Socket name"
+msgctxt "@info:shell"
 msgid "Socket name"
 msgstr "Socket-namn"
 

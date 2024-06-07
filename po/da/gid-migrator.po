@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-16 00:39+0000\n"
+"POT-Creation-Date: 2024-06-07 00:39+0000\n"
 "PO-Revision-Date: 2016-07-11 21:32+0100\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -172,16 +172,22 @@ msgid "Author"
 msgstr "Ophavsmand"
 
 #: main.cpp:36
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show reporting dialog"
+msgctxt "@info:shell"
 msgid "Show reporting dialog"
 msgstr "Vis rapporteringsdialog"
 
-#: main.cpp:37
-#, kde-format
+#: main.cpp:38
+#, fuzzy, kde-format
+#| msgid "Show report only if changes were made"
+msgctxt "@info:shell"
 msgid "Show report only if changes were made"
 msgstr "Vis kun rapport hvis der blev foretaget ændringer"
 
-#: main.cpp:38
-#, kde-format
+#: main.cpp:39
+#, fuzzy, kde-format
+#| msgid "MIME type to migrate"
+msgctxt "@info:shell"
 msgid "MIME type to migrate"
 msgstr "MIME-type der skal migreres"

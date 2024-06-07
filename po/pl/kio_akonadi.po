@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-07 00:47+0000\n"
+"POT-Creation-Date: 2024-06-07 00:39+0000\n"
 "PO-Revision-Date: 2016-08-27 09:12+0100\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -29,12 +29,16 @@ msgid "Your emails"
 msgstr "lukasz.wojnilowicz@gmail.com"
 
 #: akonadiworker.cpp:49
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Protocol name"
+msgctxt "@info:shell"
 msgid "Protocol name"
 msgstr "Nazwa protokołu"
 
 #: akonadiworker.cpp:50 akonadiworker.cpp:51
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Socket name"
+msgctxt "@info:shell"
 msgid "Socket name"
 msgstr "Nazwa gniazda"
 

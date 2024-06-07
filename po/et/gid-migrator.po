@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-16 00:39+0000\n"
+"POT-Creation-Date: 2024-06-07 00:39+0000\n"
 "PO-Revision-Date: 2016-07-27 23:46+0300\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@linux.ee>\n"
@@ -172,16 +172,22 @@ msgid "Author"
 msgstr "Autor"
 
 #: main.cpp:36
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show reporting dialog"
+msgctxt "@info:shell"
 msgid "Show reporting dialog"
 msgstr "Aruandedialoogi näitamine"
 
-#: main.cpp:37
-#, kde-format
+#: main.cpp:38
+#, fuzzy, kde-format
+#| msgid "Show report only if changes were made"
+msgctxt "@info:shell"
 msgid "Show report only if changes were made"
 msgstr "Aruande näitamine ainult muutuste korral"
 
-#: main.cpp:38
-#, kde-format
+#: main.cpp:39
+#, fuzzy, kde-format
+#| msgid "MIME type to migrate"
+msgctxt "@info:shell"
 msgid "MIME type to migrate"
 msgstr "Migreeritav MIME tüüp"

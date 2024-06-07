@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-07 00:47+0000\n"
+"POT-Creation-Date: 2024-06-07 00:39+0000\n"
 "PO-Revision-Date: 2016-03-29 16:45+0100\n"
 "Last-Translator: Antoni Bella Pérez <antonibella5@yahoo.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -32,12 +32,16 @@ msgid "Your emails"
 msgstr "manutortosa@gmail.com,antonibella5@yahoo.com"
 
 #: akonadiworker.cpp:49
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Protocol name"
+msgctxt "@info:shell"
 msgid "Protocol name"
 msgstr "Nom del protocol"
 
 #: akonadiworker.cpp:50 akonadiworker.cpp:51
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Socket name"
+msgctxt "@info:shell"
 msgid "Socket name"
 msgstr "Nom del sòcol"
 

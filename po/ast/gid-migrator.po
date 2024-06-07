@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-16 00:39+0000\n"
+"POT-Creation-Date: 2024-06-07 00:39+0000\n"
 "PO-Revision-Date: 2023-11-07 21:26+0100\n"
 "Last-Translator: Enol P. <enolp@softastur.org>\n"
 "Language-Team: \n"
@@ -166,15 +166,18 @@ msgstr ""
 
 #: main.cpp:36
 #, kde-format
+msgctxt "@info:shell"
 msgid "Show reporting dialog"
-msgstr ""
-
-#: main.cpp:37
-#, kde-format
-msgid "Show report only if changes were made"
 msgstr ""
 
 #: main.cpp:38
 #, kde-format
+msgctxt "@info:shell"
+msgid "Show report only if changes were made"
+msgstr ""
+
+#: main.cpp:39
+#, kde-format
+msgctxt "@info:shell"
 msgid "MIME type to migrate"
 msgstr ""
