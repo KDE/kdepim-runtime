@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-07 00:39+0000\n"
-"PO-Revision-Date: 2024-05-16 09:50+0200\n"
+"PO-Revision-Date: 2024-06-07 06:42+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -169,22 +169,19 @@ msgid "Author"
 msgstr "Avtor"
 
 #: main.cpp:36
-#, fuzzy, kde-format
-#| msgid "Show reporting dialog"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Show reporting dialog"
 msgstr "Prikaži pogovorno okno za poročanje"
 
 #: main.cpp:38
-#, fuzzy, kde-format
-#| msgid "Show report only if changes were made"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Show report only if changes were made"
-msgstr "Prikaži poročilo le, če so bile opravljene spremembe"
+msgstr "Prikaži poročilo samo, če so bile opravljene spremembe"
 
 #: main.cpp:39
-#, fuzzy, kde-format
-#| msgid "MIME type to migrate"
+#, kde-format
 msgctxt "@info:shell"
 msgid "MIME type to migrate"
-msgstr "Vrsta MIME za preseliti"
+msgstr "Vrsta MIME za selitev"

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-07 00:39+0000\n"
-"PO-Revision-Date: 2024-05-16 10:32+0200\n"
+"PO-Revision-Date: 2024-06-07 09:52+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -167,22 +167,19 @@ msgid "Author"
 msgstr "Autor"
 
 #: main.cpp:36
-#, fuzzy, kde-format
-#| msgid "Show reporting dialog"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Show reporting dialog"
 msgstr "Monstra dialogo pro reportar"
 
 #: main.cpp:38
-#, fuzzy, kde-format
-#| msgid "Show report only if changes were made"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Show report only if changes were made"
 msgstr "Monstra reporto solmente quando on ha facite modificationes"
 
 #: main.cpp:39
-#, fuzzy, kde-format
-#| msgid "MIME type to migrate"
+#, kde-format
 msgctxt "@info:shell"
 msgid "MIME type to migrate"
 msgstr "Typo MIME de migrar"
