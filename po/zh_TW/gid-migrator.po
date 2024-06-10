@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-07 00:39+0000\n"
-"PO-Revision-Date: 2024-05-18 16:43+0900\n"
+"PO-Revision-Date: 2024-06-09 19:18+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -167,22 +167,19 @@ msgid "Author"
 msgstr "作者"
 
 #: main.cpp:36
-#, fuzzy, kde-format
-#| msgid "Show reporting dialog"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Show reporting dialog"
 msgstr "顯示報告對話框"
 
 #: main.cpp:38
-#, fuzzy, kde-format
-#| msgid "Show report only if changes were made"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Show report only if changes were made"
 msgstr "只在有變更時顯示報告"
 
 #: main.cpp:39
-#, fuzzy, kde-format
-#| msgid "MIME type to migrate"
+#, kde-format
 msgctxt "@info:shell"
 msgid "MIME type to migrate"
 msgstr "要移植的 MIME 型態"
