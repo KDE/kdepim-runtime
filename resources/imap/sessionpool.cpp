@@ -310,7 +310,8 @@ void SessionPool::processPendingRequests()
 
 void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
 {
-    QString errorMessage;
+    // In case of an error, the 'password' argument actually contains an error message (or is empty)
+    QString errorMessage = password;
 
     if (!m_account) {
         // it looks like the connection was lost while we were waiting
@@ -329,7 +330,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
         cancelSessionCreation(m_pendingInitialSession, ReconnectNeededError, errorMessage);
         return;
     case PasswordRequesterInterface::UserRejected:
-        errorMessage = i18n("Could not read the password: user rejected wallet access");
+        errorMessage = errorMessage.isEmpty() ? i18n("Could not read the password: user rejected wallet access") : errorMessage;
         if (m_pendingInitialSession) {
             cancelSessionCreation(m_pendingInitialSession, LoginFailError, errorMessage);
         } else {
