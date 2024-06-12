@@ -1,21 +1,21 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Vit Pelcak <vit@pelcak.org>, 2013, 2014, 2017.
+# SPDX-FileCopyrightText: 2013, 2014, 2017, 2024 Vit Pelcak <vit@pelcak.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: kio_akonadi\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-07 00:39+0000\n"
-"PO-Revision-Date: 2017-02-27 13:52+0100\n"
-"Last-Translator: Vít Pelčák <vit@pelcak.org>\n"
+"PO-Revision-Date: 2024-06-07 11:35+0200\n"
+"Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 24.05.0\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -28,15 +28,13 @@ msgid "Your emails"
 msgstr "vit@pelcak.org"
 
 #: akonadiworker.cpp:49
-#, fuzzy, kde-format
-#| msgid "Protocol name"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Protocol name"
-msgstr "Jméno protokolu"
+msgstr "Název protokolu"
 
 #: akonadiworker.cpp:50 akonadiworker.cpp:51
-#, fuzzy, kde-format
-#| msgid "Socket name"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Socket name"
 msgstr "Název socketu"
