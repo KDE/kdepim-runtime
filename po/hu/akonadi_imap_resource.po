@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-06-13 00:39+0000\n"
 "PO-Revision-Date: 2014-09-04 16:12+0200\n"
 "Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -548,7 +548,7 @@ msgstr "Kiszolgálójellemzők"
 msgid "Resource not synchronized yet."
 msgstr ""
 
-#: sessionpool.cpp:250 sessionpool.cpp:406
+#: sessionpool.cpp:250 sessionpool.cpp:407
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -566,8 +566,8 @@ msgstr ""
 "Nem sikerült csatlakozni az IMAP kiszolgálóhoz.\n"
 "%1"
 
-#: sessionpool.cpp:279 sessionpool.cpp:319 sessionpool.cpp:388
-#: sessionpool.cpp:424 sessionpool.cpp:495
+#: sessionpool.cpp:279 sessionpool.cpp:320 sessionpool.cpp:389
+#: sessionpool.cpp:425 sessionpool.cpp:496
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "A kapcsolat megszakadt a kiszolgálóval a bejelentkezés során."
@@ -578,19 +578,19 @@ msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr ""
 "Nem sikerült létrehozni egy másik kapcsolatot a(z) %1 IMAP kiszolgálóhoz."
 
-#: sessionpool.cpp:332
+#: sessionpool.cpp:333
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr ""
 "Nem sikerült olvasni a jelszót: a felhasználó megtiltotta a jelszótároló "
 "elérését"
 
-#: sessionpool.cpp:340
+#: sessionpool.cpp:341
 #, kde-format
 msgid "Empty password"
 msgstr "Üres jelszó"
 
-#: sessionpool.cpp:352
+#: sessionpool.cpp:353
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
@@ -599,7 +599,7 @@ msgstr ""
 "TSL/SSL kapcsolatot kért a következőhöz: %1, de a rendszer nincs beállítva "
 "ahhoz."
 
-#: sessionpool.cpp:409
+#: sessionpool.cpp:410
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
@@ -608,7 +608,7 @@ msgstr ""
 "Nem sikerült csatlakozni az IMAP kiszolgálóhoz.\n"
 "%1"
 
-#: sessionpool.cpp:432
+#: sessionpool.cpp:433
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
@@ -618,7 +618,7 @@ msgstr ""
 "képességeket.\n"
 "%2"
 
-#: sessionpool.cpp:440
+#: sessionpool.cpp:441
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
@@ -627,7 +627,7 @@ msgstr ""
 "Nem sikerült tesztelni az IMAP kiszolgáló által támogatott képességeket.\n"
 "%1"
 
-#: sessionpool.cpp:460
+#: sessionpool.cpp:461
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -636,7 +636,7 @@ msgstr ""
 "Nem lehet használni a(z) %1 IMAP kiszolgálót, néhány kötelező képesség "
 "hiányzik: %2. Kérje meg a rendszergazdát a kiszolgáló frissítésére."
 
-#: sessionpool.cpp:532
+#: sessionpool.cpp:533
 #, fuzzy, kde-format
 #| msgid "Disconnected from server during login."
 msgid "Disconnected during login."

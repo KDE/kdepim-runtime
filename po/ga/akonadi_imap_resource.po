@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-06-13 00:39+0000\n"
 "PO-Revision-Date: 2009-12-24 06:59-0500\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -520,7 +520,7 @@ msgstr ""
 msgid "Resource not synchronized yet."
 msgstr ""
 
-#: sessionpool.cpp:250 sessionpool.cpp:406
+#: sessionpool.cpp:250 sessionpool.cpp:407
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -539,8 +539,8 @@ msgstr ""
 "Níorbh fhéidir ceangal leis an bhfreastalaí IMAP.\n"
 "%1"
 
-#: sessionpool.cpp:279 sessionpool.cpp:319 sessionpool.cpp:388
-#: sessionpool.cpp:424 sessionpool.cpp:495
+#: sessionpool.cpp:279 sessionpool.cpp:320 sessionpool.cpp:389
+#: sessionpool.cpp:425 sessionpool.cpp:496
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "Dícheangailte ón bhfreastalaí le linn logála isteach."
@@ -550,52 +550,52 @@ msgstr "Dícheangailte ón bhfreastalaí le linn logála isteach."
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr ""
 
-#: sessionpool.cpp:332
+#: sessionpool.cpp:333
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr ""
 
-#: sessionpool.cpp:340
+#: sessionpool.cpp:341
 #, kde-format
 msgid "Empty password"
 msgstr "Focal faire folamh"
 
-#: sessionpool.cpp:352
+#: sessionpool.cpp:353
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
 "set up for that."
 msgstr ""
 
-#: sessionpool.cpp:409
+#: sessionpool.cpp:410
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
 "%1"
 msgstr ""
 
-#: sessionpool.cpp:432
+#: sessionpool.cpp:433
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
 "%2"
 msgstr ""
 
-#: sessionpool.cpp:440
+#: sessionpool.cpp:441
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
 "%1"
 msgstr ""
 
-#: sessionpool.cpp:460
+#: sessionpool.cpp:461
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
 "Please ask your sysadmin to upgrade the server."
 msgstr ""
 
-#: sessionpool.cpp:532
+#: sessionpool.cpp:533
 #, fuzzy, kde-format
 #| msgid "Disconnected from server during login."
 msgid "Disconnected during login."

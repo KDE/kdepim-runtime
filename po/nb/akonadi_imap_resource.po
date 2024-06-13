@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-06-13 00:39+0000\n"
 "PO-Revision-Date: 2014-09-19 22:53+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -519,7 +519,7 @@ msgstr "Tjenerinfo"
 msgid "Resource not synchronized yet."
 msgstr ""
 
-#: sessionpool.cpp:250 sessionpool.cpp:406
+#: sessionpool.cpp:250 sessionpool.cpp:407
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -537,8 +537,8 @@ msgstr ""
 "Klarte ikke koble til IMAP-tjeneren.\n"
 "%1"
 
-#: sessionpool.cpp:279 sessionpool.cpp:319 sessionpool.cpp:388
-#: sessionpool.cpp:424 sessionpool.cpp:495
+#: sessionpool.cpp:279 sessionpool.cpp:320 sessionpool.cpp:389
+#: sessionpool.cpp:425 sessionpool.cpp:496
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "Koblet fra tjeneren under innlogging."
@@ -548,17 +548,17 @@ msgstr "Koblet fra tjeneren under innlogging."
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr "Klarte ikke opprette en ekstra forbindelse til IMAP-tjener %1."
 
-#: sessionpool.cpp:332
+#: sessionpool.cpp:333
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr "Klarte ikke lese passordet: brukeren nektet tilgang til lommeboka"
 
-#: sessionpool.cpp:340
+#: sessionpool.cpp:341
 #, kde-format
 msgid "Empty password"
 msgstr "Tomt passord"
 
-#: sessionpool.cpp:352
+#: sessionpool.cpp:353
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
@@ -567,7 +567,7 @@ msgstr ""
 "Du ba om tilkobling til %1 med TLS/SSL, men det ser ikke ut til at systemet "
 "ditt er satt opp for dette."
 
-#: sessionpool.cpp:409
+#: sessionpool.cpp:410
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
@@ -576,7 +576,7 @@ msgstr ""
 "Klarte ikke koble til IMAP-tjeneren.\n"
 "%1"
 
-#: sessionpool.cpp:432
+#: sessionpool.cpp:433
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
@@ -585,7 +585,7 @@ msgstr ""
 "Klarte ikke å teste mulighetene som IMAP-tjener %1 støtter.\n"
 "%2"
 
-#: sessionpool.cpp:440
+#: sessionpool.cpp:441
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
@@ -594,7 +594,7 @@ msgstr ""
 "Klarte ikke å teste mulighetene som IMAP-tjeneren støtter.\n"
 "%1"
 
-#: sessionpool.cpp:460
+#: sessionpool.cpp:461
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -603,7 +603,7 @@ msgstr ""
 "Kan ikke bruke IMAP-tjener %1, noen obligatoriske muligheter mangler: %2. Be "
 "din systemadministrator om å oppgradere tjeneren."
 
-#: sessionpool.cpp:532
+#: sessionpool.cpp:533
 #, kde-format
 msgid "Disconnected during login."
 msgstr ""

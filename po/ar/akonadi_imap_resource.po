@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-06-13 00:39+0000\n"
 "PO-Revision-Date: 2024-05-16 12:26+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -508,7 +508,7 @@ msgstr "معلومات الخادوم"
 msgid "Resource not synchronized yet."
 msgstr "لم يُزامن المورد بعد."
 
-#: sessionpool.cpp:250 sessionpool.cpp:406
+#: sessionpool.cpp:250 sessionpool.cpp:407
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -526,8 +526,8 @@ msgstr ""
 "تعذّر الاتّصال بخادوم IMAP.\n"
 "%1"
 
-#: sessionpool.cpp:279 sessionpool.cpp:319 sessionpool.cpp:388
-#: sessionpool.cpp:424 sessionpool.cpp:495
+#: sessionpool.cpp:279 sessionpool.cpp:320 sessionpool.cpp:389
+#: sessionpool.cpp:425 sessionpool.cpp:496
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "قُطع الاتّصال بالخادوم أثناء الولوج."
@@ -537,24 +537,24 @@ msgstr "قُطع الاتّصال بالخادوم أثناء الولوج."
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr "تعذّر إنشاء اتّصال إضافيّ بخادوم IMAP ‏%1."
 
-#: sessionpool.cpp:332
+#: sessionpool.cpp:333
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr "تعذّرت قراءة كلمة السّرّ: رفض المستخدم النّفاذ إلى الحافظة"
 
-#: sessionpool.cpp:340
+#: sessionpool.cpp:341
 #, kde-format
 msgid "Empty password"
 msgstr "كلمة السّرّ فارغة"
 
-#: sessionpool.cpp:352
+#: sessionpool.cpp:353
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
 "set up for that."
 msgstr "طلبت TLS/SSL للاتّصال بِ‍ %1، ولكن لا يبدو بأنّ النّظام مضبوط لذلك."
 
-#: sessionpool.cpp:409
+#: sessionpool.cpp:410
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
@@ -563,7 +563,7 @@ msgstr ""
 "تعذّر الاتّصال بخادوم IMAP.\n"
 "%1"
 
-#: sessionpool.cpp:432
+#: sessionpool.cpp:433
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
@@ -572,7 +572,7 @@ msgstr ""
 "تعذّر اختبار الإمكانيّات التي يدعمها خادوم IMAP ‏%1.\n"
 "%2"
 
-#: sessionpool.cpp:440
+#: sessionpool.cpp:441
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
@@ -581,7 +581,7 @@ msgstr ""
 "تعذّر اختبار الإمكانيّات التي يدعمها خادوم IMAP.\n"
 "%1"
 
-#: sessionpool.cpp:460
+#: sessionpool.cpp:461
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -590,7 +590,7 @@ msgstr ""
 "لا يمكن استخدام خادوم IMAP ‏%1، بعض الإمكانيّات الضّروريّة ناقصة: %2. رجاءً اسأل "
 "مدير النّظام لتحديث الخادوم."
 
-#: sessionpool.cpp:532
+#: sessionpool.cpp:533
 #, kde-format
 msgid "Disconnected during login."
 msgstr "قُطع الاتّصال أثناء الولوج."

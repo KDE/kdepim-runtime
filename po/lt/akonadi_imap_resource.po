@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-06-13 00:39+0000\n"
 "PO-Revision-Date: 2019-07-07 16:50+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -532,7 +532,7 @@ msgstr "Serverio informacija"
 msgid "Resource not synchronized yet."
 msgstr ""
 
-#: sessionpool.cpp:250 sessionpool.cpp:406
+#: sessionpool.cpp:250 sessionpool.cpp:407
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -550,8 +550,8 @@ msgstr ""
 "Nepavyko prisijungti prie IMAP serverio.\n"
 "%1"
 
-#: sessionpool.cpp:279 sessionpool.cpp:319 sessionpool.cpp:388
-#: sessionpool.cpp:424 sessionpool.cpp:495
+#: sessionpool.cpp:279 sessionpool.cpp:320 sessionpool.cpp:389
+#: sessionpool.cpp:425 sessionpool.cpp:496
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "Atjungta nuo serverio seanso pradžios metu."
@@ -561,18 +561,18 @@ msgstr "Atjungta nuo serverio seanso pradžios metu."
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr "Sukurti papildomą jungtį su %1 IMAP serveriu nepavyko."
 
-#: sessionpool.cpp:332
+#: sessionpool.cpp:333
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr ""
 "Slaptažodžio perskaityti nepavyko: wallet nesuteikė naudotojui prieigos"
 
-#: sessionpool.cpp:340
+#: sessionpool.cpp:341
 #, kde-format
 msgid "Empty password"
 msgstr "Slaptažodis tuščias"
 
-#: sessionpool.cpp:352
+#: sessionpool.cpp:353
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
@@ -581,7 +581,7 @@ msgstr ""
 "Jūs prašote TLS/SSL prisijungti prie %1, bet atrodo kad jūsų sistema tam "
 "neparuošta."
 
-#: sessionpool.cpp:409
+#: sessionpool.cpp:410
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
@@ -590,7 +590,7 @@ msgstr ""
 "Nepavyko prisijungti prie IMAP serverio.\n"
 "%1"
 
-#: sessionpool.cpp:432
+#: sessionpool.cpp:433
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
@@ -599,7 +599,7 @@ msgstr ""
 "Nepavyko patikrinti IMAP serverio %1 palaikymo galimybių.\n"
 "%2"
 
-#: sessionpool.cpp:440
+#: sessionpool.cpp:441
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
@@ -608,7 +608,7 @@ msgstr ""
 "Nepavyko patikrinti  IMAP serverio palaikymo galimybių.\n"
 "%1"
 
-#: sessionpool.cpp:460
+#: sessionpool.cpp:461
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -617,7 +617,7 @@ msgstr ""
 "Negalima naudoti %1 IMAP serverio, trūksta kai kurių privalomų galimybių: %2."
 "Kreipkitės į sistemos administratorių dėl serverio patobulinimo."
 
-#: sessionpool.cpp:532
+#: sessionpool.cpp:533
 #, fuzzy, kde-format
 #| msgid "Disconnected from server during login."
 msgid "Disconnected during login."

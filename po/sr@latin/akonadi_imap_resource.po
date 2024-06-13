@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-06-13 00:39+0000\n"
 "PO-Revision-Date: 2017-09-28 18:00+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -525,7 +525,7 @@ msgstr "Podaci o serveru"
 msgid "Resource not synchronized yet."
 msgstr "Resurs još nije sinhronizovan."
 
-#: sessionpool.cpp:250 sessionpool.cpp:406
+#: sessionpool.cpp:250 sessionpool.cpp:407
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -543,8 +543,8 @@ msgstr ""
 "Ne mogu da se povežem sa IMAP serverom.\n"
 "%1"
 
-#: sessionpool.cpp:279 sessionpool.cpp:319 sessionpool.cpp:388
-#: sessionpool.cpp:424 sessionpool.cpp:495
+#: sessionpool.cpp:279 sessionpool.cpp:320 sessionpool.cpp:389
+#: sessionpool.cpp:425 sessionpool.cpp:496
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "Prekinuta veza sa serverom tokom prijavljivanja."
@@ -554,17 +554,17 @@ msgstr "Prekinuta veza sa serverom tokom prijavljivanja."
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr "Ne mogu da napravim još jednu dodatnu vezu sa IMAP serverom %1."
 
-#: sessionpool.cpp:332
+#: sessionpool.cpp:333
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr "Ne mogu da pročitam lozinku: korisnik je odbio pristup novčaniku."
 
-#: sessionpool.cpp:340
+#: sessionpool.cpp:341
 #, kde-format
 msgid "Empty password"
 msgstr "Prazna lozinka"
 
-#: sessionpool.cpp:352
+#: sessionpool.cpp:353
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
@@ -573,7 +573,7 @@ msgstr ""
 "Zahtevali ste TLS/SSL za povezivanje sa %1, ali vaš sistem izgleda nije "
 "namešten za to."
 
-#: sessionpool.cpp:409
+#: sessionpool.cpp:410
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
@@ -582,7 +582,7 @@ msgstr ""
 "Ne mogu da se povežem sa IMAP serverom.\n"
 "%1"
 
-#: sessionpool.cpp:432
+#: sessionpool.cpp:433
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
@@ -591,7 +591,7 @@ msgstr ""
 "Ne mogu da ispitam sposobnosti IMAP servera %1.\n"
 "%2"
 
-#: sessionpool.cpp:440
+#: sessionpool.cpp:441
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
@@ -600,7 +600,7 @@ msgstr ""
 "Ne mogu da ispitam sposobnosti IMAP servera.\n"
 "%1"
 
-#: sessionpool.cpp:460
+#: sessionpool.cpp:461
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -609,7 +609,7 @@ msgstr ""
 "Ne mogu da koristim IMAP server %1 jer nema neke neophodne sposobnosti: %2. "
 "Zamolite sistem-administratora da nadogradi server."
 
-#: sessionpool.cpp:532
+#: sessionpool.cpp:533
 #, kde-format
 msgid "Disconnected during login."
 msgstr "Prekinuta veza tokom prijavljivanja."
