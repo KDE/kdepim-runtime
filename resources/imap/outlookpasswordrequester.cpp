@@ -13,9 +13,11 @@
 #include <MailTransport/OutlookOAuthTokenRequester>
 
 #include <KLocalizedString>
-#include <KWallet>
+#include <qt6keychain/keychain.h>
 
 #include <memory>
+
+using namespace QKeychain;
 
 static constexpr QLatin1StringView clientId{"18da2bc3-146a-4581-8c92-27dc7b9954a0"};
 static constexpr QLatin1StringView tenantId{"common"};
@@ -24,7 +26,7 @@ static const QStringList scopes{
     QLatin1StringView("offline_access"),
 };
 
-static constexpr QLatin1StringView kwalletFolder = QLatin1StringView("imap");
+static constexpr QLatin1StringView walletFolder = QLatin1StringView("imap");
 
 OutlookPasswordRequester::OutlookPasswordRequester(ImapResourceBase *resource, QObject *parent)
     : XOAuthPasswordRequester(parent)
@@ -33,23 +35,6 @@ OutlookPasswordRequester::OutlookPasswordRequester(ImapResourceBase *resource, Q
 }
 
 OutlookPasswordRequester::~OutlookPasswordRequester() = default;
-
-QString OutlookPasswordRequester::loadTokenFromKWallet(KWallet::Wallet *wallet, const QString &tokenType)
-{
-    if (!wallet->hasFolder(kwalletFolder)) {
-        return {};
-    }
-
-    wallet->setFolder(kwalletFolder);
-    QMap<QString, QString> result;
-    wallet->readMap(mResource->settings()->config()->name(), result);
-    auto token = result.constFind(tokenType);
-    if (token == result.cend()) {
-        return {};
-    }
-
-    return *token;
-}
 
 void OutlookPasswordRequester::requestPassword(RequestType request, const QString &serverError)
 {
@@ -60,21 +45,36 @@ void OutlookPasswordRequester::requestPassword(RequestType request, const QStrin
         return;
     }
 
-    auto *wallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(), 0, KWallet::Wallet::Asynchronous);
-    connect(wallet, &KWallet::Wallet::walletOpened, this, [this, wallet, request](bool success) {
-        if (!success) {
+    mTokenRequester = std::make_unique<MailTransport::OutlookOAuthTokenRequester>(clientId, tenantId, scopes);
+    connect(mTokenRequester.get(), &MailTransport::OutlookOAuthTokenRequester::finished, this, [this](const auto &result) {
+        onTokenRequestFinished(result);
+    });
+
+    auto readJob = new ReadPasswordJob(walletFolder, this);
+    readJob->setKey(mResource->settings()->config()->name());
+    connect(readJob, &ReadPasswordJob::finished, this, [this, readJob, request]() {
+        if (readJob->error() != QKeychain::Error::NoError) {
             mRequestInProgress = false;
-            Q_EMIT done(UserRejected, i18nc("@status", "Failed to open KWallet"));
+            qCWarning(IMAPRESOURCE_LOG) << "Failed to read password from keychain.";
+            Q_EMIT done(UserRejected, i18nc("@status", "Failed to read password from keychain."));
             return;
         }
 
-        mTokenRequester = std::make_unique<MailTransport::OutlookOAuthTokenRequester>(clientId, tenantId, scopes);
-        connect(mTokenRequester.get(), &MailTransport::OutlookOAuthTokenRequester::finished, this, [this, wallet](const auto &result) {
-            onTokenRequestFinished(wallet, result);
-        });
+        QMap<QString, QString> map;
+        auto value = readJob->binaryData();
+        if (value.isEmpty()) {
+            mRequestInProgress = false;
+            qCWarning(IMAPRESOURCE_LOG) << "Failed to read password from keychain.";
+            Q_EMIT done(UserRejected, i18nc("@status", "Failed to read password from keychain."));
+            return;
+        }
+
+        QDataStream ds(value);
+        ds >> map;
 
         if (request == WrongPasswordRequest) {
-            const auto refreshToken = loadTokenFromKWallet(wallet, QStringLiteral("refreshToken"));
+            const auto refreshToken = map[QStringLiteral("refreshToken")];
+
             if (!refreshToken.isEmpty()) {
                 qCDebug(IMAPRESOURCE_LOG) << "Found an Outlook OAuth2 refresh token in KWallet, refreshing access token...";
                 mTokenRequester->refreshToken(refreshToken);
@@ -83,7 +83,7 @@ void OutlookPasswordRequester::requestPassword(RequestType request, const QStrin
                 mTokenRequester->requestToken(mResource->settings()->userName());
             }
         } else {
-            const auto accessToken = loadTokenFromKWallet(wallet, QStringLiteral("accessToken"));
+            const auto accessToken = map[QStringLiteral("accessToken")];
             if (accessToken.isEmpty()) {
                 qCDebug(IMAPRESOURCE_LOG) << "No Outlook OAuth2 access token found in KWallet, requesting new token...";
                 mTokenRequester->requestToken(mResource->settings()->userName());
@@ -94,6 +94,7 @@ void OutlookPasswordRequester::requestPassword(RequestType request, const QStrin
             }
         }
     });
+    readJob->start();
 }
 
 void OutlookPasswordRequester::cancelPasswordRequests()
@@ -105,21 +106,27 @@ void OutlookPasswordRequester::cancelPasswordRequests()
     }
 }
 
-void OutlookPasswordRequester::storeResultToWallet(KWallet::Wallet *wallet, const MailTransport::TokenResult &result)
+void OutlookPasswordRequester::storeResultToWallet(const MailTransport::TokenResult &result)
 {
     const auto name = mResource->settings()->config()->name();
-    qCDebug(IMAPRESOURCE_LOG).nospace().noquote() << "Storing Outlook OAuth2 token to KWallet (" << kwalletFolder << "/" << name << ")";
-    if (!wallet->hasFolder(kwalletFolder)) {
-        wallet->createFolder(kwalletFolder);
-    }
-    wallet->setFolder(kwalletFolder);
-    const int ok = wallet->writeMap(name, {{QStringLiteral("accessToken"), result.accessToken()}, {QStringLiteral("refreshToken"), result.refreshToken()}});
-    if (ok != 0) {
-        qCWarning(IMAPRESOURCE_LOG) << "Failed to store Outlook OAuth2 token to KWallet:" << ok;
-    }
+    QByteArray mapData;
+    QDataStream ds(&mapData, QIODeviceBase::WriteOnly);
+    ds << QMap<QString, QString>{{QStringLiteral("accessToken"), result.accessToken()}, {QStringLiteral("refreshToken"), result.refreshToken()}};
+
+    auto writeJob = new WritePasswordJob(walletFolder, this);
+    writeJob->setKey(mResource->settings()->config()->name());
+    writeJob->setBinaryData(mapData);
+    connect(writeJob, &WritePasswordJob::finished, this, [this, writeJob, name]() {
+        if (writeJob->error() != QKeychain::Error::NoError) {
+            qCWarning(IMAPRESOURCE_LOG) << "Failed to store Outlook OAuth2 token to KWallet.";
+            return;
+        }
+        qCDebug(IMAPRESOURCE_LOG).nospace().noquote() << "Storing Outlook OAuth2 token to KWallet (" << walletFolder << "/" << name << ")";
+    });
+    writeJob->start();
 }
 
-void OutlookPasswordRequester::onTokenRequestFinished(KWallet::Wallet *wallet, const MailTransport::TokenResult &result)
+void OutlookPasswordRequester::onTokenRequestFinished(const MailTransport::TokenResult &result)
 {
     mRequestInProgress = false;
     mTokenRequester.release()->deleteLater();
@@ -127,7 +134,7 @@ void OutlookPasswordRequester::onTokenRequestFinished(KWallet::Wallet *wallet, c
         qCDebug(IMAPRESOURCE_LOG) << "Outlook OAuth2 token request failed:" << result.errorText();
         Q_EMIT done(UserRejected, result.errorText());
     } else {
-        storeResultToWallet(wallet, result);
+        storeResultToWallet(result);
         Q_EMIT done(PasswordRetrieved, result.accessToken());
     }
 }

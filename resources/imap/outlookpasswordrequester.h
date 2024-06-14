@@ -8,11 +8,6 @@
 
 #include "passwordrequesterinterface.h"
 
-namespace KWallet
-{
-class Wallet;
-} // namespace KWallet
-
 namespace MailTransport
 {
 class OutlookOAuthTokenRequester;
@@ -32,9 +27,8 @@ public:
     void cancelPasswordRequests() override;
 
 private:
-    void onTokenRequestFinished(KWallet::Wallet *wallet, const MailTransport::TokenResult &result);
-    void storeResultToWallet(KWallet::Wallet *wallet, const MailTransport::TokenResult &result);
-    QString loadTokenFromKWallet(KWallet::Wallet *wallet, const QString &tokenType);
+    void onTokenRequestFinished(const MailTransport::TokenResult &result);
+    void storeResultToWallet(const MailTransport::TokenResult &result);
 
     ImapResourceBase *const mResource;
     std::unique_ptr<MailTransport::OutlookOAuthTokenRequester> mTokenRequester;
