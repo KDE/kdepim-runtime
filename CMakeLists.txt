@@ -18,7 +18,7 @@ configure_file(kdepim-runtime-version.h.in ${CMAKE_CURRENT_BINARY_DIR}/kdepim-ru
 set(KF_MIN_VERSION "6.3.0")
 
 find_package(ECM ${KF_MIN_VERSION} CONFIG REQUIRED)
-set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/ ${ECM_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH})
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
@@ -115,6 +115,8 @@ find_package(KPim6AkonadiNotes ${AKONADINOTE_LIB_VERSION} CONFIG REQUIRED)
 find_package(KPim6AkonadiCalendar ${AKONADICALENDAR_LIB_VERSION} CONFIG REQUIRED)
 find_package(KPim6GAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
 find_package(KPim6LdapWidgets ${KLDAP_LIB_VERSION} CONFIG REQUIRED)
+
+find_package(LibGcrypt REQUIRED)
 
 find_package(Qt6Keychain ${QT6KEYCHAIN_LIB_VERSION} CONFIG)
 set_package_properties(Qt6Keychain PROPERTIES

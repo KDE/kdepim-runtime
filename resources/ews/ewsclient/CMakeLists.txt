@@ -90,19 +90,14 @@ set(EWSCLIENT_SRCS
     ewsxml.h
     transferjob.h
     transferjob.cpp
-
-    )
+    auth/ewspkeyauthjob.cpp
+    auth/ewspkeyauthjob.h
+)
 
 if (TARGET Qt::NetworkAuth)
     list(APPEND EWSCLIENT_SRCS
         auth/ewsoauth.cpp
         auth/ewsoauth.h)
-endif ()
-
-if (Qca-qt6_FOUND)
-    list(APPEND EWSCLIENT_SRCS
-        auth/ewspkeyauthjob.cpp
-        auth/ewspkeyauthjob.h)
 endif ()
 
 ecm_qt_declare_logging_category(EWSCLIENT_SRCS
@@ -156,7 +151,4 @@ if (TARGET Qt::NetworkAuth)
         Qt::WebEngineWidgets)
 endif ()
 
-if (Qca-qt6_FOUND)
-    target_link_libraries(ewsclient
-        qca-qt6)
-endif ()
+target_link_libraries(ewsclient ${LIBGCRYPT_LIBRARIES})

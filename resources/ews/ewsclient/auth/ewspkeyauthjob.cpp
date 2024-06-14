@@ -6,32 +6,35 @@
 
 #include "ewspkeyauthjob.h"
 
+#include <QFile>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QSslKey>
 #include <QUrlQuery>
 
-#include <QtCrypto>
+#include <gcrypt.h>
 
-static const QMap<QString, QCA::CertificateInfoTypeKnown> stringToKnownCertInfoType = {
-    {QStringLiteral("CN"), QCA::CommonName},
-    {QStringLiteral("L"), QCA::Locality},
-    {QStringLiteral("ST"), QCA::State},
-    {QStringLiteral("O"), QCA::Organization},
-    {QStringLiteral("OU"), QCA::OrganizationalUnit},
-    {QStringLiteral("C"), QCA::Country},
-    {QStringLiteral("emailAddress"), QCA::EmailLegacy},
+static const QMap<QByteArray, QSslCertificate::SubjectInfo> stringToKnownCertInfoType = {
+    {QByteArray("CN"), QSslCertificate::CommonName},
+    {QByteArray("L"), QSslCertificate::LocalityName},
+    {QByteArray("ST"), QSslCertificate::StateOrProvinceName},
+    {QByteArray("O"), QSslCertificate::Organization},
+    {QByteArray("OU"), QSslCertificate::OrganizationalUnitName},
+    {QByteArray("C"), QSslCertificate::CountryName},
+    {QByteArray("emailAddress"), QSslCertificate::EmailAddress},
 };
 
-static QMultiMap<QCA::CertificateInfoType, QString> parseCertSubjectInfo(const QString &info)
+static QHash<QSslCertificate::SubjectInfo, QStringList> parseCertSubjectInfo(const QString &info)
 {
-    QMultiMap<QCA::CertificateInfoType, QString> map;
+    QHash<QSslCertificate::SubjectInfo, QStringList> map;
     const auto infos{info.split(QLatin1Char(','), Qt::SkipEmptyParts)};
     for (const auto &token : infos) {
         const auto keyval = token.trimmed().split(QLatin1Char('='));
         if (keyval.count() == 2) {
-            if (stringToKnownCertInfoType.contains(keyval[0])) {
-                map.insert(stringToKnownCertInfoType[keyval[0]], keyval[1]);
+            const auto attr = keyval[0].toUtf8();
+            if (stringToKnownCertInfoType.contains(attr)) {
+                map[stringToKnownCertInfoType[attr]].append(keyval[1]);
             }
         }
     }
@@ -109,13 +112,6 @@ void EwsPKeyAuthJob::authRequestFinished()
 
 QByteArray EwsPKeyAuthJob::buildAuthResponse(const QMap<QString, QString> &params)
 {
-    QCA::Initializer init;
-
-    if (!QCA::isSupported("cert")) {
-        setErrorMsg(QStringLiteral("QCA was not built with PKI certificate support"));
-        return QByteArray();
-    }
-
     if (params[QStringLiteral("version")] != QLatin1StringView("1.0")) {
         setErrorMsg(QStringLiteral("Unknown version of PKey Authentication: %1").arg(params[QStringLiteral("version")]));
         return QByteArray();
@@ -123,18 +119,24 @@ QByteArray EwsPKeyAuthJob::buildAuthResponse(const QMap<QString, QString> &param
 
     const auto authoritiesInfo = parseCertSubjectInfo(params[QStringLiteral("certauthorities")]);
 
-    QCA::ConvertResult importResult;
-    const QCA::CertificateCollection certs = QCA::CertificateCollection::fromFlatTextFile(mCertFile, &importResult);
+    const auto certificates = QSslCertificate::fromPath(mCertFile, QSsl::Pem);
 
-    if (importResult != QCA::ConvertGood) {
+    if (certificates.isEmpty()) {
         setErrorMsg(QStringLiteral("Certificate import failed"));
         return QByteArray();
     }
 
-    QCA::Certificate cert;
-    const auto certificates = certs.certificates();
+    QSslCertificate cert;
     for (const auto &c : certificates) {
-        if (c.issuerInfo() == authoritiesInfo) {
+        const auto issuerInfoAttributes = c.issuerInfoAttributes();
+        bool match = true;
+        for (const auto &attribute : issuerInfoAttributes) {
+            if (!stringToKnownCertInfoType.contains(attribute) || c.issuerInfo(attribute) != authoritiesInfo[stringToKnownCertInfoType[attribute]]) {
+                match = false;
+                break;
+            }
+        }
+        if (match) {
             cert = c;
             break;
         }
@@ -145,13 +147,28 @@ QByteArray EwsPKeyAuthJob::buildAuthResponse(const QMap<QString, QString> &param
         return QByteArray();
     }
 
-    QCA::PrivateKey privateKey = QCA::PrivateKey::fromPEMFile(mKeyFile, mKeyPassword.toUtf8(), &importResult);
-    if (importResult != QCA::ConvertGood) {
+    QFile keyFile(mKeyFile);
+    if (!keyFile.open(QIODeviceBase::ReadOnly)) {
+        setErrorMsg(QStringLiteral("Private key import failed. File not found or not readable."));
+        return QByteArray();
+    }
+
+    gcry_check_version(NULL);
+    gcry_control(GCRYCTL_ENABLE_M_GUARD);
+    gcry_control(GCRYCTL_DISABLE_SECMEM);
+    gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
+
+    gcry_sexp_t rsa_private;
+
+    QSslKey privateKey(keyFile.readAll(), QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey, mKeyPassword.toUtf8());
+
+    // QCA::PrivateKey privateKey = QCA::PrivateKey::fromPEMFile(mKeyFile, mKeyPassword.toUtf8(), &importResult);
+    if (privateKey.isNull()) {
         setErrorMsg(QStringLiteral("Private key import failed"));
         return QByteArray();
     }
 
-    const QString certStr = escapeSlashes(QString::fromLatin1(cert.toDER().toBase64()));
+    const QString certStr = escapeSlashes(QString::fromLatin1(cert.toDer().toBase64()));
     const QString header = QStringLiteral("{\"x5c\":[\"%1\"],\"typ\":\"JWT\",\"alg\":\"RS256\"}").arg(certStr);
 
     const QString payload = QStringLiteral("{\"nonce\":\"%1\",\"iat\":\"%2\",\"aud\":\"%3\"}")
