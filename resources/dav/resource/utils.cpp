@@ -72,6 +72,16 @@ KDAV::Protocol Utils::protocolByTranslatedName(const QString &name)
     return protocol;
 }
 
+static QStringList tagsToCategories(const Akonadi::Tag::List &tags)
+{
+    QStringList categories;
+    categories.reserve(tags.size());
+    for (const Akonadi::Tag &tag : tags) {
+        categories.emplace_back(tag.name());
+    }
+    return categories;
+}
+
 KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Collection &collection, const Akonadi::Item::List &dependentItems)
 {
     QByteArray rawData;
@@ -81,7 +91,8 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
     const QString basePath = collection.remoteId();
 
     if (item.hasPayload<KContacts::Addressee>()) {
-        const auto contact = item.payload<KContacts::Addressee>();
+        auto contact = item.payload<KContacts::Addressee>();
+        contact.setCategories(tagsToCategories(item.tags()));
         const QString fileName = createUniqueId();
 
         url = QUrl::fromUserInput(basePath + fileName + QLatin1StringView(".vcf"));
@@ -100,7 +111,9 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
         const KCalendarCore::MemoryCalendar::Ptr calendar(new KCalendarCore::MemoryCalendar(QTimeZone::systemTimeZone()));
         calendar->addIncidence(item.payload<IncidencePtr>());
         for (const Akonadi::Item &dependentItem : std::as_const(dependentItems)) {
-            calendar->addIncidence(dependentItem.payload<IncidencePtr>());
+            auto payload = dependentItem.payload<IncidencePtr>();
+            payload->setCategories(tagsToCategories(dependentItem.tags()));
+            calendar->addIncidence(payload);
         }
 
         const QString fileName = createUniqueId();
@@ -120,6 +133,16 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
     return davItem;
 }
 
+static Akonadi::Tag::List categoriesToTags(const QStringList &categories)
+{
+    Akonadi::Tag::List tags;
+    tags.reserve(categories.size());
+    for (const QString &category : categories) {
+        tags.emplace_back(category);
+    }
+    return tags;
+}
+
 bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Akonadi::Item::List &extraItems)
 {
     const QString data = QString::fromUtf8(source.data());
@@ -132,6 +155,7 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
             return false;
         }
 
+        target.setTags(categoriesToTags(contact.categories()));
         target.setPayloadFromData(source.data());
     } else {
         KCalendarCore::ICalFormat formatter;
@@ -181,11 +205,13 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
                 extraItem.setRemoteRevision(source.etag());
                 extraItem.setMimeType(exception->mimeType());
                 extraItem.setPayload<IncidencePtr>(exception);
+                extraItem.setTags(categoriesToTags(exception->categories()));
                 extraItems << extraItem;
             }
         }
 
         target.setPayload<IncidencePtr>(mainIncidence);
+        target.setTags(categoriesToTags(mainIncidence->categories()));
         // fix mime type for CalDAV collections
         target.setMimeType(mainIncidence->mimeType());
 

@@ -54,6 +54,9 @@
 #include <KContacts/VCardConverter>
 
 #include <KLocalizedString>
+#include <kcompositejob.h>
+#include <kdav/davitem.h>
+#include <kdav/davitemsfetchjob.h>
 #include <kwindowsystem.h>
 
 using namespace Akonadi;
@@ -98,6 +101,7 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
     changeRecorder()->itemFetchScope().fetchFullPayload(true);
     changeRecorder()->itemFetchScope().setAncestorRetrieval(ItemFetchScope::All);
+    changeRecorder()->itemFetchScope().setFetchTags(true);
 
     Settings::self()->setWinId(winIdForDialogs());
     Settings::self()->setResourceIdentifier(identifier());
@@ -573,6 +577,79 @@ void DavGroupwareResource::doItemRemoval(const Akonadi::Item &item)
     job->setProperty("item", QVariant::fromValue(item));
     job->setProperty("collection", QVariant::fromValue(item.parentCollection()));
     connect(job, &KDAV::DavItemDeleteJob::result, this, &DavGroupwareResource::onItemRemovedFinished);
+    job->start();
+}
+
+class DavItemsModifyJob : public KCompositeJob
+{
+    Q_OBJECT
+public:
+    DavItemsModifyJob(const QList<KDAV::DavItem> &items, QObject *parent)
+        : KCompositeJob(parent)
+        , mItems(items)
+    {
+    }
+
+    void start() override
+    {
+        for (const auto &item : std::as_const(mItems)) {
+            new KDAV::DavItemModifyJob(item, this);
+        }
+    }
+
+private:
+    void slotResult(KJob *job) override
+    {
+        if (job->error() && !error()) {
+            setError(job->error());
+            setErrorText(job->errorText());
+        }
+
+        removeSubjob(job);
+        if (!hasSubjobs()) {
+            emitResult();
+        }
+    }
+
+    QList<KDAV::DavItem> mItems;
+};
+
+void DavGroupwareResource::itemsTagsChanged(const Item::List &items, const QSet<Tag> &addedTags, const QSet<Tag> &removedTags)
+{
+    // We just read the updated set of tags from each item
+    Q_UNUSED(addedTags);
+    Q_UNUSED(removedTags);
+
+    // Partition items by collection
+    QHash<QString, Item::List> itemsByCollection;
+    for (const Item &item : items) {
+        itemsByCollection[item.parentCollection().remoteId()].push_back(item);
+    }
+
+    QList<KDAV::DavItem> davItems;
+    davItems.reserve(items.size());
+    for (auto it = itemsByCollection.constBegin(), end = itemsByCollection.constEnd(); it != end; ++it) {
+        const QString collectionRemoteId = it.key();
+        const Item::List &items = it.value();
+
+        if (!mEtagCaches.contains(collectionRemoteId)) {
+            qCDebug(DAVRESOURCE_LOG) << "Items tags changed for a collection we don't have in the cache";
+        }
+
+        const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collectionRemoteId);
+        for (const auto &item : items) {
+            davItems.push_back(Utils::createDavItem(item, item.parentCollection()));
+        }
+    }
+
+    DavItemsModifyJob *job = new DavItemsModifyJob(davItems, this);
+    connect(job, &KJob::result, this, [this, items](KJob *job) {
+        if (job->error()) {
+            cancelTask(i18n("Unable to modify items: %1", job->errorText()));
+            return;
+        }
+        changesCommitted(items);
+    });
     job->start();
 }
 
@@ -1392,4 +1469,4 @@ void DavGroupwareResource::setCollectionIcon(Akonadi::Collection &collection)
 
 AKONADI_RESOURCE_MAIN(DavGroupwareResource)
 
-#include "moc_davgroupwareresource.cpp"
+#include "davgroupwareresource.moc"

@@ -23,7 +23,10 @@ namespace KDAV
 class DavItem;
 }
 
-class DavGroupwareResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer, public Akonadi::FreeBusyProviderBase
+class DavGroupwareResource : public Akonadi::ResourceBase,
+                             public Akonadi::AgentBase::Observer,
+                             public Akonadi::FreeBusyProviderBase,
+                             public Akonadi::AgentBase::TagObserver
 {
     Q_OBJECT
 
@@ -58,6 +61,7 @@ protected:
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
     void itemRemoved(const Akonadi::Item &item) override;
+    void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags) override;
     void collectionChanged(const Akonadi::Collection &collection) override;
     void doSetOnline(bool online) override;
 
