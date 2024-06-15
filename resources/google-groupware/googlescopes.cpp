@@ -13,6 +13,7 @@ QList<QUrl> googleScopes()
     return {
         Account::accountInfoScopeUrl(),
         Account::calendarScopeUrl(),
+        Account::calendarEventsScopeUrl(),
         Account::peopleScopeUrl(),
         Account::tasksScopeUrl(),
     };
