@@ -13,6 +13,7 @@ QList<QUrl> googleScopes()
     return {
         Account::accountInfoScopeUrl(),
         Account::calendarScopeUrl(),
+        QUrl(QStringLiteral("https://www.googleapis.com/auth/calendar.events")),
         Account::peopleScopeUrl(),
         Account::tasksScopeUrl(),
     };
