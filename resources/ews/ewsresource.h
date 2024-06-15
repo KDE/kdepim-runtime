@@ -25,7 +25,10 @@ class EwsTagStore;
 class EwsSettings;
 class KNotification;
 
-class EwsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV4, public Akonadi::TransportResourceBase
+class EwsResource : public Akonadi::ResourceBase,
+                    public Akonadi::AgentBase::ObserverV3,
+                    public Akonadi::AgentBase::TagObserver,
+                    public Akonadi::TransportResourceBase
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Ews.Resource")
