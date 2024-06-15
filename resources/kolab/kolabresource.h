@@ -9,7 +9,7 @@
 #include "imapresourcebase.h"
 #include "resourcestate.h"
 
-class KolabResource : public ImapResourceBase
+class KolabResource : public ImapResourceBase, public Akonadi::AgentBase::TagObserver
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Imap.Resource")
@@ -44,15 +44,10 @@ protected:
     void tagRemoved(const Akonadi::Tag &tag) override;
     void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags) override;
 
-    void itemsRelationsChanged(const Akonadi::Item::List &items,
-                               const Akonadi::Relation::List &addedRelations,
-                               const Akonadi::Relation::List &removedRelations) override;
-
     QString defaultName() const override;
     QByteArray clientId() const override;
 
 private Q_SLOTS:
     void retrieveTags() override;
-    void retrieveRelations() override;
     void onConfigurationDone(int result);
 };

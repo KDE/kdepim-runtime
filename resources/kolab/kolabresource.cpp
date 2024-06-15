@@ -28,7 +28,6 @@
 #include <QIcon>
 
 #include "kolabaddtagtask.h"
-#include "kolabchangeitemsrelationstask.h"
 #include "kolabchangeitemstagstask.h"
 #include "kolabchangetagtask.h"
 #include "kolabhelpers.h"
@@ -116,7 +115,6 @@ void KolabResource::retrieveCollections()
 
     startTask(new KolabRetrieveCollectionsTask(createResourceState(TaskArguments()), this));
     synchronizeTags();
-    synchronizeRelations();
 }
 
 void KolabResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
@@ -250,22 +248,6 @@ void KolabResource::retrieveTags()
 {
     qCDebug(KOLABRESOURCE_TRACE);
     auto task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), KolabRetrieveTagTask::RetrieveTags, this);
-    startTask(task);
-}
-
-void KolabResource::retrieveRelations()
-{
-    qCDebug(KOLABRESOURCE_TRACE);
-    auto task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), KolabRetrieveTagTask::RetrieveRelations, this);
-    startTask(task);
-}
-
-void KolabResource::itemsRelationsChanged(const Akonadi::Item::List &items,
-                                          const Akonadi::Relation::List &addedRelations,
-                                          const Akonadi::Relation::List &removedRelations)
-{
-    qCDebug(KOLABRESOURCE_TRACE) << items.size() << addedRelations.size() << removedRelations.size();
-    auto task = new KolabChangeItemsRelationsTask(createResourceState(TaskArguments(items, addedRelations, removedRelations)));
     startTask(task);
 }
 
