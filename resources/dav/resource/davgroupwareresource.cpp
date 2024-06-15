@@ -54,10 +54,7 @@
 #include <KContacts/VCardConverter>
 
 #include <KLocalizedString>
-#include <kcompositejob.h>
-#include <kdav/davitem.h>
-#include <kdav/davitemsfetchjob.h>
-#include <kwindowsystem.h>
+#include <KWindowSystem>
 
 using namespace Akonadi;
 
@@ -593,7 +590,13 @@ public:
     void start() override
     {
         for (const auto &item : std::as_const(mItems)) {
-            new KDAV::DavItemModifyJob(item, this);
+            auto *job = new KDAV::DavItemModifyJob(item, this);
+            addSubjob(job);
+            job->start();
+        }
+
+        if (!hasSubjobs()) {
+            emitResult();
         }
     }
 
@@ -636,7 +639,6 @@ void DavGroupwareResource::itemsTagsChanged(const Item::List &items, const QSet<
             qCDebug(DAVRESOURCE_LOG) << "Items tags changed for a collection we don't have in the cache";
         }
 
-        const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collectionRemoteId);
         for (const auto &item : items) {
             davItems.push_back(Utils::createDavItem(item, item.parentCollection()));
         }
