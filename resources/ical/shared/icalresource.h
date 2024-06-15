@@ -11,7 +11,7 @@
 
 #include <KCalendarCore/IncidenceBase>
 
-class ICalResource : public ICalResourceBase
+class ICalResource : public ICalResourceBase, public Akonadi::AgentBase::TagObserver
 {
     Q_OBJECT
 
@@ -32,6 +32,7 @@ protected:
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &) override;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
+    void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &tagsAdded, const QSet<Akonadi::Tag> &tagsRemoved) override;
 
     /**
       Returns the Akonadi specific @c text/calendar sub MIME type of the given @p incidence.

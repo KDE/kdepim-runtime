@@ -6,6 +6,7 @@
 */
 
 #include "icalresource.h"
+#include "icalresourcebase.h"
 
 #include <KCalendarCore/FreeBusy>
 
@@ -115,6 +116,48 @@ void ICalResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray>
     changeCommitted(item);
 }
 
+namespace
+{
+
+void updateIncidenceCategories(Incidence::Ptr &incidence, const QSet<Akonadi::Tag> &tagsAdded, const QSet<Akonadi::Tag> &tagsRemoved)
+{
+    auto categories = incidence->categories();
+    for (const auto &tag : tagsAdded) {
+        categories.push_back(tag.name());
+    }
+    for (const auto &tag : tagsRemoved) {
+        categories.removeAll(tag.name());
+    }
+    incidence->setCategories(categories);
+}
+
+} // namespace
+
+void ICalResource::itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &tagsAdded, const QSet<Akonadi::Tag> &tagsRemoved)
+{
+    for (const auto &item : items) {
+        if (!checkItemAddedChanged<Incidence::Ptr>(item, CheckForChanged)) {
+            return;
+        }
+
+        auto payload = item.payload<Incidence::Ptr>();
+        Incidence::Ptr incidence = calendar()->instance(item.remoteId());
+        if (!incidence) {
+            // not in calendar yet, should not happen -> add it
+            auto newPayload = Incidence::Ptr(payload->clone());
+            updateIncidenceCategories(newPayload, tagsAdded, tagsRemoved);
+            calendar()->addIncidence(newPayload);
+        } else {
+            incidence->startUpdates();
+            updateIncidenceCategories(incidence, tagsAdded, tagsRemoved);
+            incidence->endUpdates();
+        }
+    }
+
+    scheduleWrite();
+    changesCommitted(items);
+}
+
 void ICalResource::doRetrieveItems(const Akonadi::Collection &col)
 {
     Q_UNUSED(col)
@@ -125,6 +168,11 @@ void ICalResource::doRetrieveItems(const Akonadi::Collection &col)
         Item item(incidence->mimeType());
         item.setRemoteId(incidence->instanceIdentifier());
         item.setPayload(Incidence::Ptr(incidence->clone()));
+        for (const auto &category : incidence->categories()) {
+            Tag tag(category);
+            tag.setRemoteId(category.toLatin1());
+            item.setTag(tag);
+        }
         items << item;
     }
     itemsRetrieved(items);
