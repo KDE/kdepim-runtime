@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-06-16 00:39+0000\n"
 "PO-Revision-Date: 2011-04-23 14:11+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -60,7 +60,7 @@ msgstr "Tidsinterval for autogem (i minutter)."
 msgid "Autosave interval time (in minutes)."
 msgstr "Tidsinterval for autogem (i minutter)."
 
-#: shared/icalresource.cpp:47
+#: shared/icalresource.cpp:48
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "Instans med uid \"%1\" ikke fundet."

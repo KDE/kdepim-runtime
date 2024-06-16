@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-06-16 00:39+0000\n"
 "PO-Revision-Date: 2009-08-13 12:31+0000\n"
 "Last-Translator: Vilson Gjeci <vilsongjeci@gmail.com>\n"
 "Language-Team: Albanian <sq@li.org>\n"
@@ -62,7 +62,7 @@ msgstr "Intervali kohor për vetëruajtje (në minuta)."
 msgid "Autosave interval time (in minutes)."
 msgstr "Intervali kohor për vetëruajtje (në minuta)."
 
-#: shared/icalresource.cpp:47
+#: shared/icalresource.cpp:48
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "Përputhja me uid '%1' nuk u gjet."

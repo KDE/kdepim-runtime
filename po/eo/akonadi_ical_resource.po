@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-06-16 00:39+0000\n"
 "PO-Revision-Date: 2023-10-07 23:20+0100\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -60,7 +60,7 @@ msgstr "Intervalo de aŭtomata ĝisdatigo en minutoj."
 msgid "Autosave interval time (in minutes)."
 msgstr "Aŭtokonserva intervalo (en minutoj)."
 
-#: shared/icalresource.cpp:47
+#: shared/icalresource.cpp:48
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "Ne trovis incidenton kun uid '%1'."

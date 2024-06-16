@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-06-16 00:39+0000\n"
 "PO-Revision-Date: 2023-10-06 17:45+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -59,7 +59,7 @@ msgstr "Tempore de actualisar automatic in minutas."
 msgid "Autosave interval time (in minutes)."
 msgstr "Tempore de salveguardar automatic (in minutas)."
 
-#: shared/icalresource.cpp:47
+#: shared/icalresource.cpp:48
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "Non trovava  incidentia con uid '%1'."
