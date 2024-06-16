@@ -409,13 +409,9 @@ void SetupServer::readSettings()
     if (rejected) {
         m_ui->password->setEnabled(false);
         KMessageBox::information(nullptr,
-                                 i18n("Could not access KWallet. "
-                                      "If you want to store the password permanently then you have to "
-                                      "activate it. If you do not "
-                                      "want to use KWallet, check the box below, but note that you will be "
-                                      "prompted for your password when needed."),
-                                 i18n("Do not use KWallet"),
-                                 QStringLiteral("warning_kwallet_disabled"));
+                                 i18nc("@info:status", "Could not access KWallet. It is necessary to store the password. "
+                                      "Please activate it."),
+                                 i18nc("@info:status", "KWallet Unavailable"));
     } else {
         m_ui->password->lineEdit()->insert(password);
     }
@@ -465,13 +461,9 @@ void SetupServer::readSettings()
     if (rejected) {
         m_ui->customPassword->setEnabled(false);
         KMessageBox::information(nullptr,
-                                 i18n("Could not access KWallet. "
-                                      "If you want to store the password permanently then you have to "
-                                      "activate it. If you do not "
-                                      "want to use KWallet, check the box below, but note that you will be "
-                                      "prompted for your password when needed."),
-                                 i18n("Do not use KWallet"),
-                                 QStringLiteral("warning_kwallet_disabled"));
+                                 i18nc("@info:status", "Could not access KWallet. It is necessary to store the password. "
+                                      "Please activate it."),
+                                 i18nc("@info:status", "KWallet Unavailable"));
     } else {
         m_ui->customPassword->lineEdit()->insert(customPassword);
     }
