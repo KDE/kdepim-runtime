@@ -1,0 +1,14 @@
+SPDX-FileCopyrightText: 2024 Kevin Ottens <ervin@kde.org>
+SPDX-License-Identifier: LGPL-2.0-or-later
+
+[Global]
+IconName=network-server
+Name=IMAP E-Mail Server
+Comment=Connects to an IMAP e-mail server
+
+[Event/imapAuthFailed]
+Name=IMAP E-Mail authentication failure
+Comment=IMAP e-mail couldn't authenticate with the server
+Urgency=Normal
+Action=Popup
+

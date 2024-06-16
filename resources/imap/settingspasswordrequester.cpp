@@ -8,15 +8,12 @@
 #include "settingspasswordrequester.h"
 
 #include <KLocalizedString>
-#include <KMessageBox>
+#include <KNotification>
 
 #include "imapresource_debug.h"
 #include "imapresourcebase.h"
 #include "settings.h"
-#include <KAuthorized>
-#include <KPasswordDialog>
-#include <QDialogButtonBox>
-#include <QPushButton>
+#include <QDialog>
 #include <kwindowsystem.h>
 #include <mailtransport/transportbase.h>
 
@@ -43,50 +40,44 @@ void SettingsPasswordRequester::requestPassword(RequestType request, const QStri
 
 void SettingsPasswordRequester::askUserInput(const QString &serverError)
 {
-    // the credentials were not ok, allow to retry or change password
-    if (m_requestDialog) {
-        qCDebug(IMAPRESOURCE_LOG) << "Password request dialog is already open";
-        return;
-    }
-    QWidget *parent = QWidget::find(m_resource->winIdForDialogs());
-    const QString text = i18n(
-        "The server for account \"%2\" refused the supplied username and password.\n"
-        "Do you want to go to the settings, have another attempt "
-        "at logging in, or do nothing?\n\n"
-        "%1",
-        serverError,
-        m_resource->name());
-    auto dialog = new QDialog(parent, Qt::Dialog);
-    dialog->setWindowTitle(i18nc("@title:window", "Could Not Authenticate"));
-    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Cancel | QDialogButtonBox::No | QDialogButtonBox::Yes, dialog);
-    buttonBox->button(QDialogButtonBox::Yes)->setDefault(true);
+    auto notification = new KNotification(QStringLiteral("imapAuthFailed"), KNotification::Persistent);
+    notification->setComponentName(QStringLiteral("akonadi_imap_resource"));
+    notification->setIconName(QStringLiteral("network-server"));
+    notification->setTitle(i18nc("@title", "An IMAP e-mail account needs your attention."));
 
-    buttonBox->button(QDialogButtonBox::Yes)->setText(i18n("Account Settings"));
-    buttonBox->button(QDialogButtonBox::No)->setText(i18nc("Input username/password manually and not store them", "Try Again"));
-    dialog->setAttribute(Qt::WA_DeleteOnClose);
-    connect(buttonBox->button(QDialogButtonBox::Yes), &QPushButton::clicked, this, &SettingsPasswordRequester::slotYesClicked);
-    connect(buttonBox->button(QDialogButtonBox::No), &QPushButton::clicked, this, &SettingsPasswordRequester::slotNoClicked);
-    connect(buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &SettingsPasswordRequester::slotCancelClicked);
+    const auto accountName = m_resource->name();
+    const auto message = accountName.isEmpty()
+            ? i18n("The IMAP server refused the supplied username and password.\n"
+                   "Do you want to try again, or open the settings?\n\n"
+                   "%1", serverError)
+            : i18n("The IMAP server for account %1 refused the supplied username and password.\n"
+                   "Do you want to try again, or open the settings?\n\n"
+                   "%2", accountName, serverError);
+    notification->setText(message);
 
-    connect(dialog, &QDialog::destroyed, this, &SettingsPasswordRequester::onDialogDestroyed);
-    m_requestDialog = dialog;
-    dialog->setAttribute(Qt::WA_NativeWindow, true);
-    KWindowSystem::setMainWindow(dialog->windowHandle(), m_resource->winIdForDialogs());
-    bool checkboxResult = false;
-    KMessageBox::createKMessageBox(dialog, buttonBox, QMessageBox::Information, text, QStringList(), QString(), &checkboxResult, KMessageBox::NoExec);
-    dialog->show();
-}
+    auto tryAgainAction = notification->addAction(i18nc("@action:button", "Try again"));
+    connect(tryAgainAction, &KNotificationAction::activated, this, [this, notification]() {
+        disconnect(notification, &KNotification::closed, nullptr, nullptr);
+        slotNoClicked();
+    });
 
-void SettingsPasswordRequester::onDialogDestroyed()
-{
-    m_requestDialog = nullptr;
+    auto openSettingsAction = notification->addAction(i18nc("@action:button", "Open settings"));
+    connect(openSettingsAction, &KNotificationAction::activated, this, [this, notification]() {
+        disconnect(notification, &KNotification::closed, nullptr, nullptr);
+        slotYesClicked();
+    });
+
+    connect(notification, &KNotification::closed, this, [this] {
+        Q_EMIT done(UserRejected);
+    });
+
+    notification->sendEvent();
 }
 
 void SettingsPasswordRequester::slotNoClicked()
 {
     connect(m_resource->settings(), &Settings::passwordRequestCompleted, this, &SettingsPasswordRequester::onPasswordRequestCompleted);
-    requestManualAuth(nullptr);
-    m_requestDialog = nullptr;
+    m_resource->settings()->requestPassword();
 }
 
 void SettingsPasswordRequester::slotYesClicked()
@@ -97,13 +88,6 @@ void SettingsPasswordRequester::slotYesClicked()
         m_settingsDialog = dialog;
         dialog->show();
     }
-    m_requestDialog = nullptr;
-}
-
-void SettingsPasswordRequester::slotCancelClicked()
-{
-    Q_EMIT done(UserRejected);
-    m_requestDialog = nullptr;
 }
 
 void SettingsPasswordRequester::onSettingsDialogFinished(int result)
@@ -118,11 +102,6 @@ void SettingsPasswordRequester::onSettingsDialogFinished(int result)
 
 void SettingsPasswordRequester::cancelPasswordRequests()
 {
-    if (m_requestDialog) {
-        if (m_requestDialog->close()) {
-            m_requestDialog = nullptr;
-        }
-    }
 }
 
 void SettingsPasswordRequester::onPasswordRequestCompleted(const QString &password, bool userRejected)
@@ -131,7 +110,7 @@ void SettingsPasswordRequester::onPasswordRequestCompleted(const QString &passwo
 
     QString pwd = password;
     if (userRejected || pwd.isEmpty()) {
-        pwd = requestManualAuth(&userRejected);
+        pwd = m_resource->settings()->password();
     }
 
     if (userRejected) {
@@ -140,28 +119,6 @@ void SettingsPasswordRequester::onPasswordRequestCompleted(const QString &passwo
         Q_EMIT done(EmptyPasswordEntered);
     } else {
         Q_EMIT done(PasswordRetrieved, password);
-    }
-}
-
-QString SettingsPasswordRequester::requestManualAuth(bool *userRejected)
-{
-    QScopedPointer<KPasswordDialog> dlg(new KPasswordDialog(nullptr));
-    dlg->setModal(true);
-    dlg->setPrompt(i18n("Please enter password for user '%1' on IMAP server '%2'.", m_resource->settings()->userName(), m_resource->settings()->imapServer()));
-    dlg->setPassword(m_resource->settings()->password());
-    dlg->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
-                                                                                                  : KPassword::RevealMode::Never);
-    if (dlg->exec()) {
-        if (userRejected) {
-            *userRejected = false;
-        }
-        m_resource->settings()->setPassword(dlg->password());
-        return dlg->password();
-    } else {
-        if (userRejected) {
-            *userRejected = true;
-        }
-        return {};
     }
 }
 

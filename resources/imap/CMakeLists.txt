@@ -119,6 +119,7 @@ target_link_libraries(imapresource
     KPim6::IdentityManagementWidgets
     KPim6::AkonadiAgentBase
     KF6::I18n
+    KF6::Notifications
     KF6::WindowSystem
     KF6::ConfigGui
     KF6::Wallet
@@ -153,6 +154,10 @@ target_sources( akonadi_imap_resource PRIVATE
 
 install( FILES imapresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
+install(
+  FILES akonadi_imap_resource.notifyrc
+  DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR}
+)
 
 
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
