@@ -102,6 +102,7 @@ void SettingsPasswordRequester::onSettingsDialogFinished(int result)
 
 void SettingsPasswordRequester::cancelPasswordRequests()
 {
+    disconnect(m_resource->settings(), &Settings::passwordRequestCompleted, this, &SettingsPasswordRequester::onPasswordRequestCompleted);
 }
 
 void SettingsPasswordRequester::onPasswordRequestCompleted(const QString &password, bool userRejected)
