@@ -500,7 +500,7 @@ CheckPage::CheckPage(QWidget *parent)
 
     auto layout = new QVBoxLayout(this);
 
-    auto button = new QPushButton(i18n("Test Connection"), this);
+    auto button = new QPushButton(i18nc("@action:button", "Test Connection"), this);
     layout->addWidget(button);
 
     layout->addWidget(mStatusLabel);

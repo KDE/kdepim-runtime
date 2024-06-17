@@ -139,11 +139,11 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     auto hbox = new QHBoxLayout;
     vbox->addLayout(hbox);
 
-    auto button = new QPushButton(i18n("&Select All"), this);
+    auto button = new QPushButton(i18nc("@action:button", "&Select All"), this);
     connect(button, &QPushButton::clicked, this, &NewMailNotifierSelectCollectionWidget::slotSelectAllCollections);
     hbox->addWidget(button);
 
-    button = new QPushButton(i18n("&Unselect All"), this);
+    button = new QPushButton(i18nc("@action:button", "&Unselect All"), this);
     connect(button, &QPushButton::clicked, this, &NewMailNotifierSelectCollectionWidget::slotUnselectAllCollections);
     hbox->addWidget(button);
     hbox->addStretch(1);
