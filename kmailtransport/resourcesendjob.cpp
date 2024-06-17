@@ -7,7 +7,7 @@
 #include "resourcesendjob_p.h"
 #include <MailTransport/Transport>
 
-#include <KMime/KMimeMessage>
+#include <KMime/Message>
 
 #include <Akonadi/AddressAttribute>
 #include <Akonadi/Collection>
