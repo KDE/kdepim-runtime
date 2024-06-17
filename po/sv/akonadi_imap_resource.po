@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-13 00:39+0000\n"
+"POT-Creation-Date: 2024-06-17 00:39+0000\n"
 "PO-Revision-Date: 2020-10-10 07:06+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -425,12 +425,11 @@ msgstr ""
 "Misslyckades markera brevet från '%1' för borttagning på IMAP-servern. Det "
 "kommer att dyka upp igen vid nästa synkronisering."
 
-#: outlookpasswordrequester.cpp:67
-#, fuzzy, kde-format
-#| msgid "Failed to collect metadata."
+#: outlookpasswordrequester.cpp:63 outlookpasswordrequester.cpp:72
+#, kde-format
 msgctxt "@status"
-msgid "Failed to open KWallet"
-msgstr "Misslyckades samla in metadata."
+msgid "Failed to read password from keychain."
+msgstr ""
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -1150,6 +1149,12 @@ msgstr "Sök:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Endast prenumerationer"
+
+#, fuzzy
+#~| msgid "Failed to collect metadata."
+#~ msgctxt "@status"
+#~ msgid "Failed to open KWallet"
+#~ msgstr "Misslyckades samla in metadata."
 
 #~ msgid "Serverside Subscription..."
 #~ msgstr "Prenumeration på serversidan..."

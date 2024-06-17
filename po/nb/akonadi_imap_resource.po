@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-13 00:39+0000\n"
+"POT-Creation-Date: 2024-06-17 00:39+0000\n"
 "PO-Revision-Date: 2014-09-19 22:53+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -418,12 +418,11 @@ msgstr ""
 "Klarte ikke merke meldinga fra «%1» for sletting på IMAP-tjeneren. Den blir "
 "vist igjen ved neste synkronisering."
 
-#: outlookpasswordrequester.cpp:67
-#, fuzzy, kde-format
-#| msgid "Do not use KWallet"
+#: outlookpasswordrequester.cpp:63 outlookpasswordrequester.cpp:72
+#, kde-format
 msgctxt "@status"
-msgid "Failed to open KWallet"
-msgstr "Ikke bruk KWallet"
+msgid "Failed to read password from keychain."
+msgstr ""
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -1132,3 +1131,9 @@ msgstr "Søk:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Bare abonnerte"
+
+#, fuzzy
+#~| msgid "Do not use KWallet"
+#~ msgctxt "@status"
+#~ msgid "Failed to open KWallet"
+#~ msgstr "Ikke bruk KWallet"

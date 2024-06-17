@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-13 00:39+0000\n"
+"POT-Creation-Date: 2024-06-17 00:39+0000\n"
 "PO-Revision-Date: 2017-09-28 18:00+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -419,12 +419,11 @@ msgstr ""
 "Не могу да означим поруку из „%1“ за брисање на ИМАП серверу. Поново ће се "
 "појавити по наредној синхронизацији."
 
-#: outlookpasswordrequester.cpp:67
-#, fuzzy, kde-format
-#| msgid "Do not use KWallet"
+#: outlookpasswordrequester.cpp:63 outlookpasswordrequester.cpp:72
+#, kde-format
 msgctxt "@status"
-msgid "Failed to open KWallet"
-msgstr "Не користи К‑новчаник"
+msgid "Failed to read password from keychain."
+msgstr ""
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -1151,6 +1150,12 @@ msgstr "Тражи:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Само у претплаћеним"
+
+#, fuzzy
+#~| msgid "Do not use KWallet"
+#~ msgctxt "@status"
+#~ msgid "Failed to open KWallet"
+#~ msgstr "Не користи К‑новчаник"
 
 #~ msgid "Serverside Subscription..."
 #~ msgstr "Претплата на страни сервера..."

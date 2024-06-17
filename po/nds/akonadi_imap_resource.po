@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-13 00:39+0000\n"
+"POT-Creation-Date: 2024-06-17 00:39+0000\n"
 "PO-Revision-Date: 2014-07-13 18:25+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -438,12 +438,11 @@ msgstr ""
 "De Naricht ut \"%1\" lett sik op den IMAP-Server nich för't Wegdoon "
 "markeren. Se dukt bi de nakamen Synkroniseren wedder op."
 
-#: outlookpasswordrequester.cpp:67
-#, fuzzy, kde-format
-#| msgid "Failed to collect metadata."
+#: outlookpasswordrequester.cpp:63 outlookpasswordrequester.cpp:72
+#, kde-format
 msgctxt "@status"
-msgid "Failed to open KWallet"
-msgstr "Sammeln vun Metadaten nich mööglich."
+msgid "Failed to read password from keychain."
+msgstr ""
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -1190,6 +1189,12 @@ msgstr "Söken:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Bloots bestellte"
+
+#, fuzzy
+#~| msgid "Failed to collect metadata."
+#~ msgctxt "@status"
+#~ msgid "Failed to open KWallet"
+#~ msgstr "Sammeln vun Metadaten nich mööglich."
 
 #~ msgid "Serverside Subscription..."
 #~ msgstr "Bestellen op Server-Siet..."

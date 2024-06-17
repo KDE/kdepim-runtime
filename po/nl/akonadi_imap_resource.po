@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-13 00:39+0000\n"
+"POT-Creation-Date: 2024-06-17 00:39+0000\n"
 "PO-Revision-Date: 2024-05-12 14:20+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -437,11 +437,11 @@ msgstr ""
 "Markeren van het bericht uit '%1' op de IMAP-server voor verwijdering is "
 "mislukt. Het zal bij de volgende synchronisatie opnieuw verschijnen."
 
-#: outlookpasswordrequester.cpp:67
+#: outlookpasswordrequester.cpp:63 outlookpasswordrequester.cpp:72
 #, kde-format
 msgctxt "@status"
-msgid "Failed to open KWallet"
-msgstr "Openen van KWallet is mislukt"
+msgid "Failed to read password from keychain."
+msgstr ""
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -1168,6 +1168,10 @@ msgstr "Zoeken:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Alleen ingeschreven"
+
+#~ msgctxt "@status"
+#~ msgid "Failed to open KWallet"
+#~ msgstr "Openen van KWallet is mislukt"
 
 #~ msgid "Serverside Subscription..."
 #~ msgstr "Inschrijven aan de serverzijde..."

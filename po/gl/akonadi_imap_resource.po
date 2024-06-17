@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-13 00:39+0000\n"
+"POT-Creation-Date: 2024-06-17 00:39+0000\n"
 "PO-Revision-Date: 2024-05-12 12:16+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
@@ -442,11 +442,11 @@ msgstr ""
 "Non foi posíbel marcar para eliminar a mensaxe de «%1» no servidor de IMAP. "
 "Reaparecerá na vindeira sincronización."
 
-#: outlookpasswordrequester.cpp:67
+#: outlookpasswordrequester.cpp:63 outlookpasswordrequester.cpp:72
 #, kde-format
 msgctxt "@status"
-msgid "Failed to open KWallet"
-msgstr "Non se puido abrir KWallet."
+msgid "Failed to read password from keychain."
+msgstr ""
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -1172,6 +1172,10 @@ msgstr "Buscar:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Só os subscritos."
+
+#~ msgctxt "@status"
+#~ msgid "Failed to open KWallet"
+#~ msgstr "Non se puido abrir KWallet."
 
 #~ msgid "Serverside Subscription..."
 #~ msgstr "Subscrición da parte do servidor…"

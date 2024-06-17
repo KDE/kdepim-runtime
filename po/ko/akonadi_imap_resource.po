@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-13 00:39+0000\n"
+"POT-Creation-Date: 2024-06-17 00:39+0000\n"
 "PO-Revision-Date: 2024-02-17 12:43+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -413,11 +413,11 @@ msgstr ""
 "메시지 '%1'을(를) IMAP 서버에서 삭제하도록 표시할 수 없습니다. 다음 동기화에"
 "서 표시됩니다."
 
-#: outlookpasswordrequester.cpp:67
+#: outlookpasswordrequester.cpp:63 outlookpasswordrequester.cpp:72
 #, kde-format
 msgctxt "@status"
-msgid "Failed to open KWallet"
-msgstr "KWallet을 열 수 없음"
+msgid "Failed to read password from keychain."
+msgstr ""
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -1130,6 +1130,10 @@ msgstr "찾기:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "구독 중인 항목만"
+
+#~ msgctxt "@status"
+#~ msgid "Failed to open KWallet"
+#~ msgstr "KWallet을 열 수 없음"
 
 #~ msgid "Serverside Subscription..."
 #~ msgstr "서버 측 구독..."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-13 00:39+0000\n"
+"POT-Creation-Date: 2024-06-17 00:39+0000\n"
 "PO-Revision-Date: 2013-09-08 07:05+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -405,10 +405,10 @@ msgid ""
 "will reappear on next sync."
 msgstr ""
 
-#: outlookpasswordrequester.cpp:67
+#: outlookpasswordrequester.cpp:63 outlookpasswordrequester.cpp:72
 #, kde-format
 msgctxt "@status"
-msgid "Failed to open KWallet"
+msgid "Failed to read password from keychain."
 msgstr ""
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
