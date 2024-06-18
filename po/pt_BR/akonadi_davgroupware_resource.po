@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-28 00:38+0000\n"
+"POT-Creation-Date: 2024-06-18 00:40+0000\n"
 "PO-Revision-Date: 2021-08-23 13:32-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -673,7 +673,7 @@ msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "URL final (GroupDav)"
 
-#: setupwizard.cpp:497 setupwizard.cpp:503
+#: setupwizard.cpp:497
 #, kde-format
 msgid "Test Connection"
 msgstr "Testar conexão"
@@ -686,6 +686,13 @@ msgid ""
 msgstr ""
 "Você pode agora testar se consegue acessar o servidor groupware com a "
 "configuração atual"
+
+#: setupwizard.cpp:503
+#, fuzzy, kde-format
+#| msgid "Test Connection"
+msgctxt "@action:button"
+msgid "Test Connection"
+msgstr "Testar conexão"
 
 #: setupwizard.cpp:543
 #, kde-format

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-28 00:38+0000\n"
+"POT-Creation-Date: 2024-06-18 00:40+0000\n"
 "PO-Revision-Date: 2022-10-10 17:04+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -675,7 +675,7 @@ msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Конечный URL (GroupDav)"
 
-#: setupwizard.cpp:497 setupwizard.cpp:503
+#: setupwizard.cpp:497
 #, kde-format
 msgid "Test Connection"
 msgstr "Проверка подключения"
@@ -688,6 +688,13 @@ msgid ""
 msgstr ""
 "Теперь вы можете проверить, доступен ли сервер совместной работы при "
 "использовании текущих параметров"
+
+#: setupwizard.cpp:503
+#, fuzzy, kde-format
+#| msgid "Test Connection"
+msgctxt "@action:button"
+msgid "Test Connection"
+msgstr "Проверка подключения"
 
 #: setupwizard.cpp:543
 #, kde-format

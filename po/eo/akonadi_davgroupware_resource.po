@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-28 00:38+0000\n"
+"POT-Creation-Date: 2024-06-18 00:40+0000\n"
 "PO-Revision-Date: 2024-05-29 22:04+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -655,7 +655,7 @@ msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Fina URL (GroupDav)"
 
-#: setupwizard.cpp:497 setupwizard.cpp:503
+#: setupwizard.cpp:497
 #, kde-format
 msgid "Test Connection"
 msgstr "Testa Konekto"
@@ -667,6 +667,13 @@ msgid ""
 "current configuration"
 msgstr ""
 "Vi povas testi nun ĉu la grupvarservilo estas alirebla kun la nuna agordo"
+
+#: setupwizard.cpp:503
+#, fuzzy, kde-format
+#| msgid "Test Connection"
+msgctxt "@action:button"
+msgid "Test Connection"
+msgstr "Testa Konekto"
 
 #: setupwizard.cpp:543
 #, kde-format

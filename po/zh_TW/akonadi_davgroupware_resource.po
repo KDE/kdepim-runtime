@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-28 00:38+0000\n"
+"POT-Creation-Date: 2024-06-18 00:40+0000\n"
 "PO-Revision-Date: 2024-05-30 02:58+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -649,7 +649,7 @@ msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "最終網址（GroupDav）"
 
-#: setupwizard.cpp:497 setupwizard.cpp:503
+#: setupwizard.cpp:497
 #, kde-format
 msgid "Test Connection"
 msgstr "測試連線"
@@ -660,6 +660,13 @@ msgid ""
 "You can test now whether the groupware server can be accessed with the "
 "current configuration"
 msgstr "您現在可以測試是否能以目前的設定存取群組伺服器"
+
+#: setupwizard.cpp:503
+#, fuzzy, kde-format
+#| msgid "Test Connection"
+msgctxt "@action:button"
+msgid "Test Connection"
+msgstr "測試連線"
 
 #: setupwizard.cpp:543
 #, kde-format

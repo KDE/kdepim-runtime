@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-28 00:38+0000\n"
+"POT-Creation-Date: 2024-06-18 00:40+0000\n"
 "PO-Revision-Date: 2011-12-21 11:31+0700\n"
 "Last-Translator: Seng Sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <supprot@khmeros.info>\n"
@@ -688,7 +688,7 @@ msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "URL ចុងក្រោយ​ (GroupDav)"
 
-#: setupwizard.cpp:497 setupwizard.cpp:503
+#: setupwizard.cpp:497
 #, kde-format
 msgid "Test Connection"
 msgstr "សាកល្បង​ការ​តភ្ជាប់"
@@ -701,6 +701,13 @@ msgid ""
 msgstr ""
 "អ្នក​អាច​សាកល្បង​ឥឡូវ​ថាតើ​កម៉ាស៊ីនបម្រើ groupware អាច​ត្រូវ​បាន​ចូល​ដំណើរការ​ជា​មួយ​នឹង​ការ​កំណត់​"
 "រចនាសម្ព័ន្ធ​បច្ចុប្បន្ន​ដែរ​ឬទេ"
+
+#: setupwizard.cpp:503
+#, fuzzy, kde-format
+#| msgid "Test Connection"
+msgctxt "@action:button"
+msgid "Test Connection"
+msgstr "សាកល្បង​ការ​តភ្ជាប់"
 
 #: setupwizard.cpp:543
 #, fuzzy, kde-format

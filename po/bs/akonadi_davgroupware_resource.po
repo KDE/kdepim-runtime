@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource.po\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-28 00:38+0000\n"
+"POT-Creation-Date: 2024-06-18 00:40+0000\n"
 "PO-Revision-Date: 2013-10-24 06:02+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: bs <bs@kde.org>\n"
@@ -684,7 +684,7 @@ msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Odredišni URL (GroupDav)"
 
-#: setupwizard.cpp:497 setupwizard.cpp:503
+#: setupwizard.cpp:497
 #, kde-format
 msgid "Test Connection"
 msgstr "Isprobaj vezu"
@@ -697,6 +697,13 @@ msgid ""
 msgstr ""
 "Možete testirati da li se grupnom serveru može prići s trenutnom "
 "konfiguracijom"
+
+#: setupwizard.cpp:503
+#, fuzzy, kde-format
+#| msgid "Test Connection"
+msgctxt "@action:button"
+msgid "Test Connection"
+msgstr "Isprobaj vezu"
 
 #: setupwizard.cpp:543
 #, kde-format

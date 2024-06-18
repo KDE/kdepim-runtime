@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-28 00:38+0000\n"
+"POT-Creation-Date: 2024-06-18 00:40+0000\n"
 "PO-Revision-Date: 2009-11-04 20:48+0900\n"
 "Last-Translator: Japanese KDE translation team <kde-jp@kde.org>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -622,7 +622,7 @@ msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr ""
 
-#: setupwizard.cpp:497 setupwizard.cpp:503
+#: setupwizard.cpp:497
 #, kde-format
 msgid "Test Connection"
 msgstr ""
@@ -632,6 +632,12 @@ msgstr ""
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
 "current configuration"
+msgstr ""
+
+#: setupwizard.cpp:503
+#, kde-format
+msgctxt "@action:button"
+msgid "Test Connection"
 msgstr ""
 
 #: setupwizard.cpp:543

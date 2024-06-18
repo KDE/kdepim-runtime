@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-28 00:38+0000\n"
+"POT-Creation-Date: 2024-06-18 00:40+0000\n"
 "PO-Revision-Date: 2019-07-17 16:15+0200\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -661,7 +661,7 @@ msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Konečné URL (GroupDav)"
 
-#: setupwizard.cpp:497 setupwizard.cpp:503
+#: setupwizard.cpp:497
 #, kde-format
 msgid "Test Connection"
 msgstr "Testovať pripojenie"
@@ -674,6 +674,13 @@ msgid ""
 msgstr ""
 "Teraz môžete otestovať, či sa dá pristupovať na groupware server s aktuálnym "
 "nastavením"
+
+#: setupwizard.cpp:503
+#, fuzzy, kde-format
+#| msgid "Test Connection"
+msgctxt "@action:button"
+msgid "Test Connection"
+msgstr "Testovať pripojenie"
 
 #: setupwizard.cpp:543
 #, kde-format

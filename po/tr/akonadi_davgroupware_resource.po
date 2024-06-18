@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-28 00:38+0000\n"
+"POT-Creation-Date: 2024-06-18 00:40+0000\n"
 "PO-Revision-Date: 2024-05-29 12:43+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -658,7 +658,7 @@ msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Son URL (GroupDav)"
 
-#: setupwizard.cpp:497 setupwizard.cpp:503
+#: setupwizard.cpp:497
 #, kde-format
 msgid "Test Connection"
 msgstr "Bağlantıyı Sına"
@@ -671,6 +671,13 @@ msgid ""
 msgstr ""
 "Grup yazılımı sunucusuna şu anki yapılandırma dosyası ile erişebilirliğini "
 "şimdi test edebilirsiniz"
+
+#: setupwizard.cpp:503
+#, fuzzy, kde-format
+#| msgid "Test Connection"
+msgctxt "@action:button"
+msgid "Test Connection"
+msgstr "Bağlantıyı Sına"
 
 #: setupwizard.cpp:543
 #, kde-format

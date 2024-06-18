@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-28 00:38+0000\n"
+"POT-Creation-Date: 2024-06-18 00:40+0000\n"
 "PO-Revision-Date: 2017-01-22 23:51+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -674,7 +674,7 @@ msgstr "Крајњи УРЛ (групДАВ)"
 
 # >! Contexts.
 # >> @title:window
-#: setupwizard.cpp:497 setupwizard.cpp:503
+#: setupwizard.cpp:497
 #, kde-format
 msgid "Test Connection"
 msgstr "Испробај везу"
@@ -687,6 +687,15 @@ msgid ""
 msgstr ""
 "Сада можете испробати да ли је могуће приступити групверском серверу са "
 "тренутном поставом."
+
+# >! Contexts.
+# >> @title:window
+#: setupwizard.cpp:503
+#, fuzzy, kde-format
+#| msgid "Test Connection"
+msgctxt "@action:button"
+msgid "Test Connection"
+msgstr "Испробај везу"
 
 #: setupwizard.cpp:543
 #, kde-format

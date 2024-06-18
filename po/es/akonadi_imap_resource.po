@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-17 00:39+0000\n"
-"PO-Revision-Date: 2024-05-12 16:04+0200\n"
+"PO-Revision-Date: 2024-06-17 16:04+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 24.05.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: addcollectiontask.cpp:33
@@ -29,7 +29,7 @@ msgstr ""
 #: addcollectiontask.cpp:67
 #, kde-format
 msgid "Failed to create the folder '%1' on the IMAP server. "
-msgstr "Ha fallado al crear la carpeta «%1» en el servidor IMAP. "
+msgstr "No se ha podido crear la carpeta «%1» en el servidor IMAP. "
 
 #: addcollectiontask.cpp:87 movecollectiontask.cpp:119
 #, kde-format
@@ -37,14 +37,14 @@ msgid ""
 "Failed to subscribe to the folder '%1' on the IMAP server. It will disappear "
 "on next sync. Use the subscription dialog to overcome that"
 msgstr ""
-"Ha fallado al suscribirse a la carpeta «%1» en el servidor IMAP. Utilice al "
-"diálogo de suscripción para superarlo"
+"No se ha podido suscribir a la carpeta «%1» en el servidor IMAP. Use al "
+"diálogo de suscripción para solucionarlo."
 
 #: addcollectiontask.cpp:130 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
 msgstr ""
-"Ha fallado al grabar algunas anotaciones para «%1» en el servidor IMAP. %2"
+"No se han podido grabar algunas anotaciones de «%1» en el servidor IMAP. %2"
 
 #: additemtask.cpp:115 changeitemtask.cpp:181 changeitemtask.cpp:205
 #: moveitemstask.cpp:255
@@ -71,7 +71,7 @@ msgstr ""
 #, kde-format
 msgid "Failed to rename the folder, restoring folder list."
 msgstr ""
-"Ha fallado al cambiar el nombre de la carpeta; restaurando la lista de "
+"No se ha podido cambiar el nombre de la carpeta; se restaura la lista de "
 "carpetas."
 
 #: changecollectiontask.cpp:256
@@ -80,14 +80,14 @@ msgid ""
 "Failed to subscribe to the renamed folder '%1' on the IMAP server. It will "
 "disappear on next sync. Use the subscription dialog to overcome that"
 msgstr ""
-"Ha fallado al suscribirse a la carpeta cambiada de nombre «%1» en el "
+"No se ha podido suscribir a la carpeta cambiada de nombre «%1» en el "
 "servidor IMAP. Desaparecerá en la siguiente sincronización. Use el diálogo "
-"de suscripción para resolver que"
+"de suscripción para solucionarlo."
 
 #: changecollectiontask.cpp:267
 #, kde-format
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
-msgstr "Ha fallado al grabar algunas ACL para «%1» en el servidor IMAP. %2"
+msgstr "No se han podido grabar algunas ACL para «%1» en el servidor IMAP. %2"
 
 #: imapresource.cpp:49
 #, kde-format
@@ -423,8 +423,8 @@ msgstr "No se puede mover el mensaje a «%1»: «%1» no existe en el servidor."
 #, kde-format
 msgid "Failed to move item, it has no message payload. Remote id: %1"
 msgstr ""
-"Ha fallado al mover el elemento: no tiene carga útil de mensaje. Id. remoto: "
-"%1"
+"No se ha podido mover el elemento: no tiene carga útil de mensaje. Id. "
+"remoto: %1"
 
 #: moveitemstask.cpp:190
 #, kde-format
@@ -432,26 +432,27 @@ msgid ""
 "Failed to mark the message from '%1' for deletion on the IMAP server. It "
 "will reappear on next sync."
 msgstr ""
-"Ha fallado al marcar el mensaje «%1» para borrado en el servidor IMAP. "
+"No se ha podido marcar el mensaje «%1» para borrarlo en el servidor IMAP. "
 "Volverá a reaparecer en la siguiente sincronización."
 
 #: outlookpasswordrequester.cpp:63 outlookpasswordrequester.cpp:72
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
-msgstr ""
+msgstr "No se ha podido leer la contraseña de la cadena de claves."
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
-msgstr "Ha fallado al borrar la carpeta; restaurando la lista de carpetas."
+msgstr "No se ha podido borrar la carpeta; se restaura la lista de carpetas."
 
 #: removecollectionrecursivetask.cpp:146
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""
-"Ha fallado al buscar la carpeta a borrar; restaurando la lista de carpetas."
+"No se ha podido encontrar la carpeta que se va a borrar; se restaura la "
+"lista de carpetas."
 
 #: resourcestate.cpp:274
 #, kde-format
