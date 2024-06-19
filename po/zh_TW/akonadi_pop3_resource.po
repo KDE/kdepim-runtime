@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-06-19 00:39+0000\n"
 "PO-Revision-Date: 2024-03-20 18:10+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -130,7 +130,7 @@ msgid " message"
 msgid_plural " messages"
 msgstr[0] " 封信件"
 
-#: jobs.cpp:145
+#: jobs.cpp:148
 #, kde-format
 msgid "Unable to initialize SASL, aborting mail check."
 msgstr "無法初始化 SASL，中止檢查郵件。"
@@ -154,12 +154,12 @@ msgstr ""
 "從伺服器傳來無效的回應：\n"
 "\"%1\""
 
-#: pop3protocol.cpp:251 pop3protocol.cpp:255
+#: pop3protocol.cpp:253 pop3protocol.cpp:257
 #, kde-format
 msgid "Could not send to server.\n"
 msgstr "無法傳送予伺服器。\n"
 
-#: pop3protocol.cpp:352
+#: pop3protocol.cpp:356
 #, kde-format
 msgid ""
 "Login via APOP failed. The server %1 may not support APOP, although it "
@@ -172,12 +172,12 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:402
+#: pop3protocol.cpp:406
 #, kde-format
 msgid "An error occurred during authentication: %1"
 msgstr "認證時發生錯誤：%1"
 
-#: pop3protocol.cpp:496
+#: pop3protocol.cpp:500
 #, kde-format
 msgid ""
 "Login via SASL (%1) failed. The server may not support %2, or the password "
@@ -189,7 +189,7 @@ msgstr ""
 "\n"
 "%3"
 
-#: pop3protocol.cpp:507
+#: pop3protocol.cpp:511
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
@@ -198,7 +198,7 @@ msgstr ""
 "您的 POP3 伺服器 (%1) 不支援 SASL。\n"
 "請選取另一個認證方法。"
 
-#: pop3protocol.cpp:524 pop3protocol.cpp:613
+#: pop3protocol.cpp:528 pop3protocol.cpp:617
 #, kde-format
 msgid ""
 "Could not login to %1.\n"
@@ -207,7 +207,7 @@ msgstr ""
 "無法登入 %1。\n"
 "\n"
 
-#: pop3protocol.cpp:532
+#: pop3protocol.cpp:536
 #, kde-format
 msgid ""
 "Could not login to %1. The password may be wrong.\n"
@@ -218,22 +218,22 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:564
+#: pop3protocol.cpp:568
 #, kde-format
 msgid "SSL/TLS error: %1"
 msgstr "SSL/TLS 錯誤：%1"
 
-#: pop3protocol.cpp:595
+#: pop3protocol.cpp:599
 #, kde-format
 msgid "%1: %2"
 msgstr "%1: %2"
 
-#: pop3protocol.cpp:614
+#: pop3protocol.cpp:618
 #, kde-format
 msgid "The server terminated the connection immediately."
 msgstr "伺服器立即終止了連線。"
 
-#: pop3protocol.cpp:615
+#: pop3protocol.cpp:619
 #, kde-format
 msgid ""
 "Server does not respond properly:\n"
@@ -242,7 +242,7 @@ msgstr ""
 "伺服器未正確回應：\n"
 "%1\n"
 
-#: pop3protocol.cpp:639
+#: pop3protocol.cpp:643
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
@@ -251,7 +251,7 @@ msgstr ""
 "您的 POP3 伺服器 (%1) 不支援 APOP。\n"
 "請選取另一個認證方法。"
 
-#: pop3protocol.cpp:649
+#: pop3protocol.cpp:653
 #, kde-format
 msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
@@ -260,42 +260,32 @@ msgstr ""
 "您的 POP3 伺服器宣稱支援 TLS，但協調失敗了。\n"
 "您可以在 POP 帳號設定對話框中停用 TLS。"
 
-#: pop3protocol.cpp:734
+#: pop3protocol.cpp:733
 #, kde-format
 msgid "Internal error: missing argument for command %1"
 msgstr "內部錯誤：命令 %1 缺乏引數"
 
-#: pop3protocol.cpp:790
+#: pop3protocol.cpp:789
 #, kde-format
 msgid "Internal error: missing item"
 msgstr "內部錯誤：缺乏項目"
 
-#: pop3protocol.cpp:817
+#: pop3protocol.cpp:814
 #, kde-format
 msgid "Timeout from POP3 server %1"
 msgstr "POP3 伺服器 %1 逾時"
 
-#: pop3protocol.cpp:819
+#: pop3protocol.cpp:816
 #, kde-format
 msgid "Connection broken from POP3 server %1"
 msgstr "與 POP3 伺服器 %1 的連線斷開"
 
-#: pop3protocol.cpp:880
+#: pop3protocol.cpp:877
 #, kde-format
 msgid ""
 "Error during communication with the POP3 server while trying to download "
 "mail: %1"
 msgstr "嘗試下載郵件時與 POP3 伺服器聯繫時失敗：%1"
-
-#: pop3protocol.cpp:890
-#, kde-format
-msgid "Internal error, number expected: %1"
-msgstr "內部錯誤，預期了數字：%1"
-
-#: pop3protocol.cpp:910
-#, kde-format
-msgid "Unexpected response from POP3 server."
-msgstr "非預期的 POP3 伺服器回應。"
 
 #: pop3resource.cpp:95
 #, kde-format
@@ -841,6 +831,12 @@ msgstr "使用系統 Proxy 設定連線"
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "定義要使用的認證型態"
+
+#~ msgid "Internal error, number expected: %1"
+#~ msgstr "內部錯誤，預期了數字：%1"
+
+#~ msgid "Unexpected response from POP3 server."
+#~ msgstr "非預期的 POP3 伺服器回應。"
 
 #~ msgid ""
 #~ "The server does not seem to support fetching message headers, but this is "

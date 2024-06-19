@@ -1,21 +1,21 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Stefan Asserhäll <stefan.asserhall@gmail.com>, 2017, 2018, 2019, 2020, 2021.
+# SPDX-FileCopyrightText: 2017, 2018, 2019, 2020, 2021, 2024 Stefan Asserhäll <stefan.asserhall@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2021-08-25 16:52+0200\n"
-"Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
+"PO-Revision-Date: 2024-06-18 17:07+0200\n"
+"Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 20.08.1\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -73,7 +73,7 @@ msgstr "Ok"
 #: ewsconfigdialog.cpp:122 ewsconfigdialog.cpp:124
 #, kde-format
 msgid "PEM file"
-msgstr ""
+msgstr "PEM-fil"
 
 #: ewsconfigdialog.cpp:142
 #, kde-format
@@ -746,10 +746,10 @@ msgid "Exchange server autodiscovery"
 msgstr "Automatisk upptäckt av Exchange-server"
 
 #: ewsprogressdialog.cpp:49
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Performing Microsoft Exchange server autodiscovery..."
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr "Utför automatisk upptäckt av Microsoft Exchange-server..."
+msgstr "Utför automatisk upptäckt av Microsoft Exchange-server…"
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -758,10 +758,10 @@ msgid "Connecting to Exchange"
 msgstr "Ansluter till Exchange"
 
 #: ewsprogressdialog.cpp:53
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Connecting to Microsoft Exchange server..."
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "Ansluter till Microsoft Exchange-server..."
+msgstr "Ansluter till Microsoft Exchange-server…"
 
 #: ewsresource.cpp:143
 #, kde-format
@@ -1289,3 +1289,4 @@ msgstr "Objekt i felaktig ordning vid behandling av svar på objektuppdatering."
 #~ msgctxt "@info:status"
 #~ msgid "No server configured yet."
 #~ msgstr "Ingen server inställd ännu."
+

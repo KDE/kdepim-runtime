@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-17 00:39+0000\n"
+"POT-Creation-Date: 2024-06-19 00:39+0000\n"
 "PO-Revision-Date: 2024-05-18 16:42+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -276,7 +276,7 @@ msgstr "定義自訂的 sieve 伺服器使用的認證型態"
 msgid "No server configured yet."
 msgstr "還沒設定伺服器。"
 
-#: imapresourcebase.cpp:245 setupserver.cpp:651
+#: imapresourcebase.cpp:245 setupserver.cpp:643
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -594,12 +594,24 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "在登入時斷線。"
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:46
 #, kde-format
+msgctxt "@title"
+msgid "An IMAP e-mail account needs your attention."
+msgstr ""
+
+#: settingspasswordrequester.cpp:50
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and "
+#| "password.\n"
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
 msgid ""
-"The server for account \"%2\" refused the supplied username and password.\n"
-"Do you want to go to the settings, have another attempt at logging in, or do "
-"nothing?\n"
+"The IMAP server refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
@@ -608,27 +620,40 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:60
-#, kde-format
-msgctxt "@title:window"
-msgid "Could Not Authenticate"
-msgstr "無法認證"
+#: settingspasswordrequester.cpp:53
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and "
+#| "password.\n"
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
+msgid ""
+"The IMAP server for account %1 refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
+"\n"
+"%2"
+msgstr ""
+"帳號 \"%2\" 的伺服器拒絕所提供的使用者名稱與密碼。\n"
+"您要去設定，再次嘗試登入，還是什麼都不做？\n"
+"\n"
+"%1"
 
-#: settingspasswordrequester.cpp:64
-#, kde-format
-msgid "Account Settings"
-msgstr "帳號設定"
-
-#: settingspasswordrequester.cpp:65
-#, kde-format
-msgctxt "Input username/password manually and not store them"
-msgid "Try Again"
+#: settingspasswordrequester.cpp:58
+#, fuzzy, kde-format
+#| msgctxt "Input username/password manually and not store them"
+#| msgid "Try Again"
+msgctxt "@action:button"
+msgid "Try again"
 msgstr "再試一次"
 
-#: settingspasswordrequester.cpp:150
-#, kde-format
-msgid "Please enter password for user '%1' on IMAP server '%2'."
-msgstr "請輸入使用者 %1 在 IMAP 伺服器 %2 上密碼。"
+#: settingspasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Identity Settings"
+msgctxt "@action:button"
+msgid "Open settings"
+msgstr "身份設定"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -706,44 +731,43 @@ msgstr ""
 msgid "User name change"
 msgstr "使用者名稱變更"
 
-#: setupserver.cpp:412 setupserver.cpp:468
+#: setupserver.cpp:412 setupserver.cpp:464
 #, kde-format
+msgctxt "@info:status"
 msgid ""
-"Could not access KWallet. If you want to store the password permanently then "
-"you have to activate it. If you do not want to use KWallet, check the box "
-"below, but note that you will be prompted for your password when needed."
+"Could not access KWallet. It is necessary to store the password. Please "
+"activate it."
 msgstr ""
-"無法存取 KWallet。若您要永久儲存密碼，您必須啟動它。若您要使用 KWallet，請勾"
-"選下方的選項，但是要注意，需要時它會要求您輸入 KWallet 密碼。"
 
-#: setupserver.cpp:417 setupserver.cpp:473
+#: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
-msgid "Do not use KWallet"
-msgstr "不使用 KWallet"
+msgctxt "@info:status"
+msgid "KWallet Unavailable"
+msgstr ""
 
-#: setupserver.cpp:538
+#: setupserver.cpp:530
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "無法連線到伺服器，請檢查伺服器位址。"
 
-#: setupserver.cpp:550
+#: setupserver.cpp:542
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>支援 STARTTLS，並建議使用。</b></qt>"
 
-#: setupserver.cpp:553
+#: setupserver.cpp:545
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>支援 SSL/TLS，並建議使用。</b></qt>"
 
-#: setupserver.cpp:557
+#: setupserver.cpp:549
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
 msgstr "<qt><b>未支援任何安全性。不建議連線到此伺服器。</b></qt>"
 
-#: setupserver.cpp:560
+#: setupserver.cpp:552
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>無法使用此伺服器。</b></qt>"
@@ -1120,6 +1144,28 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "只有訂閱的群組"
 
+#~ msgctxt "@title:window"
+#~ msgid "Could Not Authenticate"
+#~ msgstr "無法認證"
+
+#~ msgid "Account Settings"
+#~ msgstr "帳號設定"
+
+#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
+#~ msgstr "請輸入使用者 %1 在 IMAP 伺服器 %2 上密碼。"
+
+#~ msgid ""
+#~ "Could not access KWallet. If you want to store the password permanently "
+#~ "then you have to activate it. If you do not want to use KWallet, check "
+#~ "the box below, but note that you will be prompted for your password when "
+#~ "needed."
+#~ msgstr ""
+#~ "無法存取 KWallet。若您要永久儲存密碼，您必須啟動它。若您要使用 KWallet，請"
+#~ "勾選下方的選項，但是要注意，需要時它會要求您輸入 KWallet 密碼。"
+
+#~ msgid "Do not use KWallet"
+#~ msgstr "不使用 KWallet"
+
 #~ msgctxt "@status"
 #~ msgid "Failed to open KWallet"
 #~ msgstr "開啟 KWallet 失敗"
@@ -1130,9 +1176,6 @@ msgstr "只有訂閱的群組"
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
-
-#~ msgid "Identity Settings"
-#~ msgstr "身份設定"
 
 #~ msgid "Use the default identity for this account"
 #~ msgstr "此帳號使用預設身份"

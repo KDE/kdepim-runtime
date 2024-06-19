@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-17 00:39+0000\n"
+"POT-Creation-Date: 2024-06-19 00:39+0000\n"
 "PO-Revision-Date: 2014-09-04 16:12+0200\n"
 "Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -295,7 +295,7 @@ msgstr ""
 msgid "No server configured yet."
 msgstr "Még egy kiszolgáló sincs beállítva."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:651
+#: imapresourcebase.cpp:245 setupserver.cpp:643
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -641,7 +641,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "A kapcsolat megszakadt a kiszolgálóval a bejelentkezés során."
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:46
+#, kde-format
+msgctxt "@title"
+msgid "An IMAP e-mail account needs your attention."
+msgstr ""
+
+#: settingspasswordrequester.cpp:50
 #, fuzzy, kde-format
 #| msgid ""
 #| "The server for account \"%2\" refused the supplied username and password. "
@@ -650,9 +656,8 @@ msgstr "A kapcsolat megszakadt a kiszolgálóval a bejelentkezés során."
 #| "\n"
 #| "%1"
 msgid ""
-"The server for account \"%2\" refused the supplied username and password.\n"
-"Do you want to go to the settings, have another attempt at logging in, or do "
-"nothing?\n"
+"The IMAP server refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
@@ -662,28 +667,40 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:60
+#: settingspasswordrequester.cpp:53
 #, fuzzy, kde-format
-#| msgid "Could Not Authenticate"
-msgctxt "@title:window"
-msgid "Could Not Authenticate"
-msgstr "Nem lehet hitelesíteni"
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and password. "
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
+msgid ""
+"The IMAP server for account %1 refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
+"\n"
+"%2"
+msgstr ""
+"A(z) „%2” azonosító kiszolgálója elutasította a megadott felhasználónevet és "
+"jelszót. Szeretné megnézni a beállításokat, megkísérelni újból a "
+"bejelentkezést, vagy inkább nem tesz semmit?\n"
+"\n"
+"%1"
 
-#: settingspasswordrequester.cpp:64
-#, kde-format
-msgid "Account Settings"
-msgstr "Az azonosító beállításai"
-
-#: settingspasswordrequester.cpp:65
-#, kde-format
-msgctxt "Input username/password manually and not store them"
-msgid "Try Again"
+#: settingspasswordrequester.cpp:58
+#, fuzzy, kde-format
+#| msgctxt "Input username/password manually and not store them"
+#| msgid "Try Again"
+msgctxt "@action:button"
+msgid "Try again"
 msgstr "Újra"
 
-#: settingspasswordrequester.cpp:150
-#, kde-format
-msgid "Please enter password for user '%1' on IMAP server '%2'."
-msgstr "Adja meg a(z) „%1” felhasználó jelszavát a(z) „%2” IMAP kiszolgálón."
+#: settingspasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Identity Settings"
+msgctxt "@action:button"
+msgid "Open settings"
+msgstr "Az azonosító beállításai"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -760,41 +777,38 @@ msgstr ""
 msgid "User name change"
 msgstr "Felhasználónév"
 
-#: setupserver.cpp:412 setupserver.cpp:468
+#: setupserver.cpp:412 setupserver.cpp:464
 #, kde-format
+msgctxt "@info:status"
 msgid ""
-"Could not access KWallet. If you want to store the password permanently then "
-"you have to activate it. If you do not want to use KWallet, check the box "
-"below, but note that you will be prompted for your password when needed."
+"Could not access KWallet. It is necessary to store the password. Please "
+"activate it."
 msgstr ""
-"Nem lehet elérni a KWalletet. Ha szeretné a jelszavait folyamatosan tárolni "
-"aktiválnia kell azt. Ha nem szeretné használni a KWalletet, jelölje be a "
-"lenti jelölőnégyzetet, ekkor azonban a program minden alkalommal kérni fogja "
-"a jelszót."
 
-#: setupserver.cpp:417 setupserver.cpp:473
+#: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
-msgid "Do not use KWallet"
-msgstr "Ne használjon KWalletet"
+msgctxt "@info:status"
+msgid "KWallet Unavailable"
+msgstr ""
 
-#: setupserver.cpp:538
+#: setupserver.cpp:530
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Nem lehet kapcsolódni a kiszolgálóhoz, ellenőrizze a kiszolgáló címét."
 
-#: setupserver.cpp:550
+#: setupserver.cpp:542
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>A TLS támogatott és ajánlott.</b></qt>"
 
-#: setupserver.cpp:553
+#: setupserver.cpp:545
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>A TLS támogatott és ajánlott.</b></qt>"
 
-#: setupserver.cpp:557
+#: setupserver.cpp:549
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -803,7 +817,7 @@ msgstr ""
 "<qt><b>A biztonság nem támogatott. Nem ajánlott kapcsolódni ehhez a "
 "kiszolgálóhoz.</b></qt>"
 
-#: setupserver.cpp:560
+#: setupserver.cpp:552
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Nem lehet használni ezt a kiszolgálót.</b></qt>"
@@ -1196,6 +1210,33 @@ msgid "Subscribed only"
 msgstr "Csak feliratkozottak"
 
 #, fuzzy
+#~| msgid "Could Not Authenticate"
+#~ msgctxt "@title:window"
+#~ msgid "Could Not Authenticate"
+#~ msgstr "Nem lehet hitelesíteni"
+
+#~ msgid "Account Settings"
+#~ msgstr "Az azonosító beállításai"
+
+#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
+#~ msgstr ""
+#~ "Adja meg a(z) „%1” felhasználó jelszavát a(z) „%2” IMAP kiszolgálón."
+
+#~ msgid ""
+#~ "Could not access KWallet. If you want to store the password permanently "
+#~ "then you have to activate it. If you do not want to use KWallet, check "
+#~ "the box below, but note that you will be prompted for your password when "
+#~ "needed."
+#~ msgstr ""
+#~ "Nem lehet elérni a KWalletet. Ha szeretné a jelszavait folyamatosan "
+#~ "tárolni aktiválnia kell azt. Ha nem szeretné használni a KWalletet, "
+#~ "jelölje be a lenti jelölőnégyzetet, ekkor azonban a program minden "
+#~ "alkalommal kérni fogja a jelszót."
+
+#~ msgid "Do not use KWallet"
+#~ msgstr "Ne használjon KWalletet"
+
+#, fuzzy
 #~| msgid "Failed to collect metadata."
 #~ msgctxt "@status"
 #~ msgid "Failed to open KWallet"
@@ -1203,9 +1244,6 @@ msgstr "Csak feliratkozottak"
 
 #~ msgid "Serverside Subscription..."
 #~ msgstr "Kiszolgáló oldali feliratkozás…"
-
-#~ msgid "Identity Settings"
-#~ msgstr "Az azonosító beállításai"
 
 #~ msgid "Use the default identity for this account"
 #~ msgstr "Az alapértelmezett identitás használata ehhez az azonosítóhoz"

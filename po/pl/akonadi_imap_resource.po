@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-17 00:39+0000\n"
+"POT-Creation-Date: 2024-06-19 00:39+0000\n"
 "PO-Revision-Date: 2024-03-17 11:00+0100\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -287,7 +287,7 @@ msgstr "Określa rodzaj uwierzytelnienia używanego w własnym serwerze sieve"
 msgid "No server configured yet."
 msgstr "Serwer jeszcze nieustawiony."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:651
+#: imapresourcebase.cpp:245 setupserver.cpp:643
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -621,12 +621,24 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Rozłączono podczas logowania."
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:46
 #, kde-format
+msgctxt "@title"
+msgid "An IMAP e-mail account needs your attention."
+msgstr ""
+
+#: settingspasswordrequester.cpp:50
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and "
+#| "password.\n"
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
 msgid ""
-"The server for account \"%2\" refused the supplied username and password.\n"
-"Do you want to go to the settings, have another attempt at logging in, or do "
-"nothing?\n"
+"The IMAP server refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
@@ -636,27 +648,41 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:60
-#, kde-format
-msgctxt "@title:window"
-msgid "Could Not Authenticate"
-msgstr "Nie można uwierzytelnić"
+#: settingspasswordrequester.cpp:53
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and "
+#| "password.\n"
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
+msgid ""
+"The IMAP server for account %1 refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
+"\n"
+"%2"
+msgstr ""
+"Serwer odrzucił podaną nazwę użytkownika i hasło dla konta \"%2\".\n"
+"Można przejść do ustawień konta, spróbować ponownie się zalogować lub "
+"zaniechać dalszych działań.\n"
+"\n"
+"%1"
 
-#: settingspasswordrequester.cpp:64
-#, kde-format
-msgid "Account Settings"
-msgstr "Ustawienia konta"
-
-#: settingspasswordrequester.cpp:65
-#, kde-format
-msgctxt "Input username/password manually and not store them"
-msgid "Try Again"
+#: settingspasswordrequester.cpp:58
+#, fuzzy, kde-format
+#| msgctxt "Input username/password manually and not store them"
+#| msgid "Try Again"
+msgctxt "@action:button"
+msgid "Try again"
 msgstr "Spróbuj ponownie"
 
-#: settingspasswordrequester.cpp:150
-#, kde-format
-msgid "Please enter password for user '%1' on IMAP server '%2'."
-msgstr "Wpisz hasło dla użytkownika '%1' na serwerze IMAP '%2'."
+#: settingspasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Identity Settings"
+msgctxt "@action:button"
+msgid "Open settings"
+msgstr "Ustawienia tożsamości"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -738,39 +764,36 @@ msgstr ""
 msgid "User name change"
 msgstr "Zmiana nazwy użytkownika"
 
-#: setupserver.cpp:412 setupserver.cpp:468
+#: setupserver.cpp:412 setupserver.cpp:464
 #, kde-format
+msgctxt "@info:status"
 msgid ""
-"Could not access KWallet. If you want to store the password permanently then "
-"you have to activate it. If you do not want to use KWallet, check the box "
-"below, but note that you will be prompted for your password when needed."
+"Could not access KWallet. It is necessary to store the password. Please "
+"activate it."
 msgstr ""
-"Nie można uzyskać dostępu do programu Portfel. Jeśli chcesz zapisać hasło na "
-"stałe, należy go aktywować. Jeśli nie chcesz używać programu Portfel, "
-"zaznacz poniższe pole, dzięki czemu pytanie o hasło będzie wyświetlane "
-"zawsze, gdy będzie to konieczne."
 
-#: setupserver.cpp:417 setupserver.cpp:473
+#: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
-msgid "Do not use KWallet"
-msgstr "Nie używaj Portfela"
+msgctxt "@info:status"
+msgid "KWallet Unavailable"
+msgstr ""
 
-#: setupserver.cpp:538
+#: setupserver.cpp:530
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Nie można połączyć się z serwerem, proszę zweryfikować adres serwera."
 
-#: setupserver.cpp:550
+#: setupserver.cpp:542
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS jest obsługiwane i zalecane.</b></qt>"
 
-#: setupserver.cpp:553
+#: setupserver.cpp:545
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS jest obsługiwane i zalecane.</b></qt>"
 
-#: setupserver.cpp:557
+#: setupserver.cpp:549
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -779,7 +802,7 @@ msgstr ""
 "<qt><b>Brak obsługi zabezpieczeń. Nie zaleca się łączenia z tym serwerem.</"
 "b></qt>"
 
-#: setupserver.cpp:560
+#: setupserver.cpp:552
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Użycie tego serwera jest niemożliwe.</b></qt>"
@@ -1160,6 +1183,30 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Tylko subskrybowane"
 
+#~ msgctxt "@title:window"
+#~ msgid "Could Not Authenticate"
+#~ msgstr "Nie można uwierzytelnić"
+
+#~ msgid "Account Settings"
+#~ msgstr "Ustawienia konta"
+
+#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
+#~ msgstr "Wpisz hasło dla użytkownika '%1' na serwerze IMAP '%2'."
+
+#~ msgid ""
+#~ "Could not access KWallet. If you want to store the password permanently "
+#~ "then you have to activate it. If you do not want to use KWallet, check "
+#~ "the box below, but note that you will be prompted for your password when "
+#~ "needed."
+#~ msgstr ""
+#~ "Nie można uzyskać dostępu do programu Portfel. Jeśli chcesz zapisać hasło "
+#~ "na stałe, należy go aktywować. Jeśli nie chcesz używać programu Portfel, "
+#~ "zaznacz poniższe pole, dzięki czemu pytanie o hasło będzie wyświetlane "
+#~ "zawsze, gdy będzie to konieczne."
+
+#~ msgid "Do not use KWallet"
+#~ msgstr "Nie używaj Portfela"
+
 #~ msgctxt "@status"
 #~ msgid "Failed to open KWallet"
 #~ msgstr "Nie udało się otworzyć KPortfela"
@@ -1170,9 +1217,6 @@ msgstr "Tylko subskrybowane"
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
-
-#~ msgid "Identity Settings"
-#~ msgstr "Ustawienia tożsamości"
 
 #~ msgid "Use the default identity for this account"
 #~ msgstr "Użyj domyślnej tożsamości dla tego konta"

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-18 00:40+0000\n"
-"PO-Revision-Date: 2024-05-28 09:25+0300\n"
+"PO-Revision-Date: 2024-06-18 08:43+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian\n"
 "Language: uk\n"
@@ -85,15 +85,13 @@ msgid "Search…"
 msgstr "Шукати…"
 
 #: newmailnotifierselectcollectionwidget.cpp:142
-#, fuzzy, kde-format
-#| msgid "&Select All"
+#, kde-format
 msgctxt "@action:button"
 msgid "&Select All"
-msgstr "&Позначити усі"
+msgstr "&Позначити все"
 
 #: newmailnotifierselectcollectionwidget.cpp:146
-#, fuzzy, kde-format
-#| msgid "&Unselect All"
+#, kde-format
 msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "С&касувати позначення"

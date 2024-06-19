@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-17 00:39+0000\n"
+"POT-Creation-Date: 2024-06-19 00:39+0000\n"
 "PO-Revision-Date: 2024-05-12 10:35+0100\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -281,7 +281,7 @@ msgstr "Difinas la tipon de identigo uzata de propra kribrilservilo"
 msgid "No server configured yet."
 msgstr "Ankoraŭ neniu servilo agordita."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:651
+#: imapresourcebase.cpp:245 setupserver.cpp:643
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -607,12 +607,24 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Malkonektita dum ensaluto."
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:46
 #, kde-format
+msgctxt "@title"
+msgid "An IMAP e-mail account needs your attention."
+msgstr ""
+
+#: settingspasswordrequester.cpp:50
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and "
+#| "password.\n"
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
 msgid ""
-"The server for account \"%2\" refused the supplied username and password.\n"
-"Do you want to go to the settings, have another attempt at logging in, or do "
-"nothing?\n"
+"The IMAP server refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
@@ -622,27 +634,41 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:60
-#, kde-format
-msgctxt "@title:window"
-msgid "Could Not Authenticate"
-msgstr "Ne Povis Aŭtentikigi"
+#: settingspasswordrequester.cpp:53
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and "
+#| "password.\n"
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
+msgid ""
+"The IMAP server for account %1 refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
+"\n"
+"%2"
+msgstr ""
+"La servilo por konto \"%2\" rifuzis la provizitajn uzantnomon kaj "
+"pasvorton.\n"
+"Ĉu vi volas iri al la agordoj, havi alian provon ensaluti aŭ fari nenion?\n"
+"\n"
+"%1"
 
-#: settingspasswordrequester.cpp:64
-#, kde-format
-msgid "Account Settings"
-msgstr "Kontagordoj"
-
-#: settingspasswordrequester.cpp:65
-#, kde-format
-msgctxt "Input username/password manually and not store them"
-msgid "Try Again"
+#: settingspasswordrequester.cpp:58
+#, fuzzy, kde-format
+#| msgctxt "Input username/password manually and not store them"
+#| msgid "Try Again"
+msgctxt "@action:button"
+msgid "Try again"
 msgstr "Provu denove"
 
-#: settingspasswordrequester.cpp:150
-#, kde-format
-msgid "Please enter password for user '%1' on IMAP server '%2'."
-msgstr "Bonvolu enigi pasvorton por uzanto '%1' sur IMAP-servilo '%2'."
+#: settingspasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Connection Settings"
+msgctxt "@action:button"
+msgid "Open settings"
+msgstr "Agordo de Konekto"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -723,39 +749,37 @@ msgstr ""
 msgid "User name change"
 msgstr "Ŝanĝo de uzantnomo"
 
-#: setupserver.cpp:412 setupserver.cpp:468
+#: setupserver.cpp:412 setupserver.cpp:464
 #, kde-format
+msgctxt "@info:status"
 msgid ""
-"Could not access KWallet. If you want to store the password permanently then "
-"you have to activate it. If you do not want to use KWallet, check the box "
-"below, but note that you will be prompted for your password when needed."
+"Could not access KWallet. It is necessary to store the password. Please "
+"activate it."
 msgstr ""
-"Ne eblis aliri KWallet. Se vi volas konservi la pasvorton konstante, tiam vi "
-"devas aktivigi ĝin. Se vi ne volas uzi KWallet, marku la skatolon sube, sed "
-"notu, ke oni petos vin por via pasvorto kiam necese."
 
-#: setupserver.cpp:417 setupserver.cpp:473
+#: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
-msgid "Do not use KWallet"
-msgstr "Ne uzu KWallet"
+msgctxt "@info:status"
+msgid "KWallet Unavailable"
+msgstr ""
 
-#: setupserver.cpp:538
+#: setupserver.cpp:530
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Ne eblas konektiĝi al la servilo, bonvolu konfirmi la servilan adreson."
 
-#: setupserver.cpp:550
+#: setupserver.cpp:542
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS estas subtenata kaj rekomendita.</b></qt>"
 
-#: setupserver.cpp:553
+#: setupserver.cpp:545
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS estas subtenata kaj rekomendita.</b></qt>"
 
-#: setupserver.cpp:557
+#: setupserver.cpp:549
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -764,7 +788,7 @@ msgstr ""
 "<qt><b>Neniu sekureco estas subtenata. Ne rekomendas konektiĝi al ĉi tiu "
 "servilo.</b></qt>"
 
-#: setupserver.cpp:560
+#: setupserver.cpp:552
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Ne eblas uzi ĉi tiun servilon.</b></qt>"
@@ -1142,6 +1166,29 @@ msgstr "Serĉi:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Nur abonita"
+
+#~ msgctxt "@title:window"
+#~ msgid "Could Not Authenticate"
+#~ msgstr "Ne Povis Aŭtentikigi"
+
+#~ msgid "Account Settings"
+#~ msgstr "Kontagordoj"
+
+#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
+#~ msgstr "Bonvolu enigi pasvorton por uzanto '%1' sur IMAP-servilo '%2'."
+
+#~ msgid ""
+#~ "Could not access KWallet. If you want to store the password permanently "
+#~ "then you have to activate it. If you do not want to use KWallet, check "
+#~ "the box below, but note that you will be prompted for your password when "
+#~ "needed."
+#~ msgstr ""
+#~ "Ne eblis aliri KWallet. Se vi volas konservi la pasvorton konstante, tiam "
+#~ "vi devas aktivigi ĝin. Se vi ne volas uzi KWallet, marku la skatolon "
+#~ "sube, sed notu, ke oni petos vin por via pasvorto kiam necese."
+
+#~ msgid "Do not use KWallet"
+#~ msgstr "Ne uzu KWallet"
 
 #~ msgctxt "@status"
 #~ msgid "Failed to open KWallet"

@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Stefan Asserhäll <stefan.asserhall@gmail.com>, 2013, 2014, 2015, 2016, 2020, 2022.
+# SPDX-FileCopyrightText: 2013, 2014, 2015, 2016, 2020, 2022, 2024 Stefan Asserhäll <stefan.asserhall@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-07 00:39+0000\n"
-"PO-Revision-Date: 2022-09-25 10:06+0200\n"
+"PO-Revision-Date: 2024-06-18 19:36+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 20.08.1\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -31,7 +31,7 @@ msgstr "stefan.asserhall@gmail.com"
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p %"
 
 #: ../kmigratorbase.cpp:116
 #, kde-format
@@ -50,10 +50,10 @@ msgstr ""
 "Misslyckades starta överföring eftersom överföringsverktyget inte är redo"
 
 #: ../migratorbase.cpp:147
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Starting migration..."
 msgid "Starting migration…"
-msgstr "Påbörjar överföring..."
+msgstr "Startar överföring…"
 
 #: ../migratorbase.cpp:189
 #, kde-format
@@ -87,12 +87,12 @@ msgid "Not started"
 msgstr "Inte påbörjad"
 
 #: ../migratorbase.cpp:272
-#, fuzzy, kde-format
+#, kde-format
 #| msgctxt "@info:status"
 #| msgid "Running..."
 msgctxt "@info:status"
 msgid "Running…"
-msgstr "Pågår..."
+msgstr "Pågår…"
 
 #: ../migratorbase.cpp:274
 #, kde-format
@@ -160,7 +160,7 @@ msgid "(c) 2013-2022 the Akonadi developers"
 msgstr "© 2013-2022 Akonadi-utvecklarna"
 
 #: main.cpp:33
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Christian Mollekopf"
 msgctxt "@info:credit"
 msgid "Christian Mollekopf"
@@ -172,22 +172,23 @@ msgid "Author"
 msgstr "Upphovsman"
 
 #: main.cpp:36
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Show reporting dialog"
 msgctxt "@info:shell"
 msgid "Show reporting dialog"
 msgstr "Visa rapporteringsdialogruta"
 
 #: main.cpp:38
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Show report only if changes were made"
 msgctxt "@info:shell"
 msgid "Show report only if changes were made"
 msgstr "Visa bara rapport om ändringar gjordes"
 
 #: main.cpp:39
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "MIME type to migrate"
 msgctxt "@info:shell"
 msgid "MIME type to migrate"
 msgstr "Mime-typ att överföra"
+

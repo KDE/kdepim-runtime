@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-17 00:39+0000\n"
+"POT-Creation-Date: 2024-06-19 00:39+0000\n"
 "PO-Revision-Date: 2024-05-30 20:40+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -293,7 +293,7 @@ msgstr ""
 msgid "No server configured yet."
 msgstr "Все още няма конфигуриран сървър."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:651
+#: imapresourcebase.cpp:245 setupserver.cpp:643
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -620,12 +620,24 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Прекъснато по време на влизане."
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:46
 #, kde-format
+msgctxt "@title"
+msgid "An IMAP e-mail account needs your attention."
+msgstr ""
+
+#: settingspasswordrequester.cpp:50
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and "
+#| "password.\n"
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
 msgid ""
-"The server for account \"%2\" refused the supplied username and password.\n"
-"Do you want to go to the settings, have another attempt at logging in, or do "
-"nothing?\n"
+"The IMAP server refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
@@ -635,27 +647,41 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:60
-#, kde-format
-msgctxt "@title:window"
-msgid "Could Not Authenticate"
-msgstr "Неуспешно удостоверяване"
+#: settingspasswordrequester.cpp:53
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and "
+#| "password.\n"
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
+msgid ""
+"The IMAP server for account %1 refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
+"\n"
+"%2"
+msgstr ""
+"Сървърът за акаунт \"%2\" отказа предоставеното потребителско име и парола.\n"
+"Искате ли да отидете в настройките, да опитате отново да влезете или да не "
+"се предприема нищо?\n"
+"\n"
+"%1"
 
-#: settingspasswordrequester.cpp:64
-#, kde-format
-msgid "Account Settings"
-msgstr "Настройки на акаунта"
-
-#: settingspasswordrequester.cpp:65
-#, kde-format
-msgctxt "Input username/password manually and not store them"
-msgid "Try Again"
+#: settingspasswordrequester.cpp:58
+#, fuzzy, kde-format
+#| msgctxt "Input username/password manually and not store them"
+#| msgid "Try Again"
+msgctxt "@action:button"
+msgid "Try again"
 msgstr "Повторно опитване"
 
-#: settingspasswordrequester.cpp:150
-#, kde-format
-msgid "Please enter password for user '%1' on IMAP server '%2'."
-msgstr "Моля, въведете парола за потребител ' %1' на IMAP сървър ' %2'."
+#: settingspasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Connection Settings"
+msgctxt "@action:button"
+msgid "Open settings"
+msgstr "Настройки за връзка"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -736,41 +762,38 @@ msgstr ""
 msgid "User name change"
 msgstr "Промяна на потребителското име"
 
-#: setupserver.cpp:412 setupserver.cpp:468
+#: setupserver.cpp:412 setupserver.cpp:464
 #, kde-format
+msgctxt "@info:status"
 msgid ""
-"Could not access KWallet. If you want to store the password permanently then "
-"you have to activate it. If you do not want to use KWallet, check the box "
-"below, but note that you will be prompted for your password when needed."
+"Could not access KWallet. It is necessary to store the password. Please "
+"activate it."
 msgstr ""
-"Няма достъп до KWallet. Ако искате да съхранявате паролата постоянно, трябва "
-"да я активирате. Ако не искате да използвате KWallet, поставете отметка в "
-"квадратчето по-долу, но имайте предвид, че при необходимост ще бъдете "
-"подканени да въведете паролата си."
 
-#: setupserver.cpp:417 setupserver.cpp:473
+#: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
-msgid "Do not use KWallet"
-msgstr "Без използване на KWallet"
+msgctxt "@info:status"
+msgid "KWallet Unavailable"
+msgstr ""
 
-#: setupserver.cpp:538
+#: setupserver.cpp:530
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Не може да се осъществи връзка със сървъра, моля, проверете адреса на "
 "сървъра."
 
-#: setupserver.cpp:550
+#: setupserver.cpp:542
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b> STARTTLS се поддържа и препоръчва. </b></qt>"
 
-#: setupserver.cpp:553
+#: setupserver.cpp:545
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b> SSL/TLS се поддържа и препоръчва. </b></qt>"
 
-#: setupserver.cpp:557
+#: setupserver.cpp:549
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -779,7 +802,7 @@ msgstr ""
 "<qt><b> Не се поддържа защита. Не се препоръчва да се свързвате с този "
 "сървър.</b></qt>"
 
-#: setupserver.cpp:560
+#: setupserver.cpp:552
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b> Не е възможно да се използва този сървър.</b></qt>"
@@ -1157,6 +1180,30 @@ msgstr "Търсене:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "&Само абонирани"
+
+#~ msgctxt "@title:window"
+#~ msgid "Could Not Authenticate"
+#~ msgstr "Неуспешно удостоверяване"
+
+#~ msgid "Account Settings"
+#~ msgstr "Настройки на акаунта"
+
+#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
+#~ msgstr "Моля, въведете парола за потребител ' %1' на IMAP сървър ' %2'."
+
+#~ msgid ""
+#~ "Could not access KWallet. If you want to store the password permanently "
+#~ "then you have to activate it. If you do not want to use KWallet, check "
+#~ "the box below, but note that you will be prompted for your password when "
+#~ "needed."
+#~ msgstr ""
+#~ "Няма достъп до KWallet. Ако искате да съхранявате паролата постоянно, "
+#~ "трябва да я активирате. Ако не искате да използвате KWallet, поставете "
+#~ "отметка в квадратчето по-долу, но имайте предвид, че при необходимост ще "
+#~ "бъдете подканени да въведете паролата си."
+
+#~ msgid "Do not use KWallet"
+#~ msgstr "Без използване на KWallet"
 
 #~ msgctxt "@status"
 #~ msgid "Failed to open KWallet"

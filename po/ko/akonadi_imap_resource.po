@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-17 00:39+0000\n"
+"POT-Creation-Date: 2024-06-19 00:39+0000\n"
 "PO-Revision-Date: 2024-02-17 12:43+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -273,7 +273,7 @@ msgstr "사용자 정의 Sieve 서버에 사용되는 인증 종류 정의"
 msgid "No server configured yet."
 msgstr "서버가 설정되지 않았습니다."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:651
+#: imapresourcebase.cpp:245 setupserver.cpp:643
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -600,12 +600,24 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "로그인 중 연결이 종료되었습니다."
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:46
 #, kde-format
+msgctxt "@title"
+msgid "An IMAP e-mail account needs your attention."
+msgstr ""
+
+#: settingspasswordrequester.cpp:50
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and "
+#| "password.\n"
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
 msgid ""
-"The server for account \"%2\" refused the supplied username and password.\n"
-"Do you want to go to the settings, have another attempt at logging in, or do "
-"nothing?\n"
+"The IMAP server refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
@@ -614,27 +626,40 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:60
-#, kde-format
-msgctxt "@title:window"
-msgid "Could Not Authenticate"
-msgstr "인증할 수 없음"
+#: settingspasswordrequester.cpp:53
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and "
+#| "password.\n"
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
+msgid ""
+"The IMAP server for account %1 refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
+"\n"
+"%2"
+msgstr ""
+"계정 \"%2\"에 연결된 서버에서 지정한 사용자 이름과 암호를 거부했습니다.\n"
+"설정으로 이동하거나, 한 번 더 시도하거나, 아무것도 하지 않을 수도 있습니다.\n"
+"\n"
+"%1"
 
-#: settingspasswordrequester.cpp:64
-#, kde-format
-msgid "Account Settings"
-msgstr "계정 설정"
-
-#: settingspasswordrequester.cpp:65
-#, kde-format
-msgctxt "Input username/password manually and not store them"
-msgid "Try Again"
+#: settingspasswordrequester.cpp:58
+#, fuzzy, kde-format
+#| msgctxt "Input username/password manually and not store them"
+#| msgid "Try Again"
+msgctxt "@action:button"
+msgid "Try again"
 msgstr "다시 시도"
 
-#: settingspasswordrequester.cpp:150
-#, kde-format
-msgid "Please enter password for user '%1' on IMAP server '%2'."
-msgstr "IMAP 서버 '%2'의 사용자 '%1'의 암호를 입력하십시오."
+#: settingspasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Identity Settings"
+msgctxt "@action:button"
+msgid "Open settings"
+msgstr "프로필 설정"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -712,38 +737,36 @@ msgstr ""
 msgid "User name change"
 msgstr "사용자 이름 변경"
 
-#: setupserver.cpp:412 setupserver.cpp:468
+#: setupserver.cpp:412 setupserver.cpp:464
 #, kde-format
+msgctxt "@info:status"
 msgid ""
-"Could not access KWallet. If you want to store the password permanently then "
-"you have to activate it. If you do not want to use KWallet, check the box "
-"below, but note that you will be prompted for your password when needed."
+"Could not access KWallet. It is necessary to store the password. Please "
+"activate it."
 msgstr ""
-"KWallet에 접근할 수 없습니다. 암호를 영구적으로 사용하려면 활성화해야 합니"
-"다. KWallet을 사용하지 않으려면 아래 체크 상자를 해제하면 되지만, 필요할 때마"
-"다 암호를 물어봅니다."
 
-#: setupserver.cpp:417 setupserver.cpp:473
+#: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
-msgid "Do not use KWallet"
-msgstr "KWallet을 사용하지 않음"
+msgctxt "@info:status"
+msgid "KWallet Unavailable"
+msgstr ""
 
-#: setupserver.cpp:538
+#: setupserver.cpp:530
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "서버에 연결할 수 없습니다. 서버 주소를 확인하십시오."
 
-#: setupserver.cpp:550
+#: setupserver.cpp:542
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS가 지원되며 추천합니다.</b></qt>"
 
-#: setupserver.cpp:553
+#: setupserver.cpp:545
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS가 지원되며 추천합니다.</b></qt>"
 
-#: setupserver.cpp:557
+#: setupserver.cpp:549
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -752,7 +775,7 @@ msgstr ""
 "<qt><b>보안 기능이 지원되지 않습니다. 이 서버에 연결하지 않는 것을 추천합니"
 "다.</b></qt>"
 
-#: setupserver.cpp:560
+#: setupserver.cpp:552
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>이 서버를 사용할 수 없습니다.</b></qt>"
@@ -1131,6 +1154,29 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "구독 중인 항목만"
 
+#~ msgctxt "@title:window"
+#~ msgid "Could Not Authenticate"
+#~ msgstr "인증할 수 없음"
+
+#~ msgid "Account Settings"
+#~ msgstr "계정 설정"
+
+#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
+#~ msgstr "IMAP 서버 '%2'의 사용자 '%1'의 암호를 입력하십시오."
+
+#~ msgid ""
+#~ "Could not access KWallet. If you want to store the password permanently "
+#~ "then you have to activate it. If you do not want to use KWallet, check "
+#~ "the box below, but note that you will be prompted for your password when "
+#~ "needed."
+#~ msgstr ""
+#~ "KWallet에 접근할 수 없습니다. 암호를 영구적으로 사용하려면 활성화해야 합니"
+#~ "다. KWallet을 사용하지 않으려면 아래 체크 상자를 해제하면 되지만, 필요할 "
+#~ "때마다 암호를 물어봅니다."
+
+#~ msgid "Do not use KWallet"
+#~ msgstr "KWallet을 사용하지 않음"
+
 #~ msgctxt "@status"
 #~ msgid "Failed to open KWallet"
 #~ msgstr "KWallet을 열 수 없음"
@@ -1141,9 +1187,6 @@ msgstr "구독 중인 항목만"
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "GMail"
-
-#~ msgid "Identity Settings"
-#~ msgstr "프로필 설정"
 
 #~ msgid "Use the default identity for this account"
 #~ msgstr "이 계정에 기본 프로필을 사용함"

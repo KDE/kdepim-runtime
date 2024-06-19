@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-06-19 00:39+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -125,7 +125,7 @@ msgid " message"
 msgid_plural " messages"
 msgstr[0] " 封信件"
 
-#: jobs.cpp:145
+#: jobs.cpp:148
 #, kde-format
 msgid "Unable to initialize SASL, aborting mail check."
 msgstr "无法初始化 SASL，中止邮件检查。"
@@ -149,12 +149,12 @@ msgstr ""
 "无效的服务器应答：\n"
 "“%1”"
 
-#: pop3protocol.cpp:251 pop3protocol.cpp:255
+#: pop3protocol.cpp:253 pop3protocol.cpp:257
 #, kde-format
 msgid "Could not send to server.\n"
 msgstr "无法发送到服务器。\n"
 
-#: pop3protocol.cpp:352
+#: pop3protocol.cpp:356
 #, kde-format
 msgid ""
 "Login via APOP failed. The server %1 may not support APOP, although it "
@@ -167,12 +167,12 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:402
+#: pop3protocol.cpp:406
 #, kde-format
 msgid "An error occurred during authentication: %1"
 msgstr "身份验证时发生错误：%1"
 
-#: pop3protocol.cpp:496
+#: pop3protocol.cpp:500
 #, kde-format
 msgid ""
 "Login via SASL (%1) failed. The server may not support %2, or the password "
@@ -184,7 +184,7 @@ msgstr ""
 "\n"
 "%3"
 
-#: pop3protocol.cpp:507
+#: pop3protocol.cpp:511
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
@@ -193,7 +193,7 @@ msgstr ""
 "您的 POP3 服务器 (%1) 不支持 SASL。\n"
 "请选择另外一种身份验证方式。"
 
-#: pop3protocol.cpp:524 pop3protocol.cpp:613
+#: pop3protocol.cpp:528 pop3protocol.cpp:617
 #, kde-format
 msgid ""
 "Could not login to %1.\n"
@@ -202,7 +202,7 @@ msgstr ""
 "无法登录到 %1。\n"
 "\n"
 
-#: pop3protocol.cpp:532
+#: pop3protocol.cpp:536
 #, kde-format
 msgid ""
 "Could not login to %1. The password may be wrong.\n"
@@ -213,22 +213,22 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:564
+#: pop3protocol.cpp:568
 #, kde-format
 msgid "SSL/TLS error: %1"
 msgstr "SSL/TLS 错误：%1"
 
-#: pop3protocol.cpp:595
+#: pop3protocol.cpp:599
 #, kde-format
 msgid "%1: %2"
 msgstr "%1：%2"
 
-#: pop3protocol.cpp:614
+#: pop3protocol.cpp:618
 #, kde-format
 msgid "The server terminated the connection immediately."
 msgstr "服务器立刻中止了连接。"
 
-#: pop3protocol.cpp:615
+#: pop3protocol.cpp:619
 #, kde-format
 msgid ""
 "Server does not respond properly:\n"
@@ -237,7 +237,7 @@ msgstr ""
 "服务器响应不正确：\n"
 "%1\n"
 
-#: pop3protocol.cpp:639
+#: pop3protocol.cpp:643
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
@@ -246,7 +246,7 @@ msgstr ""
 "您的 POP3 服务器 (%1) 不支持 APOP。\n"
 "请选择另外一种身份验证方式。"
 
-#: pop3protocol.cpp:649
+#: pop3protocol.cpp:653
 #, kde-format
 msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
@@ -255,42 +255,32 @@ msgstr ""
 "您的 POP3 服务器声称支持 TLS，但是协议对接失败。\n"
 "您可以在 POP 账户设置中禁用 TLS。"
 
-#: pop3protocol.cpp:734
+#: pop3protocol.cpp:733
 #, kde-format
 msgid "Internal error: missing argument for command %1"
 msgstr "内部错误：缺少命令 %1 的参数"
 
-#: pop3protocol.cpp:790
+#: pop3protocol.cpp:789
 #, kde-format
 msgid "Internal error: missing item"
 msgstr "内部错误：缺少项目"
 
-#: pop3protocol.cpp:817
+#: pop3protocol.cpp:814
 #, kde-format
 msgid "Timeout from POP3 server %1"
 msgstr "POP3 服务器超时 %1"
 
-#: pop3protocol.cpp:819
+#: pop3protocol.cpp:816
 #, kde-format
 msgid "Connection broken from POP3 server %1"
 msgstr "从 POP3服务器断开连接 %1"
 
-#: pop3protocol.cpp:880
+#: pop3protocol.cpp:877
 #, kde-format
 msgid ""
 "Error during communication with the POP3 server while trying to download "
 "mail: %1"
 msgstr "下载邮件时与 POP3 服务器通信出错：%1"
-
-#: pop3protocol.cpp:890
-#, kde-format
-msgid "Internal error, number expected: %1"
-msgstr "内部错误，预计数字： %1"
-
-#: pop3protocol.cpp:910
-#, kde-format
-msgid "Unexpected response from POP3 server."
-msgstr "POP3 服务器应答不正常。"
 
 #: pop3resource.cpp:95
 #, kde-format
@@ -836,3 +826,9 @@ msgstr "使用系统代理设置进行连接"
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "定义要使用的身份验证方式"
+
+#~ msgid "Internal error, number expected: %1"
+#~ msgstr "内部错误，预计数字： %1"
+
+#~ msgid "Unexpected response from POP3 server."
+#~ msgstr "POP3 服务器应答不正常。"

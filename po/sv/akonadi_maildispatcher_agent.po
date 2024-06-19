@@ -1,31 +1,31 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Stefan Asserhäll <stefan.asserhall@gmail.com>, 2009, 2010.
+# SPDX-FileCopyrightText: 2009, 2010, 2024 Stefan Asserhäll <stefan.asserhall@gmail.com>
 # Stefan Asserhall <stefan.asserhall@gmail.com>, 2010, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2012-10-16 18:46+0200\n"
-"Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
+"PO-Revision-Date: 2024-06-18 17:09+0200\n"
+"Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Sending messages (1 item in queue)..."
 #| msgid_plural "Sending messages (%1 items in queue)..."
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "Skickar brev (1 objekt i kö)..."
-msgstr[1] "Skickar brev (%1 objekt i kö)..."
+msgstr[0] "Skickar brev (1 objekt i kö)…"
+msgstr[1] "Skickar brev (%1 objekt i kö)…"
 
 #: maildispatcheragent.cpp:90
 #, kde-format
@@ -187,3 +187,4 @@ msgstr "Misslyckades hämta objekt."
 
 #~ msgid "Sending succeeded, but failed to finalize message."
 #~ msgstr "Sändning lyckades, men misslyckades avsluta brevhantering."
+

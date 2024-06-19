@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-17 00:39+0000\n"
+"POT-Creation-Date: 2024-06-19 00:39+0000\n"
 "PO-Revision-Date: 2012-06-11 16:03+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -280,7 +280,7 @@ msgstr "កំណត់​ប្រភេទ​ការ​ផ្ទៀងផ្
 msgid "No server configured yet."
 msgstr "គ្មាន​ម៉ាស៊ីន​បម្រើ​ត្រូវ​បាន​កំណត់​រចនាសម្ព័ន្ធ​នៅ​ឡើយ​ទេ ។"
 
-#: imapresourcebase.cpp:245 setupserver.cpp:651
+#: imapresourcebase.cpp:245 setupserver.cpp:643
 #, fuzzy, kde-format
 #| msgid "Serverside Subscription..."
 msgctxt "@title:window"
@@ -618,6 +618,31 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "បាន​ផ្ដាច់​ពី​ម៉ាស៊ីន​បម្រើ​អំឡុង​ពេល​ចូល ។"
 
+#: settingspasswordrequester.cpp:46
+#, kde-format
+msgctxt "@title"
+msgid "An IMAP e-mail account needs your attention."
+msgstr ""
+
+#: settingspasswordrequester.cpp:50
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and password. "
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
+msgid ""
+"The IMAP server refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
+"\n"
+"%1"
+msgstr ""
+"ម៉ាស៊ីន​បម្រើ​សម្រាប់​គណនី \"%2\"​បាន​បដិសេធ​ឈ្មោះ​អ្នកប្រើ និង​ពាក្យ​សម្ងាត់​ដែល​បាន​ផ្ដល់ ។ តើ​អ្នក​ចង់​ចូល​ទៅ​"
+"កាន់​ការ​កំណត់ ដែល​មាន​ការ​ប៉ុនប៉ង​ផ្សេង​ទៀត​នៅ​ពេល​ចូល ឬ​មិន​ធ្វើ​អ្វី​ទាំង​អស់​ឬ ?\n"
+"\n"
+"%1"
+
 #: settingspasswordrequester.cpp:53
 #, fuzzy, kde-format
 #| msgid ""
@@ -627,39 +652,30 @@ msgstr "បាន​ផ្ដាច់​ពី​ម៉ាស៊ីន​បម
 #| "\n"
 #| "%1"
 msgid ""
-"The server for account \"%2\" refused the supplied username and password.\n"
-"Do you want to go to the settings, have another attempt at logging in, or do "
-"nothing?\n"
+"The IMAP server for account %1 refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
 "\n"
-"%1"
+"%2"
 msgstr ""
 "ម៉ាស៊ីន​បម្រើ​សម្រាប់​គណនី \"%2\"​បាន​បដិសេធ​ឈ្មោះ​អ្នកប្រើ និង​ពាក្យ​សម្ងាត់​ដែល​បាន​ផ្ដល់ ។ តើ​អ្នក​ចង់​ចូល​ទៅ​"
 "កាន់​ការ​កំណត់ ដែល​មាន​ការ​ប៉ុនប៉ង​ផ្សេង​ទៀត​នៅ​ពេល​ចូល ឬ​មិន​ធ្វើ​អ្វី​ទាំង​អស់​ឬ ?\n"
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:60
+#: settingspasswordrequester.cpp:58
 #, fuzzy, kde-format
-#| msgid "Could Not Authenticate"
-msgctxt "@title:window"
-msgid "Could Not Authenticate"
-msgstr "មិនអាច​ផ្ទៀងផ្ទាត់​ភាព​ត្រឹមត្រូវ​បានទេ"
-
-#: settingspasswordrequester.cpp:64
-#, kde-format
-msgid "Account Settings"
-msgstr "ការ​កំណត់​គណនី"
-
-#: settingspasswordrequester.cpp:65
-#, kde-format
-msgctxt "Input username/password manually and not store them"
-msgid "Try Again"
+#| msgctxt "Input username/password manually and not store them"
+#| msgid "Try Again"
+msgctxt "@action:button"
+msgid "Try again"
 msgstr "ព្យាយាម​ម្ដងទៀត"
 
-#: settingspasswordrequester.cpp:150
-#, kde-format
-msgid "Please enter password for user '%1' on IMAP server '%2'."
-msgstr "សូម​បញ្ចូល​ពាក្យ​សម្ងាត់​សម្រាប់​អ្នក​ប្រើ '%1' នៅ​លើ​ម៉ាស៊ីន​បម្រើ IMAP '%2' ។"
+#: settingspasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Identity Settings"
+msgctxt "@action:button"
+msgid "Open settings"
+msgstr "កំណត់​អត្តសញ្ញាណ​នៃ​ការ​កំណត់"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -735,40 +751,38 @@ msgstr ""
 msgid "User name change"
 msgstr "ឈ្មោះ​អ្នកប្រើ"
 
-#: setupserver.cpp:412 setupserver.cpp:468
+#: setupserver.cpp:412 setupserver.cpp:464
 #, kde-format
+msgctxt "@info:status"
 msgid ""
-"Could not access KWallet. If you want to store the password permanently then "
-"you have to activate it. If you do not want to use KWallet, check the box "
-"below, but note that you will be prompted for your password when needed."
+"Could not access KWallet. It is necessary to store the password. Please "
+"activate it."
 msgstr ""
-"មិនអាច​ចូល​ដំណើរការ KWallet បានទេ ។ ប្រសិន​បើអ្នក​ចង់​ទុក​ពាក្យ​សម្ងាត់​ជា​រៀងរហូត គឺ​អ្នក​ត្រូវ​ធ្វើ​ឲ្យ​វា​"
-"សកម្ម ។ ប្រសិន​បើ​អ្នក​មិន​ចង់​ប្រើ KWallet សូម​ធីក​ប្រអប់​ខាងក្រោម ប៉ុន្តែ​ត្រូវ​ចាំថា អ្នក​នឹង​តម្រូវ​ឲ្យ​បញ្ចូល​"
-"ពាក្យ​សម្ងាត់ នៅពេល​ដែល​ត្រូវការ ។"
 
-#: setupserver.cpp:417 setupserver.cpp:473
+#: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
-msgid "Do not use KWallet"
-msgstr "កុំប្រើ KWallet"
+msgctxt "@info:status"
+msgid "KWallet Unavailable"
+msgstr ""
 
-#: setupserver.cpp:538
+#: setupserver.cpp:530
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "មិន​អាច​តភ្ជាប់​ទៅ​កាន់​ម៉ាស៊ីន​បម្រើ​បាន​ទេ សូម​ផ្ទៀងផ្ទាត់​អាសយដ្ឋាន​ម៉ាស៊ីន​បម្រើ ។"
 
-#: setupserver.cpp:550
+#: setupserver.cpp:542
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>TLS គឺ​ត្រូវបាន​គាំទ្រ និងផ្ដល់​អានុសាសន៍ ។</b></qt>"
 
-#: setupserver.cpp:553
+#: setupserver.cpp:545
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>TLS គឺ​ត្រូវបាន​គាំទ្រ និងផ្ដល់​អានុសាសន៍ ។</b></qt>"
 
-#: setupserver.cpp:557
+#: setupserver.cpp:549
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -777,7 +791,7 @@ msgstr ""
 "<qt><b>គ្មាន​សុវត្ថិភាព​ដែល​បាន​គាំទ្រ​ទេ ។ វា​មិន​ត្រូវ​ផ្ដល់​អនុសាសន៍​​ឲ្យ​តភ្ជាប់​ទៅកាន់​ម៉ាស៊ីន​បម្រើ​នេះ​ទេ ។"
 "</b></qt>"
 
-#: setupserver.cpp:560
+#: setupserver.cpp:552
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>វា​មិន​អាច​ប្រើ​ម៉ាស៊ីន​បម្រើ​នេះ​បាន​ទេ ។</b></qt>"
@@ -1170,6 +1184,31 @@ msgid "Subscribed only"
 msgstr "តែ​អ្វីដែលបាន​ជាវ​ប៉ុណ្ណោះ"
 
 #, fuzzy
+#~| msgid "Could Not Authenticate"
+#~ msgctxt "@title:window"
+#~ msgid "Could Not Authenticate"
+#~ msgstr "មិនអាច​ផ្ទៀងផ្ទាត់​ភាព​ត្រឹមត្រូវ​បានទេ"
+
+#~ msgid "Account Settings"
+#~ msgstr "ការ​កំណត់​គណនី"
+
+#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
+#~ msgstr "សូម​បញ្ចូល​ពាក្យ​សម្ងាត់​សម្រាប់​អ្នក​ប្រើ '%1' នៅ​លើ​ម៉ាស៊ីន​បម្រើ IMAP '%2' ។"
+
+#~ msgid ""
+#~ "Could not access KWallet. If you want to store the password permanently "
+#~ "then you have to activate it. If you do not want to use KWallet, check "
+#~ "the box below, but note that you will be prompted for your password when "
+#~ "needed."
+#~ msgstr ""
+#~ "មិនអាច​ចូល​ដំណើរការ KWallet បានទេ ។ ប្រសិន​បើអ្នក​ចង់​ទុក​ពាក្យ​សម្ងាត់​ជា​រៀងរហូត គឺ​អ្នក​ត្រូវ​ធ្វើ​ឲ្យ​"
+#~ "វា​សកម្ម ។ ប្រសិន​បើ​អ្នក​មិន​ចង់​ប្រើ KWallet សូម​ធីក​ប្រអប់​ខាងក្រោម ប៉ុន្តែ​ត្រូវ​ចាំថា អ្នក​នឹង​តម្រូវ​ឲ្យ​"
+#~ "បញ្ចូល​ពាក្យ​សម្ងាត់ នៅពេល​ដែល​ត្រូវការ ។"
+
+#~ msgid "Do not use KWallet"
+#~ msgstr "កុំប្រើ KWallet"
+
+#, fuzzy
 #~| msgid "Failed to connect to server"
 #~ msgctxt "@status"
 #~ msgid "Failed to open KWallet"
@@ -1177,9 +1216,6 @@ msgstr "តែ​អ្វីដែលបាន​ជាវ​ប៉ុណ្ណ
 
 #~ msgid "Serverside Subscription..."
 #~ msgstr "ការ​ជាវ​ជា​ប្រចាំ​នៅ​ផ្នែក​ម៉ាស៊ីន​បម្រើ..."
-
-#~ msgid "Identity Settings"
-#~ msgstr "កំណត់​អត្តសញ្ញាណ​នៃ​ការ​កំណត់"
 
 #~ msgid "Use the default identity for this account"
 #~ msgstr "ប្រើ​អត្តសញ្ញាណ​លំនាំដើម​សម្រាប់គណនី​នេះ"

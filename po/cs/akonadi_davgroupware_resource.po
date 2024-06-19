@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-18 00:40+0000\n"
-"PO-Revision-Date: 2024-05-30 15:34+0200\n"
+"PO-Revision-Date: 2024-06-18 16:05+0200\n"
 "Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 24.05.1\n"
 
 #: configdialog.cpp:33
 #, kde-format
@@ -645,8 +645,7 @@ msgid ""
 msgstr ""
 
 #: setupwizard.cpp:503
-#, fuzzy, kde-format
-#| msgid "Test Connection"
+#, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Otestovat spojení"

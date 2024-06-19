@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-03-13 00:38+0000\n"
+"POT-Creation-Date: 2024-06-19 00:39+0000\n"
 "PO-Revision-Date: 2022-05-15 22:21+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -129,7 +129,7 @@ msgid " message"
 msgid_plural " messages"
 msgstr[0] " 개"
 
-#: jobs.cpp:145
+#: jobs.cpp:148
 #, kde-format
 msgid "Unable to initialize SASL, aborting mail check."
 msgstr "SASL을 초기화할 수 없음, 메일 확인을 중단합니다."
@@ -153,12 +153,12 @@ msgstr ""
 "서버에서 잘못된 응답을 보냄:\n"
 "\"%1\""
 
-#: pop3protocol.cpp:251 pop3protocol.cpp:255
+#: pop3protocol.cpp:253 pop3protocol.cpp:257
 #, kde-format
 msgid "Could not send to server.\n"
 msgstr "서버로 보낼 수 없습니다.\n"
 
-#: pop3protocol.cpp:352
+#: pop3protocol.cpp:356
 #, kde-format
 msgid ""
 "Login via APOP failed. The server %1 may not support APOP, although it "
@@ -171,12 +171,12 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:402
+#: pop3protocol.cpp:406
 #, kde-format
 msgid "An error occurred during authentication: %1"
 msgstr "인증 중 오류 발생: %1"
 
-#: pop3protocol.cpp:496
+#: pop3protocol.cpp:500
 #, kde-format
 msgid ""
 "Login via SASL (%1) failed. The server may not support %2, or the password "
@@ -189,7 +189,7 @@ msgstr ""
 "\n"
 "%3"
 
-#: pop3protocol.cpp:507
+#: pop3protocol.cpp:511
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
@@ -198,7 +198,7 @@ msgstr ""
 "POP3 서버(%1)에서 SASL을 지원하지 않습니다.\n"
 "다른 인증 방법을 선택하십시오."
 
-#: pop3protocol.cpp:524 pop3protocol.cpp:613
+#: pop3protocol.cpp:528 pop3protocol.cpp:617
 #, kde-format
 msgid ""
 "Could not login to %1.\n"
@@ -207,7 +207,7 @@ msgstr ""
 "%1에 로그인할 수 없습니다.\n"
 "\n"
 
-#: pop3protocol.cpp:532
+#: pop3protocol.cpp:536
 #, kde-format
 msgid ""
 "Could not login to %1. The password may be wrong.\n"
@@ -218,22 +218,22 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:564
+#: pop3protocol.cpp:568
 #, kde-format
 msgid "SSL/TLS error: %1"
 msgstr "SSL/TLS 오류: %1"
 
-#: pop3protocol.cpp:595
+#: pop3protocol.cpp:599
 #, kde-format
 msgid "%1: %2"
 msgstr "%1: %2"
 
-#: pop3protocol.cpp:614
+#: pop3protocol.cpp:618
 #, kde-format
 msgid "The server terminated the connection immediately."
 msgstr "서버에서 연결을 즉시 종료했습니다."
 
-#: pop3protocol.cpp:615
+#: pop3protocol.cpp:619
 #, kde-format
 msgid ""
 "Server does not respond properly:\n"
@@ -242,7 +242,7 @@ msgstr ""
 "서버에서 올바르게 응답하지 않았습니다:\n"
 "%1\n"
 
-#: pop3protocol.cpp:639
+#: pop3protocol.cpp:643
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
@@ -251,7 +251,7 @@ msgstr ""
 "POP3 서버(%1)에서 APOP을 지원하지 않습니다\n"
 "다른 인증 방법을 선택하십시오."
 
-#: pop3protocol.cpp:649
+#: pop3protocol.cpp:653
 #, kde-format
 msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
@@ -260,42 +260,32 @@ msgstr ""
 "POP3 서버에서 TLS 지원을 하는 것처럼 전달했으나 협상이 실패했습니다.\n"
 "POP 계정 설정에서 TLS를 비활성화할 수 있습니다."
 
-#: pop3protocol.cpp:734
+#: pop3protocol.cpp:733
 #, kde-format
 msgid "Internal error: missing argument for command %1"
 msgstr "내부 오류: %1 명령의 인자 없음"
 
-#: pop3protocol.cpp:790
+#: pop3protocol.cpp:789
 #, kde-format
 msgid "Internal error: missing item"
 msgstr "내부 오류: 항목 없음"
 
-#: pop3protocol.cpp:817
+#: pop3protocol.cpp:814
 #, kde-format
 msgid "Timeout from POP3 server %1"
 msgstr "POP3 서버 %1의 시간 초과됨"
 
-#: pop3protocol.cpp:819
+#: pop3protocol.cpp:816
 #, kde-format
 msgid "Connection broken from POP3 server %1"
 msgstr "POP3 서버 %1의 연결 끊김"
 
-#: pop3protocol.cpp:880
+#: pop3protocol.cpp:877
 #, kde-format
 msgid ""
 "Error during communication with the POP3 server while trying to download "
 "mail: %1"
 msgstr "메일을 다운로드하려고 POP3 서버와 통신하는 중 오류 발생: %1"
-
-#: pop3protocol.cpp:890
-#, kde-format
-msgid "Internal error, number expected: %1"
-msgstr "내부 오류, 숫자가 예상됨: %1"
-
-#: pop3protocol.cpp:910
-#, kde-format
-msgid "Unexpected response from POP3 server."
-msgstr "POP3 서버에서 예상하지 못한 응답이 돌아왔습니다."
 
 #: pop3resource.cpp:95
 #, kde-format
@@ -844,6 +834,12 @@ msgstr "시스템 프록시 설정을 사용하여 연결"
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "사용할 인증 형식 정의"
+
+#~ msgid "Internal error, number expected: %1"
+#~ msgstr "내부 오류, 숫자가 예상됨: %1"
+
+#~ msgid "Unexpected response from POP3 server."
+#~ msgstr "POP3 서버에서 예상하지 못한 응답이 돌아왔습니다."
 
 #~ msgid ""
 #~ "The server does not seem to support fetching message headers, but this is "

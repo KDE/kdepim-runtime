@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-17 00:39+0000\n"
+"POT-Creation-Date: 2024-06-19 00:39+0000\n"
 "PO-Revision-Date: 2010-10-22 23:55-0700\n"
 "Last-Translator: Fumiaki Okushi <okushi@kde.gr.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -276,7 +276,7 @@ msgstr "認証方法を設定"
 msgid "No server configured yet."
 msgstr "サーバが設定されていません。"
 
-#: imapresourcebase.cpp:245 setupserver.cpp:651
+#: imapresourcebase.cpp:245 setupserver.cpp:643
 #, fuzzy, kde-format
 #| msgid "Serverside Subscription..."
 msgctxt "@title:window"
@@ -618,7 +618,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr ""
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:46
+#, kde-format
+msgctxt "@title"
+msgid "An IMAP e-mail account needs your attention."
+msgstr ""
+
+#: settingspasswordrequester.cpp:50
 #, fuzzy, kde-format
 #| msgid ""
 #| "The server refused the supplied username and password. Do you want to go "
@@ -626,9 +632,8 @@ msgstr ""
 #| "\n"
 #| "%1"
 msgid ""
-"The server for account \"%2\" refused the supplied username and password.\n"
-"Do you want to go to the settings, have another attempt at logging in, or do "
-"nothing?\n"
+"The IMAP server refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
@@ -637,34 +642,36 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:60
+#: settingspasswordrequester.cpp:53
 #, fuzzy, kde-format
-#| msgid "Could Not Authenticate"
-msgctxt "@title:window"
-msgid "Could Not Authenticate"
-msgstr "認証できませんでした"
+#| msgid ""
+#| "The server refused the supplied username and password. Do you want to go "
+#| "to the settings, have another attempt at logging in, or do nothing?\n"
+#| "\n"
+#| "%1"
+msgid ""
+"The IMAP server for account %1 refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
+"\n"
+"%2"
+msgstr ""
+"サーバが、提供されたユーザ名とパスワードを拒否しました。設定し直しますか？ロ"
+"グインを再試行しますか？何もしませんか？\n"
+"\n"
+"%1"
+
+#: settingspasswordrequester.cpp:58
+#, kde-format
+msgctxt "@action:button"
+msgid "Try again"
+msgstr ""
 
 #: settingspasswordrequester.cpp:64
 #, fuzzy, kde-format
-#| msgid "IMAP Settings"
-msgid "Account Settings"
-msgstr "IMAP 設定"
-
-#: settingspasswordrequester.cpp:65
-#, kde-format
-msgctxt "Input username/password manually and not store them"
-msgid "Try Again"
-msgstr ""
-
-#: settingspasswordrequester.cpp:150
-#, fuzzy, kde-format
-#| msgid ""
-#| "Could not find a valid password for user '%1' on IMAP server '%2', please "
-#| "enter it here."
-msgid "Please enter password for user '%1' on IMAP server '%2'."
-msgstr ""
-"IMAP サーバ <resource>%2</resource> のユーザ <resource>%1</resource> のパス"
-"ワードを見つけることができませんでした。ここに入力してください。"
+#| msgid "Connection Settings"
+msgctxt "@action:button"
+msgid "Open settings"
+msgstr "接続設定"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -740,40 +747,38 @@ msgstr ""
 msgid "User name change"
 msgstr "ユーザ名"
 
-#: setupserver.cpp:412 setupserver.cpp:468
+#: setupserver.cpp:412 setupserver.cpp:464
 #, kde-format
+msgctxt "@info:status"
 msgid ""
-"Could not access KWallet. If you want to store the password permanently then "
-"you have to activate it. If you do not want to use KWallet, check the box "
-"below, but note that you will be prompted for your password when needed."
+"Could not access KWallet. It is necessary to store the password. Please "
+"activate it."
 msgstr ""
-"KWallet をアクセスできませんでした。パスワードを保存するためには有効にしてく"
-"ださい。もし KWallet を使用しない場合、下をチェックしてください。この場合、必"
-"要なたびにパスワードの入力が求められます。"
 
-#: setupserver.cpp:417 setupserver.cpp:473
+#: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
-msgid "Do not use KWallet"
-msgstr "KWallet を使用しない"
+msgctxt "@info:status"
+msgid "KWallet Unavailable"
+msgstr ""
 
-#: setupserver.cpp:538
+#: setupserver.cpp:530
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "サーバに接続できませんでした。サーバのアドレスを確認してください。"
 
-#: setupserver.cpp:550
+#: setupserver.cpp:542
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt>TLS がサポートされており、その使用が奨励されます。</qt>"
 
-#: setupserver.cpp:553
+#: setupserver.cpp:545
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt>TLS がサポートされており、その使用が奨励されます。</qt>"
 
-#: setupserver.cpp:557
+#: setupserver.cpp:549
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -782,7 +787,7 @@ msgstr ""
 "<qt>セキュリティがサポートされていません。このサーバに接続することは勧められ"
 "ません。</qt>"
 
-#: setupserver.cpp:560
+#: setupserver.cpp:552
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt>このサーバを使うことは不可能です。</qt>"
@@ -1149,6 +1154,39 @@ msgstr ""
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Could Not Authenticate"
+#~ msgctxt "@title:window"
+#~ msgid "Could Not Authenticate"
+#~ msgstr "認証できませんでした"
+
+#, fuzzy
+#~| msgid "IMAP Settings"
+#~ msgid "Account Settings"
+#~ msgstr "IMAP 設定"
+
+#, fuzzy
+#~| msgid ""
+#~| "Could not find a valid password for user '%1' on IMAP server '%2', "
+#~| "please enter it here."
+#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
+#~ msgstr ""
+#~ "IMAP サーバ <resource>%2</resource> のユーザ <resource>%1</resource> のパ"
+#~ "スワードを見つけることができませんでした。ここに入力してください。"
+
+#~ msgid ""
+#~ "Could not access KWallet. If you want to store the password permanently "
+#~ "then you have to activate it. If you do not want to use KWallet, check "
+#~ "the box below, but note that you will be prompted for your password when "
+#~ "needed."
+#~ msgstr ""
+#~ "KWallet をアクセスできませんでした。パスワードを保存するためには有効にして"
+#~ "ください。もし KWallet を使用しない場合、下をチェックしてください。この場"
+#~ "合、必要なたびにパスワードの入力が求められます。"
+
+#~ msgid "Do not use KWallet"
+#~ msgstr "KWallet を使用しない"
 
 #, fuzzy
 #~| msgid "Do not use KWallet"

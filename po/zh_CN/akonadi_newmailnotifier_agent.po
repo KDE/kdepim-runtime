@@ -78,15 +78,13 @@ msgid "Search…"
 msgstr ""
 
 #: newmailnotifierselectcollectionwidget.cpp:142
-#, fuzzy, kde-format
-#| msgid "&Select All"
+#, kde-format
 msgctxt "@action:button"
 msgid "&Select All"
 msgstr "全部选择(&S)"
 
 #: newmailnotifierselectcollectionwidget.cpp:146
-#, fuzzy, kde-format
-#| msgid "&Unselect All"
+#, kde-format
 msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "全部不选(&U)"

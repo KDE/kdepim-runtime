@@ -661,8 +661,7 @@ msgid ""
 msgstr "您现在可以测试是否能以当前配置访问群件服务器"
 
 #: setupwizard.cpp:503
-#, fuzzy, kde-format
-#| msgid "Test Connection"
+#, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "测试连接"

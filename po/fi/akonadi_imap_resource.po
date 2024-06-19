@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-17 00:39+0000\n"
+"POT-Creation-Date: 2024-06-19 00:39+0000\n"
 "PO-Revision-Date: 2024-03-11 15:19+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -291,7 +291,7 @@ msgstr "Määrittää mukautetun Sieve-palvelimen käyttämän tunnistautumistav
 msgid "No server configured yet."
 msgstr "Palvelinta ei ole vielä määritetty."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:651
+#: imapresourcebase.cpp:245 setupserver.cpp:643
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -628,12 +628,24 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Yhteys katkaistiin tunnistauduttaessa."
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:46
 #, kde-format
+msgctxt "@title"
+msgid "An IMAP e-mail account needs your attention."
+msgstr ""
+
+#: settingspasswordrequester.cpp:50
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and "
+#| "password.\n"
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
 msgid ""
-"The server for account \"%2\" refused the supplied username and password.\n"
-"Do you want to go to the settings, have another attempt at logging in, or do "
-"nothing?\n"
+"The IMAP server refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
@@ -643,27 +655,41 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:60
-#, kde-format
-msgctxt "@title:window"
-msgid "Could Not Authenticate"
-msgstr "Tunnistautuminen epäonnistui"
+#: settingspasswordrequester.cpp:53
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and "
+#| "password.\n"
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
+msgid ""
+"The IMAP server for account %1 refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
+"\n"
+"%2"
+msgstr ""
+"Tilin ”%2” palvelin hylkäsi tarjotun käyttäjätunnuksen ja salasanan.\n"
+"Haluatko siirtyä asetuksiin, yrittää kirjautumista uudelleen vai olla "
+"tekemättä mitään?\n"
+"\n"
+"%1"
 
-#: settingspasswordrequester.cpp:64
-#, kde-format
-msgid "Account Settings"
-msgstr "Tilin asetukset"
-
-#: settingspasswordrequester.cpp:65
-#, kde-format
-msgctxt "Input username/password manually and not store them"
-msgid "Try Again"
+#: settingspasswordrequester.cpp:58
+#, fuzzy, kde-format
+#| msgctxt "Input username/password manually and not store them"
+#| msgid "Try Again"
+msgctxt "@action:button"
+msgid "Try again"
 msgstr "Yritä uudelleen"
 
-#: settingspasswordrequester.cpp:150
-#, kde-format
-msgid "Please enter password for user '%1' on IMAP server '%2'."
-msgstr "Anna käyttäjätunnuksen ”%1” salasana IMAP-palvelimeen ”%2”."
+#: settingspasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Identity Settings"
+msgctxt "@action:button"
+msgid "Open settings"
+msgstr "Henkilöysasetukset"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -744,39 +770,36 @@ msgstr ""
 msgid "User name change"
 msgstr "Käyttäjätunnuksen muutos"
 
-#: setupserver.cpp:412 setupserver.cpp:468
+#: setupserver.cpp:412 setupserver.cpp:464
 #, kde-format
+msgctxt "@info:status"
 msgid ""
-"Could not access KWallet. If you want to store the password permanently then "
-"you have to activate it. If you do not want to use KWallet, check the box "
-"below, but note that you will be prompted for your password when needed."
+"Could not access KWallet. It is necessary to store the password. Please "
+"activate it."
 msgstr ""
-"KWalletiin ei saatu yhteyttä. Jos haluat tallentaa salasanan pysyvästi, se "
-"on otettava käyttöön. Ellet halua käyttää KWalletia, valitse alla oleva "
-"valintaruutu, mutta huomaa, että silloin sinulta kysytään salasanaa "
-"tarvittaessa."
 
-#: setupserver.cpp:417 setupserver.cpp:473
+#: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
-msgid "Do not use KWallet"
-msgstr "Älä käytä KWalletia"
+msgctxt "@info:status"
+msgid "KWallet Unavailable"
+msgstr ""
 
-#: setupserver.cpp:538
+#: setupserver.cpp:530
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Palvelimeen ei saatu yhteyttä, tarkista palvelimen osoite."
 
-#: setupserver.cpp:550
+#: setupserver.cpp:542
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS on tuettu ja sitä suositellaan.</b></qt>"
 
-#: setupserver.cpp:553
+#: setupserver.cpp:545
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS on tuettu ja sitä suositellaan.</b></qt>"
 
-#: setupserver.cpp:557
+#: setupserver.cpp:549
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -785,7 +808,7 @@ msgstr ""
 "<qt><b>Salausta ei tueta. Yhteydenottoa tähän palvelimeen ei suositella.</"
 "b></qt>"
 
-#: setupserver.cpp:560
+#: setupserver.cpp:552
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Tätä palvelinta ei ole mahdollista käyttää.</b></qt>"
@@ -1166,6 +1189,30 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Vain tilatut"
 
+#~ msgctxt "@title:window"
+#~ msgid "Could Not Authenticate"
+#~ msgstr "Tunnistautuminen epäonnistui"
+
+#~ msgid "Account Settings"
+#~ msgstr "Tilin asetukset"
+
+#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
+#~ msgstr "Anna käyttäjätunnuksen ”%1” salasana IMAP-palvelimeen ”%2”."
+
+#~ msgid ""
+#~ "Could not access KWallet. If you want to store the password permanently "
+#~ "then you have to activate it. If you do not want to use KWallet, check "
+#~ "the box below, but note that you will be prompted for your password when "
+#~ "needed."
+#~ msgstr ""
+#~ "KWalletiin ei saatu yhteyttä. Jos haluat tallentaa salasanan pysyvästi, "
+#~ "se on otettava käyttöön. Ellet halua käyttää KWalletia, valitse alla "
+#~ "oleva valintaruutu, mutta huomaa, että silloin sinulta kysytään salasanaa "
+#~ "tarvittaessa."
+
+#~ msgid "Do not use KWallet"
+#~ msgstr "Älä käytä KWalletia"
+
 #~ msgctxt "@status"
 #~ msgid "Failed to open KWallet"
 #~ msgstr "KWalletin avaaminen epäonnistui"
@@ -1176,9 +1223,6 @@ msgstr "Vain tilatut"
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
-
-#~ msgid "Identity Settings"
-#~ msgstr "Henkilöysasetukset"
 
 #~ msgid "Use the default identity for this account"
 #~ msgstr "Käytä tälle tilille oletushenkilöyttä"

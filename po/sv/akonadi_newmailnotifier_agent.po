@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Stefan Asserhäll <stefan.asserhall@gmail.com>, 2013, 2014, 2015, 2016, 2017, 2018, 2020, 2021, 2022, 2023.
+# SPDX-FileCopyrightText: 2013, 2014, 2015, 2016, 2017, 2018, 2020, 2021, 2022, 2023, 2024 Stefan Asserhäll <stefan.asserhall@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-18 00:40+0000\n"
-"PO-Revision-Date: 2023-08-03 07:19+0200\n"
+"PO-Revision-Date: 2024-06-18 17:11+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 20.08.1\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -24,16 +24,16 @@ msgid "Notification History"
 msgstr "Underrättelsehistorik"
 
 #: newmailnotificationhistorymanager.cpp:32
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Folders"
 msgid "[Open Folder]"
-msgstr "Korgar"
+msgstr "[Öppna korg]"
 
 #: newmailnotificationhistorymanager.cpp:42
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Show mail..."
 msgid "[Show Mail]"
-msgstr "Titta på brev..."
+msgstr "[Visa brev]"
 
 #: newmailnotificationhistorywidget.cpp:24
 #: newmailnotifiersettingswidget.cpp:114
@@ -69,27 +69,27 @@ msgid "Unable to start KMail application."
 msgstr "Kan inte starta Kmail-programmet."
 
 #: newmailnotifierselectcollectionwidget.cpp:96
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Select which folders to monitor for new message notifications:"
 msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
 msgstr "Välj vilka korgar som ska bevakas efter nya brevunderrättelser:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Search..."
 msgid "Search…"
-msgstr "Sök..."
+msgstr "Sök…"
 
 #: newmailnotifierselectcollectionwidget.cpp:142
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "&Select All"
 msgctxt "@action:button"
 msgid "&Select All"
 msgstr "&Markera alla"
 
 #: newmailnotifierselectcollectionwidget.cpp:146
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "&Unselect All"
 msgctxt "@action:button"
 msgid "&Unselect All"
@@ -165,14 +165,14 @@ msgid "Display"
 msgstr "Visning"
 
 #: newmailnotifiersettingswidget.cpp:118
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Hur fungerar detta?</a>"
 
 #: newmailnotifiersettingswidget.cpp:127
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Message:"
 msgctxt "@label:textbox"
 msgid "Message:"
@@ -209,7 +209,7 @@ msgid "Copyright (C) 2013-%1 Laurent Montel"
 msgstr "Copyright © 2013-%1 Laurent Montel"
 
 #: newmailnotifiersettingswidget.cpp:158
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Laurent Montel"
 msgctxt "@info:credit"
 msgid "Laurent Montel"
@@ -253,10 +253,10 @@ msgid "In: %1 (%2)"
 msgstr "In: %1 (%2)"
 
 #: specialnotifierjob.cpp:150
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Show mail..."
 msgid "Show mail…"
-msgstr "Titta på brev..."
+msgstr "Visa brev…"
 
 #: specialnotifierjob.cpp:153
 #, kde-format
@@ -279,3 +279,5 @@ msgstr "Ta bort"
 
 #~ msgid "from: %1 <br>Subject: %2<br>In: %3"
 #~ msgstr "Från: %1<br>Rubrik: %2<br>I: %3"
+
+

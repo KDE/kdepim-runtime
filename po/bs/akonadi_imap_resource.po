@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-17 00:39+0000\n"
+"POT-Creation-Date: 2024-06-19 00:39+0000\n"
 "PO-Revision-Date: 2015-02-04 15:19+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -286,7 +286,7 @@ msgstr "Definira tip potvrde korišten  od strane prilagođenog sieve servera"
 msgid "No server configured yet."
 msgstr "Server još uvijek nije konfigurisan."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:651
+#: imapresourcebase.cpp:245 setupserver.cpp:643
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -617,6 +617,31 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Odjavi se sa servera tokom prijave."
 
+#: settingspasswordrequester.cpp:46
+#, kde-format
+msgctxt "@title"
+msgid "An IMAP e-mail account needs your attention."
+msgstr ""
+
+#: settingspasswordrequester.cpp:50
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and password. "
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
+msgid ""
+"The IMAP server refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
+"\n"
+"%1"
+msgstr ""
+"Server za nalog \"%2\" odbio korisničko ime i lozinku. Želite li ići na "
+"postavke, probati se drugi put prijaviti ili ne raditi ništa?\n"
+"\n"
+"%1"
+
 #: settingspasswordrequester.cpp:53
 #, fuzzy, kde-format
 #| msgid ""
@@ -626,39 +651,30 @@ msgstr "Odjavi se sa servera tokom prijave."
 #| "\n"
 #| "%1"
 msgid ""
-"The server for account \"%2\" refused the supplied username and password.\n"
-"Do you want to go to the settings, have another attempt at logging in, or do "
-"nothing?\n"
+"The IMAP server for account %1 refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
 "\n"
-"%1"
+"%2"
 msgstr ""
 "Server za nalog \"%2\" odbio korisničko ime i lozinku. Želite li ići na "
 "postavke, probati se drugi put prijaviti ili ne raditi ništa?\n"
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:60
+#: settingspasswordrequester.cpp:58
 #, fuzzy, kde-format
-#| msgid "Could Not Authenticate"
-msgctxt "@title:window"
-msgid "Could Not Authenticate"
-msgstr "Dokazivanje autentičnosti nije uspjelo"
-
-#: settingspasswordrequester.cpp:64
-#, kde-format
-msgid "Account Settings"
-msgstr "Podešavanje naloga"
-
-#: settingspasswordrequester.cpp:65
-#, kde-format
-msgctxt "Input username/password manually and not store them"
-msgid "Try Again"
+#| msgctxt "Input username/password manually and not store them"
+#| msgid "Try Again"
+msgctxt "@action:button"
+msgid "Try again"
 msgstr "Pokušaj ponovo"
 
-#: settingspasswordrequester.cpp:150
-#, kde-format
-msgid "Please enter password for user '%1' on IMAP server '%2'."
-msgstr "Molim unesite lozinku za korisnika '%1' na IMAP serveru '%2'."
+#: settingspasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Identity Settings"
+msgctxt "@action:button"
+msgid "Open settings"
+msgstr "Podešavanja identiteta"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -736,40 +752,38 @@ msgstr ""
 msgid "User name change"
 msgstr "Korisničko ime"
 
-#: setupserver.cpp:412 setupserver.cpp:468
+#: setupserver.cpp:412 setupserver.cpp:464
 #, kde-format
+msgctxt "@info:status"
 msgid ""
-"Could not access KWallet. If you want to store the password permanently then "
-"you have to activate it. If you do not want to use KWallet, check the box "
-"below, but note that you will be prompted for your password when needed."
+"Could not access KWallet. It is necessary to store the password. Please "
+"activate it."
 msgstr ""
-"Ne mogu pristupiti programu KWallet. Ako želite smjestiti trajno lozinku, "
-"morate ga aktivirati. Ako ne želite koristiti KWallet, označite kućicu, ali "
-"čete tada biti pitani za lozinku."
 
-#: setupserver.cpp:417 setupserver.cpp:473
+#: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
-msgid "Do not use KWallet"
-msgstr "Ne koristi KWallet"
+msgctxt "@info:status"
+msgid "KWallet Unavailable"
+msgstr ""
 
-#: setupserver.cpp:538
+#: setupserver.cpp:530
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Ne mogu se povezati na server, provjerite adresu servera."
 
-#: setupserver.cpp:550
+#: setupserver.cpp:542
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>TLS je podržan i preporučen.</b></qt>"
 
-#: setupserver.cpp:553
+#: setupserver.cpp:545
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>TLS je podržan i preporučen.</b></qt>"
 
-#: setupserver.cpp:557
+#: setupserver.cpp:549
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -778,7 +792,7 @@ msgstr ""
 "<qt><b>Nikakva sigurnost nije podržana. Ne preporučuje se prijava na ovaj "
 "server.</b></qt>"
 
-#: setupserver.cpp:560
+#: setupserver.cpp:552
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Nije moguće koristiti ovaj server.</b></qt>"
@@ -1170,6 +1184,31 @@ msgid "Subscribed only"
 msgstr "Samo potpisani"
 
 #, fuzzy
+#~| msgid "Could Not Authenticate"
+#~ msgctxt "@title:window"
+#~ msgid "Could Not Authenticate"
+#~ msgstr "Dokazivanje autentičnosti nije uspjelo"
+
+#~ msgid "Account Settings"
+#~ msgstr "Podešavanje naloga"
+
+#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
+#~ msgstr "Molim unesite lozinku za korisnika '%1' na IMAP serveru '%2'."
+
+#~ msgid ""
+#~ "Could not access KWallet. If you want to store the password permanently "
+#~ "then you have to activate it. If you do not want to use KWallet, check "
+#~ "the box below, but note that you will be prompted for your password when "
+#~ "needed."
+#~ msgstr ""
+#~ "Ne mogu pristupiti programu KWallet. Ako želite smjestiti trajno lozinku, "
+#~ "morate ga aktivirati. Ako ne želite koristiti KWallet, označite kućicu, "
+#~ "ali čete tada biti pitani za lozinku."
+
+#~ msgid "Do not use KWallet"
+#~ msgstr "Ne koristi KWallet"
+
+#, fuzzy
 #~| msgid "Do not use KWallet"
 #~ msgctxt "@status"
 #~ msgid "Failed to open KWallet"
@@ -1177,9 +1216,6 @@ msgstr "Samo potpisani"
 
 #~ msgid "Serverside Subscription..."
 #~ msgstr "Pretplate na serverskoj strani..."
-
-#~ msgid "Identity Settings"
-#~ msgstr "Podešavanja identiteta"
 
 #~ msgid "Use the default identity for this account"
 #~ msgstr "Koristi zadani identitet za ovaj račun"

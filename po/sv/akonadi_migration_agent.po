@@ -1,21 +1,21 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Stefan Asserhäll <stefan.asserhall@gmail.com>, 2013, 2019.
+# SPDX-FileCopyrightText: 2013, 2019, 2024 Stefan Asserhäll <stefan.asserhall@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2019-11-04 17:45+0100\n"
-"Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
+"PO-Revision-Date: 2024-06-18 17:10+0200\n"
+"Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: migrationagent.cpp:47
 #, kde-format
@@ -32,12 +32,12 @@ msgid "PIM Maintenance"
 msgstr "Underhåll av personlig informationshantering"
 
 #: migrationexecutor.cpp:41
-#, fuzzy, kde-format
+#, kde-format
 #| msgctxt "PIM-Maintenance is in progress."
 #| msgid "In progress..."
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress…"
-msgstr "Pågår..."
+msgstr "Pågår…"
 
 #: migrationexecutor.cpp:47
 #, kde-format
@@ -63,7 +63,7 @@ msgid "Progress"
 msgstr "Förlopp"
 
 #: migrationscheduler.cpp:149
-#, fuzzy, kde-format
+#, kde-format
 #| msgctxt "Current status of the migrator (done, in progress, ...)"
 #| msgid "Status"
 msgctxt "Current status of the migrator (done, in progress, …)"
@@ -83,3 +83,4 @@ msgstr "Överföringsinformation"
 
 #~ msgid "PIM-Maintanence"
 #~ msgstr "Underhåll av personlig informationshantering"
+

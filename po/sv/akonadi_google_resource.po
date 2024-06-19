@@ -1,21 +1,21 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Stefan Asserhäll <stefan.asserhall@gmail.com>, 2012, 2013, 2014, 2016, 2020, 2021, 2023.
+# SPDX-FileCopyrightText: 2012, 2013, 2014, 2016, 2020, 2021, 2023, 2024 Stefan Asserhäll <stefan.asserhall@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2023-07-31 08:32+0200\n"
-"Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
+"PO-Revision-Date: 2024-06-18 17:08+0200\n"
+"Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 20.08.1\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: calendarhandler.cpp:90
 #, kde-format
@@ -97,10 +97,10 @@ msgid "Invalid item."
 msgstr "Ogiltigt objekt."
 
 #: googleresource.cpp:82
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Fetching password..."
 msgid "Fetching password…"
-msgstr "Hämtar lösenord..."
+msgstr "Hämtar lösenord…"
 
 #: googleresource.cpp:89
 #, kde-format
@@ -114,10 +114,10 @@ msgid "Ready"
 msgstr "Klar"
 
 #: googleresource.cpp:142
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "not configured"
 msgid "Not configured"
-msgstr "inte inställd"
+msgstr "Inte inställd"
 
 #: googleresource.cpp:142
 #, kde-format
@@ -191,10 +191,10 @@ msgstr[1] " minuter"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:102 googlesettingswidget.ui:30
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "<b>not configured</b>"
 msgid "<b>Not configured</b>"
-msgstr "<b>inte inställd</b>"
+msgstr "<b>Inte inställd</b>"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)
 #: googlesettingswidget.ui:23
@@ -204,10 +204,10 @@ msgstr "Konto:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Configure..."
 msgid "Configure…"
-msgstr "Anpassa..."
+msgstr "Anpassa…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49
@@ -622,3 +622,4 @@ msgstr "Ta bort uppgiftslista '%1'"
 
 #~ msgid "Failed to fetch contact"
 #~ msgstr "Misslyckades hämta kontakt"
+

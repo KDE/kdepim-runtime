@@ -2,20 +2,20 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Stefan Asserhäll <stefan.asserhall@gmail.com>, 2009, 2014.
+# SPDX-FileCopyrightText: 2009, 2014, 2024 Stefan Asserhäll <stefan.asserhall@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kio_akonadi\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-07 00:39+0000\n"
-"PO-Revision-Date: 2014-08-14 17:12+0200\n"
+"PO-Revision-Date: 2024-06-18 19:36+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 23.08.5\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #, kde-format
@@ -29,14 +29,14 @@ msgid "Your emails"
 msgstr "stefan.asserhall@gmail.com"
 
 #: akonadiworker.cpp:49
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Protocol name"
 msgctxt "@info:shell"
 msgid "Protocol name"
 msgstr "Protokollnamn"
 
 #: akonadiworker.cpp:50 akonadiworker.cpp:51
-#, fuzzy, kde-format
+#, kde-format
 #| msgid "Socket name"
 msgctxt "@info:shell"
 msgid "Socket name"
@@ -51,3 +51,4 @@ msgstr "Inget sådant objekt."
 #, kde-format
 msgid "No such collection."
 msgstr "Ingen sådan samling."
+
