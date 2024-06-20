@@ -35,6 +35,7 @@ endif()
 target_link_libraries(akonadi_migration_agent
     gidmigration
     googlegroupwaremigration
+    icalcategoriestotagsmigration
     KPim6::AkonadiCore
     KPim6::AkonadiAgentBase
     KF6::Contacts
