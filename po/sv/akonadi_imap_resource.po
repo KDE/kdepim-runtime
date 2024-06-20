@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-17 00:39+0000\n"
+"POT-Creation-Date: 2024-06-19 00:39+0000\n"
 "PO-Revision-Date: 2024-06-18 17:09+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -288,7 +288,7 @@ msgstr "Definierar typ av identifikation använd av anpassad Sieve-server"
 msgid "No server configured yet."
 msgstr "Ingen server inställd ännu."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:651
+#: imapresourcebase.cpp:245 setupserver.cpp:643
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -372,8 +372,6 @@ msgstr "Flyttar korg '%1' från '%2' till '%3'"
 
 #: imapresourcebase.cpp:471
 #, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "Söker…"
@@ -614,12 +612,24 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Nerkopplad under inloggning."
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:46
 #, kde-format
+msgctxt "@title"
+msgid "An IMAP e-mail account needs your attention."
+msgstr ""
+
+#: settingspasswordrequester.cpp:50
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and "
+#| "password.\n"
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
 msgid ""
-"The server for account \"%2\" refused the supplied username and password.\n"
-"Do you want to go to the settings, have another attempt at logging in, or do "
-"nothing?\n"
+"The IMAP server refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
@@ -629,27 +639,41 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:60
-#, kde-format
-msgctxt "@title:window"
-msgid "Could Not Authenticate"
-msgstr "Kunde inte erhålla behörighet"
+#: settingspasswordrequester.cpp:53
+#, fuzzy, kde-format
+#| msgid ""
+#| "The server for account \"%2\" refused the supplied username and "
+#| "password.\n"
+#| "Do you want to go to the settings, have another attempt at logging in, or "
+#| "do nothing?\n"
+#| "\n"
+#| "%1"
+msgid ""
+"The IMAP server for account %1 refused the supplied username and password.\n"
+"Do you want to try again, or open the settings?\n"
+"\n"
+"%2"
+msgstr ""
+"Servern för kontot '%2' godkände inte angivet användarnamn och lösenord.\n"
+"Vill du gå till inställningarna, försöka logga in igen, eller inte göra "
+"någonting?\n"
+"\n"
+"%1"
 
-#: settingspasswordrequester.cpp:64
-#, kde-format
-msgid "Account Settings"
-msgstr "Kontoinställningar"
-
-#: settingspasswordrequester.cpp:65
-#, kde-format
-msgctxt "Input username/password manually and not store them"
-msgid "Try Again"
+#: settingspasswordrequester.cpp:58
+#, fuzzy, kde-format
+#| msgctxt "Input username/password manually and not store them"
+#| msgid "Try Again"
+msgctxt "@action:button"
+msgid "Try again"
 msgstr "Försök igen"
 
-#: settingspasswordrequester.cpp:150
-#, kde-format
-msgid "Please enter password for user '%1' on IMAP server '%2'."
-msgstr "Ange lösenord för användaren '%1' på IMAP-servern '%2'."
+#: settingspasswordrequester.cpp:64
+#, fuzzy, kde-format
+#| msgid "Identity Settings"
+msgctxt "@action:button"
+msgid "Open settings"
+msgstr "Identitetsinställningar"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -730,38 +754,36 @@ msgstr ""
 msgid "User name change"
 msgstr "Ändring av användarnamn"
 
-#: setupserver.cpp:412 setupserver.cpp:468
+#: setupserver.cpp:412 setupserver.cpp:464
 #, kde-format
+msgctxt "@info:status"
 msgid ""
-"Could not access KWallet. If you want to store the password permanently then "
-"you have to activate it. If you do not want to use KWallet, check the box "
-"below, but note that you will be prompted for your password when needed."
+"Could not access KWallet. It is necessary to store the password. Please "
+"activate it."
 msgstr ""
-"Kunde inte komma åt plånboken. Om du vill lagra lösenord permanent måste du "
-"aktivera den. Om du inte vill använda plånboken, markera rutan nedan, men "
-"observera att du då blir tillfrågad om ditt lösenord när det behövs."
 
-#: setupserver.cpp:417 setupserver.cpp:473
+#: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
-msgid "Do not use KWallet"
-msgstr "Använd inte plånboken"
+msgctxt "@info:status"
+msgid "KWallet Unavailable"
+msgstr ""
 
-#: setupserver.cpp:538
+#: setupserver.cpp:530
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Kan inte ansluta till servern, verifiera serverns adress."
 
-#: setupserver.cpp:550
+#: setupserver.cpp:542
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS stöds och rekommenderas.</b></qt>"
 
-#: setupserver.cpp:553
+#: setupserver.cpp:545
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS stöds och rekommenderas.</b></qt>"
 
-#: setupserver.cpp:557
+#: setupserver.cpp:549
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -770,7 +792,7 @@ msgstr ""
 "<qt><b>Ingen säkerhet stöds. Det rekommenderas inte att ansluta till den här "
 "servern.</b></qt>"
 
-#: setupserver.cpp:560
+#: setupserver.cpp:552
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Det är inte möjligt att använda den här servern.</b></qt>"
@@ -1008,7 +1030,6 @@ msgstr "Aktivera prenumerationer på serversidan"
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
 #, kde-format
-#| msgid "Serverside Subscription"
 msgid "Serverside Subscription…"
 msgstr "Prenumeration på serversidan…"
 
@@ -1150,6 +1171,29 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Endast prenumerationer"
 
+#~ msgctxt "@title:window"
+#~ msgid "Could Not Authenticate"
+#~ msgstr "Kunde inte erhålla behörighet"
+
+#~ msgid "Account Settings"
+#~ msgstr "Kontoinställningar"
+
+#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
+#~ msgstr "Ange lösenord för användaren '%1' på IMAP-servern '%2'."
+
+#~ msgid ""
+#~ "Could not access KWallet. If you want to store the password permanently "
+#~ "then you have to activate it. If you do not want to use KWallet, check "
+#~ "the box below, but note that you will be prompted for your password when "
+#~ "needed."
+#~ msgstr ""
+#~ "Kunde inte komma åt plånboken. Om du vill lagra lösenord permanent måste "
+#~ "du aktivera den. Om du inte vill använda plånboken, markera rutan nedan, "
+#~ "men observera att du då blir tillfrågad om ditt lösenord när det behövs."
+
+#~ msgid "Do not use KWallet"
+#~ msgstr "Använd inte plånboken"
+
 #, fuzzy
 #~| msgid "Failed to collect metadata."
 #~ msgctxt "@status"
@@ -1162,9 +1206,6 @@ msgstr "Endast prenumerationer"
 #~ msgctxt "Authentication method"
 #~ msgid "Gmail"
 #~ msgstr "Gmail"
-
-#~ msgid "Identity Settings"
-#~ msgstr "Identitetsinställningar"
 
 #~ msgid "Use the default identity for this account"
 #~ msgstr "Använd standardidentitet för kontot"
@@ -1417,4 +1458,3 @@ msgstr "Endast prenumerationer"
 
 #~ msgid "There is curently no connection to the IMAP server."
 #~ msgstr "Det finns för närvarande ingen anslutning till IMAP-servern."
-

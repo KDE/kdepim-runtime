@@ -52,7 +52,6 @@ msgstr "Uppdatera filen periodiskt."
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: icalresource.kcfg:30 notes/notesresource.kcfg:34
 #, kde-format
-#| msgid "Autosave interval time (in minutes)."
 msgid "Automatic update period in minutes."
 msgstr "Automatisk uppdateringsperiod i minuter."
 
@@ -97,4 +96,3 @@ msgstr "Kunde inte hämta ändrat objekt %1."
 #~ msgctxt "Filedialog filter for *.ics *.ical"
 #~ msgid "iCal Calendar File"
 #~ msgstr "iCal-kalenderfil"
-

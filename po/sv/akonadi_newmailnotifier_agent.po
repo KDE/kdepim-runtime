@@ -25,13 +25,11 @@ msgstr "Underrättelsehistorik"
 
 #: newmailnotificationhistorymanager.cpp:32
 #, kde-format
-#| msgid "Folders"
 msgid "[Open Folder]"
 msgstr "[Öppna korg]"
 
 #: newmailnotificationhistorymanager.cpp:42
 #, kde-format
-#| msgid "Show mail..."
 msgid "[Show Mail]"
 msgstr "[Visa brev]"
 
@@ -70,27 +68,23 @@ msgstr "Kan inte starta Kmail-programmet."
 
 #: newmailnotifierselectcollectionwidget.cpp:96
 #, kde-format
-#| msgid "Select which folders to monitor for new message notifications:"
 msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
 msgstr "Välj vilka korgar som ska bevakas efter nya brevunderrättelser:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
 #, kde-format
-#| msgid "Search..."
 msgid "Search…"
 msgstr "Sök…"
 
 #: newmailnotifierselectcollectionwidget.cpp:142
 #, kde-format
-#| msgid "&Select All"
 msgctxt "@action:button"
 msgid "&Select All"
 msgstr "&Markera alla"
 
 #: newmailnotifierselectcollectionwidget.cpp:146
 #, kde-format
-#| msgid "&Unselect All"
 msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "&Avmarkera alla"
@@ -166,14 +160,12 @@ msgstr "Visning"
 
 #: newmailnotifiersettingswidget.cpp:118
 #, kde-format
-#| msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Hur fungerar detta?</a>"
 
 #: newmailnotifiersettingswidget.cpp:127
 #, kde-format
-#| msgid "Message:"
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "Meddelande:"
@@ -210,7 +202,6 @@ msgstr "Copyright © 2013-%1 Laurent Montel"
 
 #: newmailnotifiersettingswidget.cpp:158
 #, kde-format
-#| msgid "Laurent Montel"
 msgctxt "@info:credit"
 msgid "Laurent Montel"
 msgstr "Laurent Montel"
@@ -254,7 +245,6 @@ msgstr "In: %1 (%2)"
 
 #: specialnotifierjob.cpp:150
 #, kde-format
-#| msgid "Show mail..."
 msgid "Show mail…"
 msgstr "Visa brev…"
 
@@ -279,5 +269,3 @@ msgstr "Ta bort"
 
 #~ msgid "from: %1 <br>Subject: %2<br>In: %3"
 #~ msgstr "Från: %1<br>Rubrik: %2<br>I: %3"
-
-

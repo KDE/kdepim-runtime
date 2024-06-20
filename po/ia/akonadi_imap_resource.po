@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-19 00:39+0000\n"
-"PO-Revision-Date: 2024-06-17 14:29+0200\n"
+"PO-Revision-Date: 2024-06-19 17:30+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -624,66 +624,46 @@ msgstr "Disconnecteva durante accesso de authentication."
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "Un conto de e-posta de IMAP necessita tu attention."
 
 #: settingspasswordrequester.cpp:50
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
-"Le servitor per conto \"%2\" refutava le contrasigno e nomine de usator "
-"fornite.\n"
-"Tu vole vader al preferentias, haber un altere tentativa de accesso con "
-"authentication o facer nihil?\n"
+"Le servitor IMAP refutava le contrasigno e nomine de usator fornite.\n"
+"Tu vole essayar de novo, o aperir le preferentias?\n"
 "\n"
 "%1"
 
 #: settingspasswordrequester.cpp:53
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%2"
 msgstr ""
-"Le servitor per conto \"%2\" refutava le contrasigno e nomine de usator "
+"Le servitor  IMAP per conto %1  refutava le contrasigno e nomine de usator "
 "fornite.\n"
-"Tu vole vader al preferentias, haber un altere tentativa de accesso con "
-"authentication o facer nihil?\n"
+"Tu vole essayar de novo, o aperir le preferentias?\n"
 "\n"
-"%1"
+"%2"
 
 #: settingspasswordrequester.cpp:58
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Essaya de nove"
 
 #: settingspasswordrequester.cpp:64
-#, fuzzy, kde-format
-#| msgid "Identity Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr "Preferentias de identitate"
+msgstr "Aperi Preferentias"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -771,12 +751,14 @@ msgid ""
 "Could not access KWallet. It is necessary to store the password. Please "
 "activate it."
 msgstr ""
+"Non poteva acceder a KWallet. Iles necessari immagazinar le contrasigno. Pro "
+"favor tu activa lo."
 
 #: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"
-msgstr ""
+msgstr "KWallet non disponibile"
 
 #: setupserver.cpp:530
 #, kde-format

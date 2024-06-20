@@ -33,8 +33,6 @@ msgstr "Underhåll av personlig informationshantering"
 
 #: migrationexecutor.cpp:41
 #, kde-format
-#| msgctxt "PIM-Maintenance is in progress."
-#| msgid "In progress..."
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress…"
 msgstr "Pågår…"
@@ -64,8 +62,6 @@ msgstr "Förlopp"
 
 #: migrationscheduler.cpp:149
 #, kde-format
-#| msgctxt "Current status of the migrator (done, in progress, ...)"
-#| msgid "Status"
 msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "Status"
@@ -83,4 +79,3 @@ msgstr "Överföringsinformation"
 
 #~ msgid "PIM-Maintanence"
 #~ msgstr "Underhåll av personlig informationshantering"
-

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-19 00:39+0000\n"
-"PO-Revision-Date: 2024-06-17 08:35+0300\n"
+"PO-Revision-Date: 2024-06-19 08:49+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian\n"
 "Language: uk\n"
@@ -633,64 +633,46 @@ msgstr "Від’єднано під час спроби входу."
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "Вашої уваги потребує обліковий запис пошти IMAP."
 
 #: settingspasswordrequester.cpp:50
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
-"Сервер облікового запису «%2» відмовився реєструвати користувача з вказаним "
-"іменем і паролем. Бажаєте змінити параметри, повторити спробу реєстрації або "
-"наказати програмі не виконувати жодних дій?\n"
+"Сервер IMAP відмовився реєструвати користувача з вказаним іменем і паролем.\n"
+"Хочете повторити спробу чи відкрити вікно параметрів?\n"
 "\n"
 "%1"
 
 #: settingspasswordrequester.cpp:53
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%2"
 msgstr ""
-"Сервер облікового запису «%2» відмовився реєструвати користувача з вказаним "
-"іменем і паролем. Бажаєте змінити параметри, повторити спробу реєстрації або "
-"наказати програмі не виконувати жодних дій?\n"
+"Сервер IMAP облікового запису %1 відмовився реєструвати користувача з "
+"вказаним іменем і паролем.\n"
+"Хочете повторити спробу чи відкрити вікно параметрів?\n"
 "\n"
-"%1"
+"%2"
 
 #: settingspasswordrequester.cpp:58
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
-msgstr "Повтор спроби"
+msgstr "Спробувати ще раз"
 
 #: settingspasswordrequester.cpp:64
-#, fuzzy, kde-format
-#| msgid "Identity Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr "Параметри профілю"
+msgstr "Відкрити вікно параметрів"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -781,12 +763,14 @@ msgid ""
 "Could not access KWallet. It is necessary to store the password. Please "
 "activate it."
 msgstr ""
+"Не вдалося отримати доступ до KWallet. Ця програма потрібна для зберігання "
+"паролів. Будь ласка, активуйте її."
 
 #: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"
-msgstr ""
+msgstr "Немає доступу до KWallet"
 
 #: setupserver.cpp:530
 #, kde-format

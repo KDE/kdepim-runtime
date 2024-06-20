@@ -533,14 +533,12 @@ msgstr "en kontakt med e-postadress"
 
 #: settings.cpp:477
 #, kde-format
-#| msgid "A password is required for user %1"
 msgctxt "@label:textbox"
 msgid "A password is required for user %1"
 msgstr "Ett lösenord krävs för användaren %1"
 
 #: settings.cpp:481
 #, kde-format
-#| msgid "Password: "
 msgctxt "@label:textbox"
 msgid "Password: "
 msgstr "Lösenord: "
@@ -644,21 +642,18 @@ msgstr "Använd säker anslutning"
 
 #: setupwizard.cpp:423
 #, kde-format
-#| msgid "Final URL (CalDav)"
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "Slutgiltig webbadress (CalDav)"
 
 #: setupwizard.cpp:428
 #, kde-format
-#| msgid "Final URL (CardDav)"
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "Slutgiltig webbadress (CardDav)"
 
 #: setupwizard.cpp:433
 #, kde-format
-#| msgid "Final URL (GroupDav)"
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Slutgiltig webbadress (GroupDav)"
@@ -679,7 +674,6 @@ msgstr ""
 
 #: setupwizard.cpp:503
 #, kde-format
-#| msgid "Test Connection"
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Testa anslutning"
@@ -819,4 +813,3 @@ msgstr "GroupDAV"
 
 #~ msgid "DAVical"
 #~ msgstr "DAVical"
-

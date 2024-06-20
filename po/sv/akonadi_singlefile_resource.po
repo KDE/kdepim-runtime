@@ -234,8 +234,8 @@ msgid ""
 "Select a local file or a remote URL to download a file from. A new local "
 "file will be created if it doesn't exist."
 msgstr ""
-"Välj en lokal fil eller en fjärradress att ladda ner en fil från. En ny lokal"
-" fil kommer att skapas om den inte finns."
+"Välj en lokal fil eller en fjärradress att ladda ner en fil från. En ny "
+"lokal fil kommer att skapas om den inte finns."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
@@ -246,40 +246,32 @@ msgstr "Namn som visas:"
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
 #, kde-format
-#| msgid ""
-#| "When read-only mode is enabled, no changes will be written. Read-only "
-#| "mode is automatically enabled when the selected file does not support "
-#| "write access."
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
 "access or when displaying a calendar from remote URL."
 msgstr ""
-"När skrivskydd är aktiverat, kommer inga ändringar att skrivas. Skrivskydd"
-" aktiveras automatiskt när den markerade filen inte stöder skrivåtkomst eller"
-" om en kalender från en fjärradress visas."
+"När skrivskydd är aktiverat, kommer inga ändringar att skrivas. Skrivskydd "
+"aktiveras automatiskt när den markerade filen inte stöder skrivåtkomst eller "
+"om en kalender från en fjärradress visas."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
 #, kde-format
-#| msgid "Monitoring"
 msgid "Monitor for &changes"
 msgstr "Ö&vervakning av ändringar"
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
 #, kde-format
-#| msgid ""
-#| "Changes made by other applications will reload the file when monitoring "
-#| "is enabled. Backups will be created to avoid conflicts when possible."
 msgid ""
 "Changes made by other applications will reload the file when monitoring is "
 "enabled. Backups will be created to avoid conflicts when possible. "
 "Monitoring is not available for remote URLs."
 msgstr ""
-"Ändringar gjorda av andra program läser in filen igen när övervakning är"
-" aktiverad. Säkerhetskopior skapas för att undvika konflikter om möjligt."
-" Övervakning är inte tillgänglig för fjärradresser."
+"Ändringar gjorda av andra program läser in filen igen när övervakning är "
+"aktiverad. Säkerhetskopior skapas för att undvika konflikter om möjligt. "
+"Övervakning är inte tillgänglig för fjärradresser."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
 #: singlefileresourceconfigwidget_desktop.ui:149
@@ -290,8 +282,6 @@ msgstr "Uppdatera automatisk om"
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
 #: singlefileresourceconfigwidget_desktop.ui:159
 #, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
 msgid " minutes"
 msgstr " minuter"
 
@@ -302,13 +292,11 @@ msgid ""
 "Periodically updates the file. Can be used when monitoring is not available "
 "(e.g. for remote calendars)."
 msgstr ""
-"Uppdaterar filen periodiskt. Kan användas när övervakning inte är tillgänglig"
-" (t.ex. för fjärrkalendrar)."
+"Uppdaterar filen periodiskt. Kan användas när övervakning inte är "
+"tillgänglig (t.ex. för fjärrkalendrar)."
 
 #: singlefileresourceconfigwidgetbase.cpp:129
 #, kde-format
-#| msgctxt "@info:status"
-#| msgid "Checking file information..."
 msgctxt "@info:status"
 msgid "Checking file information…"
 msgstr "Kontrollerar filinformation…"
@@ -485,4 +473,3 @@ msgstr "Kontrollerar filinformation…"
 
 #~ msgid "min"
 #~ msgstr "min"
-

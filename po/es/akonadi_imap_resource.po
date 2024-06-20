@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-19 00:39+0000\n"
-"PO-Revision-Date: 2024-06-17 16:04+0200\n"
+"PO-Revision-Date: 2024-06-19 15:13+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.05.0\n"
+"X-Generator: Lokalize 24.05.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: addcollectiontask.cpp:33
@@ -635,66 +635,47 @@ msgstr "Desconectado durante el inicio de sesión."
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "Una cuenta de correo electrónico IMAP necesita su atención."
 
 #: settingspasswordrequester.cpp:50
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
-"El servidor para la cuenta «%2» ha rechazado el nombre de usuario y la "
-"contraseña proporcionadas.\n"
-"¿Desea ir a las preferencias, realizar otro intento de conexión, o no hacer "
-"nada?\n"
+"El servidor IMAP ha rechazado el nombre de usuario y la contraseña "
+"proporcionadas.\n"
+"¿Desea volver a intentarlo o abrir a las preferencias?\n"
 "\n"
 "%1"
 
 #: settingspasswordrequester.cpp:53
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%2"
 msgstr ""
-"El servidor para la cuenta «%2» ha rechazado el nombre de usuario y la "
+"El servidor IMAP para la cuenta %1 ha rechazado el nombre de usuario y la "
 "contraseña proporcionadas.\n"
-"¿Desea ir a las preferencias, realizar otro intento de conexión, o no hacer "
-"nada?\n"
+"¿Desea volver a intentarlo o abrir a las preferencias?\n"
 "\n"
-"%1"
+"%2"
 
 #: settingspasswordrequester.cpp:58
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
-msgstr "Inténtelo de nuevo"
+msgstr "Volver a intentarlo"
 
 #: settingspasswordrequester.cpp:64
-#, fuzzy, kde-format
-#| msgid "Identity Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr "Preferencias de identidad"
+msgstr "Abrir las preferencias"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -782,12 +763,14 @@ msgid ""
 "Could not access KWallet. It is necessary to store the password. Please "
 "activate it."
 msgstr ""
+"No se puede acceder a KWallet, que es necesaria para guardar la contraseña. "
+"Actívela."
 
 #: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"
-msgstr ""
+msgstr "KWallet no disponible"
 
 #: setupserver.cpp:530
 #, kde-format

@@ -51,7 +51,6 @@ msgstr ""
 
 #: ../migratorbase.cpp:147
 #, kde-format
-#| msgid "Starting migration..."
 msgid "Starting migration…"
 msgstr "Startar överföring…"
 
@@ -88,8 +87,6 @@ msgstr "Inte påbörjad"
 
 #: ../migratorbase.cpp:272
 #, kde-format
-#| msgctxt "@info:status"
-#| msgid "Running..."
 msgctxt "@info:status"
 msgid "Running…"
 msgstr "Pågår…"
@@ -161,7 +158,6 @@ msgstr "© 2013-2022 Akonadi-utvecklarna"
 
 #: main.cpp:33
 #, kde-format
-#| msgid "Christian Mollekopf"
 msgctxt "@info:credit"
 msgid "Christian Mollekopf"
 msgstr "Christian Mollekopf"
@@ -173,22 +169,18 @@ msgstr "Upphovsman"
 
 #: main.cpp:36
 #, kde-format
-#| msgid "Show reporting dialog"
 msgctxt "@info:shell"
 msgid "Show reporting dialog"
 msgstr "Visa rapporteringsdialogruta"
 
 #: main.cpp:38
 #, kde-format
-#| msgid "Show report only if changes were made"
 msgctxt "@info:shell"
 msgid "Show report only if changes were made"
 msgstr "Visa bara rapport om ändringar gjordes"
 
 #: main.cpp:39
 #, kde-format
-#| msgid "MIME type to migrate"
 msgctxt "@info:shell"
 msgid "MIME type to migrate"
 msgstr "Mime-typ att överföra"
-

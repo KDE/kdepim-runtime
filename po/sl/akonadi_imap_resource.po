@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-19 00:39+0000\n"
-"PO-Revision-Date: 2024-06-17 07:12+0200\n"
+"PO-Revision-Date: 2024-06-19 08:55+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -626,64 +626,45 @@ msgstr "Med prijavljanjem je bila povezava prekinjena."
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "E-poštni račun IMAP potrebuje vašo pozornost."
 
 #: settingspasswordrequester.cpp:50
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
-"Strežnik za račun \"%2\" je zavrnil poslano uporabniško ime in geslo.\n"
-"Ali želite spremeniti nastavitve, se poskusiti prijaviti znova ali storiti "
-"nič?\n"
+"Strežnik IMAP je zavrnil posredovano uporabniško ime in geslo.\n"
+"Ali želite poskusiti znova ali odpreti nastavitve?\n"
 "\n"
 "%1"
 
 #: settingspasswordrequester.cpp:53
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%2"
 msgstr ""
-"Strežnik za račun \"%2\" je zavrnil poslano uporabniško ime in geslo.\n"
-"Ali želite spremeniti nastavitve, se poskusiti prijaviti znova ali storiti "
-"nič?\n"
+"Strežnik IMAP za račun %1 je zavrnil posredovano uporabniško ime in geslo.\n"
+"Ali želite poskusiti znova ali odpreti nastavitve?\n"
 "\n"
-"%1"
+"%2"
 
 #: settingspasswordrequester.cpp:58
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Poskusi znova"
 
 #: settingspasswordrequester.cpp:64
-#, fuzzy, kde-format
-#| msgid "Identity Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr "Nastavitve istovetnosti"
+msgstr "Odpri nastavitve"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -773,12 +754,14 @@ msgid ""
 "Could not access KWallet. It is necessary to store the password. Please "
 "activate it."
 msgstr ""
+"Ni bilo mogoče dostopati do programa KWallet. Geslo je potrebno shraniti. "
+"Prosim, aktivirajte ga."
 
 #: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"
-msgstr ""
+msgstr "KWallet ni na voljo"
 
 #: setupserver.cpp:530
 #, kde-format

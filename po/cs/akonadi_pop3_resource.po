@@ -859,6 +859,3 @@ msgstr "Připojit se pomocí nastavení proxy systému"
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "definuje typ ověření, který se má použít"
-
-#~ msgid "Unexpected response from POP3 server."
-#~ msgstr "Neočekávaná odpověď POP3 serveru."

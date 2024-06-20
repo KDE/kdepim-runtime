@@ -67,7 +67,6 @@ msgstr "Uppdatera filen periodiskt."
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: vcardresource.kcfg:30
 #, kde-format
-#| msgid "Autosave interval time (in minutes)."
 msgid "Automatic update period in minutes."
 msgstr "Automatisk uppdateringsperiod i minuter."
 
@@ -76,4 +75,3 @@ msgstr "Automatisk uppdateringsperiod i minuter."
 
 #~ msgid "Select Address Book"
 #~ msgstr "Välj adressbok"
-

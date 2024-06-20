@@ -747,7 +747,6 @@ msgstr "Automatisk upptäckt av Exchange-server"
 
 #: ewsprogressdialog.cpp:49
 #, kde-format
-#| msgid "Performing Microsoft Exchange server autodiscovery..."
 msgid "Performing Microsoft Exchange server autodiscovery…"
 msgstr "Utför automatisk upptäckt av Microsoft Exchange-server…"
 
@@ -759,7 +758,6 @@ msgstr "Ansluter till Exchange"
 
 #: ewsprogressdialog.cpp:53
 #, kde-format
-#| msgid "Connecting to Microsoft Exchange server..."
 msgid "Connecting to Microsoft Exchange server…"
 msgstr "Ansluter till Microsoft Exchange-server…"
 
@@ -1289,4 +1287,3 @@ msgstr "Objekt i felaktig ordning vid behandling av svar på objektuppdatering."
 #~ msgctxt "@info:status"
 #~ msgid "No server configured yet."
 #~ msgstr "Ingen server inställd ännu."
-

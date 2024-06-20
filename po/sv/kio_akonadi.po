@@ -30,14 +30,12 @@ msgstr "stefan.asserhall@gmail.com"
 
 #: akonadiworker.cpp:49
 #, kde-format
-#| msgid "Protocol name"
 msgctxt "@info:shell"
 msgid "Protocol name"
 msgstr "Protokollnamn"
 
 #: akonadiworker.cpp:50 akonadiworker.cpp:51
 #, kde-format
-#| msgid "Socket name"
 msgctxt "@info:shell"
 msgid "Socket name"
 msgstr "Uttagsnamn"
@@ -51,4 +49,3 @@ msgstr "Inget sådant objekt."
 #, kde-format
 msgid "No such collection."
 msgstr "Ingen sådan samling."
-

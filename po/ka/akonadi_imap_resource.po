@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-19 00:39+0000\n"
-"PO-Revision-Date: 2024-06-17 05:14+0200\n"
+"PO-Revision-Date: 2024-06-19 05:32+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -616,66 +616,46 @@ msgstr "კავშირი გაითიშა სერვერზე შ
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "IMAP ტიპის ელფოსტის ანგარიშს თქვენი ყურადღება სჭირდება."
 
 #: settingspasswordrequester.cpp:50
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
-"სერვერმა ანგარიშისთვის \"%2\" მიწოდებული მომხმარებლის სახელი და პაროლი "
-"უარყჰყო.\n"
-"გნებავთ, გადახვიდეთ პარამეტრებში, კიდევ ერთხელ სცადოთ შესვლა, თუ არაფერი "
-"გააკეთოთ?\n"
+"IMAP სერვერმა მიწოდებული მომხმარებლის სახელი და პაროლი უარჰყო.\n"
+"გნებავთ, გადახვიდეთ მორგების ფანჯარაზე, კიდევ ერთხელ სცადოთ შესვლა?\n"
 "\n"
 "%1"
 
 #: settingspasswordrequester.cpp:53
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%2"
 msgstr ""
-"სერვერმა ანგარიშისთვის \"%2\" მიწოდებული მომხმარებლის სახელი და პაროლი "
-"უარყჰყო.\n"
-"გნებავთ, გადახვიდეთ პარამეტრებში, კიდევ ერთხელ სცადოთ შესვლა, თუ არაფერი "
-"გააკეთოთ?\n"
+"IMAP სერვერმა, ანგარიშისთვის %1, მიწოდებული მომხმარებლის სახელი და პაროლი "
+"უარჰყო.\n"
+"გნებავთ, გადახვიდეთ მორგების ფანჯარაზე, კიდევ ერთხელ სცადოთ შესვლა?\n"
 "\n"
-"%1"
+"%2"
 
 #: settingspasswordrequester.cpp:58
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "კიდევ სცადეთ"
 
 #: settingspasswordrequester.cpp:64
-#, fuzzy, kde-format
-#| msgid "Connection Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr "შეერთების მორგება"
+msgstr "პარამეტრების გახსნა"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -763,12 +743,14 @@ msgid ""
 "Could not access KWallet. It is necessary to store the password. Please "
 "activate it."
 msgstr ""
+"KWallet-თან წვდომის შეცდომა. ის აუცილებელია, რომ პაროლი შეინახოთ. "
+"გაააქტიურეთ ის."
 
 #: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"
-msgstr ""
+msgstr "KWallet ხელმიუწვდომელია"
 
 #: setupserver.cpp:530
 #, kde-format

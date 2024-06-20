@@ -108,7 +108,6 @@ msgstr "Lösenordet som används för att logga in på Open-Xchange servern"
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
 #, kde-format
-#| msgid "Test Connection..."
 msgid "Test Connection…"
 msgstr "Testa anslutning…"
 
@@ -265,4 +264,3 @@ msgstr ""
 
 #~ msgid "Funded and supported"
 #~ msgstr "Finansiering och stöd"
-

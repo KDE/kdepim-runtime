@@ -98,7 +98,6 @@ msgstr "Ogiltigt objekt."
 
 #: googleresource.cpp:82
 #, kde-format
-#| msgid "Fetching password..."
 msgid "Fetching password…"
 msgstr "Hämtar lösenord…"
 
@@ -115,7 +114,6 @@ msgstr "Klar"
 
 #: googleresource.cpp:142
 #, kde-format
-#| msgid "not configured"
 msgid "Not configured"
 msgstr "Inte inställd"
 
@@ -192,7 +190,6 @@ msgstr[1] " minuter"
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:102 googlesettingswidget.ui:30
 #, kde-format
-#| msgid "<b>not configured</b>"
 msgid "<b>Not configured</b>"
 msgstr "<b>Inte inställd</b>"
 
@@ -205,7 +202,6 @@ msgstr "Konto:"
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
 #, kde-format
-#| msgid "Configure..."
 msgid "Configure…"
 msgstr "Anpassa…"
 
@@ -622,4 +618,3 @@ msgstr "Ta bort uppgiftslista '%1'"
 
 #~ msgid "Failed to fetch contact"
 #~ msgstr "Misslyckades hämta kontakt"
-

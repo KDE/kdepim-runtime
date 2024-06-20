@@ -323,7 +323,6 @@ msgstr "Uppdatera filen periodiskt."
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: mboxresource.kcfg:30
 #, kde-format
-#| msgid "Autosave interval time (in minutes)."
 msgid "Automatic update period in minutes."
 msgstr "Automatisk uppdateringsperiod i minuter."
 
@@ -360,4 +359,3 @@ msgstr "Antal borttagna brev innan en rensning startas."
 
 #~ msgid "Form"
 #~ msgstr "Formulär"
-
