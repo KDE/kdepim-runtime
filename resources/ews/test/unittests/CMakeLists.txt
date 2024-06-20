@@ -34,10 +34,10 @@ target_link_libraries(ewssettings_ut
   KF6::ConfigCore
   KF6::ConfigGui
   KF6::CoreAddons
-  )
+)
 target_compile_definitions(ewssettings_ut PUBLIC -DEWSSETTINGS_UNITTEST)
 
-if (TARGET Qt::NetworkAuth)
+if(TARGET Qt::NetworkAuth)
   set(ewsoauth_ut_SRCS
     ewsoauth_ut_mock.cpp ewsoauth_ut_mock.h
     ${CMAKE_CURRENT_SOURCE_DIR}/../../ewsclient/auth/ewsabstractauth.cpp
@@ -47,6 +47,6 @@ if (TARGET Qt::NetworkAuth)
     Qt::Widgets
     KF6::I18n
     Qt::WebEngineWidgets
-    )
+)
   target_compile_definitions(ewsoauth_ut PUBLIC -DEWSOAUTH_UNITTEST)
-endif ()
+endif()

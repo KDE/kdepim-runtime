@@ -4,7 +4,7 @@ set(googlegroupwaremigration_SRCS
     googleresourcemigrator.cpp
     googleresourcemigrator.h
     ${MIGRATION_AKONADI_SHARED_SOURCES}
-    )
+)
 
 kcfg_generate_dbus_interface(
     ${CMAKE_SOURCE_DIR}/resources/google-groupware/settingsbase.kcfg
@@ -17,7 +17,7 @@ qt_add_dbus_interface(googlegroupwaremigration_SRCS
 )
 
 add_library(googlegroupwaremigration STATIC ${googlegroupwaremigration_SRCS})
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(googlegroupwaremigration PROPERTIES UNITY_BUILD ON)
 endif()
 target_link_libraries(googlegroupwaremigration

@@ -1,4 +1,4 @@
-if (BUILD_TESTING)
+if(BUILD_TESTING)
    add_subdirectory(autotests)
 endif()
 
@@ -21,6 +21,6 @@ target_link_libraries(kmindexreader
     KPim6::AkonadiMime
 )
 
-set_target_properties(kmindexreader PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
+set_target_properties(kmindexreader PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION})
 
 install(TARGETS kmindexreader ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NAMELINK_SKIP)

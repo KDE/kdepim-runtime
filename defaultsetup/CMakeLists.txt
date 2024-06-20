@@ -7,4 +7,4 @@ install ( FILES ${CMAKE_CURRENT_BINARY_DIR}/defaultcalendar
                 ${CMAKE_CURRENT_BINARY_DIR}/defaultaddressbook
                 ${CMAKE_CURRENT_BINARY_DIR}/defaultnotebook
                 ${CMAKE_CURRENT_BINARY_DIR}/birthdaycalendar
-                DESTINATION ${KDE_INSTALL_DATADIR}/akonadi/firstrun )
+                DESTINATION ${KDE_INSTALL_DATADIR}/akonadi/firstrun)

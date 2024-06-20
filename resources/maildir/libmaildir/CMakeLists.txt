@@ -1,6 +1,6 @@
 
-if (BUILD_TESTING)
-    add_subdirectory( autotests )
+if(BUILD_TESTING)
+    add_subdirectory(autotests)
 endif()
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildir_resource\")
@@ -10,7 +10,7 @@ ecm_qt_declare_logging_category(maildir_LIB_SRCS HEADER libmaildir_debug.h IDENT
     DESCRIPTION "libmaildir (kdepim-runtime)"
     OLD_CATEGORY_NAMES log_libmaildir
     EXPORT KDEPIMRUNTIME
-    )
+)
 
 
 
@@ -23,8 +23,8 @@ target_link_libraries(maildir
     PRIVATE
     KF6::I18n
     Qt::Network
-    )
+)
 
-set_target_properties(maildir PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
+set_target_properties(maildir PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION})
 
 install(TARGETS maildir ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NAMELINK_SKIP)

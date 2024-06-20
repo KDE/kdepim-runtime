@@ -6,17 +6,17 @@ include_directories(
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_ical_resource\")
 
-add_subdirectory( notes )
+add_subdirectory(notes)
 
 if(BUILD_TESTING)
-    add_subdirectory( autotests )
+    add_subdirectory(autotests)
 endif()
 
 set(icalresource_common_SRCS)
 kconfig_add_kcfg_files(icalresource_common_SRCS settings.kcfgc)
 
 ############################# Resource #################################
-add_definitions( -DSETTINGS_NAMESPACE=Akonadi_ICal_Resource )
+add_definitions(-DSETTINGS_NAMESPACE=Akonadi_ICal_Resource)
 add_executable(akonadi_ical_resource)
 
 
@@ -26,10 +26,10 @@ qt_add_dbus_adaptor(icalresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICal.Settings.xml settings.h Akonadi_ICal_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor
 )
 
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_ical_resource PROPERTIES UNITY_BUILD ON)
 endif()
-target_sources( akonadi_ical_resource PRIVATE
+target_sources(akonadi_ical_resource PRIVATE
   icalresource.cpp
   shared/icalresourcebase.cpp
   shared/icalresource.cpp
@@ -39,15 +39,15 @@ target_sources( akonadi_ical_resource PRIVATE
   ${icalresource_SRCS}
 )
 
-if( APPLE )
+if(APPLE)
   set_target_properties(akonadi_ical_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
   set_target_properties(akonadi_ical_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.ICal")
   set_target_properties(akonadi_ical_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi iCal Resource")
-endif ()
+endif()
 
-install( FILES icalresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
+install(FILES icalresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 target_link_libraries(akonadi_ical_resource KPim6::AkonadiCore   KF6::KIOCore KF6::CalendarCore KPim6::AkonadiAgentBase akonadi-singlefileresource)
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_ical_resource PROPERTIES UNITY_BUILD ON)
 endif()
 install(TARGETS akonadi_ical_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

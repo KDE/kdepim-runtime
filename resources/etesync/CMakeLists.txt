@@ -46,7 +46,7 @@ qt_add_dbus_adaptor(etesyncresource_SRCS
 add_executable(akonadi_etesync_resource ${etesyncresource_SRCS})
 set_target_properties(akonadi_etesync_resource PROPERTIES MACOSX_BUNDLE FALSE)
 target_include_directories(akonadi_etesync_resource PRIVATE ${ETEBASE_INCLUDE_DIRS})
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_etesync_resource PROPERTIES UNITY_BUILD ON)
 endif()
 target_link_libraries(akonadi_etesync_resource
@@ -75,7 +75,7 @@ ecm_install_icons(
     icons/128-apps-akonadi-etesync.png
     DESTINATION ${KDE_INSTALL_ICONDIR}
     THEME hicolor
-    )
+)
 
 install(TARGETS akonadi_etesync_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 

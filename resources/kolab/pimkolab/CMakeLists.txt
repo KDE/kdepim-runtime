@@ -8,7 +8,7 @@ set(Libkolab_VERSION_PATCH 2)
 set(Libkolab_VERSION ${Libkolab_VERSION_MAJOR}.${Libkolab_VERSION_MINOR})
 set(Libkolab_VERSION_STRING ${CMAKE_PROJECT_NAME}-${Libkolab_VERSION})
 
-if (Qt5_POSITION_INDEPENDENT_CODE)
+if(Qt5_POSITION_INDEPENDENT_CODE)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
 
@@ -16,7 +16,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/kolabformatV2
     ${Libkolabxml_INCLUDES}
     ./
-    )
+)
 
 configure_file(libkolab-version.h.in "${CMAKE_CURRENT_BINARY_DIR}/libkolab-version.h" @ONLY)
 
@@ -76,12 +76,12 @@ set(KOLAB_SRCS
     kolabformatV2/incidence.h
     kolabformatV2/note.h
     freebusy/freebusy.h
-    )
+)
 
 ecm_qt_declare_logging_category(KOLAB_SRCS HEADER pimkolab_debug.h IDENTIFIER PIMKOLAB_LOG CATEGORY_NAME org.kde.pim.pimkolab
     DESCRIPTION "pimkolab lib (kdepim-runtime)"
     EXPORT KDEPIMRUNTIME
-    )
+)
 
 
 set(KOLAB_LINK_LIBRARIES
@@ -98,7 +98,7 @@ set(KOLAB_LINK_LIBRARIES
     Qt::Xml
     Qt::Gui
     Qt::Widgets
-    )
+)
 
 if(BUILD_TESTING)
     #for tests only

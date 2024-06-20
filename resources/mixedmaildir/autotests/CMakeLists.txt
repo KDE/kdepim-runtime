@@ -1,11 +1,11 @@
 include(ECMAddTests)
 
 if(${EXECUTABLE_OUTPUT_PATH})
-    set( PREVIOUS_EXEC_OUTPUT_PATH ${EXECUTABLE_OUTPUT_PATH} )
+    set(PREVIOUS_EXEC_OUTPUT_PATH ${EXECUTABLE_OUTPUT_PATH})
 else()
-    set( PREVIOUS_EXEC_OUTPUT_PATH . )
+    set(PREVIOUS_EXEC_OUTPUT_PATH .)
 endif()
-set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
 kde_enable_exceptions()
 
@@ -16,7 +16,7 @@ include_directories(
 )
 
 # test data
-set( testdata_SRCS
+set(testdata_SRCS
   ${testdata_generated_SRCS}
   testdatautil.cpp testdatautil.h
   ../mixedmaildir_debug.cpp
@@ -35,7 +35,7 @@ target_link_libraries(
 
 # put the libraries all tests link against into a variable and use it
 # in target_link_libraries instead
-set( common_link_libraries
+set(common_link_libraries
   kmindexreader
   maildir
   akonadi-filestore
@@ -80,7 +80,7 @@ target_link_libraries(
 )
 
 # test for collection fetching handling
-add_executable( collectionfetchtest  ../mixedmaildirstore.cpp collectionfetchtest.cpp ../mixedmaildir_debug.cpp ../mixedmaildirresource_debug.cpp)
+add_executable(collectionfetchtest  ../mixedmaildirstore.cpp collectionfetchtest.cpp ../mixedmaildir_debug.cpp ../mixedmaildirresource_debug.cpp)
 add_test(NAME collectionfetchtest COMMAND collectionfetchtest)
 ecm_mark_as_test(mixedmaildir-collectionfetchtest)
 
@@ -91,7 +91,7 @@ target_link_libraries(
 )
 
 # test for collection modification handling
-add_executable( collectionmodifytest  ../mixedmaildirstore.cpp
+add_executable(collectionmodifytest  ../mixedmaildirstore.cpp
  collectionmodifytest.cpp ../mixedmaildir_debug.cpp ../mixedmaildirresource_debug.cpp
  ${testdata_SRCS}
 )
@@ -105,7 +105,7 @@ target_link_libraries(
 )
 
 # test for collection move handling
-add_executable( collectionmovetest  ../mixedmaildirstore.cpp ../mixedmaildir_debug.cpp
+add_executable(collectionmovetest  ../mixedmaildirstore.cpp ../mixedmaildir_debug.cpp
  collectionmovetest.cpp ../mixedmaildirresource_debug.cpp
  ${testdata_SRCS}
 )
@@ -145,7 +145,7 @@ target_link_libraries(
   ${common_link_libraries}
 )
 #REACTIVATE IT
-if (0)
+if(0)
 # test for item retrieval handling
 add_executable(itemfetchtest   ../mixedmaildirstore.cpp ../mixedmaildirresource_debug.cpp
  itemfetchtest.cpp

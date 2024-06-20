@@ -91,19 +91,19 @@ set(EWSCLIENT_SRCS
     transferjob.h
     transferjob.cpp
 
-    )
+)
 
-if (TARGET Qt::NetworkAuth)
+if(TARGET Qt::NetworkAuth)
     list(APPEND EWSCLIENT_SRCS
         auth/ewsoauth.cpp
         auth/ewsoauth.h)
-endif ()
+endif()
 
-if (Qca-qt6_FOUND)
+if(Qca-qt6_FOUND)
     list(APPEND EWSCLIENT_SRCS
         auth/ewspkeyauthjob.cpp
         auth/ewspkeyauthjob.h)
-endif ()
+endif()
 
 ecm_qt_declare_logging_category(EWSCLIENT_SRCS
     HEADER ewscli_debug.h
@@ -111,7 +111,7 @@ ecm_qt_declare_logging_category(EWSCLIENT_SRCS
     CATEGORY_NAME org.kde.pim.ews.client
     DESCRIPTION "ews client (kdepim-runtime)"
     EXPORT KDEPIMRUNTIME
-    )
+)
 ecm_qt_declare_logging_category(EWSCLIENT_SRCS
     HEADER ewscli_proto_debug.h
     IDENTIFIER EWSCLI_PROTO_LOG
@@ -119,7 +119,7 @@ ecm_qt_declare_logging_category(EWSCLIENT_SRCS
     DEFAULT_SEVERITY Warning
     DESCRIPTION "ews client proto (kdepim-runtime)"
     EXPORT KDEPIMRUNTIME
-    )
+)
 ecm_qt_declare_logging_category(EWSCLIENT_SRCS
     HEADER ewscli_req_debug.h
     IDENTIFIER EWSCLI_REQUEST_LOG
@@ -127,7 +127,7 @@ ecm_qt_declare_logging_category(EWSCLIENT_SRCS
     DEFAULT_SEVERITY Warning
     DESCRIPTION "ews client request (kdepim-runtime)"
     EXPORT KDEPIMRUNTIME
-    )
+)
 ecm_qt_declare_logging_category(EWSCLIENT_SRCS
     HEADER ewscli_failedreq_debug.h
     IDENTIFIER EWSCLI_FAILEDREQUEST_LOG
@@ -135,7 +135,7 @@ ecm_qt_declare_logging_category(EWSCLIENT_SRCS
     DEFAULT_SEVERITY Warning
     DESCRIPTION "ews client failed request (kdepim-runtime)"
     EXPORT KDEPIMRUNTIME
-    )
+)
 
 
 add_library(ewsclient STATIC ${EWSCLIENT_SRCS})
@@ -150,13 +150,13 @@ target_link_libraries(ewsclient
     KF6::CalendarCore
     qt6keychain)
 
-if (TARGET Qt::NetworkAuth)
+if(TARGET Qt::NetworkAuth)
     target_link_libraries(ewsclient
         Qt::NetworkAuth
         Qt::WebEngineWidgets)
-endif ()
+endif()
 
-if (Qca-qt6_FOUND)
+if(Qca-qt6_FOUND)
     target_link_libraries(ewsclient
         qca-qt6)
-endif ()
+endif()

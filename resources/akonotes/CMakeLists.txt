@@ -13,7 +13,7 @@ kconfig_add_kcfg_files(akonotes_common_SRCS ../maildir/settings.kcfgc)
 
 ################################# Resource #################################
 
-set( akonotesresource_SRCS
+set(akonotesresource_SRCS
   ../maildir/maildirresource.cpp
   ../maildir/retrieveitemsjob.cpp
   ../maildir/maildirresource_debug.cpp
@@ -31,10 +31,10 @@ qt_add_dbus_adaptor(akonotesresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml settings.h Akonadi_Maildir_Resource::MaildirSettings maildirsettingsadaptor MaildirSettingsAdaptor
 )
 
-install( FILES akonotesresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
+install(FILES akonotesresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 
 add_executable(akonadi_akonotes_resource ${akonotesresource_SRCS})
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_akonotes_resource PROPERTIES UNITY_BUILD ON)
 endif()
 
@@ -66,7 +66,7 @@ target_sources(akonotesconfig PRIVATE
     ../maildir/maildirconfig.h
     ${akonotes_common_SRCS}
 )
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonotesconfig PROPERTIES UNITY_BUILD ON)
 endif()
 

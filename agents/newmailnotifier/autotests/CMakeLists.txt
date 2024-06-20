@@ -6,8 +6,8 @@ macro(add_newmailnotification_unittest _source)
     ecm_add_test(${_source} ${_name}.h
         TEST_NAME ${_name}
         LINK_LIBRARIES newmailnotifier Qt::Test Qt::Core KPim6::AkonadiCore
-    )
-endmacro ()
+)
+endmacro()
 
 
 add_newmailnotification_unittest(newmailnotificationhistorymanagertest.cpp)

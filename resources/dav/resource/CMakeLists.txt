@@ -4,7 +4,7 @@ if(WIN32)
     set(LIB_INSTALL_DIR ${KDE_INSTALL_LIBDIR}
         RUNTIME DESTINATION ${KDE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${KDE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${KDE_INSTALL_LIBDIR} )
+        ARCHIVE DESTINATION ${KDE_INSTALL_LIBDIR})
 endif()
 
 ########### next target ###############
@@ -19,11 +19,11 @@ set(davgroupwareconfig_SRCS
     searchdialog.h
     setupwizard.h
 
-    )
+)
 ki18n_wrap_ui(davgroupwareconfig_SRCS configdialog.ui urlconfigurationdialog.ui searchdialog.ui)
 
 
-set( davgroupwareresource_SRCS
+set(davgroupwareresource_SRCS
     ${davgroupwareresource_common_SRCS}
     ${davgroupwareconfig_SRCS}
     daverror-kdepim-runtime.cpp
@@ -46,36 +46,36 @@ set( davgroupwareresource_SRCS
     settings.h
     urlconfigurationdialog.h
     davgroupwareresource.h
-    )
+)
 
 ecm_qt_declare_logging_category(davgroupwareresource_SRCS HEADER davresource_debug.h IDENTIFIER DAVRESOURCE_LOG CATEGORY_NAME org.kde.pim.davresource
     DESCRIPTION "dav resource (kdepim-runtime)"
     OLD_CATEGORY_NAMES log_davresource
     EXPORT KDEPIMRUNTIME
-    )
+)
 
 
-install( FILES davgroupwareresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
-install( FILES org.kde.akonadi_davgroupware_resource.desktop DESTINATION ${KDE_INSTALL_APPDIR} )
+install(FILES davgroupwareresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
+install(FILES org.kde.akonadi_davgroupware_resource.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
-file( GLOB providersFiles "../services/*.desktop" )
-install( FILES ${providersFiles} DESTINATION "${KDE_INSTALL_DATADIR}/akonadi/davgroupware-providers" )
+file(GLOB providersFiles "../services/*.desktop")
+install(FILES ${providersFiles} DESTINATION "${KDE_INSTALL_DATADIR}/akonadi/davgroupware-providers")
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/davgroupwareresource.kcfg org.kde.Akonadi.davGroupware.Settings)
 qt_add_dbus_adaptor(davgroupwareresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.davGroupware.Settings.xml settings.h Settings
-    )
+)
 
 add_executable(akonadi_davgroupware_resource ${davgroupwareresource_SRCS})
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_davgroupware_resource PROPERTIES UNITY_BUILD ON)
 endif()
 
-if( APPLE )
+if(APPLE)
     set_target_properties(akonadi_davgroupware_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../../Info.plist.template)
     set_target_properties(akonadi_davgroupware_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.davGroupware")
     set_target_properties(akonadi_davgroupware_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi davGroupware Resource")
-endif ()
+endif()
 
 target_link_libraries(akonadi_davgroupware_resource
     KF6::Contacts
@@ -92,7 +92,7 @@ target_link_libraries(akonadi_davgroupware_resource
     KF6::Service
     Qt::Xml
     qt6keychain
-    )
+)
 
 install(TARGETS akonadi_davgroupware_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 

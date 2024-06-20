@@ -34,15 +34,15 @@ target_sources(akonadi-filestore PRIVATE
     itemmovejob.h
     job.h
     storecompactjob.h
-    )
+)
 
 ecm_qt_declare_logging_category(akonadi-filestore HEADER akonadifilestore_debug.h IDENTIFIER AKONADIFILESTORE_LOG CATEGORY_NAME org.kde.pim.filestore
     DESCRIPTION "resource filestore lib (kdepim-runtime)"
     EXPORT KDEPIMRUNTIME
-    )
+)
 
 
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi-filestore PROPERTIES UNITY_BUILD ON)
 endif()
 generate_export_header(akonadi-filestore BASE_NAME akonadi-filestore)
@@ -52,13 +52,13 @@ target_link_libraries(akonadi-filestore
     KPim6::AkonadiCore
     PRIVATE
     KF6::I18n
-    )
+)
 
-set_target_properties(akonadi-filestore PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
+set_target_properties(akonadi-filestore PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION})
 
 install(TARGETS akonadi-filestore ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NAMELINK_SKIP)
 
-if (BUILD_TESTING)
-    add_subdirectory( autotests )
-endif ()
+if(BUILD_TESTING)
+    add_subdirectory(autotests)
+endif()
 

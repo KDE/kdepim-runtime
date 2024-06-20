@@ -3,7 +3,7 @@ include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-add_library(migrationshared STATIC )
+add_library(migrationshared STATIC)
 
 target_sources(migrationshared PRIVATE
   kmigratorbase.cpp
@@ -24,7 +24,7 @@ ecm_qt_declare_logging_category(migrationshared
     EXPORT KDEPIMRUNTIME
 )
 
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(migrationshared PROPERTIES UNITY_BUILD ON)
 endif()
 target_link_libraries(migrationshared

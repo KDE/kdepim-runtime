@@ -11,7 +11,7 @@ target_sources(newmailnotifier PRIVATE
     newmailnotificationhistorymanager.cpp
 )
 
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(newmailnotifier PROPERTIES UNITY_BUILD ON)
 endif()
 generate_export_header(newmailnotifier BASE_NAME newmailnotifier)
@@ -22,22 +22,22 @@ target_link_libraries(newmailnotifier
     KF6::I18n
 )
 
-set_target_properties(newmailnotifier PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
+set_target_properties(newmailnotifier PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION})
 
 install(TARGETS newmailnotifier ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NAMELINK_SKIP)
 
 
-add_executable( akonadi_newmailnotifier_agent)
+add_executable(akonadi_newmailnotifier_agent)
 set(newmailnotifier_common_SRCS)
 kconfig_add_kcfg_files(newmailnotifier_common_SRCS
     newmailnotifieragentsettings.kcfgc
-  )
+)
 
 ecm_qt_declare_logging_category(newmailnotifier_common_SRCS HEADER newmailnotifier_debug.h IDENTIFIER NEWMAILNOTIFIER_LOG CATEGORY_NAME org.kde.pim.newmailnotifier
         DESCRIPTION "mailnotifier agent (kdepim-runtime)"
         OLD_CATEGORY_NAMES log_newmailnotifier
         EXPORT KDEPIMRUNTIME
-    )
+)
 
 
 
@@ -69,11 +69,11 @@ target_sources(akonadi_newmailnotifier_agent PRIVATE
   ${newmailnotifieragent_SRCS}
 )
 
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_newmailnotifier_agent PROPERTIES UNITY_BUILD ON)
 endif()
 
-target_link_libraries( akonadi_newmailnotifier_agent
+target_link_libraries(akonadi_newmailnotifier_agent
     PRIVATE
   KPim6::AkonadiCore
   KPim6::Mime
@@ -93,26 +93,26 @@ target_link_libraries( akonadi_newmailnotifier_agent
 )
 
 if(Qt6TextToSpeech_FOUND)
-    target_link_libraries( akonadi_newmailnotifier_agent PRIVATE
+    target_link_libraries(akonadi_newmailnotifier_agent PRIVATE
       Qt::TextToSpeech
-    )
+)
 endif()
 
-if( APPLE )
+if(APPLE)
   set_target_properties( akonadi_newmailnotifier_agent PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/Info.plist.template)
   set_target_properties( akonadi_newmailnotifier_agent PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.newmailnotifier")
   set_target_properties( akonadi_newmailnotifier_agent PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE New Mail Notifier")
-endif ()
+endif()
 
 if(BUILD_TESTING)
     add_subdirectory(tests)
     add_subdirectory(autotests)
 endif()
-install(TARGETS akonadi_newmailnotifier_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
+install(TARGETS akonadi_newmailnotifier_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 
 install(FILES newmailnotifieragent.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
-install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR} )
+install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR})
 
 ########################## Config plugin #################################
 
@@ -125,7 +125,7 @@ target_sources(newmailnotifierconfig PRIVATE
     newmailnotifiersettingswidget.h
     newmailnotifierselectcollectionwidget.h
     ${newmailnotifier_common_SRCS}
-    )
+)
 
 target_link_libraries(newmailnotifierconfig
     PRIVATE

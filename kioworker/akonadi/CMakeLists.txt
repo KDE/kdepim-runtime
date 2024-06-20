@@ -6,7 +6,7 @@ ecm_qt_declare_logging_category(kio_akonadi HEADER akonadiworker_debug.h IDENTIF
     DESCRIPTION "kioworker (akonadi)"
     OLD_CATEGORY_NAMES log_akonadislave org.kde.pim.akonadislave
     EXPORT KDEPIMRUNTIME
-    )
+)
 
 
 target_link_libraries(kio_akonadi  
@@ -16,7 +16,7 @@ target_link_libraries(kio_akonadi
                       Qt::DBus
                       Qt::Widgets
                       Qt::Network
-                      )
+                     )
 set_target_properties(kio_akonadi PROPERTIES OUTPUT_NAME "akonadi")
 
-install(TARGETS kio_akonadi DESTINATION ${KDE_INSTALL_PLUGINDIR}/kf6/kio )
+install(TARGETS kio_akonadi DESTINATION ${KDE_INSTALL_PLUGINDIR}/kf6/kio)

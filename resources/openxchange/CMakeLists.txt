@@ -6,7 +6,7 @@ kconfig_add_kcfg_files(openxchange_common_SRCS settings.kcfgc)
 
 ################################ Resource ##################################
 
-set( openxchangeresource_SRCS
+set(openxchangeresource_SRCS
   oxa/contactutils.cpp
   oxa/davmanager.cpp
   oxa/davutils.cpp
@@ -74,7 +74,7 @@ set( openxchangeresource_SRCS
   ${openxchange_common_SRCS}
 )
 
-install( FILES openxchangeresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
+install(FILES openxchangeresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/openxchangeresource.kcfg org.kde.Akonadi.OpenXchange.Settings)
 qt_add_dbus_adaptor(openxchangeresource_SRCS
@@ -82,15 +82,15 @@ qt_add_dbus_adaptor(openxchangeresource_SRCS
 )
 
 add_executable(akonadi_openxchange_resource ${openxchangeresource_SRCS})
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_openxchange_resource PROPERTIES UNITY_BUILD ON)
 endif()
 
-if( APPLE )
+if(APPLE)
   set_target_properties(akonadi_openxchange_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
   set_target_properties(akonadi_openxchange_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.OpenXchange")
   set_target_properties(akonadi_openxchange_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi OpenXchange Resource")
-endif ()
+endif()
 
 
 target_link_libraries(akonadi_openxchange_resource

@@ -6,9 +6,9 @@ set(vcarddirresource_common_SRCS)
 
 kconfig_add_kcfg_files(vcarddirresource_common_SRCS
     settings.kcfgc
-  )
+)
 
-set( vcarddirresource_SRCS
+set(vcarddirresource_SRCS
     ${vcarddirresource_common_SRCS}
   vcarddirresource.cpp
   vcarddirresource.h
@@ -16,7 +16,7 @@ set( vcarddirresource_SRCS
 ecm_qt_declare_logging_category(vcarddirresource_SRCS HEADER vcarddirresource_debug.h IDENTIFIER VCARDDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.vcarddirresource
         DESCRIPTION "vcarddir resource (kdepim-runtime)"
         EXPORT KDEPIMRUNTIME
-    )
+)
 
 
 
@@ -25,15 +25,15 @@ qt_add_dbus_adaptor(vcarddirresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.VCardDirectory.Settings.xml settings.h VcardDirResourceSettings
 )
 
-install( FILES vcarddirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
+install(FILES vcarddirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 
 add_executable(akonadi_vcarddir_resource ${vcarddirresource_SRCS})
 
-if( APPLE )
+if(APPLE)
   set_target_properties(akonadi_vcarddir_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
   set_target_properties(akonadi_vcarddir_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.VCardDirectory")
   set_target_properties(akonadi_vcarddir_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi VCardDirectory Resource")
-endif ()
+endif()
 
 
 target_link_libraries(akonadi_vcarddir_resource
@@ -60,7 +60,7 @@ install(
 ############################## Config plugin ################################
 kcoreaddons_add_plugin(vcarddirconfig
     INSTALL_NAMESPACE "pim6/akonadi/config"
-    )
+)
 ki18n_wrap_ui(vcarddirconfig vcarddiragentsettingswidget.ui)
 
 target_sources(vcarddirconfig PRIVATE
@@ -68,7 +68,7 @@ target_sources(vcarddirconfig PRIVATE
     vcarddirsettingswidget.h
     ${vcarddirconfig_ui_SRCS}
     ${vcarddirresource_common_SRCS}
-    )
+)
 
 
 target_link_libraries(vcarddirconfig
@@ -79,4 +79,4 @@ target_link_libraries(vcarddirconfig
     KF6::I18n
     KF6::KIOWidgets
     KF6::TextWidgets
-    )
+)

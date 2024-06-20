@@ -60,7 +60,7 @@ set(QT6KEYCHAIN_LIB_VERSION "0.14.2")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set( SharedMimeInfo_MINIMUM_VERSION "1.3" )
+set(SharedMimeInfo_MINIMUM_VERSION "1.3")
 find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
 
 find_package(Sasl2)
@@ -129,7 +129,7 @@ ecm_set_disabled_deprecation_versions(QT 6.7.0 KF 6.4.0)
 option(USE_UNITY_CMAKE_SUPPORT "Use UNITY cmake support (speedup compile time)" OFF)
 add_definitions(-DQT_NO_CONTEXTLESS_CONNECT)
 set(COMPILE_WITH_UNITY_CMAKE_SUPPORT OFF)
-if (USE_UNITY_CMAKE_SUPPORT)
+if(USE_UNITY_CMAKE_SUPPORT)
     set(COMPILE_WITH_UNITY_CMAKE_SUPPORT ON)
     add_definitions(-DCOMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
@@ -152,7 +152,7 @@ ecm_qt_install_logging_categories(
         EXPORT KDEPIMRUNTIME
         FILE kdepim-runtime.categories
         DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
-        )
+)
 
 kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
 ki18n_install(po)

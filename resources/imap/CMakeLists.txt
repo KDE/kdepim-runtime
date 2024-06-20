@@ -6,7 +6,7 @@ configure_file(config-imap.h.in ${CMAKE_CURRENT_BINARY_DIR}/config-imap.h)
 
 ########### next target ###############
 
-set( imapresource_LIB_SRCS
+set(imapresource_LIB_SRCS
   addcollectiontask.cpp
   additemtask.cpp
   batchfetcher.cpp
@@ -84,26 +84,26 @@ ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_debug.
         DESCRIPTION "imap resource (kdepim-runtime)"
         OLD_CATEGORY_NAMES log_imapresource
         EXPORT KDEPIMRUNTIME
-    )
+)
 ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_trace.h
         IDENTIFIER IMAPRESOURCE_TRACE
         CATEGORY_NAME org.kde.pim.imapresource.trace
         DESCRIPTION "resource kolab trace (kdepim-runtime)"
         EXPORT KDEPIMRUNTIME
-        )
+)
 
-kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
+kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings)
 kconfig_add_kcfg_files(imapresource_LIB_SRCS settingsbase.kcfgc)
 
-qt_add_dbus_adaptor( imapresource_LIB_SRCS
+qt_add_dbus_adaptor(imapresource_LIB_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
-     )
+    )
 
-qt_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresourcebase.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
-qt_add_dbus_adaptor( imapresource_LIB_SRCS
+qt_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresourcebase.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a)
+qt_add_dbus_adaptor(imapresource_LIB_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
         imapresourcebase.h ImapResourceBase
-     )
+    )
 
 add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 
@@ -131,7 +131,7 @@ target_link_libraries(imapresource
 
 add_executable(akonadi_imap_resource)
 ki18n_wrap_ui(akonadi_imap_resource setupserverview_desktop.ui)
-target_sources( akonadi_imap_resource PRIVATE
+target_sources(akonadi_imap_resource PRIVATE
   main.cpp
   imapresource.cpp
   resourcestate.cpp
@@ -150,9 +150,9 @@ target_sources( akonadi_imap_resource PRIVATE
   passwordrequester.h
   gmailpasswordrequester.h
   outlookpasswordrequester.h
-  )
+)
 
-install( FILES imapresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
+install(FILES imapresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 
 install(
   FILES akonadi_imap_resource.notifyrc
@@ -160,14 +160,14 @@ install(
 )
 
 
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_imap_resource PROPERTIES UNITY_BUILD ON)
 endif()
-if( APPLE )
+if(APPLE)
   set_target_properties(akonadi_imap_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
   set_target_properties(akonadi_imap_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.Imap")
   set_target_properties(akonadi_imap_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi IMAP Resource")
-endif ()
+endif()
 
 target_link_libraries(akonadi_imap_resource
     Qt::DBus
@@ -196,6 +196,6 @@ install(
 install(TARGETS akonadi_imap_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 if(BUILD_TESTING)
-    add_subdirectory( autotests )
-    add_subdirectory( tests )
+    add_subdirectory(autotests)
+    add_subdirectory(tests)
 endif()

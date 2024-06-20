@@ -4,7 +4,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/../imap
     ${CMAKE_CURRENT_SOURCE_DIR}/pimkolab/
     ${Libkolabxml_INCLUDES}
-    )
+)
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
 
@@ -48,7 +48,7 @@ set(kolabresource_SRCS
     kolabchangeitemsrelationstask.h
     kolabchangeitemstagstask.h
     updatemessagejob.h
-    )
+)
 
 ecm_qt_declare_logging_category(kolabresource_SRCS
     HEADER kolabresource_debug.h
@@ -57,14 +57,14 @@ ecm_qt_declare_logging_category(kolabresource_SRCS
     DESCRIPTION "kolab resource (kdepim-runtime)"
     OLD_CATEGORY_NAMES log_kolabresource
     EXPORT KDEPIMRUNTIME
-    )
+)
 ecm_qt_declare_logging_category(kolabresource_SRCS
     HEADER kolabresource_trace.h
     IDENTIFIER KOLABRESOURCE_TRACE
     CATEGORY_NAME org.kde.pim.kolabresource.trace
     DESCRIPTION "resource kolab trace (kdepim-runtime)"
     EXPORT KDEPIMRUNTIME
-    )
+)
 
 
 kconfig_add_kcfg_files(kolabresource_SRCS ../imap/settingsbase.kcfgc)
@@ -89,12 +89,12 @@ target_link_libraries(akonadi_kolab_resource
     akonadi-singlefileresource
     KF6::TextWidgets
     KF6::I18n
-    )
+)
 
 install(FILES kolabresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 install(TARGETS akonadi_kolab_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-install( FILES org.kde.akonadi_kolab_resource.desktop DESTINATION ${KDE_INSTALL_APPDIR} )
+install(FILES org.kde.akonadi_kolab_resource.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
-if (BUILD_TESTING)
+if(BUILD_TESTING)
     #add_subdirectory(autotests)
 endif()

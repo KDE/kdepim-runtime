@@ -5,8 +5,8 @@ include_directories(
 )
 
 
-if (BUILD_TESTING)
-   add_subdirectory( autotests )
+if(BUILD_TESTING)
+   add_subdirectory(autotests)
 endif()
 
 # maildir access library
@@ -18,7 +18,7 @@ set(maildir_common_SRCS)
 kconfig_add_kcfg_files(maildir_common_SRCS settings.kcfgc)
 
 ############################### Resource #####################################
-set( maildirresource_SRCS
+set(maildirresource_SRCS
   main.cpp
   maildirresource.cpp
   retrieveitemsjob.cpp
@@ -31,7 +31,7 @@ ecm_qt_declare_logging_category(maildirresource_SRCS HEADER maildirresource_debu
         DESCRIPTION "maildir resource (kdepim-runtime)"
         OLD_CATEGORY_NAMES log_maildirresource
         EXPORT KDEPIMRUNTIME
-    )
+)
 
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
@@ -41,7 +41,7 @@ qt_add_dbus_adaptor(maildirresource_SRCS
 )
 
 add_executable(akonadi_maildir_resource ${maildirresource_SRCS})
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_maildir_resource PROPERTIES UNITY_BUILD ON)
 endif()
 target_link_libraries(akonadi_maildir_resource
@@ -58,7 +58,7 @@ install(TARGETS akonadi_maildir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml
         DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})
 
-install( FILES maildirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
+install(FILES maildirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 
 ############################# Config plugin ###############################
 kcoreaddons_add_plugin(maildirconfig

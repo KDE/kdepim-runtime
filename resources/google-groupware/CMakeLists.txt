@@ -68,20 +68,20 @@ set(googleresource_SRCS
 )
 
 add_executable(akonadi_google_resource ${googleresource_SRCS})
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_google_resource PROPERTIES UNITY_BUILD ON)
 endif()
 
-if( APPLE )
+if(APPLE)
   set_target_properties(akonadi_google_resource PROPERTIES
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../../Info.plist.template
-  )
+)
   set_target_properties(akonadi_google_resource PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.google"
-  )
+)
   set_target_properties(akonadi_google_resource PROPERTIES
     MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Google Resource"
-  )
+)
 endif()
 
 target_link_libraries(akonadi_google_resource
