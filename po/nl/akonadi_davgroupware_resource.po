@@ -9,15 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-18 00:40+0000\n"
-"PO-Revision-Date: 2024-05-28 09:52+0200\n"
+"POT-Creation-Date: 2024-06-21 00:39+0000\n"
+"PO-Revision-Date: 2024-06-19 10:59+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 24.05.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: configdialog.cpp:33
@@ -313,52 +313,58 @@ msgstr "Ongeldig antwoord van de server"
 msgid "Unable to parse free-busy data received"
 msgstr "Ontvangen vrij/bezet-gegevens kunnen niet worden verwerkt "
 
-#: davgroupwareresource.cpp:163
+#: davgroupwareresource.cpp:164
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "Vrij-/bezetinformatie kon bij offline niet worden opgehaald"
 
-#: davgroupwareresource.cpp:246
+#: davgroupwareresource.cpp:247
 #, kde-format
 msgid "Fetching collections"
 msgstr "Verzamelingen ophalen"
 
-#: davgroupwareresource.cpp:314
+#: davgroupwareresource.cpp:315
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Gevraagd om items voor een onbekende verzameling op te halen: %1"
 
-#: davgroupwareresource.cpp:371
+#: davgroupwareresource.cpp:372
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Ongeldige verzameling voor item %1."
 
-#: davgroupwareresource.cpp:608
+#: davgroupwareresource.cpp:650
+#, fuzzy, kde-format
+#| msgid "Unable to add item: %1"
+msgid "Unable to modify items: %1"
+msgstr "Item %1 kon niet worden toegevoegd"
+
+#: davgroupwareresource.cpp:687
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Verzameling kon niet worden gewijzigd: %1"
 
-#: davgroupwareresource.cpp:677
+#: davgroupwareresource.cpp:756
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Verzameling kon niet worden verwijderd: %1"
 
-#: davgroupwareresource.cpp:697
+#: davgroupwareresource.cpp:776
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Verzameling kon niet worden opgehaald: %1"
 
-#: davgroupwareresource.cpp:830 davgroupwareresource.cpp:929
+#: davgroupwareresource.cpp:909 davgroupwareresource.cpp:1008
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Items konden niet worden opgehaald: %1"
 
-#: davgroupwareresource.cpp:1009
+#: davgroupwareresource.cpp:1088
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Item kon niet worden opgehaald: %1"
 
-#: davgroupwareresource.cpp:1029
+#: davgroupwareresource.cpp:1108
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -367,23 +373,23 @@ msgstr ""
 "Kan item niet ophalen: itemgegevens anlyseren is mislukt. Het was misschien "
 "al verwijderd."
 
-#: davgroupwareresource.cpp:1066
+#: davgroupwareresource.cpp:1145
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Item %1 kon niet worden toegevoegd"
 
-#: davgroupwareresource.cpp:1110 davgroupwareresource.cpp:1223
-#: davgroupwareresource.cpp:1235
+#: davgroupwareresource.cpp:1189 davgroupwareresource.cpp:1302
+#: davgroupwareresource.cpp:1314
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Item %1 kon niet worden gewijzigd"
 
-#: davgroupwareresource.cpp:1197 davgroupwareresource.cpp:1254
+#: davgroupwareresource.cpp:1276 davgroupwareresource.cpp:1333
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Item %1 kon niet worden verwijderd"
 
-#: davgroupwareresource.cpp:1341 davgroupwareresource.cpp:1342
+#: davgroupwareresource.cpp:1420 davgroupwareresource.cpp:1421
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "De bron is nog niet geconfigureerd"
@@ -683,8 +689,7 @@ msgstr ""
 "de groupware-server"
 
 #: setupwizard.cpp:503
-#, fuzzy, kde-format
-#| msgid "Test Connection"
+#, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Verbinding testen"
