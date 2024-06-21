@@ -3,7 +3,7 @@ configure_file(defaultcalendar.desktop ${CMAKE_CURRENT_BINARY_DIR}/defaultcalend
 configure_file(defaultnotebook.desktop ${CMAKE_CURRENT_BINARY_DIR}/defaultnotebook)
 configure_file(birthdaycalendar.desktop ${CMAKE_CURRENT_BINARY_DIR}/birthdaycalendar)
 
-install ( FILES ${CMAKE_CURRENT_BINARY_DIR}/defaultcalendar
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/defaultcalendar
                 ${CMAKE_CURRENT_BINARY_DIR}/defaultaddressbook
                 ${CMAKE_CURRENT_BINARY_DIR}/defaultnotebook
                 ${CMAKE_CURRENT_BINARY_DIR}/birthdaycalendar
