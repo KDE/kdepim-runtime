@@ -219,7 +219,6 @@ public:
     ObjectType mOverrideObjectType;
     Version mOverrideVersion;
     bool mDoOverrideVersion = false;
-    Akonadi::Relation mRelation;
     Akonadi::Tag mTag;
     QStringList mTagMembers;
 };
@@ -339,10 +338,6 @@ ObjectType KolabObjectReader::parseMimeMessage(const KMime::Message::Ptr &msg)
             }
         } else if (relation.type() == "generic") {
             if (relation.members().size() == 2) {
-                d->mRelation = Akonadi::Relation();
-                d->mRelation.setRemoteId(Conversion::fromStdString(configuration.uid()).toLatin1());
-                d->mRelation.setType(Akonadi::Relation::GENERIC);
-
                 d->mTagMembers.reserve(relation.members().size());
                 const auto members{relation.members()};
                 for (const std::string &member : members) {
@@ -435,16 +430,6 @@ Akonadi::Tag KolabObjectReader::getTag() const
 QStringList KolabObjectReader::getTagMembers() const
 {
     return d->mTagMembers;
-}
-
-bool KolabObjectReader::isRelation() const
-{
-    return d->mRelation.isValid();
-}
-
-Akonadi::Relation KolabObjectReader::getRelation() const
-{
-    return d->mRelation;
 }
 
 static KMime::Message::Ptr createMimeMessage(const std::string &mimeMessage)
@@ -598,25 +583,4 @@ KMime::Message::Ptr KolabObjectWriter::writeTag(const Akonadi::Tag &tag, const Q
     return writeRelationHelper(relation, tag.gid(), productId);
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeRelation(const Akonadi::Relation &relation, const QStringList &items, Version v, const QString &productId)
-{
-    ErrorHandler::clearErrors();
-    if (v != KolabV3) {
-        qCCritical(PIMKOLAB_LOG) << "only v3 implementation available";
-    }
-
-    if (items.size() != 2) {
-        qCCritical(PIMKOLAB_LOG) << "Wrong number of members for generic relation.";
-        return {};
-    }
-
-    Kolab::Relation kolabRelation(std::string(), "generic");
-    std::vector<std::string> m;
-    m.reserve(2);
-    m.push_back(Conversion::toStdString(items.at(0)));
-    m.push_back(Conversion::toStdString(items.at(1)));
-    kolabRelation.setMembers(m);
-
-    return writeRelationHelper(kolabRelation, relation.remoteId(), productId);
-}
 } // Namespace

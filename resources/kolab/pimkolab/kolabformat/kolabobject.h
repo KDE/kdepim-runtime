@@ -9,7 +9,6 @@
 #include "kolab_export.h"
 
 #include <Akonadi/Item>
-#include <Akonadi/Relation>
 #include <Akonadi/Tag>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Incidence>
@@ -97,8 +96,6 @@ public:
     bool isTag() const;
     Akonadi::Tag getTag() const;
     QStringList getTagMembers() const;
-    bool isRelation() const;
-    Akonadi::Relation getRelation() const;
 
 private:
     //@cond PRIVATE
@@ -131,6 +128,5 @@ public:
     static KMime::Message::Ptr writeDictionary(const QStringList &, const QString &lang, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeFreebusy(const Kolab::Freebusy &, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeTag(const Akonadi::Tag &, const QStringList &items, Version v = KolabV3, const QString &productId = QString());
-    static KMime::Message::Ptr writeRelation(const Akonadi::Relation &, const QStringList &items, Version v = KolabV3, const QString &productId = QString());
 };
 } // Namespace

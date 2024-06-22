@@ -33,7 +33,6 @@ private:
     KIMAP::Session *mSession = nullptr;
     Akonadi::Tag::List mTags;
     QHash<QString, Akonadi::Item::List> mTagMembers;
-    Akonadi::Relation::List mRelations;
     const RetrieveType mRetrieveType;
 
 private Q_SLOTS:
@@ -43,7 +42,6 @@ private Q_SLOTS:
 
 private:
     void extractTag(const Kolab::KolabObjectReader &reader, qint64 remoteUid);
-    void extractRelation(const Kolab::KolabObjectReader &reader, qint64 remoteUid);
     Akonadi::Item extractMember(const Kolab::RelationMember &member);
     void taskComplete();
 };

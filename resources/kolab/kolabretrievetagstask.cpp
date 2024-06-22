@@ -76,8 +76,6 @@ void KolabRetrieveTagTask::onMessagesAvailable(const QMap<qint64, KIMAP::Message
         case Kolab::RelationConfigurationObject:
             if (mRetrieveType == RetrieveTags && reader.isTag()) {
                 extractTag(reader, it->uid);
-            } else if (mRetrieveType == RetrieveRelations && reader.isRelation()) {
-                extractRelation(reader, it->uid);
             }
             break;
 
@@ -143,33 +141,6 @@ void KolabRetrieveTagTask::extractTag(const Kolab::KolabObjectReader &reader, qi
     mTagMembers.insert(QString::fromLatin1(tag.remoteId()), members);
 }
 
-void KolabRetrieveTagTask::extractRelation(const Kolab::KolabObjectReader &reader, qint64 remoteUid)
-{
-    Akonadi::Item::List members;
-    const QStringList lstMemberUrl = reader.getTagMembers();
-    for (const QString &memberUrl : lstMemberUrl) {
-        Kolab::RelationMember member = Kolab::parseMemberUrl(memberUrl);
-        const Akonadi::Item i = extractMember(member);
-        // TODO implement fallback to search if uid is not available
-        if (!i.remoteId().isEmpty() || !i.gid().isEmpty()) {
-            members << i;
-        } else {
-            qCWarning(KOLABRESOURCE_LOG) << "Failed to parse member: " << memberUrl;
-        }
-    }
-    if (members.size() != 2) {
-        qCWarning(KOLABRESOURCE_LOG) << "Wrong numbers of members for a relation, expected 2: " << members.size();
-        return;
-    }
-
-    Akonadi::Relation relation = reader.getRelation();
-    relation.setType(Akonadi::Relation::GENERIC);
-    relation.setRemoteId(QByteArray::number(remoteUid));
-    relation.setLeft(members.at(0));
-    relation.setRight(members.at(1));
-    mRelations << relation;
-}
-
 void KolabRetrieveTagTask::onHeadersFetchDone(KJob *job)
 {
     if (job->error()) {
@@ -186,9 +157,6 @@ void KolabRetrieveTagTask::taskComplete()
     if (mRetrieveType == RetrieveTags) {
         qCDebug(KOLABRESOURCE_LOG) << "Fetched tags: " << mTags.size() << mTagMembers.size();
         resourceState()->tagsRetrieved(mTags, mTagMembers);
-    } else if (mRetrieveType == RetrieveRelations) {
-        qCDebug(KOLABRESOURCE_LOG) << "Fetched relations:" << mRelations.size();
-        resourceState()->relationsRetrieved(mRelations);
     }
 
     deleteLater();

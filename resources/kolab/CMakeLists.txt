@@ -27,7 +27,6 @@ set(kolabresource_SRCS
     kolabsettings.cpp
     tagchangehelper.cpp
     kolabrelationresourcetask.cpp
-    kolabchangeitemsrelationstask.cpp
     kolabchangeitemstagstask.cpp
     updatemessagejob.cpp
     ../imap/settingspasswordrequester.h
@@ -45,7 +44,6 @@ set(kolabresource_SRCS
     kolabsettings.h
     tagchangehelper.h
     kolabrelationresourcetask.h
-    kolabchangeitemsrelationstask.h
     kolabchangeitemstagstask.h
     updatemessagejob.h
 )
