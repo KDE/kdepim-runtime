@@ -58,13 +58,6 @@ struct TaskArguments {
     {
     }
 
-    TaskArguments(const Akonadi::Item::List &_items, const Akonadi::Relation::List &_addedRelations, const Akonadi::Relation::List &_removedRelations)
-        : items(_items)
-        , addedRelations(_addedRelations)
-        , removedRelations(_removedRelations)
-    {
-    }
-
     TaskArguments(const Akonadi::Collection &_collection)
         : collection(_collection)
     {
@@ -105,8 +98,6 @@ struct TaskArguments {
     QSet<QByteArray> removedFlags;
     QSet<Akonadi::Tag> addedTags;
     QSet<Akonadi::Tag> removedTags;
-    Akonadi::Relation::List addedRelations;
-    Akonadi::Relation::List removedRelations;
 };
 
 class ResourceState : public ResourceStateInterface
@@ -148,9 +139,6 @@ public:
     QSet<Akonadi::Tag> addedTags() const override;
     QSet<Akonadi::Tag> removedTags() const override;
 
-    Akonadi::Relation::List addedRelations() const override;
-    Akonadi::Relation::List removedRelations() const override;
-
     QString rootRemoteId() const override;
 
     void setIdleCollection(const Akonadi::Collection &collection) override;
@@ -172,7 +160,6 @@ public:
     void collectionsRetrieved(const Akonadi::Collection::List &collections) override;
 
     void tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &) override;
-    void relationsRetrieved(const Akonadi::Relation::List &tags) override;
 
     void collectionChangeCommitted(const Akonadi::Collection &collection) override;
 

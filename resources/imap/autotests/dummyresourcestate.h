@@ -74,9 +74,6 @@ public:
     void setRemovedTags(const QSet<Akonadi::Tag> &removedTags);
     QSet<Akonadi::Tag> removedTags() const override;
 
-    Akonadi::Relation::List addedRelations() const override;
-    Akonadi::Relation::List removedRelations() const override;
-
     QString rootRemoteId() const override;
 
     void setIdleCollection(const Akonadi::Collection &collection) override;
@@ -103,7 +100,6 @@ public:
     void collectionChangeCommitted(const Akonadi::Collection &collection) override;
 
     void tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &) override;
-    void relationsRetrieved(const Akonadi::Relation::List &tags) override;
     void tagChangeCommitted(const Akonadi::Tag &tag) override;
 
     void searchFinished(const QList<qint64> &result, bool isRid = true) override;

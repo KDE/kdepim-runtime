@@ -225,16 +225,6 @@ QSet<Akonadi::Tag> DummyResourceState::removedTags() const
     return m_removedTags;
 }
 
-Akonadi::Relation::List DummyResourceState::addedRelations() const
-{
-    return {};
-}
-
-Akonadi::Relation::List DummyResourceState::removedRelations() const
-{
-    return {};
-}
-
 QString DummyResourceState::rootRemoteId() const
 {
     return QStringLiteral("root-id");
@@ -314,11 +304,6 @@ void DummyResourceState::collectionChangeCommitted(const Akonadi::Collection &co
 void DummyResourceState::tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &items)
 {
     recordCall("tagsRetrieved", QVariant::fromValue(qMakePair(tags, items)));
-}
-
-void DummyResourceState::relationsRetrieved(const Akonadi::Relation::List &relations)
-{
-    recordCall("relationsRetrieved", QVariant::fromValue(relations));
 }
 
 void DummyResourceState::tagChangeCommitted(const Akonadi::Tag &tag)

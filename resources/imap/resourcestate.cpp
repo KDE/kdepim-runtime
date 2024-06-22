@@ -154,16 +154,6 @@ QSet<Akonadi::Tag> ResourceState::removedTags() const
     return m_arguments.removedTags;
 }
 
-Akonadi::Relation::List ResourceState::addedRelations() const
-{
-    return m_arguments.addedRelations;
-}
-
-Akonadi::Relation::List ResourceState::removedRelations() const
-{
-    return m_arguments.removedRelations;
-}
-
 QString ResourceState::rootRemoteId() const
 {
     return m_resource->settings()->rootRemoteId();
@@ -337,11 +327,6 @@ MessageHelper::Ptr ResourceState::messageHelper() const
 void ResourceState::tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &tagMembers)
 {
     m_resource->tagsRetrieved(tags, tagMembers);
-}
-
-void ResourceState::relationsRetrieved(const Akonadi::Relation::List &relations)
-{
-    m_resource->relationsRetrieved(relations);
 }
 
 void ResourceState::setItemMergingMode(Akonadi::ItemSync::MergeMode mode)

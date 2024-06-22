@@ -106,10 +106,6 @@ public:
     virtual MessageHelper::Ptr messageHelper() const = 0;
 
     virtual void tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &) = 0;
-    virtual void relationsRetrieved(const Akonadi::Relation::List &tags) = 0;
-
-    virtual Akonadi::Relation::List addedRelations() const = 0;
-    virtual Akonadi::Relation::List removedRelations() const = 0;
 
     virtual void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode) = 0;
 };
