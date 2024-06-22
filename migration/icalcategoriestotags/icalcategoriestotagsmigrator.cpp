@@ -265,3 +265,4 @@ void ICalCategoriesToTagsMigrator::migrateCollection(const Akonadi::Collection &
 }
 
 #include "icalcategoriestotagsmigrator.moc"
+#include "moc_icalcategoriestotagsmigrator.cpp"

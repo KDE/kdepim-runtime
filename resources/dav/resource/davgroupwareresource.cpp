@@ -1472,3 +1472,5 @@ void DavGroupwareResource::setCollectionIcon(Akonadi::Collection &collection)
 AKONADI_RESOURCE_MAIN(DavGroupwareResource)
 
 #include "davgroupwareresource.moc"
+
+#include "moc_davgroupwareresource.cpp"

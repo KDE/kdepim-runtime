@@ -47,3 +47,5 @@ void TransferJob::setNTLM(const QString &username, const QString &password)
     mUsername = username;
     mPassword = password;
 }
+
+#include "moc_transferjob.cpp"
