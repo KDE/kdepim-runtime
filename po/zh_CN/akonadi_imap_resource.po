@@ -598,59 +598,34 @@ msgid "An IMAP e-mail account needs your attention."
 msgstr ""
 
 #: settingspasswordrequester.cpp:50
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
-"账号“%2”的服务器不接受您提供的用户名和密码。\n"
-"您想到设置中再次尝试登录，还是不做任何修改？\n"
-"\n"
-"%1"
 
 #: settingspasswordrequester.cpp:53
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%2"
 msgstr ""
-"账号“%2”的服务器不接受您提供的用户名和密码。\n"
-"您想到设置中再次尝试登录，还是不做任何修改？\n"
-"\n"
-"%1"
 
 #: settingspasswordrequester.cpp:58
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
-msgstr "重试"
+msgstr ""
 
 #: settingspasswordrequester.cpp:64
-#, fuzzy, kde-format
-#| msgid "Connection Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr "连接设置"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -1140,26 +1115,3 @@ msgstr "搜索："
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "只显示已订阅的"
-
-#~ msgctxt "@title:window"
-#~ msgid "Could Not Authenticate"
-#~ msgstr "无法验证"
-
-#~ msgid "Account Settings"
-#~ msgstr "账户设置"
-
-#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
-#~ msgstr "请输入用户“%1”在 IMAP 服务器“%2”上的密码。"
-
-#~ msgid ""
-#~ "Could not access KWallet. If you want to store the password permanently "
-#~ "then you have to activate it. If you do not want to use KWallet, check "
-#~ "the box below, but note that you will be prompted for your password when "
-#~ "needed."
-#~ msgstr ""
-#~ "无法访问 Kwallet 密码库，您必须在激活它之后才能永久保存您曾经使用过的密"
-#~ "码。如果您不想使用 KWallet 管理密码，请选中下面的选框，但是以后程序会在需"
-#~ "要时再次提示您输入密码。"
-
-#~ msgid "Do not use KWallet"
-#~ msgstr "不使用 KWallet"

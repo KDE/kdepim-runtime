@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-21 00:39+0000\n"
-"PO-Revision-Date: 2024-06-18 19:34+0200\n"
+"PO-Revision-Date: 2024-06-21 11:22+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
@@ -327,10 +327,9 @@ msgid "Invalid collection for item %1."
 msgstr "Ogiltig samling för objekt %1."
 
 #: davgroupwareresource.cpp:650
-#, fuzzy, kde-format
-#| msgid "Unable to add item: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
-msgstr "Kunde inte lägga till objekt: %1"
+msgstr "Kunde inte ändra objekt: %1"
 
 #: davgroupwareresource.cpp:687
 #, kde-format

@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-21 00:39+0000\n"
-"PO-Revision-Date: 2024-06-18 19:52+0200\n"
+"PO-Revision-Date: 2024-06-21 22:05+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
 "Language: gl\n"
@@ -332,10 +332,9 @@ msgid "Invalid collection for item %1."
 msgstr "A colección do elemento %1 é incorrecta."
 
 #: davgroupwareresource.cpp:650
-#, fuzzy, kde-format
-#| msgid "Unable to add item: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
-msgstr "Non é posíbel engadir o elemento: %1"
+msgstr "Non é posíbel modificar os elementos: %1"
 
 #: davgroupwareresource.cpp:687
 #, kde-format

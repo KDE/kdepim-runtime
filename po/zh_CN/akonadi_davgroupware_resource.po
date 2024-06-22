@@ -321,10 +321,9 @@ msgid "Invalid collection for item %1."
 msgstr "项目 %1 的收藏无效。"
 
 #: davgroupwareresource.cpp:650
-#, fuzzy, kde-format
-#| msgid "Unable to add item: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
-msgstr "无法添加项目：%1"
+msgstr ""
 
 #: davgroupwareresource.cpp:687
 #, kde-format

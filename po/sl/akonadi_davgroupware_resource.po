@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-21 00:39+0000\n"
-"PO-Revision-Date: 2024-06-18 07:48+0200\n"
+"PO-Revision-Date: 2024-06-21 07:10+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -334,10 +334,9 @@ msgid "Invalid collection for item %1."
 msgstr "Neveljavna zbirka za predmet %1."
 
 #: davgroupwareresource.cpp:650
-#, fuzzy, kde-format
-#| msgid "Unable to add item: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
-msgstr "Postavke ni moč dodati: %1"
+msgstr "Ni mogoče spreminjati postavk: %1"
 
 #: davgroupwareresource.cpp:687
 #, kde-format

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-21 00:39+0000\n"
-"PO-Revision-Date: 2024-06-18 08:42+0300\n"
+"PO-Revision-Date: 2024-06-21 08:28+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian\n"
 "Language: uk\n"
@@ -336,10 +336,9 @@ msgid "Invalid collection for item %1."
 msgstr "Некоректна збірка для запису %1."
 
 #: davgroupwareresource.cpp:650
-#, fuzzy, kde-format
-#| msgid "Unable to add item: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
-msgstr "Не вдалося додати запис: %1."
+msgstr "Не вдалося внести зміни до записів: %1"
 
 #: davgroupwareresource.cpp:687
 #, kde-format

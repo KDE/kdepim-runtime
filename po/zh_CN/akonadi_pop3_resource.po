@@ -826,9 +826,3 @@ msgstr "使用系统代理设置进行连接"
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "定义要使用的身份验证方式"
-
-#~ msgid "Internal error, number expected: %1"
-#~ msgstr "内部错误，预计数字： %1"
-
-#~ msgid "Unexpected response from POP3 server."
-#~ msgstr "POP3 服务器应答不正常。"

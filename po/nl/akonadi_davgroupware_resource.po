@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-21 00:39+0000\n"
-"PO-Revision-Date: 2024-06-19 10:59+0200\n"
+"PO-Revision-Date: 2024-06-21 09:29+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -334,10 +334,9 @@ msgid "Invalid collection for item %1."
 msgstr "Ongeldige verzameling voor item %1."
 
 #: davgroupwareresource.cpp:650
-#, fuzzy, kde-format
-#| msgid "Unable to add item: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
-msgstr "Item %1 kon niet worden toegevoegd"
+msgstr "Wijzigen van items lukt niet: %1"
 
 #: davgroupwareresource.cpp:687
 #, kde-format

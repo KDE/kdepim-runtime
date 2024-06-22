@@ -33,7 +33,7 @@ msgctxt "@info"
 msgid ""
 "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
 "valid. You need to authenticate in order to continue using it."
-msgstr "您的微软 Exchange 账号 <b>%1</b> 授权已失效，请重新授权。"
+msgstr "您的微软 Exchange 账户 <b>%1</b> 授权已失效，请重新授权。"
 
 #: ewsclient/auth/ewsoauth.cpp:522
 #, kde-kuit-format
@@ -42,7 +42,7 @@ msgid ""
 "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
 "Please update it in the account settings page."
 msgstr ""
-"无法获取微软 Exchange 账号 <b>%1</b> 的授权信息，请在账号设置页面更新该账号的"
+"无法获取微软 Exchange 账户 <b>%1</b> 的授权信息，请在账户设置页面更新该账户的"
 "信息。"
 
 #: ewsclient/auth/ewspasswordauth.cpp:57
@@ -52,8 +52,8 @@ msgid ""
 "The username/password for the Microsoft Exchange EWS account <b>%1</b> is "
 "not valid. Please update it in the account settings page."
 msgstr ""
-"微软 Exchange EWS 账号 <b>%1</b> 的用户名或密码无效，请在账号设置页面更新您的"
-"账号信息。"
+"微软 Exchange EWS 账户 <b>%1</b> 的用户名或密码无效，请在账户设置页面更新您的"
+"账户信息。"
 
 #: ewsconfigdialog.cpp:76
 #, kde-format

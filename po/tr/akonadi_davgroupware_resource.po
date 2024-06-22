@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-21 00:39+0000\n"
-"PO-Revision-Date: 2024-06-18 12:53+0300\n"
+"PO-Revision-Date: 2024-06-22 00:49+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -329,10 +329,9 @@ msgid "Invalid collection for item %1."
 msgstr "%1 ögesi için geçersiz koleksiyon."
 
 #: davgroupwareresource.cpp:650
-#, fuzzy, kde-format
-#| msgid "Unable to add item: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
-msgstr "Öge eklenemiyor: %1"
+msgstr "Ögeler değiştirilemiyor: %1"
 
 #: davgroupwareresource.cpp:687
 #, kde-format

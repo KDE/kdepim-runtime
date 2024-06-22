@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-21 00:39+0000\n"
-"PO-Revision-Date: 2024-06-18 16:05+0200\n"
+"PO-Revision-Date: 2024-06-21 13:41+0200\n"
 "Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -310,10 +310,9 @@ msgid "Invalid collection for item %1."
 msgstr ""
 
 #: davgroupwareresource.cpp:650
-#, fuzzy, kde-format
-#| msgid "Unable to modify collection: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
-msgstr "Nelze ověřit sbírku: %1"
+msgstr "Nelze upravit položky: %1"
 
 #: davgroupwareresource.cpp:687
 #, kde-format
