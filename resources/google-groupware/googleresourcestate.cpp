@@ -92,12 +92,6 @@ void GoogleResourceState::tagChangeCommitted(const Tag &tag)
     m_resource->changeCommitted(tag);
 }
 
-// Relations handling
-void GoogleResourceState::relationsRetrieved(const Relation::List &relations)
-{
-    m_resource->relationsRetrieved(relations);
-}
-
 // FreeBusy handling
 void GoogleResourceState::freeBusyRetrieved(const QString &email, const QString &freeBusy, bool success, const QString &errorText = QString())
 {

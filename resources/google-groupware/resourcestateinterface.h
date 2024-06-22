@@ -42,9 +42,6 @@ public:
     virtual void tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &) = 0;
     virtual void tagChangeCommitted(const Akonadi::Tag &tag) = 0;
 
-    // Relations handling
-    virtual void relationsRetrieved(const Akonadi::Relation::List &tags) = 0;
-
     // Result reporting
     virtual void changeProcessed() = 0;
     virtual void cancelTask(const QString &errorString) = 0;

@@ -37,9 +37,6 @@ public:
     void tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &) override;
     void tagChangeCommitted(const Akonadi::Tag &tag) override;
 
-    // Relations handling
-    void relationsRetrieved(const Akonadi::Relation::List &tags) override;
-
     // FreeBusy handling
     void freeBusyRetrieved(const QString &email, const QString &freeBusy, bool success, const QString &errorText) override;
     void handlesFreeBusy(const QString &email, bool handles) override;
