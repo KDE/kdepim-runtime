@@ -53,17 +53,17 @@ msgstr "服务器错误"
 msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
 "credentials."
-msgstr "您的 EteSync 账号信息已被修改，请点击“确定”重新输入您的账号信息。"
+msgstr "您的 EteSync 账户信息已被修改，请点击“确定”重新输入您的账户信息。"
 
 #: etesyncresource.cpp:222
 #, kde-format
 msgid "Credentials Changed"
-msgstr "账号信息已被修改"
+msgstr "账户信息已被修改"
 
 #: etesyncresource.cpp:270
 #, kde-format
 msgid "Cannot retrieve items - account is null"
-msgstr "无法获取项目 - 账号信息为空"
+msgstr "无法获取项目 - 账户信息为空"
 
 #: etesyncresource.cpp:277 etesyncresource.cpp:383 etesyncresource.cpp:456
 #: etesyncresource.cpp:514 etesyncresource.cpp:643 etesyncresource.cpp:701
@@ -139,7 +139,7 @@ msgstr "登录信息"
 #: setupwizard.cpp:68
 #, kde-format
 msgid "Enter your credentials to login to the EteSync server"
-msgstr "输入用于登录 EteSync 服务器的账号信息"
+msgstr "输入用于登录 EteSync 服务器的账户信息"
 
 #: setupwizard.cpp:77
 #, kde-format
