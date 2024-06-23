@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-19 00:39+0000\n"
-"PO-Revision-Date: 2024-06-19 23:49+0200\n"
+"POT-Creation-Date: 2024-06-23 00:39+0000\n"
+"PO-Revision-Date: 2024-06-22 06:48+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -436,7 +436,7 @@ msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""
 "Malsukcesis trovi la dosierujon por esti forigita, restarigante dosierujon."
 
-#: resourcestate.cpp:274
+#: resourcestate.cpp:264
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr "Rekomencante eron-servon."
@@ -611,7 +611,7 @@ msgstr "Malkonektita dum ensaluto."
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "IMAP-retpoŝta konto bezonas vian atenton."
 
 #: settingspasswordrequester.cpp:50
 #, kde-format
@@ -738,12 +738,14 @@ msgid ""
 "Could not access KWallet. It is necessary to store the password. Please "
 "activate it."
 msgstr ""
+"Ne eblis aliri KWallet. Ĝi estas necesa por konservi la pasvorton. Bonvolu "
+"aktivigi ĝin."
 
 #: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"
-msgstr ""
+msgstr "KWallet Nedisponebla"
 
 #: setupserver.cpp:530
 #, kde-format

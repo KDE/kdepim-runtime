@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-19 00:39+0000\n"
+"POT-Creation-Date: 2024-06-23 00:39+0000\n"
 "PO-Revision-Date: 2024-06-19 15:13+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -454,7 +454,7 @@ msgstr ""
 "No se ha podido encontrar la carpeta que se va a borrar; se restaura la "
 "lista de carpetas."
 
-#: resourcestate.cpp:274
+#: resourcestate.cpp:264
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr "Restaurando la recuperación del elemento."

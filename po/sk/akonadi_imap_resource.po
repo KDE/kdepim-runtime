@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-19 00:39+0000\n"
+"POT-Creation-Date: 2024-06-23 00:39+0000\n"
 "PO-Revision-Date: 2020-09-08 19:07+0200\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -435,7 +435,7 @@ msgstr "Zlyhalo vymazanie priečinka, obnovujem zoznam priečinkov."
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "Zlyhalo nájdenie priečinka na vymazanie, obnovujem zoznam priečinkov."
 
-#: resourcestate.cpp:274
+#: resourcestate.cpp:264
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr "Reštartujem prijatie položky."

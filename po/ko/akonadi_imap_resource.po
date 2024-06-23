@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-19 00:39+0000\n"
+"POT-Creation-Date: 2024-06-23 00:39+0000\n"
 "PO-Revision-Date: 2024-02-17 12:43+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -430,7 +430,7 @@ msgstr "폴더를 삭제할 수 없어서 폴더 목록을 복원합니다."
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "삭제할 폴더를 찾을 수 없어서 폴더 목록을 복원합니다."
 
-#: resourcestate.cpp:274
+#: resourcestate.cpp:264
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr "항목 가져오기를 다시 시도합니다."

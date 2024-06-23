@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-19 00:39+0000\n"
+"POT-Creation-Date: 2024-06-23 00:39+0000\n"
 "PO-Revision-Date: 2014-09-19 22:53+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -436,7 +436,7 @@ msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""
 "Klarte ikke å finne mappa som skulle slettes, tilbakestiller mappelista."
 
-#: resourcestate.cpp:274
+#: resourcestate.cpp:264
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr ""

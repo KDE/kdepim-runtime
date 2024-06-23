@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-19 00:39+0000\n"
-"PO-Revision-Date: 2024-03-17 11:00+0100\n"
+"POT-Creation-Date: 2024-06-23 00:39+0000\n"
+"PO-Revision-Date: 2024-06-22 07:44+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "Language: pl\n"
@@ -18,6 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -370,12 +371,10 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Przenoszenie katalogu z '%1' z '%2' do '%3'"
 
 #: imapresourcebase.cpp:471
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr "Wyszukiwanie..."
+msgstr "Szukanie…"
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -434,7 +433,7 @@ msgstr ""
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
-msgstr ""
+msgstr "Nie udało się odczytać hasła z łańcucha kluczy."
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -449,7 +448,7 @@ msgstr ""
 "Nie udało się znaleźć katalogu do usunięcia, wobec tego przywrócono listę "
 "katalogów."
 
-#: resourcestate.cpp:274
+#: resourcestate.cpp:264
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr "Ponowne pobieranie elementu."
@@ -625,64 +624,45 @@ msgstr "Rozłączono podczas logowania."
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "Konto pocztowe IMAP wymaga twojej uwagi."
 
 #: settingspasswordrequester.cpp:50
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
-"Serwer odrzucił podaną nazwę użytkownika i hasło dla konta \"%2\".\n"
-"Można przejść do ustawień konta, spróbować ponownie się zalogować lub "
-"zaniechać dalszych działań.\n"
+"Serwer IMAP podaną nazwę użytkownika i hasło.\n"
+"Spróbować ponownie, czy raczej przejść do ustawień?\n"
 "\n"
 "%1"
 
 #: settingspasswordrequester.cpp:53
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%2"
 msgstr ""
-"Serwer odrzucił podaną nazwę użytkownika i hasło dla konta \"%2\".\n"
-"Można przejść do ustawień konta, spróbować ponownie się zalogować lub "
-"zaniechać dalszych działań.\n"
+"Serwer IMAP dla konta %1 odrzucił podaną nazwę użytkownika i hasło.\n"
+"Spróbować ponownie, czy raczej przejść do ustawień?\n"
 "\n"
-"%1"
+"%2"
 
 #: settingspasswordrequester.cpp:58
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Spróbuj ponownie"
 
 #: settingspasswordrequester.cpp:64
-#, fuzzy, kde-format
-#| msgid "Identity Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr "Ustawienia tożsamości"
+msgstr "Otwórz ustawienia"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -771,12 +751,14 @@ msgid ""
 "Could not access KWallet. It is necessary to store the password. Please "
 "activate it."
 msgstr ""
+"Nie można uzyskać dostępu do KPortfela. Jest on niezbędny do zachowania "
+"hasła. Zalecamy jego włączenie."
 
 #: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"
-msgstr ""
+msgstr "KPortfel niedostępny"
 
 #: setupserver.cpp:530
 #, kde-format
@@ -1039,10 +1021,9 @@ msgstr "Włącz subskrypcje po stronie serwera"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgid "Serverside Subscription"
+#, kde-format
 msgid "Serverside Subscription…"
-msgstr "Subskrypcja po stronie serwera..."
+msgstr "Subskrybowanie na serwerze…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
