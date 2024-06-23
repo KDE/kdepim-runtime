@@ -1,16 +1,16 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-#
 # mateusz stanisław włodarski <mateo.max@wp.pl>, 2010.
 # Mateusz Stanisław Włodarski <mateo.max@wp.pl>, 2010.
 # Marta Rybczyńska <kde-i18n@rybczynska.net>, 2010, 2012, 2013.
-# Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>, 2011, 2012, 2014, 2015, 2016, 2017, 2018, 2020, 2021.
+# SPDX-FileCopyrightText: 2011, 2012, 2014, 2015, 2016, 2017, 2018, 2020, 2021, 2024 Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-03-13 00:38+0000\n"
-"PO-Revision-Date: 2021-09-12 09:15+0200\n"
+"PO-Revision-Date: 2024-06-22 07:46+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "Language: pl\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: configdialog.cpp:33
 #, kde-format
@@ -255,7 +256,7 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"Wystąpił problem z żądaniem. Element nie został stworzona na serwerze.\n"
+"Wystąpił problem z żądaniem. Rzecz nie została stworzona na serwerze.\n"
 " %1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:87
@@ -265,7 +266,7 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"Wystąpił problem z żądaniem. Element nie został usunięty na serwerze.\n"
+"Wystąpił problem z żądaniem. Rzecz nie została usunięta na serwerze.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:94
@@ -275,7 +276,7 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"Wystąpił problem z żądaniem. Element nie został zmieniony na serwerze.\n"
+"Wystąpił problem z żądaniem. Rzecz nie została zmieniona na serwerze.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:100
@@ -318,12 +319,12 @@ msgstr "Pobieranie zbiorów"
 #: davgroupwareresource.cpp:314
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
-msgstr "Zapytano o pobranie elementów dla nieznanego zbioru: %1"
+msgstr "Zapytano o pobranie rzeczy dla nieznanego zbioru: %1"
 
 #: davgroupwareresource.cpp:371
 #, kde-format
 msgid "Invalid collection for item %1."
-msgstr "Nieprawidłowy zbiór dla elementu %1."
+msgstr "Nieprawidłowy zbiór dla rzeczy %1."
 
 #: davgroupwareresource.cpp:608
 #, kde-format
@@ -343,12 +344,12 @@ msgstr "Nie można pobrać zbiorów: %1"
 #: davgroupwareresource.cpp:830 davgroupwareresource.cpp:929
 #, kde-format
 msgid "Unable to retrieve items: %1"
-msgstr "Nie można pobrać elementów: %1"
+msgstr "Nie można pobrać rzeczy: %1"
 
 #: davgroupwareresource.cpp:1009
 #, kde-format
 msgid "Unable to retrieve item: %1"
-msgstr "Nie można pobrać elementu:%1"
+msgstr "Nie można pobrać rzeczy: %1"
 
 #: davgroupwareresource.cpp:1029
 #, kde-format
@@ -356,24 +357,24 @@ msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
-"Nie można pobrać elementu: nie udało się przetworzenie danych elementów. "
-"Może został on już usunięty."
+"Nie można pobrać rzeczy: nie udało się przetworzenie danych rzeczy. Może "
+"została ona już usunięta."
 
 #: davgroupwareresource.cpp:1066
 #, kde-format
 msgid "Unable to add item: %1"
-msgstr "Nie można dodać elementu: %1"
+msgstr "Nie można dodać rzeczy: %1"
 
 #: davgroupwareresource.cpp:1110 davgroupwareresource.cpp:1223
 #: davgroupwareresource.cpp:1235
 #, kde-format
 msgid "Unable to change item: %1"
-msgstr "Nie można zmienić elementu: %1"
+msgstr "Nie można zmienić rzeczy: %1"
 
 #: davgroupwareresource.cpp:1197 davgroupwareresource.cpp:1254
 #, kde-format
 msgid "Unable to remove item: %1"
-msgstr "Nie można usunąć elementu: %1"
+msgstr "Nie można usunąć rzeczy: %1"
 
 #: davgroupwareresource.cpp:1341 davgroupwareresource.cpp:1342
 #, kde-format
@@ -465,7 +466,7 @@ msgstr "Szukaj"
 #: searchdialog.cpp:41
 #, kde-format
 msgid "Add Selected Items"
-msgstr "Dodaj wybrane elementy"
+msgstr "Dodaj zaznaczone rzeczy"
 
 #: searchdialog.cpp:126 searchdialog.cpp:169
 #, kde-format
