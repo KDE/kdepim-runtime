@@ -122,7 +122,6 @@ target_link_libraries(imapresource
     KF6::Notifications
     KF6::WindowSystem
     KF6::ConfigGui
-    KF6::Wallet
     akonadi-singlefileresource
     qt6keychain
 )

@@ -36,6 +36,8 @@
 
 #include <QStandardPaths>
 
+#include <qt6keychain/keychain.h>
+
 #include "collectionflagsattribute.h"
 #include "highestmodseqattribute.h"
 #include "imapaclattribute.h"
@@ -78,6 +80,7 @@ Q_DECLARE_METATYPE(QList<qint64>)
 Q_DECLARE_METATYPE(QWeakPointer<QObject>)
 
 using namespace Akonadi;
+using namespace QKeychain;
 
 ImapResourceBase::ImapResourceBase(const QString &id)
     : ResourceBase(id)
@@ -232,30 +235,41 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
     if (!m_pool->account()) {
         return -2;
     }
-    const QString password = settings()->password();
-    if (password.isEmpty()) {
-        return -1;
-    }
 
-    mSubscriptions.reset(new SubscriptionDialog(nullptr, SubscriptionDialog::AllowToEnableSubscription));
-    if (windowId) {
-        mSubscriptions->setAttribute(Qt::WA_NativeWindow, true);
-        KWindowSystem::setMainWindow(mSubscriptions->windowHandle(), windowId);
+    auto showServersideSubscription = [this, windowId](const QString &password) {
+        mSubscriptions.reset(new SubscriptionDialog(nullptr, SubscriptionDialog::AllowToEnableSubscription));
+        if (windowId) {
+            mSubscriptions->setAttribute(Qt::WA_NativeWindow, true);
+            KWindowSystem::setMainWindow(mSubscriptions->windowHandle(), windowId);
+        }
+        mSubscriptions->setWindowTitle(i18nc("@title:window", "Serverside Subscription"));
+        mSubscriptions->setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
+        mSubscriptions->connectAccount(*m_pool->account(), password);
+        mSubscriptions->setSubscriptionEnabled(settings()->subscriptionEnabled());
+        connect(mSubscriptions.get(), &SubscriptionDialog::accepted, this, [this]() {
+            settings()->setSubscriptionEnabled(mSubscriptions->subscriptionEnabled());
+            settings()->save();
+            Q_EMIT configurationDialogAccepted();
+            reconnect();
+        });
+        connect(mSubscriptions.get(), &SubscriptionDialog::finished, this, [this]() {
+            mSubscriptions.reset();
+        });
+        mSubscriptions->show();
+    };
+
+    if (settings()->mustFetchPassword()) {
+        auto readPasswordJob = settings()->requestPassword();
+        connect(readPasswordJob, &ReadPasswordJob::finished, this, [readPasswordJob, showServersideSubscription]() {
+            if (readPasswordJob->error() != Error::NoError) {
+                return; // error handling is done in requestPassword
+            }
+            showServersideSubscription(readPasswordJob->textData());
+        });
+        readPasswordJob->start();
+    } else {
+        showServersideSubscription(settings()->password());
     }
-    mSubscriptions->setWindowTitle(i18nc("@title:window", "Serverside Subscription"));
-    mSubscriptions->setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
-    mSubscriptions->connectAccount(*m_pool->account(), password);
-    mSubscriptions->setSubscriptionEnabled(settings()->subscriptionEnabled());
-    connect(mSubscriptions.get(), &SubscriptionDialog::accepted, this, [this]() {
-        settings()->setSubscriptionEnabled(mSubscriptions->subscriptionEnabled());
-        settings()->save();
-        Q_EMIT configurationDialogAccepted();
-        reconnect();
-    });
-    connect(mSubscriptions.get(), &SubscriptionDialog::finished, this, [this]() {
-        mSubscriptions.reset();
-    });
-    mSubscriptions->show();
 
     return 0;
 }
@@ -551,7 +565,7 @@ void ImapResourceBase::startIdle()
     }
 
     // Without password we don't even have to try
-    if (m_pool->account()->authenticationMode() != KIMAP::LoginJob::GSSAPI && settings()->password().isEmpty()) {
+    if (settings()->mustFetchPassword()) {
         return;
     }
 

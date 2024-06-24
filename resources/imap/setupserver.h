@@ -74,6 +74,8 @@ private:
     void slotSubcriptionCheckboxChanged();
     void slotShowServerInfo();
     void readSettings();
+    void passwordFetched();
+    void sievePasswordFetched();
     void populateDefaultAuthenticationOptions();
 
     ImapResourceBase *const m_parentResource;
