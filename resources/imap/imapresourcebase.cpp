@@ -18,7 +18,7 @@
 #include <KLocalizedString>
 #include <QIcon>
 
-#include <kwindowsystem.h>
+#include <KWindowSystem>
 
 #include <Akonadi/MessageParts>
 

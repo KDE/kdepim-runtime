@@ -65,15 +65,13 @@ public:
     void clearCachedPassword();
     void cleanup();
 
-Q_SIGNALS:
-    void errorOccurred(const QString &errorMessage);
-
 public Q_SLOTS:
     Q_SCRIPTABLE virtual void setPassword(const QString &password);
     Q_SCRIPTABLE virtual void setSieveCustomPassword(const QString &password);
 
 protected Q_SLOTS:
     void onRootCollectionFetched(KJob *job);
+    void handleError(const QString &errorMessage);
 
 protected:
     WId m_winId;
