@@ -16,6 +16,11 @@
 class ImapAccount;
 class KJob;
 
+namespace QKeychain
+{
+class ReadPasswordJob;
+};
+
 class Settings : public SettingsBase
 {
     Q_OBJECT
@@ -26,29 +31,48 @@ public:
     explicit Settings(WId = 0);
     void setWinId(WId);
 
-    virtual void requestPassword();
+    /// Call this to decided whether you need to call requestPassword or
+    /// password.
+    ///
+    /// \returns whether the password need to be fetched.
+    [[nodiscard]] bool mustFetchPassword() const;
+
+    /// Fetch the password from the system keychain.
+    /// \note the returned job is initialized but need to be started.
+    [[nodiscard]] QKeychain::ReadPasswordJob *requestPassword();
+
+    /// Return the password if available.
+    [[nodiscard]] QString password() const;
+
+    /// Call this to decided whether you need to call requestSievePassword or
+    /// sievePassword.
+    ///
+    /// \returns whether the sieve password need to be fetched.
+    [[nodiscard]] bool mustFetchSievePassword() const;
+
+    /// Fetch the sieve password from the system keychain.
+    /// \note the returned job is initialized but need to be started.
+    [[nodiscard]] QKeychain::ReadPasswordJob *requestSieveCustomPassword();
+
+    /// Return the sieve password if available.
+    [[nodiscard]] QString sievePassword() const;
 
     virtual void loadAccount(ImapAccount *account) const;
 
     [[nodiscard]] QString rootRemoteId() const;
     virtual void renameRootCollection(const QString &newName);
 
-    virtual void clearCachedPassword();
-    virtual void cleanup();
-
-    virtual QString password(bool *userRejected = nullptr) const;
-    virtual QString sieveCustomPassword(bool *userRejected = nullptr) const;
+    void clearCachedPassword();
+    void cleanup();
 
 Q_SIGNALS:
-    void passwordRequestCompleted(const QString &password, bool userRejected);
+    void errorOccurred(const QString &errorMessage);
 
 public Q_SLOTS:
     Q_SCRIPTABLE virtual void setPassword(const QString &password);
     Q_SCRIPTABLE virtual void setSieveCustomPassword(const QString &password);
 
 protected Q_SLOTS:
-    virtual void onWalletOpened(bool success);
-
     void onRootCollectionFetched(KJob *job);
 
 protected:

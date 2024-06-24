@@ -37,22 +37,26 @@
 #include <Akonadi/SpecialMailCollections>
 #include <Akonadi/SpecialMailCollectionsRequestJob>
 #include <KAuthorized>
+#include <KIdentityManagementCore/IdentityManager>
+#include <KIdentityManagementWidgets/IdentityCombo>
 #include <KLocalizedString>
 #include <KMessageBox>
 #include <KUser>
-#include <QNetworkInformation>
-#include <QPushButton>
 
-#include <KIdentityManagementCore/IdentityManager>
-#include <KIdentityManagementWidgets/IdentityCombo>
 #include <QFontDatabase>
+#include <QNetworkInformation>
 #include <QPointer>
+#include <QPushButton>
 #include <QVBoxLayout>
+
+#include <qt6keychain/keychain.h>
 
 #include "imapaccount.h"
 #include "subscriptiondialog.h"
 
 #include "ui_setupserverview_desktop.h"
+
+using namespace QKeychain;
 
 /** static helper functions **/
 static QString authenticationModeString(MailTransport::Transport::EnumAuthenticationType mode)
@@ -373,13 +377,13 @@ void SetupServer::readSettings()
     m_ui->accountName->setText(m_parentResource->name());
     m_oldResourceName = m_ui->accountName->text();
 
-    auto currentUser = new KUser();
+    KUser currentUser;
 
     m_ui->imapServer->setText(m_parentResource->settings()->imapServer());
 
     m_ui->portSpin->setValue(m_parentResource->settings()->imapPort());
 
-    m_ui->userName->setText(!m_parentResource->settings()->userName().isEmpty() ? m_parentResource->settings()->userName() : currentUser->loginName());
+    m_ui->userName->setText(!m_parentResource->settings()->userName().isEmpty() ? m_parentResource->settings()->userName() : currentUser.loginName());
 
     const QString safety = m_parentResource->settings()->safety();
     int i = 0;
@@ -404,18 +408,27 @@ void SetupServer::readSettings()
     i = m_parentResource->settings()->alternateAuthentication();
     setCurrentAuthMode(m_ui->authenticationAlternateCombo, static_cast<MailTransport::Transport::EnumAuthenticationType>(i));
 
-    bool rejected = false;
-    const QString password = m_parentResource->settings()->password(&rejected);
-    if (rejected) {
-        m_ui->password->setEnabled(false);
-        KMessageBox::information(nullptr,
-                                 i18nc("@info:status", "Could not access KWallet. It is necessary to store the password. "
-                                      "Please activate it."),
-                                 i18nc("@info:status", "KWallet Unavailable"));
-    } else {
-        m_ui->password->lineEdit()->insert(password);
-    }
+    if (m_parentResource->settings()->mustFetchPassword()) {
+        auto readPasswordJob = m_parentResource->settings()->requestPassword();
 
+        connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
+            auto password = readPasswordJob->textData();
+            if (readPasswordJob->error() != Error::NoError) {
+                m_ui->password->setEnabled(false);
+            } else {
+                m_ui->password->lineEdit()->insert(password);
+            }
+            passwordFetched();
+        });
+    } else {
+        auto password = m_parentResource->settings()->password();
+        m_ui->password->lineEdit()->insert(password);
+        passwordFetched();
+    }
+}
+
+void SetupServer::passwordFetched()
+{
     m_ui->subscriptionEnabled->setChecked(m_parentResource->settings()->subscriptionEnabled());
 
     m_ui->checkInterval->setValue(m_parentResource->settings()->intervalCheckTime());
@@ -456,18 +469,26 @@ void SetupServer::readSettings()
 
     m_ui->customUsername->setText(m_parentResource->settings()->sieveCustomUsername());
 
-    rejected = false;
-    const QString customPassword = m_parentResource->settings()->sieveCustomPassword(&rejected);
-    if (rejected) {
-        m_ui->customPassword->setEnabled(false);
-        KMessageBox::information(nullptr,
-                                 i18nc("@info:status", "Could not access KWallet. It is necessary to store the password. "
-                                      "Please activate it."),
-                                 i18nc("@info:status", "KWallet Unavailable"));
-    } else {
-        m_ui->customPassword->lineEdit()->insert(customPassword);
-    }
+    if (m_parentResource->settings()->mustFetchSievePassword()) {
+        auto readPasswordJob = m_parentResource->settings()->requestSieveCustomPassword();
 
+        connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
+            auto password = readPasswordJob->textData();
+            if (readPasswordJob->error() != Error::NoError) {
+                m_ui->customPassword->setEnabled(false);
+            } else {
+                m_ui->customPassword->lineEdit()->insert(password);
+            }
+            sievePasswordFetched();
+        });
+    } else {
+        m_ui->customPassword->lineEdit()->insert(m_parentResource->settings()->sievePassword());
+        sievePasswordFetched();
+    }
+}
+
+void SetupServer::sievePasswordFetched()
+{
     const QString sieverCustomAuth(m_parentResource->settings()->sieveCustomAuthentification());
     if (sieverCustomAuth == QLatin1StringView("ImapUserPassword")) {
         m_ui->imapUserPassword->setChecked(true);
@@ -476,8 +497,6 @@ void SetupServer::readSettings()
     } else if (sieverCustomAuth == QLatin1StringView("CustomUserPassword")) {
         m_ui->customUserPassword->setChecked(true);
     }
-
-    delete currentUser;
 }
 
 void SetupServer::slotTest()

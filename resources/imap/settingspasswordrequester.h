@@ -12,6 +12,11 @@ class QDialog;
 
 class ImapResourceBase;
 
+namespace QKeychain
+{
+class ReadPasswordJob;
+}
+
 class SettingsPasswordRequester : public PasswordRequesterInterface
 {
     Q_OBJECT
@@ -25,14 +30,15 @@ public:
 
 private Q_SLOTS:
     void askUserInput(const QString &serverError);
-    void onPasswordRequestCompleted(const QString &password, bool userRejected);
     void onSettingsDialogFinished(int result);
 
 private:
-    void slotYesClicked();
-    void slotNoClicked();
+    void slotTryAgainClicked();
+    void slotOpenSettingsClicked();
     QString requestManualAuth(bool *userRejected);
 
     ImapResourceBase *const m_resource;
     QDialog *m_settingsDialog = nullptr;
+
+    QList<QKeychain::ReadPasswordJob *> m_readPasswordJobs;
 };
