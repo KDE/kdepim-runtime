@@ -20,6 +20,7 @@
 #include <Akonadi/CollectionModifyJob>
 
 #include <KLocalizedString>
+#include <KNotification>
 
 #include <qt6keychain/keychain.h>
 
@@ -109,8 +110,8 @@ ReadPasswordJob *Settings::requestPassword()
 
     connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
         if (readPasswordJob->error() != NoError && readPasswordJob->error() != EntryNotFound) {
-            Q_EMIT errorOccurred(
-                i18nc("@info:status", "An error occurred when retriving the IMAP password from the system keychain: \"%1\"", readPasswordJob->errorString()));
+            handleError(
+                i18nc("@info:status", "An error occured when retriving the IMAP password from the system keychain: \"%1\"", readPasswordJob->errorString()));
             return;
         }
         m_password = readPasswordJob->textData();
@@ -138,8 +139,8 @@ ReadPasswordJob *Settings::requestSieveCustomPassword()
 
     connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
         if (readPasswordJob->error() != NoError && readPasswordJob->error() != EntryNotFound) {
-            Q_EMIT errorOccurred(
-                i18nc("@info:status", "An error occurred when retriving the sieve password from the system keychain: \"%1\"", readPasswordJob->errorString()));
+            handleError(
+                i18nc("@info:status", "An error occured when retriving the sieve password from the system keychain: \"%1\"", readPasswordJob->errorString()));
             return;
         }
         m_customSievePassword = readPasswordJob->textData();
@@ -168,8 +169,8 @@ void Settings::setSieveCustomPassword(const QString &password)
 
     connect(writePasswordJob, &WritePasswordJob::finished, this, [this, writePasswordJob](auto) {
         if (writePasswordJob->error() != Error::NoError) {
-            Q_EMIT errorOccurred(
-                i18nc("@info:status", "An error occurred when saving the sieve password in the system keychain: \"%1\"", writePasswordJob->errorString()));
+            handleError(
+                i18nc("@info:status", "An error occured when saving the sieve password in the system keychain: \"%1\"", writePasswordJob->errorString()));
             return;
         }
     });
@@ -194,8 +195,8 @@ void Settings::setPassword(const QString &password)
 
     connect(writePasswordJob, &WritePasswordJob::finished, this, [this, writePasswordJob](auto) {
         if (writePasswordJob->error() != Error::NoError) {
-            Q_EMIT errorOccurred(
-                i18nc("@info:status", "An error occurred when saving the IMAP password in the system keychain: \"%1\"", writePasswordJob->errorString()));
+            handleError(
+                i18nc("@info:status", "An error occured when saving the IMAP password in the system keychain: \"%1\"", writePasswordJob->errorString()));
             return;
         }
     });
@@ -275,6 +276,16 @@ void Settings::onRootCollectionFetched(KJob *job)
         new Akonadi::CollectionModifyJob(rootCollection);
         // We don't care about the result here, nothing we can/should do if the renaming fails
     }
+}
+
+void Settings::handleError(const QString &errorMessage)
+{
+    auto notification = new KNotification(QStringLiteral("keychain"), KNotification::Persistent);
+    notification->setComponentName(QStringLiteral("akonadi_imap_resource"));
+    notification->setIconName(QStringLiteral("network-server"));
+    notification->setTitle(i18nc("@title", "There was an error interacting with the system keychain"));
+    notification->setText(errorMessage);
+    notification->sendEvent();
 }
 
 #include "moc_settings.cpp"
