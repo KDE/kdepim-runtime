@@ -6,14 +6,10 @@
 */
 
 #include "settings.h"
-#include "settingsadaptor.h"
-#include <qt6keychain/keychain.h>
-using namespace QKeychain;
 #include "imapaccount.h"
+#include "settingsadaptor.h"
 #include <config-imap.h>
-
-#include <KWallet>
-using KWallet::Wallet;
+#include <qt6keychain/keychain.h>
 
 #include "imapresource_debug.h"
 
@@ -22,6 +18,12 @@ using KWallet::Wallet;
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionModifyJob>
+
+#include <KLocalizedString>
+
+#include <qt6keychain/keychain.h>
+
+using namespace QKeychain;
 
 /**
  * Maps the enum used to represent authentication in MailTransport (kdepimlibs)
@@ -87,92 +89,68 @@ void Settings::cleanup()
     auto deleteJob = new DeletePasswordJob(QStringLiteral("imap"));
     deleteJob->setKey(config()->name());
     deleteJob->start();
+
+    auto deleteSieveJob = new DeletePasswordJob(QStringLiteral("imap"));
+    deleteSieveJob->setKey(QLatin1StringView("custom_sieve_") + config()->name());
+    deleteSieveJob->start();
 }
 
-void Settings::requestPassword()
+bool Settings::mustFetchPassword() const
 {
-    if (!m_password.isEmpty() || (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType)authentication()) == KIMAP::LoginJob::GSSAPI)) {
-        Q_EMIT passwordRequestCompleted(m_password, false);
-    } else {
-        // Already async. Just port to ReadPassword
-        Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous);
-        if (wallet) {
-            connect(wallet, &KWallet::Wallet::walletOpened, this, &Settings::onWalletOpened);
-        } else {
-            QMetaObject::invokeMethod(this, "onWalletOpened", Qt::QueuedConnection, Q_ARG(bool, true));
-        }
-    }
+    return m_password.isEmpty() && (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType)authentication()) != KIMAP::LoginJob::GSSAPI);
 }
 
-void Settings::onWalletOpened(bool success)
+ReadPasswordJob *Settings::requestPassword()
 {
-    if (!success) {
-        Q_EMIT passwordRequestCompleted(QString(), true);
-    } else {
-        auto wallet = qobject_cast<Wallet *>(sender());
-        bool passwordNotStoredInWallet = true;
-        if (wallet && wallet->hasFolder(QStringLiteral("imap"))) {
-            wallet->setFolder(QStringLiteral("imap"));
-            wallet->readPassword(config()->name(), m_password);
-            passwordNotStoredInWallet = false;
-        }
+    Q_ASSERT(mustFetchPassword());
 
-        Q_EMIT passwordRequestCompleted(m_password, passwordNotStoredInWallet);
+    auto readPasswordJob = new ReadPasswordJob{QStringLiteral("imap"), this};
+    readPasswordJob->setKey(config()->name());
 
-        if (wallet) {
-            wallet->deleteLater();
+    connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
+        if (readPasswordJob->error() != NoError && readPasswordJob->error() != EntryNotFound) {
+            Q_EMIT errorOccurred(
+                i18nc("@info:status", "An error occurred when retriving the IMAP password from the system keychain: \"%1\"", readPasswordJob->errorString()));
+            return;
         }
-    }
+        m_password = readPasswordJob->textData();
+    });
+
+    readPasswordJob->start();
+    return readPasswordJob;
 }
 
-QString Settings::password(bool *userRejected) const
+QString Settings::password() const
 {
-    if (userRejected != nullptr) {
-        *userRejected = false;
-    }
-
-    if (!m_password.isEmpty() || (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType)authentication()) == KIMAP::LoginJob::GSSAPI)) {
-        return m_password;
-    }
-    // Move as async
-    Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
-    if (wallet && wallet->isOpen()) {
-        if (wallet->hasFolder(QStringLiteral("imap"))) {
-            wallet->setFolder(QStringLiteral("imap"));
-            wallet->readPassword(config()->name(), m_password);
-        } else {
-            wallet->createFolder(QStringLiteral("imap"));
-        }
-    } else if (userRejected != nullptr) {
-        *userRejected = true;
-    }
-    delete wallet;
+    Q_ASSERT(!mustFetchPassword());
     return m_password;
 }
 
-QString Settings::sieveCustomPassword(bool *userRejected) const
+bool Settings::mustFetchSievePassword() const
 {
-    if (userRejected != nullptr) {
-        *userRejected = false;
-    }
+    return m_customSievePassword.isEmpty();
+}
 
-    if (!m_customSievePassword.isEmpty()) {
-        return m_customSievePassword;
-    }
+ReadPasswordJob *Settings::requestSieveCustomPassword()
+{
+    auto readPasswordJob = new ReadPasswordJob{QStringLiteral("imap"), this};
+    readPasswordJob->setKey(QLatin1StringView("custom_sieve_") + config()->name());
 
-    // Move as async
-    Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
-    if (wallet && wallet->isOpen()) {
-        if (wallet->hasFolder(QStringLiteral("imap"))) {
-            wallet->setFolder(QStringLiteral("imap"));
-            wallet->readPassword(QStringLiteral("custom_sieve_") + config()->name(), m_customSievePassword);
-        } else {
-            wallet->createFolder(QStringLiteral("imap"));
+    connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
+        if (readPasswordJob->error() != NoError && readPasswordJob->error() != EntryNotFound) {
+            Q_EMIT errorOccurred(
+                i18nc("@info:status", "An error occurred when retriving the sieve password from the system keychain: \"%1\"", readPasswordJob->errorString()));
+            return;
         }
-    } else if (userRejected != nullptr) {
-        *userRejected = true;
-    }
-    delete wallet;
+        m_customSievePassword = readPasswordJob->textData();
+    });
+
+    return readPasswordJob;
+}
+
+QString Settings::sievePassword() const
+{
+    Q_ASSERT(!mustFetchSievePassword());
     return m_customSievePassword;
 }
 
@@ -181,17 +159,21 @@ void Settings::setSieveCustomPassword(const QString &password)
     if (m_customSievePassword == password) {
         return;
     }
+
     m_customSievePassword = password;
-    Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
-    if (wallet && wallet->isOpen()) {
-        if (!wallet->hasFolder(QStringLiteral("imap"))) {
-            wallet->createFolder(QStringLiteral("imap"));
+
+    auto writePasswordJob = new WritePasswordJob{QStringLiteral("imap"), this};
+    writePasswordJob->setKey(QLatin1StringView("custom_sieve_") + config()->name());
+    writePasswordJob->setTextData(password);
+
+    connect(writePasswordJob, &WritePasswordJob::finished, this, [this, writePasswordJob](auto) {
+        if (writePasswordJob->error() != Error::NoError) {
+            Q_EMIT errorOccurred(
+                i18nc("@info:status", "An error occurred when saving the sieve password in the system keychain: \"%1\"", writePasswordJob->errorString()));
+            return;
         }
-        wallet->setFolder(QStringLiteral("imap"));
-        wallet->writePassword(QLatin1StringView("custom_sieve_") + config()->name(), password);
-        qCDebug(IMAPRESOURCE_LOG) << "Wallet save: " << wallet->sync();
-    }
-    delete wallet;
+    });
+    writePasswordJob->start();
 }
 
 void Settings::setPassword(const QString &password)
@@ -205,16 +187,19 @@ void Settings::setPassword(const QString &password)
     }
 
     m_password = password;
-    Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
-    if (wallet && wallet->isOpen()) {
-        if (!wallet->hasFolder(QStringLiteral("imap"))) {
-            wallet->createFolder(QStringLiteral("imap"));
+
+    auto writePasswordJob = new WritePasswordJob{QStringLiteral("imap"), this};
+    writePasswordJob->setKey(config()->name());
+    writePasswordJob->setTextData(password);
+
+    connect(writePasswordJob, &WritePasswordJob::finished, this, [this, writePasswordJob](auto) {
+        if (writePasswordJob->error() != Error::NoError) {
+            Q_EMIT errorOccurred(
+                i18nc("@info:status", "An error occurred when saving the IMAP password in the system keychain: \"%1\"", writePasswordJob->errorString()));
+            return;
         }
-        wallet->setFolder(QStringLiteral("imap"));
-        wallet->writePassword(config()->name(), password);
-        qCDebug(IMAPRESOURCE_LOG) << "Wallet save: " << wallet->sync();
-    }
-    delete wallet;
+    });
+    writePasswordJob->start();
 }
 
 void Settings::loadAccount(ImapAccount *account) const

@@ -10,12 +10,16 @@
 #include <KLocalizedString>
 #include <KNotification>
 
+#include <qt6keychain/keychain.h>
+
 #include "imapresource_debug.h"
 #include "imapresourcebase.h"
 #include "settings.h"
 #include <QDialog>
 #include <kwindowsystem.h>
 #include <mailtransport/transportbase.h>
+
+using namespace QKeychain;
 
 SettingsPasswordRequester::SettingsPasswordRequester(ImapResourceBase *resource, QObject *parent)
     : PasswordRequesterInterface(parent)
@@ -33,8 +37,33 @@ void SettingsPasswordRequester::requestPassword(RequestType request, const QStri
     if (request == WrongPasswordRequest) {
         QMetaObject::invokeMethod(this, "askUserInput", Qt::QueuedConnection, Q_ARG(QString, serverError));
     } else {
-        connect(m_resource->settings(), &Settings::passwordRequestCompleted, this, &SettingsPasswordRequester::onPasswordRequestCompleted);
-        m_resource->settings()->requestPassword();
+        if (m_resource->settings()->mustFetchPassword()) {
+            auto job = m_resource->settings()->requestPassword();
+            connect(job, &ReadPasswordJob::finished, this, [this, job](auto) {
+                auto password = job->textData();
+                if (job->error() == NoError) {
+                    if (password.isEmpty()) {
+                        Q_EMIT done(EmptyPasswordEntered);
+                    } else {
+                        Q_EMIT done(PasswordRetrieved, password);
+                    }
+                } else if (job->error() == AccessDeniedByUser) {
+                    Q_EMIT done(UserRejected);
+                } else {
+                    Q_EMIT done(EmptyPasswordEntered);
+                }
+                m_readPasswordJobs.removeAll(job);
+            });
+            m_readPasswordJobs << job;
+            job->start();
+        } else {
+            auto password = m_resource->settings()->password();
+            if (password.isEmpty()) {
+                Q_EMIT done(EmptyPasswordEntered);
+            } else {
+                Q_EMIT done(PasswordRetrieved, password);
+            }
+        }
     }
 }
 
@@ -62,13 +91,13 @@ void SettingsPasswordRequester::askUserInput(const QString &serverError)
     auto tryAgainAction = notification->addAction(i18nc("@action:button", "Try again"));
     connect(tryAgainAction, &KNotificationAction::activated, this, [this, notification]() {
         disconnect(notification, &KNotification::closed, nullptr, nullptr);
-        slotNoClicked();
+        slotTryAgainClicked();
     });
 
     auto openSettingsAction = notification->addAction(i18nc("@action:button", "Open settings"));
     connect(openSettingsAction, &KNotificationAction::activated, this, [this, notification]() {
         disconnect(notification, &KNotification::closed, nullptr, nullptr);
-        slotYesClicked();
+        slotOpenSettingsClicked();
     });
 
     connect(notification, &KNotification::closed, this, [this] {
@@ -78,13 +107,12 @@ void SettingsPasswordRequester::askUserInput(const QString &serverError)
     notification->sendEvent();
 }
 
-void SettingsPasswordRequester::slotNoClicked()
+void SettingsPasswordRequester::slotTryAgainClicked()
 {
-    connect(m_resource->settings(), &Settings::passwordRequestCompleted, this, &SettingsPasswordRequester::onPasswordRequestCompleted);
-    m_resource->settings()->requestPassword();
+    requestPassword();
 }
 
-void SettingsPasswordRequester::slotYesClicked()
+void SettingsPasswordRequester::slotOpenSettingsClicked()
 {
     if (!m_settingsDialog) {
         QDialog *dialog = m_resource->createConfigureDialog(m_resource->winIdForDialogs());
@@ -106,24 +134,9 @@ void SettingsPasswordRequester::onSettingsDialogFinished(int result)
 
 void SettingsPasswordRequester::cancelPasswordRequests()
 {
-    disconnect(m_resource->settings(), &Settings::passwordRequestCompleted, this, &SettingsPasswordRequester::onPasswordRequestCompleted);
-}
-
-void SettingsPasswordRequester::onPasswordRequestCompleted(const QString &password, bool userRejected)
-{
-    disconnect(m_resource->settings(), &Settings::passwordRequestCompleted, this, &SettingsPasswordRequester::onPasswordRequestCompleted);
-
-    QString pwd = password;
-    if (userRejected || pwd.isEmpty()) {
-        pwd = m_resource->settings()->password();
-    }
-
-    if (userRejected) {
-        Q_EMIT done(UserRejected);
-    } else if (password.isEmpty() && (m_resource->settings()->authentication() != MailTransport::Transport::EnumAuthenticationType::GSSAPI)) {
-        Q_EMIT done(EmptyPasswordEntered);
-    } else {
-        Q_EMIT done(PasswordRetrieved, password);
+    for (const auto job : std::as_const(m_readPasswordJobs)) {
+        m_readPasswordJobs.removeAll(job);
+        disconnect(job, &ReadPasswordJob::finished, this, nullptr);
     }
 }
 
