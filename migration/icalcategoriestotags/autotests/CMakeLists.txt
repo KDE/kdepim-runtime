@@ -1,2 +1,2 @@
-
+include(ECMMarkAsTest)
 add_akonadi_isolated_test(icalcategoriestotagsmigrationtest.cpp LINK_LIBRARIES KF6::ConfigCore KF6::CalendarCore icalcategoriestotagsmigration migrationshared)

@@ -21,4 +21,6 @@ target_link_libraries(icalcategoriestotagsmigration
     migrationshared
 )
 
-add_subdirectory(autotests)
+if (BUILD_TESTING)
+    add_subdirectory(autotests)
+endif()
