@@ -70,6 +70,8 @@ void EwsRequest::prepare(const QString &body)
     if (mClient.auth()) {
         if (!mClient.auth()->getAuthData(username, password, customHeaders)) {
             setErrorMsg(QStringLiteral("Failed to retrieve authentication data"));
+            Q_EMIT emitResult();
+            return;
         }
     }
 
