@@ -18,16 +18,17 @@ TransferJob::TransferJob(const QNetworkRequest &request, const QByteArray &body)
 
 void TransferJob::start()
 {
-    mReply = qnam->post(mRequest, mBody);
-    connect(mReply, &QNetworkReply::finished, this, [this] {
+    mReply.reset(qnam->post(mRequest, mBody));
+    connect(mReply.get(), &QNetworkReply::finished, this, [this] {
         emitResult();
     });
-    connect(mReply, &QNetworkReply::downloadProgress, this, [this](qint64 bytesReceived, qint64 bytesTotal) {
+    connect(mReply.get(), &QNetworkReply::downloadProgress, this, [this](qint64 bytesReceived, qint64 bytesTotal) {
+        Q_UNUSED(bytesTotal);
         setProcessedAmount(Unit::Bytes, bytesReceived);
     });
 
     connect(qnam, &QNetworkAccessManager::authenticationRequired, this, [this](QNetworkReply *reply, QAuthenticator *authenticator) {
-        if (mReply != reply) {
+        if (mReply.get() != reply) {
             return;
         }
         if (!mUsername.isEmpty() && !mPassword.isEmpty()) {
@@ -39,7 +40,7 @@ void TransferJob::start()
 
 QNetworkReply *TransferJob::reply() const
 {
-    return mReply;
+    return mReply.get();
 }
 
 void TransferJob::setNTLM(const QString &username, const QString &password)
