@@ -109,3 +109,4 @@ Comment[x-test]=xxCredentials used to access Microsoft Exchange are no longer va
 Comment[zh_CN]=访问 Microsoft Exchange 所使用的凭据不再有效
 Comment[zh_TW]=曾用來存取 Microsoft Exchange 的憑證現已無效
 Action=Popup
+Urgency=Critical
