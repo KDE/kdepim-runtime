@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-21 00:39+0000\n"
-"PO-Revision-Date: 2024-05-30 02:58+0900\n"
+"PO-Revision-Date: 2024-06-26 06:45+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -323,10 +323,9 @@ msgid "Invalid collection for item %1."
 msgstr "項目 %1 無效的收藏。"
 
 #: davgroupwareresource.cpp:650
-#, fuzzy, kde-format
-#| msgid "Unable to add item: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
-msgstr "無法新增項目：%1"
+msgstr "無法修改項目：%1"
 
 #: davgroupwareresource.cpp:687
 #, kde-format
@@ -668,8 +667,7 @@ msgid ""
 msgstr "您現在可以測試是否能以目前的設定存取群組伺服器"
 
 #: setupwizard.cpp:503
-#, fuzzy, kde-format
-#| msgid "Test Connection"
+#, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "測試連線"
