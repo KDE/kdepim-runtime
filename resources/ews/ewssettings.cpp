@@ -56,7 +56,7 @@ void EwsSettings::requestMap()
     connect(readJob, &ReadPasswordJob::finished, this, [this, readJob]() {
         QMap<QString, QString> map;
         if (readJob->error() != QKeychain::Error::NoError) {
-            qCDebug(EWSRES_LOG) << "requestPassword: Failed to read map";
+            qCDebug(EWSRES_LOG) << "requestPassword: Failed to read map" << readJob->error();
 
             // TODO remove me in 2025, this is a fallback to read password stored
             // in KWallet and store it back in QtKeychain.
