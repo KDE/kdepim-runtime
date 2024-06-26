@@ -111,6 +111,7 @@ Comment[zh_TW]=連線到 IMAP 信件伺服器
 
 [Event/imapAuthFailed]
 Name=IMAP E-Mail authentication failure
+Name[bg]=Неуспешно удостоверяване на IMAP Е-поща
 Name[ca]=Ha fallat l'autenticació del correu electrònic IMAP
 Name[ca@valencia]=No s'ha pogut fer l'autenticació del correu electrònic IMAP
 Name[cs]=Ověření pošty IMAP selhalo
@@ -127,7 +128,9 @@ Name[sv]=IMAP e-post behörighetskontroll misslyckades
 Name[tr]=IMAP E-posta Yetkilendirme Hatası
 Name[uk]=Помилка під час спроби розпізнавання у IMAP
 Name[x-test]=xxIMAP E-Mail authentication failurexx
+Name[zh_TW]=IMAP 電子郵件認證失敗
 Comment=IMAP e-mail couldn't authenticate with the server
+Comment[bg]=IMAP Е-поща не може да се удостовери със сървъра
 Comment[ca]=El correu electrònic IMAP no s'ha pogut autenticar amb el servidor
 Comment[ca@valencia]=El correu electrònic IMAP no s'ha pogut autenticar amb el servidor
 Comment[cs]=Pošta IMAP se na serveru nemohla přihlásit
@@ -144,6 +147,7 @@ Comment[sv]=IMAP e-post kunde inte utföra behörighetskontroll med servern
 Comment[tr]=IMAP e-postası, sunucu ile yetkilendirilemedi
 Comment[uk]=Не вдалося пройти розпізнавання поштової адреси IMAP на сервері
 Comment[x-test]=xxIMAP e-mail couldn't authenticate with the serverxx
+Comment[zh_TW]=IMAP 電子郵件無法與伺服器認證
 Urgency=Normal
 Action=Popup
 
