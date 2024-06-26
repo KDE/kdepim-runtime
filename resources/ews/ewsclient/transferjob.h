@@ -7,6 +7,8 @@
 #include <KJob>
 #include <QNetworkRequest>
 
+#include <memory>
+
 class QNetworkReply;
 
 /// Wrap a QNetworkRequest in a KJob to create POST HTTP request.
@@ -29,7 +31,7 @@ public:
 private:
     QNetworkRequest mRequest;
     const QByteArray mBody;
-    QNetworkReply *mReply = nullptr;
+    std::unique_ptr<QNetworkReply> mReply;
     QString mUsername;
     QString mPassword;
 };
