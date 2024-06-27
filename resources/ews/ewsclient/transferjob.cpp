@@ -16,6 +16,8 @@ TransferJob::TransferJob(const QNetworkRequest &request, const QByteArray &body)
 {
 }
 
+TransferJob::~TransferJob() = default;
+
 void TransferJob::start()
 {
     mReply.reset(qnam->post(mRequest, mBody));

@@ -19,6 +19,7 @@ class TransferJob : public KJob
 public:
     /// Transfer job constructor
     TransferJob(const QNetworkRequest &request, const QByteArray &body);
+    ~TransferJob();
 
     void start() override;
 
