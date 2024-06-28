@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-18 00:40+0000\n"
-"PO-Revision-Date: 2024-05-29 09:00+0200\n"
+"PO-Revision-Date: 2024-06-26 13:24+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
@@ -89,18 +89,16 @@ msgid "Search…"
 msgstr "Rechercher…"
 
 #: newmailnotifierselectcollectionwidget.cpp:142
-#, fuzzy, kde-format
-#| msgid "&Select All"
+#, kde-format
 msgctxt "@action:button"
 msgid "&Select All"
 msgstr "Tout &sélectionner"
 
 #: newmailnotifierselectcollectionwidget.cpp:146
-#, fuzzy, kde-format
-#| msgid "&Unselect All"
+#, kde-format
 msgctxt "@action:button"
 msgid "&Unselect All"
-msgstr "Tout désélectionner"
+msgstr "To&ut dé-sélectionner"
 
 #: newmailnotifiersettingswidget.cpp:34
 #, c-format

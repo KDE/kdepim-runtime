@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-23 00:39+0000\n"
-"PO-Revision-Date: 2024-05-13 09:42+0200\n"
+"PO-Revision-Date: 2024-06-26 13:31+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
@@ -22,9 +22,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.08.5\n"
-"X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
+"X-Environment: kde\n"
+"X-Generator: Lokalize 23.08.5\n"
 "X-Text-Markup: kde4\n"
 
 #: addcollectiontask.cpp:33
@@ -463,7 +463,7 @@ msgstr ""
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
-msgstr ""
+msgstr "Impossible de lire le mot de passe du trousseau."
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -659,66 +659,47 @@ msgstr "Déconnecté pendant la connexion."
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "Un compte de messagerie « IMAP » requière votre attention."
 
 #: settingspasswordrequester.cpp:50
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
-"Le serveur du compte « %2 » a refusé le nom d'utilisateur et le mot de passe "
-"fournis.\n"
-"Voulez-vous ouvrir la page de configuration, tenter à nouveau de vous "
-"connecter ou ne rien faire ?\n"
+"Le serveur du compte « IMAP » a refusé le nom d'utilisateur et le mot de "
+"passe fournis.\n"
+"Voulez-vous essayer à nouveau ou ouvrir la page de configuration ?\n"
 "\n"
 "%1"
 
 #: settingspasswordrequester.cpp:53
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%2"
 msgstr ""
-"Le serveur du compte « %2 » a refusé le nom d'utilisateur et le mot de passe "
-"fournis.\n"
-"Voulez-vous ouvrir la page de configuration, tenter à nouveau de vous "
-"connecter ou ne rien faire ?\n"
+"Le serveur du compte « IMAP » pour le compte %1 a refusé le nom "
+"d'utilisateur et le mot de passe fournis.\n"
+"Voulez-vous essayer à nouveau ou ouvrir la page de configuration ?\n"
 "\n"
-"%1"
+"%2"
 
 #: settingspasswordrequester.cpp:58
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
-msgstr "Essayer à nouveau"
+msgstr "Veuillez essayer à nouveau"
 
 #: settingspasswordrequester.cpp:64
-#, fuzzy, kde-format
-#| msgid "Identity Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr "Configuration d'identité"
+msgstr "Ouvrir la configuration"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -806,12 +787,14 @@ msgid ""
 "Could not access KWallet. It is necessary to store the password. Please "
 "activate it."
 msgstr ""
+"Impossible d'accéder à KWallet. Il est nécessaire d'enregistrer le mot de "
+"passe. Veuillez l'activer."
 
 #: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"
-msgstr ""
+msgstr "KWallet est indisponible."
 
 #: setupserver.cpp:530
 #, kde-format
