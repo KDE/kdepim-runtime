@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-19 00:39+0000\n"
+"POT-Creation-Date: 2024-07-04 00:39+0000\n"
 "PO-Revision-Date: 2024-05-30 07:49+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -38,7 +38,9 @@ msgid "POP3 Account"
 msgstr "POP3-konto"
 
 #: accountwidget.cpp:194
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Unable to open wallet"
+msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Ne eblas malfermi monujon"
 

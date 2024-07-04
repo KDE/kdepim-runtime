@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-19 00:39+0000\n"
+"POT-Creation-Date: 2024-07-04 00:39+0000\n"
 "PO-Revision-Date: 2024-04-28 20:05+0200\n"
 "Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -39,7 +39,9 @@ msgid "POP3 Account"
 msgstr "POP3-Postfach"
 
 #: accountwidget.cpp:194
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Unable to open wallet"
+msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Der Passwortspeicher kann nicht geöffnet werden"
 

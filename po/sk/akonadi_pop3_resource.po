@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-19 00:39+0000\n"
+"POT-Creation-Date: 2024-07-04 00:39+0000\n"
 "PO-Revision-Date: 2019-07-17 16:26+0200\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -37,7 +37,9 @@ msgid "POP3 Account"
 msgstr "POP3 účet"
 
 #: accountwidget.cpp:194
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Unable to open wallet"
+msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Nepodarilo sa otvoriť wallet"
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-19 00:39+0000\n"
+"POT-Creation-Date: 2024-07-04 00:39+0000\n"
 "PO-Revision-Date: 2019-05-01 11:44+0200\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
@@ -39,9 +39,11 @@ msgid "POP3 Account"
 msgstr "POP3-konto"
 
 #: accountwidget.cpp:194
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Unable to complete the mail fetch."
+msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
-msgstr ""
+msgstr "Feil ved henting av e-post."
 
 #: accountwidget.cpp:244
 #, kde-format
