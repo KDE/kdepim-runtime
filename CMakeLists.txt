@@ -60,7 +60,7 @@ set(QT6KEYCHAIN_LIB_VERSION "0.14.2")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(SharedMimeInfo_MINIMUM_VERSION "1.3")
+set(SharedMimeInfo_MINIMUM_VERSION "1.8")
 find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
 
 find_package(Sasl2)
