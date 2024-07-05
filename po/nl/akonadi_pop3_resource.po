@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-04 00:39+0000\n"
-"PO-Revision-Date: 2024-03-13 11:35+0100\n"
+"PO-Revision-Date: 2024-07-04 17:43+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 23.08.4\n"
+"X-Generator: Lokalize 24.05.1\n"
 
 #: accountwidget.cpp:82
 #, kde-format
@@ -37,8 +37,7 @@ msgid "POP3 Account"
 msgstr "POP3-account"
 
 #: accountwidget.cpp:194
-#, fuzzy, kde-format
-#| msgid "Unable to open wallet"
+#, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Portefeuille openen lukt niet"

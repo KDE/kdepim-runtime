@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-04 00:39+0000\n"
-"PO-Revision-Date: 2024-03-16 23:22+0100\n"
+"PO-Revision-Date: 2024-07-04 14:44+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
 "Language: gl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.02.0\n"
+"X-Generator: Lokalize 24.05.1\n"
 
 #: accountwidget.cpp:82
 #, kde-format
@@ -39,8 +39,7 @@ msgid "POP3 Account"
 msgstr "Conta POP3"
 
 #: accountwidget.cpp:194
-#, fuzzy, kde-format
-#| msgid "Unable to open wallet"
+#, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Non é posíbel abrir a carteira."

@@ -36,8 +36,7 @@ msgid "POP3 Account"
 msgstr "POP3 账户"
 
 #: accountwidget.cpp:194
-#, fuzzy, kde-format
-#| msgid "Unable to open wallet"
+#, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "无法打开密码库"

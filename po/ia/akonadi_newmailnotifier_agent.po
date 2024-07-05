@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-04 00:39+0000\n"
-"PO-Revision-Date: 2024-06-18 14:53+0200\n"
+"PO-Revision-Date: 2024-07-04 12:14+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -75,11 +75,10 @@ msgstr ""
 "Selige qual dossieres pro monitorar pro notificationes de nove messages:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, fuzzy, kde-format
-#| msgid "Search…"
+#, kde-format
 msgctxt "@info:placeholder"
 msgid "Search…"
-msgstr "Il cerca ..."
+msgstr "Cerca…"
 
 #: newmailnotifierselectcollectionwidget.cpp:142
 #, kde-format
