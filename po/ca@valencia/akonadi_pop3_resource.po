@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-04 00:39+0000\n"
-"PO-Revision-Date: 2024-03-13 12:04+0100\n"
+"PO-Revision-Date: 2024-07-04 13:58+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
@@ -42,8 +42,7 @@ msgid "POP3 Account"
 msgstr "Compte POP3"
 
 #: accountwidget.cpp:194
-#, fuzzy, kde-format
-#| msgid "Unable to open wallet"
+#, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "No s'ha pogut obrir la cartera"
@@ -883,9 +882,3 @@ msgstr "Connecta emprant la configuració del servidor intermediari del sistema"
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "Definiu el tipus d'autenticació que s'ha d'utilitzar"
-
-#~ msgid "Internal error, number expected: %1"
-#~ msgstr "S'ha produït un error intern, s'esperava el número: %1"
-
-#~ msgid "Unexpected response from POP3 server."
-#~ msgstr "Resposta inesperada des del servidor POP3."
