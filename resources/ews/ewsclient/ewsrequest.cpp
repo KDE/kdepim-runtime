@@ -121,12 +121,16 @@ void EwsRequest::requestResult(KJob *job)
     if (EWSCLI_PROTO_LOG().isDebugEnabled()) {
         ewsLogDir.setAutoRemove(false);
         if (ewsLogDir.isValid()) {
-            QTemporaryFile dumpFile(ewsLogDir.path() + QStringLiteral("/ews_xmldump_XXXXXXX.xml"));
-            dumpFile.open();
-            dumpFile.setAutoRemove(false);
-            dumpFile.write(mResponseData);
-            qCDebug(EWSCLI_PROTO_LOG) << "response dumped to" << dumpFile.fileName();
-            dumpFile.close();
+            if (!mResponseData.isEmpty()) {
+                QTemporaryFile dumpFile(ewsLogDir.path() + QStringLiteral("/ews_xmldump_XXXXXXX.xml"));
+                dumpFile.open();
+                dumpFile.setAutoRemove(false);
+                dumpFile.write(mResponseData);
+                qCDebug(EWSCLI_PROTO_LOG) << "response dumped to" << dumpFile.fileName();
+                dumpFile.close();
+            } else {
+                qCDebug(EWSCLI_PROTO_LOG) << "response is empty";
+            }
         }
     }
 
