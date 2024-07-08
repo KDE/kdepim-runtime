@@ -142,7 +142,7 @@ void EwsRequest::requestResult(KJob *job)
     }
 
     if (reply->error() != QNetworkReply::NoError) {
-        setErrorMsg(QStringLiteral("Failed to process EWS request: ") + job->errorString(), job->error());
+        setErrorMsg(QStringLiteral("Failed to process EWS request: ") + reply->errorString(), reply->error());
     }
     /* Don't attempt to parse the response in case of a HTTP error. The only exception is
      * 500 (Bad Request) as in such case the server does provide the usual SOAP response. */
