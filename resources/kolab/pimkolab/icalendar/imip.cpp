@@ -53,20 +53,20 @@ KMime::Message::Ptr createMessage(const QString &from,
     message->contentTransferEncoding()->clear(); // 7Bit, decoded.
 
     // Set the headers
-    message->userAgent()->fromUnicodeString(userAgent, "utf-8");
-    message->from()->fromUnicodeString(from, "utf-8");
-    message->to()->fromUnicodeString(to, "utf-8");
-    message->cc()->fromUnicodeString(cc, "utf-8");
+    message->userAgent()->fromUnicodeString(userAgent);
+    message->from()->fromUnicodeString(from);
+    message->to()->fromUnicodeString(to);
+    message->cc()->fromUnicodeString(cc);
     if (bccMe) {
-        message->bcc()->fromUnicodeString(from, "utf-8"); // from==me, right?
+        message->bcc()->fromUnicodeString(from); // from==me, right?
     }
     message->date()->setDateTime(QDateTime::currentDateTime());
-    message->subject()->fromUnicodeString(subject, "utf-8");
+    message->subject()->fromUnicodeString(subject);
 
     if (outlookConformInvitation) {
         message->contentType()->setMimeType("text/calendar");
         message->contentType()->setCharset("utf-8");
-        message->contentType()->setName(QStringLiteral("cal.ics"), "utf-8");
+        message->contentType()->setName(QStringLiteral("cal.ics"));
         message->contentType()->setParameter(QStringLiteral("method"), QStringLiteral("request"));
 
         if (!attachment.isEmpty()) {
@@ -102,7 +102,7 @@ KMime::Message::Ptr createMessage(const QString &from,
             attachDisposition->setDisposition(KMime::Headers::CDattachment);
             attachMessage->contentType()->setMimeType("text/calendar");
             attachMessage->contentType()->setCharset("utf-8");
-            attachMessage->contentType()->setName(QStringLiteral("cal.ics"), "utf-8");
+            attachMessage->contentType()->setName(QStringLiteral("cal.ics"));
             attachMessage->contentType()->setParameter(QStringLiteral("method"), QStringLiteral("request"));
             attachMessage->setHeader(attachDisposition);
             attachMessage->contentTransferEncoding()->setEncoding(KMime::Headers::CEquPr);

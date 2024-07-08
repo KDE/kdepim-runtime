@@ -65,7 +65,7 @@ void EwsFetchMailDetailJob::processItems(const EwsGetItemRequest::Response::List
         // Rebuild the message headers
         QVariant v = ewsItem[EwsItemFieldSubject];
         if (Q_LIKELY(v.isValid())) {
-            msg->subject()->fromUnicodeString(v.toString(), "utf-8");
+            msg->subject()->fromUnicodeString(v.toString());
         }
 
         v = ewsItem[EwsItemFieldFrom];

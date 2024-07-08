@@ -146,8 +146,8 @@ KMime::Message::Ptr contactToKolabFormat(const KolabV2::Contact &contact, const 
         qCCritical(PIMKOLAB_LOG) << "empty message";
         return {};
     }
-    message->subject()->fromUnicodeString(contact.uid(), "utf-8");
-    message->from()->fromUnicodeString(contact.fullEmail(), "utf-8");
+    message->subject()->fromUnicodeString(contact.uid());
+    message->from()->fromUnicodeString(contact.fullEmail());
 
     KMime::Content *content = Mime::createMainPart(KOLAB_TYPE_CONTACT, contact.saveXML().toUtf8());
     message->appendContent(content);
@@ -191,8 +191,8 @@ KMime::Message::Ptr distListToKolabFormat(const KolabV2::DistributionList &distL
         qCCritical(PIMKOLAB_LOG) << "empty message";
         return {};
     }
-    message->subject()->fromUnicodeString(distList.uid(), "utf-8");
-    message->from()->fromUnicodeString(distList.uid(), "utf-8");
+    message->subject()->fromUnicodeString(distList.uid());
+    message->from()->fromUnicodeString(distList.uid());
 
     KMime::Content *content = Mime::createMainPart(KOLAB_TYPE_DISTLIST_V2, distList.saveXML().toUtf8());
     message->appendContent(content);

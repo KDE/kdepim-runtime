@@ -96,7 +96,7 @@ KMime::Message::Ptr createMessage(const QByteArray &mimetype,
                                   const QString &subject)
 {
     KMime::Message::Ptr message = createMessage(xKolabType, v3, productId);
-    message->subject()->fromUnicodeString(subject, "utf-8");
+    message->subject()->fromUnicodeString(subject);
     if (!fromEmail.isEmpty()) {
         KMime::Types::Mailbox mb;
         mb.setName(fromName);
@@ -131,7 +131,7 @@ createMessage(const QString &subject, const QString &mimetype, const QString &xK
 {
     KMime::Message::Ptr message = createMessage(xKolabType.toLatin1(), v3, prodid.toLatin1());
     if (!subject.isEmpty()) {
-        message->subject()->fromUnicodeString(subject, "utf-8");
+        message->subject()->fromUnicodeString(subject);
     }
 
     KMime::Content *content = createMainPart(mimetype.toLatin1(), xml);
@@ -161,11 +161,11 @@ KMime::Message::Ptr createMessage(const QByteArray &xKolabType, bool v3, const Q
     KMime::Message::Ptr message(new KMime::Message);
     message->date()->setDateTime(QDateTime::currentDateTimeUtc());
     auto h = new KMime::Headers::Generic(X_KOLAB_TYPE_HEADER);
-    h->fromUnicodeString(QString::fromUtf8(xKolabType), "utf-8");
+    h->fromUnicodeString(QString::fromUtf8(xKolabType));
     message->appendHeader(h);
     if (v3) {
         auto hv3 = new KMime::Headers::Generic(X_KOLAB_MIME_VERSION_HEADER);
-        hv3->fromUnicodeString(KOLAB_VERSION_V3, "utf-8");
+        hv3->fromUnicodeString(KOLAB_VERSION_V3);
         message->appendHeader(hv3);
     }
     message->userAgent()->from7BitString(prodid);
@@ -179,7 +179,8 @@ KMime::Content *createMainPart(const QByteArray &mimeType, const QByteArray &dec
 {
     auto content = new KMime::Content();
     content->contentType()->setMimeType(mimeType);
-    content->contentType()->setName(KOLAB_OBJECT_FILENAME, "us-ascii");
+    content->contentType()->setName(KOLAB_OBJECT_FILENAME);
+    content->contentType()->setRFC2047Charset("us-ascii");
     content->contentTransferEncoding()->setEncoding(KMime::Headers::CEquPr);
     content->contentDisposition()->setDisposition(KMime::Headers::CDattachment);
     content->contentDisposition()->setFilename(KOLAB_OBJECT_FILENAME);
@@ -194,7 +195,7 @@ KMime::Content *createAttachmentPart(const QByteArray &cid, const QByteArray &mi
         content->contentID()->setIdentifier(cid);
     }
     content->contentType()->setMimeType(mimeType);
-    content->contentType()->setName(fileName, "utf-8");
+    content->contentType()->setName(fileName);
     content->contentTransferEncoding()->setEncoding(KMime::Headers::CEbase64);
     content->contentDisposition()->setDisposition(KMime::Headers::CDattachment);
     content->contentDisposition()->setFilename(fileName);
