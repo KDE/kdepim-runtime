@@ -25,21 +25,21 @@
 #include "ewssubscriptionwidget.h"
 #include "ui_ewsconfigdialog.h"
 
-using StringPair = QPair<QString, QString>;
+using StringPair = std::pair<QLatin1StringView, QLatin1StringView>;
 
-static const QList<StringPair> userAgents = {
-    {QStringLiteral("Microsoft Outlook 2016"), QStringLiteral("Microsoft Office/16.0 (Windows NT 10.0; Microsoft Outlook 16.0.6326; Pro)")},
-    {QStringLiteral("Microsoft Outlook 2013"), QStringLiteral("Microsoft Office/15.0 (Windows NT 6.1; Microsoft Outlook 15.0.4420; Pro)")},
-    {QStringLiteral("Microsoft Outlook 2010"), QStringLiteral("Microsoft Office/14.0 (Windows NT 6.1; Microsoft Outlook 14.0.5128; Pro)")},
-    {QStringLiteral("Microsoft Outlook 2011 for Mac"), QStringLiteral("MacOutlook/14.2.0.101115 (Intel Mac OS X 10.6.7)")},
-    {QStringLiteral("Mozilla Thunderbird 38 for Windows (with ExQuilla)"),
-     QStringLiteral("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")},
-    {QStringLiteral("Mozilla Thunderbird 38 for Linux (with ExQuilla)"),
-     QStringLiteral("Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")},
-    {QStringLiteral("Mozilla Thunderbird 38 for Mac (with ExQuilla)"),
-     QStringLiteral("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")}};
+static constexpr auto userAgents = std::to_array<StringPair>(
+    {{QLatin1StringView("Microsoft Outlook 2016"), QLatin1StringView("Microsoft Office/16.0 (Windows NT 10.0; Microsoft Outlook 16.0.6326; Pro)")},
+     {QLatin1StringView("Microsoft Outlook 2013"), QLatin1StringView("Microsoft Office/15.0 (Windows NT 6.1; Microsoft Outlook 15.0.4420; Pro)")},
+     {QLatin1StringView("Microsoft Outlook 2010"), QLatin1StringView("Microsoft Office/14.0 (Windows NT 6.1; Microsoft Outlook 14.0.5128; Pro)")},
+     {QLatin1StringView("Microsoft Outlook 2011 for Mac"), QLatin1StringView("MacOutlook/14.2.0.101115 (Intel Mac OS X 10.6.7)")},
+     {QLatin1StringView("Mozilla Thunderbird 38 for Windows (with ExQuilla)"),
+      QLatin1StringView("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")},
+     {QLatin1StringView("Mozilla Thunderbird 38 for Linux (with ExQuilla)"),
+      QLatin1StringView("Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")},
+     {QLatin1StringView("Mozilla Thunderbird 38 for Mac (with ExQuilla)"),
+      QLatin1StringView("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")}});
 
-static const QString pkeyPasswordMapKey = QStringLiteral("pkey-password");
+static constexpr auto pkeyPasswordMapKey = QLatin1StringView("pkey-password");
 
 static bool execJob(KJob *job)
 {
