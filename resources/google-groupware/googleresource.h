@@ -26,7 +26,10 @@ class Job;
 class GoogleSettings;
 class GoogleResourceState;
 
-class GoogleResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV3, public Akonadi::FreeBusyProviderBase
+class GoogleResource : public Akonadi::ResourceBase,
+                       public Akonadi::AgentBase::ObserverV3,
+                       public Akonadi::AgentBase::TagObserver,
+                       public Akonadi::FreeBusyProviderBase
 {
     Q_OBJECT
 
@@ -72,6 +75,7 @@ protected Q_SLOTS:
     void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
     void itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection) override;
     void itemsUnlinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection) override;
+    void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags) override;
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
     void collectionChanged(const Akonadi::Collection &collection) override;

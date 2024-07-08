@@ -29,6 +29,11 @@ void GenericHandler::itemsUnlinked(const Akonadi::Item::List & /*items*/, const 
     m_iface->cancelTask(i18n("Cannot handle item unlinking"));
 }
 
+void GenericHandler::itemsTagsChanged(const Akonadi::Item::List & /*items*/, const QSet<Akonadi::Tag> & /*added*/, const QSet<Akonadi::Tag> & /* removed*/)
+{
+    m_iface->cancelTask(i18n("Cannot handle item tag changes"));
+}
+
 void GenericHandler::slotGenericJobFinished(KGAPI2::Job *job)
 {
     if (!m_iface->handleError(job)) {

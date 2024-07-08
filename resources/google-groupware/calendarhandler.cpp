@@ -34,6 +34,7 @@
 #include <KCalendarCore/Calendar>
 #include <KCalendarCore/FreeBusy>
 #include <KCalendarCore/ICalFormat>
+#include <calendar/eventmodifyjob.h>
 
 using namespace KGAPI2;
 using namespace Akonadi;
@@ -164,12 +165,19 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
             }
         }
 
+        auto kcalEvent = event.dynamicCast<KCalendarCore::Event>();
+
         Item item;
         item.setMimeType(mimeType());
         item.setParentCollection(collection);
         item.setRemoteId(event->id());
         item.setRemoteRevision(event->etag());
-        item.setPayload<KCalendarCore::Event::Ptr>(event.dynamicCast<KCalendarCore::Event>());
+        item.setPayload<KCalendarCore::Event::Ptr>(kcalEvent);
+        for (const auto &category : kcalEvent->categories()) {
+            if (!category.isEmpty()) {
+                item.setTag(Tag(category));
+            }
+        }
 
         if (event->deleted()) {
             qCDebug(GOOGLE_CALENDAR_LOG) << " - removed" << event->uid();
@@ -192,11 +200,28 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
     emitReadyStatus();
 }
 
+namespace
+{
+
+void copyTagsToCategories(const Tag::List &tags, EventPtr &event)
+{
+    QStringList categories;
+    categories.reserve(tags.count());
+    for (const Tag &tag : tags) {
+        categories << tag.name();
+    }
+    event->setCategories(categories);
+}
+
+} // namespace
+
 void CalendarHandler::itemAdded(const Item &item, const Collection &collection)
 {
     m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Adding event to calendar '%1'", collection.name()));
     qCDebug(GOOGLE_CALENDAR_LOG) << "Event added to calendar" << collection.remoteId();
     EventPtr event(new Event(*item.payload<KCalendarCore::Event::Ptr>()));
+    copyTagsToCategories(item.tags(), event);
+
     auto job = new EventCreateJob(event, collection.remoteId(), m_settings->accountPtr(), this);
     job->setSendUpdates(SendUpdatesPolicy::None);
     connect(job, &EventCreateJob::finished, this, [this, item](KGAPI2::Job *job) {
@@ -219,8 +244,9 @@ void CalendarHandler::itemAdded(const Item &item, const Collection &collection)
 void CalendarHandler::itemChanged(const Item &item, const QSet<QByteArray> & /*partIdentifiers*/)
 {
     m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Changing event in calendar '%1'", item.parentCollection().displayName()));
-    qCDebug(GOOGLE_CALENDAR_LOG) << "Changing event" << item.remoteId();
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Changing event" << item.remoteId() << item.tags();
     EventPtr event(new Event(*item.payload<KCalendarCore::Event::Ptr>()));
+    copyTagsToCategories(item.tags(), event);
     auto job = new EventModifyJob(event, item.parentCollection().remoteId(), m_settings->accountPtr(), this);
     job->setSendUpdates(SendUpdatesPolicy::None);
     job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
@@ -259,6 +285,71 @@ void CalendarHandler::itemsMoved(const Item::List &items, const Collection &coll
     auto job = new EventMoveJob(eventIds, collectionSource.remoteId(), collectionDestination.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
     connect(job, &EventMoveJob::finished, this, &CalendarHandler::slotGenericJobFinished);
+}
+
+class BatchTagChangeJob : public KJob
+{
+public:
+    explicit BatchTagChangeJob(const Item::List &items, const KGAPI2::AccountPtr &account, QObject *parent = nullptr)
+        : KJob(parent)
+        , mItems(items)
+        , mAccount(account)
+    {
+    }
+
+    void start() override
+    {
+        for (const auto &item : std::as_const(mItems)) {
+            EventPtr event(new Event(*item.payload<KCalendarCore::Event::Ptr>()));
+            copyTagsToCategories(item.tags(), event);
+            auto job = new EventModifyJob(event, item.parentCollection().remoteId(), mAccount, this);
+            connect(job, &EventModifyJob::finished, this, &BatchTagChangeJob::slotJobFinished);
+            mJobs.push_back(job);
+        }
+
+        if (mJobs.empty()) {
+            emitResult();
+        }
+    }
+
+private Q_SLOTS:
+    void slotJobFinished(KGAPI2::Job *job)
+    {
+        if (job->error()) {
+            qCWarning(GOOGLE_CALENDAR_LOG) << "Failed to modify event:" << job->errorString();
+            setError(job->error());
+            setErrorText(job->errorString());
+            // don't emit result, continue wit the remaining jobs
+        }
+
+        mJobs.removeOne(job);
+        if (mJobs.empty()) {
+            emitResult();
+        }
+    }
+
+private:
+    Item::List mItems;
+    KGAPI2::AccountPtr mAccount;
+    QList<KGAPI2::Job *> mJobs;
+};
+
+void CalendarHandler::itemsTagsChanged(const Item::List &items, const QSet<Tag> &addedTags, const QSet<Tag> &removedTags)
+{
+    Q_UNUSED(addedTags);
+    Q_UNUSED(removedTags);
+    m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Changing events tags"));
+    auto job = new BatchTagChangeJob(items, m_settings->accountPtr(), this);
+    connect(job, &KJob::result, this, [this, items](KJob *job) {
+        if (job->error()) {
+            m_iface->cancelTask(i18n("Failed to change tags on events"));
+            return;
+        }
+
+        qCDebug(GOOGLE_CALENDAR_LOG) << "Items changes committed";
+        m_iface->itemsChangesCommitted(items);
+    });
+    job->start();
 }
 
 void CalendarHandler::collectionAdded(const Collection &collection, const Collection & /*parent*/)

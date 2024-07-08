@@ -50,6 +50,7 @@ public:
     itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) = 0;
     virtual void itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection);
     virtual void itemsUnlinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection);
+    virtual void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags);
 
     virtual void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) = 0;
     virtual void collectionChanged(const Akonadi::Collection &collection) = 0;

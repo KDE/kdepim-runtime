@@ -28,6 +28,7 @@ public:
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers) override;
     void itemsRemoved(const Akonadi::Item::List &items) override;
     void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
+    void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags) override;
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
     void collectionChanged(const Akonadi::Collection &collection) override;

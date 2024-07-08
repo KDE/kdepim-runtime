@@ -23,6 +23,7 @@
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/ItemFetchScope>
+#include <Akonadi/TagFetchScope>
 
 #include <KCalendarCore/Event>
 
@@ -76,6 +77,9 @@ GoogleResource::GoogleResource(const QString &id)
     changeRecorder()->itemFetchScope().fetchFullPayload(true);
     changeRecorder()->itemFetchScope().setFetchVirtualReferences(true);
     changeRecorder()->itemFetchScope().setAncestorRetrieval(ItemFetchScope::All);
+    changeRecorder()->itemFetchScope().setFetchTags(true);
+    changeRecorder()->itemFetchScope().fetchAllAttributes(true);
+    changeRecorder()->itemFetchScope().setFetchGid(true);
     changeRecorder()->fetchCollection(true);
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::All);
 
@@ -491,6 +495,20 @@ void GoogleResource::itemsUnlinked(const Item::List &items, const Collection &co
         handler->itemsUnlinked(items, collection);
     } else if (!handler) {
         qCWarning(GOOGLE_LOG) << "Could not unlink item mimetype" << items.first().mimeType() << "from" << collection.remoteId();
+        cancelTask(i18n("Invalid payload type"));
+    }
+}
+
+void GoogleResource::itemsTagsChanged(const Item::List &items, const QSet<Tag> &addedTags, const QSet<Tag> &removedTags)
+{
+    if ((!canPerformTask())) {
+        return;
+    }
+    auto handler = fetchHandlerByMimetype(items.first().mimeType());
+    if (handler && handler->canPerformTask(items)) {
+        handler->itemsTagsChanged(items, addedTags, removedTags);
+    } else if (!handler) {
+        qCWarning(GOOGLE_LOG) << "Could not apply items tags change for item" << items.first().mimeType();
         cancelTask(i18n("Invalid payload type"));
     }
 }
