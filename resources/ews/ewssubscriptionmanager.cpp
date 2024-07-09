@@ -14,13 +14,14 @@
 #include "ewssubscriberequest.h"
 #include "ewsunsubscriberequest.h"
 #include <QPointer>
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 // TODO: Allow customization
-static constexpr uint pollInterval = 10; /* seconds */
-
-static constexpr uint streamingTimeout = 30; /* minutes */
-
-static constexpr uint streamingConnTimeout = 60; /* seconds */
+static constexpr auto pollInterval = 10s;
+static constexpr auto streamingTimeout = 30min;
+static constexpr auto streamingConnTimeout = 60s;
 
 EwsSubscriptionManager::EwsSubscriptionManager(EwsClient &client, const EwsId &rootId, EwsSettings *settings, QObject *parent)
     : QObject(parent)
@@ -31,7 +32,7 @@ EwsSubscriptionManager::EwsSubscriptionManager(EwsClient &client, const EwsId &r
     , mSettings(settings)
 {
     mStreamingEvents = mEwsClient.serverVersion().supports(EwsServerVersion::StreamingSubscription);
-    mStreamingTimer.setInterval(streamingConnTimeout * 1000);
+    mStreamingTimer.setInterval(streamingConnTimeout);
     mStreamingTimer.setSingleShot(true);
     connect(&mStreamingTimer, &QTimer::timeout, this, &EwsSubscriptionManager::streamingConnectionTimeout);
 }
@@ -51,7 +52,7 @@ void EwsSubscriptionManager::start()
     }
 
     if (!mStreamingEvents) {
-        mPollTimer.setInterval(pollInterval * 1000);
+        mPollTimer.setInterval(pollInterval);
         mPollTimer.setSingleShot(false);
         connect(&mPollTimer, &QTimer::timeout, this, &EwsSubscriptionManager::getEvents);
     }

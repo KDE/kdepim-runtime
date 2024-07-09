@@ -20,7 +20,7 @@ public:
     EwsGetStreamingEventsRequest(EwsClient &client, QObject *parent);
     ~EwsGetStreamingEventsRequest() override;
 
-    void setTimeout(uint timeout)
+    void setTimeout(std::chrono::seconds timeout)
     {
         mTimeout = timeout;
     }
@@ -35,6 +35,6 @@ protected Q_SLOTS:
     void requestDataTimeout();
 
 protected:
-    uint mTimeout;
+    std::chrono::seconds mTimeout;
     QTimer mRespTimer;
 };
