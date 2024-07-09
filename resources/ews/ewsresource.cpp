@@ -1402,7 +1402,7 @@ void EwsResource::reauthenticate()
     case AuthRefreshToken: {
         mAuthStage = AuthAccessToken;
         const auto reauthPrompt = mAuth->reauthPrompt();
-        if (!reauthPrompt.isNull()) {
+        if (!reauthPrompt.isNull() && !mReauthNotification) {
             mReauthNotification = new KNotification(QStringLiteral("auth-expired"), KNotification::Persistent, this);
 
             mReauthNotification->setText(reauthPrompt.arg(name()));
