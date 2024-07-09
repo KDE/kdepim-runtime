@@ -10,11 +10,13 @@
 
 #include "ewsclient_debug.h"
 
-static constexpr uint respChunkTimeout = 250; /* ms */
+using namespace std::chrono_literals;
+
+static constexpr auto respChunkTimeout = 250ms;
 
 EwsGetStreamingEventsRequest::EwsGetStreamingEventsRequest(EwsClient &client, QObject *parent)
     : EwsEventRequestBase(client, QStringLiteral("GetStreamingEvents"), parent)
-    , mTimeout(30)
+    , mTimeout(30s)
     , mRespTimer(this)
 {
     mRespTimer.setInterval(respChunkTimeout);
@@ -40,13 +42,14 @@ void EwsGetStreamingEventsRequest::start()
     writer.writeTextElement(ewsTypeNsUri, QStringLiteral("SubscriptionId"), mSubscriptionId);
     writer.writeEndElement();
 
-    writer.writeTextElement(ewsMsgNsUri, QStringLiteral("ConnectionTimeout"), QString::number(mTimeout));
+    writer.writeTextElement(ewsMsgNsUri, QStringLiteral("ConnectionTimeout"), QString::number(mTimeout.count()));
 
     writer.writeEndElement();
 
     endSoapDocument(writer);
 
-    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting GetStreamingEvents request (subId: %1, timeout: %2)").arg(ewsHash(mSubscriptionId)).arg(mTimeout);
+    qCDebugNC(EWSCLI_REQUEST_LOG)
+        << QStringLiteral("Starting GetStreamingEvents request (subId: %1, timeout: %2)").arg(ewsHash(mSubscriptionId)).arg(mTimeout.count());
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 
