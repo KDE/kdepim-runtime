@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-07-10 00:39+0000\n"
 "PO-Revision-Date: 2024-05-12 07:12+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -22,31 +22,31 @@ msgstr ""
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: calendarhandler.cpp:90
+#: calendarhandler.cpp:91
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving calendars"
 msgstr "Pridobivanje koledarjev"
 
-#: calendarhandler.cpp:141
+#: calendarhandler.cpp:142
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
 msgstr "Pridobivanje dogodkov za koledar »%1«"
 
-#: calendarhandler.cpp:197 taskhandler.cpp:170
+#: calendarhandler.cpp:220 taskhandler.cpp:170
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
 msgstr "Dodajanje dogodka v koledar »%1«"
 
-#: calendarhandler.cpp:221
+#: calendarhandler.cpp:246
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing event in calendar '%1'"
 msgstr "Spreminjanje dogodka v koledarju »%1«"
 
-#: calendarhandler.cpp:232
+#: calendarhandler.cpp:258
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 event"
@@ -56,7 +56,7 @@ msgstr[1] "Odstranjevanje %1 dogodka"
 msgstr[2] "Odstranjevanje %1 dogodkov"
 msgstr[3] "Odstranjevanje %1 dogodkov"
 
-#: calendarhandler.cpp:248
+#: calendarhandler.cpp:274
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
@@ -66,19 +66,33 @@ msgstr[1] "Premikanje %1 dogodka iz koledarja »%2« v koledar »%3«"
 msgstr[2] "Premikanje %1 dogodkov iz koledarja »%2« v koledar »%3«"
 msgstr[3] "Premikanje %1 dogodkov iz koledarja »%2« v koledar »%3«"
 
-#: calendarhandler.cpp:266
+#: calendarhandler.cpp:341
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Changing contact"
+msgctxt "@info:status"
+msgid "Changing events tags"
+msgstr "Spreminjanje stika"
+
+#: calendarhandler.cpp:345
+#, fuzzy, kde-format
+#| msgid "Failed to refresh tokens"
+msgid "Failed to change tags on events"
+msgstr "Žetonov ni bilo mogoče osvežiti"
+
+#: calendarhandler.cpp:357
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating calendar '%1'"
 msgstr "Ustvarjanje koledarja »%1«"
 
-#: calendarhandler.cpp:294
+#: calendarhandler.cpp:385
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing calendar '%1'"
 msgstr "Spreminjanje koledarja »%1«"
 
-#: calendarhandler.cpp:307
+#: calendarhandler.cpp:398
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing calendar '%1'"
@@ -94,50 +108,56 @@ msgstr "Povezovanje elementov ni mogoče"
 msgid "Cannot handle item unlinking"
 msgstr "Prekinjanje povezav elementov ni mogoče"
 
-#: generichandler.cpp:56
+#: generichandler.cpp:34
+#, fuzzy, kde-format
+#| msgid "Cannot handle item linking"
+msgid "Cannot handle item tag changes"
+msgstr "Povezovanje elementov ni mogoče"
+
+#: generichandler.cpp:61
 #, kde-format
 msgctxt "@status"
 msgid "Ready"
 msgstr "Pripravljen"
 
-#: generichandler.h:65 generichandler.h:77
+#: generichandler.h:66 generichandler.h:78
 #, kde-format
 msgid "Invalid item."
 msgstr "Neveljavni predmet."
 
-#: googleresource.cpp:82
+#: googleresource.cpp:86
 #, kde-format
 msgid "Fetching password…"
 msgstr "Pridobivanje gesla…"
 
-#: googleresource.cpp:89
+#: googleresource.cpp:93
 #, kde-format
 msgid "Can't fetch password"
 msgstr "Ni mogoče pridobiti gesla"
 
-#: googleresource.cpp:130
+#: googleresource.cpp:134
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Pripravljen"
 
-#: googleresource.cpp:142
+#: googleresource.cpp:146
 #, kde-format
 msgid "Not configured"
 msgstr "Ni nastavljeno"
 
-#: googleresource.cpp:142
+#: googleresource.cpp:146
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google Groupware (%1)"
 
-#: googleresource.cpp:193
+#: googleresource.cpp:197
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Račun je bil odjavljen."
 
-#: googleresource.cpp:196
+#: googleresource.cpp:200
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -146,7 +166,7 @@ msgstr ""
 "Google Groupware je bil odjavljen iz vašega računa. Znova se prijavite, da "
 "omogočite ponovno usklajevanje Google Contacts in Calendar."
 
-#: googleresource.cpp:197
+#: googleresource.cpp:201
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -155,36 +175,37 @@ msgstr ""
 "Google Groupware je bil odjavljen iz računa %1. Znova se prijavite, da "
 "omogočite ponovno usklajevanje Google Contacts in Calendar."
 
-#: googleresource.cpp:201
+#: googleresource.cpp:205
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 potrebuje vaša pozornost."
 
-#: googleresource.cpp:206
+#: googleresource.cpp:210
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Prijavi se"
 
-#: googleresource.cpp:218 googleresource.cpp:219
+#: googleresource.cpp:222 googleresource.cpp:223
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Vir ni nastavljen"
 
-#: googleresource.cpp:234
+#: googleresource.cpp:238
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Žetonov ni bilo mogoče osvežiti"
 
-#: googleresource.cpp:423 googleresource.cpp:437 googleresource.cpp:451
-#: googleresource.cpp:466 googleresource.cpp:480 googleresource.cpp:494
+#: googleresource.cpp:427 googleresource.cpp:441 googleresource.cpp:455
+#: googleresource.cpp:470 googleresource.cpp:484 googleresource.cpp:498
+#: googleresource.cpp:512
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Neveljavna vrsta vsebine"
 
-#: googleresource.cpp:508 googleresource.cpp:522 googleresource.cpp:536
+#: googleresource.cpp:526 googleresource.cpp:540 googleresource.cpp:554
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Neznana vrsta MIME zbirke"

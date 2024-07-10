@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-07-10 00:39+0000\n"
 "PO-Revision-Date: 2020-07-31 19:09+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Lokalize 20.04.2\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: calendarhandler.cpp:90
+#: calendarhandler.cpp:91
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Retrieving photos"
@@ -25,25 +25,25 @@ msgctxt "@info:status"
 msgid "Retrieving calendars"
 msgstr "Henter fotos"
 
-#: calendarhandler.cpp:141
+#: calendarhandler.cpp:142
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
 msgstr ""
 
-#: calendarhandler.cpp:197 taskhandler.cpp:170
+#: calendarhandler.cpp:220 taskhandler.cpp:170
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
 msgstr ""
 
-#: calendarhandler.cpp:221
+#: calendarhandler.cpp:246
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing event in calendar '%1'"
 msgstr ""
 
-#: calendarhandler.cpp:232
+#: calendarhandler.cpp:258
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Removing contact"
@@ -53,7 +53,7 @@ msgid_plural "Removing %1 events"
 msgstr[0] "Fjerner kontakt"
 msgstr[1] "Fjerner kontakt"
 
-#: calendarhandler.cpp:248
+#: calendarhandler.cpp:274
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
@@ -61,19 +61,33 @@ msgid_plural "Moving %1 events from calendar '%2' to calendar '%3'"
 msgstr[0] ""
 msgstr[1] ""
 
-#: calendarhandler.cpp:266
+#: calendarhandler.cpp:341
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Removing contact"
+msgctxt "@info:status"
+msgid "Changing events tags"
+msgstr "Fjerner kontakt"
+
+#: calendarhandler.cpp:345
+#, fuzzy, kde-format
+#| msgid "Failed to create a new event: %1"
+msgid "Failed to change tags on events"
+msgstr "Kunne ikke oprette ny begivenhed: %1"
+
+#: calendarhandler.cpp:357
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating calendar '%1'"
 msgstr ""
 
-#: calendarhandler.cpp:294
+#: calendarhandler.cpp:385
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing calendar '%1'"
 msgstr ""
 
-#: calendarhandler.cpp:307
+#: calendarhandler.cpp:398
 #, fuzzy, kde-format
 #| msgid "Remove Calendar?"
 msgctxt "@info:status"
@@ -90,41 +104,46 @@ msgstr ""
 msgid "Cannot handle item unlinking"
 msgstr ""
 
-#: generichandler.cpp:56
+#: generichandler.cpp:34
+#, kde-format
+msgid "Cannot handle item tag changes"
+msgstr ""
+
+#: generichandler.cpp:61
 #, kde-format
 msgctxt "@status"
 msgid "Ready"
 msgstr "Klar"
 
-#: generichandler.h:65 generichandler.h:77
+#: generichandler.h:66 generichandler.h:78
 #, fuzzy, kde-format
 #| msgid "Invalid item payload."
 msgid "Invalid item."
 msgstr "Ugyldig elementladning."
 
-#: googleresource.cpp:82
+#: googleresource.cpp:86
 #, kde-format
 msgid "Fetching password…"
 msgstr ""
 
-#: googleresource.cpp:89
+#: googleresource.cpp:93
 #, kde-format
 msgid "Can't fetch password"
 msgstr ""
 
-#: googleresource.cpp:130
+#: googleresource.cpp:134
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Klar"
 
-#: googleresource.cpp:142
+#: googleresource.cpp:146
 #, fuzzy, kde-format
 #| msgid "not configured"
 msgid "Not configured"
 msgstr "ikke konfigureret"
 
-#: googleresource.cpp:142
+#: googleresource.cpp:146
 #, fuzzy, kde-format
 #| msgctxt "%1 is account name (user@gmail.com)"
 #| msgid "Google Contacts (%1)"
@@ -132,56 +151,57 @@ msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google-kontakter (%1)"
 
-#: googleresource.cpp:193
+#: googleresource.cpp:197
 #, fuzzy, kde-format
 #| msgid "Configured account has been removed"
 msgid "Account has been logged out."
 msgstr "Den konfigurerede konto er blevet fjernet"
 
-#: googleresource.cpp:196
+#: googleresource.cpp:200
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
 
-#: googleresource.cpp:197
+#: googleresource.cpp:201
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
 
-#: googleresource.cpp:201
+#: googleresource.cpp:205
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr ""
 
-#: googleresource.cpp:206
+#: googleresource.cpp:210
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr ""
 
-#: googleresource.cpp:218 googleresource.cpp:219
+#: googleresource.cpp:222 googleresource.cpp:223
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Ressourcen er ikke konfigureret"
 
-#: googleresource.cpp:234
+#: googleresource.cpp:238
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Kunne ikke genopfriske poletter"
 
-#: googleresource.cpp:423 googleresource.cpp:437 googleresource.cpp:451
-#: googleresource.cpp:466 googleresource.cpp:480 googleresource.cpp:494
+#: googleresource.cpp:427 googleresource.cpp:441 googleresource.cpp:455
+#: googleresource.cpp:470 googleresource.cpp:484 googleresource.cpp:498
+#: googleresource.cpp:512
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Ugyldig ladningstype"
 
-#: googleresource.cpp:508 googleresource.cpp:522 googleresource.cpp:536
+#: googleresource.cpp:526 googleresource.cpp:540 googleresource.cpp:554
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Ukendt MIME-type for samling"
@@ -550,9 +570,6 @@ msgstr "Fjern opgaveliste?"
 
 #~ msgid "Failed to fetch events: %1"
 #~ msgstr "Kunne ikke hente begivenheder: %1"
-
-#~ msgid "Failed to create a new event: %1"
-#~ msgstr "Kunne ikke oprette ny begivenhed: %1"
 
 #~ msgid "Failed to update an event: %1"
 #~ msgstr "Kunne ikke opdatere en begivenhed: %1"

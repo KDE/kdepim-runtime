@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-07-10 00:39+0000\n"
 "PO-Revision-Date: 2024-05-18 16:43+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -19,57 +19,71 @@ msgstr ""
 "X-Generator: Lokalize 24.04.70\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: calendarhandler.cpp:90
+#: calendarhandler.cpp:91
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving calendars"
 msgstr "正在取得行事曆"
 
-#: calendarhandler.cpp:141
+#: calendarhandler.cpp:142
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
 msgstr "正在為行事曆 '%1' 取得事件"
 
-#: calendarhandler.cpp:197 taskhandler.cpp:170
+#: calendarhandler.cpp:220 taskhandler.cpp:170
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
 msgstr "正在新增事件到行事曆 '%1'"
 
-#: calendarhandler.cpp:221
+#: calendarhandler.cpp:246
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing event in calendar '%1'"
 msgstr "正在變更行事曆 '%1' 中的事件"
 
-#: calendarhandler.cpp:232
+#: calendarhandler.cpp:258
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 event"
 msgid_plural "Removing %1 events"
 msgstr[0] "正在移除 %1 個事件"
 
-#: calendarhandler.cpp:248
+#: calendarhandler.cpp:274
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
 msgid_plural "Moving %1 events from calendar '%2' to calendar '%3'"
 msgstr[0] "正在從行事曆 '%2' 移動 %1 個事件到行事曆 '%3'"
 
-#: calendarhandler.cpp:266
+#: calendarhandler.cpp:341
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Changing contact"
+msgctxt "@info:status"
+msgid "Changing events tags"
+msgstr "正在變更聯絡人"
+
+#: calendarhandler.cpp:345
+#, fuzzy, kde-format
+#| msgid "Failed to refresh tokens"
+msgid "Failed to change tags on events"
+msgstr "刷新標記時失敗"
+
+#: calendarhandler.cpp:357
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating calendar '%1'"
 msgstr "正在建立行事曆 '%1'"
 
-#: calendarhandler.cpp:294
+#: calendarhandler.cpp:385
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing calendar '%1'"
 msgstr "正在變更行事曆 '%1'"
 
-#: calendarhandler.cpp:307
+#: calendarhandler.cpp:398
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing calendar '%1'"
@@ -85,50 +99,56 @@ msgstr "無法處理項目連結"
 msgid "Cannot handle item unlinking"
 msgstr "無法處理項目解除連結"
 
-#: generichandler.cpp:56
+#: generichandler.cpp:34
+#, fuzzy, kde-format
+#| msgid "Cannot handle item linking"
+msgid "Cannot handle item tag changes"
+msgstr "無法處理項目連結"
+
+#: generichandler.cpp:61
 #, kde-format
 msgctxt "@status"
 msgid "Ready"
 msgstr "已就緒"
 
-#: generichandler.h:65 generichandler.h:77
+#: generichandler.h:66 generichandler.h:78
 #, kde-format
 msgid "Invalid item."
 msgstr "無效的項目。"
 
-#: googleresource.cpp:82
+#: googleresource.cpp:86
 #, kde-format
 msgid "Fetching password…"
 msgstr "正在抓取密碼…"
 
-#: googleresource.cpp:89
+#: googleresource.cpp:93
 #, kde-format
 msgid "Can't fetch password"
 msgstr "無法抓取密碼"
 
-#: googleresource.cpp:130
+#: googleresource.cpp:134
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "已就緒"
 
-#: googleresource.cpp:142
+#: googleresource.cpp:146
 #, kde-format
 msgid "Not configured"
 msgstr "未設定"
 
-#: googleresource.cpp:142
+#: googleresource.cpp:146
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google 協作工具 (%1)"
 
-#: googleresource.cpp:193
+#: googleresource.cpp:197
 #, kde-format
 msgid "Account has been logged out."
 msgstr "帳號已被登出。"
 
-#: googleresource.cpp:196
+#: googleresource.cpp:200
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -136,7 +156,7 @@ msgid ""
 msgstr ""
 "Google 協作工具已從您的帳號登出。請登入來重新啟用 Google 聯絡人與行事曆同步。"
 
-#: googleresource.cpp:197
+#: googleresource.cpp:201
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -144,36 +164,37 @@ msgid ""
 msgstr ""
 "Google 協作工具已從帳號 %1 登出。請登入來重新啟用 Google 聯絡人與行事曆同步。"
 
-#: googleresource.cpp:201
+#: googleresource.cpp:205
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 需要您的注意。"
 
-#: googleresource.cpp:206
+#: googleresource.cpp:210
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "登入"
 
-#: googleresource.cpp:218 googleresource.cpp:219
+#: googleresource.cpp:222 googleresource.cpp:223
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "資源未設定"
 
-#: googleresource.cpp:234
+#: googleresource.cpp:238
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "刷新標記時失敗"
 
-#: googleresource.cpp:423 googleresource.cpp:437 googleresource.cpp:451
-#: googleresource.cpp:466 googleresource.cpp:480 googleresource.cpp:494
+#: googleresource.cpp:427 googleresource.cpp:441 googleresource.cpp:455
+#: googleresource.cpp:470 googleresource.cpp:484 googleresource.cpp:498
+#: googleresource.cpp:512
 #, kde-format
 msgid "Invalid payload type"
 msgstr "無效的資料（payload）型態"
 
-#: googleresource.cpp:508 googleresource.cpp:522 googleresource.cpp:536
+#: googleresource.cpp:526 googleresource.cpp:540 googleresource.cpp:554
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "未知的收藏 MIME 型態"
