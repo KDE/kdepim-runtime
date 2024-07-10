@@ -50,7 +50,7 @@ QString TimezoneConverter::fromCityName(const QString &tz)
     }
 
     static const QRegularExpression locationFinder(QStringLiteral("\\b([a-zA-Z])+\\b"));
-    QRegularExpressionMatchIterator iter = locationFinder.globalMatch(tz);
+    QRegularExpressionMatchIterator iter = locationFinder.globalMatchView(tz);
     while (iter.hasNext()) {
         QRegularExpressionMatch match = iter.next();
         const QString location = match.captured(0);
