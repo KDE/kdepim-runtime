@@ -110,18 +110,19 @@ add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 target_link_libraries(imapresource
     Qt::DBus
     Qt::Network
-    KPim6::AkonadiCore
-    KPim6::IMAP
-    KPim6::MailTransport
+    KF6::ConfigGui
+    KF6::I18n
     KF6::KIOWidgets
-    KPim6::Mime
+    KF6::Notifications
+    KF6::Wallet
+    KF6::WindowSystem
+    KPim6::AkonadiAgentBase
+    KPim6::AkonadiCore
     KPim6::AkonadiMime
     KPim6::IdentityManagementWidgets
-    KPim6::AkonadiAgentBase
-    KF6::I18n
-    KF6::Notifications
-    KF6::WindowSystem
-    KF6::ConfigGui
+    KPim6::IMAP
+    KPim6::MailTransport
+    KPim6::Mime
     akonadi-singlefileresource
     qt6keychain
 )
