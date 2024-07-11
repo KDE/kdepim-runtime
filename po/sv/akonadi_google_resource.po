@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-10 00:39+0000\n"
-"PO-Revision-Date: 2024-06-18 17:08+0200\n"
-"Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
+"PO-Revision-Date: 2024-07-10 16:49+0200\n"
+"Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
@@ -58,18 +58,15 @@ msgstr[0] "Flyttar %1 händelse från kalender '%2' till kalender '%3'"
 msgstr[1] "Flyttar %1 händelser från kalender '%2' till kalender '%3'"
 
 #: calendarhandler.cpp:341
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Changing contact"
+#, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr "Ändrar kontakt"
+msgstr "Ändrar händelsens etiketter"
 
 #: calendarhandler.cpp:345
-#, fuzzy, kde-format
-#| msgid "Failed to create a new event: %1"
+#, kde-format
 msgid "Failed to change tags on events"
-msgstr "Misslyckades skapa en ny händelse: %1"
+msgstr "Misslyckades ändra händelsernas etiketter"
 
 #: calendarhandler.cpp:357
 #, kde-format
@@ -100,10 +97,9 @@ msgid "Cannot handle item unlinking"
 msgstr "Kan inte hantera borttagning av objektlänkning"
 
 #: generichandler.cpp:34
-#, fuzzy, kde-format
-#| msgid "Cannot handle item linking"
+#, kde-format
 msgid "Cannot handle item tag changes"
-msgstr "Kan inte hantera objektlänkning"
+msgstr "Kan inte hantera ändringar av objektens etiketter"
 
 #: generichandler.cpp:61
 #, kde-format

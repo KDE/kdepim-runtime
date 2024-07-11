@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-10 00:39+0000\n"
-"PO-Revision-Date: 2024-05-12 13:45+0300\n"
+"PO-Revision-Date: 2024-07-10 13:04+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -62,18 +62,15 @@ msgstr[0] "%1 etkinlik, “%2” takviminden “%3” takvimine taşınıyor"
 msgstr[1] "%1 etkinlik, “%2” takviminden “%3” takvimine taşınıyor"
 
 #: calendarhandler.cpp:341
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Changing contact"
+#, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr "Kişi değiştiriliyor"
+msgstr "Etkinlik künyeleri değiştiriliyor"
 
 #: calendarhandler.cpp:345
-#, fuzzy, kde-format
-#| msgid "Failed to refresh tokens"
+#, kde-format
 msgid "Failed to change tags on events"
-msgstr "Jetonlar yenilemedi"
+msgstr "Etkinliklerdeki künyeler değiştirilemedi"
 
 #: calendarhandler.cpp:357
 #, kde-format
@@ -104,10 +101,9 @@ msgid "Cannot handle item unlinking"
 msgstr "Öge bağı kaldırma işlenemiyor"
 
 #: generichandler.cpp:34
-#, fuzzy, kde-format
-#| msgid "Cannot handle item linking"
+#, kde-format
 msgid "Cannot handle item tag changes"
-msgstr "Öge bağlama işlenemiyor"
+msgstr "Öge künyeleri değişiklikleri işlenemiyor"
 
 #: generichandler.cpp:61
 #, kde-format

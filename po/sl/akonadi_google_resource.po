@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-10 00:39+0000\n"
-"PO-Revision-Date: 2024-05-12 07:12+0200\n"
+"PO-Revision-Date: 2024-07-10 06:39+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: calendarhandler.cpp:91
 #, kde-format
@@ -67,18 +67,15 @@ msgstr[2] "Premikanje %1 dogodkov iz koledarja »%2« v koledar »%3«"
 msgstr[3] "Premikanje %1 dogodkov iz koledarja »%2« v koledar »%3«"
 
 #: calendarhandler.cpp:341
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Changing contact"
+#, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr "Spreminjanje stika"
+msgstr "Spreminjanje oznak dogodka"
 
 #: calendarhandler.cpp:345
-#, fuzzy, kde-format
-#| msgid "Failed to refresh tokens"
+#, kde-format
 msgid "Failed to change tags on events"
-msgstr "Žetonov ni bilo mogoče osvežiti"
+msgstr "Sprememba oznak dogodkov ni uspela"
 
 #: calendarhandler.cpp:357
 #, kde-format
@@ -109,10 +106,9 @@ msgid "Cannot handle item unlinking"
 msgstr "Prekinjanje povezav elementov ni mogoče"
 
 #: generichandler.cpp:34
-#, fuzzy, kde-format
-#| msgid "Cannot handle item linking"
+#, kde-format
 msgid "Cannot handle item tag changes"
-msgstr "Povezovanje elementov ni mogoče"
+msgstr "Ni mogoče obdelovati sprememb oznake dogodka"
 
 #: generichandler.cpp:61
 #, kde-format
