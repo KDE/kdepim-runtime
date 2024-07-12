@@ -1,0 +1,163 @@
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+#
+# SPDX-FileCopyrightText: 2024 Yaron Shahrabani <sh.yaron@gmail.com>
+msgid ""
+msgstr ""
+"Project-Id-Version: kdepim-runtime\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"PO-Revision-Date: 2024-07-11 08:12+0300\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"Language-Team: צוות התרגום של KDE ישראל\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 24.05.1\n"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
+#: contactsagentsettingswidget.ui:29
+#, kde-format
+msgid "Directory Name"
+msgstr "שם התיקייה"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: contactsagentsettingswidget.ui:37
+#, kde-format
+msgid "Di&rectory:"
+msgstr "&תיקייה:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: contactsagentsettingswidget.ui:52
+#, kde-format
+msgid ""
+"Select the directory whose contents should be represented by this resource. "
+"If the directory does not exist, it will be created."
+msgstr ""
+"נא לבחור את התיקייה שהתוכן שלה ייוצג על ידי המשאב הזה. אם התיקייה לא קיימת, "
+"היא תיווצר."
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox)
+#: contactsagentsettingswidget.ui:65
+#, kde-format
+msgid "Access Rights"
+msgstr "הרשאות גישה"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
+#: contactsagentsettingswidget.ui:71
+#, kde-format
+msgctxt "if the access is limited to read-only"
+msgid "Read only"
+msgstr "לקריאה בלבד"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: contactsagentsettingswidget.ui:78
+#, kde-format
+msgid ""
+"If read-only mode is enabled, no changes will be written to the directory "
+"selected above. Read-only mode will be automatically enabled if you do not "
+"have write access to the directory."
+msgstr ""
+"אם מצב קריאה בלבד פעיל, לא ייכתבו שינויים לתיקייה שנבחרה לעיל. מצב לקריאה "
+"בלבד יופעל אוטומטית אם אין לך הרשאות כתיבה לתיקייה."
+
+#: contactsresource.cpp:44
+#, kde-format
+msgid "Personal Contacts"
+msgstr "אנשי קשר פרטיים"
+
+#: contactsresource.cpp:124
+#, kde-format
+msgid "Directory '%1' does not exists"
+msgstr "התיקייה ‚%1’ לא קיימת"
+
+#: contactsresource.cpp:148 contactsresource.cpp:223
+#, kde-format
+msgid "Found file of unknown format: '%1'"
+msgstr "נמצא קובץ בתבנית לא מוכרת: ‚%1’"
+
+#: contactsresource.cpp:197
+#, kde-format
+msgid "Unable to open file '%1'"
+msgstr "לא ניתן לפתוח את הקובץ ‚%1’"
+
+#: contactsresource.cpp:207
+#, kde-format
+msgid "Found invalid contact in file '%1'"
+msgstr "נמצא איש קשר שגוי בקובץ ‚%1’"
+
+#: contactsresource.cpp:217
+#, kde-format
+msgid "Found invalid contact group in file '%1': %2"
+msgstr "נמצאה קבוצת קשר שגויה בקובץ ‚%1’: %2"
+
+#: contactsresource.cpp:233 contactsresource.cpp:358 contactsresource.cpp:379
+#: contactsresource.cpp:412
+#, kde-format
+msgid "Trying to write to a read-only directory: '%1'"
+msgstr "מתבצע ניסיון לכתוב לתיקייה לקריאה בלבד: ‚%1’"
+
+#: contactsresource.cpp:251 contactsresource.cpp:266 contactsresource.cpp:301
+#: contactsresource.cpp:313
+#, kde-format
+msgid "Unable to write to file '%1': %2"
+msgstr "לא ניתן לכתוב לקובץ ‚%1’: %2"
+
+#: contactsresource.cpp:285 contactsresource.cpp:333
+#, kde-format
+msgid "Trying to write to a read-only file: '%1'"
+msgstr "מתבצע ניסיון לכתוב לקובץ לקריאה בלבד: ‚%1’"
+
+#: contactsresource.cpp:323
+#, kde-format
+msgid "Received item with unknown payload %1"
+msgstr "התקבל פריט עם מטען לא מוכר %1"
+
+#: contactsresource.cpp:348
+#, kde-format
+msgid "Unable to remove file '%1'"
+msgstr "לא ניתן להסיר את הקובץ ‚%1’"
+
+#: contactsresource.cpp:365
+#, kde-format
+msgid "Unable to create folder '%1'."
+msgstr "לא ניתן ליצור את התיקייה ‚%1’."
+
+#: contactsresource.cpp:400
+#, kde-format
+msgid "Unable to rename folder '%1'."
+msgstr "לא ניתן לשנות את שם התיקייה ‚%1’."
+
+#: contactsresource.cpp:418
+#, kde-format
+msgid "Unknown folder to delete."
+msgstr "תיקייה לא מוכרת למחיקה."
+
+#: contactsresource.cpp:422
+#, kde-format
+msgid "Unable to delete folder '%1'."
+msgstr "לא ניתן למחוק את התיקייה ‚%1’."
+
+#: contactsresource.cpp:437
+#, kde-format
+msgid "Unable to move file '%1' to '%2', '%2' already exists."
+msgstr "לא ניתן להעביר את הקובץ ‚%1’ אל ‚%2’, ‚%2’ כבר קיים."
+
+#: contactsresource.cpp:451
+#, kde-format
+msgid "Unable to move directory '%1' to '%2', '%2' already exists."
+msgstr "לא ניתן להעביר את התיקייה ‚%1’ אל ‚%2’, ‚%2’ כבר קיים."
+
+#. i18n: ectx: label, entry (Path), group (General)
+#: contactsresource.kcfg:10
+#, kde-format
+msgid "Path to contacts directory"
+msgstr "נתיב לתיקיית קשר"
+
+#. i18n: ectx: label, entry (ReadOnly), group (General)
+#: contactsresource.kcfg:14
+#, kde-format
+msgid "Do not change the actual backend data."
+msgstr "לא לשנות את נתוני המנגנון בפועל."
