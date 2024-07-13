@@ -41,7 +41,6 @@ void MigrationAgent::configure(WId windowId)
     topLayout->addWidget(widget);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, dlg);
-    connect(buttonBox, &QDialogButtonBox::accepted, dlg, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, dlg, &QDialog::reject);
     topLayout->addWidget(buttonBox);
 
