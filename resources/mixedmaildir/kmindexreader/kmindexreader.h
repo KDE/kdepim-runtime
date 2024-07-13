@@ -26,9 +26,9 @@ public:
     KMIndexData();
     /** Status object of the message. */
     MessageStatus &status();
-    QStringList tagList() const;
-    quint64 uid() const;
-    bool isEmpty() const;
+    [[nodiscard]] QStringList tagList() const;
+    [[nodiscard]] quint64 uid() const;
+    [[nodiscard]] bool isEmpty() const;
 
 private:
     QString mCachedStringParts[20];
@@ -55,7 +55,7 @@ public:
     explicit KMIndexReader(const QString &indexFile);
     ~KMIndexReader();
 
-    bool error() const;
+    [[nodiscard]] bool error() const;
 
     /**
      * begins the index reading process
@@ -109,7 +109,7 @@ private:
 
     bool fillPartsCache(KMIndexData *msg, off_t off, short int len);
 
-    QList<KMIndexDataPtr> messages();
+    [[nodiscard]] QList<KMIndexDataPtr> messages();
 
     QString mIndexFileName;
     QFile mIndexFile;
