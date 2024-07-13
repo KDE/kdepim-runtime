@@ -25,12 +25,12 @@ class NewMailNotifierCollectionProxyModel : public QIdentityProxyModel
 public:
     explicit NewMailNotifierCollectionProxyModel(QObject *parent = nullptr);
 
-    QVariant data(const QModelIndex &index, int role) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
 
-    bool setData(const QModelIndex &index, const QVariant &_data, int role) override;
-    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    [[nodiscard]] bool setData(const QModelIndex &index, const QVariant &_data, int role) override;
+    [[nodiscard]] Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-    QHash<Akonadi::Collection, bool> notificationCollection() const;
+    [[nodiscard]] QHash<Akonadi::Collection, bool> notificationCollection() const;
 
 private:
     QHash<Akonadi::Collection, bool> mNotificationCollection;
