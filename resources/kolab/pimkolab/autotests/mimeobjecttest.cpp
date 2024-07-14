@@ -114,20 +114,6 @@ void MIMEObjectTest::testJournal()
     testFunction<Kolab::Journal>(&Kolab::MIMEObject::readJournal, &Kolab::MIMEObject::writeJournal);
 }
 
-void MIMEObjectTest::testNote_data()
-{
-    QTest::addColumn<Kolab::Version>("version");
-    QTest::addColumn<Kolab::ObjectType>("type");
-    QTest::addColumn<QString>("mimeFileName");
-
-    QTest::newRow("v3noteSimple") << Kolab::KolabV3 << Kolab::NoteObject << getPath("v3/note/note.mime.mime");
-}
-
-void MIMEObjectTest::testNote()
-{
-    testFunction<Kolab::Note>(&Kolab::MIMEObject::readNote, &Kolab::MIMEObject::writeNote);
-}
-
 void MIMEObjectTest::testContact_data()
 {
     QTest::addColumn<Kolab::Version>("version");

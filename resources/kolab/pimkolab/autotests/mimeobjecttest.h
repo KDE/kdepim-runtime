@@ -24,8 +24,6 @@ private Q_SLOTS:
     void testTodo();
     void testJournal_data();
     void testJournal();
-    void testNote_data();
-    void testNote();
     void testContact_data();
     void testContact();
     void testDistlist_data();

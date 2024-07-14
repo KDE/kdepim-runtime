@@ -10,8 +10,6 @@
 #include "pimkolab/kolabformat/errorhandler.h"
 #include "pimkolab/kolabformat/kolabobject.h"
 
-#include <Akonadi/NoteUtils>
-
 #include <Akonadi/Collection>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
@@ -19,6 +17,8 @@
 #include <KCalendarCore/Incidence>
 #include <KLocalizedString>
 #include <QColor>
+
+#include <KMime/Headers>
 
 bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
 {
@@ -85,11 +85,16 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
         break;
     }
     case Kolab::NoteType: {
-        Akonadi::NoteUtils::NoteMessageWrapper note;
-        note.setTitle(i18n("Corrupt Note"));
-        note.setText(i18n("Note could not be read. Delete this note to remove it from the server."));
-        item.setPayload(Akonadi::NoteUtils::noteMimeType());
-        item.setPayload(note.message());
+        auto message = KMime::Message::Ptr::create();
+        auto subject = new KMime::Headers::Subject();
+        subject->fromUnicodeString(i18n("Notes are not supported"));
+        message->setHeader(subject);
+        auto contentType = new KMime::Headers::ContentType();
+        contentType->setMimeType("text/plain");
+        message->setHeader(subject);
+        message->setBody(i18n("Support for notes have been removed.").toUtf8());
+        item.setMimeType(QStringLiteral("text/x-vnd.akonadi.note"));
+        item.setPayload(message);
         break;
     }
     case Kolab::MailType:
@@ -142,18 +147,9 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         return newItem;
     }
     case Kolab::NoteObject: {
-        const KMime::Message::Ptr note = reader.getNote();
-        if (!note) {
-            qCWarning(KOLABRESOURCE_LOG) << "Failed to read note.";
-            ok = false;
-            return {};
-        }
-        Akonadi::Item newItem(QStringLiteral("text/x-vnd.akonadi.note"));
-        newItem.setPayload(note);
-        newItem.setRemoteId(imapItem.remoteId());
-        const Akonadi::NoteUtils::NoteMessageWrapper wrapper(note);
-        newItem.setGid(wrapper.uid());
-        return newItem;
+        qCInfo(KOLABRESOURCE_LOG) << "Note support removed.";
+        ok = false;
+        return {};
     }
     case Kolab::ContactObject: {
         Akonadi::Item newItem(KContacts::Addressee::mimeType());
@@ -273,10 +269,9 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
             break;
         }
         case Kolab::NoteObject: {
-            qCDebug(KOLABRESOURCE_LOG) << "converted note";
-            const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeNote(item.payload<KMime::Message::Ptr>(), Kolab::KolabV3, productId);
-            imapItem.setPayload(message);
-            break;
+            qCInfo(KOLABRESOURCE_LOG) << "note support removed";
+            ok = false;
+            return {};
         }
         case Kolab::ContactObject: {
             qCDebug(KOLABRESOURCE_LOG) << "converted contact";

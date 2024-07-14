@@ -9,18 +9,14 @@
 #include "pimkolab_debug.h"
 #include "v2helpers.h"
 
-#include <Akonadi/NoteUtils>
-
 #include "conversion/commonconversion.h"
 #include "conversion/kabcconversion.h"
 #include "conversion/kcalconversion.h"
-#include "conversion/kolabconversion.h"
 #include "kolabformat/mimeobject.h"
 #include "kolabformatV2/contact.h"
 #include "kolabformatV2/distributionlist.h"
 #include "kolabformatV2/event.h"
 #include "kolabformatV2/journal.h"
-#include "kolabformatV2/note.h"
 #include "kolabformatV2/task.h"
 #include "mime/mimeutils.h"
 #include <kolabformat.h>
@@ -210,7 +206,6 @@ public:
     KCalendarCore::Incidence::Ptr mIncidence;
     KContacts::Addressee mAddressee;
     KContacts::ContactGroup mContactGroup;
-    KMime::Message::Ptr mNote;
     QStringList mDictionary;
     QString mDictionaryLanguage;
     ObjectType mObjectType;
@@ -300,8 +295,7 @@ ObjectType KolabObjectReader::parseMimeMessage(const KMime::Message::Ptr &msg)
         break;
     }
     case NoteObject: {
-        const Kolab::Note &note = mimeObject.getNote();
-        d->mNote = Kolab::Conversion::toNote(note);
+        qCInfo(PIMKOLAB_LOG) << "Note support has been removed";
         break;
     }
     case DictionaryConfigurationObject: {
@@ -399,11 +393,6 @@ KContacts::Addressee KolabObjectReader::getContact() const
 KContacts::ContactGroup KolabObjectReader::getDistlist() const
 {
     return d->mContactGroup;
-}
-
-KMime::Message::Ptr KolabObjectReader::getNote() const
-{
-    return d->mNote;
 }
 
 QStringList KolabObjectReader::getDictionary(QString &lang) const
@@ -513,19 +502,6 @@ KMime::Message::Ptr KolabObjectWriter::writeDistlist(const KContacts::ContactGro
     const Kolab::DistList &distlist = Kolab::Conversion::fromKABC(kDistList);
     Kolab::MIMEObject mimeObject;
     const std::string mimeMessage = mimeObject.writeDistlist(distlist, v, productId.toStdString());
-    return createMimeMessage(mimeMessage);
-}
-
-KMime::Message::Ptr KolabObjectWriter::writeNote(const KMime::Message::Ptr &n, Version v, const QString &productId)
-{
-    ErrorHandler::clearErrors();
-    if (!n) {
-        qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
-        return {};
-    }
-    const Kolab::Note &note = Kolab::Conversion::fromNote(n);
-    Kolab::MIMEObject mimeObject;
-    const std::string mimeMessage = mimeObject.writeNote(note, v, productId.toStdString());
     return createMimeMessage(mimeMessage);
 }
 

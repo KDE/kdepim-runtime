@@ -49,7 +49,6 @@ public:
     Kolab::Event getEvent() const;
     Kolab::Todo getTodo() const;
     Kolab::Journal getJournal() const;
-    Kolab::Note getNote() const;
     Kolab::Contact getContact() const;
     Kolab::DistList getDistlist() const;
     Kolab::Freebusy getFreebusy() const;
@@ -63,9 +62,6 @@ public:
 
     std::string writeJournal(const Kolab::Journal &journal, Version version, const std::string &productId = std::string());
     Kolab::Journal readJournal(const std::string &s);
-
-    std::string writeNote(const Kolab::Note &note, Version version, const std::string &productId = std::string());
-    Kolab::Note readNote(const std::string &s);
 
     std::string writeContact(const Kolab::Contact &contact, Version version, const std::string &productId = std::string());
     Kolab::Contact readContact(const std::string &s);

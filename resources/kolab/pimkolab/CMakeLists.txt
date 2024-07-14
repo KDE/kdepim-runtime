@@ -33,7 +33,6 @@ set(KOLAB_SRCS
     conversion/kcalconversion.cpp
     conversion/kabcconversion.cpp
     conversion/commonconversion.cpp
-    conversion/kolabconversion.cpp
     conversion/timezoneconverter.cpp
     calendaring/calendaring.cpp
     calendaring/event.cpp
@@ -47,7 +46,6 @@ set(KOLAB_SRCS
     kolabformatV2/task.cpp
     kolabformatV2/journal.cpp
     kolabformatV2/incidence.cpp
-    kolabformatV2/note.cpp
     freebusy/freebusy.cpp
 
     kolabformat/kolabobject.h
@@ -60,7 +58,6 @@ set(KOLAB_SRCS
     conversion/kcalconversion.h
     conversion/kabcconversion.h
     conversion/commonconversion.h
-    conversion/kolabconversion.h
     conversion/timezoneconverter.h
     calendaring/calendaring.h
     calendaring/event.h
@@ -74,7 +71,6 @@ set(KOLAB_SRCS
     kolabformatV2/task.h
     kolabformatV2/journal.h
     kolabformatV2/incidence.h
-    kolabformatV2/note.h
     freebusy/freebusy.h
 )
 
@@ -90,7 +86,6 @@ set(KOLAB_LINK_LIBRARIES
     KF6::Contacts
     KPim6::Mime
     KPim6::AkonadiCore
-    KPim6::AkonadiNotes
     KF6::Codecs
     KF6::I18n
     ${Libkolabxml_LIBRARIES}
