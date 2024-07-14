@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_migration_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-23 00:39+0000\n"
+"POT-Creation-Date: 2024-07-14 00:39+0000\n"
 "PO-Revision-Date: 2013-11-24 22:51+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: migrationagent.cpp:49
+#: migrationagent.cpp:48
 #, kde-format
 msgctxt ""
 "Title of the window that shows the status of the migration agent and offers "
@@ -76,12 +76,12 @@ msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "stanje"
 
-#: migrationstatuswidget.cpp:98
+#: migrationstatuswidget.cpp:97
 #, kde-format
 msgid "Logfile"
 msgstr "Dnevnički fajl"
 
-#: migrationstatuswidget.cpp:107
+#: migrationstatuswidget.cpp:106
 #, kde-format
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"

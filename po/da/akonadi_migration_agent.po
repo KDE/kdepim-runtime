@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-23 00:39+0000\n"
+"POT-Creation-Date: 2024-07-14 00:39+0000\n"
 "PO-Revision-Date: 2020-07-31 19:05+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 20.04.2\n"
 
-#: migrationagent.cpp:49
+#: migrationagent.cpp:48
 #, kde-format
 msgctxt ""
 "Title of the window that shows the status of the migration agent and offers "
@@ -70,12 +70,12 @@ msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "Status"
 
-#: migrationstatuswidget.cpp:98
+#: migrationstatuswidget.cpp:97
 #, kde-format
 msgid "Logfile"
 msgstr "Logfil"
 
-#: migrationstatuswidget.cpp:107
+#: migrationstatuswidget.cpp:106
 #, kde-format
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"
