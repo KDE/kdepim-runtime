@@ -12,7 +12,6 @@ Dependencies:
     'pim/akonadi-calendar' : '@same'
     'pim/akonadi-contacts' : '@same'
     'pim/akonadi-mime' : '@same'
-    'pim/akonadi-notes' : '@same'
     'pim/kcalutils' : '@same'
     'pim/kidentitymanagement' : '@same'
     'pim/kimap' : '@same'
