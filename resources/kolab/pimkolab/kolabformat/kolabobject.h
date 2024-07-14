@@ -90,7 +90,6 @@ public:
     KCalendarCore::Incidence::Ptr getIncidence() const;
     KContacts::Addressee getContact() const;
     KContacts::ContactGroup getDistlist() const;
-    KMime::Message::Ptr getNote() const;
     QStringList getDictionary(QString &lang) const;
     Freebusy getFreebusy() const;
     bool isTag() const;
@@ -124,7 +123,6 @@ public:
     writeIncidence(const KCalendarCore::Incidence::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
     static KMime::Message::Ptr writeContact(const KContacts::Addressee &, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeDistlist(const KContacts::ContactGroup &, Version v = KolabV3, const QString &productId = QString());
-    static KMime::Message::Ptr writeNote(const KMime::Message::Ptr &, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeDictionary(const QStringList &, const QString &lang, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeFreebusy(const Kolab::Freebusy &, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeTag(const Akonadi::Tag &, const QStringList &items, Version v = KolabV3, const QString &productId = QString());

@@ -9,7 +9,6 @@
 #include "conversion/commonconversion.h"
 #include "conversion/kabcconversion.h"
 #include "conversion/kcalconversion.h"
-#include "conversion/kolabconversion.h"
 #include "kolabformat/xmlobject.h"
 
 #include "kolabformat/v2helpers.h"
@@ -26,7 +25,6 @@ Q_DECLARE_METATYPE(Kolab::Todo)
 Q_DECLARE_METATYPE(Kolab::Journal)
 Q_DECLARE_METATYPE(Kolab::Contact)
 Q_DECLARE_METATYPE(Kolab::DistList)
-Q_DECLARE_METATYPE(Kolab::Note)
 Q_DECLARE_METATYPE(Kolab::Freebusy)
 Q_DECLARE_METATYPE(Kolab::Configuration)
 
@@ -331,10 +329,8 @@ QVariant MIMEObjectPrivate::readKolabV2(const KMime::Message::Ptr &msg, Kolab::O
         break;
     }
     case NoteObject: {
-        KMime::Message::Ptr kNote = noteFromKolab(xmlData, msg->date()->dateTime());
-        Kolab::Note note = Kolab::Conversion::fromNote(kNote);
-        variant = QVariant::fromValue(note);
-        break;
+        qCInfo(PIMKOLAB_LOG) << "Notes support has been removed";
+        return {};
     }
     default:
         CRITICAL(QStringLiteral("no kolab object found "));
@@ -385,7 +381,7 @@ QVariant MIMEObjectPrivate::readKolabV3(const KMime::Message::Ptr &msg, Kolab::O
         variant = QVariant::fromValue<Kolab::DistList>(Kolab::readDistlist(xml, false));
         break;
     case NoteObject:
-        variant = QVariant::fromValue<Kolab::Note>(Kolab::readNote(xml, false));
+        qCInfo(PIMKOLAB_LOG) << "Notes support has been removed";
         break;
     case FreebusyObject:
         variant = QVariant::fromValue<Kolab::Freebusy>(Kolab::readFreebusy(xml, false));
@@ -558,11 +554,6 @@ Kolab::Journal MIMEObject::getJournal() const
     return d->mObject.value<Kolab::Journal>();
 }
 
-Kolab::Note MIMEObject::getNote() const
-{
-    return d->mObject.value<Kolab::Note>();
-}
-
 Kolab::Contact MIMEObject::getContact() const
 {
     return d->mObject.value<Kolab::Contact>();
@@ -656,31 +647,6 @@ std::string MIMEObject::writeJournal(const Journal &journal, Version version, co
 Journal MIMEObject::readJournal(const std::string &s)
 {
     return d->parseMimeMessage(s).value<Kolab::Journal>();
-}
-
-std::string MIMEObject::writeNote(const Note &note, Version version, const std::string &pId)
-{
-    ErrorHandler::clearErrors();
-    const std::string productId = getProductId(pId);
-
-    KMime::Message::Ptr msg;
-    Kolab::XMLObject xmlObject;
-    std::vector<std::string> attachmentCids;
-    if (version == KolabV3) {
-        const std::string xml = xmlObject.writeNote(convertAttachmentsToReferences(note, attachmentCids), version, productId);
-        msg = Mime::createMessage(kolabMimeType(), noteKolabType(), xml, true, productId, std::string(), std::string(), note.uid());
-    } else if (version == KolabV2) {
-        const std::string xml = xmlObject.writeNote(note, version, productId);
-        msg = Mime::createMessage(noteKolabType(), noteKolabType(), xml, false, productId, std::string(), std::string(), note.uid());
-    }
-    addAttachments(msg, note.attachments(), attachmentCids);
-    msg->assemble();
-    return msg->encodedContent().data();
-}
-
-Note MIMEObject::readNote(const std::string &s)
-{
-    return d->parseMimeMessage(s).value<Kolab::Note>();
 }
 
 std::string MIMEObject::writeContact(const Contact &contact, Version version, const std::string &pId)

@@ -8,7 +8,6 @@
 #include "conversion/commonconversion.h"
 #include "conversion/kabcconversion.h"
 #include "conversion/kcalconversion.h"
-#include "conversion/kolabconversion.h"
 #include "kolabformatV2/event.h"
 #include "pimkolab_debug.h"
 #include "v2helpers.h"
@@ -263,40 +262,6 @@ std::string XMLObject::writeDistlist(const DistList &distlist, Version version, 
         return Conversion::toStdString(d.saveXML());
     }
     const std::string result = Kolab::writeDistlist(distlist, productId);
-    mWrittenUID = Kolab::getSerializedUID();
-    ErrorHandler::handleLibkolabxmlErrors();
-    return result;
-}
-
-Note XMLObject::readNote(const std::string &s, Version version)
-{
-    if (version == KolabV2) {
-        const KMime::Message::Ptr msg = noteFromKolab(QByteArray(s.c_str(), s.length()), QDateTime());
-        if (!msg || Kolab::ErrorHandler::errorOccured()) {
-            qCCritical(PIMKOLAB_LOG) << "failed to read xml";
-            return {};
-        }
-        return Conversion::fromNote(msg);
-    }
-    const Kolab::Note note = Kolab::readNote(s, false);
-    ErrorHandler::handleLibkolabxmlErrors();
-    return note;
-}
-
-std::string XMLObject::writeNote(const Note &note, Version version, const std::string &productId)
-{
-    mWrittenUID.clear();
-    if (version == KolabV2) {
-        Note noteWithUID = note;
-        if (noteWithUID.uid().empty()) {
-            noteWithUID.setUid(Conversion::toStdString(createUuid()));
-        }
-        mWrittenUID = noteWithUID.uid();
-        const KMime::Message::Ptr n = Conversion::toNote(noteWithUID);
-        const QByteArray &xml = noteToKolabXML(n);
-        return std::string(xml.constData());
-    }
-    const std::string result = Kolab::writeNote(note, productId);
     mWrittenUID = Kolab::getSerializedUID();
     ErrorHandler::handleLibkolabxmlErrors();
     return result;

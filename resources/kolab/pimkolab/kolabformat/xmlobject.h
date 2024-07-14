@@ -60,13 +60,6 @@ public:
     Kolab::DistList readDistlist(const std::string &s, Kolab::Version version);
     std::string writeDistlist(const Kolab::DistList &, Kolab::Version version, const std::string &productId = std::string());
 
-    /**
-     * V2 notes:
-     * * set the creation date from the mime date header.
-     */
-    Kolab::Note readNote(const std::string &s, Kolab::Version version);
-    std::string writeNote(const Kolab::Note &, Kolab::Version version, const std::string &productId = std::string());
-
     Kolab::Configuration readConfiguration(const std::string &s, Kolab::Version version);
     std::string writeConfiguration(const Kolab::Configuration &, Kolab::Version version, const std::string &productId = std::string());
 

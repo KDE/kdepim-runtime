@@ -14,7 +14,6 @@
 #include "kolabformatV2/event.h"
 #include "kolabformatV2/journal.h"
 #include "kolabformatV2/kolabbase.h"
-#include "kolabformatV2/note.h"
 #include "kolabformatV2/task.h"
 #include "mime/mimeutils.h"
 
@@ -22,8 +21,6 @@
 #include <KContacts/Addressee>
 #include <KContacts/ContactGroup>
 #include <KMime/Message>
-
-#include <Akonadi/NoteUtils>
 
 #include <qdom.h>
 
@@ -77,10 +74,6 @@ KMime::Message::Ptr contactToKolabFormat(const KolabV2::Contact &contact, const 
 KContacts::ContactGroup contactGroupFromKolab(const QByteArray &xmlData);
 
 KMime::Message::Ptr distListToKolabFormat(const KolabV2::DistributionList &distList, const QString &productId);
-KMime::Message::Ptr noteFromKolab(const QByteArray &xmlData, const QDateTime &creationDate);
-
-KMime::Message::Ptr noteToKolab(const KMime::Message::Ptr &msg, const QString &productId);
-QByteArray noteToKolabXML(const KMime::Message::Ptr &msg);
 
 QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString &language);
 }

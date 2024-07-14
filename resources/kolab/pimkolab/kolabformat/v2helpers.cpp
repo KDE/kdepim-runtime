@@ -201,45 +201,6 @@ KMime::Message::Ptr distListToKolabFormat(const KolabV2::DistributionList &distL
     return message;
 }
 
-KMime::Message::Ptr noteFromKolab(const QByteArray &xmlData, const QDateTime &creationDate)
-{
-    KolabV2::Note j;
-    if (!j.load(QString::fromUtf8(xmlData))) {
-        qCWarning(PIMKOLAB_LOG) << "failed to read note";
-        return {};
-    }
-
-    Akonadi::NoteUtils::NoteMessageWrapper note;
-    note.setTitle(j.summary());
-    note.setText(j.body());
-    note.setFrom(QStringLiteral("kolab@kde4"));
-    note.setCreationDate(creationDate);
-    return note.message();
-}
-
-KMime::Message::Ptr noteToKolab(const KMime::Message::Ptr &msg, const QString &productId)
-{
-    if (!msg) {
-        qCCritical(PIMKOLAB_LOG) << "empty message";
-        return {};
-    }
-    Akonadi::NoteUtils::NoteMessageWrapper note(msg);
-    return Mime::createMessage(note.title(), QStringLiteral(KOLAB_TYPE_NOTE), QStringLiteral(KOLAB_TYPE_NOTE), noteToKolabXML(msg), false, productId);
-}
-
-QByteArray noteToKolabXML(const KMime::Message::Ptr &msg)
-{
-    if (!msg) {
-        qCCritical(PIMKOLAB_LOG) << "empty message";
-        return {};
-    }
-    Akonadi::NoteUtils::NoteMessageWrapper note(msg);
-    KolabV2::Note j;
-    j.setSummary(note.title());
-    j.setBody(note.text());
-    return j.saveXML().toUtf8();
-}
-
 QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString &language)
 {
     QStringList dictionary;
