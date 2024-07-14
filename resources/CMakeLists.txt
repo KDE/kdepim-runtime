@@ -36,7 +36,6 @@ endmacro(akonadi_add_resourcetest)
 
 
 
-add_subdirectory(akonotes)
 add_subdirectory(contacts)
 add_subdirectory(dav)
 add_subdirectory(ical)
