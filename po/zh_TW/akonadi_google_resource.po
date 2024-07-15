@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-10 00:39+0000\n"
-"PO-Revision-Date: 2024-05-18 16:43+0900\n"
+"PO-Revision-Date: 2024-07-14 17:19+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -58,18 +58,15 @@ msgid_plural "Moving %1 events from calendar '%2' to calendar '%3'"
 msgstr[0] "正在從行事曆 '%2' 移動 %1 個事件到行事曆 '%3'"
 
 #: calendarhandler.cpp:341
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Changing contact"
+#, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr "正在變更聯絡人"
+msgstr "正在變更事件標籤"
 
 #: calendarhandler.cpp:345
-#, fuzzy, kde-format
-#| msgid "Failed to refresh tokens"
+#, kde-format
 msgid "Failed to change tags on events"
-msgstr "刷新標記時失敗"
+msgstr "變更事件上的標籤時失敗"
 
 #: calendarhandler.cpp:357
 #, kde-format
@@ -100,10 +97,9 @@ msgid "Cannot handle item unlinking"
 msgstr "無法處理項目解除連結"
 
 #: generichandler.cpp:34
-#, fuzzy, kde-format
-#| msgid "Cannot handle item linking"
+#, kde-format
 msgid "Cannot handle item tag changes"
-msgstr "無法處理項目連結"
+msgstr "無法處理項目標籤變更"
 
 #: generichandler.cpp:61
 #, kde-format
@@ -185,7 +181,7 @@ msgstr "資源未設定"
 #: googleresource.cpp:238
 #, kde-format
 msgid "Failed to refresh tokens"
-msgstr "刷新標記時失敗"
+msgstr "刷新權杖時失敗"
 
 #: googleresource.cpp:427 googleresource.cpp:441 googleresource.cpp:455
 #: googleresource.cpp:470 googleresource.cpp:484 googleresource.cpp:498

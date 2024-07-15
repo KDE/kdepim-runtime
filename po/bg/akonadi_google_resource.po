@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-10 00:39+0000\n"
-"PO-Revision-Date: 2024-05-13 22:47+0200\n"
+"PO-Revision-Date: 2024-07-14 21:41+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 24.07.70\n"
 
 #: calendarhandler.cpp:91
 #, kde-format
@@ -60,18 +60,15 @@ msgstr[0] "Преместване на %1 събитие от календар \
 msgstr[1] "Преместване на %1 събития от календар \"%2\" в календар \"%3\""
 
 #: calendarhandler.cpp:341
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Changing contact"
+#, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr "Промяна на контакта"
+msgstr "Промяна на етикети на събития"
 
 #: calendarhandler.cpp:345
-#, fuzzy, kde-format
-#| msgid "Failed to refresh tokens"
+#, kde-format
 msgid "Failed to change tags on events"
-msgstr "Неуспешно опресняване на токени"
+msgstr "Промяната на етикети на събития е неуспешна"
 
 #: calendarhandler.cpp:357
 #, kde-format
@@ -102,10 +99,9 @@ msgid "Cannot handle item unlinking"
 msgstr "Не може да се отмени връзката на елемента"
 
 #: generichandler.cpp:34
-#, fuzzy, kde-format
-#| msgid "Cannot handle item linking"
+#, kde-format
 msgid "Cannot handle item tag changes"
-msgstr "Не може да се създаде връзка на елемента"
+msgstr "Не може да се обработват промени на етикет на елемент"
 
 #: generichandler.cpp:61
 #, kde-format
