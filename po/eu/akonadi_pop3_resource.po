@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-04 00:39+0000\n"
-"PO-Revision-Date: 2024-03-24 11:24+0100\n"
+"PO-Revision-Date: 2024-07-19 09:10+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.02.1\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: accountwidget.cpp:82
 #, kde-format
@@ -39,11 +39,10 @@ msgid "POP3 Account"
 msgstr "POP3 kontua"
 
 #: accountwidget.cpp:194
-#, fuzzy, kde-format
-#| msgid "Unable to open wallet"
+#, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
-msgstr "Ez da zorroa irekitzeko gai"
+msgstr "Zorroa ireki ezinik"
 
 #: accountwidget.cpp:244
 #, kde-format
@@ -91,8 +90,7 @@ msgstr "Mesedez, aurrena zehartu zerbitzari bat eta ataka bat Orokorra fitxan."
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
-"Ez da zerbitzariarekin konektatzeko gai, mesedez egiaztatu zerbitzariaren "
-"helbidea."
+"Zerbitzariarekin konektatu ezinik, mesedez egiaztatu zerbitzariaren helbidea."
 
 #: accountwidget.cpp:369
 #, kde-format
@@ -147,7 +145,7 @@ msgstr[1] " mezu"
 #: jobs.cpp:148
 #, kde-format
 msgid "Unable to initialize SASL, aborting mail check."
-msgstr "Ez da SASL hasieratzeko gai, posta egiaztapena uzten."
+msgstr "SASL hasieratu ezinik, posta egiaztapena uzten."
 
 #: pop3protocol.cpp:189
 #, kde-format
@@ -411,7 +409,7 @@ msgstr "Errorea aurre-komandoa exekutatzean."
 #: pop3resource.cpp:457
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
-msgstr "Ez da \"%1\" zerbitzarian saio-hasteko gai."
+msgstr "\"%1\" zerbitzarian saio-hasi ezinik."
 
 #: pop3resource.cpp:466
 #, kde-format
@@ -460,7 +458,7 @@ msgstr "%1 / %2 (%3 / %4 KB) mezua eskuratzen, %5(e)rako"
 #: pop3resource.cpp:600
 #, kde-format
 msgid "Unable to store downloaded mails."
-msgstr "Ez da zama-jaitsitako postak gordetzeko gai."
+msgstr "Zama-jaitsitako postak gorde ezinik."
 
 #: pop3resource.cpp:748
 #, kde-format
@@ -482,7 +480,7 @@ msgstr[1] "Posta egiaztapena amaitu da, %1 mezu zama-jaitsi dira."
 #: pop3resource.cpp:820
 #, kde-format
 msgid "Unable to complete the mail fetch."
-msgstr "Ez da posta eskuratzea amaitzeko gai."
+msgstr "Posta eskuratzea osatu ezinik."
 
 #: pop3resource.cpp:954
 #, kde-format

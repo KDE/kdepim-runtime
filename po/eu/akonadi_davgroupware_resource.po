@@ -1,16 +1,16 @@
 # Translation for akonadi_davgroupware_resource.po to Euskara/Basque (eu).
-# Copyright (C) 2022 This file is copyright:
+# Copyright (C) 2022-2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
-# KDE euskaratzeko proiektuko arduraduna <xalba@ni.eus>.
+# SPDX-FileCopyrightText: 2024 KDE euskaratzeko proiektuko arduraduna <xalba@ni.eus>
 #
 # Translators:
-# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022.
+# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-21 00:39+0000\n"
-"PO-Revision-Date: 2022-08-31 21:07+0200\n"
+"PO-Revision-Date: 2024-07-19 09:32+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 22.08.0\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: configdialog.cpp:33
 #, kde-format
@@ -330,10 +330,9 @@ msgid "Invalid collection for item %1."
 msgstr "%1 elementurako bilduma baliogabea."
 
 #: davgroupwareresource.cpp:650
-#, fuzzy, kde-format
-#| msgid "Unable to add item: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
-msgstr "Ez da elementua gehitzeko gai: %1"
+msgstr "Elementua ezin ditu aldatu: %1"
 
 #: davgroupwareresource.cpp:687
 #, kde-format
@@ -541,15 +540,13 @@ msgid "a contact with email"
 msgstr "e-posta hau duen kontaktu bat"
 
 #: settings.cpp:477
-#, fuzzy, kde-format
-#| msgid "A password is required for user %1"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "A password is required for user %1"
 msgstr "%1 erabiltzailerako pasahitz bat behar da"
 
 #: settings.cpp:481
-#, fuzzy, kde-format
-#| msgid "Password: "
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Password: "
 msgstr "Pasahitza:"
@@ -653,22 +650,19 @@ msgid "Use secure connection"
 msgstr "Erabili konexio segurua"
 
 #: setupwizard.cpp:423
-#, fuzzy, kde-format
-#| msgid "Final URL (CalDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "Amaierako URLa (CalDav)"
 
 #: setupwizard.cpp:428
-#, fuzzy, kde-format
-#| msgid "Final URL (CardDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "Amaierako URLa (CardDav)"
 
 #: setupwizard.cpp:433
-#, fuzzy, kde-format
-#| msgid "Final URL (GroupDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Amaierako URLa (GroupDav)"
@@ -688,8 +682,7 @@ msgstr ""
 "dezakezu orain"
 
 #: setupwizard.cpp:503
-#, fuzzy, kde-format
-#| msgid "Test Connection"
+#, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Probako konexioa"

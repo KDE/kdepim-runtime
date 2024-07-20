@@ -1,16 +1,16 @@
 # Translation for akonadi_ews_resource.po
-# Copyright (C) 2022-2023 This file is copyright:
+# Copyright (C) 2022-2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
-# SPDX-FileCopyrightText: 2023 KDE euskaratzeko proiektuko ardurandu <xalba@ni.eus>
+# SPDX-FileCopyrightText: 2023, 2024 KDE euskaratzeko proiektuko ardurandu <xalba@ni.eus>
 #
 # Translator:
-# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022, 2023.
+# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2023-09-21 19:01+0200\n"
+"PO-Revision-Date: 2024-07-19 09:16+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 23.08.1\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -758,10 +758,9 @@ msgid "Exchange server autodiscovery"
 msgstr "Exchange zerbitzariaren auto-aurkikuntza"
 
 #: ewsprogressdialog.cpp:49
-#, fuzzy, kde-format
-#| msgid "Performing Microsoft Exchange server autodiscovery..."
+#, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr "Exchange zerbitzariaren auto-aurkikuntza egiten..."
+msgstr "Microsoft Exchange zerbitzariaren auto-aurkikuntza egiten..."
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -770,8 +769,7 @@ msgid "Connecting to Exchange"
 msgstr "Exchange-ra konektatzea"
 
 #: ewsprogressdialog.cpp:53
-#, fuzzy, kde-format
-#| msgid "Connecting to Microsoft Exchange server..."
+#, kde-format
 msgid "Connecting to Microsoft Exchange server…"
 msgstr "Microsoft Exchange zerbitzariarekin konektatzen..."
 

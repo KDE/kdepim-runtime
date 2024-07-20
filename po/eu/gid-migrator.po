@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-07 00:39+0000\n"
-"PO-Revision-Date: 2024-03-24 11:24+0100\n"
+"PO-Revision-Date: 2024-07-19 09:29+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.02.1\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -52,8 +52,7 @@ msgid "Failed to start migration because migrator is not ready"
 msgstr "Migrazioa hastea huts egin du migratzailea prest ez dagoelako"
 
 #: ../migratorbase.cpp:147
-#, fuzzy, kde-format
-#| msgid "Starting migration..."
+#, kde-format
 msgid "Starting migration…"
 msgstr "Migrazioa hasten..."
 
@@ -89,9 +88,7 @@ msgid "Not started"
 msgstr "Hasi gabe"
 
 #: ../migratorbase.cpp:272
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Running..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Running…"
 msgstr "Martxan..."
@@ -162,8 +159,7 @@ msgid "(c) 2013-2022 the Akonadi developers"
 msgstr "(c) 2013-2022 Akonadi garatzaileak"
 
 #: main.cpp:33
-#, fuzzy, kde-format
-#| msgid "Christian Mollekopf"
+#, kde-format
 msgctxt "@info:credit"
 msgid "Christian Mollekopf"
 msgstr "Christian Mollekopf"
@@ -174,22 +170,19 @@ msgid "Author"
 msgstr "Egilea"
 
 #: main.cpp:36
-#, fuzzy, kde-format
-#| msgid "Show reporting dialog"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Show reporting dialog"
 msgstr "Erakutsi berri emateko elkarrizketa-koadroa"
 
 #: main.cpp:38
-#, fuzzy, kde-format
-#| msgid "Show report only if changes were made"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Show report only if changes were made"
 msgstr "Erakutsi txostena aldaketak egin badira bakarrik"
 
 #: main.cpp:39
-#, fuzzy, kde-format
-#| msgid "MIME type to migrate"
+#, kde-format
 msgctxt "@info:shell"
 msgid "MIME type to migrate"
 msgstr "Migratu beharreko MIME mota"
