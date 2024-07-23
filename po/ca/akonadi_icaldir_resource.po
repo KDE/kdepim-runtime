@@ -125,9 +125,3 @@ msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " minut"
 msgstr[1] " minuts"
-
-#~ msgid "Directory Name"
-#~ msgstr "Nom del directori"
-
-#~ msgid "Access Rights"
-#~ msgstr "Drets d'accés"
