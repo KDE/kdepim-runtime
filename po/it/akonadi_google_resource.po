@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-10 00:39+0000\n"
-"PO-Revision-Date: 2024-05-12 17:48+0200\n"
+"PO-Revision-Date: 2024-07-14 15:53+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -58,18 +58,15 @@ msgstr[0] "Spostamento di %1 evento dal calendario «%2» al calendario «%3»"
 msgstr[1] "Spostamento di %1 eventi dal calendario «%2» al calendario «%3»"
 
 #: calendarhandler.cpp:341
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Changing contact"
+#, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr "Modifica contatto"
+msgstr "Modifica etichette degli eventi"
 
 #: calendarhandler.cpp:345
-#, fuzzy, kde-format
-#| msgid "Failed to create a new event: %1"
+#, kde-format
 msgid "Failed to change tags on events"
-msgstr "Creazione di un nuovo evento non riuscita: %1"
+msgstr "Modifica delle etichette sugli eventi non riuscita"
 
 #: calendarhandler.cpp:357
 #, kde-format
@@ -100,10 +97,9 @@ msgid "Cannot handle item unlinking"
 msgstr "Impossibile gestire la disconnessione dell'elemento"
 
 #: generichandler.cpp:34
-#, fuzzy, kde-format
-#| msgid "Cannot handle item linking"
+#, kde-format
 msgid "Cannot handle item tag changes"
-msgstr "Impossibile gestire la connessione dell'elemento"
+msgstr "Impossibile gestire modifiche all'etichetta dell'elemento"
 
 #: generichandler.cpp:61
 #, kde-format
