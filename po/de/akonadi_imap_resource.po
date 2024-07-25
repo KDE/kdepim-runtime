@@ -5,21 +5,22 @@
 # Markus Slopianka <kamikazow@fishmouth.net>, 2010.
 # Panagiotis Papadopoulos <pano_90@gmx.net>, 2010.
 # Björn Ricks <bjoern.ricks@intevation.de>, 2010.
+# SPDX-FileCopyrightText: 2024 Frank Steinmetzger <dev-kde@felsenfleischer.de>
 # Intevation GmbH, 2010, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-23 00:39+0000\n"
-"PO-Revision-Date: 2024-04-28 20:14+0200\n"
-"Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
+"PO-Revision-Date: 2024-07-21 22:25+0200\n"
+"Last-Translator: Frank Steinmetzger <dev-kde@felsenfleischer.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -387,9 +388,7 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Ordner „%1“ wird von „%2“ nach „%3“ verschoben"
 
 #: imapresourcebase.cpp:471
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "Suche läuft ..."
@@ -458,7 +457,7 @@ msgstr ""
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
-msgstr ""
+msgstr "Das Passwort kann nicht vom Schlüsselbund gelesen werden.."
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -655,67 +654,48 @@ msgstr "Die Verbindung wurde während der Anmeldung unterbrochen."
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "Ein IMAP-E-Mail-Zugang benötigt Ihre Aufmerksamkeit."
 
 #: settingspasswordrequester.cpp:50
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
-"Der Server hat den Benutzernamen und das Passwort für den Zugang „%2“ "
+"Der Server hat den angegebenen Benutzernamen und das Passwort "
 "zurückgewiesen.\n"
-" Möchten Sie die Einstellungen anzeigen, die Anmeldung erneut versuchen, "
-"oder nichts weiter unternehmen?\n"
+"Möchten Sie die Anmeldung erneut versuchen oder die Einstellungen anzeigen?\n"
 "\n"
 "%1"
 
 #: settingspasswordrequester.cpp:53
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%2"
 msgstr ""
-"Der Server hat den Benutzernamen und das Passwort für den Zugang „%2“ "
-"zurückgewiesen.\n"
-" Möchten Sie die Einstellungen anzeigen, die Anmeldung erneut versuchen, "
-"oder nichts weiter unternehmen?\n"
+"Der IMAP-Server für den Zugang „%2“ hat den angegebenen Benutzernamen und "
+"das Passwort zurückgewiesen.\n"
+"Möchten Sie die Anmeldung erneut versuchen oder die Einstellungen anzeigen?\n"
 "\n"
 "%1"
 
 # hier könnte auch eventuell "Wiederholen" passen
 #: settingspasswordrequester.cpp:58
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Erneut versuchen"
 
 #: settingspasswordrequester.cpp:64
-#, fuzzy, kde-format
-#| msgid "Identity Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr "Einstellungen zur Identität"
+msgstr "Einstellungen öffnen"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -771,7 +751,7 @@ msgid ""
 "as before we will have to re-download all your emails from this account "
 "again. Are you sure you want to proceed?"
 msgstr ""
-"Sie haben die Adresse des Servers geändert. Auch denn es derselbe Server wie "
+"Sie haben die Adresse des Servers geändert. Auch wenn es derselbe Server wie "
 "vorher ist, müssen Sie alle E-Mails von diesem Zugang erneut herunterladen. "
 "Möchten Sie wirklich fortfahren?"
 
@@ -803,12 +783,14 @@ msgid ""
 "Could not access KWallet. It is necessary to store the password. Please "
 "activate it."
 msgstr ""
+"Der Passwortspeicher ist nicht verfügbar. Er wird zum Abspeichern des "
+"Passworts benötigt. Bitte aktivieren Sie ihn."
 
 #: setupserver.cpp:414 setupserver.cpp:466
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"
-msgstr ""
+msgstr "Passwortspeicher nicht verfügbar"
 
 #: setupserver.cpp:530
 #, kde-format
@@ -1075,10 +1057,9 @@ msgstr "Serverseitiges Abonnement aktivieren"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgid "Serverside Subscription"
+#, kde-format
 msgid "Serverside Subscription…"
-msgstr "Serverseitiges Abonnement"
+msgstr "Serverseitiges Abonnement ..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
