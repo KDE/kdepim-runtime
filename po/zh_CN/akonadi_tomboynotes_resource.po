@@ -14,9 +14,9 @@ msgstr ""
 "X-Crowdin-Project: kdeorg\n"
 "X-Crowdin-Project-ID: 269464\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf6-trunk/messages/kdepim-runtime/"
+"X-Crowdin-File: /kf6-stable/messages/kdepim-runtime/"
 "akonadi_tomboynotes_resource.pot\n"
-"X-Crowdin-File-ID: 45519\n"
+"X-Crowdin-File-ID: 49800\n"
 
 #: tomboyitemuploadjob.cpp:107 tomboyitemuploadjob.cpp:113
 #, kde-format
