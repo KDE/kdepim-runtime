@@ -67,7 +67,7 @@ KMime::Message::Ptr createMessage(const QString &from,
         message->contentType()->setMimeType("text/calendar");
         message->contentType()->setCharset("utf-8");
         message->contentType()->setName(QStringLiteral("cal.ics"));
-        message->contentType()->setParameter(QStringLiteral("method"), QStringLiteral("request"));
+        message->contentType()->setParameter(QByteArrayLiteral("method"), QStringLiteral("request"));
 
         if (!attachment.isEmpty()) {
             auto disposition = new KMime::Headers::ContentDisposition();
@@ -103,7 +103,7 @@ KMime::Message::Ptr createMessage(const QString &from,
             attachMessage->contentType()->setMimeType("text/calendar");
             attachMessage->contentType()->setCharset("utf-8");
             attachMessage->contentType()->setName(QStringLiteral("cal.ics"));
-            attachMessage->contentType()->setParameter(QStringLiteral("method"), QStringLiteral("request"));
+            attachMessage->contentType()->setParameter(QByteArrayLiteral("method"), QStringLiteral("request"));
             attachMessage->setHeader(attachDisposition);
             attachMessage->contentTransferEncoding()->setEncoding(KMime::Headers::CEquPr);
             attachMessage->setBody(KMime::CRLFtoLF(attachment.toUtf8()));
