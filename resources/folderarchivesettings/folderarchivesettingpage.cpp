@@ -24,7 +24,7 @@
 FolderArchiveSettingPage::FolderArchiveSettingPage(const QString &instanceName, QWidget *parent)
     : QWidget(parent)
     , mInstanceName(instanceName)
-    , mEnabled(new QCheckBox(i18n("Enable"), this))
+    , mEnabled(new QCheckBox(i18nc("@option:check", "Enable"), this))
     , mArchiveNamed(new FolderArchiveComboBox(this))
     , mArchiveFolder(new Akonadi::CollectionRequester(this))
 {

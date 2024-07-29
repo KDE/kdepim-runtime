@@ -82,7 +82,7 @@ LoginPage::LoginPage(QWidget *parent)
     layout->addRow(i18n("Password:"), mPassword);
     registerField(QStringLiteral("credentialsPassword*"), mPassword, "password", SIGNAL(passwordChanged(QString)));
 
-    mAdvancedSettings = new QCheckBox(i18n("Advanced settings"), this);
+    mAdvancedSettings = new QCheckBox(i18nc("@option:check", "Advanced settings"), this);
     layout->addWidget(mAdvancedSettings);
 
     mServerUrl = new QLineEdit(this);

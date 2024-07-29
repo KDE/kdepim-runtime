@@ -57,31 +57,31 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     auto groupboxLayout = new QVBoxLayout;
     grp->setLayout(groupboxLayout);
 
-    mShowPhoto = new QCheckBox(i18n("Show Photo"), parent);
+    mShowPhoto = new QCheckBox(i18nc("@option:check", "Show Photo"), parent);
     mShowPhoto->setObjectName("mShowPhoto"_L1);
     groupboxLayout->addWidget(mShowPhoto);
 
-    mShowFrom = new QCheckBox(i18n("Show From"), parent);
+    mShowFrom = new QCheckBox(i18nc("@option:check", "Show From"), parent);
     mShowFrom->setObjectName("mShowFrom"_L1);
     groupboxLayout->addWidget(mShowFrom);
 
-    mShowSubject = new QCheckBox(i18n("Show Subject"), parent);
+    mShowSubject = new QCheckBox(i18nc("@option:check", "Show Subject"), parent);
     mShowSubject->setObjectName("mShowSubject"_L1);
     groupboxLayout->addWidget(mShowSubject);
 
-    mShowFolders = new QCheckBox(i18n("Show Folders"), parent);
+    mShowFolders = new QCheckBox(i18nc("@option:check", "Show Folders"), parent);
     mShowFolders->setObjectName("mShowFolders"_L1);
     groupboxLayout->addWidget(mShowFolders);
 
-    mExcludeMySelf = new QCheckBox(i18n("Do not notify when email was sent by me"), parent);
+    mExcludeMySelf = new QCheckBox(i18nc("@option:check", "Do not notify when email was sent by me"), parent);
     mExcludeMySelf->setObjectName("mExcludeMySelf"_L1);
     vbox->addWidget(mExcludeMySelf);
 
-    mKeepPersistentNotification = new QCheckBox(i18n("Keep Persistent Notification"), parent);
+    mKeepPersistentNotification = new QCheckBox(i18nc("@option:check", "Keep Persistent Notification"), parent);
     mKeepPersistentNotification->setObjectName("mKeepPersistentNotification"_L1);
     vbox->addWidget(mKeepPersistentNotification);
 
-    mAllowToShowMail = new QCheckBox(i18n("Show Action Buttons"), parent);
+    mAllowToShowMail = new QCheckBox(i18nc("@option:check", "Show Action Buttons"), parent);
     mAllowToShowMail->setObjectName("mAllowToShowMail"_L1);
     vbox->addWidget(mAllowToShowMail);
 
@@ -89,7 +89,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     hboxLayout->setObjectName("hboxLayout"_L1);
     vbox->addLayout(hboxLayout);
 
-    mReplyMail = new QCheckBox(i18n("Reply Mail"), parent);
+    mReplyMail = new QCheckBox(i18nc("@option:check", "Reply Mail"), parent);
     mReplyMail->setObjectName("mReplyMail"_L1);
     hboxLayout->addWidget(mReplyMail);
     mReplyMail->setEnabled(false);
@@ -111,7 +111,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     auto textSpeakWidget = new QWidget;
     vbox = new QVBoxLayout;
     textSpeakWidget->setLayout(vbox);
-    mTextToSpeak = new QCheckBox(i18n("Enabled"), parent);
+    mTextToSpeak = new QCheckBox(i18nc("@option:check", "Enabled"), parent);
     mTextToSpeak->setObjectName("mTextToSpeak"_L1);
     vbox->addWidget(mTextToSpeak);
 

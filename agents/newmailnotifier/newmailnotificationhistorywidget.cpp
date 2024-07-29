@@ -21,7 +21,7 @@ using namespace Qt::Literals::StringLiterals;
 NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *parent)
     : QWidget{parent}
     , mTextBrowser(new NewMailNotificationHistoryBrowserTextWidget(new NewMailNotificationHistoryBrowserText(this), this))
-    , mEnabledHistory(new QCheckBox(i18n("Enabled"), this))
+    , mEnabledHistory(new QCheckBox(i18nc("@option:check", "Enabled"), this))
 {
     auto mainLayout = new QVBoxLayout(this);
     mainLayout->setObjectName("mainLayout"_L1);

@@ -392,7 +392,7 @@ ConnectionPage::ConnectionPage(QWidget *parent)
     mLayout->addRow(i18n("Installation path"), mPath);
     registerField(QStringLiteral("installationPath"), mPath);
 
-    mUseSecureConnection = new QCheckBox(i18n("Use secure connection"));
+    mUseSecureConnection = new QCheckBox(i18nc("@option:check", "Use secure connection"));
     mUseSecureConnection->setChecked(true);
     registerField(QStringLiteral("connectionUseSecureConnection"), mUseSecureConnection);
     mLayout->addRow(QString(), mUseSecureConnection);
