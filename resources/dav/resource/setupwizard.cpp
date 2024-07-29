@@ -252,7 +252,7 @@ PredefinedProviderPage::PredefinedProviderPage(QWidget *parent)
     , mLabel(new QLabel(this))
     , mProviderGroup(new QButtonGroup(this))
     , mUseProvider(new QRadioButton(this))
-    , mDontUseProvider(new QRadioButton(i18n("No, choose another server"), this))
+    , mDontUseProvider(new QRadioButton(i18nc("@option:radio", "No, choose another server"), this))
 {
     setTitle(i18n("Predefined provider found"));
     setSubTitle(i18n("Select if you want to use the auto-detected provider"));
@@ -335,7 +335,7 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     mServerGroup->setExclusive(true);
 
     auto hLayout = new QHBoxLayout;
-    auto button = new QRadioButton(i18n("Use one of those servers:"), this);
+    auto button = new QRadioButton(i18nc("@option:radio", "Use one of those servers:"), this);
     registerField(QStringLiteral("templateConfiguration"), button);
     mServerGroup->addButton(button);
     mServerGroup->setId(button, 0);
@@ -344,7 +344,7 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     hLayout->addWidget(mProvidersCombo);
     layout->addLayout(hLayout);
 
-    button = new QRadioButton(i18n("Configure the resource manually"), this);
+    button = new QRadioButton(i18nc("@option:radio", "Configure the resource manually"), this);
     connect(button, &QRadioButton::toggled, this, &ServerTypePage::manualConfigToggled);
     registerField(QStringLiteral("manualConfiguration"), button);
     mServerGroup->addButton(button);
