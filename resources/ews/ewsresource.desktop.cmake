@@ -45,6 +45,7 @@ Comment[bg]=Позволява достъп до поща, задачи, кон�
 Comment[ca]=Proporciona accés al correu, tasques de cita i contactes emmagatzemats en un servidor Microsoft Exchange emprant EWS
 Comment[ca@valencia]=Proporciona accés al correu, tasques de cita i contactes emmagatzemats en un servidor Microsoft Exchange emprant EWS
 Comment[cs]=Poskytuje přístup k poště, úkolům schůzky a kontaktům serveru Microsoft Exchange pomocí EWS
+Comment[da]=Giver adgang til mail, aftaleopgaver og kontakter gennem en Microsoft Exchange server ved at bruge EWS
 Comment[de]=Ermöglicht den Zugriff über EWS auf E-Mails, Termine, Aufgaben und Kontakte, die auf einem Microsoft Exchange Server gespeichert sind.
 Comment[en_GB]=Provides access to mail, appointments tasks and contacts of a Microsoft Exchange server using EWS
 Comment[eo]=Provizas aliron al poŝto, rendevuaj taskoj kaj kontaktoj de Microsoft Exchange-servilo uzante EWS
