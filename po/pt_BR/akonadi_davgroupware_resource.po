@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-21 00:39+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2021-08-23 13:32-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -582,7 +582,9 @@ msgid "User:"
 msgstr "Usuário:"
 
 #: setupwizard.cpp:255
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No, choose another server"
+msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Não, escolher outro servidor"
 
@@ -624,12 +626,16 @@ msgstr ""
 "Selecione o servidor groupware para o qual deverá estar configurado o recurso"
 
 #: setupwizard.cpp:338
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use one of those servers:"
+msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Usar um destes servidores:"
 
 #: setupwizard.cpp:347
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Configure the resource manually"
+msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Configurar o recurso manualmente"
 
@@ -654,7 +660,9 @@ msgid "Installation path"
 msgstr "Caminho de instalação"
 
 #: setupwizard.cpp:395
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use secure connection"
+msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Usar conexão segura"
 

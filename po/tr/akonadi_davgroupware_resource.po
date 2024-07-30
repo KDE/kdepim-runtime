@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-21 00:39+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2024-06-22 00:49+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -570,7 +570,9 @@ msgid "User:"
 msgstr "Kullanıcı:"
 
 #: setupwizard.cpp:255
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No, choose another server"
+msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Hayır, başka bir sunucu seç"
 
@@ -611,12 +613,16 @@ msgid "Select the groupware server the resource shall be configured for"
 msgstr "Kaynağın yapılandırılacağı grup çalışması sunucusunu seçin"
 
 #: setupwizard.cpp:338
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use one of those servers:"
+msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Bu sunuculardan birini kullan:"
 
 #: setupwizard.cpp:347
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Configure the resource manually"
+msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Kaynakları elle yapılandır"
 
@@ -641,7 +647,9 @@ msgid "Installation path"
 msgstr "Kurulum yolu"
 
 #: setupwizard.cpp:395
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use secure connection"
+msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Güvenli bağlantı kullan"
 

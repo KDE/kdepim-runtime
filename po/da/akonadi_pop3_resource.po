@@ -2,26 +2,27 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Martin Schlander <mschlander@opensuse.org>, 2010, 2011, 2012, 2016, 2020.
+# SPDX-FileCopyrightText: 2024 rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-04 00:39+0000\n"
-"PO-Revision-Date: 2020-07-31 19:06+0200\n"
-"Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
-"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"PO-Revision-Date: 2024-07-18 11:45+0200\n"
+"Last-Translator: rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>\n"
+"Language-Team: Danish <kde-i18n-doc@kde.org>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 20.04.2\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: accountwidget.cpp:82
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p%"
 
 #: accountwidget.cpp:90
 #, kde-format
@@ -36,8 +37,7 @@ msgid "POP3 Account"
 msgstr "POP3-konto"
 
 #: accountwidget.cpp:194
-#, fuzzy, kde-format
-#| msgid "Unable to open wallet"
+#, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Kan ikke åbne tegnebogen"
@@ -56,17 +56,7 @@ msgstr ""
 "\", da nogle servere ikke bekendtgør deres kapabiliteter korrekt."
 
 #: accountwidget.cpp:259
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that this feature can cause some POP3 servers that do not "
-#| "support pipelining to send corrupted mail;\n"
-#| "this is configurable, though, because some servers support pipelining but "
-#| "do not announce their capabilities. To check whether your POP3 server "
-#| "announces pipelining support use the \"Auto Detect\" button at the bottom "
-#| "of the dialog;\n"
-#| "if your server does not announce it, but you want more speed, then you "
-#| "should do some testing first by sending yourself a batch of mail and "
-#| "downloading it."
+#, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
 "support pipelining to send corrupted mail;\n"
@@ -80,10 +70,11 @@ msgid ""
 msgstr ""
 "Bemærk at denne funktion kan få nogle POP3-servere, der ikke understøtter "
 "pipelining, til at sende defekte e-mails.\n"
-"Dette kan dog indstilles, da nogle servere understøtter pipelining, uden at "
-"det bekendtgøres. Brug knappen \"Autodetektér\" nederst i denne dialog, til "
-"at tjekke om din POP3-server bekendtgør understøttelse af pipelining.\n"
-"Hvis du ønsker højere hastighed, men din server ikke bekendtgør dette, bør "
+"Dette kan dog indstilles, da nogle servere understøtter pipelining, \n"
+"uden at det bekendtgøres. Brug knappen \"Autodetektér\" nederst i denne "
+"dialog, \n"
+"til at tjekke om din POP3-server bekendtgør understøttelse af pipelining.\n"
+"Hvis du ønsker højere hastighed, men din server ikke bekendtgør dette, bør\n"
 "du først teste lidt ved at sende dig selv en samling breve, og downloade dem."
 
 #: accountwidget.cpp:292
@@ -146,20 +137,19 @@ msgstr[0] " brev"
 msgstr[1] " breve"
 
 #: jobs.cpp:148
-#, fuzzy, kde-format
-#| msgid "Unable to create POP3 slave, aborting mail check."
+#, kde-format
 msgid "Unable to initialize SASL, aborting mail check."
-msgstr "Kan ikke oprette POP3-slave, afbryder tjek af e-mail."
+msgstr "Kan ikke initialisere SASL, afbryder tjek af e-mail."
 
 #: pop3protocol.cpp:189
 #, kde-format
 msgid "The server said: \"%1\""
-msgstr ""
+msgstr "Serveren sagde: '%1'"
 
 #: pop3protocol.cpp:211
 #, kde-format
 msgid "The server terminated the connection."
-msgstr ""
+msgstr "Serveren terminerede forbindelsen."
 
 #: pop3protocol.cpp:213
 #, kde-format
@@ -167,11 +157,13 @@ msgid ""
 "Invalid response from server:\n"
 "\"%1\""
 msgstr ""
+"Ugyldigt svar fra server:\n"
+"'%1'"
 
 #: pop3protocol.cpp:253 pop3protocol.cpp:257
 #, kde-format
 msgid "Could not send to server.\n"
-msgstr ""
+msgstr "Kunne ikke sende til server.\n"
 
 #: pop3protocol.cpp:356
 #, kde-format
@@ -181,11 +173,15 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
+"Kunen ikke logge ind via APOP. Adgangskoden er måske forkert eller serveren "
+"%1 understøtter måske ikke APOP, selvom den melder, at den gør-\n"
+"\n"
+"%2"
 
 #: pop3protocol.cpp:406
 #, kde-format
 msgid "An error occurred during authentication: %1"
-msgstr ""
+msgstr "En fejl opstod under autentificering: %1"
 
 #: pop3protocol.cpp:500
 #, kde-format
@@ -195,6 +191,10 @@ msgid ""
 "\n"
 "%3"
 msgstr ""
+"Kunne ikke logge ind via SASL (%1). Serveren understøtter måske ikke %2 "
+"eller adgangskoden er måske forkert.\n"
+"\n"
+"%3"
 
 #: pop3protocol.cpp:511
 #, kde-format
@@ -202,6 +202,8 @@ msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
 "Choose a different authentication method."
 msgstr ""
+"Din POP3-server (%1) understøtter ikke SASL.\n"
+"Vælg en anden autentificeringsmetode."
 
 #: pop3protocol.cpp:528 pop3protocol.cpp:617
 #, kde-format
@@ -209,6 +211,8 @@ msgid ""
 "Could not login to %1.\n"
 "\n"
 msgstr ""
+"Kunne ikke logge ind til %1.\n"
+"\n"
 
 #: pop3protocol.cpp:536
 #, kde-format
@@ -217,21 +221,24 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
+"Kunne ikke logge ind til %1. Adgangskoden er måske forkert.\n"
+"\n"
+"%2"
 
 #: pop3protocol.cpp:568
 #, kde-format
 msgid "SSL/TLS error: %1"
-msgstr ""
+msgstr "SSL/TLS fejl: %1"
 
 #: pop3protocol.cpp:599
 #, kde-format
 msgid "%1: %2"
-msgstr ""
+msgstr "%1: %2"
 
 #: pop3protocol.cpp:618
 #, kde-format
 msgid "The server terminated the connection immediately."
-msgstr ""
+msgstr "Serveren terminerede forbindelse med det samme."
 
 #: pop3protocol.cpp:619
 #, kde-format
@@ -239,6 +246,8 @@ msgid ""
 "Server does not respond properly:\n"
 "%1\n"
 msgstr ""
+"Server svarer ikke ordenligt:\n"
+"%1\n"
 
 #: pop3protocol.cpp:643
 #, kde-format
@@ -246,6 +255,8 @@ msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
 "Choose a different authentication method."
 msgstr ""
+"Din POP3-server (%1) understøtter ikke APOP.\n"
+"Vælg en anden autentificeringsmetode."
 
 #: pop3protocol.cpp:653
 #, kde-format
@@ -253,26 +264,29 @@ msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
 "You can disable TLS in the POP account settings dialog."
 msgstr ""
+"Din POP3-server melder, at den understøtter TLS, men forhandlingen lykkedes "
+"ikke.\n"
+"Du kan slå TLS fra i POP-konto indstillinger-dialogen."
 
 #: pop3protocol.cpp:733
 #, kde-format
 msgid "Internal error: missing argument for command %1"
-msgstr ""
+msgstr "Intern fejl: mangler argument for kommando: %1"
 
 #: pop3protocol.cpp:789
 #, kde-format
 msgid "Internal error: missing item"
-msgstr ""
+msgstr "Intern fejl: mangler element"
 
 #: pop3protocol.cpp:814
 #, kde-format
 msgid "Timeout from POP3 server %1"
-msgstr ""
+msgstr "Tiden løb ud fra POP3-server %1"
 
 #: pop3protocol.cpp:816
 #, kde-format
 msgid "Connection broken from POP3 server %1"
-msgstr ""
+msgstr "Forbindelsen afbrudt fra POP3-server %1"
 
 #: pop3protocol.cpp:877
 #, kde-format
@@ -280,6 +294,8 @@ msgid ""
 "Error during communication with the POP3 server while trying to download "
 "mail: %1"
 msgstr ""
+"Fejl under kommunikation med POP3-serveren, mens der blev forsøgt at "
+"downloade mail: %1"
 
 #: pop3resource.cpp:95
 #, kde-format
@@ -385,10 +401,9 @@ msgid "Error while executing precommand."
 msgstr "Fejl under kørsel af forkommando."
 
 #: pop3resource.cpp:457
-#, fuzzy, kde-format
-#| msgid "Unable to login to the server %1."
+#, kde-format
 msgid "Unable to login to the server \"%1\"."
-msgstr "Kan ikke logge ind på serveren %1."
+msgstr "Kan ikke logge ind på serveren '%1'."
 
 #: pop3resource.cpp:466
 #, kde-format
@@ -614,8 +629,7 @@ msgstr "Avanceret"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget)
 #: popsettings.ui:217
-#, fuzzy, kde-format
-#| msgid "POP Settings"
+#, kde-format
 msgid "POP Settings"
 msgstr "POP-indstillinger"
 
@@ -765,30 +779,7 @@ msgstr "STA&RTTLS"
 
 #. i18n: ectx: property (text), widget (QLabel, imapInfo)
 #: popsettings.ui:465
-#, fuzzy, kde-format
-#| msgid ""
-#| "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#| "REC-html40/strict.dtd\">\n"
-#| "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#| "css\">\n"
-#| "p, li { white-space: pre-wrap; }\n"
-#| "</style></head><body style=\" font-family:'HandelGotDLig'; font-"
-#| "size:10pt; font-weight:400; font-style:normal;\">\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "family:'Sans Serif'; font-weight:600;\">SSL/TLS</span><span style=\" font-"
-#| "family:'Sans Serif';\"> is safe IMAP over port 993;</span></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "family:'Sans Serif'; font-weight:600;\">STARTTLS</span><span style=\" "
-#| "font-family:'Sans Serif';\"> will operate on port 143 and switch to a "
-#| "secure connection directly after connecting;</span></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "family:'Sans Serif'; font-weight:600;\">None</span><span style=\" font-"
-#| "family:'Sans Serif';\"> will connect to port 143 but not switch to a "
-#| "secure connection. This setting is not recommended.</span></p></body></"
-#| "html>"
+#, kde-format
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -817,21 +808,21 @@ msgstr ""
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
 "\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'HandelGotDLig'; font-size:10pt; "
-"font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; font-"
+"weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">SSL/TLS</span><span style=\" font-"
-"family:'Sans Serif';\"> er sikker IMAP over port 993;</span></p>\n"
+"family:'Sans Serif';\"> er sikker POP over port 995;</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">STARTTLS</span><span style=\" font-"
-"family:'Sans Serif';\"> vil arbejde på port 143 og skifte til en sikker "
+"family:'Sans Serif';\"> vil arbejde på port 110 og skifte til en sikker "
 "forbindelse straks efter forbindelse er oprettet;</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">Ingen</span><span style=\" font-"
-"family:'Sans Serif';\"> vil forbinde til port 143 men ikke skifte til en "
+"family:'Sans Serif';\"> vil forbinde til port 110 men ikke skifte til en "
 "sikker forbindelse. Denne indstilling anbefales ikke.</span></p></body></"
 "html>"
 

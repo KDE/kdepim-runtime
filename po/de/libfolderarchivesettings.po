@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-05 01:35+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2014-02-12 07:01+0100\n"
 "Last-Translator: Burkhard Lück <lueck@hube-lueck.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -32,7 +32,9 @@ msgid "Year"
 msgstr "Jahr"
 
 #: folderarchivesettingpage.cpp:27
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable"
+msgctxt "@option:check"
 msgid "Enable"
 msgstr "Aktivieren"
 

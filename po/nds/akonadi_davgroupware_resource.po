@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-21 00:39+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2014-08-15 15:50+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -600,7 +600,9 @@ msgid "User:"
 msgstr "Bruker"
 
 #: setupwizard.cpp:255
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No, choose another server"
+msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Nee, en annern Server bruken"
 
@@ -642,12 +644,16 @@ msgstr ""
 "Söök den Arbeitkoppel-Server ut, för den Du de Ressource instellen wullt."
 
 #: setupwizard.cpp:338
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use one of those servers:"
+msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Een vun disse Servers bruken:"
 
 #: setupwizard.cpp:347
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Configure the resource manually"
+msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "De Ressource vun Hand instellen"
 
@@ -672,7 +678,9 @@ msgid "Installation path"
 msgstr "Installatschoonpadd"
 
 #: setupwizard.cpp:395
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use secure connection"
+msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Seker Verbinnen bruken"
 

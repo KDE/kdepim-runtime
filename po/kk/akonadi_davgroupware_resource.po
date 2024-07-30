@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-21 00:39+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2013-09-19 04:02+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -593,7 +593,9 @@ msgid "User:"
 msgstr "Пайдаланушы"
 
 #: setupwizard.cpp:255
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No, choose another server"
+msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Жоқ, басқа серверді таңдау"
 
@@ -634,12 +636,16 @@ msgid "Select the groupware server the resource shall be configured for"
 msgstr "Ресурс қай топтық жұмыс серверімен істеуге бапталады, таңдаңыз"
 
 #: setupwizard.cpp:338
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use one of those servers:"
+msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Осылардың біреуін қолданыңыз:"
 
 #: setupwizard.cpp:347
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Configure the resource manually"
+msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Ресурс қолмен бапталсын"
 
@@ -664,7 +670,9 @@ msgid "Installation path"
 msgstr "Орнату орны"
 
 #: setupwizard.cpp:395
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use secure connection"
+msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Каупсіз қосылым пайдалансын"
 

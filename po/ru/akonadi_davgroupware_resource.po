@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-21 00:39+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2022-10-10 17:04+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -585,7 +585,9 @@ msgid "User:"
 msgstr "Пользователь:"
 
 #: setupwizard.cpp:255
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No, choose another server"
+msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Нет, выбрать другой сервер"
 
@@ -626,12 +628,16 @@ msgid "Select the groupware server the resource shall be configured for"
 msgstr "Выберите сервер совместной работы для настройки ресурса"
 
 #: setupwizard.cpp:338
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use one of those servers:"
+msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Выбрать тип сервера из списка:"
 
 #: setupwizard.cpp:347
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Configure the resource manually"
+msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Настроить ресурс вручную"
 
@@ -656,7 +662,9 @@ msgid "Installation path"
 msgstr "Путь установки:"
 
 #: setupwizard.cpp:395
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use secure connection"
+msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Использовать защищённое соединение"
 

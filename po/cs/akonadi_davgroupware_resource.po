@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-21 00:39+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2024-06-21 13:41+0200\n"
 "Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -548,6 +548,7 @@ msgstr "Uživatel:"
 
 #: setupwizard.cpp:255
 #, kde-format
+msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr ""
 
@@ -586,11 +587,13 @@ msgstr ""
 
 #: setupwizard.cpp:338
 #, kde-format
+msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr ""
 
 #: setupwizard.cpp:347
 #, kde-format
+msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr ""
 
@@ -615,7 +618,9 @@ msgid "Installation path"
 msgstr "Cesta instalace"
 
 #: setupwizard.cpp:395
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use secure connection"
+msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Použít bezpečné spojení"
 

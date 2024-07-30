@@ -2,42 +2,43 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Martin Schlander <mschlander@opensuse.org>, 2011, 2013, 2014, 2015, 2016, 2017, 2020.
+# SPDX-FileCopyrightText: 2024 rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-04 00:39+0000\n"
-"PO-Revision-Date: 2020-07-31 19:06+0200\n"
-"Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
+"PO-Revision-Date: 2024-07-18 11:34+0200\n"
+"Last-Translator: rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 20.04.2\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
-msgstr ""
+msgstr "Notifikationshistorie"
 
 #: newmailnotificationhistorymanager.cpp:32
-#, fuzzy, kde-format
-#| msgid "Folders"
+#, kde-format
 msgid "[Open Folder]"
-msgstr "Mapper"
+msgstr "[Åbn mappe]"
 
 #: newmailnotificationhistorymanager.cpp:42
-#, fuzzy, kde-format
-#| msgid "Show mail..."
+#, kde-format
 msgid "[Show Mail]"
-msgstr "Vis e-mail..."
+msgstr "[Vis mail]"
 
 #: newmailnotificationhistorywidget.cpp:24
 #: newmailnotifiersettingswidget.cpp:114
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enabled"
+msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Aktiveret"
 
@@ -66,32 +67,28 @@ msgstr "Der blev modtaget et brev fra %f"
 #: newmailnotifiershowmessagejob.cpp:36
 #, kde-format
 msgid "Unable to start KMail application."
-msgstr ""
+msgstr "Kunne ikke starte KMail-applikation."
 
 #: newmailnotifierselectcollectionwidget.cpp:96
-#, fuzzy, kde-format
-#| msgid "Select which folders to monitor for new message notifications:"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
 msgstr "Vælg hvilke mapper der skal overvåges for bekendtgørelse af nye breve:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
-#, fuzzy, kde-format
-#| msgid "Search..."
+#, kde-format
 msgctxt "@info:placeholder"
 msgid "Search…"
-msgstr "Søg..."
+msgstr "Søg…"
 
 #: newmailnotifierselectcollectionwidget.cpp:142
-#, fuzzy, kde-format
-#| msgid "&Select All"
+#, kde-format
 msgctxt "@action:button"
 msgid "&Select All"
 msgstr "&Markér alle"
 
 #: newmailnotifierselectcollectionwidget.cpp:146
-#, fuzzy, kde-format
-#| msgid "&Unselect All"
+#, kde-format
 msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "&Afmarkér alle"
@@ -111,55 +108,70 @@ msgid "Choose which fields to show:"
 msgstr "Vælg hvilke felter der skal vises:"
 
 #: newmailnotifiersettingswidget.cpp:60
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show Photo"
+msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "Vis foto"
 
 #: newmailnotifiersettingswidget.cpp:64
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show From"
+msgctxt "@option:check"
 msgid "Show From"
 msgstr "Vis fra"
 
 #: newmailnotifiersettingswidget.cpp:68
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show Subject"
+msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "Vis emne"
 
 #: newmailnotifiersettingswidget.cpp:72
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show Folders"
+msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "Vis mapper"
 
 #: newmailnotifiersettingswidget.cpp:76
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Do not notify when email was sent by me"
+msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "Bekendtgør ikke når e-mail er sendt af mig selv"
 
 #: newmailnotifiersettingswidget.cpp:80
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Keep Persistent Notification"
+msgctxt "@option:check"
 msgid "Keep Persistent Notification"
-msgstr ""
+msgstr "Behold vedholdende notifikation"
 
 #: newmailnotifiersettingswidget.cpp:84
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show Action Buttons"
+msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr "Vis handlingsknapper"
 
 #: newmailnotifiersettingswidget.cpp:92
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Reply Mail"
+msgctxt "@option:check"
 msgid "Reply Mail"
-msgstr ""
+msgstr "Svar mail"
 
 #: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:163
 #, kde-format
 msgid "Reply to Author"
-msgstr ""
+msgstr "Svar til forfatteren"
 
 #: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:166
-#, fuzzy, kde-format
-#| msgid "&Select All"
+#, kde-format
 msgid "Reply to All"
-msgstr "&Markér alle"
+msgstr "Svar til alle"
 
 #: newmailnotifiersettingswidget.cpp:109
 #, kde-format
@@ -167,18 +179,16 @@ msgid "Display"
 msgstr "Vis"
 
 #: newmailnotifiersettingswidget.cpp:118
-#, fuzzy, kde-format
-#| msgid "<a href=\"whatsthis\">How does this work?</a>"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Hvordan virker dette?</a>"
 
 #: newmailnotifiersettingswidget.cpp:127
-#, fuzzy, kde-format
-#| msgid "Message:"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Message:"
-msgstr "Brev:"
+msgstr "Besked:"
 
 #: newmailnotifiersettingswidget.cpp:139
 #, kde-format
@@ -201,20 +211,17 @@ msgid "New Mail Notifier Agent"
 msgstr "Agent til bekendtgørelse af nye e-mails"
 
 #: newmailnotifiersettingswidget.cpp:153
-#, fuzzy, kde-format
-#| msgid "Notifies about new mail."
+#, kde-format
 msgid "Notify about new mails."
 msgstr "Bekendtgør om nye e-mails."
 
 #: newmailnotifiersettingswidget.cpp:155
-#, fuzzy, kde-format
-#| msgid "Copyright (C) 2013-2020 Laurent Montel"
+#, kde-format
 msgid "Copyright (C) 2013-%1 Laurent Montel"
-msgstr "Ophavsret (C) 2013-2020 Laurent Montel"
+msgstr "Ophavsret (C) 2013-%1 Laurent Montel"
 
 #: newmailnotifiersettingswidget.cpp:158
-#, fuzzy, kde-format
-#| msgid "Laurent Montel"
+#, kde-format
 msgctxt "@info:credit"
 msgid "Laurent Montel"
 msgstr "Laurent Montel"
@@ -252,16 +259,14 @@ msgid "In: %1"
 msgstr "I: %1"
 
 #: specialnotifierjob.cpp:125
-#, fuzzy, kde-format
-#| msgid "In: %1"
+#, kde-format
 msgid "In: %1 (%2)"
-msgstr "I: %1"
+msgstr "I: %1 (%2)"
 
 #: specialnotifierjob.cpp:150
-#, fuzzy, kde-format
-#| msgid "Show mail..."
+#, kde-format
 msgid "Show mail…"
-msgstr "Vis e-mail..."
+msgstr "Vis e-mail…"
 
 #: specialnotifierjob.cpp:153
 #, kde-format

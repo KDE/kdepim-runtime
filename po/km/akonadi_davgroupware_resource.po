@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-21 00:39+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2011-12-21 11:31+0700\n"
 "Last-Translator: Seng Sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <supprot@khmeros.info>\n"
@@ -598,7 +598,9 @@ msgid "User:"
 msgstr "អ្នកប្រើ"
 
 #: setupwizard.cpp:255
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No, choose another server"
+msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "ទេ ជ្រើស​ម៉ាស៊ីន​បម្រើ​ផ្សេង"
 
@@ -639,12 +641,16 @@ msgid "Select the groupware server the resource shall be configured for"
 msgstr "ជ្រើស​ម៉ាស៊ីន​បម្រើ groupware ដែល​ធនធាន​នឹង​​ត្រូវ​បាន​កំណត់​រចនាសម្ព័ន្ធ"
 
 #: setupwizard.cpp:338
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use one of those servers:"
+msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "ប្រើ​មួយ​របស់​ម៉ាស៊ីនបម្រើ​ទាំងនោះ ៖"
 
 #: setupwizard.cpp:347
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Configure the resource manually"
+msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "កំណត់​រចនាសម្ព័ន្ធ​ធនធាន​ដោយ​ដៃ"
 
@@ -669,7 +675,9 @@ msgid "Installation path"
 msgstr "ផ្លូវ​ដំឡើង"
 
 #: setupwizard.cpp:395
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use secure connection"
+msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "ប្រើ​ការ​តភ្ជាប់​សុវត្ថិភាព"
 

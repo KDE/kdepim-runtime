@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libfolderarchivesettings\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-05 01:35+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2014-02-12 09:51+0000\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -31,7 +31,9 @@ msgid "Year"
 msgstr "Ano"
 
 #: folderarchivesettingpage.cpp:27
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable"
+msgctxt "@option:check"
 msgid "Enable"
 msgstr "Activar"
 

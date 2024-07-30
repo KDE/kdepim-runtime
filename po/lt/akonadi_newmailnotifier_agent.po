@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-04 00:39+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2015-12-29 20:26+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -41,7 +41,9 @@ msgstr ""
 
 #: newmailnotificationhistorywidget.cpp:24
 #: newmailnotifiersettingswidget.cpp:114
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enabled"
+msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Įgalinta"
 
@@ -120,44 +122,58 @@ msgid "Choose which fields to show:"
 msgstr "Pasirinkti, kuriuos laukus rodyti:"
 
 #: newmailnotifiersettingswidget.cpp:60
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show Photo"
+msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "Rodyti nuotrauką"
 
 #: newmailnotifiersettingswidget.cpp:64
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show From"
+msgctxt "@option:check"
 msgid "Show From"
 msgstr "Rodyti nuo ko"
 
 #: newmailnotifiersettingswidget.cpp:68
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show Subject"
+msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "Rodyti temą"
 
 #: newmailnotifiersettingswidget.cpp:72
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show Folders"
+msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "Rodyti aplankus"
 
 #: newmailnotifiersettingswidget.cpp:76
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Do not notify when email was sent by me"
+msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "Neperspėti kai el. laiškas buvo siųstas mano paties"
 
 #: newmailnotifiersettingswidget.cpp:80
 #, kde-format
+msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:84
 #, kde-format
+msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:92
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "&Select All"
+msgctxt "@option:check"
 msgid "Reply Mail"
-msgstr ""
+msgstr "&Pažymėti viską"
 
 #: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:163
 #, kde-format

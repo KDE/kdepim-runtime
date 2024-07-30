@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-04 00:39+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2013-09-30 03:01+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -36,7 +36,9 @@ msgstr ""
 
 #: newmailnotificationhistorywidget.cpp:24
 #: newmailnotifiersettingswidget.cpp:114
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enabled"
+msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Рұқсат етілген"
 
@@ -111,44 +113,58 @@ msgid "Choose which fields to show:"
 msgstr "Қай өрістерді қөрсету керек:"
 
 #: newmailnotifiersettingswidget.cpp:60
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show Photo"
+msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "Фотосын көрсету"
 
 #: newmailnotifiersettingswidget.cpp:64
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show From"
+msgctxt "@option:check"
 msgid "Show From"
 msgstr "Кімденді көрсету"
 
 #: newmailnotifiersettingswidget.cpp:68
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show Subject"
+msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "Тақырыбын көрсету"
 
 #: newmailnotifiersettingswidget.cpp:72
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show Folders"
+msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "Қапшықтарын көрсету"
 
 #: newmailnotifiersettingswidget.cpp:76
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Do not notify when email was sent by me"
+msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "Эл.пошта өзім жіберіген болса - құлақтандырмау"
 
 #: newmailnotifiersettingswidget.cpp:80
 #, kde-format
+msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:84
 #, kde-format
+msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:92
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "&Select All"
+msgctxt "@option:check"
 msgid "Reply Mail"
-msgstr ""
+msgstr "&Бүкілін таңдау"
 
 #: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:163
 #, kde-format

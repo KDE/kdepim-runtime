@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtimeReport-Msgid-Bugs-To: https://bugs.kde."
 "org\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-13 00:39+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2023-05-28 19:19+0100\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -157,7 +157,9 @@ msgid "Password:"
 msgstr "Pasvorto:"
 
 #: setupwizard.cpp:85
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Advanced settings"
+msgctxt "@option:check"
 msgid "Advanced settings"
 msgstr "Altnivelaj agordoj"
 

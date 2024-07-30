@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_etesync_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-13 00:39+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2020-09-19 20:51+0200\n"
 "Last-Translator: Roman Paholík <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
@@ -152,7 +152,9 @@ msgid "Password:"
 msgstr "Heslo:"
 
 #: setupwizard.cpp:85
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Advanced settings"
+msgctxt "@option:check"
 msgid "Advanced settings"
 msgstr "Pokročilé nastavenia"
 

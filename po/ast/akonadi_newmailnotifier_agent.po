@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-04 00:39+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2023-11-07 21:26+0100\n"
 "Last-Translator: Enol P. <enolp@softastur.org>\n"
 "Language-Team: \n"
@@ -36,6 +36,7 @@ msgstr ""
 #: newmailnotificationhistorywidget.cpp:24
 #: newmailnotifiersettingswidget.cpp:114
 #, kde-format
+msgctxt "@option:check"
 msgid "Enabled"
 msgstr ""
 
@@ -104,41 +105,49 @@ msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:60
 #, kde-format
+msgctxt "@option:check"
 msgid "Show Photo"
 msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:64
 #, kde-format
+msgctxt "@option:check"
 msgid "Show From"
 msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:68
 #, kde-format
+msgctxt "@option:check"
 msgid "Show Subject"
 msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:72
 #, kde-format
+msgctxt "@option:check"
 msgid "Show Folders"
 msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:76
 #, kde-format
+msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:80
 #, kde-format
+msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:84
 #, kde-format
+msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:92
 #, kde-format
+msgctxt "@option:check"
 msgid "Reply Mail"
 msgstr ""
 

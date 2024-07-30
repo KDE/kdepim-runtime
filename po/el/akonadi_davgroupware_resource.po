@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-21 00:39+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2017-04-20 16:15+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -586,7 +586,9 @@ msgid "User:"
 msgstr "Χρήστης"
 
 #: setupwizard.cpp:255
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No, choose another server"
+msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Όχι, να επιλεγεί άλλος εξυπηρετητής"
 
@@ -630,12 +632,16 @@ msgstr ""
 "Επιλογή εξυπηρετητή groupware για τον οποίο θα γίνει διαμόρφωση του πόρου"
 
 #: setupwizard.cpp:338
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use one of those servers:"
+msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Να χρησιμοποιηθεί ένας από αυτούς τους εξυπηρετητές:"
 
 #: setupwizard.cpp:347
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Configure the resource manually"
+msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Διαμορφώστε τον πόρο χειροκίνητα"
 
@@ -660,7 +666,9 @@ msgid "Installation path"
 msgstr "Διαδρομή εγκατάστασης"
 
 #: setupwizard.cpp:395
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use secure connection"
+msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Χρήση ασφαλούς σύνδεσης"
 

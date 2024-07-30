@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-05 01:35+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2024-07-09 08:25+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -37,7 +37,9 @@ msgid "Year"
 msgstr "שנה"
 
 #: folderarchivesettingpage.cpp:27
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable"
+msgctxt "@option:check"
 msgid "Enable"
 msgstr "הפעלה"
 

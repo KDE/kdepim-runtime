@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-01-05 01:35+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2022-08-26 13:50+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -39,7 +39,9 @@ msgid "Year"
 msgstr "Urtea"
 
 #: folderarchivesettingpage.cpp:27
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable"
+msgctxt "@option:check"
 msgid "Enable"
 msgstr "Gaitu"
 

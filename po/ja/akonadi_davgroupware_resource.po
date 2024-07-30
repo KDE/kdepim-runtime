@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-21 00:39+0000\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2009-11-04 20:48+0900\n"
 "Last-Translator: Japanese KDE translation team <kde-jp@kde.org>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -538,6 +538,7 @@ msgstr ""
 
 #: setupwizard.cpp:255
 #, kde-format
+msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr ""
 
@@ -576,11 +577,13 @@ msgstr ""
 
 #: setupwizard.cpp:338
 #, kde-format
+msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr ""
 
 #: setupwizard.cpp:347
 #, kde-format
+msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr ""
 
@@ -606,6 +609,7 @@ msgstr ""
 
 #: setupwizard.cpp:395
 #, kde-format
+msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr ""
 

@@ -2,29 +2,28 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Martin Schlander <mschlander@opensuse.org>, 2010, 2011, 2013.
+# SPDX-FileCopyrightText: 2024 rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2013-01-02 21:20+0100\n"
-"Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
+"PO-Revision-Date: 2024-07-17 21:05+0200\n"
+"Last-Translator: rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
-#, fuzzy, kde-format
-#| msgid "Sending messages (1 item in queue)..."
-#| msgid_plural "Sending messages (%1 items in queue)..."
+#, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "Sender breve (1 element i kø)..."
-msgstr[1] "Sender breve (%1 elementer i kø)..."
+msgstr[0] "Sender breve (1 element i kø)…"
+msgstr[1] "Sender breve (%1 elementer i kø…"
 
 #: maildispatcheragent.cpp:90
 #, kde-format
