@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-30 00:41+0000\n"
-"PO-Revision-Date: 2024-06-21 05:51+0200\n"
+"PO-Revision-Date: 2024-07-30 06:36+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -566,8 +566,7 @@ msgid "User:"
 msgstr "მომხმარებელი:"
 
 #: setupwizard.cpp:255
-#, fuzzy, kde-format
-#| msgid "No, choose another server"
+#, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "არა, აირჩიეთ სხვა სერვერი"
@@ -609,15 +608,13 @@ msgid "Select the groupware server the resource shall be configured for"
 msgstr "აირჩიეთ groupware-ის სერვერი, რომლისთვისაც რესურსის მორგებას აპირებთ"
 
 #: setupwizard.cpp:338
-#, fuzzy, kde-format
-#| msgid "Use one of those servers:"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "გამოიყენეთ ერთ-ერთი სერვერი:"
 
 #: setupwizard.cpp:347
-#, fuzzy, kde-format
-#| msgid "Configure the resource manually"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "რესურსის ხელით მორგება"
@@ -643,8 +640,7 @@ msgid "Installation path"
 msgstr "დაყენების ბილიკი"
 
 #: setupwizard.cpp:395
-#, fuzzy, kde-format
-#| msgid "Use secure connection"
+#, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "დაცული კავშირის გამოყენება"

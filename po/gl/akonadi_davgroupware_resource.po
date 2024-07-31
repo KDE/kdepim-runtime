@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-30 00:41+0000\n"
-"PO-Revision-Date: 2024-06-21 22:05+0200\n"
+"PO-Revision-Date: 2024-07-30 17:27+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
 "Language: gl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.05.0\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: configdialog.cpp:33
 #, kde-format
@@ -576,11 +576,10 @@ msgid "User:"
 msgstr "Usuario:"
 
 #: setupwizard.cpp:255
-#, fuzzy, kde-format
-#| msgid "No, choose another server"
+#, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
-msgstr "Non, escoller outro servidor"
+msgstr "Non, escoller outro servidor."
 
 #: setupwizard.cpp:257
 #, kde-format
@@ -622,18 +621,16 @@ msgstr ""
 "recurso"
 
 #: setupwizard.cpp:338
-#, fuzzy, kde-format
-#| msgid "Use one of those servers:"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Usar un deses servidores:"
 
 #: setupwizard.cpp:347
-#, fuzzy, kde-format
-#| msgid "Configure the resource manually"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
-msgstr "Configurar o recurso manualmente"
+msgstr "Configurar o recurso manualmente."
 
 #: setupwizard.cpp:381
 #, kde-format
@@ -656,11 +653,10 @@ msgid "Installation path"
 msgstr "Ruta de instalación"
 
 #: setupwizard.cpp:395
-#, fuzzy, kde-format
-#| msgid "Use secure connection"
+#, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
-msgstr "Usar unha conexión segura"
+msgstr "Usar unha conexión segura."
 
 #: setupwizard.cpp:423
 #, kde-format

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-30 00:41+0000\n"
-"PO-Revision-Date: 2024-07-11 08:41+0300\n"
+"PO-Revision-Date: 2024-07-30 10:10+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Lokalize 24.05.1\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: etesyncresource.cpp:49
 #, kde-format
@@ -154,8 +154,7 @@ msgid "Password:"
 msgstr "סיסמה:"
 
 #: setupwizard.cpp:85
-#, fuzzy, kde-format
-#| msgid "Advanced settings"
+#, kde-format
 msgctxt "@option:check"
 msgid "Advanced settings"
 msgstr "הגדרות מתקדמות"

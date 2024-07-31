@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-30 00:41+0000\n"
-"PO-Revision-Date: 2024-06-21 07:10+0200\n"
+"PO-Revision-Date: 2024-07-30 09:02+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -577,8 +577,7 @@ msgid "User:"
 msgstr "Uporabnik:"
 
 #: setupwizard.cpp:255
-#, fuzzy, kde-format
-#| msgid "No, choose another server"
+#, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Ne, izberi drug strežnik"
@@ -620,18 +619,16 @@ msgid "Select the groupware server the resource shall be configured for"
 msgstr "Izberite strežnik za skupinsko delo, za katerega bo nastavljen vir"
 
 #: setupwizard.cpp:338
-#, fuzzy, kde-format
-#| msgid "Use one of those servers:"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
-msgstr "Uporabi enega izmed teh strežnikov:"
+msgstr "Uporabi enega od teh strežnikov:"
 
 #: setupwizard.cpp:347
-#, fuzzy, kde-format
-#| msgid "Configure the resource manually"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
-msgstr "Ročno nastavi vir"
+msgstr "Ročno konfiguriraj vir"
 
 #: setupwizard.cpp:381
 #, kde-format
@@ -654,8 +651,7 @@ msgid "Installation path"
 msgstr "Namestitvena pot"
 
 #: setupwizard.cpp:395
-#, fuzzy, kde-format
-#| msgid "Use secure connection"
+#, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Uporabi varno povezavo"
