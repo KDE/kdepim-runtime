@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-21 00:39+0000\n"
-"PO-Revision-Date: 2024-06-21 12:46+0200\n"
+"PO-Revision-Date: 2024-07-30 16:37+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.05.1\n"
+"X-Generator: Lokalize 24.05.2\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: configdialog.cpp:33
@@ -581,7 +581,7 @@ msgstr "Usuario:"
 #: setupwizard.cpp:255
 #, kde-format
 msgid "No, choose another server"
-msgstr "No, elija otro servidor"
+msgstr "No, elegir otro servidor"
 
 #: setupwizard.cpp:257
 #, kde-format
@@ -608,7 +608,7 @@ msgstr ""
 #: setupwizard.cpp:282
 #, kde-format
 msgid "Yes, use %1 as provider"
-msgstr "Sí, use %1 como proveedor"
+msgstr "Sí, usar %1 como proveedor"
 
 #: setupwizard.cpp:308
 #, kde-format
@@ -625,12 +625,12 @@ msgstr ""
 #: setupwizard.cpp:338
 #, kde-format
 msgid "Use one of those servers:"
-msgstr "Use uno de estos servidores:"
+msgstr "Usar uno de estos servidores:"
 
 #: setupwizard.cpp:347
 #, kde-format
 msgid "Configure the resource manually"
-msgstr "Configure el recurso manualmente"
+msgstr "Configurar el recurso manualmente"
 
 #: setupwizard.cpp:381
 #, kde-format
