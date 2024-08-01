@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-30 00:41+0000\n"
-"PO-Revision-Date: 2024-06-21 10:38+0200\n"
+"PO-Revision-Date: 2024-07-31 10:15+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -576,8 +576,7 @@ msgid "User:"
 msgstr "Usator:"
 
 #: setupwizard.cpp:255
-#, fuzzy, kde-format
-#| msgid "No, choose another server"
+#, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "No, selige un altere servitor"
@@ -620,15 +619,13 @@ msgstr ""
 "Selectiona per qual servitor de groupware on debe configurar le ressource"
 
 #: setupwizard.cpp:338
-#, fuzzy, kde-format
-#| msgid "Use one of those servers:"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Usa un de iste servitores:"
 
 #: setupwizard.cpp:347
-#, fuzzy, kde-format
-#| msgid "Configure the resource manually"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Configura le resource manualmente"
@@ -654,8 +651,7 @@ msgid "Installation path"
 msgstr "Percurso de installation"
 
 #: setupwizard.cpp:395
-#, fuzzy, kde-format
-#| msgid "Use secure connection"
+#, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Usa connexion secure"
