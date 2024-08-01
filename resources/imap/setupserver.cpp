@@ -254,7 +254,7 @@ void SetupServer::applySettings()
                                                i18n("You have changed the address of the server. Even if this is the same server as before "
                                                     "we will have to re-download all your emails from this account again. "
                                                     "Are you sure you want to proceed?"),
-                                               i18n("Server address change"))
+                                               i18nc("@title:window", "Server address change"))
             == KMessageBox::Cancel) {
             return;
         }
@@ -264,7 +264,7 @@ void SetupServer::applySettings()
                                                i18n("You have changed the user name. Even if this is a user name for the same account as before "
                                                     "we will have to re-download all your emails from this account again. "
                                                     "Are you sure you want to proceed?"),
-                                               i18n("User name change"))
+                                               i18nc("@title:window", "User name change"))
             == KMessageBox::Cancel) {
             return;
         }

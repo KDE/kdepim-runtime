@@ -69,9 +69,9 @@ void ConfigWidget::checkConnectionJobFinished(KJob *job)
     QApplication::restoreOverrideCursor();
 
     if (job->error()) {
-        KMessageBox::error(this, i18n("Unable to connect: %1", job->errorText()), i18n("Connection error"));
+        KMessageBox::error(this, i18n("Unable to connect: %1", job->errorText()), i18nc("@title:window", "Connection error"));
     } else {
-        KMessageBox::information(this, i18n("Tested connection successfully."), i18n("Connection success"));
+        KMessageBox::information(this, i18n("Tested connection successfully."), i18nc("@title:window", "Connection success"));
     }
 }
 

@@ -339,7 +339,7 @@ void EwsConfigDialog::dialogAccepted()
             if (KMessageBox::questionTwoActions(
                     this,
                     i18n("Autodiscovery failed. This can be caused by incorrect parameters. Do you still want to save your settings?"),
-                    i18n("Exchange server autodiscovery"),
+                    i18nc("@title:window", "Exchange server autodiscovery"),
                     KStandardGuiItem::save(),
                     KStandardGuiItem::cancel())
                 == KMessageBox::ButtonCode::PrimaryAction) {
@@ -370,7 +370,7 @@ void EwsConfigDialog::dialogAccepted()
                 if (KMessageBox::questionTwoActions(
                         this,
                         i18n("Connecting to Exchange failed. This can be caused by incorrect parameters. Do you still want to save your settings?"),
-                        i18n("Exchange server connection"),
+                        i18nc("@title:window", "Exchange server connection"),
                         KStandardGuiItem::save(),
                         KStandardGuiItem::cancel())
                     == KMessageBox::ButtonCode::PrimaryAction) {
