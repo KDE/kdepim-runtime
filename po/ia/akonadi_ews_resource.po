@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-05-13 11:57+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -146,8 +146,9 @@ msgstr ""
 "Autodiscovery (discoperta automatic) falleva. Isto pote esser causate per "
 "parametros incorrecte. Tu ancora vole salveguardar tu preferentias?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Autodiscovery (discoperta automatic)  de servitor Exchange"
 
@@ -161,7 +162,9 @@ msgstr ""
 "incorrecte. Tu vole ancora salveguardar tu preferentias?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Connexion de servitor Exchange"
 
@@ -746,12 +749,6 @@ msgstr "Le nomine del Resource EWS genitor a usar quando on invia posta"
 msgid "Cancel"
 msgstr "Cancella"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Autodiscovery (discoperta automatic)  de servitor Exchange"
-
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
@@ -1290,6 +1287,9 @@ msgid "Item out of order while processing update item response."
 msgstr ""
 "Elemento in reparation durante que processava responsa de elemento de "
 "actualisar."
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Autodiscovery (discoperta automatic)  de servitor Exchange"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr ""

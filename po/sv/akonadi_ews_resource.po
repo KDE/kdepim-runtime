@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-06-18 17:07+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -146,8 +146,9 @@ msgstr ""
 "Automatisk upptäckt misslyckades. Det kan orsakas av felaktiga parametrar. "
 "Vill du ändå spara inställningarna?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Automatisk upptäckt av Exchange-server"
 
@@ -161,7 +162,9 @@ msgstr ""
 "parametrar. Vill du ändå spara inställningarna?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Exchange-serveranslutning"
 
@@ -739,12 +742,6 @@ msgstr "Namnet på överliggande EWS-resurs att använda när brev skickas"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Automatisk upptäckt av Exchange-server"
-
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
@@ -1272,6 +1269,9 @@ msgstr "Objektuppdatering misslyckades: "
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Objekt i felaktig ordning vid behandling av svar på objektuppdatering."
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Automatisk upptäckt av Exchange-server"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr "Ange ett lösenord för användare '%1' och Exchange-konto '%2'."

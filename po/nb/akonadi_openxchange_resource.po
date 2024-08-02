@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2012-08-19 20:22+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -40,7 +40,9 @@ msgid "Unable to connect: %1"
 msgstr "Klarer ikke koble til: %1"
 
 #: configwidget.cpp:72
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Connection error"
+msgctxt "@title:window"
 msgid "Connection error"
 msgstr "Tilkoblingsfeil"
 
@@ -50,7 +52,9 @@ msgid "Tested connection successfully."
 msgstr "Forbindelsen vellykket testet."
 
 #: configwidget.cpp:74
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Connection success"
+msgctxt "@title:window"
 msgid "Connection success"
 msgstr "Vellykket tilkobling"
 

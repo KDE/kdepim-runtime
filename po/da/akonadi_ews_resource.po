@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-07-18 12:03+0200\n"
 "Last-Translator: rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -148,10 +148,11 @@ msgstr ""
 "Autoopdagelse fejlede. Dette kan være på grund af forkerte argumenter. Vil "
 "du stadig gemme dine indstillinger?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
-msgstr "Exchange-server autoopdagelse"
+msgstr ""
 
 #: ewsconfigdialog.cpp:372
 #, kde-format
@@ -163,7 +164,9 @@ msgstr ""
 "argumenter. Vil du stadig gemme dine indstillinger?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Exchange-server forbindelse"
 
@@ -675,12 +678,6 @@ msgstr ""
 #, kde-format
 msgid "Cancel"
 msgstr "Annullér"
-
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr ""
 
 #: ewsprogressdialog.cpp:49
 #, kde-format
@@ -1203,3 +1200,6 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr ""
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Exchange-server autoopdagelse"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-23 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-06-22 12:57+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
@@ -708,7 +708,9 @@ msgstr ""
 "again. Are you sure you want to proceed?"
 
 #: setupserver.cpp:257
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Server address change"
+msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Server address change"
 
@@ -724,7 +726,9 @@ msgstr ""
 "account again. Are you sure you want to proceed?"
 
 #: setupserver.cpp:267
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "User name change"
+msgctxt "@title:window"
 msgid "User name change"
 msgstr "User name change"
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-06-22 07:46+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -148,8 +148,9 @@ msgstr ""
 "Nieudane samowykrywanie. Powodem mogą być niepoprawne parametry. Czy nadal "
 "chcesz zapisać swoje ustawienia?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Samowykrywanie serwera Exchange"
 
@@ -163,7 +164,9 @@ msgstr ""
 "parametry. Czy nadal chcesz zapisać swoje ustawienia?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Połączenie do serwera Exchange"
 
@@ -746,12 +749,6 @@ msgstr "Nazwa nadrzędnego zasobu EWS używana przy wysyłaniu poczty"
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Samowykrywanie serwera Exchange"
-
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
@@ -1282,6 +1279,9 @@ msgstr "Nie udało się uaktualnić rzeczy: "
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Rzecz poza kolejnością podczas uaktualniania odpowiedzi rzeczy."
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Samowykrywanie serwera Exchange"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr "Podaj hasło dla użytkownika '%1' o koncie Exchange '%2'."

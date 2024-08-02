@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-06-22 07:48+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -41,7 +41,9 @@ msgid "Unable to connect: %1"
 msgstr "Nie można połączyć: %1"
 
 #: configwidget.cpp:72
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Connection error"
+msgctxt "@title:window"
 msgid "Connection error"
 msgstr "Błąd połączenia"
 
@@ -51,7 +53,9 @@ msgid "Tested connection successfully."
 msgstr "Test połączenia zakończony sukcesem."
 
 #: configwidget.cpp:74
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Connection success"
+msgctxt "@title:window"
 msgid "Connection success"
 msgstr "Nawiązano połączenie"
 

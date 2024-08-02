@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-23 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-03-11 15:19+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -750,7 +750,9 @@ msgstr ""
 "varmasti jatkaa?"
 
 #: setupserver.cpp:257
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Server address change"
+msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Palvelinosoitteen muutos"
 
@@ -766,7 +768,9 @@ msgstr ""
 "uudelleen. Haluatko varmasti jatkaa?"
 
 #: setupserver.cpp:267
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "User name change"
+msgctxt "@title:window"
 msgid "User name change"
 msgstr "Käyttäjätunnuksen muutos"
 

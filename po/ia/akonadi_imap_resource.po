@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-23 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-06-19 17:30+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -724,7 +724,9 @@ msgstr ""
 "nove. Tu es secur que tu vole proceder?"
 
 #: setupserver.cpp:257
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Server address change"
+msgctxt "@title:window"
 msgid "Server address change"
 msgstr "CAmbio de adresse de servitor"
 
@@ -740,7 +742,9 @@ msgstr ""
 "posta ex iste conto de nove. Tu es secur que tu vole proceder?"
 
 #: setupserver.cpp:267
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "User name change"
+msgctxt "@title:window"
 msgid "User name change"
 msgstr "Cambio de nomine de usator"
 

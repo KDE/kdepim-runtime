@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-05-12 21:36+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -151,8 +151,9 @@ msgstr ""
 "Ha fallat el descobriment automàtic. Això pot ser causat per paràmetres "
 "incorrectes. Voleu desar la configuració?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Descobriment automàtic del servidor Exchange"
 
@@ -166,7 +167,9 @@ msgstr ""
 "incorrectes. Voleu desar la configuració?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Connexió amb el servidor Exchange"
 
@@ -752,12 +755,6 @@ msgstr "El nom del recurs EWS primari que s'usarà per a enviar els missatges"
 msgid "Cancel"
 msgstr "Cancel·la"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Descobriment automàtic del servidor Exchange"
-
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
@@ -1310,6 +1307,9 @@ msgid "Item out of order while processing update item response."
 msgstr ""
 "Element fora de servei durant el processament de la resposta en actualitzar "
 "l'element."
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Descobriment automàtic del servidor Exchange"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr ""

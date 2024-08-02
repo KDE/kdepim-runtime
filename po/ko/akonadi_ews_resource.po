@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2023-10-08 23:04+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -147,8 +147,9 @@ msgstr ""
 "자동 발견이 실패했습니다. 인자가 잘못되었을 수도 있습니다. 그래도 설정을 저장"
 "하시겠습니까?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Exchange 서버 자동 발견"
 
@@ -162,7 +163,9 @@ msgstr ""
 "설정을 저장하시겠습니까?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Exchange 서버 연결"
 
@@ -726,12 +729,6 @@ msgstr "메일을 보낼 때 사용할 부모 EWS 리소스 이름"
 msgid "Cancel"
 msgstr "취소"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Exchange 서버 자동 발견"
-
 #: ewsprogressdialog.cpp:49
 #, fuzzy, kde-format
 #| msgid "Performing Microsoft Exchange server autodiscovery..."
@@ -1258,6 +1255,9 @@ msgstr "항목 업데이트 실패:"
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "항목 응답 업데이트를 처리하는 중 항목이 응답하지 않습니다."
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Exchange 서버 자동 발견"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr "사용자 '%1' 및 Exchange 계정 '%2'의 암호를 입력하십시오."

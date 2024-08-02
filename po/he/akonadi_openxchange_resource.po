@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-07-11 08:47+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -39,7 +39,9 @@ msgid "Unable to connect: %1"
 msgstr "לא ניתן להתחבר: %1"
 
 #: configwidget.cpp:72
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Connection error"
+msgctxt "@title:window"
 msgid "Connection error"
 msgstr "שגיאת חיבור"
 
@@ -49,7 +51,9 @@ msgid "Tested connection successfully."
 msgstr "החיבור נבדק בהצלחה."
 
 #: configwidget.cpp:74
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Connection success"
+msgctxt "@title:window"
 msgid "Connection success"
 msgstr "החיבור הצליח"
 

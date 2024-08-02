@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-02-09 22:48+0300\n"
 "Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -151,8 +151,9 @@ msgstr ""
 "Ошибка автоматического обнаружения. Возможно, заданы неверные параметры. "
 "Сохранить?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Автоматическое обнаружение сервера Exchange"
 
@@ -166,7 +167,9 @@ msgstr ""
 "Сохранить?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Подключение к серверу Exchange"
 
@@ -757,12 +760,6 @@ msgstr ""
 msgid "Cancel"
 msgstr "Отменить"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Автоматическое обнаружение сервера Exchange"
-
 #: ewsprogressdialog.cpp:49
 #, fuzzy, kde-format
 #| msgid "Performing Microsoft Exchange server autodiscovery..."
@@ -1302,6 +1299,9 @@ msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr ""
 "При обработке ответа на обновление объекта обнаружен объект вне порядка."
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Автоматическое обнаружение сервера Exchange"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr ""

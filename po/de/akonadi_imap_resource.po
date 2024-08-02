@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-23 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-07-21 22:25+0200\n"
 "Last-Translator: Frank Steinmetzger <dev-kde@felsenfleischer.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -756,7 +756,9 @@ msgstr ""
 "Möchten Sie wirklich fortfahren?"
 
 #: setupserver.cpp:257
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Server address change"
+msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Server-Adresse geändert"
 
@@ -772,7 +774,9 @@ msgstr ""
 "herunterladen. Möchten Sie wirklich fortfahren?"
 
 #: setupserver.cpp:267
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "User name change"
+msgctxt "@title:window"
 msgid "User name change"
 msgstr "Benutzername geändert"
 

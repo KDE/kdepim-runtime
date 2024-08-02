@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-23 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2013-03-13 11:09+0530\n"
 "Last-Translator: Chetan Khona <chetan@kompkin.com>\n"
 "Language-Team: Marathi <kde-i18n-doc@kde.org>\n"
@@ -668,9 +668,11 @@ msgid ""
 msgstr ""
 
 #: setupserver.cpp:257
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Username"
+msgctxt "@title:window"
 msgid "Server address change"
-msgstr ""
+msgstr "वापरकर्ता नाव"
 
 #: setupserver.cpp:264
 #, kde-format
@@ -683,6 +685,7 @@ msgstr ""
 #: setupserver.cpp:267
 #, fuzzy, kde-format
 #| msgid "Username"
+msgctxt "@title:window"
 msgid "User name change"
 msgstr "वापरकर्ता नाव"
 

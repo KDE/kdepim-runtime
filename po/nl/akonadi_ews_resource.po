@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-05-12 14:20+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -147,8 +147,9 @@ msgstr ""
 "Autodiscovery is mislukt. Dit kan veroorzaakt zijn door onjuiste parameters. "
 "Wilt u toch uw instellingen opslaan?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Exchange server automatisch ontdekken"
 
@@ -162,7 +163,9 @@ msgstr ""
 "parameters. Wilt u toch uw instellingen opslaan?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Verbinding met Exchange-server"
 
@@ -746,12 +749,6 @@ msgstr ""
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Exchange server automatisch ontdekken"
-
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
@@ -1287,6 +1284,9 @@ msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr ""
 "Item niet in orde tijdens verwerken van antwoord voor bijwerken op item."
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Exchange server automatisch ontdekken"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr "Voer wachtwoord in voor gebruiker '%1' en Exchange-account '%2'."

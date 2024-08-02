@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-05-12 17:48+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -148,8 +148,9 @@ msgstr ""
 "Rilevamento automatico non riuscito. Questo può essere causato da parametri "
 "non corretti. Vuoi ancora salvare le tue impostazioni?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Rilevamento automatico del server Exchange"
 
@@ -163,7 +164,9 @@ msgstr ""
 "non corretti. Vuoi ancora salvare le tue impostazioni?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Connessione al server Exchange"
 
@@ -746,12 +749,6 @@ msgstr "Il nome della risorsa EWS genitore da usare quando inviare la posta"
 msgid "Cancel"
 msgstr "Annulla"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Rilevamento automatico del server Exchange"
-
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
@@ -1296,6 +1293,9 @@ msgid "Item out of order while processing update item response."
 msgstr ""
 "Elemento fuori ordine durante l'elaborazione della risposta di aggiornamento "
 "per un elemento."
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Rilevamento automatico del server Exchange"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr "Inserisci la password per l'utente «%1» e l'account Exchange «%2»."

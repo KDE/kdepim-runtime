@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -141,10 +141,11 @@ msgid ""
 "still want to save your settings?"
 msgstr "自动发现失败。您的配置可能不正确，仍要保存设置吗？"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
-msgstr "Exchange 服务器自动发现"
+msgstr "自动发现 Exchange 服务器"
 
 #: ewsconfigdialog.cpp:372
 #, kde-format
@@ -154,7 +155,9 @@ msgid ""
 msgstr "连接到 Exchange 失败。这可能由不正确的参数引起。您仍然想要保存设置吗？"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Exchange 服务器连接"
 
@@ -708,12 +711,6 @@ msgstr "发送邮件时要使用的父 EWS 资源的名称"
 msgid "Cancel"
 msgstr "取消"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "自动发现 Exchange 服务器"
-
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
@@ -1237,3 +1234,6 @@ msgstr "项目更新失败："
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "正在处理项目响应时项目出错。"
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Exchange 服务器自动发现"

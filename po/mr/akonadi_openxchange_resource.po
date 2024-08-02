@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2013-03-15 11:19+0530\n"
 "Last-Translator: Chetan Khona <chetan@kompkin.com>\n"
 "Language-Team: Marathi <kde-i18n-doc@kde.org>\n"
@@ -39,6 +39,7 @@ msgstr ""
 
 #: configwidget.cpp:72
 #, kde-format
+msgctxt "@title:window"
 msgid "Connection error"
 msgstr ""
 
@@ -49,6 +50,7 @@ msgstr ""
 
 #: configwidget.cpp:74
 #, kde-format
+msgctxt "@title:window"
 msgid "Connection success"
 msgstr ""
 

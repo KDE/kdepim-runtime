@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2023-10-05 18:27-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -149,8 +149,9 @@ msgstr ""
 "A autodescoberta falhou. Isto pode ser devido a parâmetros incorretos. "
 "Deseja salvar as suas definições mesmo assim?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Autodescoberta do servidor de Exchange"
 
@@ -164,7 +165,9 @@ msgstr ""
 "incorretos. Deseja salvar as suas definições mesmo assim?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Conexão com o servidor Exchange"
 
@@ -744,12 +747,6 @@ msgstr "O nome do recurso-pai do EWS a ser usado para envio do e-mail"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Autodescoberta do servidor de Exchange"
-
 #: ewsprogressdialog.cpp:49
 #, fuzzy, kde-format
 #| msgid "Performing Microsoft Exchange server autodiscovery..."
@@ -1293,6 +1290,9 @@ msgstr "Falha ao atualizar item: "
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Item fora de ordem ao processar a resposta da atualização do item."
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Autodescoberta do servidor de Exchange"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr "Informe a senha do usuário '%1' e da conta Exchange '%2'."

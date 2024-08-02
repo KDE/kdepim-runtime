@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-05-30 20:40+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -150,8 +150,9 @@ msgstr ""
 "Неуспешно автоматично откриване. Това може да бъде причинено от неправилни "
 "параметри. Все още ли искате да запазите настройките си?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Автоматично откриване на сървър за обмен"
 
@@ -165,7 +166,9 @@ msgstr ""
 "неправилни параметри. Все още ли искате да запазите настройките си?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Обмен на сървърна връзка"
 
@@ -752,12 +755,6 @@ msgstr ""
 msgid "Cancel"
 msgstr "Отказ"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Автоматично откриване на сървър за обмен"
-
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
@@ -1292,3 +1289,6 @@ msgstr "Актуализирането на елемента е неуспешн
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Елементът е недостъпен, докато се обработва отговор на елемента."
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Автоматично откриване на сървър за обмен"

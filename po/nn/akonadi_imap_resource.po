@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-23 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2010-04-20 21:54+0200\n"
 "Last-Translator: Eirik U. Birkeland <eirbir@gmail.com>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
@@ -684,6 +684,7 @@ msgstr ""
 
 #: setupserver.cpp:257
 #, kde-format
+msgctxt "@title:window"
 msgid "Server address change"
 msgstr ""
 
@@ -696,9 +697,11 @@ msgid ""
 msgstr ""
 
 #: setupserver.cpp:267
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Username"
+msgctxt "@title:window"
 msgid "User name change"
-msgstr ""
+msgstr "Brukarnamn"
 
 #: setupserver.cpp:412 setupserver.cpp:464
 #, kde-format

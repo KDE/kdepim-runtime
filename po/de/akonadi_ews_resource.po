@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-04-28 20:13+0200\n"
 "Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -154,8 +154,9 @@ msgstr ""
 "Parameter verursacht werden. Möchten Sie Ihre Einstellungen trotzdem "
 "speichern?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Automatische Erkennung des Exchange-Servers"
 
@@ -170,7 +171,9 @@ msgstr ""
 "speichern?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Verbindung zum Exchange-Server"
 
@@ -765,12 +768,6 @@ msgstr ""
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Automatische Erkennung des Exchange-Servers"
-
 #: ewsprogressdialog.cpp:49
 #, fuzzy, kde-format
 #| msgid "Performing Microsoft Exchange server autodiscovery..."
@@ -1330,6 +1327,9 @@ msgid "Item out of order while processing update item response."
 msgstr ""
 "Eintrag in falscher Reihenfolge während der Verarbeitung der Antwort vom "
 "Aktualisieren des Eintrags"
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Automatische Erkennung des Exchange-Servers"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr ""

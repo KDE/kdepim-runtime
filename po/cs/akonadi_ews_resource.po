@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-05-30 15:35+0200\n"
 "Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -137,10 +137,11 @@ msgid ""
 "still want to save your settings?"
 msgstr ""
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
-msgstr ""
+msgstr "Automatické hledání serveru Exchange"
 
 #: ewsconfigdialog.cpp:372
 #, kde-format
@@ -150,9 +151,12 @@ msgid ""
 msgstr ""
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@title:window"
+#| msgid "Exchange server autodiscovery"
+msgctxt "@title:window"
 msgid "Exchange server connection"
-msgstr ""
+msgstr "Automatické hledání serveru Exchange"
 
 #: ewsconfigdialog.cpp:427
 #, kde-format
@@ -662,12 +666,6 @@ msgstr ""
 #, kde-format
 msgid "Cancel"
 msgstr "Zrušit"
-
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Automatické hledání serveru Exchange"
 
 #: ewsprogressdialog.cpp:49
 #, kde-format

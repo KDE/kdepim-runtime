@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-05-23 20:05+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
@@ -147,8 +147,9 @@ msgstr ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
 "still want to save your settings?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Exchange server autodiscovery"
 
@@ -162,7 +163,9 @@ msgstr ""
 "Do you still want to save your settings?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Exchange server connection"
 
@@ -736,12 +739,6 @@ msgstr "The name of the parent EWS Resource to use when sending mail"
 msgid "Cancel"
 msgstr "Cancel"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Exchange server autodiscovery"
-
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
@@ -1270,6 +1267,9 @@ msgstr "Item update failed: "
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Item out of order while processing update item response."
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Exchange server autodiscovery"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr "Please enter password for user '%1' and Exchange account '%2'."

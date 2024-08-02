@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2019-12-18 18:35+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -149,8 +149,9 @@ msgstr ""
 "Automaatne tuvastamine nurjus. Seda võivad põhjustada valed parameetrid. Kas "
 "siiski seadistused salvestada?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Exchange'i serveri automaatne tuvastamine"
 
@@ -164,7 +165,9 @@ msgstr ""
 "siiski seadistused salvestada?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Exchange'i serveri ühendus"
 
@@ -753,12 +756,6 @@ msgstr "EWS eellasressursi nimi, mida kasutada kirja saatmisel"
 msgid "Cancel"
 msgstr "Loobu"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Exchange'i serveri automaatne tuvastamine"
-
 #: ewsprogressdialog.cpp:49
 #, fuzzy, kde-format
 #| msgid "Performing Microsoft Exchange server autodiscovery..."
@@ -1288,6 +1285,9 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr ""
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Exchange'i serveri automaatne tuvastamine"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr "Palun anna kasutaja '%1' ja Exchange'i konto '%2' parool."

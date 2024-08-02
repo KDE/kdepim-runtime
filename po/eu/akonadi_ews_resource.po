@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-07-19 09:16+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -150,8 +150,9 @@ msgstr ""
 "Auto-aurkikuntzak huts egin du. Okerreko parametroen eragina izan daiteke. "
 "Hala eta guztiz ere zure ezarpenak gorde nahi dituzu?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Exchange zerbitzariaren auto-aurkikuntza"
 
@@ -165,7 +166,9 @@ msgstr ""
 "daiteke. Hala eta guztiz ere zure ezarpenak gorde nahi dituzu?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Exchange zerbitzariaren konexioa"
 
@@ -751,12 +754,6 @@ msgstr "Posta bidaltzean erabili beharreko EWS guraso-baliabidearen izena"
 msgid "Cancel"
 msgstr "Utzi"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Exchange zerbitzariaren auto-aurkikuntza"
-
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
@@ -1292,6 +1289,9 @@ msgstr "Elementua eguneratzea:"
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Elementua hondatuta elementua eguneratzeko erantzuna prozesatzean."
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Exchange zerbitzariaren auto-aurkikuntza"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr ""

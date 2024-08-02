@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2019-11-05 19:58+0100\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -148,8 +148,10 @@ msgstr ""
 "Automatické objavenie zlyhalo. Môže to byť spôsobené nesprávnymi "
 "parametrami. Naozaj chcete uložiť svoje nastavenia?"
 
-#: ewsconfigdialog.cpp:342
-#, kde-format
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
+#, fuzzy, kde-format
+#| msgid "Exchange server autodiscovery"
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Automatické objavenie servera Exchange"
 
@@ -163,7 +165,9 @@ msgstr ""
 "parametrami.Naozaj chcete uložiť svoje nastavenia?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Pripojenie na server Exchange"
 
@@ -693,13 +697,6 @@ msgstr ""
 #, kde-format
 msgid "Cancel"
 msgstr "Zrušiť"
-
-#: ewsprogressdialog.cpp:48
-#, fuzzy, kde-format
-#| msgid "Exchange server autodiscovery"
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Automatické objavenie servera Exchange"
 
 #: ewsprogressdialog.cpp:49
 #, fuzzy, kde-format
@@ -1238,6 +1235,9 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr ""
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Automatické objavenie servera Exchange"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr "Zadajte heslo pre používateľa '%1' a účet Exchange '%2'."

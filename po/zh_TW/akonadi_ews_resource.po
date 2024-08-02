@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-05-18 16:42+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -143,8 +143,9 @@ msgid ""
 "still want to save your settings?"
 msgstr "自動探索失敗。這可能是參數錯誤所造成的。您還是要儲存設定嗎？"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Exchange 伺服器自動探索"
 
@@ -156,7 +157,9 @@ msgid ""
 msgstr "連線至 Exchange 時失敗。這可能是參數錯誤所造成的。您還是要儲存設定嗎？"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Exchange 伺服器連線"
 
@@ -715,12 +718,6 @@ msgstr "傳送郵件時要使用的親 EWS 資源的名稱"
 msgid "Cancel"
 msgstr "取消"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Exchange 伺服器自動探索"
-
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
@@ -1244,3 +1241,6 @@ msgstr "項目更新失敗："
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "處理更新項目回應時項目順序不正確。"
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Exchange 伺服器自動探索"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2024-05-12 09:10+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian\n"
@@ -153,8 +153,9 @@ msgstr ""
 "Спроба автоматичного визначення зазнала невдачі. Причиною цього можуть бути "
 "неправильні параметри. Хочете зберегти ваші параметри попри це?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:342 ewsprogressdialog.cpp:48
 #, kde-format
+msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Автовизначення сервера Exchange"
 
@@ -168,7 +169,9 @@ msgstr ""
 "неправильні параметри. Хочете зберегти ваші параметри попри це?"
 
 #: ewsconfigdialog.cpp:373
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Exchange server connection"
+msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "З'єднання із сервером Exchange"
 
@@ -755,12 +758,6 @@ msgstr ""
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: ewsprogressdialog.cpp:48
-#, kde-format
-msgctxt "@title:window"
-msgid "Exchange server autodiscovery"
-msgstr "Автовизначення сервера Exchange"
-
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
@@ -1301,6 +1298,9 @@ msgid "Item out of order while processing update item response."
 msgstr ""
 "Під час обробки відповіді щодо оновлення записів виявлено запис поза "
 "порядком записів."
+
+#~ msgid "Exchange server autodiscovery"
+#~ msgstr "Автовизначення сервера Exchange"
 
 #~ msgid "Please enter password for user '%1' and Exchange account '%2'."
 #~ msgstr ""

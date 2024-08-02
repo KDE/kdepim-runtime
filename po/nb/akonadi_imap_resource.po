@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-06-23 00:39+0000\n"
+"POT-Creation-Date: 2024-08-02 00:41+0000\n"
 "PO-Revision-Date: 2014-09-19 22:53+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -703,6 +703,7 @@ msgstr ""
 
 #: setupserver.cpp:257
 #, kde-format
+msgctxt "@title:window"
 msgid "Server address change"
 msgstr ""
 
@@ -715,9 +716,11 @@ msgid ""
 msgstr ""
 
 #: setupserver.cpp:267
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Username"
+msgctxt "@title:window"
 msgid "User name change"
-msgstr ""
+msgstr "Brukernavn"
 
 #: setupserver.cpp:412 setupserver.cpp:464
 #, kde-format
