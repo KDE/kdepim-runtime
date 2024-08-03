@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-30 00:41+0000\n"
-"PO-Revision-Date: 2024-07-14 15:53+0200\n"
+"PO-Revision-Date: 2024-07-31 22:23+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -36,8 +36,7 @@ msgstr "[Mostra messaggio di posta]"
 
 #: newmailnotificationhistorywidget.cpp:24
 #: newmailnotifiersettingswidget.cpp:114
-#, fuzzy, kde-format
-#| msgid "Enabled"
+#, kde-format
 msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Abilitato"
@@ -109,57 +108,49 @@ msgid "Choose which fields to show:"
 msgstr "Scegli quali campi mostrare:"
 
 #: newmailnotifiersettingswidget.cpp:60
-#, fuzzy, kde-format
-#| msgid "Show Photo"
+#, kde-format
 msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "Mostra foto"
 
 #: newmailnotifiersettingswidget.cpp:64
-#, fuzzy, kde-format
-#| msgid "Show From"
+#, kde-format
 msgctxt "@option:check"
 msgid "Show From"
 msgstr "Mostra «Da»"
 
 #: newmailnotifiersettingswidget.cpp:68
-#, fuzzy, kde-format
-#| msgid "Show Subject"
+#, kde-format
 msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "Mostra oggetto"
 
 #: newmailnotifiersettingswidget.cpp:72
-#, fuzzy, kde-format
-#| msgid "Show Folders"
+#, kde-format
 msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "Mostra cartelle"
 
 #: newmailnotifiersettingswidget.cpp:76
-#, fuzzy, kde-format
-#| msgid "Do not notify when email was sent by me"
+#, kde-format
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "Non notificare quando un messaggio di posta è stato inviato da me"
 
 #: newmailnotifiersettingswidget.cpp:80
-#, fuzzy, kde-format
-#| msgid "Keep Persistent Notification"
+#, kde-format
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr "Mantieni le notifiche persistenti"
 
 #: newmailnotifiersettingswidget.cpp:84
-#, fuzzy, kde-format
-#| msgid "Show Action Buttons"
+#, kde-format
 msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr "Mostra i pulsanti di azione"
 
 #: newmailnotifiersettingswidget.cpp:92
-#, fuzzy, kde-format
-#| msgid "Reply Mail"
+#, kde-format
 msgctxt "@option:check"
 msgid "Reply Mail"
 msgstr "Rispondi a messaggio"

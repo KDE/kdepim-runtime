@@ -560,8 +560,7 @@ msgid "User:"
 msgstr "用户："
 
 #: setupwizard.cpp:255
-#, fuzzy, kde-format
-#| msgid "No, choose another server"
+#, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "不，选择另一个服务器"
@@ -603,15 +602,13 @@ msgid "Select the groupware server the resource shall be configured for"
 msgstr "选择资源要配置的群件服务器"
 
 #: setupwizard.cpp:338
-#, fuzzy, kde-format
-#| msgid "Use one of those servers:"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "使用以下服务器之一："
 
 #: setupwizard.cpp:347
-#, fuzzy, kde-format
-#| msgid "Configure the resource manually"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "手动配置资源"
@@ -637,8 +634,7 @@ msgid "Installation path"
 msgstr "安装路径"
 
 #: setupwizard.cpp:395
-#, fuzzy, kde-format
-#| msgid "Use secure connection"
+#, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "使用安全连接"

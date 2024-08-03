@@ -37,8 +37,7 @@ msgid "Year"
 msgstr "年份"
 
 #: folderarchivesettingpage.cpp:27
-#, fuzzy, kde-format
-#| msgid "Enable"
+#, kde-format
 msgctxt "@option:check"
 msgid "Enable"
 msgstr "启用"

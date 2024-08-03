@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-02 00:41+0000\n"
-"PO-Revision-Date: 2024-05-12 16:11+0200\n"
+"PO-Revision-Date: 2024-08-02 17:38+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 24.05.2\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: configwidget.cpp:25
@@ -41,8 +41,7 @@ msgid "Unable to connect: %1"
 msgstr "No es posible conectar: %1"
 
 #: configwidget.cpp:72
-#, fuzzy, kde-format
-#| msgid "Connection error"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection error"
 msgstr "Error de conexión"
@@ -53,11 +52,10 @@ msgid "Tested connection successfully."
 msgstr "Prueba de conexión satisfactoria."
 
 #: configwidget.cpp:74
-#, fuzzy, kde-format
-#| msgid "Connection success"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection success"
-msgstr "Conexión satisfactoria"
+msgstr "Conexión correcta"
 
 #. i18n: ectx: property (text), widget (QLabel, label_BaseUrl)
 #: configwidget.ui:29

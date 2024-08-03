@@ -39,8 +39,7 @@ msgid "Unable to connect: %1"
 msgstr "无法连接：%1"
 
 #: configwidget.cpp:72
-#, fuzzy, kde-format
-#| msgid "Connection error"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection error"
 msgstr "连接错误"
@@ -51,8 +50,7 @@ msgid "Tested connection successfully."
 msgstr "测试连接成功。"
 
 #: configwidget.cpp:74
-#, fuzzy, kde-format
-#| msgid "Connection success"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection success"
 msgstr "连接成功"

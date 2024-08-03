@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-02 00:41+0000\n"
-"PO-Revision-Date: 2024-05-12 13:52+0300\n"
+"PO-Revision-Date: 2024-08-02 14:05+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.07.70\n"
+"X-Generator: Lokalize 24.11.70\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -90,7 +90,7 @@ msgstr "Microsoft Exchange Web Services için Akonadi Özkaynağı (EWS)"
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
-msgstr "Telif hakkı (c) Krzysztof Nowicki 2015–2020"
+msgstr "© Krzysztof Nowicki 2015–2020"
 
 #: ewsconfigdialog.cpp:155
 #, kde-format
@@ -161,11 +161,10 @@ msgstr ""
 "Ayarlarınızı yine de kaydetmek istiyor musunuz?"
 
 #: ewsconfigdialog.cpp:373
-#, fuzzy, kde-format
-#| msgid "Exchange server connection"
+#, kde-format
 msgctxt "@title:window"
 msgid "Exchange server connection"
-msgstr "Exchange sunucusu bağlantısı"
+msgstr "Exchange Sunucusu Bağlantısı"
 
 #: ewsconfigdialog.cpp:427
 #, kde-format

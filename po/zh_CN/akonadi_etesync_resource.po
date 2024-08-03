@@ -152,8 +152,7 @@ msgid "Password:"
 msgstr "密码："
 
 #: setupwizard.cpp:85
-#, fuzzy, kde-format
-#| msgid "Advanced settings"
+#, kde-format
 msgctxt "@option:check"
 msgid "Advanced settings"
 msgstr "高级设置"

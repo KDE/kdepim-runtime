@@ -155,8 +155,7 @@ msgid ""
 msgstr "连接到 Exchange 失败。这可能由不正确的参数引起。您仍然想要保存设置吗？"
 
 #: ewsconfigdialog.cpp:373
-#, fuzzy, kde-format
-#| msgid "Exchange server connection"
+#, kde-format
 msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Exchange 服务器连接"
@@ -1234,6 +1233,3 @@ msgstr "项目更新失败："
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "正在处理项目响应时项目出错。"
-
-#~ msgid "Exchange server autodiscovery"
-#~ msgstr "Exchange 服务器自动发现"

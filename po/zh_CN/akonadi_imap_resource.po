@@ -684,8 +684,7 @@ msgstr ""
 "户中的所有文件。您确定要执行吗？"
 
 #: setupserver.cpp:257
-#, fuzzy, kde-format
-#| msgid "Server address change"
+#, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "服务器地址变化"
@@ -701,8 +700,7 @@ msgstr ""
 "户中的所有邮件。您确定要执行吗？"
 
 #: setupserver.cpp:267
-#, fuzzy, kde-format
-#| msgid "User name change"
+#, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "用户名变化"

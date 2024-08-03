@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-02 00:41+0000\n"
-"PO-Revision-Date: 2024-05-12 10:35+0100\n"
+"PO-Revision-Date: 2024-08-02 22:29+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -28,7 +28,7 @@ msgstr "Malĝusta retadreso"
 #: ewsautodiscoveryjob.cpp:116
 #, kde-format
 msgid "Exchange protocol information not found"
-msgstr "Interŝanĝaj protokolaj informoj ne trovitaj"
+msgstr "Exchange-protokolaj informoj ne trovitaj"
 
 #: ewsclient/auth/ewsoauth.cpp:513
 #, kde-kuit-format
@@ -154,7 +154,7 @@ msgstr ""
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
-msgstr "Interŝanĝa servilo aŭtomalkovro"
+msgstr "Exchange-servila aŭtomalkovro"
 
 #: ewsconfigdialog.cpp:372
 #, kde-format
@@ -166,11 +166,10 @@ msgstr ""
 "parametroj. Ĉu vi ankoraŭ volas konservi viajn agordojn?"
 
 #: ewsconfigdialog.cpp:373
-#, fuzzy, kde-format
-#| msgid "Exchange server connection"
+#, kde-format
 msgctxt "@title:window"
 msgid "Exchange server connection"
-msgstr "Interŝanĝa servilo-konekto"
+msgstr "Exchange-servila konekto"
 
 #: ewsconfigdialog.cpp:427
 #, kde-format
@@ -1219,7 +1218,7 @@ msgstr "Vojo al PKey-konfirmo PEM privata ŝlosilo"
 #, kde-format
 msgctxt "@info"
 msgid "Exchange server not configured."
-msgstr "Interŝanĝservilo ne agordita."
+msgstr "Exchange-servilo ne agordita."
 
 #: ewssubscriptionwidget.cpp:180 ewssubscriptionwidget.cpp:201
 #, kde-format
@@ -1274,6 +1273,3 @@ msgstr "Ĝisdatigo de ero malsukcesis:"
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Ero ne en ordo dum prilaborado de ĝisdatiga objektorespondo."
-
-#~ msgid "Exchange server autodiscovery"
-#~ msgstr "Interŝanĝa servilo aŭtomalkovro"

@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-02 00:41+0000\n"
-"PO-Revision-Date: 2024-06-19 08:55+0200\n"
+"PO-Revision-Date: 2024-08-02 05:28+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -727,8 +727,7 @@ msgstr ""
 "želite nadaljevati?"
 
 #: setupserver.cpp:257
-#, fuzzy, kde-format
-#| msgid "Server address change"
+#, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Sprememba naslova strežnika"
@@ -745,8 +744,7 @@ msgstr ""
 "prepričani, da želite nadaljevati?"
 
 #: setupserver.cpp:267
-#, fuzzy, kde-format
-#| msgid "User name change"
+#, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Sprememba uporabniškega imena"

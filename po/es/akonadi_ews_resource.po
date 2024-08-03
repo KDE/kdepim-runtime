@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: kde-l10n-es\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-02 00:41+0000\n"
-"PO-Revision-Date: 2024-05-12 16:01+0200\n"
+"PO-Revision-Date: 2024-08-02 17:37+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 24.05.2\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
@@ -164,11 +164,10 @@ msgstr ""
 "parámetros incorrectos. Aún así, ¿quiere guardar las preferencias?"
 
 #: ewsconfigdialog.cpp:373
-#, fuzzy, kde-format
-#| msgid "Exchange server connection"
+#, kde-format
 msgctxt "@title:window"
 msgid "Exchange server connection"
-msgstr "Conexión al servidor Exchange"
+msgstr "Conexión al servidor de Exchange"
 
 #: ewsconfigdialog.cpp:427
 #, kde-format

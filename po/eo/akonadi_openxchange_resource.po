@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_openxchange_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-02 00:41+0000\n"
-"PO-Revision-Date: 2024-05-12 10:35+0100\n"
+"PO-Revision-Date: 2024-08-02 22:29+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -40,8 +40,7 @@ msgid "Unable to connect: %1"
 msgstr "Ne eblas konektiĝi: %1"
 
 #: configwidget.cpp:72
-#, fuzzy, kde-format
-#| msgid "Connection error"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection error"
 msgstr "Eraro de konekto"
@@ -52,8 +51,7 @@ msgid "Tested connection successfully."
 msgstr "Provita konekto sukcese."
 
 #: configwidget.cpp:74
-#, fuzzy, kde-format
-#| msgid "Connection success"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection success"
 msgstr "Sukceso de konekto"
