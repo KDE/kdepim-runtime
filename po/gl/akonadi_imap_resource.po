@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-02 00:41+0000\n"
-"PO-Revision-Date: 2024-06-21 22:13+0200\n"
+"PO-Revision-Date: 2024-08-03 12:20+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
 "Language: gl\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.05.0\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -738,8 +738,7 @@ msgstr ""
 "continuar?"
 
 #: setupserver.cpp:257
-#, fuzzy, kde-format
-#| msgid "Server address change"
+#, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Cambio do enderezo do servidor"
@@ -756,11 +755,10 @@ msgstr ""
 "todas as mensaxes de correo electrónico da conta. Seguro que quere continuar?"
 
 #: setupserver.cpp:267
-#, fuzzy, kde-format
-#| msgid "User name change"
+#, kde-format
 msgctxt "@title:window"
 msgid "User name change"
-msgstr "Renomeamento de usuario"
+msgstr "Cambio de nome de persoa usuaria"
 
 #: setupserver.cpp:412 setupserver.cpp:464
 #, kde-format

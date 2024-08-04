@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-02 00:41+0000\n"
-"PO-Revision-Date: 2024-06-26 06:45+0900\n"
+"PO-Revision-Date: 2024-08-03 14:41+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -695,8 +695,7 @@ msgstr ""
 "載您所有的電子郵件。您確定您要繼續？"
 
 #: setupserver.cpp:257
-#, fuzzy, kde-format
-#| msgid "Server address change"
+#, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "伺服器地址變更"
@@ -712,8 +711,7 @@ msgstr ""
 "下載您所有的電子郵件。您確定您要繼續？"
 
 #: setupserver.cpp:267
-#, fuzzy, kde-format
-#| msgid "User name change"
+#, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "使用者名稱變更"
