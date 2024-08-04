@@ -1,31 +1,32 @@
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2018, 2019, 2023, 2024 Adrian Chaves <adrian@chaves.io>
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
+# SPDX-FileCopyrightText: 2024 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-05-12 14:18+0200\n"
-"Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
-"Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
-"Language: gl\n"
+"PO-Revision-Date: 2024-08-03 22:17+0300\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"Language-Team: צוות התרגום של KDE ישראל\n"
+"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
+"2 : 3);\n"
 "X-Generator: Lokalize 24.05.2\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
 msgid "Incorrect email address"
-msgstr "Enderezo de correo incorrecto"
+msgstr "כתובת דוא״ל שגויה"
 
 #: ewsautodiscoveryjob.cpp:116
 #, kde-format
 msgid "Exchange protocol information not found"
-msgstr "Non se atopou a información do protocolo de Exchange"
+msgstr "פרטי פרוטוקול Exchange לא נמצאו"
 
 #: ewsclient/auth/ewsoauth.cpp:513
 #, kde-kuit-format
@@ -34,8 +35,8 @@ msgid ""
 "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
 "valid. You need to authenticate in order to continue using it."
 msgstr ""
-"As credenciais de Microsoft Exchange da conta <b>%1</b> xa non son "
-"correctas. Ten que autenticarse para seguir usándoo."
+"פרטי הגישה ב־Microsoft Exchange לחשבון <b>%1</b> לא תקפים יותר. צריך לעבו "
+"ראימות כדי להמשיך להשתמש בו."
 
 #: ewsclient/auth/ewsoauth.cpp:522
 #, kde-kuit-format
@@ -44,8 +45,8 @@ msgid ""
 "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
 "Please update it in the account settings page."
 msgstr ""
-"Non foi posíbel obter as credenciais da conta <b>%1</b> de Microsoft "
-"Exchange. Actualíceas na páxina de configuración da conta."
+"משיכת פרטי הגישה לחשבון ה־Microsoft Exchange‏ <b>%1</b> נכשלה. נא לעדכן אותם "
+"בעמוד הגדרות החשבון."
 
 #: ewsclient/auth/ewspasswordauth.cpp:57
 #, kde-format
@@ -54,49 +55,49 @@ msgid ""
 "The username/password for the Microsoft Exchange EWS account <b>%1</b> is "
 "not valid. Please update it in the account settings page."
 msgstr ""
-"O nome de usuaria ou o contrasinal da conta <b>%1</b> de Microsoft Exchange "
-"EWS non son correctos. Actualíceos na páxina de configuración da conta."
+"שם המשתמש/הסיסמה לחשבון ה־EWS ב־Microsoft Exchange‏ <b>%1</b> אינם תקפים. נא "
+"לעדכן אותם בעמוד הגדרות החשבון"
 
 #: ewsconfigdialog.cpp:76
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
-msgstr "Configuración de Microsoft Exchange"
+msgstr "הגדרות Microsoft Exchange"
 
 #: ewsconfigdialog.cpp:102
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
-msgstr "Aceptar"
+msgstr "אישור"
 
 #: ewsconfigdialog.cpp:122 ewsconfigdialog.cpp:124
 #, kde-format
 msgid "PEM file"
-msgstr "Ficheiro PEM"
+msgstr "קובץ PEM"
 
 #: ewsconfigdialog.cpp:142
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
-msgstr "Personalizado"
+msgstr "מותאם אישית"
 
 #: ewsconfigdialog.cpp:153
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
-msgstr "Recurso de Akonadi para servizos web de Microsoft Exchange (EWS)"
+msgstr "משאב Akonadi ל־Microsoft Exchange Web Services‏ (EWS)"
 
 #: ewsconfigdialog.cpp:154
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
-msgstr "© 2015-2020 Krzysztof Nowicki"
+msgstr "כל הזכויות שמורות (c) לקריסטוף נוביצקי 2015‏-2020"
 
 #: ewsconfigdialog.cpp:155
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
-msgstr "Versión %1"
+msgstr "גרסה %1"
 
 #: ewsconfigdialog.cpp:156
 #, kde-format
@@ -104,39 +105,37 @@ msgctxt "@info"
 msgid ""
 "Distributed under the GNU Library General Public License version 2.0 or "
 "later."
-msgstr ""
-"Distribuído baixo a versión 2.0 ou posterior da Licenza Pública Xeral de "
-"Biblioteca de GNU."
+msgstr "כפוף לתנאי גרסה 2.0 ומעלה של הרישיון הציבורי הכללי לספריות גנו."
 
 #: ewsconfigdialog.cpp:251
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
-msgstr "O descubrimento automático fallou"
+msgstr "גילוי אוטומטי נכשל"
 
 #: ewsconfigdialog.cpp:266
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
-msgstr "Fallou a conexión"
+msgstr "החיבור נכשל"
 
 #: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:425
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
-msgstr "Fallou"
+msgstr "נכשל"
 
 #: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:426
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
-msgstr "Descoñecida"
+msgstr "לא ידוע"
 
 #: ewsconfigdialog.cpp:271 ewsconfigdialog.cpp:430
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
-msgstr "Aceptar"
+msgstr "אישור"
 
 #: ewsconfigdialog.cpp:341
 #, kde-format
@@ -144,13 +143,12 @@ msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
 "still want to save your settings?"
 msgstr ""
-"O descubrimento automático fallou. Isto pódeo causar o uso de parámetros "
-"incorrectos. Quere aínda así gardar a súa configuración?"
+"גילוי אוטומטי נכשל. כנראה בגלל משתנים שגויים. בכל זאת לשמור את ההגדרות שלך?"
 
 #: ewsconfigdialog.cpp:342
 #, kde-format
 msgid "Exchange server autodiscovery"
-msgstr "Descubrimento automático do servidor de Exchange"
+msgstr "גילוי שרת Exchange אוטומטית"
 
 #: ewsconfigdialog.cpp:372
 #, kde-format
@@ -158,70 +156,70 @@ msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
 "Do you still want to save your settings?"
 msgstr ""
-"Produciuse un erro ao conectar con Exchange. Isto pódeo causar o uso de "
-"parámetros incorrectos. Quere aínda así gardar a súa configuración?"
+"החיבור ל־Exchange נכשל. כנראה בגלל משתנים שגויים. בכל זאת לשמור את ההגדרות "
+"שלך?"
 
 #: ewsconfigdialog.cpp:373
 #, kde-format
 msgid "Exchange server connection"
-msgstr "Conexión ao servidor de Exchange"
+msgstr "חיבור לשרת Exchange"
 
 #: ewsconfigdialog.cpp:427
 #, kde-format
 msgid "Connection failed"
-msgstr "Fallou a conexión"
+msgstr "החיבור נכשל"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, SetupServerView)
 #: ewsconfigdialog.ui:14
 #, kde-format
 msgid "EWS Configuration"
-msgstr "Configuración de EWS"
+msgstr "הגדרת EWS"
 
 #. i18n: ectx: attribute (title), widget (QWidget, generalTab)
 #: ewsconfigdialog.ui:24
 #, kde-format
 msgctxt "General settings tab"
 msgid "General"
-msgstr "Xeral"
+msgstr "כללי"
 
 #. i18n: ectx: property (title), widget (QGroupBox, accountInfoGroupBox)
 #: ewsconfigdialog.ui:45
 #, kde-format
 msgid "Account Information"
-msgstr "Información da conta"
+msgstr "פרטי החשבון"
 
 #. i18n: ectx: property (text), widget (QLabel, accountNameLabel)
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: ewsconfigdialog.ui:57 ewsmtaconfigdialog.ui:32
 #, kde-format
 msgid "Account Name:"
-msgstr "Nome da conta:"
+msgstr "שם החשבון:"
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, accountName)
 #: ewsconfigdialog.ui:64
 #, kde-format
 msgid "This is the account name that will appear in all Akonadi applications"
-msgstr "Este é o nome de conta que aparecerá nas aplicacións de Akonadi"
+msgstr "זה שם החשבון שיופיע בכל יישומי Akonadi"
 
 #. i18n: ectx: property (text), widget (QLabel, emailLabel)
 #: ewsconfigdialog.ui:71
 #, kde-format
 msgctxt "Exchange account e-mail address"
 msgid "Email:"
-msgstr "Correo electrónico:"
+msgstr "דוא״ל:"
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Email)
 #: ewsconfigdialog.ui:78
 #, kde-format
 msgid "The e-mail address of this account"
-msgstr "O enderezo de correo electrónico desta conta"
+msgstr "כתובת הדוא״ל של החשבון הזה"
 
 #. i18n: ectx: property (title), widget (QGroupBox, authenticationGroupBox)
 #. i18n: ectx: property (title), widget (QGroupBox, advAuthenticationGroupBox)
 #: ewsconfigdialog.ui:88 ewsconfigdialog.ui:486
 #, kde-format
 msgid "Authentication"
-msgstr "Autenticación"
+msgstr "אימות"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, authUsernameRadioButton)
 #: ewsconfigdialog.ui:94
@@ -234,19 +232,13 @@ msgid ""
 "hosted Office 365 instances, where the administrator has chosen to enable it."
 "</p></body></html>"
 msgstr ""
-"<html><head/><body><p>Permite autenticarse polo método tradicional de nome "
-"de usuaria e contrasinal contra o servidor de Exchange. Isto inclúe métodos "
-"como o básico, NTLM ou Kerberos.</p> <p>Este método de autenticación "
-"considérase obsoleto ata certo punto, e úsase principalmente para "
-"instalacións locais pequenas de Exchange e instancias de Office 365 aloxadas "
-"nas que o equipo de administración escollese activalo.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authUsernameRadioButton)
 #: ewsconfigdialog.ui:97
 #, kde-format
 msgctxt "authentication type"
 msgid "&Username/Password"
-msgstr "Nome de &usuaria e contrasinal"
+msgstr "&שם משתמש/סיסמה"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_HasDomain)
 #: ewsconfigdialog.ui:143
@@ -262,40 +254,31 @@ msgid ""
 "will cause the server to set the domain to the default one its configured "
 "with.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>Permite indicar un dominio de Active Directory para a "
-"persoa usuaria.</p> <p><span style=\" font-weight:600;\">Nota:</span> Hai "
-"unha sutil diferenza entre «dominio baleiro» e «sen dominio».</p> <p>Cun "
-"dominio baleiro (a opción de dominio marcada, a caixa do dominio baleira) o "
-"recurso de EWS pasará o usuario cun dominio explicitamente baleiro "
-"(«\\usuario»).</p> <p>Sen un dominio definido (a opción de dominio sen "
-"marcar) o nome de usuaria pasarase sen dominio («usuario»), o que fará que o "
-"servidor seleccione o dominio predeterminado co que está configurado.</p></"
-"body></html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_HasDomain)
 #: ewsconfigdialog.ui:146
 #, kde-format
 msgid "Domain:"
-msgstr "Dominio:"
+msgstr "שם תחום:"
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Domain)
 #: ewsconfigdialog.ui:156
 #, kde-format
 msgid "The Active Directory domain the user belongs to."
-msgstr "O dominio de Active Directory ao que pertence a persoa usuaria."
+msgstr "שם תחום ה־Active Directory אליו משתייך המשתמש."
 
 #. i18n: ectx: property (text), widget (QLabel, usernameLabel)
 #: ewsconfigdialog.ui:169
 #, kde-format
 msgctxt "Exchange account username/login"
 msgid "Username:"
-msgstr "Nome de usuaria:"
+msgstr "שם משתמש:"
 
 #. i18n: ectx: property (text), widget (QLabel, passwordLabel)
 #: ewsconfigdialog.ui:179
 #, kde-format
 msgid "Password:"
-msgstr "Contrasinal:"
+msgstr "סיסמה:"
 
 #. i18n: ectx: property (whatsThis), widget (KPasswordLineEdit, passwordEdit)
 #: ewsconfigdialog.ui:186
@@ -305,9 +288,9 @@ msgid ""
 "p><p><span style=\" font-weight:600;\">Note:</span> This can be left empty "
 "when using Kerberos authentication.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>O contrasinal que se usa para acceder ao servidor de "
-"Exchange.</p><p><span style=\" font-weight:600;\">Nota:</span> Isto pode "
-"deixarse baleiro ao usar autenticación de Kerberos.</p></body></html>"
+"<html><head/><body><p>הסיסמה שמשמשת לכניסה לשרת ה־Exchange.</p><p><span "
+"style=\" font-weight:600;\">לתשומת ליבך:</span> אפשר להשאיר ריק בשימוש עם "
+"אימות Kerberos.</p></body></html>"
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Username)
 #: ewsconfigdialog.ui:193
@@ -317,9 +300,9 @@ msgid ""
 "p><p><span style=\" font-weight:600;\">Note:</span> This can be left empty "
 "when using Kerberos authentication.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>O nome de usuaria que se usa para acceder ao servidor "
-"de Exchange.</p><p><span style=\" font-weight:600;\">Nota:</span> Isto pode "
-"deixarse baleiro ao usar autenticación de Kerberos.</p></body></html>"
+"<html><head/><body><p>שם המשתמש שמשמש לכניסה לשרת ה־Exchange.</p><p><span "
+"style=\" font-weight:600;\">לתשומת ליבך:</span> אפשר להשאיר ריק בשימוש עם "
+"אימות Kerberos.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QLabel, kerberosNoteLabel)
 #: ewsconfigdialog.ui:203
@@ -329,9 +312,9 @@ msgid ""
 "Username and password are not needed (can be empty) when Kerberos is "
 "properly configured on your system.</p></body></html>"
 msgstr ""
-"<html><head/><body><p><span style=\" font-weight:600;\">Nota:</span> Non se "
-"necesitan o nome de usuaria e contrasinal (poden deixarse baleiros) cando "
-"Kerberos está correctamente configurado no sistema.</p></body></html>"
+"<html><head/><body><p><span style=\" font-weight:600;\">לתשומת ליבך:</"
+"span>שם המשתמש והסיסמה לא נחוצים (can be empty) כש־Kerberosמוגדר במערכת שלך "
+"כראוי.</p></body></html>"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, authOAuth2RadioButton)
 #: ewsconfigdialog.ui:222
@@ -344,12 +327,10 @@ msgid ""
 "one-time-passwords generated by tokens.</p><p>This method is mostly used for "
 "hosted Office 365 instances.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>Permite autenticarse mediante un método máis moderno e "
-"seguro baseado en OAuth2.</p> <p>Este tipo de autenticación abrirá unha "
-"páxina web da organización, onde a persoa usuaria poderá introducir a "
-"información de autenticación, que podería incluír autenticación con varios "
-"factores como contrasinais efémeros xerados por códigos temporais.</p> "
-"<p>Este método úsase principalmente para instancias de Office 365 aloxadas.</"
+"<html><head/><body><p>הפעלת אימות מודרני וקשיח יותר על בסיס OAuth2. </"
+"p><p>סוג האימות הזה יפתח אתר שסופק על ידי ארגון, בו יוכלו המשתמשים למלא פרטי "
+"אימות שיכולים להיות אימות דו־שלבי בצורת סיסמה חד־פעמית שנוצרה על ידי "
+"אסימונים.</p><p>בשיטה הזאת נהוג להשתמש בעיקר למערכות Office 365 באירוח מלא.</"
 "p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authOAuth2RadioButton)
@@ -362,21 +343,19 @@ msgstr "OAuth&2 (Office 365)"
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "EWS Settings"
-msgstr "Configuración de EWS"
+msgstr "הגדרות EWS"
 
 #. i18n: ectx: property (text), widget (QLabel, serverUrlLabel)
 #: ewsconfigdialog.ui:250
 #, kde-format
 msgid "EWS URL:"
-msgstr "URL de EWS:"
+msgstr "כתובת EWS:"
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_BaseUrl)
 #: ewsconfigdialog.ui:263
 #, kde-format
 msgid "The Microsoft Exchange server URL used to send EWS requests."
-msgstr ""
-"O URL do servidor de Microsoft Exchange que se usa para enviar solicitudes "
-"de EWS."
+msgstr "כתובת שרת ה־Microsoft Exchange ששימשה לשלוח בקשות EWS."
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_AutoDiscovery)
 #: ewsconfigdialog.ui:285
@@ -385,30 +364,28 @@ msgid ""
 "<html><head/><body><p>Attempts to find out the Microsoft Exchange server "
 "address relevant to the supplied e-mail address.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>Intenta descubrir o enderezo de servidor de Microsoft "
-"Exchange relevante para o enderezo de correo electrónico indicado.</p></"
-"body></html>"
+"<html><head/><body><p>ניסיון למצוא את כתובת שרת ה־Microsoft Exchange שתואמת "
+"לכתובת הדוא״ל שסופקה.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_AutoDiscovery)
 #. i18n: ectx: label, entry (AutoDiscovery), group (General)
 #: ewsconfigdialog.ui:288 ewsresource.kcfg:35
 #, kde-format
 msgid "Server Autodiscovery"
-msgstr "Descubrimento automático de servidor."
+msgstr "גילוי שרת אוטומטי"
 
 #. i18n: ectx: property (text), widget (QPushButton, autodiscoverButton)
 #: ewsconfigdialog.ui:298
 #, kde-format
 msgid "Perform"
-msgstr "Realizar"
+msgstr "ביצוע"
 
 #. i18n: ectx: property (text), widget (QPushButton, tryConnectButton)
 #: ewsconfigdialog.ui:308
 #, kde-format
 msgid "Try connect"
-msgstr "Intentar conectar"
+msgstr "לנסות להתחבר"
 
-# skip-rule: proposta-gl-directorio
 #. i18n: ectx: property (whatsThis), widget (QGroupBox, pkeyAuthGroupBox)
 #: ewsconfigdialog.ui:324
 #, kde-format
@@ -423,60 +400,50 @@ msgid ""
 "requirements for strong authentication, in which case entering the MFA code "
 "is not required.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>A autenticación de chave privada (PKey) úsase como "
-"paso adicional de autenticación nas autenticacións baseadas en OAuth. Usa un "
-"certificado X.509 e unha chave privada que identifica a un dispositivo de "
-"confianza, que se uniu ao Azure Directory (directorio de Azure) usando un "
-"Workplace Join (unión a espazo de traballo).</p> <p>Algúns equipos de "
-"administración poden esixir o uso de autenticación de chave privada ao "
-"conectar a Office 365 desde fóra da rede da empresa. Noutros casos, cando a "
-"autenticación con múltiples factores está configurada, usar autenticación de "
-"chave privada pode satisfacer os requisitos de autenticación fortemente "
-"segura, facendo innecesario introducir o código MFA.</p></body></html>"
 
 #. i18n: ectx: property (title), widget (QGroupBox, pkeyAuthGroupBox)
 #: ewsconfigdialog.ui:327
 #, kde-format
 msgid "Private Key (PKey) Authentication (Office 365)"
-msgstr "Autenticación de chave privada (PKey) (Office 365)"
+msgstr "אימות מפתח פרטי (PKey ‏- Office 365)"
 
 #. i18n: ectx: property (text), widget (QLabel, pkeyAuthCertLabel)
 #: ewsconfigdialog.ui:339
 #, kde-format
 msgid "Certificate:"
-msgstr "Certificado:"
+msgstr "אישור:"
 
 #. i18n: ectx: property (text), widget (QLabel, pkeyAuthKeyLabel)
 #: ewsconfigdialog.ui:353
 #, kde-format
 msgid "Private key:"
-msgstr "Chave privada:"
+msgstr "מפתח פרטי:"
 
 #. i18n: ectx: property (text), widget (QLabel, pkeyAuthPasswordLabel)
 #: ewsconfigdialog.ui:364
 #, kde-format
 msgid "Key password:"
-msgstr "Contrasinal da chave:"
+msgstr "סיסמת מפתח:"
 
 #. i18n: ectx: attribute (title), widget (QWidget, subscriptionTab)
 #: ewsconfigdialog.ui:395
 #, kde-format
 msgid "Subscriptions"
-msgstr "Subscricións"
+msgstr "מינויים"
 
 #. i18n: ectx: attribute (title), widget (QWidget, advancedTab)
 #: ewsconfigdialog.ui:401
 #, kde-format
 msgctxt "Advanced settings tab"
 msgid "Advanced"
-msgstr "Avanzado"
+msgstr "מתקדם"
 
 #. i18n: ectx: property (title), widget (QGroupBox, retrievalMethodGroupBox)
 #. i18n: ectx: label, entry (RetrievalMethod), group (General)
 #: ewsconfigdialog.ui:407 ewsresource.kcfg:45
 #, kde-format
 msgid "Retrieval"
-msgstr "Obtención"
+msgstr "משיכה"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, pollRadioButton)
 #: ewsconfigdialog.ui:413
@@ -485,26 +452,25 @@ msgid ""
 "<html><head/><body><p>Periodically asks for new item change events.</p></"
 "body></html>"
 msgstr ""
-"<html><head/><body><p>Pregunta periodicamente sobre novos eventos de cambio "
-"de elemento.</p></body></html>"
+"<html><head/><body><p>בקשה מחזורית לאירועים שינויי פריטים.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, pollRadioButton)
 #: ewsconfigdialog.ui:416
 #, kde-format
 msgid "Po&ll for new messages"
-msgstr "Sonda en busca de mensaxes &novas"
+msgstr "ב&קשת הודעות חדשות"
 
 #. i18n: ectx: property (suffix), widget (QDoubleSpinBox, kcfg_PollInterval)
 #: ewsconfigdialog.ui:441
 #, kde-format
 msgid " minutes"
-msgstr " minutos"
+msgstr " דק׳"
 
 #. i18n: ectx: property (text), widget (QLabel, pollIntervalLabel)
 #: ewsconfigdialog.ui:460
 #, kde-format
 msgid "Interval"
-msgstr "Intervalo"
+msgstr "הפרש"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, streamingRadioButton)
 #: ewsconfigdialog.ui:470
@@ -515,17 +481,15 @@ msgid ""
 "delivered instantly.</p><p><br/></p><p>This option requires Exchange server "
 "version 2010 SP1 or later.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>A emisión de notificacións funciona de maneira similar "
-"ao modo de levar (push): mantense una conexión e as notificacións sobre "
-"cambios de elementos entréganse instantaneamente.</p><p><br/></p><p>Esta "
-"opción require a versión 2010 SP1 ou posterior do servidor de Exchange.</p></"
-"body></html>"
+"<html><head/><body><p>התראות מוזרמות מתנהגות כמו מצב דחיפה - נשאר חיבור פעיל "
+"וההתראות על שינויים בפריטים נמסרות מיידית. </p><p><br/></p><p>האפשרות הזאת "
+"דורשת גרסה 2010 SP1 ומעלה של שרת Exchange.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, streamingRadioButton)
 #: ewsconfigdialog.ui:473
 #, kde-format
 msgid "&Use streaming notifications"
-msgstr "&Usar emisión de notificacións"
+msgstr "להשתמש בהתראות מו&זרמות"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_EnableNTLMv2)
 #: ewsconfigdialog.ui:492
@@ -537,17 +501,12 @@ msgid ""
 "allow NTLMv2 authentication. In such case this option must be enabled in "
 "order to connect successfully.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>De maneira predeterminada, KDE usa a autenticación "
-"NTLMv1, menos segura. Activar isto fará que se use o protocolo NTLMv2, máis "
-"seguro.</p> <p>Algúns servidores de Microsoft Exchange máis modernos están "
-"configurados para permitir unicamente autenticación NTLMv2. Neses casos esta "
-"opción debe activarse para conectar correctamente.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_EnableNTLMv2)
 #: ewsconfigdialog.ui:495
 #, kde-format
 msgid "Enable NTLMv2"
-msgstr "Activar NTLMv2."
+msgstr "הפעלת NTLMv2"
 
 #. i18n: ectx: property (whatsThis), widget (QGroupBox, userAgentGroupBox)
 #: ewsconfigdialog.ui:505
@@ -561,25 +520,18 @@ msgid ""
 "advised that bypassing company policies may result in personal consequences."
 "</p></body></html>"
 msgstr ""
-"<html><head/><body><p>Algunhas organizacións restrinxen o acceso ao correo "
-"só a clientes aprobados, como Microsoft Outlook. No lado do servidor, isto "
-"faise analizando a cadea de axente de usuaria (User-Agent) e permitindo só "
-"unha lista de clientes aprobados.</p><p>Esta opción permite simular algúns "
-"clientes ben coñecidos, así como fornecer unha cadea de axente de usuaria "
-"personalizada.</p> <p>Teña en conta que saltarse normas da empresa pode ter "
-"consecuencias persoais.</p></body></html>"
 
 #. i18n: ectx: property (title), widget (QGroupBox, userAgentGroupBox)
 #: ewsconfigdialog.ui:508
 #, kde-format
 msgid "Use custo&m User Agent"
-msgstr "Usar un a&xente de usuaria personalizado"
+msgstr "להשתמש ב&סוכן משתמש משלך"
 
 #. i18n: ectx: property (title), widget (QGroupBox, clearSyncStateGroupBox)
 #: ewsconfigdialog.ui:533
 #, kde-format
 msgid "Clear Synchronization State"
-msgstr "Borrar o estado de sincronización"
+msgstr "פינוי מצב סנכרון"
 
 #. i18n: ectx: property (text), widget (QLabel, clearSyncStateLabel)
 #: ewsconfigdialog.ui:539
@@ -588,516 +540,493 @@ msgid ""
 "Resets synchronization state between Exchange and Akonadi. Use in case some "
 "items or folders are not showing up despite existing in Exchange."
 msgstr ""
-"Estabelece o estado de sincronización entre Exchange e Akonadi. Use se "
-"algúns elementos ou cartafoles non aparecen a pesar de existir en Exchange."
+"איפוס מצב הסנכרון בין Exchange לבין Akonadi. יש להשתמש במצב שבו כמה פריטים "
+"או תיקיות לא מופיעים למרות שהם קיימים ב־Exchange."
 
 #. i18n: ectx: property (text), widget (QPushButton, clearFolderTreeSyncStateButton)
 #: ewsconfigdialog.ui:564
 #, kde-format
 msgid "Clear Folder Tree State"
-msgstr "Borrar o estado da árbore de cartafoles"
+msgstr "פינוי מצב עץ תיקיות"
 
 #. i18n: ectx: property (text), widget (QPushButton, clearFolderItemSyncStateButton)
 #: ewsconfigdialog.ui:571
 #, kde-format
 msgid "Clear Folder Item State"
-msgstr "Borrar o estado do cartafol de elementos"
+msgstr "פינוי מצב פריט תיקייה"
 
 #. i18n: ectx: attribute (title), widget (QWidget, statusTab)
 #: ewsconfigdialog.ui:598
 #, kde-format
 msgid "Status"
-msgstr "Estado"
+msgstr "מצב"
 
 #. i18n: ectx: property (title), widget (QGroupBox, serverStatusGroupBox)
 #: ewsconfigdialog.ui:604
 #, kde-format
 msgid "Server Status"
-msgstr "Estado do servidor"
+msgstr "מצב השרת"
 
 #. i18n: ectx: property (text), widget (QLabel, serverStatusLabel)
 #: ewsconfigdialog.ui:610
 #, kde-format
 msgid "Status:"
-msgstr "Estado:"
+msgstr "מצב:"
 
 #. i18n: ectx: property (text), widget (QLabel, serverStatusText)
 #: ewsconfigdialog.ui:617
 #, kde-format
 msgctxt "Unknown server status"
 msgid "Unknown"
-msgstr "Descoñecido"
+msgstr "לא ידוע"
 
 #. i18n: ectx: property (text), widget (QLabel, serverVersionLabel)
 #: ewsconfigdialog.ui:627
 #, kde-format
 msgid "Version:"
-msgstr "Versión:"
+msgstr "גרסה:"
 
 #. i18n: ectx: property (text), widget (QLabel, serverVersionText)
 #: ewsconfigdialog.ui:634
 #, kde-format
 msgctxt "Unknown server version"
 msgid "Unknown"
-msgstr "Descoñecida"
+msgstr "לא ידוע"
 
 #. i18n: ectx: attribute (title), widget (QWidget, aboutTab)
 #: ewsconfigdialog.ui:658
 #, kde-format
 msgid "About"
-msgstr "Sobre"
+msgstr "על אודות"
 
 #: ewsfetchitempayloadjob.cpp:63
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
-msgstr "Non foi posíbel procesar a solicitude de obtención de elementos."
+msgstr "עיבוד בקשת משיכת פריטים נכשל"
 
 #: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
 #: ewsresource.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
-msgstr "Non foi posíbel obter os elementos."
+msgstr "משיכת פריטים נכשלה"
 
 #: ewsfetchitempayloadjob.cpp:78
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - incorrect number of responses"
-msgstr "Non foi posíbel obter os elementos — número incorrecto de respostas."
+msgstr "משיכת פריטים נכשלה - מספר התגובות שגוי"
 
 #: ewsfetchitempayloadjob.cpp:91
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Akonadi item not found for item %1"
-msgstr ""
-"Non foi posíbel obter os elementos — non se atopou o elemento de Akonadi "
-"para o elemento %1"
+msgstr "משיכת הפריטים נכשלה - לא נמצא פריט Akonadi לפריט %1"
 
 #: ewsfetchitempayloadjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Unknown item type for item %1"
-msgstr ""
-"Non foi posíbel obter os elementos — Tipo de elemento descoñecido para o "
-"elemento %1"
+msgstr "משיכת הפריטים נכשלה - סוג הפריט %1 לא ידוע"
 
 #: ewsfetchitempayloadjob.cpp:104
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to fetch item payload"
-msgstr "Non foi posíbel obter a carga do elemento."
+msgstr "משיכת מטען פריטים נכשלה"
 
 #: ewsfetchitemsjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list"
-msgstr "Obtendo %1 lista de elementos."
+msgstr "מתקבלת רשימת פריטי %1"
 
 #: ewsfetchitemsjob.cpp:214
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
-msgstr "Obtendo %1 lista de elementos (%2 elementos)."
+msgstr "מתקבלת רשימת פריטי %1 (%2 פריטים)"
 
 #: ewsfetchitemsjob.cpp:399
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"
-msgstr "Obtendo %1 elementos."
+msgstr "%1 פריטים מתקבלים"
 
 #: ewsmtaconfigdialog.cpp:45
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Mail Transport Configuration"
-msgstr "Configuración do transporte de correo de Microsoft Exchange"
+msgstr "הגדרות תעבורת דוא״ל Microsoft Exchange"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, SetupServerView)
 #: ewsmtaconfigdialog.ui:14
 #, kde-format
 msgid "EWS Mail Transport Configuration"
-msgstr "Configuración do transporte de correo de EWS"
+msgstr "הגדרות תעבורת דוא״ל EWS"
 
 #. i18n: ectx: property (text), widget (QLabel, recourceLabel)
 #: ewsmtaconfigdialog.ui:42
 #, kde-format
 msgid "Parent Exchange account:"
-msgstr "Conta superior de Exchange:"
+msgstr "חשבון Exchange הורה:"
 
 #: ewsmtaresource.cpp:57
 #, kde-format
 msgid "Unable to connect to master EWS resource"
-msgstr "Non é posíbel conectar co recurso mestre de EWS"
+msgstr "לא ניתן להתחבר למשאב EWS עליון"
 
 #. i18n: ectx: label, entry (EwsResource), group (General)
 #: ewsmtaresource.kcfg:10
 #, kde-format
 msgid "Ews Resource"
-msgstr "Recurso de EWS"
+msgstr "משאב Ews"
 
 #. i18n: ectx: tooltip, entry (EwsResource), group (General)
 #. i18n: ectx: whatsthis, entry (EwsResource), group (General)
 #: ewsmtaresource.kcfg:11 ewsmtaresource.kcfg:12
 #, kde-format
 msgid "The name of the parent EWS Resource to use when sending mail"
-msgstr "O nome do recurso superior de EWS para usar ao enviar correo."
+msgstr "שם משאב ה־EWS ההורה לשימוש לשליחת דוא״ל"
 
 #: ewsprogressdialog.cpp:34
 #, kde-format
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "ביטול"
 
 #: ewsprogressdialog.cpp:48
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
-msgstr "Descubrimento automático do servidor de Exchange"
+msgstr "גילוי שרת Exchange אוטומטית"
 
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr ""
-"Realizando o descubrimento automático de servidor de Microsoft Exchange…"
+msgstr "מתבצע גילוי שרת Microsoft Exchange אוטומטית…"
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
 msgctxt "@title:window"
 msgid "Connecting to Exchange"
-msgstr "Conectando a Exchange"
+msgstr "מתבצעת התחברות ל־Exchange"
 
 #: ewsprogressdialog.cpp:53
 #, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "Conectando ao servidor de Microsoft Exchange…"
+msgstr "התחברות לשרת Microsoft Exchange…"
 
 #: ewsresource.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
-msgstr "Conectando ao servidor de Exchange."
+msgstr "התחברות לשרת Exchange"
 
 #: ewsresource.cpp:161 ewsresource.cpp:168 ewsresource.cpp:175
 #: ewsresource.cpp:313
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
-msgstr "Non é posíbel conectar ao servidor de Exchange."
+msgstr "לא ניתן להתחבר לשרת Exchange"
 
 #: ewsresource.cpp:253
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
-msgstr "Identificador de cartafol raíz descoñecido."
+msgstr "מזהה התיקייה העליונה לא מוכר."
 
 #: ewsresource.cpp:257
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
-msgstr "Obtendo a árbore de coleccións."
+msgstr "עץ האוסף מתקבל"
 
 #: ewsresource.cpp:406
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
-msgstr "Obtendo elementos."
+msgstr "פריטים מתקבלים"
 
 #: ewsresource.cpp:428 ewsresource.cpp:514
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
-msgstr "Non foi posíbel obter os elementos — erro interno."
+msgstr "משיכת פריטים נכשלה - שגיאה פנימית"
 
 #: ewsresource.cpp:462
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
-msgstr "Non foi posíbel obter os cartafoles — erro interno."
+msgstr "משיכת תיקיות נכשלה - שגיאה פנימית"
 
 #: ewsresource.cpp:468
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
-msgstr "Non foi posíbel procesar a solicitude de obtención de cartafoles."
+msgstr "עיבוד בקשת משיכת תיקיות נכשל"
 
 #: ewsresource.cpp:485
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
-msgstr ""
-"Obxecto incorrecto de traballo de solicitude de obtención incremental de "
-"cartafoles."
+msgstr "פריט משימת בקשת משיכת תיקיות מצטברת שגוי"
 
 #: ewsresource.cpp:548
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
-msgstr "Non se permite o tipo de elemento para cambiar."
+msgstr "אין תמיכה בסוג הפריט הזה מבחינת שינוי"
 
 #: ewsresource.cpp:561
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
-msgstr "Actualizando as marcas de elemento."
+msgstr "סימוני הפריטים מתעדכנים"
 
 #: ewsresource.cpp:573
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
-msgstr ""
-"Non foi posíbel procesar a solicitude de actualización de marcas de elemento."
+msgstr "עיבוד בקשת עדכון סימוני פריט בדגל נכשל"
 
 #: ewsresource.cpp:580
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
-msgstr "Non foi posíbel actualizar as marcas de elemento — erro interno."
+msgstr "עדכון סימוני פריט נכשל - שגיאה פנימית"
 
 #: ewsresource.cpp:594
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
-msgstr "Non foi posíbel procesar a solicitude de actualización de elemento."
+msgstr "עיבוד בקשת עדכון פריט נכשל"
 
 #: ewsresource.cpp:601
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
-msgstr "Non foi posíbel actualizar o elemento — erro interno."
+msgstr "עדכון פריט נכשל - שגיאה פנימית"
 
 #: ewsresource.cpp:636
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
-msgstr "Non foi posíbel procesar a solicitude de movemento de elemento."
+msgstr "עיבוד בקשת העברת פריט נכשל"
 
 #: ewsresource.cpp:643
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
-msgstr "Non foi posíbel mover o elemento — erro interno."
+msgstr "העברת פריט נכשלה - שגיאה פנימית"
 
 #: ewsresource.cpp:650
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
-msgstr ""
-"Non foi posíbel mover o elemento — recibiuse un número incorrecto de "
-"respostas do servidor."
+msgstr "העברת פריט נכשלה - מספר הבקשות שהתקבלו מהשרת שגוי"
 
 #: ewsresource.cpp:743
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
-msgstr "Non foi posíbel procesar a solicitude de eliminación de elemento."
+msgstr "עיבוד בקשת מחיקת פריט נכשל"
 
 #: ewsresource.cpp:750
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
-msgstr "Non foi posíbel eliminar o elemento — erro interno."
+msgstr "מחיקת פריט נכשלה - שגיאה פנימית"
 
 #: ewsresource.cpp:757
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
-msgstr ""
-"Non foi posíbel eliminar o elemento — recibiuse un número incorrecto de "
-"respostas do servidor."
+msgstr "מחיקת פריט נכשלה - מספר הבקשות שהתקבלו מהשרת שגוי"
 
 #: ewsresource.cpp:802 ewsresource.cpp:1015
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
-msgstr "Non se permite o tipo de elemento para crear."
+msgstr "אין תמיכה בסוג הפריט הזה מבחינת יצירה"
 
 #: ewsresource.cpp:813
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
-msgstr "Non foi posíbel procesar a solicitude de creación de elemento."
+msgstr "עיבוד בקשת יצירת פריט נכשל"
 
 #: ewsresource.cpp:819
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
-msgstr "Non foi posíbel crear o elemento — erro interno."
+msgstr "יצירת פריט נכשלה - שגיאה פנימית"
 
 #: ewsresource.cpp:840
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
-msgstr ""
-"Non foi posíbel engadir a colección — non se pode determinar o tipo de "
-"cartafol de EWS."
+msgstr "הוספת האוסף נכשלה - לא ניתן לאתר את סוג תיקיית ה־EWS"
 
 #: ewsresource.cpp:859
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
-msgstr "Non foi posíbel procesar a solicitude de creación de cartafol."
+msgstr "עיבוד בקשת יצירת תיקייה נכשל"
 
 #: ewsresource.cpp:865
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
-msgstr "Non foi posíbel crear o cartafol — erro interno."
+msgstr "יצירת תיקייה נכשלה - שגיאה פנימית"
 
 #: ewsresource.cpp:877
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
-msgstr "Non foi posíbel crear o cartafol."
+msgstr "יצירת תיקייה נכשלה"
 
 #: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
-msgstr "Non foi posíbel procesar a solicitude de movemento de cartafol."
+msgstr "עיבוד בקשת העברת תיקייה נכשל"
 
 #: ewsresource.cpp:906
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
-msgstr "Non foi posíbel mover o cartafol — erro interno."
+msgstr "העברת תיקייה נכשלה - שגיאה פנימית"
 
 #: ewsresource.cpp:912
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
-msgstr ""
-"Non foi posíbel mover o cartafol — recibiuse un número incorrecto de "
-"respostas do servidor."
+msgstr "העברת תיקייה נכשלה - מספר הבקשות שהתקבלו מהשרת שגוי"
 
 #: ewsresource.cpp:923
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
-msgstr "Non foi posíbel mover o cartafol."
+msgstr "העברת תיקייה נכשלה"
 
 #: ewsresource.cpp:951
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
-msgstr "Non foi posíbel procesar a solicitude de actualización de cartafol."
+msgstr "עיבוד בקשת עדכון תיקייה נכשל"
 
 #: ewsresource.cpp:957
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
-msgstr "Non foi posíbel actualizar o cartafol — erro interno."
+msgstr "עדכון תיקייה נכשל - שגיאה פנימית"
 
 #: ewsresource.cpp:963
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
-msgstr ""
-"Non foi posíbel actualizar o cartafol — recibiuse un número incorrecto de "
-"respostas do servidor."
+msgstr "עדכון תיקייה נכשל - מספר הבקשות שהתקבלו מהשרת שגוי"
 
 #: ewsresource.cpp:974
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
-msgstr "Non foi posíbel actualizar o cartafol."
+msgstr "עדכון תיקייה נכשל"
 
 #: ewsresource.cpp:991
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
-msgstr "Non foi posíbel procesar a solicitude de eliminación de cartafol."
+msgstr "עיבוד בקשת מחיקת תיקייה נכשל"
 
 #: ewsresource.cpp:997
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
-msgstr "Non foi posíbel eliminar o cartafol — erro interno."
+msgstr "מחיקת תיקייה נכשלה - שגיאה פנימית"
 
 #: ewsresource.cpp:1005
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
-msgstr "Non foi posíbel eliminar o cartafol."
+msgstr "מחיקת תיקייה נכשלה"
 
 #: ewsresource.cpp:1029 ewsresource.cpp:1063
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
-msgstr "Non foi posíbel procesar a solicitude de envío de elemento."
+msgstr "עיבוד בקשת שליחת פריט נכשל"
 
 #: ewsresource.cpp:1035 ewsresource.cpp:1069
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
-msgstr "Non foi posíbel enviar o elemento — erro interno."
+msgstr "שליחת פריט נכשלה - שגיאה פנימית"
 
 #: ewsresource.cpp:1074
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
-msgstr "Recibiuse un número incorrecto de respostas do servidor."
+msgstr "מספר הבקשות שהתקבלו מהשרת שגוי"
 
 #: ewsresource.cpp:1266
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
-msgstr "Actualizando as etiquetas de elemento."
+msgstr "תגיות הפריטים מתעדכנות"
 
 #: ewsresource.cpp:1279
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
-msgstr ""
-"Non foi posíbel procesar a solicitude de actualización de etiquetas de "
-"elemento."
+msgstr "עיבוד בקשת עדכון תגיות פריט נכשל"
 
 #: ewsresource.cpp:1285
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
-msgstr "Non foi posíbel actualizar as etiquetas de elemento — erro interno."
+msgstr "עדכון תגיות פריט נכשל - שגיאה פנימית"
 
 #: ewsresource.cpp:1322
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
-msgstr ""
-"Non foi posíbel procesar a solicitude de actualización de etiqueta global."
+msgstr "עיבוד בקשת עדכון תגית כללית נכשל"
 
 #: ewsresource.cpp:1338
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
-msgstr ""
-"Non foi posíbel procesar a solicitude de obtención de etiquetas globais."
+msgstr "עיבוד בקשת משיכת תגיות כלליות נכשל"
 
 #: ewsresource.cpp:1416
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
-msgstr "Autenticar"
+msgstr "אימות"
 
 #: ewsresource.cpp:1428 ewsresource.cpp:1443
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
-msgstr "Fallou a autenticación."
+msgstr "האימות נכשל"
 
 #: ewsresource.cpp:1451
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"
-msgstr "Listo."
+msgstr "בהמתנה"
 
 #. i18n: ectx: label, entry (BaseUrl), group (General)
 #: ewsresource.kcfg:10
 #, kde-format
 msgid "Server URL"
-msgstr "URL do servidor"
+msgstr "כתובת שרת"
 
-# skip-rule: proposta-gl-punto-final
 #. i18n: ectx: tooltip, entry (BaseUrl), group (General)
 #. i18n: ectx: whatsthis, entry (BaseUrl), group (General)
 #: ewsresource.kcfg:12 ewsresource.kcfg:13
@@ -1106,62 +1035,61 @@ msgid ""
 "The URL of the Microsoft Exchange server, should be something like https://"
 "myserver.org/EWS/Exchange.asmx"
 msgstr ""
-"O URL do servidor de Microsoft Exchange; debería ser algo similar a https://"
-"myserver.org/EWS/Exchange.asmx."
+"כתובת שרת ה־Microsoft Exchange, אמורה להיות משהו בסגנון  https://myserver."
+"org/EWS/Exchange.asmx‎"
 
 #. i18n: ectx: label, entry (Username), group (General)
 #: ewsresource.kcfg:16
 #, kde-format
 msgctxt "The username to login into the server"
 msgid "Username"
-msgstr "Nome de usuaria"
+msgstr "שם משתמש"
 
 #. i18n: ectx: tooltip, entry (Username), group (General)
 #. i18n: ectx: whatsthis, entry (Username), group (General)
 #: ewsresource.kcfg:17 ewsresource.kcfg:18
 #, kde-format
 msgid "The username that is used to log into the Microsoft Exchange server"
-msgstr ""
-"O nome de usuaria usado para acceder ao servidor de Microsoft Exchange."
+msgstr "שם המשתמש שמשמש להיכנס לשרת ה־Microsoft Exchange"
 
 #. i18n: ectx: label, entry (Domain), group (General)
 #: ewsresource.kcfg:21
 #, kde-format
 msgid "Domain"
-msgstr "Dominio"
+msgstr "שם תחום"
 
 #. i18n: ectx: tooltip, entry (Domain), group (General)
 #. i18n: ectx: whatsthis, entry (Domain), group (General)
 #: ewsresource.kcfg:22 ewsresource.kcfg:23
 #, kde-format
 msgid "The Active Directory domain the user belongs to"
-msgstr "O dominio de Active Directory ao que pertence a persoa usuaria."
+msgstr "שם תחום ה־Active Directory אליו משתייך המשתמש"
 
 #. i18n: ectx: label, entry (HasDomain), group (General)
 #: ewsresource.kcfg:26
 #, kde-format
 msgid "Use a domain name during authentication"
-msgstr "Usar un nome de dominio durante a autenticación"
+msgstr "להשתמש בשם תחום במהלך האימות"
 
 #. i18n: ectx: label, entry (Email), group (General)
 #: ewsresource.kcfg:30
 #, kde-format
 msgctxt "Account e-mail address"
 msgid "E-mail"
-msgstr "Correo electrónico"
+msgstr "דוא״ל"
 
 #. i18n: ectx: tooltip, entry (Email), group (General)
 #. i18n: ectx: whatsthis, entry (Email), group (General)
 #: ewsresource.kcfg:31 ewsresource.kcfg:32
 #, kde-format
 msgid "The primary e-mail address of this account"
-msgstr "O enderezo de correo electrónico principal desta conta."
+msgstr "כתובת הדוא״ל העיקרית של החשבון הזה"
 
 #. i18n: ectx: tooltip, entry (AutoDiscovery), group (General)
 #: ewsresource.kcfg:36
 #, kde-format
 msgid "Attempt to automatically discover Exchange server address"
-msgstr "Intentar descubrir automaticamente o enderezo do servidor de Exchange"
+msgstr "ניסיון לגלות אוטומטית את כתובת שרת ה־Exchange"
 
 #. i18n: ectx: whatsthis, entry (AutoDiscovery), group (General)
 #: ewsresource.kcfg:37
@@ -1170,149 +1098,130 @@ msgid ""
 "Attempts to find out the Microsoft Exchange server address relevant to the "
 "supplied e-mail address."
 msgstr ""
-"Intenta descubrir o enderezo de servidor de Microsoft Exchange relevante "
-"para o enderezo de correo electrónico indicado."
+"ניסיון למצוא את כתובת שרת ה־Microsoft Exchange שתואמת לכתובת הדוא״ל שסופקה."
 
 #. i18n: ectx: label, entry (PollInterval), group (General)
 #: ewsresource.kcfg:40
 #, kde-format
 msgid "Poll Interval"
-msgstr "Intervalo de sondaxe"
+msgstr "הפרש בקשות"
 
 #. i18n: ectx: tooltip, entry (PollInterval), group (General)
 #: ewsresource.kcfg:41
 #, kde-format
 msgid "Sets the interval for checking for new mail"
-msgstr "Define o intervalo de comprobación de novo correo"
+msgstr "הגדרת הפרש בין בדיקות הודעות חדשות"
 
 #. i18n: ectx: whatsthis, entry (PollInterval), group (General)
 #: ewsresource.kcfg:42
 #, kde-format
 msgid "Sets the interval for checking for new mail."
-msgstr "Define o intervalo de comprobación de novo correo."
+msgstr "הגדרת הפרש בין בדיקות הודעות חדשות."
 
 #. i18n: ectx: label, entry (ServerSubscription), group (General)
 #: ewsresource.kcfg:48
 #, kde-format
 msgid "Enable Server-Side Subscriptions"
-msgstr "Activar as subscricións da parte do servidor"
+msgstr "הפעלת מינויים מצד השרת"
 
 #. i18n: ectx: label, entry (ServerSubscriptionList), group (General)
 #: ewsresource.kcfg:51
 #, kde-format
 msgid "List of folders to subscribe to"
-msgstr "Lista de cartafoles aos que subscribirse"
+msgstr "רשימת תיקיות למינוי"
 
 #. i18n: ectx: label, entry (EnableNTLMv2), group (General)
 #: ewsresource.kcfg:55
 #, kde-format
 msgid "Enable NTLMv2 authentication"
-msgstr "Activar a autenticación NTLMv2"
+msgstr "הפעלת אימות NTLMv2"
 
 #. i18n: ectx: label, entry (UserAgent), group (General)
 #: ewsresource.kcfg:59
 #, kde-format
 msgid "Forces a non-default User-Agent string"
-msgstr "Forza unha cadea de axente de usuaria distinta da predeterminada."
+msgstr "אילוץ "
 
 #. i18n: ectx: label, entry (OAuth2AppId), group (General)
 #: ewsresource.kcfg:65
 #, kde-format
 msgid "OAuth2 application identifier"
-msgstr "Identificador de aplicación de OAuth2"
+msgstr "מזהה יישום OAuth2"
 
 #. i18n: ectx: label, entry (OAuth2ReturnUri), group (General)
 #: ewsresource.kcfg:69
 #, kde-format
 msgid "OAuth2 return URI"
-msgstr "URI de volta de OAuth2"
+msgstr "כתובת חזרה מלאה ל־OAuth2"
 
 #. i18n: ectx: label, entry (PKeyCert), group (General)
 #: ewsresource.kcfg:73
 #, kde-format
 msgid "Path to PKey authentication PEM certificate"
-msgstr "Ruta do certificado PEM para a autenticación de chave privada"
+msgstr "נתיב לאישור PEM לאימות PKey"
 
 #. i18n: ectx: label, entry (PKeyKey), group (General)
 #: ewsresource.kcfg:76
 #, kde-format
 msgid "Path to PKey authentication PEM private key"
-msgstr "Ruta da chave privada para a autenticación de chave privada"
+msgstr "נתיב למפתח PEM פרטי לאימות PKey"
 
 #: ewssubscriptionwidget.cpp:171
 #, kde-format
 msgctxt "@info"
 msgid "Exchange server not configured."
-msgstr "O servidor de Exchange non está configurado."
+msgstr "שרת Exchange לא מוגדר."
 
 #: ewssubscriptionwidget.cpp:180 ewssubscriptionwidget.cpp:201
 #, kde-format
 msgctxt "@info"
 msgid "Failed to retrieve folder list."
-msgstr "Non foi posíbel obter a lista de cartafoles."
+msgstr "משיכת רשימת התיקיות נכשלה."
 
 #: ewssubscriptionwidget.cpp:286
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
-msgstr "Activar as subscricións do lado do servidor."
+msgstr "הפעלת מינויים מצד השרת"
 
 #: ewssubscriptionwidget.cpp:294
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Filter folders"
-msgstr "Filtrar os cartafoles"
+msgstr "סינון תיקיות"
 
 #: ewssubscriptionwidget.cpp:314
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
-msgstr "Recargar a &lista"
+msgstr "רענון &רשימה"
 
 #: ewssubscriptionwidget.cpp:317
 #, kde-format
 msgctxt "@action:button"
 msgid "&Reset"
-msgstr "&Restablecer"
+msgstr "&איפוס"
 
 #: ewssubscriptionwidget.cpp:326
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"
-msgstr "Só os subscritos"
+msgstr "עם מינוי בלבד"
 
 #: mail/ewscreatemailjob.cpp:148 mail/ewscreatemailjob.cpp:185
 #: mail/ewscreatemailjob.cpp:218
 #, kde-format
 msgid "Failed to create mail item"
-msgstr "Non foi posíbel crear o elemento de correo"
+msgstr "יצירת פריט דוא״ל נכשלה"
 
 #: mail/ewsmodifymailjob.cpp:92
 #, kde-format
 msgctxt "@info:status"
 msgid "Item update failed: "
-msgstr "A actualización do elemento fallou: "
+msgstr "עדכון הפריט נכשל:"
 
 #: mail/ewsmodifymailjob.cpp:103
 #, kde-format
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
-msgstr ""
-"Atopouse un elemento desordenado ao procesar a resposta da actualización do "
-"elemento."
-
-#~ msgid "Please enter password for user '%1' and Exchange account '%2'."
-#~ msgstr ""
-#~ "Introduza o contrasinal para o usuario «%1» e a conta de Exchange «%2»."
-
-#~ msgctxt "@info:status The resource is ready"
-#~ msgid "Ready"
-#~ msgstr "Listo"
-
-#~ msgctxt "@info:status"
-#~ msgid "No password configured."
-#~ msgstr "Non hai ningún contrasinal configurado."
-
-#~ msgctxt "@info:status"
-#~ msgid "No server configured yet."
-#~ msgstr "Aínda non se configurou ningún servidor."
+msgstr "הפריט לא ברצף הנכון בעת עיבוד תגובת עדכון הפריט."
