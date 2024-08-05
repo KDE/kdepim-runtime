@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-01-05 01:35+0000\n"
-"PO-Revision-Date: 2024-05-05 14:23+0530\n"
+"PO-Revision-Date: 2024-08-04 17:27+0530\n"
 "Last-Translator: Kishore G <kishore96@gmail.com>\n"
 "Language-Team: Tamil <kde-i18n-doc@kde.org>\n"
 "Language: ta\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: folderarchivecombobox.cpp:20
 #, kde-format
@@ -44,10 +44,10 @@ msgstr "இயக்கு"
 #, kde-format
 msgctxt "@label:chooser for the folder that messages will be archived under"
 msgid "Archive into:"
-msgstr ""
+msgstr "இதில் காப்பகப்படுத்து:"
 
 #: folderarchivesettingpage.cpp:38
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Archive folder name:"
-msgstr ""
+msgstr "காப்பக அடைவின் பெயர்:"

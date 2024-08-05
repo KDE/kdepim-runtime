@@ -7,44 +7,49 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-02-29 00:38+0000\n"
-"PO-Revision-Date: 2024-08-04 00:54+0300\n"
+"PO-Revision-Date: 2024-08-04 21:55+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
+"2 : 3);\n"
 "X-Generator: Lokalize 24.05.2\n"
 
 #: compactpage.cpp:71
 #, kde-format
 msgid "(1 message marked for deletion)"
 msgid_plural "(%1 messages marked for deletion)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(הודעה סומנה למחיקה)"
+msgstr[1] "(שתי הודעות סומנו למחיקה)"
+msgstr[2] "(%1 הודעות סומנו למחיקה)"
+msgstr[3] "(%1 הודעות סומנו למחיקה)"
 
 #: compactpage.cpp:78
 #, kde-format
 msgid "Failed to fetch the collection."
-msgstr ""
+msgstr "משיכת האוסף נכשלה."
 
 #: compactpage.cpp:94
 #, kde-format
 msgid "Failed to load the mbox file"
-msgstr ""
+msgstr "טעינת קובץ ה־mbox נכשלה"
 
 #: compactpage.cpp:96
 #, kde-format
 msgid "(Deleting 1 message)"
 msgid_plural "(Deleting %1 messages)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(הודעה נמחקת)"
+msgstr[1] "(שתי הודעות נמחקו)"
+msgstr[2] "(%1 הודעות נמחקות)"
+msgstr[3] "(%1 הודעות נמחקות)"
 
 #: compactpage.cpp:107 compactpage.cpp:115
 #, kde-format
 msgid "Failed to compact the mbox file."
-msgstr ""
+msgstr "דחיסת קובץ ה־mbox נכשלה."
 
 #: compactpage.cpp:117
 #, kde-format
@@ -82,31 +87,31 @@ msgstr ""
 #: compactpage.ui:49
 #, kde-format
 msgid "&Compact now"
-msgstr ""
+msgstr "ל&דחוס כעת"
 
 #. i18n: ectx: property (text), widget (QRadioButton, never)
 #: compactpage.ui:79
 #, kde-format
 msgid "&Never compact automatically"
-msgstr ""
+msgstr "אף פעם לא לדחוס &אוטומטית"
 
 #. i18n: ectx: property (text), widget (QRadioButton, per_x_messages)
 #: compactpage.ui:86
 #, kde-format
 msgid "C&ompact every"
-msgstr ""
+msgstr "לדחוס &כל"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_MessageCount)
 #: compactpage.ui:96
 #, kde-format
 msgid "msg"
-msgstr ""
+msgstr "הודעה"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, LockFilePage)
 #: lockfilepage.ui:15
 #, kde-format
 msgid "MBox Settings"
-msgstr ""
+msgstr "הגדרות MBox"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: lockfilepage.ui:27
@@ -135,31 +140,31 @@ msgstr ""
 #: lockfilepage.ui:43
 #, kde-format
 msgid "Procmail loc&kfile"
-msgstr ""
+msgstr "קובץ נ&עילה של Procmail"
 
 #. i18n: ectx: property (text), widget (QRadioButton, mutt_dotlock)
 #: lockfilepage.ui:53
 #, kde-format
 msgid "&Mutt dotlock"
-msgstr ""
+msgstr "dotlock של& Mutt"
 
 #. i18n: ectx: property (text), widget (QRadioButton, mutt_dotlock_privileged)
 #: lockfilepage.ui:60
 #, kde-format
 msgid "M&utt dotlock privileged"
-msgstr ""
+msgstr "גotlock privileged"
 
 #. i18n: ectx: property (text), widget (QRadioButton, none)
 #: lockfilepage.ui:67
 #, kde-format
 msgid "Non&e"
-msgstr ""
+msgstr "&בלי"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, kcfg_Lockfile)
 #: lockfilepage.ui:84
 #, kde-format
 msgid ".lock"
-msgstr ""
+msgstr "‎.lock"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: lockfilepage.ui:92
@@ -176,48 +181,48 @@ msgstr ""
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
-msgstr ""
+msgstr "קובץ MBox"
 
 #: mboxconfig.cpp:21
 #, kde-format
 msgid "Compact frequency"
-msgstr ""
+msgstr "תדירות דחיסה"
 
 #: mboxconfig.cpp:22
 #, kde-format
 msgid "Lock method"
-msgstr ""
+msgstr "שיטת נעילה"
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format
 msgctxt "@info:status"
 msgid "MBox not configured."
-msgstr ""
+msgstr "MBox לא הוגדר."
 
 #: mboxresource.cpp:143 mboxresource.cpp:182
 #, kde-format
 msgid "MBox not loaded."
-msgstr ""
+msgstr "MBox לא נטען."
 
 #: mboxresource.cpp:158
 #, kde-format
 msgid "Failed to read message with uid '%1'."
-msgstr ""
+msgstr "קריאת ההודעה עם המזהה ‚%1’ נכשלה."
 
 #: mboxresource.cpp:192
 #, kde-format
 msgid "Only email messages can be added to the MBox resource."
-msgstr ""
+msgstr "אפשר להוסיף רק הודעות דוא״ל למשאב ה־MBox."
 
 #: mboxresource.cpp:198
 #, kde-format
 msgid "Mail message not added to the MBox."
-msgstr ""
+msgstr "הודעת הדוא״ל לא נוספה ל־MBox."
 
 #: mboxresource.cpp:237
 #, kde-format
 msgid "Could not fetch the collection: %1"
-msgstr ""
+msgstr "לא ניתן למשוך את האוסף: %1"
 
 #: mboxresource.cpp:266
 #, kde-format
@@ -227,63 +232,66 @@ msgid ""
 "happening use locking and make sure that all programs accessing the mbox use "
 "the same locking method."
 msgstr ""
+"קובץ ה־MBox השתנה על ידי תוכנית אחרת. עותק של הקובץ החדש נוצר והוא ושינויים "
+"ממתינים נוספו לעותק הזה. כדי למנוע מזה לקרות יש להשתמש בנעילה ולוודא שכל "
+"התוכניות שניגשות ל־mbox משתמשות באותה שיטת הנעילה."
 
 #: mboxresource.cpp:297
 #, kde-format
 msgid "Failed to save mbox file to %1"
-msgstr ""
+msgstr "שמירת קובץ ה־mbox אל %1 נכשלה"
 
 #: mboxresource.cpp:356
 #, kde-format
 msgid ""
 "Failed to update the changed item because the old item could not be deleted "
 "Reason: %1"
-msgstr ""
+msgstr "עדכון הפריט שהשתנה נכשל כיוון שלא ניתן למחוק את הפריט הישן סיבה: %1"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: mboxresource.kcfg:10
 #, kde-format
 msgid "Path to mbox file."
-msgstr ""
+msgstr "נתיב לקובץ mbox."
 
 #. i18n: ectx: label, entry (DisplayName), group (General)
 #: mboxresource.kcfg:14
 #, kde-format
 msgid "Display name."
-msgstr ""
+msgstr "שם תצוגה."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: mboxresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr ""
+msgstr "לא לשנות את נתוני המנגנון בפועל."
 
 #. i18n: ectx: label, entry (MonitorFile), group (General)
 #: mboxresource.kcfg:22
 #, kde-format
 msgid "Monitor file for changes."
-msgstr ""
+msgstr "מעקב אחר שינויים בקובץ."
 
 #. i18n: ectx: label, entry (PeriodicUpdate), group (General)
 #: mboxresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "עדכון הקובץ באופן מחזורי."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: mboxresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
-msgstr ""
+msgstr "הפרש בין עדכונים אוטומטיים בדקות."
 
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
 #: mboxresource.kcfg:45
 #, kde-format
 msgid "Lockfile"
-msgstr ""
+msgstr "קובץ נעילה"
 
 #. i18n: ectx: label, entry (MessageCount), group (Compacting)
 #: mboxresource.kcfg:58
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
-msgstr ""
+msgstr "מספר ההודעות שנמחקו לפני שהחל ניפוי."
