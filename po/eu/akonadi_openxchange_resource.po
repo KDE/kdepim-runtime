@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-02 00:41+0000\n"
-"PO-Revision-Date: 2024-07-19 09:05+0200\n"
+"PO-Revision-Date: 2024-08-06 01:03+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -41,8 +41,7 @@ msgid "Unable to connect: %1"
 msgstr "Ezin du konektatu: %1"
 
 #: configwidget.cpp:72
-#, fuzzy, kde-format
-#| msgid "Connection error"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection error"
 msgstr "Konexio-errorea"
@@ -53,8 +52,7 @@ msgid "Tested connection successfully."
 msgstr "Konexioa proba arrakastatsua."
 
 #: configwidget.cpp:74
-#, fuzzy, kde-format
-#| msgid "Connection success"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection success"
 msgstr "Konexio arrakastatsua"
