@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-02-29 00:38+0000\n"
-"PO-Revision-Date: 2024-08-04 21:50+0300\n"
+"PO-Revision-Date: 2024-08-05 07:53+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: compactpage.cpp:71
 #, kde-format
@@ -176,6 +176,10 @@ msgid ""
 "this is the case, the resource and the other programs must all use the same "
 "locking method."
 msgstr ""
+"ללא, הגדרות ברירת המחדל אמורות להיות בטוחות ברוב המקרים. עם זאת, אם תוכניות "
+"שלא משתמשות ב־Akonadi ניגשות גם כן לקובץ ה־mbox המוגדר, יש להגדיר שיטת נעילה "
+"הולמת. כדאי לשים לב שאם זה המצב, המשאב ושאר התוכניות חייבים להשתמש כולם "
+"באותה שיטת הנעילה."
 
 #: mboxconfig.cpp:20
 #, kde-format

@@ -1,186 +1,170 @@
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# Kristóf Kiszel <ulysses@kubuntu.org>, 2011.
-# Balázs Úr <urbalazs@gmail.com>, 2012.
-# SPDX-FileCopyrightText: 2024 Kristof Kiszel <ulysses@fsf.hu>
+# SPDX-FileCopyrightText: 2024 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-08-06 14:38+0200\n"
-"Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
-"Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
-"Language: hu\n"
+"PO-Revision-Date: 2024-08-06 11:23+0300\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"Language-Team: צוות התרגום של KDE ישראל\n"
+"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
+"2 : 3);\n"
 "X-Generator: Lokalize 24.05.2\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
 #, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "Üzenetek küldése (1 elem a sorban)…"
-msgstr[1] "Üzenetek küldése (%1 elem a sorban)…"
+msgstr[0] "הודעות נשלחות (פריט בתור)…"
+msgstr[1] "הודעות נשלחות (שני פריטים בתור)..."
+msgstr[2] "הודעות נשלחות (%1 פריטים בתור)..."
+msgstr[3] "הודעות נשלחות (%1 פריטים בתור)..."
 
 #: maildispatcheragent.cpp:90
 #, kde-format
 msgid "Sending canceled."
-msgstr "A küldés megszakítva."
+msgstr ""
 
 #: maildispatcheragent.cpp:97
 #, kde-format
 msgid "Finished sending messages."
-msgstr "Az üzenetek küldése befejeződött."
+msgstr ""
 
 #: maildispatcheragent.cpp:103
 #, kde-format
 msgctxt "Notification title when email was sent"
 msgid "E-Mail Successfully Sent"
-msgstr "Az e-mail sikeresen elküldve"
+msgstr "ההודעה נשלחה בהצלחה"
 
 #: maildispatcheragent.cpp:104
 #, kde-format
 msgctxt "Notification when the email was sent"
 msgid "Your E-Mail has been sent successfully."
-msgstr "Az e-mail sikeresen elküldve."
+msgstr ""
 
 #: maildispatcheragent.cpp:110
 #, kde-format
 msgid "No items in queue."
-msgstr "Nincsenek elemek a sorban."
+msgstr ""
 
 #: maildispatcheragent.cpp:155
 #, kde-format
 msgid "Online, sending messages in queue."
-msgstr "Online, a sorban lévő üzenetek küldése."
+msgstr ""
 
 #: maildispatcheragent.cpp:159
 #, kde-format
 msgid "Offline, message sending suspended."
-msgstr "Offline, az üzenetek küldése felfüggesztve."
+msgstr ""
 
 #: maildispatcheragent.cpp:184
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
-msgstr "Küldés: %1"
+msgstr ""
 
 #: maildispatcheragent.cpp:249
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
-msgstr "Az e-mail küldése sikertelen"
+msgstr ""
 
 #: maildispatcheragent.cpp:282
 #, kde-format
 msgid "Ready to dispatch messages."
-msgstr "Az üzenetek küldésére kész."
+msgstr ""
 
 #. i18n: ectx: label, entry (Outbox), group (General)
 #: maildispatcheragent.kcfg:10
 #, kde-format
 msgid "Outbox collection id"
-msgstr "Kimenő gyűjtemény azonosítója"
+msgstr ""
 
 #. i18n: ectx: label, entry (SentMail), group (General)
 #: maildispatcheragent.kcfg:14
 #, kde-format
 msgid "Sent Mail collection id"
-msgstr "Elküldött levélgyűjtemény azonosítója"
+msgstr ""
 
 #: outboxqueue.cpp:265
 #, kde-format
 msgid "Could not access the outbox folder (%1)."
-msgstr "Nem sikerült elérni a kimenő mappát (%1)."
+msgstr ""
 
 #: sendjob.cpp:49 sendjob.cpp:50
 #, kde-format
 msgid "Message sending aborted."
-msgstr "Az üzenet küldése megszakítadt."
+msgstr ""
 
 #: sendjob.cpp:59
 #, kde-format
 msgid "Could not initiate message transport. Possibly invalid transport."
 msgstr ""
-"Nem skerült inicializálni az üzenetátvitelt, az átvitel valószínűleg "
-"érvénytelen."
 
 #: sendjob.cpp:65
 #, kde-format
 msgid "Could not send message. Invalid transport."
-msgstr "Nem sikerült elküldeni az üzenetet. Érvénytelen átvitel."
+msgstr ""
 
 #: sendjob.cpp:97
 #, kde-format
 msgid "Failed to get D-Bus interface of resource %1."
-msgstr "Nem sikerült megszerezni a(z) %1 erőforrás D-Bus interfészét."
+msgstr ""
 
 #: sendjob.cpp:110
 #, kde-format
 msgid "Invalid D-Bus reply from resource %1."
-msgstr "Érvénytelen D-Bus válasz a(z) %1 erőforrástól."
+msgstr ""
 
 #: sendjob.cpp:229
 #, kde-format
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr ""
-"Az alapértelmezett elküldött üzenetek mappa nem érhető el. Az üzenetek "
-"megtartása a postázandók között."
 
 #: sendjob.cpp:241
 #, kde-format
 msgid "Message transport aborted."
-msgstr "Az üzenetátvitel megszakadt."
+msgstr ""
 
 #: sendjob.cpp:241
 #, kde-format
 msgid "Failed to transport message."
-msgstr "Nem sikerült átvinni az üzenetet."
+msgstr ""
 
 #: sendjob.cpp:283
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
-msgstr "Nem sikerült megszerezni a mailfilteragent D-Bus interfészét."
+msgstr ""
 
 #: sendjob.cpp:290
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
-msgstr "Érvénytelen D-Bus válaz a mailfilteragenttől"
+msgstr ""
 
 #: sendjob.cpp:332
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr ""
-"A küldés sikeres, de nem sikerült eltávolítani az üzenetet a postázandók "
-"közül."
 
 #: sendjob.cpp:335
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
 msgstr ""
-"A küldés sikeres, de nem sikerült áthelyezni az üzenetet az elküldött "
-"levelek közé."
 
 #: sendjob.cpp:371
 #, kde-format
 msgid "Failed to store result in item."
-msgstr "Nem sikerólt tárolni az eredményt az elemben."
+msgstr ""
 
 #: storeresultjob.cpp:59
 #, kde-format
 msgid "Failed to fetch item."
-msgstr "Nem sikerült letölteni az elemet."
-
-#~ msgid "Mail Dispatcher Agent Settings"
-#~ msgstr "A levélküldő ügynök beállításai"
-
-#~ msgid "Select the collection to be used as outbox:"
-#~ msgstr "Válassza ki a kimenő mappaként használandó gyűjteményt:"
-
-#~ msgid "Select the collection to move sent messages into:"
-#~ msgstr "Válassza ki a gyűjteményt az elküldött üzenetek elhelyezésére:"
+msgstr ""
