@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-30 00:41+0000\n"
-"PO-Revision-Date: 2024-07-05 15:48+0200\n"
+"PO-Revision-Date: 2024-08-07 11:23+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.05.1\n"
+"X-Generator: Lokalize 24.07.70\n"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -36,8 +36,7 @@ msgstr "[Показване на поща]"
 
 #: newmailnotificationhistorywidget.cpp:24
 #: newmailnotifiersettingswidget.cpp:114
-#, fuzzy, kde-format
-#| msgid "Enabled"
+#, kde-format
 msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Активирано"
@@ -108,60 +107,52 @@ msgid "Choose which fields to show:"
 msgstr "Избиране на полета за показване:"
 
 #: newmailnotifiersettingswidget.cpp:60
-#, fuzzy, kde-format
-#| msgid "Show Photo"
+#, kde-format
 msgctxt "@option:check"
 msgid "Show Photo"
-msgstr "Показване на изображението"
+msgstr "Показване на снимка"
 
 #: newmailnotifiersettingswidget.cpp:64
-#, fuzzy, kde-format
-#| msgid "Show From"
+#, kde-format
 msgctxt "@option:check"
 msgid "Show From"
 msgstr "Показване на подател"
 
 #: newmailnotifiersettingswidget.cpp:68
-#, fuzzy, kde-format
-#| msgid "Show Subject"
+#, kde-format
 msgctxt "@option:check"
 msgid "Show Subject"
-msgstr "Показване на относно"
+msgstr "Показване на Тема"
 
 #: newmailnotifiersettingswidget.cpp:72
-#, fuzzy, kde-format
-#| msgid "Show Folders"
+#, kde-format
 msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "Показване на папки"
 
 #: newmailnotifiersettingswidget.cpp:76
-#, fuzzy, kde-format
-#| msgid "Do not notify when email was sent by me"
+#, kde-format
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "Без уведомяване, когато писмото е изпратено от мен"
 
 #: newmailnotifiersettingswidget.cpp:80
-#, fuzzy, kde-format
-#| msgid "Keep Persistent Notification"
+#, kde-format
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr "Поддържане на постоянно известие"
 
 #: newmailnotifiersettingswidget.cpp:84
-#, fuzzy, kde-format
-#| msgid "Show Action Buttons"
+#, kde-format
 msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr "Показване на бутони за действие"
 
 #: newmailnotifiersettingswidget.cpp:92
-#, fuzzy, kde-format
-#| msgid "Reply Mail"
+#, kde-format
 msgctxt "@option:check"
 msgid "Reply Mail"
-msgstr "Отговор на писмото"
+msgstr "Отговор на писмо"
 
 #: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:163
 #, kde-format

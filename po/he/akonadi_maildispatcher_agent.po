@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-08-06 11:23+0300\n"
+"PO-Revision-Date: 2024-08-06 11:41+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
-"2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
+"n % 10 == 0) ? 2 : 3));\n"
 "X-Generator: Lokalize 24.05.2\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
@@ -30,12 +30,12 @@ msgstr[3] "הודעות נשלחות (%1 פריטים בתור)..."
 #: maildispatcheragent.cpp:90
 #, kde-format
 msgid "Sending canceled."
-msgstr ""
+msgstr "השליחה בוטלה."
 
 #: maildispatcheragent.cpp:97
 #, kde-format
 msgid "Finished sending messages."
-msgstr ""
+msgstr "שליחת ההודעות הסתיימה."
 
 #: maildispatcheragent.cpp:103
 #, kde-format
@@ -47,124 +47,125 @@ msgstr "ההודעה נשלחה בהצלחה"
 #, kde-format
 msgctxt "Notification when the email was sent"
 msgid "Your E-Mail has been sent successfully."
-msgstr ""
+msgstr "ההודעה שלך נשלחה בהצלחה."
 
 #: maildispatcheragent.cpp:110
 #, kde-format
 msgid "No items in queue."
-msgstr ""
+msgstr "אין פריטים בתור."
 
 #: maildispatcheragent.cpp:155
 #, kde-format
 msgid "Online, sending messages in queue."
-msgstr ""
+msgstr "מקוון, שליחת הודעות מהתור."
 
 #: maildispatcheragent.cpp:159
 #, kde-format
 msgid "Offline, message sending suspended."
-msgstr ""
+msgstr "מנותק, שליחת הודעה מושהית."
 
 #: maildispatcheragent.cpp:184
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
-msgstr ""
+msgstr "נשלח: %1"
 
 #: maildispatcheragent.cpp:249
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
-msgstr ""
+msgstr "שליחת דוא״ל נכשלה"
 
 #: maildispatcheragent.cpp:282
 #, kde-format
 msgid "Ready to dispatch messages."
-msgstr ""
+msgstr "אפשר לשלח הודעות."
 
 #. i18n: ectx: label, entry (Outbox), group (General)
 #: maildispatcheragent.kcfg:10
 #, kde-format
 msgid "Outbox collection id"
-msgstr ""
+msgstr "מזהה אוסף תיבת דוא״ל יוצא"
 
 #. i18n: ectx: label, entry (SentMail), group (General)
 #: maildispatcheragent.kcfg:14
 #, kde-format
 msgid "Sent Mail collection id"
-msgstr ""
+msgstr "מזהה אוסף דוא״ל שנשלח"
 
 #: outboxqueue.cpp:265
 #, kde-format
 msgid "Could not access the outbox folder (%1)."
-msgstr ""
+msgstr "לא ניתן לגשת לתיקיית הדוא״ל היוצא (%1)."
 
 #: sendjob.cpp:49 sendjob.cpp:50
 #, kde-format
 msgid "Message sending aborted."
-msgstr ""
+msgstr "שליחת הודעות בוטלה."
 
 #: sendjob.cpp:59
 #, kde-format
 msgid "Could not initiate message transport. Possibly invalid transport."
-msgstr ""
+msgstr "לא ניתן לאתחל העברת דוא״ל. כנראה העברה שגויה."
 
 #: sendjob.cpp:65
 #, kde-format
 msgid "Could not send message. Invalid transport."
-msgstr ""
+msgstr "לא ניתן לשלוח הודעה. העברה שגויה."
 
 #: sendjob.cpp:97
 #, kde-format
 msgid "Failed to get D-Bus interface of resource %1."
-msgstr ""
+msgstr "משיכת ממשק ה־D-Bus של המשאב %1 נכשלה."
 
 #: sendjob.cpp:110
 #, kde-format
 msgid "Invalid D-Bus reply from resource %1."
-msgstr ""
+msgstr "תגובת D-Bus שגויה מהמשאב %1."
 
 #: sendjob.cpp:229
 #, kde-format
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr ""
+"ברירת מחדל לתיקיית דוא״ל שנשלח אינה זמינה. ההודעות נשמרות בדוא״ל היוצא."
 
 #: sendjob.cpp:241
 #, kde-format
 msgid "Message transport aborted."
-msgstr ""
+msgstr "העברת ההודעה בוטלה."
 
 #: sendjob.cpp:241
 #, kde-format
 msgid "Failed to transport message."
-msgstr ""
+msgstr "העברת ההודעה נכשלה."
 
 #: sendjob.cpp:283
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
-msgstr ""
+msgstr "משיכת ממשק ה־D-Bus של mailfilteragent נכשלה."
 
 #: sendjob.cpp:290
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
-msgstr ""
+msgstr "תגובת D-Bus שגויה מ־mailfilteragent"
 
 #: sendjob.cpp:332
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
-msgstr ""
+msgstr "השליחה הצליחה, אך הסרת ההודעה מהדוא״ל היוצא נכשלה."
 
 #: sendjob.cpp:335
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
-msgstr ""
+msgstr "השליחה הצליחה אבל העברת ההודעה לתיקיית הדוא״ל שנשלח נכשלה."
 
 #: sendjob.cpp:371
 #, kde-format
 msgid "Failed to store result in item."
-msgstr ""
+msgstr "אחסון התוצאה בפריט נכשלה."
 
 #: storeresultjob.cpp:59
 #, kde-format
 msgid "Failed to fetch item."
-msgstr ""
+msgstr "משיכת הפריט נכשלה."
