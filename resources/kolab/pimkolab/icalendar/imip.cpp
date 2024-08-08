@@ -50,7 +50,7 @@ KMime::Message::Ptr createMessage(const QString &from,
     // will be the root message that has 2 additional message. The body itself and
     // the attached cal.ics calendar file.
     KMime::Message::Ptr message = KMime::Message::Ptr(new KMime::Message);
-    message->contentTransferEncoding()->clear(); // 7Bit, decoded.
+    message->contentTransferEncoding()->setEncoding(KMime::Headers::CE7Bit);
 
     // Set the headers
     message->userAgent()->fromUnicodeString(userAgent);
