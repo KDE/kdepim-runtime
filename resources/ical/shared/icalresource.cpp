@@ -6,7 +6,6 @@
 */
 
 #include "icalresource.h"
-#include "icalresourcebase.h"
 
 #include <KCalendarCore/FreeBusy>
 

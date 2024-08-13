@@ -6,7 +6,6 @@
 
 #include "passwordrequester.h"
 #include "imapresourcebase.h"
-#include "passwordrequesterinterface.h"
 #include "settings.h"
 #include <config-imap.h>
 

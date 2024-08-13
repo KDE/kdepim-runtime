@@ -7,7 +7,6 @@
 #include "outlookpasswordrequester.h"
 #include "imapresource_debug.h"
 #include "imapresourcebase.h"
-#include "passwordrequesterinterface.h"
 #include "settings.h"
 
 #include <MailTransport/OutlookOAuthTokenRequester>
