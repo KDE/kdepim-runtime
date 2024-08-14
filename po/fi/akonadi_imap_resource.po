@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-02 00:41+0000\n"
+"POT-Creation-Date: 2024-08-14 00:39+0000\n"
 "PO-Revision-Date: 2024-03-11 15:19+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -440,7 +440,7 @@ msgstr ""
 "Kansion ”%1” viestiä ei onnistuttu merkitsemään poistettavaksi IMAP-tilillä. "
 "Se palaa näkyviin seuraavassa synkronoinnissa."
 
-#: outlookpasswordrequester.cpp:63 outlookpasswordrequester.cpp:72
+#: outlookpasswordrequester.cpp:62 outlookpasswordrequester.cpp:71
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."

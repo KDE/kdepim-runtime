@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-02 00:41+0000\n"
+"POT-Creation-Date: 2024-08-14 00:39+0000\n"
 "PO-Revision-Date: 2020-11-09 10:43-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -434,7 +434,7 @@ msgstr ""
 "Falha ao marcar a mensagem de '%1' para exclusão no servidor IMAP. Ela "
 "reaparecerá na próxima sincronização."
 
-#: outlookpasswordrequester.cpp:63 outlookpasswordrequester.cpp:72
+#: outlookpasswordrequester.cpp:62 outlookpasswordrequester.cpp:71
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-02 00:41+0000\n"
+"POT-Creation-Date: 2024-08-14 00:39+0000\n"
 "PO-Revision-Date: 2024-08-07 11:20+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -434,7 +434,7 @@ msgstr ""
 "Неуспешно маркиране на съобщението от „%1“ за изтриване на IMAP сървъра. Той "
 "ще се появи отново при следващо синхронизиране."
 
-#: outlookpasswordrequester.cpp:63 outlookpasswordrequester.cpp:72
+#: outlookpasswordrequester.cpp:62 outlookpasswordrequester.cpp:71
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."

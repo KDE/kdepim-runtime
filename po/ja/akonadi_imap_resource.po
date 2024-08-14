@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-02 00:41+0000\n"
+"POT-Creation-Date: 2024-08-14 00:39+0000\n"
 "PO-Revision-Date: 2010-10-22 23:55-0700\n"
 "Last-Translator: Fumiaki Okushi <okushi@kde.gr.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -413,7 +413,7 @@ msgstr ""
 "IMAP サーバ上で、メッセージを “%1” から削除するよう指定できませんでした。次の"
 "同期で再び現れます。"
 
-#: outlookpasswordrequester.cpp:63 outlookpasswordrequester.cpp:72
+#: outlookpasswordrequester.cpp:62 outlookpasswordrequester.cpp:71
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
