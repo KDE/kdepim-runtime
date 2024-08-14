@@ -115,6 +115,8 @@ find_package(KPim6AkonadiCalendar ${AKONADICALENDAR_LIB_VERSION} CONFIG REQUIRED
 find_package(KPim6GAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
 find_package(KPim6LdapWidgets ${KLDAP_LIB_VERSION} CONFIG REQUIRED)
 
+find_package(KPim6PimCommonActivities ${PIMCOMMON_LIB_VERSION} CONFIG)
+
 find_package(Qt6Keychain ${QT6KEYCHAIN_LIB_VERSION} CONFIG)
 set_package_properties(Qt6Keychain PROPERTIES
                                    DESCRIPTION "Provides support for secure credentials storage"
@@ -131,6 +133,30 @@ set(COMPILE_WITH_UNITY_CMAKE_SUPPORT OFF)
 if(USE_UNITY_CMAKE_SUPPORT)
     set(COMPILE_WITH_UNITY_CMAKE_SUPPORT ON)
     add_definitions(-DCOMPILE_WITH_UNITY_CMAKE_SUPPORT)
+endif()
+
+if(TARGET KPim6::PimCommonActivities)
+	option(OPTION_USE_PLASMA_ACTIVITIES "Activate plasma activities" OFF)
+    if(OPTION_USE_PLASMA_ACTIVITIES)
+        if(NOT WIN32 AND NOT APPLE)
+            set(OPTION_USE_PLASMA_ACTIVITIES true)
+        else()
+            set(OPTION_USE_PLASMA_ACTIVITIES false)
+        endif()
+    endif()
+    if(OPTION_USE_PLASMA_ACTIVITIES)
+        if(NOT WIN32 AND NOT APPLE)
+            find_package(PlasmaActivities "6.1.0")
+            set_package_properties(PlasmaActivities PROPERTIES DESCRIPTION
+                "Allow to compile with plasma activities"
+                TYPE OPTIONAL
+            )
+        endif()
+
+        if(TARGET Plasma::Activities)
+            set(HAVE_ACTIVITY_SUPPORT TRUE)
+        endif()
+    endif()
 endif()
 
 if(BUILD_TESTING)
