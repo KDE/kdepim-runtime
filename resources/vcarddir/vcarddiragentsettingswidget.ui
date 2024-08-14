@@ -135,7 +135,7 @@
           </widget>
          </item>
          <item>
-          <widget class="KPluralHandlingSpinBox" name="kcfg_AutosaveInterval">
+          <widget class="QSpinBox" name="kcfg_AutosaveInterval">
            <property name="minimum">
             <number>0</number>
            </property>
@@ -184,11 +184,6 @@
    <extends>QFrame</extends>
    <header>kurlrequester.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>KPluralHandlingSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>KPluralHandlingSpinBox</header>
   </customwidget>
  </customwidgets>
  <resources/>

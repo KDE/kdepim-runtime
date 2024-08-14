@@ -37,11 +37,13 @@
 #include <Akonadi/SpecialMailCollections>
 #include <Akonadi/SpecialMailCollectionsRequestJob>
 #include <KAuthorized>
+#include <KLocalization>
 #include <KLocalizedString>
 #include <KMessageBox>
 #include <KUser>
 #include <QNetworkInformation>
 #include <QPushButton>
+#include <ki18n_version.h>
 
 #include <KIdentityManagementCore/IdentityManager>
 #include <KIdentityManagementWidgets/IdentityCombo>
@@ -153,7 +155,9 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     m_ui->testProgress->hide();
     m_ui->testProgress->setFormat(i18nc("Percent value; %p is the value, % is the percent sign", "%p%"));
     m_ui->accountName->setFocus();
-    m_ui->checkInterval->setSuffix(ki18np(" minute", " minutes"));
+#if KI18N_VERSION > QT_VERSION_CHECK(6, 5, 0)
+    KLocalization::setupSpinBoxFormatString(m_ui->checkInterval, ki18np(" minute", " minutes"));
+#endif
     m_ui->checkInterval->setMinimum(Akonadi::ResourceSettings::self()->minimumCheckInterval());
     m_ui->checkInterval->setMaximum(10000);
     m_ui->checkInterval->setSingleStep(1);

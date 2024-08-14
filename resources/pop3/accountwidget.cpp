@@ -21,9 +21,11 @@
 #include <Akonadi/SpecialMailCollectionsRequestJob>
 #include <KAuthorized>
 #include <KLineEditEventHandler>
+#include <KLocalization>
 #include <KMessageBox>
 #include <KUser>
 #include <MailTransport/ServerTest>
+#include <ki18n_version.h>
 
 #include <QButtonGroup>
 #include <QPushButton>
@@ -87,7 +89,9 @@ void AccountWidget::setupWidgets()
     // only letters, digits, '-', '.', ':' (IPv6) and '_' (for Windows
     // compatibility) are allowed
     hostEdit->setValidator(&mValidator);
-    intervalSpin->setSuffix(ki18np(" minute", " minutes"));
+#if KI18N_VERSION > QT_VERSION_CHECK(6, 5, 0)
+    KLocalization::setupSpinBoxFormatString(intervalSpin, ki18np(" minute", " minutes"));
+#endif
 
     intervalSpin->setRange(ResourceSettings::self()->minimumCheckInterval(), 10000);
     intervalSpin->setSingleStep(1);

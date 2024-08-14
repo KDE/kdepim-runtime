@@ -88,8 +88,7 @@ ki18n_wrap_ui(pop3config popsettings.ui)
 
 target_link_libraries(pop3config
     KPim6::AkonadiCore
-    KF6::TextWidgets
-    KF6::Completion
+        KF6::Completion
     KF6::WidgetsAddons
     KF6::I18n
     KPim6::MailTransport

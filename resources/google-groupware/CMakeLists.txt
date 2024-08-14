@@ -92,8 +92,7 @@ target_link_libraries(akonadi_google_resource
   KF6::Contacts
   KF6::I18n
   KF6::WindowSystem
-  KF6::TextWidgets
-  KF6::Notifications
+    KF6::Notifications
   KPim6::GAPICalendar
   KPim6::GAPIPeople
   KPim6::GAPICore
@@ -143,8 +142,7 @@ target_link_libraries(googleconfig
     KF6::Wallet
     KF6::I18n
     KF6::WindowSystem
-    KF6::TextWidgets
-    KF6::Notifications
+        KF6::Notifications
     KPim6::GAPICalendar
     KPim6::GAPIPeople
     KPim6::GAPICore

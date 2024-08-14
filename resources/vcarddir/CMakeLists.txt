@@ -41,8 +41,7 @@ target_link_libraries(akonadi_vcarddir_resource
   KPim6::AkonadiAgentBase
   KF6::Contacts
   KF6::I18n
-  KF6::TextWidgets
-  KF6::KIOWidgets
+    KF6::KIOWidgets
   KF6::ConfigWidgets
   KF6::WindowSystem
   Qt::DBus
@@ -78,5 +77,4 @@ target_link_libraries(vcarddirconfig
     KPim6::AkonadiWidgets
     KF6::I18n
     KF6::KIOWidgets
-    KF6::TextWidgets
-)
+    )

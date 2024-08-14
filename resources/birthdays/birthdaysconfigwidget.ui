@@ -53,7 +53,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="KPluralHandlingSpinBox" name="kcfg_AlarmDays">
+       <widget class="QSpinBox" name="kcfg_AlarmDays">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -111,11 +111,6 @@
    <class>Akonadi::TagSelectWidget</class>
    <extends>QWidget</extends>
    <header>Akonadi/TagSelectWidget</header>
-  </customwidget>
-  <customwidget>
-   <class>KPluralHandlingSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>KPluralHandlingSpinBox</header>
   </customwidget>
  </customwidgets>
  <resources/>

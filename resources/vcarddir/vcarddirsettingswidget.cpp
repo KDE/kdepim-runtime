@@ -10,8 +10,10 @@
 #include "settings.h"
 
 #include <KConfigDialogManager>
+#include <KLocalization>
 #include <KLocalizedString>
 #include <QUrl>
+#include <ki18n_version.h>
 
 #include <QPushButton>
 #include <QTimer>
@@ -32,7 +34,9 @@ VcardDirSettingsWidget::VcardDirSettingsWidget(const KSharedConfigPtr &config, Q
     connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &VcardDirSettingsWidget::validate);
 
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(VcardDirResourceSettings::self()->path()));
-    ui.kcfg_AutosaveInterval->setSuffix(ki18np(" minute", " minutes"));
+#if KI18N_VERSION > QT_VERSION_CHECK(6, 5, 0)
+    KLocalization::setupSpinBoxFormatString(ui.kcfg_AutosaveInterval, ki18np(" minute", " minutes"));
+#endif
     mManager = new KConfigDialogManager(mainWidget, VcardDirResourceSettings::self());
 }
 

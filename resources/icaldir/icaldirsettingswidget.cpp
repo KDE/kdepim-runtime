@@ -10,8 +10,10 @@
 #include "settings.h"
 
 #include <KConfigDialogManager>
+#include <KLocalization>
 #include <KLocalizedString>
 #include <QUrl>
+#include <ki18n_version.h>
 
 #include <QFontDatabase>
 #include <QPushButton>
@@ -33,7 +35,9 @@ IcalDirSettingsWidget::IcalDirSettingsWidget(const KSharedConfigPtr &config, QWi
     connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &IcalDirSettingsWidget::validate);
 
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(IcalDirResourceSettings::self()->path()));
-    ui.kcfg_AutosaveInterval->setSuffix(ki18np(" minute", " minutes"));
+#if KI18N_VERSION > QT_VERSION_CHECK(6, 5, 0)
+    KLocalization::setupSpinBoxFormatString(ui.kcfg_AutosaveInterval, ki18np(" minute", " minutes"));
+#endif
     mManager = new KConfigDialogManager(mainWidget, IcalDirResourceSettings::self());
     ui.readOnlyLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));
     ui.runingLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));

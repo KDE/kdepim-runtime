@@ -37,8 +37,7 @@ target_link_libraries(akonadi_icaldir_resource
   KPim6::AkonadiAgentBase
   KF6::CalendarCore
   KF6::I18n
-  KF6::TextWidgets
-  KF6::KIOWidgets
+    KF6::KIOWidgets
   KF6::ConfigWidgets
 )
 
@@ -65,5 +64,4 @@ target_link_libraries(icaldirconfig
     KPim6::AkonadiWidgets
     KF6::I18n
     KF6::KIOWidgets
-    KF6::TextWidgets
-)
+    )

@@ -91,7 +91,6 @@ find_package(KF6KIO ${KF_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF6ItemModels ${KF_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF6Codecs ${KF_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF6WindowSystem ${KF_MIN_VERSION} CONFIG REQUIRED)
-find_package(KF6TextWidgets ${KF_MIN_VERSION} CONFIG REQUIRED) # for KPluralHandlingSpinBox
 find_package(KF6Notifications ${KF_MIN_VERSION} CONFIG REQUIRED) # pop3, ews
 find_package(KF6KCMUtils ${KF_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF6DAV ${KF_MIN_VERSION} CONFIG REQUIRED)

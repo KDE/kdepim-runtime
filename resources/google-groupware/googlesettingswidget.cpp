@@ -18,8 +18,10 @@
 #include <KGAPI/Calendar/CalendarFetchJob>
 #include <KGAPI/Tasks/TaskList>
 #include <KGAPI/Tasks/TaskListFetchJob>
+#include <KLocalization>
 #include <KMessageBox>
 #include <KWindowSystem>
+#include <ki18n_version.h>
 
 #include <qt6keychain/keychain.h>
 
@@ -37,7 +39,9 @@ GoogleSettingsWidget::GoogleSettingsWidget(GoogleSettings &settings, const QStri
     mainLayout->addWidget(mainWidget);
     setupUi(mainWidget);
 
-    refreshSpinBox->setSuffix(ki18np(" minute", " minutes"));
+#if KI18N_VERSION > QT_VERSION_CHECK(6, 5, 0)
+    KLocalization::setupSpinBoxFormatString(refreshSpinBox, ki18np(" minute", " minutes"));
+#endif
     enableRefresh->setChecked(m_settings.enableIntervalCheck());
     refreshSpinBox->setEnabled(m_settings.enableIntervalCheck());
     refreshSpinBox->setValue(m_settings.intervalCheckTime());

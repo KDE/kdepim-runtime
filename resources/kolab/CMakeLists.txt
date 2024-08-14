@@ -85,8 +85,7 @@ target_link_libraries(akonadi_kolab_resource
     KF6::Contacts
     KF6::CalendarCore
     akonadi-singlefileresource
-    KF6::TextWidgets
-    KF6::I18n
+        KF6::I18n
 )
 
 install(FILES kolabresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")

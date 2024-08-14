@@ -181,8 +181,7 @@ target_link_libraries(akonadi_imap_resource
     KPim6::IdentityManagementCore
     KF6::I18n
     imapresource
-    KF6::TextWidgets
-    KF6::ConfigGui
+        KF6::ConfigGui
 
     folderarchivesettings
     KPim6::GAPICore

@@ -9,11 +9,12 @@
 #include "settings.h"
 #include <Akonadi/Tag>
 #include <KConfigDialogManager>
+#include <KLocalization>
 #include <KLocalizedString>
 #include <KSharedConfig>
 #include <QIcon>
 #include <QPushButton>
-
+#include <ki18n_version.h>
 namespace
 {
 static const char myConfigGroupName[] = "BirthdaysSettingsDialog";
@@ -32,7 +33,9 @@ BirthdaysConfigAgentWidget::BirthdaysConfigAgentWidget(const KSharedConfigPtr &c
 
     mManager = new KConfigDialogManager(mainWidget, Settings::self());
     mManager->updateWidgets();
-    ui.kcfg_AlarmDays->setSuffix(ki18np(" day", " days"));
+#if KI18N_VERSION > QT_VERSION_CHECK(6, 5, 0)
+    KLocalization::setupSpinBoxFormatString(ui.kcfg_AlarmDays, ki18np(" day", " days"));
+#endif
 }
 
 BirthdaysConfigAgentWidget::~BirthdaysConfigAgentWidget() = default;

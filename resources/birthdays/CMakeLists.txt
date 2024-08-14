@@ -69,5 +69,4 @@ target_link_libraries(birthdaysconfig
     KF6::Contacts
     KPim6::AkonadiWidgets
     KF6::I18n
-    KF6::TextWidgets
-)
+    )
