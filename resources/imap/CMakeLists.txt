@@ -127,6 +127,13 @@ target_link_libraries(imapresource
     qt6keychain
 )
 
+if(TARGET KPim6::PimCommonActivities AND OPTION_USE_PLASMA_ACTIVITIES)
+    target_link_libraries(imapresource
+        KPim6::PimCommonActivities
+    )
+endif()
+
+
 ########### next target ###############
 
 add_executable(akonadi_imap_resource)

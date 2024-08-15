@@ -8,12 +8,20 @@
 */
 
 #pragma once
-
-class KJob;
+#include "config-kdepim-runtime.h"
 #include <Akonadi/Collection>
 #include <QDialog>
 
 #include <QRegularExpressionValidator>
+
+#if HAVE_ACTIVITY_SUPPORT
+namespace PimCommonActivities
+{
+class ConfigureActivitiesWidget;
+}
+#endif
+
+class KJob;
 class QPushButton;
 class QComboBox;
 namespace Ui
@@ -80,6 +88,9 @@ private:
     Akonadi::Collection mOldTrash;
     FolderArchiveSettingPage *m_folderArchiveSettingPage = nullptr;
     QPushButton *mOkButton = nullptr;
+#if HAVE_ACTIVITY_SUPPORT
+    PimCommonActivities::ConfigureActivitiesWidget *const mConfigureActivitiesWidget;
+#endif
 
 private Q_SLOTS:
     void slotTest();

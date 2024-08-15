@@ -55,6 +55,9 @@
 #include "subscriptiondialog.h"
 
 #include "ui_setupserverview_desktop.h"
+#if HAVE_ACTIVITY_SUPPORT
+#include <PimCommonActivities/ConfigureActivitiesWidget>
+#endif
 
 /** static helper functions **/
 static QString authenticationModeString(MailTransport::Transport::EnumAuthenticationType mode)
@@ -117,6 +120,9 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     , m_parentResource(parentResource)
     , m_ui(new Ui::SetupServerView)
     , mValidator(this)
+#if HAVE_ACTIVITY_SUPPORT
+    , mConfigureActivitiesWidget(new PimCommonActivities::ConfigureActivitiesWidget(this))
+#endif
 {
     m_parentResource->settings()->setWinId(parent);
     auto mainWidget = new QWidget(this);
@@ -190,6 +196,10 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     connect(m_ui->safeImapGroup, &QButtonGroup::buttonClicked, this, &SetupServer::slotEncryptionRadioChanged);
     connect(m_ui->customSieveGroup, &QButtonGroup::buttonClicked, this, &SetupServer::slotCustomSieveChanged);
     connect(m_ui->showServerInfo, &QPushButton::pressed, this, &SetupServer::slotShowServerInfo);
+
+#if HAVE_ACTIVITY_SUPPORT
+    m_ui->tabWidget->addTab(mConfigureActivitiesWidget, i18n("Activities"));
+#endif
 
     readSettings();
     slotTestChanged();

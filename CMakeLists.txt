@@ -162,6 +162,8 @@ endif()
 if(BUILD_TESTING)
    add_definitions(-DBUILD_TESTING)
 endif()
+include_directories(${kdepim-runtime_SOURCE_DIR} ${kdepim-runtime_BINARY_DIR})
+configure_file(config-kdepim-runtime.h.in ${CMAKE_CURRENT_BINARY_DIR}/config-kdepim-runtime.h)
 
 add_subdirectory(resources)
 add_subdirectory(agents)
