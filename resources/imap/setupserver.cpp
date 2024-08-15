@@ -197,7 +197,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     slotCustomSieveChanged();
 
     QNetworkInformation::instance()->loadBackendByFeatures(QNetworkInformation::Feature::Reachability);
-    connect(QNetworkInformation::instance(), &QNetworkInformation::reachabilityChanged, this, [this](QNetworkInformation::Reachability newReachability) {
+    connect(QNetworkInformation::instance(), &QNetworkInformation::reachabilityChanged, this, [this]() {
         slotTestChanged();
     });
 }
