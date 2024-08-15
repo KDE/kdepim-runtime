@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-14 00:39+0000\n"
+"POT-Creation-Date: 2024-08-15 00:40+0000\n"
 "PO-Revision-Date: 2024-05-18 16:43+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -117,13 +117,13 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "自動儲存延遲："
 
-#. i18n: ectx: property (toolTip), widget (KPluralHandlingSpinBox, kcfg_AutosaveInterval)
+#. i18n: ectx: property (toolTip), widget (QSpinBox, kcfg_AutosaveInterval)
 #: settingsdialog.ui:152
 #, kde-format
 msgid "Autosave interval time (in minutes)."
 msgstr "自動儲存的間隔時間 (秒)。"
 
-#. i18n: ectx: property (whatsThis), widget (KPluralHandlingSpinBox, kcfg_AutosaveInterval)
+#. i18n: ectx: property (whatsThis), widget (QSpinBox, kcfg_AutosaveInterval)
 #: settingsdialog.ui:155
 #, kde-format
 msgid "Select autosave interval time for the resource data (in minutes)."

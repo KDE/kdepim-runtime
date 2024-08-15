@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-04 00:39+0000\n"
+"POT-Creation-Date: 2024-08-15 00:40+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -18,30 +18,30 @@ msgstr ""
 "pot\n"
 "X-Crowdin-File-ID: 45677\n"
 
-#: accountwidget.cpp:82
+#: accountwidget.cpp:84
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: accountwidget.cpp:90
+#: accountwidget.cpp:93
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " 分钟"
 
-#: accountwidget.cpp:127 pop3resource.cpp:46
+#: accountwidget.cpp:131 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 账户"
 
-#: accountwidget.cpp:194
+#: accountwidget.cpp:198
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "无法打开密码库"
 
-#: accountwidget.cpp:244
+#: accountwidget.cpp:248
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -52,7 +52,7 @@ msgstr ""
 "服务器似乎不支持唯一信件号，但是要在服务器上保留信件，必须使用此特性。\n"
 "由于某些服务器无法正确声明其能力，您仍然有机会关闭在服务器上保留信件的功能。"
 
-#: accountwidget.cpp:259
+#: accountwidget.cpp:263
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -73,17 +73,17 @@ msgstr ""
 "如果您的服务器没有声明，但您想要更快的速度，您应先尝试向自己发送一大堆测试邮"
 "件并下载下来。"
 
-#: accountwidget.cpp:292
+#: accountwidget.cpp:296
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "请先在常规标签页中指定服务器和端口。"
 
-#: accountwidget.cpp:325
+#: accountwidget.cpp:329
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "无法连接到服务器，请检查服务器地址"
 
-#: accountwidget.cpp:369
+#: accountwidget.cpp:373
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -101,7 +101,7 @@ msgstr ""
 "处理重要邮件之前，您应该先向您自己发送大量测试信件，然后从 POP 服务器一次性收"
 "取。"
 
-#: accountwidget.cpp:389
+#: accountwidget.cpp:393
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -114,13 +114,13 @@ msgstr ""
 "此选项已被禁用。\n"
 "由于某些服务器无法正确声明其能力，您仍然有机会关闭在服务器上保留信件的功能。"
 
-#: accountwidget.cpp:421
+#: accountwidget.cpp:425
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " 天"
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:430
 #, kde-format
 msgid " message"
 msgid_plural " messages"

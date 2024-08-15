@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-04 00:39+0000\n"
+"POT-Creation-Date: 2024-08-15 00:40+0000\n"
 "PO-Revision-Date: 2012-07-12 22:31+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -18,13 +18,13 @@ msgstr ""
 "2);\n"
 "X-Generator: Lokalize 1.4\n"
 
-#: accountwidget.cpp:82
+#: accountwidget.cpp:84
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: accountwidget.cpp:90
+#: accountwidget.cpp:93
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -32,19 +32,19 @@ msgstr[0] " minūte"
 msgstr[1] " minūtes"
 msgstr[2] " minūšu"
 
-#: accountwidget.cpp:127 pop3resource.cpp:46
+#: accountwidget.cpp:131 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 konts"
 
-#: accountwidget.cpp:194
+#: accountwidget.cpp:198
 #, fuzzy, kde-format
 #| msgid "Unable to open wallet"
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Neizdevās atvērt maku"
 
-#: accountwidget.cpp:244
+#: accountwidget.cpp:248
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -57,7 +57,7 @@ msgstr ""
 "Tā kā daži serveri pareizi nepaziņo par to iespējām, jums vēl joprojām ir ir "
 "iespēja ieslēgt saņemto vēstuļu atstāšanu uz servera."
 
-#: accountwidget.cpp:259
+#: accountwidget.cpp:263
 #, fuzzy, kde-format
 #| msgid ""
 #| "Please note that this feature can cause some POP3 servers that do not "
@@ -91,17 +91,17 @@ msgstr ""
 "nelielu pārbaudi, vispirms nosūtot sev lielu daudzumu vēstuļu un tad tās "
 "lejupielādējot."
 
-#: accountwidget.cpp:292
+#: accountwidget.cpp:296
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Lūdzu, vispirms cilnē 'Vispārīgi' norādiet serveri un portu."
 
-#: accountwidget.cpp:325
+#: accountwidget.cpp:329
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Neizdevās pieslēgties serverim, lūdzu, pārbaudiet servera adresi."
 
-#: accountwidget.cpp:369
+#: accountwidget.cpp:373
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -122,7 +122,7 @@ msgstr ""
 "jāveic pārbaude, nosūtot sev lielu skaitu testa vēstuļu, kuras pēc tam no "
 "POP servera ar vienu paņēmienu lejupielādē."
 
-#: accountwidget.cpp:389
+#: accountwidget.cpp:393
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -137,7 +137,7 @@ msgstr ""
 "Tā kā daži serveri pareizi nepaziņo par to iespējām, jums vēl joprojām ir ir "
 "iespēja ieslēgt saņemto vēstuļu atstāšanu uz servera."
 
-#: accountwidget.cpp:421
+#: accountwidget.cpp:425
 #, kde-format
 msgid " day"
 msgid_plural " days"
@@ -145,7 +145,7 @@ msgstr[0] " diena"
 msgstr[1] " dienas"
 msgstr[2] " dienu"
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:430
 #, kde-format
 msgid " message"
 msgid_plural " messages"

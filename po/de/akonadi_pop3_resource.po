@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-04 00:39+0000\n"
+"POT-Creation-Date: 2024-08-15 00:40+0000\n"
 "PO-Revision-Date: 2024-04-28 20:05+0200\n"
 "Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -20,32 +20,32 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 24.02.2\n"
 
-#: accountwidget.cpp:82
+#: accountwidget.cpp:84
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p %"
 
-#: accountwidget.cpp:90
+#: accountwidget.cpp:93
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " Minute"
 msgstr[1] " Minuten"
 
-#: accountwidget.cpp:127 pop3resource.cpp:46
+#: accountwidget.cpp:131 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3-Postfach"
 
-#: accountwidget.cpp:194
+#: accountwidget.cpp:198
 #, fuzzy, kde-format
 #| msgid "Unable to open wallet"
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Der Passwortspeicher kann nicht geöffnet werden"
 
-#: accountwidget.cpp:244
+#: accountwidget.cpp:248
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -60,7 +60,7 @@ msgstr ""
 "versuchen, die Einstellung „Abgeholte Nachrichten auf dem Server lassen“ "
 "einzuschalten."
 
-#: accountwidget.cpp:259
+#: accountwidget.cpp:263
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -83,21 +83,21 @@ msgstr ""
 "Geschwindigkeit wünschen, sollten Sie diese Funktion zuerst durch das "
 "probeweise Versenden einiger E-Mails an sich selbst überprüfen."
 
-#: accountwidget.cpp:292
+#: accountwidget.cpp:296
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr ""
 "Bitte geben Sie zuerst auf der Karteikarte „Allgemein“ einen Server und "
 "einen Port an."
 
-#: accountwidget.cpp:325
+#: accountwidget.cpp:329
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Es kann keine Verbindung mit dem Server hergestellt werden. Überprüfen Sie "
 "die Serveradresse."
 
-#: accountwidget.cpp:369
+#: accountwidget.cpp:373
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -120,7 +120,7 @@ msgstr ""
 "zum Testen an sich selbst schicken und in einem Durchgang vom POP-Server "
 "abholen."
 
-#: accountwidget.cpp:389
+#: accountwidget.cpp:393
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -137,14 +137,14 @@ msgstr ""
 "versuchen, die Einstellung für das Belassen der Nachrichten auf dem Server "
 "einzuschalten."
 
-#: accountwidget.cpp:421
+#: accountwidget.cpp:425
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " Tag"
 msgstr[1] " Tage"
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:430
 #, kde-format
 msgid " message"
 msgid_plural " messages"

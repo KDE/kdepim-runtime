@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-14 00:39+0000\n"
+"POT-Creation-Date: 2024-08-15 00:40+0000\n"
 "PO-Revision-Date: 2009-08-04 10:29+0300\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -130,13 +130,13 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "Interval de salvare automată:"
 
-#. i18n: ectx: property (toolTip), widget (KPluralHandlingSpinBox, kcfg_AutosaveInterval)
+#. i18n: ectx: property (toolTip), widget (QSpinBox, kcfg_AutosaveInterval)
 #: settingsdialog.ui:152
 #, kde-format
 msgid "Autosave interval time (in minutes)."
 msgstr ""
 
-#. i18n: ectx: property (whatsThis), widget (KPluralHandlingSpinBox, kcfg_AutosaveInterval)
+#. i18n: ectx: property (whatsThis), widget (QSpinBox, kcfg_AutosaveInterval)
 #: settingsdialog.ui:155
 #, kde-format
 msgid "Select autosave interval time for the resource data (in minutes)."

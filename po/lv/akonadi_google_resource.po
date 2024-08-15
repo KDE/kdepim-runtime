@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-10 00:39+0000\n"
+"POT-Creation-Date: 2024-08-15 00:40+0000\n"
 "PO-Revision-Date: 2012-07-07 21:01+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -204,7 +204,7 @@ msgstr "Nederīgs saturs"
 msgid "Unknown collection mimetype"
 msgstr ""
 
-#: googlesettingswidget.cpp:40
+#: googlesettingswidget.cpp:43
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -213,7 +213,7 @@ msgstr[1] ""
 msgstr[2] ""
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:102 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:106 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>Not configured</b>"
 msgstr ""

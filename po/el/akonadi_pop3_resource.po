@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-04 00:39+0000\n"
+"POT-Creation-Date: 2024-08-15 00:40+0000\n"
 "PO-Revision-Date: 2016-05-24 16:38+0200\n"
 "Last-Translator: Petros Vidalis <pvidalis@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -19,32 +19,32 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: accountwidget.cpp:82
+#: accountwidget.cpp:84
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: accountwidget.cpp:90
+#: accountwidget.cpp:93
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " λεπτό"
 msgstr[1] " λεπτά"
 
-#: accountwidget.cpp:127 pop3resource.cpp:46
+#: accountwidget.cpp:131 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "Λογαριασμός POP3"
 
-#: accountwidget.cpp:194
+#: accountwidget.cpp:198
 #, fuzzy, kde-format
 #| msgid "Unable to open wallet"
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Αδυναμία ανοίγματος πορτοφολιού"
 
-#: accountwidget.cpp:244
+#: accountwidget.cpp:248
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -58,7 +58,7 @@ msgstr ""
 "τους, μπορείτε να ενεργοποιήσετε την παραμονή των προσκομισθέντων αντιγράφων "
 "μηνυμάτων στον εξυπηρετητή."
 
-#: accountwidget.cpp:259
+#: accountwidget.cpp:263
 #, fuzzy, kde-format
 #| msgid ""
 #| "Please note that this feature can cause some POP3 servers that do not "
@@ -93,17 +93,17 @@ msgstr ""
 "θα πρέπει να κάνετε κάποιες δοκιμές με την αποστολή στον εαυτό σας μιας "
 "δέσμης μηνυμάτων και της λήψης αυτών."
 
-#: accountwidget.cpp:292
+#: accountwidget.cpp:296
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Δηλώστε πρώτα έναν εξυπηρετητή και μια θύρα στη καρτέλα Γενικά."
 
-#: accountwidget.cpp:325
+#: accountwidget.cpp:329
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Αδυναμία σύνδεσης με τον εξυπηρετητή, ελέγξτε τη διεύθυνση."
 
-#: accountwidget.cpp:369
+#: accountwidget.cpp:373
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -126,7 +126,7 @@ msgstr ""
 "μηνυμάτων τα οποία θα κατεβάσετε με την πρώτη προσπάθεια από τον εξυπηρετητή "
 "POP."
 
-#: accountwidget.cpp:389
+#: accountwidget.cpp:393
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -142,14 +142,14 @@ msgstr ""
 "αλλά εσείς μπορείτε να ενεργοποιήσετε την παραμονή των προσκομισθέντων "
 "μηνυμάτων στον εξυπηρετητή."
 
-#: accountwidget.cpp:421
+#: accountwidget.cpp:425
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " ημέρα"
 msgstr[1] " ημέρες"
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:430
 #, kde-format
 msgid " message"
 msgid_plural " messages"

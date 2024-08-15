@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-04 00:39+0000\n"
+"POT-Creation-Date: 2024-08-15 00:40+0000\n"
 "PO-Revision-Date: 2012-06-12 10:21+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -18,31 +18,31 @@ msgstr ""
 "X-Generator: WordForge 0.8 RC1\n"
 "X-Language: km-KH\n"
 
-#: accountwidget.cpp:82
+#: accountwidget.cpp:84
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: accountwidget.cpp:90
+#: accountwidget.cpp:93
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " នាទី"
 
-#: accountwidget.cpp:127 pop3resource.cpp:46
+#: accountwidget.cpp:131 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "គណនី POP3"
 
-#: accountwidget.cpp:194
+#: accountwidget.cpp:198
 #, fuzzy, kde-format
 #| msgid "Unable to open wallet"
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "មិន​អាច​បើក​កាបូប​បាន​ឡើយ"
 
-#: accountwidget.cpp:244
+#: accountwidget.cpp:248
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -54,7 +54,7 @@ msgstr ""
 "ព្រោះ​ថា​ ម៉ាស៊ីន​បម្រើ​មួយ​ចំនួន​មិន​ប្រកាស​សមត្ថភាព​របស់​ពួកវា​ត្រឹមត្រូវ​តែ អ្នក​នៅតែ​អាច​​បើក​ទុក​សារ​ដែល​បាន​ទៅ​"
 "យក​នៅ​លើ​ម៉ាស៊ីន​បម្រើ ។"
 
-#: accountwidget.cpp:259
+#: accountwidget.cpp:263
 #, fuzzy, kde-format
 #| msgid ""
 #| "Please note that this feature can cause some POP3 servers that do not "
@@ -85,17 +85,17 @@ msgstr ""
 "ប្រសិនបើ​ម៉ាស៊ីនបម្រើ​របស់​អ្នក​មិន​ប្រកាស​វា​ទេ ប៉ុន្តែ​អ្នក​ចង់បាន​ល្បឿន​កាន់​តែ​លឿន នោះ​អ្នក​គួរ​ធ្វើ​ការ​សាកល្បង​"
 "សិន​ ដោយ​ផ្ញើ​ឲ្យ​ខ្លួន​អ្នក​ផ្ទាល់​នូវ​បណ្ដុំ​សំបុត្រ​ ហើយ​ទាញយក​វា ។"
 
-#: accountwidget.cpp:292
+#: accountwidget.cpp:296
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "សូម​បញ្ជាក់​ម៉ាស៊ីន​បម្រើ និង​ច្រក​នៅ​លើ​ផ្ទាំង​ទូទៅ​សិន ។"
 
-#: accountwidget.cpp:325
+#: accountwidget.cpp:329
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "មិនអាច​តភ្ជាប់​ទៅកាន់​ម៉ាស៊ីន​បម្រើ​បានទេ សូម​ផ្ទៀងផ្ទាត់​អាសយដ្ឋាន​ម៉ាស៊ីន​បម្រើ ។"
 
-#: accountwidget.cpp:369
+#: accountwidget.cpp:373
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -113,7 +113,7 @@ msgstr ""
 "ដើម្បីផ្ញើសារ​ដែល​ខូច ។ ដូច្នេះ មុននឹង​ប្រើ​លក្ខណពិសេស​នេះ​ជា​មួយ​សំបុត្រ​សំខាន់ ដំបូង​អ្នកគួរ​តែ​សាកល្បង​វាសិន​ "
 "ដោយ​ផ្ញើ​ទៅ​ខ្លួន​អ្នក​​ផ្ទាល់​នូវ​សារ​សាកល្បង​ដែលមាន​ទំហំ​ធំ ដែល​អ្នក​អាច​ទាញយក​ពី​ម៉ាស៊ីនបម្រើ POP ។"
 
-#: accountwidget.cpp:389
+#: accountwidget.cpp:393
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -127,13 +127,13 @@ msgstr ""
 "ព្រោះ​ថា​ម៉ាស៊ីន​បម្រើ​មួយ​ចំនួន​មិន​ប្រកាស​សមត្ថភាព​របស់​ពួក​វា​ត្រឹមត្រូវ​នោះ​ទេ អ្នក​នៅតែ​អាច​បើក​ការ​ទុក​សារ​​ដែល​"
 "បាន​ទៅ​យក​នៅ​លើ​ម៉ាស៊ីនបម្រើបាន ។"
 
-#: accountwidget.cpp:421
+#: accountwidget.cpp:425
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " ថ្ងៃ"
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:430
 #, kde-format
 msgid " message"
 msgid_plural " messages"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-04 00:39+0000\n"
+"POT-Creation-Date: 2024-08-15 00:40+0000\n"
 "PO-Revision-Date: 2024-07-04 21:35+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -19,31 +19,31 @@ msgstr ""
 "X-Generator: translate-po (https://github.com/zcribe/translate-po)\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: accountwidget.cpp:82
+#: accountwidget.cpp:84
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: accountwidget.cpp:90
+#: accountwidget.cpp:93
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " minuto"
 msgstr[1] " minutoj"
 
-#: accountwidget.cpp:127 pop3resource.cpp:46
+#: accountwidget.cpp:131 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3-konto"
 
-#: accountwidget.cpp:194
+#: accountwidget.cpp:198
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Ne eblas malfermi monujon"
 
-#: accountwidget.cpp:244
+#: accountwidget.cpp:248
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -56,7 +56,7 @@ msgstr ""
 "Ĉar kelkaj serviloj ne korekte publikigi siajn eblecojn, vi ankoraŭ havas la "
 "eblecon ŝalti la \"Lasu la prenitajn mesaĝojn en la servilo\"."
 
-#: accountwidget.cpp:259
+#: accountwidget.cpp:263
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -79,18 +79,18 @@ msgstr ""
 "vi devus fari iujn provojn unue per sendante al vi aron\n"
 "o da poŝto kaj elŝutante ĝin."
 
-#: accountwidget.cpp:292
+#: accountwidget.cpp:296
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Bonvolu indiki servilon kaj pordon en la ·ĝenerala tabo antaŭ ĉio."
 
-#: accountwidget.cpp:325
+#: accountwidget.cpp:329
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Ne eblas konektiĝi al la servilo, bonvolu kontroli la servilan adreson."
 
-#: accountwidget.cpp:369
+#: accountwidget.cpp:373
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -110,7 +110,7 @@ msgstr ""
 "nombron da testmesaĝoj, kiujn vi ĉiuj elŝutas per sola prenado de la POP-"
 "servilo."
 
-#: accountwidget.cpp:389
+#: accountwidget.cpp:393
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -124,14 +124,14 @@ msgstr ""
 "Ĉar kelkaj serviloj ne korekte publikigi sian kapablon, vi ankoraŭ havas la "
 "eblecon ŝalti la \"Lasu la prenitajn mesaĝojn en la servilo\"."
 
-#: accountwidget.cpp:421
+#: accountwidget.cpp:425
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " tago"
 msgstr[1] " tagoj"
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:430
 #, kde-format
 msgid " message"
 msgid_plural " messages"

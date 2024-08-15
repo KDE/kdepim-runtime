@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-10 00:39+0000\n"
+"POT-Creation-Date: 2024-08-15 00:40+0000\n"
 "PO-Revision-Date: 2012-06-12 09:59+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -201,14 +201,14 @@ msgstr "payload មិន​ត្រឹមត្រូវ"
 msgid "Unknown collection mimetype"
 msgstr ""
 
-#: googlesettingswidget.cpp:40
+#: googlesettingswidget.cpp:43
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] ""
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:102 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:106 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>Not configured</b>"
 msgstr ""

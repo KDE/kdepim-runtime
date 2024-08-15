@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: l 10n\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-10 00:39+0000\n"
+"POT-Creation-Date: 2024-08-15 00:40+0000\n"
 "PO-Revision-Date: 2020-04-29 13:16+0300\n"
 "Last-Translator: Moo\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -214,7 +214,7 @@ msgstr "Netinkamas naudingosios apkrovos tipas"
 msgid "Unknown collection mimetype"
 msgstr "Nežinomas kolekcijos mime tipas"
 
-#: googlesettingswidget.cpp:40
+#: googlesettingswidget.cpp:43
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -224,7 +224,7 @@ msgstr[2] " minučių"
 msgstr[3] " minutė"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:102 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:106 googlesettingswidget.ui:30
 #, fuzzy, kde-format
 #| msgid "<b>not configured</b>"
 msgid "<b>Not configured</b>"
