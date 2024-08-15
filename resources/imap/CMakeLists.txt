@@ -127,7 +127,7 @@ target_link_libraries(imapresource
     qt6keychain
 )
 
-if(TARGET KPim6::PimCommonActivities AND OPTION_USE_PLASMA_ACTIVITIES)
+if(HAVE_ACTIVITY_SUPPORT)
     target_link_libraries(imapresource
         KPim6::PimCommonActivities
     )
