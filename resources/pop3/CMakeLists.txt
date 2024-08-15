@@ -97,3 +97,8 @@ target_link_libraries(pop3config
     KPim6::AkonadiMime
     qt6keychain
 )
+if(HAVE_ACTIVITY_SUPPORT)
+     target_link_libraries(pop3config
+         KPim6::PimCommonActivities
+     )
+endif()
