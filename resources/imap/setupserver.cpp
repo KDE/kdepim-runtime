@@ -162,7 +162,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     m_ui->testProgress->setFormat(i18nc("Percent value; %p is the value, % is the percent sign", "%p%"));
     m_ui->accountName->setFocus();
 #if KI18N_VERSION > QT_VERSION_CHECK(6, 5, 0)
-    KLocalization::setupSpinBoxFormatString(m_ui->checkInterval, ki18np(" minute", " minutes"));
+    KLocalization::setupSpinBoxFormatString(m_ui->checkInterval, ki18np("%v minute", "%v minutes"));
 #endif
     m_ui->checkInterval->setMinimum(Akonadi::ResourceSettings::self()->minimumCheckInterval());
     m_ui->checkInterval->setMaximum(10000);

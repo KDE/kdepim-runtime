@@ -36,7 +36,7 @@ IcalDirSettingsWidget::IcalDirSettingsWidget(const KSharedConfigPtr &config, QWi
 
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(IcalDirResourceSettings::self()->path()));
 #if KI18N_VERSION > QT_VERSION_CHECK(6, 5, 0)
-    KLocalization::setupSpinBoxFormatString(ui.kcfg_AutosaveInterval, ki18np(" minute", " minutes"));
+    KLocalization::setupSpinBoxFormatString(ui.kcfg_AutosaveInterval, ki18np("%v minute", "%v minutes"));
 #endif
     mManager = new KConfigDialogManager(mainWidget, IcalDirResourceSettings::self());
     ui.readOnlyLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));

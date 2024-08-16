@@ -90,7 +90,7 @@ void AccountWidget::setupWidgets()
     // compatibility) are allowed
     hostEdit->setValidator(&mValidator);
 #if KI18N_VERSION > QT_VERSION_CHECK(6, 5, 0)
-    KLocalization::setupSpinBoxFormatString(intervalSpin, ki18np(" minute", " minutes"));
+    KLocalization::setupSpinBoxFormatString(intervalSpin, ki18np("%v minute", "%v minutes"));
 #endif
 
     intervalSpin->setRange(ResourceSettings::self()->minimumCheckInterval(), 10000);

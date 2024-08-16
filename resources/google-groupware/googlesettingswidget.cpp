@@ -40,7 +40,7 @@ GoogleSettingsWidget::GoogleSettingsWidget(GoogleSettings &settings, const QStri
     setupUi(mainWidget);
 
 #if KI18N_VERSION > QT_VERSION_CHECK(6, 5, 0)
-    KLocalization::setupSpinBoxFormatString(refreshSpinBox, ki18np(" minute", " minutes"));
+    KLocalization::setupSpinBoxFormatString(refreshSpinBox, ki18np("%v minute", "%v minutes"));
 #endif
     enableRefresh->setChecked(m_settings.enableIntervalCheck());
     refreshSpinBox->setEnabled(m_settings.enableIntervalCheck());

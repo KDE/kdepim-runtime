@@ -35,7 +35,7 @@ VcardDirSettingsWidget::VcardDirSettingsWidget(const KSharedConfigPtr &config, Q
 
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(VcardDirResourceSettings::self()->path()));
 #if KI18N_VERSION > QT_VERSION_CHECK(6, 5, 0)
-    KLocalization::setupSpinBoxFormatString(ui.kcfg_AutosaveInterval, ki18np(" minute", " minutes"));
+    KLocalization::setupSpinBoxFormatString(ui.kcfg_AutosaveInterval, ki18np("%v minute", "%v minutes"));
 #endif
     mManager = new KConfigDialogManager(mainWidget, VcardDirResourceSettings::self());
 }

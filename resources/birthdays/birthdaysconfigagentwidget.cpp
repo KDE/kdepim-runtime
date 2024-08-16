@@ -34,7 +34,7 @@ BirthdaysConfigAgentWidget::BirthdaysConfigAgentWidget(const KSharedConfigPtr &c
     mManager = new KConfigDialogManager(mainWidget, Settings::self());
     mManager->updateWidgets();
 #if KI18N_VERSION > QT_VERSION_CHECK(6, 5, 0)
-    KLocalization::setupSpinBoxFormatString(ui.kcfg_AlarmDays, ki18np(" day", " days"));
+    KLocalization::setupSpinBoxFormatString(ui.kcfg_AlarmDays, ki18np("%v day", "%v days"));
 #endif
 }
 
