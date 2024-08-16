@@ -6,11 +6,17 @@
 */
 
 #pragma once
-
+#include "config-kdepim-runtime.h"
 #include "ui_contactsagentsettingswidget.h"
 #include <Akonadi/AgentConfigurationBase>
 
 class KConfigDialogManager;
+#if HAVE_ACTIVITY_SUPPORT
+namespace PimCommonActivities
+{
+class ConfigureActivitiesWidget;
+}
+#endif
 
 class ContactsSettingsWidget : public Akonadi::AgentConfigurationBase
 {
@@ -28,5 +34,8 @@ private:
     void validate();
     Ui::ContactAgentSettingsWidget ui;
     KConfigDialogManager *mManager = nullptr;
+#if HAVE_ACTIVITY_SUPPORT
+    PimCommonActivities::ConfigureActivitiesWidget *const mConfigureActivitiesWidget;
+#endif
 };
 AKONADI_AGENTCONFIG_FACTORY(ContactsSettingsWidgetFactory, "contactsconfig.json", ContactsSettingsWidget)

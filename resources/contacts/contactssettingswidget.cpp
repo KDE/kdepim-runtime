@@ -14,7 +14,9 @@
 #include <QPushButton>
 #include <QTimer>
 #include <QUrl>
-
+#if HAVE_ACTIVITY_SUPPORT
+#include <PimCommonActivities/ConfigureActivitiesWidget>
+#endif
 namespace
 {
 static const char myConfigGroupName[] = "ContactsSettingsDialog";
@@ -22,6 +24,10 @@ static const char myConfigGroupName[] = "ContactsSettingsDialog";
 
 ContactsSettingsWidget::ContactsSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)
+#if HAVE_ACTIVITY_SUPPORT
+    , mConfigureActivitiesWidget(new PimCommonActivities::ConfigureActivitiesWidget(parent))
+#endif
+
 {
     ContactsResourceSettings::instance(config);
 
@@ -30,6 +36,9 @@ ContactsSettingsWidget::ContactsSettingsWidget(const KSharedConfigPtr &config, Q
     ui.setupUi(mainWidget);
     parent->layout()->addWidget(mainWidget);
     ui.kcfg_Path->setMode(KFile::LocalOnly | KFile::Directory);
+#if HAVE_ACTIVITY_SUPPORT
+    ui.tabWidget->addTab(mConfigureActivitiesWidget, i18n("Activities"));
+#endif
 
     ui.label_3->setMinimumSize(ui.label_3->sizeHint());
     ui.label_2->setMinimumSize(ui.label_2->sizeHint());

@@ -73,3 +73,9 @@ target_link_libraries(contactsconfig
     KF6::I18n
     KF6::KIOWidgets
 )
+if(HAVE_ACTIVITY_SUPPORT)
+    target_link_libraries(contactsconfig
+        KPim6::PimCommonActivities
+    )
+endif()
+
