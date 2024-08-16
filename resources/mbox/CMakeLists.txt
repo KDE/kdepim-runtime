@@ -97,3 +97,9 @@ target_link_libraries(mboxconfig
     KPim6::Mbox
     akonadi-singlefileresource
 )
+if(HAVE_ACTIVITY_SUPPORT)
+    target_link_libraries(mboxconfig
+        KPim6::PimCommonActivities
+    )
+endif()
+
