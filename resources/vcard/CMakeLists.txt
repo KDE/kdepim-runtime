@@ -54,3 +54,8 @@ target_link_libraries(vcardconfig
     KPim6::AkonadiCore
     akonadi-singlefileresource
 )
+if(HAVE_ACTIVITY_SUPPORT)
+     target_link_libraries(vcardconfig
+         KPim6::PimCommonActivities
+     )
+endif()
