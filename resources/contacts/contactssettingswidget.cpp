@@ -27,7 +27,6 @@ ContactsSettingsWidget::ContactsSettingsWidget(const KSharedConfigPtr &config, Q
 #if HAVE_ACTIVITY_SUPPORT
     , mConfigureActivitiesWidget(new PimCommonActivities::ConfigureActivitiesWidget(parent))
 #endif
-
 {
     ContactsResourceSettings::instance(config);
 

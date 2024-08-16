@@ -6,12 +6,17 @@
 */
 
 #pragma once
-
+#include "config-kdepim-runtime.h"
 #include "ui_icaldirsagentsettingswidget.h"
 #include <Akonadi/AgentConfigurationBase>
 
 class KConfigDialogManager;
-
+#if HAVE_ACTIVITY_SUPPORT
+namespace PimCommonActivities
+{
+class ConfigureActivitiesWidget;
+}
+#endif
 class IcalDirSettingsWidget : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
@@ -25,6 +30,9 @@ private:
     void validate();
     Ui::IcalDirsAgentSettingsWidget ui;
     KConfigDialogManager *mManager = nullptr;
+#if HAVE_ACTIVITY_SUPPORT
+    PimCommonActivities::ConfigureActivitiesWidget *const mConfigureActivitiesWidget;
+#endif
 };
 
 AKONADI_AGENTCONFIG_FACTORY(IcalDirSettingsWidgetFactory, "icaldirconfig.json", IcalDirSettingsWidget)

@@ -78,3 +78,8 @@ target_link_libraries(vcarddirconfig
     KF6::I18n
     KF6::KIOWidgets
     )
+if(HAVE_ACTIVITY_SUPPORT)
+     target_link_libraries(vcarddirconfig
+         KPim6::PimCommonActivities
+     )
+endif()

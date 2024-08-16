@@ -17,9 +17,15 @@
 
 #include <QPushButton>
 #include <QTimer>
+#if HAVE_ACTIVITY_SUPPORT
+#include <PimCommonActivities/ConfigureActivitiesWidget>
+#endif
 
 VcardDirSettingsWidget::VcardDirSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)
+#if HAVE_ACTIVITY_SUPPORT
+    , mConfigureActivitiesWidget(new PimCommonActivities::ConfigureActivitiesWidget(parent))
+#endif
 {
     VcardDirResourceSettings::instance(config);
 
@@ -38,6 +44,9 @@ VcardDirSettingsWidget::VcardDirSettingsWidget(const KSharedConfigPtr &config, Q
     KLocalization::setupSpinBoxFormatString(ui.kcfg_AutosaveInterval, ki18np("%v minute", "%v minutes"));
 #endif
     mManager = new KConfigDialogManager(mainWidget, VcardDirResourceSettings::self());
+#if HAVE_ACTIVITY_SUPPORT
+    ui.ktabwidget->addTab(mConfigureActivitiesWidget, i18n("Activities"));
+#endif
 }
 
 void VcardDirSettingsWidget::validate()

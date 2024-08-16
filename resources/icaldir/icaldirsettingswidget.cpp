@@ -18,9 +18,15 @@
 #include <QFontDatabase>
 #include <QPushButton>
 #include <QTimer>
+#if HAVE_ACTIVITY_SUPPORT
+#include <PimCommonActivities/ConfigureActivitiesWidget>
+#endif
 
 IcalDirSettingsWidget::IcalDirSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)
+#if HAVE_ACTIVITY_SUPPORT
+    , mConfigureActivitiesWidget(new PimCommonActivities::ConfigureActivitiesWidget(parent))
+#endif
 {
     IcalDirResourceSettings::instance(config);
 
@@ -42,6 +48,9 @@ IcalDirSettingsWidget::IcalDirSettingsWidget(const KSharedConfigPtr &config, QWi
     ui.readOnlyLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));
     ui.runingLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));
     ui.pathLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));
+#if HAVE_ACTIVITY_SUPPORT
+    ui.ktabwidget->addTab(mConfigureActivitiesWidget, i18n("Activities"));
+#endif
 }
 
 void IcalDirSettingsWidget::validate()
