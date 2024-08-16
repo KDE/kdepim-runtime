@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include "config-kdepim-runtime.h"
 #include <QWidget>
 
 #include "ui_settings.h"
@@ -15,6 +16,12 @@ namespace Akonadi_Maildir_Resource
 {
 class MaildirSettings;
 }
+#if HAVE_ACTIVITY_SUPPORT
+namespace PimCommonActivities
+{
+class ConfigureActivitiesWidget;
+}
+#endif
 class FolderArchiveSettingPage;
 class ConfigWidget : public QWidget
 {
@@ -37,5 +44,8 @@ private:
     KConfigDialogManager *mManager = nullptr;
     FolderArchiveSettingPage *mFolderArchiveSettingPage = nullptr;
     Akonadi_Maildir_Resource::MaildirSettings *mSettings = nullptr;
+#if HAVE_ACTIVITY_SUPPORT
+    PimCommonActivities::ConfigureActivitiesWidget *const mConfigureActivitiesWidget;
+#endif
     bool mToplevelIsContainer = false;
 };

@@ -78,3 +78,9 @@ target_link_libraries(akonotesconfig
     maildir
     folderarchivesettings
 )
+
+if(HAVE_ACTIVITY_SUPPORT)
+    target_link_libraries(akonotesconfig
+        KPim6::PimCommonActivities
+    )
+endif()

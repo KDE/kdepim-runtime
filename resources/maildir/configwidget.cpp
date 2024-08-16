@@ -13,13 +13,18 @@
 #include <KConfigDialogManager>
 #include <KLineEdit>
 #include <QVBoxLayout>
-
+#if HAVE_ACTIVITY_SUPPORT
+#include <PimCommonActivities/ConfigureActivitiesWidget>
+#endif
 using KPIM::Maildir;
 using namespace Akonadi_Maildir_Resource;
 
 ConfigWidget::ConfigWidget(MaildirSettings *settings, const QString &identifier, QWidget *parent)
     : QWidget(parent)
     , mSettings(settings)
+#if HAVE_ACTIVITY_SUPPORT
+    , mConfigureActivitiesWidget(new PimCommonActivities::ConfigureActivitiesWidget(parent))
+#endif
     , mToplevelIsContainer(false)
 {
     auto mainWidget = new QWidget(this);
@@ -29,6 +34,9 @@ ConfigWidget::ConfigWidget(MaildirSettings *settings, const QString &identifier,
     mFolderArchiveSettingPage = new FolderArchiveSettingPage(identifier, this);
     ui.tabWidget->addTab(mFolderArchiveSettingPage, i18n("Archive Folder"));
 
+#if HAVE_ACTIVITY_SUPPORT
+    ui.tabWidget->addTab(mConfigureActivitiesWidget, i18n("Activities"));
+#endif
     ui.kcfg_Path->setMode(KFile::Directory | KFile::ExistingOnly);
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(mSettings->path()));
 

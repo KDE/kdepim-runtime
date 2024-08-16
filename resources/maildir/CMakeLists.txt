@@ -85,3 +85,9 @@ target_link_libraries(maildirconfig
     folderarchivesettings
     maildir
 )
+
+if(HAVE_ACTIVITY_SUPPORT)
+    target_link_libraries(maildirconfig
+        KPim6::PimCommonActivities
+    )
+endif()
