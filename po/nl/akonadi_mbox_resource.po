@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2023-10-06 11:43+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -220,21 +220,26 @@ msgstr ""
 "het geval is dan zal hier en in de andere programma's dezelfde "
 "vergrendelingsmethode gebruikt moeten worden."
 
-#: mboxconfig.cpp:20
+#: mboxconfig.cpp:26
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "MBox-bestand"
 
-#: mboxconfig.cpp:21
+#: mboxconfig.cpp:27
 #, kde-format
 msgid "Compact frequency"
 msgstr "Frequentie van comprimeren"
 
-#: mboxconfig.cpp:22
+#: mboxconfig.cpp:28
 #, kde-format
 msgid "Lock method"
 msgstr "Vergrendelingsmethode"
+
+#: mboxconfig.cpp:30
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format

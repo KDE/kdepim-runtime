@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-16 00:40+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2012-07-07 22:46+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -727,9 +727,11 @@ msgid "%p%"
 msgstr ""
 
 #: setupserver.cpp:165
-#, kde-format
-msgid " minute"
-msgid_plural " minutes"
+#, fuzzy, kde-format
+#| msgid " minute"
+#| msgid_plural " minutes"
+msgid "%v minute"
+msgid_plural "%v minutes"
 msgstr[0] " minūte"
 msgstr[1] " minūtes"
 msgstr[2] " minūšu"

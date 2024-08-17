@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2024-07-11 08:12+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -18,20 +18,26 @@ msgstr ""
 "n % 10 == 0) ? 2 : 3));\n"
 "X-Generator: Lokalize 24.05.1\n"
 
+#. i18n: ectx: attribute (title), widget (QWidget, tab_3)
+#: contactsagentsettingswidget.ui:27
+#, kde-format
+msgid "Settings"
+msgstr ""
+
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
-#: contactsagentsettingswidget.ui:29
+#: contactsagentsettingswidget.ui:33
 #, kde-format
 msgid "Directory Name"
 msgstr "שם התיקייה"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: contactsagentsettingswidget.ui:37
+#: contactsagentsettingswidget.ui:41
 #, kde-format
 msgid "Di&rectory:"
 msgstr "&תיקייה:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: contactsagentsettingswidget.ui:52
+#: contactsagentsettingswidget.ui:56
 #, kde-format
 msgid ""
 "Select the directory whose contents should be represented by this resource. "
@@ -41,20 +47,20 @@ msgstr ""
 "היא תיווצר."
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: contactsagentsettingswidget.ui:65
+#: contactsagentsettingswidget.ui:69
 #, kde-format
 msgid "Access Rights"
 msgstr "הרשאות גישה"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
-#: contactsagentsettingswidget.ui:71
+#: contactsagentsettingswidget.ui:75
 #, kde-format
 msgctxt "if the access is limited to read-only"
 msgid "Read only"
 msgstr "לקריאה בלבד"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: contactsagentsettingswidget.ui:78
+#: contactsagentsettingswidget.ui:82
 #, kde-format
 msgid ""
 "If read-only mode is enabled, no changes will be written to the directory "
@@ -162,3 +168,8 @@ msgstr "נתיב לתיקיית קשר"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "לא לשנות את נתוני המנגנון בפועל."
+
+#: contactssettingswidget.cpp:39
+#, kde-format
+msgid "Activities"
+msgstr ""

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-02 00:55+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2021-10-29 16:53+0200\n"
 "Last-Translator: Antoni Bella Pérez <antonibella5@yahoo.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -22,33 +22,38 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
 
-#: configwidget.cpp:30
+#: configwidget.cpp:35
 #, kde-format
 msgid "Archive Folder"
 msgstr "Arxiva la carpeta"
 
-#: configwidget.cpp:45
+#: configwidget.cpp:38
+#, kde-format
+msgid "Activities"
+msgstr ""
+
+#: configwidget.cpp:53
 #, kde-format
 msgid "The selected path is empty."
 msgstr "El camí seleccionat està buit."
 
-#: configwidget.cpp:58
+#: configwidget.cpp:66
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
 msgstr "El camí seleccionat conté carpetes vàlides de directori de correu."
 
-#: configwidget.cpp:65
+#: configwidget.cpp:73
 #, kde-format
 msgid "The selected path is a valid Maildir."
 msgstr "El camí seleccionat és un directori de correu vàlid."
 
-#: configwidget.cpp:71
+#: configwidget.cpp:79
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
 msgstr ""
 "El camí seleccionat encara no existeix, es crearà un nou directori de correu."
 
-#: configwidget.cpp:75
+#: configwidget.cpp:83
 #, kde-format
 msgid "The selected path does not exist."
 msgstr "El camí seleccionat no existeix."

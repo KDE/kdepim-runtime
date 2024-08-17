@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2023-10-07 08:11+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -219,21 +219,26 @@ msgstr ""
 "ustawić odpowiednią metodę blokowania. Zauważ, że w tym przypadku, zasoby i "
 "inne programy muszą wszystkie używać tej samej metody blokowania."
 
-#: mboxconfig.cpp:20
+#: mboxconfig.cpp:26
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "Plik skrzynki pocztowej"
 
-#: mboxconfig.cpp:21
+#: mboxconfig.cpp:27
 #, kde-format
 msgid "Compact frequency"
 msgstr "Częstotliwość zmniejszania"
 
-#: mboxconfig.cpp:22
+#: mboxconfig.cpp:28
 #, kde-format
 msgid "Lock method"
 msgstr "Metoda blokowania"
+
+#: mboxconfig.cpp:30
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format

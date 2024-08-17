@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-02 00:55+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2016-11-14 21:20+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -19,32 +19,37 @@ msgstr ""
 "X-Generator: Lokalize 2.0\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: configwidget.cpp:30
+#: configwidget.cpp:35
 #, kde-format
 msgid "Archive Folder"
 msgstr "歸檔資料夾"
 
-#: configwidget.cpp:45
+#: configwidget.cpp:38
+#, kde-format
+msgid "Activities"
+msgstr ""
+
+#: configwidget.cpp:53
 #, kde-format
 msgid "The selected path is empty."
 msgstr "選取的路徑是空的。"
 
-#: configwidget.cpp:58
+#: configwidget.cpp:66
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
 msgstr "選取的路徑包含合法的 Maildir 資料夾。"
 
-#: configwidget.cpp:65
+#: configwidget.cpp:73
 #, kde-format
 msgid "The selected path is a valid Maildir."
 msgstr "選取的路徑是一個合法的 Maildir 資料夾。"
 
-#: configwidget.cpp:71
+#: configwidget.cpp:79
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
 msgstr "選取的路徑不存在，將建立一個新的 Maildir 資料夾。"
 
-#: configwidget.cpp:75
+#: configwidget.cpp:83
 #, kde-format
 msgid "The selected path does not exist."
 msgstr "選取的路徑不存在。"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2014-06-21 12:26+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -258,22 +258,27 @@ msgstr ""
 "elő, az erőforrásnak és más programoknak mind ugyanazt a zárolási módot kell "
 "használniuk."
 
-#: mboxconfig.cpp:20
+#: mboxconfig.cpp:26
 #, fuzzy, kde-format
 #| msgid "Select MBox file"
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "MBox fájl kiválasztása"
 
-#: mboxconfig.cpp:21
+#: mboxconfig.cpp:27
 #, kde-format
 msgid "Compact frequency"
 msgstr "Tömörítési gyakoriság"
 
-#: mboxconfig.cpp:22
+#: mboxconfig.cpp:28
 #, kde-format
 msgid "Lock method"
 msgstr "Zárolási mód"
+
+#: mboxconfig.cpp:30
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format

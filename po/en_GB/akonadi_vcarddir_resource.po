@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-15 00:40+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2019-03-24 20:04+0000\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English <kde-l10n-en_gb@kde.org>\n"
@@ -127,12 +127,19 @@ msgstr "Autosave interval time (in minutes)."
 msgid "Do not change the actual backend data."
 msgstr "Do not change the actual backend data."
 
-#: vcarddirsettingswidget.cpp:38
-#, kde-format
-msgid " minute"
-msgid_plural " minutes"
+#: vcarddirsettingswidget.cpp:44
+#, fuzzy, kde-format
+#| msgid " minute"
+#| msgid_plural " minutes"
+msgid "%v minute"
+msgid_plural "%v minutes"
 msgstr[0] " minute"
 msgstr[1] " minutes"
+
+#: vcarddirsettingswidget.cpp:48
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #~ msgid "Path:"
 #~ msgstr "Path:"

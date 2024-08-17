@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2019-07-17 16:21+0200\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -255,21 +255,26 @@ msgstr ""
 "súboru mbox, budete musieť nastaviť vhodnú metódu zamykania. Toto je prípad, "
 "keď zdroj a ostatné programy musia používať rovnakú metódu zamykania."
 
-#: mboxconfig.cpp:20
+#: mboxconfig.cpp:26
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "MBox súbor"
 
-#: mboxconfig.cpp:21
+#: mboxconfig.cpp:27
 #, kde-format
 msgid "Compact frequency"
 msgstr "Frekvencia komprimácie"
 
-#: mboxconfig.cpp:22
+#: mboxconfig.cpp:28
 #, kde-format
 msgid "Lock method"
 msgstr "Metóda zamknutia"
+
+#: mboxconfig.cpp:30
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format

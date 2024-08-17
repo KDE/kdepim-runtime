@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2020-03-22 13:24+0100\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -18,20 +18,26 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Lokalize 19.12.3\n"
 
+#. i18n: ectx: attribute (title), widget (QWidget, tab_3)
+#: contactsagentsettingswidget.ui:27
+#, kde-format
+msgid "Settings"
+msgstr ""
+
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
-#: contactsagentsettingswidget.ui:29
+#: contactsagentsettingswidget.ui:33
 #, kde-format
 msgid "Directory Name"
 msgstr "Název adresáře"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: contactsagentsettingswidget.ui:37
+#: contactsagentsettingswidget.ui:41
 #, kde-format
 msgid "Di&rectory:"
 msgstr "Ad&resář:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: contactsagentsettingswidget.ui:52
+#: contactsagentsettingswidget.ui:56
 #, kde-format
 msgid ""
 "Select the directory whose contents should be represented by this resource. "
@@ -41,20 +47,20 @@ msgstr ""
 "neexistuje, bude vytvořen."
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: contactsagentsettingswidget.ui:65
+#: contactsagentsettingswidget.ui:69
 #, kde-format
 msgid "Access Rights"
 msgstr "Přístupová práva"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
-#: contactsagentsettingswidget.ui:71
+#: contactsagentsettingswidget.ui:75
 #, kde-format
 msgctxt "if the access is limited to read-only"
 msgid "Read only"
 msgstr "Pouze ke čtení"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: contactsagentsettingswidget.ui:78
+#: contactsagentsettingswidget.ui:82
 #, kde-format
 msgid ""
 "If read-only mode is enabled, no changes will be written to the directory "
@@ -163,3 +169,8 @@ msgstr "Cesta k adresáři s kontakty"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Neměnit data aktuální podpůrné vrstvy."
+
+#: contactssettingswidget.cpp:39
+#, kde-format
+msgid "Activities"
+msgstr ""

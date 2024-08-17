@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2024-07-17 21:10+0200\n"
 "Last-Translator: rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -216,21 +216,26 @@ msgstr ""
 "tilfældet, skal ressourcen og de andre programmer alle sammen bruge den "
 "samme låsningsmetode."
 
-#: mboxconfig.cpp:20
+#: mboxconfig.cpp:26
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "MBox-fil"
 
-#: mboxconfig.cpp:21
+#: mboxconfig.cpp:27
 #, kde-format
 msgid "Compact frequency"
 msgstr "Komprimeringsfrekvens"
 
-#: mboxconfig.cpp:22
+#: mboxconfig.cpp:28
 #, kde-format
 msgid "Lock method"
 msgstr "Låsemetode"
+
+#: mboxconfig.cpp:30
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format

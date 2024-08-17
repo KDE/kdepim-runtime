@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-02 00:55+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2012-07-08 15:17+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -23,32 +23,37 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
-#: configwidget.cpp:30
+#: configwidget.cpp:35
 #, kde-format
 msgid "Archive Folder"
 msgstr ""
 
-#: configwidget.cpp:45
+#: configwidget.cpp:38
+#, kde-format
+msgid "Activities"
+msgstr ""
+
+#: configwidget.cpp:53
 #, kde-format
 msgid "The selected path is empty."
 msgstr "Izvēlētais ceļš ir tukšs."
 
-#: configwidget.cpp:58
+#: configwidget.cpp:66
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
 msgstr "Izvēlētais ceļš satur derīgas Maildir mapes."
 
-#: configwidget.cpp:65
+#: configwidget.cpp:73
 #, kde-format
 msgid "The selected path is a valid Maildir."
 msgstr "Izvēlētails ceļs ir derīgs Maildir."
 
-#: configwidget.cpp:71
+#: configwidget.cpp:79
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
 msgstr "Izvēlētais ceļš nepastāv. Tiks izveidota jauna Maildir mape."
 
-#: configwidget.cpp:75
+#: configwidget.cpp:83
 #, kde-format
 msgid "The selected path does not exist."
 msgstr "Izvēlētais ceļš nepastāv."

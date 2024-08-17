@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-15 00:40+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2021-07-08 08:40+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@neuf.fr>\n"
 "Language-Team: French <kde-francophone@kde.org>\n"
@@ -123,12 +123,19 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "Délai d'enregistrement automatique :"
 
-#: icaldirsettingswidget.cpp:39
-#, kde-format
-msgid " minute"
-msgid_plural " minutes"
+#: icaldirsettingswidget.cpp:45
+#, fuzzy, kde-format
+#| msgid " minute"
+#| msgid_plural " minutes"
+msgid "%v minute"
+msgid_plural "%v minutes"
 msgstr[0] " minute"
 msgstr[1] " minutes"
+
+#: icaldirsettingswidget.cpp:52
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #~ msgid "Directory Name"
 #~ msgstr "Nom du dossier"

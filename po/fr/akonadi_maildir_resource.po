@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-02 00:55+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2015-11-11 09:13+0100\n"
 "Last-Translator: Maxime Corteel <mcorteel@gmail.com>\n"
 "Language-Team: French <kde-francophone@kde.org>\n"
@@ -26,34 +26,39 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: configwidget.cpp:30
+#: configwidget.cpp:35
 #, kde-format
 msgid "Archive Folder"
 msgstr "Dossier d'archive"
 
-#: configwidget.cpp:45
+#: configwidget.cpp:38
+#, kde-format
+msgid "Activities"
+msgstr ""
+
+#: configwidget.cpp:53
 #, kde-format
 msgid "The selected path is empty."
 msgstr "L'emplacement sélectionné est vide."
 
-#: configwidget.cpp:58
+#: configwidget.cpp:66
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
 msgstr "L'emplacement sélectionné contient des dossiers valables « Maildir »."
 
-#: configwidget.cpp:65
+#: configwidget.cpp:73
 #, kde-format
 msgid "The selected path is a valid Maildir."
 msgstr "L'emplacement sélectionné est un dossier valable « Maildir »."
 
-#: configwidget.cpp:71
+#: configwidget.cpp:79
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
 msgstr ""
 "L'emplacement sélectionné n'existe pas encore, un nouveau dossier "
 "« Maildir » va être créé."
 
-#: configwidget.cpp:75
+#: configwidget.cpp:83
 #, kde-format
 msgid "The selected path does not exist."
 msgstr "L'emplacement sélectionné n'existe pas."

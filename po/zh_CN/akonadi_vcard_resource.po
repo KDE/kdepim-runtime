@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -18,11 +18,16 @@ msgstr ""
 "pot\n"
 "X-Crowdin-File-ID: 45297\n"
 
-#: vcardconfig.cpp:16
+#: vcardconfig.cpp:22
 #, kde-format
 msgctxt "Filedialog filter for *.vcf"
 msgid "vCard Address Book File"
 msgstr "vCard 地址簿文件"
+
+#: vcardconfig.cpp:24
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #: vcardresource.cpp:71
 #, kde-format

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2011-08-01 13:00+0200\n"
 "Last-Translator: Marko Dimjašević <marko@dimjasevic.net>\n"
 "Language-Team: Croatian <kde-croatia-list@lists.sourceforge.net>\n"
@@ -21,21 +21,27 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
+#. i18n: ectx: attribute (title), widget (QWidget, tab_3)
+#: contactsagentsettingswidget.ui:27
+#, kde-format
+msgid "Settings"
+msgstr ""
+
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
-#: contactsagentsettingswidget.ui:29
+#: contactsagentsettingswidget.ui:33
 #, kde-format
 msgid "Directory Name"
 msgstr "Ime direktorija"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: contactsagentsettingswidget.ui:37
+#: contactsagentsettingswidget.ui:41
 #, fuzzy, kde-format
 #| msgid "&Directory:"
 msgid "Di&rectory:"
 msgstr "&Direktorij:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: contactsagentsettingswidget.ui:52
+#: contactsagentsettingswidget.ui:56
 #, kde-format
 msgid ""
 "Select the directory whose contents should be represented by this resource. "
@@ -45,13 +51,13 @@ msgstr ""
 "Direktorij će biti stvoren ukoliko ne postoji."
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: contactsagentsettingswidget.ui:65
+#: contactsagentsettingswidget.ui:69
 #, kde-format
 msgid "Access Rights"
 msgstr "Prava pristupa"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
-#: contactsagentsettingswidget.ui:71
+#: contactsagentsettingswidget.ui:75
 #, fuzzy, kde-format
 #| msgid "Read only"
 msgctxt "if the access is limited to read-only"
@@ -59,7 +65,7 @@ msgid "Read only"
 msgstr "Samo za čitanje"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: contactsagentsettingswidget.ui:78
+#: contactsagentsettingswidget.ui:82
 #, kde-format
 msgid ""
 "If read-only mode is enabled, no changes will be written to the directory "
@@ -168,6 +174,11 @@ msgstr "Putanja do direktorija s kontaktima"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Ne mijenjaj postojeće podatke pozadinskog servisa."
+
+#: contactssettingswidget.cpp:39
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #~ msgid "Filename:"
 #~ msgstr "Naziv datoteke:"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bosnianuniversetranslation\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-15 00:40+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2014-02-09 17:00+0100\n"
 "Last-Translator: Samir Ribić <megaribi@epn.ba>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -214,9 +214,11 @@ msgid "Unknown collection mimetype"
 msgstr "Nepoznat mime tip kolekcije"
 
 #: googlesettingswidget.cpp:43
-#, kde-format
-msgid " minute"
-msgid_plural " minutes"
+#, fuzzy, kde-format
+#| msgid " minute"
+#| msgid_plural " minutes"
+msgid "%v minute"
+msgid_plural "%v minutes"
 msgstr[0] " minut"
 msgstr[1] "minute"
 msgstr[2] "minuta"

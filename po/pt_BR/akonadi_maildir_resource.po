@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-02 00:55+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2015-09-03 07:39-0300\n"
 "Last-Translator: André Marcelo Alvarenga <alvarenga@kde.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_br@kde.org>\n"
@@ -19,32 +19,37 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: configwidget.cpp:30
+#: configwidget.cpp:35
 #, kde-format
 msgid "Archive Folder"
 msgstr "Arquivar pasta"
 
-#: configwidget.cpp:45
+#: configwidget.cpp:38
+#, kde-format
+msgid "Activities"
+msgstr ""
+
+#: configwidget.cpp:53
 #, kde-format
 msgid "The selected path is empty."
 msgstr "O caminho selecionado está vazio."
 
-#: configwidget.cpp:58
+#: configwidget.cpp:66
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
 msgstr "O caminho selecionado contém pastas Maildir válidas."
 
-#: configwidget.cpp:65
+#: configwidget.cpp:73
 #, kde-format
 msgid "The selected path is a valid Maildir."
 msgstr "O caminho selecionado é uma Maildir válida."
 
-#: configwidget.cpp:71
+#: configwidget.cpp:79
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
 msgstr "O caminho selecionado ainda não existe. Uma nova Maildir será criada."
 
-#: configwidget.cpp:75
+#: configwidget.cpp:83
 #, kde-format
 msgid "The selected path does not exist."
 msgstr "O caminho selecionado não existe."

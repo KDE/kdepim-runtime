@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcarddir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-15 00:40+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2018-12-06 06:42+0100\n"
 "Last-Translator: Burkhard Lück <lueck@hube-lueck.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -126,12 +126,19 @@ msgstr "Intervall für automatisches Speichern (in Minuten)."
 msgid "Do not change the actual backend data."
 msgstr "Die eigentlichen Daten des Backends nicht ändern."
 
-#: vcarddirsettingswidget.cpp:38
-#, kde-format
-msgid " minute"
-msgid_plural " minutes"
+#: vcarddirsettingswidget.cpp:44
+#, fuzzy, kde-format
+#| msgid " minute"
+#| msgid_plural " minutes"
+msgid "%v minute"
+msgid_plural "%v minutes"
 msgstr[0] " Minute"
 msgstr[1] " Minuten"
+
+#: vcarddirsettingswidget.cpp:48
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #~ msgid "Path:"
 #~ msgstr "Pfad:"

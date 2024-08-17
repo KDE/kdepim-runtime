@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-15 00:40+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -123,8 +123,15 @@ msgstr "自动保存间隔时间(分钟)。"
 msgid "Do not change the actual backend data."
 msgstr "不更改真实的后端数据。"
 
-#: vcarddirsettingswidget.cpp:38
-#, kde-format
-msgid " minute"
-msgid_plural " minutes"
+#: vcarddirsettingswidget.cpp:44
+#, fuzzy, kde-format
+#| msgid " minute"
+#| msgid_plural " minutes"
+msgid "%v minute"
+msgid_plural "%v minutes"
 msgstr[0] " 分钟"
+
+#: vcarddirsettingswidget.cpp:48
+#, kde-format
+msgid "Activities"
+msgstr ""

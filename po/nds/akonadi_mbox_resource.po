@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2014-04-02 22:38+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -258,22 +258,27 @@ msgstr ""
 "schullst Du en passen Metood för't Afsluten fastleggen. Beacht, dat denn all "
 "op de Datei togriepen Programmen de sülve Metood bruken mööt."
 
-#: mboxconfig.cpp:20
+#: mboxconfig.cpp:26
 #, fuzzy, kde-format
 #| msgid "Select MBox file"
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "MBox-Datei utsöken"
 
-#: mboxconfig.cpp:21
+#: mboxconfig.cpp:27
 #, kde-format
 msgid "Compact frequency"
 msgstr "Komprimeren-Opfrischtiet"
 
-#: mboxconfig.cpp:22
+#: mboxconfig.cpp:28
 #, kde-format
 msgid "Lock method"
 msgstr "Afsluutmetood"
+
+#: mboxconfig.cpp:30
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format

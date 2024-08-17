@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-16 00:40+0000\n"
-"PO-Revision-Date: 2024-08-02 12:48+0200\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"PO-Revision-Date: 2024-08-16 16:41+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
@@ -713,9 +713,11 @@ msgid "%p%"
 msgstr "%p%"
 
 #: setupserver.cpp:165
-#, kde-format
-msgid " minute"
-msgid_plural " minutes"
+#, fuzzy, kde-format
+#| msgid " minute"
+#| msgid_plural " minutes"
+msgid "%v minute"
+msgid_plural "%v minutes"
 msgstr[0] " minut"
 msgstr[1] " minuts"
 
@@ -727,7 +729,7 @@ msgstr "Identitat:"
 #: setupserver.cpp:201
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Activitats"
 
 #: setupserver.cpp:268
 #, kde-format

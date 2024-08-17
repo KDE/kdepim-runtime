@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcarddir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-15 00:40+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2009-04-06 08:33-0500\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -119,12 +119,19 @@ msgstr ""
 msgid "Do not change the actual backend data."
 msgstr "Ná hathraigh na sonraí féin."
 
-#: vcarddirsettingswidget.cpp:38
-#, kde-format
-msgid " minute"
-msgid_plural " minutes"
+#: vcarddirsettingswidget.cpp:44
+#, fuzzy, kde-format
+#| msgid " minute"
+#| msgid_plural " minutes"
+msgid "%v minute"
+msgid_plural "%v minutes"
 msgstr[0] " nóiméad"
 msgstr[1] " nóiméad"
 msgstr[2] " nóiméad"
 msgstr[3] " nóiméad"
 msgstr[4] " nóiméad"
+
+#: vcarddirsettingswidget.cpp:48
+#, kde-format
+msgid "Activities"
+msgstr ""

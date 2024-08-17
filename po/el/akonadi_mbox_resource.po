@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-02-29 00:38+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2014-11-13 20:01+0200\n"
 "Last-Translator: Dimitris Kardarakos <dimkard@gmail.com>\n"
 "Language-Team: American English <kde-i18n-el@kde.org>\n"
@@ -261,22 +261,27 @@ msgstr ""
 "μέθοδο κλειδώματος. Σημειώστε ότι σε αυτήν την περίπτωση ο πόρος και τα άλλα "
 "προγράμματα θα πρέπει να χρησιμοποιούν την ίδια μέθοδο κλειδώματος."
 
-#: mboxconfig.cpp:20
+#: mboxconfig.cpp:26
 #, fuzzy, kde-format
 #| msgid "Select MBox file"
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "Επιλέξτε αρχείο mbox"
 
-#: mboxconfig.cpp:21
+#: mboxconfig.cpp:27
 #, kde-format
 msgid "Compact frequency"
 msgstr "Συχνότητα εξάλειψης"
 
-#: mboxconfig.cpp:22
+#: mboxconfig.cpp:28
 #, kde-format
 msgid "Lock method"
 msgstr "Μέθοδος κλειδώματος"
+
+#: mboxconfig.cpp:30
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-15 00:40+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2023-12-13 05:17+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -112,11 +112,18 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "自動儲存延遲："
 
-#: icaldirsettingswidget.cpp:39
-#, kde-format
-msgid " minute"
-msgid_plural " minutes"
+#: icaldirsettingswidget.cpp:45
+#, fuzzy, kde-format
+#| msgid " minute"
+#| msgid_plural " minutes"
+msgid "%v minute"
+msgid_plural "%v minutes"
 msgstr[0] " 分鐘"
+
+#: icaldirsettingswidget.cpp:52
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #~ msgid "Directory Name"
 #~ msgstr "目錄名稱"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-15 00:40+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2013-03-20 14:33+0530\n"
 "Last-Translator: Chetan Khona <chetan@kompkin.com>\n"
 "Language-Team: Marathi <kde-i18n-doc@kde.org>\n"
@@ -107,12 +107,17 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr ""
 
-#: icaldirsettingswidget.cpp:39
+#: icaldirsettingswidget.cpp:45
 #, kde-format
-msgid " minute"
-msgid_plural " minutes"
+msgid "%v minute"
+msgid_plural "%v minutes"
 msgstr[0] ""
 msgstr[1] ""
+
+#: icaldirsettingswidget.cpp:52
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #~ msgid "Directory Name"
 #~ msgstr "संचयीका नाव"

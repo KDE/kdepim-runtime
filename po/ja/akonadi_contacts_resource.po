@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_contacts_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2010-05-31 14:59-0700\n"
 "Last-Translator: Fumiaki Okushi <okushi@kde.gr.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -17,21 +17,27 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
+#. i18n: ectx: attribute (title), widget (QWidget, tab_3)
+#: contactsagentsettingswidget.ui:27
+#, kde-format
+msgid "Settings"
+msgstr ""
+
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
-#: contactsagentsettingswidget.ui:29
+#: contactsagentsettingswidget.ui:33
 #, kde-format
 msgid "Directory Name"
 msgstr "フォルダ名"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: contactsagentsettingswidget.ui:37
+#: contactsagentsettingswidget.ui:41
 #, fuzzy, kde-format
 #| msgid "&Directory:"
 msgid "Di&rectory:"
 msgstr "フォルダ(&D):"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: contactsagentsettingswidget.ui:52
+#: contactsagentsettingswidget.ui:56
 #, kde-format
 msgid ""
 "Select the directory whose contents should be represented by this resource. "
@@ -41,13 +47,13 @@ msgstr ""
 "れば作成されます。"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: contactsagentsettingswidget.ui:65
+#: contactsagentsettingswidget.ui:69
 #, kde-format
 msgid "Access Rights"
 msgstr "アクセス許可"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
-#: contactsagentsettingswidget.ui:71
+#: contactsagentsettingswidget.ui:75
 #, fuzzy, kde-format
 #| msgid "Read only"
 msgctxt "if the access is limited to read-only"
@@ -55,7 +61,7 @@ msgid "Read only"
 msgstr "読み取り専用"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: contactsagentsettingswidget.ui:78
+#: contactsagentsettingswidget.ui:82
 #, kde-format
 msgid ""
 "If read-only mode is enabled, no changes will be written to the directory "
@@ -165,3 +171,8 @@ msgstr "連絡先フォルダへのパス"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "実際のバックエンドのデータは変更しない。"
+
+#: contactssettingswidget.cpp:39
+#, kde-format
+msgid "Activities"
+msgstr ""

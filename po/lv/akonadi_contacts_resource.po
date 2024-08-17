@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-09-21 00:45+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2011-07-13 01:37+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -19,21 +19,27 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
+#. i18n: ectx: attribute (title), widget (QWidget, tab_3)
+#: contactsagentsettingswidget.ui:27
+#, kde-format
+msgid "Settings"
+msgstr ""
+
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
-#: contactsagentsettingswidget.ui:29
+#: contactsagentsettingswidget.ui:33
 #, kde-format
 msgid "Directory Name"
 msgstr "Mapes nosaukums"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: contactsagentsettingswidget.ui:37
+#: contactsagentsettingswidget.ui:41
 #, fuzzy, kde-format
 #| msgid "&Directory:"
 msgid "Di&rectory:"
 msgstr "&Mape:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: contactsagentsettingswidget.ui:52
+#: contactsagentsettingswidget.ui:56
 #, kde-format
 msgid ""
 "Select the directory whose contents should be represented by this resource. "
@@ -42,13 +48,13 @@ msgstr ""
 "Norādiet resursa attēlojamo mapi. Ja šāda mape nepastāv, tā tiks izveidota."
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: contactsagentsettingswidget.ui:65
+#: contactsagentsettingswidget.ui:69
 #, kde-format
 msgid "Access Rights"
 msgstr "Pieejas atļaujas"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
-#: contactsagentsettingswidget.ui:71
+#: contactsagentsettingswidget.ui:75
 #, fuzzy, kde-format
 #| msgid "Read only"
 msgctxt "if the access is limited to read-only"
@@ -56,7 +62,7 @@ msgid "Read only"
 msgstr "Tikai lasāms"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: contactsagentsettingswidget.ui:78
+#: contactsagentsettingswidget.ui:82
 #, kde-format
 msgid ""
 "If read-only mode is enabled, no changes will be written to the directory "
@@ -165,6 +171,11 @@ msgstr "Ceļš uz kontaktu mapi"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Nemainīt īstos aizmugures datus."
+
+#: contactssettingswidget.cpp:39
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #~ msgid "Filename:"
 #~ msgstr "Faila nosaukums:"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-15 00:40+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2024-02-05 22:35+0100\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -117,12 +117,19 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "Az automatikus mentés késleltetése:"
 
-#: icaldirsettingswidget.cpp:39
-#, kde-format
-msgid " minute"
-msgid_plural " minutes"
+#: icaldirsettingswidget.cpp:45
+#, fuzzy, kde-format
+#| msgid " minute"
+#| msgid_plural " minutes"
+msgid "%v minute"
+msgid_plural "%v minutes"
 msgstr[0] " perc"
 msgstr[1] " perc"
+
+#: icaldirsettingswidget.cpp:52
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #~ msgid "Directory Name"
 #~ msgstr "Könyvtár név"

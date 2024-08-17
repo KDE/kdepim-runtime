@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-15 00:40+0000\n"
+"POT-Creation-Date: 2024-08-17 00:39+0000\n"
 "PO-Revision-Date: 2009-08-04 10:32+0300\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -128,11 +128,16 @@ msgstr "Interval de salvare automată (în minute)."
 msgid "Do not change the actual backend data."
 msgstr "Nu modifica datele reale ale platformei."
 
-#: vcarddirsettingswidget.cpp:38
+#: vcarddirsettingswidget.cpp:44
 #, fuzzy, kde-format
 #| msgid "min"
-msgid " minute"
-msgid_plural " minutes"
+msgid "%v minute"
+msgid_plural "%v minutes"
 msgstr[0] "min"
 msgstr[1] "min"
 msgstr[2] "min"
+
+#: vcarddirsettingswidget.cpp:48
+#, kde-format
+msgid "Activities"
+msgstr ""
