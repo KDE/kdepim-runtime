@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-23 00:39+0000\n"
-"PO-Revision-Date: 2024-06-19 11:39+0300\n"
+"PO-Revision-Date: 2024-08-16 12:04+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.07.70\n"
+"X-Generator: Lokalize 24.11.70\n"
 "X-POOTLE-MTIME: 1413102275.000000\n"
 
 #: addcollectiontask.cpp:33
@@ -96,7 +96,7 @@ msgstr "IMAP Hesabı"
 #, kde-format
 msgctxt "@title:window"
 msgid "IMAP Account Settings"
-msgstr "IMAP Hesap Ayarları"
+msgstr "IMAP Hesabı Ayarları"
 
 #. i18n: ectx: label, entry (ImapServer), group (network)
 #: imapresource.kcfg:10
