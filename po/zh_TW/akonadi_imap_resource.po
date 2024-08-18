@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-08-03 14:41+0900\n"
+"PO-Revision-Date: 2024-08-18 00:47+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -674,12 +674,10 @@ msgid "%p%"
 msgstr "%p%"
 
 #: setupserver.cpp:165
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " 分鐘"
+msgstr[0] "%v 分鐘"
 
 #: setupserver.cpp:181
 #, kde-format
@@ -689,7 +687,7 @@ msgstr "身份："
 #: setupserver.cpp:201
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "活動"
 
 #: setupserver.cpp:268
 #, kde-format

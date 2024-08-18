@@ -1,16 +1,16 @@
 # Translation for akonadi_vcardir_resource.po to Euskara/Basque (eu).
-# Copyright (C) 2022 This file is copyright:
+# Copyright (C) 2022-2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
-# KDE euskaratzeko proiektuko arduraduna <xalba@ni.eus>.
+# SPDX-FileCopyrightText: 2024 KDE euskaratzeko proiektuko arduraduna <xalba@ni.eus>
 #
 # Translators:
-# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022.
+# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2022-08-27 18:06+0200\n"
+"PO-Revision-Date: 2024-08-17 10:23+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 22.04.3\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: vcarddiragentsettingswidget.ui:33
@@ -131,18 +131,16 @@ msgid "Do not change the actual backend data."
 msgstr "Ez aldatu uneko bizkarraldekoaren datuak."
 
 #: vcarddirsettingswidget.cpp:44
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minutu"
-msgstr[1] " minutu"
+msgstr[0] "minutu %v"
+msgstr[1] "%v minutu"
 
 #: vcarddirsettingswidget.cpp:48
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Jarduerak"
 
 #~ msgid "Path:"
 #~ msgstr "Bide-izena:"

@@ -3,22 +3,22 @@
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# Josep M. Ferrer <txemaq@gmail.com>, 2020, 2022, 2023, 2024.
+# SPDX-FileCopyrightText: 2020, 2022, 2023, 2024 Josep M. Ferrer <txemaq@gmail.com>
 # SPDX-FileCopyrightText: 2020, 2021, 2024 Antoni Bella Pérez <antonibella5@yahoo.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-07-11 19:28+0200\n"
-"Last-Translator: Antoni Bella Pérez <antonibella5@yahoo.com>\n"
+"PO-Revision-Date: 2024-08-17 11:18+0200\n"
+"Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: calendarhandler.cpp:91
 #, kde-format
@@ -205,13 +205,11 @@ msgid "Unknown collection mimetype"
 msgstr "Tipus MIME de la col·lecció desconegut"
 
 #: googlesettingswidget.cpp:43
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minut"
-msgstr[1] " minuts"
+msgstr[0] "%v minut"
+msgstr[1] "%v minuts"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:106 googlesettingswidget.ui:30

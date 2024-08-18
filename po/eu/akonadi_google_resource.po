@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-07-19 09:27+0200\n"
+"PO-Revision-Date: 2024-08-17 10:08+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -201,13 +201,11 @@ msgid "Unknown collection mimetype"
 msgstr "Bildumaren MIME-mota ezezaguna"
 
 #: googlesettingswidget.cpp:43
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minutu"
-msgstr[1] " minutu"
+msgstr[0] "minutu %v"
+msgstr[1] "%v minutu"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:106 googlesettingswidget.ui:30

@@ -3,13 +3,13 @@
 #
 # Franklin Weng <franklin@goodhorse.idv.tw>, 2015.
 # Jeff Huang <s8321414@gmail.com>, 2016.
-# SPDX-FileCopyrightText: 2023 Kisaragi Hiu <mail@kisaragi-hiu.com>
+# SPDX-FileCopyrightText: 2023, 2024 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2023-12-13 05:17+0900\n"
+"PO-Revision-Date: 2024-08-18 00:47+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 23.08.4\n"
+"X-Generator: Lokalize 24.04.70\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -113,17 +113,15 @@ msgid "Autosave delay:"
 msgstr "自動儲存延遲："
 
 #: icaldirsettingswidget.cpp:45
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " 分鐘"
+msgstr[0] "%v 分鐘"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "活動"
 
 #~ msgid "Directory Name"
 #~ msgstr "目錄名稱"

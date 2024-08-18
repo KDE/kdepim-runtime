@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-07-10 06:39+0200\n"
+"PO-Revision-Date: 2024-08-17 07:37+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -207,15 +207,13 @@ msgid "Unknown collection mimetype"
 msgstr "Neznana vrsta MIME zbirke"
 
 #: googlesettingswidget.cpp:43
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minut"
-msgstr[1] " minuta"
-msgstr[2] " minuti"
-msgstr[3] " minute"
+msgstr[0] "%v minut"
+msgstr[1] "%v minuta"
+msgstr[2] "%v minuti"
+msgstr[3] "%v minute"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:106 googlesettingswidget.ui:30

@@ -124,12 +124,10 @@ msgid "Do not change the actual backend data."
 msgstr "不更改真实的后端数据。"
 
 #: vcarddirsettingswidget.cpp:44
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " 分钟"
+msgstr[0] ""
 
 #: vcarddirsettingswidget.cpp:48
 #, kde-format

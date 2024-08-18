@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-07-14 17:19+0900\n"
+"PO-Revision-Date: 2024-08-18 00:47+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -196,12 +196,10 @@ msgid "Unknown collection mimetype"
 msgstr "未知的收藏 MIME 型態"
 
 #: googlesettingswidget.cpp:43
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " 分鐘"
+msgstr[0] "%v 分鐘"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:106 googlesettingswidget.ui:30

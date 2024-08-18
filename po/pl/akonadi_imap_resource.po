@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-08-03 11:43+0200\n"
+"PO-Revision-Date: 2024-08-17 09:38+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "Language: pl\n"
@@ -717,7 +717,7 @@ msgstr "Tożsamość:"
 #: setupserver.cpp:201
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktywności"
 
 #: setupserver.cpp:268
 #, kde-format

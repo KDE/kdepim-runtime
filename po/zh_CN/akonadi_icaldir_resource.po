@@ -112,12 +112,10 @@ msgid "Autosave delay:"
 msgstr "自动保存延迟："
 
 #: icaldirsettingswidget.cpp:45
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " 分钟"
+msgstr[0] ""
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

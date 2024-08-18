@@ -663,12 +663,10 @@ msgid "%p%"
 msgstr ""
 
 #: setupserver.cpp:165
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " 分钟"
+msgstr[0] ""
 
 #: setupserver.cpp:181
 #, kde-format

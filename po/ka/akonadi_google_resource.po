@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-07-10 05:46+0200\n"
+"PO-Revision-Date: 2024-08-17 04:23+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -199,13 +199,11 @@ msgid "Unknown collection mimetype"
 msgstr "კოლექციის უცნობი mimetype"
 
 #: googlesettingswidget.cpp:43
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " წუთი"
-msgstr[1] " წუთი"
+msgstr[0] "%v წუთი"
+msgstr[1] "%v წუთი"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:106 googlesettingswidget.ui:30

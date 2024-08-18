@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-08-16 09:31+0200\n"
+"PO-Revision-Date: 2024-08-17 08:28+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
@@ -692,13 +692,11 @@ msgid "%p%"
 msgstr "%p %"
 
 #: setupserver.cpp:165
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minut"
-msgstr[1] " minuter"
+msgstr[0] "%v minut"
+msgstr[1] "%v minuter"
 
 #: setupserver.cpp:181
 #, kde-format

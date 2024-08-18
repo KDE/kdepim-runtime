@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-07-05 02:11+0200\n"
+"PO-Revision-Date: 2024-08-18 00:57+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.05.1\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: accountwidget.cpp:84
 #, kde-format
@@ -27,13 +27,11 @@ msgid "%p%"
 msgstr "%p %"
 
 #: accountwidget.cpp:93
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minuto"
-msgstr[1] " minutos"
+msgstr[0] "%v minuto"
+msgstr[1] "%v minutos"
 
 #: accountwidget.cpp:131 pop3resource.cpp:46
 #, kde-format
