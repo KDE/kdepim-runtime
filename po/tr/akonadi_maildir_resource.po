@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-02-09 17:46+0300\n"
+"PO-Revision-Date: 2024-08-18 20:24+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.01.95\n"
+"X-Generator: Lokalize 24.11.70\n"
 "X-POOTLE-MTIME: 1413102275.000000\n"
 
 #: configwidget.cpp:35
@@ -31,7 +31,7 @@ msgstr "Arşiv Klasörü"
 #: configwidget.cpp:38
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Etkinlikler"
 
 #: configwidget.cpp:53
 #, kde-format
@@ -110,7 +110,7 @@ msgstr "Kullanılamaz yapılandırma."
 #: maildirresource.cpp:187
 #, kde-format
 msgid "Unable to fetch item: The maildir folder \"%1\" is not valid."
-msgstr "Öge getirilemedi: Maildir klasörü \"%1\" geçerli değil."
+msgstr "Öge getirilemedi: Maildir klasörü “%1” geçerli değil."
 
 #: maildirresource.cpp:265
 #, kde-format
@@ -130,17 +130,17 @@ msgstr "Maildir kaynağı e-posta olmayan bir içeriğe sahip."
 #: maildirresource.cpp:393
 #, kde-format
 msgid "Source folder is invalid: '%1'."
-msgstr "Kaynak klasör geçersiz: '%1'."
+msgstr "Kaynak klasör geçersiz: “%1”."
 
 #: maildirresource.cpp:399
 #, kde-format
 msgid "Destination folder is invalid: '%1'."
-msgstr "Hedef klasör geçersiz: '%1'."
+msgstr "Hedef klasör geçersiz: “%1”."
 
 #: maildirresource.cpp:416
 #, kde-format
 msgid "Could not move message '%1' from '%2' to '%3'. The error was %4."
-msgstr "'%1' iletisi '%2' konumundan '%3' konumuna taşınamadı. Hata %4."
+msgstr "“%1” iletisi “%2” konumundan “%3” konumuna taşınamadı. Hata %4."
 
 #: maildirresource.cpp:438
 #, kde-format
@@ -150,37 +150,37 @@ msgstr "İleti silinemedi: %1"
 #: maildirresource.cpp:527
 #, kde-format
 msgid "Maildir '%1' for collection '%2' is invalid."
-msgstr "'%2' koleksiyonu için '%1' Maildir geçersiz."
+msgstr "“%2” koleksiyonu için “%1” Maildir geçersiz."
 
 #: maildirresource.cpp:606
 #, kde-format
 msgid "Unable to rename maildir folder '%1'."
-msgstr "'%1' maildir klasörü yeniden adlandırılamıyor."
+msgstr "“%1” maildir klasörü yeniden adlandırılamıyor."
 
 #: maildirresource.cpp:627
 #, kde-format
 msgid "Cannot move root maildir folder '%1'."
-msgstr "'%1' kök maildir klasörü taşınamıyor."
+msgstr "“%1” kök maildir klasörü taşınamıyor."
 
 #: maildirresource.cpp:642
 #, kde-format
 msgid "Unable to move maildir folder '%1' from '%2' to '%3'."
-msgstr "'%1' maildir klasörü '%2' konumundan '%3' konumuna taşınamıyor."
+msgstr "“%1” maildir klasörü “%2” konumundan “%3” konumuna taşınamıyor."
 
 #: maildirresource.cpp:660
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
-msgstr "En üst düzey maildir klasörü '%1' silinemiyor."
+msgstr "En üst düzey maildir klasörü “%1” silinemiyor."
 
 #: maildirresource.cpp:669
 #, kde-format
 msgid "Failed to delete sub-folder '%1'."
-msgstr "'%1' alt klasörü silinemedi."
+msgstr "“%1” alt klasörü silinemedi."
 
 #: maildirresource.cpp:683
 #, kde-format
 msgid "Unable to create maildir '%1'."
-msgstr "'%1' maildir oluşturulamıyor."
+msgstr "“%1” maildir oluşturulamıyor."
 
 #: maildirresource.cpp:693
 #, kde-format

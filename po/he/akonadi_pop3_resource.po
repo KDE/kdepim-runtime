@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-08-12 09:36+0300\n"
+"PO-Revision-Date: 2024-08-18 08:28+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -25,15 +25,13 @@ msgid "%p%"
 msgstr "%p%"
 
 #: accountwidget.cpp:93
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " דקה"
-msgstr[1] " דקות"
-msgstr[2] " דקות"
-msgstr[3] " דקות"
+msgstr[0] "דקה"
+msgstr[1] "שתי דקות"
+msgstr[2] "%v דקות"
+msgstr[3] "%v דקות"
 
 #: accountwidget.cpp:131 pop3resource.cpp:46
 #, kde-format

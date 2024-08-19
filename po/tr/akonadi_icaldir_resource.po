@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
+# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2023-11-11 23:31+0300\n"
+"PO-Revision-Date: 2024-08-18 20:26+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -15,18 +15,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.11.70\n"
+"X-Generator: Lokalize 24.11.70\n"
 "X-POOTLE-MTIME: 1502203052.000000\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
 msgid "Incidence with uid '%1' not found."
-msgstr "'%1' kullanıcı kimliğine sahip olay bulunamadı."
+msgstr "“%1” kullanıcı kimliğine sahip olay bulunamadı."
 
 #: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
-msgstr "Saltokunur bir dizine yazılmaya çalışılıyor: '%1'"
+msgstr "Saltokunur bir dizine yazılmaya çalışılıyor: “%1”"
 
 #: icaldirresource.cpp:250
 #, kde-format
@@ -115,18 +115,16 @@ msgid "Autosave delay:"
 msgstr "Kendiliğinden kaydetme gecikmesi:"
 
 #: icaldirsettingswidget.cpp:45
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " dakika"
-msgstr[1] " dakika"
+msgstr[0] "%v dakika"
+msgstr[1] "%v dakika"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Etkinlikler"
 
 #~ msgid "Directory Name"
 #~ msgstr "Dizin Adı"

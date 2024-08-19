@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-07-27 16:22+0300\n"
+"PO-Revision-Date: 2024-08-18 08:28+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -26,7 +26,7 @@ msgstr "העברת תיקייה לארכיון"
 #: configwidget.cpp:38
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "פעילויות"
 
 #: configwidget.cpp:53
 #, kde-format
