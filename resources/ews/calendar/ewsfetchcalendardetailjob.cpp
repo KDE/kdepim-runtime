@@ -176,6 +176,10 @@ void EwsFetchCalendarDetailJob::exceptionItemsFetched(KJob *job)
         QString mimeContent = ewsItem[EwsItemFieldMimeContent].toString();
         KCalendarCore::Calendar::Ptr memcal(new KCalendarCore::MemoryCalendar(QTimeZone::utc()));
         format.fromString(memcal, mimeContent);
+        if (memcal->events().count() == 0) {
+            qCWarningNC(EWSRES_LOG) << QStringLiteral("Empty calendar or failed to parse it.");
+            continue;
+        }
         KCalendarCore::Incidence::Ptr incidence(memcal->events().last());
         incidence->clearRecurrence();
 
