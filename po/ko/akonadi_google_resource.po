@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-02-10 00:32+0100\n"
+"PO-Revision-Date: 2024-08-19 22:47+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 23.08.1\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: calendarhandler.cpp:91
 #, kde-format
@@ -58,18 +58,15 @@ msgstr[0] ""
 "로 일정 %1개 이동 중"
 
 #: calendarhandler.cpp:341
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Changing contact"
+#, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr "연락처 변경 중"
+msgstr "이벤트 태그 변경 중"
 
 #: calendarhandler.cpp:345
-#, fuzzy, kde-format
-#| msgid "Failed to create a new event: %1"
+#, kde-format
 msgid "Failed to change tags on events"
-msgstr "새 행사를 만들 수 없음: %1"
+msgstr "이벤트 태그를 변경할 수 없음"
 
 #: calendarhandler.cpp:357
 #, kde-format
@@ -100,10 +97,9 @@ msgid "Cannot handle item unlinking"
 msgstr "항목 연결 해제를 처리할 수 없음"
 
 #: generichandler.cpp:34
-#, fuzzy, kde-format
-#| msgid "Cannot handle item linking"
+#, kde-format
 msgid "Cannot handle item tag changes"
-msgstr "항목 연결을 처리할 수 없음"
+msgstr "항목 태그 변경을 처리할 수 없음"
 
 #: generichandler.cpp:61
 #, kde-format
@@ -117,10 +113,9 @@ msgid "Invalid item."
 msgstr "항목이 잘못되었습니다."
 
 #: googleresource.cpp:86
-#, fuzzy, kde-format
-#| msgid "Fetching password..."
+#, kde-format
 msgid "Fetching password…"
-msgstr "암호 가져오는 중..."
+msgstr "암호 가져오는 중…"
 
 #: googleresource.cpp:93
 #, kde-format
@@ -224,10 +219,9 @@ msgstr "계정:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, fuzzy, kde-format
-#| msgid "Configure..."
+#, kde-format
 msgid "Configure…"
-msgstr "설정..."
+msgstr "설정…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49

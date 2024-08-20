@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_vcarddir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2023-05-29 08:53+0100\n"
+"PO-Revision-Date: 2024-08-19 21:47+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -129,18 +129,13 @@ msgid "Do not change the actual backend data."
 msgstr "Ne ŝanĝi la faktajn interndatumojn."
 
 #: vcarddirsettingswidget.cpp:44
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minuto"
-msgstr[1] " minutoj"
+msgstr[0] "%v minuto"
+msgstr[1] "%v minutoj"
 
 #: vcarddirsettingswidget.cpp:48
 #, kde-format
 msgid "Activities"
-msgstr ""
-
-#~ msgid "Path:"
-#~ msgstr "Vojo:"
+msgstr "Aktivecoj"
