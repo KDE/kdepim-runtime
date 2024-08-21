@@ -26,7 +26,7 @@ msgstr "Soubor knihy adres vizitek"
 #: vcardconfig.cpp:24
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktivity"
 
 #: vcardresource.cpp:71
 #, kde-format

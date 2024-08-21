@@ -1,14 +1,14 @@
 # translation of akonadi_maildir_resource.po to Italian
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the akonadi_maildir_resource package.
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2010, 2011, 2013, 2014, 2015.
+# Luigi Toscano <luigi.toscano@tiscali.it>, 2010, 2011, 2013, 2014, 2015, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2015-09-08 00:28+0200\n"
+"PO-Revision-Date: 2024-08-17 13:12+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: configwidget.cpp:35
 #, kde-format
@@ -26,7 +26,7 @@ msgstr "Cartella di archiviazione"
 #: configwidget.cpp:38
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Attività"
 
 #: configwidget.cpp:53
 #, kde-format

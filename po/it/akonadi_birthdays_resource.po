@@ -1,14 +1,14 @@
 # translation of akonadi_birthdays_resource.po to Italian
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2016.
+# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2016, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_birthdays_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2016-05-24 00:28+0100\n"
+"PO-Revision-Date: 2024-08-17 13:10+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -16,16 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: birthdaysconfigagentwidget.cpp:37
-#, fuzzy, kde-format
-#| msgid " day"
-#| msgid_plural " days"
+#, kde-format
 msgid "%v day"
 msgid_plural "%v days"
-msgstr[0] " giorno"
-msgstr[1] " giorni"
+msgstr[0] "%v giorno"
+msgstr[1] "%v giorni"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: birthdaysconfigwidget.ui:29

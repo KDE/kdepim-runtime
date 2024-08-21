@@ -22,7 +22,7 @@ msgstr ""
 #: contactsagentsettingswidget.ui:27
 #, kde-format
 msgid "Settings"
-msgstr ""
+msgstr "Nastavení"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: contactsagentsettingswidget.ui:33
@@ -173,4 +173,4 @@ msgstr "Neměnit data aktuální podpůrné vrstvy."
 #: contactssettingswidget.cpp:39
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktivity"

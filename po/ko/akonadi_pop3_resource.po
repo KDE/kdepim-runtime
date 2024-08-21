@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-08-19 22:48+0200\n"
+"PO-Revision-Date: 2024-08-21 00:37+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -24,12 +24,10 @@ msgid "%p%"
 msgstr "%p%"
 
 #: accountwidget.cpp:93
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " 분"
+msgstr[0] "%v분"
 
 #: accountwidget.cpp:131 pop3resource.cpp:46
 #, kde-format

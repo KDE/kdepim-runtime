@@ -1,31 +1,32 @@
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# A S Alam <aalam@users.sf.net>, 2010.
+# SPDX-FileCopyrightText: 2024 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-21 00:48+0000\n"
-"PO-Revision-Date: 2010-01-16 08:40+0530\n"
-"Last-Translator: A S Alam <aalam@users.sf.net>\n"
-"Language-Team: ਪੰਜਾਬੀ <punjabi-users@lists.sf.net>\n"
-"Language: pa\n"
+"PO-Revision-Date: 2024-08-20 09:57+0300\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"Language-Team: צוות התרגום של KDE ישראל\n"
+"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
+"2 : 3);\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
 msgid "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'."
-msgstr ""
+msgstr "לא ניתן להוסיף תיקיית IMAP‏ ‚%1’ לתיקיית ההורה ‚%2’ שאינה קיימת."
 
 #: addcollectiontask.cpp:67
 #, kde-format
 msgid "Failed to create the folder '%1' on the IMAP server. "
-msgstr ""
+msgstr "יצירת התיקייה ‚%1’ בשרת ה־IMAP נכשלה."
 
 #: addcollectiontask.cpp:87 movecollectiontask.cpp:119
 #, kde-format
@@ -33,22 +34,24 @@ msgid ""
 "Failed to subscribe to the folder '%1' on the IMAP server. It will disappear "
 "on next sync. Use the subscription dialog to overcome that"
 msgstr ""
+"ההרשמה לתיקייה ‚%1’ בשרת ה־IMAP נכשלה. היא תיעלם בסנכרון הבא. אפשר להשתמש "
+"בחלונית המינוי כדי להתגבר על זה."
 
 #: addcollectiontask.cpp:130 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
-msgstr ""
+msgstr "כתיבת הסברים ל־‚%1’ בשרת ה־IMAP נכשלה. %2"
 
 #: additemtask.cpp:115 changeitemtask.cpp:181 changeitemtask.cpp:205
 #: moveitemstask.cpp:255
 #, kde-format
 msgid "Could not determine the UID for the newly created message on the server"
-msgstr ""
+msgstr "לא ניתן לקבוע את מזהה המשתמש (UID) של ההודעה החדשה שנוצרה בשרת"
 
 #: changecollectiontask.cpp:39
 #, kde-format
 msgid "Cannot modify IMAP folder '%1', it does not exist on the server."
-msgstr ""
+msgstr "לא ניתן לשנות את תיקיית ה־IMAP‏ ‚%1’ בשרת, היא לא קיימת בשרת."
 
 #: changecollectiontask.cpp:51
 #, kde-format
@@ -56,11 +59,13 @@ msgid ""
 "ACLs for '%1' need to be retrieved from the IMAP server first. Skipping ACL "
 "change"
 msgstr ""
+"ראשית יש למשוך את ה־ACLים (רשימות בקרת גישה) עבור ‚%1’ משרת ה־IMAP. תוך "
+"דילוג על שינויים ב־ACL"
 
 #: changecollectiontask.cpp:237
 #, kde-format
 msgid "Failed to rename the folder, restoring folder list."
-msgstr ""
+msgstr "שינוי שם התיקייה נכשל, רשימת התיקיות משוחזרת."
 
 #: changecollectiontask.cpp:256
 #, kde-format
@@ -68,73 +73,73 @@ msgid ""
 "Failed to subscribe to the renamed folder '%1' on the IMAP server. It will "
 "disappear on next sync. Use the subscription dialog to overcome that"
 msgstr ""
+"ההרשמה לתיקייה ‚%1’ ששמה השתנה בשרת ה־IMAP נכשלה. היא תיעלם בסנכרון הבא. "
+"אפשר להשתמש בחלונית המינוי כדי להתגבר על זה."
 
 #: changecollectiontask.cpp:267
 #, kde-format
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
-msgstr ""
+msgstr "כתיבת ACLים (רשימות בקרת גישה) ל־‚%1’ בשרת ה־IMAP נכשלה. %2"
 
 #: imapresource.cpp:49
 #, kde-format
 msgid "IMAP Account"
-msgstr ""
+msgstr "חשבון IMAP"
 
 #: imapresource.cpp:62
-#, fuzzy, kde-format
-#| msgid "Settings"
+#, kde-format
 msgctxt "@title:window"
 msgid "IMAP Account Settings"
-msgstr "ਸੈਟਿੰਗ"
+msgstr "הגדרות חשבון IMAP"
 
 #. i18n: ectx: label, entry (ImapServer), group (network)
 #: imapresource.kcfg:10
 #, kde-format
 msgid "IMAP server"
-msgstr "IMAP ਸਰਵਰ"
+msgstr "שרת IMAP"
 
 #. i18n: ectx: label, entry (ImapPort), group (network)
 #: imapresource.kcfg:13
 #, kde-format
 msgid "Defines the port the IMAP service is running on"
-msgstr ""
+msgstr "הגדרת הפתחה "
 
 #. i18n: ectx: label, entry (UserName), group (network)
 #: imapresource.kcfg:17
 #, kde-format
 msgid "Username"
-msgstr "ਯੂਜ਼ਰ ਨਾਂ"
+msgstr "שם משתמש"
 
 #. i18n: ectx: label, entry (Safety), group (network)
 #: imapresource.kcfg:20
 #, kde-format
 msgid "Defines the encryption type to use"
-msgstr ""
+msgstr "הגדרת סוג ההצפנה לשימוש"
 
 #. i18n: ectx: label, entry (OverrideEncryption), group (network)
 #: imapresource.kcfg:24
 #, kde-format
 msgid "Override configured encryption mode"
-msgstr ""
+msgstr "דריסת מצב הצפנה מוגדר"
 
 #. i18n: ectx: label, entry (Authentication), group (network)
 #: imapresource.kcfg:27
 #, kde-format
 msgid "Defines the authentication type to use"
-msgstr ""
+msgstr "הגדרת סוג ההצפנה לשימוש"
 
 #. i18n: ectx: label, entry (SubscriptionEnabled), group (network)
 #: imapresource.kcfg:31
-#, fuzzy, kde-format
-#| msgid "Enable Subscriptions?"
+#, kde-format
 msgid "Defines if the server side subscription is enabled"
-msgstr "ਮੈਂਬਰੀ ਯੋਗ?"
+msgstr "הגדרה אם המינוי מצד השרת פעיל"
 
 #. i18n: ectx: property (text), widget (QCheckBox, useProxyCheck)
 #. i18n: ectx: label, entry (UseProxy), group (network)
 #: imapresource.kcfg:38 setupserverview_desktop.ui:560
 #, kde-format
 msgid "Connect using the system proxy settings"
-msgstr ""
+msgstr "התחברות באמצעות הגדרות המתווך של המערכת"
 
 #. i18n: ectx: whatsthis, entry (UseProxy), group (network)
 #: imapresource.kcfg:39
@@ -143,6 +148,8 @@ msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
 msgstr ""
+"אם האפשרות מסומנת, ייעשה שימוש בהגדרות המתווך של המערכת כדי להתחבר לשרת "
+"הדוא״ל."
 
 #. i18n: ectx: label, entry (DisconnectedModeEnabled), group (cache)
 #: imapresource.kcfg:45
@@ -158,10 +165,9 @@ msgstr ""
 
 #. i18n: ectx: label, entry (IntervalCheckTime), group (cache)
 #: imapresource.kcfg:53
-#, fuzzy, kde-format
-#| msgid "Check interval:"
+#, kde-format
 msgid "Check interval in minutes"
-msgstr "ਜਾਂਚ ਅੰਤਰਾਲ:"
+msgstr "הפרש בין בדיקות בדקות"
 
 #. i18n: ectx: label, entry (RetrieveMetadataOnFolderListing), group (cache)
 #: imapresource.kcfg:58
@@ -200,10 +206,9 @@ msgstr ""
 
 #. i18n: ectx: label, entry (AccountIdentity), group (cache)
 #: imapresource.kcfg:79
-#, fuzzy, kde-format
-#| msgid "Settings"
+#, kde-format
 msgid "Identity account"
-msgstr "ਸੈਟਿੰਗ"
+msgstr "חשבון זהות"
 
 #. i18n: ectx: label, entry (KnownMailBoxes), group (cache)
 #: imapresource.kcfg:82
@@ -268,19 +273,18 @@ msgstr ""
 #: imapresourcebase.cpp:212
 #, kde-format
 msgid "No server configured yet."
-msgstr "ਕੋਈ ਸਰਵਰ ਹਾਲੇ ਸੰਰਚਿਤ ਨਹੀਂ ਹੈ।"
+msgstr ""
 
 #: imapresourcebase.cpp:245 setupserver.cpp:674
-#, fuzzy, kde-format
-#| msgid "Enable Subscriptions?"
+#, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
-msgstr "ਮੈਂਬਰੀ ਯੋਗ?"
+msgstr ""
 
 #: imapresourcebase.cpp:269
 #, kde-format
 msgid "Connection established."
-msgstr "ਕੁਨੈਕਸ਼ਨ ਬਣਾਇਆ।"
+msgstr ""
 
 #: imapresourcebase.cpp:286
 #, kde-format
@@ -303,61 +307,61 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
-msgstr ""
+msgstr "פריטים מעודכנים"
 
 #: imapresourcebase.cpp:365
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
-msgstr ""
+msgstr "פריטים נמחקים"
 
 #: imapresourcebase.cpp:381
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
-msgstr ""
+msgstr "פריטים מועברים מ־‚%1’ אל ‚%2’"
 
 #: imapresourcebase.cpp:390
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
-msgstr ""
+msgstr "התיקיות נמשכות"
 
 #: imapresourcebase.cpp:397
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
-msgstr ""
+msgstr "מתקבל מידע תיקייה נוסף על ‚%1’"
 
 #: imapresourcebase.cpp:415
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
-msgstr ""
+msgstr "התיקייה ‚%1’ נוצרת"
 
 #: imapresourcebase.cpp:421
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
-msgstr ""
+msgstr "התיקייה ‚%1’ מתעדכנת"
 
 #: imapresourcebase.cpp:434
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
-msgstr ""
+msgstr "התיקייה ‚%1’ נמחקת"
 
 #: imapresourcebase.cpp:441
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
-msgstr ""
+msgstr "התיקייה ‚%1’ מועבר מ־‚%2’ אל ‚%3’"
 
 #: imapresourcebase.cpp:471
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr ""
+msgstr "מתבצע חיפוש…"
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -431,10 +435,9 @@ msgid "Unable to connect to the IMAP server."
 msgstr ""
 
 #: resourcetask.cpp:113 resourcetask.cpp:125
-#, fuzzy, kde-format
-#| msgid "Connection established."
+#, kde-format
 msgid "Connection lost"
-msgstr "ਕੁਨੈਕਸ਼ਨ ਬਣਾਇਆ।"
+msgstr ""
 
 #: resourcetask.cpp:475
 #, kde-format
@@ -451,17 +454,17 @@ msgstr ""
 #: retrievecollectionmetadatatask.cpp:182
 #, kde-format
 msgid "Access rights revoked"
-msgstr ""
+msgstr "הרשאת הגישה נשללה"
 
 #: retrievecollectionstask.cpp:155
 #, kde-format
 msgid "Inbox"
-msgstr "ਆਉਣਬਕਸਾ"
+msgstr "דואר נכנס"
 
 #: retrievecollectionstask.cpp:164
 #, kde-format
 msgid "Shared Folders"
-msgstr "ਸਾਂਝੇ ਕੀਤੇ ਫੋਲਡਰ"
+msgstr "תיקיות משותפות"
 
 #: retrieveitemstask.cpp:530
 #, kde-format
@@ -472,7 +475,7 @@ msgstr ""
 #: retrieveitemtask.cpp:35
 #, kde-format
 msgid "Remote id is empty or invalid"
-msgstr ""
+msgstr "המזהה המרוחק ריק או שגוי"
 
 #: retrieveitemtask.cpp:78 retrieveitemtask.cpp:94
 #, kde-format
@@ -487,19 +490,19 @@ msgstr ""
 #: searchtask.cpp:193
 #, kde-format
 msgid "Invalid search"
-msgstr ""
+msgstr "חיפוש שגוי"
 
 #: serverinfodialog.cpp:29
 #, kde-format
 msgctxt ""
 "@title:window Dialog title for dialog showing information about a server"
 msgid "Server Info"
-msgstr ""
+msgstr "פרטי השרת"
 
 #: serverinfodialog.cpp:83
 #, kde-format
 msgid "Resource not synchronized yet."
-msgstr ""
+msgstr "המשאב לא מסונכרן עדיין."
 
 #: sessionpool.cpp:250 sessionpool.cpp:407
 #, kde-format
@@ -507,6 +510,8 @@ msgid ""
 "Could not connect to the IMAP-server %1.\n"
 "%2"
 msgstr ""
+"לא ניתן להתחבר לשרת ה־IMAP‏ %1.\n"
+"%2"
 
 #: sessionpool.cpp:254
 #, kde-format
@@ -514,28 +519,29 @@ msgid ""
 "Could not connect to the IMAP server.\n"
 "%1"
 msgstr ""
+"לא ניתן להתחבר לשרת ה־IMAP‏.\n"
+"%1"
 
 #: sessionpool.cpp:279 sessionpool.cpp:320 sessionpool.cpp:389
 #: sessionpool.cpp:425 sessionpool.cpp:496
 #, kde-format
 msgid "Disconnected from server during login."
-msgstr ""
+msgstr "החיבור לשרת נקטע מצד השרת במהלך הכניסה לחשבון."
 
 #: sessionpool.cpp:303
 #, kde-format
 msgid "Could not create another extra connection to the IMAP-server %1."
-msgstr ""
+msgstr "לא ניתן ליצור חיבור נוסף לשרת ה־IMAP‏ %1."
 
 #: sessionpool.cpp:333
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
-msgstr ""
+msgstr "לא ניתן לקרוא את הסיסמה: גישת המשתמש לארנק נדחתה"
 
 #: sessionpool.cpp:341
-#, fuzzy, kde-format
-#| msgid "The password."
+#, kde-format
 msgid "Empty password"
-msgstr "ਪਾਸਵਰਡ"
+msgstr "סיסמה ריקה"
 
 #: sessionpool.cpp:353
 #, kde-format
@@ -605,46 +611,42 @@ msgstr ""
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
-msgstr ""
+msgstr "לנסות שוב"
 
 #: settingspasswordrequester.cpp:64
-#, fuzzy, kde-format
-#| msgid "Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr "ਸੈਟਿੰਗ"
+msgstr "פתיחת ההגדרות"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserver.cpp:80 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
-#, fuzzy, kde-format
-#| msgid "Clear text"
+#, kde-format
 msgctxt "Authentication method"
 msgid "Clear text"
-msgstr "ਸਾਫ਼ ਟੈਕਸਟ"
+msgstr "טקסט גלוי"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserver.cpp:82 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
-#, fuzzy, kde-format
-#| msgid "Anonymous"
+#, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
-msgstr "ਅਗਿਆਤ"
+msgstr "אלמוני"
 
 #: setupserver.cpp:84
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
-msgstr ""
+msgstr "XOAuth"
 
 #: setupserver.cpp:152
-#, fuzzy, kde-format
-#| msgid "Shared Folders"
+#, kde-format
 msgid "Archive Folder"
-msgstr "ਸਾਂਝੇ ਕੀਤੇ ਫੋਲਡਰ"
+msgstr ""
 
 #: setupserver.cpp:163
 #, kde-format
@@ -653,23 +655,23 @@ msgid "%p%"
 msgstr ""
 
 #: setupserver.cpp:166
-#, fuzzy, kde-format
-#| msgid " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " ਮਿੰਟ"
-msgstr[1] " ਮਿੰਟ"
+msgstr[0] "דקה"
+msgstr[1] "שתי דקות"
+msgstr[2] "%v דקות"
+msgstr[3] "%v דקות"
 
 #: setupserver.cpp:182
-#, fuzzy, kde-format
-#| msgid "Settings"
+#, kde-format
 msgid "Identity:"
-msgstr "ਸੈਟਿੰਗ"
+msgstr "זהות:"
 
 #: setupserver.cpp:202
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "פעילויות"
 
 #: setupserver.cpp:269
 #, kde-format
@@ -678,13 +680,14 @@ msgid ""
 "as before we will have to re-download all your emails from this account "
 "again. Are you sure you want to proceed?"
 msgstr ""
+"החלפת את כתובת השרת. אפילו אם זה אותו השרת כמו קודם יש להוריד את כל ההודעות "
+"שלך מהחשהון הזה שוב. להמשיך?"
 
 #: setupserver.cpp:272
-#, fuzzy, kde-format
-#| msgid "Username"
+#, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
-msgstr "ਯੂਜ਼ਰ ਨਾਂ"
+msgstr "החלפת כתובת שרת"
 
 #: setupserver.cpp:279
 #, kde-format
@@ -695,11 +698,10 @@ msgid ""
 msgstr ""
 
 #: setupserver.cpp:282
-#, fuzzy, kde-format
-#| msgid "Username"
+#, kde-format
 msgctxt "@title:window"
 msgid "User name change"
-msgstr "ਯੂਜ਼ਰ ਨਾਂ"
+msgstr "שם המשתמש השתנה"
 
 #: setupserver.cpp:434 setupserver.cpp:486
 #, kde-format
@@ -713,54 +715,52 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"
-msgstr ""
+msgstr "KWallet לא זמין"
 
 #: setupserver.cpp:561
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
-msgstr ""
+msgstr "לא ניתן להתחבר לשרת, נא לוודא שכתובת השרת נכונה."
 
 #: setupserver.cpp:573
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
-msgstr ""
+msgstr "<qt><b>יש תמיכה ב־STARTLS ומומלץ להשתמש בזה.</b></qt>"
 
 #: setupserver.cpp:576
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
-msgstr ""
+msgstr "<qt><b>יש תמיכה ב־SSL/TLS ומומלץ להשתמש בזה.</b></qt>"
 
 #: setupserver.cpp:580
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
-msgstr ""
+msgstr "<qt><b>אין תמיכה באף אמצעי אבטחה. לא מומלץ להתחבר לשרת הזה.</b></qt>"
 
 #: setupserver.cpp:583
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
-msgstr ""
+msgstr "<qt><b>אי אפשר להשתמש בשרת הזה.</b></qt>"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: setupserverview_desktop.ui:33
 #, kde-format
 msgid "General"
-msgstr ""
+msgstr "כללי"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, accountInfoLabel)
 #: setupserverview_desktop.ui:39
-#, fuzzy, kde-format
-#| msgid "Settings"
+#, kde-format
 msgid "Account Information"
-msgstr "ਸੈਟਿੰਗ"
+msgstr "פרטי חשבון"
 
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: setupserverview_desktop.ui:46
-#, fuzzy, kde-format
-#| msgid "Settings"
+#, kde-format
 msgid "Account Name:"
-msgstr "ਸੈਟਿੰਗ"
+msgstr "שם חשבון:"
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label)
 #: setupserverview_desktop.ui:57
@@ -773,73 +773,70 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: setupserverview_desktop.ui:60
-#, fuzzy, kde-format
-#| msgid "IMAP server:"
+#, kde-format
 msgid "I&MAP Server:"
-msgstr "IMAP ਸਰਵਰ:"
+msgstr "&שרת IMAP:"
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label_2)
 #: setupserverview_desktop.ui:74
 #, kde-format
 msgid "The username."
-msgstr "ਯੂਜ਼ਰ ਨਾਂ।"
+msgstr "שם המשתמש."
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: setupserverview_desktop.ui:77
-#, fuzzy, kde-format
-#| msgid "Username:"
+#, kde-format
 msgid "Use&rname:"
-msgstr "ਯੂਜ਼ਰ-ਨਾਂ:"
+msgstr "שם מ&שתמש:"
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label_3)
 #: setupserverview_desktop.ui:91
 #, kde-format
 msgid "The password."
-msgstr "ਪਾਸਵਰਡ"
+msgstr "הסיסמה."
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #. i18n: ectx: property (text), widget (QLabel, label_13)
 #: setupserverview_desktop.ui:94 setupserverview_desktop.ui:270
 #, kde-format
 msgid "Password:"
-msgstr "ਪਾਸਵਰਡ:"
+msgstr "סיסמה:"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, checkOptions)
 #: setupserverview_desktop.ui:108
 #, kde-format
 msgid "Mail Checking Options"
-msgstr ""
+msgstr "אפשרויות בדיקת דוא״ל"
 
 #. i18n: ectx: property (text), widget (QCheckBox, disconnectedModeEnabled)
 #: setupserverview_desktop.ui:115
 #, kde-format
 msgid "&Download all messages for offline use"
-msgstr ""
+msgstr "&להוריד את כל ההודעות לשימוש בלתי מקוון"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableMailCheckBox)
 #: setupserverview_desktop.ui:122
 #, kde-format
 msgid "Enable &interval mail checking"
-msgstr ""
+msgstr "הפעלת בדיקת דוא״ל ל&פרקים"
 
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: setupserverview_desktop.ui:129
-#, fuzzy, kde-format
-#| msgid "Check interval:"
+#, kde-format
 msgid "Check mail interval:"
-msgstr "ਜਾਂਚ ਅੰਤਰਾਲ:"
+msgstr "הפרש בין בדיקות דוא״ל:"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
 #: setupserverview_desktop.ui:160
 #, kde-format
 msgid "Filtering"
-msgstr ""
+msgstr "סינון"
 
 #. i18n: ectx: property (text), widget (QCheckBox, managesieveCheck)
 #: setupserverview_desktop.ui:166
 #, kde-format
 msgid "Server supports Sieve"
-msgstr ""
+msgstr "השרת תומך ב־Sieve"
 
 #. i18n: ectx: property (text), widget (QCheckBox, sameConfigCheck)
 #: setupserverview_desktop.ui:173
@@ -855,6 +852,8 @@ msgid ""
 "Old server implementations still use port 2000, while newer standard conform "
 "server can only be accessed via port 4190."
 msgstr ""
+"פתחת השרת השתנתה כאשר ManageSieve הפך לתקן RFC מלא. מימוש השרת הישן עדיין "
+"משתמש בפתחה 2000, בעוד שרתים שכפופים לתקן החדש נגישים בפתחה 4190 בלבד."
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: setupserverview_desktop.ui:192
@@ -864,74 +863,67 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: setupserverview_desktop.ui:210
-#, fuzzy, kde-format
-#| msgid "IMAP server:"
+#, kde-format
 msgid "Alternate Server:"
-msgstr "IMAP ਸਰਵਰ:"
+msgstr "שרת חלופי:"
 
 #. i18n: ectx: property (title), widget (QGroupBox, authentication)
 #: setupserverview_desktop.ui:223
-#, fuzzy, kde-format
-#| msgid "Authentication Method"
+#, kde-format
 msgid "Authentication"
-msgstr "ਪਰਮਾਣਕਿਤਾ ਢੰਗ"
+msgstr "אימות"
 
 #. i18n: ectx: property (text), widget (QRadioButton, noAuthentification)
 #: setupserverview_desktop.ui:233
-#, fuzzy, kde-format
-#| msgid "Authentication Method"
+#, kde-format
 msgid "No authentication"
-msgstr "ਪਰਮਾਣਕਿਤਾ ਢੰਗ"
+msgstr "אין אימות"
 
 #. i18n: ectx: property (text), widget (QRadioButton, customUserPassword)
 #: setupserverview_desktop.ui:243
 #, kde-format
 msgid "&Username and Password"
-msgstr ""
+msgstr "שם משתמש ו&סיסמה"
 
 #. i18n: ectx: property (text), widget (QRadioButton, imapUserPassword)
 #: setupserverview_desktop.ui:257
 #, kde-format
 msgid "I&MAP Username and Password"
-msgstr ""
+msgstr "ש&ם משתמש וסיסמה של IMAP"
 
 #. i18n: ectx: property (text), widget (QLabel, label_12)
 #: setupserverview_desktop.ui:277
 #, kde-format
 msgid "Username:"
-msgstr "ਯੂਜ਼ਰ-ਨਾਂ:"
+msgstr "שם משתמש:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_15)
 #. i18n: ectx: property (text), widget (QLabel, label_10)
 #: setupserverview_desktop.ui:286 setupserverview_desktop.ui:509
-#, fuzzy, kde-format
-#| msgid "Authentication Method"
+#, kde-format
 msgid "Authentication:"
-msgstr "ਪਰਮਾਣਕਿਤਾ ਢੰਗ"
+msgstr "אימות:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:299 setupserverview_desktop.ui:522
-#, fuzzy, kde-format
-#| msgid "LOGIN"
+#, kde-format
 msgctxt "Authentication method"
 msgid "LOGIN"
-msgstr "LOGIN"
+msgstr "כניסה"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:304 setupserverview_desktop.ui:527
-#, fuzzy, kde-format
-#| msgid "PLAIN"
+#, kde-format
 msgctxt "Authentication method"
 msgid "PLAIN"
-msgstr "PLAIN"
+msgstr "פשוט"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:309 setupserverview_desktop.ui:532
-#, fuzzy, kde-format
-#| msgid "CRAM-MD5"
+#, kde-format
 msgctxt "Authentication method"
 msgid "CRAM-MD5"
 msgstr "CRAM-MD5"
@@ -939,17 +931,15 @@ msgstr "CRAM-MD5"
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:314 setupserverview_desktop.ui:537
-#, fuzzy, kde-format
-#| msgid "DIGEST-MD5"
+#, kde-format
 msgctxt "Authentication method"
 msgid "DIGEST-MD5"
-msgstr "DIGEST-MD5"
+msgstr "תמצית-MD5"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:319 setupserverview_desktop.ui:542
-#, fuzzy, kde-format
-#| msgid "NTLM"
+#, kde-format
 msgctxt "Authentication method"
 msgid "NTLM"
 msgstr "NTLM"
@@ -957,8 +947,7 @@ msgstr "NTLM"
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:324 setupserverview_desktop.ui:547
-#, fuzzy, kde-format
-#| msgid "GSSAPI"
+#, kde-format
 msgctxt "Authentication method"
 msgid "GSSAPI"
 msgstr "GSSAPI"
@@ -967,28 +956,25 @@ msgstr "GSSAPI"
 #: setupserverview_desktop.ui:356
 #, kde-format
 msgid "Advanced"
-msgstr ""
+msgstr "מתקדם"
 
 #. i18n: ectx: property (text), widget (KTitleWidget)
 #: setupserverview_desktop.ui:362
-#, fuzzy, kde-format
-#| msgid "Settings"
+#, kde-format
 msgid "IMAP Settings"
-msgstr "ਸੈਟਿੰਗ"
+msgstr "הגדרות IMAP"
 
 #. i18n: ectx: property (text), widget (QCheckBox, subscriptionEnabled)
 #: setupserverview_desktop.ui:371
-#, fuzzy, kde-format
-#| msgid "Enable Subscriptions?"
+#, kde-format
 msgid "Enable server-side subscriptions"
-msgstr "ਮੈਂਬਰੀ ਯੋਗ?"
+msgstr "הפעלת מינויים מצד השרת"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgid "Enable Subscriptions?"
+#, kde-format
 msgid "Serverside Subscription…"
-msgstr "ਮੈਂਬਰੀ ਯੋਗ?"
+msgstr "מינוי מצד השרת…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1004,48 +990,45 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (KTitleWidget)
 #: setupserverview_desktop.ui:407
-#, fuzzy, kde-format
-#| msgid "Connection established."
+#, kde-format
 msgid "Connection Settings"
-msgstr "ਕੁਨੈਕਸ਼ਨ ਬਣਾਇਆ।"
+msgstr "הגדרות החיבור"
 
 #. i18n: ectx: property (text), widget (QPushButton, testButton)
 #: setupserverview_desktop.ui:416
 #, kde-format
 msgid "Auto Detect"
-msgstr "ਆਟੋ ਖੋਜ"
+msgstr "זיהוי אוטומטי"
 
 #. i18n: ectx: property (text), widget (QPushButton, showServerInfo)
 #: setupserverview_desktop.ui:423
 #, kde-format
 msgid "Server Info"
-msgstr ""
+msgstr "פרטי השרת"
 
 #. i18n: ectx: property (text), widget (QLabel, label_9)
 #: setupserverview_desktop.ui:432
-#, fuzzy, kde-format
-#| msgid "Encryption"
+#, kde-format
 msgid "Encryption:"
-msgstr "ਇਕ੍ਰਿਪਸ਼ਨ"
+msgstr "הצפנה:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, tlsRadio)
 #: setupserverview_desktop.ui:441
 #, kde-format
 msgid "STARTTLS"
-msgstr ""
+msgstr "STARTTLS"
 
 #. i18n: ectx: property (text), widget (QRadioButton, sslRadio)
 #: setupserverview_desktop.ui:451
-#, fuzzy, kde-format
-#| msgid "SSL"
+#, kde-format
 msgid "SSL/TLS"
-msgstr "SSL"
+msgstr "SSL/TLS"
 
 #. i18n: ectx: property (text), widget (QRadioButton, noRadio)
 #: setupserverview_desktop.ui:461
 #, kde-format
 msgid "None"
-msgstr "ਕੋਈ ਨਹੀਂ"
+msgstr "אין"
 
 #. i18n: ectx: property (text), widget (QLabel, imapInfo)
 #: setupserverview_desktop.ui:482
@@ -1073,143 +1056,60 @@ msgid ""
 "family:'Sans Serif';\"> will connect to port 143 but not switch to a secure "
 "connection. This setting is not recommended.</span></p></body></html>"
 msgstr ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'HandelGotDLig'; font-size:10pt; "
+"font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"family:'Sans Serif'; font-weight:600;\">SSL/TLS</span><span style=\" font-"
+"family:'Sans Serif';\"> הוא IMAP מאובטח על גבי פתחה 993;</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"family:'Sans Serif'; font-weight:600;\">STARTTLS</span><span style=\" font-"
+"family:'Sans Serif';\"> יפעל מול פתחה 143 ויעבור לחיבור מאובטח מייד לאחר "
+"ההתחברות;</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"family:'Sans Serif'; font-weight:600;\">אין</span><span style=\" font-"
+"family:'Sans Serif';\"> יתחבר לפתחה 143 אך לא יעבור לחיבור מאובטח. זאת הגדרה "
+"לא מומלצת.</span></p></body></html>"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: setupserverview_desktop.ui:489
 #, kde-format
 msgid "Port:"
-msgstr ""
+msgstr "פתחה:"
 
 #. i18n: ectx: property (text), widget (QLabel, testInfo)
 #: setupserverview_desktop.ui:573
 #, kde-format
 msgid "Empty"
-msgstr "ਖਾਲੀ"
+msgstr "ריק"
 
 #: subscriptiondialog.cpp:50
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
-msgstr ""
+msgstr "רענון &רשימה"
 
 #: subscriptiondialog.cpp:65
-#, fuzzy, kde-format
-#| msgid "Enable Subscriptions?"
+#, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
-msgstr "ਮੈਂਬਰੀ ਯੋਗ?"
+msgstr "הפעלת מינויים מצד השרת"
 
 #: subscriptiondialog.cpp:71
 #, kde-format
 msgctxt "@label search for a subscription"
 msgid "Search:"
-msgstr ""
+msgstr "חיפוש:"
 
 #: subscriptiondialog.cpp:80
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"
-msgstr ""
-
-#, fuzzy
-#~| msgid "Authentication Method"
-#~ msgctxt "@title:window"
-#~ msgid "Could Not Authenticate"
-#~ msgstr "ਪਰਮਾਣਕਿਤਾ ਢੰਗ"
-
-#, fuzzy
-#~| msgid "Settings"
-#~ msgid "Account Settings"
-#~ msgstr "ਸੈਟਿੰਗ"
-
-#~ msgid "Do not use KWallet"
-#~ msgstr "ਕੇਵਾਲਿਟ ਨਾ ਵਰਤੋਂ"
-
-#, fuzzy
-#~| msgid "Do not use KWallet"
-#~ msgctxt "@status"
-#~ msgid "Failed to open KWallet"
-#~ msgstr "ਕੇਵਾਲਿਟ ਨਾ ਵਰਤੋਂ"
-
-#, fuzzy
-#~| msgid "Enable Subscriptions?"
-#~ msgid "Serverside Subscription..."
-#~ msgstr "ਮੈਂਬਰੀ ਯੋਗ?"
-
-#, fuzzy
-#~| msgid "Username:"
-#~ msgid "&Username:"
-#~ msgstr "ਯੂਜ਼ਰ-ਨਾਂ:"
-
-#~ msgid "IMAP server:"
-#~ msgstr "IMAP ਸਰਵਰ:"
-
-#~ msgid "Encryption"
-#~ msgstr "ਇਕ੍ਰਿਪਸ਼ਨ"
-
-#~ msgid "SSL"
-#~ msgstr "SSL"
-
-#~ msgid "TLS"
-#~ msgstr "TLS"
-
-#~ msgid "Authentication Method"
-#~ msgstr "ਪਰਮਾਣਕਿਤਾ ਢੰਗ"
-
-#~ msgid "Check interval:"
-#~ msgstr "ਜਾਂਚ ਅੰਤਰਾਲ:"
-
-#, fuzzy
-#~| msgid "Enable Subscriptions?"
-#~ msgid "Enable Server-Side Subscriptions"
-#~ msgstr "ਮੈਂਬਰੀ ਯੋਗ?"
-
-#~ msgid "Clear text"
-#~ msgstr "ਸਾਫ਼ ਟੈਕਸਟ"
-
-#~ msgid "Anonymous"
-#~ msgstr "ਅਗਿਆਤ"
-
-#~ msgid " minutes"
-#~ msgstr " ਮਿੰਟ"
-
-#, fuzzy
-#~| msgid "Authentication Method"
-#~ msgid "Authentification"
-#~ msgstr "ਪਰਮਾਣਕਿਤਾ ਢੰਗ"
-
-#~ msgid "Settings"
-#~ msgstr "ਸੈਟਿੰਗ"
-
-#~ msgctxt "Input username/password manually and not store them"
-#~ msgid "Single Input"
-#~ msgstr "ਇਕੱਲੀ ਇੰਪੁੱਟ"
-
-#, fuzzy
-#~| msgid "Password:"
-#~ msgid "Password"
-#~ msgstr "ਪਾਸਵਰਡ:"
-
-#~ msgctxt "no interval mail check"
-#~ msgid "Never"
-#~ msgstr "ਕਦੇ ਨਹੀਂ"
-
-#~ msgid "Enable Subscriptions?"
-#~ msgstr "ਮੈਂਬਰੀ ਯੋਗ?"
-
-#~ msgid "Enable"
-#~ msgstr "ਯੋਗ"
-
-#~ msgid "Do Not Enable"
-#~ msgstr "ਯੋਗ ਨਾ ਕਰੋ"
-
-#~ msgctxt "NAME OF TRANSLATORS"
-#~ msgid "Your names"
-#~ msgstr "ਅਮਨਪਰੀਤ ਸਿੰਘ ਆਲਮ (A S Alam)"
-
-#~ msgctxt "EMAIL OF TRANSLATORS"
-#~ msgid "Your emails"
-#~ msgstr "aalam@users.sf.net"
-
-#~ msgid "Authentication failed."
-#~ msgstr "ਪਰਮਾਣਕਿਤਾ ਫ਼ੇਲ੍ਹ ਹੋ ਗਈ ਹੈ।"
+msgstr "עם מינוי בלבד"

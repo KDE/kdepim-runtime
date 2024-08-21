@@ -1,32 +1,30 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Lukáš Tinkl <lukas@kde.org>, 2011.
-# Vít Pelčák <vit@pelcak.org>, 2016.
+# SPDX-FileCopyrightText: 2016, 2024 Vít Pelčák <vit@pelcak.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2016-07-01 10:59+0100\n"
-"Last-Translator: Vít Pelčák <vit@pelcak.org>\n"
+"PO-Revision-Date: 2024-08-20 08:36+0200\n"
+"Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: birthdaysconfigagentwidget.cpp:37
-#, fuzzy, kde-format
-#| msgid " day"
-#| msgid_plural " days"
+#, kde-format
 msgid "%v day"
 msgid_plural "%v days"
-msgstr[0] " den"
-msgstr[1] " dny"
-msgstr[2] " dnů"
+msgstr[0] "%v den"
+msgstr[1] "%v dny"
+msgstr[2] "%v dnů"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: birthdaysconfigwidget.ui:29

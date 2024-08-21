@@ -194,7 +194,7 @@ msgstr "Metoda uzamykání"
 #: mboxconfig.cpp:30
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktivity"
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format

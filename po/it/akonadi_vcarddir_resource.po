@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This file is copyright:
 # This file is distributed under the same license as the akonadi_vcarddir_resource package.
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2010, 2012, 2013, 2014, 2018.
+# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2010, 2012, 2013, 2014, 2018, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcarddir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2018-12-06 23:29+0100\n"
+"PO-Revision-Date: 2024-08-17 13:14+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -15,6 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: vcarddiragentsettingswidget.ui:33
@@ -127,18 +128,16 @@ msgid "Do not change the actual backend data."
 msgstr "Non modificare i dati attuali del motore."
 
 #: vcarddirsettingswidget.cpp:44
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] "minuto"
-msgstr[1] "minuti"
+msgstr[0] "%v minuto"
+msgstr[1] "%v minuti"
 
 #: vcarddirsettingswidget.cpp:48
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Attività"
 
 #~ msgid "Path:"
 #~ msgstr "Percorso:"
