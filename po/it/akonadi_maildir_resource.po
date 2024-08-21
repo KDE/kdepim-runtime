@@ -1,7 +1,7 @@
 # translation of akonadi_maildir_resource.po to Italian
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the akonadi_maildir_resource package.
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2010, 2011, 2013, 2014, 2015.
+# Luigi Toscano <luigi.toscano@tiscali.it>, 2010, 2011, 2013, 2014, 2015, 2024.
 #
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: configwidget.cpp:30
 #, kde-format

@@ -1,7 +1,7 @@
 # translation of akonadi_vcard_resource.po to Italian
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the akonadi_vcard_resource package.
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2010, 2014, 2023.
+# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2010, 2014, 2023, 2024.
 #
 msgid ""
 msgstr ""
