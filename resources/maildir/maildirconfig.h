@@ -5,14 +5,19 @@
 */
 
 #pragma once
-
+#include "config-kdepim-runtime.h"
 #include <Akonadi/AgentConfigurationBase>
 
 #include "configwidget.h"
 #include "settings.h"
-
+#include <Akonadi/AgentConfigurationBase>
 #include <QScopedPointer>
-
+#if HAVE_ACTIVITY_SUPPORT
+namespace PimCommonActivities
+{
+class ConfigureActivitiesWidget;
+}
+#endif
 class MaildirConfig : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
@@ -26,4 +31,7 @@ public:
 private:
     QScopedPointer<Akonadi_Maildir_Resource::MaildirSettings> mSettings;
     QScopedPointer<ConfigWidget> mWidget;
+#if HAVE_ACTIVITY_SUPPORT
+    PimCommonActivities::ConfigureActivitiesWidget *const mConfigureActivitiesWidget;
+#endif
 };
