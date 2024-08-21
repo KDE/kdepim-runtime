@@ -75,11 +75,10 @@ void ContactsSettingsWidget::load()
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(ContactsResourceSettings::self()->path()));
 #if HAVE_ACTIVITY_SUPPORT
     PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
-    // TODO
-    // settings.enabled = m_parentResource->activitiesEnabled();
-    // settings.activities = m_parentResource->activities();
+    const KConfigGroup activitiesGroup = ContactsResourceSettings::self()->sharedConfig()->group(QStringLiteral("Agent"));
+    settings.enabled = activitiesGroup.readEntry(QStringLiteral("ActivitiesEnabled"), false);
+    settings.activities = activitiesGroup.readEntry(QStringLiteral("Activities"), QStringList());
     qDebug() << "read activities settings " << settings;
-    // TODO fix me initialize list of activities
     mConfigureActivitiesWidget->setActivitiesSettings(settings);
 #endif
     mManager->updateWidgets();
@@ -90,7 +89,9 @@ bool ContactsSettingsWidget::save() const
     mManager->updateSettings();
 #if HAVE_ACTIVITY_SUPPORT
     const PimCommonActivities::ActivitiesBaseManager::ActivitySettings activitiesSettings = mConfigureActivitiesWidget->activitiesSettings();
-    // TODO
+    KConfigGroup activitiesGroup = ContactsResourceSettings::self()->sharedConfig()->group(QStringLiteral("Agent"));
+    activitiesGroup.writeEntry(QStringLiteral("ActivitiesEnabled"), activitiesSettings.enabled);
+    activitiesGroup.writeEntry(QStringLiteral("Activities"), activitiesSettings.activities);
 #endif
     ContactsResourceSettings::self()->setPath(ui.kcfg_Path->url().toLocalFile());
     ContactsResourceSettings::self()->save();
