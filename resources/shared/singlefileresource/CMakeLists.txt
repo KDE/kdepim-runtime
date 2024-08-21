@@ -52,6 +52,13 @@ PRIVATE
     KPim6::IMAP
 )
 
+if(HAVE_ACTIVITY_SUPPORT)
+    target_link_libraries(akonadi-singlefileresource
+        PUBLIC
+        KPim6::PimCommonActivities
+    )
+endif()
+
 set_target_properties(akonadi-singlefileresource PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION})
 install(TARGETS akonadi-singlefileresource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NAMELINK_SKIP)
 

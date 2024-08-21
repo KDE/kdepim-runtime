@@ -6,11 +6,15 @@
 
 #pragma once
 
-#include <Akonadi/AgentConfigurationBase>
-
 #include "akonadi-singlefileresource_export.h"
+#include "config-kdepim-runtime.h"
 #include "singlefileresourceconfigwidget.h"
-
+#include <Akonadi/AgentConfigurationBase>
+#include <KLocalizedString>
+#if HAVE_ACTIVITY_SUPPORT
+#include <Akonadi/AgentConfigurationBase>
+#include <PimCommonActivities/ConfigureActivitiesWidget>
+#endif
 template<typename Settings>
 class SingleFileResourceConfigBase : public Akonadi::AgentConfigurationBase
 {
@@ -19,7 +23,13 @@ public:
         : Akonadi::AgentConfigurationBase(config, parent, list)
         , mSettings(new Settings(config))
         , mWidget(new Akonadi::SingleFileResourceConfigWidget<Settings>(parent, mSettings.data()))
+#if HAVE_ACTIVITY_SUPPORT
+        , mConfigureActivitiesWidget(new PimCommonActivities::ConfigureActivitiesWidget(parent))
+#endif
     {
+#if HAVE_ACTIVITY_SUPPORT
+        mWidget->addPage(i18n("Activities"), mConfigureActivitiesWidget.data());
+#endif
     }
 
     ~SingleFileResourceConfigBase() override = default;
@@ -27,11 +37,23 @@ public:
     void load() override
     {
         mWidget->load();
+#if HAVE_ACTIVITY_SUPPORT
+        Akonadi::AgentConfigurationBase::ActivitySettings settingsBase = restoreActivitiesSettings();
+        PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
+        settings.enabled = settingsBase.enabled;
+        settings.activities = settingsBase.activities;
+        qDebug() << "read activities settings " << settings;
+        mConfigureActivitiesWidget->setActivitiesSettings(settings);
+#endif
         Akonadi::AgentConfigurationBase::load();
     }
 
     bool save() const override
     {
+#if HAVE_ACTIVITY_SUPPORT
+        const PimCommonActivities::ActivitiesBaseManager::ActivitySettings activitiesSettings = mConfigureActivitiesWidget->activitiesSettings();
+        saveActivitiesSettings(Akonadi::AgentConfigurationBase::ActivitySettings{activitiesSettings.enabled, activitiesSettings.activities});
+#endif
         if (!mWidget->save()) {
             return false;
         }
@@ -41,4 +63,9 @@ public:
 protected:
     QScopedPointer<Settings> mSettings;
     QScopedPointer<Akonadi::SingleFileResourceConfigWidget<Settings>> mWidget;
+
+private:
+#if HAVE_ACTIVITY_SUPPORT
+    QScopedPointer<PimCommonActivities::ConfigureActivitiesWidget> mConfigureActivitiesWidget;
+#endif
 };
