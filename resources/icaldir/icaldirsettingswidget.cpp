@@ -75,18 +75,6 @@ void IcalDirSettingsWidget::load()
 {
     mManager->updateWidgets();
 #if HAVE_ACTIVITY_SUPPORT
-    const PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings = mConfigureActivitiesWidget->activitiesSettings();
-    // TODO
-#endif
-    QTimer::singleShot(0, this, &IcalDirSettingsWidget::validate);
-}
-
-bool IcalDirSettingsWidget::save() const
-{
-    mManager->updateSettings();
-    IcalDirResourceSettings::self()->setPath(ui.kcfg_Path->url().toLocalFile());
-    IcalDirResourceSettings::self()->save();
-#if HAVE_ACTIVITY_SUPPORT
     PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
     // TODO
     // settings.enabled = m_parentResource->activitiesEnabled();
@@ -95,6 +83,18 @@ bool IcalDirSettingsWidget::save() const
     // TODO fix me initialize list of activities
     mConfigureActivitiesWidget->setActivitiesSettings(settings);
 #endif
+    QTimer::singleShot(0, this, &IcalDirSettingsWidget::validate);
+}
+
+bool IcalDirSettingsWidget::save() const
+{
+    mManager->updateSettings();
+#if HAVE_ACTIVITY_SUPPORT
+    const PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings = mConfigureActivitiesWidget->activitiesSettings();
+    // TODO
+#endif
+    IcalDirResourceSettings::self()->setPath(ui.kcfg_Path->url().toLocalFile());
+    IcalDirResourceSettings::self()->save();
     return true;
 }
 

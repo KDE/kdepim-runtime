@@ -15,6 +15,7 @@
 #include <QTimer>
 #include <QUrl>
 #if HAVE_ACTIVITY_SUPPORT
+#include <PimCommonActivities/ActivitiesBaseManager>
 #include <PimCommonActivities/ConfigureActivitiesWidget>
 #endif
 namespace
@@ -72,12 +73,25 @@ void ContactsSettingsWidget::load()
     QTimer::singleShot(0, this, &ContactsSettingsWidget::validate);
 
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(ContactsResourceSettings::self()->path()));
+#if HAVE_ACTIVITY_SUPPORT
+    PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
+    // TODO
+    // settings.enabled = m_parentResource->activitiesEnabled();
+    // settings.activities = m_parentResource->activities();
+    qDebug() << "read activities settings " << settings;
+    // TODO fix me initialize list of activities
+    mConfigureActivitiesWidget->setActivitiesSettings(settings);
+#endif
     mManager->updateWidgets();
 }
 
 bool ContactsSettingsWidget::save() const
 {
     mManager->updateSettings();
+#if HAVE_ACTIVITY_SUPPORT
+    const PimCommonActivities::ActivitiesBaseManager::ActivitySettings activitiesSettings = mConfigureActivitiesWidget->activitiesSettings();
+    // TODO
+#endif
     ContactsResourceSettings::self()->setPath(ui.kcfg_Path->url().toLocalFile());
     ContactsResourceSettings::self()->save();
     return true;
