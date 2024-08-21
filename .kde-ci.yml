@@ -34,3 +34,7 @@ Dependencies:
     'frameworks/kdav': '@latest-kf6'
     'third-party/qtkeychain': '@latest-kf6'
     'libraries/ktextaddons': '@latest-kf6'
+
+- 'on': ['Linux', 'FreeBSD']
+  'require':
+    'plasma/plasma-activities': '@latest-kf6'
