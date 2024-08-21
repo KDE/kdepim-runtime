@@ -74,10 +74,10 @@ void ContactsSettingsWidget::load()
 
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(ContactsResourceSettings::self()->path()));
 #if HAVE_ACTIVITY_SUPPORT
+    Akonadi::AgentConfigurationBase::ActivitySettings settingsBase = restoreActivitiesSettings();
     PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
-    const KConfigGroup activitiesGroup = ContactsResourceSettings::self()->sharedConfig()->group(QStringLiteral("Agent"));
-    settings.enabled = activitiesGroup.readEntry(QStringLiteral("ActivitiesEnabled"), false);
-    settings.activities = activitiesGroup.readEntry(QStringLiteral("Activities"), QStringList());
+    settings.enabled = settingsBase.enabled;
+    settings.activities = settingsBase.activities;
     qDebug() << "read activities settings " << settings;
     mConfigureActivitiesWidget->setActivitiesSettings(settings);
 #endif
@@ -89,9 +89,7 @@ bool ContactsSettingsWidget::save() const
     mManager->updateSettings();
 #if HAVE_ACTIVITY_SUPPORT
     const PimCommonActivities::ActivitiesBaseManager::ActivitySettings activitiesSettings = mConfigureActivitiesWidget->activitiesSettings();
-    KConfigGroup activitiesGroup = ContactsResourceSettings::self()->sharedConfig()->group(QStringLiteral("Agent"));
-    activitiesGroup.writeEntry(QStringLiteral("ActivitiesEnabled"), activitiesSettings.enabled);
-    activitiesGroup.writeEntry(QStringLiteral("Activities"), activitiesSettings.activities);
+    saveActivitiesSettings(Akonadi::AgentConfigurationBase::ActivitySettings{activitiesSettings.enabled, activitiesSettings.activities});
 #endif
     ContactsResourceSettings::self()->setPath(ui.kcfg_Path->url().toLocalFile());
     ContactsResourceSettings::self()->save();
