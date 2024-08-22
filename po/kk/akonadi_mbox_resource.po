@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2010-12-17 06:31+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan(at)computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -251,27 +251,22 @@ msgstr ""
 "лайықты бұғаттау әдісін қолдануы қажет. Бұндайда, mbox файлыңыз мен сол "
 "бағдарламалар бір бұғаттау әдісін пайдалану керек."
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, fuzzy, kde-format
 #| msgid "Select MBox file"
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "MBox файлын таңдау"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "Ықшамдау жиілігі"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "Бұғаттау әдісі"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr ""
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, fuzzy, kde-format

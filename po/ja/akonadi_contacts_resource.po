@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_contacts_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2010-05-31 14:59-0700\n"
 "Last-Translator: Fumiaki Okushi <okushi@kde.gr.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -172,7 +172,7 @@ msgstr "連絡先フォルダへのパス"
 msgid "Do not change the actual backend data."
 msgstr "実際のバックエンドのデータは変更しない。"
 
-#: contactssettingswidget.cpp:39
+#: contactssettingswidget.cpp:40
 #, kde-format
 msgid "Activities"
 msgstr ""

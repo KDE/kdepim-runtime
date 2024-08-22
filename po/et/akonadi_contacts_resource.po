@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_contacts_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2019-11-18 17:37+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -172,7 +172,7 @@ msgstr "Kontaktide kataloogi asukoht"
 msgid "Do not change the actual backend data."
 msgstr "Taustaprogrammi tegelikke andmeid ei muudeta."
 
-#: contactssettingswidget.cpp:39
+#: contactssettingswidget.cpp:40
 #, kde-format
 msgid "Activities"
 msgstr ""

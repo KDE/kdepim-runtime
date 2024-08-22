@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2024-08-18 00:56+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -218,26 +218,21 @@ msgstr ""
 "mecanismo adecuado de bloqueo. Tenga en cuenta que si este es el caso, el "
 "recurso y los otros programas deben utilizar el mismo mecanismo de bloqueo."
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "Archivo MBox"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "Frecuencia para comprimir"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "Método de bloqueo"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr "Actividades"
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format
@@ -344,6 +339,9 @@ msgstr "Archivo de bloqueo"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Número de mensajes borrados antes de iniciar una purga."
+
+#~ msgid "Activities"
+#~ msgstr "Actividades"
 
 #~ msgid "URL:"
 #~ msgstr "URL:"

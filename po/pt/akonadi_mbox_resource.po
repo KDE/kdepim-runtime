@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2023-03-27 23:39+0100\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -214,26 +214,21 @@ msgstr ""
 "último caso, dever-se-á certificar que tanto o recurso como o programa usam "
 "o mesmo método de bloqueio."
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "Ficheiro MBox"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "Frequência de compactação"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "Método de bloqueio"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr ""
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format

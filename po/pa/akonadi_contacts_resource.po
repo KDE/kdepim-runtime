@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2010-01-16 08:37+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: ਪੰਜਾਬੀ <punjabi-users@lists.sf.net>\n"
@@ -166,7 +166,7 @@ msgstr "ਸੰਪਰਕ ਡਾਇਰੈਕਟਰੀ ਲਈ ਪਾਥ"
 msgid "Do not change the actual backend data."
 msgstr ""
 
-#: contactssettingswidget.cpp:39
+#: contactssettingswidget.cpp:40
 #, kde-format
 msgid "Activities"
 msgstr ""

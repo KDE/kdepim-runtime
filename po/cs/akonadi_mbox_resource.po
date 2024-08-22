@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2023-11-06 14:45+0100\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -175,26 +175,21 @@ msgid ""
 "locking method."
 msgstr ""
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "Soubor MBox"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "Frekvence komprimování"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "Metoda uzamykání"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr "Aktivity"
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format
@@ -297,3 +292,6 @@ msgstr "Zamykací soubor"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Počet smazaných zpráv před zahájením pročištění."
+
+#~ msgid "Activities"
+#~ msgstr "Aktivity"

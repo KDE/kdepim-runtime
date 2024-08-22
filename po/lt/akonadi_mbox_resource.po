@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2015-12-29 21:04+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -259,27 +259,22 @@ msgstr ""
 "failo, jums reikės nustatyti tinkamą blokavimo būdą. Dėmesio, šiuo atveju, "
 "visi ištekliai bei kitos programos privalo naudoti tą patį blokavimo būdą."
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, fuzzy, kde-format
 #| msgid "Select MBox file"
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "Parinkti MBox failą"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "Glaudinimo dažnis"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "Blokavimo būdas"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr ""
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, fuzzy, kde-format

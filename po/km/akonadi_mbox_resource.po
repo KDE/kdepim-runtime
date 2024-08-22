@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2010-11-29 09:16+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -248,27 +248,22 @@ msgstr ""
 "កំណត់​វិធីសាស្ត្រ​ចាក់សោ​ដែល​សមរម្យ ។ ចំណាំថា ប្រសិន​បើ​មានករណី​នេះ ធនធាន និង​កម្មវិធី​ផ្សេងៗ​ត្រូវតែ​ប្រើ​"
 "វិធីសាស្ត្រ​ចាក់សោ​ដូច​គ្នា​ទាំងអស់ ។"
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, fuzzy, kde-format
 #| msgid "Select MBox file"
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "ជ្រើស​ឯកសារ MBox"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "ប្រេកង់​បង្រួម"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "វិធីសាស្ត្រ​ចាក់សោ"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr ""
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, fuzzy, kde-format

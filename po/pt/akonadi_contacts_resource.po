@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_contacts_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2019-11-18 12:13+0000\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -164,7 +164,7 @@ msgstr "Localização da pasta de contactos"
 msgid "Do not change the actual backend data."
 msgstr "Não alterar os dados actuais da infra-estrutura."
 
-#: contactssettingswidget.cpp:39
+#: contactssettingswidget.cpp:40
 #, kde-format
 msgid "Activities"
 msgstr ""

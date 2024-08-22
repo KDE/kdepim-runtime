@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_contacts_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2010-02-28 10:31+0700\n"
 "Last-Translator: Thanomsub Noppaburana <donga.nb@gmail.com>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
@@ -172,7 +172,7 @@ msgstr "พาธไปยังไดเรกทอรีเก็บที่
 msgid "Do not change the actual backend data."
 msgstr "ไม่ต้องเปลี่ยนข้อมูลจริงของโปรแกรมเบื้องหลัง"
 
-#: contactssettingswidget.cpp:39
+#: contactssettingswidget.cpp:40
 #, kde-format
 msgid "Activities"
 msgstr ""

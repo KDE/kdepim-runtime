@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2019-11-16 15:39+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -255,26 +255,21 @@ msgstr ""
 "määrata sobiv lukustamisviis. Pane tähele, et sel juhul peavad nii ressurss "
 "kui ka teised programmid kasutama sama lukustamisviisi."
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "MBox-fail"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "Tihendamine sagedus"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "Lukustamise meetod"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr ""
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format

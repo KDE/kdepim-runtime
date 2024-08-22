@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2023-04-03 16:24+0200\n"
 "Last-Translator: Frederik Schwarzer <schwarzer@kde.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -220,26 +220,21 @@ msgstr ""
 "verwenden, so müssen Sie eine Sperrmethode festlegen. Beachten Sie bitte, "
 "dass alle Programme dann die gleiche Sperrmethode verwenden müssen."
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "Mbox-Datei"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "Komprimierhäufigkeit"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "Sperrmethode"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr ""
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format

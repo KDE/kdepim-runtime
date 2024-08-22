@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2024-08-17 10:15+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -218,26 +218,21 @@ msgstr ""
 "bat ezarri behar duzu. Kontuan izan, hala bada, baliabideak eta beste "
 "programek, guztiek erabili behar dutela giltzatzeko metodo bera."
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "«Mbox» fitxategia"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "Trinkotzeko maiztasuna"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "Giltzatze metodoa"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr "Jarduerak"
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format
@@ -344,6 +339,9 @@ msgstr "Gitzatzeko fitxategia"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Erabat kentzen hasi baino lehen ezabatu beharreko mezu-kopurua."
+
+#~ msgid "Activities"
+#~ msgstr "Jarduerak"
 
 #~ msgid "URL:"
 #~ msgstr "URLa:"

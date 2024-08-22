@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2024-08-18 08:28+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -218,26 +218,21 @@ msgstr ""
 "הולמת. כדאי לשים לב שאם זה המצב, המשאב ושאר התוכניות חייבים להשתמש כולם "
 "באותה שיטת הנעילה."
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "קובץ MBox"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "תדירות דחיסה"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "שיטת נעילה"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr "פעילויות"
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format
@@ -341,3 +336,6 @@ msgstr "קובץ נעילה"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "מספר ההודעות שנמחקו לפני שהחל ניפוי."
+
+#~ msgid "Activities"
+#~ msgstr "פעילויות"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-15 00:40+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2023-11-15 18:30+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -214,6 +214,11 @@ msgstr "Tiedostoa ”%1” ei voi ladata."
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Tiedostoa ”%1” ei voi tallentaa."
+
+#: singlefileresourceconfigbase.h:31
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: singlefileresourceconfigwidget_desktop.ui:39

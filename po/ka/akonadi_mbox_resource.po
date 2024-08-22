@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2024-08-17 04:24+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -215,26 +215,21 @@ msgstr ""
 "შემთხვევაში, რესურსი და სხვა პროგრამები იგივე დაბლოკვის მეთოდს უნდა "
 "იყენებდნენ."
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "MBox ფაილი"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "დაპატარავების სიხშირე"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "დაბლოკვის მეთოდი"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr "ქმედებები"
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format
@@ -341,6 +336,9 @@ msgstr "ბლოკის ფაილი"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "წაშლილი შეტყობინების რიცხვი, სანამ განადგურება დაიწყება."
+
+#~ msgid "Activities"
+#~ msgstr "ქმედებები"
 
 #~ msgid "URL:"
 #~ msgstr "მისამართი:"

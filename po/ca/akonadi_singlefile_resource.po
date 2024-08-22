@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-15 00:40+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2024-05-12 21:38+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -221,6 +221,11 @@ msgstr "No s'ha pogut carregar el fitxer «%1»."
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "No s'ha pogut desar el fitxer «%1»."
+
+#: singlefileresourceconfigbase.h:31
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: singlefileresourceconfigwidget_desktop.ui:39

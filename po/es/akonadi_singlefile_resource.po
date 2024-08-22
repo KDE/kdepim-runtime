@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-15 00:40+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2024-05-12 16:13+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -219,6 +219,11 @@ msgstr "No se ha podido cargar el archivo «%1»."
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "No se ha podido guardar el archivo «%1»."
+
+#: singlefileresourceconfigbase.h:31
+#, kde-format
+msgid "Activities"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: singlefileresourceconfigwidget_desktop.ui:39

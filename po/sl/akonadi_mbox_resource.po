@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2024-08-17 07:38+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -224,26 +224,21 @@ msgstr ""
 "primeren način zaklepanja. V tem primeru morata isti način zaklepanja "
 "uporabljati tako vir Akonadi kot tudi drugi program."
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "Datoteka MBox"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "Pogostost stiskanja"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "Način zaklepanja"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr "Dejavnosti"
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format
@@ -351,6 +346,9 @@ msgstr "Zaklepna datoteka"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Število izbrisanih sporočil pred začetkom čiščenja."
+
+#~ msgid "Activities"
+#~ msgstr "Dejavnosti"
 
 #~ msgid "URL:"
 #~ msgstr "URL:"

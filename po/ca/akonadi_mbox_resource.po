@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2024-08-17 11:20+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -222,26 +222,21 @@ msgstr ""
 "bloqueig apropiat. Teniu present que si aquest és el cas, el recurs i els "
 "altres programes hauran d'usar el mateix mètode de bloqueig."
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "Fitxer MBox"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "Freqüència de compactació"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "Mètode de bloqueig"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr "Activitats"
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format
@@ -348,3 +343,6 @@ msgstr "Fitxer de bloqueig"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Nombre de missatges suprimits abans d'iniciar una purga."
+
+#~ msgid "Activities"
+#~ msgstr "Activitats"

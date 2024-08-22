@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-04-30 15:57+0200\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
+"PO-Revision-Date: 2024-08-18 09:39+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
@@ -21,9 +21,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.08.5\n"
-"X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
+"X-Environment: kde\n"
+"X-Generator: Lokalize 23.08.5\n"
 "X-Text-Markup: kde4\n"
 
 #: compactpage.cpp:71
@@ -227,26 +227,21 @@ msgstr ""
 "verrouillage appropriée. Veuillez noter que dans ce cas, la ressource et les "
 "autres programmes doivent tous utiliser la même méthode de verrouillage."
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "Fichier « mbox »"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "Fréquence de compression"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "Méthode de verrouillage"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr ""
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format
@@ -354,6 +349,9 @@ msgstr "Fichier verrou"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Nombre de messages supprimés avant qu'une purge ne soit lancée."
+
+#~ msgid "Activities"
+#~ msgstr "Activités"
 
 #~ msgid "URL:"
 #~ msgstr "URL :"

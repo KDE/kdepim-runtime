@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
 "PO-Revision-Date: 2024-08-21 00:37+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -210,26 +210,21 @@ msgstr ""
 "올바른 잠금 방법을 설정해야 합니다. 잠금 방법을 설정했다면 이 리소스와 리소스"
 "에 접근할 다른 프로그램에서 같은 방법을 사용해야 합니다."
 
-#: mboxconfig.cpp:26
+#: mboxconfig.cpp:19
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
 msgstr "MBox 파일"
 
-#: mboxconfig.cpp:27
+#: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
 msgstr "압축 주기"
 
-#: mboxconfig.cpp:28
+#: mboxconfig.cpp:21
 #, kde-format
 msgid "Lock method"
 msgstr "잠금 방법"
-
-#: mboxconfig.cpp:30
-#, kde-format
-msgid "Activities"
-msgstr "활동"
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
 #, kde-format
@@ -335,6 +330,9 @@ msgstr "잠금 파일"
 msgid "Number of deleted messages before a purge is started."
 msgstr ""
 "비우기 작업을 시작하기 전에 다음 개수만큼 메시지가 삭제될 때까지 기다립니다."
+
+#~ msgid "Activities"
+#~ msgstr "활동"
 
 #~ msgid "URL:"
 #~ msgstr "URL:"
