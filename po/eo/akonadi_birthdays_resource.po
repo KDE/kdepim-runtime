@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_birthdays_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2023-05-29 07:34+0100\n"
+"PO-Revision-Date: 2024-08-22 22:54+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -19,13 +19,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: birthdaysconfigagentwidget.cpp:37
-#, fuzzy, kde-format
-#| msgid " day"
-#| msgid_plural " days"
+#, kde-format
 msgid "%v day"
 msgid_plural "%v days"
-msgstr[0] " tago"
-msgstr[1] " tagoj"
+msgstr[0] "%v tago"
+msgstr[1] "%v tagoj"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: birthdaysconfigwidget.ui:29

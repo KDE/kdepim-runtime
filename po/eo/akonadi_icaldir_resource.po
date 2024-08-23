@@ -11,7 +11,7 @@ msgstr ""
 "org\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2023-05-28 19:19+0100\n"
+"PO-Revision-Date: 2024-08-22 22:54+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -119,15 +119,13 @@ msgid "Autosave delay:"
 msgstr "Aŭtokonserva prokrasto:"
 
 #: icaldirsettingswidget.cpp:45
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minuto"
-msgstr[1] " minutoj"
+msgstr[0] "%v minuto"
+msgstr[1] "%v minutoj"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktivecoj"
