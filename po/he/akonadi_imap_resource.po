@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-21 00:48+0000\n"
-"PO-Revision-Date: 2024-08-22 14:22+0300\n"
+"PO-Revision-Date: 2024-08-24 14:15+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
 "2 : 3);\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -26,7 +26,7 @@ msgstr "לא ניתן להוסיף תיקיית IMAP‏ ‚%1’ לתיקיית 
 #: addcollectiontask.cpp:67
 #, kde-format
 msgid "Failed to create the folder '%1' on the IMAP server. "
-msgstr "יצירת התיקייה ‚%1’ בשרת ה־IMAP נכשלה."
+msgstr "יצירת התיקייה ‚%1’ בשרת ה־IMAP נכשלה. "
 
 #: addcollectiontask.cpp:87 movecollectiontask.cpp:119
 #, kde-format
@@ -35,7 +35,7 @@ msgid ""
 "on next sync. Use the subscription dialog to overcome that"
 msgstr ""
 "ההרשמה לתיקייה ‚%1’ בשרת ה־IMAP נכשלה. היא תיעלם בסנכרון הבא. אפשר להשתמש "
-"בחלונית המינוי כדי להתגבר על זה."
+"בחלונית המינוי כדי להתגבר על זה"
 
 #: addcollectiontask.cpp:130 changecollectiontask.cpp:276
 #, kde-format
@@ -74,7 +74,7 @@ msgid ""
 "disappear on next sync. Use the subscription dialog to overcome that"
 msgstr ""
 "ההרשמה לתיקייה ‚%1’ ששמה השתנה בשרת ה־IMAP נכשלה. היא תיעלם בסנכרון הבא. "
-"אפשר להשתמש בחלונית המינוי כדי להתגבר על זה."
+"אפשר להשתמש בחלונית המינוי כדי להתגבר על זה"
 
 #: changecollectiontask.cpp:267
 #, kde-format
@@ -102,7 +102,7 @@ msgstr "שרת IMAP"
 #: imapresource.kcfg:13
 #, kde-format
 msgid "Defines the port the IMAP service is running on"
-msgstr "הגדרת הפתחה "
+msgstr "הגדרת הפתחה שעליה פועל שירות ה־IMAP"
 
 #. i18n: ectx: label, entry (UserName), group (network)
 #: imapresource.kcfg:17
@@ -155,7 +155,7 @@ msgstr ""
 #: imapresource.kcfg:45
 #, kde-format
 msgid "Defines if all the IMAP data should be cached locally all the time"
-msgstr ""
+msgstr "הגדרה האם כל נתוני ה־IMAP צריכים להישמר במטמון המקומי כל הזמן"
 
 #. i18n: ectx: label, entry (IntervalCheckEnabled), group (cache)
 #: imapresource.kcfg:49
@@ -190,19 +190,19 @@ msgstr ""
 #: imapresource.kcfg:67
 #, kde-format
 msgid "Define which folder is used for trash"
-msgstr ""
+msgstr "הגדרה אילו תיקייה תשמש לאשפה"
 
 #. i18n: ectx: label, entry (TrashCollectionMigrated), group (cache)
 #: imapresource.kcfg:71
 #, kde-format
 msgid "Define if the trash collection received the special attribute"
-msgstr ""
+msgstr "הגדרה האם אוסף האשפה קיבל את המאפיין המיוחד"
 
 #. i18n: ectx: label, entry (UseDefaultIdentity), group (cache)
 #: imapresource.kcfg:75
 #, kde-format
 msgid "Define if account uses the default identity"
-msgstr ""
+msgstr "הגדרה אם חשבון משתמש בזהות ברירת המחדל"
 
 #. i18n: ectx: label, entry (AccountIdentity), group (cache)
 #: imapresource.kcfg:79
@@ -214,7 +214,7 @@ msgstr "חשבון זהות"
 #: imapresource.kcfg:82
 #, kde-format
 msgid "List of mailbox names reported by the server the last time"
-msgstr ""
+msgstr "רשימה של שמות תיבות דוא״ל שדווחו על ידי השרת בפעם האחרונה"
 
 #. i18n: ectx: label, entry (IdleRidPath), group (idle)
 #: imapresource.kcfg:87
@@ -226,7 +226,7 @@ msgstr ""
 #: imapresource.kcfg:92
 #, kde-format
 msgid "Define if server supports sieve"
-msgstr ""
+msgstr "הגדרה האם השרת תומך ב־sieve"
 
 #. i18n: ectx: label, entry (SieveReuseConfig), group (siever)
 #: imapresource.kcfg:96
@@ -238,19 +238,19 @@ msgstr ""
 #: imapresource.kcfg:100
 #, kde-format
 msgid "Define sieve port"
-msgstr ""
+msgstr "הגדרת פתחת sieve"
 
 #. i18n: ectx: label, entry (SieveAlternateUrl), group (siever)
 #: imapresource.kcfg:104
 #, kde-format
 msgid "Define alternate URL"
-msgstr ""
+msgstr "הגדרת כתובת חלופית"
 
 #. i18n: ectx: label, entry (AlternateAuthentication), group (siever)
 #: imapresource.kcfg:107
 #, kde-format
 msgid "Defines the authentication type to use for alternate server"
-msgstr ""
+msgstr "הגדרת סוג האימות לשימוש לשרת חלופי"
 
 #. i18n: ectx: label, entry (SieveVacationFilename), group (siever)
 #: imapresource.kcfg:111
@@ -268,40 +268,40 @@ msgstr ""
 #: imapresource.kcfg:119
 #, kde-format
 msgid "Defines the type of identification used by custom sieve server"
-msgstr ""
+msgstr "הגדרת זוג הזיהוי לשימוש מול שרת ה־sieve בהתאמה אישית"
 
 #: imapresourcebase.cpp:212
 #, kde-format
 msgid "No server configured yet."
-msgstr ""
+msgstr "לא הוגדר שרת עדיין."
 
 #: imapresourcebase.cpp:245 setupserver.cpp:674
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
-msgstr ""
+msgstr "מינוי מצד השרת"
 
 #: imapresourcebase.cpp:269
 #, kde-format
 msgid "Connection established."
-msgstr ""
+msgstr "החיבור נוצר."
 
 #: imapresourcebase.cpp:286
 #, kde-format
 msgid "Server is not available."
-msgstr ""
+msgstr "השרת לא זמין."
 
 #: imapresourcebase.cpp:337
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
-msgstr ""
+msgstr "נוסף פריט ב־‚%1’"
 
 #: imapresourcebase.cpp:344
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
-msgstr ""
+msgstr "הפריט ב־‚%1’ מתעדכן"
 
 #: imapresourcebase.cpp:351
 #, kde-format
@@ -384,22 +384,22 @@ msgstr ""
 #: moveitemstask.cpp:41
 #, kde-format
 msgid "Cannot move message, it does not exist on the server."
-msgstr ""
+msgstr "לא ניתן להעביר הודעה, היא לא קיימת בשרת."
 
 #: moveitemstask.cpp:48
 #, kde-format
 msgid "Cannot move message out of '%1', '%1' does not exist on the server."
-msgstr ""
+msgstr "לא ניתן להעביר את ההודעה אל מחוץ ל־‚%1’, ‚%1’ לא קיים בשרת."
 
 #: moveitemstask.cpp:55
 #, kde-format
 msgid "Cannot move message to '%1', '%1' does not exist on the server."
-msgstr ""
+msgstr "לא ניתן להעביר את ההודעה אל ‚%1’, ‚%1’ לא קיים בשרת."
 
 #: moveitemstask.cpp:113
 #, kde-format
 msgid "Failed to move item, it has no message payload. Remote id: %1"
-msgstr ""
+msgstr "העברת הפריט נכשלה, אין לו מטען הודעה. מזהה מרוחק: %1"
 
 #: moveitemstask.cpp:190
 #, kde-format
@@ -407,43 +407,44 @@ msgid ""
 "Failed to mark the message from '%1' for deletion on the IMAP server. It "
 "will reappear on next sync."
 msgstr ""
+"סימון ההודעה מ־‚%1’ למחיקה בשרת ה־IMAP נכשל. היא תופיע מחדש בסנכרון הבא."
 
 #: outlookpasswordrequester.cpp:62 outlookpasswordrequester.cpp:71
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
-msgstr ""
+msgstr "קריאת הסיסמה ממחזיק המפתחות נכשלה."
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
-msgstr ""
+msgstr "מחיקת התיקייה נכשלה, רשימת התיקיות משוחזרת."
 
 #: removecollectionrecursivetask.cpp:146
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
-msgstr ""
+msgstr "איתור התיקייה למחיקה נכשל, רשימת התיקיות משוחזרת."
 
 #: resourcestate.cpp:264
 #, kde-format
 msgid "Restarting item retrieval."
-msgstr ""
+msgstr "משיכת הפריט מתחדשת."
 
 #: resourcetask.cpp:69
 #, kde-format
 msgid "Unable to connect to the IMAP server."
-msgstr ""
+msgstr "לא ניתן להתחבר לשרת ה־IMAP."
 
 #: resourcetask.cpp:113 resourcetask.cpp:125
 #, kde-format
 msgid "Connection lost"
-msgstr ""
+msgstr "החיבור נקטע"
 
 #: resourcetask.cpp:475
 #, kde-format
 msgid "killed"
-msgstr ""
+msgstr "חוסל"
 
 #: retrievecollectionmetadatatask.cpp:179
 #, kde-format
@@ -481,12 +482,12 @@ msgstr "המזהה המרוחק ריק או שגוי"
 #: retrieveitemtask.cpp:78 retrieveitemtask.cpp:94
 #, kde-format
 msgid "No message retrieved, failed to read the message."
-msgstr ""
+msgstr "לא נמשכה הודעה כלל, קריאת ההודעה נכשלה."
 
 #: retrieveitemtask.cpp:115
 #, kde-format
 msgid "No message retrieved, server reply was empty."
-msgstr ""
+msgstr "לא התקבלה הודעה, תגובת השרת הייתה ריקה."
 
 #: searchtask.cpp:193
 #, kde-format
@@ -549,7 +550,7 @@ msgstr "סיסמה ריקה"
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
 "set up for that."
-msgstr ""
+msgstr "ביקשת TLS/SSL כדי להתחבר אל %1, אך נראה שהמערכת שלך לא מוגדרת לזה."
 
 #: sessionpool.cpp:410
 #, kde-format
@@ -557,6 +558,8 @@ msgid ""
 "Could not connect to the IMAP-server.\n"
 "%1"
 msgstr ""
+"לא ניתן להתחבר לשרת ה־IMAP.\n"
+"%1"
 
 #: sessionpool.cpp:433
 #, kde-format
@@ -564,6 +567,8 @@ msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
 "%2"
 msgstr ""
+"לא ניתן לבחון את היכולות שנתמכות על ידי שרת ה־IMAP‏ %1.\n"
+"%2"
 
 #: sessionpool.cpp:441
 #, kde-format
@@ -571,6 +576,8 @@ msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
 "%1"
 msgstr ""
+"לא ניתן לבחון את היכולות שנתמכות על ידי שרת ה־IMAP‏.\n"
+"%1"
 
 #: sessionpool.cpp:461
 #, kde-format
@@ -578,17 +585,19 @@ msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
 "Please ask your sysadmin to upgrade the server."
 msgstr ""
+"לא ניתן להשתמש בשרת ה־IMAP‏ %1, כמה יכולות הכרחיות חסרות: %2. נא לבקש מהנהלת "
+"השרת שלך לשדרג את השרת."
 
 #: sessionpool.cpp:533
 #, kde-format
 msgid "Disconnected during login."
-msgstr ""
+msgstr "החיבור נותק במהלך הכניסה לחשבון."
 
 #: settingspasswordrequester.cpp:46
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "חשבון דוא״ל IMAP צריך את תשומת הלב שלך."
 
 #: settingspasswordrequester.cpp:50
 #, kde-format
@@ -598,6 +607,10 @@ msgid ""
 "\n"
 "%1"
 msgstr ""
+"שרת ה־IMAP סירב לשם המשתמש והסיסמה.\n"
+"לנסות שוב או לפתוח את ההגדרות?\n"
+"\n"
+"%1"
 
 #: settingspasswordrequester.cpp:53
 #, kde-format
@@ -607,6 +620,10 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
+"שרת ה־IMAP לחשבון %1 סירב לשם המשתמש והסיסמה.\n"
+"לנסות שוב או לפתוח את ההגדרות?\n"
+"\n"
+"%2"
 
 #: settingspasswordrequester.cpp:58
 #, kde-format
@@ -653,7 +670,7 @@ msgstr ""
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p%"
 
 #: setupserver.cpp:166
 #, kde-format
@@ -710,7 +727,7 @@ msgctxt "@info:status"
 msgid ""
 "Could not access KWallet. It is necessary to store the password. Please "
 "activate it."
-msgstr ""
+msgstr "לא ניתן לגשת ל־KWallet. הכרחי כדי לאחסן את הסיסמה. נא להפעיל אותו."
 
 #: setupserver.cpp:436 setupserver.cpp:488
 #, kde-format
@@ -843,7 +860,7 @@ msgstr "השרת תומך ב־Sieve"
 #: setupserverview_desktop.ui:173
 #, kde-format
 msgid "Reuse host and login configuration"
-msgstr ""
+msgstr "שימוש חוזר בהגדרות המארח ופרטי הגישה"
 
 #. i18n: ectx: property (text), widget (QLabel, label_14)
 #: setupserverview_desktop.ui:180
@@ -860,7 +877,7 @@ msgstr ""
 #: setupserverview_desktop.ui:192
 #, kde-format
 msgid "Managesieve port:"
-msgstr ""
+msgstr "פתחת sieve על הודעות:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: setupserverview_desktop.ui:210
@@ -987,7 +1004,7 @@ msgstr ""
 #: setupserverview_desktop.ui:397
 #, kde-format
 msgid "Trash folder:"
-msgstr ""
+msgstr "תיקיית אשפה:"
 
 #. i18n: ectx: property (text), widget (KTitleWidget)
 #: setupserverview_desktop.ui:407

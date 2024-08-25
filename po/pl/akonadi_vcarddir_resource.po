@@ -1,15 +1,15 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Maciej Wikło <maciej.wiklo@wp.pl>, 2010.
-# Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>, 2011, 2014, 2019.
+# SPDX-FileCopyrightText: 2011, 2014, 2019, 2024 Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>
 # Marta Rybczyńska <kde-i18n@rybczynska.net>, 2013.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2019-02-03 07:12+0100\n"
+"PO-Revision-Date: 2024-08-24 12:10+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "Language: pl\n"
@@ -18,6 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: vcarddiragentsettingswidget.ui:33
@@ -129,19 +130,17 @@ msgid "Do not change the actual backend data."
 msgstr "Nie zmieniaj bieżących danych silnika."
 
 #: vcarddirsettingswidget.cpp:44
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minuta"
+msgstr[0] "%v minuta"
 msgstr[1] " minuty"
 msgstr[2] " minut"
 
 #: vcarddirsettingswidget.cpp:48
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktywności"
 
 #~ msgid "Path:"
 #~ msgstr "Ścieżka:"

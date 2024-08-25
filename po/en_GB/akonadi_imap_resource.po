@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-21 00:48+0000\n"
-"PO-Revision-Date: 2024-08-03 12:53+0100\n"
+"PO-Revision-Date: 2024-08-24 11:46+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
 "Language: en_GB\n"
@@ -685,13 +685,11 @@ msgid "%p%"
 msgstr "%p%"
 
 #: setupserver.cpp:166
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minute"
-msgstr[1] " minutes"
+msgstr[0] "%v minute"
+msgstr[1] "%v minutes"
 
 #: setupserver.cpp:182
 #, kde-format
@@ -701,7 +699,7 @@ msgstr "Identity:"
 #: setupserver.cpp:202
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Activities"
 
 #: setupserver.cpp:269
 #, kde-format

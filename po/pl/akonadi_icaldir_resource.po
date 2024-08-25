@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
+# SPDX-FileCopyrightText: 2012, 2014, 2016, 2021, 2024 Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>
 #
-# Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>, 2012, 2014, 2016, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2021-07-11 08:25+0200\n"
+"PO-Revision-Date: 2024-08-24 12:09+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "Language: pl\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -115,19 +116,17 @@ msgid "Autosave delay:"
 msgstr "Opóźnienie automatycznego zapisu:"
 
 #: icaldirsettingswidget.cpp:45
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minuta"
+msgstr[0] "%v minuta"
 msgstr[1] " minuty"
 msgstr[2] " minut"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktywności"
 
 #~ msgid "Directory Name"
 #~ msgstr "Nazwa katalogu"
