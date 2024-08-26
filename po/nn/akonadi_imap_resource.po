@@ -622,7 +622,6 @@ msgstr ""
 
 #: settingspasswordrequester.cpp:64
 #, fuzzy, kde-format
-#| msgid "Connection Settings"
 msgctxt "@action:button"
 msgid "Open settings"
 msgstr "Innstillingar for tilkopling"
@@ -973,7 +972,6 @@ msgstr "Bruk tenarabonnement"
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
 #, fuzzy, kde-format
-#| msgid "Serverside Subscription..."
 msgid "Serverside Subscription…"
 msgstr "Tenarabonnement …"
 

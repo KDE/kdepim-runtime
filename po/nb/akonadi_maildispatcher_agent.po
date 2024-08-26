@@ -21,8 +21,6 @@ msgstr ""
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
 #, fuzzy, kde-format
-#| msgid "Sending messages (1 item in queue)..."
-#| msgid_plural "Sending messages (%1 items in queue)..."
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
 msgstr[0] "Sender meldinger (1 oppføring i køen) …"

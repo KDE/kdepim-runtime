@@ -1,3 +1,4 @@
+# SPDX-FileCopyrightText: 2024 Johannes Obermayr <johannesobermayr@gmx.de>
 # Burkhard Lück <lueck@hube-lueck.de>, 2009, 2014.
 # Thomas Reitelbach <tr@erdfunkstelle.de>, 2009.
 # Frederik Schwarzer <schwarzer@kde.org>, 2010, 2011.
@@ -7,14 +8,15 @@ msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-02-29 00:38+0000\n"
-"PO-Revision-Date: 2014-04-02 09:00+0200\n"
-"Last-Translator: Burkhard Lück <lueck@hube-lueck.de>\n"
+"PO-Revision-Date: 2024-08-21 22:01+0200\n"
+"Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: vcardconfig.cpp:16
 #, kde-format
@@ -60,14 +62,13 @@ msgstr "Datei auf Änderungen überwachen."
 #: vcardresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "Die Datei periodisch aktualisieren."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: vcardresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Autosave interval time (in minutes)."
+#, kde-format
 msgid "Automatic update period in minutes."
-msgstr "Intervall für automatisches Speichern (in Minuten)."
+msgstr "Intervall für automatisches Aktualisieren in Minuten."
 
 #~ msgid "Filename:"
 #~ msgstr "Dateiname:"

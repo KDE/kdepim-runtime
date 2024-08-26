@@ -1,3 +1,4 @@
+# SPDX-FileCopyrightText: 2024 Johannes Obermayr <johannesobermayr@gmx.de>
 # Burkhard Lück <lueck@hube-lueck.de>, 2009.
 # Jannick Kuhr <opensource@kuhr.org>, 2009.
 # Frederik Schwarzer <schwarzer@kde.org>, 2009, 2012, 2016.
@@ -14,6 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: birthdaysconfigagentwidget.cpp:35
 #, kde-format

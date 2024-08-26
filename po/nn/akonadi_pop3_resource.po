@@ -40,7 +40,6 @@ msgstr "POP3-konto"
 
 #: accountwidget.cpp:194
 #, fuzzy, kde-format
-#| msgid "Unable to complete the mail fetch."
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Feil ved henting av e-post."

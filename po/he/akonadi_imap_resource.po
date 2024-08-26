@@ -7,15 +7,16 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-23 00:39+0000\n"
-"PO-Revision-Date: 2024-08-24 14:17+0300\n"
+"PO-Revision-Date: 2024-08-25 08:09+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
+"n % 10 == 0) ? 2 : 3));\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -160,7 +161,7 @@ msgstr "הגדרה האם כל נתוני ה־IMAP צריכים להישמר ב�
 #: imapresource.kcfg:49
 #, kde-format
 msgid "Defines if interval checking is enabled."
-msgstr ""
+msgstr "הגדרה האם בדיקה לפרקים פעילה."
 
 #. i18n: ectx: label, entry (IntervalCheckTime), group (cache)
 #: imapresource.kcfg:53
@@ -175,6 +176,8 @@ msgid ""
 "Defines if the annotations, ACLs and quota information of mailboxes should\n"
 "             also be retrieved when the mailboxes get listed."
 msgstr ""
+"הגדרה האם ההסברים, רשימות בקרת גישה (ACLs) ופרטי מכסה של תיבות הדוא״ל\n"
+"             צריכים להתקבל גם כאשר רשימות תיבות הדוא״ל מוצגות ברשימה."
 
 #. i18n: ectx: label, entry (AutomaticExpungeEnabled), group (cache)
 #: imapresource.kcfg:63
@@ -231,7 +234,7 @@ msgstr "הגדרה האם השרת תומך ב־sieve"
 #: imapresource.kcfg:96
 #, kde-format
 msgid "Define if we reuse host and login configuration"
-msgstr ""
+msgstr "הגדרה האם לעשות שימוש חוזר בהגדרות המארח ופרטי הגישה"
 
 #. i18n: ectx: label, entry (SievePort), group (siever)
 #: imapresource.kcfg:100
@@ -378,7 +381,7 @@ msgstr ""
 #, kde-format
 msgid ""
 "Cannot move IMAP folder '%1' to '%2', '%2' does not exist on the server."
-msgstr ""
+msgstr "לא ניתן להעביר את תיקיית ה־IMAP‏ ‚%1’ אל ‚%2’,‏ ‚%2’ לא קיימת בשרת."
 
 #: moveitemstask.cpp:41
 #, kde-format
@@ -451,6 +454,8 @@ msgid ""
 "<p>Your access rights to folder <b>%1</b> have been restricted, it will no "
 "longer be possible to add messages to this folder.</p>"
 msgstr ""
+"<p>הרשאות הגישה שלך לתיקייה <b>%1</b> הוגבלו, לא ניתן עוד להוסיף הודעות "
+"לתיקייה הזאת.</p>"
 
 #: retrievecollectionmetadatatask.cpp:182
 #, kde-format
@@ -675,8 +680,10 @@ msgstr "%p%"
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] " דקה"
+msgstr[1] " דקות"
+msgstr[2] " דקות"
+msgstr[3] " דקות"
 
 #: setupserver.cpp:171
 #, kde-format
@@ -705,6 +712,8 @@ msgid ""
 "account as before we will have to re-download all your emails from this "
 "account again. Are you sure you want to proceed?"
 msgstr ""
+"שינית את שם המשתמש. אפילו אם זה אותו שם המשתמש לחשבון כמו מקודם אנחנו נצטרך "
+"להוריד את כל הודעות הדוא״ל שלך מהחשבון הזה שוב. להמשיך?"
 
 #: setupserver.cpp:267
 #, kde-format

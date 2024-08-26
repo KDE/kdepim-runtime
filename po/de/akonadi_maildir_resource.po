@@ -1,3 +1,4 @@
+# SPDX-FileCopyrightText: 2024 Johannes Obermayr <johannesobermayr@gmx.de>
 # Thomas Reitelbach <tr@erdfunkstelle.de>, 2009.
 # Frederik Schwarzer <schwarzer@kde.org>, 2010, 2011.
 # Torbjörn Klatt <opensource@torbjoern-klatt.de>, 2011.
@@ -15,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: configwidget.cpp:30
 #, kde-format

@@ -239,10 +239,6 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
 #, fuzzy, kde-format
-#| msgid ""
-#| "If read-only mode is enabled, no changes will be written to the directory "
-#| "selected above. Read-only mode will be automatically enabled if you do "
-#| "not have write access to the directory."
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
@@ -289,8 +285,6 @@ msgstr ""
 
 #: singlefileresourceconfigwidgetbase.cpp:129
 #, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Checking file information..."
 msgctxt "@info:status"
 msgid "Checking file information…"
 msgstr "Sjekkar filinformasjonen …"

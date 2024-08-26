@@ -52,7 +52,6 @@ msgstr "Klarte ikke å starte migrering fordi migrator ikke er klar"
 
 #: ../migratorbase.cpp:147
 #, fuzzy, kde-format
-#| msgid "Starting migration..."
 msgid "Starting migration…"
 msgstr "Starter migrering …"
 
@@ -89,8 +88,6 @@ msgstr "Ikke startet"
 
 #: ../migratorbase.cpp:272
 #, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Running..."
 msgctxt "@info:status"
 msgid "Running…"
 msgstr "Kjører …"
@@ -162,7 +159,6 @@ msgstr ""
 
 #: main.cpp:33
 #, fuzzy, kde-format
-#| msgid "Christian Mollekopf"
 msgctxt "@info:credit"
 msgid "Christian Mollekopf"
 msgstr "Christian Mollekopf"
@@ -174,21 +170,18 @@ msgstr "Forfatter"
 
 #: main.cpp:36
 #, fuzzy, kde-format
-#| msgid "Show reporting dialog"
 msgctxt "@info:shell"
 msgid "Show reporting dialog"
 msgstr "Vis rapporteringsdialog"
 
 #: main.cpp:38
 #, fuzzy, kde-format
-#| msgid "Show report only if changes were made"
 msgctxt "@info:shell"
 msgid "Show report only if changes were made"
 msgstr "Vis rapport bare hvis det ble gjort endringer"
 
 #: main.cpp:39
 #, fuzzy, kde-format
-#| msgid "MIME type to migrate"
 msgctxt "@info:shell"
 msgid "MIME type to migrate"
 msgstr "Mime-type som skal migreres"

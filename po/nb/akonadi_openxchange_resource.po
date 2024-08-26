@@ -109,7 +109,6 @@ msgstr "Passordet som brukes til å logge inn på Open-Xchange-tjeneren"
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
 #, fuzzy, kde-format
-#| msgid "Test Connection..."
 msgid "Test Connection…"
 msgstr "Test tilkobling …"
 

@@ -27,13 +27,11 @@ msgstr ""
 
 #: newmailnotificationhistorymanager.cpp:32
 #, fuzzy, kde-format
-#| msgid "Folders"
 msgid "[Open Folder]"
 msgstr "Mapper"
 
 #: newmailnotificationhistorymanager.cpp:42
 #, fuzzy, kde-format
-#| msgid "Show mail..."
 msgid "[Show Mail]"
 msgstr "Vis e-post …"
 
@@ -72,28 +70,24 @@ msgstr ""
 
 #: newmailnotifierselectcollectionwidget.cpp:96
 #, fuzzy, kde-format
-#| msgid "Select which folders to monitor for new message notifications:"
 msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
 msgstr "Velg hvilke mapper som skal overvåkes for å varsle om nye meldinger:"
 
 #: newmailnotifierselectcollectionwidget.cpp:127
 #, fuzzy, kde-format
-#| msgid "Search..."
 msgctxt "@info:placeholder"
 msgid "Search…"
 msgstr "Søk …"
 
 #: newmailnotifierselectcollectionwidget.cpp:142
 #, fuzzy, kde-format
-#| msgid "&Select All"
 msgctxt "@action:button"
 msgid "&Select All"
 msgstr "&Velg alle"
 
 #: newmailnotifierselectcollectionwidget.cpp:146
 #, fuzzy, kde-format
-#| msgid "&Unselect All"
 msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "Frav&elg alle"
@@ -169,14 +163,12 @@ msgstr "Vis"
 
 #: newmailnotifiersettingswidget.cpp:118
 #, fuzzy, kde-format
-#| msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Hvordan virker dette?</a>"
 
 #: newmailnotifiersettingswidget.cpp:127
 #, fuzzy, kde-format
-#| msgid "Message:"
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "Melding:"
@@ -213,7 +205,6 @@ msgstr ""
 
 #: newmailnotifiersettingswidget.cpp:158
 #, fuzzy, kde-format
-#| msgid "Laurent Montel"
 msgctxt "@info:credit"
 msgid "Laurent Montel"
 msgstr "Laurent Montel"
@@ -257,7 +248,6 @@ msgstr ""
 
 #: specialnotifierjob.cpp:150
 #, fuzzy, kde-format
-#| msgid "Show mail..."
 msgid "Show mail…"
 msgstr "Vis e-post …"
 
