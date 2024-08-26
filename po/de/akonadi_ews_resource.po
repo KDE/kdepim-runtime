@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-02 00:41+0000\n"
-"PO-Revision-Date: 2024-04-28 20:13+0200\n"
+"PO-Revision-Date: 2024-08-21 21:49+0200\n"
 "Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -171,8 +171,7 @@ msgstr ""
 "speichern?"
 
 #: ewsconfigdialog.cpp:373
-#, fuzzy, kde-format
-#| msgid "Exchange server connection"
+#, kde-format
 msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Verbindung zum Exchange-Server"
@@ -769,10 +768,9 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 #: ewsprogressdialog.cpp:49
-#, fuzzy, kde-format
-#| msgid "Performing Microsoft Exchange server autodiscovery..."
+#, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr "Automatische Erkennung des Exchange-Servers wird ausgeführt ..."
+msgstr "Automatische Erkennung des Exchange-Servers wird ausgeführt …"
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -781,10 +779,9 @@ msgid "Connecting to Exchange"
 msgstr "Verbindung zu Exchange wird aufgebaut"
 
 #: ewsprogressdialog.cpp:53
-#, fuzzy, kde-format
-#| msgid "Connecting to Microsoft Exchange server..."
+#, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "Verbindung zum Microsoft-Exchange-Server wird aufgebaut ..."
+msgstr "Verbindung zum Microsoft-Exchange-Server wird aufgebaut …"
 
 #: ewsresource.cpp:143
 #, kde-format

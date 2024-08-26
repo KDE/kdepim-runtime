@@ -52,7 +52,6 @@ msgstr ""
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: icalresource.kcfg:30 notes/notesresource.kcfg:34
 #, fuzzy, kde-format
-#| msgid "Autosave interval time (in minutes)."
 msgid "Automatic update period in minutes."
 msgstr "Autolagringsintervall (i minutter)."
 

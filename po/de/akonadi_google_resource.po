@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-04-28 20:13+0200\n"
+"PO-Revision-Date: 2024-08-25 21:34+0200\n"
 "Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: calendarhandler.cpp:91
 #, kde-format
@@ -58,18 +58,15 @@ msgstr[0] "%1 Termin wird vom Kalender „%2“ in den Kalender „%3“ verscho
 msgstr[1] "%1 Termine werden vom Kalender „%2“ in den Kalender „%3“ verschoben"
 
 #: calendarhandler.cpp:341
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Changing contact"
+#, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr "Kontakt wird geändert"
+msgstr "Termindaten werden geändert"
 
 #: calendarhandler.cpp:345
-#, fuzzy, kde-format
-#| msgid "Failed to create a new event: %1"
+#, kde-format
 msgid "Failed to change tags on events"
-msgstr "Das Erstellen eines neuen Termins ist fehlgeschlagen: %1"
+msgstr "Das Ändern der Daten des Termins ist fehlgeschlagen"
 
 #: calendarhandler.cpp:357
 #, kde-format
@@ -100,10 +97,9 @@ msgid "Cannot handle item unlinking"
 msgstr "Lösen von Elementen nicht möglich"
 
 #: generichandler.cpp:34
-#, fuzzy, kde-format
-#| msgid "Cannot handle item linking"
+#, kde-format
 msgid "Cannot handle item tag changes"
-msgstr "Verknüpfung von Elementen nicht möglich"
+msgstr "Ändern der Termindaten nicht möglich"
 
 #: generichandler.cpp:61
 #, kde-format
@@ -117,10 +113,9 @@ msgid "Invalid item."
 msgstr "Ungültiges Element."
 
 #: googleresource.cpp:86
-#, fuzzy, kde-format
-#| msgid "Fetching password..."
+#, kde-format
 msgid "Fetching password…"
-msgstr "Passwort wird geholt ..."
+msgstr "Passwort wird geholt …"
 
 #: googleresource.cpp:93
 #, kde-format
@@ -204,13 +199,11 @@ msgid "Unknown collection mimetype"
 msgstr "Unbekannter Sammlungs-Mimetyp"
 
 #: googlesettingswidget.cpp:43
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " Minute"
-msgstr[1] " Minuten"
+msgstr[0] "%v Minute"
+msgstr[1] "%v Minuten"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:106 googlesettingswidget.ui:30
@@ -226,10 +219,9 @@ msgstr "Konto:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, fuzzy, kde-format
-#| msgid "Configure..."
+#, kde-format
 msgid "Configure…"
-msgstr "Einrichten ..."
+msgstr "Einrichten …"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49

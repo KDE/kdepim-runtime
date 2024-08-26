@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-22 00:40+0000\n"
-"PO-Revision-Date: 2024-04-28 20:07+0200\n"
+"PO-Revision-Date: 2024-08-25 21:35+0200\n"
 "Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -224,7 +224,7 @@ msgstr "Die Datei „%1“ lässt sich nicht speichern."
 #: singlefileresourceconfigbase.h:31
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktivitäten"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: singlefileresourceconfigwidget_desktop.ui:39
@@ -245,6 +245,9 @@ msgid ""
 "Select a local file or a remote URL to download a file from. A new local "
 "file will be created if it doesn't exist."
 msgstr ""
+"Wählen Sie eine lokale Datei oder eine entfernte Adresse für das "
+"Herunterladen. Eine neue lokale Datei wird erstellt, wenn sie nicht "
+"existiert."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
@@ -288,7 +291,7 @@ msgstr ""
 #: singlefileresourceconfigwidget_desktop.ui:149
 #, kde-format
 msgid "Automatically &update every"
-msgstr ""
+msgstr "Automatisch &aktualisieren alle"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
 #: singlefileresourceconfigwidget_desktop.ui:159
@@ -303,14 +306,14 @@ msgid ""
 "Periodically updates the file. Can be used when monitoring is not available "
 "(e.g. for remote calendars)."
 msgstr ""
+"Die Datei wird periodisch aktualisiert. Dies ist hilfreich, wenn eine "
+"Überwachung nicht zur Verfügung steht (z. B. bei entfernten Kalendern)."
 
 #: singlefileresourceconfigwidgetbase.cpp:129
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Checking file information..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"
-msgstr "Dateiinformationen werden überprüft ..."
+msgstr "Dateiinformationen werden überprüft …"
 
 #~ msgid "File Name:"
 #~ msgstr "Dateiname:"

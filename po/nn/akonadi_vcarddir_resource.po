@@ -123,8 +123,6 @@ msgstr "Ikkje endra grunnlagsdataa."
 
 #: vcarddirsettingswidget.cpp:44
 #, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] " minutt"

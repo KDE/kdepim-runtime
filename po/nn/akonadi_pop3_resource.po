@@ -28,8 +28,6 @@ msgstr ""
 
 #: accountwidget.cpp:93
 #, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] " minutt"
@@ -42,7 +40,6 @@ msgstr "POP3-konto"
 
 #: accountwidget.cpp:198
 #, fuzzy, kde-format
-#| msgid "Unable to complete the mail fetch."
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Feil ved henting av e-post."

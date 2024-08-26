@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-21 00:48+0000\n"
-"PO-Revision-Date: 2024-07-21 22:25+0200\n"
-"Last-Translator: Frank Steinmetzger <dev-kde@felsenfleischer.de>\n"
+"PO-Revision-Date: 2024-08-25 21:34+0200\n"
+"Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -733,13 +733,11 @@ msgid "%p%"
 msgstr "%p %"
 
 #: setupserver.cpp:166
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " Minute"
-msgstr[1] " Minuten"
+msgstr[0] "%v Minute"
+msgstr[1] "%v Minuten"
 
 #: setupserver.cpp:182
 #, kde-format
@@ -749,7 +747,7 @@ msgstr "Identität:"
 #: setupserver.cpp:202
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktivitäten"
 
 #: setupserver.cpp:269
 #, kde-format
@@ -763,8 +761,7 @@ msgstr ""
 "Möchten Sie wirklich fortfahren?"
 
 #: setupserver.cpp:272
-#, fuzzy, kde-format
-#| msgid "Server address change"
+#, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Server-Adresse geändert"
@@ -781,8 +778,7 @@ msgstr ""
 "herunterladen. Möchten Sie wirklich fortfahren?"
 
 #: setupserver.cpp:282
-#, fuzzy, kde-format
-#| msgid "User name change"
+#, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Benutzername geändert"

@@ -67,7 +67,6 @@ msgstr ""
 
 #: calendarhandler.cpp:345
 #, fuzzy, kde-format
-#| msgid "Failed to refresh tokens"
 msgid "Failed to change tags on events"
 msgstr "Klarte ikke å friske opp symboler"
 
@@ -133,7 +132,6 @@ msgstr "Klar"
 
 #: googleresource.cpp:146
 #, fuzzy, kde-format
-#| msgid "not configured"
 msgid "Not configured"
 msgstr "ikke satt opp"
 
@@ -199,8 +197,6 @@ msgstr "Ukjent mimetype for samling "
 
 #: googlesettingswidget.cpp:43
 #, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] " minutt"
@@ -209,7 +205,6 @@ msgstr[1] " minutter"
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:106 googlesettingswidget.ui:30
 #, fuzzy, kde-format
-#| msgid "not configured"
 msgid "<b>Not configured</b>"
 msgstr "ikke satt opp"
 
@@ -222,7 +217,6 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
 #, fuzzy, kde-format
-#| msgid "not configured"
 msgid "Configure…"
 msgstr "ikke satt opp"
 

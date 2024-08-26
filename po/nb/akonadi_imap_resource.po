@@ -364,8 +364,6 @@ msgstr "Flytrer mappe «%1» fra «%2» til «%3»"
 
 #: imapresourcebase.cpp:471
 #, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "Søker …"
@@ -633,15 +631,12 @@ msgstr ""
 
 #: settingspasswordrequester.cpp:58
 #, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Forsøk igjen"
 
 #: settingspasswordrequester.cpp:64
 #, fuzzy, kde-format
-#| msgid "Connection Settings"
 msgctxt "@action:button"
 msgid "Open settings"
 msgstr "Innstillinger for tilkopling"
@@ -683,8 +678,6 @@ msgstr ""
 
 #: setupserver.cpp:166
 #, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] " minutt"
@@ -724,7 +717,6 @@ msgstr ""
 
 #: setupserver.cpp:282
 #, fuzzy, kde-format
-#| msgid "Username"
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Brukernavn"
@@ -1005,8 +997,6 @@ msgstr "Slå på abonnementer  på tjenersiden"
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
 #, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Serverside Subscription"
 msgid "Serverside Subscription…"
 msgstr "Abonnement  på tjenersiden"
 

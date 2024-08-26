@@ -41,7 +41,6 @@ msgstr "Klarer ikke koble til: %1"
 
 #: configwidget.cpp:72
 #, fuzzy, kde-format
-#| msgid "Connection error"
 msgctxt "@title:window"
 msgid "Connection error"
 msgstr "Tilkoblingsfeil"
@@ -53,7 +52,6 @@ msgstr "Forbindelsen vellykket testet."
 
 #: configwidget.cpp:74
 #, fuzzy, kde-format
-#| msgid "Connection success"
 msgctxt "@title:window"
 msgid "Connection success"
 msgstr "Vellykket tilkobling"
@@ -113,7 +111,6 @@ msgstr "Passordet som brukes til å logge inn på Open-Xchange-tjeneren"
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
 #, fuzzy, kde-format
-#| msgid "Test Connection..."
 msgid "Test Connection…"
 msgstr "Test tilkobling …"
 

@@ -35,8 +35,6 @@ msgstr "PIM-vedlikehold"
 
 #: migrationexecutor.cpp:41
 #, fuzzy, kde-format
-#| msgctxt "PIM-Maintenance is in progress."
-#| msgid "In progress..."
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress…"
 msgstr "pågår …"
@@ -66,8 +64,6 @@ msgstr ""
 
 #: migrationscheduler.cpp:149
 #, fuzzy, kde-format
-#| msgctxt "Current status of the migrator (done, in progress, ...)"
-#| msgid "Status"
 msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "Status"

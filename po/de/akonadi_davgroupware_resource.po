@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-30 00:41+0000\n"
-"PO-Revision-Date: 2024-04-28 20:10+0200\n"
+"PO-Revision-Date: 2024-08-21 21:49+0200\n"
 "Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #: configdialog.cpp:33
 #, kde-format
@@ -339,10 +339,9 @@ msgid "Invalid collection for item %1."
 msgstr "Ungültige Sammlung für Eintrag %1."
 
 #: davgroupwareresource.cpp:650
-#, fuzzy, kde-format
-#| msgid "Unable to add item: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
-msgstr "Das Element kann nicht hinzugefügt werden: %1"
+msgstr "Die Elemente können nicht geändert werden: %1"
 
 #: davgroupwareresource.cpp:687
 #, kde-format
@@ -550,15 +549,13 @@ msgid "a contact with email"
 msgstr "Ein Kontakt mit E-Mail-Adresse"
 
 #: settings.cpp:477
-#, fuzzy, kde-format
-#| msgid "A password is required for user %1"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "A password is required for user %1"
 msgstr "Für den Benutzer „%1“ ist ein Passwort erforderlich"
 
 #: settings.cpp:481
-#, fuzzy, kde-format
-#| msgid "Password: "
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Password: "
 msgstr "Passwort: "
@@ -587,8 +584,7 @@ msgid "User:"
 msgstr "Benutzer:"
 
 #: setupwizard.cpp:255
-#, fuzzy, kde-format
-#| msgid "No, choose another server"
+#, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Nein, einen anderen Server wählen"
@@ -632,15 +628,13 @@ msgstr ""
 "soll"
 
 #: setupwizard.cpp:338
-#, fuzzy, kde-format
-#| msgid "Use one of those servers:"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Einen dieser Server nutzen:"
 
 #: setupwizard.cpp:347
-#, fuzzy, kde-format
-#| msgid "Configure the resource manually"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Die Ressource manuell einrichten"
@@ -666,29 +660,25 @@ msgid "Installation path"
 msgstr "Installationspfad"
 
 #: setupwizard.cpp:395
-#, fuzzy, kde-format
-#| msgid "Use secure connection"
+#, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Sichere Verbindung verwenden"
 
 #: setupwizard.cpp:423
-#, fuzzy, kde-format
-#| msgid "Final URL (CalDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "Endgültige Adresse (CalDav)"
 
 #: setupwizard.cpp:428
-#, fuzzy, kde-format
-#| msgid "Final URL (CardDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "Endgültige Adresse (CardDav)"
 
 #: setupwizard.cpp:433
-#, fuzzy, kde-format
-#| msgid "Final URL (GroupDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Endgültige Adresse (GroupDav)"
@@ -708,8 +698,7 @@ msgstr ""
 "Einstellungen zugänglich ist."
 
 #: setupwizard.cpp:503
-#, fuzzy, kde-format
-#| msgid "Test Connection"
+#, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Verbindung testen"
