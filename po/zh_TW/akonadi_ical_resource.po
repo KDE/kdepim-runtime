@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-14 00:39+0000\n"
+"POT-Creation-Date: 2024-08-27 00:40+0000\n"
 "PO-Revision-Date: 2023-12-13 05:19+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -20,46 +20,40 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. i18n: ectx: label, entry (Path), group (General)
-#: icalresource.kcfg:10 notes/notesresource.kcfg:10
+#: icalresource.kcfg:10
 #, kde-format
 msgid "Path to iCal file."
 msgstr "iCal 檔案路徑。"
 
 #. i18n: ectx: label, entry (DisplayName), group (General)
-#: icalresource.kcfg:14 notes/notesresource.kcfg:14
+#: icalresource.kcfg:14
 #, kde-format
 msgid "Display name."
 msgstr "顯示名稱。"
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
-#: icalresource.kcfg:18 notes/notesresource.kcfg:18
+#: icalresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "不要變更實際的後端資料。"
 
 #. i18n: ectx: label, entry (MonitorFile), group (General)
-#: icalresource.kcfg:22 notes/notesresource.kcfg:26
+#: icalresource.kcfg:22
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "監控檔案變更。"
 
 #. i18n: ectx: label, entry (PeriodicUpdate), group (General)
-#: icalresource.kcfg:26 notes/notesresource.kcfg:30
+#: icalresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
 msgstr "每隔一段時間就更新檔案。"
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
-#: icalresource.kcfg:30 notes/notesresource.kcfg:34
+#: icalresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "自動更新間隔（分鐘）。"
-
-#. i18n: ectx: label, entry (AutosaveInterval), group (General)
-#: notes/notesresource.kcfg:22
-#, kde-format
-msgid "Autosave interval time (in minutes)."
-msgstr "自動儲存間隔時間（分）。"
 
 #: shared/icalresource.cpp:47
 #, kde-format
@@ -86,6 +80,9 @@ msgstr "無法取得新增項目 %1。"
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "無法取得變更項目 %1。"
+
+#~ msgid "Autosave interval time (in minutes)."
+#~ msgstr "自動儲存間隔時間（分）。"
 
 #~ msgid "Filename:"
 #~ msgstr "檔案名稱："

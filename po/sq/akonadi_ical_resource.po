@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-14 00:39+0000\n"
+"POT-Creation-Date: 2024-08-27 00:40+0000\n"
 "PO-Revision-Date: 2009-08-13 12:31+0000\n"
 "Last-Translator: Vilson Gjeci <vilsongjeci@gmail.com>\n"
 "Language-Team: Albanian <sq@li.org>\n"
@@ -20,46 +20,40 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #. i18n: ectx: label, entry (Path), group (General)
-#: icalresource.kcfg:10 notes/notesresource.kcfg:10
+#: icalresource.kcfg:10
 #, kde-format
 msgid "Path to iCal file."
 msgstr "Shtegu për tek skedari iCal."
 
 #. i18n: ectx: label, entry (DisplayName), group (General)
-#: icalresource.kcfg:14 notes/notesresource.kcfg:14
+#: icalresource.kcfg:14
 #, kde-format
 msgid "Display name."
 msgstr ""
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
-#: icalresource.kcfg:18 notes/notesresource.kcfg:18
+#: icalresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Mos i ndrysho të dhënat aktuale backend."
 
 #. i18n: ectx: label, entry (MonitorFile), group (General)
-#: icalresource.kcfg:22 notes/notesresource.kcfg:26
+#: icalresource.kcfg:22
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "Monitoro ndryshimin e skedarëve."
 
 #. i18n: ectx: label, entry (PeriodicUpdate), group (General)
-#: icalresource.kcfg:26 notes/notesresource.kcfg:30
+#: icalresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
 msgstr ""
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
-#: icalresource.kcfg:30 notes/notesresource.kcfg:34
+#: icalresource.kcfg:30
 #, fuzzy, kde-format
 #| msgid "Autosave interval time (in minutes)."
 msgid "Automatic update period in minutes."
-msgstr "Intervali kohor për vetëruajtje (në minuta)."
-
-#. i18n: ectx: label, entry (AutosaveInterval), group (General)
-#: notes/notesresource.kcfg:22
-#, kde-format
-msgid "Autosave interval time (in minutes)."
 msgstr "Intervali kohor për vetëruajtje (në minuta)."
 
 #: shared/icalresource.cpp:47
@@ -87,6 +81,9 @@ msgstr "Nuk jemi në gjendje të marrim temën %1."
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Nuk jemi në gjendje të marrim temën e modifikuar %1."
+
+#~ msgid "Autosave interval time (in minutes)."
+#~ msgstr "Intervali kohor për vetëruajtje (në minuta)."
 
 #~ msgid "Select Calendar"
 #~ msgstr "Zgjidh Kalendarin"

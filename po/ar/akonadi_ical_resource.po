@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-14 00:39+0000\n"
+"POT-Creation-Date: 2024-08-27 00:40+0000\n"
 "PO-Revision-Date: 2024-02-23 18:02+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -19,46 +19,40 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. i18n: ectx: label, entry (Path), group (General)
-#: icalresource.kcfg:10 notes/notesresource.kcfg:10
+#: icalresource.kcfg:10
 #, kde-format
 msgid "Path to iCal file."
 msgstr "مسار ملفّ iCal."
 
 #. i18n: ectx: label, entry (DisplayName), group (General)
-#: icalresource.kcfg:14 notes/notesresource.kcfg:14
+#: icalresource.kcfg:14
 #, kde-format
 msgid "Display name."
 msgstr "اسم العرض."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
-#: icalresource.kcfg:18 notes/notesresource.kcfg:18
+#: icalresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "لا تغيّر بيانات السّند الفعليّة."
 
 #. i18n: ectx: label, entry (MonitorFile), group (General)
-#: icalresource.kcfg:22 notes/notesresource.kcfg:26
+#: icalresource.kcfg:22
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "راقِب تغييرات الملفّ."
 
 #. i18n: ectx: label, entry (PeriodicUpdate), group (General)
-#: icalresource.kcfg:26 notes/notesresource.kcfg:30
+#: icalresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
 msgstr "حدث الملف بشكل دوري."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
-#: icalresource.kcfg:30 notes/notesresource.kcfg:34
+#: icalresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "فترة التحديث الآليّ بالدّقيقة."
-
-#. i18n: ectx: label, entry (AutosaveInterval), group (General)
-#: notes/notesresource.kcfg:22
-#, kde-format
-msgid "Autosave interval time (in minutes)."
-msgstr "فترة الحفظ الآليّ (بالدّقيقة)."
 
 #: shared/icalresource.cpp:47
 #, kde-format
@@ -85,6 +79,9 @@ msgstr "تعذّر جلب العنصر %1 المُضاف."
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "تعذّر جلب العنصر %1 المعدّل."
+
+#~ msgid "Autosave interval time (in minutes)."
+#~ msgstr "فترة الحفظ الآليّ (بالدّقيقة)."
 
 #~ msgid "Filename:"
 #~ msgstr "اسم الملفّ:"

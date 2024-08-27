@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-14 00:39+0000\n"
+"POT-Creation-Date: 2024-08-27 00:40+0000\n"
 "PO-Revision-Date: 2010-12-27 12:43+0100\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -20,45 +20,39 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 
 #. i18n: ectx: label, entry (Path), group (General)
-#: icalresource.kcfg:10 notes/notesresource.kcfg:10
+#: icalresource.kcfg:10
 #, kde-format
 msgid "Path to iCal file."
 msgstr "Sti til iCal-fil."
 
 #. i18n: ectx: label, entry (DisplayName), group (General)
-#: icalresource.kcfg:14 notes/notesresource.kcfg:14
+#: icalresource.kcfg:14
 #, kde-format
 msgid "Display name."
 msgstr "Skjermnavn."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
-#: icalresource.kcfg:18 notes/notesresource.kcfg:18
+#: icalresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Ikke endre de virkelige bakgrunnsdataene."
 
 #. i18n: ectx: label, entry (MonitorFile), group (General)
-#: icalresource.kcfg:22 notes/notesresource.kcfg:26
+#: icalresource.kcfg:22
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "Overvåk fil etter endringer."
 
 #. i18n: ectx: label, entry (PeriodicUpdate), group (General)
-#: icalresource.kcfg:26 notes/notesresource.kcfg:30
+#: icalresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
 msgstr ""
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
-#: icalresource.kcfg:30 notes/notesresource.kcfg:34
+#: icalresource.kcfg:30
 #, fuzzy, kde-format
 msgid "Automatic update period in minutes."
-msgstr "Autolagringsintervall (i minutter)."
-
-#. i18n: ectx: label, entry (AutosaveInterval), group (General)
-#: notes/notesresource.kcfg:22
-#, kde-format
-msgid "Autosave interval time (in minutes)."
 msgstr "Autolagringsintervall (i minutter)."
 
 #: shared/icalresource.cpp:47
@@ -86,3 +80,6 @@ msgstr "Klarer ikke hente tilagt element %1."
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Klarer ikke hente endret element %1."
+
+#~ msgid "Autosave interval time (in minutes)."
+#~ msgstr "Autolagringsintervall (i minutter)."

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-14 00:39+0000\n"
+"POT-Creation-Date: 2024-08-27 00:40+0000\n"
 "PO-Revision-Date: 2023-10-07 16:35+0200\n"
 "Last-Translator: Xavier BESNARD <xavier.besnard@neuf.fr>\n"
 "Language-Team: French <kde-francophone@kde.org>\n"
@@ -24,46 +24,40 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 
 #. i18n: ectx: label, entry (Path), group (General)
-#: icalresource.kcfg:10 notes/notesresource.kcfg:10
+#: icalresource.kcfg:10
 #, kde-format
 msgid "Path to iCal file."
 msgstr "Emplacement du fichier « iCal »."
 
 #. i18n: ectx: label, entry (DisplayName), group (General)
-#: icalresource.kcfg:14 notes/notesresource.kcfg:14
+#: icalresource.kcfg:14
 #, kde-format
 msgid "Display name."
 msgstr "Afficher le nom."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
-#: icalresource.kcfg:18 notes/notesresource.kcfg:18
+#: icalresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Ne pas modifier les données actuelles du moteur."
 
 #. i18n: ectx: label, entry (MonitorFile), group (General)
-#: icalresource.kcfg:22 notes/notesresource.kcfg:26
+#: icalresource.kcfg:22
 #, kde-format
 msgid "Monitor file for changes."
 msgstr "Surveiller les modifications de fichiers."
 
 #. i18n: ectx: label, entry (PeriodicUpdate), group (General)
-#: icalresource.kcfg:26 notes/notesresource.kcfg:30
+#: icalresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
 msgstr "Mettre à jour régulièrement le fichier"
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
-#: icalresource.kcfg:30 notes/notesresource.kcfg:34
+#: icalresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "Intervalle de mise à jour automatique en minutes."
-
-#. i18n: ectx: label, entry (AutosaveInterval), group (General)
-#: notes/notesresource.kcfg:22
-#, kde-format
-msgid "Autosave interval time (in minutes)."
-msgstr "Intervalle d'enregistrement automatique (en minutes)."
 
 #: shared/icalresource.cpp:47
 #, kde-format
@@ -90,6 +84,9 @@ msgstr "Impossible d'extraire l'élément ajouté %1."
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Impossible d'extraire l'élément modifié %1."
+
+#~ msgid "Autosave interval time (in minutes)."
+#~ msgstr "Intervalle d'enregistrement automatique (en minutes)."
 
 #~ msgid "Filename:"
 #~ msgstr "Nom de fichier :"
