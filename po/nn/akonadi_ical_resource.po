@@ -81,6 +81,3 @@ msgstr "Klarte ikkje henta det nye elementet %1."
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Klarte ikkje henta det endra elementet %1."
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Minutt mellom autolagring."

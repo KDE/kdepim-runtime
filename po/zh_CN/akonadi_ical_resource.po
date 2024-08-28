@@ -79,6 +79,3 @@ msgstr "无法取回已添加项 %1。"
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "无法取回已修改项 %1。"
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "自动保存间隔时间(分钟)。"

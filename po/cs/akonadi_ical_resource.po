@@ -78,6 +78,3 @@ msgstr "Nelze získat přidanou položku %1."
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Nelze získat upravenou položku %1."
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Interval automatického ukládání (v minutách)."
