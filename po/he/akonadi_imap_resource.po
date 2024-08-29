@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-21 00:48+0000\n"
-"PO-Revision-Date: 2024-08-25 08:09+0300\n"
+"PO-Revision-Date: 2024-08-27 16:54+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -187,6 +187,8 @@ msgid ""
 "be\n"
 "             triggered manually through the D-Bus interface."
 msgstr ""
+"הגדרה האם פקודת הפינוי/expunge מופעלת אוטומטית, אחרת יש להזניק אותה\n"
+"             ידנית דרך ממשק D-Bus."
 
 #. i18n: ectx: label, entry (TrashCollection), group (cache)
 #: imapresource.kcfg:67
@@ -222,7 +224,7 @@ msgstr "רשימה של שמות תיבות דוא״ל שדווחו על ידי 
 #: imapresource.kcfg:87
 #, kde-format
 msgid "RID path to the mailbox to watch for changes"
-msgstr ""
+msgstr "נתיב מזהה מרוחק לתיבת הדוא״ל למעקב שינויים"
 
 #. i18n: ectx: label, entry (SieveSupport), group (siever)
 #: imapresource.kcfg:92
@@ -258,13 +260,13 @@ msgstr "הגדרת סוג האימות לשימוש לשרת חלופי"
 #: imapresource.kcfg:111
 #, kde-format
 msgid "Define default sieve vacation filename"
-msgstr ""
+msgstr "הגדרת שם קובץ חופשות sieve כברירת מחדל"
 
 #. i18n: ectx: label, entry (SieveCustomUsername), group (siever)
 #: imapresource.kcfg:115
 #, kde-format
 msgid "Define username used from custom server sieve url"
-msgstr ""
+msgstr "הגדרת שם משתמש שהיה בשימוש מכתובת שרת sieve מותאם אישית"
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
 #: imapresource.kcfg:119
@@ -476,7 +478,7 @@ msgstr "תיקיות משותפות"
 #, kde-format
 msgctxt "@info:status"
 msgid "Fetching missing mail bodies in %3: %1/%2"
-msgstr ""
+msgstr "תוכני הודעות חסרים מתקבלים ב־%3:‏ %1/%2"
 
 #: retrieveitemtask.cpp:35
 #, kde-format
@@ -668,7 +670,7 @@ msgstr "XOAuth"
 #: setupserver.cpp:152
 #, kde-format
 msgid "Archive Folder"
-msgstr ""
+msgstr "תיקיית ארכיון"
 
 #: setupserver.cpp:163
 #, kde-format
@@ -794,6 +796,8 @@ msgid ""
 "a specific encryption scheme, you can add \":port\" to indicate that. For "
 "example: \"imap.foo.com:144\"."
 msgstr ""
+"ציון שרת ה־IMAP. כדי להתחבר לפתחה בלתי שגרתית למטרות סכמת הצפנה מסוימת, אפשר "
+"להוסיף את הפתחה אחרי נקודתיים כדי לציין את זה. למשל: „imap.walla.co.il:144”"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: setupserverview_desktop.ui:60
@@ -1004,7 +1008,7 @@ msgstr "מינוי מצד השרת…"
 #: setupserverview_desktop.ui:390
 #, kde-format
 msgid "Automaticall&y compact folders (expunges deleted messages)"
-msgstr ""
+msgstr "ל&צמצם את התיקיות אוטומטית (פינוי ההודעות שנמחקו)"
 
 #. i18n: ectx: property (text), widget (QLabel, label_11)
 #: setupserverview_desktop.ui:397
