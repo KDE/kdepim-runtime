@@ -5,7 +5,7 @@
 # Burkhard Lück <lueck@hube-lueck.de>, 2016, 2017.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: akonadi_tomboynotes_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-05-26 00:47+0000\n"
 "PO-Revision-Date: 2017-11-26 20:23+0100\n"
