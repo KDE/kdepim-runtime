@@ -2,7 +2,7 @@
 # Burkhard Lück <lueck@hube-lueck.de>, 2014.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: libfolderarchivesettings\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-30 00:41+0000\n"
 "PO-Revision-Date: 2024-08-21 22:04+0200\n"
