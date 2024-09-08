@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Outlook
+NoDisplay=true
+Exec=akonadi_outlook_resource
+Icon=window-duplicate
