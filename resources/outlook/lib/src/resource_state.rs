@@ -72,8 +72,8 @@ pub mod resource_state{
     impl cxx_qt::Threading for ResourceState {}
 }
 
-pub type Collection = qobject::Collection;
-pub type Item = qobject::Item;
+pub type Collection = resource_state::Collection;
+pub type Item = resource_state::Item;
 
 enum ResourceTask {
     SyncCollectionTree {

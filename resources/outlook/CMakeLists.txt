@@ -2,8 +2,16 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_outlook_resource\")
 
 corrosion_import_crate(
   MANIFEST_PATH lib/Cargo.toml
-  CRATE_TYPE staticlib
+  CRATES "libgraph"
 )
+
+set(CXXQT_EXPORT_DIR "${CMAKE_CURRENT_BINARY_DIR}/cxxqt")
+get_target_property(QMAKE Qt::qmake IMPORTED_LOCATION)
+corrosion_set_env_vars(libgraph
+    "CXXQT_EXPORT_DIR=${CXXQT_EXPORT_DIR}"
+    "QMAKE=${QMAKE}"
+)
+
 
 set(resource_common_SRCS
 #    settings.cpp
@@ -24,18 +32,20 @@ kcfg_generate_dbus_interface(
   org.kde.Akonadi.Outlook.Settings
 )
 
-qt_add_dbus_adaptor(resource_common_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Outlook.Settings.xml
-  ${CMAKE_CURRENT_SOURCE_DIR}/outlooksettings.h OutlookSettings
-)
+#qt_add_dbus_adaptor(resource_common_SRCS
+#  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Outlook.Settings.xml
+#  ${CMAKE_CURRENT_SOURCE_DIR}/outlooksettings.h OutlookSettings
+#)
 
 ############################# Resource #################################
 set(outlook_resource_SRCS
     outlookresource.cpp
+    conversion.cpp
     ${resource_common_SRCS}
 )
 
 add_executable(akonadi_outlook_resource ${outlook_resource_SRCS})
+target_include_directories(akonadi_outlook_resource PRIVATE "${CXXQT_EXPORT_DIR}/libgraph")
 
 if(APPLE)
   set_target_properties(akonadi_outlook_resource PROPERTIES
@@ -60,6 +70,8 @@ target_link_libraries(akonadi_outlook_resource
   KF6::Notifications
   qt6keychain
   libgraph
+  OpenSSL::SSL
+  OpenSSL::Crypto
 )
 
 install(TARGETS akonadi_outlook_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

@@ -4,4 +4,5 @@ fn main() {
     CxxQtBuilder::new()
         .file("src/resource_state.rs")
         .build();
+
 }

@@ -3,7 +3,7 @@ use anyhow::Error;
 use serde::Deserialize;
 
 use crate::calendar::Calendar;
-use crate::resource_state::qobject::{Collection, Item};
+use crate::resource_state::{Collection, Item};
 
 pub struct Resource {
     client: GraphClient,
