@@ -157,7 +157,7 @@ msgstr "Migración de elementos de Akonadi para compatibilidade con GID"
 #: main.cpp:30
 #, kde-format
 msgid "(c) 2013-2022 the Akonadi developers"
-msgstr "© 2013-2022 Equipo de desenvolvemento de Akonadi"
+msgstr "© 2013-2022 Equipo desenvolvedor de Akonadi"
 
 #: main.cpp:33
 #, kde-format
