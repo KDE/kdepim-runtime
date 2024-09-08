@@ -1,20 +1,32 @@
 [package]
-name = "lib"
+name = "libgraph"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+crate-type = ["cdylib", "staticlib"]
+
 [dependencies]
-chrono = "0.4.38"
-cxx = { version = "1.0.128", features = ["c++20"] }
-graph-rs-sdk = "2.0.1"
-reqwest = "0.12.7"
-serde = "1.0.209"
-serde_json = "1.0.128"
-serde_with = { version = "3.9.0", features = ["chrono"] }
-test-context = "0.3.0"
-tokio = "1.40.0"
-url = "2.5.2"
+anyhow = "1.0.87"
+chrono = "0.4"
+cxx = { version = "1.0", features = ["c++14", "c++17", "c++20"] }
+cxx-qt = "0.6"
+cxx-qt-lib = { version = "0.6", features = ["chrono", "time"] }
+futures-core = "0.3"
+graph-http = "2.0"
+graph-rs-sdk = "2.0"
+http = "1.1"
+reqwest = "0.12"
+serde = "1.0"
+serde_json = "1.0"
+serde_with = { version = "3.9", features = ["chrono"] }
+test-context = "0.3"
+tokio = "1.40"
+url = "2.5"
+
+[build-dependencies]
+cxx-qt-build = "0.6"
 
 [dev-dependencies]
-graph-rs-sdk = { version = "2.0.1", features = ["test-util"] }
-http-test-server = "2.1.1"
+graph-rs-sdk = { version = "2.0", features = ["test-util"] }
+http-test-server = "2.1"
