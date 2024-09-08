@@ -122,12 +122,13 @@ set_package_properties(Qt6Keychain PROPERTIES
                                    URL "https://github.com/frankosterfeld/qtkeychain"
                                    TYPE REQUIRED)
 
-find_package(Corrosion REQUIRED)                                   
+find_package(Corrosion REQUIRED)
 set_package_properties(Corrosion PROPERTIES
     PURPOSE "Required to build the builtin adblocker"
     DESCRIPTION "CMake scripts to seamlessly build and link to targets using cargo"
     URL https://github.com/corrosion-rs/corrosion
 )
+find_package(OpenSSL REQUIRED)
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 ecm_set_disabled_deprecation_versions(QT 6.7.2 KF 6.7.0)
