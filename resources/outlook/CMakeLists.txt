@@ -21,7 +21,7 @@ kconfig_add_kcfg_files(resource_common_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/settings
 
 kcfg_generate_dbus_interface(
   ${CMAKE_CURRENT_SOURCE_DIR}/settingsbase.kcfg
-  org.kde.Akonadi.outlook.Settings
+  org.kde.Akonadi.Outlook.Settings
 )
 
 qt_add_dbus_adaptor(resource_common_SRCS
