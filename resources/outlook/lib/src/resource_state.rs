@@ -6,7 +6,7 @@ use cxx_qt::Threading;
 use crate::resource::{CollectionSyncResult, Resource};
 
 #[cxx_qt::bridge]
-pub mod qobject {
+pub mod resource_state{
     #[derive(Debug)]
     struct Collection {
         id: i64,
@@ -30,28 +30,42 @@ pub mod qobject {
         #[qobject]
         type ResourceState = super::ResourceStateRust;
 
-        fn sync_collection(self: Pin<&mut ResourceState>, collection: Collection);
-        fn sync_collection_tree(self: Pin<&mut ResourceState>);
+        #[cxx_name = "retrieveItems"]
+        fn retrieve_items(self: Pin<&mut ResourceState>, collection: Collection);
+        #[cxx_name = "retrieveCollections"]
+        fn retrieve_collections(self: Pin<&mut ResourceState>);
 
+        #[cxx_name = "itemAdded"]
         fn item_added(self: Pin<&mut ResourceState>, item: Item);
+        #[cxx_name = "itemChanged"]
         fn item_changed(self: Pin<&mut ResourceState>, item: Item);
+        #[cxx_name = "itemRemoved"]
         fn item_removed(self: Pin<&mut ResourceState>);
 
+        #[cxx_name = "collectionAdded"]
         fn collection_added(self: Pin<&mut ResourceState>, collection: Collection);
+        #[cxx_name = "collectionChanged"]
         fn collection_changed(self: Pin<&mut ResourceState>, collection: Collection);
+        #[cxx_name = "collectionRemoved"]
         fn collection_removed(self: Pin<&mut ResourceState>);
 
         #[qsignal]
+        #[cxx_name = "changeProcessed"]
         fn change_processed(self: Pin<&mut ResourceState>);
         #[qsignal]
+        #[cxx_name = "itemsRetrieved"]
         fn items_retrieved(self: Pin<&mut ResourceState>, items: Vec<Item>);
         #[qsignal]
+        #[cxx_name = "itemsRetrievedIncremental"]
         fn items_retrieved_incremental(self: Pin<&mut ResourceState>, added_items: Vec<Item>, removed_items: Vec<Item>);
         #[qsignal]
+        #[cxx_name = "collectionsRetrieved"]
         fn collections_retrieved(self: Pin<&mut ResourceState>, collections: Vec<Collection>);
         #[qsignal]
+        #[cxx_name = "taskDone"]
         fn task_done(self: Pin<&mut ResourceState>);
         #[qsignal]
+        #[cxx_name = "taskFailed"]
         fn task_failed(self: Pin<&mut ResourceState>, error: String);
     }
 
@@ -154,9 +168,9 @@ impl Drop for ResourceStateRust
 unsafe impl Sync for ResourceStateRust {}
 unsafe impl Send for ResourceStateRust {}
 
-impl qobject::ResourceState
+impl resource_state::ResourceState
 {
-    pub fn sync_collection(self: Pin<&mut Self>, collection: Collection) {
+    pub fn retrieve_items(self: Pin<&mut Self>, collection: Collection) {
         let qt_thread = Mutex::new(self.qt_thread());
         if let Err(err) = self.channel.send(ResourceTask::SyncCollection {
             collection,
@@ -186,7 +200,7 @@ impl qobject::ResourceState
         }
     }
 
-    pub fn sync_collection_tree(self: Pin<&mut Self>) {
+    pub fn retrieve_collections(self: Pin<&mut Self>) {
         let qt_thread = Mutex::new(self.qt_thread());
         if let Err(err) = self.channel.send(ResourceTask::SyncCollectionTree {
             result_handler: Box::new(move |result| {
