@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Outlook Groupware
+Comment=Access your Microsoft365 calendars and contacts
+Type=AkonadiResource
+Exec=akonadi_outlook_resource
+X-Akonadi-MimeTypes=text/calendar,text/directory,application/x-vnd.akonadi.calendar.event,application/x-vnd.akonadi.calendar.todo,application/x-vnd.akonadi.calendar.freebusy
+X-Akonadi-Capabilities=Resource,FreeBusyProvider
+X-Akonadi-Identifier=akonadi_outlook_resource
+Icon=window-duplicate
