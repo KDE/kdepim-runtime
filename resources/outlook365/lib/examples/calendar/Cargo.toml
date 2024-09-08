@@ -1,0 +1,16 @@
+[package]
+name = "calendar"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.87"
+axum = { version = "0.7.5", features = ["macros"] }
+graph-oauth = "2.0.1"
+libgraph = { path = "../../" }
+reqwest = "0.12.7"
+serde = "1.0.210"
+text_io = "0.1.12"
+tokio = { version = "1.40.0", features = ["net", "rt-multi-thread"] }
+url = "2.5.2"
+webbrowser = "1.0.1"

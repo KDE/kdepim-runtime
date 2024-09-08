@@ -6,6 +6,17 @@ use serde::{Serialize, Deserialize};
 use serde_with::{serde_as, skip_serializing_none};
 use chrono::{DateTime, NaiveDate, NaiveDateTime, Utc};
 
+pub struct EventsListResponse {
+    pub events: Vec<Event>,
+    pub delta_link: Option<String>,
+}
+
+impl From<(Vec<Event>, Option<String>)> for EventsListResponse {
+    fn from((events, delta_link): (Vec<Event>, Option<String>)) -> Self {
+        Self { events, delta_link }
+    }
+}
+
 /// Trait to perform various basic operations on the calendar.
 pub trait CalendarAPI {
     /// Returns a list of calendars
@@ -21,7 +32,10 @@ pub trait CalendarAPI {
     fn delete_calendar<ID: AsRef<str> + Send>(&self, calendar_id: ID) -> impl Future<Output = GraphResult<()>> + Send;
 
     /// Returns a list of events
-    fn list_events<ID: AsRef<str> + Send>(&self, calendar_id: ID) -> impl Future<Output = GraphResult<Vec<Event>>> + Send;
+    fn list_events<ID: AsRef<str> + Send>(&self, calendar_id: ID) -> impl Future<Output = GraphResult<EventsListResponse>> + Send;
+    fn list_events_ids<ID: AsRef<str> + Send>(&self, calendar_id: ID) -> impl Future<Output = GraphResult<Vec<String>>> + Send;
+    fn list_events_delta<ID: AsRef<str> + Send, Token: AsRef<str> + Send>(&self, calendar_id: ID, delta_token: Token) -> impl Future<Output = GraphResult<EventsListResponse>> + Send;
+    fn list_events_changed_since<ID: AsRef<str> + Send>(&self, calendar_id: ID, changed_since: DateTime<Utc>) -> impl Future<Output = GraphResult<Vec<Event>>> + Send;
 
     /// Creates a new event
     fn create_event<ID: AsRef<str> + Send>(&self, calendar_id: ID, event: Event) -> impl Future<Output = GraphResult<Event>> + Send;
@@ -33,9 +47,10 @@ pub trait CalendarAPI {
     fn delete_event<ID: AsRef<str> + Send>(&self, calendar_id: ID, event_id: ID) -> impl Future<Output = GraphResult<()>> + Send;
 }
 
+
 /// Pre-defined set of color themes for calendars
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
+#[serde(rename_all = "camelCase")]
 pub enum CalendarColor {
     Auto,
     LightBlue,
@@ -231,32 +246,33 @@ pub struct Attendee {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Location {
-    pub address: PhysicalAddress,
-    pub coordinates: GeoCoordinates,
+    pub address: Option<PhysicalAddress>,
+    pub coordinates: Option<GeoCoordinates>,
     pub display_name: String,
     pub location_email_address: Option<String>,
     pub location_uri: Option<String>,
+    #[serde(skip_serializing)]
     pub location_type: LocationType,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PhysicalAddress {
-    pub city: String,
-    pub country_or_region: String,
-    pub postal_code: String,
-    pub state: String,
-    pub street: String,
+    pub city: Option<String>,
+    pub country_or_region: Option<String>,
+    pub postal_code: Option<String>,
+    pub state: Option<String>,
+    pub street: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GeoCoordinates {
-    pub accuracy: f64,
-    pub altitude: f64,
-    pub altitude_accuracy: f64,
-    pub latitude: f64,
-    pub longitude: f64,
+    pub accuracy: Option<f64>,
+    pub altitude: Option<f64>,
+    pub altitude_accuracy: Option<f64>,
+    pub latitude: Option<f64>,
+    pub longitude: Option<f64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
