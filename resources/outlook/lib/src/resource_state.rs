@@ -70,12 +70,6 @@ pub mod resource_state{
     }
 
     impl cxx_qt::Threading for ResourceState {}
-
-    unsafe extern "C++" {
-        include!("resourcestatebridge.hpp");
-    }
-
-    //impl cxx_qt::Constructor<(SharedPtr<ResourceStateBridge>, ), NewArguments=(SharedPtr<ResourceStateBeidge>, )> for ResourceStateBridge {}
 }
 
 pub type Collection = qobject::Collection;
