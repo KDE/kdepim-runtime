@@ -1,5 +1,10 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_outlook_resource\")
 
+corrosion_import_crate(
+  MANIFEST_PATH lib/Cargo.toml
+  CRATE_TYPE staticlib
+)
+
 set(resource_common_SRCS
     settings.cpp
     settings.h
