@@ -14,15 +14,13 @@ pub struct GraphResponse<T> {
     values: Vec<T> 
 }
 
-impl Default for Resource {
-    fn default() -> Self {
+impl Resource {
+    pub fn new(access_token: String, _refresh_token: String) -> Self {
         Self {
-            client: GraphClient::new("1234")
+            client: GraphClient::new(access_token)
         }
     }
-}
 
-impl Resource {
     pub async fn sync_collection(
         &self,
         _collection: Collection,

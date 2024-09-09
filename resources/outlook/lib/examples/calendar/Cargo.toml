@@ -7,7 +7,7 @@ edition = "2021"
 anyhow = "1.0.87"
 axum = { version = "0.7.5", features = ["macros"] }
 graph-oauth = "2.0.1"
-libgraph = { path = "../../" }
+libgraph = { path = "../.." }
 reqwest = "0.12.7"
 serde = "1.0.210"
 text_io = "0.1.12"

@@ -1,5 +1,6 @@
 use std::{fmt::{self, Debug, Formatter}, pin::Pin, sync::Mutex, thread::{self, JoinHandle}};
 use anyhow::Error;
+use cxx_qt_lib::QString;
 use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender, unbounded_channel};
 use cxx_qt::Threading;
 
@@ -7,6 +8,12 @@ use crate::resource::{CollectionSyncResult, Resource};
 
 #[cxx_qt::bridge]
 pub mod resource_state{
+    unsafe extern "C++" {
+        include!("cxx-qt-lib/qstring.h");
+        /// An alias to the QString type
+        type QString = cxx_qt_lib::QString;
+    }
+
     #[derive(Debug)]
     struct Collection {
         id: i64,
@@ -66,8 +73,10 @@ pub mod resource_state{
         fn task_done(self: Pin<&mut ResourceState>);
         #[qsignal]
         #[cxx_name = "taskFailed"]
-        fn task_failed(self: Pin<&mut ResourceState>, error: String);
+        fn task_failed(self: Pin<&mut ResourceState>, error: QString);
     }
+
+    impl cxx_qt::Constructor<(QString, QString), NewArguments=(QString, QString)> for ResourceState {}
 
     impl cxx_qt::Threading for ResourceState {}
 }
@@ -129,18 +138,29 @@ pub struct ResourceStateRust {
     worker_thread: Option<JoinHandle<()>>,
 }
 
-impl Default for ResourceStateRust
-{
-    fn default() -> Self {
+impl cxx_qt::Constructor<(QString, QString)> for resource_state::ResourceState {
+    type BaseArguments = ();
+    type InitializeArguments = ();
+    type NewArguments = (QString, QString);
+
+    fn route_arguments(args: (QString, QString)) -> (
+        Self::NewArguments,
+        Self::BaseArguments,
+        Self::InitializeArguments,
+    ) {
+        (args, (), ())
+    }
+
+    fn new((access_token, refresh_token): (QString, QString)) -> ResourceStateRust {
         let (tx, rx) = unbounded_channel();
-        Self {
+        ResourceStateRust {
             channel: tx,
-            worker_thread: Some(thread::spawn(|| {
+            worker_thread: Some(thread::spawn(move || {
                 let runtime = tokio::runtime::Builder::new_current_thread()
                         .enable_all()
                         .build()
                         .expect("Failed to create Tokio runtime");
-                runtime.block_on(resource_loop(rx));
+                runtime.block_on(resource_loop(rx, (&access_token).into(), (&refresh_token).into()));
             }))
         }
     }
@@ -180,7 +200,7 @@ impl resource_state::ResourceState
                         ResourceTaskResult::TaskDone { result } => {
                             match result {
                                 Ok(()) => this.change_processed(),
-                                Err(error) => this.task_failed(error.to_string()),
+                                Err(error) => this.task_failed((&error.to_string()).into()),
                             }
                         },
                         _ => panic!("Unexpected result {:?} for task SyncCollection", result)
@@ -206,7 +226,7 @@ impl resource_state::ResourceState
                         ResourceTaskResult::TaskDone { result } => {
                             match result {
                                 Ok(()) => this.change_processed(),
-                                Err(error) => this.task_failed(error.to_string()),
+                                Err(error) => this.task_failed((&error.to_string()).into()),
                             }
                         },
                         _ => panic!("Unexpected result {:?} for task SyncCollectionTree", result)
@@ -247,9 +267,9 @@ impl resource_state::ResourceState
 }
 
 
-async fn resource_loop(mut channel: UnboundedReceiver<ResourceTask>)
+async fn resource_loop(mut channel: UnboundedReceiver<ResourceTask>, access_token: String, refresh_token: String)
 {
-    let resource = Resource::default();
+    let resource = Resource::new(access_token, refresh_token);
 
     loop {
         match channel.recv().await {

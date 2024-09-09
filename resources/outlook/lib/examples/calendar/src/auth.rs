@@ -17,7 +17,7 @@ use url::Url;
 
 static CLIENT_ID: &str = "29854e75-de16-4284-9c28-cbabb2344bf9";
 static TENANT: &str = "common";
-static SCOPE: [&str; 1] = ["Calendars.ReadWrite"];
+static SCOPE: [&str; 2] = ["Calendars.ReadWrite", "offline_access"];
 
 enum Authentication {
     Port(u16),
@@ -53,12 +53,13 @@ fn get_authorization_code_url(port: u16) -> Result<Url> {
 #[derive(Debug, Clone, Deserialize)]
 struct TokenResponse {
     access_token: Option<String>,
+    refresh_token: Option<String>,
     #[allow(dead_code)]
     error: Option<String>,
     error_description: Option<String>,
 }
 
-async fn access_token_from_authorization_code(port: u16, code: String) -> Result<String> {
+async fn access_token_from_authorization_code(port: u16, code: String) -> Result<(String, String)> {
     // FIXME: We could use AuthorizationCodeCredential for it, but due to a bug it insists
     // on sending client_secret, even though it's not permitted for desktop apps
     // See https://github.com/sreeise/graph-rs-sdk/pull/493
@@ -76,7 +77,7 @@ async fn access_token_from_authorization_code(port: u16, code: String) -> Result
         .json::<TokenResponse>()
         .await?;
     if let Some(access_token) = response.access_token {
-        Ok(access_token)
+        Ok((access_token, response.refresh_token.unwrap()))
     } else {
         Err(anyhow::Error::msg(response.error_description.unwrap()))
     }
@@ -115,7 +116,7 @@ async fn handle_access_token(
     }
 }
 
-pub async fn get_access_token() -> Result<String> {
+pub async fn get_access_token() -> Result<(String, String)> {
     let (tx, mut rx) = tokio::sync::mpsc::unbounded_channel::<Authentication>();
     let (stop_sender, stop_receiver) = oneshot::channel::<()>();
     tokio::spawn(async move {
@@ -147,7 +148,7 @@ pub async fn get_access_token() -> Result<String> {
             Authentication::AccessCode(code) => {
                 stop_sender.send(()).unwrap();
                 let token = match access_token_from_authorization_code(server_port.unwrap(), code).await {
-                    Ok(token) => token,
+                    Ok(tokens) => tokens,
                     Err(error) => {
                         return Err(error)
                     }
