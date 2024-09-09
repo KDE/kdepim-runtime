@@ -11,7 +11,7 @@ anyhow = "1.0.87"
 chrono = "0.4"
 cxx = { version = "1.0", features = ["c++14", "c++17", "c++20"] }
 cxx-qt = "0.6"
-cxx-qt-lib = { version = "0.6", features = ["chrono", "time"] }
+cxx-qt-lib = { version = "0.6", default-features = false, features = ["chrono", "time"] }
 futures-core = "0.3"
 graph-http = "2.0"
 graph-rs-sdk = "2.0"
