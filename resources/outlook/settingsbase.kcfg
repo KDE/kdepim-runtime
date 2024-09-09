@@ -6,6 +6,8 @@
 			  http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile arg="true"/>
   <group name="General">
+    <entry name="AccessToken" type="String">
+    </entry>
     <entry name="Account" type="String">
     </entry>
     <!-- AccountName and accountId are used only when using

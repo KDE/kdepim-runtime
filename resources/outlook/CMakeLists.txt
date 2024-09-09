@@ -92,31 +92,31 @@ install(
 #)
 
 ################################ Config plugin ###############################
-#
-#kcoreaddons_add_plugin(outlookconfig
-#    INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config"
-#)
-#
-#target_sources(outlookconfig
-#PRIVATE
-#    outlookconfig.cpp
-#    settingswidget.cpp
-#    settingswidget.h
-#    ${resource_common_SRCS}
-#)
-#
-#ki18n_wrap_ui(outlookconfig outlooksettingswidget.ui)
-#
-#target_link_libraries(outlookconfig
-#    KPim6::AkonadiCore
-#    KPim6::AkonadiCalendar
-#    KPim6::AkonadiAgentBase
-#    KF6::CalendarCore
-#    KF6::Contacts
-#    KF6::Wallet
-#    KF6::I18n
-#    KF6::WindowSystem
-#    KF6::Notifications
-#    qt6keychain
-#)
-#
+
+kcoreaddons_add_plugin(outlookconfig
+    INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config"
+)
+
+target_sources(outlookconfig
+PRIVATE
+    outlookconfig.cpp
+    outlooksettingswidget.cpp
+    outlooksettingswidget.h
+    ${resource_common_SRCS}
+)
+
+ki18n_wrap_ui(outlookconfig outlooksettingswidget.ui)
+
+target_link_libraries(outlookconfig
+    KPim6::AkonadiCore
+    KPim6::AkonadiCalendar
+    KPim6::AkonadiAgentBase
+    KF6::CalendarCore
+    KF6::Contacts
+    KF6::Wallet
+    KF6::I18n
+    KF6::WindowSystem
+    KF6::Notifications
+    qt6keychain
+)
+
