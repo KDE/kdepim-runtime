@@ -1,0 +1,167 @@
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+#
+# SPDX-FileCopyrightText: 2024 Kishore G <kishore96@gmail.com>
+msgid ""
+msgstr ""
+"Project-Id-Version: kdepim-runtime\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"PO-Revision-Date: 2024-09-08 13:12+0200\n"
+"Last-Translator: Kishore G <kishore96@gmail.com>\n"
+"Language-Team: Tamil <kde-i18n-doc@kde.org>\n"
+"Language: ta\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 24.08.0\n"
+
+#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
+#, kde-format
+msgid "Sending messages (1 item in queue)…"
+msgid_plural "Sending messages (%1 items in queue)..."
+msgstr[0] ""
+msgstr[1] ""
+
+#: maildispatcheragent.cpp:90
+#, kde-format
+msgid "Sending canceled."
+msgstr "அனுப்புவது ரத்து செய்யப்பட்டது."
+
+#: maildispatcheragent.cpp:97
+#, kde-format
+msgid "Finished sending messages."
+msgstr "அஞ்சல்கள் அனுப்பப்பட்டன."
+
+#: maildispatcheragent.cpp:103
+#, kde-format
+msgctxt "Notification title when email was sent"
+msgid "E-Mail Successfully Sent"
+msgstr ""
+
+#: maildispatcheragent.cpp:104
+#, kde-format
+msgctxt "Notification when the email was sent"
+msgid "Your E-Mail has been sent successfully."
+msgstr ""
+
+#: maildispatcheragent.cpp:110
+#, kde-format
+msgid "No items in queue."
+msgstr "அனுப்புவரிசையில் எதுவும் இல்லை."
+
+#: maildispatcheragent.cpp:155
+#, kde-format
+msgid "Online, sending messages in queue."
+msgstr ""
+
+#: maildispatcheragent.cpp:159
+#, kde-format
+msgid "Offline, message sending suspended."
+msgstr ""
+
+#: maildispatcheragent.cpp:184
+#, kde-format
+msgctxt "Message with given subject is being sent."
+msgid "Sending: %1"
+msgstr ""
+
+#: maildispatcheragent.cpp:249
+#, kde-format
+msgctxt "Notification title when email sending failed"
+msgid "E-Mail Sending Failed"
+msgstr ""
+
+#: maildispatcheragent.cpp:282
+#, kde-format
+msgid "Ready to dispatch messages."
+msgstr ""
+
+#. i18n: ectx: label, entry (Outbox), group (General)
+#: maildispatcheragent.kcfg:10
+#, kde-format
+msgid "Outbox collection id"
+msgstr ""
+
+#. i18n: ectx: label, entry (SentMail), group (General)
+#: maildispatcheragent.kcfg:14
+#, kde-format
+msgid "Sent Mail collection id"
+msgstr ""
+
+#: outboxqueue.cpp:265
+#, kde-format
+msgid "Could not access the outbox folder (%1)."
+msgstr ""
+
+#: sendjob.cpp:49 sendjob.cpp:50
+#, kde-format
+msgid "Message sending aborted."
+msgstr ""
+
+#: sendjob.cpp:59
+#, kde-format
+msgid "Could not initiate message transport. Possibly invalid transport."
+msgstr ""
+
+#: sendjob.cpp:65
+#, kde-format
+msgid "Could not send message. Invalid transport."
+msgstr ""
+
+#: sendjob.cpp:97
+#, kde-format
+msgid "Failed to get D-Bus interface of resource %1."
+msgstr ""
+
+#: sendjob.cpp:110
+#, kde-format
+msgid "Invalid D-Bus reply from resource %1."
+msgstr ""
+
+#: sendjob.cpp:229
+#, kde-format
+msgid "Default sent-mail folder unavailable. Keeping message in outbox."
+msgstr ""
+
+#: sendjob.cpp:241
+#, kde-format
+msgid "Message transport aborted."
+msgstr ""
+
+#: sendjob.cpp:241
+#, kde-format
+msgid "Failed to transport message."
+msgstr ""
+
+#: sendjob.cpp:283
+#, kde-format
+msgid "Failed to get D-Bus interface of mailfilteragent."
+msgstr ""
+
+#: sendjob.cpp:290
+#, kde-format
+msgid "Invalid D-Bus reply from mailfilteragent"
+msgstr ""
+
+#: sendjob.cpp:332
+#, kde-format
+msgid "Sending succeeded, but failed to remove the message from the outbox."
+msgstr ""
+
+#: sendjob.cpp:335
+#, kde-format
+msgid ""
+"Sending succeeded, but failed to move the message to the sent-mail folder."
+msgstr ""
+
+#: sendjob.cpp:371
+#, kde-format
+msgid "Failed to store result in item."
+msgstr ""
+
+#: storeresultjob.cpp:59
+#, kde-format
+msgid "Failed to fetch item."
+msgstr ""

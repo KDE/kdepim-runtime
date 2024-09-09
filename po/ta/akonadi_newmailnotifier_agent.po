@@ -1,0 +1,258 @@
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+#
+# SPDX-FileCopyrightText: 2024 Kishore G <kishore96@gmail.com>
+msgid ""
+msgstr ""
+"Project-Id-Version: kdepim-runtime\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2024-07-04 00:39+0000\n"
+"PO-Revision-Date: 2024-09-08 13:17+0200\n"
+"Last-Translator: Kishore G <kishore96@gmail.com>\n"
+"Language-Team: Tamil <kde-i18n-doc@kde.org>\n"
+"Language: ta\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 24.08.0\n"
+
+#: newmailnotificationhistorydialog.cpp:26
+#, kde-format
+msgctxt "@title:window"
+msgid "Notification History"
+msgstr "அறிவிப்பு வரலாறு"
+
+#: newmailnotificationhistorymanager.cpp:32
+#, kde-format
+msgid "[Open Folder]"
+msgstr "[அடைவை திற]"
+
+#: newmailnotificationhistorymanager.cpp:42
+#, kde-format
+msgid "[Show Mail]"
+msgstr "[அஞ்சலை காட்டு]"
+
+#: newmailnotificationhistorywidget.cpp:24
+#: newmailnotifiersettingswidget.cpp:114
+#, kde-format
+msgid "Enabled"
+msgstr "இயக்கு"
+
+#: newmailnotifieragent.cpp:365
+#, kde-format
+msgctxt ""
+"%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
+"user named it)"
+msgid "One new email in %2 from \"%3\""
+msgid_plural "%1 new emails in %2 from \"%3\""
+msgstr[0] ""
+msgstr[1] ""
+
+#: newmailnotifieragent.cpp:402
+#, kde-format
+msgid "New mail arrived"
+msgstr "புதிய அஞ்சல் உள்ளது"
+
+#: newmailnotifieragentsettings.kcfg:34
+#, kde-format
+msgctxt "%f is a variable for agent. Do not change it"
+msgid "A message was received from %f"
+msgstr "%f தனிலிருந்து புதிய அஞ்சல் பெறப்பட்டது"
+
+#: newmailnotifieropenfolderjob.cpp:37 newmailnotifierreplymessagejob.cpp:38
+#: newmailnotifiershowmessagejob.cpp:36
+#, kde-format
+msgid "Unable to start KMail application."
+msgstr "கேமெயில் தனைத் துவக்க முடியவில்லை."
+
+#: newmailnotifierselectcollectionwidget.cpp:96
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Select which folders to monitor for new message notifications:"
+msgstr ""
+
+#: newmailnotifierselectcollectionwidget.cpp:127
+#, kde-format
+msgctxt "@info:placeholder"
+msgid "Search…"
+msgstr "தேடு…"
+
+#: newmailnotifierselectcollectionwidget.cpp:142
+#, kde-format
+msgctxt "@action:button"
+msgid "&Select All"
+msgstr "&அனைத்தையும் தேர்ந்தெடு"
+
+#: newmailnotifierselectcollectionwidget.cpp:146
+#, kde-format
+msgctxt "@action:button"
+msgid "&Unselect All"
+msgstr "அ&னைத்து தேர்வுகளை நிராகரி"
+
+#: newmailnotifiersettingswidget.cpp:34
+#, c-format
+msgid ""
+"<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
+"li><li>%f set from</li></ul></qt>"
+msgstr ""
+
+#: newmailnotifiersettingswidget.cpp:55
+#, kde-format
+msgid "Choose which fields to show:"
+msgstr "காட்டவேண்டிய புலங்களைத் தேர்ந்தெடுக்கவும்:"
+
+#: newmailnotifiersettingswidget.cpp:60
+#, kde-format
+msgid "Show Photo"
+msgstr "படத்தைக் காட்டு"
+
+#: newmailnotifiersettingswidget.cpp:64
+#, kde-format
+msgid "Show From"
+msgstr "அனுப்புநரைக் காட்டு"
+
+#: newmailnotifiersettingswidget.cpp:68
+#, kde-format
+msgid "Show Subject"
+msgstr "தலைப்பைக் காட்டு"
+
+#: newmailnotifiersettingswidget.cpp:72
+#, kde-format
+msgid "Show Folders"
+msgstr "அடைவுகளைக் காட்டு"
+
+#: newmailnotifiersettingswidget.cpp:76
+#, kde-format
+msgid "Do not notify when email was sent by me"
+msgstr "நான் அனுப்பிய அஞ்சலுக்கு அறிவிப்பு வேண்டாம்"
+
+#: newmailnotifiersettingswidget.cpp:80
+#, kde-format
+msgid "Keep Persistent Notification"
+msgstr "அறிவிப்பை தக்கவை"
+
+#: newmailnotifiersettingswidget.cpp:84
+#, kde-format
+msgid "Show Action Buttons"
+msgstr "பட்டன்களைக் காட்டு"
+
+#: newmailnotifiersettingswidget.cpp:92
+#, kde-format
+msgid "Reply Mail"
+msgstr "பதிலளி"
+
+#: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:163
+#, kde-format
+msgid "Reply to Author"
+msgstr "அனுப்புநருக்கு பதிலளி"
+
+#: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:166
+#, kde-format
+msgid "Reply to All"
+msgstr "அனைவருக்கும் பதிலளி"
+
+#: newmailnotifiersettingswidget.cpp:109
+#, kde-format
+msgid "Display"
+msgstr "காட்டு"
+
+#: newmailnotifiersettingswidget.cpp:118
+#, kde-format
+msgctxt "@label:textbox"
+msgid "<a href=\"whatsthis\">How does this work?</a>"
+msgstr "<a href=\"whatsthis\">இது எப்படி வேலை செய்யும்?</a>"
+
+#: newmailnotifiersettingswidget.cpp:127
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Message:"
+msgstr "செய்தி:"
+
+#: newmailnotifiersettingswidget.cpp:139
+#, kde-format
+msgid "Text to Speak"
+msgstr "பேச்சாக்க வேண்டிய உரை"
+
+#: newmailnotifiersettingswidget.cpp:145
+#, kde-format
+msgid "Notify"
+msgstr "அறிவு"
+
+#: newmailnotifiersettingswidget.cpp:148
+#, kde-format
+msgid "Folders"
+msgstr "அடைவுகள்"
+
+#: newmailnotifiersettingswidget.cpp:151
+#, kde-format
+msgid "New Mail Notifier Agent"
+msgstr "புதிய அஞ்சல் அறிவிப்பு நிரல்"
+
+#: newmailnotifiersettingswidget.cpp:153
+#, kde-format
+msgid "Notify about new mails."
+msgstr "புதிய அஞ்சல்களைப் பற்றி அறிவிக்கும்."
+
+#: newmailnotifiersettingswidget.cpp:155
+#, kde-format
+msgid "Copyright (C) 2013-%1 Laurent Montel"
+msgstr ""
+
+#: newmailnotifiersettingswidget.cpp:158
+#, kde-format
+msgctxt "@info:credit"
+msgid "Laurent Montel"
+msgstr ""
+
+#: newmailnotifiersettingswidget.cpp:158
+#, kde-format
+msgid "Maintainer"
+msgstr ""
+
+#: newmailnotifiersettingswidget.cpp:159
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr ""
+
+#: newmailnotifiersettingswidget.cpp:159
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr ""
+
+#: specialnotifierjob.cpp:111
+#, kde-format
+msgid "From: %1"
+msgstr ""
+
+#: specialnotifierjob.cpp:119
+#, kde-format
+msgid "Subject: %1"
+msgstr ""
+
+#: specialnotifierjob.cpp:123
+#, kde-format
+msgid "In: %1"
+msgstr ""
+
+#: specialnotifierjob.cpp:125
+#, kde-format
+msgid "In: %1 (%2)"
+msgstr ""
+
+#: specialnotifierjob.cpp:150
+#, kde-format
+msgid "Show mail…"
+msgstr ""
+
+#: specialnotifierjob.cpp:153
+#, kde-format
+msgid "Mark As Read"
+msgstr ""
+
+#: specialnotifierjob.cpp:156
+#, kde-format
+msgid "Delete"
+msgstr ""
