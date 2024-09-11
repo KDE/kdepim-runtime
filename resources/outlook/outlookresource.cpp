@@ -1,18 +1,46 @@
 #include "outlookresource.h"
 #include "conversion.h"
 #include "cxx-qt-gen/resource_state.cxxqt.h"
+#include "outlookresource_debug.h"
+#include "outlooksettings.h"
+
+#include <KLocalizedString>
+
+static const QString ROOT_COLLECTION_REMOTE_ID = QStringLiteral("outlook_root");
 
 OutlookResource::OutlookResource(const QString &id)
     : Akonadi::ResourceBase(id)
-    , mState(std::make_unique<ResourceState>())
 {
-    connect(mState.get(), &ResourceState::collectionsRetrieved, this, [this](const auto &collections) {
-        collectionsRetrieved(intoAkonadi(collections));
+    connect(this, &Akonadi::ResourceBase::reloadConfiguration, this, [this] {
+        qCDebug(OUTLOOK_LOG) << "Resource" << identifier() << "reconfigured";
+        resetState();
     });
+
+    resetState();
 }
 
-OutlookResource::~OutlookResource()
+OutlookResource::~OutlookResource() = default;
+
+void OutlookResource::resetState()
 {
+    auto settings = OutlookSettings(config());
+    mState = std::make_unique<ResourceState>(settings.accessToken(), settings.refreshToken());
+    connect(mState.get(), &ResourceState::collectionsRetrieved, this, [this](const auto &collections) {
+        qCDebug(OUTLOOK_LOG) << collections.size() << "collections received";
+        Akonadi::Collection parent;
+        parent.setName(i18n("Outlook"));
+        parent.setRemoteId(ROOT_COLLECTION_REMOTE_ID);
+        parent.setParentCollection(Akonadi::Collection::root());
+        parent.setContentMimeTypes({Akonadi::Collection::mimeType()});
+        parent.setRights(Akonadi::Collection::ReadOnly);
+        auto akonadiCollections = intoAkonadi(collections, parent);
+        akonadiCollections.push_back(parent);
+        collectionsRetrieved(akonadiCollections);
+    });
+    connect(mState.get(), &ResourceState::taskFailed, this, [this](const QString &error) {
+        qCWarning(OUTLOOK_LOG) << "Task failed:" << error;
+        cancelTask();
+    });
 }
 
 void OutlookResource::configure(WId windowId)
@@ -22,6 +50,7 @@ void OutlookResource::configure(WId windowId)
 
 void OutlookResource::retrieveCollections()
 {
+    qCDebug(OUTLOOK_LOG) << "Retrieving collections";
     mState->retrieveCollections();
 }
 

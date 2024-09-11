@@ -25,11 +25,14 @@ OutlookSettingsWidget::~OutlookSettingsWidget() = default;
 void OutlookSettingsWidget::loadSettings()
 {
     accessTokenEdit->setText(m_settings.accessToken());
+    refreshTokenEdit->setText(m_settings.refreshToken());
 }
 
 void OutlookSettingsWidget::saveSettings()
 {
-    m_settings.setAccessToken(accessTokenEdit);
+    m_settings.setAccessToken(accessTokenEdit->text());
+    m_settings.setRefreshToken(refreshTokenEdit->text());
+    m_settings.save();
 }
 
 #include "moc_outlooksettingswidget.cpp"

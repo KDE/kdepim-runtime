@@ -10,11 +10,11 @@
 #include "outlooksettings.h"
 #include "ui_outlooksettingswidget.h"
 
-class OutlookSettingsWidget : public QWidget, private Ui::OutlookSettingsWidget
+class OutlookSettingsWidget : public QWidget, private Ui::OutlookSettingsDialog
 {
     Q_OBJECT
 public:
-    explicit OutlookSettingsWidget(OutlookSettings &settings, const QString &identifier, QWidget *parent);
+    explicit OutlookSettingsWidget(OutlookSettings &settings, QWidget *parent);
     ~OutlookSettingsWidget() override;
 
     void loadSettings();

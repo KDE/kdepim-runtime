@@ -3,4 +3,5 @@
 OutlookSettings::OutlookSettings(const KSharedConfigPtr &config)
     : SettingsBase(config)
 {
+    load();
 }

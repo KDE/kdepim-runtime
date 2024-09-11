@@ -1278,6 +1278,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "itertools"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "413ee7dfc52ee1a4949ceeb7dbc8a33f2d6c088194d9f922fb8318faf1f01186"
+dependencies = [
+ "either",
+]
+
+[[package]]
 name = "itoa"
 version = "1.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1364,6 +1373,7 @@ dependencies = [
  "graph-http",
  "graph-rs-sdk",
  "http 1.1.0",
+ "itertools 0.13.0",
  "reqwest",
  "serde",
  "serde_json",
@@ -2661,7 +2671,7 @@ version = "5.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c73a36bc44e3039f51fbee93e39f41225f6b17b380eb70cc2aab942df06b34dd"
 dependencies = [
- "itertools",
+ "itertools 0.11.0",
  "nom",
 ]
 
