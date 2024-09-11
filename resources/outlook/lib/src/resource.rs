@@ -3,7 +3,7 @@ use graph_rs_sdk::GraphClient;
 use itertools::Itertools;
 use serde::Deserialize;
 
-use crate::calendar::Calendar;
+use crate::calendar::{Calendar, Event};
 use crate::resource_state::{Collection, Item};
 
 pub struct Resource {
@@ -36,9 +36,9 @@ impl Resource {
         collection: Collection
     ) -> Result<CollectionSyncResult, Error> {
         if collection.remote_revision.is_empty() {
-            self.sync_collection_full(collection)
+            self.sync_collection_full(collection).await
         } else {
-            self.sync_collection_incremental(collection)
+            self.sync_collection_incremental(collection).await
         }
     }
     
@@ -97,29 +97,40 @@ impl Resource {
 }
 
 impl Resource {
-    fn sync_collection_full(&self, collection: Collection) -> Result<CollectionSyncResult, Error>
+    async fn sync_collection_full(&self, collection: Collection) -> Result<CollectionSyncResult, Error>
     {
         Ok(
-            CollectionSynResult::Full {
-                items: self.client.me().calendar(collection.remote_id).list_events().paging().json::<GraphResponse<Item>>().await?.iter().flat_map(|resp| resp.body()).map(|body| match body {
-                    GraphResponse::Error { error } => Err(Error::msg(format!("Graph error: {} ({})", error.message, error.code))),
-                    GraphResponse::Value { value } => Ok(value.iter().map(|event| Item {
-                        id: -1,
-                        remote_id: event.id.clone(),
-                        remote_revision: event.change_key.clone(),
-                        payload: Box::new(event)
-                    }))
-                })
-                .flatten_ok()
-                .collect()?,
-                collection
+            CollectionSyncResult::Full {
+                items: self.client
+                    .me()
+                    .calendar(&collection.remote_id)
+                    .list_events()
+                    .paging()
+                    .json::<GraphResponse<Event>>()
+                    .await?
+                    .iter()
+                    .flat_map(|resp| resp.body())
+                    .map(|body| match body {
+                        GraphResponse::Error { error } => Err(Error::msg(format!("Graph error: {} ({})", error.message, error.code))),
+                        GraphResponse::Value { value } => Ok(value.iter().map(|event| Item {
+                            id: -1,
+                            remote_id: event.id.clone(),
+                            remote_revision: event.change_key.clone(),
+                            mime_type: "application/x-vnd.akonadi.calendar.event".to_string(),
+                            payload: event.into()
+                        }))
+                    })
+                    .flatten_ok()
+                    .flatten()
+                    .collect::<Vec<_>>(),
+                    collection
             }
         )
     }
 
-    fn sync_collection_incremental(&self, collection: Collection) -> Result<CollectionSyncResult>
+    async fn sync_collection_incremental(&self, _collection: Collection) -> Result<CollectionSyncResult, Error>
     {
-
+        todo!()
     }
 }
 
