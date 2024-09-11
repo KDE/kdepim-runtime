@@ -1,8 +1,13 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_outlook_resource\")
 
+# The cxx bindgen producs macros with "$" in the name, which Clang complains about
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "clang")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-dollar-in-identifier-extension")
+endif()
+
 corrosion_import_crate(
   MANIFEST_PATH lib/Cargo.toml
-  CRATES "libgraph"
+  TYPES staticlib
 )
 
 set(CXXQT_EXPORT_DIR "${CMAKE_CURRENT_BINARY_DIR}/cxxqt")
@@ -14,8 +19,8 @@ corrosion_set_env_vars(libgraph
 
 
 set(resource_common_SRCS
-#    settings.cpp
-#    settings.h
+    outlooksettings.cpp
+    outlooksettings.h
 )
 
 ecm_qt_declare_logging_category(resource_common_SRCS
@@ -32,10 +37,10 @@ kcfg_generate_dbus_interface(
   org.kde.Akonadi.Outlook.Settings
 )
 
-#qt_add_dbus_adaptor(resource_common_SRCS
-#  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Outlook.Settings.xml
-#  ${CMAKE_CURRENT_SOURCE_DIR}/outlooksettings.h OutlookSettings
-#)
+qt_add_dbus_adaptor(resource_common_SRCS
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Outlook.Settings.xml
+  ${CMAKE_CURRENT_SOURCE_DIR}/outlooksettings.h OutlookSettings
+)
 
 ############################# Resource #################################
 set(outlook_resource_SRCS
@@ -100,6 +105,7 @@ kcoreaddons_add_plugin(outlookconfig
 target_sources(outlookconfig
 PRIVATE
     outlookconfig.cpp
+    outlooksettingswidget.ui
     outlooksettingswidget.cpp
     outlooksettingswidget.h
     ${resource_common_SRCS}

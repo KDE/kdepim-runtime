@@ -26,5 +26,7 @@ public:
     void collectionRemoved(const Akonadi::Collection &collection) override;
 
 private:
+    void resetState();
+
     std::unique_ptr<ResourceState> mState;
 };

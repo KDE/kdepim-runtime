@@ -17,15 +17,14 @@ public:
     explicit OutlookConfig(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &list)
         : Akonadi::AgentConfigurationBase(config, parent, list)
         , mSettings(config)
-        , mWidget(mSettings, identifier(), parent)
+        , mWidget(mSettings, parent)
     {
-        connect(&mWidget, &OutlookSettingsWidget::okEnabled, this, &Akonadi::AgentConfigurationBase::enableOkButton);
     }
 
     void load() override
     {
         Akonadi::AgentConfigurationBase::load();
-        mSettings.init();
+        mWidget.loadSettings();
     }
 
     [[nodiscard]] bool save() const override
