@@ -2,28 +2,35 @@ use anyhow::Error;
 use cxx_qt::Threading;
 use cxx_qt_lib::QString;
 use std::{
-    fmt::{self, Debug, Formatter},
-    pin::Pin,
-    sync::Mutex,
-    thread::{self, JoinHandle},
+    fmt::{self, Debug, Formatter}, pin::Pin, sync::Mutex, thread::{self, JoinHandle}
 };
 use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
 
 use crate::resource::{CollectionSyncResult, Resource};
-use crate::entities::{Item, Collection};
 
 #[cxx_qt::bridge]
 pub mod resource_state {
+    #[derive(Debug)]
+    pub struct Collection {
+        id: i64,
+        name: String,
+        remote_revision: String,
+        remote_id: String,
+    }
+
+    #[derive(Debug)]
+    pub struct Item {
+        id: i64,
+        remote_revision: String,
+        remote_id: String,
+        mime_type: String,
+        payload: Vec<u8>
+    }
+
     unsafe extern "C++" {
         include!("cxx-qt-lib/qstring.h");
         /// An alias to the QString type
         type QString = cxx_qt_lib::QString;
-    }
-
-    extern "Rust" {
-        type Item;
-        type Collection;
-
     }
 
     unsafe extern "RustQt" {
@@ -31,40 +38,41 @@ pub mod resource_state {
         type ResourceState = super::ResourceStateRust;
 
         #[cxx_name = "retrieveItems"]
-        fn retrieve_items(self: Pin<&mut ResourceState>, collection: &Box<Collection>);
+        fn retrieve_items(self: Pin<&mut ResourceState>, collection: Collection);
         #[cxx_name = "retrieveCollections"]
         fn retrieve_collections(self: Pin<&mut ResourceState>);
 
         #[cxx_name = "itemAdded"]
-        fn item_added(self: Pin<&mut ResourceState>, item: &Box<Item>);
+        fn item_added(self: Pin<&mut ResourceState>, item: &Item);
         #[cxx_name = "itemChanged"]
-        fn item_changed(self: Pin<&mut ResourceState>, item: &Box<Item>);
+        fn item_changed(self: Pin<&mut ResourceState>, item: &Item);
         #[cxx_name = "itemRemoved"]
-        fn item_removed(self: Pin<&mut ResourceState>);
+        fn item_removed(self: Pin<&mut ResourceState>, item: &Item);
 
         #[cxx_name = "collectionAdded"]
-        fn collection_added(self: Pin<&mut ResourceState>, collection: &Box<Collection>);
+        fn collection_added(self: Pin<&mut ResourceState>, collection: Collection);
         #[cxx_name = "collectionChanged"]
-        fn collection_changed(self: Pin<&mut ResourceState>, collection: &Box<Collection>);
+        fn collection_changed(self: Pin<&mut ResourceState>, collection: Collection);
         #[cxx_name = "collectionRemoved"]
-        fn collection_removed(self: Pin<&mut ResourceState>);
+        fn collection_removed(self: Pin<&mut ResourceState>, collection: Collection);
 
         #[qsignal]
         #[cxx_name = "changeProcessed"]
         fn change_processed(self: Pin<&mut ResourceState>);
         #[qsignal]
         #[cxx_name = "itemsRetrieved"]
-        fn items_retrieved(self: Pin<&mut ResourceState>, items: &Vec<Item>);
+        fn items_retrieved(self: Pin<&mut ResourceState>, items: &[Item], collection: Collection);
         #[qsignal]
         #[cxx_name = "itemsRetrievedIncremental"]
         fn items_retrieved_incremental(
             self: Pin<&mut ResourceState>,
-            added_items: Vec<Item>,
-            removed_items: Vec<Item>,
+            added_items: &[Item],
+            removed_items: &[Item],
+            collection: Collection,
         );
         #[qsignal]
         #[cxx_name = "collectionsRetrieved"]
-        fn collections_retrieved(self: Pin<&mut ResourceState>, collections: Vec<Collection>);
+        fn collections_retrieved(self: Pin<&mut ResourceState>, collections: &[Collection]);
         #[qsignal]
         #[cxx_name = "taskDone"]
         fn task_done(self: Pin<&mut ResourceState>);
@@ -78,12 +86,15 @@ pub mod resource_state {
     impl cxx_qt::Threading for ResourceState {}
 }
 
+pub type Item = resource_state::Item;
+pub type Collection = resource_state::Collection;
+
 
 enum ResourceTask {
     SyncCollectionTree {
         result_handler: Box<dyn FnOnce(ResourceTaskResult) + Send>,
     },
-    SyncCollectionFull {
+    SyncCollection {
         collection: Collection,
         result_handler: Box<dyn FnOnce(ResourceTaskResult) + Send>,
     },
@@ -105,10 +116,12 @@ impl Debug for ResourceTask {
 enum ResourceTaskResult {
     ItemsRetreved {
         items: Vec<Item>,
+        collection: Collection,
     },
     ItemsRetrievedIncremental {
         added: Vec<Item>,
         removed: Vec<Item>,
+        collection: Collection,
     },
     CollectionsRetrieved {
         collections: Vec<Collection>,
@@ -192,11 +205,11 @@ impl resource_state::ResourceState {
             collection,
             result_handler: Box::new(move |result| {
                 if let Err(err) = qt_thread.lock().unwrap().queue(move |this| match result {
-                    ResourceTaskResult::ItemsRetreved { items } => {
-                        this.items_retrieved(items);
+                    ResourceTaskResult::ItemsRetreved { items, collection } => {
+                        this.items_retrieved(&items, collection);
                     }
-                    ResourceTaskResult::ItemsRetrievedIncremental { added, removed } => {
-                        this.items_retrieved_incremental(added, removed);
+                    ResourceTaskResult::ItemsRetrievedIncremental { added, removed, collection } => {
+                        this.items_retrieved_incremental(&added, &removed, collection);
                     }
                     ResourceTaskResult::TaskDone { result } => match result {
                         Ok(()) => this.change_processed(),
@@ -218,7 +231,7 @@ impl resource_state::ResourceState {
             result_handler: Box::new(move |result| {
                 if let Err(err) = qt_thread.lock().unwrap().queue(move |this| match result {
                     ResourceTaskResult::CollectionsRetrieved { collections } => {
-                        this.collections_retrieved(collections);
+                        this.collections_retrieved(&collections);
                     }
                     ResourceTaskResult::TaskDone { result } => match result {
                         Ok(()) => this.change_processed(),
@@ -242,19 +255,19 @@ impl resource_state::ResourceState {
         todo!();
     }
 
-    pub fn collection_removed(self: Pin<&mut Self>) {
+    pub fn collection_removed(self: Pin<&mut Self>, _collection: Collection) {
         todo!();
     }
 
-    pub fn item_added(self: Pin<&mut Self>, _item: Item) {
+    pub fn item_added(self: Pin<&mut Self>, _item: &Item) {
         todo!();
     }
 
-    pub fn item_changed(self: Pin<&mut Self>, _item: Item) {
+    pub fn item_changed(self: Pin<&mut Self>, _item: &Item) {
         todo!();
     }
 
-    pub fn item_removed(self: Pin<&mut Self>) {
+    pub fn item_removed(self: Pin<&mut Self>, _item: &Item) {
         todo!();
     }
 }
@@ -286,14 +299,25 @@ async fn resource_loop(
                 result_handler,
             }) => match resource.sync_collection(collection).await {
                 Ok(result) => match result {
-                    CollectionSyncResult::Incremental { added, removed } => {
+                    CollectionSyncResult::Incremental {
+                        added,
+                        removed,
+                        collection
+                    } => {
                         result_handler(ResourceTaskResult::ItemsRetrievedIncremental {
                             added,
                             removed,
+                            collection,
                         });
                     }
-                    CollectionSyncResult::Full { items } => {
-                        result_handler(ResourceTaskResult::ItemsRetreved { items });
+                    CollectionSyncResult::Full {
+                        items,
+                        collection
+                    } => {
+                        result_handler(ResourceTaskResult::ItemsRetreved {
+                            items,
+                            collection,
+                        });
                     }
                 },
                 Err(error) => {
