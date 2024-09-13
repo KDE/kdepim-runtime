@@ -20,6 +20,25 @@
 
 using namespace Akonadi;
 
+namespace
+{
+
+QString sanitizeEwsIcal(QString content)
+{
+    // It is a known bug with some versions of EWS that in some cases, the iCal data are missing the trailing
+    // END:VCALENDAR, which causes ical to fail  to parse the data. This is a hacky workaround to be able to
+    // deal with this situation.
+    // https://answers.microsoft.com/en-us/outlook_com/forum/all/ics-files-are-missing-end-nodes/fb2e1cc7-eed5-43e2-a62f-bebc653e119f?page=2
+    // https://github.com/asciipip/mutt-ical/issues/4
+    if (!content.contains(u"END:VCALENDAR")) {
+        content += QStringLiteral("\nEND:VCALENDAR");
+    }
+
+    return content;
+}
+
+} // namespace
+
 EwsFetchCalendarDetailJob::EwsFetchCalendarDetailJob(EwsClient &client, QObject *parent, const Collection &collection)
     : EwsFetchItemDetailJob(client, parent, collection)
 {
@@ -77,7 +96,8 @@ void EwsFetchCalendarDetailJob::processItems(const EwsGetItemRequest::Response::
         }
 
         const EwsItem &ewsItem = resp.item();
-        QString mimeContent = ewsItem[EwsItemFieldMimeContent].toString();
+        const QString mimeContent = sanitizeEwsIcal(ewsItem[EwsItemFieldMimeContent].toString());
+
         KCalendarCore::Calendar::Ptr memcal(new KCalendarCore::MemoryCalendar(QTimeZone::utc()));
         format.fromString(memcal, mimeContent);
         qCDebugNC(EWSRES_LOG) << QStringLiteral("Found %1 events").arg(memcal->events().count());
@@ -173,7 +193,7 @@ void EwsFetchCalendarDetailJob::exceptionItemsFetched(KJob *job)
         item.setRemoteId(id.id());
         item.setRemoteRevision(id.changeKey());
 
-        QString mimeContent = ewsItem[EwsItemFieldMimeContent].toString();
+        const QString mimeContent = sanitizeEwsIcal(ewsItem[EwsItemFieldMimeContent].toString());
         KCalendarCore::Calendar::Ptr memcal(new KCalendarCore::MemoryCalendar(QTimeZone::utc()));
         format.fromString(memcal, mimeContent);
         KCalendarCore::Incidence::Ptr incidence(memcal->events().last());
