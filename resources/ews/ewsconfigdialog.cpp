@@ -249,13 +249,11 @@ void EwsConfigDialog::autoDiscoveryFinished(KJob *job)
 {
     if (job->error() || job != mAutoDiscoveryJob) {
         KMessageBox::error(this, job->errorText(), i18nc("Exchange server autodiscovery", "Autodiscovery failed"));
-        mProgressDialog->reject();
     } else {
-        mProgressDialog->accept();
         mUi->kcfg_BaseUrl->setText(mAutoDiscoveryJob->ewsUrl());
     }
-    mAutoDiscoveryJob->deleteLater();
     mAutoDiscoveryJob = nullptr;
+    mProgressDialog->hide();
     mProgressDialog->deleteLater();
     mProgressDialog = nullptr;
 }
@@ -266,34 +264,30 @@ void EwsConfigDialog::tryConnectFinished(KJob *job)
         KMessageBox::error(this, job->errorText(), i18nc("Exchange server connection", "Connection failed"));
         mUi->serverStatusText->setText(i18nc("Exchange server status", "Failed"));
         mUi->serverVersionText->setText(i18nc("Exchange server version", "Unknown"));
-        mProgressDialog->reject();
     } else {
         mUi->serverStatusText->setText(i18nc("Exchange server status", "OK"));
         mUi->serverVersionText->setText(mTryConnectJob->serverVersion().toString());
-        mProgressDialog->accept();
     }
-    // mTryConnectJob->deleteLater();
     mTryConnectJob = nullptr;
-    // mProgressDialog->deleteLater();
+    mProgressDialog->hide();
+    mProgressDialog->deleteLater();
     mProgressDialog = nullptr;
 }
 
 void EwsConfigDialog::autoDiscoveryCancelled()
 {
-    if (mAutoDiscoveryJob) {
-        mAutoDiscoveryJob->kill();
-    }
+    mAutoDiscoveryJob->kill();
+    mAutoDiscoveryJob = nullptr;
     mProgressDialog->deleteLater();
     mProgressDialog = nullptr;
 }
 
 void EwsConfigDialog::tryConnectCancelled()
 {
-    if (mTryConnectJob) {
-        mTryConnectJob->kill();
-    }
-
+    mTryConnectJob->kill();
     mTryConnectJobCancelled = true;
+    mProgressDialog->deleteLater();
+    mProgressDialog = nullptr;
 }
 
 void EwsConfigDialog::setAutoDiscoveryNeeded()
