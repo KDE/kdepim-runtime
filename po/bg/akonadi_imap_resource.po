@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-21 00:48+0000\n"
-"PO-Revision-Date: 2024-08-07 11:20+0200\n"
+"PO-Revision-Date: 2024-09-13 20:53+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -701,13 +701,11 @@ msgid "%p%"
 msgstr "%p%"
 
 #: setupserver.cpp:166
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " минута"
-msgstr[1] " минути"
+msgstr[0] "%v минута"
+msgstr[1] "%v минути"
 
 #: setupserver.cpp:182
 #, kde-format
@@ -717,7 +715,7 @@ msgstr "Самоличност:"
 #: setupserver.cpp:202
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Дейности"
 
 #: setupserver.cpp:269
 #, kde-format
