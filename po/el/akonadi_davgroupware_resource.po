@@ -123,10 +123,9 @@ msgstr "Μόνο συγχρονισμός γεγονότων πιο πρόσφα
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
 #: configdialog.ui:190
-#, fuzzy, kde-format
-#| msgid "Server Configuration"
+#, kde-format
 msgid "Server Configuration:"
-msgstr "Διαμόρφωση εξυπηρετητή"
+msgstr "Διαμόρφωση εξυπηρετητή:"
 
 #. i18n: ectx: property (text), widget (QPushButton, addButton)
 #: configdialog.ui:204
@@ -474,8 +473,7 @@ msgid "Account enabled services"
 msgstr "Ενεργές υπηρεσίες λογαριασμού"
 
 #: searchdialog.cpp:26
-#, fuzzy, kde-format
-#| msgid "Search"
+#, kde-format
 msgctxt "@title:window"
 msgid "Search"
 msgstr "Αναζήτηση"
@@ -549,22 +547,19 @@ msgid "a contact with email"
 msgstr "επαφή με email"
 
 #: settings.cpp:477
-#, fuzzy, kde-format
-#| msgid "A password is required for user %1"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "A password is required for user %1"
 msgstr "Απαιτείται κωδικός πρόσβασης για τον χρήστη %1"
 
 #: settings.cpp:481
-#, fuzzy, kde-format
-#| msgid "Password: "
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Password: "
 msgstr "Κωδικός: "
 
 #: setupwizard.cpp:137
-#, fuzzy, kde-format
-#| msgid "DAV groupware configuration wizard"
+#, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "Βοηθός διαμόρφωσης DAV groupware"
@@ -580,14 +575,12 @@ msgid "Enter your credentials to login to the groupware server"
 msgstr "Δώστε τα διαπιστευτήριά σας για την είσοδο στον εξυπηρετητή groupware"
 
 #: setupwizard.cpp:215
-#, fuzzy, kde-format
-#| msgid "User"
+#, kde-format
 msgid "User:"
-msgstr "Χρήστης"
+msgstr "Χρήστης:"
 
 #: setupwizard.cpp:255
-#, fuzzy, kde-format
-#| msgid "No, choose another server"
+#, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Όχι, να επιλεγεί άλλος εξυπηρετητής"
@@ -632,15 +625,13 @@ msgstr ""
 "Επιλογή εξυπηρετητή groupware για τον οποίο θα γίνει διαμόρφωση του πόρου"
 
 #: setupwizard.cpp:338
-#, fuzzy, kde-format
-#| msgid "Use one of those servers:"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Να χρησιμοποιηθεί ένας από αυτούς τους εξυπηρετητές:"
 
 #: setupwizard.cpp:347
-#, fuzzy, kde-format
-#| msgid "Configure the resource manually"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Διαμορφώστε τον πόρο χειροκίνητα"
@@ -666,29 +657,25 @@ msgid "Installation path"
 msgstr "Διαδρομή εγκατάστασης"
 
 #: setupwizard.cpp:395
-#, fuzzy, kde-format
-#| msgid "Use secure connection"
+#, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Χρήση ασφαλούς σύνδεσης"
 
 #: setupwizard.cpp:423
-#, fuzzy, kde-format
-#| msgid "Final URL (CalDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "Τελικό URL (CalDav)"
 
 #: setupwizard.cpp:428
-#, fuzzy, kde-format
-#| msgid "Final URL (CardDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "Τελικό URL (CardDav)"
 
 #: setupwizard.cpp:433
-#, fuzzy, kde-format
-#| msgid "Final URL (GroupDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Τελικό URL (GroupDav)"
@@ -708,8 +695,7 @@ msgstr ""
 "εξυπηρετητή groupware"
 
 #: setupwizard.cpp:503
-#, fuzzy, kde-format
-#| msgid "Test Connection"
+#, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Έλεγχος σύνδεσης"
@@ -725,8 +711,7 @@ msgid "Connected successfully"
 msgstr "Σύνδεση επιτυχής"
 
 #: urlconfigurationdialog.cpp:267
-#, fuzzy, kde-format
-#| msgid "Display name"
+#, kde-format
 msgid "Display Name"
 msgstr "Εμφάνιση ονόματος"
 
@@ -756,10 +741,9 @@ msgstr "GroupDAV"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: urlconfigurationdialog.ui:66
-#, fuzzy, kde-format
-#| msgid "Remote URL"
+#, kde-format
 msgid "Remote URL:"
-msgstr "Απομακρυσμένο URL"
+msgstr "Απομακρυσμένο URL:"
 
 #. i18n: ectx: property (text), widget (QLabel, label1)
 #: urlconfigurationdialog.ui:76
@@ -769,10 +753,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, collectionsLabel)
 #: urlconfigurationdialog.ui:146
-#, fuzzy, kde-format
-#| msgid "Discovered collections"
+#, kde-format
 msgid "Discovered collections:"
-msgstr "Ευρεθείσες συλλογές"
+msgstr "Ευρεθείσες συλλογές:"
 
 #. i18n: ectx: property (text), widget (QPushButton, fetchButton)
 #: urlconfigurationdialog.ui:174

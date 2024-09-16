@@ -253,10 +253,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
-#, fuzzy, kde-format
-#| msgid "Display Name"
+#, kde-format
 msgid "Display Name:"
-msgstr "Εμφάνιση ονόματος"
+msgstr "Εμφάνιση ονόματος:"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
@@ -315,12 +314,10 @@ msgid ""
 msgstr ""
 
 #: singlefileresourceconfigwidgetbase.cpp:129
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Checking file information..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"
-msgstr "Έλεγχος πληροφοριών αρχείου..."
+msgstr "Έλεγχος πληροφοριών αρχείου…"
 
 #, fuzzy
 #~| msgid "&Filename:"

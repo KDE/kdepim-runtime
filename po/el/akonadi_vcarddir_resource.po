@@ -33,8 +33,7 @@ msgstr "Όνομα καταλόγου"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: vcarddiragentsettingswidget.ui:47
-#, fuzzy, kde-format
-#| msgid "&Directory:"
+#, kde-format
 msgid "Di&rectory:"
 msgstr "&Κατάλογος:"
 

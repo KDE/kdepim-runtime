@@ -52,10 +52,9 @@ msgstr ""
 "Αποτυχία έναρξης της μεταφοράς διότι το εργαλείο μεταφοράς δεν είναι έτοιμο"
 
 #: ../migratorbase.cpp:147
-#, fuzzy, kde-format
-#| msgid "Starting migration..."
+#, kde-format
 msgid "Starting migration…"
-msgstr "Έναρξη της μεταφοράς..."
+msgstr "Έναρξη της μεταφοράς…"
 
 #: ../migratorbase.cpp:189
 #, kde-format
@@ -89,12 +88,10 @@ msgid "Not started"
 msgstr "Δεν ξεκίνησε"
 
 #: ../migratorbase.cpp:272
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Running..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Running…"
-msgstr "Εκτελείται..."
+msgstr "Εκτελείται…"
 
 #: ../migratorbase.cpp:274
 #, kde-format
@@ -163,8 +160,7 @@ msgid "(c) 2013-2022 the Akonadi developers"
 msgstr "(c) 2013-2016 οι προγραμματιστές του Akonadi"
 
 #: main.cpp:33
-#, fuzzy, kde-format
-#| msgid "Christian Mollekopf"
+#, kde-format
 msgctxt "@info:credit"
 msgid "Christian Mollekopf"
 msgstr "Christian Mollekopf"
@@ -175,22 +171,19 @@ msgid "Author"
 msgstr "Συγγραφέας"
 
 #: main.cpp:36
-#, fuzzy, kde-format
-#| msgid "Show reporting dialog"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Show reporting dialog"
 msgstr "Εμφάνιση διαλόγου αναφοράς"
 
 #: main.cpp:38
-#, fuzzy, kde-format
-#| msgid "Show report only if changes were made"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Show report only if changes were made"
 msgstr "Εμφάνιση αναφοράς μόνο αν έγιναν αλλαγές"
 
 #: main.cpp:39
-#, fuzzy, kde-format
-#| msgid "MIME type to migrate"
+#, kde-format
 msgctxt "@info:shell"
 msgid "MIME type to migrate"
 msgstr "Τύπος MIME για μεταφορά"

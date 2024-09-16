@@ -100,8 +100,7 @@ msgid "IMAP Account"
 msgstr "Λογαριασμός IMAP"
 
 #: imapresource.cpp:62
-#, fuzzy, kde-format
-#| msgid "IMAP Account Settings"
+#, kde-format
 msgctxt "@title:window"
 msgid "IMAP Account Settings"
 msgstr "Ρυθμίσεις λογαριασμού IMAP"
@@ -385,12 +384,10 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Μετακίνηση φακέλου '%1' από το '%2' στο '%3'"
 
 #: imapresourcebase.cpp:471
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr "Αναζήτηση..."
+msgstr "Αναζήτηση…"
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -696,9 +693,7 @@ msgstr ""
 "%1"
 
 #: settingspasswordrequester.cpp:58
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Προσπαθήστε ξανά"
@@ -776,8 +771,7 @@ msgstr ""
 "σας από αυτόν τον λογαριασμό. Είστε βέβαιοι ότι θέλετε να συνεχίσετε;"
 
 #: setupserver.cpp:272
-#, fuzzy, kde-format
-#| msgid "Server address change"
+#, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Η διεύθυνση του εξυπηρετητή άλλαξε"
@@ -795,8 +789,7 @@ msgstr ""
 "συνεχίσετε;"
 
 #: setupserver.cpp:282
-#, fuzzy, kde-format
-#| msgid "User name change"
+#, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Το όνομα χρήστη άλλαξε"
@@ -1081,10 +1074,9 @@ msgstr "Ενεργοποίηση εγγραφών στον εξυπηρετητ�
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgid "Serverside Subscription"
+#, kde-format
 msgid "Serverside Subscription…"
-msgstr "Εγγραφή στον εξυπηρετητή"
+msgstr "Εγγραφή στον εξυπηρετητή…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390

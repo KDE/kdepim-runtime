@@ -112,9 +112,7 @@ msgid "Cannot handle item tag changes"
 msgstr ""
 
 #: generichandler.cpp:61
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Ready"
+#, kde-format
 msgctxt "@status"
 msgid "Ready"
 msgstr "Έτοιμο"
@@ -142,10 +140,9 @@ msgid "Ready"
 msgstr "Έτοιμο"
 
 #: googleresource.cpp:146
-#, fuzzy, kde-format
-#| msgid "not configured"
+#, kde-format
 msgid "Not configured"
-msgstr "αδιαμόρφωτο"
+msgstr "Αδιαμόρφωτο"
 
 #: googleresource.cpp:146
 #, fuzzy, kde-format
@@ -300,8 +297,7 @@ msgid "Family"
 msgstr "Οικογένεια"
 
 #: personhandler.cpp:93
-#, fuzzy, kde-format
-#| msgid "My Contacts"
+#, kde-format
 msgctxt "Name of a group of contacts"
 msgid "My Contacts"
 msgstr "Οι επαφές μου"

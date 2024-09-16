@@ -15,8 +15,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 2.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 2.0\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -29,15 +29,13 @@ msgid "Your emails"
 msgstr "pvidalis@gmail.com"
 
 #: akonadiworker.cpp:49
-#, fuzzy, kde-format
-#| msgid "Protocol name"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Protocol name"
 msgstr "Όνομα πρωτοκόλλου"
 
 #: akonadiworker.cpp:50 akonadiworker.cpp:51
-#, fuzzy, kde-format
-#| msgid "Socket name"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Socket name"
 msgstr "Όνομα υποδοχής"

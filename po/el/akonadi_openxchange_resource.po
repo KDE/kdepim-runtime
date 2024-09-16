@@ -38,8 +38,7 @@ msgid "Unable to connect: %1"
 msgstr "Αδυναμία σύνδεσης: %1"
 
 #: configwidget.cpp:72
-#, fuzzy, kde-format
-#| msgid "Connection error"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection error"
 msgstr "Σφάλμα σύνδεσης"
@@ -50,8 +49,7 @@ msgid "Tested connection successfully."
 msgstr "Επιτυχής έλεγχος σύνδεσης."
 
 #: configwidget.cpp:74
-#, fuzzy, kde-format
-#| msgid "Connection success"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection success"
 msgstr "Σύνδεση επιτυχής"
@@ -110,10 +108,9 @@ msgstr "Ο κωδικός για την είσοδο στον εξυπηρετη
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
-#, fuzzy, kde-format
-#| msgid "Test Connection..."
+#, kde-format
 msgid "Test Connection…"
-msgstr "Έλεγχος σύνδεσης..."
+msgstr "Έλεγχος σύνδεσης…"
 
 #: openxchangeresource.cpp:250
 #, kde-format

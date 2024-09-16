@@ -40,8 +40,7 @@ msgid "POP3 Account"
 msgstr "Λογαριασμός POP3"
 
 #: accountwidget.cpp:198
-#, fuzzy, kde-format
-#| msgid "Unable to open wallet"
+#, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Αδυναμία ανοίγματος πορτοφολιού"
@@ -632,8 +631,7 @@ msgstr "Για προχωρημένους"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget)
 #: popsettings.ui:217
-#, fuzzy, kde-format
-#| msgid "POP Settings"
+#, kde-format
 msgid "POP Settings"
 msgstr "Ρυθμίσεις POP"
 

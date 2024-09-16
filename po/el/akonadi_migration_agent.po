@@ -32,12 +32,10 @@ msgid "PIM Maintenance"
 msgstr "Συντήρηση PIM"
 
 #: migrationexecutor.cpp:41
-#, fuzzy, kde-format
-#| msgctxt "PIM-Maintenance is in progress."
-#| msgid "In progress..."
+#, kde-format
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress…"
-msgstr "Σε εξέλιξη..."
+msgstr "Σε εξέλιξη…"
 
 #: migrationexecutor.cpp:47
 #, kde-format
@@ -57,17 +55,13 @@ msgid "Name"
 msgstr "Όνομα"
 
 #: migrationscheduler.cpp:147
-#, fuzzy, kde-format
-#| msgctxt "Progress of the mgirator in %"
-#| msgid "Progress"
+#, kde-format
 msgctxt "Progress of the migrator in %"
 msgid "Progress"
 msgstr "Πρόοδος"
 
 #: migrationscheduler.cpp:149
-#, fuzzy, kde-format
-#| msgctxt "Current status of the migrator (done, in progress, ...)"
-#| msgid "Status"
+#, kde-format
 msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "Κατάσταση"
