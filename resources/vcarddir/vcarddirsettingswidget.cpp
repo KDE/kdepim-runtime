@@ -13,7 +13,6 @@
 #include <KLocalization>
 #include <KLocalizedString>
 #include <QUrl>
-#include <ki18n_version.h>
 
 #include <QPushButton>
 #include <QTimer>

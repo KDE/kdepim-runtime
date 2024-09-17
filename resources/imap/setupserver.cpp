@@ -43,7 +43,6 @@
 #include <KUser>
 #include <QNetworkInformation>
 #include <QPushButton>
-#include <ki18n_version.h>
 
 #include <KIdentityManagementCore/IdentityManager>
 #include <KIdentityManagementWidgets/IdentityCombo>

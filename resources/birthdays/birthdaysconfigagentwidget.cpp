@@ -14,7 +14,6 @@
 #include <KSharedConfig>
 #include <QIcon>
 #include <QPushButton>
-#include <ki18n_version.h>
 namespace
 {
 static const char myConfigGroupName[] = "BirthdaysSettingsDialog";

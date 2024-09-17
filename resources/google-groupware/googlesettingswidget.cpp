@@ -21,7 +21,6 @@
 #include <KLocalization>
 #include <KMessageBox>
 #include <KWindowSystem>
-#include <ki18n_version.h>
 
 #include <qt6keychain/keychain.h>
 

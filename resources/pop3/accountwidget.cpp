@@ -25,7 +25,6 @@
 #include <KMessageBox>
 #include <KUser>
 #include <MailTransport/ServerTest>
-#include <ki18n_version.h>
 
 #include <QButtonGroup>
 #include <QPushButton>
