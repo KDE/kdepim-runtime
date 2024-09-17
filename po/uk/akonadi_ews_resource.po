@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-09-17 02:36+0000\n"
 "PO-Revision-Date: 2024-05-12 09:10+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian\n"
@@ -120,31 +120,31 @@ msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "Не вдалося виконати автовизначення"
 
-#: ewsconfigdialog.cpp:266
+#: ewsconfigdialog.cpp:264
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Не вдалося встановити з’єднання"
 
-#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:425
+#: ewsconfigdialog.cpp:265 ewsconfigdialog.cpp:419
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Помилка"
 
-#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:426
+#: ewsconfigdialog.cpp:266 ewsconfigdialog.cpp:420
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Невідома"
 
-#: ewsconfigdialog.cpp:271 ewsconfigdialog.cpp:430
+#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:424
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "Гаразд"
 
-#: ewsconfigdialog.cpp:341
+#: ewsconfigdialog.cpp:335
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -153,12 +153,12 @@ msgstr ""
 "Спроба автоматичного визначення зазнала невдачі. Причиною цього можуть бути "
 "неправильні параметри. Хочете зберегти ваші параметри попри це?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:336
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "Автовизначення сервера Exchange"
 
-#: ewsconfigdialog.cpp:372
+#: ewsconfigdialog.cpp:366
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -167,12 +167,12 @@ msgstr ""
 "Не вдалося встановити з'єднання із Exchange. Причиною цього можуть бути "
 "неправильні параметри. Хочете зберегти ваші параметри попри це?"
 
-#: ewsconfigdialog.cpp:373
+#: ewsconfigdialog.cpp:367
 #, kde-format
 msgid "Exchange server connection"
 msgstr "З'єднання із сервером Exchange"
 
-#: ewsconfigdialog.cpp:427
+#: ewsconfigdialog.cpp:421
 #, kde-format
 msgid "Connection failed"
 msgstr "Не вдалося встановити з’єднання"

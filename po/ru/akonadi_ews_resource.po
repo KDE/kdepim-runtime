@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-09-17 02:36+0000\n"
 "PO-Revision-Date: 2024-02-09 22:48+0300\n"
 "Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -118,31 +118,31 @@ msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "Ошибка автоматического обнаружения"
 
-#: ewsconfigdialog.cpp:266
+#: ewsconfigdialog.cpp:264
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Ошибка подключения"
 
-#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:425
+#: ewsconfigdialog.cpp:265 ewsconfigdialog.cpp:419
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Ошибка"
 
-#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:426
+#: ewsconfigdialog.cpp:266 ewsconfigdialog.cpp:420
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: ewsconfigdialog.cpp:271 ewsconfigdialog.cpp:430
+#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:424
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:341
+#: ewsconfigdialog.cpp:335
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -151,12 +151,12 @@ msgstr ""
 "Ошибка автоматического обнаружения. Возможно, заданы неверные параметры. "
 "Сохранить?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:336
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "Автоматическое обнаружение сервера Exchange"
 
-#: ewsconfigdialog.cpp:372
+#: ewsconfigdialog.cpp:366
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -165,12 +165,12 @@ msgstr ""
 "Ошибка подключения к серверу Exchange. Возможно, заданы неверные параметры. "
 "Сохранить?"
 
-#: ewsconfigdialog.cpp:373
+#: ewsconfigdialog.cpp:367
 #, kde-format
 msgid "Exchange server connection"
 msgstr "Подключение к серверу Exchange"
 
-#: ewsconfigdialog.cpp:427
+#: ewsconfigdialog.cpp:421
 #, kde-format
 msgid "Connection failed"
 msgstr "Ошибка подключения"

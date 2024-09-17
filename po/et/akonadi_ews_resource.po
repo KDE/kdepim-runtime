@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-09-17 02:36+0000\n"
 "PO-Revision-Date: 2019-12-18 18:35+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -116,31 +116,31 @@ msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "Automaatne tuvastamine nurjus"
 
-#: ewsconfigdialog.cpp:266
+#: ewsconfigdialog.cpp:264
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Ühendus nurjus"
 
-#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:425
+#: ewsconfigdialog.cpp:265 ewsconfigdialog.cpp:419
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Nurjumine"
 
-#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:426
+#: ewsconfigdialog.cpp:266 ewsconfigdialog.cpp:420
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Teadmata"
 
-#: ewsconfigdialog.cpp:271 ewsconfigdialog.cpp:430
+#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:424
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:341
+#: ewsconfigdialog.cpp:335
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -149,12 +149,12 @@ msgstr ""
 "Automaatne tuvastamine nurjus. Seda võivad põhjustada valed parameetrid. Kas "
 "siiski seadistused salvestada?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:336
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "Exchange'i serveri automaatne tuvastamine"
 
-#: ewsconfigdialog.cpp:372
+#: ewsconfigdialog.cpp:366
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -163,12 +163,12 @@ msgstr ""
 "Ühendus Exchange'iga nurjus. Seda võivad põhjustada valed parameetrid. Kas "
 "siiski seadistused salvestada?"
 
-#: ewsconfigdialog.cpp:373
+#: ewsconfigdialog.cpp:367
 #, kde-format
 msgid "Exchange server connection"
 msgstr "Exchange'i serveri ühendus"
 
-#: ewsconfigdialog.cpp:427
+#: ewsconfigdialog.cpp:421
 #, kde-format
 msgid "Connection failed"
 msgstr "Ühendus nurjus"

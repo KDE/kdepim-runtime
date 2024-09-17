@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-05-12 00:39+0000\n"
+"POT-Creation-Date: 2024-09-17 02:36+0000\n"
 "PO-Revision-Date: 2021-08-27 12:57+0100\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -112,31 +112,31 @@ msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "A auto-descoberta falhou"
 
-#: ewsconfigdialog.cpp:266
+#: ewsconfigdialog.cpp:264
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "A ligação falhou"
 
-#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:425
+#: ewsconfigdialog.cpp:265 ewsconfigdialog.cpp:419
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Falhou"
 
-#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:426
+#: ewsconfigdialog.cpp:266 ewsconfigdialog.cpp:420
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Desconhecida"
 
-#: ewsconfigdialog.cpp:271 ewsconfigdialog.cpp:430
+#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:424
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:341
+#: ewsconfigdialog.cpp:335
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -145,12 +145,12 @@ msgstr ""
 "A auto-descoberta falhou. Isto poder-se-á dever a parâmetros incorrectos. "
 "Deseja à mesma gravar as suas definições?"
 
-#: ewsconfigdialog.cpp:342
+#: ewsconfigdialog.cpp:336
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "Auto-descoberta do servidor de Exchange"
 
-#: ewsconfigdialog.cpp:372
+#: ewsconfigdialog.cpp:366
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -159,12 +159,12 @@ msgstr ""
 "A ligação ao Exchange foi mal-sucedida. Isto poder-se-á dever a parâmetros "
 "incorrectos. Deseja à mesma gravar as suas definições?"
 
-#: ewsconfigdialog.cpp:373
+#: ewsconfigdialog.cpp:367
 #, kde-format
 msgid "Exchange server connection"
 msgstr "Ligação ao servidor de Exchange"
 
-#: ewsconfigdialog.cpp:427
+#: ewsconfigdialog.cpp:421
 #, kde-format
 msgid "Connection failed"
 msgstr "A ligação falhou"
