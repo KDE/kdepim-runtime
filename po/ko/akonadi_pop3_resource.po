@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-09-18 00:40+0000\n"
 "PO-Revision-Date: 2024-08-21 00:37+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -17,30 +17,30 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 23.08.5\n"
 
-#: accountwidget.cpp:84
+#: accountwidget.cpp:83
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: accountwidget.cpp:93
+#: accountwidget.cpp:92
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%v분"
 
-#: accountwidget.cpp:131 pop3resource.cpp:46
+#: accountwidget.cpp:130 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 계정"
 
-#: accountwidget.cpp:198
+#: accountwidget.cpp:197
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "지갑을 열 수 없음"
 
-#: accountwidget.cpp:248
+#: accountwidget.cpp:247
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -53,7 +53,7 @@ msgstr ""
 "일부 서버는 사용 가능한 기능을 제대로 알려 주지 않으므로 메시지를 가져온 후 "
 "서버에 남겨 두는 기능을 사용할 수도 있습니다."
 
-#: accountwidget.cpp:263
+#: accountwidget.cpp:262
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -75,17 +75,17 @@ msgstr ""
 "만약 서버에서 알려 주지 않으나 더 빠른 속도를 원하면 직접 여러 통의 메일을\n"
 "보낸 다음 다운로드하는 테스트를 진행하십시오."
 
-#: accountwidget.cpp:296
+#: accountwidget.cpp:295
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "일반 탭에서 서버와 포트를 먼저 지정하십시오."
 
-#: accountwidget.cpp:329
+#: accountwidget.cpp:328
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "서버에 연결할 수 없습니다. 서버 주소를 확인하십시오."
 
-#: accountwidget.cpp:373
+#: accountwidget.cpp:372
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -104,7 +104,7 @@ msgstr ""
 "된 메일을 보낼 수도 있음을 유의해야 합니다. 중요한 메일을 주고받기 전에 직접 "
 "여러 통의 메일을 보낸 다음 다운로드하는 테스트를 진행하십시오."
 
-#: accountwidget.cpp:393
+#: accountwidget.cpp:392
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -118,13 +118,13 @@ msgstr ""
 "일부 서버는 사용 가능한 기능을 제대로 알려 주지 않으므로 메시지를 가져온 후 "
 "서버에 남겨 두는 기능을 사용할 수도 있습니다."
 
-#: accountwidget.cpp:425
+#: accountwidget.cpp:424
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] "일"
 
-#: accountwidget.cpp:430
+#: accountwidget.cpp:429
 #, kde-format
 msgid " message"
 msgid_plural " messages"

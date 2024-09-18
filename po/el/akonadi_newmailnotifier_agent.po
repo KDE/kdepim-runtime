@@ -34,10 +34,9 @@ msgid "[Open Folder]"
 msgstr "Φάκελοι"
 
 #: newmailnotificationhistorymanager.cpp:42
-#, fuzzy, kde-format
-#| msgid "Show mail..."
+#, kde-format
 msgid "[Show Mail]"
-msgstr "Εμφάνιση αλληλογραφίας..."
+msgstr "[Εμφάνιση αλληλογραφίας]"
 
 #: newmailnotificationhistorywidget.cpp:24
 #: newmailnotifiersettingswidget.cpp:114

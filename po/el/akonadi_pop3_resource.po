@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-09-18 00:40+0000\n"
 "PO-Revision-Date: 2016-05-24 16:38+0200\n"
 "Last-Translator: Petros Vidalis <pvidalis@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -19,13 +19,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: accountwidget.cpp:84
+#: accountwidget.cpp:83
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: accountwidget.cpp:93
+#: accountwidget.cpp:92
 #, fuzzy, kde-format
 #| msgid " minute"
 #| msgid_plural " minutes"
@@ -34,18 +34,18 @@ msgid_plural "%v minutes"
 msgstr[0] " λεπτό"
 msgstr[1] " λεπτά"
 
-#: accountwidget.cpp:131 pop3resource.cpp:46
+#: accountwidget.cpp:130 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "Λογαριασμός POP3"
 
-#: accountwidget.cpp:198
+#: accountwidget.cpp:197
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Αδυναμία ανοίγματος πορτοφολιού"
 
-#: accountwidget.cpp:248
+#: accountwidget.cpp:247
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -59,18 +59,8 @@ msgstr ""
 "τους, μπορείτε να ενεργοποιήσετε την παραμονή των προσκομισθέντων αντιγράφων "
 "μηνυμάτων στον εξυπηρετητή."
 
-#: accountwidget.cpp:263
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that this feature can cause some POP3 servers that do not "
-#| "support pipelining to send corrupted mail;\n"
-#| "this is configurable, though, because some servers support pipelining but "
-#| "do not announce their capabilities. To check whether your POP3 server "
-#| "announces pipelining support use the \"Auto Detect\" button at the bottom "
-#| "of the dialog;\n"
-#| "if your server does not announce it, but you want more speed, then you "
-#| "should do some testing first by sending yourself a batch of mail and "
-#| "downloading it."
+#: accountwidget.cpp:262
+#, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
 "support pipelining to send corrupted mail;\n"
@@ -83,28 +73,31 @@ msgid ""
 "of mail and downloading it."
 msgstr ""
 "Σημειώστε ότι αυτό το χαρακτηριστικό μπορεί να γίνει αιτία κάποιοι POP3 "
-"εξυπηρετητές που δεν υποστηρίζουν «pipelining», να στέλνουν αλλοιωμένα "
-"μηνύματα·\n"
-"ωστόσο αυτό μπορεί να διαμορφωθεί, επειδή κάποιοι εξυπηρετητές υποστηρίζουν "
-"«pipelining» αλλά δεν ανακοινώνουν τις δυνατότητές τους. Για να ελέγξετε αν "
+"εξυπηρετητές που δεν υποστηρίζουν «pipelining»,\n"
+"να στέλνουν αλλοιωμένα μηνύματα· ωστόσο αυτό μπορεί να διαμορφωθεί, επειδή "
+"κάποιοι εξυπηρετητές\n"
+"υποστηρίζουν «pipelining» αλλά δεν ανακοινώνουν τις δυνατότητές τους. Για να "
+"ελέγξετε αν\n"
 "ο εξυπηρετητής POP3 που χρησιμοποιείτε ανακοινώνει υποστήριξη «pipelining», "
-"χρησιμοποιήστε το κουμπί «Έλεγχος Υποστηρικτικών Δυνατοτήτων» που βρίσκεται "
-"στο κάτω μέρος του διαλόγου·\n"
+"χρησιμοποιήστε\n"
+"το κουμπί «Έλεγχος Υποστηρικτικών Δυνατοτήτων» που βρίσκεται στο κάτω μέρος "
+"του διαλόγου·\n"
 "αν ο εξυπηρετητής δεν το ανακοινώνει, αλλά θέλετε μεγαλύτερη ταχύτητα, τότε "
-"θα πρέπει να κάνετε κάποιες δοκιμές με την αποστολή στον εαυτό σας μιας "
-"δέσμης μηνυμάτων και της λήψης αυτών."
+"θα πρέπει να κάνετε\n"
+"κάποιες δοκιμές με την αποστολή στον εαυτό σας μιας δέσμης μηνυμάτων και της "
+"λήψης αυτών."
 
-#: accountwidget.cpp:296
+#: accountwidget.cpp:295
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Δηλώστε πρώτα έναν εξυπηρετητή και μια θύρα στη καρτέλα Γενικά."
 
-#: accountwidget.cpp:329
+#: accountwidget.cpp:328
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Αδυναμία σύνδεσης με τον εξυπηρετητή, ελέγξτε τη διεύθυνση."
 
-#: accountwidget.cpp:373
+#: accountwidget.cpp:372
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -127,7 +120,7 @@ msgstr ""
 "μηνυμάτων τα οποία θα κατεβάσετε με την πρώτη προσπάθεια από τον εξυπηρετητή "
 "POP."
 
-#: accountwidget.cpp:393
+#: accountwidget.cpp:392
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -143,14 +136,14 @@ msgstr ""
 "αλλά εσείς μπορείτε να ενεργοποιήσετε την παραμονή των προσκομισθέντων "
 "μηνυμάτων στον εξυπηρετητή."
 
-#: accountwidget.cpp:425
+#: accountwidget.cpp:424
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " ημέρα"
 msgstr[1] " ημέρες"
 
-#: accountwidget.cpp:430
+#: accountwidget.cpp:429
 #, kde-format
 msgid " message"
 msgid_plural " messages"
@@ -396,10 +389,9 @@ msgid "Error while executing precommand."
 msgstr "Σφάλμα κατά την εκτέλεση προ-εντολής."
 
 #: pop3resource.cpp:457
-#, fuzzy, kde-format
-#| msgid "Unable to login to the server %1."
+#, kde-format
 msgid "Unable to login to the server \"%1\"."
-msgstr "Αδυναμία εισόδου στον εξυπηρετητή %1."
+msgstr "Αδυναμία εισόδου στον εξυπηρετητή «%1»."
 
 #: pop3resource.cpp:466
 #, kde-format

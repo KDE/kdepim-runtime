@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-09-18 00:40+0000\n"
 "PO-Revision-Date: 2024-08-17 09:58+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -20,13 +20,13 @@ msgstr ""
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Lokalize 23.04.3\n"
 
-#: accountwidget.cpp:84
+#: accountwidget.cpp:83
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: accountwidget.cpp:93
+#: accountwidget.cpp:92
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -35,18 +35,18 @@ msgstr[1] "%v хвилини"
 msgstr[2] "%v хвилин"
 msgstr[3] "%v хвилина"
 
-#: accountwidget.cpp:131 pop3resource.cpp:46
+#: accountwidget.cpp:130 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "Обліковий запис POP3"
 
-#: accountwidget.cpp:198
+#: accountwidget.cpp:197
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Не вдалося відкрити сховище паролів"
 
-#: accountwidget.cpp:248
+#: accountwidget.cpp:247
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -59,7 +59,7 @@ msgstr ""
 "Деякі сервери неправильно оголошують свої можливості, тому ви все ще можете "
 "ввімкнути залишення повідомлень на сервері."
 
-#: accountwidget.cpp:263
+#: accountwidget.cpp:262
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -83,19 +83,19 @@ msgstr ""
 "отримання листів, то вам потрібно провести перевірку: надішліть собі "
 "декілька листів і спробуйте отримати їх."
 
-#: accountwidget.cpp:296
+#: accountwidget.cpp:295
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Будь ласка, спочатку вкажіть сервер та порт у вкладці «Загальне»."
 
-#: accountwidget.cpp:329
+#: accountwidget.cpp:328
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Не вдалося встановити з’єднання з сервером, будь ласка, перевірте адресу "
 "сервера."
 
-#: accountwidget.cpp:373
+#: accountwidget.cpp:372
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -116,7 +116,7 @@ msgstr ""
 "надішліть собі велику кількість листів і спробуйте одночасно отримати їх всі "
 "з POP сервера."
 
-#: accountwidget.cpp:393
+#: accountwidget.cpp:392
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -131,7 +131,7 @@ msgstr ""
 "Деякі сервери неправильно оголошують свої можливості, тому ви все ще можете "
 "ввімкнути залишення повідомлень на сервері."
 
-#: accountwidget.cpp:425
+#: accountwidget.cpp:424
 #, kde-format
 msgid " day"
 msgid_plural " days"
@@ -140,7 +140,7 @@ msgstr[1] " дні"
 msgstr[2] " днів"
 msgstr[3] " день"
 
-#: accountwidget.cpp:430
+#: accountwidget.cpp:429
 #, kde-format
 msgid " message"
 msgid_plural " messages"

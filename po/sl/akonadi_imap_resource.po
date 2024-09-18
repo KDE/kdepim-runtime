@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-21 00:48+0000\n"
+"POT-Creation-Date: 2024-09-18 00:40+0000\n"
 "PO-Revision-Date: 2024-08-17 07:35+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -293,7 +293,7 @@ msgstr ""
 msgid "No server configured yet."
 msgstr "Ni še nastavljenih strežnikov."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:674
+#: imapresourcebase.cpp:245 setupserver.cpp:673
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -668,7 +668,7 @@ msgstr "Odpri nastavitve"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:80 setupserverview_desktop.ui:294
+#: setupserver.cpp:79 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -677,31 +677,31 @@ msgstr "Navadno besedilo"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:82 setupserverview_desktop.ui:329
+#: setupserver.cpp:81 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Anonimno"
 
-#: setupserver.cpp:84
+#: setupserver.cpp:83
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr "XOAuth"
 
-#: setupserver.cpp:152
+#: setupserver.cpp:151
 #, kde-format
 msgid "Archive Folder"
 msgstr "Arhiviraj mapo"
 
-#: setupserver.cpp:163
+#: setupserver.cpp:162
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: setupserver.cpp:166
+#: setupserver.cpp:165
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -710,17 +710,17 @@ msgstr[1] "%v minuti"
 msgstr[2] "%v minute"
 msgstr[3] "%v minut"
 
-#: setupserver.cpp:182
+#: setupserver.cpp:181
 #, kde-format
 msgid "Identity:"
 msgstr "Istovetnost:"
 
-#: setupserver.cpp:202
+#: setupserver.cpp:201
 #, kde-format
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: setupserver.cpp:269
+#: setupserver.cpp:268
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -731,13 +731,13 @@ msgstr ""
 "morali znova prejeti vso e-pošto iz tega računa. Ali ste prepričani, da "
 "želite nadaljevati?"
 
-#: setupserver.cpp:272
+#: setupserver.cpp:271
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Sprememba naslova strežnika"
 
-#: setupserver.cpp:279
+#: setupserver.cpp:278
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -748,13 +748,13 @@ msgstr ""
 "prej, boste morali znova prejeti vso e-pošto iz tega računa. Ali ste "
 "prepričani, da želite nadaljevati?"
 
-#: setupserver.cpp:282
+#: setupserver.cpp:281
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Sprememba uporabniškega imena"
 
-#: setupserver.cpp:434 setupserver.cpp:486
+#: setupserver.cpp:433 setupserver.cpp:485
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -764,28 +764,28 @@ msgstr ""
 "Ni bilo mogoče dostopati do programa KWallet. Geslo je potrebno shraniti. "
 "Prosim, aktivirajte ga."
 
-#: setupserver.cpp:436 setupserver.cpp:488
+#: setupserver.cpp:435 setupserver.cpp:487
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"
 msgstr "KWallet ni na voljo"
 
-#: setupserver.cpp:561
+#: setupserver.cpp:560
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Ni se mogoče povezati s strežnikom. Preverite njegov naslov."
 
-#: setupserver.cpp:573
+#: setupserver.cpp:572
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS je podprt in priporočen.</b></qt>"
 
-#: setupserver.cpp:576
+#: setupserver.cpp:575
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS je podprt in priporočen.</b></qt>"
 
-#: setupserver.cpp:580
+#: setupserver.cpp:579
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -794,7 +794,7 @@ msgstr ""
 "<qt><b>Varnostne podpore ni. Povezava na ta strežnik ni priporočljiva.</b></"
 "qt>"
 
-#: setupserver.cpp:583
+#: setupserver.cpp:582
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Tega strežnika ni mogoče uporabiti.</b></qt>"

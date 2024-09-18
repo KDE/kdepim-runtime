@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-09-18 00:40+0000\n"
 "PO-Revision-Date: 2024-08-25 21:34+0200\n"
 "Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -198,7 +198,7 @@ msgstr "Ungültiger Nutzdatentyp"
 msgid "Unknown collection mimetype"
 msgstr "Unbekannter Sammlungs-Mimetyp"
 
-#: googlesettingswidget.cpp:43
+#: googlesettingswidget.cpp:42
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -206,7 +206,7 @@ msgstr[0] "%v Minute"
 msgstr[1] "%v Minuten"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:106 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:105 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>Not configured</b>"
 msgstr "<b>Nicht eingerichtet</b>"

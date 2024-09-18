@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-09-18 00:40+0000\n"
 "PO-Revision-Date: 2023-12-12 00:59+0100\n"
 "Last-Translator: Enol P. <enolp@softastur.org>\n"
 "Language-Team: Asturian <alministradores@softastur.org>\n"
@@ -193,7 +193,7 @@ msgstr ""
 msgid "Unknown collection mimetype"
 msgstr ""
 
-#: googlesettingswidget.cpp:43
+#: googlesettingswidget.cpp:42
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -201,7 +201,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:106 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:105 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>Not configured</b>"
 msgstr ""
