@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2023-10-07 23:20+0100\n"
+"PO-Revision-Date: 2024-09-21 10:41+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
@@ -28,7 +28,7 @@ msgstr "vCard Adreslibra Dosiero"
 #: vcardconfig.cpp:24
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktivecoj"
 
 #: vcardresource.cpp:71
 #, kde-format
