@@ -80,6 +80,3 @@ msgstr "Невъзможно извличане на добавен елемен
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Невъзможно извличане на променен елемент %1."
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Интервал на автозапис (в минути)."

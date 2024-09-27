@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-30 00:41+0000\n"
-"PO-Revision-Date: 2024-06-08 12:04+0400\n"
+"PO-Revision-Date: 2024-09-26 13:17+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -330,10 +330,9 @@ msgid "Invalid collection for item %1."
 msgstr "تجميعة غير صالحة للعنصر %1."
 
 #: davgroupwareresource.cpp:650
-#, fuzzy, kde-format
-#| msgid "Unable to add item: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
-msgstr "تعذّرت إضافة العنصر: %1"
+msgstr "تعذّر تعديل العنصر: %1"
 
 #: davgroupwareresource.cpp:687
 #, kde-format
@@ -570,8 +569,7 @@ msgid "User:"
 msgstr "المستخدم:"
 
 #: setupwizard.cpp:255
-#, fuzzy, kde-format
-#| msgid "No, choose another server"
+#, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "لا، اختر خدمة أخرى"
@@ -613,15 +611,13 @@ msgid "Select the groupware server the resource shall be configured for"
 msgstr "اختر خادوم البرمجيّات التعاونيّة الذي على المورد أن يُضبط لأجله"
 
 #: setupwizard.cpp:338
-#, fuzzy, kde-format
-#| msgid "Use one of those servers:"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "استخدم أحد هذه الخواديم:"
 
 #: setupwizard.cpp:347
-#, fuzzy, kde-format
-#| msgid "Configure the resource manually"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "اضبط المورد يدويًّا"
@@ -647,8 +643,7 @@ msgid "Installation path"
 msgstr "مسار التّثبيت"
 
 #: setupwizard.cpp:395
-#, fuzzy, kde-format
-#| msgid "Use secure connection"
+#, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "استخدم اتّصالًا آمنًا"
@@ -686,8 +681,7 @@ msgstr ""
 "بالضّبط الحاليّ"
 
 #: setupwizard.cpp:503
-#, fuzzy, kde-format
-#| msgid "Test Connection"
+#, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "اختبر الاتّصال"

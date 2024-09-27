@@ -1288,6 +1288,3 @@ msgstr "Актуализирането на елемента е неуспешн
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Елементът е недостъпен, докато се обработва отговор на елемента."
-
-#~ msgid "Exchange server autodiscovery"
-#~ msgstr "Автоматично откриване на сървър за обмен"

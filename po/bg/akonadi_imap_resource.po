@@ -1171,31 +1171,3 @@ msgstr "Търсене:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "&Само абонирани"
-
-#~ msgctxt "@title:window"
-#~ msgid "Could Not Authenticate"
-#~ msgstr "Неуспешно удостоверяване"
-
-#~ msgid "Account Settings"
-#~ msgstr "Настройки на акаунта"
-
-#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
-#~ msgstr "Моля, въведете парола за потребител ' %1' на IMAP сървър ' %2'."
-
-#~ msgid ""
-#~ "Could not access KWallet. If you want to store the password permanently "
-#~ "then you have to activate it. If you do not want to use KWallet, check "
-#~ "the box below, but note that you will be prompted for your password when "
-#~ "needed."
-#~ msgstr ""
-#~ "Няма достъп до KWallet. Ако искате да съхранявате паролата постоянно, "
-#~ "трябва да я активирате. Ако не искате да използвате KWallet, поставете "
-#~ "отметка в квадратчето по-долу, но имайте предвид, че при необходимост ще "
-#~ "бъдете подканени да въведете паролата си."
-
-#~ msgid "Do not use KWallet"
-#~ msgstr "Без използване на KWallet"
-
-#~ msgctxt "@status"
-#~ msgid "Failed to open KWallet"
-#~ msgstr "Неуспешно отваряне на KWallet"
