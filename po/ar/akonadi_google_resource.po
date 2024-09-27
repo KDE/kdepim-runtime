@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-10 00:39+0000\n"
-"PO-Revision-Date: 2024-02-23 18:11+0400\n"
+"PO-Revision-Date: 2024-09-26 13:25+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: calendarhandler.cpp:91
 #, kde-format
@@ -217,8 +218,7 @@ msgstr[5] " دقيقة"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:102 googlesettingswidget.ui:30
-#, fuzzy, kde-format
-#| msgid "<b>not configured</b>"
+#, kde-format
 msgid "<b>Not configured</b>"
 msgstr "<b>غير مضبوط</b>"
 
@@ -230,10 +230,9 @@ msgstr "الحساب:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, fuzzy, kde-format
-#| msgid "Configure..."
+#, kde-format
 msgid "Configure…"
-msgstr "اضبط..."
+msgstr "اضبط…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-09-17 02:36+0000\n"
-"PO-Revision-Date: 2024-02-23 18:11+0400\n"
+"PO-Revision-Date: 2024-09-26 13:24+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -640,20 +641,16 @@ msgid "Failed to fetch item payload"
 msgstr "فشل جلب حمولة العنصر"
 
 #: ewsfetchitemsjob.cpp:98
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Retrieving %1 items"
+#, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list"
-msgstr "يجلب %1 من العناصر"
+msgstr "يجلب %1 من قائمة العناصر"
 
 #: ewsfetchitemsjob.cpp:214
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Retrieving %1 items"
+#, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
-msgstr "يجلب %1 من العناصر"
+msgstr "يجلب %1 من قائمة العناصر (%2 عنصر)"
 
 #: ewsfetchitemsjob.cpp:399
 #, kde-format
@@ -709,10 +706,9 @@ msgid "Exchange server autodiscovery"
 msgstr "الكشف الآليّ عن خادوم «إكسچينج»"
 
 #: ewsprogressdialog.cpp:49
-#, fuzzy, kde-format
-#| msgid "Performing Microsoft Exchange server autodiscovery..."
+#, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr "يجري الكشف الآليّ عن خادوم «مايكروسوفت إكسچينج»..."
+msgstr "يجري الكشف الآليّ عن خادوم «مايكروسوفت إكسچينج»…"
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -721,10 +717,9 @@ msgid "Connecting to Exchange"
 msgstr "يتّصل بِ‍«إكسچينج»"
 
 #: ewsprogressdialog.cpp:53
-#, fuzzy, kde-format
-#| msgid "Connecting to Microsoft Exchange server..."
+#, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "يتّصل بخادوم «مايكروسوفت إكسچينج»..."
+msgstr "يتّصل بخادوم «مايكروسوفت إكسچينج»…"
 
 #: ewsresource.cpp:143
 #, kde-format
