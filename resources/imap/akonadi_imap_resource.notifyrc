@@ -111,6 +111,7 @@ Comment[zh_TW]=連線到 IMAP 信件伺服器
 
 [Event/imapAuthFailed]
 Name=IMAP E-Mail authentication failure
+Name[ar]=فشل مصادقة البريد الإلكتروني IMAP
 Name[bg]=Неуспешно удостоверяване на IMAP Е-поща
 Name[ca]=Ha fallat l'autenticació del correu electrònic IMAP
 Name[ca@valencia]=No s'ha pogut fer l'autenticació del correu electrònic IMAP
@@ -138,6 +139,7 @@ Name[uk]=Помилка під час спроби розпізнавання у
 Name[x-test]=xxIMAP E-Mail authentication failurexx
 Name[zh_TW]=IMAP 電子郵件認證失敗
 Comment=IMAP e-mail couldn't authenticate with the server
+Comment[ar]=لم يتمكن بريد IMAP الإلكتروني من المصادقة مع الخادم
 Comment[bg]=IMAP Е-поща не може да се удостовери със сървъра
 Comment[ca]=El correu electrònic IMAP no s'ha pogut autenticar amb el servidor
 Comment[ca@valencia]=El correu electrònic IMAP no s'ha pogut autenticar amb el servidor
