@@ -27,7 +27,6 @@ Dependencies:
     'frameworks/kitemmodels': '@latest-kf6'
     'frameworks/kcodecs': '@latest-kf6'
     'frameworks/kwindowsystem': '@latest-kf6'
-    'frameworks/ktextwidgets': '@latest-kf6'
     'frameworks/knotifications': '@latest-kf6'
     'frameworks/kcmutils': '@latest-kf6'
     'frameworks/kdav': '@latest-kf6'
