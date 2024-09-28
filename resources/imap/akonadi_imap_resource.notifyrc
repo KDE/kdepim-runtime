@@ -1,6 +1,3 @@
-SPDX-FileCopyrightText: 2024 Kevin Ottens <ervin@kde.org>
-SPDX-License-Identifier: LGPL-2.0-or-later
-
 [Global]
 IconName=network-server
 Name=IMAP E-Mail Server
