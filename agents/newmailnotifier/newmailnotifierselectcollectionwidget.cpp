@@ -108,7 +108,6 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
 
     auto mimeTypeProxy = new Akonadi::CollectionFilterProxyModel(this);
     mimeTypeProxy->setExcludeVirtualCollections(true);
-    mimeTypeProxy->setDynamicSortFilter(true);
     mimeTypeProxy->addMimeTypeFilters(QStringList() << KMime::Message::mimeType());
     mimeTypeProxy->setSourceModel(mModel);
 
@@ -116,7 +115,6 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
 
     mCollectionFilter->setRecursiveFilteringEnabled(true);
     mCollectionFilter->setSourceModel(mNewMailNotifierProxyModel);
-    mCollectionFilter->setDynamicSortFilter(true);
     mCollectionFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
     mCollectionFilter->setSortRole(Qt::DisplayRole);
     mCollectionFilter->setSortCaseSensitivity(Qt::CaseSensitive);
