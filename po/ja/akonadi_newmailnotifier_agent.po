@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-30 00:41+0000\n"
+"POT-Creation-Date: 2024-10-02 00:40+0000\n"
 "PO-Revision-Date: 2011-01-08 14:26-0800\n"
 "Last-Translator: Japanese KDE translation team <kde-jp@kde.org>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -69,19 +69,19 @@ msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
 msgstr ""
 
-#: newmailnotifierselectcollectionwidget.cpp:127
+#: newmailnotifierselectcollectionwidget.cpp:125
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Search…"
 msgstr ""
 
-#: newmailnotifierselectcollectionwidget.cpp:142
+#: newmailnotifierselectcollectionwidget.cpp:140
 #, kde-format
 msgctxt "@action:button"
 msgid "&Select All"
 msgstr ""
 
-#: newmailnotifierselectcollectionwidget.cpp:146
+#: newmailnotifierselectcollectionwidget.cpp:144
 #, kde-format
 msgctxt "@action:button"
 msgid "&Unselect All"

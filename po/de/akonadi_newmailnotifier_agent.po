@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-30 00:41+0000\n"
+"POT-Creation-Date: 2024-10-02 00:40+0000\n"
 "PO-Revision-Date: 2024-08-21 21:56+0200\n"
 "Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -75,19 +75,19 @@ msgstr ""
 "Wählen Sie die Ordner aus, die auf neue E-Mail-Nachrichten überwacht werden "
 "sollen."
 
-#: newmailnotifierselectcollectionwidget.cpp:127
+#: newmailnotifierselectcollectionwidget.cpp:125
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Search…"
 msgstr "Suchen …"
 
-#: newmailnotifierselectcollectionwidget.cpp:142
+#: newmailnotifierselectcollectionwidget.cpp:140
 #, kde-format
 msgctxt "@action:button"
 msgid "&Select All"
 msgstr "Alles au&swählen"
 
-#: newmailnotifierselectcollectionwidget.cpp:146
+#: newmailnotifierselectcollectionwidget.cpp:144
 #, kde-format
 msgctxt "@action:button"
 msgid "&Unselect All"

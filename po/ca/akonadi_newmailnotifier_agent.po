@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-30 00:41+0000\n"
+"POT-Creation-Date: 2024-10-02 00:40+0000\n"
 "PO-Revision-Date: 2024-07-31 12:01+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -78,19 +78,19 @@ msgid "Select which folders to monitor for new message notifications:"
 msgstr ""
 "Seleccioneu quines carpetes vigilar per a les notificacions de missatge nou:"
 
-#: newmailnotifierselectcollectionwidget.cpp:127
+#: newmailnotifierselectcollectionwidget.cpp:125
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Search…"
 msgstr "Cerca…"
 
-#: newmailnotifierselectcollectionwidget.cpp:142
+#: newmailnotifierselectcollectionwidget.cpp:140
 #, kde-format
 msgctxt "@action:button"
 msgid "&Select All"
 msgstr "&Selecciona-ho tot"
 
-#: newmailnotifierselectcollectionwidget.cpp:146
+#: newmailnotifierselectcollectionwidget.cpp:144
 #, kde-format
 msgctxt "@action:button"
 msgid "&Unselect All"
