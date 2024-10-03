@@ -104,7 +104,6 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     }
 
     bool baseUrlEmpty = mUi->kcfg_BaseUrl->text().isEmpty();
-    mButtonBox->button(QDialogButtonBox::Ok)->setEnabled(!baseUrlEmpty);
     mUi->tryConnectButton->setEnabled(!baseUrlEmpty);
     mTryConnectNeeded = baseUrlEmpty;
 
@@ -175,6 +174,9 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     connect(mUi->tryConnectButton, &QPushButton::clicked, this, &EwsConfigDialog::tryConnect);
     connect(mUi->userAgentCombo, &QComboBox::currentIndexChanged, this, &EwsConfigDialog::userAgentChanged);
     connect(mUi->clearFolderTreeSyncStateButton, &QPushButton::clicked, mParentResource, &EwsResource::clearFolderTreeSyncState);
+
+    mButtonBox->button(QDialogButtonBox::Ok)
+        ->setEnabled(!baseUrlEmpty && !mAutoDiscoveryNeeded && (!mUi->kcfg_Email->text().isEmpty() || !mUi->kcfg_Username->text().isEmpty()));
 }
 
 EwsConfigDialog::~EwsConfigDialog()
@@ -292,7 +294,12 @@ void EwsConfigDialog::tryConnectCancelled()
 
 void EwsConfigDialog::setAutoDiscoveryNeeded()
 {
-    mAutoDiscoveryNeeded = true;
+    // When using OAuth2 autodiscovery is not needed, unless the user customized the base URL.
+    if (mUi->authOAuth2RadioButton->isChecked() && mUi->kcfg_AutoDiscovery->isChecked()) {
+        mAutoDiscoveryNeeded = false;
+    } else {
+        mAutoDiscoveryNeeded = true;
+    }
     mTryConnectNeeded = true;
     mAuthMap.clear();
 
