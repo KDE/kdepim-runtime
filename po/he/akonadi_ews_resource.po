@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-17 02:36+0000\n"
+"POT-Creation-Date: 2024-10-04 02:31+0000\n"
 "PO-Revision-Date: 2024-08-19 10:16+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -70,36 +70,36 @@ msgctxt "Server status"
 msgid "OK"
 msgstr "אישור"
 
-#: ewsconfigdialog.cpp:122 ewsconfigdialog.cpp:124
+#: ewsconfigdialog.cpp:121 ewsconfigdialog.cpp:123
 #, kde-format
 msgid "PEM file"
 msgstr "קובץ PEM"
 
-#: ewsconfigdialog.cpp:142
+#: ewsconfigdialog.cpp:141
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "מותאם אישית"
 
-#: ewsconfigdialog.cpp:153
+#: ewsconfigdialog.cpp:152
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "משאב Akonadi ל־Microsoft Exchange Web Services‏ (EWS)"
 
-#: ewsconfigdialog.cpp:154
+#: ewsconfigdialog.cpp:153
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "כל הזכויות שמורות (c) לקריסטוף נוביצקי 2015‏-2020"
 
-#: ewsconfigdialog.cpp:155
+#: ewsconfigdialog.cpp:154
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "גרסה %1"
 
-#: ewsconfigdialog.cpp:156
+#: ewsconfigdialog.cpp:155
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -107,37 +107,37 @@ msgid ""
 "later."
 msgstr "כפוף לתנאי גרסה 2.0 ומעלה של הרישיון הציבורי הכללי לספריות גנו."
 
-#: ewsconfigdialog.cpp:251
+#: ewsconfigdialog.cpp:253
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "גילוי אוטומטי נכשל"
 
-#: ewsconfigdialog.cpp:264
+#: ewsconfigdialog.cpp:266
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "החיבור נכשל"
 
-#: ewsconfigdialog.cpp:265 ewsconfigdialog.cpp:419
+#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:426
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "נכשל"
 
-#: ewsconfigdialog.cpp:266 ewsconfigdialog.cpp:420
+#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:427
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "לא ידוע"
 
-#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:424
+#: ewsconfigdialog.cpp:270 ewsconfigdialog.cpp:431
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "אישור"
 
-#: ewsconfigdialog.cpp:335
+#: ewsconfigdialog.cpp:342
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -145,12 +145,12 @@ msgid ""
 msgstr ""
 "גילוי אוטומטי נכשל. כנראה בגלל משתנים שגויים. בכל זאת לשמור את ההגדרות שלך?"
 
-#: ewsconfigdialog.cpp:336
+#: ewsconfigdialog.cpp:343
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "גילוי שרת Exchange אוטומטית"
 
-#: ewsconfigdialog.cpp:366
+#: ewsconfigdialog.cpp:373
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -159,12 +159,12 @@ msgstr ""
 "החיבור ל־Exchange נכשל. כנראה בגלל משתנים שגויים. בכל זאת לשמור את ההגדרות "
 "שלך?"
 
-#: ewsconfigdialog.cpp:367
+#: ewsconfigdialog.cpp:374
 #, kde-format
 msgid "Exchange server connection"
 msgstr "חיבור לשרת Exchange"
 
-#: ewsconfigdialog.cpp:421
+#: ewsconfigdialog.cpp:428
 #, kde-format
 msgid "Connection failed"
 msgstr "החיבור נכשל"
