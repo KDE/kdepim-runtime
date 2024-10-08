@@ -41,7 +41,7 @@ impl Resource {
             self.sync_collection_incremental(collection).await
         }
     }
-    
+
     pub async fn sync_collection_tree(&self) -> Result<Vec<Collection>, Error> {
         let response = self
             .client

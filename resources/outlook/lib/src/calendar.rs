@@ -1,5 +1,5 @@
 //! Module that implements traits and types to represent Calendaring API.
-use std::future::Future;
+use std::{default, future::Future};
 
 use chrono::{DateTime, NaiveDate, NaiveDateTime, Utc};
 use graph_rs_sdk::GraphResult;
@@ -8,7 +8,7 @@ use icalendar::{
     EventStatus, Property,
 };
 use serde::{Deserialize, Serialize};
-use serde_with::{serde_as, skip_serializing_none};
+use serde_with::{serde_as, skip_serializing_none, NoneAsEmptyString};
 
 pub struct EventsListResponse {
     pub events: Vec<Event>,
@@ -87,7 +87,7 @@ pub trait CalendarAPI {
 }
 
 /// Pre-defined set of color themes for calendars
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub enum CalendarColor {
     Auto,
@@ -103,7 +103,10 @@ pub enum CalendarColor {
     MaxColor,
 }
 
+fn mk_false() -> bool { false }
+
 /// Represents a single calendar
+#[serde_as]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Calendar {
@@ -122,10 +125,15 @@ pub struct Calendar {
     /// The calendar color, expressed in a hex color code.
     /// If the user has never explicitly set a color for the calendar, this property is empty.
     /// Read-only.
+    #[serde_as(as = "NoneAsEmptyString")]
     pub hex_color: Option<String>,
 
     /// Name of the calendar
     pub name: String,
+
+    /// Whether this is the user's default calendar
+    #[serde(default = "mk_false")]
+    pub is_default_calendar: bool,
 }
 
 /// Represents a single event in a calendar

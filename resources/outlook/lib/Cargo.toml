@@ -32,4 +32,5 @@ cxx-qt-build = "0.6"
 
 [dev-dependencies]
 graph-rs-sdk = { version = "2.0", features = ["test-util"] }
-http-test-server = "2.1"
+reqwest = "0.12"
+rouille = "3.6.2"
