@@ -14,6 +14,7 @@
 
 #include <Akonadi/AgentFilterProxyModel>
 #include <Akonadi/AgentInstance>
+#include <Akonadi/AgentInstanceFilterProxyModel>
 #include <Akonadi/AgentInstanceModel>
 #include <Akonadi/AgentInstanceWidget>
 
@@ -48,7 +49,7 @@ EwsMtaConfigDialog::EwsMtaConfigDialog(EwsMtaResource *parentResource, WId wId)
     mUi->setupUi(mainWidget);
     mUi->accountName->setText(parentResource->name());
 
-    Akonadi::AgentFilterProxyModel *model = mUi->resourceWidget->agentFilterProxyModel();
+    Akonadi::AgentInstanceFilterProxyModel *model = mUi->resourceWidget->agentInstanceFilterProxyModel();
     model->addCapabilityFilter(QStringLiteral("X-EwsMailTransport"));
     mUi->resourceWidget->view()->setSelectionMode(QAbstractItemView::SingleSelection);
 
