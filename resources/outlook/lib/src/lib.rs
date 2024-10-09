@@ -1,5 +1,5 @@
 pub mod calendar;
-pub mod graph;
+pub mod client;
 pub mod resource;
 pub mod resource_state;
 

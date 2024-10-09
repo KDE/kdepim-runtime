@@ -1371,6 +1371,7 @@ dependencies = [
  "cxx-qt",
  "cxx-qt-build",
  "cxx-qt-lib",
+ "futures",
  "futures-core",
  "graph-http",
  "graph-rs-sdk",

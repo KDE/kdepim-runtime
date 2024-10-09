@@ -1,7 +1,8 @@
 //! Module that implements traits and types to represent Calendaring API.
-use std::{default, future::Future};
+use std::{future::Future, pin::Pin};
 
 use chrono::{DateTime, NaiveDate, NaiveDateTime, Utc};
+use futures::Stream;
 use graph_rs_sdk::GraphResult;
 use icalendar::{
     Calendar as ICalCalendar, Class, Component, DatePerhapsTime, Event as ICalEvent, EventLike,
@@ -12,12 +13,15 @@ use serde_with::{serde_as, skip_serializing_none, NoneAsEmptyString};
 
 pub struct EventsListResponse {
     pub events: Vec<Event>,
-    pub delta_link: Option<String>,
+    pub delta_token: Option<String>,
 }
 
 impl From<(Vec<Event>, Option<String>)> for EventsListResponse {
-    fn from((events, delta_link): (Vec<Event>, Option<String>)) -> Self {
-        Self { events, delta_link }
+    fn from((events, delta_token): (Vec<Event>, Option<String>)) -> Self {
+        Self {
+            events,
+            delta_token,
+        }
     }
 }
 
@@ -44,25 +48,25 @@ pub trait CalendarAPI {
         calendar_id: ID,
     ) -> impl Future<Output = GraphResult<()>> + Send;
 
-    /// Returns a list of events
-    fn list_events<ID: AsRef<str> + Send>(
+    /// Returns stream that yields all instances (master events, occurrences and exceptions) of all
+    /// events in the calendar for some implementation-specified time range.
+    fn list_events_instances<ID: AsRef<str> + Send>(
         &self,
         calendar_id: ID,
-    ) -> impl Future<Output = GraphResult<EventsListResponse>> + Send;
-    fn list_events_ids<ID: AsRef<str> + Send>(
+    ) -> impl Future<Output = GraphResult<Pin<Box<dyn Stream<Item = GraphResult<Event>>>>>> + Send;
+
+    /// Lists all master events in the calendar (no recurrences, no exceptions).
+    fn list_calendar_events<ID: AsRef<str> + Send>(
         &self,
         calendar_id: ID,
-    ) -> impl Future<Output = GraphResult<Vec<String>>> + Send;
-    fn list_events_delta<ID: AsRef<str> + Send, Token: AsRef<str> + Send>(
+    ) -> impl Future<Output = GraphResult<Pin<Box<dyn Stream<Item = GraphResult<Event>>>>>> + Send;
+
+    /// List all exceptions of a recurring event
+    fn list_event_exceptions<ID: AsRef<str> + Send>(
         &self,
         calendar_id: ID,
-        delta_token: Token,
-    ) -> impl Future<Output = GraphResult<EventsListResponse>> + Send;
-    fn list_events_changed_since<ID: AsRef<str> + Send>(
-        &self,
-        calendar_id: ID,
-        changed_since: DateTime<Utc>,
-    ) -> impl Future<Output = GraphResult<Vec<Event>>> + Send;
+        event_id: ID,
+    ) -> impl Future<Output = GraphResult<Pin<Box<dyn Stream<Item = GraphResult<Event>>>>>> + Send;
 
     /// Creates a new event
     fn create_event<ID: AsRef<str> + Send>(
@@ -103,7 +107,9 @@ pub enum CalendarColor {
     MaxColor,
 }
 
-fn mk_false() -> bool { false }
+fn mk_false() -> bool {
+    false
+}
 
 /// Represents a single calendar
 #[serde_as]
@@ -145,21 +151,21 @@ pub struct Event {
     /// Collection of attendees for the event
     pub attendees: Option<Vec<Attendee>>,
     /// The body of the message associated with the event
-    pub body: ItemBody,
+    pub body: Option<ItemBody>,
     /// Categories associated with the event
     pub categories: Option<Vec<String>>,
     /// Identifies the version of the event object.
     /// Every time the event is changed, ChangeKey changes as well
     #[serde(skip_serializing)]
-    pub change_key: String,
+    pub change_key: Option<String>,
     /// Timestamp of when the event was created
     #[serde(skip_serializing)]
-    pub created_date_time: DateTime<Utc>,
+    pub created_date_time: Option<DateTime<Utc>>,
     /// The date, time, and time zone that the event ends.
     pub end: DateTimeTimeZone,
     /// A unique identifier for an event across calendars.
     #[serde(rename = "iCalUId", skip_serializing)]
-    pub ical_uid: String,
+    pub ical_uid: Option<String>,
     /// Unique identifier for the event.
     pub id: String,
     /// The importance of the event.
@@ -177,7 +183,7 @@ pub struct Event {
     /// Location of the event.
     pub location: Option<Location>,
     /// The organizer of the event.
-    pub organizer: Recipient,
+    pub organizer: Option<Recipient>,
     /// The timezone that was used when the event was created.
     pub original_end_time_zone: Option<String>,
     /// Represents the start time of an event when it is initially created as an occurrence or exception in a recurring series
@@ -202,7 +208,7 @@ pub struct Event {
     /// The start date, time, and time zone of the event.
     pub start: DateTimeTimeZone,
     /// The text of the event's subject line.
-    pub subject: String,
+    pub subject: Option<String>,
     /// The event type.
     #[serde(rename = "type")]
     pub type_: Option<EventType>,
@@ -223,7 +229,7 @@ pub enum Sensitivity {
 #[serde(rename_all = "camelCase")]
 pub enum EventType {
     SingleInstance,
-    Occurence,
+    Occurrence,
     Exception,
     SeriesMaster,
 }
@@ -453,22 +459,32 @@ pub enum RecurrenceRangeType {
     Numbered,
 }
 
-
 impl From<&Event> for Vec<u8> {
     fn from(event: &Event) -> Self {
         let mut ical_event = ICalEvent::new()
-            .uid(&event.ical_uid)
-            .summary(&event.subject)
-            .description(&event.body.content)
+            .uid(&event.ical_uid.as_ref().unwrap_or(&event.id))
             .starts(event.start.into_maybe_allday(&event.is_all_day))
             .ends(event.end.into_maybe_allday(&event.is_all_day))
             .done();
 
-        let organizer = &event.organizer.email_address;
-        ical_event.append_property(
-            Property::new("ORGANIZER".to_string(), format!("mailto:{}", &organizer.address))
+        if let Some(subject) = &event.subject {
+            ical_event.summary(&subject);
+        }
+        if let Some(body) = &event.body {
+            ical_event.description(&body.content);
+        }
+
+        if let Some(organizer) = &event.organizer {
+            let organizer = &organizer.email_address;
+            ical_event.append_property(
+                Property::new(
+                    "ORGANIZER".to_string(),
+                    format!("mailto:{}", &organizer.address),
+                )
                 .add_parameter("NAME", &organizer.name)
-                .done());
+                .done(),
+            );
+        }
         if let Some(location) = &event.location {
             ical_event.location(&location.display_name);
         }
@@ -487,22 +503,27 @@ impl From<&Event> for Vec<u8> {
             ical_event.priority(match importance {
                 Importance::Low => 9,
                 Importance::Normal => 5,
-                Importance::High => 1
+                Importance::High => 1,
             });
         }
         if let Some(status) = &event.response_status {
             match status.response {
-                Response::Accepted => { ical_event.status(EventStatus::Confirmed); },
-                Response::TentativelyAccepted => { ical_event.status(EventStatus::Tentative); },
-                Response::Declined => { ical_event.status(EventStatus::Cancelled); },
-                Response::Organizer => {}, // unmapped
-                Response::NotResponded => {}, // unmapped
-                Response::None => {}, // unmapped
+                Response::Accepted => {
+                    ical_event.status(EventStatus::Confirmed);
+                }
+                Response::TentativelyAccepted => {
+                    ical_event.status(EventStatus::Tentative);
+                }
+                Response::Declined => {
+                    ical_event.status(EventStatus::Cancelled);
+                }
+                Response::Organizer => {}    // unmapped
+                Response::NotResponded => {} // unmapped
+                Response::None => {}         // unmapped
             };
         }
 
         // FIXME: Add support for recurrence, reminders, ..
-
 
         format!("{}", ICalCalendar::new().push(ical_event.done()).done()).into()
     }

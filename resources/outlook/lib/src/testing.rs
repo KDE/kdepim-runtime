@@ -39,6 +39,7 @@ impl GraphExplorerProxy {
             )],
         )
         .expect("Failed to parse URL");
+        println!("{:?}", request.raw_url());
 
         let mut proxy_resp = tokio::task::block_in_place(move || {
             // Constructing a new client for each request is not ideal, but it's the easiest way
@@ -85,7 +86,7 @@ impl GraphExplorerProxy {
                 proxy_resp
                     .read_to_end(&mut data)
                     .expect("Failed to read response body");
-                println!("{:?}", String::from_utf8_lossy(&data));
+                //println!("{:?}", String::from_utf8_lossy(&data));
                 ResponseBody::from_data(data)
             },
             upgrade: None,
