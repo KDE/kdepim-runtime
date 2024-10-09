@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-17 00:39+0000\n"
+"POT-Creation-Date: 2024-10-09 00:40+0000\n"
 "PO-Revision-Date: 2019-11-05 19:58+0100\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -656,7 +656,7 @@ msgctxt "@info:status"
 msgid "Retrieving %1 items"
 msgstr "Získavam %1 položiek"
 
-#: ewsmtaconfigdialog.cpp:45
+#: ewsmtaconfigdialog.cpp:46
 #, fuzzy, kde-format
 #| msgid "Microsoft Exchange Mail Transport Configuration"
 msgctxt "@title:window"
