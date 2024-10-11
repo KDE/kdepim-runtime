@@ -14,6 +14,7 @@
 #include <KLineEdit>
 #include <QVBoxLayout>
 #if HAVE_ACTIVITY_SUPPORT
+#include <Akonadi/AgentConfigurationBase>
 #include <PimCommonActivities/ConfigureActivitiesWidget>
 #endif
 using KPIM::Maildir;
@@ -88,6 +89,16 @@ void ConfigWidget::checkPath()
 
 void ConfigWidget::load()
 {
+#if HAVE_ACTIVITY_SUPPORT
+    /*
+    Akonadi::AgentConfigurationBase::ActivitySettings settingsBase = restoreActivitiesSettings();
+    PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
+    settings.enabled = settingsBase.enabled;
+    settings.activities = settingsBase.activities;
+    qDebug() << "read activities settings " << settings;
+    mConfigureActivitiesWidget->setActivitiesSettings(settings);
+    */
+#endif
     mFolderArchiveSettingPage->loadSettings();
     mManager = new KConfigDialogManager(this, mSettings);
     mManager->updateWidgets();
@@ -108,7 +119,12 @@ bool ConfigWidget::save() const
             d.mkpath(ui.kcfg_Path->url().toLocalFile());
         }
     }
-
+#if HAVE_ACTIVITY_SUPPORT
+    /*
+    const PimCommonActivities::ActivitiesBaseManager::ActivitySettings activitiesSettings = mConfigureActivitiesWidget->activitiesSettings();
+    saveActivitiesSettings(Akonadi::AgentConfigurationBase::ActivitySettings{activitiesSettings.enabled, activitiesSettings.activities});
+    */
+#endif
     return true;
 }
 

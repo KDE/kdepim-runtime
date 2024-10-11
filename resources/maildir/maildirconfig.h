@@ -10,7 +10,6 @@
 
 #include "configwidget.h"
 #include "settings.h"
-#include <Akonadi/AgentConfigurationBase>
 #include <QScopedPointer>
 #if HAVE_ACTIVITY_SUPPORT
 namespace PimCommonActivities
@@ -31,7 +30,4 @@ public:
 private:
     QScopedPointer<Akonadi_Maildir_Resource::MaildirSettings> mSettings;
     QScopedPointer<ConfigWidget> mWidget;
-#if HAVE_ACTIVITY_SUPPORT
-    PimCommonActivities::ConfigureActivitiesWidget *const mConfigureActivitiesWidget;
-#endif
 };
