@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-10-12 00:39+0000\n"
 "PO-Revision-Date: 2024-08-17 10:10+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -20,38 +20,38 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 24.05.2\n"
 
-#: configwidget.cpp:35
+#: configwidget.cpp:36
 #, kde-format
 msgid "Archive Folder"
 msgstr "Artxibatu karpeta"
 
-#: configwidget.cpp:38
+#: configwidget.cpp:39
 #, kde-format
 msgid "Activities"
 msgstr "Jarduerak"
 
-#: configwidget.cpp:53
+#: configwidget.cpp:54
 #, kde-format
 msgid "The selected path is empty."
 msgstr "Hautatutako bide-izena hutsik dago."
 
-#: configwidget.cpp:66
+#: configwidget.cpp:67
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
 msgstr "Hautatutako bide-izenak «Maildir» karpeta baliodunak ditu."
 
-#: configwidget.cpp:73
+#: configwidget.cpp:74
 #, kde-format
 msgid "The selected path is a valid Maildir."
 msgstr "Hautatutako bide-izena «Maildir» balioduna da."
 
-#: configwidget.cpp:79
+#: configwidget.cpp:80
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
 msgstr ""
 "Hautatutako bide-izena ez dago oraindik, «Maildir» berri bat sortuko da."
 
-#: configwidget.cpp:83
+#: configwidget.cpp:84
 #, kde-format
 msgid "The selected path does not exist."
 msgstr "Hautatutako bide-izena ez dago."

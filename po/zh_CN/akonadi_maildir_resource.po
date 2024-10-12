@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-10-12 00:39+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -18,37 +18,37 @@ msgstr ""
 "pot\n"
 "X-Crowdin-File-ID: 45641\n"
 
-#: configwidget.cpp:35
+#: configwidget.cpp:36
 #, kde-format
 msgid "Archive Folder"
 msgstr "归档文件夹"
 
-#: configwidget.cpp:38
+#: configwidget.cpp:39
 #, kde-format
 msgid "Activities"
 msgstr ""
 
-#: configwidget.cpp:53
+#: configwidget.cpp:54
 #, kde-format
 msgid "The selected path is empty."
 msgstr "所选路径为空。"
 
-#: configwidget.cpp:66
+#: configwidget.cpp:67
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
 msgstr "所选路径包含有效的邮件目录(Maildir)文件夹。"
 
-#: configwidget.cpp:73
+#: configwidget.cpp:74
 #, kde-format
 msgid "The selected path is a valid Maildir."
 msgstr "所选路径是一个有效的邮件目录(Maildir)文件夹。"
 
-#: configwidget.cpp:79
+#: configwidget.cpp:80
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
 msgstr "所选路径不存在，将创建一个新的邮件目录(Maildir)文件夹。"
 
-#: configwidget.cpp:83
+#: configwidget.cpp:84
 #, kde-format
 msgid "The selected path does not exist."
 msgstr "所选路径不存在。"

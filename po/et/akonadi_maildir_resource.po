@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-17 00:39+0000\n"
+"POT-Creation-Date: 2024-10-12 00:39+0000\n"
 "PO-Revision-Date: 2016-01-14 23:26+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@linux.ee>\n"
@@ -18,37 +18,37 @@ msgstr ""
 "X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: configwidget.cpp:35
+#: configwidget.cpp:36
 #, kde-format
 msgid "Archive Folder"
 msgstr "Kausta arhiveerimine"
 
-#: configwidget.cpp:38
+#: configwidget.cpp:39
 #, kde-format
 msgid "Activities"
 msgstr ""
 
-#: configwidget.cpp:53
+#: configwidget.cpp:54
 #, kde-format
 msgid "The selected path is empty."
 msgstr "Valitud asukoht on tühi."
 
-#: configwidget.cpp:66
+#: configwidget.cpp:67
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
 msgstr "Valitud asukoht sisaldab korrektseid Maildir-katalooge."
 
-#: configwidget.cpp:73
+#: configwidget.cpp:74
 #, kde-format
 msgid "The selected path is a valid Maildir."
 msgstr "Valitud asukoht sisaldab korrektset Maildir-kataloogi."
 
-#: configwidget.cpp:79
+#: configwidget.cpp:80
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
 msgstr "Valitud asukohta pole veel olemas, luuakse uus Maildir-kataloog."
 
-#: configwidget.cpp:83
+#: configwidget.cpp:84
 #, kde-format
 msgid "The selected path does not exist."
 msgstr "Valitud asukohta ei ole olemas."
