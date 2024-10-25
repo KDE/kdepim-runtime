@@ -172,8 +172,10 @@ void EwsSubscriptionManager::getEventsRequestFinished(KJob *job)
 {
     mStreamingTimer.stop();
 
-    mEventReq->deleteLater();
-    mEventReq = nullptr;
+    if (mEventReq) {
+        mEventReq->deleteLater();
+        mEventReq = nullptr;
+    }
 
     auto req = qobject_cast<EwsEventRequestBase *>(job);
     if (!req) {
