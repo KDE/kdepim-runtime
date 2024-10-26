@@ -46,13 +46,17 @@ void SettingsPasswordRequester::askUserInput(const QString &serverError)
     notification->setTitle(i18nc("@title", "An IMAP e-mail account needs your attention."));
 
     const auto accountName = m_resource->name();
-    const auto message = accountName.isEmpty()
-            ? i18n("The IMAP server refused the supplied username and password.\n"
-                   "Do you want to try again, or open the settings?\n\n"
-                   "%1", serverError)
-            : i18n("The IMAP server for account %1 refused the supplied username and password.\n"
-                   "Do you want to try again, or open the settings?\n\n"
-                   "%2", accountName, serverError);
+    const auto message = accountName.isEmpty() ? i18n(
+                                                     "The IMAP server refused the supplied username and password.\n"
+                                                     "Do you want to try again, or open the settings?\n\n"
+                                                     "%1",
+                                                     serverError)
+                                               : i18n(
+                                                     "The IMAP server for account %1 refused the supplied username and password.\n"
+                                                     "Do you want to try again, or open the settings?\n\n"
+                                                     "%2",
+                                                     accountName,
+                                                     serverError);
     notification->setText(message);
 
     auto tryAgainAction = notification->addAction(i18nc("@action:button", "Try again"));

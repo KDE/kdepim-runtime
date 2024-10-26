@@ -129,9 +129,17 @@ private Q_SLOTS:
 #endif
 
 private:
-    enum AuthStage { AuthIdle, AuthRefreshToken, AuthAccessToken, AuthFailure };
+    enum AuthStage {
+        AuthIdle,
+        AuthRefreshToken,
+        AuthAccessToken,
+        AuthFailure
+    };
 
-    enum QueuedFetchItemsJobType { RetrieveItems, SubscriptionSync };
+    enum QueuedFetchItemsJobType {
+        RetrieveItems,
+        SubscriptionSync
+    };
 
     void finishItemsFetch(FetchItemState *state);
     void fetchSpecialFolders();

@@ -428,8 +428,9 @@ void SetupServer::readSettings()
     if (rejected) {
         m_ui->password->setEnabled(false);
         KMessageBox::information(nullptr,
-                                 i18nc("@info:status", "Could not access KWallet. It is necessary to store the password. "
-                                      "Please activate it."),
+                                 i18nc("@info:status",
+                                       "Could not access KWallet. It is necessary to store the password. "
+                                       "Please activate it."),
                                  i18nc("@info:status", "KWallet Unavailable"));
     } else {
         m_ui->password->lineEdit()->insert(password);
@@ -480,8 +481,9 @@ void SetupServer::readSettings()
     if (rejected) {
         m_ui->customPassword->setEnabled(false);
         KMessageBox::information(nullptr,
-                                 i18nc("@info:status", "Could not access KWallet. It is necessary to store the password. "
-                                      "Please activate it."),
+                                 i18nc("@info:status",
+                                       "Could not access KWallet. It is necessary to store the password. "
+                                       "Please activate it."),
                                  i18nc("@info:status", "KWallet Unavailable"));
     } else {
         m_ui->customPassword->lineEdit()->insert(customPassword);

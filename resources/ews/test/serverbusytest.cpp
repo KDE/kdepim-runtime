@@ -84,7 +84,13 @@ void BasicTest::busyInit()
 
     QEventLoop loop;
 
-    enum { InitialOffline, InitialOnline, BusyOffline, RetryOnline, RetryOffline } instanceState = InitialOffline;
+    enum {
+        InitialOffline,
+        InitialOnline,
+        BusyOffline,
+        RetryOnline,
+        RetryOffline
+    } instanceState = InitialOffline;
 
     connect(AgentManager::self(), &AgentManager::instanceOnline, this, [&](const AgentInstance &_instance, bool online) {
         if (_instance.identifier() == mTestInstance->identifier()) {

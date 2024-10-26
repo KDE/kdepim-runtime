@@ -99,7 +99,12 @@ static const EwsPropertyField propPidTagContainerClass(0x3613, EwsPropTypeString
 class FolderDescr
 {
 public:
-    using Flag = enum { RemoteCreated = 0x0001, RemoteUpdated = 0x0002, RemoteDeleted = 0x0004, Processed = 0x0008 };
+    using Flag = enum {
+        RemoteCreated = 0x0001,
+        RemoteUpdated = 0x0002,
+        RemoteDeleted = 0x0004,
+        Processed = 0x0008
+    };
     Q_DECLARE_FLAGS(Flags, Flag)
 
     FolderDescr() = default;
