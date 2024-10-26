@@ -88,9 +88,7 @@ void AccountWidget::setupWidgets()
     // only letters, digits, '-', '.', ':' (IPv6) and '_' (for Windows
     // compatibility) are allowed
     hostEdit->setValidator(&mValidator);
-#if KI18N_VERSION > QT_VERSION_CHECK(6, 5, 0)
     KLocalization::setupSpinBoxFormatString(intervalSpin, ki18np("%v minute", "%v minutes"));
-#endif
 
     intervalSpin->setRange(ResourceSettings::self()->minimumCheckInterval(), 10000);
     intervalSpin->setSingleStep(1);
