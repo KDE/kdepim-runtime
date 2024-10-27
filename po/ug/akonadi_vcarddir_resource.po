@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcarddir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2013-09-08 07:05+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -124,7 +124,7 @@ msgstr "ئاپتوماتىك ساقلاش ئىنتېرۋالى(مىنۇت)"
 msgid "Do not change the actual backend data."
 msgstr "ئەمەلىي ئارقا ئۇچ سانلىق-مەلۇماتىنى ئۆزگەرتمەيدۇ."
 
-#: vcarddirsettingswidget.cpp:43
+#: vcarddirsettingswidget.cpp:42
 #, fuzzy, kde-format
 #| msgid " minute"
 #| msgid_plural " minutes"
@@ -132,7 +132,7 @@ msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] " مىنۇت"
 
-#: vcarddirsettingswidget.cpp:47
+#: vcarddirsettingswidget.cpp:45
 #, kde-format
 msgid "Activities"
 msgstr ""

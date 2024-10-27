@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -111,13 +111,13 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "自动保存延迟："
 
-#: icaldirsettingswidget.cpp:44
+#: icaldirsettingswidget.cpp:43
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] ""
 
-#: icaldirsettingswidget.cpp:51
+#: icaldirsettingswidget.cpp:49
 #, kde-format
 msgid "Activities"
 msgstr ""

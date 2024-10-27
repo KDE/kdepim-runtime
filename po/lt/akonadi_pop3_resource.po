@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2015-12-29 20:27+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -28,7 +28,7 @@ msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: accountwidget.cpp:92
+#: accountwidget.cpp:91
 #, fuzzy, kde-format
 #| msgid " minute"
 #| msgid_plural " minutes"
@@ -39,19 +39,19 @@ msgstr[1] " minutės"
 msgstr[2] " minučių"
 msgstr[3] " minutė"
 
-#: accountwidget.cpp:130 pop3resource.cpp:46
+#: accountwidget.cpp:128 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 Paskyra"
 
-#: accountwidget.cpp:197
+#: accountwidget.cpp:195
 #, fuzzy, kde-format
 #| msgid "Unable to open wallet"
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Negalima atidaryti piniginės"
 
-#: accountwidget.cpp:247
+#: accountwidget.cpp:245
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -64,7 +64,7 @@ msgstr ""
 "Kadangi kai kurie serveriai automatiškai nepraneša apie savo galimybes jūs "
 "turbūt turite galimybę palikti atsiųstus laiškus serveryje."
 
-#: accountwidget.cpp:262
+#: accountwidget.cpp:260
 #, fuzzy, kde-format
 #| msgid ""
 #| "Please note that this feature can cause some POP3 servers that do not "
@@ -97,17 +97,17 @@ msgstr ""
 "turėtumėte pabandyti pirmiausia siunčiant sau pačiam laiškų paketą ir jį "
 "atsisiųsti."
 
-#: accountwidget.cpp:295
+#: accountwidget.cpp:293
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Pirmiausia prašome nurodyti serverį ir prievadą Bendrojoje kortelėje."
 
-#: accountwidget.cpp:328
+#: accountwidget.cpp:326
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Negalima užmegzti ryšio, prašom patikrinti serverio adresą."
 
-#: accountwidget.cpp:372
+#: accountwidget.cpp:370
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -127,7 +127,7 @@ msgstr ""
 "paštu pirmiausia turėtumėte išbandyti jį išsiųsdami sau didelį kiekį "
 "bandomųjų laiškų, ir atsisiųsti juos visus vienu kartu iš POP serverio."
 
-#: accountwidget.cpp:392
+#: accountwidget.cpp:390
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -141,7 +141,7 @@ msgstr ""
 "Kadangi kai kurie serveriai automatiškai nepraneša apie savo galimybes jūs "
 "turbūt turite galimybę palikti atsiųstus laiškus serveryje."
 
-#: accountwidget.cpp:424
+#: accountwidget.cpp:422
 #, kde-format
 msgid " day"
 msgid_plural " days"
@@ -150,7 +150,7 @@ msgstr[1] " dienos"
 msgstr[2] " dienų"
 msgstr[3] " diena"
 
-#: accountwidget.cpp:429
+#: accountwidget.cpp:427
 #, kde-format
 msgid " message"
 msgid_plural " messages"

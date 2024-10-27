@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2019-07-17 16:26+0200\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -23,7 +23,7 @@ msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: accountwidget.cpp:92
+#: accountwidget.cpp:91
 #, fuzzy, kde-format
 #| msgid " minute"
 #| msgid_plural " minutes"
@@ -33,19 +33,19 @@ msgstr[0] " minúta"
 msgstr[1] " minúty"
 msgstr[2] " minút"
 
-#: accountwidget.cpp:130 pop3resource.cpp:46
+#: accountwidget.cpp:128 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 účet"
 
-#: accountwidget.cpp:197
+#: accountwidget.cpp:195
 #, fuzzy, kde-format
 #| msgid "Unable to open wallet"
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Nepodarilo sa otvoriť wallet"
 
-#: accountwidget.cpp:247
+#: accountwidget.cpp:245
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -58,7 +58,7 @@ msgstr ""
 "Keďže niektoré servery nesprávne udávajú svoje možnosti, je stále možnosť "
 "zapnutia ponechania stiahnutých správ na serveri."
 
-#: accountwidget.cpp:262
+#: accountwidget.cpp:260
 #, fuzzy, kde-format
 #| msgid ""
 #| "Please note that this feature can cause some POP3 servers that do not "
@@ -90,17 +90,17 @@ msgstr ""
 "ak to váš server neoznámi, ale chcete vyššiu rýchlosť, mali by ste urobiť "
 "najprv nejaké testy poslaním dávka mailov sebe a stiahnuť ich."
 
-#: accountwidget.cpp:295
+#: accountwidget.cpp:293
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Prosím, najprv určite server a port v karte Všeobecné."
 
-#: accountwidget.cpp:328
+#: accountwidget.cpp:326
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Nemôžem sa pripojiť na server, prosím skontrolujte adresu servera."
 
-#: accountwidget.cpp:372
+#: accountwidget.cpp:370
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -120,7 +120,7 @@ msgstr ""
 "ste to mali najskôr otestovať odoslaním väčšieho množstva správ sebe, ktoré "
 "všetky stiahnete naraz z POP servera."
 
-#: accountwidget.cpp:392
+#: accountwidget.cpp:390
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -134,7 +134,7 @@ msgstr ""
 "Keďže niektoré servery nesprávne udávajú svoje schopnosti, je stále možnosť "
 "zapnúť ponechanie stiahnutých správ na serveri."
 
-#: accountwidget.cpp:424
+#: accountwidget.cpp:422
 #, kde-format
 msgid " day"
 msgid_plural " days"
@@ -142,7 +142,7 @@ msgstr[0] " deň"
 msgstr[1] " dni"
 msgstr[2] " dní"
 
-#: accountwidget.cpp:429
+#: accountwidget.cpp:427
 #, kde-format
 msgid " message"
 msgid_plural " messages"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2015-02-04 14:09+0000\n"
 "Last-Translator: Vedran Ljubovic <vljubovic@smartnet.ba>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -26,7 +26,7 @@ msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: accountwidget.cpp:92
+#: accountwidget.cpp:91
 #, fuzzy, kde-format
 #| msgid " minute"
 #| msgid_plural " minutes"
@@ -36,19 +36,19 @@ msgstr[0] " minut"
 msgstr[1] " minuta"
 msgstr[2] " minuta"
 
-#: accountwidget.cpp:130 pop3resource.cpp:46
+#: accountwidget.cpp:128 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 račun"
 
-#: accountwidget.cpp:197
+#: accountwidget.cpp:195
 #, fuzzy, kde-format
 #| msgid "Unable to open wallet"
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Ne mogu otvoriti novčanik"
 
-#: accountwidget.cpp:247
+#: accountwidget.cpp:245
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -61,7 +61,7 @@ msgstr ""
 "Pošto neki serveri ne objavljuju ispravno svoje mogućnosti, ostavljena vam "
 "je mogućnost da svejedno uključite ostavljanje poruka na serveru."
 
-#: accountwidget.cpp:262
+#: accountwidget.cpp:260
 #, fuzzy, kde-format
 #| msgid ""
 #| "Please note that this feature can cause some POP3 servers that do not "
@@ -94,17 +94,17 @@ msgstr ""
 "trebali biste najprije napraviti test: pošaljite sebi nekoliko poruka "
 "odjednom i zatim ih skinite i provjerite njihovu ispravnost."
 
-#: accountwidget.cpp:295
+#: accountwidget.cpp:293
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Molim najprije navedite server i port u kartici Općenito."
 
-#: accountwidget.cpp:328
+#: accountwidget.cpp:326
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Ne mogu se povezati na server, provjerite adresu servera."
 
-#: accountwidget.cpp:372
+#: accountwidget.cpp:370
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -124,7 +124,7 @@ msgstr ""
 "mogućnosti, trebali biste najprije napraviti test: pošaljite sebi nekoliko "
 "poruka odjednom i zatim ih skinite i provjerite njihovu ispravnost."
 
-#: accountwidget.cpp:392
+#: accountwidget.cpp:390
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -138,7 +138,7 @@ msgstr ""
 "Pošto neki serveri ne objavljuju ispravno svoje mogućnosti, ostavljena vam "
 "je mogućnost da svejedno uključite ostavljanje poruka na serveru."
 
-#: accountwidget.cpp:424
+#: accountwidget.cpp:422
 #, kde-format
 msgid " day"
 msgid_plural " days"
@@ -146,7 +146,7 @@ msgstr[0] " dan"
 msgstr[1] " dana"
 msgstr[2] " dana"
 
-#: accountwidget.cpp:429
+#: accountwidget.cpp:427
 #, kde-format
 msgid " message"
 msgid_plural " messages"

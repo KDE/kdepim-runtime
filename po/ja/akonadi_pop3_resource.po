@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2010-11-21 15:56-0800\n"
 "Last-Translator: Fumiaki Okushi <okushi@kde.gr.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -24,7 +24,7 @@ msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: accountwidget.cpp:92
+#: accountwidget.cpp:91
 #, fuzzy, kde-format
 #| msgid " minute"
 #| msgid_plural " minutes"
@@ -32,19 +32,19 @@ msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] " 分"
 
-#: accountwidget.cpp:130 pop3resource.cpp:46
+#: accountwidget.cpp:128 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 アカウント"
 
-#: accountwidget.cpp:197
+#: accountwidget.cpp:195
 #, fuzzy, kde-format
 #| msgid "Unable to complete the mail fetch."
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "メールの取得を完了できません。"
 
-#: accountwidget.cpp:247
+#: accountwidget.cpp:245
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -57,7 +57,7 @@ msgstr ""
 "能を正しく公表しないサーバもあるので、場合によってはこのオプションを利用でき"
 "るかもしれません。</p></html>"
 
-#: accountwidget.cpp:262
+#: accountwidget.cpp:260
 #, fuzzy, kde-format
 #| msgid ""
 #| "Please note that this feature can cause some POP3 servers that do not "
@@ -90,17 +90,17 @@ msgstr ""
 "ロードのスピードを向上させたい場合は、何本かのメールをまとめて自分自身に送"
 "り、それらをダウンロードして先にテストしてみてください。</p></html>"
 
-#: accountwidget.cpp:295
+#: accountwidget.cpp:293
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "先に「一般」タブでサーバとポートを指定してください。"
 
-#: accountwidget.cpp:328
+#: accountwidget.cpp:326
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "サーバに接続できません。サーバアドレスを確認してください。"
 
-#: accountwidget.cpp:372
+#: accountwidget.cpp:370
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -120,7 +120,7 @@ msgstr ""
 "う前に、まず自分自身に多数のテストメッセージを送り、それらをサーバから一度に"
 "ダウンロードしてテストしてください。</p></html>"
 
-#: accountwidget.cpp:392
+#: accountwidget.cpp:390
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -134,13 +134,13 @@ msgstr ""
 "した。</p><p>しかし、サポートする機能を正しく公表しないサーバもあるので、場合"
 "によってはこのオプションを利用できるかもしれません。</p></html>"
 
-#: accountwidget.cpp:424
+#: accountwidget.cpp:422
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " 日"
 
-#: accountwidget.cpp:429
+#: accountwidget.cpp:427
 #, kde-format
 msgid " message"
 msgid_plural " messages"
