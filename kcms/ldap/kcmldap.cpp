@@ -12,21 +12,21 @@
 #include <QVBoxLayout>
 
 #include <KAboutData>
-#include <KLDAPWidgets/LdapConfigureWidget>
+#include <KLDAPWidgets/LdapConfigureWidgetNg>
 #include <KLocalizedString>
 #include <KPluginFactory>
 
 K_PLUGIN_CLASS_WITH_JSON(KCMLdap, "kcmldap.json")
 KCMLdap::KCMLdap(QObject *parent, const KPluginMetaData &data)
     : KCModule(parent, data)
-    , mLdapConfigureWidget(new KLDAPWidgets::LdapConfigureWidget(widget()))
+    , mLdapConfigureWidget(new KLDAPWidgets::LdapConfigureWidgetNg(widget()))
 {
     setButtons(KCModule::Apply);
     auto layout = new QVBoxLayout(widget());
     layout->setContentsMargins({});
 
     layout->addWidget(mLdapConfigureWidget);
-    connect(mLdapConfigureWidget, &KLDAPWidgets::LdapConfigureWidget::changed, this, &KCMLdap::setNeedsSave);
+    connect(mLdapConfigureWidget, &KLDAPWidgets::LdapConfigureWidgetNg::changed, this, &KCMLdap::setNeedsSave);
 }
 
 KCMLdap::~KCMLdap() = default;
