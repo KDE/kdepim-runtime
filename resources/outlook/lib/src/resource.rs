@@ -1,7 +1,9 @@
 use std::collections::HashMap;
+use std::future::Future;
 
 use anyhow::Error;
-use futures::{future, StreamExt, TryStreamExt};
+use futures::{future, FutureExt, StreamExt, TryFuture, TryFutureExt, TryStreamExt};
+use graph_rs_sdk::GraphResult;
 
 use crate::calendar::{CalendarAPI, Event, EventType};
 use crate::client::Client;
@@ -75,62 +77,53 @@ struct EventWithExceptions {
     exceptions: Vec<Event>,
 }
 
+async fn fetch_exceptions_for_event<'a>(client: &'a Client, calendar_id: &'a str, event_id: String) -> GraphResult<Vec<Event>> {
+    client
+        .list_event_exceptions(calendar_id, &event_id)
+        .await?
+        .try_collect()
+        .await
+}
+
 impl Resource {
     async fn sync_collection_full(
         &self,
         collection: Collection,
     ) -> Result<CollectionSyncResult, Error> {
-        let events = HashMap::<String, EventWithExceptions>::new();
-
-        self
-            .client
-            .list_calendar_events(collection.remote_id)
-            .await?
-            .map(|event| match event {
-                Ok(event) => Ok(EventWithExceptions {
-                    master: event,
-                    ..Default::default()
-                }),
-                Err(err) => Err(err),
-            })
-            .try_buffer_unordered(5, |event| async {
-                let exceptions = match self.client.list_event_exceptions(&collection.remote_id, &event.master.id).await {
-                    Ok(stream) => stream,
-                    Err(err) => return future::ready(Err(err))
-                }.try_collect().await;
-
-                match exceptions {
-                    Ok(exceptions) => {
-                        event.exceptions = exceptions;
-                        future::ready(Ok(event))
-                    }
-                    Err(err) => future::ready(Err(err))
-                }
-            })
-            .await;
-
-        self
-            .client
-            .list_events_exceptions(collection.remote_id)
-            .await?
-            .try_for_each(|event| match event {
-                Some(EventType::SeriesMaster) => {
-                    // TODO: validate that the master event already exists in the events map
-
-                }
-            })
-
-
         Ok(CollectionSyncResult::Full {
-            items: result.events.iter().map(|event| Item {
-                id: -1,
-                remote_revision: event.change_key.as_ref().unwrap_or(&"".to_string()).clone(),
-                remote_id: event.id.clone(),
-                mime_type: "text/calendar".to_string(),
-                payload: event.into()
-            }).collect(),
+            items: {
+                let mut events = Vec::<EventWithExceptions>::new();
+
+                // Fetch events and their exceptions - the stream will short-circuit on any error
+                // Unfortunatelly we have to materialize the interminnent results
+                self
+                .client
+                .list_calendar_events(collection.remote_id)
+                .await?
+                .try_for_each_concurrent(5, |event| async {
+                    events.push(
+                        fetch_exceptions_for_event(&self.client, &collection.remote_id, event.id.clone())
+                            .map_ok(|exceptions| EventWithExceptions {
+                                master: event,
+                                exceptions,
+                            }).await?
+                    );
+                    Ok(())
+                }).await?;
+
+                events
+                    .into_iter()
+                    .map(|event| Item {
+                        id: -1,
+                        remote_revision: event.master.change_key.as_ref().unwrap_or(&"".to_string()).clone(),
+                        remote_id: event.master.id.clone(),
+                        mime_type: "text/calendar".to_string(),
+                        payload: event.into(),
+                    })
+                    .collect()
+            },
             collection: Collection {
-                remote_revision: result.delta_token.unwrap_or("".to_string()).to_string(),
+                //remote_revision: result.delta_token.unwrap_or("".to_string()).to_string(),
                 ..collection
             }
         })
