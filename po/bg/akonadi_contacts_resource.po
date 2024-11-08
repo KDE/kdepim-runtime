@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-21 00:45+0000\n"
-"PO-Revision-Date: 2024-11-06 23:59+0100\n"
+"PO-Revision-Date: 2024-11-07 20:26+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -106,7 +106,7 @@ msgstr "Опит за запис в директория само за чете�
 #: contactsresource.cpp:313
 #, kde-format
 msgid "Unable to write to file '%1': %2"
-msgstr "Невъзможност за запис във файл\"'%1\": %2"
+msgstr "Невъзможност за запис във файл „%1“: %2"
 
 #: contactsresource.cpp:285 contactsresource.cpp:333
 #, kde-format
