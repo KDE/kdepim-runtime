@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-10-09 00:40+0000\n"
+"POT-Creation-Date: 2024-11-09 02:31+0000\n"
 "PO-Revision-Date: 2024-08-02 14:05+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -69,36 +69,36 @@ msgctxt "Server status"
 msgid "OK"
 msgstr "Tamam"
 
-#: ewsconfigdialog.cpp:122 ewsconfigdialog.cpp:124
+#: ewsconfigdialog.cpp:121 ewsconfigdialog.cpp:123
 #, kde-format
 msgid "PEM file"
 msgstr "PEM dosyası"
 
-#: ewsconfigdialog.cpp:142
+#: ewsconfigdialog.cpp:141
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "Özel"
 
-#: ewsconfigdialog.cpp:153
+#: ewsconfigdialog.cpp:152
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Microsoft Exchange Web Services için Akonadi Özkaynağı (EWS)"
 
-#: ewsconfigdialog.cpp:154
+#: ewsconfigdialog.cpp:153
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "© Krzysztof Nowicki 2015–2020"
 
-#: ewsconfigdialog.cpp:155
+#: ewsconfigdialog.cpp:154
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "Sürüm %1"
 
-#: ewsconfigdialog.cpp:156
+#: ewsconfigdialog.cpp:155
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -106,37 +106,37 @@ msgid ""
 "later."
 msgstr "GNU Kitaplığı Genel Kamu Lisansı sürüm 2.0 veya sonrası ile dağıtılır."
 
-#: ewsconfigdialog.cpp:251
+#: ewsconfigdialog.cpp:253
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "Kendiliğinden algılama başarısız oldu"
 
-#: ewsconfigdialog.cpp:264
+#: ewsconfigdialog.cpp:266
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Bağlantı başarısız"
 
-#: ewsconfigdialog.cpp:265 ewsconfigdialog.cpp:419
+#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:426
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Başarısız"
 
-#: ewsconfigdialog.cpp:266 ewsconfigdialog.cpp:420
+#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:427
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:424
+#: ewsconfigdialog.cpp:270 ewsconfigdialog.cpp:431
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "Tamam"
 
-#: ewsconfigdialog.cpp:335
+#: ewsconfigdialog.cpp:342
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -145,13 +145,13 @@ msgstr ""
 "Kendiliğinden algılama başarısız oldu. Yanlış ayarlardan dolayı böyle "
 "olabilir. Ayarlarınızı yine de kaydetmek istiyor musunuz?"
 
-#: ewsconfigdialog.cpp:336 ewsprogressdialog.cpp:48
+#: ewsconfigdialog.cpp:343 ewsprogressdialog.cpp:48
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Exchange sunucusunu kendiliğinden algıla"
 
-#: ewsconfigdialog.cpp:366
+#: ewsconfigdialog.cpp:373
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -160,13 +160,13 @@ msgstr ""
 "Exchange bağlantısı başarısız oldu. Yanlış ayarlardan dolayı bu olabilir. "
 "Ayarlarınızı yine de kaydetmek istiyor musunuz?"
 
-#: ewsconfigdialog.cpp:367
+#: ewsconfigdialog.cpp:374
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Exchange Sunucusu Bağlantısı"
 
-#: ewsconfigdialog.cpp:421
+#: ewsconfigdialog.cpp:428
 #, kde-format
 msgid "Connection failed"
 msgstr "Bağlantı başarısız"
