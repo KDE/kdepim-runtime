@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-22 00:40+0000\n"
-"PO-Revision-Date: 2024-09-13 20:53+0200\n"
+"PO-Revision-Date: 2024-11-09 20:09+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.07.70\n"
+"X-Generator: Lokalize 24.08.2\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -156,12 +156,12 @@ msgstr "Готово"
 #: singlefileresource.h:104
 #, kde-format
 msgid "Could not create file '%1'."
-msgstr "Не може да се създаде файл : \"%1\"."
+msgstr "Не може да се създаде файл : „%1“."
 
 #: singlefileresource.h:118
 #, kde-format
 msgid "Could not read file '%1'"
-msgstr "Файлът \"%1\" не може да бъде прочетен"
+msgstr "Файлът „%1“ не може да бъде прочетен"
 
 #: singlefileresource.h:135
 #, kde-format
@@ -181,7 +181,7 @@ msgstr "Изтегляне на отдалечен файл."
 #: singlefileresource.h:186
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
-msgstr "Опит за запис във файл само за четене: \"%1\"."
+msgstr "Опит за запис във файл само за четене: „%1“."
 
 #: singlefileresource.h:198
 #, kde-format
@@ -204,18 +204,18 @@ msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
 "contents has been created at '%2'."
 msgstr ""
-"Файлът \"%1\" е променен на диска. Като предпазна мярка, резервно копие на "
-"предишнотосъдържание е създадено на \"%2\"."
+"Файлът „%1“ е променен на диска. Като предпазна мярка, резервно копие на "
+"предишнотосъдържание е създадено на „%2“."
 
 #: singlefileresourcebase.cpp:272
 #, kde-format
 msgid "Could not load file '%1'."
-msgstr "Не може да се зареди файл \"%1\"."
+msgstr "Не може да се зареди файл „%1“."
 
 #: singlefileresourcebase.cpp:288
 #, kde-format
 msgid "Could not save file '%1'."
-msgstr "Не може да се запази файл \"%1\"."
+msgstr "Не може да се запази файл „%1“."
 
 #: singlefileresourceconfigbase.h:31
 #, kde-format

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-12 00:39+0000\n"
-"PO-Revision-Date: 2024-09-13 20:53+0200\n"
+"PO-Revision-Date: 2024-11-09 20:04+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.07.70\n"
+"X-Generator: Lokalize 24.08.2\n"
 
 #: configwidget.cpp:36
 #, kde-format
@@ -108,7 +108,7 @@ msgstr "Неизползваема конфигурация."
 #, kde-format
 msgid "Unable to fetch item: The maildir folder \"%1\" is not valid."
 msgstr ""
-"Невъзможност за извличане на елемент: Папката maildir \"%1\" не е валидна."
+"Невъзможност за извличане на елемент: Папката maildir „%1“ не е валидна."
 
 #: maildirresource.cpp:265
 #, kde-format
@@ -168,12 +168,12 @@ msgstr "Невъзможно е да се премести maildir папка '%
 #: maildirresource.cpp:660
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
-msgstr "Не може да се изтрие maildir папка от най-високо ниво \"%1\"."
+msgstr "Не може да се изтрие maildir папка от най-високо ниво „%1“."
 
 #: maildirresource.cpp:669
 #, kde-format
 msgid "Failed to delete sub-folder '%1'."
-msgstr "Неуспешно изтриване на подпапка \"%1\"."
+msgstr "Неуспешно изтриване на подпапка „%1“."
 
 #: maildirresource.cpp:683
 #, kde-format

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-09-13 20:54+0200\n"
+"PO-Revision-Date: 2024-11-09 20:04+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.07.70\n"
+"X-Generator: Lokalize 24.08.2\n"
 
 #: vcardconfig.cpp:22
 #, kde-format
@@ -33,7 +33,7 @@ msgstr "Дейности"
 #: vcardresource.cpp:71
 #, kde-format
 msgid "Contact with uid '%1' not found."
-msgstr "Не е намерен контакт с uid \"%1\"."
+msgstr "Не е намерен контакт с uid „%1“."
 
 #: vcardresource.cpp:168 vcardresource.cpp:188
 #, kde-format
