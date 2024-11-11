@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-22 00:40+0000\n"
-"PO-Revision-Date: 2024-09-13 20:53+0200\n"
+"PO-Revision-Date: 2024-11-10 13:28+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.07.70\n"
+"X-Generator: Lokalize 24.11.70\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -33,7 +33,7 @@ msgid ""
 "this resource."
 msgstr ""
 "Изберете настройки на директорията, чието съдържание трябва да бъде "
-"представено оттози ресурс."
+"представено от този ресурс."
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: settingsdialog.ui:39
@@ -113,7 +113,7 @@ msgid ""
 "with changing anything here, the defaults are good enough in most cases."
 msgstr ""
 "Опциите на тази страница ви позволяват да променяте параметрите, които "
-"балансиратбезопасността и последователността на данните спрямо "
+"балансират безопасността и последователността на данните спрямо "
 "производителността. Като цяло трябва да внимавате да променяте каквото и да "
 "било тук, тъй като в повечето случаи настройките по подразбиране са "
 "достатъчно добри."
@@ -205,7 +205,7 @@ msgid ""
 "contents has been created at '%2'."
 msgstr ""
 "Файлът \"%1\" е променен на диска. Като предпазна мярка, резервно копие на "
-"предишнотосъдържание е създадено на \"%2\"."
+"предишното съдържание е създадено на \"%2\"."
 
 #: singlefileresourcebase.cpp:272
 #, kde-format
