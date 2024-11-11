@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-12 00:39+0000\n"
-"PO-Revision-Date: 2024-11-09 20:04+0100\n"
+"PO-Revision-Date: 2024-11-10 20:13+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.08.2\n"
+"X-Generator: Lokalize 24.11.70\n"
 
 #: configwidget.cpp:36
 #, kde-format
@@ -128,17 +128,17 @@ msgstr "Maildir ресурсът е получил съдържание, кое�
 #: maildirresource.cpp:393
 #, kde-format
 msgid "Source folder is invalid: '%1'."
-msgstr "Изходната папка е невалидна: '%1'."
+msgstr "Изходната папка е невалидна: „%1“."
 
 #: maildirresource.cpp:399
 #, kde-format
 msgid "Destination folder is invalid: '%1'."
-msgstr "Папката за местоназначение е невалидна: '%1'."
+msgstr "Папката за местоназначение е невалидна: „%1“."
 
 #: maildirresource.cpp:416
 #, kde-format
 msgid "Could not move message '%1' from '%2' to '%3'. The error was %4."
-msgstr "Не можа да се премести съобщение '%1' от '%2' в '%3'. Грешката е %4."
+msgstr "Не можа да се премести съобщение „%1“ от „%2“ в „%3“. Грешката е %4."
 
 #: maildirresource.cpp:438
 #, kde-format
@@ -148,22 +148,22 @@ msgstr "Неуспешно изтриване на съобщение: %1"
 #: maildirresource.cpp:527
 #, kde-format
 msgid "Maildir '%1' for collection '%2' is invalid."
-msgstr "Maildir '%1' за колекция '%2' е невалидна."
+msgstr "Maildir „%1“ за колекция „%2“ е невалидна."
 
 #: maildirresource.cpp:606
 #, kde-format
 msgid "Unable to rename maildir folder '%1'."
-msgstr "Невъзможност за преименуване на папката maildir '%1'."
+msgstr "Невъзможност за преименуване на папката maildir „%1“."
 
 #: maildirresource.cpp:627
 #, kde-format
 msgid "Cannot move root maildir folder '%1'."
-msgstr "Не може да се премести главната maildir папка '%1'."
+msgstr "Не може да се премести главната maildir папка „%1“."
 
 #: maildirresource.cpp:642
 #, kde-format
 msgid "Unable to move maildir folder '%1' from '%2' to '%3'."
-msgstr "Невъзможно е да се премести maildir папка '%1' от '%2' в '%3'."
+msgstr "Невъзможно е да се премести maildir папка „%1“ от „%2“ в „%3“."
 
 #: maildirresource.cpp:660
 #, kde-format
@@ -178,7 +178,7 @@ msgstr "Неуспешно изтриване на подпапка „%1“."
 #: maildirresource.cpp:683
 #, kde-format
 msgid "Unable to create maildir '%1'."
-msgstr "Не е възможно да се създаде maildir '%1'."
+msgstr "Не е възможно да се създаде maildir „%1“."
 
 #: maildirresource.cpp:693
 #, kde-format

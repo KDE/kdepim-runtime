@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-30 00:41+0000\n"
-"PO-Revision-Date: 2024-08-07 11:21+0200\n"
+"PO-Revision-Date: 2024-11-10 12:01+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.07.70\n"
+"X-Generator: Lokalize 24.11.70\n"
 
 #: configdialog.cpp:33
 #, kde-format
@@ -560,7 +560,7 @@ msgstr "Идентификационни данни за вход"
 #: setupwizard.cpp:211
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
-msgstr "Въведете данните си за вход в сървъра за групов софтуер"
+msgstr "Въведете данните си за вход в сървъра за групов софтуер (groupware)"
 
 #: setupwizard.cpp:215
 #, kde-format
@@ -631,7 +631,7 @@ msgstr "Връзка"
 #: setupwizard.cpp:382
 #, kde-format
 msgid "Enter the connection information for the groupware server"
-msgstr "Въведете информацията за връзката на сървъра на групуеър"
+msgstr "Въведете информацията за връзката на сървъра на groupware"
 
 #: setupwizard.cpp:389
 #, kde-format
@@ -678,7 +678,7 @@ msgid ""
 "You can test now whether the groupware server can be accessed with the "
 "current configuration"
 msgstr ""
-"Сега можете да проверите дали достъпът до сървъра за групуер е възможен с "
+"Сега можете да проверите дали достъпът до сървъра за groupware е възможен с "
 "текущата конфигурация"
 
 #: setupwizard.cpp:503

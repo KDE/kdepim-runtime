@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-22 00:40+0000\n"
-"PO-Revision-Date: 2024-11-09 20:09+0100\n"
+"PO-Revision-Date: 2024-11-10 20:12+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.08.2\n"
+"X-Generator: Lokalize 24.11.70\n"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab_3)
 #: contactsagentsettingswidget.ui:27
@@ -152,12 +152,12 @@ msgstr "Не може да се изтрие папка „%1“."
 #: contactsresource.cpp:437
 #, kde-format
 msgid "Unable to move file '%1' to '%2', '%2' already exists."
-msgstr "Не може да се премести файл „%1“ в '%2', „%2“ вече съществува."
+msgstr "Не може да се премести файл „%1“ в „%2“, „%2“ вече съществува."
 
 #: contactsresource.cpp:451
 #, kde-format
 msgid "Unable to move directory '%1' to '%2', '%2' already exists."
-msgstr "Не може да се премести директория „%1“ в '%2', „%2“ вече съществува."
+msgstr "Не може да се премести директория „%1“ в „%2“, „%2“ вече съществува."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: contactsresource.kcfg:10

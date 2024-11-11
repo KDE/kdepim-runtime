@@ -22,7 +22,7 @@ msgstr ""
 #: contactsagentsettingswidget.ui:27
 #, kde-format
 msgid "Settings"
-msgstr ""
+msgstr "设置"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: contactsagentsettingswidget.ui:33
@@ -170,4 +170,4 @@ msgstr "不改变实际后端数据。"
 #: contactssettingswidget.cpp:40
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "活动"
