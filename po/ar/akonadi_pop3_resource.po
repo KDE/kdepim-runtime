@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2024-09-26 13:16+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -25,7 +25,7 @@ msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p٪"
 
-#: accountwidget.cpp:92
+#: accountwidget.cpp:91
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -36,18 +36,18 @@ msgstr[3] "%v دقائق"
 msgstr[4] "%v دقيقة"
 msgstr[5] "%v دقيقة"
 
-#: accountwidget.cpp:130 pop3resource.cpp:46
+#: accountwidget.cpp:128 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "حساب POP3"
 
-#: accountwidget.cpp:197
+#: accountwidget.cpp:195
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "تعذّر فتح المحفظة"
 
-#: accountwidget.cpp:247
+#: accountwidget.cpp:245
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -60,7 +60,7 @@ msgstr ""
 "بسبب عدم إخبار بعض الخواديم عن إمكانيّاتها، ما تزال لديك الفرصة بتفعيل ترك "
 "الرّسائل التي جُلبت من الخادوم إن كان يدعم ذلك."
 
-#: accountwidget.cpp:262
+#: accountwidget.cpp:260
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -81,17 +81,17 @@ msgstr ""
 " تريد أن تزيد السّرعة قليلًا، فعليك إجراء بعض الاختبارات بإرسال مجموعة\n"
 " من الرّسائل إليك وتنزيلها بعد ذلك."
 
-#: accountwidget.cpp:295
+#: accountwidget.cpp:293
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "رجاءً حدّد خادومًا ومنفذًا من لسان ”عامّ“ أوّلًا."
 
-#: accountwidget.cpp:328
+#: accountwidget.cpp:326
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "تعذّر الاتّصال بالخادوم، رجاءً افحص عنوان الخادوم."
 
-#: accountwidget.cpp:372
+#: accountwidget.cpp:370
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -110,7 +110,7 @@ msgstr ""
 "للبريد الهامّ عليك أوّلًا اختبارها بإرسال مجموعة كبيرة من الرّسائل الاختباريّة "
 "والتي ستُنزّلها لاحقًا مرّة واحدة من خادوم POP."
 
-#: accountwidget.cpp:392
+#: accountwidget.cpp:390
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -124,7 +124,7 @@ msgstr ""
 "بسبب عدم إخبار بعض الخواديم عن إمكانيّاتها، ما تزال لديك الفرصة بتفعيل ترك "
 "الرّسائل التي جُلبت من الخادوم إن كان يدعم ذلك."
 
-#: accountwidget.cpp:424
+#: accountwidget.cpp:422
 #, kde-format
 msgid " day"
 msgid_plural " days"
@@ -135,7 +135,7 @@ msgstr[3] " أيّام"
 msgstr[4] " يومًا"
 msgstr[5] " يوم"
 
-#: accountwidget.cpp:429
+#: accountwidget.cpp:427
 #, kde-format
 msgid " message"
 msgid_plural " messages"

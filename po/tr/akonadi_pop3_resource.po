@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2024-08-18 20:21+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -30,25 +30,25 @@ msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%​%p"
 
-#: accountwidget.cpp:92
+#: accountwidget.cpp:91
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%v dakika"
 msgstr[1] "%v dakika"
 
-#: accountwidget.cpp:130 pop3resource.cpp:46
+#: accountwidget.cpp:128 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 Hesabı"
 
-#: accountwidget.cpp:197
+#: accountwidget.cpp:195
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Cüzdan açılamıyor"
 
-#: accountwidget.cpp:247
+#: accountwidget.cpp:245
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -61,7 +61,7 @@ msgstr ""
 "Bazı sunucular yeteneklerini doğru olarak bildirmedikleri için, siz yine de "
 "alınan iletilerin sunucuda bırakılmasını seçebilirsiniz."
 
-#: accountwidget.cpp:262
+#: accountwidget.cpp:260
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -83,17 +83,17 @@ msgstr ""
 "ancak daha fazla hız istiyorsanız önce kendinize toplu birkaç posta\n"
 "gönderip indirerek bunu sınamalısınız."
 
-#: accountwidget.cpp:295
+#: accountwidget.cpp:293
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Lütfen önce Genel sekmesinde bir sunucu ve port numarası tanımlayın."
 
-#: accountwidget.cpp:328
+#: accountwidget.cpp:326
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Sunucuya bağlanılamadı, lütfen sunucu adresini doğrulayın."
 
-#: accountwidget.cpp:372
+#: accountwidget.cpp:370
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -114,7 +114,7 @@ msgstr ""
 "kendinize büyük sayıda sınama iletileri göndererek ve POP sunucusundan "
 "bunları indirerek sınayın."
 
-#: accountwidget.cpp:392
+#: accountwidget.cpp:390
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -129,14 +129,14 @@ msgstr ""
 "Bazı sunucular yeteneklerini doğru olarak bildirmedikleri için, yine de "
 "alınmış iletileri sunucuda bırakma özelliğini etkinleştirebilirsiniz."
 
-#: accountwidget.cpp:424
+#: accountwidget.cpp:422
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " gün"
 msgstr[1] " gün"
 
-#: accountwidget.cpp:429
+#: accountwidget.cpp:427
 #, kde-format
 msgid " message"
 msgid_plural " messages"

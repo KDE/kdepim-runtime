@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2024-08-24 12:10+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -129,7 +129,7 @@ msgstr "Częstotliwość automatycznego zapisu (w minutach)."
 msgid "Do not change the actual backend data."
 msgstr "Nie zmieniaj bieżących danych silnika."
 
-#: vcarddirsettingswidget.cpp:43
+#: vcarddirsettingswidget.cpp:42
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -137,7 +137,7 @@ msgstr[0] "%v minuta"
 msgstr[1] " minuty"
 msgstr[2] " minut"
 
-#: vcarddirsettingswidget.cpp:47
+#: vcarddirsettingswidget.cpp:45
 #, kde-format
 msgid "Activities"
 msgstr "Aktywności"

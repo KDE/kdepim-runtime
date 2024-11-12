@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2024-08-19 15:17+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
@@ -652,7 +652,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:55
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -666,13 +666,13 @@ msgstr ""
 "\n"
 "%2"
 
-#: settingspasswordrequester.cpp:58
+#: settingspasswordrequester.cpp:62
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Intentalo de novo"
 
-#: settingspasswordrequester.cpp:64
+#: settingspasswordrequester.cpp:68
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
@@ -713,24 +713,24 @@ msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: setupserver.cpp:165
+#: setupserver.cpp:164
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%v minuto"
 msgstr[1] "%v minutos"
 
-#: setupserver.cpp:181
+#: setupserver.cpp:179
 #, kde-format
 msgid "Identity:"
 msgstr "Identidade:"
 
-#: setupserver.cpp:201
+#: setupserver.cpp:199
 #, kde-format
 msgid "Activities"
 msgstr "Actividades"
 
-#: setupserver.cpp:268
+#: setupserver.cpp:266
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -742,13 +742,13 @@ msgstr ""
 "de novo todas as mensaxes de correo electrónico da conta. Seguro que quere "
 "continuar?"
 
-#: setupserver.cpp:271
+#: setupserver.cpp:269
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Cambio do enderezo do servidor"
 
-#: setupserver.cpp:278
+#: setupserver.cpp:276
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -759,13 +759,13 @@ msgstr ""
 "corresponda á mesma conta que o anterior, é necesario descargar de novo "
 "todas as mensaxes de correo electrónico da conta. Seguro que quere continuar?"
 
-#: setupserver.cpp:281
+#: setupserver.cpp:279
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Cambio de nome de persoa usuaria"
 
-#: setupserver.cpp:433 setupserver.cpp:485
+#: setupserver.cpp:432 setupserver.cpp:485
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -775,7 +775,7 @@ msgstr ""
 "Non foi posíbel acceder a KWallet, que é necesario para almacenar o "
 "contrasinal. Actíveo."
 
-#: setupserver.cpp:435 setupserver.cpp:487
+#: setupserver.cpp:434 setupserver.cpp:487
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"

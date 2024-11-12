@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2024-08-17 10:16+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -26,25 +26,25 @@ msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%%p"
 
-#: accountwidget.cpp:92
+#: accountwidget.cpp:91
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "minutu %v"
 msgstr[1] "%v minutu"
 
-#: accountwidget.cpp:130 pop3resource.cpp:46
+#: accountwidget.cpp:128 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 kontua"
 
-#: accountwidget.cpp:197
+#: accountwidget.cpp:195
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Zorroa ireki ezinik"
 
-#: accountwidget.cpp:247
+#: accountwidget.cpp:245
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -57,7 +57,7 @@ msgstr ""
 "Zerbitzari batzuek beren gaitasunak behar bezala iragartzen ez dituztenez, "
 "eskuratutako mezuak zerbitzarian uztea pizteko aukera duzu oraindik."
 
-#: accountwidget.cpp:262
+#: accountwidget.cpp:260
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -81,18 +81,18 @@ msgstr ""
 "proba batzuk egin beharko zenituzke, aurrena zeure buruari posta-sorta bat\n"
 "bidaliz eta haiek zama-jaitsiz."
 
-#: accountwidget.cpp:295
+#: accountwidget.cpp:293
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Mesedez, aurrena zehartu zerbitzari bat eta ataka bat Orokorra fitxan."
 
-#: accountwidget.cpp:328
+#: accountwidget.cpp:326
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Zerbitzariarekin konektatu ezinik, mesedez egiaztatu zerbitzariaren helbidea."
 
-#: accountwidget.cpp:372
+#: accountwidget.cpp:370
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -113,7 +113,7 @@ msgstr ""
 "erabili aurretik, lehenik probatu egin behar zenuke, zeure buruari proba-"
 "mezu kopuru handia bidaliz, POP zerbitzaritik denak batera zama-jaisteko."
 
-#: accountwidget.cpp:392
+#: accountwidget.cpp:390
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -128,14 +128,14 @@ msgstr ""
 "Zerbitzari batzuek beren gaitasunak behar bezala iragartzen ez dituztenez, "
 "eskuratutako mezuak zerbitzarian uztea pizteko aukera duzu oraindik."
 
-#: accountwidget.cpp:424
+#: accountwidget.cpp:422
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " egun"
 msgstr[1] " egun"
 
-#: accountwidget.cpp:429
+#: accountwidget.cpp:427
 #, kde-format
 msgid " message"
 msgid_plural " messages"

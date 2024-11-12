@@ -77,7 +77,7 @@ msgstr "选择新信件提醒要监视的文件夹"
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Search…"
-msgstr ""
+msgstr "搜索…"
 
 #: newmailnotifierselectcollectionwidget.cpp:140
 #, kde-format
@@ -256,7 +256,7 @@ msgstr "位于：%1 (%2)"
 #: specialnotifierjob.cpp:150
 #, kde-format
 msgid "Show mail…"
-msgstr ""
+msgstr "显示邮件…"
 
 #: specialnotifierjob.cpp:153
 #, kde-format

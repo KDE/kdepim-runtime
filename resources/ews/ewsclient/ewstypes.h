@@ -59,7 +59,11 @@ typedef enum {
     EwsDIdArchiveRecoverableItemsPurges
 } EwsDistinguishedId;
 
-typedef enum { EwsShapeIdOnly = 0, EwsShapeDefault, EwsShapeAllProperties } EwsBaseShape;
+typedef enum {
+    EwsShapeIdOnly = 0,
+    EwsShapeDefault,
+    EwsShapeAllProperties
+} EwsBaseShape;
 
 typedef enum {
     EwsPropSetMeeting = 0,
@@ -125,7 +129,12 @@ typedef enum {
     EwsItemTypeUnknown
 } EwsItemType;
 
-typedef enum { EwsItemSensitivityNormal, EwsItemSensitivityPersonal, EwsItemSensitivityPrivate, EwsItemSensitivityConfidential } EwsItemSensitivity;
+typedef enum {
+    EwsItemSensitivityNormal,
+    EwsItemSensitivityPersonal,
+    EwsItemSensitivityPrivate,
+    EwsItemSensitivityConfidential
+} EwsItemSensitivity;
 
 /**
  *  @brief List of fields in EWS Item and its descendants
@@ -411,11 +420,23 @@ typedef enum {
     EwsItemFieldExchangePersonIdGuid,
 } EwsItemFields;
 
-typedef enum { EwsItemImportanceLow, EwsItemImportanceNormal, EwsItemImportanceHigh } EwsItemImportance;
+typedef enum {
+    EwsItemImportanceLow,
+    EwsItemImportanceNormal,
+    EwsItemImportanceHigh
+} EwsItemImportance;
 
-typedef enum { EwsBasePointBeginning, EwsBasePointEnd } EwsIndexedViewBasePoint;
+typedef enum {
+    EwsBasePointBeginning,
+    EwsBasePointEnd
+} EwsIndexedViewBasePoint;
 
-typedef enum { EwsCalendarItemSingle = 0, EwsCalendarItemOccurrence, EwsCalendarItemException, EwsCalendarItemRecurringMaster } EwsCalendarItemType;
+typedef enum {
+    EwsCalendarItemSingle = 0,
+    EwsCalendarItemOccurrence,
+    EwsCalendarItemException,
+    EwsCalendarItemRecurringMaster
+} EwsCalendarItemType;
 
 typedef enum {
     EwsEventResponseUnknown = 0,
@@ -426,7 +447,13 @@ typedef enum {
     EwsEventResponseNotReceived
 } EwsEventResponseType;
 
-typedef enum { EwsLfbStatusFree = 0, EwsLfbStatusTentative, EwsLfbStatusBusy, EwsLfbOutOfOffice, EwsLfbNoData } EwsLegacyFreeBusyStatus;
+typedef enum {
+    EwsLfbStatusFree = 0,
+    EwsLfbStatusTentative,
+    EwsLfbStatusBusy,
+    EwsLfbOutOfOffice,
+    EwsLfbNoData
+} EwsLegacyFreeBusyStatus;
 
 typedef enum {
     EwsDispSaveOnly = 0,

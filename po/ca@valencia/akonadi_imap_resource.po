@@ -11,15 +11,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
-"PO-Revision-Date: 2024-08-17 11:20+0200\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
+"PO-Revision-Date: 2024-10-25 19:23+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 24.08.2\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
 
@@ -42,7 +42,7 @@ msgid ""
 "on next sync. Use the subscription dialog to overcome that"
 msgstr ""
 "No s'ha pogut subscriure a la carpeta «%1» en el servidor IMAP. "
-"Desapareixerà en la propera sincronització. Utilitzeu el diàleg de "
+"Desapareixerà en la pròxima sincronització. Utilitzeu el diàleg de "
 "subscripció per a previndre-ho"
 
 #: addcollectiontask.cpp:130 changecollectiontask.cpp:276
@@ -86,7 +86,7 @@ msgid ""
 "disappear on next sync. Use the subscription dialog to overcome that"
 msgstr ""
 "No s'ha pogut canviar de nom la carpeta «%1» en el servidor IMAP. "
-"Desapareixerà en la propera sincronització. Utilitzeu el diàleg de "
+"Desapareixerà en la pròxima sincronització. Utilitzeu el diàleg de "
 "subscripció per a previndre-ho"
 
 #: changecollectiontask.cpp:267
@@ -656,7 +656,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:55
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -670,13 +670,13 @@ msgstr ""
 "\n"
 "%2"
 
-#: settingspasswordrequester.cpp:58
+#: settingspasswordrequester.cpp:62
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Torneu-ho a provar"
 
-#: settingspasswordrequester.cpp:64
+#: settingspasswordrequester.cpp:68
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
@@ -717,24 +717,24 @@ msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: setupserver.cpp:165
+#: setupserver.cpp:164
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%v minut"
 msgstr[1] "%v minuts"
 
-#: setupserver.cpp:181
+#: setupserver.cpp:179
 #, kde-format
 msgid "Identity:"
 msgstr "Identitat:"
 
-#: setupserver.cpp:201
+#: setupserver.cpp:199
 #, kde-format
 msgid "Activities"
 msgstr "Activitats"
 
-#: setupserver.cpp:268
+#: setupserver.cpp:266
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -745,13 +745,13 @@ msgstr ""
 "abans, cal tornar a baixar tots els vostres correus des d'este compte. Segur "
 "que voleu continuar?"
 
-#: setupserver.cpp:271
+#: setupserver.cpp:269
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Canvi de l'adreça del servidor"
 
-#: setupserver.cpp:278
+#: setupserver.cpp:276
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -762,13 +762,13 @@ msgstr ""
 "compte que abans, cal tornar a baixar tots els vostres correus des d'este "
 "compte. Segur que voleu continuar?"
 
-#: setupserver.cpp:281
+#: setupserver.cpp:279
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Canvi del nom d'usuari"
 
-#: setupserver.cpp:433 setupserver.cpp:485
+#: setupserver.cpp:432 setupserver.cpp:485
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -777,7 +777,7 @@ msgid ""
 msgstr ""
 "No s'ha pogut accedir a KWallet. Cal emmagatzemar la contrasenya. Activeu-lo."
 
-#: setupserver.cpp:435 setupserver.cpp:487
+#: setupserver.cpp:434 setupserver.cpp:487
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"

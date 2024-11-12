@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2024-08-17 09:57+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -648,7 +648,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:55
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -662,13 +662,13 @@ msgstr ""
 "\n"
 "%2"
 
-#: settingspasswordrequester.cpp:58
+#: settingspasswordrequester.cpp:62
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Спробувати ще раз"
 
-#: settingspasswordrequester.cpp:64
+#: settingspasswordrequester.cpp:68
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
@@ -709,7 +709,7 @@ msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: setupserver.cpp:165
+#: setupserver.cpp:164
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -718,17 +718,17 @@ msgstr[1] "%v хвилини"
 msgstr[2] "%v хвилин"
 msgstr[3] "%v хвилина"
 
-#: setupserver.cpp:181
+#: setupserver.cpp:179
 #, kde-format
 msgid "Identity:"
 msgstr "Профіль:"
 
-#: setupserver.cpp:201
+#: setupserver.cpp:199
 #, kde-format
 msgid "Activities"
 msgstr "Простори дій"
 
-#: setupserver.cpp:268
+#: setupserver.cpp:266
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -739,13 +739,13 @@ msgstr ""
 "нам доведеться знову отримати з нього усі ваші повідомлення електронної "
 "пошти з цього облікового запису. Ви справді цього хочете?"
 
-#: setupserver.cpp:271
+#: setupserver.cpp:269
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Зміна адреси сервера"
 
-#: setupserver.cpp:278
+#: setupserver.cpp:276
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -757,13 +757,13 @@ msgstr ""
 "ваші повідомлення електронної пошти з цього облікового запису. Ви справді "
 "цього хочете?"
 
-#: setupserver.cpp:281
+#: setupserver.cpp:279
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Зміна імені користувача"
 
-#: setupserver.cpp:433 setupserver.cpp:485
+#: setupserver.cpp:432 setupserver.cpp:485
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -773,7 +773,7 @@ msgstr ""
 "Не вдалося отримати доступ до KWallet. Ця програма потрібна для зберігання "
 "паролів. Будь ласка, активуйте її."
 
-#: setupserver.cpp:435 setupserver.cpp:487
+#: setupserver.cpp:434 setupserver.cpp:487
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2019-05-01 11:44+0200\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
@@ -26,25 +26,25 @@ msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: accountwidget.cpp:92
+#: accountwidget.cpp:91
 #, fuzzy, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] " minutt"
 msgstr[1] " minutt"
 
-#: accountwidget.cpp:130 pop3resource.cpp:46
+#: accountwidget.cpp:128 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3-konto"
 
-#: accountwidget.cpp:197
+#: accountwidget.cpp:195
 #, fuzzy, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Feil ved henting av e-post."
 
-#: accountwidget.cpp:247
+#: accountwidget.cpp:245
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -57,7 +57,7 @@ msgstr ""
 "Men sidan enkelte tenarar gjev feil opplysningar om kva dei støttar, så har "
 "du framleis høve til å kryssa av for å la meldingar liggja att."
 
-#: accountwidget.cpp:262
+#: accountwidget.cpp:260
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -71,17 +71,17 @@ msgid ""
 "of mail and downloading it."
 msgstr ""
 
-#: accountwidget.cpp:295
+#: accountwidget.cpp:293
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Oppgje tenar og port på fana «Generelt» først."
 
-#: accountwidget.cpp:328
+#: accountwidget.cpp:326
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 
-#: accountwidget.cpp:372
+#: accountwidget.cpp:370
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -102,7 +102,7 @@ msgstr ""
 "mange testmeldingar til deg sjølv, og så lasta dei alle ned på ein gong frå "
 "POP-tenaren."
 
-#: accountwidget.cpp:392
+#: accountwidget.cpp:390
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -117,14 +117,14 @@ msgstr ""
 "Men sidan enkelte tenarar gjev feil opplysningar om kva dei støttar, så har "
 "du framleis høve til å kryssa av for å la meldingar liggja att på tenaren."
 
-#: accountwidget.cpp:424
+#: accountwidget.cpp:422
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " dag"
 msgstr[1] " dagar"
 
-#: accountwidget.cpp:429
+#: accountwidget.cpp:427
 #, kde-format
 msgid " message"
 msgid_plural " messages"

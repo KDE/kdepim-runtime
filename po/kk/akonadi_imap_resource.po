@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2013-11-18 04:31+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -644,7 +644,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:55
 #, fuzzy, kde-format
 #| msgid ""
 #| "The server for account \"%2\" refused the supplied username and password. "
@@ -664,7 +664,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:58
+#: settingspasswordrequester.cpp:62
 #, fuzzy, kde-format
 #| msgctxt "Input username/password manually and not store them"
 #| msgid "Try Again"
@@ -672,7 +672,7 @@ msgctxt "@action:button"
 msgid "Try again"
 msgstr "Қайталап көру"
 
-#: settingspasswordrequester.cpp:64
+#: settingspasswordrequester.cpp:68
 #, fuzzy, kde-format
 #| msgid "Identity Settings"
 msgctxt "@action:button"
@@ -715,7 +715,7 @@ msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: setupserver.cpp:165
+#: setupserver.cpp:164
 #, fuzzy, kde-format
 #| msgid " minute"
 #| msgid_plural " minutes"
@@ -723,17 +723,17 @@ msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] " минут"
 
-#: setupserver.cpp:181
+#: setupserver.cpp:179
 #, kde-format
 msgid "Identity:"
 msgstr "Іс-әлпеті:"
 
-#: setupserver.cpp:201
+#: setupserver.cpp:199
 #, kde-format
 msgid "Activities"
 msgstr ""
 
-#: setupserver.cpp:268
+#: setupserver.cpp:266
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -741,14 +741,14 @@ msgid ""
 "again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:271
+#: setupserver.cpp:269
 #, fuzzy, kde-format
 #| msgid "Username"
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Пайдаланушы"
 
-#: setupserver.cpp:278
+#: setupserver.cpp:276
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -756,14 +756,14 @@ msgid ""
 "account again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:281
+#: setupserver.cpp:279
 #, fuzzy, kde-format
 #| msgid "Username"
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Пайдаланушы"
 
-#: setupserver.cpp:433 setupserver.cpp:485
+#: setupserver.cpp:432 setupserver.cpp:485
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -771,7 +771,7 @@ msgid ""
 "activate it."
 msgstr ""
 
-#: setupserver.cpp:435 setupserver.cpp:487
+#: setupserver.cpp:434 setupserver.cpp:487
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"

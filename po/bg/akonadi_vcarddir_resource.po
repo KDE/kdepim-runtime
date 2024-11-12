@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
-"PO-Revision-Date: 2024-09-13 20:55+0200\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
+"PO-Revision-Date: 2024-11-10 11:23+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.07.70\n"
+"X-Generator: Lokalize 24.11.70\n"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: vcarddiragentsettingswidget.ui:33
@@ -86,7 +86,7 @@ msgid ""
 "with changing anything here, the defaults are good enough in most cases."
 msgstr ""
 "Опциите на тази страница ви позволяват да променяте параметрите, които "
-"балансиратбезопасността и последователността на данните спрямо "
+"балансират безопасността и последователността на данните спрямо "
 "производителността. Като цяло трябва да внимавате да променяте каквото и да "
 "било тук, тъй като в повечето случаи настройките по подразбиране са "
 "достатъчно добри."
@@ -100,12 +100,12 @@ msgstr "Интервал на автоматичен запис:"
 #: vcarddirresource.cpp:122
 #, kde-format
 msgid "Contact with uid '%1' not found."
-msgstr "Не е намерен контакт с uid \"%1\"."
+msgstr "Не е намерен контакт с uid „%1“."
 
 #: vcarddirresource.cpp:134 vcarddirresource.cpp:168 vcarddirresource.cpp:204
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
-msgstr "Опит за запис в директория само за четене: \"%1\""
+msgstr "Опит за запис в директория само за четене: „%1“"
 
 #: vcarddirresource.cpp:239
 #, kde-format
@@ -130,14 +130,14 @@ msgstr "Интервал на автозапис (в минути)."
 msgid "Do not change the actual backend data."
 msgstr "Без промяна на действителните данни на бекенда."
 
-#: vcarddirsettingswidget.cpp:43
+#: vcarddirsettingswidget.cpp:42
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%v минута"
 msgstr[1] "%v минути"
 
-#: vcarddirsettingswidget.cpp:47
+#: vcarddirsettingswidget.cpp:45
 #, kde-format
 msgid "Activities"
 msgstr "Дейности"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2023-11-07 21:26+0100\n"
 "Last-Translator: Enol P. <enolp@softastur.org>\n"
 "Language-Team: \n"
@@ -585,7 +585,7 @@ msgid ""
 "%1"
 msgstr ""
 
-#: settingspasswordrequester.cpp:53
+#: settingspasswordrequester.cpp:55
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -594,13 +594,13 @@ msgid ""
 "%2"
 msgstr ""
 
-#: settingspasswordrequester.cpp:58
+#: settingspasswordrequester.cpp:62
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr ""
 
-#: settingspasswordrequester.cpp:64
+#: settingspasswordrequester.cpp:68
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
@@ -641,24 +641,24 @@ msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: setupserver.cpp:165
+#: setupserver.cpp:164
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: setupserver.cpp:181
+#: setupserver.cpp:179
 #, kde-format
 msgid "Identity:"
 msgstr ""
 
-#: setupserver.cpp:201
+#: setupserver.cpp:199
 #, kde-format
 msgid "Activities"
 msgstr ""
 
-#: setupserver.cpp:268
+#: setupserver.cpp:266
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -666,13 +666,13 @@ msgid ""
 "again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:271
+#: setupserver.cpp:269
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr ""
 
-#: setupserver.cpp:278
+#: setupserver.cpp:276
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -680,13 +680,13 @@ msgid ""
 "account again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:281
+#: setupserver.cpp:279
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr ""
 
-#: setupserver.cpp:433 setupserver.cpp:485
+#: setupserver.cpp:432 setupserver.cpp:485
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -694,7 +694,7 @@ msgid ""
 "activate it."
 msgstr ""
 
-#: setupserver.cpp:435 setupserver.cpp:487
+#: setupserver.cpp:434 setupserver.cpp:487
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"

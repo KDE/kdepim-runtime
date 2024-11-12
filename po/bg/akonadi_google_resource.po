@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
-"PO-Revision-Date: 2024-09-13 20:53+0200\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
+"PO-Revision-Date: 2024-11-09 20:09+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.07.70\n"
+"X-Generator: Lokalize 24.08.2\n"
 
 #: calendarhandler.cpp:91
 #, kde-format
@@ -29,19 +29,19 @@ msgstr "Извличане на календари"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
-msgstr "Извличане на събития за календар \"%1\""
+msgstr "Извличане на събития за календар „%1“"
 
 #: calendarhandler.cpp:220 taskhandler.cpp:170
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
-msgstr "Добавяне на събитие към календара \"%1\""
+msgstr "Добавяне на събитие към календара „%1“"
 
 #: calendarhandler.cpp:246
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing event in calendar '%1'"
-msgstr "Промяна на събитието в календар \"%1\""
+msgstr "Промяна на събитието в календар „%1“"
 
 #: calendarhandler.cpp:258
 #, kde-format
@@ -56,8 +56,8 @@ msgstr[1] "Премахване на %1 събития"
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
 msgid_plural "Moving %1 events from calendar '%2' to calendar '%3'"
-msgstr[0] "Преместване на %1 събитие от календар \"%2\" в календар \"%3\""
-msgstr[1] "Преместване на %1 събития от календар \"%2\" в календар \"%3\""
+msgstr[0] "Преместване на %1 събитие от календар „%2“ в календар „%3“"
+msgstr[1] "Преместване на %1 събития от календар „%2“ в календар „%3“"
 
 #: calendarhandler.cpp:341
 #, kde-format
@@ -74,19 +74,19 @@ msgstr "Промяната на етикети на събития е неусп
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating calendar '%1'"
-msgstr "Създаване на календар \"%1\""
+msgstr "Създаване на календар „%1“"
 
 #: calendarhandler.cpp:385
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing calendar '%1'"
-msgstr "Промяна на календара \"%1\""
+msgstr "Промяна на календара „%1“"
 
 #: calendarhandler.cpp:398
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing calendar '%1'"
-msgstr "Премахване на календар \"%1\""
+msgstr "Премахване на календар „%1“"
 
 #: generichandler.cpp:24
 #, kde-format
@@ -199,7 +199,7 @@ msgstr "Невалиден тип съдържание"
 msgid "Unknown collection mimetype"
 msgstr "Неизвестна колекция mimetype"
 
-#: googlesettingswidget.cpp:42
+#: googlesettingswidget.cpp:41
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -207,7 +207,7 @@ msgstr[0] "%v минута"
 msgstr[1] "%v минути"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:105 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>Not configured</b>"
 msgstr "<b>Не е конфигуриран</b>"
@@ -300,13 +300,13 @@ msgstr "Други контакти"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts for group '%1'"
-msgstr "Извличане на контакти за група \"%1\""
+msgstr "Извличане на контакти за група „%1“"
 
 #: personhandler.cpp:370
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding contact to group '%1'"
-msgstr "Добавяне на контакт към група \"%1\""
+msgstr "Добавяне на контакт към група „%1“"
 
 #: personhandler.cpp:404
 #, kde-format
@@ -332,8 +332,8 @@ msgstr "Невалидни източник или дестинация на к�
 msgctxt "@info:status"
 msgid "Moving %1 contact from group '%2' to '%3'"
 msgid_plural "Moving %1 contacts from group '%2' to '%3'"
-msgstr[0] "Преместване на %1 контакт от група \"%2\" в \"%3\""
-msgstr[1] "Преместване на %1 контакти от група \"%2\" в \"%3\""
+msgstr[0] "Преместване на %1 контакт от група „%2“ в „%3“"
+msgstr[1] "Преместване на %1 контакти от група „%2“ в „%3“"
 
 #: personhandler.cpp:461
 #, kde-format
@@ -355,19 +355,19 @@ msgstr[1] "Включване на %1 контакти"
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new contact group '%1'"
-msgstr "Създаване на нова група за контакт \"%1\""
+msgstr "Създаване на нова група за контакт „%1“"
 
 #: personhandler.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact group '%1'"
-msgstr "Промяна на групата за контакт \"%1\""
+msgstr "Промяна на групата за контакт „%1“"
 
 #: personhandler.cpp:554
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing contact group '%1'"
-msgstr "Премахване на групата за контакт \"%1\""
+msgstr "Премахване на групата за контакт „%1“"
 
 #. i18n: ectx: label, entry (Calendars), group (General)
 #: settingsbase.kcfg:21
@@ -391,13 +391,13 @@ msgstr "Извличане на списъци със задачи"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
-msgstr "Извличане на задачи за списък \"%1\""
+msgstr "Извличане на задачи за списък „%1“"
 
 #: taskhandler.cpp:195
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
-msgstr "Промяна на задачата в списъка \"%1\""
+msgstr "Промяна на задачата в списъка „%1“"
 
 #: taskhandler.cpp:215
 #, kde-format
@@ -426,16 +426,16 @@ msgstr "Преместването на задачи между списъцит
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new task list '%1'"
-msgstr "Създаване на нов списък със задачи \"%1\""
+msgstr "Създаване на нов списък със задачи „%1“"
 
 #: taskhandler.cpp:322
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task list '%1'"
-msgstr "Промяна на списъка със задачи \"%1\""
+msgstr "Промяна на списъка със задачи „%1“"
 
 #: taskhandler.cpp:335
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
-msgstr "Премахване на списъка със задачи \"%1\""
+msgstr "Премахване на списъка със задачи „%1“"

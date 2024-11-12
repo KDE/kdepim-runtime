@@ -26,7 +26,9 @@ class MigrationJob : public KCompositeJob
 {
     Q_OBJECT
 public:
-    enum Error { Canceled = KCompositeJob::UserDefinedError };
+    enum Error {
+        Canceled = KCompositeJob::UserDefinedError
+    };
 
     explicit MigrationJob(const Akonadi::Collection &collection, QObject *parent = nullptr)
         : KCompositeJob(parent)

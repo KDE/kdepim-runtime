@@ -12,7 +12,7 @@
 #include <KCModule>
 namespace KLDAPWidgets
 {
-class LdapConfigureWidget;
+class LdapConfigureWidgetNg;
 }
 
 class KCMLdap : public KCModule
@@ -27,5 +27,5 @@ public:
     void save() override;
 
 private:
-    KLDAPWidgets::LdapConfigureWidget *const mLdapConfigureWidget;
+    KLDAPWidgets::LdapConfigureWidgetNg *const mLdapConfigureWidget;
 };

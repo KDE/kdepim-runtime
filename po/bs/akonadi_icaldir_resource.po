@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kde 49i410\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2015-02-04 15:46+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian\n"
@@ -123,7 +123,7 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "Vremenski pomak automatskog čuvanja:"
 
-#: icaldirsettingswidget.cpp:44
+#: icaldirsettingswidget.cpp:43
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -131,7 +131,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: icaldirsettingswidget.cpp:51
+#: icaldirsettingswidget.cpp:49
 #, kde-format
 msgid "Activities"
 msgstr ""

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-18 00:40+0000\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
 "PO-Revision-Date: 2021-11-23 17:20+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -27,7 +27,7 @@ msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: accountwidget.cpp:92
+#: accountwidget.cpp:91
 #, fuzzy, kde-format
 #| msgid " minute"
 #| msgid_plural " minutes"
@@ -36,19 +36,19 @@ msgid_plural "%v minutes"
 msgstr[0] " minuutti"
 msgstr[1] " minuuttia"
 
-#: accountwidget.cpp:130 pop3resource.cpp:46
+#: accountwidget.cpp:128 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3-tili"
 
-#: accountwidget.cpp:197
+#: accountwidget.cpp:195
 #, fuzzy, kde-format
 #| msgid "Unable to open wallet"
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Lompakkoa ei saada auki"
 
-#: accountwidget.cpp:247
+#: accountwidget.cpp:245
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -61,7 +61,7 @@ msgstr ""
 "Koska jotkin palvelimet kuitenkin ilmoittavat kykynsä väärin, voi silti yhä "
 "olla mahdollista ottaa viestien jättäminen palvelimelle käyttöön."
 
-#: accountwidget.cpp:262
+#: accountwidget.cpp:260
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -82,17 +82,17 @@ msgstr ""
 "-painiketta. Ellei palvelimesi ilmoita siitä mutta kaipaat nopeutta\n"
 ", kokeile toimintoa lähettämällä ja lataamalla itsellesi joitakin viestejä."
 
-#: accountwidget.cpp:295
+#: accountwidget.cpp:293
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Määritä ensin Yleistä-lehdeltä palvelin ja portti."
 
-#: accountwidget.cpp:328
+#: accountwidget.cpp:326
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Palvelimeen ei saatu yhteyttä, tarkista palvelimen osoite."
 
-#: accountwidget.cpp:372
+#: accountwidget.cpp:370
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -113,7 +113,7 @@ msgstr ""
 "kannattaa testata lähettämällä runsaasti testiviestejä, jotka lataat "
 "kerralla POP-palvelimelta."
 
-#: accountwidget.cpp:392
+#: accountwidget.cpp:390
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -127,14 +127,14 @@ msgstr ""
 "Koska jotkin palvelimet ilmoittavat kykynsä väärin, voi silti yhä olla "
 "mahdollista ottaa noudettujen viestien jättäminen palvelimella käyttöön."
 
-#: accountwidget.cpp:424
+#: accountwidget.cpp:422
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " päivä"
 msgstr[1] " päivää"
 
-#: accountwidget.cpp:429
+#: accountwidget.cpp:427
 #, kde-format
 msgid " message"
 msgid_plural " messages"

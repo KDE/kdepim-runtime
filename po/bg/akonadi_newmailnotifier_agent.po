@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-02 00:40+0000\n"
-"PO-Revision-Date: 2024-08-07 11:23+0200\n"
+"PO-Revision-Date: 2024-11-09 20:08+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.07.70\n"
+"X-Generator: Lokalize 24.08.2\n"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -48,8 +48,8 @@ msgctxt ""
 "user named it)"
 msgid "One new email in %2 from \"%3\""
 msgid_plural "%1 new emails in %2 from \"%3\""
-msgstr[0] "Едно ново писмо в %2 от \"%3\""
-msgstr[1] "%1 нови писма в %2 от \"%3\""
+msgstr[0] "Едно ново писмо в %2 от „%3“"
+msgstr[1] "%1 нови писма в %2 от „%3“"
 
 #: newmailnotifieragent.cpp:402
 #, kde-format
