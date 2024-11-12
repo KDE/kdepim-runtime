@@ -17,10 +17,14 @@
 
 #include <KCompositeJob>
 
+#include <KCalendarCore/Event>
 #include <KCalendarCore/Incidence>
+#include <KCalendarCore/Todo>
 
 #include <QTimer>
 #include <akonadi/itemmodifyjob.h>
+
+#include <algorithm>
 
 class MigrationJob : public KCompositeJob
 {
@@ -82,13 +86,16 @@ private:
         }
 
         const auto item = mItems.takeFirst();
-        const auto missingTags = calculateMissingTags(item);
-        if (!missingTags.empty()) {
-            migrateItem(item, missingTags);
-        } else {
-            setProcessedAmount(Unit::Items, ++mProcessed);
-            QTimer::singleShot(0, this, &MigrationJob::migrateNextItem);
+        if (item.mimeType() == KCalendarCore::Event::eventMimeType() || item.mimeType() == KCalendarCore::Todo::todoMimeType()) {
+            const auto missingTags = calculateMissingTags(item);
+            if (!missingTags.empty()) {
+                migrateItem(item, missingTags);
+                return;
+            }
         }
+
+        setProcessedAmount(Unit::Items, ++mProcessed);
+        QTimer::singleShot(0, this, &MigrationJob::migrateNextItem);
     }
 
     Akonadi::Tag::List calculateMissingTags(const Akonadi::Item &item) const
@@ -194,9 +201,7 @@ void ICalCategoriesToTagsMigrator::startWork()
 void ICalCategoriesToTagsMigrator::discoverCalendarCollections()
 {
     auto job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive);
-    job->fetchScope().setContentMimeTypes({QStringLiteral("text/calendar"),
-                                           QStringLiteral("application/x-vnd.akonadi.calendar.event"),
-                                           QStringLiteral("application/x-vnd.akonadi.calendar.todo")});
+    job->fetchScope().setContentMimeTypes({QStringLiteral("text/calendar"), KCalendarCore::Event::eventMimeType(), KCalendarCore::Todo::todoMimeType()});
     job->fetchScope().setIncludeStatistics(true);
     connect(job, &Akonadi::CollectionFetchJob::result, this, [this, job]() {
         if (job->error()) {
