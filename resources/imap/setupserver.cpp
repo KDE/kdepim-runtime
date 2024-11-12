@@ -430,16 +430,14 @@ void SetupServer::readSettings()
         auto readPasswordJob = m_parentResource->settings()->requestPassword();
 
         connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
-            auto password = readPasswordJob->textData();
-            if (readPasswordJob->error() != Error::NoError) {
-                m_ui->password->setEnabled(false);
-            } else {
+            if (readPasswordJob->error() == Error::NoError) {
+                const auto password = readPasswordJob->textData();
                 m_ui->password->lineEdit()->insert(password);
             }
             passwordFetched();
         });
     } else {
-        auto password = m_parentResource->settings()->password();
+        const auto password = m_parentResource->settings()->password();
         m_ui->password->lineEdit()->insert(password);
         passwordFetched();
     }
@@ -491,10 +489,8 @@ void SetupServer::passwordFetched()
         auto readPasswordJob = m_parentResource->settings()->requestSieveCustomPassword();
 
         connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
-            auto password = readPasswordJob->textData();
-            if (readPasswordJob->error() != Error::NoError) {
-                m_ui->customPassword->setEnabled(false);
-            } else {
+            if (readPasswordJob->error() == Error::NoError) {
+                const auto password = readPasswordJob->textData();
                 m_ui->customPassword->lineEdit()->insert(password);
             }
             sievePasswordFetched();
