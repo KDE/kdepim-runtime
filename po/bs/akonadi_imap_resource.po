@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-10-27 00:40+0000\n"
+"POT-Creation-Date: 2024-11-18 00:40+0000\n"
 "PO-Revision-Date: 2015-02-04 15:19+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -281,94 +281,94 @@ msgstr ""
 msgid "Defines the type of identification used by custom sieve server"
 msgstr "Definira tip potvrde korišten  od strane prilagođenog sieve servera"
 
-#: imapresourcebase.cpp:212
+#: imapresourcebase.cpp:215
 #, kde-format
 msgid "No server configured yet."
 msgstr "Server još uvijek nije konfigurisan."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:673
+#: imapresourcebase.cpp:245 setupserver.cpp:685
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
 msgstr "Pretplata na serverskoj strani"
 
-#: imapresourcebase.cpp:269
+#: imapresourcebase.cpp:283
 #, kde-format
 msgid "Connection established."
 msgstr "Konekcija uspostavljena."
 
-#: imapresourcebase.cpp:286
+#: imapresourcebase.cpp:300
 #, kde-format
 msgid "Server is not available."
 msgstr ""
 
-#: imapresourcebase.cpp:337
+#: imapresourcebase.cpp:351
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Dodajem element u '%1'"
 
-#: imapresourcebase.cpp:344
+#: imapresourcebase.cpp:358
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Ažuriram element u '%1'"
 
-#: imapresourcebase.cpp:351
+#: imapresourcebase.cpp:365
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Ažuriram stavke"
 
-#: imapresourcebase.cpp:365
+#: imapresourcebase.cpp:379
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Uklanjam stavke"
 
-#: imapresourcebase.cpp:381
+#: imapresourcebase.cpp:395
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Premještam stavke iz '%1' u '%2'"
 
-#: imapresourcebase.cpp:390
+#: imapresourcebase.cpp:404
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Preuzimam direktorije"
 
-#: imapresourcebase.cpp:397
+#: imapresourcebase.cpp:411
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Preuzimam dodatne informacije direktorija za '%1'"
 
-#: imapresourcebase.cpp:415
+#: imapresourcebase.cpp:429
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Kreiram direktorij '%1'"
 
-#: imapresourcebase.cpp:421
+#: imapresourcebase.cpp:435
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Ažuriram direktorij '%1'"
 
-#: imapresourcebase.cpp:434
+#: imapresourcebase.cpp:448
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Uklanjam direktorij '%1'"
 
-#: imapresourcebase.cpp:441
+#: imapresourcebase.cpp:455
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Premlještam direktorij '%1' sa '%2' na '%3'"
 
-#: imapresourcebase.cpp:471
+#: imapresourcebase.cpp:485
 #, fuzzy, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
@@ -617,13 +617,62 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Odjavi se sa servera tokom prijave."
 
-#: settingspasswordrequester.cpp:46
+#: settings.cpp:156
+#, kde-format
+msgctxt "@info:status"
+msgid "Password not found for %1 IMAP account"
+msgstr ""
+
+#: settings.cpp:162
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"An error occured when retriving the IMAP password from the system keychain: "
+"\"%1\""
+msgstr ""
+
+#: settings.cpp:192
+#, kde-format
+msgctxt "@info:status"
+msgid "Password not found for %1 sieve account"
+msgstr ""
+
+#: settings.cpp:198
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"An error occured when retriving the sieve password from the system keychain: "
+"\"%1\""
+msgstr ""
+
+#: settings.cpp:228
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"An error occured when saving the sieve password in the system keychain: "
+"\"%1\""
+msgstr ""
+
+#: settings.cpp:254
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"An error occured when saving the IMAP password in the system keychain: \"%1\""
+msgstr ""
+
+#: settings.cpp:341
+#, kde-format
+msgctxt "@title"
+msgid "Problem with %1 IMAP account"
+msgstr ""
+
+#: settingspasswordrequester.cpp:75
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr ""
 
-#: settingspasswordrequester.cpp:50
+#: settingspasswordrequester.cpp:79
 #, fuzzy, kde-format
 #| msgid ""
 #| "The server for account \"%2\" refused the supplied username and password. "
@@ -642,7 +691,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:55
+#: settingspasswordrequester.cpp:84
 #, fuzzy, kde-format
 #| msgid ""
 #| "The server for account \"%2\" refused the supplied username and password. "
@@ -661,7 +710,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:62
+#: settingspasswordrequester.cpp:91
 #, fuzzy, kde-format
 #| msgctxt "Input username/password manually and not store them"
 #| msgid "Try Again"
@@ -669,7 +718,7 @@ msgctxt "@action:button"
 msgid "Try again"
 msgstr "Pokušaj ponovo"
 
-#: settingspasswordrequester.cpp:68
+#: settingspasswordrequester.cpp:97
 #, fuzzy, kde-format
 #| msgid "Identity Settings"
 msgctxt "@action:button"
@@ -678,7 +727,7 @@ msgstr "Podešavanja identiteta"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:79 setupserverview_desktop.ui:294
+#: setupserver.cpp:82 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -687,32 +736,32 @@ msgstr "Izbriši tekst"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:81 setupserverview_desktop.ui:329
+#: setupserver.cpp:84 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Anonimno"
 
-#: setupserver.cpp:83
+#: setupserver.cpp:86
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr ""
 
-#: setupserver.cpp:151
+#: setupserver.cpp:154
 #, fuzzy, kde-format
 #| msgid "Shared Folders"
 msgid "Archive Folder"
 msgstr "Dijeljeni Folderi"
 
-#: setupserver.cpp:162
+#: setupserver.cpp:165
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: setupserver.cpp:164
+#: setupserver.cpp:167
 #, fuzzy, kde-format
 #| msgid " minute"
 #| msgid_plural " minutes"
@@ -722,17 +771,17 @@ msgstr[0] " minut"
 msgstr[1] " minute"
 msgstr[2] " minuta"
 
-#: setupserver.cpp:179
+#: setupserver.cpp:182
 #, kde-format
 msgid "Identity:"
 msgstr "Identitet:"
 
-#: setupserver.cpp:199
+#: setupserver.cpp:202
 #, kde-format
 msgid "Activities"
 msgstr ""
 
-#: setupserver.cpp:266
+#: setupserver.cpp:269
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -740,14 +789,14 @@ msgid ""
 "again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:269
+#: setupserver.cpp:272
 #, fuzzy, kde-format
 #| msgid "Username"
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Korisničko ime"
 
-#: setupserver.cpp:276
+#: setupserver.cpp:279
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -755,45 +804,31 @@ msgid ""
 "account again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:279
+#: setupserver.cpp:282
 #, fuzzy, kde-format
 #| msgid "Username"
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Korisničko ime"
 
-#: setupserver.cpp:432 setupserver.cpp:485
-#, kde-format
-msgctxt "@info:status"
-msgid ""
-"Could not access KWallet. It is necessary to store the password. Please "
-"activate it."
-msgstr ""
-
-#: setupserver.cpp:434 setupserver.cpp:487
-#, kde-format
-msgctxt "@info:status"
-msgid "KWallet Unavailable"
-msgstr ""
-
-#: setupserver.cpp:560
+#: setupserver.cpp:572
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Ne mogu se povezati na server, provjerite adresu servera."
 
-#: setupserver.cpp:572
+#: setupserver.cpp:584
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>TLS je podržan i preporučen.</b></qt>"
 
-#: setupserver.cpp:575
+#: setupserver.cpp:587
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>TLS je podržan i preporučen.</b></qt>"
 
-#: setupserver.cpp:579
+#: setupserver.cpp:591
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -802,7 +837,7 @@ msgstr ""
 "<qt><b>Nikakva sigurnost nije podržana. Ne preporučuje se prijava na ovaj "
 "server.</b></qt>"
 
-#: setupserver.cpp:582
+#: setupserver.cpp:594
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Nije moguće koristiti ovaj server.</b></qt>"

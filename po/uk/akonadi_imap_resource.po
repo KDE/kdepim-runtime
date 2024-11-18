@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-10-27 00:40+0000\n"
+"POT-Creation-Date: 2024-11-18 00:40+0000\n"
 "PO-Revision-Date: 2024-08-17 09:57+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -293,94 +293,94 @@ msgstr ""
 "Визначає тип розпізнавання, який слід використовувати нетиповому серверу "
 "фільтрування"
 
-#: imapresourcebase.cpp:212
+#: imapresourcebase.cpp:215
 #, kde-format
 msgid "No server configured yet."
 msgstr "Жодного сервера ще не налаштовано."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:673
+#: imapresourcebase.cpp:245 setupserver.cpp:685
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
 msgstr "Підписка на сервері"
 
-#: imapresourcebase.cpp:269
+#: imapresourcebase.cpp:283
 #, kde-format
 msgid "Connection established."
 msgstr "Встановлено з’єднання."
 
-#: imapresourcebase.cpp:286
+#: imapresourcebase.cpp:300
 #, kde-format
 msgid "Server is not available."
 msgstr "Немає доступу до сервера."
 
-#: imapresourcebase.cpp:337
+#: imapresourcebase.cpp:351
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Додавання запису до «%1»"
 
-#: imapresourcebase.cpp:344
+#: imapresourcebase.cpp:358
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Оновлення запису у «%1»"
 
-#: imapresourcebase.cpp:351
+#: imapresourcebase.cpp:365
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Оновлення записів"
 
-#: imapresourcebase.cpp:365
+#: imapresourcebase.cpp:379
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Вилучення записів"
 
-#: imapresourcebase.cpp:381
+#: imapresourcebase.cpp:395
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Пересування записів з «%1» до «%2»"
 
-#: imapresourcebase.cpp:390
+#: imapresourcebase.cpp:404
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Отримання даних тек"
 
-#: imapresourcebase.cpp:397
+#: imapresourcebase.cpp:411
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Отримання додаткових даних щодо теки для «%1»"
 
-#: imapresourcebase.cpp:415
+#: imapresourcebase.cpp:429
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Створення теки «%1»"
 
-#: imapresourcebase.cpp:421
+#: imapresourcebase.cpp:435
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Оновлення теки «%1»"
 
-#: imapresourcebase.cpp:434
+#: imapresourcebase.cpp:448
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Вилучення теки «%1»"
 
-#: imapresourcebase.cpp:441
+#: imapresourcebase.cpp:455
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Пересування теки «%1» з «%2» до «%3»"
 
-#: imapresourcebase.cpp:471
+#: imapresourcebase.cpp:485
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
@@ -629,13 +629,62 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Від’єднано під час спроби входу."
 
-#: settingspasswordrequester.cpp:46
+#: settings.cpp:156
+#, kde-format
+msgctxt "@info:status"
+msgid "Password not found for %1 IMAP account"
+msgstr ""
+
+#: settings.cpp:162
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"An error occured when retriving the IMAP password from the system keychain: "
+"\"%1\""
+msgstr ""
+
+#: settings.cpp:192
+#, kde-format
+msgctxt "@info:status"
+msgid "Password not found for %1 sieve account"
+msgstr ""
+
+#: settings.cpp:198
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"An error occured when retriving the sieve password from the system keychain: "
+"\"%1\""
+msgstr ""
+
+#: settings.cpp:228
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"An error occured when saving the sieve password in the system keychain: "
+"\"%1\""
+msgstr ""
+
+#: settings.cpp:254
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"An error occured when saving the IMAP password in the system keychain: \"%1\""
+msgstr ""
+
+#: settings.cpp:341
+#, kde-format
+msgctxt "@title"
+msgid "Problem with %1 IMAP account"
+msgstr ""
+
+#: settingspasswordrequester.cpp:75
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr "Вашої уваги потребує обліковий запис пошти IMAP."
 
-#: settingspasswordrequester.cpp:50
+#: settingspasswordrequester.cpp:79
 #, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
@@ -648,7 +697,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:55
+#: settingspasswordrequester.cpp:84
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -662,13 +711,13 @@ msgstr ""
 "\n"
 "%2"
 
-#: settingspasswordrequester.cpp:62
+#: settingspasswordrequester.cpp:91
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Спробувати ще раз"
 
-#: settingspasswordrequester.cpp:68
+#: settingspasswordrequester.cpp:97
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
@@ -676,7 +725,7 @@ msgstr "Відкрити вікно параметрів"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:79 setupserverview_desktop.ui:294
+#: setupserver.cpp:82 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -685,31 +734,31 @@ msgstr "Звичайний текстовий"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:81 setupserverview_desktop.ui:329
+#: setupserver.cpp:84 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Анонімний"
 
-#: setupserver.cpp:83
+#: setupserver.cpp:86
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr "XOAuth"
 
-#: setupserver.cpp:151
+#: setupserver.cpp:154
 #, kde-format
 msgid "Archive Folder"
 msgstr "Архівування теки"
 
-#: setupserver.cpp:162
+#: setupserver.cpp:165
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: setupserver.cpp:164
+#: setupserver.cpp:167
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -718,17 +767,17 @@ msgstr[1] "%v хвилини"
 msgstr[2] "%v хвилин"
 msgstr[3] "%v хвилина"
 
-#: setupserver.cpp:179
+#: setupserver.cpp:182
 #, kde-format
 msgid "Identity:"
 msgstr "Профіль:"
 
-#: setupserver.cpp:199
+#: setupserver.cpp:202
 #, kde-format
 msgid "Activities"
 msgstr "Простори дій"
 
-#: setupserver.cpp:266
+#: setupserver.cpp:269
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -739,13 +788,13 @@ msgstr ""
 "нам доведеться знову отримати з нього усі ваші повідомлення електронної "
 "пошти з цього облікового запису. Ви справді цього хочете?"
 
-#: setupserver.cpp:269
+#: setupserver.cpp:272
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Зміна адреси сервера"
 
-#: setupserver.cpp:276
+#: setupserver.cpp:279
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -757,46 +806,30 @@ msgstr ""
 "ваші повідомлення електронної пошти з цього облікового запису. Ви справді "
 "цього хочете?"
 
-#: setupserver.cpp:279
+#: setupserver.cpp:282
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Зміна імені користувача"
 
-#: setupserver.cpp:432 setupserver.cpp:485
-#, kde-format
-msgctxt "@info:status"
-msgid ""
-"Could not access KWallet. It is necessary to store the password. Please "
-"activate it."
-msgstr ""
-"Не вдалося отримати доступ до KWallet. Ця програма потрібна для зберігання "
-"паролів. Будь ласка, активуйте її."
-
-#: setupserver.cpp:434 setupserver.cpp:487
-#, kde-format
-msgctxt "@info:status"
-msgid "KWallet Unavailable"
-msgstr "Немає доступу до KWallet"
-
-#: setupserver.cpp:560
+#: setupserver.cpp:572
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Не вдалося встановити з’єднання з сервером, будь ласка, перевірте адресу "
 "сервера."
 
-#: setupserver.cpp:572
+#: setupserver.cpp:584
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS підтримується, рекомендуємо ним скористатися.</b></qt>"
 
-#: setupserver.cpp:575
+#: setupserver.cpp:587
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS підтримується, рекомендуємо ним скористатися.</b></qt>"
 
-#: setupserver.cpp:579
+#: setupserver.cpp:591
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -805,7 +838,7 @@ msgstr ""
 "<qt><b>Шифрування не підтримується. Не рекомендуємо з’єднуватися з цим "
 "сервером.</b></qt>"
 
-#: setupserver.cpp:582
+#: setupserver.cpp:594
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Використання цього сервера неможливе.</b></qt>"
@@ -1187,6 +1220,18 @@ msgstr "Шукати:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Тільки підписані"
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Could not access KWallet. It is necessary to store the password. Please "
+#~ "activate it."
+#~ msgstr ""
+#~ "Не вдалося отримати доступ до KWallet. Ця програма потрібна для "
+#~ "зберігання паролів. Будь ласка, активуйте її."
+
+#~ msgctxt "@info:status"
+#~ msgid "KWallet Unavailable"
+#~ msgstr "Немає доступу до KWallet"
 
 #~ msgctxt "@title:window"
 #~ msgid "Could Not Authenticate"
