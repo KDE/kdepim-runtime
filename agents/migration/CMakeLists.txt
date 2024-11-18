@@ -44,7 +44,7 @@ target_link_libraries(akonadi_migration_agent
 )
 
 install(TARGETS akonadi_migration_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES migrationagent.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}//akonadi/agents")
+install(FILES migrationagent.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 
 if(BUILD_TESTING)
     add_subdirectory(autotests)
