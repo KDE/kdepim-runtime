@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-18 00:40+0000\n"
-"PO-Revision-Date: 2024-08-17 09:57+0300\n"
-"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
-"Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
+"PO-Revision-Date: 2024-11-18 08:52+0200\n"
+"Last-Translator: Fracture dept <yurchor@ukr.net>\n"
+"Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -633,7 +633,7 @@ msgstr "Від’єднано під час спроби входу."
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
-msgstr ""
+msgstr "Не знайдено пароля для облікового запису IMAP %1"
 
 #: settings.cpp:162
 #, kde-format
@@ -642,12 +642,14 @@ msgid ""
 "An error occured when retriving the IMAP password from the system keychain: "
 "\"%1\""
 msgstr ""
+"Під час спроби отримати пароль до IMAP зі сховища ключів системи сталася "
+"помилка: «%1»"
 
 #: settings.cpp:192
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
-msgstr ""
+msgstr "Не знайдено пароля для облікового запису фільтрування %1"
 
 #: settings.cpp:198
 #, kde-format
@@ -656,6 +658,8 @@ msgid ""
 "An error occured when retriving the sieve password from the system keychain: "
 "\"%1\""
 msgstr ""
+"Під час спроби отримати пароль до фільтрування зі сховища ключів системи "
+"сталася помилка: «%1»"
 
 #: settings.cpp:228
 #, kde-format
@@ -664,6 +668,8 @@ msgid ""
 "An error occured when saving the sieve password in the system keychain: "
 "\"%1\""
 msgstr ""
+"Під час спроби зберегти пароль до фільтрування у сховищі ключів системи "
+"сталася помилка: «%1»"
 
 #: settings.cpp:254
 #, kde-format
@@ -671,12 +677,14 @@ msgctxt "@info:status"
 msgid ""
 "An error occured when saving the IMAP password in the system keychain: \"%1\""
 msgstr ""
+"Під час спроби зберегти пароль до IMAP у сховищі ключів системи сталася "
+"помилка: «%1»"
 
 #: settings.cpp:341
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
-msgstr ""
+msgstr "Проблема з обліковим записом IMAP %1"
 
 #: settingspasswordrequester.cpp:75
 #, kde-format

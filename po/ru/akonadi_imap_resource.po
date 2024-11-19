@@ -9,19 +9,20 @@
 # Julia Dronova <juliette.tux@gmail.com>, 2012.
 # Alexander Lakhin <exclusion@gmail.com>, 2013.
 # Alexander Yavorsky <kekcuha@gmail.com>, 2018, 2020.
+# SPDX-FileCopyrightText: 2024 Olesya Gerasimenko <translation-team@basealt.ru>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-18 00:40+0000\n"
-"PO-Revision-Date: 2020-04-21 09:01+0300\n"
-"Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
-"Language-Team: Russian <kde-russian@lists.kde.ru>\n"
+"PO-Revision-Date: 2024-11-18 12:56+0300\n"
+"Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
+"Language-Team: Basealt Translation Team\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 19.12.3\n"
+"X-Generator: Lokalize 23.08.5\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Environment: kde\n"
@@ -378,12 +379,10 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Перемещение каталога «%1» из «%2» в «%3»"
 
 #: imapresourcebase.cpp:485
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr "Поиск..."
+msgstr "Поиск…"
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -443,7 +442,7 @@ msgstr ""
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
-msgstr ""
+msgstr "Не удалось прочитать пароль из цепочки ключей."
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -681,62 +680,46 @@ msgstr ""
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "Требуется настройка учётной записи электронной почты IMAP"
 
 #: settingspasswordrequester.cpp:79
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
-"Сервер отклонил предоставленные имя и пароль для учётной записи «%2».\n"
-"Перейти к настройке, повторить попытку или ничего не делать?\n"
+"Сервер IMAP отклонил предоставленные имя пользователя и пароль.\n"
+"Повторить попытку или перейти к настройке параметров?\n"
 "\n"
 "%1"
 
 #: settingspasswordrequester.cpp:84
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%2"
 msgstr ""
-"Сервер отклонил предоставленные имя и пароль для учётной записи «%2».\n"
-"Перейти к настройке, повторить попытку или ничего не делать?\n"
+"Сервер IMAP отклонил предоставленные имя пользователя и пароль для учётной "
+"записи %1.\n"
+"Повторить попытку или перейти к настройке параметров?\n"
 "\n"
-"%1"
+"%2"
 
 #: settingspasswordrequester.cpp:91
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Попробовать ещё раз"
 
 #: settingspasswordrequester.cpp:97
-#, fuzzy, kde-format
-#| msgid "Identity Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr "Параметры профиля"
+msgstr "Открыть параметры"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -760,7 +743,7 @@ msgstr "Анонимный"
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
-msgstr ""
+msgstr "XOAuth"
 
 #: setupserver.cpp:154
 #, kde-format
@@ -771,18 +754,16 @@ msgstr "Архивная папка"
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p%"
 
 #: setupserver.cpp:167
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " минута"
-msgstr[1] " минуты"
-msgstr[2] " минут"
-msgstr[3] " минута"
+msgstr[0] "%v минута"
+msgstr[1] "%v минуты"
+msgstr[2] "%v минут"
+msgstr[3] "%v минута"
 
 #: setupserver.cpp:182
 #, kde-format
@@ -792,7 +773,7 @@ msgstr "Профиль:"
 #: setupserver.cpp:202
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Комнаты"
 
 #: setupserver.cpp:269
 #, kde-format
@@ -805,8 +786,7 @@ msgstr ""
 "загрузить все письма из этой учётной записи. Продолжить?"
 
 #: setupserver.cpp:272
-#, fuzzy, kde-format
-#| msgid "Server address change"
+#, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Изменение адреса сервера"
@@ -823,8 +803,7 @@ msgstr ""
 "Продолжить?"
 
 #: setupserver.cpp:282
-#, fuzzy, kde-format
-#| msgid "User name change"
+#, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Изменение имени пользователя"
@@ -1091,10 +1070,9 @@ msgstr "Включить подписку на сервере"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgid "Serverside Subscription"
+#, kde-format
 msgid "Serverside Subscription…"
-msgstr "Подписка на сервере"
+msgstr "Подписка на сервере…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1262,7 +1240,6 @@ msgstr "Только подписанные"
 
 # BUGME: full stop at the end. --aspotashev
 #, fuzzy
-#~| msgid "Failed to connect to server"
 #~ msgctxt "@status"
 #~ msgid "Failed to open KWallet"
 #~ msgstr "Ошибка подключения к серверу."
@@ -1284,14 +1261,10 @@ msgstr "Только подписанные"
 #~ msgstr "Выберите профиль KMail для этой учётной записи"
 
 #, fuzzy
-#~| msgid "Server reported: %1."
 #~ msgid "Server has not reported UIDNEXT."
 #~ msgstr "Ответ сервера: %1."
 
 #, fuzzy
-#~| msgid ""
-#~| "Could not connect to the IMAP-server %1.\n"
-#~| "%2"
 #~ msgid ""
 #~ "Could not retrieve namespaces from the IMAP server %1.\n"
 #~ "%2"
@@ -1300,9 +1273,6 @@ msgstr "Только подписанные"
 #~ "%2"
 
 #, fuzzy
-#~| msgid ""
-#~| "Could not connect to the IMAP server.\n"
-#~| "%1"
 #~ msgid ""
 #~ "Could not retrieve namespaces from the IMAP server.\n"
 #~ "%1"
@@ -1311,9 +1281,6 @@ msgstr "Только подписанные"
 #~ "%1"
 
 #, fuzzy
-#~| msgid ""
-#~| "Could not connect to the IMAP-server %1.\n"
-#~| "%2"
 #~ msgid ""
 #~ "Could not send client ID to the IMAP server %1.\n"
 #~ "%2"
@@ -1322,9 +1289,6 @@ msgstr "Только подписанные"
 #~ "%2"
 
 #, fuzzy
-#~| msgid ""
-#~| "Could not connect to the IMAP server.\n"
-#~| "%1"
 #~ msgid ""
 #~ "Could not send client ID to the IMAP server.\n"
 #~ "%1"
@@ -1427,7 +1391,6 @@ msgstr "Только подписанные"
 #~ msgstr " мин"
 
 #, fuzzy
-#~| msgid "Failed to select the mailbox."
 #~ msgid "Failed to retrieve items."
 #~ msgstr "Ошибка выбора почтового ящика."
 
@@ -1443,8 +1406,6 @@ msgstr "Только подписанные"
 #~ msgid "Authentification"
 #~ msgstr "Проверка подлинности"
 
-#~| msgid ""
-#~| "Cannot move IMAP folder '%1' to '%2', '%2' does not exist on the server."
 #~ msgid ""
 #~ "Cannot move IMAP folder '%1' to '%2', en error occurred when closing "
 #~ "folder"
@@ -1467,7 +1428,6 @@ msgstr "Только подписанные"
 #~ msgstr "Одноразовый вход"
 
 #, fuzzy
-#~| msgid "Password:"
 #~ msgid "Password"
 #~ msgstr "Пароль:"
 
@@ -1511,8 +1471,6 @@ msgstr "Только подписанные"
 #~ msgstr "Не удалось переместить папку «%1» из «%2» на IMAP-сервере."
 
 #, fuzzy
-#~| msgid ""
-#~| "Failed to subcribe to the newly moved folder '%1' on the IMAP server."
 #~ msgid ""
 #~ "Failed to subscribe to the newly moved folder '%1' on the IMAP server."
 #~ msgstr ""
@@ -1577,3 +1535,15 @@ msgstr "Только подписанные"
 
 #~ msgid "Cancel connection"
 #~ msgstr "Отмена подключения"
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Could not access KWallet. It is necessary to store the password. Please "
+#~ "activate it."
+#~ msgstr ""
+#~ "Не удалось получить доступ к KWallet, необходимый для сохранения пароля. "
+#~ "Активируйте KWallet."
+
+#~ msgctxt "@info:status"
+#~ msgid "KWallet Unavailable"
+#~ msgstr "Нет доступа к KWallet"

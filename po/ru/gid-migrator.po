@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Alexander Potashev <aspotashev@gmail.com>, 2014, 2015, 2016.
-# Olesya Gerasimenko <translation-team@basealt.ru>, 2022.
+# SPDX-FileCopyrightText: 2022, 2024 Olesya Gerasimenko <translation-team@basealt.ru>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-07 00:39+0000\n"
-"PO-Revision-Date: 2022-10-11 11:04+0300\n"
+"PO-Revision-Date: 2024-11-18 14:46+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
 "Language: ru\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Lokalize 22.04.3\n"
+"X-Generator: Lokalize 23.08.5\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -25,18 +25,18 @@ msgstr ""
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "Александр Поташев"
+msgstr "Александр Поташев,Олеся Герасименко"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "aspotashev@gmail.com"
+msgstr "aspotashev@gmail.com,translation-team@basealt.ru"
 
 #: ../infodialog.cpp:53
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p%"
 
 #: ../kmigratorbase.cpp:116
 #, kde-format
@@ -55,10 +55,9 @@ msgstr ""
 "Не удалось начать перенос данных, потому что алгоритм миграции не готов"
 
 #: ../migratorbase.cpp:147
-#, fuzzy, kde-format
-#| msgid "Starting migration..."
+#, kde-format
 msgid "Starting migration…"
-msgstr "Начат перенос данных..."
+msgstr "Начат перенос данных…"
 
 #: ../migratorbase.cpp:189
 #, kde-format
@@ -92,12 +91,10 @@ msgid "Not started"
 msgstr "Не запущено"
 
 #: ../migratorbase.cpp:272
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Running..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Running…"
-msgstr "Выполняется..."
+msgstr "Выполняется…"
 
 #: ../migratorbase.cpp:274
 #, kde-format
@@ -168,8 +165,7 @@ msgid "(c) 2013-2022 the Akonadi developers"
 msgstr "© Разработчики Akonadi, 2013–2022"
 
 #: main.cpp:33
-#, fuzzy, kde-format
-#| msgid "Christian Mollekopf"
+#, kde-format
 msgctxt "@info:credit"
 msgid "Christian Mollekopf"
 msgstr "Christian Mollekopf"
@@ -180,22 +176,19 @@ msgid "Author"
 msgstr "Автор"
 
 #: main.cpp:36
-#, fuzzy, kde-format
-#| msgid "Show reporting dialog"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Show reporting dialog"
 msgstr "Показать отчёт"
 
 #: main.cpp:38
-#, fuzzy, kde-format
-#| msgid "Show report only if changes were made"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Show report only if changes were made"
 msgstr "Показать отчёт только в случае внесения изменений"
 
 #: main.cpp:39
-#, fuzzy, kde-format
-#| msgid "MIME type to migrate"
+#, kde-format
 msgctxt "@info:shell"
 msgid "MIME type to migrate"
 msgstr "Перенести объекты с указанным типом MIME"

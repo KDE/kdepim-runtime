@@ -3,22 +3,22 @@
 #
 # Alexander Potashev <aspotashev@gmail.com>, 2017.
 # SPDX-FileCopyrightText: 2018, 2019, 2020, 2024 Alexander Yavorsky <kekcuha@gmail.com>
-# Olesya Gerasimenko <translation-team@basealt.ru>, 2022.
+# SPDX-FileCopyrightText: 2022, 2024 Olesya Gerasimenko <translation-team@basealt.ru>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-09 00:40+0000\n"
-"PO-Revision-Date: 2024-02-09 22:48+0300\n"
-"Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
-"Language-Team: Russian <kde-russian@lists.kde.ru>\n"
+"PO-Revision-Date: 2024-11-18 12:40+0300\n"
+"Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
+"Language-Team: Basealt Translation Team\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Lokalize 24.01.95\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -167,8 +167,7 @@ msgstr ""
 "Сохранить?"
 
 #: ewsconfigdialog.cpp:374
-#, fuzzy, kde-format
-#| msgid "Exchange server connection"
+#, kde-format
 msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Подключение к серверу Exchange"
@@ -761,10 +760,9 @@ msgid "Cancel"
 msgstr "Отменить"
 
 #: ewsprogressdialog.cpp:49
-#, fuzzy, kde-format
-#| msgid "Performing Microsoft Exchange server autodiscovery..."
+#, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr "Выполняется автоматическое обнаружение сервера Microsoft Exchange..."
+msgstr "Выполняется автоматическое обнаружение сервера Microsoft Exchange…"
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -773,10 +771,9 @@ msgid "Connecting to Exchange"
 msgstr "Подключение к Exchange"
 
 #: ewsprogressdialog.cpp:53
-#, fuzzy, kde-format
-#| msgid "Connecting to Microsoft Exchange server..."
+#, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "Подключение к серверу Microsoft Exchange..."
+msgstr "Подключение к серверу Microsoft Exchange…"
 
 #: ewsresource.cpp:143
 #, kde-format
