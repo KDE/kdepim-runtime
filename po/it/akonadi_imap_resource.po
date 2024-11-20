@@ -1,7 +1,7 @@
 # translation of akonadi_imap_resource.po to Italian
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the akonadi_imap_resource package.
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2024.
+# SPDX-FileCopyrightText: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2024 Luigi Toscano <luigi.toscano@tiscali.it>
 # Federico Zenith <federico.zenith@member.fsf.org>, 2009.
 #
 msgid ""
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-18 00:40+0000\n"
-"PO-Revision-Date: 2024-08-17 13:12+0200\n"
+"PO-Revision-Date: 2024-11-18 19:14+0100\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 25.03.70\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -634,7 +634,7 @@ msgstr "Disconnesso durante il login."
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
-msgstr ""
+msgstr "Password non trovata per l'account IMAP %1"
 
 #: settings.cpp:162
 #, kde-format
@@ -643,12 +643,14 @@ msgid ""
 "An error occured when retriving the IMAP password from the system keychain: "
 "\"%1\""
 msgstr ""
+"Si è verificato un errore durante il recupero della password IMAP dal "
+"portachiavi di sistema: «%1»"
 
 #: settings.cpp:192
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
-msgstr ""
+msgstr "Password non trovata per l'account di sieve %1"
 
 #: settings.cpp:198
 #, kde-format
@@ -657,6 +659,8 @@ msgid ""
 "An error occured when retriving the sieve password from the system keychain: "
 "\"%1\""
 msgstr ""
+"Si è verificato un errore durante il recupero della password di sieve dal "
+"portachiavi di sistema: «%1»"
 
 #: settings.cpp:228
 #, kde-format
@@ -665,6 +669,8 @@ msgid ""
 "An error occured when saving the sieve password in the system keychain: "
 "\"%1\""
 msgstr ""
+"Si è verificato un errore durante il salvataggio della password di sieve nel "
+"portachiavi di sistema: «%1»"
 
 #: settings.cpp:254
 #, kde-format
@@ -672,12 +678,14 @@ msgctxt "@info:status"
 msgid ""
 "An error occured when saving the IMAP password in the system keychain: \"%1\""
 msgstr ""
+"Si è verificato un errore durante il salvataggio della password IMAP nel "
+"portachiavi di sistema: «%1»"
 
 #: settings.cpp:341
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
-msgstr ""
+msgstr "Problema con l'account IMAP %1"
 
 #: settingspasswordrequester.cpp:75
 #, kde-format

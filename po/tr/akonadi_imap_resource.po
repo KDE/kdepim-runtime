@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-18 00:40+0000\n"
-"PO-Revision-Date: 2024-08-18 20:24+0300\n"
+"PO-Revision-Date: 2024-11-19 21:48+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.11.70\n"
+"X-Generator: Lokalize 25.03.70\n"
 "X-POOTLE-MTIME: 1413102275.000000\n"
 
 #: addcollectiontask.cpp:33
@@ -615,7 +615,7 @@ msgstr "Oturum açma sırasında sunucuyla bağlantı kesildi."
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
-msgstr ""
+msgstr "%1 IMAP hesabı için parola bulunamadı"
 
 #: settings.cpp:162
 #, kde-format
@@ -624,12 +624,13 @@ msgid ""
 "An error occured when retriving the IMAP password from the system keychain: "
 "\"%1\""
 msgstr ""
+"IMAP parolası sistem anahtar zincirinden alınırken bir hata oluştu: “%1”"
 
 #: settings.cpp:192
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
-msgstr ""
+msgstr "%1 Sieve hesabı için parola bulunamadı"
 
 #: settings.cpp:198
 #, kde-format
@@ -638,6 +639,7 @@ msgid ""
 "An error occured when retriving the sieve password from the system keychain: "
 "\"%1\""
 msgstr ""
+"Sieve parolası sistem anahtar zincirinden alınırken bir hata oluştu: “%1”"
 
 #: settings.cpp:228
 #, kde-format
@@ -646,6 +648,7 @@ msgid ""
 "An error occured when saving the sieve password in the system keychain: "
 "\"%1\""
 msgstr ""
+"Sieve parolası sistem anahtar zincirine kaydedilirken bir hata oluştu: “%1”"
 
 #: settings.cpp:254
 #, kde-format
@@ -653,12 +656,13 @@ msgctxt "@info:status"
 msgid ""
 "An error occured when saving the IMAP password in the system keychain: \"%1\""
 msgstr ""
+"IMAP parolası sistem anahtar zincirine kaydedilirken bir hata oluştu: “%1”"
 
 #: settings.cpp:341
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
-msgstr ""
+msgstr "%1 IMAP Hesabı Sorunu"
 
 #: settingspasswordrequester.cpp:75
 #, kde-format
