@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-18 00:40+0000\n"
-"PO-Revision-Date: 2024-08-17 08:28+0200\n"
+"PO-Revision-Date: 2024-11-24 19:15+0100\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 24.08.3\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: addcollectiontask.cpp:33
@@ -616,7 +616,7 @@ msgstr "Nerkopplad under inloggning."
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
-msgstr ""
+msgstr "Lösenordet hittades inte för IMAP-kontot %1"
 
 #: settings.cpp:162
 #, kde-format
@@ -625,12 +625,14 @@ msgid ""
 "An error occured when retriving the IMAP password from the system keychain: "
 "\"%1\""
 msgstr ""
+"Ett fel uppstod när IMAP-lösenordet hämtades från systemets nyckelring: "
+"\"%1\""
 
 #: settings.cpp:192
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
-msgstr ""
+msgstr "Lösenordet hittades inte för sieve-kontot %1"
 
 #: settings.cpp:198
 #, kde-format
@@ -639,6 +641,8 @@ msgid ""
 "An error occured when retriving the sieve password from the system keychain: "
 "\"%1\""
 msgstr ""
+"Ett fel uppstod när sieve-lösenordet hämtades från systemets nyckelring: "
+"\"%1\""
 
 #: settings.cpp:228
 #, kde-format
@@ -647,6 +651,7 @@ msgid ""
 "An error occured when saving the sieve password in the system keychain: "
 "\"%1\""
 msgstr ""
+"Ett fel uppstod när sieve-lösenordet sparades i systemets nyckelring: \"%1\""
 
 #: settings.cpp:254
 #, kde-format
@@ -654,12 +659,13 @@ msgctxt "@info:status"
 msgid ""
 "An error occured when saving the IMAP password in the system keychain: \"%1\""
 msgstr ""
+"Ett fel uppstod när IMAP-lösenordet sparades i systemets nyckelring: \"%1\""
 
 #: settings.cpp:341
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
-msgstr ""
+msgstr "Problem med IMAP-kontot %1"
 
 #: settingspasswordrequester.cpp:75
 #, kde-format
