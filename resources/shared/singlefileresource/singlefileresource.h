@@ -158,7 +158,7 @@ public:
             mDownloadJob->setProperty("QEventLoopLocker", QVariant::fromValue(ref));
             mDownloadJob->setProperty("QPromise", QVariant::fromValue(promise));
             connect(mDownloadJob, &KJob::result, this, &SingleFileResource<Settings>::slotDownloadJobResult);
-            connect(mDownloadJob, SIGNAL(percent(KJob *, ulong)), SLOT(handleProgress(KJob *, ulong)));
+            connect(mDownloadJob, &KJob::percentChanged, this, &SingleFileResource<Settings>::handleProgress);
 
             Q_EMIT status(Running, i18n("Downloading remote file."));
             future = promise->future();
@@ -261,7 +261,7 @@ public:
             mUploadJob = KIO::file_copy(QUrl::fromLocalFile(cacheFile()), mCurrentUrl, -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo);
             mUploadJob->setProperty("QEventLoopLocker", QVariant::fromValue(ref));
             connect(mUploadJob, &KJob::result, this, &SingleFileResource<Settings>::slotUploadJobResult);
-            connect(mUploadJob, SIGNAL(percent(KJob *, ulong)), SLOT(handleProgress(KJob *, ulong)));
+            connect(mUploadJob, &KJob::percentChanged, this, &SingleFileResource<Settings>::handleProgress);
 
             Q_EMIT status(Running, i18n("Uploading cached file to remote location."));
         }
