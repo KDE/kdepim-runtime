@@ -7,6 +7,7 @@
 
 #include "icalresource.h"
 
+#include <Akonadi/ItemModifyJob>
 #include <KCalendarCore/FreeBusy>
 
 #include <KLocalizedString>
@@ -134,7 +135,7 @@ void updateIncidenceCategories(Incidence::Ptr &incidence, const QSet<Akonadi::Ta
 
 void ICalResource::itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &tagsAdded, const QSet<Akonadi::Tag> &tagsRemoved)
 {
-    for (const auto &item : items) {
+    for (auto item : items) {
         if (!checkItemAddedChanged<Incidence::Ptr>(item, CheckForChanged)) {
             return;
         }
@@ -146,11 +147,21 @@ void ICalResource::itemsTagsChanged(const Akonadi::Item::List &items, const QSet
             auto newPayload = Incidence::Ptr(payload->clone());
             updateIncidenceCategories(newPayload, tagsAdded, tagsRemoved);
             calendar()->addIncidence(newPayload);
+            item.setPayload(newPayload);
         } else {
             incidence->startUpdates();
             updateIncidenceCategories(incidence, tagsAdded, tagsRemoved);
             incidence->endUpdates();
+            item.setPayload(incidence);
         }
+
+        // We have changed the payload, so we need to upload the change back to Akonadi
+        auto update = new Akonadi::ItemModifyJob(item, this);
+        connect(update, &KJob::result, this, [](KJob *job) {
+            if (job->error()) {
+                qWarning() << "Failed to update item" << job->errorString();
+            }
+        });
     }
 
     scheduleWrite();
