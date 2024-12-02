@@ -1,23 +1,22 @@
 # KDE Finnish translation sprint participants:
 # Author: Artnay
+# SPDX-FileCopyrightText: 2012, 2013, 2017, 2020, 2021, 2023, 2024 Tommi Nieminen <translator@legisign.org>
 # Jiri Grönroos <jiri.gronroos+kde@iki.fi>, 2012.
-# Tommi Nieminen <translator@legisign.org>, 2012, 2013, 2017, 2020, 2021, 2023, 2024.
 # Lasse Liehu <lasse.liehu@gmail.com>, 2013, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-27 00:40+0000\n"
-"PO-Revision-Date: 2024-01-22 16:10+0200\n"
+"PO-Revision-Date: 2024-10-20 14:32+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-POT-Import-Date: 2012-12-01 22:24:47+0000\n"
-"X-Generator: Lokalize 22.12.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: calendarhandler.cpp:91
 #, kde-format
@@ -60,18 +59,15 @@ msgstr[0] "Siirretään %1 tapahtuma kalenterista ”%2” kalenteriin ”%3”"
 msgstr[1] "Siirretään %1 tapahtumaa kalenterista ”%2” kalenteriin ”%3”"
 
 #: calendarhandler.cpp:341
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Changing contact"
+#, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr "Muutetaan yhteystietoa"
+msgstr "Muutetaan tapahtumien luokituksia"
 
 #: calendarhandler.cpp:345
-#, fuzzy, kde-format
-#| msgid "Failed to create a new event: %1"
+#, kde-format
 msgid "Failed to change tags on events"
-msgstr "Uuden tapahtuman luonti epäonnistui: %1"
+msgstr "Tapahtumien luokitusten muuttaminen epäonnistui"
 
 #: calendarhandler.cpp:357
 #, kde-format
@@ -102,10 +98,9 @@ msgid "Cannot handle item unlinking"
 msgstr "Tietueiden linkityksen purkua ei voida käsitellä"
 
 #: generichandler.cpp:34
-#, fuzzy, kde-format
-#| msgid "Cannot handle item linking"
+#, kde-format
 msgid "Cannot handle item tag changes"
-msgstr "Tietueiden linkitystä ei voida käsitellä"
+msgstr "Kohteiden luokitusmuutoksia ei voida käsitellä"
 
 #: generichandler.cpp:61
 #, kde-format
@@ -119,8 +114,7 @@ msgid "Invalid item."
 msgstr "Virheellinen tietue."
 
 #: googleresource.cpp:86
-#, fuzzy, kde-format
-#| msgid "Fetching password..."
+#, kde-format
 msgid "Fetching password…"
 msgstr "Noudetaan salasanaa…"
 
@@ -206,13 +200,11 @@ msgid "Unknown collection mimetype"
 msgstr "Kokoelman MIME-tyyppi on tuntematon"
 
 #: googlesettingswidget.cpp:41
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minuutti"
-msgstr[1] " minuuttia"
+msgstr[0] "%v minuutti"
+msgstr[1] "%v minuuttia"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
@@ -228,8 +220,7 @@ msgstr "Tili:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, fuzzy, kde-format
-#| msgid "Configure..."
+#, kde-format
 msgid "Configure…"
 msgstr "Asetukset…"
 
