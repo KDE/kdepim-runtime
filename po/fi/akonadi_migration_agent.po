@@ -1,6 +1,6 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# Tommi Nieminen <translator@legisign.org>, 2013, 2020.
+# SPDX-FileCopyrightText: 2013, 2020, 2024 Tommi Nieminen <translator@legisign.org>
 # Lasse Liehu <lasse.liehu@gmail.com>, 2013.
 #
 msgid ""
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-07-14 00:39+0000\n"
-"PO-Revision-Date: 2020-01-01 12:42+0200\n"
+"PO-Revision-Date: 2024-10-20 14:35+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 18.12.3\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: migrationagent.cpp:48
 #, kde-format
@@ -33,12 +33,10 @@ msgid "PIM Maintenance"
 msgstr "PIM-ylläpito"
 
 #: migrationexecutor.cpp:41
-#, fuzzy, kde-format
-#| msgctxt "PIM-Maintenance is in progress."
-#| msgid "In progress..."
+#, kde-format
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress…"
-msgstr "Käynnissä…"
+msgstr "Meneillään…"
 
 #: migrationexecutor.cpp:47
 #, kde-format
@@ -64,9 +62,7 @@ msgid "Progress"
 msgstr "Edistyminen"
 
 #: migrationscheduler.cpp:149
-#, fuzzy, kde-format
-#| msgctxt "Current status of the migrator (done, in progress, ...)"
-#| msgid "Status"
+#, kde-format
 msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "Tila"

@@ -1,6 +1,6 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# Tommi Nieminen <translator@legisign.org>, 2010, 2011, 2013, 2016, 2017, 2018, 2019, 2020, 2024.
+# SPDX-FileCopyrightText: 2010, 2011, 2013, 2016, 2017, 2018, 2019, 2020, 2024 Tommi Nieminen <translator@legisign.org>
 # Lasse Liehu <lasse.liehu@gmail.com>, 2012, 2013, 2014, 2015, 2016.
 #
 # KDE Finnish translation sprint participants:
@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-18 00:40+0000\n"
-"PO-Revision-Date: 2024-03-11 15:19+0200\n"
+"PO-Revision-Date: 2024-10-20 14:34+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -18,8 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-POT-Import-Date: 2012-12-01 22:24:47+0000\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -378,9 +377,7 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Siirretään kansio ”%1” kansiosta ”%2” kansioon ”%3”"
 
 #: imapresourcebase.cpp:485
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "Etsitään…"
@@ -444,7 +441,7 @@ msgstr ""
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
-msgstr ""
+msgstr "Salasanan noutaminen avainrenkaasta epäonnistui."
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -681,64 +678,45 @@ msgstr ""
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "IMAP-sähköpostitili vaatii huomiotasi."
 
 #: settingspasswordrequester.cpp:79
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
-"Tilin ”%2” palvelin hylkäsi tarjotun käyttäjätunnuksen ja salasanan.\n"
-"Haluatko siirtyä asetuksiin, yrittää kirjautumista uudelleen vai olla "
-"tekemättä mitään?\n"
+"IMAP-palvelin hylkäsi tarjotun käyttäjätunnuksen ja salasanan.\n"
+"Haluatko yrittää uudelleen vai siirtyä asetuksiin?\n"
 "\n"
 "%1"
 
 #: settingspasswordrequester.cpp:84
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and "
-#| "password.\n"
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%2"
 msgstr ""
-"Tilin ”%2” palvelin hylkäsi tarjotun käyttäjätunnuksen ja salasanan.\n"
-"Haluatko siirtyä asetuksiin, yrittää kirjautumista uudelleen vai olla "
-"tekemättä mitään?\n"
+"Tilin %1 IMAP-palvelin hylkäsi tarjotun käyttäjätunnuksen ja salasanan.\n"
+"Haluatko yrittää uudelleen vai siirtyä asetuksiin?\n"
 "\n"
-"%1"
+"%2"
 
 #: settingspasswordrequester.cpp:91
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Yritä uudelleen"
 
 #: settingspasswordrequester.cpp:97
-#, fuzzy, kde-format
-#| msgid "Identity Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr "Henkilöysasetukset"
+msgstr "Siirry asetuksiin"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -773,16 +751,14 @@ msgstr "Arkistokansio"
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p %"
 
 #: setupserver.cpp:167
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minuutti"
-msgstr[1] " minuuttia"
+msgstr[0] "%v minuutti"
+msgstr[1] "%v minuuttia"
 
 #: setupserver.cpp:182
 #, kde-format
@@ -792,7 +768,7 @@ msgstr "Henkilöys:"
 #: setupserver.cpp:202
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktiviteetit"
 
 #: setupserver.cpp:269
 #, kde-format
@@ -806,8 +782,7 @@ msgstr ""
 "varmasti jatkaa?"
 
 #: setupserver.cpp:272
-#, fuzzy, kde-format
-#| msgid "Server address change"
+#, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Palvelinosoitteen muutos"
@@ -824,8 +799,7 @@ msgstr ""
 "uudelleen. Haluatko varmasti jatkaa?"
 
 #: setupserver.cpp:282
-#, fuzzy, kde-format
-#| msgid "User name change"
+#, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Käyttäjätunnuksen muutos"
@@ -1092,10 +1066,9 @@ msgstr "Salli palvelinpuolen tilaukset"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgid "Serverside Subscription"
+#, kde-format
 msgid "Serverside Subscription…"
-msgstr "Palvelinpuolen tilaus"
+msgstr "Palvelinpuolen tilaus…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
