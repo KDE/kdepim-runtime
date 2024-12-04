@@ -9,7 +9,6 @@
 
 #include "migratorbase.h"
 #include <QAbstractItemModel>
-class QObject;
 #include <QPointer>
 #include <QSharedPointer>
 #include <QStandardItemModel>

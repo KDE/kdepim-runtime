@@ -6,7 +6,6 @@
 
 #pragma once
 
-class QObject;
 #include <QString>
 
 #include <Akonadi/SpecialMailCollections>
