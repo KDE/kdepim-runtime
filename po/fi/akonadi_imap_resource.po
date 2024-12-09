@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-18 00:40+0000\n"
-"PO-Revision-Date: 2024-10-20 14:34+0300\n"
+"PO-Revision-Date: 2024-12-07 15:01+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -629,7 +629,7 @@ msgstr "Yhteys katkaistiin tunnistauduttaessa."
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
-msgstr ""
+msgstr "IMAP-tilille %1 ei löytynyt salasanaa"
 
 #: settings.cpp:162
 #, kde-format
@@ -638,12 +638,13 @@ msgid ""
 "An error occured when retriving the IMAP password from the system keychain: "
 "\"%1\""
 msgstr ""
+"Tapahtui virhe noudettaessa järjestelmän avainrenkaasta IMAP-salasanaa: ”%1”"
 
 #: settings.cpp:192
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
-msgstr ""
+msgstr "Sieve-tilille %1 ei löytynyt salasanaa"
 
 #: settings.cpp:198
 #, kde-format
@@ -652,6 +653,7 @@ msgid ""
 "An error occured when retriving the sieve password from the system keychain: "
 "\"%1\""
 msgstr ""
+"Tapahtui virhe noudettaessa järjestelmän avainrenkaasta Sieve-salasanaa: ”%1”"
 
 #: settings.cpp:228
 #, kde-format
@@ -660,6 +662,8 @@ msgid ""
 "An error occured when saving the sieve password in the system keychain: "
 "\"%1\""
 msgstr ""
+"Tapahtui virhe tallennettaessa Sieve-salasanaa järjestelmän avainrenkaaseen: "
+"”%1”"
 
 #: settings.cpp:254
 #, kde-format
@@ -667,12 +671,14 @@ msgctxt "@info:status"
 msgid ""
 "An error occured when saving the IMAP password in the system keychain: \"%1\""
 msgstr ""
+"Tapahtui virhe tallennettaessa IMAP-salasanaa järjestelmän avainrenkaaseen: "
+"”%1”"
 
 #: settings.cpp:341
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
-msgstr ""
+msgstr "Ongelma IMAP-tilillä %1"
 
 #: settingspasswordrequester.cpp:75
 #, kde-format
