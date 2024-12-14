@@ -1,0 +1,328 @@
+# Sanskrit translations for kdepim-runtime package.
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+# Kali <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kdepim-runtime\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2024-08-22 00:40+0000\n"
+"PO-Revision-Date: 2024-12-13 19:09+0530\n"
+"Last-Translator: Kali <EMAIL@ADDRESS>\n"
+"Language-Team: Sanskrit\n"
+"Language: sa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>2);\n"
+
+#: compactpage.cpp:71
+#, kde-format
+msgid "(1 message marked for deletion)"
+msgid_plural "(%1 messages marked for deletion)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: compactpage.cpp:78
+#, kde-format
+msgid "Failed to fetch the collection."
+msgstr "संग्रहं आनेतुं असफलः अभवत् ।"
+
+#: compactpage.cpp:94
+#, kde-format
+msgid "Failed to load the mbox file"
+msgstr "mbox सञ्चिकां लोड् कर्तुं असफलम्"
+
+#: compactpage.cpp:96
+#, kde-format
+msgid "(Deleting 1 message)"
+msgid_plural "(Deleting %1 messages)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: compactpage.cpp:107 compactpage.cpp:115
+#, kde-format
+msgid "Failed to compact the mbox file."
+msgstr "mbox सञ्चिकां संकुचितं कर्तुं असफलम् ।"
+
+#: compactpage.cpp:117
+#, kde-format
+msgid "MBox file compacted."
+msgstr "MBox सञ्चिका संकुचिता।"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: compactpage.ui:23
+#, kde-format
+msgid ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-size:10pt; font-weight:400; font-style:"
+"normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">The only way to fully "
+"remove a mail from an mbox file is by removing it from the actual file. As "
+"this can be a rather expensive operation, the mbox resource keeps a list of "
+"deleted messages. Once in a while these messages are really removed from the "
+"file.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></"
+"p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">Note:</span> The downside of this is that if the file is "
+"changed by another program, the list of deleted messages cannot be trusted "
+"any longer and deleted messages might reappear.</p></body></html>"
+msgstr ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\"><html><head><meta name=\"qrichtext\" content=\"1\" /"
+"><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-size:10pt; font-weight:400; font-style:"
+"normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"> mbox सञ्चिकातः मेलं "
+"पूर्णतया निष्कासयितुं एकमात्रः उपायः वास्तविकसञ्चिकातः निष्कासनं भवति । यतः एतत् महत् "
+"कार्यं भवितुम् अर्हति, mbox संसाधनं विलोपितसन्देशानां सूचीं रक्षति । एकवारं एकवारं एते "
+"सन्देशाः वास्तवतः सञ्चिकातः निष्कासिताः भवन्ति । </p><p style=\"-qt-paragraph-type:"
+"empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; "
+"-qt-block-indent:0; text-indent:0px;\"></p><p style=\" margin-top:0px; "
+"margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; "
+"text-indent:0px;\"> <span style=\" font-weight:600;\">नोटः-</span> अस्य "
+"दुष्परिणामः अस्ति यत् यदि सञ्चिका अन्येन कार्यक्रमेन परिवर्तिता भवति तर्हि विलोपितानां "
+"सन्देशानां सूचीं अधिककालं यावत् विश्वसितुम् न शक्यते तथा च विलोपिताः सन्देशाः पुनः दृश्यन्ते</"
+"p></body></html>"
+
+#. i18n: ectx: property (text), widget (QPushButton, compactButton)
+#: compactpage.ui:49
+#, kde-format
+msgid "&Compact now"
+msgstr "&अधुना संकुचितं कुर्वन्तु"
+
+#. i18n: ectx: property (text), widget (QRadioButton, never)
+#: compactpage.ui:79
+#, kde-format
+msgid "&Never compact automatically"
+msgstr "&स्वतः कदापि संकुचितं न कुर्वन्तु"
+
+#. i18n: ectx: property (text), widget (QRadioButton, per_x_messages)
+#: compactpage.ui:86
+#, kde-format
+msgid "C&ompact every"
+msgstr "C&ompact प्रत्येकं"
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_MessageCount)
+#: compactpage.ui:96
+#, kde-format
+msgid "msg"
+msgstr "msg"
+
+#. i18n: ectx: property (windowTitle), widget (QWidget, LockFilePage)
+#: lockfilepage.ui:15
+#, kde-format
+msgid "MBox Settings"
+msgstr "MBox सेटिंग्स्"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: lockfilepage.ui:27
+#, kde-format
+msgid ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-size:10pt; font-weight:400; font-style:"
+"normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Select a method to lock "
+"the mbox file when data is read from or written to the file.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></"
+"p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">Note</span>: For some methods you might need to install "
+"additional software before they can be used.</p></body></html>"
+msgstr ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\"><html><head><meta name=\"qrichtext\" content=\"1\" /"
+"><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-size:10pt; font-weight:400; font-style:"
+"normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"> यदा सञ्चिकातः "
+"दत्तांशः पठितः अथवा लिखितः भवति तदा mbox सञ्चिकां ताडयितुं विधिं चिनोतु । </p><p "
+"style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-"
+"left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p><p "
+"style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"> <span style=\" font-"
+"weight:600;\">नोट</span> : केषाञ्चन पद्धतीनां कृते तेषां उपयोगात् पूर्वं भवद्भिः अतिरिक्तं "
+"सॉफ्टवेयरं संस्थापनीयं भवेत् ।</p></body></html>"
+
+#. i18n: ectx: property (text), widget (QRadioButton, procmail)
+#: lockfilepage.ui:43
+#, kde-format
+msgid "Procmail loc&kfile"
+msgstr "Procmail loc&kfile इति"
+
+#. i18n: ectx: property (text), widget (QRadioButton, mutt_dotlock)
+#: lockfilepage.ui:53
+#, kde-format
+msgid "&Mutt dotlock"
+msgstr "&मुट् डॉटलॉक"
+
+#. i18n: ectx: property (text), widget (QRadioButton, mutt_dotlock_privileged)
+#: lockfilepage.ui:60
+#, kde-format
+msgid "M&utt dotlock privileged"
+msgstr "M&utt dotlock विशेषाधिकार प्राप्त"
+
+#. i18n: ectx: property (text), widget (QRadioButton, none)
+#: lockfilepage.ui:67
+#, kde-format
+msgid "Non&e"
+msgstr "न भवति"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, kcfg_Lockfile)
+#: lockfilepage.ui:84
+#, kde-format
+msgid ".lock"
+msgstr "।ताल"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: lockfilepage.ui:92
+#, kde-format
+msgid ""
+"None, the default configuration, should be safe in most cases.  However, if "
+"programs that do not make use of Akonadi are also accessing the configured "
+"mbox file, you will need to set an appropriate locking method. Note that if "
+"this is the case, the resource and the other programs must all use the same "
+"locking method."
+msgstr ""
+"कोऽपि, पूर्वनिर्धारितविन्यासः, अधिकतया सुरक्षितः न भवेत् ।  तथापि यदि अकोनाडी इत्यस्य "
+"उपयोगं न कुर्वन्ति ये कार्यक्रमाः ते विन्यस्त mbox सञ्चिकां अपि अभिगच्छन्ति तर्हि भवद्भिः "
+"समुचितं लॉकिंग मेथड् सेट् कर्तव्यं भविष्यति । ध्यानं कुर्वन्तु यत् यदि एतत् भवति तर्हि संसाधनं अन्ये "
+"च कार्यक्रमाः सर्वे एकमेव लॉकिंग्-विधिं प्रयोक्तव्याः ।"
+
+#: mboxconfig.cpp:19
+#, kde-format
+msgctxt "Filedialog filter for *.mbox"
+msgid "MBox file"
+msgstr ""
+
+#: mboxconfig.cpp:20
+#, kde-format
+msgid "Compact frequency"
+msgstr "संकुचित आवृत्ति"
+
+#: mboxconfig.cpp:21
+#, kde-format
+msgid "Lock method"
+msgstr "तालाविधिः"
+
+#: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
+#, kde-format
+msgctxt "@info:status"
+msgid "MBox not configured."
+msgstr ""
+
+#: mboxresource.cpp:143 mboxresource.cpp:182
+#, kde-format
+msgid "MBox not loaded."
+msgstr "MBox न भारितम्।"
+
+#: mboxresource.cpp:158
+#, kde-format
+msgid "Failed to read message with uid '%1'."
+msgstr "uid '%1' इत्यनेन सह सन्देशं पठितुं असफलम् ।"
+
+#: mboxresource.cpp:192
+#, kde-format
+msgid "Only email messages can be added to the MBox resource."
+msgstr "MBox संसाधने केवलं ईमेलसन्देशाः एव योजयितुं शक्यन्ते ।"
+
+#: mboxresource.cpp:198
+#, kde-format
+msgid "Mail message not added to the MBox."
+msgstr "MBox मध्ये मेलसन्देशः न योजितः।"
+
+#: mboxresource.cpp:237
+#, kde-format
+msgid "Could not fetch the collection: %1"
+msgstr "संग्रहं आनेतुं न शक्तम्: %1"
+
+#: mboxresource.cpp:266
+#, kde-format
+msgid ""
+"The MBox file was changed by another program. A copy of the new file was "
+"made and pending changes are appended to that copy. To prevent this from "
+"happening use locking and make sure that all programs accessing the mbox use "
+"the same locking method."
+msgstr ""
+"MBox सञ्चिका अन्येन कार्यक्रमेन परिवर्तिता । नूतनसञ्चिकायाः प्रतिलिपिः कृता, तस्मिन् "
+"प्रतिलिप्यां लम्बितपरिवर्तनानि संलग्नाः सन्ति । एतत् निवारयितुं locking इत्यस्य उपयोगं "
+"कुर्वन्तु तथा च सुनिश्चितं कुर्वन्तु यत् mbox - मध्ये प्रवेशं कुर्वन्तः सर्वे कार्यक्रमाः समानं "
+"locking विधिं उपयुञ्जते ।"
+
+#: mboxresource.cpp:297
+#, kde-format
+msgid "Failed to save mbox file to %1"
+msgstr "mbox सञ्चिकां %1 मध्ये रक्षितुं असफलम्"
+
+#: mboxresource.cpp:356
+#, kde-format
+msgid ""
+"Failed to update the changed item because the old item could not be deleted "
+"Reason: %1"
+msgstr "परिवर्तितं द्रव्यं अद्यतनीकर्तुं असफलम् यतः पुरातनं द्रव्यं विलोपयितुं न शक्यते कारणम्: %1"
+
+#. i18n: ectx: label, entry (Path), group (General)
+#: mboxresource.kcfg:10
+#, kde-format
+msgid "Path to mbox file."
+msgstr "mbox सञ्चिकायाः मार्गः ।"
+
+#. i18n: ectx: label, entry (DisplayName), group (General)
+#: mboxresource.kcfg:14
+#, kde-format
+msgid "Display name."
+msgstr "नाम प्रदर्शयतु।"
+
+#. i18n: ectx: label, entry (ReadOnly), group (General)
+#: mboxresource.kcfg:18
+#, kde-format
+msgid "Do not change the actual backend data."
+msgstr "वास्तविकं पृष्ठभागदत्तांशं न परिवर्तयन्तु ।"
+
+#. i18n: ectx: label, entry (MonitorFile), group (General)
+#: mboxresource.kcfg:22
+#, kde-format
+msgid "Monitor file for changes."
+msgstr "परिवर्तनार्थं सञ्चिकायाः निरीक्षणं कुर्वन्तु।"
+
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: mboxresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr "समये समये सञ्चिकां अद्यतनं कुर्वन्तु।"
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: mboxresource.kcfg:30
+#, kde-format
+msgid "Automatic update period in minutes."
+msgstr "निमेषेषु स्वचालितं अद्यतनकालः।"
+
+#. i18n: ectx: label, entry (Lockfile), group (Locking)
+#: mboxresource.kcfg:45
+#, kde-format
+msgid "Lockfile"
+msgstr "तालासञ्चिका"
+
+#. i18n: ectx: label, entry (MessageCount), group (Compacting)
+#: mboxresource.kcfg:58
+#, kde-format
+msgid "Number of deleted messages before a purge is started."
+msgstr "शुद्धिकरणस्य आरम्भात् पूर्वं विलोपितसन्देशानां संख्या ।"

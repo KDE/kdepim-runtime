@@ -1,0 +1,126 @@
+# Sanskrit translations for kdepim-runtime package.
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+# Kali <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kdepim-runtime\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
+"PO-Revision-Date: 2024-12-13 19:09+0530\n"
+"Last-Translator: Kali <EMAIL@ADDRESS>\n"
+"Language-Team: Sanskrit\n"
+"Language: sa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>2);\n"
+
+#: icaldirresource.cpp:121
+#, kde-format
+msgid "Incidence with uid '%1' not found."
+msgstr "uid '%1' इत्यनेन सह घटना न प्राप्ता ।"
+
+#: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
+#, kde-format
+msgid "Trying to write to a read-only directory: '%1'"
+msgstr "केवलं पठनीयनिर्देशिकायां लिखितुं प्रयतते: '%1'."
+
+#: icaldirresource.cpp:250
+#, kde-format
+msgid "Calendar Folder"
+msgstr "पञ्चाङ्गपुटम्"
+
+#. i18n: ectx: label, entry (Path), group (General)
+#: icaldirresource.kcfg:10
+#, kde-format
+msgid "Path to iCal directory"
+msgstr "iCal निर्देशिकायाः मार्गः"
+
+#. i18n: ectx: label, entry (AutosaveInterval), group (General)
+#: icaldirresource.kcfg:14
+#, kde-format
+msgid "Autosave interval time (in minutes)."
+msgstr "अन्तरालसमयं स्वतः रक्षन्तु (निमेषेषु)।"
+
+#. i18n: ectx: label, entry (ReadOnly), group (General)
+#: icaldirresource.kcfg:18
+#, kde-format
+msgid "Do not change the actual backend data."
+msgstr "वास्तविकं पृष्ठभागदत्तांशं न परिवर्तयन्तु ।"
+
+#. i18n: ectx: attribute (title), widget (QWidget, tab)
+#: icaldirsagentsettingswidget.ui:33
+#, kde-format
+msgid "Directory"
+msgstr "निर्देशिका"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: icaldirsagentsettingswidget.ui:39
+#, kde-format
+msgid "Di&rectory:"
+msgstr "Di&rectory: १."
+
+#. i18n: ectx: property (text), widget (QLabel, pathLabel)
+#: icaldirsagentsettingswidget.ui:58
+#, kde-format
+msgid ""
+"Select the directory whose contents should be represented by this resource. "
+"If the directory does not exist, it will be created."
+msgstr ""
+"यस्याः सामग्रीः एतेन संसाधनेन प्रतिनिधित्वं कर्तव्यं तत् निर्देशिकां चिनोतु । यदि निर्देशिका "
+"नास्ति तर्हि तस्याः निर्माणं भविष्यति ।"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
+#: icaldirsagentsettingswidget.ui:68
+#, kde-format
+msgid "Read only"
+msgstr "केवलं पठन्तु"
+
+#. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
+#: icaldirsagentsettingswidget.ui:84
+#, kde-format
+msgid ""
+"When read-only mode is enabled, no changes will be written. Read-only mode "
+"is automatically enabled when the selected file does not support write "
+"access."
+msgstr ""
+"यदा केवलं पठनीयविधिः सक्षमः भवति तदा परिवर्तनं न लिख्यते । यदा चयनितसञ्चिका लेखनप्रवेशं "
+"न समर्थयति तदा केवलं पठनीयविधिः स्वयमेव सक्षमः भवति ।"
+
+#. i18n: ectx: attribute (title), widget (QWidget, tab_2)
+#: icaldirsagentsettingswidget.ui:108
+#, kde-format
+msgid "Tuning"
+msgstr "ट्यूनिङ्ग्"
+
+#. i18n: ectx: property (text), widget (QLabel, runingLabel)
+#: icaldirsagentsettingswidget.ui:114
+#, kde-format
+msgid ""
+"The options on this page allow you to change parameters that balance data "
+"safety and consistency against performance. In general you should be careful "
+"with changing anything here, the defaults are good enough in most cases."
+msgstr ""
+"अस्मिन् पृष्ठे विकल्पाः भवन्तं कार्यप्रदर्शनस्य विरुद्धं दत्तांशसुरक्षां स्थिरतां च सन्तुलितं कुर्वन्ति "
+"मापदण्डान् परिवर्तयितुं शक्नुवन्ति । सामान्यतया भवन्तः अत्र किमपि परिवर्तनं कर्तुं सावधानाः "
+"भवेयुः, पूर्वनिर्धारिताः अधिकतया पर्याप्ताः सन्ति ।"
+
+#. i18n: ectx: property (text), widget (QLabel, autosaveLabel)
+#: icaldirsagentsettingswidget.ui:124
+#, kde-format
+msgid "Autosave delay:"
+msgstr "स्वतः रक्षणविलम्बः : १."
+
+#: icaldirsettingswidget.cpp:43
+#, kde-format
+msgid "%v minute"
+msgid_plural "%v minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: icaldirsettingswidget.cpp:49
+#, kde-format
+msgid "Activities"
+msgstr "गतिविधयः"

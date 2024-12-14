@@ -1,0 +1,1248 @@
+# Sanskrit translations for kdepim-runtime package.
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+# Kali <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kdepim-runtime\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2024-11-09 00:40+0000\n"
+"PO-Revision-Date: 2024-12-13 19:09+0530\n"
+"Last-Translator: Kali <EMAIL@ADDRESS>\n"
+"Language-Team: Sanskrit\n"
+"Language: sa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
+#, kde-format
+msgid "Incorrect email address"
+msgstr "गलत् ईमेल-सङ्केतः"
+
+#: ewsautodiscoveryjob.cpp:116
+#, kde-format
+msgid "Exchange protocol information not found"
+msgstr "आदानप्रदानप्रोटोकॉलसूचना न प्राप्ता"
+
+#: ewsclient/auth/ewsoauth.cpp:513
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Microsoft Exchange credentials for the account <b>%1</b> are no longer "
+"valid. You need to authenticate in order to continue using it."
+msgstr ""
+
+#: ewsclient/auth/ewsoauth.cpp:522
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
+"Please update it in the account settings page."
+msgstr ""
+
+#: ewsclient/auth/ewspasswordauth.cpp:57
+#, kde-format
+msgctxt "@info"
+msgid ""
+"The username/password for the Microsoft Exchange EWS account <b>%1</b> is "
+"not valid. Please update it in the account settings page."
+msgstr ""
+
+#: ewsconfigdialog.cpp:76
+#, kde-format
+msgctxt "@title:window"
+msgid "Microsoft Exchange Configuration"
+msgstr ""
+
+#: ewsconfigdialog.cpp:102
+#, kde-format
+msgctxt "Server status"
+msgid "OK"
+msgstr ""
+
+#: ewsconfigdialog.cpp:121 ewsconfigdialog.cpp:123
+#, kde-format
+msgid "PEM file"
+msgstr "PEM सञ्चिका"
+
+#: ewsconfigdialog.cpp:141
+#, kde-format
+msgctxt "User Agent"
+msgid "Custom"
+msgstr ""
+
+#: ewsconfigdialog.cpp:152
+#, kde-format
+msgctxt "@info"
+msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
+msgstr ""
+
+#: ewsconfigdialog.cpp:153
+#, kde-format
+msgctxt "@info"
+msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
+msgstr ""
+
+#: ewsconfigdialog.cpp:154
+#, kde-format
+msgctxt "@info"
+msgid "Version %1"
+msgstr ""
+
+#: ewsconfigdialog.cpp:155
+#, kde-format
+msgctxt "@info"
+msgid ""
+"Distributed under the GNU Library General Public License version 2.0 or "
+"later."
+msgstr ""
+
+#: ewsconfigdialog.cpp:253
+#, kde-format
+msgctxt "Exchange server autodiscovery"
+msgid "Autodiscovery failed"
+msgstr ""
+
+#: ewsconfigdialog.cpp:266
+#, kde-format
+msgctxt "Exchange server connection"
+msgid "Connection failed"
+msgstr "संयोजनं विफलम् अभवत्"
+
+#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:426
+#, kde-format
+msgctxt "Exchange server status"
+msgid "Failed"
+msgstr ""
+
+#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:427
+#, kde-format
+msgctxt "Exchange server version"
+msgid "Unknown"
+msgstr ""
+
+#: ewsconfigdialog.cpp:270 ewsconfigdialog.cpp:431
+#, kde-format
+msgctxt "Exchange server status"
+msgid "OK"
+msgstr ""
+
+#: ewsconfigdialog.cpp:342
+#, kde-format
+msgid ""
+"Autodiscovery failed. This can be caused by incorrect parameters. Do you "
+"still want to save your settings?"
+msgstr ""
+"स्वतः आविष्कारः विफलः अभवत् । एतत् अशुद्धमापदण्डैः कारणं भवितुम् अर्हति । किं भवन्तः "
+"अद्यापि स्वस्य सेटिङ्ग्स् रक्षितुं इच्छन्ति?"
+
+#: ewsconfigdialog.cpp:343 ewsprogressdialog.cpp:48
+#, kde-format
+msgctxt "@title:window"
+msgid "Exchange server autodiscovery"
+msgstr ""
+
+#: ewsconfigdialog.cpp:373
+#, kde-format
+msgid ""
+"Connecting to Exchange failed. This can be caused by incorrect parameters. "
+"Do you still want to save your settings?"
+msgstr ""
+"Exchange इत्यनेन सह संयोजनं विफलम् अभवत् । एतत् अशुद्धमापदण्डैः कारणं भवितुम् अर्हति । किं "
+"भवन्तः अद्यापि स्वस्य सेटिङ्ग्स् रक्षितुं इच्छन्ति?"
+
+#: ewsconfigdialog.cpp:374
+#, kde-format
+msgctxt "@title:window"
+msgid "Exchange server connection"
+msgstr ""
+
+#: ewsconfigdialog.cpp:428
+#, kde-format
+msgid "Connection failed"
+msgstr "संयोजनं विफलम् अभवत्"
+
+#. i18n: ectx: property (windowTitle), widget (QWidget, SetupServerView)
+#: ewsconfigdialog.ui:14
+#, kde-format
+msgid "EWS Configuration"
+msgstr "EWS विन्यासः"
+
+#. i18n: ectx: attribute (title), widget (QWidget, generalTab)
+#: ewsconfigdialog.ui:24
+#, kde-format
+msgctxt "General settings tab"
+msgid "General"
+msgstr ""
+
+#. i18n: ectx: property (title), widget (QGroupBox, accountInfoGroupBox)
+#: ewsconfigdialog.ui:45
+#, kde-format
+msgid "Account Information"
+msgstr "खाता सूचना"
+
+#. i18n: ectx: property (text), widget (QLabel, accountNameLabel)
+#. i18n: ectx: property (text), widget (QLabel, accountLabel)
+#: ewsconfigdialog.ui:57 ewsmtaconfigdialog.ui:32
+#, kde-format
+msgid "Account Name:"
+msgstr "खातानाम : १."
+
+#. i18n: ectx: property (whatsThis), widget (QLineEdit, accountName)
+#: ewsconfigdialog.ui:64
+#, kde-format
+msgid "This is the account name that will appear in all Akonadi applications"
+msgstr "एतत् खातानाम सर्वेषु अकोनाडी अनुप्रयोगेषु दृश्यते"
+
+#. i18n: ectx: property (text), widget (QLabel, emailLabel)
+#: ewsconfigdialog.ui:71
+#, kde-format
+msgctxt "Exchange account e-mail address"
+msgid "Email:"
+msgstr ""
+
+#. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Email)
+#: ewsconfigdialog.ui:78
+#, kde-format
+msgid "The e-mail address of this account"
+msgstr "अस्य खातेः ई-मेल-सङ्केतः"
+
+#. i18n: ectx: property (title), widget (QGroupBox, authenticationGroupBox)
+#. i18n: ectx: property (title), widget (QGroupBox, advAuthenticationGroupBox)
+#: ewsconfigdialog.ui:88 ewsconfigdialog.ui:486
+#, kde-format
+msgid "Authentication"
+msgstr "प्रमाणीकरणम्"
+
+#. i18n: ectx: property (whatsThis), widget (QRadioButton, authUsernameRadioButton)
+#: ewsconfigdialog.ui:94
+#, kde-format
+msgid ""
+"<html><head/><body><p>Enables traditional username/password authentication "
+"against the Exchange server. This includes methods like Basic, NTLM or "
+"Kerberos.</p><p>This authentication method is considered to be somewhat "
+"legacy and is mostly used for smaller on-premise Exchange installations and "
+"hosted Office 365 instances, where the administrator has chosen to enable it."
+"</p></body></html>"
+msgstr ""
+"<html><head/><body><p>Exchange सर्वरस्य विरुद्धं पारम्परिकं उपयोक्तृनाम/"
+"गुप्तशब्दप्रमाणीकरणं सक्षमं करोति । अस्मिन् Basic, NTLM अथवा Kerberos इत्यादीनि पद्धतयः "
+"सन्ति ।</p><p> इयं प्रमाणीकरणविधिः किञ्चित् विरासतां मन्यते तथा च अधिकतया लघु-स्थानीय-"
+"Exchange-स्थापनानाम्, होस्ट्-कृत-Office 365-दृष्टान्तानां च कृते उपयुज्यते, यत्र प्रशासकेन तत् "
+"सक्षमीकरणाय चयनं कृतम् अस्ति</p></body></html>"
+
+#. i18n: ectx: property (text), widget (QRadioButton, authUsernameRadioButton)
+#: ewsconfigdialog.ui:97
+#, kde-format
+msgctxt "authentication type"
+msgid "&Username/Password"
+msgstr ""
+
+#. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_HasDomain)
+#: ewsconfigdialog.ui:143
+#, kde-format
+msgid ""
+"<html><head/><body><p>Allows to specify an Active Directory domain for the "
+"user.</p><p><span style=\" font-weight:600;\">Note:</span> There is a subtle "
+"difference between &quot;empty domain&quot; and &quot;no-domain&quot;.</"
+"p><p>With an empty domain (Domain checkbox checked, empty domain in edit "
+"box) the EWS resource will pass the user with an explicitly empty domain "
+"(&quot;\\username&quot;).</p><p>With no domain set (Domain checkbox cleared) "
+"the username will be passed without the domain (&quot;username&quot;), which "
+"will cause the server to set the domain to the default one its configured "
+"with.</p></body></html>"
+msgstr ""
+"<html><head/><body><p>उपयोक्तुः कृते Active Directory डोमेन् निर्दिष्टुं शक्नोति ।</"
+"p><p> <span style=\" font-weight:600;\">नोटः-</span> &quot;रिक्तक्षेत्रम्&quot; "
+"&quot;कोऽपि क्षेत्रं नास्ति&quot; इति सूक्ष्मः अन्तरः अस्ति ।</p><p> रिक्त डोमेन (Domain "
+"चेकबॉक्स चेक्ड्, सम्पादन बॉक्स मध्ये रिक्त डोमेन) सह EWS संसाधनं स्पष्टतया रिक्त डोमेन (&quot;"
+"\\username&quot;) सह उपयोक्तारं पारयिष्यति ।</p><p> डोमेन सेट् न कृत्वा (Domain "
+"checkbox cleared) उपयोक्तृनाम डोमेन् (&quot;username&quot;) विना पारितं भविष्यति, "
+"येन सर्वरः डोमेन् पूर्वनिर्धारितरूपेण सेट् करिष्यति यस्य सह विन्यस्तम् अस्ति</p></body></html>"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_HasDomain)
+#: ewsconfigdialog.ui:146
+#, kde-format
+msgid "Domain:"
+msgstr "क्षेत्र:"
+
+#. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Domain)
+#: ewsconfigdialog.ui:156
+#, kde-format
+msgid "The Active Directory domain the user belongs to."
+msgstr "उपयोक्ता यस्य Active Directory डोमेनस्य अस्ति ।"
+
+#. i18n: ectx: property (text), widget (QLabel, usernameLabel)
+#: ewsconfigdialog.ui:169
+#, kde-format
+msgctxt "Exchange account username/login"
+msgid "Username:"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, passwordLabel)
+#: ewsconfigdialog.ui:179
+#, kde-format
+msgid "Password:"
+msgstr "समाभाष्:"
+
+#. i18n: ectx: property (whatsThis), widget (KPasswordLineEdit, passwordEdit)
+#: ewsconfigdialog.ui:186
+#, kde-format
+msgid ""
+"<html><head/><body><p>The password used to login to the Exchange server.</"
+"p><p><span style=\" font-weight:600;\">Note:</span> This can be left empty "
+"when using Kerberos authentication.</p></body></html>"
+msgstr ""
+"<html><head/><body><p>Exchange सर्वरे प्रवेशार्थं प्रयुक्तः गुप्तशब्दः ।</p><p> <span "
+"style=\" font-weight:600;\">नोट्:</span> Kerberos प्रमाणीकरणस्य उपयोगं कुर्वन् एतत् "
+"रिक्तं त्यक्तुं शक्यते ।</p></body></html>"
+
+#. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Username)
+#: ewsconfigdialog.ui:193
+#, kde-format
+msgid ""
+"<html><head/><body><p>The username used to login to the Exchange server.</"
+"p><p><span style=\" font-weight:600;\">Note:</span> This can be left empty "
+"when using Kerberos authentication.</p></body></html>"
+msgstr ""
+"<html><head/><body><p>Exchange सर्वरे प्रवेशार्थं प्रयुक्तं उपयोक्तृनाम ।</p><p> <span "
+"style=\" font-weight:600;\">नोट्:</span> Kerberos प्रमाणीकरणस्य उपयोगं कुर्वन् एतत् "
+"रिक्तं त्यक्तुं शक्यते ।</p></body></html>"
+
+#. i18n: ectx: property (text), widget (QLabel, kerberosNoteLabel)
+#: ewsconfigdialog.ui:203
+#, kde-format
+msgid ""
+"<html><head/><body><p><span style=\" font-weight:600;\">Note:</span> "
+"Username and password are not needed (can be empty) when Kerberos is "
+"properly configured on your system.</p></body></html>"
+msgstr ""
+"<html><head/><body><p><span style=\" font-weight:600;\">नोट्:</span> यदा भवतः "
+"प्रणाल्यां Kerberos सम्यक् विन्यस्तं भवति तदा उपयोक्तृनामस्य गुप्तशब्दस्य च आवश्यकता नास्ति "
+"(रिक्तं भवितुम् अर्हति) ।</p></body></html>"
+
+#. i18n: ectx: property (whatsThis), widget (QRadioButton, authOAuth2RadioButton)
+#: ewsconfigdialog.ui:222
+#, kde-format
+msgid ""
+"<html><head/><body><p>Enables more modern and stronger authentication based "
+"on OAuth2.</p><p>This type of authentication will open an organization-"
+"supplied webpage, where the user will be able to enter authentication "
+"information, which may also include multifactor authentication in form of "
+"one-time-passwords generated by tokens.</p><p>This method is mostly used for "
+"hosted Office 365 instances.</p></body></html>"
+msgstr ""
+"<html><head/><body><p>OAuth2 इत्यस्य आधारेण अधिकं आधुनिकं सशक्तं च प्रमाणीकरणं सक्षमं "
+"करोति ।</p><p> एतादृशः प्रमाणीकरणं संस्थायाः आपूर्तिं कृतं जालपुटं उद्घाटयिष्यति, यत्र "
+"उपयोक्ता प्रमाणीकरणसूचनाः प्रविष्टुं शक्नोति, यस्मिन् टोकनद्वारा उत्पन्नस्य एकवारं-"
+"गुप्तशब्दरूपेण बहुकारकप्रमाणीकरणं अपि अन्तर्भवितुं शक्नोति</p><p> एषा पद्धतिः अधिकतया होस्ट् "
+"कृते Office 365 उदाहरणानां कृते उपयुज्यते ।</p></body></html>"
+
+#. i18n: ectx: property (text), widget (QRadioButton, authOAuth2RadioButton)
+#: ewsconfigdialog.ui:225
+#, kde-format
+msgid "OAuth&2 (Office 365)"
+msgstr "OAuth&2 (कार्यालय ३६५) २."
+
+#. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
+#: ewsconfigdialog.ui:235
+#, kde-format
+msgid "EWS Settings"
+msgstr "EWS सेटिंग्स्"
+
+#. i18n: ectx: property (text), widget (QLabel, serverUrlLabel)
+#: ewsconfigdialog.ui:250
+#, kde-format
+msgid "EWS URL:"
+msgstr "EWS URL: 1.1."
+
+#. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_BaseUrl)
+#: ewsconfigdialog.ui:263
+#, kde-format
+msgid "The Microsoft Exchange server URL used to send EWS requests."
+msgstr "EWS अनुरोधं प्रेषयितुं प्रयुक्तं Microsoft Exchange सर्वर URL ।"
+
+#. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_AutoDiscovery)
+#: ewsconfigdialog.ui:285
+#, kde-format
+msgid ""
+"<html><head/><body><p>Attempts to find out the Microsoft Exchange server "
+"address relevant to the supplied e-mail address.</p></body></html>"
+msgstr ""
+"<html><head/><body><p>आपूर्तिकृतस्य ई-मेल-सङ्केतस्य प्रासंगिकं Microsoft Exchange सर्वर-"
+"सङ्केतं ज्ञातुं प्रयतते ।</p></body></html>"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_AutoDiscovery)
+#. i18n: ectx: label, entry (AutoDiscovery), group (General)
+#: ewsconfigdialog.ui:288 ewsresource.kcfg:35
+#, kde-format
+msgid "Server Autodiscovery"
+msgstr "सर्वर स्वतः आविष्कारः"
+
+#. i18n: ectx: property (text), widget (QPushButton, autodiscoverButton)
+#: ewsconfigdialog.ui:298
+#, kde-format
+msgid "Perform"
+msgstr "प्रदर्शन"
+
+#. i18n: ectx: property (text), widget (QPushButton, tryConnectButton)
+#: ewsconfigdialog.ui:308
+#, kde-format
+msgid "Try connect"
+msgstr "संयोजयितुं प्रयतस्व"
+
+#. i18n: ectx: property (whatsThis), widget (QGroupBox, pkeyAuthGroupBox)
+#: ewsconfigdialog.ui:324
+#, kde-format
+msgid ""
+"<html><head/><body><p>Private Key (PKey) Authentication is used as an "
+"additional authentication step to OAuth2-based authentication. It uses an "
+"X.509 certificate and private key that identifies a trusted device, which "
+"was joined to the Azure Directory using a Workplace Join.</p><p>Some "
+"administrators may mandate use of PKey authentication when connecting to "
+"Office 365 from outside of corporate network. In other cases, when multi-"
+"factor authentication is set-up, using the PKey authentication can satisfy "
+"requirements for strong authentication, in which case entering the MFA code "
+"is not required.</p></body></html>"
+msgstr ""
+"<html><head/><body><p>निजीकुंजी (PKey) प्रमाणीकरणं OAuth2-आधारितप्रमाणीकरणस्य "
+"अतिरिक्तप्रमाणीकरणपदरूपेण उपयुज्यते । एतत् X.509 प्रमाणपत्रं निजकुंजी च उपयुङ्क्ते यत् "
+"विश्वसनीयं उपकरणं चिनोति, यत् Workplace Join इत्यस्य उपयोगेन Azure Directory इत्यनेन "
+"सह संयोजितम् आसीत् ।</p><p> केचन प्रशासकाः निगमजालस्य बहिः Office 365 इत्यनेन सह "
+"सम्बद्धतां कुर्वन्तः PKey प्रमाणीकरणस्य उपयोगं आज्ञापयितुं शक्नुवन्ति । अन्येषु सन्दर्भेषु, यदा "
+"बहुकारकप्रमाणीकरणं स्थापितं भवति, तदा PKey प्रमाणीकरणस्य उपयोगेन दृढप्रमाणीकरणस्य "
+"आवश्यकताः पूरयितुं शक्यन्ते, अस्मिन् सन्दर्भे MFA कोडं प्रविष्टुं आवश्यकं नास्ति</p></body></"
+"html>"
+
+#. i18n: ectx: property (title), widget (QGroupBox, pkeyAuthGroupBox)
+#: ewsconfigdialog.ui:327
+#, kde-format
+msgid "Private Key (PKey) Authentication (Office 365)"
+msgstr "निजी कुञ्जी (PKey) प्रमाणीकरणम् (कार्यालयः ३६५) २."
+
+#. i18n: ectx: property (text), widget (QLabel, pkeyAuthCertLabel)
+#: ewsconfigdialog.ui:339
+#, kde-format
+msgid "Certificate:"
+msgstr "प्रमाणपत्रं:"
+
+#. i18n: ectx: property (text), widget (QLabel, pkeyAuthKeyLabel)
+#: ewsconfigdialog.ui:353
+#, kde-format
+msgid "Private key:"
+msgstr "निजी कुञ्जी : १."
+
+#. i18n: ectx: property (text), widget (QLabel, pkeyAuthPasswordLabel)
+#: ewsconfigdialog.ui:364
+#, kde-format
+msgid "Key password:"
+msgstr "मुख्यगुप्तशब्दः : १."
+
+#. i18n: ectx: attribute (title), widget (QWidget, subscriptionTab)
+#: ewsconfigdialog.ui:395
+#, kde-format
+msgid "Subscriptions"
+msgstr "सदस्यता"
+
+#. i18n: ectx: attribute (title), widget (QWidget, advancedTab)
+#: ewsconfigdialog.ui:401
+#, kde-format
+msgctxt "Advanced settings tab"
+msgid "Advanced"
+msgstr ""
+
+#. i18n: ectx: property (title), widget (QGroupBox, retrievalMethodGroupBox)
+#. i18n: ectx: label, entry (RetrievalMethod), group (General)
+#: ewsconfigdialog.ui:407 ewsresource.kcfg:45
+#, kde-format
+msgid "Retrieval"
+msgstr "पुनर्प्राप्ति"
+
+#. i18n: ectx: property (whatsThis), widget (QRadioButton, pollRadioButton)
+#: ewsconfigdialog.ui:413
+#, kde-format
+msgid ""
+"<html><head/><body><p>Periodically asks for new item change events.</p></"
+"body></html>"
+msgstr ""
+"<html><head/><body><p>समये समये नूतनानि द्रव्यपरिवर्तनघटनानि पृच्छति।</p></body></"
+"html>"
+
+#. i18n: ectx: property (text), widget (QRadioButton, pollRadioButton)
+#: ewsconfigdialog.ui:416
+#, kde-format
+msgid "Po&ll for new messages"
+msgstr "नूतनसन्देशानां कृते Po&ll"
+
+#. i18n: ectx: property (suffix), widget (QDoubleSpinBox, kcfg_PollInterval)
+#: ewsconfigdialog.ui:441
+#, kde-format
+msgid " minutes"
+msgstr " पन्चनिमेषः"
+
+#. i18n: ectx: property (text), widget (QLabel, pollIntervalLabel)
+#: ewsconfigdialog.ui:460
+#, kde-format
+msgid "Interval"
+msgstr "अन्तराल"
+
+#. i18n: ectx: property (whatsThis), widget (QRadioButton, streamingRadioButton)
+#: ewsconfigdialog.ui:470
+#, kde-format
+msgid ""
+"<html><head/><body><p>Streaming notifications behave similarly to push mode "
+"- a connection is kept alive and notifications about item changes are "
+"delivered instantly.</p><p><br/></p><p>This option requires Exchange server "
+"version 2010 SP1 or later.</p></body></html>"
+msgstr ""
+"<html><head/><body><p>स्ट्रीमिंग् सूचनाः पुश मोड् इत्यस्य सदृशं वर्तन्ते - एकं संयोजनं जीवितं "
+"भवति तथा च मदपरिवर्तनस्य विषये सूचनाः तत्क्षणमेव वितरिताः भवन्ति ।</p><p><br/></"
+"p><p> अस्य विकल्पस्य कृते Exchange server version 2010 SP1 अथवा ततः परं आवश्यकम् ।</"
+"p></body></html>"
+
+#. i18n: ectx: property (text), widget (QRadioButton, streamingRadioButton)
+#: ewsconfigdialog.ui:473
+#, kde-format
+msgid "&Use streaming notifications"
+msgstr "&स्ट्रीमिंग सूचनानां उपयोगं कुर्वन्तु"
+
+#. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_EnableNTLMv2)
+#: ewsconfigdialog.ui:492
+#, kde-format
+msgid ""
+"<html><head/><body><p>By default KDE uses the less secure NTLMv1 "
+"authentication. Enabling this will cause the more secure NTLMv2 protocol to "
+"be used.</p><p>Some newer Microsoft Exchange servers are configured to only "
+"allow NTLMv2 authentication. In such case this option must be enabled in "
+"order to connect successfully.</p></body></html>"
+msgstr ""
+"<html><head/><body><p>पूर्वनिर्धारितरूपेण KDE न्यूनसुरक्षितं NTLMv1 प्रमाणीकरणं उपयुङ्क्ते । "
+"एतत् सक्षमीकरणेन अधिकसुरक्षितस्य NTLMv2 प्रोटोकॉलस्य उपयोगः भविष्यति ।</p><p> केचन "
+"नूतनाः Microsoft Exchange सर्वराः केवलं NTLMv2 प्रमाणीकरणस्य अनुमतिं दातुं विन्यस्ताः "
+"सन्ति । एतादृशे सति सफलतया संयोजितुं एषः विकल्पः सक्षमः भवितुमर्हति ।</p></body></html>"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_EnableNTLMv2)
+#: ewsconfigdialog.ui:495
+#, kde-format
+msgid "Enable NTLMv2"
+msgstr "NTLMv2 सक्षमं कुर्वन्तु"
+
+#. i18n: ectx: property (whatsThis), widget (QGroupBox, userAgentGroupBox)
+#: ewsconfigdialog.ui:505
+#, kde-format
+msgid ""
+"<html><head/><body><p>Some organizations restrict access to mail only to "
+"approved clients, such as Microsoft Outlook. On the server-side this is "
+"implemented by analyzing the User-Agent string and only allowing a list of "
+"approved clients.</p><p>This setting allows to emulate some well known "
+"clients as well as providing a custom User-Agent string.</p><p>Please be "
+"advised that bypassing company policies may result in personal consequences."
+"</p></body></html>"
+msgstr ""
+"<html><head/><body><p>केचन संस्थाः केवलं अनुमोदितग्राहकानाम् कृते मेल-प्रवेशं प्रतिबन्धयन्ति, "
+"यथा Microsoft Outlook । सर्वर-पक्षे एतत् User-Agent स्ट्रिंग् विश्लेष्य केवलं अनुमोदितानां "
+"क्लायन्ट्-सूचीं अनुमन्यमानं कार्यान्वितं भवति ।</p><p> एषा सेटिङ्ग् केषाञ्चन "
+"सुप्रसिद्धग्राहकानाम् अनुकरणं कर्तुं तथा च कस्टम् User-Agent स्ट्रिंग् प्रदातुं शक्नोति ।</p><p> "
+"कृपया सूचितं यत् कम्पनीनीतिं त्यक्त्वा व्यक्तिगतपरिणामाः भवितुम् अर्हन्ति ।</p></body></"
+"html>"
+
+#. i18n: ectx: property (title), widget (QGroupBox, userAgentGroupBox)
+#: ewsconfigdialog.ui:508
+#, kde-format
+msgid "Use custo&m User Agent"
+msgstr "custo&m User Agent इत्यस्य उपयोगं कुर्वन्तु"
+
+#. i18n: ectx: property (title), widget (QGroupBox, clearSyncStateGroupBox)
+#: ewsconfigdialog.ui:533
+#, kde-format
+msgid "Clear Synchronization State"
+msgstr "समन्वयन अवस्था स्पष्ट करें"
+
+#. i18n: ectx: property (text), widget (QLabel, clearSyncStateLabel)
+#: ewsconfigdialog.ui:539
+#, kde-format
+msgid ""
+"Resets synchronization state between Exchange and Akonadi. Use in case some "
+"items or folders are not showing up despite existing in Exchange."
+msgstr ""
+"Exchange तथा Akonadi इत्येतयोः मध्ये समन्वयनस्थितिं पुनः सेट् करोति । Exchange मध्ये "
+"विद्यमानाः अपि केचन वस्तूनि वा पुटं वा न दर्शयन्ति इति सन्दर्भे उपयोगं कुर्वन्तु ।"
+
+#. i18n: ectx: property (text), widget (QPushButton, clearFolderTreeSyncStateButton)
+#: ewsconfigdialog.ui:564
+#, kde-format
+msgid "Clear Folder Tree State"
+msgstr "Folder Tree State स्वच्छं कुर्वन्तु"
+
+#. i18n: ectx: property (text), widget (QPushButton, clearFolderItemSyncStateButton)
+#: ewsconfigdialog.ui:571
+#, kde-format
+msgid "Clear Folder Item State"
+msgstr "Folder Item State स्वच्छं कुर्वन्तु"
+
+#. i18n: ectx: attribute (title), widget (QWidget, statusTab)
+#: ewsconfigdialog.ui:598
+#, kde-format
+msgid "Status"
+msgstr "स्थितिः"
+
+#. i18n: ectx: property (title), widget (QGroupBox, serverStatusGroupBox)
+#: ewsconfigdialog.ui:604
+#, kde-format
+msgid "Server Status"
+msgstr "सर्वर स्थितिः"
+
+#. i18n: ectx: property (text), widget (QLabel, serverStatusLabel)
+#: ewsconfigdialog.ui:610
+#, kde-format
+msgid "Status:"
+msgstr "स्थितिः:"
+
+#. i18n: ectx: property (text), widget (QLabel, serverStatusText)
+#: ewsconfigdialog.ui:617
+#, kde-format
+msgctxt "Unknown server status"
+msgid "Unknown"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, serverVersionLabel)
+#: ewsconfigdialog.ui:627
+#, kde-format
+msgid "Version:"
+msgstr "संस्करण:"
+
+#. i18n: ectx: property (text), widget (QLabel, serverVersionText)
+#: ewsconfigdialog.ui:634
+#, kde-format
+msgctxt "Unknown server version"
+msgid "Unknown"
+msgstr ""
+
+#. i18n: ectx: attribute (title), widget (QWidget, aboutTab)
+#: ewsconfigdialog.ui:658
+#, kde-format
+msgid "About"
+msgstr "विषये"
+
+#: ewsfetchitempayloadjob.cpp:63
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process items retrieval request"
+msgstr ""
+
+#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
+#: ewsresource.cpp:529
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to retrieve items"
+msgstr ""
+
+#: ewsfetchitempayloadjob.cpp:78
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to retrieve items - incorrect number of responses"
+msgstr ""
+
+#: ewsfetchitempayloadjob.cpp:91
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to retrieve items - Akonadi item not found for item %1"
+msgstr ""
+
+#: ewsfetchitempayloadjob.cpp:98
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to retrieve items - Unknown item type for item %1"
+msgstr ""
+
+#: ewsfetchitempayloadjob.cpp:104
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to fetch item payload"
+msgstr ""
+
+#: ewsfetchitemsjob.cpp:98
+#, kde-format
+msgctxt "@info:status"
+msgid "Retrieving %1 item list"
+msgstr ""
+
+#: ewsfetchitemsjob.cpp:214
+#, kde-format
+msgctxt "@info:status"
+msgid "Retrieving %1 item list (%2 items)"
+msgstr ""
+
+#: ewsfetchitemsjob.cpp:399
+#, kde-format
+msgctxt "@info:status"
+msgid "Retrieving %1 items"
+msgstr ""
+
+#: ewsmtaconfigdialog.cpp:46
+#, kde-format
+msgctxt "@title:window"
+msgid "Microsoft Exchange Mail Transport Configuration"
+msgstr ""
+
+#. i18n: ectx: property (windowTitle), widget (QWidget, SetupServerView)
+#: ewsmtaconfigdialog.ui:14
+#, kde-format
+msgid "EWS Mail Transport Configuration"
+msgstr "EWS मेल परिवहन विन्यास"
+
+#. i18n: ectx: property (text), widget (QLabel, recourceLabel)
+#: ewsmtaconfigdialog.ui:42
+#, kde-format
+msgid "Parent Exchange account:"
+msgstr "मातापितृ विनिमय खाता : १."
+
+#: ewsmtaresource.cpp:57
+#, kde-format
+msgid "Unable to connect to master EWS resource"
+msgstr "Master EWS संसाधनं प्रति सम्बद्धं कर्तुं असमर्थः"
+
+#. i18n: ectx: label, entry (EwsResource), group (General)
+#: ewsmtaresource.kcfg:10
+#, kde-format
+msgid "Ews Resource"
+msgstr "Ews संसाधन"
+
+#. i18n: ectx: tooltip, entry (EwsResource), group (General)
+#. i18n: ectx: whatsthis, entry (EwsResource), group (General)
+#: ewsmtaresource.kcfg:11 ewsmtaresource.kcfg:12
+#, kde-format
+msgid "The name of the parent EWS Resource to use when sending mail"
+msgstr "मेल प्रेषणकाले उपयोक्तुं मातापितृ EWS संसाधनस्य नाम"
+
+#: ewsprogressdialog.cpp:34
+#, kde-format
+msgid "Cancel"
+msgstr "निरसयतु"
+
+#: ewsprogressdialog.cpp:49
+#, kde-format
+msgid "Performing Microsoft Exchange server autodiscovery…"
+msgstr "Microsoft Exchange सर्वर स्वतः आविष्कारं कुर्वन्..."
+
+#: ewsprogressdialog.cpp:52
+#, kde-format
+msgctxt "@title:window"
+msgid "Connecting to Exchange"
+msgstr ""
+
+#: ewsprogressdialog.cpp:53
+#, kde-format
+msgid "Connecting to Microsoft Exchange server…"
+msgstr "Microsoft Exchange सर्वरेण सह सम्बद्धः भवति..."
+
+#: ewsresource.cpp:143
+#, kde-format
+msgctxt "@info:status"
+msgid "Connecting to Exchange server"
+msgstr ""
+
+#: ewsresource.cpp:161 ewsresource.cpp:168 ewsresource.cpp:175
+#: ewsresource.cpp:313
+#, kde-format
+msgctxt "@info:status"
+msgid "Unable to connect to Exchange server"
+msgstr ""
+
+#: ewsresource.cpp:253
+#, kde-format
+msgctxt "@info:status"
+msgid "Root folder id not known."
+msgstr ""
+
+#: ewsresource.cpp:257
+#, kde-format
+msgctxt "@info:status"
+msgid "Retrieving collection tree"
+msgstr ""
+
+#: ewsresource.cpp:406
+#, kde-format
+msgctxt "@info:status"
+msgid "Retrieving items"
+msgstr ""
+
+#: ewsresource.cpp:428 ewsresource.cpp:514
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to retrieve items - internal error"
+msgstr ""
+
+#: ewsresource.cpp:462
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to retrieve folders - internal error"
+msgstr ""
+
+#: ewsresource.cpp:468
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process folders retrieval request"
+msgstr ""
+
+#: ewsresource.cpp:485
+#, kde-format
+msgctxt "@info:status"
+msgid "Invalid incremental folders retrieval request job object"
+msgstr ""
+
+#: ewsresource.cpp:548
+#, kde-format
+msgctxt "@info:status"
+msgid "Item type not supported for changing"
+msgstr ""
+
+#: ewsresource.cpp:561
+#, kde-format
+msgctxt "@info:status"
+msgid "Updating item flags"
+msgstr ""
+
+#: ewsresource.cpp:573
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process item flags update request"
+msgstr ""
+
+#: ewsresource.cpp:580
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to update item flags - internal error"
+msgstr ""
+
+#: ewsresource.cpp:594
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process item update request"
+msgstr ""
+
+#: ewsresource.cpp:601
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to update item - internal error"
+msgstr ""
+
+#: ewsresource.cpp:636
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process item move request"
+msgstr ""
+
+#: ewsresource.cpp:643
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to move item - internal error"
+msgstr ""
+
+#: ewsresource.cpp:650
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to move item - invalid number of responses received from server"
+msgstr ""
+
+#: ewsresource.cpp:743
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process item delete request"
+msgstr ""
+
+#: ewsresource.cpp:750
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to delete item - internal error"
+msgstr ""
+
+#: ewsresource.cpp:757
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"Failed to delete item - invalid number of responses received from server"
+msgstr ""
+
+#: ewsresource.cpp:802 ewsresource.cpp:1015
+#, kde-format
+msgctxt "@info:status"
+msgid "Item type not supported for creation"
+msgstr ""
+
+#: ewsresource.cpp:813
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process item create request"
+msgstr ""
+
+#: ewsresource.cpp:819
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to create item - internal error"
+msgstr ""
+
+#: ewsresource.cpp:840
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to add collection - cannot determine EWS folder type"
+msgstr ""
+
+#: ewsresource.cpp:859
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process folder create request"
+msgstr ""
+
+#: ewsresource.cpp:865
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to create folder - internal error"
+msgstr ""
+
+#: ewsresource.cpp:877
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to create folder"
+msgstr ""
+
+#: ewsresource.cpp:900
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process folder move request"
+msgstr ""
+
+#: ewsresource.cpp:906
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to move folder - internal error"
+msgstr ""
+
+#: ewsresource.cpp:912
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"Failed to move folder - invalid number of responses received from server"
+msgstr ""
+
+#: ewsresource.cpp:923
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to move folder"
+msgstr ""
+
+#: ewsresource.cpp:951
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process folder update request"
+msgstr ""
+
+#: ewsresource.cpp:957
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to update folder - internal error"
+msgstr ""
+
+#: ewsresource.cpp:963
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"Failed to update folder - invalid number of responses received from server"
+msgstr ""
+
+#: ewsresource.cpp:974
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to update folder"
+msgstr ""
+
+#: ewsresource.cpp:991
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process folder delete request"
+msgstr ""
+
+#: ewsresource.cpp:997
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to delete folder - internal error"
+msgstr ""
+
+#: ewsresource.cpp:1005
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to delete folder"
+msgstr ""
+
+#: ewsresource.cpp:1029 ewsresource.cpp:1063
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process item send request"
+msgstr ""
+
+#: ewsresource.cpp:1035 ewsresource.cpp:1069
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to send item - internal error"
+msgstr ""
+
+#: ewsresource.cpp:1074
+#, kde-format
+msgctxt "@info:status"
+msgid "Invalid number of responses received from server"
+msgstr ""
+
+#: ewsresource.cpp:1266
+#, kde-format
+msgctxt "@info:status"
+msgid "Updating item tags"
+msgstr ""
+
+#: ewsresource.cpp:1279
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process item tags update request"
+msgstr ""
+
+#: ewsresource.cpp:1285
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to update item tags - internal error"
+msgstr ""
+
+#: ewsresource.cpp:1322
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process global tag update request"
+msgstr ""
+
+#: ewsresource.cpp:1338
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to process global tags retrieval request"
+msgstr ""
+
+#: ewsresource.cpp:1416
+#, kde-format
+msgctxt "@action:button"
+msgid "Authenticate"
+msgstr ""
+
+#: ewsresource.cpp:1428 ewsresource.cpp:1443
+#, kde-format
+msgctxt "@info:status"
+msgid "Authentication failed"
+msgstr ""
+
+#: ewsresource.cpp:1451
+#, kde-format
+msgctxt "@info:status Resource is ready"
+msgid "Ready"
+msgstr ""
+
+#. i18n: ectx: label, entry (BaseUrl), group (General)
+#: ewsresource.kcfg:10
+#, kde-format
+msgid "Server URL"
+msgstr "सर्वर URL"
+
+#. i18n: ectx: tooltip, entry (BaseUrl), group (General)
+#. i18n: ectx: whatsthis, entry (BaseUrl), group (General)
+#: ewsresource.kcfg:12 ewsresource.kcfg:13
+#, kde-format
+msgid ""
+"The URL of the Microsoft Exchange server, should be something like https://"
+"myserver.org/EWS/Exchange.asmx"
+msgstr ""
+"Microsoft Exchange सर्वरस्य URL, https://myserver.org/EWS/Exchange.asmx इव "
+"किमपि भवेत्"
+
+#. i18n: ectx: label, entry (Username), group (General)
+#: ewsresource.kcfg:16
+#, kde-format
+msgctxt "The username to login into the server"
+msgid "Username"
+msgstr ""
+
+#. i18n: ectx: tooltip, entry (Username), group (General)
+#. i18n: ectx: whatsthis, entry (Username), group (General)
+#: ewsresource.kcfg:17 ewsresource.kcfg:18
+#, kde-format
+msgid "The username that is used to log into the Microsoft Exchange server"
+msgstr "Microsoft Exchange सर्वरे प्रवेशार्थं यत् उपयोक्तृनाम उपयुज्यते"
+
+#. i18n: ectx: label, entry (Domain), group (General)
+#: ewsresource.kcfg:21
+#, kde-format
+msgid "Domain"
+msgstr "क्षेत्र"
+
+#. i18n: ectx: tooltip, entry (Domain), group (General)
+#. i18n: ectx: whatsthis, entry (Domain), group (General)
+#: ewsresource.kcfg:22 ewsresource.kcfg:23
+#, kde-format
+msgid "The Active Directory domain the user belongs to"
+msgstr "उपयोक्ता यस्य Active Directory डोमेनस्य अस्ति"
+
+#. i18n: ectx: label, entry (HasDomain), group (General)
+#: ewsresource.kcfg:26
+#, kde-format
+msgid "Use a domain name during authentication"
+msgstr "प्रमाणीकरणकाले डोमेननामस्य उपयोगं कुर्वन्तु"
+
+#. i18n: ectx: label, entry (Email), group (General)
+#: ewsresource.kcfg:30
+#, kde-format
+msgctxt "Account e-mail address"
+msgid "E-mail"
+msgstr ""
+
+#. i18n: ectx: tooltip, entry (Email), group (General)
+#. i18n: ectx: whatsthis, entry (Email), group (General)
+#: ewsresource.kcfg:31 ewsresource.kcfg:32
+#, kde-format
+msgid "The primary e-mail address of this account"
+msgstr "अस्य खातेः प्राथमिकः ई-मेल-सङ्केतः"
+
+#. i18n: ectx: tooltip, entry (AutoDiscovery), group (General)
+#: ewsresource.kcfg:36
+#, kde-format
+msgid "Attempt to automatically discover Exchange server address"
+msgstr "Exchange सर्वर-सङ्केतं स्वयमेव आविष्कर्तुं प्रयतध्वम्"
+
+#. i18n: ectx: whatsthis, entry (AutoDiscovery), group (General)
+#: ewsresource.kcfg:37
+#, kde-format
+msgid ""
+"Attempts to find out the Microsoft Exchange server address relevant to the "
+"supplied e-mail address."
+msgstr ""
+"आपूर्तिकृतस्य ई-मेल-सङ्केतस्य प्रासंगिकं Microsoft Exchange सर्वर-सङ्केतं ज्ञातुं प्रयतते ।"
+
+#. i18n: ectx: label, entry (PollInterval), group (General)
+#: ewsresource.kcfg:40
+#, kde-format
+msgid "Poll Interval"
+msgstr "मतदानान्तरम्"
+
+#. i18n: ectx: tooltip, entry (PollInterval), group (General)
+#: ewsresource.kcfg:41
+#, kde-format
+msgid "Sets the interval for checking for new mail"
+msgstr "नूतनमेलस्य जाँचार्थं अन्तरालं सेट् करोति"
+
+#. i18n: ectx: whatsthis, entry (PollInterval), group (General)
+#: ewsresource.kcfg:42
+#, kde-format
+msgid "Sets the interval for checking for new mail."
+msgstr "नूतनमेलस्य जाँचार्थं अन्तरालं सेट् करोति ।"
+
+#. i18n: ectx: label, entry (ServerSubscription), group (General)
+#: ewsresource.kcfg:48
+#, kde-format
+msgid "Enable Server-Side Subscriptions"
+msgstr "सर्वर-पक्षीयसदस्यतां सक्षमं कुर्वन्तु"
+
+#. i18n: ectx: label, entry (ServerSubscriptionList), group (General)
+#: ewsresource.kcfg:51
+#, kde-format
+msgid "List of folders to subscribe to"
+msgstr "सदस्यतां ग्रहीतुं पुटस्य सूची"
+
+#. i18n: ectx: label, entry (EnableNTLMv2), group (General)
+#: ewsresource.kcfg:55
+#, kde-format
+msgid "Enable NTLMv2 authentication"
+msgstr "NTLMv2 प्रमाणीकरणं सक्षमं कुर्वन्तु"
+
+#. i18n: ectx: label, entry (UserAgent), group (General)
+#: ewsresource.kcfg:59
+#, kde-format
+msgid "Forces a non-default User-Agent string"
+msgstr "अपूर्वनिर्धारितं User-Agent स्ट्रिंग् बाध्यते"
+
+#. i18n: ectx: label, entry (OAuth2AppId), group (General)
+#: ewsresource.kcfg:65
+#, kde-format
+msgid "OAuth2 application identifier"
+msgstr "OAuth2 अनुप्रयोगपरिचयः"
+
+#. i18n: ectx: label, entry (OAuth2ReturnUri), group (General)
+#: ewsresource.kcfg:69
+#, kde-format
+msgid "OAuth2 return URI"
+msgstr "OAuth2 URI प्रत्यागच्छति"
+
+#. i18n: ectx: label, entry (PKeyCert), group (General)
+#: ewsresource.kcfg:73
+#, kde-format
+msgid "Path to PKey authentication PEM certificate"
+msgstr "PKey प्रमाणीकरणस्य PEM प्रमाणपत्रस्य मार्गः"
+
+#. i18n: ectx: label, entry (PKeyKey), group (General)
+#: ewsresource.kcfg:76
+#, kde-format
+msgid "Path to PKey authentication PEM private key"
+msgstr "PKey प्रमाणीकरणस्य मार्गः PEM निजीकुंजी"
+
+#: ewssubscriptionwidget.cpp:171
+#, kde-format
+msgctxt "@info"
+msgid "Exchange server not configured."
+msgstr ""
+
+#: ewssubscriptionwidget.cpp:180 ewssubscriptionwidget.cpp:201
+#, kde-format
+msgctxt "@info"
+msgid "Failed to retrieve folder list."
+msgstr ""
+
+#: ewssubscriptionwidget.cpp:286
+#, kde-format
+msgctxt "@option:check"
+msgid "Enable server-side subscriptions"
+msgstr ""
+
+#: ewssubscriptionwidget.cpp:294
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Filter folders"
+msgstr ""
+
+#: ewssubscriptionwidget.cpp:314
+#, kde-format
+msgctxt "@action:button"
+msgid "Reload &List"
+msgstr ""
+
+#: ewssubscriptionwidget.cpp:317
+#, kde-format
+msgctxt "@action:button"
+msgid "&Reset"
+msgstr ""
+
+#: ewssubscriptionwidget.cpp:326
+#, kde-format
+msgctxt "@option:check"
+msgid "Subscribed only"
+msgstr ""
+
+#: mail/ewscreatemailjob.cpp:148 mail/ewscreatemailjob.cpp:185
+#: mail/ewscreatemailjob.cpp:218
+#, kde-format
+msgid "Failed to create mail item"
+msgstr "मेल-वस्तु निर्मातुं असफलम्"
+
+#: mail/ewsmodifymailjob.cpp:92
+#, kde-format
+msgctxt "@info:status"
+msgid "Item update failed: "
+msgstr ""
+
+#: mail/ewsmodifymailjob.cpp:103
+#, kde-format
+msgctxt "@info:status"
+msgid "Item out of order while processing update item response."
+msgstr ""

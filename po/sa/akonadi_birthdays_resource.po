@@ -1,0 +1,87 @@
+# Sanskrit translations for kdepim-runtime package.
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+# Kali <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kdepim-runtime\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2024-10-27 00:40+0000\n"
+"PO-Revision-Date: 2024-12-13 19:09+0530\n"
+"Last-Translator: Kali <EMAIL@ADDRESS>\n"
+"Language-Team: Sanskrit\n"
+"Language: sa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>2);\n"
+
+#: birthdaysconfigagentwidget.cpp:35
+#, kde-format
+msgid "%v day"
+msgid_plural "%v days"
+msgstr[0] ""
+msgstr[1] ""
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox)
+#: birthdaysconfigwidget.ui:29
+#, kde-format
+msgid "Reminder"
+msgstr "स्मरणम्"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_EnableAlarm)
+#: birthdaysconfigwidget.ui:38
+#, kde-format
+msgid "Set &reminder"
+msgstr "&स्मरणं सेट् कुर्वन्तु"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: birthdaysconfigwidget.ui:48
+#, kde-format
+msgid "&Remind prior to event:"
+msgstr "&घटनापूर्वं स्मरणं कुर्वन्तु:"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
+#: birthdaysconfigwidget.ui:74
+#, kde-format
+msgid "Filter"
+msgstr "फ़िल्टर"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_FilterOnCategories)
+#: birthdaysconfigwidget.ui:80
+#, kde-format
+msgid "&Filter by categories"
+msgstr "&वर्गानुसारं छानयतु"
+
+#: birthdaysresource.cpp:40
+#, kde-format
+msgid "Birthdays & Anniversaries"
+msgstr "जन्मदिन एवं वार्षिकोत्सव"
+
+#: birthdaysresource.cpp:309
+#, kde-format
+msgid "%1's birthday"
+msgstr "%1 इत्यस्य जन्मदिनम्"
+
+#: birthdaysresource.cpp:320
+#, kde-format
+msgid "Birthday"
+msgstr "जन्मदिवस"
+
+#: birthdaysresource.cpp:358
+#, kde-format
+msgctxt "insert names of both spouses"
+msgid "%1's & %2's anniversary"
+msgstr ""
+
+#: birthdaysresource.cpp:360
+#, kde-format
+msgctxt "only one spouse in addressbook, insert the name"
+msgid "%1's anniversary"
+msgstr ""
+
+#: birthdaysresource.cpp:372
+#, kde-format
+msgid "Anniversary"
+msgstr "वार्षिकी"
