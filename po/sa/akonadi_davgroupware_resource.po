@@ -23,7 +23,7 @@ msgstr ""
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
-msgstr ""
+msgstr "DAV संसाधन विन्यासः"
 
 #: configdialog.cpp:46
 #, kde-format
@@ -534,19 +534,19 @@ msgstr "ईमेलेन सह सम्पर्कः"
 #, kde-format
 msgctxt "@label:textbox"
 msgid "A password is required for user %1"
-msgstr ""
+msgstr "उपयोक्तुः %1 कृते गुप्तशब्दः आवश्यकः"
 
 #: settings.cpp:481
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Password: "
-msgstr ""
+msgstr "समाभाष्: "
 
 #: setupwizard.cpp:137
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
-msgstr ""
+msgstr "DAV groupware विन्यासविजार्डः"
 
 #: setupwizard.cpp:210
 #, kde-format
@@ -567,7 +567,7 @@ msgstr "उपयोक्ता : १."
 #, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
-msgstr ""
+msgstr "न, अन्यं सर्वरं चिनुत"
 
 #: setupwizard.cpp:257
 #, kde-format
@@ -609,13 +609,13 @@ msgstr "संसाधनं विन्यस्तं भविष्यत�
 #, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
-msgstr ""
+msgstr "तेषु सर्वरेषु एकस्य उपयोगं कुर्वन्तु:"
 
 #: setupwizard.cpp:347
 #, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
-msgstr ""
+msgstr "संसाधनं मैन्युअल् रूपेण विन्यस्यताम्"
 
 #: setupwizard.cpp:381
 #, kde-format
@@ -641,25 +641,25 @@ msgstr "संस्थापनमार्गः"
 #, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
-msgstr ""
+msgstr "सुरक्षितसंयोजनस्य उपयोगं कुर्वन्तु"
 
 #: setupwizard.cpp:423
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
-msgstr ""
+msgstr "अन्तिमः URL (CalDav) २."
 
 #: setupwizard.cpp:428
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
-msgstr ""
+msgstr "अन्तिमः URL (CardDav) २."
 
 #: setupwizard.cpp:433
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
-msgstr ""
+msgstr "अन्तिमः URL (GroupDav) २."
 
 #: setupwizard.cpp:497
 #, kde-format

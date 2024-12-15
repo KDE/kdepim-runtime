@@ -21,8 +21,8 @@ msgstr ""
 #, kde-format
 msgid "%v day"
 msgid_plural "%v days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%v दिवस"
+msgstr[1] "%v दिवसाः"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: birthdaysconfigwidget.ui:29
@@ -73,13 +73,13 @@ msgstr "जन्मदिवस"
 #, kde-format
 msgctxt "insert names of both spouses"
 msgid "%1's & %2's anniversary"
-msgstr ""
+msgstr "%1 इत्यस्य & %2 इत्यस्य वार्षिकोत्सवः"
 
 #: birthdaysresource.cpp:360
 #, kde-format
 msgctxt "only one spouse in addressbook, insert the name"
 msgid "%1's anniversary"
-msgstr ""
+msgstr "%1 इत्यस्य वार्षिकोत्सवः"
 
 #: birthdaysresource.cpp:372
 #, kde-format

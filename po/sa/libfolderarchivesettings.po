@@ -20,34 +20,34 @@ msgstr ""
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Unique"
-msgstr ""
+msgstr "अद्वितीयः"
 
 #: folderarchivecombobox.cpp:21
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Month and year"
-msgstr ""
+msgstr "मासः संवत्सरः च"
 
 #: folderarchivecombobox.cpp:22
 #, kde-format
 msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Year"
-msgstr ""
+msgstr "वर्ष"
 
 #: folderarchivesettingpage.cpp:27
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable"
-msgstr ""
+msgstr "सक्रियं करोतु"
 
 #: folderarchivesettingpage.cpp:36
 #, kde-format
 msgctxt "@label:chooser for the folder that messages will be archived under"
 msgid "Archive into:"
-msgstr ""
+msgstr "Archive into:"
 
 #: folderarchivesettingpage.cpp:38
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Archive folder name:"
-msgstr ""
+msgstr "संग्रह पुटस्य नाम : १."

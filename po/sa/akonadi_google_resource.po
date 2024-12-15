@@ -3,65 +3,67 @@
 # This file is distributed under the same license as the kdepim-runtime package.
 # Kali <EMAIL@ADDRESS>, 2024.
 #
+# SPDX-FileCopyrightText: 2024 kali <skkalwar999@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-27 00:40+0000\n"
-"PO-Revision-Date: 2024-12-13 19:09+0530\n"
-"Last-Translator: Kali <EMAIL@ADDRESS>\n"
-"Language-Team: Sanskrit\n"
+"PO-Revision-Date: 2024-12-14 01:48+0530\n"
+"Last-Translator: kali <skkalwar999@gmail.com>\n"
+"Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
 "Language: sa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>2);\n"
+"X-Generator: Lokalize 24.08.2\n"
 
 #: calendarhandler.cpp:91
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving calendars"
-msgstr ""
+msgstr "पञ्चाङ्गानां पुनः प्राप्तिः"
 
 #: calendarhandler.cpp:142
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
-msgstr ""
+msgstr "'%1' पञ्चाङ्गस्य कृते घटनाः पुनः प्राप्ताः ।"
 
 #: calendarhandler.cpp:220 taskhandler.cpp:170
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
-msgstr ""
+msgstr "'%1' पञ्चाङ्गे घटनां योजयति।"
 
 #: calendarhandler.cpp:246
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing event in calendar '%1'"
-msgstr ""
+msgstr "'%1' पञ्चाङ्गे घटनां परिवर्तयति।"
 
 #: calendarhandler.cpp:258
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 event"
 msgid_plural "Removing %1 events"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 घटनां निष्कासयति"
+msgstr[1] "%1 घटनाः निष्कासयन्"
 
 #: calendarhandler.cpp:274
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
 msgid_plural "Moving %1 events from calendar '%2' to calendar '%3'"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 घटनां '%2' पञ्चाङ्गात् '%3' पञ्चाङ्गं प्रति स्थानान्तरयति।"
+msgstr[1] "%1 घटनाः '%2' पञ्चाङ्गात् '%3' पञ्चाङ्गं प्रति स्थानान्तरयन् ।"
 
 #: calendarhandler.cpp:341
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr ""
+msgstr "इवेण्ट्स् टैग्स् परिवर्तयन्"
 
 #: calendarhandler.cpp:345
 #, kde-format
@@ -72,19 +74,19 @@ msgstr "घटनासु टैग् परिवर्तनं कर्त
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating calendar '%1'"
-msgstr ""
+msgstr "'%1' पञ्चाङ्गस्य निर्माणम् ।"
 
 #: calendarhandler.cpp:385
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing calendar '%1'"
-msgstr ""
+msgstr "'%1' पञ्चाङ्गं परिवर्तयति।"
 
 #: calendarhandler.cpp:398
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing calendar '%1'"
-msgstr ""
+msgstr "'%1' पञ्चाङ्गं निष्कासयति।"
 
 #: generichandler.cpp:24
 #, kde-format
@@ -105,7 +107,7 @@ msgstr "मद टैग् परिवर्तनं सम्भालित
 #, kde-format
 msgctxt "@status"
 msgid "Ready"
-msgstr ""
+msgstr "आत्त"
 
 #: generichandler.h:66 generichandler.h:78
 #, kde-format
@@ -115,7 +117,7 @@ msgstr "अमान्य मद।"
 #: googleresource.cpp:86
 #, kde-format
 msgid "Fetching password…"
-msgstr "गुप्तशब्दं आनयन्..."
+msgstr "गुप्तशब्दं आनयन्…"
 
 #: googleresource.cpp:93
 #, kde-format
@@ -126,7 +128,7 @@ msgstr "गुप्तशब्दं आनेतुं न शक्नोत
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
-msgstr ""
+msgstr "आत्त"
 
 #: googleresource.cpp:146
 #, kde-format
@@ -137,7 +139,7 @@ msgstr "न विन्यस्तम्"
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
-msgstr ""
+msgstr "गूगल ग्रुपवेयर (%1) 1.1."
 
 #: googleresource.cpp:197
 #, kde-format
@@ -166,19 +168,19 @@ msgstr ""
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
-msgstr ""
+msgstr "%1 भवतः ध्यानस्य आवश्यकता अस्ति।"
 
 #: googleresource.cpp:210
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
-msgstr ""
+msgstr "प्रवेशं कुर्वन्तु"
 
 #: googleresource.cpp:222 googleresource.cpp:223
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
-msgstr ""
+msgstr "संसाधनं विन्यस्तं नास्ति"
 
 #: googleresource.cpp:238
 #, kde-format
@@ -201,8 +203,8 @@ msgstr "अज्ञात संग्रह अनुकरणप्रका�
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%एकनिमेषे"
+msgstr[1] "%v निमेषाः"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
@@ -220,7 +222,7 @@ msgstr "वृतांत्तः:"
 #: googlesettingswidget.ui:42
 #, kde-format
 msgid "Configure…"
-msgstr "विन्यस्तं कुर्वन्तु..."
+msgstr "विन्यस्तं कुर्वन्तु…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49
@@ -263,31 +265,31 @@ msgstr "सक्षमकार्यसूचिकाः : १."
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Coworkers"
-msgstr ""
+msgstr "सहकर्मी"
 
 #: personhandler.cpp:89
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Friends"
-msgstr ""
+msgstr "मित्राः"
 
 #: personhandler.cpp:91
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Family"
-msgstr ""
+msgstr "परिवारं"
 
 #: personhandler.cpp:93
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "My Contacts"
-msgstr ""
+msgstr "मम सम्पर्काः"
 
 #: personhandler.cpp:117
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts groups"
-msgstr ""
+msgstr "सम्पर्कसमूहान् पुनः प्राप्तुं"
 
 #: personhandler.cpp:124 personhandler.cpp:130
 #, kde-format
@@ -298,27 +300,27 @@ msgstr "अन्य सम्पर्क"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts for group '%1'"
-msgstr ""
+msgstr "'%1' समूहस्य सम्पर्कं पुनः प्राप्तम्।"
 
 #: personhandler.cpp:370
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding contact to group '%1'"
-msgstr ""
+msgstr "'%1' समूहे सम्पर्कं योजयति।"
 
 #: personhandler.cpp:404
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact"
-msgstr ""
+msgstr "सम्पर्क परिवर्तन"
 
 #: personhandler.cpp:418
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 contact"
 msgid_plural "Removing %1 contacts"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 सम्पर्कं निष्कासयति"
+msgstr[1] "%1 सम्पर्कं निष्कासयति"
 
 #: personhandler.cpp:438
 #, kde-format
@@ -330,42 +332,42 @@ msgstr "अमान्य स्रोतः गन्तव्यसङ्ग�
 msgctxt "@info:status"
 msgid "Moving %1 contact from group '%2' to '%3'"
 msgid_plural "Moving %1 contacts from group '%2' to '%3'"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 सम्पर्कं '%2' समूहात् '%3' मध्ये स्थानान्तरयति।"
+msgstr[1] "%1 सम्पर्कं '%2' समूहात् '%3' मध्ये स्थानान्तरयति।"
 
 #: personhandler.cpp:461
 #, kde-format
 msgctxt "@info:status"
 msgid "Linking %1 contact"
 msgid_plural "Linking %1 contacts"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 सम्पर्कं लिङ्क् करणम्"
+msgstr[1] "%1 सम्पर्कं लिङ्क् करणम्"
 
 #: personhandler.cpp:475
 #, kde-format
 msgctxt "@info:status"
 msgid "Unlinking %1 contact"
 msgid_plural "Unlinking %1 contacts"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 सम्पर्कस्य अलिङ्क् करणं"
+msgstr[1] "%1 सम्पर्कस्य अलिङ्क् करणं"
 
 #: personhandler.cpp:508
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new contact group '%1'"
-msgstr ""
+msgstr "नूतनं सम्पर्कसमूहं '%1' निर्माय ।"
 
 #: personhandler.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact group '%1'"
-msgstr ""
+msgstr "'%1' सम्पर्कसमूहं परिवर्तयति।"
 
 #: personhandler.cpp:554
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing contact group '%1'"
-msgstr ""
+msgstr "'%1' सम्पर्कसमूहं निष्कासयति।"
 
 #. i18n: ectx: label, entry (Calendars), group (General)
 #: settingsbase.kcfg:21
@@ -383,27 +385,27 @@ msgstr "संग्रहे कार्यसूचीनां IDs"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving task lists"
-msgstr ""
+msgstr "कार्यसूचीनां पुनः प्राप्तिः"
 
 #: taskhandler.cpp:103
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
-msgstr ""
+msgstr "'%1' सूचीयाः कार्याणि पुनः प्राप्तम् ।"
 
 #: taskhandler.cpp:195
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
-msgstr ""
+msgstr "'%1' इति सूचीयां कार्यं परिवर्तयति।"
 
 #: taskhandler.cpp:215
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 task"
 msgid_plural "Removing %1 tasks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 कार्यं निष्कासयति"
+msgstr[1] "%1 कार्याणि निष्कासयन्"
 
 #: taskhandler.cpp:225
 #, kde-format
@@ -424,16 +426,16 @@ msgstr "कार्यसूचीनां मध्ये कार्या�
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new task list '%1'"
-msgstr ""
+msgstr "नूतनकार्यसूचीं '%1' रचयन् ।"
 
 #: taskhandler.cpp:322
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task list '%1'"
-msgstr ""
+msgstr "कार्यसूचीं '%1' परिवर्तयति।"
 
 #: taskhandler.cpp:335
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
-msgstr ""
+msgstr "कार्यसूचीं '%1' निष्कासयति।"

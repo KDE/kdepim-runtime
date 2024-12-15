@@ -3,25 +3,27 @@
 # This file is distributed under the same license as the kdepim-runtime package.
 # Kali <EMAIL@ADDRESS>, 2024.
 #
+# SPDX-FileCopyrightText: 2024 kali <skkalwar999@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-02 00:40+0000\n"
-"PO-Revision-Date: 2024-12-13 19:09+0530\n"
-"Last-Translator: Kali <EMAIL@ADDRESS>\n"
-"Language-Team: Sanskrit\n"
+"PO-Revision-Date: 2024-12-14 01:48+0530\n"
+"Last-Translator: kali <skkalwar999@gmail.com>\n"
+"Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
 "Language: sa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>2);\n"
+"X-Generator: Lokalize 24.08.2\n"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
-msgstr ""
+msgstr "अधिसूचना इतिहास"
 
 #: newmailnotificationhistorymanager.cpp:32
 #, kde-format
@@ -38,7 +40,7 @@ msgstr "[मेलं दर्शयतु] ।"
 #, kde-format
 msgctxt "@option:check"
 msgid "Enabled"
-msgstr ""
+msgstr "सक्षमम्"
 
 #: newmailnotifieragent.cpp:365
 #, kde-format
@@ -47,8 +49,8 @@ msgctxt ""
 "user named it)"
 msgid "One new email in %2 from \"%3\""
 msgid_plural "%1 new emails in %2 from \"%3\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "\"%3\" तः %2 मध्ये एकः नूतनः ईमेलः ।"
+msgstr[1] "\"%3\" तः %2 मध्ये %1 नूतनानि ईमेलपत्राणि।"
 
 #: newmailnotifieragent.cpp:402
 #, kde-format
@@ -59,7 +61,7 @@ msgstr "नूतनं मेलम् आगतं"
 #, kde-format
 msgctxt "%f is a variable for agent. Do not change it"
 msgid "A message was received from %f"
-msgstr ""
+msgstr "%f इत्यस्मात् सन्देशः प्राप्तः"
 
 #: newmailnotifieropenfolderjob.cpp:37 newmailnotifierreplymessagejob.cpp:38
 #: newmailnotifiershowmessagejob.cpp:36
@@ -71,25 +73,25 @@ msgstr "KMail अनुप्रयोगं आरभ्यतुं असम�
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
-msgstr ""
+msgstr "नूतनसन्देशसूचनानां कृते केषां पुटानां निरीक्षणं कर्तव्यमिति चिनोतु:"
 
 #: newmailnotifierselectcollectionwidget.cpp:125
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Search…"
-msgstr ""
+msgstr "अन्वेषण…"
 
 #: newmailnotifierselectcollectionwidget.cpp:140
 #, kde-format
 msgctxt "@action:button"
 msgid "&Select All"
-msgstr ""
+msgstr "&सर्वं चिनोतु"
 
 #: newmailnotifierselectcollectionwidget.cpp:144
 #, kde-format
 msgctxt "@action:button"
 msgid "&Unselect All"
-msgstr ""
+msgstr "&सर्वं अचयनं कुर्वन्तु"
 
 #: newmailnotifiersettingswidget.cpp:34
 #, c-format
@@ -109,49 +111,49 @@ msgstr "के क्षेत्राणि दर्शयितव्या�
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Photo"
-msgstr ""
+msgstr "फोटो दर्शयतु"
 
 #: newmailnotifiersettingswidget.cpp:64
 #, kde-format
 msgctxt "@option:check"
 msgid "Show From"
-msgstr ""
+msgstr "From From इति दर्शयतु"
 
 #: newmailnotifiersettingswidget.cpp:68
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Subject"
-msgstr ""
+msgstr "विषयं दर्शयतु"
 
 #: newmailnotifiersettingswidget.cpp:72
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Folders"
-msgstr ""
+msgstr "पुटं दर्शयतु"
 
 #: newmailnotifiersettingswidget.cpp:76
 #, kde-format
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
-msgstr ""
+msgstr "मया कदा ईमेल प्रेषितम् इति मा सूचयन्तु"
 
 #: newmailnotifiersettingswidget.cpp:80
 #, kde-format
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
-msgstr ""
+msgstr "निरन्तरं सूचनां स्थापयन्तु"
 
 #: newmailnotifiersettingswidget.cpp:84
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Action Buttons"
-msgstr ""
+msgstr "क्रिया बटन्स् दर्शयतु"
 
 #: newmailnotifiersettingswidget.cpp:92
 #, kde-format
 msgctxt "@option:check"
 msgid "Reply Mail"
-msgstr ""
+msgstr "उत्तरं मेल"
 
 #: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:163
 #, kde-format
@@ -172,13 +174,13 @@ msgstr "प्रदर्शन"
 #, kde-format
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
-msgstr ""
+msgstr "<a href=\"whatsthis\">एतत् कथं कार्यं करोति ?</a>"
 
 #: newmailnotifiersettingswidget.cpp:127
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Message:"
-msgstr ""
+msgstr "सन्देशः:"
 
 #: newmailnotifiersettingswidget.cpp:139
 #, kde-format
@@ -214,7 +216,7 @@ msgstr "प्रतिलिपि अधिकार (C) 2013-%1 Laurent Monte
 #, kde-format
 msgctxt "@info:credit"
 msgid "Laurent Montel"
-msgstr ""
+msgstr "लॉरेण्ट् मोंटेल्"
 
 #: newmailnotifiersettingswidget.cpp:158
 #, kde-format
@@ -225,13 +227,13 @@ msgstr "परिपालकः"
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr ""
+msgstr "भवतः नामानि"
 
 #: newmailnotifiersettingswidget.cpp:159
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr ""
+msgstr "भवतः ईमेलपत्राणि"
 
 #: specialnotifierjob.cpp:111
 #, kde-format
@@ -256,7 +258,7 @@ msgstr "In: %1 (%2) ."
 #: specialnotifierjob.cpp:150
 #, kde-format
 msgid "Show mail…"
-msgstr "मेल दर्शयतु..."
+msgstr "मेल दर्शयतु…"
 
 #: specialnotifierjob.cpp:153
 #, kde-format

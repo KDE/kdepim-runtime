@@ -25,7 +25,7 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Configured storage location is empty"
-msgstr ""
+msgstr "विन्यस्तं भण्डारणस्थानं रिक्तम् अस्ति"
 
 #: abstractlocalstore.cpp:401 abstractlocalstore.cpp:432
 #: abstractlocalstore.cpp:463 abstractlocalstore.cpp:489
@@ -34,47 +34,47 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Given folder name is empty"
-msgstr ""
+msgstr "दत्तं पुटनाम रिक्तम् अस्ति"
 
 #: abstractlocalstore.cpp:406 abstractlocalstore.cpp:525
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits folder creation in folder %1"
-msgstr ""
+msgstr "अभिगमननियन्त्रणं %1 पुटे पुटनिर्माणं निषिद्धं करोति"
 
 #: abstractlocalstore.cpp:437
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits folder deletion in folder %1"
-msgstr ""
+msgstr "अभिगमननियन्त्रणं %1 पुटे पुटविलोपनं निषिद्धं करोति"
 
 #: abstractlocalstore.cpp:494
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits folder modification in folder %1"
-msgstr ""
+msgstr "अभिगमननियन्त्रणं %1 पुटे पुटपरिवर्तनं निषिद्धं करोति"
 
 #: abstractlocalstore.cpp:580 abstractlocalstore.cpp:645
 #: abstractlocalstore.cpp:679 abstractlocalstore.cpp:731
 #, kde-format
 msgctxt "@info:status"
 msgid "Given item identifier is empty"
-msgstr ""
+msgstr "दत्तः द्रव्यपरिचयः रिक्तः अस्ति"
 
 #: abstractlocalstore.cpp:618 abstractlocalstore.cpp:719
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits item creation in folder %1"
-msgstr ""
+msgstr "अभिगमननियन्त्रणं %1 पुटे मदनिर्माणं निषिद्धं करोति"
 
 #: abstractlocalstore.cpp:651
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits item modification in folder %1"
-msgstr ""
+msgstr "अभिगमननियन्त्रणं %1 पुटे मदपरिवर्तनं निषिद्धं करोति"
 
 #: abstractlocalstore.cpp:685 abstractlocalstore.cpp:725
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits item deletion in folder %1"
-msgstr ""
+msgstr "अभिगमननियन्त्रणं %1 पुटस्य मदविलोपनं निषिद्धं करोति"

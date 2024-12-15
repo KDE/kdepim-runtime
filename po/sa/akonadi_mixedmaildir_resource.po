@@ -50,32 +50,32 @@ msgstr "चयनितः मार्गः नास्ति।"
 #, kde-format
 msgctxt "@info:status"
 msgid "Unusable configuration."
-msgstr ""
+msgstr "अनुपयोगी विन्यास।"
 
 #: mixedmaildirresource.cpp:171
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Item %1 belongs to invalid collection %2. Maybe it was deleted meanwhile?"
-msgstr ""
+msgstr "%1 मदः अमान्यसङ्ग्रहस्य %2 अस्ति । कदाचित् तावत्पर्यन्तं लोपितम् आसीत्?"
 
 #: mixedmaildirresource.cpp:202
 #, kde-format
 msgctxt "@info:status"
 msgid "Synchronizing email folders"
-msgstr ""
+msgstr "ईमेल-पुटस्य समन्वयनम्"
 
 #: mixedmaildirresource.cpp:217
 #, kde-format
 msgctxt "@info:status"
 msgid "Synchronizing email folder %1"
-msgstr ""
+msgstr "ईमेलपुटस्य %1 समन्वयनम्"
 
 #: mixedmaildirresource.cpp:318
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move root maildir folder '%1'."
-msgstr ""
+msgstr "'%1' मूलं maildir पुटं स्थानान्तरयितुं न शक्यते ।"
 
 #: mixedmaildirresource.cpp:346
 #, kde-format
@@ -86,13 +86,13 @@ msgstr "शीर्षस्तरीयं maildir पुटं '%1' विल
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to create maildir '%1'."
-msgstr ""
+msgstr "maildir '%1' निर्मातुं असमर्थः ।"
 
 #: mixedmaildirresource.cpp:372
 #, kde-format
 msgctxt "@info:status"
 msgid "No usable storage location configured."
-msgstr ""
+msgstr "न कोऽपि उपयोगी भण्डारणस्थानं विन्यस्तम् ।"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: mixedmaildirresource.kcfg:10
@@ -117,19 +117,19 @@ msgstr "वास्तविकं पृष्ठभागदत्तां�
 #, kde-format
 msgctxt "@info:status"
 msgid "Given folder name is empty"
-msgstr ""
+msgstr "दत्तं पुटनाम रिक्तम् अस्ति"
 
 #: mixedmaildirstore.cpp:585 mixedmaildirstore.cpp:604
 #, kde-format
 msgctxt "@info:status"
 msgid "Folder %1 does not seem to be a valid email folder"
-msgstr ""
+msgstr "%1 पुटं वैधं ईमेलपुटं न दृश्यते"
 
 #: mixedmaildirstore.cpp:973
 #, kde-format
 msgctxt "@info:status"
 msgid "Unhandled operation %1"
-msgstr ""
+msgstr "अनियंत्रित संचालन %1"
 
 #: mixedmaildirstore.cpp:986 mixedmaildirstore.cpp:999
 #: mixedmaildirstore.cpp:1006 mixedmaildirstore.cpp:1014
@@ -137,27 +137,27 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot create folder %1 inside folder %2"
-msgstr ""
+msgstr "%2 पुटस्य अन्तः %1 पुटं निर्मातुं न शक्यते"
 
 #: mixedmaildirstore.cpp:1053 mixedmaildirstore.cpp:1062
 #: mixedmaildirstore.cpp:1070 mixedmaildirstore.cpp:1077
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot remove folder %1 from folder %2"
-msgstr ""
+msgstr "%2 पुटतः %1 पुटं निष्कासयितुं न शक्यते"
 
 #: mixedmaildirstore.cpp:1113 mixedmaildirstore.cpp:1652
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to load MBox folder %1"
-msgstr ""
+msgstr "MBox पुटं %1 लोड् कर्तुं असफलम्"
 
 #: mixedmaildirstore.cpp:1177 mixedmaildirstore.cpp:1193
 #: mixedmaildirstore.cpp:1228 mixedmaildirstore.cpp:1236
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot rename folder %1"
-msgstr ""
+msgstr "%1 पुटस्य नाम परिवर्तनं कर्तुं न शक्यते"
 
 #: mixedmaildirstore.cpp:1297 mixedmaildirstore.cpp:1314
 #: mixedmaildirstore.cpp:1335 mixedmaildirstore.cpp:1375
@@ -165,33 +165,33 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move folder %1 from folder %2 to folder %3"
-msgstr ""
+msgstr "%1 पुटं %2 पुटतः %3 पुटं प्रति स्थानान्तरयितुं न शक्यते"
 
 #: mixedmaildirstore.cpp:1463 mixedmaildirstore.cpp:1477
 #: mixedmaildirstore.cpp:1502 mixedmaildirstore.cpp:1532
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot add emails to folder %1"
-msgstr ""
+msgstr "%1 पुटे ईमेल योजयितुं न शक्यते"
 
 #: mixedmaildirstore.cpp:1555 mixedmaildirstore.cpp:1567
 #: mixedmaildirstore.cpp:1581 mixedmaildirstore.cpp:1613
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot remove emails from folder %1"
-msgstr ""
+msgstr "%1 पुटतः ईमेल-पत्राणि हर्तुं न शक्यते"
 
 #: mixedmaildirstore.cpp:1679 mixedmaildirstore.cpp:1719
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while reading mails from folder %1"
-msgstr ""
+msgstr "%1 पुटतः मेलपठनकाले त्रुटिः"
 
 #: mixedmaildirstore.cpp:1700
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to load Maildirs folder %1"
-msgstr ""
+msgstr "Maildirs पुटं %1 लोड् कर्तुं असफलम्"
 
 #: mixedmaildirstore.cpp:1759 mixedmaildirstore.cpp:1771
 #: mixedmaildirstore.cpp:1785 mixedmaildirstore.cpp:1819
@@ -199,20 +199,20 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot modify emails in folder %1"
-msgstr ""
+msgstr "%1 पुटे ईमेल परिवर्तयितुं न शक्यते"
 
 #: mixedmaildirstore.cpp:1874
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot modify emails in folder %1. %2"
-msgstr ""
+msgstr "%1 पुटे ईमेल परिवर्तयितुं न शक्यते । %2"
 
 #: mixedmaildirstore.cpp:1899 mixedmaildirstore.cpp:1930
 #: mixedmaildirstore.cpp:1954
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move emails from folder %1"
-msgstr ""
+msgstr "%1 पुटतः ईमेल-पत्राणि स्थानान्तरयितुं न शक्यते"
 
 #: mixedmaildirstore.cpp:1913 mixedmaildirstore.cpp:1941
 #: mixedmaildirstore.cpp:1986 mixedmaildirstore.cpp:2010
@@ -221,38 +221,38 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move emails to folder %1"
-msgstr ""
+msgstr "ईमेल-पत्राणि %1 पुटं प्रति स्थानान्तरयितुं न शक्यते"
 
 #: mixedmaildirstore.cpp:1962 mixedmaildirstore.cpp:2062
 #: mixedmaildirstore.cpp:2084
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move email from folder %1"
-msgstr ""
+msgstr "%1 पुटतः ईमेलं स्थानान्तरयितुं न शक्यते"
 
 #: mixedmaildirstore.cpp:2040 mixedmaildirstore.cpp:2145
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move email from folder %1 to folder %2"
-msgstr ""
+msgstr "%1 पुटतः %2 पुटं प्रति ईमेलं स्थानान्तरयितुं न शक्यते"
 
 #: mixedmaildirstore.cpp:2298
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move folder %1 into one of its own subfolder tree"
-msgstr ""
+msgstr "%1 पुटं स्वस्य उपपुटवृक्षे एकस्मिन् स्थानान्तरयितुं न शक्यते"
 
 #: mixedmaildirstore.cpp:2310
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot add email to folder %1 because there is no email content"
-msgstr ""
+msgstr "%1 पुटे ईमेल योजयितुं न शक्यते यतः ईमेल सामग्री नास्ति"
 
 #: mixedmaildirstore.cpp:2318
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot modify email in folder %1 because there is no email content"
-msgstr ""
+msgstr "%1 पुटे ईमेल परिवर्तयितुं न शक्यते यतः ईमेल सामग्री नास्ति"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, ConfigWidget)
 #: settings.ui:15

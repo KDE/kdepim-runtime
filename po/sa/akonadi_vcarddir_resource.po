@@ -130,8 +130,8 @@ msgstr "वास्तविकं पृष्ठभागदत्तां�
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%एकनिमेषे"
+msgstr[1] "%v निमेषाः"
 
 #: vcarddirsettingswidget.cpp:45
 #, kde-format

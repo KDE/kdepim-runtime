@@ -21,8 +21,8 @@ msgstr ""
 #, kde-format
 msgid "(1 message marked for deletion)"
 msgid_plural "(%1 messages marked for deletion)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(१ सन्देशः लोपार्थं चिह्नितः)"
+msgstr[1] "(%1 सन्देशाः लोपार्थं चिह्निताः)"
 
 #: compactpage.cpp:78
 #, kde-format
@@ -38,8 +38,8 @@ msgstr "mbox सञ्चिकां लोड् कर्तुं असफ�
 #, kde-format
 msgid "(Deleting 1 message)"
 msgid_plural "(Deleting %1 messages)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(१ सन्देशं विलोपयन्) २."
+msgstr[1] "(%1 सन्देशान् विलोपयति)"
 
 #: compactpage.cpp:107 compactpage.cpp:115
 #, kde-format
@@ -211,7 +211,7 @@ msgstr ""
 #, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
-msgstr ""
+msgstr "MBox सञ्चिका"
 
 #: mboxconfig.cpp:20
 #, kde-format
@@ -227,7 +227,7 @@ msgstr "तालाविधिः"
 #, kde-format
 msgctxt "@info:status"
 msgid "MBox not configured."
-msgstr ""
+msgstr "MBox न विन्यस्तम्।"
 
 #: mboxresource.cpp:143 mboxresource.cpp:182
 #, kde-format

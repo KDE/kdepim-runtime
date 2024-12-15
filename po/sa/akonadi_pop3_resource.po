@@ -23,14 +23,14 @@ msgstr ""
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%प% ९."
 
 #: accountwidget.cpp:91
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%एकनिमेषे"
+msgstr[1] "%v निमेषाः"
 
 #: accountwidget.cpp:128 pop3resource.cpp:46
 #, kde-format
@@ -41,7 +41,7 @@ msgstr "POP3 खाता"
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
-msgstr ""
+msgstr "बटुकं उद्घाटयितुं असमर्थः"
 
 #: accountwidget.cpp:245
 #, kde-format
@@ -126,15 +126,15 @@ msgstr ""
 #, kde-format
 msgid " day"
 msgid_plural " days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] " दिनं"
+msgstr[1] " दिवसाः"
 
 #: accountwidget.cpp:427
 #, kde-format
 msgid " message"
 msgid_plural " messages"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] " सन्देशः"
+msgstr[1] " सन्देशाः"
 
 #: jobs.cpp:148
 #, kde-format
@@ -454,8 +454,8 @@ msgstr "मेलपरीक्षा समाप्तवती, कोऽप
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "मेलपरीक्षा समाप्तवती, १ सन्देशः डाउनलोड् कृतः।"
+msgstr[1] "मेलपरीक्षणं समाप्तम्, %1 सन्देशाः अवतरणं कृतम् ।"
 
 #: pop3resource.cpp:820
 #, kde-format

@@ -20,7 +20,7 @@ msgstr ""
 #, kde-format
 msgctxt "Filedialog filter for *.vcf"
 msgid "vCard Address Book File"
-msgstr ""
+msgstr "vCard पतापुस्तिका सञ्चिका"
 
 #: vcardconfig.cpp:24
 #, kde-format

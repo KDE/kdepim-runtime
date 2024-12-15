@@ -110,7 +110,7 @@ msgstr "EteSync सर्वरस्य URL, https://myserver.org/ इव क�
 #, kde-format
 msgctxt "the username to login on server"
 msgid "Username"
-msgstr ""
+msgstr "उपयोक्तृनाम"
 
 #. i18n: ectx: tooltip, entry (Username), group (General)
 #. i18n: ectx: whatsthis, entry (Username), group (General)
@@ -129,7 +129,7 @@ msgstr "आधारनिर्देशिकायाः मार्गः"
 #, kde-format
 msgctxt "@title:window"
 msgid "EteSync configuration wizard"
-msgstr ""
+msgstr "EteSync विन्यासविजार्डः"
 
 #: setupwizard.cpp:66
 #, kde-format
@@ -155,7 +155,7 @@ msgstr "समाभाष्:"
 #, kde-format
 msgctxt "@option:check"
 msgid "Advanced settings"
-msgstr ""
+msgstr "उन्नत सेटिंग्स्"
 
 #: setupwizard.cpp:90
 #, kde-format

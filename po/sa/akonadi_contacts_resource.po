@@ -55,7 +55,7 @@ msgstr "अभिगमन अधिकार"
 #, kde-format
 msgctxt "if the access is limited to read-only"
 msgid "Read only"
-msgstr ""
+msgstr "केवलं पठन्तु"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: contactsagentsettingswidget.ui:82

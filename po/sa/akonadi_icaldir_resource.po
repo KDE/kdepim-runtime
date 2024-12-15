@@ -117,8 +117,8 @@ msgstr "स्वतः रक्षणविलम्बः : १."
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%एकनिमेषे"
+msgstr[1] "%v निमेषाः"
 
 #: icaldirsettingswidget.cpp:49
 #, kde-format

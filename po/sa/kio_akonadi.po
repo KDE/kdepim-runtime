@@ -19,24 +19,24 @@ msgstr ""
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr ""
+msgstr "भवतः नामानि"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr ""
+msgstr "भवतः ईमेलपत्राणि"
 
 #: akonadiworker.cpp:49
 #, kde-format
 msgctxt "@info:shell"
 msgid "Protocol name"
-msgstr ""
+msgstr "प्रोटोकॉल नाम"
 
 #: akonadiworker.cpp:50 akonadiworker.cpp:51
 #, kde-format
 msgctxt "@info:shell"
 msgid "Socket name"
-msgstr ""
+msgstr "सॉकेट नाम"
 
 #: akonadiworker.cpp:87 akonadiworker.cpp:113 akonadiworker.cpp:131
 #, kde-format

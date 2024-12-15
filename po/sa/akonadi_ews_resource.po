@@ -3,18 +3,21 @@
 # This file is distributed under the same license as the kdepim-runtime package.
 # Kali <EMAIL@ADDRESS>, 2024.
 #
+# SPDX-FileCopyrightText: 2024 kali <skkalwar999@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-09 00:40+0000\n"
-"PO-Revision-Date: 2024-12-13 19:09+0530\n"
-"Last-Translator: Kali <EMAIL@ADDRESS>\n"
-"Language-Team: Sanskrit\n"
+"PO-Revision-Date: 2024-12-14 01:48+0530\n"
+"Last-Translator: kali <skkalwar999@gmail.com>\n"
+"Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
 "Language: sa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 24.08.2\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -33,6 +36,8 @@ msgid ""
 "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
 "valid. You need to authenticate in order to continue using it."
 msgstr ""
+"<b>%1</b> खातेः Microsoft Exchange प्रमाणपत्राणि अधुना वैधं न भवन्ति । तस्य उपयोगं "
+"निरन्तरं कर्तुं भवद्भिः प्रमाणीकरणं करणीयम् ।"
 
 #: ewsclient/auth/ewsoauth.cpp:522
 #, kde-kuit-format
@@ -41,6 +46,8 @@ msgid ""
 "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
 "Please update it in the account settings page."
 msgstr ""
+"Microsoft Exchange खातेः <b>%1</b> कृते प्रमाणपत्राणि प्राप्तुं असफलम् । कृपया "
+"खातासेटिंग्स् पृष्ठे अद्यतनं कुर्वन्तु।"
 
 #: ewsclient/auth/ewspasswordauth.cpp:57
 #, kde-format
@@ -49,18 +56,20 @@ msgid ""
 "The username/password for the Microsoft Exchange EWS account <b>%1</b> is "
 "not valid. Please update it in the account settings page."
 msgstr ""
+"Microsoft Exchange EWS खातेः <b>%1</b> उपयोक्तृनाम/गुप्तशब्दः वैधः नास्ति । कृपया "
+"खातासेटिंग्स् पृष्ठे अद्यतनं कुर्वन्तु।"
 
 #: ewsconfigdialog.cpp:76
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
-msgstr ""
+msgstr "Microsoft Exchange विन्यासः"
 
 #: ewsconfigdialog.cpp:102
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
-msgstr ""
+msgstr "अस्तु"
 
 #: ewsconfigdialog.cpp:121 ewsconfigdialog.cpp:123
 #, kde-format
@@ -71,25 +80,25 @@ msgstr "PEM सञ्चिका"
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
-msgstr ""
+msgstr "आचारः"
 
 #: ewsconfigdialog.cpp:152
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
-msgstr ""
+msgstr "Microsoft Exchange Web Services (EWS) कृते अकोनाडी संसाधनम्"
 
 #: ewsconfigdialog.cpp:153
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
-msgstr ""
+msgstr "प्रतिलिपि अधिकार (ग) Krzysztof Nowicki 2015-2020"
 
 #: ewsconfigdialog.cpp:154
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
-msgstr ""
+msgstr "संस्करणम् %1"
 
 #: ewsconfigdialog.cpp:155
 #, kde-format
@@ -97,13 +106,13 @@ msgctxt "@info"
 msgid ""
 "Distributed under the GNU Library General Public License version 2.0 or "
 "later."
-msgstr ""
+msgstr "GNU Library General Public License संस्करणं 2.0 अथवा ततः परं वितरितम् ।"
 
 #: ewsconfigdialog.cpp:253
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
-msgstr ""
+msgstr "स्वतः आविष्कारः विफलः अभवत्"
 
 #: ewsconfigdialog.cpp:266
 #, kde-format
@@ -115,19 +124,19 @@ msgstr "संयोजनं विफलम् अभवत्"
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
-msgstr ""
+msgstr "असफल"
 
 #: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:427
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
-msgstr ""
+msgstr "अज्ञात"
 
 #: ewsconfigdialog.cpp:270 ewsconfigdialog.cpp:431
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
-msgstr ""
+msgstr "अस्तु"
 
 #: ewsconfigdialog.cpp:342
 #, kde-format
@@ -142,7 +151,7 @@ msgstr ""
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
-msgstr ""
+msgstr "एक्सचेंज सर्वर ऑटोडिस्कवरी"
 
 #: ewsconfigdialog.cpp:373
 #, kde-format
@@ -157,7 +166,7 @@ msgstr ""
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server connection"
-msgstr ""
+msgstr "सर्वर-संयोजनम् आदान-प्रदानं कुर्वन्तु"
 
 #: ewsconfigdialog.cpp:428
 #, kde-format
@@ -175,7 +184,7 @@ msgstr "EWS विन्यासः"
 #, kde-format
 msgctxt "General settings tab"
 msgid "General"
-msgstr ""
+msgstr "सामान्य"
 
 #. i18n: ectx: property (title), widget (QGroupBox, accountInfoGroupBox)
 #: ewsconfigdialog.ui:45
@@ -201,7 +210,7 @@ msgstr "एतत् खातानाम सर्वेषु अकोना
 #, kde-format
 msgctxt "Exchange account e-mail address"
 msgid "Email:"
-msgstr ""
+msgstr "ईमेल : १."
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Email)
 #: ewsconfigdialog.ui:78
@@ -238,7 +247,7 @@ msgstr ""
 #, kde-format
 msgctxt "authentication type"
 msgid "&Username/Password"
-msgstr ""
+msgstr "&उपयोक्तृनाम/गुप्तशब्द"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_HasDomain)
 #: ewsconfigdialog.ui:143
@@ -279,7 +288,7 @@ msgstr "उपयोक्ता यस्य Active Directory डोमेन�
 #, kde-format
 msgctxt "Exchange account username/login"
 msgid "Username:"
-msgstr ""
+msgstr "उपयोक्तृनाम : १."
 
 #. i18n: ectx: property (text), widget (QLabel, passwordLabel)
 #: ewsconfigdialog.ui:179
@@ -451,7 +460,7 @@ msgstr "सदस्यता"
 #, kde-format
 msgctxt "Advanced settings tab"
 msgid "Advanced"
-msgstr ""
+msgstr "उन्नतं"
 
 #. i18n: ectx: property (title), widget (QGroupBox, retrievalMethodGroupBox)
 #. i18n: ectx: label, entry (RetrievalMethod), group (General)
@@ -605,7 +614,7 @@ msgstr "स्थितिः:"
 #, kde-format
 msgctxt "Unknown server status"
 msgid "Unknown"
-msgstr ""
+msgstr "अज्ञात"
 
 #. i18n: ectx: property (text), widget (QLabel, serverVersionLabel)
 #: ewsconfigdialog.ui:627
@@ -618,7 +627,7 @@ msgstr "संस्करण:"
 #, kde-format
 msgctxt "Unknown server version"
 msgid "Unknown"
-msgstr ""
+msgstr "अज्ञात"
 
 #. i18n: ectx: attribute (title), widget (QWidget, aboutTab)
 #: ewsconfigdialog.ui:658
@@ -630,62 +639,62 @@ msgstr "विषये"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
-msgstr ""
+msgstr "द्रव्यपुनर्प्राप्तिनुरोधं संसाधितुं असफलम्"
 
 #: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
 #: ewsresource.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
-msgstr ""
+msgstr "वस्तूनि पुनः प्राप्तुं असफलम्"
 
 #: ewsfetchitempayloadjob.cpp:78
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - incorrect number of responses"
-msgstr ""
+msgstr "वस्तूनि पुनः प्राप्तुं असफलम् - प्रतिक्रियाणां अशुद्धसङ्ख्या"
 
 #: ewsfetchitempayloadjob.cpp:91
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Akonadi item not found for item %1"
-msgstr ""
+msgstr "द्रव्यं पुनः प्राप्तुं असफलम् - Akonadi द्रव्यं %1 कृते न प्राप्तम्"
 
 #: ewsfetchitempayloadjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Unknown item type for item %1"
-msgstr ""
+msgstr "द्रव्यं पुनः प्राप्तुं असफलम् - द्रव्यस्य %1 कृते अज्ञातवस्तुप्रकारः"
 
 #: ewsfetchitempayloadjob.cpp:104
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to fetch item payload"
-msgstr ""
+msgstr "मदं पेलोड् आनेतुं असफलम्"
 
 #: ewsfetchitemsjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list"
-msgstr ""
+msgstr "%1 मदसूचीं पुनः प्राप्तम्"
 
 #: ewsfetchitemsjob.cpp:214
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
-msgstr ""
+msgstr "%1 द्रव्यसूचीं (%2 द्रव्यं) पुनः प्राप्तम्"
 
 #: ewsfetchitemsjob.cpp:399
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"
-msgstr ""
+msgstr "%1 द्रव्यं पुनः प्राप्तम्"
 
 #: ewsmtaconfigdialog.cpp:46
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Mail Transport Configuration"
-msgstr ""
+msgstr "Microsoft Exchange मेलपरिवहनविन्यासः"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, SetupServerView)
 #: ewsmtaconfigdialog.ui:14
@@ -725,322 +734,322 @@ msgstr "निरसयतु"
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr "Microsoft Exchange सर्वर स्वतः आविष्कारं कुर्वन्..."
+msgstr "Microsoft Exchange सर्वर स्वतः आविष्कारं कुर्वन्…"
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
 msgctxt "@title:window"
 msgid "Connecting to Exchange"
-msgstr ""
+msgstr "Exchange इत्यनेन सह सम्बद्धः भवति"
 
 #: ewsprogressdialog.cpp:53
 #, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "Microsoft Exchange सर्वरेण सह सम्बद्धः भवति..."
+msgstr "Microsoft Exchange सर्वरेण सह सम्बद्धः भवति…"
 
 #: ewsresource.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
-msgstr ""
+msgstr "Exchange सर्वरेण सह सम्बद्धम्"
 
 #: ewsresource.cpp:161 ewsresource.cpp:168 ewsresource.cpp:175
 #: ewsresource.cpp:313
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
-msgstr ""
+msgstr "Exchange सर्वरेण सह सम्बद्धं कर्तुं असमर्थः"
 
 #: ewsresource.cpp:253
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
-msgstr ""
+msgstr "मूलपुटस्य id न ज्ञायते।"
 
 #: ewsresource.cpp:257
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
-msgstr ""
+msgstr "संग्रहवृक्षं पुनः प्राप्तम्"
 
 #: ewsresource.cpp:406
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
-msgstr ""
+msgstr "वस्तूनि पुनः प्राप्तुं"
 
 #: ewsresource.cpp:428 ewsresource.cpp:514
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
-msgstr ""
+msgstr "वस्तूनि पुनः प्राप्तुं असफलम् - आन्तरिकदोषः"
 
 #: ewsresource.cpp:462
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
-msgstr ""
+msgstr "पुटं पुनः प्राप्तुं असफलम् - आन्तरिकदोषः"
 
 #: ewsresource.cpp:468
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
-msgstr ""
+msgstr "फोल्डर्-पुनर्प्राप्ति-अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:485
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
-msgstr ""
+msgstr "अमान्यवृद्धिपुटपुनर्प्राप्तिअनुरोधकार्यवस्तु"
 
 #: ewsresource.cpp:548
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
-msgstr ""
+msgstr "परिवर्तनार्थं द्रव्यप्रकारः समर्थितः नास्ति"
 
 #: ewsresource.cpp:561
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
-msgstr ""
+msgstr "मदध्वजान् अद्यतनीकरोति"
 
 #: ewsresource.cpp:573
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
-msgstr ""
+msgstr "मदध्वजानां अद्यतननिवेदनं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:580
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
-msgstr ""
+msgstr "मदध्वजान् अद्यतनीकर्तुं असफलम् - आन्तरिकदोषः"
 
 #: ewsresource.cpp:594
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
-msgstr ""
+msgstr "मद अद्यतन अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:601
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
-msgstr ""
+msgstr "मदं अद्यतनीकर्तुं असफलम् - आन्तरिकदोषः"
 
 #: ewsresource.cpp:636
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
-msgstr ""
+msgstr "मद चालन अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:643
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
-msgstr ""
+msgstr "मदं स्थानान्तरयितुं असफलम् - आन्तरिकदोषः"
 
 #: ewsresource.cpp:650
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
-msgstr ""
+msgstr "द्रव्यं स्थानान्तरयितुं असफलम् - सर्वरात् प्राप्तानां प्रतिक्रियाणां अमान्यसङ्ख्या"
 
 #: ewsresource.cpp:743
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
-msgstr ""
+msgstr "मदं विलोपन अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:750
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
-msgstr ""
+msgstr "मदं विलोपयितुं असफलम् - आन्तरिकदोषः"
 
 #: ewsresource.cpp:757
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
-msgstr ""
+msgstr "मदं विलोपयितुं असफलम् - सर्वरात् प्राप्तानां प्रतिक्रियाणां अमान्यसङ्ख्या"
 
 #: ewsresource.cpp:802 ewsresource.cpp:1015
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
-msgstr ""
+msgstr "द्रव्यप्रकारः निर्माणार्थं समर्थितः नास्ति"
 
 #: ewsresource.cpp:813
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
-msgstr ""
+msgstr "मदं निर्मातुं अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:819
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
-msgstr ""
+msgstr "मदं निर्मातुं असफलम् - आन्तरिकदोषः"
 
 #: ewsresource.cpp:840
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
-msgstr ""
+msgstr "संग्रहं योजयितुं असफलम् - EWS पुटस्य प्रकारं निर्धारयितुं न शक्नोति"
 
 #: ewsresource.cpp:859
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
-msgstr ""
+msgstr "फोल्डर् निर्मातुं अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:865
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
-msgstr ""
+msgstr "पुटस्य निर्माणे असफलः - आन्तरिकदोषः"
 
 #: ewsresource.cpp:877
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
-msgstr ""
+msgstr "पुटस्य निर्माणं कर्तुं असफलम्"
 
 #: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
-msgstr ""
+msgstr "फोल्डर् चालन अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:906
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
-msgstr ""
+msgstr "पुटं स्थानान्तरयितुं असफलम् - आन्तरिकदोषः"
 
 #: ewsresource.cpp:912
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
-msgstr ""
+msgstr "पुटं स्थानान्तरयितुं असफलम् - सर्वरात् प्राप्तानां प्रतिक्रियाणां अमान्यसङ्ख्या"
 
 #: ewsresource.cpp:923
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
-msgstr ""
+msgstr "पुटं स्थानान्तरयितुं असफलम्"
 
 #: ewsresource.cpp:951
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
-msgstr ""
+msgstr "फोल्डर-अद्यतन-अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:957
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
-msgstr ""
+msgstr "पुटं अद्यतनीकर्तुं असफलम् - आन्तरिकदोषः"
 
 #: ewsresource.cpp:963
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
-msgstr ""
+msgstr "पुटस्य अद्यतनीकरणे असफलम् - सर्वरात् प्राप्तानां प्रतिक्रियाणां अमान्यसङ्ख्या"
 
 #: ewsresource.cpp:974
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
-msgstr ""
+msgstr "पुटं अद्यतनीकर्तुं असफलम्"
 
 #: ewsresource.cpp:991
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
-msgstr ""
+msgstr "पुटविलोपनानुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:997
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
-msgstr ""
+msgstr "पुटं विलोपयितुं असफलम् - आन्तरिकदोषः"
 
 #: ewsresource.cpp:1005
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
-msgstr ""
+msgstr "पुटं विलोपयितुं असफलम्"
 
 #: ewsresource.cpp:1029 ewsresource.cpp:1063
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
-msgstr ""
+msgstr "मद प्रेषण अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:1035 ewsresource.cpp:1069
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
-msgstr ""
+msgstr "मदं प्रेषयितुं असफलम् - आन्तरिकदोषः"
 
 #: ewsresource.cpp:1074
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
-msgstr ""
+msgstr "सर्वरतः प्राप्तानां प्रतिक्रियाणां अमान्यसङ्ख्या"
 
 #: ewsresource.cpp:1266
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
-msgstr ""
+msgstr "आइटम टैग्स् अपडेट् करणम्"
 
 #: ewsresource.cpp:1279
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
-msgstr ""
+msgstr "मदटैग्स् अपडेट् अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:1285
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
-msgstr ""
+msgstr "मदटैग्स् अपडेट् कर्तुं असफलम् - आन्तरिकदोषः"
 
 #: ewsresource.cpp:1322
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
-msgstr ""
+msgstr "वैश्विकटैग-अद्यतन-अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:1338
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
-msgstr ""
+msgstr "वैश्विकटैग्-पुनर्प्राप्ति-अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:1416
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
-msgstr ""
+msgstr "प्रमाणीकरणं कुर्वन्तु"
 
 #: ewsresource.cpp:1428 ewsresource.cpp:1443
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
-msgstr ""
+msgstr "प्रमाणीकरणं विफलम् अभवत्"
 
 #: ewsresource.cpp:1451
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"
-msgstr ""
+msgstr "आत्त"
 
 #. i18n: ectx: label, entry (BaseUrl), group (General)
 #: ewsresource.kcfg:10
@@ -1064,7 +1073,7 @@ msgstr ""
 #, kde-format
 msgctxt "The username to login into the server"
 msgid "Username"
-msgstr ""
+msgstr "उपयोक्तृनाम"
 
 #. i18n: ectx: tooltip, entry (Username), group (General)
 #. i18n: ectx: whatsthis, entry (Username), group (General)
@@ -1097,7 +1106,7 @@ msgstr "प्रमाणीकरणकाले डोमेननामस�
 #, kde-format
 msgctxt "Account e-mail address"
 msgid "E-mail"
-msgstr ""
+msgstr "ई-मेल"
 
 #. i18n: ectx: tooltip, entry (Email), group (General)
 #. i18n: ectx: whatsthis, entry (Email), group (General)
@@ -1191,43 +1200,43 @@ msgstr "PKey प्रमाणीकरणस्य मार्गः PEM न�
 #, kde-format
 msgctxt "@info"
 msgid "Exchange server not configured."
-msgstr ""
+msgstr "विनिमयसर्वरः विन्यस्तः नास्ति।"
 
 #: ewssubscriptionwidget.cpp:180 ewssubscriptionwidget.cpp:201
 #, kde-format
 msgctxt "@info"
 msgid "Failed to retrieve folder list."
-msgstr ""
+msgstr "पुटसूचीं पुनः प्राप्तुं असफलम्।"
 
 #: ewssubscriptionwidget.cpp:286
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
-msgstr ""
+msgstr "सर्वर-पक्षीयसदस्यतां सक्षमं कुर्वन्तु"
 
 #: ewssubscriptionwidget.cpp:294
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Filter folders"
-msgstr ""
+msgstr "पुटं छानयन्तु"
 
 #: ewssubscriptionwidget.cpp:314
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
-msgstr ""
+msgstr "पुनः लोड करें &सूची"
 
 #: ewssubscriptionwidget.cpp:317
 #, kde-format
 msgctxt "@action:button"
 msgid "&Reset"
-msgstr ""
+msgstr "&पुनः सेट् कुर्वन्तु"
 
 #: ewssubscriptionwidget.cpp:326
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"
-msgstr ""
+msgstr "सदस्यता प्राप्त ही"
 
 #: mail/ewscreatemailjob.cpp:148 mail/ewscreatemailjob.cpp:185
 #: mail/ewscreatemailjob.cpp:218
@@ -1239,10 +1248,10 @@ msgstr "मेल-वस्तु निर्मातुं असफलम्
 #, kde-format
 msgctxt "@info:status"
 msgid "Item update failed: "
-msgstr ""
+msgstr "मद अद्यतनं विफलम्: "
 
 #: mail/ewsmodifymailjob.cpp:103
 #, kde-format
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
-msgstr ""
+msgstr "अद्यतनं मदप्रतिसादं संसाधयन् क्रमात् बहिः द्रव्यम्।"

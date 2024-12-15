@@ -3,19 +3,21 @@
 # This file is distributed under the same license as the kdepim-runtime package.
 # Kali <EMAIL@ADDRESS>, 2024.
 #
+# SPDX-FileCopyrightText: 2024 kali <skkalwar999@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-18 00:40+0000\n"
-"PO-Revision-Date: 2024-12-13 19:09+0530\n"
-"Last-Translator: Kali <EMAIL@ADDRESS>\n"
-"Language-Team: Sanskrit\n"
+"PO-Revision-Date: 2024-12-14 01:48+0530\n"
+"Last-Translator: kali <skkalwar999@gmail.com>\n"
+"Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
 "Language: sa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>2);\n"
+"X-Generator: Lokalize 24.08.2\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -88,7 +90,7 @@ msgstr "IMAP खाता"
 #, kde-format
 msgctxt "@title:window"
 msgid "IMAP Account Settings"
-msgstr ""
+msgstr "IMAP खाता सेटिंग्स्"
 
 #. i18n: ectx: label, entry (ImapServer), group (network)
 #: imapresource.kcfg:10
@@ -279,7 +281,7 @@ msgstr "अद्यापि कोऽपि सर्वरः विन्य
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
-msgstr ""
+msgstr "सर्वरसाइड सदस्यता"
 
 #: imapresourcebase.cpp:283
 #, kde-format
@@ -295,73 +297,73 @@ msgstr "सर्वरः उपलब्धः नास्ति ।"
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
-msgstr ""
+msgstr "'%1' इत्यस्मिन् मदं योजयन् ।"
 
 #: imapresourcebase.cpp:358
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
-msgstr ""
+msgstr "'%1' इत्यस्मिन् द्रव्यं अद्यतनीकरोति ।"
 
 #: imapresourcebase.cpp:365
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
-msgstr ""
+msgstr "वस्तूनि अद्यतनं कुर्वन्"
 
 #: imapresourcebase.cpp:379
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
-msgstr ""
+msgstr "वस्तूनि निष्कासयन्"
 
 #: imapresourcebase.cpp:395
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
-msgstr ""
+msgstr "'%1' तः '%2' मध्ये वस्तूनि स्थानान्तरयति।"
 
 #: imapresourcebase.cpp:404
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
-msgstr ""
+msgstr "पुटं पुनः प्राप्तम्"
 
 #: imapresourcebase.cpp:411
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
-msgstr ""
+msgstr "'%1' कृते अतिरिक्तपुटसूचनाः पुनः प्राप्ताः ।"
 
 #: imapresourcebase.cpp:429
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
-msgstr ""
+msgstr "'%1' इति पुटस्य निर्माणम् ।"
 
 #: imapresourcebase.cpp:435
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
-msgstr ""
+msgstr "'%1' पुटस्य अद्यतनीकरणम् ।"
 
 #: imapresourcebase.cpp:448
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
-msgstr ""
+msgstr "'%1' पुटं निष्कासयति।"
 
 #: imapresourcebase.cpp:455
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
-msgstr ""
+msgstr "'%1' पुटं '%2' तः '%3' मध्ये स्थानान्तरयति।"
 
 #: imapresourcebase.cpp:485
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr ""
+msgstr "अन्वेषणं कुर्वन्…"
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -413,7 +415,7 @@ msgstr ""
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
-msgstr ""
+msgstr "कीचेन् तः गुप्तशब्दं पठितुं असफलम्।"
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -474,7 +476,7 @@ msgstr "साझापुटम्"
 #, kde-format
 msgctxt "@info:status"
 msgid "Fetching missing mail bodies in %3: %1/%2"
-msgstr ""
+msgstr "%3: %1/%2 मध्ये लुप्तमेलशरीराणि आनयन्"
 
 #: retrieveitemtask.cpp:35
 #, kde-format
@@ -601,7 +603,7 @@ msgstr "प्रवेशकाले विच्छिन्नः।"
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
-msgstr ""
+msgstr "%1 IMAP खातेः कृते गुप्तशब्दः न प्राप्तः"
 
 #: settings.cpp:162
 #, kde-format
@@ -609,13 +611,13 @@ msgctxt "@info:status"
 msgid ""
 "An error occured when retriving the IMAP password from the system keychain: "
 "\"%1\""
-msgstr ""
+msgstr "प्रणाली कीलश्रृङ्खलातः IMAP गुप्तशब्दं पुनः प्राप्तुं त्रुटिः अभवत्: \"%1\"."
 
 #: settings.cpp:192
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
-msgstr ""
+msgstr "%1 sieve खातेः कृते गुप्तशब्दः न प्राप्तः"
 
 #: settings.cpp:198
 #, kde-format
@@ -623,7 +625,7 @@ msgctxt "@info:status"
 msgid ""
 "An error occured when retriving the sieve password from the system keychain: "
 "\"%1\""
-msgstr ""
+msgstr "प्रणाली कीलश्रृङ्खलातः चलनीगुप्तशब्दं पुनः प्राप्तुं त्रुटिः अभवत्: \"%1\"."
 
 #: settings.cpp:228
 #, kde-format
@@ -631,26 +633,26 @@ msgctxt "@info:status"
 msgid ""
 "An error occured when saving the sieve password in the system keychain: "
 "\"%1\""
-msgstr ""
+msgstr "सिस्टम् कीलचेन् मध्ये चलनीगुप्तशब्दं रक्षन्ते सति त्रुटिः अभवत्: \"%1\"."
 
 #: settings.cpp:254
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occured when saving the IMAP password in the system keychain: \"%1\""
-msgstr ""
+msgstr "सिस्टम् कीचेन् मध्ये IMAP गुप्तशब्दं रक्षन्ते सति त्रुटिः अभवत्: \"%1\"."
 
 #: settings.cpp:341
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
-msgstr ""
+msgstr "%1 IMAP खातेन समस्या"
 
 #: settingspasswordrequester.cpp:75
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "IMAP ई-मेल खाते भवतः ध्यानस्य आवश्यकता वर्तते।"
 
 #: settingspasswordrequester.cpp:79
 #, kde-format
@@ -682,13 +684,13 @@ msgstr ""
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
-msgstr ""
+msgstr "पुनः प्रयासं कुर्वन्तु"
 
 #: settingspasswordrequester.cpp:97
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr ""
+msgstr "सेटिंग्स् उद्घाटयन्तु"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -697,7 +699,7 @@ msgstr ""
 #, kde-format
 msgctxt "Authentication method"
 msgid "Clear text"
-msgstr ""
+msgstr "पाठः स्पष्टः"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -706,13 +708,13 @@ msgstr ""
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
-msgstr ""
+msgstr "अनामक"
 
 #: setupserver.cpp:86
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
-msgstr ""
+msgstr "XOAuth"
 
 #: setupserver.cpp:154
 #, kde-format
@@ -723,14 +725,14 @@ msgstr "आर्काइव फोल्डर"
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%प% ९."
 
 #: setupserver.cpp:167
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%एकनिमेषे"
+msgstr[1] "%v निमेषाः"
 
 #: setupserver.cpp:182
 #, kde-format
@@ -757,7 +759,7 @@ msgstr ""
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
-msgstr ""
+msgstr "सर्वर पता परिवर्तनम्"
 
 #: setupserver.cpp:279
 #, kde-format
@@ -774,7 +776,7 @@ msgstr ""
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
-msgstr ""
+msgstr "उपयोक्तृनाम परिवर्तनम्"
 
 #: setupserver.cpp:572
 #, kde-format
@@ -973,7 +975,7 @@ msgstr "प्रमाणीकरणम् : १."
 #, kde-format
 msgctxt "Authentication method"
 msgid "LOGIN"
-msgstr ""
+msgstr "LOGIN इति"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -981,7 +983,7 @@ msgstr ""
 #, kde-format
 msgctxt "Authentication method"
 msgid "PLAIN"
-msgstr ""
+msgstr "सम"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -989,7 +991,7 @@ msgstr ""
 #, kde-format
 msgctxt "Authentication method"
 msgid "CRAM-MD5"
-msgstr ""
+msgstr "CRAM-MD5"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -997,7 +999,7 @@ msgstr ""
 #, kde-format
 msgctxt "Authentication method"
 msgid "DIGEST-MD5"
-msgstr ""
+msgstr "DIGEST-MD5"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -1005,7 +1007,7 @@ msgstr ""
 #, kde-format
 msgctxt "Authentication method"
 msgid "NTLM"
-msgstr ""
+msgstr "एनटीएलएम"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -1013,7 +1015,7 @@ msgstr ""
 #, kde-format
 msgctxt "Authentication method"
 msgid "GSSAPI"
-msgstr ""
+msgstr "GSSAPI"
 
 #. i18n: ectx: attribute (title), widget (QWidget, advancedTab)
 #: setupserverview_desktop.ui:356
@@ -1037,7 +1039,7 @@ msgstr "सर्वर-पक्षीयसदस्यतां सक्ष�
 #: setupserverview_desktop.ui:381
 #, kde-format
 msgid "Serverside Subscription…"
-msgstr "सर्वरसाइड सदस्यता..."
+msgstr "सर्वरसाइड सदस्यता…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1155,7 +1157,7 @@ msgstr "रिक्तम्‌"
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
-msgstr ""
+msgstr "पुनः लोड करें &सूची"
 
 #: subscriptiondialog.cpp:65
 #, kde-format
@@ -1167,10 +1169,10 @@ msgstr "सर्वर-पक्षीयसदस्यतां सक्ष�
 #, kde-format
 msgctxt "@label search for a subscription"
 msgid "Search:"
-msgstr ""
+msgstr "अन्वेषण:"
 
 #: subscriptiondialog.cpp:80
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"
-msgstr ""
+msgstr "सदस्यता प्राप्त ही"
