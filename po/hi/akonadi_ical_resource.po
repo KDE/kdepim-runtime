@@ -1,4 +1,4 @@
-# Sanskrit translations for kdepim-runtime package.
+# Hindi translations for kdepim-runtime package.
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 # Kali <EMAIL@ADDRESS>, 2024.
@@ -8,73 +8,72 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-27 00:40+0000\n"
-"PO-Revision-Date: 2024-12-13 19:09+0530\n"
+"PO-Revision-Date: 2024-12-15 15:57+0530\n"
 "Last-Translator: Kali <EMAIL@ADDRESS>\n"
-"Language-Team: Sanskrit\n"
-"Language: sa\n"
+"Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
+"Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n>2);\n"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icalresource.kcfg:10
 #, kde-format
 msgid "Path to iCal file."
-msgstr "iCal सञ्चिकायाः मार्गः ।"
+msgstr ""
 
 #. i18n: ectx: label, entry (DisplayName), group (General)
 #: icalresource.kcfg:14
 #, kde-format
 msgid "Display name."
-msgstr "नाम प्रदर्शयतु।"
+msgstr ""
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: icalresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "वास्तविकं पृष्ठभागदत्तांशं न परिवर्तयन्तु ।"
+msgstr ""
 
 #. i18n: ectx: label, entry (MonitorFile), group (General)
 #: icalresource.kcfg:22
 #, kde-format
 msgid "Monitor file for changes."
-msgstr "परिवर्तनार्थं सञ्चिकायाः निरीक्षणं कुर्वन्तु।"
+msgstr ""
 
 #. i18n: ectx: label, entry (PeriodicUpdate), group (General)
 #: icalresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr "समये समये सञ्चिकां अद्यतनं कुर्वन्तु।"
+msgstr ""
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: icalresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
-msgstr "निमेषेषु स्वचालितं अद्यतनकालः।"
+msgstr ""
 
 #: shared/icalresource.cpp:47
 #, kde-format
 msgid "Incidence with uid '%1' not found."
-msgstr "uid '%1' इत्यनेन सह घटना न प्राप्ता ।"
+msgstr ""
 
 #: shared/icalresourcebase.cpp:46 shared/icalresourcebase.cpp:59
 #: shared/icalresourcebase.cpp:90 shared/icalresourcebase.h:88
 #, kde-format
 msgid "Calendar not loaded."
-msgstr "पञ्चाङ्गं न लोडितम्।"
+msgstr ""
 
 #: shared/icalresourcebase.cpp:143
 #, kde-format
 msgid "Failed to save calendar file to %1"
-msgstr "%1 मध्ये पञ्चाङ्गसञ्चिकां रक्षितुं असफलम्"
+msgstr ""
 
 #: shared/icalresourcebase.h:93
 #, kde-format
 msgid "Unable to retrieve added item %1."
-msgstr "%1 योजितं द्रव्यं पुनः प्राप्तुं असमर्थम् ।"
+msgstr ""
 
 #: shared/icalresourcebase.h:93
 #, kde-format
 msgid "Unable to retrieve modified item %1."
-msgstr "परिवर्तितं द्रव्यं %1 पुनः प्राप्तुं असमर्थम् ।"
+msgstr ""

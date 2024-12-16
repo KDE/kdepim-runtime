@@ -1,4 +1,4 @@
-# Sanskrit translations for kdepim-runtime package.
+# Hindi translations for kdepim-runtime package.
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 # Kali <EMAIL@ADDRESS>, 2024.
@@ -8,14 +8,13 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2021-11-03 00:20+0000\n"
-"PO-Revision-Date: 2024-12-13 19:09+0530\n"
+"PO-Revision-Date: 2024-12-15 15:57+0530\n"
 "Last-Translator: Kali <EMAIL@ADDRESS>\n"
-"Language-Team: Sanskrit\n"
-"Language: sa\n"
+"Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
+"Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n>2);\n"
 
 #: abstractlocalstore.cpp:396 abstractlocalstore.cpp:427
 #: abstractlocalstore.cpp:458 abstractlocalstore.cpp:484
@@ -26,7 +25,7 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Configured storage location is empty"
-msgstr "विन्यस्तं भण्डारणस्थानं रिक्तम् अस्ति"
+msgstr ""
 
 #: abstractlocalstore.cpp:401 abstractlocalstore.cpp:432
 #: abstractlocalstore.cpp:463 abstractlocalstore.cpp:489
@@ -35,47 +34,47 @@ msgstr "विन्यस्तं भण्डारणस्थानं र�
 #, kde-format
 msgctxt "@info:status"
 msgid "Given folder name is empty"
-msgstr "दत्तं पुटनाम रिक्तम् अस्ति"
+msgstr ""
 
 #: abstractlocalstore.cpp:406 abstractlocalstore.cpp:525
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits folder creation in folder %1"
-msgstr "अभिगमननियन्त्रणं %1 पुटे पुटनिर्माणं निषिद्धं करोति"
+msgstr ""
 
 #: abstractlocalstore.cpp:437
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits folder deletion in folder %1"
-msgstr "अभिगमननियन्त्रणं %1 पुटे पुटविलोपनं निषिद्धं करोति"
+msgstr ""
 
 #: abstractlocalstore.cpp:494
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits folder modification in folder %1"
-msgstr "अभिगमननियन्त्रणं %1 पुटे पुटपरिवर्तनं निषिद्धं करोति"
+msgstr ""
 
 #: abstractlocalstore.cpp:580 abstractlocalstore.cpp:645
 #: abstractlocalstore.cpp:679 abstractlocalstore.cpp:731
 #, kde-format
 msgctxt "@info:status"
 msgid "Given item identifier is empty"
-msgstr "दत्तः द्रव्यपरिचयः रिक्तः अस्ति"
+msgstr ""
 
 #: abstractlocalstore.cpp:618 abstractlocalstore.cpp:719
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits item creation in folder %1"
-msgstr "अभिगमननियन्त्रणं %1 पुटे मदनिर्माणं निषिद्धं करोति"
+msgstr ""
 
 #: abstractlocalstore.cpp:651
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits item modification in folder %1"
-msgstr "अभिगमननियन्त्रणं %1 पुटे मदपरिवर्तनं निषिद्धं करोति"
+msgstr ""
 
 #: abstractlocalstore.cpp:685 abstractlocalstore.cpp:725
 #, kde-format
 msgctxt "@info:status"
 msgid "Access control prohibits item deletion in folder %1"
-msgstr "अभिगमननियन्त्रणं %1 पुटस्य मदविलोपनं निषिद्धं करोति"
+msgstr ""

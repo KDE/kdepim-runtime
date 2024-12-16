@@ -1,4 +1,4 @@
-# Sanskrit translations for kdepim-runtime package.
+# Hindi translations for kdepim-runtime package.
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 # Kali <EMAIL@ADDRESS>, 2024.
@@ -8,54 +8,53 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-12 00:39+0000\n"
-"PO-Revision-Date: 2024-12-13 19:08+0530\n"
+"PO-Revision-Date: 2024-12-15 15:57+0530\n"
 "Last-Translator: Kali <EMAIL@ADDRESS>\n"
-"Language-Team: Sanskrit\n"
-"Language: sa\n"
+"Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
+"Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n>2);\n"
 
 #: configwidget.cpp:36
 #, kde-format
 msgid "Archive Folder"
-msgstr "आर्काइव फोल्डर"
+msgstr ""
 
 #: configwidget.cpp:39
 #, kde-format
 msgid "Activities"
-msgstr "गतिविधयः"
+msgstr ""
 
 #: configwidget.cpp:54
 #, kde-format
 msgid "The selected path is empty."
-msgstr "चयनितः मार्गः रिक्तः अस्ति।"
+msgstr ""
 
 #: configwidget.cpp:67
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
-msgstr "चयनितमार्गे वैधानि Maildir पुटानि सन्ति ।"
+msgstr ""
 
 #: configwidget.cpp:74
 #, kde-format
 msgid "The selected path is a valid Maildir."
-msgstr "चयनितः मार्गः वैधः मैल्डिरः अस्ति ।"
+msgstr ""
 
 #: configwidget.cpp:80
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
-msgstr "चयनितः मार्गः अद्यापि नास्ति, नूतनः मैल्डिरः निर्मितः भविष्यति ।"
+msgstr ""
 
 #: configwidget.cpp:84
 #, kde-format
 msgid "The selected path does not exist."
-msgstr "चयनितः मार्गः नास्ति।"
+msgstr ""
 
 #: libmaildir/maildir.cpp:214 libmaildir/maildir.cpp:219
 #, kde-format
 msgid "Error opening %1; this folder is missing."
-msgstr "%1 उद्घाटने त्रुटिः; एतत् पुटं लुप्तम् अस्ति।"
+msgstr ""
 
 #: libmaildir/maildir.cpp:225
 #, kde-format
@@ -63,8 +62,6 @@ msgid ""
 "Error opening %1; either this is not a valid maildir folder, or you do not "
 "have sufficient access permissions."
 msgstr ""
-"%1 उद्घाटने त्रुटिः; अथवा एतत् वैधं maildir पुटं नास्ति, अथवा भवतः पर्याप्ताः "
-"अभिगमनानुमतिः नास्ति ।"
 
 #: libmaildir/maildir.cpp:452 libmaildir/maildir.cpp:474
 #: libmaildir/maildir.cpp:492 libmaildir/maildir.cpp:512
@@ -72,154 +69,154 @@ msgstr ""
 #: libmaildir/maildir.cpp:630 libmaildir/maildir.cpp:780
 #, kde-format
 msgid "Cannot locate mail file %1."
-msgstr "%1 मेलसञ्चिकां ज्ञातुं न शक्यते ।"
+msgstr ""
 
 #: libmaildir/maildir.cpp:458 libmaildir/maildir.cpp:480
 #, kde-format
 msgid "Cannot open mail file %1."
-msgstr "मेलसञ्चिका %1 उद्घाटयितुं न शक्यते ।"
+msgstr ""
 
 #: libmaildir/maildir.cpp:563 libmaildir/maildir.cpp:590
 #, kde-format
 msgid "Cannot write to mail file %1."
-msgstr "%1 मेलसञ्चिकायां लिखितुं न शक्यते ।"
+msgstr ""
 
 #: libmaildir/maildir.cpp:604
 #, kde-format
 msgid "Failed to create mail file %1. The error was: %2"
-msgstr "%1 मेलसञ्चिकां निर्मातुं असफलम् । त्रुटिः आसीत् : %2"
+msgstr ""
 
 #: libmaildir/maildir.cpp:698
 #, kde-format
 msgid "Failed to update the file name %1 to %2 on the disk. The error was: %3."
-msgstr "डिस्कमध्ये %1 तः %2 सञ्चिकानाम अद्यतनीकर्तुं असफलम् । त्रुटिः आसीत् : %3 ।"
+msgstr ""
 
 #: maildirresource.cpp:122 maildirresource.cpp:254 maildirresource.cpp:293
 #: maildirresource.cpp:387 maildirresource.cpp:428 maildirresource.cpp:548
 #: maildirresource.cpp:578 maildirresource.cpp:621 maildirresource.cpp:654
 #, kde-format
 msgid "Unusable configuration."
-msgstr "अनुपयोगी विन्यास।"
+msgstr ""
 
 #: maildirresource.cpp:187
 #, kde-format
 msgid "Unable to fetch item: The maildir folder \"%1\" is not valid."
-msgstr "द्रव्यं आनेतुं असमर्थः: maildir पुटं \"%1\" वैधं नास्ति ।"
+msgstr ""
 
 #: maildirresource.cpp:265
 #, kde-format
 msgid "Error: Unsupported type."
-msgstr "त्रुटिः - असमर्थितः प्रकारः ।"
+msgstr ""
 
 #: maildirresource.cpp:331
 #, kde-format
 msgid "Failed to change the flags for the mail. %1"
-msgstr "मेलस्य कृते ध्वजान् परिवर्तयितुं असफलम् । %1"
+msgstr ""
 
 #: maildirresource.cpp:366
 #, kde-format
 msgid "Maildir resource got a non-mail content."
-msgstr "Maildir संसाधनं गैर-मेल सामग्रीं प्राप्तवान्।"
+msgstr ""
 
 #: maildirresource.cpp:393
 #, kde-format
 msgid "Source folder is invalid: '%1'."
-msgstr "स्रोतपुटम् अमान्यम् अस्ति: '%1' ।"
+msgstr ""
 
 #: maildirresource.cpp:399
 #, kde-format
 msgid "Destination folder is invalid: '%1'."
-msgstr "गन्तव्यपुटम् अमान्यम् अस्ति: '%1' ।"
+msgstr ""
 
 #: maildirresource.cpp:416
 #, kde-format
 msgid "Could not move message '%1' from '%2' to '%3'. The error was %4."
-msgstr "'%1' सन्देशं '%2' तः '%3' मध्ये स्थानान्तरयितुं न शक्तम् । दोषः %4 आसीत् ।"
+msgstr ""
 
 #: maildirresource.cpp:438
 #, kde-format
 msgid "Failed to delete message: %1"
-msgstr "सन्देशं विलोपयितुं असफलम्: %1"
+msgstr ""
 
 #: maildirresource.cpp:527
 #, kde-format
 msgid "Maildir '%1' for collection '%2' is invalid."
-msgstr "'%2' संग्रहस्य कृते मैल्डिर '%1' अमान्यम् अस्ति ।"
+msgstr ""
 
 #: maildirresource.cpp:606
 #, kde-format
 msgid "Unable to rename maildir folder '%1'."
-msgstr "maildir पुटस्य नाम '%1' इति परिवर्तयितुं असमर्थः ।"
+msgstr ""
 
 #: maildirresource.cpp:627
 #, kde-format
 msgid "Cannot move root maildir folder '%1'."
-msgstr "'%1' मूलं maildir पुटं स्थानान्तरयितुं न शक्यते ।"
+msgstr ""
 
 #: maildirresource.cpp:642
 #, kde-format
 msgid "Unable to move maildir folder '%1' from '%2' to '%3'."
-msgstr "'%1' maildir पुटं '%2' तः '%3' मध्ये स्थानान्तरयितुं असमर्थः ।"
+msgstr ""
 
 #: maildirresource.cpp:660
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
-msgstr "शीर्षस्तरीयं maildir पुटं '%1' विलोपयितुं न शक्यते ।"
+msgstr ""
 
 #: maildirresource.cpp:669
 #, kde-format
 msgid "Failed to delete sub-folder '%1'."
-msgstr "'%1' उपपुटं विलोपयितुं असफलम् ।"
+msgstr ""
 
 #: maildirresource.cpp:683
 #, kde-format
 msgid "Unable to create maildir '%1'."
-msgstr "maildir '%1' निर्मातुं असमर्थः ।"
+msgstr ""
 
 #: maildirresource.cpp:693
 #, kde-format
 msgid "No usable storage location configured."
-msgstr "न कोऽपि उपयोगी भण्डारणस्थानं विन्यस्तम् ।"
+msgstr ""
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: maildirresource.kcfg:10
 #, kde-format
 msgid "Path to maildir"
-msgstr "मैल्डिरं प्रति मार्गः"
+msgstr ""
 
 #. i18n: ectx: label, entry (TopLevelIsContainer), group (General)
 #: maildirresource.kcfg:14
 #, kde-format
 msgid ""
 "Path points to a folder containing Maildirs instead of to a maildir itself."
-msgstr "मार्गः स्वयं maildir इत्यस्य स्थाने Maildirs युक्तं पुटं दर्शयति ।"
+msgstr ""
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: maildirresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "वास्तविकं पृष्ठभागदत्तांशं न परिवर्तयन्तु ।"
+msgstr ""
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, ConfigWidget)
 #: settings.ui:15
 #, kde-format
 msgid "Mail Directory Settings"
-msgstr "मेल निर्देशिका सेटिंग्स्"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: settings.ui:37
 #, kde-format
 msgid "Maildir"
-msgstr "मैलदीर्"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: settings.ui:43
 #, kde-format
 msgid "Select the folder containing the maildir information:"
-msgstr "maildir सूचनायुक्तं पुटं चिनोतु:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: settings.ui:53
 #, kde-format
 msgid "Open in read-only mode"
-msgstr "केवलं पठनीयविधाने उद्घाटयन्तु"
+msgstr ""
