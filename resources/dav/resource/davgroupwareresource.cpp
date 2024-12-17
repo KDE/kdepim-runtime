@@ -674,13 +674,6 @@ void DavGroupwareResource::itemsTagsChanged(const Item::List &items, const QSet<
         return;
     }
 
-    qCWarning(DAVRESOURCE_LOG) << "======== Items tags changed! ========";
-    qCWarning(DAVRESOURCE_LOG) << "Added:" << addedTags;
-    qCWarning(DAVRESOURCE_LOG) << "Removed:" << removedTags;
-    for (const auto &item : items) {
-        qCWarning(DAVRESOURCE_LOG) << "Item" << item.id() << "(RID" << item.remoteId() << ") has tags" << item.tags();
-    }
-
     QList<std::tuple<KDAV::DavItem, Akonadi::Item>> modifiedItems;
     modifiedItems.reserve(items.size());
     for (auto akonadiItem : items) {
