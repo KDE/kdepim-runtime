@@ -50,4 +50,9 @@ createDavItem(const Akonadi::Item &item, const Akonadi::Collection &collection, 
  * Parses the DAV data contained in @p source and puts it in @p target and @extraItems.
  */
 bool parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Akonadi::Item::List &extraItems);
+
+/**
+ * Converts given list of tags into iCal categories
+ */
+QStringList tagsToCategories(const Akonadi::Tag::List &tags);
 }
