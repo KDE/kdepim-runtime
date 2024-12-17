@@ -72,7 +72,7 @@ KDAV::Protocol Utils::protocolByTranslatedName(const QString &name)
     return protocol;
 }
 
-static QStringList tagsToCategories(const Akonadi::Tag::List &tags)
+QStringList Utils::tagsToCategories(const Akonadi::Tag::List &tags)
 {
     QStringList categories;
     categories.reserve(tags.size());
@@ -109,7 +109,9 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
         rawData = converter.exportVCard(contact, KContacts::VCardConverter::v3_0);
     } else if (item.hasPayload<IncidencePtr>()) {
         const KCalendarCore::MemoryCalendar::Ptr calendar(new KCalendarCore::MemoryCalendar(QTimeZone::systemTimeZone()));
-        calendar->addIncidence(item.payload<IncidencePtr>());
+        auto incidence = item.payload<IncidencePtr>();
+        incidence->setCategories(tagsToCategories(item.tags()));
+        calendar->addIncidence(incidence);
         for (const Akonadi::Item &dependentItem : std::as_const(dependentItems)) {
             auto payload = dependentItem.payload<IncidencePtr>();
             payload->setCategories(tagsToCategories(dependentItem.tags()));

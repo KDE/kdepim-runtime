@@ -581,16 +581,18 @@ class DavItemsModifyJob : public KCompositeJob
 {
     Q_OBJECT
 public:
-    DavItemsModifyJob(const QList<KDAV::DavItem> &items, QObject *parent)
+    DavItemsModifyJob(const QList<std::tuple<KDAV::DavItem, Akonadi::Item>> &items, std::shared_ptr<KDAV::EtagCache> cache, DavGroupwareResource *parent)
         : KCompositeJob(parent)
         , mItems(items)
+        , mCache(cache)
     {
     }
 
     void start() override
     {
-        for (const auto &item : std::as_const(mItems)) {
-            auto *job = new KDAV::DavItemModifyJob(item, this);
+        for (const auto &[davItem, akonadiItem] : std::as_const(mItems)) {
+            auto *job = new KDAV::DavItemModifyJob(davItem, this);
+            job->setProperty("item", QVariant::fromValue(akonadiItem));
             addSubjob(job);
             job->start();
         }
@@ -600,12 +602,46 @@ public:
         }
     }
 
+    Akonadi::Item::List akonadiItems() const
+    {
+        return mUpdatedAkonadiItems;
+    }
+
+Q_SIGNALS:
+    void jobFinished(KJob *job);
+
 private:
     void slotResult(KJob *job) override
     {
-        if (job->error() && !error()) {
-            setError(job->error());
-            setErrorText(job->errorText());
+        if (const auto davJob = qobject_cast<KDAV::DavItemModifyJob *>(job); davJob) {
+            auto akonadiItem = job->property("item").value<Akonadi::Item>();
+            if (job->error() && !error()) {
+                qCWarning(DAVRESOURCE_LOG,
+                          "Error modifying DAV item ID: %lld (RID: %s): %s",
+                          akonadiItem.id(),
+                          qUtf8Printable(akonadiItem.remoteId()),
+                          qUtf8Printable(job->errorText()));
+                setError(job->error());
+                setErrorText(job->errorText());
+            } else {
+                // If we successfuly updated the DAV item, now write back the modified payload
+                // to Akonadi.
+                const auto davItem = davJob->item();
+                akonadiItem.setRemoteRevision(davItem.etag());
+                mCache->setEtag(akonadiItem.remoteId(), davItem.etag());
+                auto *modifyJob = new ItemModifyJob(akonadiItem, this);
+                modifyJob->disableRevisionCheck();
+                addSubjob(modifyJob);
+            }
+        } else if (const auto akonadiJob = qobject_cast<Akonadi::ItemModifyJob *>(job); akonadiJob) {
+            const auto item = akonadiJob->item();
+            if (job->error() && !error()) {
+                qCWarning(DAVRESOURCE_LOG, "Error modifying Akonadi item ID: %lld: %s", item.id(), qUtf8Printable(job->errorText()));
+                setError(job->error());
+                setErrorText(job->errorText());
+            }
+
+            mUpdatedAkonadiItems.push_back(item);
         }
 
         removeSubjob(job);
@@ -614,7 +650,9 @@ private:
         }
     }
 
-    QList<KDAV::DavItem> mItems;
+    QList<std::tuple<KDAV::DavItem, Akonadi::Item>> mItems;
+    Akonadi::Item::List mUpdatedAkonadiItems;
+    std::shared_ptr<KDAV::EtagCache> mCache;
 };
 
 void DavGroupwareResource::itemsTagsChanged(const Item::List &items, const QSet<Tag> &addedTags, const QSet<Tag> &removedTags)
@@ -623,34 +661,59 @@ void DavGroupwareResource::itemsTagsChanged(const Item::List &items, const QSet<
     Q_UNUSED(addedTags);
     Q_UNUSED(removedTags);
 
-    // Partition items by collection
-    QHash<QString, Item::List> itemsByCollection;
-    for (const Item &item : items) {
-        itemsByCollection[item.parentCollection().remoteId()].push_back(item);
+    if (!configurationIsValid()) {
+        return;
     }
 
-    QList<KDAV::DavItem> davItems;
-    davItems.reserve(items.size());
-    for (auto it = itemsByCollection.constBegin(), end = itemsByCollection.constEnd(); it != end; ++it) {
-        const QString collectionRemoteId = it.key();
-        const Item::List &items = it.value();
+    // We know that items are already only for a single collection
+    const auto collection = items.first().parentCollection();
+    auto cache = mEtagCaches.find(collection.remoteId());
+    if (cache == mEtagCaches.end()) {
+        qCDebug(DAVRESOURCE_LOG) << "Items tags changed for a collection we don't have in the cache";
+        cancelTask();
+        return;
+    }
 
-        if (!mEtagCaches.contains(collectionRemoteId)) {
-            qCDebug(DAVRESOURCE_LOG) << "Items tags changed for a collection we don't have in the cache";
-        }
+    qCWarning(DAVRESOURCE_LOG) << "======== Items tags changed! ========";
+    qCWarning(DAVRESOURCE_LOG) << "Added:" << addedTags;
+    qCWarning(DAVRESOURCE_LOG) << "Removed:" << removedTags;
+    for (const auto &item : items) {
+        qCWarning(DAVRESOURCE_LOG) << "Item" << item.id() << "(RID" << item.remoteId() << ") has tags" << item.tags();
+    }
 
-        for (const auto &item : items) {
-            davItems.push_back(Utils::createDavItem(item, item.parentCollection()));
+    QList<std::tuple<KDAV::DavItem, Akonadi::Item>> modifiedItems;
+    modifiedItems.reserve(items.size());
+    for (auto akonadiItem : items) {
+        if (akonadiItem.hasPayload<IncidencePtr>()) {
+            auto incidence = akonadiItem.payload<IncidencePtr>();
+            incidence->setCategories(Utils::tagsToCategories(akonadiItem.tags()));
+            akonadiItem.setPayload(incidence);
+
+            auto url = akonadiItem.remoteId();
+            if (url.contains(QLatin1Char('#'))) {
+                url.truncate(url.indexOf(QLatin1Char('#')));
+            }
+            const auto davUrl = Settings::self()->davUrlFromCollectionUrl(akonadiItem.parentCollection().remoteId(), akonadiItem.remoteId());
+
+            auto davItem = Utils::createDavItem(akonadiItem, akonadiItem.parentCollection());
+
+            // We have to re-set the URL as it's not necessarily valud after createDavItem()
+            davItem.setUrl(davUrl);
+            davItem.setEtag(akonadiItem.remoteRevision());
+            modifiedItems.push_back(std::make_tuple(davItem, akonadiItem));
         }
     }
 
-    DavItemsModifyJob *job = new DavItemsModifyJob(davItems, this);
-    connect(job, &KJob::result, this, [this, items](KJob *job) {
+    auto job = new DavItemsModifyJob(modifiedItems, *cache, this);
+    connect(job, &KJob::result, this, [this, job]() {
         if (job->error()) {
+            qCWarning(DAVRESOURCE_LOG) << "Unable to modify items tags:" << job->errorText();
             cancelTask(i18n("Unable to modify items: %1", job->errorText()));
             return;
         }
-        changesCommitted(items);
+
+        qCWarning(DAVRESOURCE_LOG) << "Items tags changed successfully";
+        changesCommitted(job->akonadiItems());
     });
     job->start();
 }
