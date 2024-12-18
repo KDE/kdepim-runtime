@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-30 00:41+0000\n"
+"POT-Creation-Date: 2024-12-18 00:41+0000\n"
 "PO-Revision-Date: 2024-08-19 22:47+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -320,37 +320,37 @@ msgstr "알 수 없는 모음집에서 항목을 가져와야 함: %1"
 msgid "Invalid collection for item %1."
 msgstr "항목 %1의 모음집이 올바르지 않습니다."
 
-#: davgroupwareresource.cpp:650
+#: davgroupwareresource.cpp:704
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "항목을 수정할 수 없음: %1"
 
-#: davgroupwareresource.cpp:687
+#: davgroupwareresource.cpp:743
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "모음집을 수정할 수 없음: %1"
 
-#: davgroupwareresource.cpp:756
+#: davgroupwareresource.cpp:812
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "모음집을 삭제하는 중: %1"
 
-#: davgroupwareresource.cpp:776
+#: davgroupwareresource.cpp:832
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "모음집을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:909 davgroupwareresource.cpp:1008
+#: davgroupwareresource.cpp:965 davgroupwareresource.cpp:1064
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "항목을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:1088
+#: davgroupwareresource.cpp:1144
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "항목을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:1108
+#: davgroupwareresource.cpp:1164
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -359,23 +359,23 @@ msgstr ""
 "항목을 가져올 수 없음: 항목 데이터를 해석할 수 없습니다. 이미 삭제되었을 수"
 "도 있습니다."
 
-#: davgroupwareresource.cpp:1145
+#: davgroupwareresource.cpp:1201
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "항목을 추가할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1189 davgroupwareresource.cpp:1302
-#: davgroupwareresource.cpp:1314
+#: davgroupwareresource.cpp:1245 davgroupwareresource.cpp:1358
+#: davgroupwareresource.cpp:1370
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "항목을 변경할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1276 davgroupwareresource.cpp:1333
+#: davgroupwareresource.cpp:1332 davgroupwareresource.cpp:1389
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "항목을 삭제할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1420 davgroupwareresource.cpp:1421
+#: davgroupwareresource.cpp:1476 davgroupwareresource.cpp:1477
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "리소스가 설정되지 않음"
