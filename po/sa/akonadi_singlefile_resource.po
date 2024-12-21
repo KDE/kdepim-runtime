@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-22 00:40+0000\n"
-"PO-Revision-Date: 2024-12-14 01:48+0530\n"
+"PO-Revision-Date: 2024-12-20 21:52+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
 "Language: sa\n"
@@ -119,7 +119,7 @@ msgstr ""
 #: settingsdialog.ui:145
 #, kde-format
 msgid "Autosave delay:"
-msgstr "स्वतः रक्षणविलम्बः : १."
+msgstr "स्वतः रक्षणविलम्बः :"
 
 #. i18n: ectx: property (toolTip), widget (QSpinBox, kcfg_AutosaveInterval)
 #: settingsdialog.ui:152
@@ -229,7 +229,7 @@ msgstr "संचिका"
 #: singlefileresourceconfigwidget_desktop.ui:47
 #, kde-format
 msgid "File or URL:"
-msgstr "सञ्चिका अथवा URL : १."
+msgstr "सञ्चिका अथवा URL :"
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
@@ -245,7 +245,7 @@ msgstr ""
 #: singlefileresourceconfigwidget_desktop.ui:79
 #, kde-format
 msgid "Display Name:"
-msgstr "प्रदर्शननाम : १."
+msgstr "प्रदर्शननाम :"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108

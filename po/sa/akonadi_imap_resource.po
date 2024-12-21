@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-18 00:40+0000\n"
-"PO-Revision-Date: 2024-12-14 01:48+0530\n"
+"PO-Revision-Date: 2024-12-20 22:10+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
 "Language: sa\n"
@@ -725,7 +725,7 @@ msgstr "आर्काइव फोल्डर"
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr "%प% ९."
+msgstr "%p%"
 
 #: setupserver.cpp:167
 #, kde-format
@@ -822,7 +822,7 @@ msgstr "खाता सूचना"
 #: setupserverview_desktop.ui:46
 #, kde-format
 msgid "Account Name:"
-msgstr "खातानाम : १."
+msgstr "खातानाम :"
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label)
 #: setupserverview_desktop.ui:57
@@ -839,7 +839,7 @@ msgstr ""
 #: setupserverview_desktop.ui:60
 #, kde-format
 msgid "I&MAP Server:"
-msgstr "I&MAP सर्वरः : १."
+msgstr "I&MAP सर्वरः :"
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label_2)
 #: setupserverview_desktop.ui:74
@@ -851,7 +851,7 @@ msgstr "उपयोक्तृनाम ।"
 #: setupserverview_desktop.ui:77
 #, kde-format
 msgid "Use&rname:"
-msgstr "प्रयोग&नाम: १."
+msgstr "प्रयोग&नाम:"
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label_3)
 #: setupserverview_desktop.ui:91
@@ -888,7 +888,7 @@ msgstr "&interval मेल-परीक्षणं सक्षमं कु�
 #: setupserverview_desktop.ui:129
 #, kde-format
 msgid "Check mail interval:"
-msgstr "मेल-अन्तरालं पश्यन्तु : १."
+msgstr "मेल-अन्तरालं पश्यन्तु :"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
 #: setupserverview_desktop.ui:160
@@ -924,13 +924,13 @@ msgstr ""
 #: setupserverview_desktop.ui:192
 #, kde-format
 msgid "Managesieve port:"
-msgstr "Managesyeve पोर्ट् : १."
+msgstr "Managesyeve पोर्ट् :"
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: setupserverview_desktop.ui:210
 #, kde-format
 msgid "Alternate Server:"
-msgstr "वैकल्पिकसर्वरः : १."
+msgstr "वैकल्पिकसर्वरः :"
 
 #. i18n: ectx: property (title), widget (QGroupBox, authentication)
 #: setupserverview_desktop.ui:223
@@ -960,14 +960,14 @@ msgstr "I&MAP उपयोक्तृनाम तथा गुप्तशब�
 #: setupserverview_desktop.ui:277
 #, kde-format
 msgid "Username:"
-msgstr "उपयोक्तृनाम : १."
+msgstr "उपयोक्तृनाम :"
 
 #. i18n: ectx: property (text), widget (QLabel, label_15)
 #. i18n: ectx: property (text), widget (QLabel, label_10)
 #: setupserverview_desktop.ui:286 setupserverview_desktop.ui:509
 #, kde-format
 msgid "Authentication:"
-msgstr "प्रमाणीकरणम् : १."
+msgstr "प्रमाणीकरणम् :"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -1051,7 +1051,7 @@ msgstr "Automaticall&y compact folders (विलोपितान् सन्
 #: setupserverview_desktop.ui:397
 #, kde-format
 msgid "Trash folder:"
-msgstr "कचरापुटम् : १."
+msgstr "कचरापुटम् :"
 
 #. i18n: ectx: property (text), widget (KTitleWidget)
 #: setupserverview_desktop.ui:407
@@ -1075,7 +1075,7 @@ msgstr "सर्वर इन्फो"
 #: setupserverview_desktop.ui:432
 #, kde-format
 msgid "Encryption:"
-msgstr "एन्क्रिप्शन : १."
+msgstr "एन्क्रिप्शन :"
 
 #. i18n: ectx: property (text), widget (QRadioButton, tlsRadio)
 #: setupserverview_desktop.ui:441

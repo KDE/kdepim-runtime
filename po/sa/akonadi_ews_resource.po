@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-09 00:40+0000\n"
-"PO-Revision-Date: 2024-12-14 01:48+0530\n"
+"PO-Revision-Date: 2024-12-20 21:52+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
 "Language: sa\n"
@@ -197,7 +197,7 @@ msgstr "खाता सूचना"
 #: ewsconfigdialog.ui:57 ewsmtaconfigdialog.ui:32
 #, kde-format
 msgid "Account Name:"
-msgstr "खातानाम : १."
+msgstr "खातानाम :"
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, accountName)
 #: ewsconfigdialog.ui:64
@@ -210,7 +210,7 @@ msgstr "एतत् खातानाम सर्वेषु अकोना
 #, kde-format
 msgctxt "Exchange account e-mail address"
 msgid "Email:"
-msgstr "ईमेल : १."
+msgstr "ईमेल :"
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Email)
 #: ewsconfigdialog.ui:78
@@ -288,7 +288,7 @@ msgstr "उपयोक्ता यस्य Active Directory डोमेन�
 #, kde-format
 msgctxt "Exchange account username/login"
 msgid "Username:"
-msgstr "उपयोक्तृनाम : १."
+msgstr "उपयोक्तृनाम :"
 
 #. i18n: ectx: property (text), widget (QLabel, passwordLabel)
 #: ewsconfigdialog.ui:179
@@ -353,7 +353,7 @@ msgstr ""
 #: ewsconfigdialog.ui:225
 #, kde-format
 msgid "OAuth&2 (Office 365)"
-msgstr "OAuth&2 (कार्यालय ३६५) २."
+msgstr "OAuth&2 (कार्यालय ३६५)"
 
 #. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
 #: ewsconfigdialog.ui:235
@@ -429,7 +429,7 @@ msgstr ""
 #: ewsconfigdialog.ui:327
 #, kde-format
 msgid "Private Key (PKey) Authentication (Office 365)"
-msgstr "निजी कुञ्जी (PKey) प्रमाणीकरणम् (कार्यालयः ३६५) २."
+msgstr "निजी कुञ्जी (PKey) प्रमाणीकरणम् (कार्यालयः ३६५)"
 
 #. i18n: ectx: property (text), widget (QLabel, pkeyAuthCertLabel)
 #: ewsconfigdialog.ui:339
@@ -441,13 +441,13 @@ msgstr "प्रमाणपत्रं:"
 #: ewsconfigdialog.ui:353
 #, kde-format
 msgid "Private key:"
-msgstr "निजी कुञ्जी : १."
+msgstr "निजी कुञ्जी :"
 
 #. i18n: ectx: property (text), widget (QLabel, pkeyAuthPasswordLabel)
 #: ewsconfigdialog.ui:364
 #, kde-format
 msgid "Key password:"
-msgstr "मुख्यगुप्तशब्दः : १."
+msgstr "मुख्यगुप्तशब्दः :"
 
 #. i18n: ectx: attribute (title), widget (QWidget, subscriptionTab)
 #: ewsconfigdialog.ui:395
@@ -706,7 +706,7 @@ msgstr "EWS मेल परिवहन विन्यास"
 #: ewsmtaconfigdialog.ui:42
 #, kde-format
 msgid "Parent Exchange account:"
-msgstr "मातापितृ विनिमय खाता : १."
+msgstr "मातापितृ विनिमय खाता :"
 
 #: ewsmtaresource.cpp:57
 #, kde-format

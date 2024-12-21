@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-27 00:40+0000\n"
-"PO-Revision-Date: 2024-12-14 01:48+0530\n"
+"PO-Revision-Date: 2024-12-20 21:52+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
 "Language: sa\n"
@@ -234,7 +234,7 @@ msgstr "अन्तराल ताजगीकरणं सक्षमं क
 #: googlesettingswidget.ui:56
 #, kde-format
 msgid "Refresh interval:"
-msgstr "ताजगी अन्तरालः : १."
+msgstr "ताजगी अन्तरालः :"
 
 #. i18n: ectx: property (text), widget (QLabel, eventsLimitLabel)
 #: googlesettingswidget.ui:79
@@ -246,7 +246,7 @@ msgstr "केवलं घटनाः आनयन्तु यतः:"
 #: googlesettingswidget.ui:92
 #, kde-format
 msgid "Enabled Calendars:"
-msgstr "सक्षमाः पञ्चाङ्गाः : १."
+msgstr "सक्षमाः पञ्चाङ्गाः :"
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
@@ -259,7 +259,7 @@ msgstr "पुनः लोड करें"
 #: googlesettingswidget.ui:135
 #, kde-format
 msgid "Enabled Tasklists:"
-msgstr "सक्षमकार्यसूचिकाः : १."
+msgstr "सक्षमकार्यसूचिकाः :"
 
 #: personhandler.cpp:87
 #, kde-format

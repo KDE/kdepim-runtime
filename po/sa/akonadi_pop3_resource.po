@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-27 00:40+0000\n"
-"PO-Revision-Date: 2024-12-13 20:20+0530\n"
+"PO-Revision-Date: 2024-12-20 22:10+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
 "Language: sa\n"
@@ -23,7 +23,7 @@ msgstr ""
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr "%प% ९."
+msgstr "%p%"
 
 #: accountwidget.cpp:91
 #, kde-format
@@ -517,7 +517,7 @@ msgstr ""
 #: popsettings.ui:77
 #, kde-format
 msgid "Account &name:"
-msgstr "खाता &नाम: १."
+msgstr "खाता &नाम:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, nameEdit)
 #: popsettings.ui:87
@@ -557,7 +557,7 @@ msgstr ""
 #: popsettings.ui:117
 #, kde-format
 msgid "Use&rname:"
-msgstr "प्रयोग&नाम: १."
+msgstr "प्रयोग&नाम:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, loginEdit)
 #: popsettings.ui:127
@@ -606,7 +606,7 @@ msgstr "&interval मेल-परीक्षणं सक्षमं कु�
 #: popsettings.ui:174
 #, kde-format
 msgid "Check mail interval:"
-msgstr "मेल-अन्तरालं पश्यन्तु : १."
+msgstr "मेल-अन्तरालं पश्यन्तु :"
 
 #. i18n: ectx: attribute (title), widget (QWidget, page2)
 #: popsettings.ui:211
@@ -652,7 +652,7 @@ msgstr "मूलसन्देशः x दिवसानां अनन्�
 #: popsettings.ui:261
 #, kde-format
 msgid "Days to leave messages on the server:"
-msgstr "सर्वरे सन्देशान् त्यक्तुं दिवसाः : १."
+msgstr "सर्वरे सन्देशान् त्यक्तुं दिवसाः :"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, leaveOnServerCountCheck)
 #: popsettings.ui:284
@@ -674,7 +674,7 @@ msgstr ""
 #: popsettings.ui:290
 #, kde-format
 msgid "Number of messages to keep:"
-msgstr "स्थापनीयसन्देशानां संख्या : १."
+msgstr "स्थापनीयसन्देशानां संख्या :"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, leaveOnServerSizeCheck)
 #: popsettings.ui:313
@@ -696,7 +696,7 @@ msgstr ""
 #: popsettings.ui:319
 #, kde-format
 msgid "Maximum megabytes to keep:"
-msgstr "अधिकतमं मेगाबाइट् स्थापनीयम् : १."
+msgstr "अधिकतमं मेगाबाइट् स्थापनीयम् :"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, leaveOnServerSizeSpin)
 #: popsettings.ui:329
@@ -714,13 +714,13 @@ msgstr "&शीघ्रतरं मेल-अवलोकनार्थं �
 #: popsettings.ui:365
 #, kde-format
 msgid "Destination folder:"
-msgstr "गन्तव्यपुटम् : १."
+msgstr "गन्तव्यपुटम् :"
 
 #. i18n: ectx: property (text), widget (QLabel, preCommandLabel)
 #: popsettings.ui:375
 #, kde-format
 msgid "Pre-com&mand:"
-msgstr "पूर्वादेशः&आज्ञाः : १."
+msgstr "पूर्वादेशः&आज्ञाः :"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, precommand)
 #: popsettings.ui:391
@@ -744,7 +744,7 @@ msgstr "ऑटो डिटेक्ट्"
 #: popsettings.ui:424
 #, kde-format
 msgid "Encryption:"
-msgstr "एन्क्रिप्शन : १."
+msgstr "एन्क्रिप्शन :"
 
 #. i18n: ectx: property (text), widget (QRadioButton, encryptionNone)
 #: popsettings.ui:433
@@ -820,7 +820,7 @@ msgstr "पोताश्रय:"
 #: popsettings.ui:492
 #, kde-format
 msgid "Authentication:"
-msgstr "प्रमाणीकरणम् : १."
+msgstr "प्रमाणीकरणम् :"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, proxyCheck)
 #: popsettings.ui:502
