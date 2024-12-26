@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-09 00:40+0000\n"
-"PO-Revision-Date: 2024-12-20 21:52+0530\n"
-"Last-Translator: kali <skkalwar999@gmail.com>\n"
+"PO-Revision-Date: 2024-12-25 19:45+0530\n"
+"Last-Translator: kali <shreekantkalwar@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
 "Language: sa\n"
 "MIME-Version: 1.0\n"
@@ -794,7 +794,7 @@ msgstr "पुटं पुनः प्राप्तुं असफलम्
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
-msgstr "फोल्डर्-पुनर्प्राप्ति-अनुरोधं संसाधितुं असफलम्"
+msgstr "समुच्चय-पुनर्प्राप्ति-अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:485
 #, kde-format
@@ -903,7 +903,7 @@ msgstr "संग्रहं योजयितुं असफलम् - EWS 
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
-msgstr "फोल्डर् निर्मातुं अनुरोधं संसाधितुं असफलम्"
+msgstr "समुच्चय निर्मातुं अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:865
 #, kde-format
@@ -921,7 +921,7 @@ msgstr "पुटस्य निर्माणं कर्तुं असफ
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
-msgstr "फोल्डर् चालन अनुरोधं संसाधितुं असफलम्"
+msgstr "समुच्चय चालन अनुरोधं संसाधितुं असफलम्"
 
 #: ewsresource.cpp:906
 #, kde-format
