@@ -9,8 +9,8 @@
 
 #include "changecollectiontask.h"
 
-#include "imapaclattribute.h"
 #include <Akonadi/CollectionAnnotationsAttribute>
+#include <PimCommonAkonadi/ImapAclAttribute>
 #include <QTest>
 Q_DECLARE_METATYPE(QSet<QByteArray>)
 
@@ -38,7 +38,7 @@ private Q_SLOTS:
         collection.setName(QStringLiteral("Bar"));
         collection.setRights(Akonadi::Collection::AllRights);
 
-        auto acls = new Akonadi::ImapAclAttribute;
+        auto acls = new PimCommon::ImapAclAttribute;
         QMap<QByteArray, KIMAP::Acl::Rights> rights;
         // Old rights
         rights["test@kdab.com"] = KIMAP::Acl::rightsFromString("lrswipckxtda");
@@ -129,7 +129,7 @@ private Q_SLOTS:
         collection.setName(QStringLiteral("Bar"));
         collection.setRights(Akonadi::Collection::AllRights);
 
-        acls = new Akonadi::ImapAclAttribute;
+        acls = new PimCommon::ImapAclAttribute;
         // Old rights
         rights["test@kdab.com"] = KIMAP::Acl::rightsFromString("lrswipckxtda");
         rights["foo@kde.org"] = KIMAP::Acl::rightsFromString("lrswipcda");

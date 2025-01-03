@@ -12,9 +12,9 @@
 #include "imapresource_debug.h"
 #include "imapresource_trace.h"
 #include <KLocalizedString>
+#include <PimCommonAkonadi/ImapAclAttribute>
 
 #include "collectionflagsattribute.h"
-#include "imapaclattribute.h"
 #include "imapflags.h"
 #include "sessionpool.h"
 
@@ -529,7 +529,7 @@ ResourceStateInterface::Ptr ResourceTask::resourceState()
 
 KIMAP::Acl::Rights ResourceTask::myRights(const Akonadi::Collection &col)
 {
-    const auto aclAttribute = col.attribute<Akonadi::ImapAclAttribute>();
+    const auto aclAttribute = col.attribute<PimCommon::ImapAclAttribute>();
     if (aclAttribute) {
         // HACK, only return myrights if they are available
         if (aclAttribute->myRights() != KIMAP::Acl::None) {

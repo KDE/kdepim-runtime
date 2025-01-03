@@ -18,12 +18,12 @@
 #include "imapresource_debug.h"
 
 #include "collectionmetadatahelper.h"
-#include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
 #include <Akonadi/CollectionAnnotationsAttribute>
 #include <Akonadi/CollectionQuotaAttribute>
 #include <Akonadi/EntityDisplayAttribute>
+#include <PimCommonAkonadi/ImapAclAttribute>
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent)
@@ -135,7 +135,7 @@ void RetrieveCollectionMetadataTask::onGetAclDone(KJob *job)
     auto acl = qobject_cast<KIMAP::GetAclJob *>(job);
 
     // Store the mailbox ACLs
-    auto const aclAttribute = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
+    auto const aclAttribute = m_collection.attribute<PimCommon::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
     const QMap<QByteArray, KIMAP::Acl::Rights> oldRights = aclAttribute->rights();
     if (oldRights != acl->allRights()) {
         aclAttribute->setRights(acl->allRights());
@@ -161,7 +161,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
     KIMAP::Acl::Rights parentRights = KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create;
 
     // FIXME I don't think we have the parent's acl's available
-    if (collection().parentCollection().attribute<Akonadi::ImapAclAttribute>()) {
+    if (collection().parentCollection().attribute<PimCommon::ImapAclAttribute>()) {
         parentRights = myRights(collection().parentCollection());
     }
 
@@ -170,7 +170,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
     //                 << "newRights:" << newRights
     //                 << "oldRights:" << collection.rights();
 
-    const bool isNewCollection = !m_collection.hasAttribute<Akonadi::ImapAclAttribute>();
+    const bool isNewCollection = !m_collection.hasAttribute<PimCommon::ImapAclAttribute>();
     const bool accessRevoked = CollectionMetadataHelper::applyRights(m_collection, imapRights, parentRights);
     if (accessRevoked && !isNewCollection) {
         // write access revoked
@@ -184,7 +184,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
     }
 
     // Store the mailbox ACLs
-    auto aclAttribute = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
+    auto aclAttribute = m_collection.attribute<PimCommon::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
     const KIMAP::Acl::Rights oldRights = aclAttribute->myRights();
     if (oldRights != imapRights) {
         aclAttribute->setMyRights(imapRights);

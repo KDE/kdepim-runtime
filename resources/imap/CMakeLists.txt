@@ -123,6 +123,7 @@ target_link_libraries(imapresource
     KPim6::IMAP
     KPim6::MailTransport
     KPim6::Mime
+    KPim6::PimCommonAkonadi
     akonadi-singlefileresource
     qt6keychain
 )

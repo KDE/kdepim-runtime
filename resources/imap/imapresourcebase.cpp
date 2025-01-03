@@ -38,9 +38,10 @@
 
 #include <qt6keychain/keychain.h>
 
+#include <PimCommonAkonadi/ImapAclAttribute>
+
 #include "collectionflagsattribute.h"
 #include "highestmodseqattribute.h"
-#include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
 #include "uidnextattribute.h"
@@ -99,7 +100,7 @@ ImapResourceBase::ImapResourceBase(const QString &id)
 
     Akonadi::AttributeFactory::registerAttribute<CollectionFlagsAttribute>();
 
-    Akonadi::AttributeFactory::registerAttribute<ImapAclAttribute>();
+    Akonadi::AttributeFactory::registerAttribute<PimCommon::ImapAclAttribute>();
     Akonadi::AttributeFactory::registerAttribute<ImapQuotaAttribute>();
 
     // For QMetaObject::invokeMethod()

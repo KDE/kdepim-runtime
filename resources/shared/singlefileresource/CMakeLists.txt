@@ -17,9 +17,7 @@ set(AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES
 )
 
 set(AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
-  imapaclattribute.cpp
   imapquotaattribute.cpp
-  imapaclattribute.h
   imapquotaattribute.h
 )
 
@@ -61,7 +59,3 @@ endif()
 
 set_target_properties(akonadi-singlefileresource PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION})
 install(TARGETS akonadi-singlefileresource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NAMELINK_SKIP)
-
-if(BUILD_TESTING)
-   add_subdirectory(autotests)
-endif()

@@ -14,9 +14,9 @@
 #include <KIMAP/SubscribeJob>
 #include <KIMAP/UnsubscribeJob>
 
-#include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include <Akonadi/CollectionAnnotationsAttribute>
+#include <PimCommonAkonadi/ImapAclAttribute>
 
 #include "imapresource_debug.h"
 #include <KLocalizedString>
@@ -45,7 +45,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
     m_pendingJobs = 0;
 
     if (parts().contains("AccessRights")) {
-        auto aclAttribute = m_collection.attribute<Akonadi::ImapAclAttribute>();
+        auto aclAttribute = m_collection.attribute<PimCommon::ImapAclAttribute>();
 
         if (aclAttribute == nullptr) {
             emitWarning(i18n("ACLs for '%1' need to be retrieved from the IMAP server first. Skipping ACL change", collection().name()));
@@ -144,7 +144,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
 
     if (parts().contains("imapacl")) {
         Akonadi::Collection c = collection();
-        auto aclAttribute = c.attribute<Akonadi::ImapAclAttribute>();
+        auto aclAttribute = c.attribute<PimCommon::ImapAclAttribute>();
 
         if (aclAttribute) {
             const QMap<QByteArray, KIMAP::Acl::Rights> rights = aclAttribute->rights();

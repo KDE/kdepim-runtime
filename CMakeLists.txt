@@ -114,6 +114,7 @@ find_package(KPim6GAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
 find_package(KPim6LdapWidgets ${KLDAP_LIB_VERSION} CONFIG REQUIRED)
 
 find_package(KPim6PimCommonActivities ${PIMCOMMON_LIB_VERSION} CONFIG)
+find_package(KPim6PimCommonAkonadi ${PIMCOMMON_LIB_VERSION} CONFIG)
 
 find_package(Qt6Keychain ${QT6KEYCHAIN_LIB_VERSION} CONFIG)
 set_package_properties(Qt6Keychain PROPERTIES

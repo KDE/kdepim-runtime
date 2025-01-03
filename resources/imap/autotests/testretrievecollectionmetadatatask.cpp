@@ -9,13 +9,13 @@
 
 #include "retrievecollectionmetadatatask.h"
 
-#include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noinferiorsattribute.h"
 #include "noselectattribute.h"
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionAnnotationsAttribute>
 #include <Akonadi/CollectionQuotaAttribute>
+#include <PimCommonAkonadi/ImapAclAttribute>
 #include <QTest>
 using QBYTEARRAYMAP = QMap<QByteArray, QByteArray>;
 using QBYTEARRAYINT64MAP = QMap<QByteArray, qint64>;
@@ -31,7 +31,7 @@ private Q_SLOTS:
 
     void initTestCase()
     {
-        Akonadi::AttributeFactory::registerAttribute<Akonadi::ImapAclAttribute>();
+        Akonadi::AttributeFactory::registerAttribute<PimCommon::ImapAclAttribute>();
         Akonadi::AttributeFactory::registerAttribute<NoSelectAttribute>();
     }
 
@@ -100,7 +100,7 @@ private Q_SLOTS:
         rightsMap.insert("Hans",
                          KIMAP::Acl::Lookup | KIMAP::Acl::Read | KIMAP::Acl::KeepSeen | KIMAP::Acl::Write | KIMAP::Acl::Insert | KIMAP::Acl::Post
                              | KIMAP::Acl::Delete);
-        auto aclAttribute = new Akonadi::ImapAclAttribute();
+        auto aclAttribute = new PimCommon::ImapAclAttribute();
         aclAttribute->setRights(rightsMap);
         parentCollection.addAttribute(aclAttribute);
         collection.setParentCollection(parentCollection);
@@ -147,7 +147,7 @@ private Q_SLOTS:
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.setParentCollection(createCollectionChain(QStringLiteral("/INBOX")));
         // We use the aclattribute to determine if a collection already has acl's or not
-        collection.addAttribute(new Akonadi::ImapAclAttribute());
+        collection.addAttribute(new PimCommon::ImapAclAttribute());
         collection.setRights(Akonadi::Collection::CanCreateItem);
 
         capabilities.clear();

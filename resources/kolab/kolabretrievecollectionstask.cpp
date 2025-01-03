@@ -13,12 +13,12 @@
 #include "kolabresource_trace.h"
 
 #include "collectionmetadatahelper.h"
-#include "imapaclattribute.h"
 #include "noinferiorsattribute.h"
 #include "noselectattribute.h"
 #include <Akonadi/CollectionAnnotationsAttribute>
 #include <KIMAP/GetMetaDataJob>
 #include <KIMAP/MyRightsJob>
+#include <PimCommonAkonadi/ImapAclAttribute>
 
 #include <Akonadi/MessageParts>
 
@@ -449,7 +449,7 @@ void KolabRetrieveCollectionsTask::applyRights(const QHash<QString, KIMAP::Acl::
             CollectionMetadataHelper::applyRights(collection, imapRights, parentImapRights);
 
             // Store the mailbox ACLs
-            auto aclAttribute = collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
+            auto aclAttribute = collection.attribute<PimCommon::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
             const KIMAP::Acl::Rights oldRights = aclAttribute->myRights();
             if (oldRights != imapRights) {
                 aclAttribute->setMyRights(imapRights);
