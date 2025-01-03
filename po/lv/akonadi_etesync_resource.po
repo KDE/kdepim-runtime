@@ -1,0 +1,198 @@
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+#
+# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
+msgid ""
+msgstr ""
+"Project-Id-Version: kdepim-runtime\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2024-07-30 00:41+0000\n"
+"PO-Revision-Date: 2024-12-19 16:36+0200\n"
+"Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
+"Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
+"Language: lv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
+"2);\n"
+"X-Generator: Lokalize 24.12.0\n"
+
+#: etesyncresource.cpp:49
+#, kde-format
+msgid "EteSync Resource"
+msgstr "„EteSync“ resurss"
+
+#: etesyncresource.cpp:187
+#, kde-format
+msgid "Temporary server error"
+msgstr "Pagaidu servera kļūda"
+
+#: etesyncresource.cpp:191
+#, kde-format
+msgid "You do not have permission to perform this action."
+msgstr "Jums nav atļauju veikt šo darbību."
+
+#: etesyncresource.cpp:194
+#, kde-format
+msgid "Permission denied"
+msgstr "Pieeja ir liegta"
+
+#: etesyncresource.cpp:198
+#, kde-format
+msgid "A server error occurred."
+msgstr "Notika servera kļūda."
+
+#: etesyncresource.cpp:201
+#, kde-format
+msgid "Server error"
+msgstr "Servera kļūda"
+
+#: etesyncresource.cpp:220
+#, kde-format
+msgid ""
+"Your EteSync credentials were changed. Please click OK to re-enter your "
+"credentials."
+msgstr ""
+"Ir mainīti jūsu „EteSync“ ierakstīšanās dati. Spiediet uz „Labi“, lai no "
+"jauna ievadītu ierakstīšanās datus."
+
+#: etesyncresource.cpp:222
+#, kde-format
+msgid "Credentials Changed"
+msgstr "Mainījušies ierakstīšanās dati"
+
+#: etesyncresource.cpp:270
+#, kde-format
+msgid "Cannot retrieve items - account is null"
+msgstr "Nevar izgūt vienumus — nav konta"
+
+#: etesyncresource.cpp:277 etesyncresource.cpp:383 etesyncresource.cpp:456
+#: etesyncresource.cpp:514 etesyncresource.cpp:643 etesyncresource.cpp:701
+#, kde-format
+msgid "Could not get etesyncCollection from cache '%1'"
+msgstr "no kešatmiņas „%1“ nevarēja iegūt „etesyncCollection“"
+
+#: etesyncresource.cpp:411
+#, kde-format
+msgid "Could not create new etesyncItem '%1'"
+msgstr "Nevarēja izveidot jaunu „etesyncItem“ „%1“"
+
+#: etesyncresource.cpp:463 etesyncresource.cpp:521
+#, kde-format
+msgid "Could not get etesyncItem from cache '%1'"
+msgstr "No kešatmiņas „%1“ nevarēja iegūt „etesyncItem“"
+
+#: etesyncresource.cpp:583
+#, kde-format
+msgid "Could not create new etesyncCollection"
+msgstr "Nevarēja izveidot jaunu „etesyncCollection“"
+
+#: etesyncresource.h:62
+#, kde-format
+msgid "Something went wrong"
+msgstr "Notikusi kaut kāda kļūda"
+
+#. i18n: ectx: label, entry (BaseUrl), group (General)
+#: etesyncresource.kcfg:10
+#, kde-format
+msgid "Server URL"
+msgstr "Servera URL"
+
+#. i18n: ectx: tooltip, entry (BaseUrl), group (General)
+#. i18n: ectx: whatsthis, entry (BaseUrl), group (General)
+#: etesyncresource.kcfg:11 etesyncresource.kcfg:12
+#, kde-format
+msgid ""
+"The URL of the EteSync server, should be something like https://myserver.org/"
+msgstr ""
+"„EteSync“ servera URL. Tai vajadzētu izskatīties aptuveni šādi — „https://"
+"mansserveris.org“"
+
+#. i18n: ectx: label, entry (Username), group (General)
+#: etesyncresource.kcfg:15
+#, kde-format
+msgctxt "the username to login on server"
+msgid "Username"
+msgstr "Lietotājvārds"
+
+#. i18n: ectx: tooltip, entry (Username), group (General)
+#. i18n: ectx: whatsthis, entry (Username), group (General)
+#: etesyncresource.kcfg:16 etesyncresource.kcfg:17
+#, kde-format
+msgid "The username that is used to log into the EteSync server"
+msgstr "Lietotājvārds, ar kuru ierakstīties „EteSync“ serverī"
+
+#. i18n: ectx: label, entry (BasePath), group (General)
+#: etesyncresource.kcfg:20
+#, kde-format
+msgid "Path to base directory"
+msgstr "Ceļš uz pamata mapi"
+
+#: setupwizard.cpp:28
+#, kde-format
+msgctxt "@title:window"
+msgid "EteSync configuration wizard"
+msgstr "„EteSync“ konfigurācijas vednis"
+
+#: setupwizard.cpp:66
+#, kde-format
+msgid "Login Credentials"
+msgstr "Ierakstīšanās dati"
+
+#: setupwizard.cpp:67
+#, kde-format
+msgid "Enter your credentials to login to the EteSync server"
+msgstr "Norādiet savus „EteSync“ servera ierakstīšanās datus"
+
+#: setupwizard.cpp:76
+#, kde-format
+msgid "Username:"
+msgstr "Lietotājvārds:"
+
+#: setupwizard.cpp:82
+#, kde-format
+msgid "Password:"
+msgstr "Parole:"
+
+#: setupwizard.cpp:85
+#, kde-format
+msgctxt "@option:check"
+msgid "Advanced settings"
+msgstr "Papildu iestatījumi"
+
+#: setupwizard.cpp:90
+#, kde-format
+msgid "Server:"
+msgstr "Serveris:"
+
+#: setupwizard.cpp:103
+#, kde-format
+msgid ""
+"🛈 The password field is empty because EteSync does not store it for security "
+"reasons."
+msgstr ""
+"🛈 Paroles lauks ir tukšs, jo „EteSync“ to drošības apsvērumu dēļ nesaglabā."
+
+#: setupwizard.cpp:135
+#, kde-format
+msgid ""
+"Please ensure that the server URL is correct. The URL should start with "
+"http:// or https://."
+msgstr ""
+"Pārliecinieties, ka servera URL ir pareiza. URL ir jāsākas ar „http://“ vai "
+"„https://“."
+
+#: setupwizard.cpp:137
+#, kde-format
+msgid ""
+"Could not connect to the server. Please ensure that the server URL is "
+"correct."
+msgstr ""
+"Neizdevās savienoties ar serveri. Pārliecinieties, ka servera URL ir pareiza."
+
+#: setupwizard.cpp:139
+#, kde-format
+msgid "EteSync server not found. Please ensure that the server URL is correct."
+msgstr ""
+"„EteSync“ serveris nav atrasts. Pārliecinieties, ka servera URL ir pareiza."

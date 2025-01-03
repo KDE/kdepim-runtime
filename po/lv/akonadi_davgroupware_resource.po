@@ -2,28 +2,28 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Einars Sprugis <einars8@gmail.com>, 2011.
+# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-12-18 00:41+0000\n"
-"PO-Revision-Date: 2011-07-14 21:42+0300\n"
-"Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
-"Language-Team: Latvian <locale@laka.lv>\n"
+"PO-Revision-Date: 2024-12-19 16:27+0200\n"
+"Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
+"Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Lokalize 24.12.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
 #: configdialog.cpp:33
-#, fuzzy, kde-format
-#| msgid "DAV groupware configuration wizard"
+#, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
-msgstr "DAV grupprogrammatūras konfigurācijas vednis"
+msgstr "DAV resursu konfigurators"
 
 #: configdialog.cpp:46
 #, kde-format
@@ -38,17 +38,17 @@ msgstr "URL"
 #: configdialog.cpp:59
 #, kde-format
 msgid "Days"
-msgstr ""
+msgstr "Dienas"
 
 #: configdialog.cpp:60
 #, kde-format
 msgid "Months"
-msgstr ""
+msgstr "Mēneši"
 
 #: configdialog.cpp:61
 #, kde-format
 msgid "Years"
-msgstr ""
+msgstr "Gadi"
 
 #: configdialog.cpp:137
 #, kde-format
@@ -56,26 +56,26 @@ msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
 "Please use a different URL"
 msgstr ""
+"Cits konfigurācijas ieraksts jau satur to pašu URL/protokolu pāri.\n"
+"Izvēlieties citu URL"
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: configdialog.ui:29
-#, fuzzy, kde-format
-#| msgid "Display name"
+#, kde-format
 msgid "Display name:"
-msgstr "Attēlojamais nosaukums"
+msgstr "Attēlojamais nosaukums:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: configdialog.ui:39
-#, fuzzy, kde-format
-#| msgid "Refresh every"
+#, kde-format
 msgid "Refresh every:"
-msgstr "Atsvaidzināt katras"
+msgstr "Atsvaidzināt katras:"
 
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, kcfg_refreshInterval)
 #: configdialog.ui:48
 #, kde-format
 msgid "Never"
-msgstr ""
+msgstr "Nekad"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: configdialog.ui:58
@@ -86,18 +86,16 @@ msgstr "minūtes"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: configdialog.ui:80 urlconfigurationdialog.ui:111
-#, fuzzy, kde-format
-#| msgid "Username"
+#, kde-format
 msgid "Username:"
-msgstr "Lietotājvārds"
+msgstr "Lietotājvārds:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configdialog.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:127
-#, fuzzy, kde-format
-#| msgid "Password"
+#, kde-format
 msgid "Password:"
-msgstr "Parole"
+msgstr "Parole:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_limitSyncRange)
 #: configdialog.ui:136
@@ -106,25 +104,26 @@ msgid ""
 "Select this if your calendars contain a lot of events and the server cannot "
 "fulfill the requests"
 msgstr ""
+"Atzīmējiet, ja kalendārs satur daudz notikumu, bet serveris nespēj izpildīt "
+"pieprasījumus"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
 #: configdialog.ui:139
 #, kde-format
 msgid "Limit CalDav retrieval time range"
-msgstr ""
+msgstr "Ierobežot „CalDav“ atgūšanas laika intervālu"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configdialog.ui:151
 #, kde-format
 msgid "Only sync events more recent than"
-msgstr ""
+msgstr "Sinhronizēt tikai notikumus, kas ir vecāki par"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
 #: configdialog.ui:190
-#, fuzzy, kde-format
-#| msgid "Server configuration"
+#, kde-format
 msgid "Server Configuration:"
-msgstr "Servera konfigurācija"
+msgstr "Servera konfigurācija:"
 
 #. i18n: ectx: property (text), widget (QPushButton, addButton)
 #: configdialog.ui:204
@@ -136,13 +135,13 @@ msgstr "Pievienot"
 #: configdialog.ui:211 searchdialog.ui:151
 #, kde-format
 msgid "Search"
-msgstr ""
+msgstr "Meklēt"
 
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
 #: configdialog.ui:218
 #, kde-format
 msgid "Remove"
-msgstr "Izņemt"
+msgstr "Noņemt"
 
 #. i18n: ectx: property (text), widget (QPushButton, editButton)
 #: configdialog.ui:225
@@ -153,89 +152,85 @@ msgstr "Rediģēt"
 #: daverror-kdepim-runtime.cpp:26
 #, kde-format
 msgid "Invalid username/password"
-msgstr ""
+msgstr "Nederīgs lietotājvārds/parole"
 
 #: daverror-kdepim-runtime.cpp:28
 #, kde-format
 msgid "Access forbidden"
-msgstr ""
+msgstr "Piekļuve ir liegta"
 
 #: daverror-kdepim-runtime.cpp:30
 #, kde-format
 msgid "Resource not found"
-msgstr ""
+msgstr "Resurss nav atrasts"
 
 #: daverror-kdepim-runtime.cpp:32
 #, kde-format
 msgid "HTTP error"
-msgstr ""
+msgstr "HTTP kļūme"
 
 #: daverror-kdepim-runtime.cpp:35
-#, fuzzy, kde-format
-#| msgid "There was a problem with the request : error %1."
+#, kde-format
 msgid ""
 "There was a problem with the request.\n"
 "%1 (%2)."
-msgstr "Radās problēma ar pieprasījumu: kļūda %1."
+msgstr ""
+"Radās problēma ar pieprasījumu.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:41
 #, kde-format
 msgid "Protocol for the collection does not support MULTIGET"
-msgstr ""
+msgstr "Kolekcijas protokols neatbalsta MULTIGET"
 
 #: daverror-kdepim-runtime.cpp:44
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server encountered an error that prevented it from completing your "
-#| "request"
+#, kde-format
 msgid ""
 "The server encountered an error that prevented it from completing your "
 "request: %1 (%2)"
-msgstr "Serverim radās kļūda, kas neļāva tam izpildīt jūsu pieprasījumu"
+msgstr ""
+"Serveris ir saskāries ar kļūdu, kas tam neļāva izpildīt jūsu pieprasījumu: "
+"%1 (%2)"
 
 #: daverror-kdepim-runtime.cpp:48
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request - the collection has not been "
-#| "deleted from the server. Error %1."
+#, kde-format
 msgid ""
 "There was a problem with the request. The collection has not been deleted "
 "from the server.\n"
 "%1 (%2)."
 msgstr ""
-"Radās problēma pieprasījumā — kolekcija netika dzēsta no servera. Kļūda %1."
+"Radās problēma pieprasījumā. Kolekcija netika dzēsta no servera.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:54
 #, kde-format
 msgid "Invalid responses from backend"
-msgstr "Nederīgas atbildes no aizmugures"
+msgstr "Nederīgas atbildes no aizmugursistēmas"
 
 #: daverror-kdepim-runtime.cpp:57
 #, kde-format
 msgid "Error setting focus for XQuery"
-msgstr "Kļūda iestatot fokusu XQuery"
+msgstr "Kļūda, iestatot „XQuery“ fokusu"
 
 #: daverror-kdepim-runtime.cpp:60
 #, kde-format
 msgid "Invalid XQuery submitted by DAV implementation"
-msgstr "DAV implementācija nosūtīja nederīgu XQuery"
+msgstr "DAV implementācija nosūtīja nederīgu „XQuery“"
 
 #: daverror-kdepim-runtime.cpp:64
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The item has not been modified on "
-#| "the server : error %1."
+#, kde-format
 msgid ""
 "There was a problem with the request. The collection has not been modified "
 "on the server.\n"
 "%1 (%2)."
 msgstr ""
-"Radās problēma ar pieprasījumu — vienība netika dzēsta no servera Kļūda %1."
+"Radās problēma ar pieprasījumu. Serverī esošā kolekcija netika mainīta.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:70
 #, kde-format
 msgid "No properties to change or remove"
-msgstr "Nav īpašību, ko izmainīt vai dzēst"
+msgstr "Nav īpašību, ko izmainīt vai noņemt"
 
 #: daverror-kdepim-runtime.cpp:73
 #, kde-format
@@ -243,10 +238,7 @@ msgid "There was an error when modifying the properties"
 msgstr "Radās kļūda, izmainot īpašības"
 
 #: daverror-kdepim-runtime.cpp:75
-#, fuzzy, kde-format
-#| msgid ""
-#| "\n"
-#| "The server returned more information:\n"
+#, kde-format
 msgid ""
 "\n"
 "The server returned more information:\n"
@@ -254,114 +246,99 @@ msgid ""
 msgstr ""
 "\n"
 "Serveris atgrieza vairāk informācijas:\n"
+"%1"
 
 #: daverror-kdepim-runtime.cpp:80
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request - the item has not been created on "
-#| "the server. Error %1."
+#, kde-format
 msgid ""
 "There was a problem with the request. The item has not been created on the "
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"Radās problēma ar pieprasījumu — vienība uz servera netika izveidotaKļūda %1"
+"Radās problēma ar pieprasījumu. Serverī esošais vienums netika izveidots.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:87
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request - the item has not been deleted from "
-#| "the server. Error %1."
+#, kde-format
 msgid ""
 "There was a problem with the request. The item has not been deleted from the "
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"Radās problēma pieprasījumā — vienība netika dzēsta no servera. Kļūda %1."
+"Radās problēma ar pieprasījumu. Serverī esošais vienums netika dzēsts.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:94
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request - the item was not modified on the "
-#| "server. Error %1."
+#, kde-format
 msgid ""
 "There was a problem with the request. The item was not modified on the "
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"Radās problēma ar pieprasījumu — vienība uz servera netika izmainīta Kļūda %1"
+"Radās problēma ar pieprasījumu. Serverī esošais vienums netika izmainīts.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:100
-#, fuzzy, kde-format
-#| msgid "There was a problem with the request : error %1."
+#, kde-format
 msgid "There was a problem with the request."
-msgstr "Radās problēma ar pieprasījumu: kļūda %1."
+msgstr "Radās problēma ar pieprasījumu."
 
 #: daverror-kdepim-runtime.cpp:104
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request - the item has not been created on "
-#| "the server. Error %1."
+#, kde-format
 msgid ""
 "There was a problem with the request. The requested MIME types are not "
 "supported."
-msgstr ""
-"Radās problēma ar pieprasījumu — vienība uz servera netika izveidotaKļūda %1"
+msgstr "Radās problēma ar pieprasījumu. Pieprasītie MIME tipi nav atbalstīti."
 
 #: davfreebusyhandler.cpp:58
 #, kde-format
 msgid "No schedule-outbox found for %1"
-msgstr ""
+msgstr "Nav atrasts „%1“ grafiks-izsūtne"
 
 #: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
-#, fuzzy, kde-format
-#| msgid "Invalid responses from backend"
+#, kde-format
 msgid "Invalid response from the server"
-msgstr "Nederīgas atbildes no aizmugures"
+msgstr "Nederīga servera atbilde"
 
 #: davfreebusyhandler.cpp:209
 #, kde-format
 msgid "Unable to parse free-busy data received"
-msgstr ""
+msgstr "Nevar parsēt saņemtos „brīvs vai aizņemts“ datus"
 
 #: davgroupwareresource.cpp:164
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve added item %1."
+#, kde-format
 msgid "Unable to retrieve free-busy info while offline"
-msgstr "Nevar atlasīt pievienoto vienību %1."
+msgstr "Nevar izgūt „brīvs vai aizņemts“ datus, esot nesaistē"
 
 #: davgroupwareresource.cpp:247
 #, kde-format
 msgid "Fetching collections"
-msgstr "Saņem kolekcijas"
+msgstr "Izgūt kolekcijas"
 
 #: davgroupwareresource.cpp:315
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
-msgstr "Neizdevās saņemt kolekcijas: %1"
+msgstr "Lūdza izgūt vienumus nezināmai kolekcijai: %1"
 
 #: davgroupwareresource.cpp:372
 #, kde-format
 msgid "Invalid collection for item %1."
-msgstr "Nederīga kolekcija vienībai %1."
+msgstr "Nederīga kolekcija vienumam %1."
 
 #: davgroupwareresource.cpp:704
-#, fuzzy, kde-format
-#| msgid "Unable to add item: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
-msgstr "Neizdevās pievienot vienību: %1"
+msgstr "Neizdevās mainīt vienumus: %1"
 
 #: davgroupwareresource.cpp:743
-#, fuzzy, kde-format
-#| msgid "Unable to remove collection: %1"
+#, kde-format
 msgid "Unable to modify collection: %1"
-msgstr "Neizdevās izņemt kolekciju: %1"
+msgstr "Neizdevās mainīt kolekciju: %1"
 
 #: davgroupwareresource.cpp:812
 #, kde-format
 msgid "Unable to remove collection: %1"
-msgstr "Neizdevās izņemt kolekciju: %1"
+msgstr "Neizdevās noņemt kolekciju: %1"
 
 #: davgroupwareresource.cpp:832
 #, kde-format
@@ -371,12 +348,12 @@ msgstr "Neizdevās saņemt kolekcijas: %1"
 #: davgroupwareresource.cpp:965 davgroupwareresource.cpp:1064
 #, kde-format
 msgid "Unable to retrieve items: %1"
-msgstr "Neizdevās saņemt vienības: %1"
+msgstr "Neizdevās izgūt vienumus: %1"
 
 #: davgroupwareresource.cpp:1144
 #, kde-format
 msgid "Unable to retrieve item: %1"
-msgstr "Neizdevās saņemt vienību: %1"
+msgstr "Neizdevās izgūt vienumu: %1"
 
 #: davgroupwareresource.cpp:1164
 #, kde-format
@@ -384,22 +361,24 @@ msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
+"Neizdevās izgūt vienumu: neizdevās parsēt vienumu datus. Iespējams, tie ir "
+"jau dzēsti."
 
 #: davgroupwareresource.cpp:1201
 #, kde-format
 msgid "Unable to add item: %1"
-msgstr "Neizdevās pievienot vienību: %1"
+msgstr "Neizdevās pievienot vienumu: %1"
 
 #: davgroupwareresource.cpp:1245 davgroupwareresource.cpp:1358
 #: davgroupwareresource.cpp:1370
 #, kde-format
 msgid "Unable to change item: %1"
-msgstr "Neizdevās mainīt vienību: %1"
+msgstr "Neizdevās mainīt vienumu: %1"
 
 #: davgroupwareresource.cpp:1332 davgroupwareresource.cpp:1389
 #, kde-format
 msgid "Unable to remove item: %1"
-msgstr "Neizdevās izņemt vienību: %1"
+msgstr "Neizdevās noņemt vienumu: %1"
 
 #: davgroupwareresource.cpp:1476 davgroupwareresource.cpp:1477
 #, kde-format
@@ -410,7 +389,7 @@ msgstr "Resurss vēl nav konfigurēts"
 #: davgroupwareresource.kcfg:10
 #, kde-format
 msgid "Settings Version"
-msgstr ""
+msgstr "Iestatījumu versija"
 
 #. i18n: ectx: label, entry (displayName), group (General)
 #: davgroupwareresource.kcfg:14
@@ -428,12 +407,11 @@ msgstr "Atsvaidzināt katras"
 #: davgroupwareresource.kcfg:22
 #, kde-format
 msgid "Remote URLs"
-msgstr "Attālinātās URL"
+msgstr "Attālās URL"
 
 #. i18n: ectx: label, entry (defaultUsername), group (General)
 #: davgroupwareresource.kcfg:26
-#, fuzzy, kde-format
-#| msgid "Username"
+#, kde-format
 msgid "User name"
 msgstr "Lietotājvārds"
 
@@ -441,19 +419,19 @@ msgstr "Lietotājvārds"
 #: davgroupwareresource.kcfg:30
 #, kde-format
 msgid "Limit the events retrieval to the specified time range"
-msgstr ""
+msgstr "Ierobežot vienumu izgūšanu uz noteiktu laika intervālu"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
 #, kde-format
 msgid "Period for which to retrieve events, quantity"
-msgstr ""
+msgstr "Periods, kādam izgūt vienumus, daudzums"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
 #, kde-format
 msgid "Period for which to retrieve events, type"
-msgstr ""
+msgstr "Periods, kuram izgūt notikumus, tips"
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
 #: davgroupwareresource.kcfg:42
@@ -469,30 +447,30 @@ msgstr ""
 #: davgroupwareresource.kcfg:46
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "Nemainīt īstos aizmugures datus."
+msgstr "Nemainīt aktuālos aizmugursistēmas datus."
 
 #. i18n: ectx: label, entry (AccountId), group (General)
 #: davgroupwareresource.kcfg:50
 #, kde-format
 msgid "The account id in WebAccounts framework."
-msgstr ""
+msgstr "Konta ID „WebAccounts“ satvarā."
 
 #. i18n: ectx: label, entry (AccountServices), group (General)
 #: davgroupwareresource.kcfg:53
 #, kde-format
 msgid "Account enabled services"
-msgstr ""
+msgstr "Konta ieslēgtie pakalpojumi"
 
 #: searchdialog.cpp:26
 #, kde-format
 msgctxt "@title:window"
 msgid "Search"
-msgstr ""
+msgstr "Meklēt"
 
 #: searchdialog.cpp:41
 #, kde-format
 msgid "Add Selected Items"
-msgstr ""
+msgstr "Pievienot atlasītos vienumus"
 
 #: searchdialog.cpp:126 searchdialog.cpp:169
 #, kde-format
@@ -500,27 +478,26 @@ msgid ""
 "An error occurred when executing search:\n"
 "%1"
 msgstr ""
+"Notika kļūda, izpildot meklēšanu:\n"
+"%1"
 
 #. i18n: ectx: property (text), widget (QRadioButton, useDefaultCreds)
 #: searchdialog.ui:32 urlconfigurationdialog.ui:85
-#, fuzzy, kde-format
-#| msgid "Login Credentials"
+#, kde-format
 msgid "Use global creden&tials"
-msgstr "Pieteikšanās akreditācijas dati"
+msgstr "Izmantot gl&obālos ierakstīšanās datus"
 
 #. i18n: ectx: property (text), widget (QRadioButton, useSpecificCreds)
 #: searchdialog.ui:42 urlconfigurationdialog.ui:95
-#, fuzzy, kde-format
-#| msgid "Login Credentials"
+#, kde-format
 msgid "Use specific credentials"
-msgstr "Pieteikšanās akreditācijas dati"
+msgstr "Izmantot specifiskus ierakstīšanās datus"
 
 #. i18n: ectx: property (title), widget (QGroupBox, credentialsGroup)
 #: searchdialog.ui:49
-#, fuzzy, kde-format
-#| msgid "Login Credentials"
+#, kde-format
 msgid "Credentials"
-msgstr "Pieteikšanās akreditācijas dati"
+msgstr "Ierakstīšanās dati"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: searchdialog.ui:61
@@ -538,43 +515,40 @@ msgstr "Parole"
 #: searchdialog.ui:96
 #, kde-format
 msgid "Search URL"
-msgstr ""
+msgstr "Meklēšanas URL"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: searchdialog.ui:106
 #, kde-format
 msgid "Search for"
-msgstr ""
+msgstr "Meklēt"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, searchType)
 #: searchdialog.ui:116
-#, fuzzy, kde-format
-#| msgid "Username"
+#, kde-format
 msgid "a person named"
-msgstr "Lietotājvārds"
+msgstr "personu vārdā"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, searchType)
 #: searchdialog.ui:121
 #, kde-format
 msgid "a contact with email"
-msgstr ""
+msgstr "kontaktu ar e-pastu"
 
 #: settings.cpp:477
 #, kde-format
 msgctxt "@label:textbox"
 msgid "A password is required for user %1"
-msgstr ""
+msgstr "Lietotājam „%1“ pieprasa ievadīt paroli"
 
 #: settings.cpp:481
-#, fuzzy, kde-format
-#| msgid "Password"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Password: "
-msgstr "Parole"
+msgstr "Parole: "
 
 #: setupwizard.cpp:137
-#, fuzzy, kde-format
-#| msgid "DAV groupware configuration wizard"
+#, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "DAV grupprogrammatūras konfigurācijas vednis"
@@ -582,23 +556,21 @@ msgstr "DAV grupprogrammatūras konfigurācijas vednis"
 #: setupwizard.cpp:210
 #, kde-format
 msgid "Login Credentials"
-msgstr "Pieteikšanās akreditācijas dati"
+msgstr "Ierakstīšanās dati"
 
 #: setupwizard.cpp:211
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr ""
-"Ievadiet jūsu akreditācijas datus, lai pieteiktos grupprogrammatūras serverī"
+"Ievadiet jūsu ierakstīšanās datus, lai ierakstītos grupprogrammatūras serverī"
 
 #: setupwizard.cpp:215
-#, fuzzy, kde-format
-#| msgid "User"
+#, kde-format
 msgid "User:"
-msgstr "Lietotājs"
+msgstr "Lietotājs:"
 
 #: setupwizard.cpp:255
-#, fuzzy, kde-format
-#| msgid "No, choose another server"
+#, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Nē, izvēlēties citu serveri"
@@ -606,12 +578,13 @@ msgstr "Nē, izvēlēties citu serveri"
 #: setupwizard.cpp:257
 #, kde-format
 msgid "Predefined provider found"
-msgstr "Atrasts iepriekšdefinēts nodrošinātājs"
+msgstr "Atrasts iepriekš definēts pakalpojumu sniedzējs"
 
 #: setupwizard.cpp:258
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
-msgstr "Izvēlieties, ja vēlaties lietot automātiski noteikto nodrošinātāju"
+msgstr ""
+"Izvēlieties, ja vēlaties lietot automātiski noteiktu pakalpojumu sniedzēju"
 
 #: setupwizard.cpp:277
 #, kde-format
@@ -620,14 +593,14 @@ msgid ""
 "can configure automatically an account for %1 services.\n"
 "Do you wish to do so?"
 msgstr ""
-"Balstoties uz e-pastu, ko izmantojāt piesakoties, šis vednis\n"
-"var automātiski konfigurēt kontu %1 servisiem.\n"
+"Balstoties uz e-pastu, ko izmantojāt ierakstoties, šis vednis\n"
+"var automātiski konfigurēt kontu „%1“ pakalpojumiem.\n"
 "Vai vēlaties to darīt?"
 
 #: setupwizard.cpp:282
 #, kde-format
 msgid "Yes, use %1 as provider"
-msgstr "Jā, lietot %1 kā nodrošinātāju"
+msgstr "Jā, kā pakalpojumu sniedzēju lietot „%1“"
 
 #: setupwizard.cpp:308
 #, kde-format
@@ -637,22 +610,19 @@ msgstr "Grupprogrammatūras serveris"
 #: setupwizard.cpp:309
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
-msgstr ""
-"Izvēlieties grupprogrammatūras serveri, priekš kura resursi tiks konfigurēti"
+msgstr "Izvēlieties grupprogrammatūras serveri, kuram konfigurēt resursus"
 
 #: setupwizard.cpp:338
-#, fuzzy, kde-format
-#| msgid "Use one of those servers:"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
-msgstr "Lietot vienu no šiem serveriem:"
+msgstr "Lietot kādu no šiem serveriem:"
 
 #: setupwizard.cpp:347
-#, fuzzy, kde-format
-#| msgid "Configure the resource manually"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
-msgstr "Konfigurēt resursu pašrocīgi"
+msgstr "Manuāli konfigurēt resursu"
 
 #: setupwizard.cpp:381
 #, kde-format
@@ -662,7 +632,7 @@ msgstr "Savienojums"
 #: setupwizard.cpp:382
 #, kde-format
 msgid "Enter the connection information for the groupware server"
-msgstr "Ievadiet informāciju par savienojumu grupprogrammatūras serverim"
+msgstr "Ievadiet informāciju par savienojumu ar grupprogrammatūras serveri"
 
 #: setupwizard.cpp:389
 #, kde-format
@@ -675,32 +645,28 @@ msgid "Installation path"
 msgstr "Instalācijas ceļš"
 
 #: setupwizard.cpp:395
-#, fuzzy, kde-format
-#| msgid "Use secure connection"
+#, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Lietot drošu savienojumu"
 
 #: setupwizard.cpp:423
-#, fuzzy, kde-format
-#| msgid "Final URL (CalDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
-msgstr "Beigu URL (CalDav)"
+msgstr "Beigu URL („CalDav“)"
 
 #: setupwizard.cpp:428
-#, fuzzy, kde-format
-#| msgid "Final URL (CardDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
-msgstr "Beigu URL (CardDav)"
+msgstr "Beigu URL („CardDav“)"
 
 #: setupwizard.cpp:433
-#, fuzzy, kde-format
-#| msgid "Final URL (GroupDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
-msgstr "Beigu URL (GroupDav)"
+msgstr "Beigu URL („GroupDav“)"
 
 #: setupwizard.cpp:497
 #, kde-format
@@ -717,26 +683,23 @@ msgstr ""
 "pašreizējo konfigurāciju"
 
 #: setupwizard.cpp:503
-#, fuzzy, kde-format
-#| msgid "Test Connection"
+#, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Pārbaudīt savienojumu"
 
 #: setupwizard.cpp:543
-#, fuzzy, kde-format
-#| msgid "An error occurred: "
+#, kde-format
 msgid "An error occurred: %1"
-msgstr "Radās kļūda: "
+msgstr "Radās kļūda: %1"
 
 #: setupwizard.cpp:546
 #, kde-format
 msgid "Connected successfully"
-msgstr "Veiksmīgi pievienojās"
+msgstr "Savienošanās izdevusies"
 
 #: urlconfigurationdialog.cpp:267
-#, fuzzy, kde-format
-#| msgid "Display name"
+#, kde-format
 msgid "Display Name"
 msgstr "Attēlojamais nosaukums"
 
@@ -744,14 +707,13 @@ msgstr "Attēlojamais nosaukums"
 #: urlconfigurationdialog.ui:35
 #, kde-format
 msgid "Access protocol:"
-msgstr ""
+msgstr "Piekļuves protokols:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, caldav)
 #: urlconfigurationdialog.ui:42
-#, fuzzy, kde-format
-#| msgid "CalDAV"
+#, kde-format
 msgid "CalDA&V"
-msgstr "CalDAV"
+msgstr "CalDA&V"
 
 #. i18n: ectx: property (text), widget (QRadioButton, carddav)
 #: urlconfigurationdialog.ui:52
@@ -767,29 +729,27 @@ msgstr "GroupDAV"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: urlconfigurationdialog.ui:66
-#, fuzzy, kde-format
-#| msgid "Remote URL"
+#, kde-format
 msgid "Remote URL:"
-msgstr "Attālinātā URL"
+msgstr "Attālā URL:"
 
 #. i18n: ectx: property (text), widget (QLabel, label1)
 #: urlconfigurationdialog.ui:76
 #, kde-format
 msgid "Access:"
-msgstr ""
+msgstr "Piekļuve:"
 
 #. i18n: ectx: property (text), widget (QLabel, collectionsLabel)
 #: urlconfigurationdialog.ui:146
-#, fuzzy, kde-format
-#| msgid "Discovered collections"
+#, kde-format
 msgid "Discovered collections:"
-msgstr "Atklātās kolekcijas"
+msgstr "Atklātās kolekcijas:"
 
 #. i18n: ectx: property (text), widget (QPushButton, fetchButton)
 #: urlconfigurationdialog.ui:174
 #, kde-format
 msgid "Fetch"
-msgstr "Ielādēt"
+msgstr "Izgūt"
 
 #: utils.cpp:47 utils.cpp:64
 #, kde-format

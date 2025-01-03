@@ -3,19 +3,20 @@
 #
 # Viesturs Zarins <viesturs.zarins@mii.lu.lv>, 2010.
 # Einars Sprugis <einars8@gmail.com>, 2011.
+# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-22 00:40+0000\n"
-"PO-Revision-Date: 2011-07-13 01:37+0300\n"
-"Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
-"Language-Team: Latvian <locale@laka.lv>\n"
+"PO-Revision-Date: 2024-12-27 16:49+0200\n"
+"Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
+"Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Lokalize 24.12.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
@@ -23,7 +24,7 @@ msgstr ""
 #: contactsagentsettingswidget.ui:27
 #, kde-format
 msgid "Settings"
-msgstr ""
+msgstr "Iestatījumi"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: contactsagentsettingswidget.ui:33
@@ -33,8 +34,7 @@ msgstr "Mapes nosaukums"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: contactsagentsettingswidget.ui:41
-#, fuzzy, kde-format
-#| msgid "&Directory:"
+#, kde-format
 msgid "Di&rectory:"
 msgstr "&Mape:"
 
@@ -44,8 +44,7 @@ msgstr "&Mape:"
 msgid ""
 "Select the directory whose contents should be represented by this resource. "
 "If the directory does not exist, it will be created."
-msgstr ""
-"Norādiet resursa attēlojamo mapi. Ja šāda mape nepastāv, tā tiks izveidota."
+msgstr "Norādiet resursa attēlojamo mapi. Ja šāda mape nepastāv, to izveidos."
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: contactsagentsettingswidget.ui:69
@@ -55,8 +54,7 @@ msgstr "Pieejas atļaujas"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: contactsagentsettingswidget.ui:75
-#, fuzzy, kde-format
-#| msgid "Read only"
+#, kde-format
 msgctxt "if the access is limited to read-only"
 msgid "Read only"
 msgstr "Tikai lasāms"
@@ -70,7 +68,7 @@ msgid ""
 "have write access to the directory."
 msgstr ""
 "Ja ieslēgts tikai lasāmas mapes režīms, mapes izmaiņas netiks saglabātas. "
-"Tikai lasāma pieeja tiks automātiski iestatīta, ja jums šai mapei nav "
+"Tikai lasāma pieeja ir automātiski ieslēgta, ja jums šai mapei nav "
 "rakstīšanas atļauju."
 
 #: contactsresource.cpp:44
@@ -81,84 +79,86 @@ msgstr "Personīgie kontakti"
 #: contactsresource.cpp:124
 #, kde-format
 msgid "Directory '%1' does not exists"
-msgstr "Mape '%1' nepastāv"
+msgstr "Mape „%1“ nepastāv"
 
 #: contactsresource.cpp:148 contactsresource.cpp:223
 #, kde-format
 msgid "Found file of unknown format: '%1'"
-msgstr "Atrasts nezināma formāta fails: '%1'"
+msgstr "Atrasta nezināma formāta datne: „%1“"
 
 #: contactsresource.cpp:197
 #, kde-format
 msgid "Unable to open file '%1'"
-msgstr "Neizdevās atvērt failu '%1'"
+msgstr "Neizdevās atvērt datni „%1“"
 
 #: contactsresource.cpp:207
 #, kde-format
 msgid "Found invalid contact in file '%1'"
-msgstr "Atrasts nederīgs kontakts failā '%1'"
+msgstr "Atrasts nederīgs kontakts datnē „%1“"
 
 #: contactsresource.cpp:217
 #, kde-format
 msgid "Found invalid contact group in file '%1': %2"
-msgstr "Atrasta nederīga kontaktu grupa failā '%1': %2"
+msgstr "Atrasta nederīga kontaktu grupa datnē „%1“: %2"
 
 #: contactsresource.cpp:233 contactsresource.cpp:358 contactsresource.cpp:379
 #: contactsresource.cpp:412
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
-msgstr "Mēģinājums rakstīt tikai lasāmā mapē: '%1'"
+msgstr "Mēģinājums rakstīt tikai lasāmā mapē: „%1“"
 
 #: contactsresource.cpp:251 contactsresource.cpp:266 contactsresource.cpp:301
 #: contactsresource.cpp:313
 #, kde-format
 msgid "Unable to write to file '%1': %2"
-msgstr "Neizdevās ierakstīt failā '%1': %2"
+msgstr "Neizdevās ierakstīt datnē „%1“: %2"
 
 #: contactsresource.cpp:285 contactsresource.cpp:333
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'"
-msgstr "Mēģinājums rakstīt tikai lasāmā failā: '%1'"
+msgstr "Mēģinājums rakstīt tikai lasāmā datnē: „%1“"
 
 #: contactsresource.cpp:323
 #, kde-format
 msgid "Received item with unknown payload %1"
-msgstr "Saņemts ieraksts ar nezināmu saturu %1"
+msgstr "Saņemts ieraksts ar nezināmu saturu „%1“"
 
 #: contactsresource.cpp:348
 #, kde-format
 msgid "Unable to remove file '%1'"
-msgstr "Neizdevās izmest failu '%1'"
+msgstr "Neizdevās izmest datni „%1“"
 
 #: contactsresource.cpp:365
 #, kde-format
 msgid "Unable to create folder '%1'."
-msgstr "Neizdevās izveidot mapi '%1'."
+msgstr "Neizdevās izveidot mapi „%1“."
 
 #: contactsresource.cpp:400
 #, kde-format
 msgid "Unable to rename folder '%1'."
-msgstr "Neizdevās pārdēvēt mapi '%1'."
+msgstr "Neizdevās pārdēvēt mapi „%1“."
 
 #: contactsresource.cpp:418
 #, kde-format
 msgid "Unknown folder to delete."
-msgstr ""
+msgstr "Nezināma mape, ko dzēst."
 
 #: contactsresource.cpp:422
 #, kde-format
 msgid "Unable to delete folder '%1'."
-msgstr "Neizdevās izdzēst mapi '%1'."
+msgstr "Neizdevās izdzēst mapi „%1“."
 
 #: contactsresource.cpp:437
 #, kde-format
 msgid "Unable to move file '%1' to '%2', '%2' already exists."
-msgstr "Neizdevās pārvietot failu '%1' uz '%2', '%2' jau pastāv."
+msgstr ""
+"Neizdevās pārvietot datni „%1“ uz „%2“. Datne ar nosaukumu „%2“ jau pastāv."
 
 #: contactsresource.cpp:451
 #, kde-format
 msgid "Unable to move directory '%1' to '%2', '%2' already exists."
-msgstr "Neizdevās pārvietot mapi '%1' uz '%2', '%2' jau pastāv."
+msgstr ""
+"Neizdevās pārvietot mapi „%1“ uz „%2“. Mape ar nosaukumu „%2“ jau pastāv."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: contactsresource.kcfg:10
@@ -170,12 +170,12 @@ msgstr "Ceļš uz kontaktu mapi"
 #: contactsresource.kcfg:14
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "Nemainīt īstos aizmugures datus."
+msgstr "Nemainīt aktuālos aizmugursistēmas datus."
 
 #: contactssettingswidget.cpp:40
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktivitātes"
 
 #~ msgid "Filename:"
 #~ msgstr "Faila nosaukums:"

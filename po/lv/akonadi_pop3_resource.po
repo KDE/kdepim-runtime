@@ -2,37 +2,36 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Einars Sprugis <einars8@gmail.com>, 2012.
+# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-27 00:40+0000\n"
-"PO-Revision-Date: 2012-07-12 22:31+0300\n"
-"Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
-"Language-Team: Latvian <locale@laka.lv>\n"
+"PO-Revision-Date: 2024-12-30 16:07+0200\n"
+"Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
+"Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 24.12.0\n"
 
 #: accountwidget.cpp:83
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p %"
 
 #: accountwidget.cpp:91
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minūte"
-msgstr[1] " minūtes"
-msgstr[2] " minūšu"
+msgstr[0] "%v minūte"
+msgstr[1] "%v minūtes"
+msgstr[2] "%v minūšu"
 
 #: accountwidget.cpp:128 pop3resource.cpp:46
 #, kde-format
@@ -40,8 +39,7 @@ msgid "POP3 Account"
 msgstr "POP3 konts"
 
 #: accountwidget.cpp:195
-#, fuzzy, kde-format
-#| msgid "Unable to open wallet"
+#, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Neizdevās atvērt maku"
@@ -54,23 +52,13 @@ msgid ""
 "Since some servers do not correctly announce their capabilities you still "
 "have the possibility to turn leaving fetched messages on the server on."
 msgstr ""
-"Serveris, šķiet, neatbalsta unikālus vēstuļu numurus, bet tas ir obligāts "
-"nosacījums vēstuļu atstāšanai uz servera.\n"
-"Tā kā daži serveri pareizi nepaziņo par to iespējām, jums vēl joprojām ir ir "
-"iespēja ieslēgt saņemto vēstuļu atstāšanu uz servera."
+"Izskatās, ka serveris neatbalsta unikālus vēstuļu numurus, bet tas ir "
+"obligāts nosacījums vēstuļu atstāšanai uz servera.\n"
+"Tā kā daži serveri pareizi nepaziņo par to iespējām, jums ir iespēja ieslēgt "
+"saņemto vēstuļu atstāšanu uz servera."
 
 #: accountwidget.cpp:260
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that this feature can cause some POP3 servers that do not "
-#| "support pipelining to send corrupted mail;\n"
-#| "this is configurable, though, because some servers support pipelining but "
-#| "do not announce their capabilities. To check whether your POP3 server "
-#| "announces pipelining support use the \"Check What the Server Supports\" "
-#| "button at the bottom of the dialog;\n"
-#| "if your server does not announce it, but you want more speed, then you "
-#| "should do some testing first by sending yourself a batch of mail and "
-#| "downloading it."
+#, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
 "support pipelining to send corrupted mail;\n"
@@ -82,26 +70,25 @@ msgid ""
 "you should do some testing first by sending yourself a batch\n"
 "of mail and downloading it."
 msgstr ""
-"Lūdzu, ievērojiet, ka šī iespēja var izraisīt dažu POP3 serveru, kas "
-"neatbalsta cauruļošanu (pipelining), nepareizu darbību — sūtot bojātu e-"
-"pastu;\n"
-"tas ir konfigurējams, jo daži cauruļošanu atbalsta, bet atbalstītajām "
-"iespējām neziņo. Lai pārbaudītu, vai jūsu POP3 serveris ziņo par "
-"cauruļošanas atbalstu, lietojiet pogu 'Pārbaudīt, ko serveris atbalsta' "
-"dialogloga apakšā;\n"
-"ja serveris par to nepaziņo, bet jūs vēlaties lielāku ātrumu, varat veikt "
-"nelielu pārbaudi, vispirms nosūtot sev lielu daudzumu vēstuļu un tad tās "
-"lejupielādējot."
+"Ievērojiet, ka šī iespēja var izraisīt dažu POP3 serveru, kas neatbalsta "
+"cauruļošanu (pipelining), nepareizu darbību — sūtot bojātas e-pasta "
+"vēstules.\n"
+"Iespēja ir konfigurējama, jo daži serveri cauruļošanu atbalsta, bet par "
+"atbalstītajām iespējām neziņo. Lai pārbaudītu, vai jūsu POP3 serveris ziņo "
+"par\n"
+"cauruļošanas atbalstu, lietojiet pogu loga apakšā„Noteikt automātiski“.\n"
+"Ja serveris par to neziņo, bet jūs vēlaties lielāku ātrumu,\n"
+"veicat pārbaudes, nosūtot sev virkni vēstuļu un tās lejupielādējot."
 
 #: accountwidget.cpp:293
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
-msgstr "Lūdzu, vispirms cilnē 'Vispārīgi' norādiet serveri un portu."
+msgstr "Vispirms pamata iestatījumu cilnē norādiet serveri un portu."
 
 #: accountwidget.cpp:326
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
-msgstr "Neizdevās pieslēgties serverim, lūdzu, pārbaudiet servera adresi."
+msgstr "Neizdevās pieslēgties serverim. Pārbaudiet servera adresi."
 
 #: accountwidget.cpp:370
 #, kde-format
@@ -115,14 +102,13 @@ msgid ""
 "should first test it by sending yourself a larger number of test messages "
 "which you all download in one go from the POP server."
 msgstr ""
-"Serveris, šķiet, neatbalsta cauruļošanu, līdz ar to šī opcija tika "
-"atslēgta.\n"
-"Tā kā daži serveri pareizi nepaziņo par savām iespējām, jums vēljoprojām ir "
-"iespēja cauruļošanu ieslēgt. Bet, lūdzu, ievērojiet, ka šī iespēja var "
-"izraisīt situāciju, kad daži POP severi, kas cauruļošanu neatbalsta, sūta "
-"bojātus ziņojumus. Tādēļ, pirms izmantot šo iespēju ar svarīgiem e-pastiem, "
-"jāveic pārbaude, nosūtot sev lielu skaitu testa vēstuļu, kuras pēc tam no "
-"POP servera ar vienu paņēmienu lejupielādē."
+"Izskatās, ka serveris neatbalsta cauruļošanu, tāpēc šī opcija ir izslēgta.\n"
+"Tā kā daži serveri pareizi nepaziņo par savām spējām, jums ir iespēja "
+"cauruļošanu ieslēgt. Bet ievērojiet, ka šī iespēja var izraisīt situāciju, "
+"kad daži POP serveri, kas cauruļošanu neatbalsta, sūta bojātus ziņojumus. "
+"Tāpēc, pirms izmantojat šo iespēju ar svarīgiem e-pastiem, pārbaudiet tās "
+"darbību, nosūtot sev lielu skaitu vēstuļu, kuras pēc tam no POP servera ar "
+"vienu paņēmienu lejupielādējiet."
 
 #: accountwidget.cpp:390
 #, kde-format
@@ -134,9 +120,8 @@ msgid ""
 "have the possibility to turn leaving fetched messages on the server on."
 msgstr ""
 "Serveris, šķiet, neatbalsta unikālus vēstuļu numurus, bet tas ir obligāts "
-"nosacījums vēstuļu atstāšanai uz servera, līdz ar to šī opcija tika "
-"atslēgta.\n"
-"Tā kā daži serveri pareizi nepaziņo par to iespējām, jums vēl joprojām ir ir "
+"nosacījums vēstuļu atstāšanai uz servera, tāpēc šī opcija ir izslēgta.\n"
+"Tā kā daži serveri pareizi nepaziņo par to atbalstītajām iespējām, jums ir "
 "iespēja ieslēgt saņemto vēstuļu atstāšanu uz servera."
 
 #: accountwidget.cpp:422
@@ -156,20 +141,19 @@ msgstr[1] " vēstules"
 msgstr[2] " vēstuļu"
 
 #: jobs.cpp:148
-#, fuzzy, kde-format
-#| msgid "Unable to create POP3 slave, aborting mail check."
+#, kde-format
 msgid "Unable to initialize SASL, aborting mail check."
-msgstr "Neizdevās izveidot POP3 vergu, pasta pārbaude pārtraukta."
+msgstr "Nespēj inicializēt SASL. Pasta pārbaudi atceļ."
 
 #: pop3protocol.cpp:189
 #, kde-format
 msgid "The server said: \"%1\""
-msgstr ""
+msgstr "Serveris atbildēja: „%1“"
 
 #: pop3protocol.cpp:211
 #, kde-format
 msgid "The server terminated the connection."
-msgstr ""
+msgstr "Serveris savienojumu pārtrauca."
 
 #: pop3protocol.cpp:213
 #, kde-format
@@ -177,11 +161,13 @@ msgid ""
 "Invalid response from server:\n"
 "\"%1\""
 msgstr ""
+"Nederīga atbilde no servera:\n"
+"„%1“"
 
 #: pop3protocol.cpp:253 pop3protocol.cpp:257
 #, kde-format
 msgid "Could not send to server.\n"
-msgstr ""
+msgstr "Nevarēja nosūtīt serverim.\n"
 
 #: pop3protocol.cpp:356
 #, kde-format
@@ -191,11 +177,15 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
+"Ierakstīšanās caur APOP neizdevās. Iespējams, serveris „%1“ neatbalsta APOP, "
+"lai gan tas apgalvo, ka to atbalsta. Vai arī ievadījāt nepareizu paroli.\n"
+"\n"
+"%2"
 
 #: pop3protocol.cpp:406
 #, kde-format
 msgid "An error occurred during authentication: %1"
-msgstr ""
+msgstr "Autentifikācijas laikā notikusi kļūda: %1"
 
 #: pop3protocol.cpp:500
 #, kde-format
@@ -205,6 +195,10 @@ msgid ""
 "\n"
 "%3"
 msgstr ""
+"Ierakstīšanās caur SASL (%1) neizdevās. Iespējams, serveris neatbalsta „%2“. "
+"Vai arī ievadījāt nepareizu paroli.\n"
+"\n"
+"%3"
 
 #: pop3protocol.cpp:511
 #, kde-format
@@ -212,6 +206,8 @@ msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
 "Choose a different authentication method."
 msgstr ""
+"Jūsu POP3 serveris (%1) neatbalsta SASL.\n"
+"Izvēlieties citu autentifikācijas metodi."
 
 #: pop3protocol.cpp:528 pop3protocol.cpp:617
 #, kde-format
@@ -219,6 +215,8 @@ msgid ""
 "Could not login to %1.\n"
 "\n"
 msgstr ""
+"Neizdevās ierakstīties „%1“.\n"
+"\n"
 
 #: pop3protocol.cpp:536
 #, kde-format
@@ -227,21 +225,24 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
+"Neizdevās ierakstīties „%1“. Parole var būt nepareiza.\n"
+"\n"
+"%2"
 
 #: pop3protocol.cpp:568
 #, kde-format
 msgid "SSL/TLS error: %1"
-msgstr ""
+msgstr "SSL/TLS kļūda: %1"
 
 #: pop3protocol.cpp:599
 #, kde-format
 msgid "%1: %2"
-msgstr ""
+msgstr "%1: %2"
 
 #: pop3protocol.cpp:618
 #, kde-format
 msgid "The server terminated the connection immediately."
-msgstr ""
+msgstr "Serveris savienojumu nekavējoties pārtrauca."
 
 #: pop3protocol.cpp:619
 #, kde-format
@@ -249,6 +250,8 @@ msgid ""
 "Server does not respond properly:\n"
 "%1\n"
 msgstr ""
+"Serveris korekti neatbild:\n"
+"%1\n"
 
 #: pop3protocol.cpp:643
 #, kde-format
@@ -256,6 +259,8 @@ msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
 "Choose a different authentication method."
 msgstr ""
+"POP3 serveris (%1) neatbalsta APOP.\n"
+"Izvēlieties citu autentifikācijas metodi."
 
 #: pop3protocol.cpp:653
 #, kde-format
@@ -263,26 +268,29 @@ msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
 "You can disable TLS in the POP account settings dialog."
 msgstr ""
+"Jūsu POP3 serveris norāda, ka atbalstot TLS, tomēr komunikācija ar to "
+"neizdevās.\n"
+"Varat izslēgt TLS lietošanu POP konta iestatījumu lodziņā."
 
 #: pop3protocol.cpp:733
 #, kde-format
 msgid "Internal error: missing argument for command %1"
-msgstr ""
+msgstr "Iekšēja kļūda: „%1“ komandai trūkst parametra"
 
 #: pop3protocol.cpp:789
 #, kde-format
 msgid "Internal error: missing item"
-msgstr ""
+msgstr "Iekšēja kļūda: trūkst vienuma"
 
 #: pop3protocol.cpp:814
 #, kde-format
 msgid "Timeout from POP3 server %1"
-msgstr ""
+msgstr "Noildze no POP3 servera „%1“"
 
 #: pop3protocol.cpp:816
 #, kde-format
 msgid "Connection broken from POP3 server %1"
-msgstr ""
+msgstr "Savienojums nedarbojas no POP3 servera „%1“"
 
 #: pop3protocol.cpp:877
 #, kde-format
@@ -290,6 +298,7 @@ msgid ""
 "Error during communication with the POP3 server while trying to download "
 "mail: %1"
 msgstr ""
+"Kļūda komunikācijas laikā ar POP3 serveri, mēģinot lejupielādēt pastu: %1"
 
 #: pop3resource.cpp:95
 #, kde-format
@@ -299,18 +308,18 @@ msgstr "Pasta pārbaude pārtraukta."
 #: pop3resource.cpp:102
 #, kde-format
 msgid "Mail check was canceled manually."
-msgstr "Pasta pārbaude tika atcelta pašrocīgi."
+msgstr "Pasta pārbaude ir atcelta manuāli."
 
 #: pop3resource.cpp:130
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
-msgstr "Lūdzu, ievadiet konta '%1' lietotājvārdu un paroli."
+msgstr "Ievadiet konta „%1“ lietotājvārdu un paroli."
 
 #: pop3resource.cpp:147
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
-msgstr "Jums tiek vaicāts šeit, jo paroli neizdevās ielādēt no maka."
+msgstr "Jums to lūdz izdarīt šeit, jo neizdevās ielādēt paroli no maka."
 
 #: pop3resource.cpp:164
 #, kde-format
@@ -320,12 +329,12 @@ msgstr "Konts:"
 #: pop3resource.cpp:181
 #, kde-format
 msgid "No username and password supplied."
-msgstr "Lietotājvārds un parole netika norādīta."
+msgstr "Nav norādīts lietotājvārds un parole."
 
 #: pop3resource.cpp:200
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
-msgstr "Sagatavo pārsūtīšanu no \"%1\"."
+msgstr "Sagatavo pārsūtīšanu no „%1“."
 
 #: pop3resource.cpp:221
 #, kde-format
@@ -335,17 +344,17 @@ msgstr "Izpilda pirmskomandu."
 #: pop3resource.cpp:246
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
-msgstr "Jums tiek vaicāts šeit, jo iepriekšējā pieteikšanās bija neveiksmīga."
+msgstr "Jums vaicā te, jo iepriekšējā ierakstīšanās neizdevās."
 
 #: pop3resource.cpp:248
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
-msgstr "Jums tiek vaicāts šeit, jo jūsu ievadītais lietotājvārds ir tukšs."
+msgstr "Jums to vaicā te, jo jūsu ievadītais lietotājvārds ir tukšs."
 
 #: pop3resource.cpp:275
 #, kde-format
 msgid "Fetching mail listing."
-msgstr "Saņem e-pastu sarakstu."
+msgstr "Saņem e-pasta vēstuļu sarakstu."
 
 #: pop3resource.cpp:331
 #, kde-format
@@ -361,7 +370,8 @@ msgstr "Saglabā paroli makā."
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
-"Radās kļūda, mēģinot saņemt vietējo iesūtnes mapi, pasta pārbaude pārtraukta."
+"Radās kļūda, mēģinot saņemt vietējo iesūtnes mapi. Pasta pārbaude ir "
+"pārtraukta."
 
 #: pop3resource.cpp:398
 #, kde-format
@@ -379,23 +389,23 @@ msgstr ""
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr ""
-"Radās kļūda, mēģinot saņemt ienākošā pasta mapi, pasta pārbaude pārtraukta."
+"Radās kļūda, mēģinot saņemt ienākošā pasta mapi, Pasta pārbaude ir "
+"pārtraukta."
 
 #: pop3resource.cpp:432
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
-msgstr "Neizdevās atrast ienākošā pasta mapi, pasta pārbaude pārtraukta."
+msgstr "Neizdevās atrast ienākošā pasta mapi. Pasta pārbaude ir pārtraukta."
 
 #: pop3resource.cpp:443
 #, kde-format
 msgid "Error while executing precommand."
-msgstr "Kļūda izpildot pirmskomandu."
+msgstr "Kļūda, izpildot pirmskomandu."
 
 #: pop3resource.cpp:457
-#, fuzzy, kde-format
-#| msgid "Unable to login to the server %1."
+#, kde-format
 msgid "Unable to login to the server \"%1\"."
-msgstr "Neizdevās pietiekties serverī %1."
+msgstr "Neizdevās ierakstīties serverī „%1“."
 
 #: pop3resource.cpp:466
 #, kde-format
@@ -417,10 +427,10 @@ msgid ""
 "the feature to leave the mails on the server will therefore not work "
 "properly."
 msgstr ""
-"Jūsu POP3 serveris (konts: %1) neatbalsta UIDL komandu: šī komanda ir "
-"nepieciešama, lai uzticamā veidā noteiktu, kurus e-pastus šajā serverī KMail "
-"jau ir redzējis pirms tam;\n"
-"līdz ar to e-pastu atstāšana serverī nedarbosies pareizi."
+"Jūsu POP3 serveris (konts: „%1“) neatbalsta UIDL komandu: šī komanda ir "
+"nepieciešama, lai uzticamā veidā noteiktu, kurus e-pastus „KMail“ šajā "
+"serverījau ir redzējis.\n"
+"Bez šīs iespējas e-pastu atstāšana serverī nedarbosies pareizi."
 
 #: pop3resource.cpp:508
 #, kde-format
@@ -432,12 +442,12 @@ msgstr "Radās kļūda, saņemot e-pastus no servera."
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
 msgstr ""
-"Saņem ziņojumu %1 no %2 (%3 no %4 KB) priekš %5 (serverī paliek %6 KB)."
+"Saņem %1. vēstuli no %2 (%3 no %4 KB) priekš „%5“ (serverī paliek %6 KB)."
 
 #: pop3resource.cpp:577
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
-msgstr "Saņem ziņojumu %1 no %2 (%3 no %4 KB) priekš %5"
+msgstr "Saņem %1. vēstuli no %2 (%3 no %4 KB) priekš „%5“"
 
 #: pop3resource.cpp:600
 #, kde-format
@@ -452,15 +462,15 @@ msgstr "Neizdevās dzēst vēstules no servera."
 #: pop3resource.cpp:804
 #, kde-format
 msgid "Finished mail check, no message downloaded."
-msgstr "Pasta pārbaude pabeigta, netika lejupielādēta neviena vēstule."
+msgstr "Pasta pārbaude ir pabeigta, nav lejupielādēta neviena vēstule."
 
 #: pop3resource.cpp:806
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
-msgstr[0] "Pasta pārbaude pabeigta, lejupielādēta %1 vēstule."
-msgstr[1] "Pasta pārbaude pabeigta, lejupielādētas %1 vēstules."
-msgstr[2] "Pasta pārbaude pabeigta, lejupielādēts %1 vēstuļu."
+msgstr[0] "Pasta pārbaude ir pabeigta. Lejupielādēta %1 vēstule."
+msgstr[1] "Pasta pārbaude ir pabeigta. Lejupielādētas %1 vēstules."
+msgstr[2] "Pasta pārbaude ir pabeigta. Lejupielādēts %1 vēstuļu."
 
 #: pop3resource.cpp:820
 #, kde-format
@@ -470,7 +480,7 @@ msgstr "Neizdevās pabeigt pasta saņemšanu."
 #: pop3resource.cpp:954
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
-msgstr "Pasta pārbaude jau notiek, neizdevās palaist otro pārbaudi."
+msgstr "Pasta pārbaude jau notiek. Otru pārbaudi palaist nevar."
 
 #: pop3resource.cpp:975
 #, kde-format
@@ -480,7 +490,7 @@ msgstr "Gatavs"
 #: pop3resource.cpp:978
 #, kde-format
 msgid "Mail check aborted after going offline."
-msgstr "Pēc pāriešanas nesaistes režīmā pasta pārbaude pārtraukta."
+msgstr "Pasta pārbaude ir pārtraukta pēc pāriešanas nesaistes režīmā."
 
 #: pop3resource.cpp:980
 #, kde-format
@@ -514,7 +524,7 @@ msgid ""
 "to authenticate you with their servers. It usually is the first part of your "
 "email address (the part before <em>@</em>)."
 msgstr ""
-"Jūsu interneta servisa nodrošinātājs jums piešķīra <em>lietotājvārdu</em>, "
+"Jūsu interneta pakalpojumu sniedzējs jums piešķīra <em>lietotājvārdu</em>, "
 "kas tiek izmantots, lai autentificētos tā serveros. Tas parasti ir jūsu e-"
 "pasta adreses pirmā daļa (daļa pirms <em>@</em>)."
 
@@ -534,13 +544,11 @@ msgstr "Kontu sarakstā parādītais nosaukums"
 #: popsettings.ui:90
 #, kde-format
 msgid "Account name: This defines the name displayed in the account list."
-msgstr ""
-"Konta nosaukums: šis nosaka nosaukumu, kas tiks parādīts kontu sarakstā."
+msgstr "Konta nosaukums: nosaka nosaukumu, kas būs redzams kontu sarakstā."
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: popsettings.ui:97
-#, fuzzy, kde-format
-#| msgid "Incoming mail &server:"
+#, kde-format
 msgid "Incoming &mail server:"
 msgstr "Ienākošā pasta &serveris:"
 
@@ -557,15 +565,14 @@ msgid ""
 "The address of the POP3 server, e.g. pop3.yourprovider.org. You should get "
 "this address from your mail provider."
 msgstr ""
-"POP3 servera adrese, piem., pop3.yourprovider.org. Jums šo adresi vajadzētu "
-"saņemt no sava e-pasta nodrošinātāja."
+"POP3 servera adrese, piemēram, „pop3.yourprovider.org“. Šo adresi parasti "
+"sniedz e-pasta pakalpojumu sniedzējs."
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: popsettings.ui:117
-#, fuzzy, kde-format
-#| msgid "Username:"
+#, kde-format
 msgid "Use&rname:"
-msgstr "Lietotājvārds:"
+msgstr "&Lietotājvārds:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, loginEdit)
 #: popsettings.ui:127
@@ -589,26 +596,26 @@ msgstr "Parole piekļuvei pasta serverim"
 #: popsettings.ui:150
 #, kde-format
 msgid "Password: The password given to you by your mail provider."
-msgstr "Parole: parole, ko jums piešķīra pasta nodrošinātājs."
+msgstr "Parole: e-pasta pakalpojumu sniedzēja sniegtā parole."
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget_5)
 #: popsettings.ui:157
 #, kde-format
 msgid "Mail Checking Options"
-msgstr "Pasta pārbaudes opcijas"
+msgstr "Jauna e-pasta pārraudzības opcijas"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, intervalCheck)
 #: popsettings.ui:164
 #, kde-format
 msgid ""
 "If active, the POP3 account will be checked for new mail every x minutes"
-msgstr "Ja aktīva, jauni e-pasti POP3 kontā tiks pārbaudīti katras x minūtes"
+msgstr "Ja aktīvs, POP3 kontā jaunus e-pastus pārbaudīs katras x minūtes"
 
 #. i18n: ectx: property (text), widget (QCheckBox, intervalCheck)
 #: popsettings.ui:167
 #, kde-format
 msgid "Enable &interval mail checking"
-msgstr "&Ieslēgt pasta pārbaudi ik pēc noteikta intervāla"
+msgstr "&Ieslēgt pasta pārbaudi ik pēc noteikta laika"
 
 #. i18n: ectx: property (text), widget (QLabel, intervalLabel)
 #: popsettings.ui:174
@@ -624,8 +631,7 @@ msgstr "Paplašināti"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget)
 #: popsettings.ui:217
-#, fuzzy, kde-format
-#| msgid "POP Settings"
+#, kde-format
 msgid "POP Settings"
 msgstr "POP iestatījumi"
 
@@ -633,7 +639,7 @@ msgstr "POP iestatījumi"
 #: popsettings.ui:239
 #, kde-format
 msgid "If checked the message is not deleted from the mail server"
-msgstr "Ja atzīmēts, vēstules no pasta servera netiek dzēstas"
+msgstr "Ja atzīmēts, vēstules no pasta servera netiks dzēstas"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, leaveOnServerCheck)
 #: popsettings.ui:242
@@ -661,13 +667,13 @@ msgstr "Oriģinālā vēstule no servera tiek dzēsta pēc x dienām"
 #: popsettings.ui:261
 #, kde-format
 msgid "Days to leave messages on the server:"
-msgstr "Laika ilgums dienās, kādu vēstules atstāt serverī:"
+msgstr "Laiks dienās, cik ilgi vēstules atstāt serverī:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, leaveOnServerCountCheck)
 #: popsettings.ui:284
 #, kde-format
 msgid "Only the x most recent messages are kept on the server"
-msgstr "Serverī tiek atstātas tikai x jaunākās vēstules"
+msgstr "Serverī atstāj tikai x skaitu jaunākās vēstules"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, leaveOnServerCountCheck)
 #: popsettings.ui:287
@@ -705,7 +711,7 @@ msgstr ""
 #: popsettings.ui:319
 #, kde-format
 msgid "Maximum megabytes to keep:"
-msgstr "Maksimālais paturamo izmērs, megabaitos:"
+msgstr "Maksimālais paturamo vēstuļu izmērs megabaitos:"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, leaveOnServerSizeSpin)
 #: popsettings.ui:329
@@ -735,7 +741,7 @@ msgstr "Pirmsko&manda:"
 #: popsettings.ui:391
 #, kde-format
 msgid "Command that is executed before checking mail"
-msgstr "Komanda, kas tiek izpildīta pirms pasta pārbaudes"
+msgstr "Komanda, ko programma izpildīs pirms pasta pārbaudes"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget_2)
 #: popsettings.ui:403
@@ -769,37 +775,13 @@ msgstr "SSL/TLS"
 
 #. i18n: ectx: property (text), widget (QRadioButton, encryptionTLS)
 #: popsettings.ui:450
-#, fuzzy, kde-format
-#| msgid "STARTTLS"
+#, kde-format
 msgid "STA&RTTLS"
-msgstr "STARTTLS"
+msgstr "STA&RTTLS"
 
 #. i18n: ectx: property (text), widget (QLabel, imapInfo)
 #: popsettings.ui:465
-#, fuzzy, kde-format
-#| msgid ""
-#| "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#| "REC-html40/strict.dtd\">\n"
-#| "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#| "css\">\n"
-#| "p, li { white-space: pre-wrap; }\n"
-#| "</style></head><body style=\" font-family:'HandelGotDLig'; font-"
-#| "size:10pt; font-weight:400; font-style:normal;\">\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "family:'Sans Serif'; font-weight:600;\">SSL/TLS</span><span style=\" font-"
-#| "family:'Sans Serif';\"> is safe IMAP over port 993;</span></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "family:'Sans Serif'; font-weight:600;\">STARTTLS</span><span style=\" "
-#| "font-family:'Sans Serif';\"> will operate on port 143 and switch to a "
-#| "secure connection directly after connecting;</span></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "family:'Sans Serif'; font-weight:600;\">None</span><span style=\" font-"
-#| "family:'Sans Serif';\"> will connect to port 143 but not switch to a "
-#| "secure connection. This setting is not recommended.</span></p></body></"
-#| "html>"
+#, kde-format
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -828,22 +810,22 @@ msgstr ""
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
 "\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'HandelGotDLig'; font-size:10pt; "
-"font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; font-"
+"weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">SSL/TLS</span><span style=\" font-"
-"family:'Sans Serif';\"> ir drošs IMAP caur portu 993;</span></p>\n"
+"family:'Sans Serif';\"> ir drošs POP caur portu 995;</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">STARTTLS</span><span style=\" font-"
-"family:'Sans Serif';\"> darbosies caur portu 143 un pārslēgsies uz drošu "
-"savienojumu uzreiz pēc pievienošanās;</span></p>\n"
+"family:'Sans Serif';\"> darbosies caur portu 110 un pārslēgsies uz drošu "
+"savienojumu uzreiz pēc savienošanās;</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">Nav</span><span style=\" font-"
-"family:'Sans Serif';\"> pievienosies portam 143, bet nepārslēgsies uz drošu "
-"savienojumu. Šis iestatījums nav ieteicams.</span></p></body></html>"
+"family:'Sans Serif';\"> savienosies caur portu 110, bet nepārslēgsies uz "
+"drošu savienojumu. Šis iestatījums nav ieteicams.</span></p></body></html>"
 
 #. i18n: ectx: property (text), widget (QLabel, label_13)
 #: popsettings.ui:472
@@ -859,25 +841,25 @@ msgstr "Autentifikācija:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, proxyCheck)
 #: popsettings.ui:502
-#, fuzzy, kde-format
-#| msgid "If checked the message is not deleted from the mail server"
+#, kde-format
 msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
-msgstr "Ja atzīmēts, vēstules no pasta servera netiek dzēstas"
+msgstr ""
+"Ja atzīmēts, lai savienotos ar e-pasta serveri, ierīce izmantos sistēmas "
+"starpniekservera iestatījumus."
 
 #. i18n: ectx: property (text), widget (QCheckBox, proxyCheck)
 #: popsettings.ui:505
-#, fuzzy, kde-format
-#| msgid "Wallet disabled in system settings"
+#, kde-format
 msgid "Connect using the system proxy settings"
-msgstr "Maks ir atslēgts sistēmas iestatījumos"
+msgstr "Savienoties, izmantojot sistēmas starpniekservera iestatījumus"
 
 #. i18n: ectx: label, entry (authenticationMethod), group (General)
 #: settings.kcfg:30
 #, kde-format
 msgid "Defines the authentication type to use"
-msgstr "Norāda izmantojamo pieteikšanās veidu"
+msgstr "Norāda izmantojamo autentifikācijas veidu"
 
 #, fuzzy
 #~| msgid "Deleting messages from the server."

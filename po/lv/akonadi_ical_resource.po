@@ -7,19 +7,20 @@
 # Viesturs Zariņš <viesturs.zarins@mii.lu.lv>, 2009.
 # Viesturs Zarins <viesturs.zarins@mii.lu.lv>, 2010.
 # Einars Sprugis <einars8@gmail.com>, 2011.
+# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-12-18 00:41+0000\n"
-"PO-Revision-Date: 2011-07-14 21:43+0300\n"
-"Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
-"Language-Team: Latvian <locale@laka.lv>\n"
+"PO-Revision-Date: 2024-12-27 16:47+0200\n"
+"Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
+"Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Lokalize 24.12.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
@@ -27,7 +28,7 @@ msgstr ""
 #: icalresource.kcfg:10
 #, kde-format
 msgid "Path to iCal file."
-msgstr "Ceļš uz iCal failu."
+msgstr "Ceļš uz „iCal“ datni."
 
 #. i18n: ectx: label, entry (DisplayName), group (General)
 #: icalresource.kcfg:14
@@ -39,31 +40,30 @@ msgstr "Attēlojamais vārds."
 #: icalresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "Nemainīt aizmugures datus."
+msgstr "Nemainīt aizmugursistēmas datus."
 
 #. i18n: ectx: label, entry (MonitorFile), group (General)
 #: icalresource.kcfg:22
 #, kde-format
 msgid "Monitor file for changes."
-msgstr "Vērot izmaiņas failā."
+msgstr "Pārraudzīt izmaiņas datnē."
 
 #. i18n: ectx: label, entry (PeriodicUpdate), group (General)
 #: icalresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "Periodiski atjaunināt datni."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: icalresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Autosave interval time (in minutes)."
+#, kde-format
 msgid "Automatic update period in minutes."
-msgstr "Pšsaglabāšanās intervāls (minūtēs)."
+msgstr "Automātiskas saglabāšanas intervāls minūtēs."
 
 #: shared/icalresource.cpp:48
 #, kde-format
 msgid "Incidence with uid '%1' not found."
-msgstr "Notikums ar UID '%1' nav atrasts."
+msgstr "Notikums ar UID „%1“ nav atrasts."
 
 #: shared/icalresourcebase.cpp:46 shared/icalresourcebase.cpp:59
 #: shared/icalresourcebase.cpp:90 shared/icalresourcebase.h:88
@@ -74,17 +74,17 @@ msgstr "Kalendārs nav ielādēts."
 #: shared/icalresourcebase.cpp:143
 #, kde-format
 msgid "Failed to save calendar file to %1"
-msgstr "Neizdevās saglabāt kalendāru failā '%1'"
+msgstr "Neizdevās saglabāt kalendāru datnē „%1“"
 
 #: shared/icalresourcebase.h:93
 #, kde-format
 msgid "Unable to retrieve added item %1."
-msgstr "Nevar atlasīt pievienoto ierakstu %1."
+msgstr "Nevar atlasīt pievienoto vienumu „%1“."
 
 #: shared/icalresourcebase.h:93
 #, kde-format
 msgid "Unable to retrieve modified item %1."
-msgstr "Nevar atlasīt laboto ierakstu %1."
+msgstr "Nevar atlasīt laboto vienumu „%1“."
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Pšsaglabāšanās intervāls (minūtēs)."

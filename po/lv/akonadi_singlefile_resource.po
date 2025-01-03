@@ -7,19 +7,20 @@
 # Maris Nartiss <maris.kde@gmail.com>, 2009.
 # Viesturs Zarins <viesturs.zarins@mii.lu.lv>, 2010.
 # Einars Sprugis <einars8@gmail.com>, 2012.
+# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-22 00:40+0000\n"
-"PO-Revision-Date: 2012-07-13 00:38+0300\n"
-"Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
-"Language-Team: Latvian <locale@laka.lv>\n"
+"PO-Revision-Date: 2024-12-30 16:17+0200\n"
+"Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
+"Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 24.12.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
@@ -27,59 +28,42 @@ msgstr ""
 #: settingsdialog.ui:29
 #, kde-format
 msgid "Directory settings of the resource."
-msgstr ""
+msgstr "Resursa mapes iestatījumi."
 
 #. i18n: ectx: property (whatsThis), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:32
-#, fuzzy, kde-format
-#| msgid ""
-#| "Select the file whose contents should be represented by this resource. If "
-#| "the file does not exist, it will be created. A URL of a remote file can "
-#| "also be specified, but note that monitoring for file changes will not "
-#| "work in this case."
+#, kde-format
 msgid ""
 "Select settings of the directory whose contents should be represented by "
 "this resource."
-msgstr ""
-"Izvēlieties resursa attēlojamo failu. Ja tāds fails nepastāv, tas tiks "
-"izveidots. Pieļaujama arī tīkla vai Interneta vietne, taču tad netiks sekots "
-"faila izmaiņām."
+msgstr "Atlasiet mapes iestatījumus, kuru saturu reprezentēs šis resurss."
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: settingsdialog.ui:39
 #, kde-format
 msgid "Directory"
-msgstr ""
+msgstr "Mape"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: settingsdialog.ui:45
-#, fuzzy, kde-format
-#| msgid "Display Name"
+#, kde-format
 msgid "Directory Name"
-msgstr "Attēlojamais nosaukums"
+msgstr "Mapes nosaukums"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: settingsdialog.ui:53
-#, fuzzy, kde-format
-#| msgid "Display Name"
+#, kde-format
 msgid "Director&y:"
-msgstr "Attēlojamais nosaukums"
+msgstr "&Mape:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: settingsdialog.ui:68
-#, fuzzy, kde-format
-#| msgid ""
-#| "Select the file whose contents should be represented by this resource. If "
-#| "the file does not exist, it will be created. A URL of a remote file can "
-#| "also be specified, but note that monitoring for file changes will not "
-#| "work in this case."
+#, kde-format
 msgid ""
 "Select the directory whose contents should be represented by this resource. "
 "If the directory does not exist, it will be created."
 msgstr ""
-"Izvēlieties resursa attēlojamo failu. Ja tāds fails nepastāv, tas tiks "
-"izveidots. Pieļaujama arī tīkla vai Interneta vietne, taču tad netiks sekots "
-"faila izmaiņām."
+"Norādiet šī resursa attēlojamo mapi. Ja šāda mape nepastāv, to izveidos."
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: settingsdialog.ui:81
@@ -89,39 +73,26 @@ msgstr "Pieejas tiesības"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_ReadOnly)
 #: settingsdialog.ui:87
-#, fuzzy, kde-format
-#| msgid ""
-#| "If read-only mode is enabled, no changes will be written to the file "
-#| "selected above. Read-only mode will be automatically enabled if you do "
-#| "not have write access to the file or the file is on a remote server that "
-#| "does not support write access."
+#, kde-format
 msgid ""
 "If read-only mode is enabled, no changes will be written to the directory "
 "selected above."
 msgstr ""
-"Ja ieslēgts tikai lasīšanas režīms, izmaiņas augšminētajā failā netiks "
-"saglabātas. Šis režīms tiks izvēlēts automātiski, ja jums nav faila "
-"rakstīšanas tiesību vai arī fails atrodas uz tīkla servera, kurš neatļauj "
-"rakstīšanu."
+"Ja ir ieslēgts tikai lasīšanas režīms, augstāk norādītajā mapē netiks "
+"rakstīti nekādi iestatījumi."
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_ReadOnly)
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: settingsdialog.ui:90 settingsdialog.ui:100
-#, fuzzy, kde-format
-#| msgid ""
-#| "If read-only mode is enabled, no changes will be written to the file "
-#| "selected above. Read-only mode will be automatically enabled if you do "
-#| "not have write access to the file or the file is on a remote server that "
-#| "does not support write access."
+#, kde-format
 msgid ""
 "If read-only mode is enabled, no changes will be written to the directory "
 "selected above. Read-only mode will be automatically enabled if you do not "
 "have write access to the directory."
 msgstr ""
-"Ja ieslēgts tikai lasīšanas režīms, izmaiņas augšminētajā failā netiks "
-"saglabātas. Šis režīms tiks izvēlēts automātiski, ja jums nav faila "
-"rakstīšanas tiesību vai arī fails atrodas uz tīkla servera, kurš neatļauj "
-"rakstīšanu."
+"Ja ieslēgts tikai lasāmas mapes režīms, mapes izmaiņas netiks saglabātas. "
+"Tikai lasāma pieeja ir automātiski ieslēgta, ja jums šai mapei nav "
+"rakstīšanas atļauju."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: settingsdialog.ui:93 singlefileresourceconfigwidget_desktop.ui:92
@@ -143,8 +114,9 @@ msgid ""
 "safety and consistency against performance. In general you should be careful "
 "with changing anything here, the defaults are good enough in most cases."
 msgstr ""
-"Šie parametri ļauj līdzsvarot datu drošību un ātrdarbību. Ieteicams uzmanīgi "
-"izvērtēt izmaiņas, vairumā gadījumu noklusētās vērtības ir pietiekamas."
+"Šī opcijas ļauj lapai mainīt parametrus, lai sabalansētu ātrdarbību un datu "
+"drošumu. Vienmēr esiet piesardzīgi, kad kaut ko maināt šajā sadaļā, jo "
+"parasti noklusējumi ir pietiekami labi."
 
 #. i18n: ectx: property (text), widget (QLabel, autosaveLabel)
 #: settingsdialog.ui:145
@@ -156,65 +128,66 @@ msgstr "Automātiskās saglabāšanas aizture:"
 #: settingsdialog.ui:152
 #, kde-format
 msgid "Autosave interval time (in minutes)."
-msgstr ""
+msgstr "Automātiskās saglabāšanas intervāls (minūtēs)."
 
 #. i18n: ectx: property (whatsThis), widget (QSpinBox, kcfg_AutosaveInterval)
 #: settingsdialog.ui:155
 #, kde-format
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr ""
+"Norādiet automātiskās saglabāšanas intervālu šiem resursa datiem (minūtēs)."
 
 #: singlefileresource.h:68
 #, kde-format
 msgid "No file selected."
-msgstr "Nav izvēlēts fails."
+msgstr "Neviena datne nav atlasīta."
 
 #: singlefileresource.h:70
 #, kde-format
 msgid "The resource not configured yet"
-msgstr ""
+msgstr "Resurss vēl nav konfigurēts"
 
 #: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
 #: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
-msgstr "Pabeigts"
+msgstr "Gatavs"
 
 #: singlefileresource.h:104
 #, kde-format
 msgid "Could not create file '%1'."
-msgstr "Neizdevās izveidot failu '%1'."
+msgstr "Neizdevās izveidot datni „%1“."
 
 #: singlefileresource.h:118
 #, kde-format
 msgid "Could not read file '%1'"
-msgstr "Neizdevās nolasīt failu '%1'"
+msgstr "Neizdevās nolasīt datni „%1“"
 
 #: singlefileresource.h:135
 #, kde-format
 msgid "Another download is still in progress."
-msgstr "Cita lejupielāde vēl nav pabeigta."
+msgstr "Joprojām notiek cita lejupielāde."
 
 #: singlefileresource.h:145 singlefileresource.h:236
 #, kde-format
 msgid "Another file upload is still in progress."
-msgstr "Cita augšupielāde vēl nav pabeigta."
+msgstr "Vēl notiek citas datnes augšupielāde."
 
 #: singlefileresource.h:163
 #, kde-format
 msgid "Downloading remote file."
-msgstr "Lejupielādē attālu failu."
+msgstr "Lejupielādē attālu datni."
 
 #: singlefileresource.h:186
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
-msgstr "Mēģināts rakstīt tikai lasāmā failā '%1'."
+msgstr "Mēģināts rakstīt tikai lasāmā datnē „%1“."
 
 #: singlefileresource.h:198
 #, kde-format
 msgid "No file specified."
-msgstr "Nav norādīts fails."
+msgstr "Nav norādīta datne."
 
 #: singlefileresource.h:226
 #, kde-format
@@ -224,7 +197,7 @@ msgstr "Lejupielāde vēl nav pabeigta."
 #: singlefileresource.h:266
 #, kde-format
 msgid "Uploading cached file to remote location."
-msgstr "Augšupielādē kešatmiņas failu uz attālinātu vietu."
+msgstr "Augšupielādē kešatmiņas datni uz attālo vietu."
 
 #: singlefileresourcebase.cpp:240
 #, kde-format
@@ -232,35 +205,35 @@ msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
 "contents has been created at '%2'."
 msgstr ""
-"Fails '%1' uz diska tika mainīts. Piesardzības nolūkos tika izveidota "
-"iepriekšējā satura rezerves kopija '%2'."
+"Datne „%1“ diskā ir mainīta. Piesardzības nolūkos ir izveidota iepriekšējā "
+"satura rezerves kopija „%2“."
 
 #: singlefileresourcebase.cpp:272
 #, kde-format
 msgid "Could not load file '%1'."
-msgstr "Neizdevās ielādēt failu '%1'."
+msgstr "Neizdevās ielādēt datni „%1“."
 
 #: singlefileresourcebase.cpp:288
 #, kde-format
 msgid "Could not save file '%1'."
-msgstr "Neizdevās saglabāt failu '%1'."
+msgstr "Neizdevās saglabāt datni „%1“."
 
 #: singlefileresourceconfigbase.h:31
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktivitātes"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: singlefileresourceconfigwidget_desktop.ui:39
 #, kde-format
 msgid "File"
-msgstr "Fails"
+msgstr "Datne"
 
 #. i18n: ectx: property (text), widget (QLabel, filenameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:47
 #, kde-format
 msgid "File or URL:"
-msgstr ""
+msgstr "Datne vai URL:"
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
@@ -269,38 +242,33 @@ msgid ""
 "Select a local file or a remote URL to download a file from. A new local "
 "file will be created if it doesn't exist."
 msgstr ""
+"Atlasiet lokālu datni vai norādiet attālo URL, no kuras datni lejupielādēt. "
+"Ja datne nepastāv, programma izveidos jaunu lokālu datni."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
-#, fuzzy, kde-format
-#| msgid "Display Name"
+#, kde-format
 msgid "Display Name:"
-msgstr "Attēlojamais nosaukums"
+msgstr "Attēlojamais nosaukums:"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
-#, fuzzy, kde-format
-#| msgid ""
-#| "If read-only mode is enabled, no changes will be written to the file "
-#| "selected above. Read-only mode will be automatically enabled if you do "
-#| "not have write access to the file or the file is on a remote server that "
-#| "does not support write access."
+#, kde-format
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
 "access or when displaying a calendar from remote URL."
 msgstr ""
-"Ja ieslēgts tikai lasīšanas režīms, izmaiņas augšminētajā failā netiks "
-"saglabātas. Šis režīms tiks izvēlēts automātiski, ja jums nav faila "
-"rakstīšanas tiesību vai arī fails atrodas uz tīkla servera, kurš neatļauj "
-"rakstīšanu."
+"Kad it ieslēgts tikai lasīšanas režīms, nekādas izmaiņas programma "
+"nesaglabās. Lasīšanas režīms ir ieslēgts automātiski gadījumos, ja atlasītā "
+"datne neatbalsta rakstīšanas piekļuvi vai kad programma parāda kalendāru no "
+"attālas URL."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
-#, fuzzy, kde-format
-#| msgid "Monitoring"
+#, kde-format
 msgid "Monitor for &changes"
-msgstr "Novērošana"
+msgstr "Pārraudzīt i&zmaiņas"
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
@@ -310,18 +278,21 @@ msgid ""
 "enabled. Backups will be created to avoid conflicts when possible. "
 "Monitoring is not available for remote URLs."
 msgstr ""
+"Kad ir ieslēgta pārraudzība, datne tiks pārlādēta, ja to izmainīs citas "
+"programmas. Lai izvairītos no konfliktiem, iespēju robežās sistēma veidos "
+"rezerves kopijas. Pārraudzība nav pieejama attālām URL."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
 #: singlefileresourceconfigwidget_desktop.ui:149
 #, kde-format
 msgid "Automatically &update every"
-msgstr ""
+msgstr "Automātiski a&tjaunināt ik pēc"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
 #: singlefileresourceconfigwidget_desktop.ui:159
 #, kde-format
 msgid " minutes"
-msgstr ""
+msgstr " minūtēm"
 
 #. i18n: ectx: property (text), widget (QLabel, periodicUpdateLabel)
 #: singlefileresourceconfigwidget_desktop.ui:193
@@ -330,14 +301,14 @@ msgid ""
 "Periodically updates the file. Can be used when monitoring is not available "
 "(e.g. for remote calendars)."
 msgstr ""
+"Periodiski atjaunina datni. Var izmantot, ja pārraudzība nav pieejama "
+"(piemēram, attāliem kalendāriem)."
 
 #: singlefileresourceconfigwidgetbase.cpp:129
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Checking file information..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"
-msgstr "Tiek pārbaudīta faila informācija..."
+msgstr "Pārbauda datnes informāciju…"
 
 #, fuzzy
 #~| msgid "&Filename:"

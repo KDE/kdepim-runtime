@@ -1,0 +1,79 @@
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+#
+# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
+msgid ""
+msgstr ""
+"Project-Id-Version: kdepim-runtime\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2024-07-14 00:39+0000\n"
+"PO-Revision-Date: 2024-12-28 15:59+0200\n"
+"Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
+"Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
+"Language: lv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
+"2);\n"
+"X-Generator: Lokalize 24.12.0\n"
+
+#: migrationagent.cpp:48
+#, kde-format
+msgctxt ""
+"Title of the window that shows the status of the migration agent and offers "
+"controls to start/stop individual migration jobs."
+msgid "Migration Status"
+msgstr "Migrācijas statuss"
+
+#: migrationexecutor.cpp:20
+#, kde-format
+msgctxt "User visible name of ongoing Akonadi migration jobs"
+msgid "PIM Maintenance"
+msgstr "PIM apkope"
+
+#: migrationexecutor.cpp:41
+#, kde-format
+msgctxt "PIM-Maintenance is in progress."
+msgid "In progress…"
+msgstr "Notiek darbība…"
+
+#: migrationexecutor.cpp:47
+#, kde-format
+msgid "PIM Maintenance"
+msgstr "PIM apkope"
+
+#: migrationexecutor.cpp:72
+#, kde-format
+msgctxt "PIM-Maintenance is paused."
+msgid "Paused."
+msgstr "Pauzēts."
+
+#: migrationscheduler.cpp:145
+#, kde-format
+msgctxt "Name of the migrator in this row"
+msgid "Name"
+msgstr "Nosaukums"
+
+#: migrationscheduler.cpp:147
+#, kde-format
+msgctxt "Progress of the migrator in %"
+msgid "Progress"
+msgstr "Progress"
+
+#: migrationscheduler.cpp:149
+#, kde-format
+msgctxt "Current status of the migrator (done, in progress, …)"
+msgid "Status"
+msgstr "Statuss"
+
+#: migrationstatuswidget.cpp:97
+#, kde-format
+msgid "Logfile"
+msgstr "Žurnāla datne"
+
+#: migrationstatuswidget.cpp:106
+#, kde-format
+msgctxt "Title of the window displaying the log of a single migration job."
+msgid "Migration Info"
+msgstr "Migrācijas informācija"

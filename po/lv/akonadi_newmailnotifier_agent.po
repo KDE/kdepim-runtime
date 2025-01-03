@@ -2,98 +2,97 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Einars Sprugis <einars8@gmail.com>, 2012.
+# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-02 00:40+0000\n"
-"PO-Revision-Date: 2012-07-13 23:05+0300\n"
-"Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
-"Language-Team: Latvian <locale@laka.lv>\n"
+"PO-Revision-Date: 2024-12-28 17:24+0200\n"
+"Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
+"Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 24.12.0\n"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
-msgstr ""
+msgstr "Paziņojumu vēsture"
 
 #: newmailnotificationhistorymanager.cpp:32
 #, kde-format
 msgid "[Open Folder]"
-msgstr ""
+msgstr "[Atvērt mapi]"
 
 #: newmailnotificationhistorymanager.cpp:42
 #, kde-format
 msgid "[Show Mail]"
-msgstr ""
+msgstr "[Rādīt mapi]"
 
 #: newmailnotificationhistorywidget.cpp:24
 #: newmailnotifiersettingswidget.cpp:114
 #, kde-format
 msgctxt "@option:check"
 msgid "Enabled"
-msgstr ""
+msgstr "Ieslēgt"
 
 #: newmailnotifieragent.cpp:365
-#, fuzzy, kde-format
-#| msgid "One new email in %2"
-#| msgid_plural "%1 new emails in %2"
+#, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
 "user named it)"
 msgid "One new email in %2 from \"%3\""
 msgid_plural "%1 new emails in %2 from \"%3\""
-msgstr[0] "%2 saņemta %1 jauna vēstule"
-msgstr[1] "%2 saņemtas %1 jaunas vēstules"
-msgstr[2] "%2 saņemts %1 jaunu vēstuļu"
+msgstr[0] "%1 jauna e-pasta vēstule „%2“ no „%3“"
+msgstr[1] "%1 jaunas e-pasta vēstules „%2“ no „%3“"
+msgstr[2] "%1 jaunu e-pasta vēstuļu „%2“ no „%3“"
 
 #: newmailnotifieragent.cpp:402
 #, kde-format
 msgid "New mail arrived"
-msgstr ""
+msgstr "Pienākusi jauna vēstule"
 
 #: newmailnotifieragentsettings.kcfg:34
 #, kde-format
 msgctxt "%f is a variable for agent. Do not change it"
 msgid "A message was received from %f"
-msgstr ""
+msgstr "Saņemta vēstule no „%f“"
 
 #: newmailnotifieropenfolderjob.cpp:37 newmailnotifierreplymessagejob.cpp:38
 #: newmailnotifiershowmessagejob.cpp:36
 #, kde-format
 msgid "Unable to start KMail application."
-msgstr ""
+msgstr "Neizdevās palaist „KMail“ programmu."
 
 #: newmailnotifierselectcollectionwidget.cpp:96
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
-msgstr ""
+msgstr "Atlasiet, kuras mapes pārraudzīt jaunu vēstuļu paziņojumiem:"
 
 #: newmailnotifierselectcollectionwidget.cpp:125
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Search…"
-msgstr ""
+msgstr "Meklēt…"
 
 #: newmailnotifierselectcollectionwidget.cpp:140
 #, kde-format
 msgctxt "@action:button"
 msgid "&Select All"
-msgstr ""
+msgstr "&Atlasīt visu"
 
 #: newmailnotifierselectcollectionwidget.cpp:144
 #, kde-format
 msgctxt "@action:button"
 msgid "&Unselect All"
-msgstr ""
+msgstr "&Noņemt atlasi visam"
 
 #: newmailnotifiersettingswidget.cpp:34
 #, c-format
@@ -101,171 +100,173 @@ msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
 "li><li>%f set from</li></ul></qt>"
 msgstr ""
+"<qt><p>Te varat definēt vēstuli. Varat lietot:</p><ul><li>„%s“ norāda "
+"tematu</li><li>„%f“ norāda „No“ lauku</li></ul></qt>"
 
 #: newmailnotifiersettingswidget.cpp:55
 #, kde-format
 msgid "Choose which fields to show:"
-msgstr ""
+msgstr "Izvēlieties parādāmos laukus:"
 
 #: newmailnotifiersettingswidget.cpp:60
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Photo"
-msgstr ""
+msgstr "Rādīt fotogrāfiju"
 
 #: newmailnotifiersettingswidget.cpp:64
 #, kde-format
 msgctxt "@option:check"
 msgid "Show From"
-msgstr ""
+msgstr "Rādīt „No“ lauku"
 
 #: newmailnotifiersettingswidget.cpp:68
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Subject"
-msgstr ""
+msgstr "Rādīt tematu"
 
 #: newmailnotifiersettingswidget.cpp:72
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Folders"
-msgstr ""
+msgstr "Rādīt mapes"
 
 #: newmailnotifiersettingswidget.cpp:76
 #, kde-format
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
-msgstr ""
+msgstr "Neinformēt, kad es nosūtu e-pasta vēstules"
 
 #: newmailnotifiersettingswidget.cpp:80
 #, kde-format
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
-msgstr ""
+msgstr "Turēt paliekošus paziņojumus"
 
 #: newmailnotifiersettingswidget.cpp:84
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Action Buttons"
-msgstr ""
+msgstr "Rādīt darbību pogas"
 
 #: newmailnotifiersettingswidget.cpp:92
 #, kde-format
 msgctxt "@option:check"
 msgid "Reply Mail"
-msgstr ""
+msgstr "Atbildēt uz vēstuli"
 
 #: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:163
 #, kde-format
 msgid "Reply to Author"
-msgstr ""
+msgstr "Atbildēt autoram"
 
 #: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:166
 #, kde-format
 msgid "Reply to All"
-msgstr ""
+msgstr "Atbildēt visiem"
 
 #: newmailnotifiersettingswidget.cpp:109
 #, kde-format
 msgid "Display"
-msgstr ""
+msgstr "Parādīt"
 
 #: newmailnotifiersettingswidget.cpp:118
 #, kde-format
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
-msgstr ""
+msgstr "<a href=\"whatsthis\">Kā tas darbojas?</a>"
 
 #: newmailnotifiersettingswidget.cpp:127
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Message:"
-msgstr ""
+msgstr "Vēstule:"
 
 #: newmailnotifiersettingswidget.cpp:139
 #, kde-format
 msgid "Text to Speak"
-msgstr ""
+msgstr "Teksts uz runu"
 
 #: newmailnotifiersettingswidget.cpp:145
 #, kde-format
 msgid "Notify"
-msgstr ""
+msgstr "Paziņot"
 
 #: newmailnotifiersettingswidget.cpp:148
 #, kde-format
 msgid "Folders"
-msgstr ""
+msgstr "Mapes"
 
 #: newmailnotifiersettingswidget.cpp:151
 #, kde-format
 msgid "New Mail Notifier Agent"
-msgstr ""
+msgstr "Jauna ziņa informācijas aģents"
 
 #: newmailnotifiersettingswidget.cpp:153
 #, kde-format
 msgid "Notify about new mails."
-msgstr ""
+msgstr "Informēt par jaunu pastu."
 
 #: newmailnotifiersettingswidget.cpp:155
 #, kde-format
 msgid "Copyright (C) 2013-%1 Laurent Montel"
-msgstr ""
+msgstr "Autortiesības (C) 2013—%1 Laurent Montel"
 
 #: newmailnotifiersettingswidget.cpp:158
 #, kde-format
 msgctxt "@info:credit"
 msgid "Laurent Montel"
-msgstr ""
+msgstr "Laurent Montel"
 
 #: newmailnotifiersettingswidget.cpp:158
 #, kde-format
 msgid "Maintainer"
-msgstr ""
+msgstr "Uzturētājs"
 
 #: newmailnotifiersettingswidget.cpp:159
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr ""
+msgstr "Toms Trasūns"
 
 #: newmailnotifiersettingswidget.cpp:159
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr ""
+msgstr "toms.trasuns@posteo.net"
 
 #: specialnotifierjob.cpp:111
 #, kde-format
 msgid "From: %1"
-msgstr ""
+msgstr "No: %1"
 
 #: specialnotifierjob.cpp:119
 #, kde-format
 msgid "Subject: %1"
-msgstr ""
+msgstr "Temats: %1"
 
 #: specialnotifierjob.cpp:123
 #, kde-format
 msgid "In: %1"
-msgstr ""
+msgstr "Atrodas: „%1“"
 
 #: specialnotifierjob.cpp:125
 #, kde-format
 msgid "In: %1 (%2)"
-msgstr ""
+msgstr "Atrodas: „%1“ („%2“)"
 
 #: specialnotifierjob.cpp:150
 #, kde-format
 msgid "Show mail…"
-msgstr ""
+msgstr "Rādīt pastu…"
 
 #: specialnotifierjob.cpp:153
 #, kde-format
 msgid "Mark As Read"
-msgstr ""
+msgstr "Atzīmēt kā lasītu"
 
 #: specialnotifierjob.cpp:156
 #, kde-format
 msgid "Delete"
-msgstr ""
+msgstr "Dzēst"

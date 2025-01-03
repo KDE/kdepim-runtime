@@ -7,31 +7,32 @@
 # Viesturs Zariņš <viesturs.zarins@mii.lu.lv>, 2009.
 # Viesturs Zarins <viesturs.zarins@mii.lu.lv>, 2010.
 # Einars Sprugis <einars8@gmail.com>, 2012.
+# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-12 00:39+0000\n"
-"PO-Revision-Date: 2012-07-08 15:17+0300\n"
-"Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
-"Language-Team: Latvian <locale@laka.lv>\n"
+"PO-Revision-Date: 2024-12-27 18:20+0200\n"
+"Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
+"Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 24.12.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
 #: configwidget.cpp:36
 #, kde-format
 msgid "Archive Folder"
-msgstr ""
+msgstr "Arhīva mape"
 
 #: configwidget.cpp:39
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktivitātes"
 
 #: configwidget.cpp:54
 #, kde-format
@@ -41,17 +42,17 @@ msgstr "Izvēlētais ceļš ir tukšs."
 #: configwidget.cpp:67
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
-msgstr "Izvēlētais ceļš satur derīgas Maildir mapes."
+msgstr "Izvēlētais ceļš satur derīgas „Maildir“ mapes."
 
 #: configwidget.cpp:74
 #, kde-format
 msgid "The selected path is a valid Maildir."
-msgstr "Izvēlētails ceļs ir derīgs Maildir."
+msgstr "Izvēlētais ceļš ir derīgs „Maildir“."
 
 #: configwidget.cpp:80
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
-msgstr "Izvēlētais ceļš nepastāv. Tiks izveidota jauna Maildir mape."
+msgstr "Izvēlētais ceļš nepastāv. Izveidos jaunu „Maildir“ mapi."
 
 #: configwidget.cpp:84
 #, kde-format
@@ -61,7 +62,7 @@ msgstr "Izvēlētais ceļš nepastāv."
 #: libmaildir/maildir.cpp:214 libmaildir/maildir.cpp:219
 #, kde-format
 msgid "Error opening %1; this folder is missing."
-msgstr ""
+msgstr "Kļūda, atverot „%1“. Šādas mapes nav."
 
 #: libmaildir/maildir.cpp:225
 #, kde-format
@@ -69,81 +70,79 @@ msgid ""
 "Error opening %1; either this is not a valid maildir folder, or you do not "
 "have sufficient access permissions."
 msgstr ""
+"Kļūda, atverot „%1“. Vai nu tā nav derīga „maildir“ mape, vai arī jums "
+"trūkst nepieciešamo piekļuves tiesību."
 
 #: libmaildir/maildir.cpp:452 libmaildir/maildir.cpp:474
 #: libmaildir/maildir.cpp:492 libmaildir/maildir.cpp:512
 #: libmaildir/maildir.cpp:531 libmaildir/maildir.cpp:555
 #: libmaildir/maildir.cpp:630 libmaildir/maildir.cpp:780
-#, fuzzy, kde-format
-#| msgid "Cannot move root maildir folder '%1'."
+#, kde-format
 msgid "Cannot locate mail file %1."
-msgstr "Nevar pārvietot saknes maildir mapi '%1'."
+msgstr "Nevar atrast pasta datni „%1“."
 
 #: libmaildir/maildir.cpp:458 libmaildir/maildir.cpp:480
-#, fuzzy, kde-format
-#| msgid "Cannot move root maildir folder '%1'."
+#, kde-format
 msgid "Cannot open mail file %1."
-msgstr "Nevar pārvietot saknes maildir mapi '%1'."
+msgstr "Nevar atvērt pasta datni „%1“."
 
 #: libmaildir/maildir.cpp:563 libmaildir/maildir.cpp:590
-#, fuzzy, kde-format
-#| msgid "Cannot move root maildir folder '%1'."
+#, kde-format
 msgid "Cannot write to mail file %1."
-msgstr "Nevar pārvietot saknes maildir mapi '%1'."
+msgstr "Nevar rakstīt pasta datnē „%1“."
 
 #: libmaildir/maildir.cpp:604
 #, kde-format
 msgid "Failed to create mail file %1. The error was: %2"
-msgstr ""
+msgstr "Neizdevās izveidot pasta datni „%1“. Kļūda bija: %2"
 
 #: libmaildir/maildir.cpp:698
 #, kde-format
 msgid "Failed to update the file name %1 to %2 on the disk. The error was: %3."
 msgstr ""
+"Neizdevās diskā atjaunināt datnes „%1“ nosaukumu uz „%2“. Kļūda bija: %3."
 
 #: maildirresource.cpp:122 maildirresource.cpp:254 maildirresource.cpp:293
 #: maildirresource.cpp:387 maildirresource.cpp:428 maildirresource.cpp:548
 #: maildirresource.cpp:578 maildirresource.cpp:621 maildirresource.cpp:654
 #, kde-format
 msgid "Unusable configuration."
-msgstr "Nederīga konfigurācija."
+msgstr "Nelietojama konfigurācija."
 
 #: maildirresource.cpp:187
 #, kde-format
 msgid "Unable to fetch item: The maildir folder \"%1\" is not valid."
-msgstr "Neizdevās nolasīt ierakstu: Maildir mape \"%1\" nav derīga."
+msgstr "Neizdevās izgūt vienumu: „maildir“ mape „%1“ nav derīga."
 
 #: maildirresource.cpp:265
 #, kde-format
 msgid "Error: Unsupported type."
-msgstr "Kļūda: Neatbalstīts tips."
+msgstr "Kļūda: neatbalstīts tips."
 
 #: maildirresource.cpp:331
-#, fuzzy, kde-format
-#| msgid "Failed to change the flags for the mail."
+#, kde-format
 msgid "Failed to change the flags for the mail. %1"
-msgstr "Neizdevās nomainīt pasta karogu."
+msgstr "Neizdevās mainīt pasta karogus. %1"
 
 #: maildirresource.cpp:366
 #, kde-format
 msgid "Maildir resource got a non-mail content."
-msgstr ""
+msgstr "„Maildir“ resurss ir saņēmis saturu, kas nav pasta vēstule."
 
 #: maildirresource.cpp:393
 #, kde-format
 msgid "Source folder is invalid: '%1'."
-msgstr "Avota mape nav derīga: '%1'."
+msgstr "Avota mape nav derīga: „%1“."
 
 #: maildirresource.cpp:399
 #, kde-format
 msgid "Destination folder is invalid: '%1'."
-msgstr "Mērķa mape nav derīga: '%1'."
+msgstr "Mērķa mape nav derīga: „%1“."
 
 #: maildirresource.cpp:416
-#, fuzzy, kde-format
-#| msgid "Could not move message '%1'."
+#, kde-format
 msgid "Could not move message '%1' from '%2' to '%3'. The error was %4."
-msgstr "Neizdevās pārvietot vēstuli '%1'."
+msgstr "Neizdevās pārvietot „%1“ vēstuli no „%2“ uz „%3“. Kļūda bija „%4“."
 
 #: maildirresource.cpp:438
 #, kde-format
@@ -153,61 +152,61 @@ msgstr "Neizdevās dzēst vēstuli: %1"
 #: maildirresource.cpp:527
 #, kde-format
 msgid "Maildir '%1' for collection '%2' is invalid."
-msgstr "Maildir '%1' kolekcijai '%2' nav derīgs."
+msgstr "„Maildir“ „%1“ kolekcijai „%2“ nav derīgs."
 
 #: maildirresource.cpp:606
 #, kde-format
 msgid "Unable to rename maildir folder '%1'."
-msgstr "Neizdevās pārdēvēt maildir mapi '%1'."
+msgstr "Neizdevās pārdēvēt „maildir“ mapi „%1“."
 
 #: maildirresource.cpp:627
 #, kde-format
 msgid "Cannot move root maildir folder '%1'."
-msgstr "Nevar pārvietot saknes maildir mapi '%1'."
+msgstr "Nevar pārvietot „maildir“ saknes mapi „%1“."
 
 #: maildirresource.cpp:642
 #, kde-format
 msgid "Unable to move maildir folder '%1' from '%2' to '%3'."
-msgstr "Neizdevās pārvietot maildir mapi '%1' no '%2' uz '%3'"
+msgstr "Neizdevās pārvietot „%1“ „maildir“ mapi no „%2“ uz „%3“."
 
 #: maildirresource.cpp:660
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
-msgstr "Nevar izdzēst augšējā līnmeņa mapi '%1'."
+msgstr "Nevar izdzēst augšējā līmeņa mapi „%1“."
 
 #: maildirresource.cpp:669
 #, kde-format
 msgid "Failed to delete sub-folder '%1'."
-msgstr "Neizdevās dzēst apakšmapi '%1'."
+msgstr "Neizdevās dzēst apakšmapi „%1“."
 
 #: maildirresource.cpp:683
 #, kde-format
 msgid "Unable to create maildir '%1'."
-msgstr "Neizdevās izveidot maildir mapi '%1'."
+msgstr "Neizdevās izveidot „maildir“ mapi „%1“."
 
 #: maildirresource.cpp:693
 #, kde-format
 msgid "No usable storage location configured."
-msgstr "Nav konfigurētas nevienas derīgas glabātuves vietas."
+msgstr "Nav konfigurētas nevienas derīgas krātuves vietas."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: maildirresource.kcfg:10
 #, kde-format
 msgid "Path to maildir"
-msgstr "Maildir ceļš"
+msgstr "Ceļš uz „maildir“"
 
 #. i18n: ectx: label, entry (TopLevelIsContainer), group (General)
 #: maildirresource.kcfg:14
 #, kde-format
 msgid ""
 "Path points to a folder containing Maildirs instead of to a maildir itself."
-msgstr "Ceļš rāda uz mapi, kas satur Maildir mapes nevis pašu maildir."
+msgstr "Ceļš norāda uz mapi, kas satur „Maildir“ mapes nevis pašu „maildir“."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: maildirresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "Nemainīt īstos aizmugures datus."
+msgstr "Nemainīt aktuālos aizmugursistēmas datus."
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, ConfigWidget)
 #: settings.ui:15
@@ -219,13 +218,13 @@ msgstr "Pasta mapes iestatījumi"
 #: settings.ui:37
 #, kde-format
 msgid "Maildir"
-msgstr ""
+msgstr "Maildir"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: settings.ui:43
 #, kde-format
 msgid "Select the folder containing the maildir information:"
-msgstr "Norādiet mapi, kas satur maildir informāciju:"
+msgstr "Norādiet mapi, kas satur „maildir“ informāciju:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: settings.ui:53

@@ -2,21 +2,22 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Einars Sprugis <einars8@gmail.com>, 2012.
+# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-22 00:40+0000\n"
-"PO-Revision-Date: 2012-07-09 17:45+0300\n"
-"Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
-"Language-Team: Latvian <locale@laka.lv>\n"
+"PO-Revision-Date: 2024-12-28 15:58+0200\n"
+"Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
+"Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 24.12.0\n"
 
 #: compactpage.cpp:71
 #, kde-format
@@ -34,7 +35,7 @@ msgstr "Neizdevās saņemt kolekciju."
 #: compactpage.cpp:94
 #, kde-format
 msgid "Failed to load the mbox file"
-msgstr "Neizdevās ielādēt mbox failu"
+msgstr "Neizdevās ielādēt „mbox“ datni"
 
 #: compactpage.cpp:96
 #, kde-format
@@ -47,38 +48,16 @@ msgstr[2] "(Dzēš %1 vēstuļu)"
 #: compactpage.cpp:107 compactpage.cpp:115
 #, kde-format
 msgid "Failed to compact the mbox file."
-msgstr "Neizdevās sablīvēt mbox failu."
+msgstr "Neizdevās samazināt „mbox“ datni."
 
 #: compactpage.cpp:117
 #, kde-format
 msgid "MBox file compacted."
-msgstr "MBox fails sablīvēts."
+msgstr "„MBox“ datne ir samazināta."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: compactpage.ui:23
-#, fuzzy, kde-format
-#| msgid ""
-#| "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#| "REC-html40/strict.dtd\">\n"
-#| "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#| "css\">\n"
-#| "p, li { white-space: pre-wrap; }\n"
-#| "</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; "
-#| "font-weight:400; font-style:normal;\">\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\">The only way to fully "
-#| "remove a mail from an mbox file is by removing it from the actual file. "
-#| "As this can be a rather expensive operation, the mbox resource keeps a "
-#| "list of deleted messages. Once in a while these messages are really "
-#| "removed from the file.</p>\n"
-#| "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
-#| "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
-#| "\"></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "weight:600;\">Note:</span> The downside of this is that if the file is "
-#| "changed by another program, the list of deleted messages cannot be "
-#| "trusted any longer and deleted messages might reappear.</p></body></html>"
+#, kde-format
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -107,40 +86,40 @@ msgstr ""
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
 "\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; font-"
-"weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-size:10pt; font-weight:400; font-style:"
+"normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\">Vienīgais veids, kā "
-"pilnībā izdzēst vēstuli no mbox faila, ir izņemt to no reālā faila. Tā kā tā "
-"var būt visai resursus prasoša darbība, mbox resurss uztur sarakstu ar "
-"dzēstajām vēstulēm. Laiku pa laikam šīs vēstules no faila tiek izdzēstas.</"
-"p>\n"
+"pilnībā izdzēst vēstuli no „mbox“ datnes, ir izņemt to no faktiskās datnes. "
+"Tā kā tā var būt visai resursus prasoša darbība, „mbox“ resurss uztur "
+"sarakstu ar dzēšamajām vēstulēm, bet tās reāli no datnes izdzēš laiku pa "
+"laikam visas kopā.</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
 "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></"
 "p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"weight:600;\">Piezīme:</span>mīnuss šajai metodei ir tāds, ka, ja failu "
-"izmaina cita programma, dzēsto vēstuļu saraksts vairs nav ticams, un "
-"izdzēstās vēstules var parādīties atkal.</p></body></html>"
+"weight:600;\">Piezīme:</span> mīnuss šai metodei ir tāds, ka, ja šo datni "
+"izmaina cita programma, tad dzēšamo vēstuļu saraksts vairs nav uzticams un "
+"dzēstās vēstules var parādīties no jauna.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QPushButton, compactButton)
 #: compactpage.ui:49
 #, kde-format
 msgid "&Compact now"
-msgstr "Sa&blīvēt tagad"
+msgstr "Sa&mazināt tagad"
 
 #. i18n: ectx: property (text), widget (QRadioButton, never)
 #: compactpage.ui:79
 #, kde-format
 msgid "&Never compact automatically"
-msgstr "&Nekad nesablīvēt automātiski"
+msgstr "&Nekad nesamazināt automātiski"
 
 #. i18n: ectx: property (text), widget (QRadioButton, per_x_messages)
 #: compactpage.ui:86
 #, kde-format
 msgid "C&ompact every"
-msgstr "Sablī&vēt katras"
+msgstr "Sama&zināt katras"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_MessageCount)
 #: compactpage.ui:96
@@ -152,29 +131,11 @@ msgstr "vēstules"
 #: lockfilepage.ui:15
 #, kde-format
 msgid "MBox Settings"
-msgstr "MBox iestatījumi"
+msgstr "„MBox“ iestatījumi"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: lockfilepage.ui:27
-#, fuzzy, kde-format
-#| msgid ""
-#| "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#| "REC-html40/strict.dtd\">\n"
-#| "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#| "css\">\n"
-#| "p, li { white-space: pre-wrap; }\n"
-#| "</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; "
-#| "font-weight:400; font-style:normal;\">\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\">Select a method to lock "
-#| "the mbox file when data is read from or written to the file.</p>\n"
-#| "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
-#| "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
-#| "\"></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "weight:600;\">Note</span>: For some methods you might need to install "
-#| "additional software before they can be used.</p></body></html>"
+#, kde-format
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -199,25 +160,25 @@ msgstr ""
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
 "\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; font-"
-"weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-size:10pt; font-weight:400; font-style:"
+"normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Izvēlieties mbox faila "
-"slēgšanas metodi, ko izmantot, kad no faila tiek nolasīti vai tajā tiek "
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Izvēlieties „mbox“ datnes "
+"slēgšanas metodi, ko izmantot, kad no datnes tiek nolasīti vai tajā tiek "
 "ierakstīti dati.</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
 "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></"
 "p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"weight:600;\">Piezīme</span>: dažām metodēm, lai tās darbotos, var nākties "
+"weight:600;\">Piezīme</span>: lai darbotos dažas metodes, var nākties "
 "instalēt papildu programmatūru.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, procmail)
 #: lockfilepage.ui:43
 #, kde-format
 msgid "Procmail loc&kfile"
-msgstr "Procmail &slēgfails"
+msgstr "„Procmail“ &slēgšanas datne"
 
 #. i18n: ectx: property (text), widget (QRadioButton, mutt_dotlock)
 #: lockfilepage.ui:53
@@ -229,7 +190,7 @@ msgstr "&Mutt dotlock"
 #: lockfilepage.ui:60
 #, kde-format
 msgid "M&utt dotlock privileged"
-msgstr "M&utt dotlock priviliģētais"
+msgstr "„M&utt dotlock“ priviliģētais"
 
 #. i18n: ectx: property (text), widget (QRadioButton, none)
 #: lockfilepage.ui:67
@@ -253,23 +214,22 @@ msgid ""
 "this is the case, the resource and the other programs must all use the same "
 "locking method."
 msgstr ""
-"'Nav', noklusētajā konfigurācijā, vairākumā gadījumu būs droša izvēle. "
-"Tomēr, ja arī programmas, kas neizmanto Akonadi, piekļūst konfigurētajam "
-"mbox failam, jums nāksies uzstādīt piemērotu slēgšanas metodi. Ievērojiet, "
-"ka šādā gadījumā resursam un citām programmām jāizmanto viena un tā pati "
-"slēgšanas metode."
+"„Nav“, kas ir noklusējuma konfigurācija, vairākumā gadījumu būs droša "
+"izvēle. Tomēr, ja arī programmas, kas neizmanto „Akonadi“, piekļūst "
+"konfigurētajai „mbox“ datnei, jums nāksies norādīt piemērotu slēgšanas "
+"metodi. Ievērojiet, ka šādā gadījumā resursam un citām programmām jāizmanto "
+"viena un tā pati slēgšanas metode."
 
 #: mboxconfig.cpp:19
-#, fuzzy, kde-format
-#| msgid "Select MBox file"
+#, kde-format
 msgctxt "Filedialog filter for *.mbox"
 msgid "MBox file"
-msgstr "Izvēlieties MBox failu"
+msgstr "„MBox“ datne"
 
 #: mboxconfig.cpp:20
 #, kde-format
 msgid "Compact frequency"
-msgstr "Sablīvēšanas biežums"
+msgstr "Samazināšanas biežums"
 
 #: mboxconfig.cpp:21
 #, kde-format
@@ -277,31 +237,30 @@ msgid "Lock method"
 msgstr "Slēgšanas metode"
 
 #: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
-#, fuzzy, kde-format
-#| msgid "MBox not loaded."
+#, kde-format
 msgctxt "@info:status"
 msgid "MBox not configured."
-msgstr "MBox nav ielādēts."
+msgstr "„MBox“ nav konfigurēta."
 
 #: mboxresource.cpp:143 mboxresource.cpp:182
 #, kde-format
 msgid "MBox not loaded."
-msgstr "MBox nav ielādēts."
+msgstr "MBox nav ielādēta."
 
 #: mboxresource.cpp:158
 #, kde-format
 msgid "Failed to read message with uid '%1'."
-msgstr "Neizdevās nolasīt vēstuli ar uid '%1'."
+msgstr "Neizdevās nolasīt vēstuli ar UID „%1“."
 
 #: mboxresource.cpp:192
 #, kde-format
 msgid "Only email messages can be added to the MBox resource."
-msgstr "MBox resursam var pievienot tikai e-pasta vēstules."
+msgstr "„MBox“ resursam var pievienot tikai e-pasta vēstules."
 
 #: mboxresource.cpp:198
 #, kde-format
 msgid "Mail message not added to the MBox."
-msgstr "E-pasta vēstule MBox netika pievienota."
+msgstr "E-pasta vēstule netika pievienota „MBox“."
 
 #: mboxresource.cpp:237
 #, kde-format
@@ -316,15 +275,15 @@ msgid ""
 "happening use locking and make sure that all programs accessing the mbox use "
 "the same locking method."
 msgstr ""
-"MBox failu izmainīja cita programma.Tika izveidota jaunā faila kopija, un "
-"visas izpildi gaidošās izmaiņas tiek pievienotas šajai kopijai. Lai to "
-"novērstu, lietojiet slēgšanu, un pārliecinieties, ka visas programmas, kas "
-"piekļūst mbox, izmanto vienu un to pašu slēgšanas metodi."
+"„MBox“ datni izmainīja cita programma. Ir izveidota jaunās datnes kopija, "
+"bet visas izpildi gaidošās izmaiņas programma pievienos šai kopijai. Lai to "
+"novērstu, lietojiet slēgšanu un pārliecinieties, ka visas programmas, kas "
+"piekļūst „mbox“ datnei, izmanto vienu un to pašu slēgšanas metodi."
 
 #: mboxresource.cpp:297
 #, kde-format
 msgid "Failed to save mbox file to %1"
-msgstr "Neizdevās saglabāt mbox failu uz %1"
+msgstr "Neizdevās „%1“ saglabāt „mbox“ datni"
 
 #: mboxresource.cpp:356
 #, kde-format
@@ -332,56 +291,56 @@ msgid ""
 "Failed to update the changed item because the old item could not be deleted "
 "Reason: %1"
 msgstr ""
-"Neizdevās atjaunināt izmainīto vienību, jo nevarēja dzēst veco vienību "
+"Neizdevās atjaunināt izmainīto vienumu, jo nevarēja dzēst veco vienumu. "
 "Iemesls: %1"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: mboxresource.kcfg:10
 #, kde-format
 msgid "Path to mbox file."
-msgstr "Ceļš uz mbox failu."
+msgstr "Ceļš uz „mbox“ datni."
 
 #. i18n: ectx: label, entry (DisplayName), group (General)
 #: mboxresource.kcfg:14
 #, kde-format
 msgid "Display name."
-msgstr "Attēlojamais nosaukums."
+msgstr "Attēlojamais vārds."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: mboxresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "Nemainīt īstos aizmugures datus."
+msgstr "Nemainīt aktuālos aizmugursistēmas datus."
 
 #. i18n: ectx: label, entry (MonitorFile), group (General)
 #: mboxresource.kcfg:22
 #, kde-format
 msgid "Monitor file for changes."
-msgstr "Vērot izmaiņas failā."
+msgstr "Pārraudzīt izmaiņas datnē."
 
 #. i18n: ectx: label, entry (PeriodicUpdate), group (General)
 #: mboxresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "Periodiski atjaunināt datni."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: mboxresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
-msgstr ""
+msgstr "Automātiskās atjaunināšanas laiks minūtēs."
 
 #. i18n: ectx: label, entry (Lockfile), group (Locking)
 #: mboxresource.kcfg:45
 #, kde-format
 msgid "Lockfile"
-msgstr "Slēgfails"
+msgstr "Slēgšanas datne"
 
 #. i18n: ectx: label, entry (MessageCount), group (Compacting)
 #: mboxresource.kcfg:58
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
-msgstr "Dzēsto vēstuļu skaits, pirms sākas izmešana."
+msgstr "Dzēsto vēstuļu skaits pirms sākas izmešana."
 
 #~ msgid "URL:"
 #~ msgstr "URL:"

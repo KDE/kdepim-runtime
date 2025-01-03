@@ -2,45 +2,47 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Einars Sprugis <einars8@gmail.com>, 2012.
+# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-02 00:41+0000\n"
-"PO-Revision-Date: 2012-07-09 22:58+0300\n"
-"Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
-"Language-Team: Latvian <locale@laka.lv>\n"
+"PO-Revision-Date: 2024-12-28 17:32+0200\n"
+"Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
+"Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 24.12.0\n"
 
 #: configwidget.cpp:25
 #, kde-format
 msgid "Enter the http or https URL to your Open-Xchange installation here."
-msgstr "Ievadiet http vai https URL uz jūsu Open-Xchange instalāciju šeit."
+msgstr ""
+"Ievadiet „http“ vai „https“ URL, kas norāda uz jūsu „Open-Xchange“ "
+"instalāciju."
 
 #: configwidget.cpp:26
 #, kde-format
 msgid "Enter the username of your Open-Xchange account here."
-msgstr "Ievadiet jūsu Open-Xchange konta lietotājvārdu šeit."
+msgstr "Ievadiet jūsu „Open-Xchange“ konta lietotājvārdu."
 
 #: configwidget.cpp:27
 #, kde-format
 msgid "Enter the password of your Open-Xchange account here."
-msgstr "Ievadiet jūsu Open-Xchange konta paroli šeit."
+msgstr "Ievadiet jūsu „Open-Xchange“ konta paroli."
 
 #: configwidget.cpp:72
 #, kde-format
 msgid "Unable to connect: %1"
-msgstr "Neizdevās pieslēgties: %1"
+msgstr "Neizdevās savienoties: %1"
 
 #: configwidget.cpp:72
-#, fuzzy, kde-format
-#| msgid "Connection error"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection error"
 msgstr "Savienojuma kļūda"
@@ -48,14 +50,13 @@ msgstr "Savienojuma kļūda"
 #: configwidget.cpp:74
 #, kde-format
 msgid "Tested connection successfully."
-msgstr "Savienojums pārbaudīts veiksmīgi."
+msgstr "Savienojums ir veiksmīgi pārbaudīts."
 
 #: configwidget.cpp:74
-#, fuzzy, kde-format
-#| msgid "Connection success"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection success"
-msgstr "Savienojums veiksmīgs"
+msgstr "Savienojums ir veiksmīgs"
 
 #. i18n: ectx: property (text), widget (QLabel, label_BaseUrl)
 #: configwidget.ui:29
@@ -74,8 +75,8 @@ msgid ""
 "The URL of the Open-Xchange server, should be something like https://"
 "myserver.org/"
 msgstr ""
-"Open-Xchange servera URL, būtu jāizskatās apmēram šādi: https://mansserveris."
-"org/"
+"„Open-Xchange“ servera URL būtu jāizskatās apmēram šādi: https://"
+"mansserveris.org/"
 
 #. i18n: ectx: property (text), widget (QLabel, label_Username)
 #: configwidget.ui:52
@@ -91,7 +92,7 @@ msgstr "Lietotājvārds:"
 #: openxchangeresource.kcfg:17
 #, kde-format
 msgid "The username that is used to log into the Open-Xchange server"
-msgstr "Lietotājvārds, kas tiks izmantots, lai pieteiktos Open-Xchange serverī"
+msgstr "Lietotājvārds, lai pieteiktos „Open-Xchange“ serverī"
 
 #. i18n: ectx: property (text), widget (QLabel, label_Password)
 #: configwidget.ui:72
@@ -107,14 +108,13 @@ msgstr "Parole:"
 #: openxchangeresource.kcfg:22
 #, kde-format
 msgid "The password that is used to log into the Open-Xchange server"
-msgstr "Parole, kas tiks izmantota, lai pieteiktos Open-Xchange serverī"
+msgstr "Parole, lai pieteiktos „Open-Xchange“ serverī"
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
-#, fuzzy, kde-format
-#| msgid "Test Connection..."
+#, kde-format
 msgid "Test Connection…"
-msgstr "Pārbaudīt savienojumu..."
+msgstr "Pārbaudīt savienojumu…"
 
 #: openxchangeresource.cpp:250
 #, kde-format
@@ -150,14 +150,14 @@ msgstr "Neizdevās pieslēgties serverim"
 #, kde-format
 msgid ""
 "The object was edited by another participant in the meantime. Please check."
-msgstr "Objektu šajā laikā rediģēja cits dalībnieks. Lūdzu, pārbaudiet."
+msgstr "Objektu šajā laikā ir rediģējis cits dalībnieks. Pārbaudiet."
 
 #: openxchangeresource.cpp:808
 #, kde-format
 msgid ""
 "Object not found. Maybe it was deleted by another participant in the "
 "meantime."
-msgstr "Objekts nav atrasts. Varbūt to šajā laikā izdzēsa cits dalībnieks."
+msgstr "Objekts nav atrasts. Varbūt to šajā laikā ir izdzēsis cits dalībnieks."
 
 #: openxchangeresource.cpp:811
 #, kde-format
@@ -170,8 +170,7 @@ msgid ""
 "A conflict detected. Please check if there are other objects in conflict "
 "with this one."
 msgstr ""
-"Atrasts konflikts. Lūdzu, pārbaudiet, vai ar šo objektu nekonfliktē citi "
-"objekti."
+"Atrasts konflikts. Pārbaudiet, vai ar šo objektu nekonfliktē citi objekti."
 
 #: openxchangeresource.cpp:817
 #, kde-format
@@ -179,8 +178,8 @@ msgid ""
 "A mandatory data field is missing. Please check. Otherwise contact your "
 "administrator."
 msgstr ""
-"Trūkst obligāta datu lauka. Lūdzu, pārbaudiet. Pretējā gadījumā sazinieties "
-"ar savu sistēmas administratoru."
+"Trūkst obligāta datu lauka. Pārbaudiet. Pretējā gadījumā sazinieties ar savu "
+"sistēmas administratoru."
 
 #: openxchangeresource.cpp:820
 #, kde-format
@@ -189,13 +188,12 @@ msgid ""
 "Please check if there are other appointments in conflict with this one."
 msgstr ""
 "Atrasts tikšanos konflikts.\n"
-"Lūdzu, pārbaudiet, vai ar šo tukšanos nekonfliktē citas tikšanās."
+"Pārbaudiet, vai ar šo tikšanos nekonfliktē citas tikšanās."
 
 #: openxchangeresource.cpp:823
 #, kde-format
 msgid "Internal server error. Please contact your administrator."
-msgstr ""
-"Iekšēja servera kļūda. Lūdzu, sazinieties ar jūsu sistēmas administratoru."
+msgstr "Iekšēja servera kļūda. Sazinieties ar jūsu sistēmas administratoru."
 
 #. i18n: ectx: label, entry (BaseUrl), group (General)
 #: openxchangeresource.kcfg:10
@@ -230,8 +228,8 @@ msgid ""
 "Use incremental updates instead of reloading all data from the server each "
 "time"
 msgstr ""
-"Lietot inkrementālus atjauninājumus tā vietā, lai katru reizi visus datus "
-"pārlādētu no servera"
+"Lietot inkrementālus atjauninājumus tā vietā, lai katru reizi no servera "
+"pārlādētu visus datus"
 
 #~ msgid "Connection"
 #~ msgstr "Savienojums"
