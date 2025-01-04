@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-11-18 00:40+0000\n"
+"POT-Creation-Date: 2025-01-04 00:41+0000\n"
 "PO-Revision-Date: 2024-11-19 21:48+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -284,94 +284,94 @@ msgstr "Özel sunucu sieve url’sinden kullanılan kullanıcı adını tanımla
 msgid "Defines the type of identification used by custom sieve server"
 msgstr "Özel sieve sunucusunun kullandığı kimlik kanıtlama türünü tanımlar"
 
-#: imapresourcebase.cpp:215
+#: imapresourcebase.cpp:216
 #, kde-format
 msgid "No server configured yet."
 msgstr "Henüz bir sunucu yapılandırılmadı."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:685
+#: imapresourcebase.cpp:246 setupserver.cpp:685
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
 msgstr "Sunucu Tarafı Abonelik"
 
-#: imapresourcebase.cpp:283
+#: imapresourcebase.cpp:284
 #, kde-format
 msgid "Connection established."
 msgstr "Bağlantı sağlandı."
 
-#: imapresourcebase.cpp:300
+#: imapresourcebase.cpp:301
 #, kde-format
 msgid "Server is not available."
 msgstr "Sunucu kullanılabilir değil."
 
-#: imapresourcebase.cpp:351
+#: imapresourcebase.cpp:352
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "“%1” içerisine öge ekleniyor"
 
-#: imapresourcebase.cpp:358
+#: imapresourcebase.cpp:359
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "“%1” konumundaki öge güncelleniyor"
 
-#: imapresourcebase.cpp:365
+#: imapresourcebase.cpp:366
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Ögeler güncelleniyor"
 
-#: imapresourcebase.cpp:379
+#: imapresourcebase.cpp:380
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Ögeler kaldırılıyor"
 
-#: imapresourcebase.cpp:395
+#: imapresourcebase.cpp:396
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Ögeler “%1” konumundan “%2” konumuna taşınıyor"
 
-#: imapresourcebase.cpp:404
+#: imapresourcebase.cpp:405
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Klasörler alınıyor"
 
-#: imapresourcebase.cpp:411
+#: imapresourcebase.cpp:412
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "“%1” için ek klasör bilgisi alınıyor"
 
-#: imapresourcebase.cpp:429
+#: imapresourcebase.cpp:430
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "“%1” klasörü oluşturuluyor"
 
-#: imapresourcebase.cpp:435
+#: imapresourcebase.cpp:436
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "“%1” klasörü güncelleniyor"
 
-#: imapresourcebase.cpp:448
+#: imapresourcebase.cpp:449
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "“%1” klasörü kaldırılıyor"
 
-#: imapresourcebase.cpp:455
+#: imapresourcebase.cpp:456
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "“%1” klasörü “%2” konumundan “%3” konumuna taşınıyor"
 
-#: imapresourcebase.cpp:485
+#: imapresourcebase.cpp:486
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"

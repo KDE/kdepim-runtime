@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-11-18 00:40+0000\n"
+"POT-Creation-Date: 2025-01-04 00:41+0000\n"
 "PO-Revision-Date: 2019-12-18 18:36+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -276,94 +276,94 @@ msgstr ""
 msgid "Defines the type of identification used by custom sieve server"
 msgstr "Kohandatud sieve serveri kasutatava tuvastamistüübi määramine"
 
-#: imapresourcebase.cpp:215
+#: imapresourcebase.cpp:216
 #, kde-format
 msgid "No server configured yet."
 msgstr "Serverit pole veel seadistatud."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:685
+#: imapresourcebase.cpp:246 setupserver.cpp:685
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
 msgstr "Serveripoolne tellimine"
 
-#: imapresourcebase.cpp:283
+#: imapresourcebase.cpp:284
 #, kde-format
 msgid "Connection established."
 msgstr "Ühendus loodud."
 
-#: imapresourcebase.cpp:300
+#: imapresourcebase.cpp:301
 #, kde-format
 msgid "Server is not available."
 msgstr "Server pole kättesaadav."
 
-#: imapresourcebase.cpp:351
+#: imapresourcebase.cpp:352
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Elemendi lisamine kogusse \"%1\""
 
-#: imapresourcebase.cpp:358
+#: imapresourcebase.cpp:359
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Elemendi uuendamine kogus \"%1\""
 
-#: imapresourcebase.cpp:365
+#: imapresourcebase.cpp:366
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Elementide uuendamine"
 
-#: imapresourcebase.cpp:379
+#: imapresourcebase.cpp:380
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Elementide eemaldamine"
 
-#: imapresourcebase.cpp:395
+#: imapresourcebase.cpp:396
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Elemendi liigutamine asukohast \"%1\" asukohta \"%2\""
 
-#: imapresourcebase.cpp:404
+#: imapresourcebase.cpp:405
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Kaustade tõmbamine"
 
-#: imapresourcebase.cpp:411
+#: imapresourcebase.cpp:412
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "\"%1\" kausta lisateabe tõmbamine"
 
-#: imapresourcebase.cpp:429
+#: imapresourcebase.cpp:430
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Kausta \"%1\" loomine"
 
-#: imapresourcebase.cpp:435
+#: imapresourcebase.cpp:436
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Kausta \"%1\" uuendamine"
 
-#: imapresourcebase.cpp:448
+#: imapresourcebase.cpp:449
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Kausta \"%1\" eemaldamine"
 
-#: imapresourcebase.cpp:455
+#: imapresourcebase.cpp:456
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Kausta \"%1\" liigutamine asukohast \"%2\" asukohta \"%3\""
 
-#: imapresourcebase.cpp:485
+#: imapresourcebase.cpp:486
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Searching..."

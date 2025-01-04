@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-11-18 00:40+0000\n"
+"POT-Creation-Date: 2025-01-04 00:41+0000\n"
 "PO-Revision-Date: 2009-12-24 06:59-0500\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -274,94 +274,94 @@ msgstr "Sainmhíníonn sé seo an cineál criptiúcháin"
 msgid "Defines the type of identification used by custom sieve server"
 msgstr "Sainmhíníonn sé seo an cineál criptiúcháin"
 
-#: imapresourcebase.cpp:215
+#: imapresourcebase.cpp:216
 #, kde-format
 msgid "No server configured yet."
 msgstr "Níl aon fhreastalaí cumraithe."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:685
+#: imapresourcebase.cpp:246 setupserver.cpp:685
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
 msgstr ""
 
-#: imapresourcebase.cpp:283
+#: imapresourcebase.cpp:284
 #, kde-format
 msgid "Connection established."
 msgstr "Ceangal déanta."
 
-#: imapresourcebase.cpp:300
+#: imapresourcebase.cpp:301
 #, kde-format
 msgid "Server is not available."
 msgstr ""
 
-#: imapresourcebase.cpp:351
+#: imapresourcebase.cpp:352
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:358
+#: imapresourcebase.cpp:359
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:365
+#: imapresourcebase.cpp:366
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr ""
 
-#: imapresourcebase.cpp:379
+#: imapresourcebase.cpp:380
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr ""
 
-#: imapresourcebase.cpp:395
+#: imapresourcebase.cpp:396
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr ""
 
-#: imapresourcebase.cpp:404
+#: imapresourcebase.cpp:405
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr ""
 
-#: imapresourcebase.cpp:411
+#: imapresourcebase.cpp:412
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:429
+#: imapresourcebase.cpp:430
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:435
+#: imapresourcebase.cpp:436
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:448
+#: imapresourcebase.cpp:449
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:455
+#: imapresourcebase.cpp:456
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr ""
 
-#: imapresourcebase.cpp:485
+#: imapresourcebase.cpp:486
 #, fuzzy, kde-format
 #| msgctxt "@label search for a subscription"
 #| msgid "Search:"

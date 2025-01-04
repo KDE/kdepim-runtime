@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-11-18 00:40+0000\n"
+"POT-Creation-Date: 2025-01-04 00:41+0000\n"
 "PO-Revision-Date: 2024-11-18 03:54+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -280,94 +280,94 @@ msgstr ""
 msgid "Defines the type of identification used by custom sieve server"
 msgstr "მითითებული სერვერის საცრის იდენტიფიკაციის ტიპის აღწერა"
 
-#: imapresourcebase.cpp:215
+#: imapresourcebase.cpp:216
 #, kde-format
 msgid "No server configured yet."
 msgstr "სერვერი ჯერ მორგებული არაა."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:685
+#: imapresourcebase.cpp:246 setupserver.cpp:685
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
 msgstr "სერვერის მხარეს გამოწერა"
 
-#: imapresourcebase.cpp:283
+#: imapresourcebase.cpp:284
 #, kde-format
 msgid "Connection established."
 msgstr "კავშირი დამყარებულია."
 
-#: imapresourcebase.cpp:300
+#: imapresourcebase.cpp:301
 #, kde-format
 msgid "Server is not available."
 msgstr "სერვერი მიუწვდომელია."
 
-#: imapresourcebase.cpp:351
+#: imapresourcebase.cpp:352
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "%1-ში ელემენტის ჩამატება"
 
-#: imapresourcebase.cpp:358
+#: imapresourcebase.cpp:359
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "%1-ში ელემენტის განახლება"
 
-#: imapresourcebase.cpp:365
+#: imapresourcebase.cpp:366
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "ელემენტების განახლება"
 
-#: imapresourcebase.cpp:379
+#: imapresourcebase.cpp:380
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "ელემენტების წაშლა"
 
-#: imapresourcebase.cpp:395
+#: imapresourcebase.cpp:396
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "ელემენტების %1-დან %2-ზე გადატანა"
 
-#: imapresourcebase.cpp:404
+#: imapresourcebase.cpp:405
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "საქაღალდეების მიღება"
 
-#: imapresourcebase.cpp:411
+#: imapresourcebase.cpp:412
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "%1-სთვის საქაღალდეების დამატებითი ინფორმაციის მიღება"
 
-#: imapresourcebase.cpp:429
+#: imapresourcebase.cpp:430
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "საქაღალდის შექმნა: %1"
 
-#: imapresourcebase.cpp:435
+#: imapresourcebase.cpp:436
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "საქაღალდის განახლება: %1"
 
-#: imapresourcebase.cpp:448
+#: imapresourcebase.cpp:449
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "საქაღალდის წაშლა: %1"
 
-#: imapresourcebase.cpp:455
+#: imapresourcebase.cpp:456
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "საქაღალდის გადატანა(%1) %2-დან %3-ში"
 
-#: imapresourcebase.cpp:485
+#: imapresourcebase.cpp:486
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"

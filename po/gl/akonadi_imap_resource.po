@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-11-18 00:40+0000\n"
+"POT-Creation-Date: 2025-01-04 00:41+0000\n"
 "PO-Revision-Date: 2024-12-04 20:46+0100\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
@@ -294,94 +294,94 @@ msgid "Defines the type of identification used by custom sieve server"
 msgstr ""
 "Define o tipo de autenticación que usa o servidor personalizado de sieve."
 
-#: imapresourcebase.cpp:215
+#: imapresourcebase.cpp:216
 #, kde-format
 msgid "No server configured yet."
 msgstr "Aínda non se configurou ningún servidor."
 
-#: imapresourcebase.cpp:245 setupserver.cpp:685
+#: imapresourcebase.cpp:246 setupserver.cpp:685
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
 msgstr "Subscrición do lado do servidor"
 
-#: imapresourcebase.cpp:283
+#: imapresourcebase.cpp:284
 #, kde-format
 msgid "Connection established."
 msgstr "Estabeleceuse a conexión."
 
-#: imapresourcebase.cpp:300
+#: imapresourcebase.cpp:301
 #, kde-format
 msgid "Server is not available."
 msgstr "O servidor non está dispoñíbel."
 
-#: imapresourcebase.cpp:351
+#: imapresourcebase.cpp:352
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Engadindo o elemento en «%1»."
 
-#: imapresourcebase.cpp:358
+#: imapresourcebase.cpp:359
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Actualizando o elemento en «%1»."
 
-#: imapresourcebase.cpp:365
+#: imapresourcebase.cpp:366
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Actualizando os elementos."
 
-#: imapresourcebase.cpp:379
+#: imapresourcebase.cpp:380
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Retirando os elementos."
 
-#: imapresourcebase.cpp:395
+#: imapresourcebase.cpp:396
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Estanse a mover os elementos de «%1» para «%2»."
 
-#: imapresourcebase.cpp:404
+#: imapresourcebase.cpp:405
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Obtendo os cartafoles."
 
-#: imapresourcebase.cpp:411
+#: imapresourcebase.cpp:412
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Obtendo información adicional do cartafol «%1»."
 
-#: imapresourcebase.cpp:429
+#: imapresourcebase.cpp:430
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Creando o cartafol «%1»."
 
-#: imapresourcebase.cpp:435
+#: imapresourcebase.cpp:436
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Actualizando o cartafol «%1»."
 
-#: imapresourcebase.cpp:448
+#: imapresourcebase.cpp:449
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Retirando o cartafol «%1»."
 
-#: imapresourcebase.cpp:455
+#: imapresourcebase.cpp:456
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Movendo o cartafol «%1» de «%2» a «%3»."
 
-#: imapresourcebase.cpp:485
+#: imapresourcebase.cpp:486
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
