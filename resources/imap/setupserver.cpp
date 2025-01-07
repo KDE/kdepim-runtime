@@ -150,7 +150,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     KLineEditEventHandler::catchReturnKey(m_ui->alternateURL);
     KLineEditEventHandler::catchReturnKey(m_ui->customUsername);
 
-    m_folderArchiveSettingPage = new FolderArchiveSettingPage(m_parentResource->identifier());
+    m_folderArchiveSettingPage = new FolderArchiveSettingPage(m_parentResource->identifier(), this);
     m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Archive Folder"));
     m_ui->safeImapGroup->setId(m_ui->noRadio, KIMAP::LoginJob::Unencrypted);
     m_ui->safeImapGroup->setId(m_ui->sslRadio, KIMAP::LoginJob::SSLorTLS);
