@@ -1,14 +1,14 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Safa Alfulaij <safa1996alfulaij@gmail.com>, 2016, 2018.
-# SPDX-FileCopyrightText: 2022, 2024 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+# SPDX-FileCopyrightText: 2022, 2024, 2025 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-01-04 00:41+0000\n"
-"PO-Revision-Date: 2024-10-10 08:57+0400\n"
+"PO-Revision-Date: 2025-01-09 17:08+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -600,7 +600,7 @@ msgstr "قُطع الاتّصال أثناء الولوج."
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
-msgstr ""
+msgstr "لم يعثر على كلمة السر لحساب IMAP %1"
 
 #: settings.cpp:162
 #, kde-format
@@ -608,13 +608,13 @@ msgctxt "@info:status"
 msgid ""
 "An error occured when retriving the IMAP password from the system keychain: "
 "\"%1\""
-msgstr ""
+msgstr "حدث خطأ أثناء استرداد كلمة سر IMAP من سلسلة مفاتيح النظام: \"%1\""
 
 #: settings.cpp:192
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
-msgstr ""
+msgstr "لم يعثر على كلمة السر لحساب سِيف %1"
 
 #: settings.cpp:198
 #, kde-format
@@ -622,7 +622,7 @@ msgctxt "@info:status"
 msgid ""
 "An error occured when retriving the sieve password from the system keychain: "
 "\"%1\""
-msgstr ""
+msgstr "حدث خطأ أثناء استرداد كلمة سر سِيف من سلسلة مفاتيح النظام: \"%1\""
 
 #: settings.cpp:228
 #, kde-format
@@ -630,20 +630,20 @@ msgctxt "@info:status"
 msgid ""
 "An error occured when saving the sieve password in the system keychain: "
 "\"%1\""
-msgstr ""
+msgstr "حدث خطأ عند حفظ كلمة سر سِيف في سلسلة مفاتيح النظام: \"%1\""
 
 #: settings.cpp:254
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occured when saving the IMAP password in the system keychain: \"%1\""
-msgstr ""
+msgstr "حدث خطأ عند حفظ كلمة سر IMAP في سلسلة مفاتيح النظام: \"%1\""
 
 #: settings.cpp:341
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
-msgstr ""
+msgstr "مشكلة مع حساب IMAP %1"
 
 #: settingspasswordrequester.cpp:75
 #, kde-format
