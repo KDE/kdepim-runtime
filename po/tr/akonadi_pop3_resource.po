@@ -7,13 +7,13 @@
 # obsoleteman <tulliana@gmail.com>, 2009,2012.
 # Volkan Gezer <volkangezer@gmail.com>, 2013-2014, 2015.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-27 00:40+0000\n"
-"PO-Revision-Date: 2024-08-18 20:21+0300\n"
+"PO-Revision-Date: 2025-01-09 16:18+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.11.70\n"
+"X-Generator: Lokalize 25.03.70\n"
 "X-POOTLE-MTIME: 1413104452.000000\n"
 
 #: accountwidget.cpp:83
@@ -79,7 +79,7 @@ msgstr ""
 "çünkü bazı sunucular veriyolu yapmayı destekler; ancak bunu\n"
 "belgelemezler. POP3 sunucunuzun veriyolu yapmayı destekleyip\n"
 "desteklemediğini denetlemek için pencerenin alt kısmındaki\n"
-"‘Kendiliğinden Algıla’ düğmesini kullanın; sunucunuz bunu duyurmazsa;\n"
+"“Kendiliğinden Algıla” düğmesini kullanın; sunucunuz bunu duyurmazsa;\n"
 "ancak daha fazla hız istiyorsanız önce kendinize toplu birkaç posta\n"
 "gönderip indirerek bunu sınamalısınız."
 
