@@ -1,14 +1,14 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Safa Alfulaij <safa1996alfulaij@gmail.com>, 2016, 2018.
-# SPDX-FileCopyrightText: 2022, 2024 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+# SPDX-FileCopyrightText: 2022, 2024, 2025 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-27 00:40+0000\n"
-"PO-Revision-Date: 2024-09-26 13:25+0400\n"
+"PO-Revision-Date: 2025-01-12 14:10+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -23,94 +23,93 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving calendars"
-msgstr ""
+msgstr "استرجاع التقويمات"
 
 #: calendarhandler.cpp:142
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
-msgstr ""
+msgstr "استرداد الأحداث للتقويم '%1'"
 
 #: calendarhandler.cpp:220 taskhandler.cpp:170
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
-msgstr ""
+msgstr "إضافة حدث إلى التقويم '%1'"
 
 #: calendarhandler.cpp:246
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing event in calendar '%1'"
-msgstr ""
+msgstr "تغيير الحدث في التقويم '%1'"
 
 #: calendarhandler.cpp:258
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 event"
 msgid_plural "Removing %1 events"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لا يزيل أي شيء"
+msgstr[1] "يزيل حدث واحد"
+msgstr[2] "يزيل حدثان"
+msgstr[3] "يزيل %1 أحداث"
+msgstr[4] "يزيل %1 حدثًا"
+msgstr[5] "يزيل %1 حدث"
 
 #: calendarhandler.cpp:274
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
 msgid_plural "Moving %1 events from calendar '%2' to calendar '%3'"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لا ينقل شيء من التقويم '%2' إلى التقويم '%3'"
+msgstr[1] "نقل حدث واحد من التقويم '%2' إلى التقويم '%3'"
+msgstr[2] "نقل حدثين من التقويم '%2' إلى التقويم '%3'"
+msgstr[3] "نقل %1 أحداث من التقويم '%2' إلى التقويم '%3'"
+msgstr[4] "نقل %1 حدثًا من التقويم '%2' إلى التقويم '%3'"
+msgstr[5] "نقل %1 حدث من التقويم '%2' إلى التقويم '%3'"
 
 #: calendarhandler.cpp:341
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr ""
+msgstr "تغيير علامات الأحداث"
 
 #: calendarhandler.cpp:345
-#, fuzzy, kde-format
-#| msgid "Failed to refresh tokens"
+#, kde-format
 msgid "Failed to change tags on events"
-msgstr "فشل إنعاش الأمارات"
+msgstr "فشل في تغيير الوسوم في الأحداث"
 
 #: calendarhandler.cpp:357
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating calendar '%1'"
-msgstr ""
+msgstr "إنشاء التقويم '%1'"
 
 #: calendarhandler.cpp:385
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing calendar '%1'"
-msgstr ""
+msgstr "تغيير التقويم '%1'"
 
 #: calendarhandler.cpp:398
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing calendar '%1'"
-msgstr ""
+msgstr "إزالة التقويم '%1'"
 
 #: generichandler.cpp:24
 #, kde-format
 msgid "Cannot handle item linking"
-msgstr ""
+msgstr "لا يمكن التعامل مع ربط العناصر"
 
 #: generichandler.cpp:29
 #, kde-format
 msgid "Cannot handle item unlinking"
-msgstr ""
+msgstr "لا يمكن التعامل مع إلغاء ربط العنصر"
 
 #: generichandler.cpp:34
 #, kde-format
 msgid "Cannot handle item tag changes"
-msgstr ""
+msgstr "لا يمكن معالجة تغييرات علامة العنصر"
 
 #: generichandler.cpp:61
 #, kde-format
@@ -126,12 +125,12 @@ msgstr "عنصر غير صالح."
 #: googleresource.cpp:86
 #, kde-format
 msgid "Fetching password…"
-msgstr ""
+msgstr "جلب كلمة السر..."
 
 #: googleresource.cpp:93
 #, kde-format
 msgid "Can't fetch password"
-msgstr ""
+msgstr "لا يمكن جلب كلمة السر"
 
 #: googleresource.cpp:134
 #, kde-format
@@ -151,10 +150,9 @@ msgid "Google Groupware (%1)"
 msgstr "البرمجيات التعاونية من غوغل (%1)"
 
 #: googleresource.cpp:197
-#, fuzzy, kde-format
-#| msgid "Configured account has been removed"
+#, kde-format
 msgid "Account has been logged out."
-msgstr "أُزيل الحساب المضبوط"
+msgstr "خرجت من الحساب"
 
 #: googleresource.cpp:200
 #, kde-format
@@ -162,6 +160,8 @@ msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
+"خرجت البرمجيات التعاونية من غوغل من حسابك. يرجى تسجيل الدخول لتمكين مزامنة "
+"جهات اتصال غوغل والتقويم مرة أخرى."
 
 #: googleresource.cpp:201
 #, kde-format
@@ -169,12 +169,14 @@ msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
+"خرجت البرمجيات التعاونية من غوغل من الحساب %1. يرجى تسجيل الدخول لتمكين "
+"مزامنة جهات اتصال غوغل والتقويم مرة أخرى."
 
 #: googleresource.cpp:205
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
-msgstr ""
+msgstr "%1 يحتاج إلى اهتمامك."
 
 #: googleresource.cpp:210
 #, kde-format
@@ -275,7 +277,7 @@ msgstr "قوائم المهامّ الممكنة:"
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Coworkers"
-msgstr ""
+msgstr "زملاء العمل"
 
 #: personhandler.cpp:89
 #, kde-format
@@ -293,108 +295,107 @@ msgstr "العائلة"
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "My Contacts"
-msgstr ""
+msgstr "متراسلي"
 
 #: personhandler.cpp:117
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts groups"
-msgstr ""
+msgstr "استرجاع مجموعات المتراسلين"
 
 #: personhandler.cpp:124 personhandler.cpp:130
 #, kde-format
 msgid "Other Contacts"
-msgstr ""
+msgstr "المتراسلون آخرون"
 
 #: personhandler.cpp:170
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts for group '%1'"
-msgstr ""
+msgstr "استرداد المتراسلين للمجموعة '%1'"
 
 #: personhandler.cpp:370
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding contact to group '%1'"
-msgstr ""
+msgstr "يضيف متراسل إلى المجموعة '%1'"
 
 #: personhandler.cpp:404
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact"
-msgstr ""
+msgstr "يغير متراسل"
 
 #: personhandler.cpp:418
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 contact"
 msgid_plural "Removing %1 contacts"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لا يزيل أي متراسل"
+msgstr[1] "يزيل متراسل واحد"
+msgstr[2] "يزيل متراسلين"
+msgstr[3] "يزيل %1 متراسلين"
+msgstr[4] "يزيل %1 متراسلًا"
+msgstr[5] "يزيل %1 متراسل"
 
 #: personhandler.cpp:438
-#, fuzzy, kde-format
-#| msgid "IDs of calendars in collection"
+#, kde-format
 msgid "Invalid source or destination collection"
-msgstr "معرّفات التّقاويم في التّجميعة"
+msgstr "مجموعة المصدر أو الوجهة غير صالحة"
 
 #: personhandler.cpp:444
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 contact from group '%2' to '%3'"
 msgid_plural "Moving %1 contacts from group '%2' to '%3'"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لا ينقل أي متراسل من المجموعة '%2' إلى '%3'"
+msgstr[1] "ينقل متراسل من المجموعة '%2' إلى '%3'"
+msgstr[2] "ينقل متراسلين من المجموعة '%2' إلى '%3'"
+msgstr[3] "ينقل %1 متراسلين من المجموعة '%2' إلى '%3'"
+msgstr[4] "ينقل %1 متراسلًا من المجموعة '%2' إلى '%3'"
+msgstr[5] "ينقل %1 متراسل من المجموعة '%2' إلى '%3'"
 
 #: personhandler.cpp:461
 #, kde-format
 msgctxt "@info:status"
 msgid "Linking %1 contact"
 msgid_plural "Linking %1 contacts"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لا يربط أي متراسل"
+msgstr[1] "يربط متراسل واحد"
+msgstr[2] "يربط متراسلين"
+msgstr[3] "يربط %1 متراسلين"
+msgstr[4] "يربط %1 متراسلًا"
+msgstr[5] "يربط %1 متراسل"
 
 #: personhandler.cpp:475
 #, kde-format
 msgctxt "@info:status"
 msgid "Unlinking %1 contact"
 msgid_plural "Unlinking %1 contacts"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لا يفك ربط أي متراسل"
+msgstr[1] "يفك ربط متراسل واحد"
+msgstr[2] "يفك ربط متراسلين"
+msgstr[3] "يفك ربط %1 متراسلين"
+msgstr[4] "يفك ربط %1 متراسلًا"
+msgstr[5] "يفك ربط %1 متراسل"
 
 #: personhandler.cpp:508
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new contact group '%1'"
-msgstr ""
+msgstr "إنشاء مجموعة متراسلين '%1'"
 
 #: personhandler.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact group '%1'"
-msgstr ""
+msgstr "تغيير مجموعة متراسلين '%1'"
 
 #: personhandler.cpp:554
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing contact group '%1'"
-msgstr ""
+msgstr "إزالة مجموعة مجموعة '%1'"
 
 #. i18n: ectx: label, entry (Calendars), group (General)
 #: settingsbase.kcfg:21
@@ -412,31 +413,31 @@ msgstr "معرّفات قوائم المهامّ في التّجميعة"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving task lists"
-msgstr ""
+msgstr "استرجاع قوائم المهام"
 
 #: taskhandler.cpp:103
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
-msgstr ""
+msgstr "استرداد المهام للقائمة '%1'"
 
 #: taskhandler.cpp:195
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
-msgstr ""
+msgstr "تغيير مهمة في القائمة '%1'"
 
 #: taskhandler.cpp:215
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 task"
 msgid_plural "Removing %1 tasks"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لا يزيل شيء"
+msgstr[1] "يزيل مهمة واحدة"
+msgstr[2] "يزيل مهمتان"
+msgstr[3] "يزيل %1 مهام"
+msgstr[4] "يزيل %1 مهمة"
+msgstr[5] "يزيل %1 مهمة"
 
 #: taskhandler.cpp:225
 #, kde-format
@@ -444,10 +445,9 @@ msgid "Failed to delete task: %1"
 msgstr "فشل حذف المهمّة: %1"
 
 #: taskhandler.cpp:261
-#, fuzzy, kde-format
-#| msgid "Failed to delete task: %1"
+#, kde-format
 msgid "Failed to reparent subtasks: %1"
-msgstr "فشل حذف المهمّة: %1"
+msgstr "فشل إعادة تعيين المهام الفرعية: %1"
 
 #: taskhandler.cpp:292
 #, kde-format
@@ -458,19 +458,19 @@ msgstr "نقل المهامّ بين قوائم المهامّ غير مدعوم
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new task list '%1'"
-msgstr ""
+msgstr "إنشاء قائمة مهام جديدة '%1'"
 
 #: taskhandler.cpp:322
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task list '%1'"
-msgstr ""
+msgstr "تغيير قائمة المهام '%1'"
 
 #: taskhandler.cpp:335
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
-msgstr ""
+msgstr "إزالة قائمة المهام '%1'"
 
 #~ msgid "Configured account does not exist"
 #~ msgstr "الحساب المضبوط غير موجود"
