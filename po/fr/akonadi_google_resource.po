@@ -2,7 +2,7 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 # Joëlle Cornavin <jcorn@free.fr>, 2012, 2013.
-# SPDX-FileCopyrightText: 2013, 2014, 2020, 2021, 2023, 2024 Xavier Besnard <xavier.besnard@kde.org>
+# SPDX-FileCopyrightText: 2013, 2014, 2020, 2021, 2023, 2024, 2025 Xavier Besnard <xavier.besnard@kde.org>
 # Vincent Pinon <vpinon@kde.org>, 2017.
 # Xavier Besnard <xavier.besnard@kde.org>, 2023.
 #
@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-27 00:40+0000\n"
-"PO-Revision-Date: 2024-08-18 09:38+0200\n"
+"PO-Revision-Date: 2025-01-14 14:59+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 24.12.1\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -148,7 +148,7 @@ msgstr "Non configuré"
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
-msgstr "Logiciel « Google Groupware » (%1)"
+msgstr "Logiciel de groupe de Google (%1)"
 
 #: googleresource.cpp:197
 #, kde-format
@@ -161,7 +161,7 @@ msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
-"Le logiciel « Google Groupware » s'est déconnecté de votre compte. Veuillez "
+"Le logiciel de groupe de Google s'est déconnecté de votre compte. Veuillez "
 "vous connecter pour activer de nouveau la synchronisation de « Google "
 "Contacts » et « Google Calendar »."
 
@@ -171,7 +171,7 @@ msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
-"Le logiciel « Google Groupware »  s'est déconnecté de votre compte %1e. "
+"Le logiciel de groupe de Google s'est déconnecté de votre compte %1. "
 "Veuillez vous connecter pour activer de nouveau la synchronisation de "
 "« Google Contacts » et « Google Calendar »."
 
