@@ -716,13 +716,13 @@ msgctxt "@info:status"
 msgid ""
 "Could not access KWallet. It is necessary to store the password. Please "
 "activate it."
-msgstr ""
+msgstr "无法访问KWallet。需要存储密码，请激活它。 "
 
 #: setupserver.cpp:434 setupserver.cpp:487
 #, kde-format
 msgctxt "@info:status"
 msgid "KWallet Unavailable"
-msgstr ""
+msgstr "KWallet 不可用"
 
 #: setupserver.cpp:560
 #, kde-format
