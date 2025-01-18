@@ -7,7 +7,6 @@
 #pragma once
 
 class QLabel;
-class QProgressBar;
 #include <QProgressBar>
 #include <QWizard>
 #include <QWizardPage>
