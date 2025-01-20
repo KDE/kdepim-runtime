@@ -46,13 +46,13 @@ msgstr "监视文件更改。"
 #: icalresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "定期更新该文件。"
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: icalresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
-msgstr ""
+msgstr "自动更新周期 (以分钟为单位) 。"
 
 #: shared/icalresource.cpp:48
 #, kde-format

@@ -36,7 +36,7 @@ msgstr "个人信息维护"
 #, kde-format
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress…"
-msgstr ""
+msgstr "进行中..."
 
 #: migrationexecutor.cpp:47
 #, kde-format

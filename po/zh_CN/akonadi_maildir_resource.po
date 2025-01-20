@@ -26,7 +26,7 @@ msgstr "归档文件夹"
 #: configwidget.cpp:39
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "活动"
 
 #: configwidget.cpp:54
 #, kde-format

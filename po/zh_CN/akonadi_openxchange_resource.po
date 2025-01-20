@@ -109,7 +109,7 @@ msgstr "用于登录到 Open-Xchange 服务器的密码"
 #: configwidget.ui:98
 #, kde-format
 msgid "Test Connection…"
-msgstr ""
+msgstr "测试连接..."
 
 #: openxchangeresource.cpp:250
 #, kde-format

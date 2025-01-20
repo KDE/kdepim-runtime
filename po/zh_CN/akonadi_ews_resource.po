@@ -71,7 +71,7 @@ msgstr "确定"
 #: ewsconfigdialog.cpp:121 ewsconfigdialog.cpp:123
 #, kde-format
 msgid "PEM file"
-msgstr ""
+msgstr "PEM 文件"
 
 #: ewsconfigdialog.cpp:141
 #, kde-format
@@ -714,7 +714,7 @@ msgstr "取消"
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr ""
+msgstr "正在执行 Microsoft Exchange 服务器自动搜索..."
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -725,7 +725,7 @@ msgstr "连接到 Exchange"
 #: ewsprogressdialog.cpp:53
 #, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr ""
+msgstr "正在连接到 Microsoft Exchange 服务器..."
 
 #: ewsresource.cpp:143
 #, kde-format

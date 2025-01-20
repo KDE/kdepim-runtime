@@ -22,13 +22,13 @@ msgstr ""
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p%"
 
 #: accountwidget.cpp:91
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] ""
+msgstr[0] "%v 分钟"
 
 #: accountwidget.cpp:128 pop3resource.cpp:46
 #, kde-format
