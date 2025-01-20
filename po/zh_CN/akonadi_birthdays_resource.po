@@ -22,7 +22,7 @@ msgstr ""
 #, kde-format
 msgid "%v day"
 msgid_plural "%v days"
-msgstr[0] ""
+msgstr[0] "第 %v 天"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: birthdaysconfigwidget.ui:29

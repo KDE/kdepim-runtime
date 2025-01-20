@@ -31,7 +31,7 @@ msgstr "kde-china@kde.org"
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p%"
 
 #: ../kmigratorbase.cpp:116
 #, kde-format
@@ -51,7 +51,7 @@ msgstr "迁移器未准备就绪，迁移失败"
 #: ../migratorbase.cpp:147
 #, kde-format
 msgid "Starting migration…"
-msgstr ""
+msgstr "开始迁移..."
 
 #: ../migratorbase.cpp:189
 #, kde-format
@@ -88,7 +88,7 @@ msgstr "未开始"
 #, kde-format
 msgctxt "@info:status"
 msgid "Running…"
-msgstr ""
+msgstr "运行中..."
 
 #: ../migratorbase.cpp:274
 #, kde-format

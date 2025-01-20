@@ -60,12 +60,12 @@ msgstr[0] "正在从日历“%2”中移动 %1 项日程至日历“%3”"
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr ""
+msgstr "更改事件标签"
 
 #: calendarhandler.cpp:345
 #, kde-format
 msgid "Failed to change tags on events"
-msgstr ""
+msgstr "更改事件标签失败"
 
 #: calendarhandler.cpp:357
 #, kde-format
@@ -98,7 +98,7 @@ msgstr "无法取消这些项目的链接"
 #: generichandler.cpp:34
 #, kde-format
 msgid "Cannot handle item tag changes"
-msgstr ""
+msgstr "无法处理项目标签更改"
 
 #: generichandler.cpp:61
 #, kde-format
@@ -114,7 +114,7 @@ msgstr "无效项目。"
 #: googleresource.cpp:86
 #, kde-format
 msgid "Fetching password…"
-msgstr ""
+msgstr "正在获取密码..."
 
 #: googleresource.cpp:93
 #, kde-format
@@ -130,7 +130,7 @@ msgstr "就绪"
 #: googleresource.cpp:146
 #, kde-format
 msgid "Not configured"
-msgstr ""
+msgstr "未配置"
 
 #: googleresource.cpp:146
 #, kde-format
@@ -200,13 +200,13 @@ msgstr "未知收藏文件类型"
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] ""
+msgstr[0] "%v 分钟"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>Not configured</b>"
-msgstr ""
+msgstr "<b>未配置</b>"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)
 #: googlesettingswidget.ui:23
@@ -218,7 +218,7 @@ msgstr "账户："
 #: googlesettingswidget.ui:42
 #, kde-format
 msgid "Configure…"
-msgstr ""
+msgstr "配置..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49

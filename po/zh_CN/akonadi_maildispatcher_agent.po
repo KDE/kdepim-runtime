@@ -22,7 +22,7 @@ msgstr ""
 #, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] ""
+msgstr[0] "正在发送信件 (队列中有 %1 项) "
 
 #: maildispatcheragent.cpp:90
 #, kde-format

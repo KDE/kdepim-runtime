@@ -323,7 +323,7 @@ msgstr "项目 %1 的收藏无效。"
 #: davgroupwareresource.cpp:704
 #, kde-format
 msgid "Unable to modify items: %1"
-msgstr ""
+msgstr "无法更改项目：%1"
 
 #: davgroupwareresource.cpp:743
 #, kde-format

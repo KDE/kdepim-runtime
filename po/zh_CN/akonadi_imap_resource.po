@@ -358,7 +358,7 @@ msgstr "正在将文件夹“%1”从“%2”移至“%3”"
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr ""
+msgstr "正在搜索..."
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -409,7 +409,7 @@ msgstr ""
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
-msgstr ""
+msgstr "无法从密钥串中读取密码。"
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -595,7 +595,7 @@ msgstr "登录时断开连接。"
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
-msgstr ""
+msgstr "找不到 %1 的 IMAP 账户的密码"
 
 #: settings.cpp:162
 #, kde-format
@@ -603,13 +603,13 @@ msgctxt "@info:status"
 msgid ""
 "An error occured when retriving the IMAP password from the system keychain: "
 "\"%1\""
-msgstr ""
+msgstr "从系统密钥链中获取 IMAP 密码时发生错误：“%1”"
 
 #: settings.cpp:192
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
-msgstr ""
+msgstr "找不到 %1 的 Sieve 账户的密码"
 
 #: settings.cpp:198
 #, kde-format
@@ -617,7 +617,7 @@ msgctxt "@info:status"
 msgid ""
 "An error occured when retriving the sieve password from the system keychain: "
 "\"%1\""
-msgstr ""
+msgstr "从系统密钥链中获取 Sieve 密码时发生错误：“%1”"
 
 #: settings.cpp:228
 #, kde-format
@@ -625,26 +625,26 @@ msgctxt "@info:status"
 msgid ""
 "An error occured when saving the sieve password in the system keychain: "
 "\"%1\""
-msgstr ""
+msgstr "保存系统密钥链中的 Sieve 密码时发生错误：“%1”"
 
 #: settings.cpp:254
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occured when saving the IMAP password in the system keychain: \"%1\""
-msgstr ""
+msgstr "保存系统密钥链中的 IMAP 密码时发生错误：“%1”"
 
 #: settings.cpp:341
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
-msgstr ""
+msgstr "%1 的 IMAP 帐户存在问题"
 
 #: settingspasswordrequester.cpp:75
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "IMAP 电子邮件账户需要您注意。"
 
 #: settingspasswordrequester.cpp:79
 #, kde-format
@@ -654,6 +654,10 @@ msgid ""
 "\n"
 "%1"
 msgstr ""
+"IMAP 服务器拒绝了提供的用户名和密码。\n"
+"您是想重试还是打开设置？\n"
+"\n"
+"%1"
 
 #: settingspasswordrequester.cpp:84
 #, kde-format
@@ -663,18 +667,22 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
+"账户 %1 的 IMAP 服务器拒绝了所提供的用户名和密码。\n"
+"您是想重试还是打开设置？\n"
+"\n"
+"%2"
 
 #: settingspasswordrequester.cpp:91
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
-msgstr ""
+msgstr "重试"
 
 #: settingspasswordrequester.cpp:97
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr ""
+msgstr "打开设置"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -698,7 +706,7 @@ msgstr "匿名"
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
-msgstr ""
+msgstr "XOAuth"
 
 #: setupserver.cpp:154
 #, kde-format
@@ -709,13 +717,13 @@ msgstr "归档文件夹"
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p%"
 
 #: setupserver.cpp:167
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] ""
+msgstr[0] "%v 分钟"
 
 #: setupserver.cpp:182
 #, kde-format
@@ -725,7 +733,7 @@ msgstr "身份："
 #: setupserver.cpp:202
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "活动"
 
 #: setupserver.cpp:269
 #, kde-format
@@ -1018,7 +1026,7 @@ msgstr "启用服务器端订阅"
 #: setupserverview_desktop.ui:381
 #, kde-format
 msgid "Serverside Subscription…"
-msgstr ""
+msgstr "服务器端订阅..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390

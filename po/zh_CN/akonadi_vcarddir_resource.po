@@ -127,9 +127,9 @@ msgstr "不更改真实的后端数据。"
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] ""
+msgstr[0] "%v 分钟"
 
 #: vcarddirsettingswidget.cpp:45
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "活动"
