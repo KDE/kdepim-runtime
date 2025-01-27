@@ -3,14 +3,14 @@
 # Xosé <xosecalvo@gmail.com>, 2009, 2010, 2013.
 # Adrian Chaves Fernandez <adriyetichaves@gmail.com>, 2013, 2015, 2017.
 # Marce Villarino <mvillarino@kde-espana.org>, 2014.
-# SPDX-FileCopyrightText: 2024 Adrián Chaves (Gallaecio)
+# SPDX-FileCopyrightText: 2024, 2025 Adrián Chaves (Gallaecio)
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-12-18 02:40+0000\n"
-"PO-Revision-Date: 2024-07-30 17:27+0200\n"
+"PO-Revision-Date: 2025-01-26 21:24+0100\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
 "Language: gl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 24.12.1\n"
 
 #: configdialog.cpp:33
 #, kde-format
@@ -113,7 +113,7 @@ msgstr ""
 #: configdialog.ui:139
 #, kde-format
 msgid "Limit CalDav retrieval time range"
-msgstr "Limitar o intervalo de tempo de descarga de CalDav."
+msgstr "Limitar o intervalo de tempo de obtención de CalDav."
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configdialog.ui:151
@@ -425,19 +425,19 @@ msgstr "Nome de usuaria"
 #: davgroupwareresource.kcfg:30
 #, kde-format
 msgid "Limit the events retrieval to the specified time range"
-msgstr "Limitar a descarga de eventos ao intervalo de tempo indicado."
+msgstr "Limitar a obtención de eventos ao intervalo de tempo indicado."
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
 #, kde-format
 msgid "Period for which to retrieve events, quantity"
-msgstr "Cantidade do período de tempo para o que descargar eventos."
+msgstr "Cantidade do período de tempo para o que obter eventos."
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
 #, kde-format
 msgid "Period for which to retrieve events, type"
-msgstr "Tipo do período de tempo para o que descargar eventos."
+msgstr "Tipo do período de tempo para o que obter eventos."
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
 #: davgroupwareresource.kcfg:42
