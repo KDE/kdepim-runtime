@@ -3,14 +3,14 @@
 # Xosé <xosecalvo@gmail.com>, 2009, 2010.
 # Marce Villarino <mvillarino@kde-espana.es>, 2012, 2013, 2014.
 # Adrian Chaves Fernandez <adriyetichaves@gmail.com>, 2013, 2016.
-# SPDX-FileCopyrightText: 2023, 2024 Adrián Chaves (Gallaecio)
+# SPDX-FileCopyrightText: 2023, 2024, 2025 Adrián Chaves (Gallaecio)
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-27 00:40+0000\n"
-"PO-Revision-Date: 2024-12-16 22:29+0100\n"
+"PO-Revision-Date: 2025-01-26 21:20+0100\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
 "Language: gl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.12.0\n"
+"X-Generator: Lokalize 24.12.1\n"
 
 #: accountwidget.cpp:83
 #, kde-format
@@ -55,7 +55,7 @@ msgstr ""
 "Parece que o servidor non permite números de mensaxe únicos, pero isto é un "
 "requisito para deixar as mensaxes no servidor.\n"
 "Dado que algúns servidores non anuncian correctamente as súas capacidades, "
-"aínda ten a posibilidade de activar que se deixen as mensaxes descargadas no "
+"aínda ten a posibilidade de activar que se deixen as mensaxes obtidas no "
 "servidor."
 
 #: accountwidget.cpp:260
@@ -127,7 +127,7 @@ msgstr ""
 "desactivar esta opción.\n"
 "Dado que algúns servidores non anuncian axeitadamente as súas "
 "características, aínda ten a posibilidade de activar que se deixen as "
-"mensaxes descargadas no servidor."
+"mensaxes obtidas no servidor."
 
 #: accountwidget.cpp:422
 #, kde-format
@@ -664,7 +664,7 @@ msgstr ""
 #: popsettings.ui:245
 #, kde-format
 msgid "Lea&ve fetched messages on the server"
-msgstr "Dei&xar no servidor as mensaxes descargadas"
+msgstr "Dei&xar no servidor as mensaxes obtidas"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, leaveOnServerDaysCheck)
 #: popsettings.ui:258
