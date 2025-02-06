@@ -83,13 +83,13 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
     } else if (readerName == "ReferenceAttachment"_L1) {
         d->mType = ReferenceAttachment;
     } else {
-        qCWarningNC(EWSCLI_LOG) << u"Unknown attachment type %1"_s.arg(readerName.toString());
+        qCWarningNC(EWSCLI_LOG) << "Unknown attachment type" << readerName.toString();
         ok = false;
     }
 
     // Skip this attachment type as it's not clearly documented.
     if (d->mType == ReferenceAttachment) {
-        qCWarningNC(EWSCLI_LOG) << u"Attachment type ReferenceAttachment not fully supported"_s;
+        qCWarningNC(EWSCLI_LOG) << "Attachment type ReferenceAttachment not fully supported";
         reader.skipCurrentElement();
         d->mValid = true;
         return;
@@ -97,7 +97,7 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
 
     while (ok && reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsTypeNsUri) {
-            qCWarningNC(EWSCLI_LOG) << u"Unexpected namespace in Attachment element:"_s << reader.namespaceUri();
+            qCWarningNC(EWSCLI_LOG) << "Unexpected namespace in Attachment element:" << reader.namespaceUri();
             reader.skipCurrentElement();
             ok = false;
             break;
@@ -107,7 +107,7 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
         if (elmName == "AttachmentId"_L1) {
             QXmlStreamAttributes attrs = reader.attributes();
             if (!attrs.hasAttribute(u"Id"_s)) {
-                qCWarningNC(EWSCLI_LOG) << u"Failed to read %1 element - missing Id in AttachmentId element."_s.arg(u"Attachment"_s);
+                qCWarningNC(EWSCLI_LOG) << "Failed to read Attachment element - missing Id in AttachmentId element.";
                 reader.skipCurrentElement();
                 ok = false;
             } else {
@@ -151,14 +151,14 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
                        || elmName == "MeetingCancellation"_L1 || elmName == "Task"_L1)) {
             d->mItem = EwsItem(reader);
             if (!d->mItem.isValid()) {
-                qCWarningNC(EWSCLI_LOG) << u"Failed to read %1 element - invalid %2 element."_s.arg(u"Attachment"_s, u"Item"_s);
+                qCWarningNC(EWSCLI_LOG) << "Failed to read attachment element - invalid Item element.";
                 reader.skipCurrentElement();
                 ok = false;
             } else {
                 d->mValidFields.setBit(EwsAttachmentPrivate::Item);
             }
         } else {
-            qCWarningNC(EWSCLI_LOG) << u"Failed to read %1 element - unknown %2 element."_s.arg(u"Attachment"_s, elmName);
+            qCWarningNC(EWSCLI_LOG) << u"Failed to read attachment element - unknown %1 element."_s.arg(elmName);
             reader.skipCurrentElement();
             ok = false;
         }
@@ -206,13 +206,13 @@ void EwsAttachment::write(QXmlStreamWriter &writer) const
         elmName = u"ReferenceAttachment"_s;
         break;
     default:
-        qCWarning(EWSCLI_LOG) << u"Failed to write Attachment element - invalid attachment type."_s;
+        qCWarning(EWSCLI_LOG) << "Failed to write attachment element - invalid attachment type.";
         return;
     }
     writer.writeStartElement(ewsTypeNsUri, elmName);
 
     if (d->mType == ReferenceAttachment) {
-        qCWarningNC(EWSCLI_LOG) << u"Attachment type ReferenceAttachment not fully supported"_s;
+        qCWarningNC(EWSCLI_LOG) << "Attachment type ReferenceAttachment not fully supported";
         writer.writeEndElement();
         return;
     }

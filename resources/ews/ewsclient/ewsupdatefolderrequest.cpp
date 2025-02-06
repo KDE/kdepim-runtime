@@ -74,9 +74,9 @@ bool EwsUpdateFolderRequest::parseItemsResponse(QXmlStreamReader &reader)
 
     if (EWSCLI_REQUEST_LOG().isDebugEnabled()) {
         if (resp.isSuccess()) {
-            qCDebugNC(EWSCLI_REQUEST_LOG) << u"Got UpdateFolder response - OK"_s;
+            qCDebugNC(EWSCLI_REQUEST_LOG) << "Got UpdateFolder response - OK";
         } else {
-            qCDebugNC(EWSCLI_REQUEST_LOG) << u"Got UpdateFolder response - %1"_s.arg(resp.responseMessage());
+            qCDebugNC(EWSCLI_REQUEST_LOG) << "Got UpdateFolder response -" << resp.responseMessage();
         }
     }
 

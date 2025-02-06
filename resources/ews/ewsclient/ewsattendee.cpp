@@ -52,7 +52,7 @@ EwsAttendee::EwsAttendee(QXmlStreamReader &reader)
 {
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsTypeNsUri) {
-            qCWarningNC(EWSCLI_LOG) << u"Unexpected namespace in mailbox element:"_s << reader.namespaceUri();
+            qCWarningNC(EWSCLI_LOG) << "Unexpected namespace in mailbox element:" << reader.namespaceUri();
             return;
         }
         const QStringView readerName = reader.name();
@@ -71,7 +71,7 @@ EwsAttendee::EwsAttendee(QXmlStreamReader &reader)
             }
         } else if (readerName == "LastResponseTime"_L1) {
             // Unsupported - ignore
-            // qCWarningNC(EWSCLIENT_LOG) << u"Unsupported mailbox element %1"_s.arg(reader.name().toString());
+            // qCWarningNC(EWSCLIENT_LOG) << "Unsupported mailbox element %1" << reader.name().toString();
             reader.skipCurrentElement();
         }
     }

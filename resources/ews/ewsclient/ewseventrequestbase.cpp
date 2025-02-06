@@ -63,9 +63,9 @@ bool EwsEventRequestBase::parseNotificationsResponse(QXmlStreamReader &reader)
             for (const Notification &nfy : notifications) {
                 numEv += nfy.events().size();
             }
-            qCDebugNC(EWSCLI_REQUEST_LOG) << u"Got %1 response (%2 notifications, %3 events)"_s.arg(mReqName).arg(resp.notifications().size()).arg(numEv);
+            qCDebugNC(EWSCLI_REQUEST_LOG) << "Got" << mReqName << "response (" << resp.notifications().size() << "notifications," << numEv << "events)";
         } else {
-            qCDebug(EWSCLI_REQUEST_LOG) << u"Got %1 response - %2"_s.arg(mReqName, resp.responseMessage());
+            qCDebug(EWSCLI_REQUEST_LOG) << "Got" << mReqName << "response -" << resp.responseMessage();
         }
     }
 
@@ -227,9 +227,9 @@ EwsEventRequestBase::Event::Event(QXmlStreamReader &reader)
     mUnreadCount = values[UnreadCount].toUInt();
 
     if (mType == EwsStatusEvent) {
-        qCDebugNCS(EWSCLI_LOG) << u" %1"_s.arg(elmName.toString());
+        qCDebugNCS(EWSCLI_LOG) << elmName.toString();
     } else {
-        qCDebugNCS(EWSCLI_LOG) << u" %1, %2, parent: "_s.arg(elmName.toString()).arg(mIsFolder ? 'F' : 'I') << mParentFolderId << u", id: "_s << mId;
+        qCDebugNCS(EWSCLI_LOG).nospace() << elmName.toString() << ", " << (mIsFolder ? 'F' : 'I') << ", parent: " << mParentFolderId << u", id: "_s << mId;
     }
 }
 
