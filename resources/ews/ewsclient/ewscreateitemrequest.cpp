@@ -7,19 +7,21 @@
 #include "ewscreateitemrequest.h"
 #include "ewsclient_debug.h"
 
-static const QList<QString> messageDispositionNames = {
-    QStringLiteral("SaveOnly"),
-    QStringLiteral("SendOnly"),
-    QStringLiteral("SendAndSaveCopy"),
-};
+using namespace Qt::StringLiterals;
 
-static const QList<QString> meetingDispositionNames = {
-    QStringLiteral("SendToNone"),
-    QStringLiteral("SendOnlyToAll"),
-    QStringLiteral("SendOnlyToChanged"),
-    QStringLiteral("SendToAllAndSaveCopy"),
-    QStringLiteral("SendToChangedAndSaveCopy"),
-};
+static constexpr auto messageDispositionNames = std::to_array<QLatin1StringView>({
+    "SaveOnly"_L1,
+    "SendOnly"_L1,
+    "SendAndSaveCopy"_L1,
+});
+
+static constexpr auto meetingDispositionNames = std::to_array<QLatin1StringView>({
+    "SendToNone"_L1,
+    "SendOnlyToAll"_L1,
+    "SendOnlyToChanged"_L1,
+    "SendToAllAndSaveCopy"_L1,
+    "SendToChangedAndSaveCopy"_L1,
+});
 
 EwsCreateItemRequest::EwsCreateItemRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
@@ -28,9 +30,7 @@ EwsCreateItemRequest::EwsCreateItemRequest(EwsClient &client, QObject *parent)
 {
 }
 
-EwsCreateItemRequest::~EwsCreateItemRequest()
-{
-}
+EwsCreateItemRequest::~EwsCreateItemRequest() = default;
 
 void EwsCreateItemRequest::start()
 {
@@ -63,7 +63,8 @@ void EwsCreateItemRequest::start()
 
     endSoapDocument(writer);
 
-    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting CreateItem request (%1 items, parent %2)").arg(mItems.size()).arg(mSavedFolderId.id());
+    qCDebugNC(EWSCLI_REQUEST_LOG)
+        << QStringLiteral("Starting CreateItem request (%1 items, parent %2)").arg(QString::number(mItems.size()), mSavedFolderId.id());
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 

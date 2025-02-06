@@ -8,6 +8,8 @@
 #include "ewsclient_debug.h"
 #include "ewsxml.h"
 
+using namespace Qt::StringLiterals;
+
 enum NotificationElementType {
     InvalidNotificationElement = -1,
     SubscriptionId,
@@ -15,7 +17,7 @@ enum NotificationElementType {
     MoreEvents,
     Events,
 };
-typedef EwsXml<NotificationElementType> NotificationReader;
+using NotificationReader = EwsXml<NotificationElementType>;
 
 enum EventElementType {
     InvalidEventElement = -1,
@@ -29,7 +31,7 @@ enum EventElementType {
     OldParentFolderId,
     UnreadCount,
 };
-typedef EwsXml<EventElementType> EventReader;
+using EventReader = EwsXml<EventElementType>;
 
 EwsEventRequestBase::EwsEventRequestBase(EwsClient &client, const QString &reqName, QObject *parent)
     : EwsRequest(client, parent)
@@ -38,9 +40,7 @@ EwsEventRequestBase::EwsEventRequestBase(EwsClient &client, const QString &reqNa
     qRegisterMetaType<EwsEventRequestBase::Event::List>();
 }
 
-EwsEventRequestBase::~EwsEventRequestBase()
-{
-}
+EwsEventRequestBase::~EwsEventRequestBase() = default;
 
 bool EwsEventRequestBase::parseResult(QXmlStreamReader &reader)
 {
@@ -63,10 +63,9 @@ bool EwsEventRequestBase::parseNotificationsResponse(QXmlStreamReader &reader)
             for (const Notification &nfy : notifications) {
                 numEv += nfy.events().size();
             }
-            qCDebugNC(EWSCLI_REQUEST_LOG)
-                << QStringLiteral("Got %1 response (%2 notifications, %3 events)").arg(mReqName).arg(resp.notifications().size()).arg(numEv);
+            qCDebugNC(EWSCLI_REQUEST_LOG) << u"Got %1 response (%2 notifications, %3 events)"_s.arg(mReqName).arg(resp.notifications().size()).arg(numEv);
         } else {
-            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got %1 response - %2").arg(mReqName, resp.responseMessage());
+            qCDebug(EWSCLI_REQUEST_LOG) << u"Got %1 response - %2"_s.arg(mReqName, resp.responseMessage());
         }
     }
 
@@ -83,14 +82,14 @@ EwsEventRequestBase::Response::Response(QXmlStreamReader &reader)
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
-            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2").arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
+            setErrorMsg(u"Unexpected namespace in %1 element: %2"_s.arg(u"ResponseMessage"_s, reader.namespaceUri().toString()));
             return;
         }
 
         if (reader.name() == QLatin1StringView("Notification")) {
             Notification nfy(reader);
             if (!nfy.isValid()) {
-                setErrorMsg(QStringLiteral("Failed to process notification."));
+                setErrorMsg(u"Failed to process notification."_s);
                 reader.skipCurrentElement();
                 return;
             }
@@ -100,19 +99,19 @@ EwsEventRequestBase::Response::Response(QXmlStreamReader &reader)
                 if (reader.name() == QLatin1StringView("Notification")) {
                     Notification nfy(reader);
                     if (!nfy.isValid()) {
-                        setErrorMsg(QStringLiteral("Failed to process notification."));
+                        setErrorMsg(u"Failed to process notification."_s);
                         reader.skipCurrentElement();
                         return;
                     }
                     mNotifications.append(nfy);
                 } else {
-                    setErrorMsg(QStringLiteral("Failed to read EWS request - expected Notification inside Notifications"));
+                    setErrorMsg(u"Failed to read EWS request - expected Notification inside Notifications"_s);
                 }
             }
         } else if (reader.name() == QLatin1StringView("ConnectionStatus")) {
             reader.skipCurrentElement();
         } else if (!readResponseElement(reader)) {
-            setErrorMsg(QStringLiteral("Failed to read EWS request - invalid response element '%1'").arg(reader.name().toString()));
+            setErrorMsg(u"Failed to read EWS request - invalid response element '%1'"_s.arg(reader.name().toString()));
             return;
         }
     }
@@ -121,17 +120,17 @@ EwsEventRequestBase::Response::Response(QXmlStreamReader &reader)
 EwsEventRequestBase::Notification::Notification(QXmlStreamReader &reader)
 {
     static const QList<NotificationReader::Item> items = {
-        {SubscriptionId, QStringLiteral("SubscriptionId"), &ewsXmlTextReader},
-        {PreviousWatermark, QStringLiteral("PreviousWatermark"), &ewsXmlTextReader},
-        {MoreEvents, QStringLiteral("MoreEvents"), &ewsXmlBoolReader},
-        {Events, QStringLiteral("CopiedEvent"), &eventsReader},
-        {Events, QStringLiteral("CreatedEvent"), &eventsReader},
-        {Events, QStringLiteral("DeletedEvent"), &eventsReader},
-        {Events, QStringLiteral("ModifiedEvent"), &eventsReader},
-        {Events, QStringLiteral("MovedEvent"), &eventsReader},
-        {Events, QStringLiteral("NewMailEvent"), &eventsReader},
-        {Events, QStringLiteral("FreeBusyChangeEvent"), &eventsReader},
-        {Events, QStringLiteral("StatusEvent"), &eventsReader},
+        {SubscriptionId, u"SubscriptionId"_s, &ewsXmlTextReader},
+        {PreviousWatermark, u"PreviousWatermark"_s, &ewsXmlTextReader},
+        {MoreEvents, u"MoreEvents"_s, &ewsXmlBoolReader},
+        {Events, u"CopiedEvent"_s, &eventsReader},
+        {Events, u"CreatedEvent"_s, &eventsReader},
+        {Events, u"DeletedEvent"_s, &eventsReader},
+        {Events, u"ModifiedEvent"_s, &eventsReader},
+        {Events, u"MovedEvent"_s, &eventsReader},
+        {Events, u"NewMailEvent"_s, &eventsReader},
+        {Events, u"FreeBusyChangeEvent"_s, &eventsReader},
+        {Events, u"StatusEvent"_s, &eventsReader},
     };
     static const NotificationReader staticReader(items);
 
@@ -156,7 +155,7 @@ bool EwsEventRequestBase::Notification::eventsReader(QXmlStreamReader &reader, Q
 
     Event event(reader);
     if (!event.isValid()) {
-        qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element").arg(elmName);
+        qCWarningNC(EWSCLI_LOG) << u"Failed to read %1 element"_s.arg(elmName);
         return false;
     }
 
@@ -170,15 +169,15 @@ EwsEventRequestBase::Event::Event(QXmlStreamReader &reader)
     : mType(EwsUnknownEvent)
 {
     static const QList<EventReader::Item> items = {
-        {Watermark, QStringLiteral("Watermark"), &ewsXmlTextReader},
-        {Timestamp, QStringLiteral("TimeStamp"), &ewsXmlDateTimeReader},
-        {FolderId, QStringLiteral("FolderId"), &ewsXmlIdReader},
-        {ItemId, QStringLiteral("ItemId"), &ewsXmlIdReader},
-        {ParentFolderId, QStringLiteral("ParentFolderId"), &ewsXmlIdReader},
-        {OldFolderId, QStringLiteral("OldFolderId"), &ewsXmlIdReader},
-        {OldItemId, QStringLiteral("OldItemId"), &ewsXmlIdReader},
-        {OldParentFolderId, QStringLiteral("OldParentFolderId"), &ewsXmlIdReader},
-        {UnreadCount, QStringLiteral("UnreadCount"), &ewsXmlUIntReader},
+        {Watermark, u"Watermark"_s, &ewsXmlTextReader},
+        {Timestamp, u"TimeStamp"_s, &ewsXmlDateTimeReader},
+        {FolderId, u"FolderId"_s, &ewsXmlIdReader},
+        {ItemId, u"ItemId"_s, &ewsXmlIdReader},
+        {ParentFolderId, u"ParentFolderId"_s, &ewsXmlIdReader},
+        {OldFolderId, u"OldFolderId"_s, &ewsXmlIdReader},
+        {OldItemId, u"OldItemId"_s, &ewsXmlIdReader},
+        {OldParentFolderId, u"OldParentFolderId"_s, &ewsXmlIdReader},
+        {UnreadCount, u"UnreadCount"_s, &ewsXmlUIntReader},
     };
     static const EventReader staticReader(items);
 
@@ -201,7 +200,7 @@ EwsEventRequestBase::Event::Event(QXmlStreamReader &reader)
     } else if (elmName == QLatin1StringView("FreeBusyChangedEvent")) {
         mType = EwsFreeBusyChangedEvent;
     } else {
-        qCWarning(EWSCLI_LOG) << QStringLiteral("Unknown notification event type: %1").arg(elmName.toString());
+        qCWarning(EWSCLI_LOG) << u"Unknown notification event type: %1"_s.arg(elmName.toString());
         return;
     }
 
@@ -228,10 +227,9 @@ EwsEventRequestBase::Event::Event(QXmlStreamReader &reader)
     mUnreadCount = values[UnreadCount].toUInt();
 
     if (mType == EwsStatusEvent) {
-        qCDebugNCS(EWSCLI_LOG) << QStringLiteral(" %1").arg(elmName.toString());
+        qCDebugNCS(EWSCLI_LOG) << u" %1"_s.arg(elmName.toString());
     } else {
-        qCDebugNCS(EWSCLI_LOG) << QStringLiteral(" %1, %2, parent: ").arg(elmName.toString()).arg(mIsFolder ? 'F' : 'I') << mParentFolderId
-                               << QStringLiteral(", id: ") << mId;
+        qCDebugNCS(EWSCLI_LOG) << u" %1, %2, parent: "_s.arg(elmName.toString()).arg(mIsFolder ? 'F' : 'I') << mParentFolderId << u", id: "_s << mId;
     }
 }
 

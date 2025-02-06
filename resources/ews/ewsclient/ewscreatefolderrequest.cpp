@@ -8,14 +8,14 @@
 
 #include "ewsclient_debug.h"
 
+using namespace Qt::StringLiterals;
+
 EwsCreateFolderRequest::EwsCreateFolderRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
 {
 }
 
-EwsCreateFolderRequest::~EwsCreateFolderRequest()
-{
-}
+EwsCreateFolderRequest::~EwsCreateFolderRequest() = default;
 
 void EwsCreateFolderRequest::start()
 {
@@ -24,13 +24,13 @@ void EwsCreateFolderRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("CreateFolder"));
+    writer.writeStartElement(ewsMsgNsUri, u"CreateFolder"_s);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("ParentFolderId"));
+    writer.writeStartElement(ewsMsgNsUri, u"ParentFolderId"_s);
     mParentFolderId.writeFolderIds(writer);
     writer.writeEndElement();
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("Folders"));
+    writer.writeStartElement(ewsMsgNsUri, u"Folders"_s);
     for (const EwsFolder &folder : std::as_const(mFolders)) {
         folder.write(writer);
     }
@@ -40,7 +40,7 @@ void EwsCreateFolderRequest::start()
 
     endSoapDocument(writer);
 
-    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting CreateFolder request (%1 folders, parent %2)").arg(mFolders.size()).arg(mParentFolderId.id());
+    qCDebugNC(EWSCLI_REQUEST_LOG) << u"Starting CreateFolder request (%1 folders, parent %2)"_s.arg(mFolders.size()).arg(mParentFolderId.id());
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 
@@ -51,7 +51,7 @@ void EwsCreateFolderRequest::start()
 
 bool EwsCreateFolderRequest::parseResult(QXmlStreamReader &reader)
 {
-    return parseResponseMessage(reader, QStringLiteral("CreateFolder"), [this](QXmlStreamReader &reader) {
+    return parseResponseMessage(reader, u"CreateFolder"_s, [this](QXmlStreamReader &reader) {
         return parseItemsResponse(reader);
     });
 }
@@ -65,9 +65,9 @@ bool EwsCreateFolderRequest::parseItemsResponse(QXmlStreamReader &reader)
 
     if (EWSCLI_REQUEST_LOG().isDebugEnabled()) {
         if (resp.isSuccess()) {
-            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got CreateFolder response - OK");
+            qCDebug(EWSCLI_REQUEST_LOG) << "Got CreateFolder response - OK";
         } else {
-            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got CreateFolder response - %1").arg(resp.responseMessage());
+            qCDebug(EWSCLI_REQUEST_LOG) << u"Got CreateFolder response - %1"_s.arg(resp.responseMessage());
         }
     }
     mResponses.append(resp);
@@ -83,7 +83,7 @@ EwsCreateFolderRequest::Response::Response(QXmlStreamReader &reader)
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
-            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2").arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
+            setErrorMsg(u"Unexpected namespace in %1 element: %2"_s.arg(u"ResponseMessage"_s, reader.namespaceUri().toString()));
             return;
         }
 
@@ -99,7 +99,7 @@ EwsCreateFolderRequest::Response::Response(QXmlStreamReader &reader)
                 reader.skipCurrentElement();
             }
         } else if (!readResponseElement(reader)) {
-            setErrorMsg(QStringLiteral("Failed to read EWS request - invalid response element."));
+            setErrorMsg(u"Failed to read EWS request - invalid response element."_s);
             return;
         }
     }

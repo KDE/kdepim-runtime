@@ -7,19 +7,21 @@
 #include "ewsupdatefolderrequest.h"
 #include "ewsclient_debug.h"
 
-static const QList<QString> updateTypeElementNames = {
-    QStringLiteral("AppendToFolderField"),
-    QStringLiteral("SetFolderField"),
-    QStringLiteral("DeleteFolderField"),
-};
+using namespace Qt::StringLiterals;
 
-static const QList<QString> folderTypeNames = {
-    QStringLiteral("Folder"),
-    QStringLiteral("CalendarFolder"),
-    QStringLiteral("ContactsFolder"),
-    QStringLiteral("SearchFolder"),
-    QStringLiteral("TasksFolder"),
-};
+static constexpr auto updateTypeElementNames = std::to_array<QLatin1StringView>({
+    "AppendToFolderField"_L1,
+    "SetFolderField"_L1,
+    "DeleteFolderField"_L1,
+});
+
+static constexpr auto folderTypeNames = std::to_array<QLatin1StringView>({
+    "Folder"_L1,
+    "CalendarFolder"_L1,
+    "ContactsFolder"_L1,
+    "SearchFolder"_L1,
+    "TasksFolder"_L1,
+});
 
 EwsUpdateFolderRequest::EwsUpdateFolderRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
@@ -35,9 +37,9 @@ void EwsUpdateFolderRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("UpdateFolder"));
+    writer.writeStartElement(ewsMsgNsUri, u"UpdateFolder"_s);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("FolderChanges"));
+    writer.writeStartElement(ewsMsgNsUri, u"FolderChanges"_s);
     for (const FolderChange &ch : std::as_const(mChanges)) {
         ch.write(writer);
     }
@@ -47,7 +49,7 @@ void EwsUpdateFolderRequest::start()
 
     endSoapDocument(writer);
 
-    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting UpdateFolder request (%1 changes)").arg(mChanges.size());
+    qCDebugNC(EWSCLI_REQUEST_LOG) << u"Starting UpdateFolder request (%1 changes)"_s.arg(mChanges.size());
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 
@@ -58,7 +60,7 @@ void EwsUpdateFolderRequest::start()
 
 bool EwsUpdateFolderRequest::parseResult(QXmlStreamReader &reader)
 {
-    return parseResponseMessage(reader, QStringLiteral("UpdateFolder"), [this](QXmlStreamReader &reader) {
+    return parseResponseMessage(reader, u"UpdateFolder"_s, [this](QXmlStreamReader &reader) {
         return parseItemsResponse(reader);
     });
 }
@@ -72,9 +74,9 @@ bool EwsUpdateFolderRequest::parseItemsResponse(QXmlStreamReader &reader)
 
     if (EWSCLI_REQUEST_LOG().isDebugEnabled()) {
         if (resp.isSuccess()) {
-            qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got UpdateFolder response - OK");
+            qCDebugNC(EWSCLI_REQUEST_LOG) << u"Got UpdateFolder response - OK"_s;
         } else {
-            qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got UpdateFolder response - %1").arg(resp.responseMessage());
+            qCDebugNC(EWSCLI_REQUEST_LOG) << u"Got UpdateFolder response - %1"_s.arg(resp.responseMessage());
         }
     }
 
@@ -91,7 +93,7 @@ EwsUpdateFolderRequest::Response::Response(QXmlStreamReader &reader)
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
-            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2").arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
+            setErrorMsg(u"Unexpected namespace in %1 element: %2"_s.arg(u"ResponseMessage"_s, reader.namespaceUri().toString()));
             return;
         }
 
@@ -107,7 +109,7 @@ EwsUpdateFolderRequest::Response::Response(QXmlStreamReader &reader)
             // Finish the Folders element.
             reader.skipCurrentElement();
         } else if (!readResponseElement(reader)) {
-            setErrorMsg(QStringLiteral("Failed to read EWS request - invalid response element."));
+            setErrorMsg(u"Failed to read EWS request - invalid response element."_s);
             return;
         }
     }
@@ -136,11 +138,11 @@ bool EwsUpdateFolderRequest::FolderChange::write(QXmlStreamWriter &writer) const
 {
     bool retVal = true;
 
-    writer.writeStartElement(ewsTypeNsUri, QStringLiteral("FolderChange"));
+    writer.writeStartElement(ewsTypeNsUri, u"FolderChange"_s);
 
     mId.writeFolderIds(writer);
 
-    writer.writeStartElement(ewsTypeNsUri, QStringLiteral("Updates"));
+    writer.writeStartElement(ewsTypeNsUri, u"Updates"_s);
 
     for (const QSharedPointer<const Update> &upd : std::as_const(mUpdates)) {
         if (!upd->write(writer, mType)) {

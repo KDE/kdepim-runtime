@@ -12,6 +12,8 @@
 #include "ewsclient_debug.h"
 #include "ewsmailbox.h"
 
+using namespace Qt::StringLiterals;
+
 class EwsAttendeePrivate : public QSharedData
 {
 public:
@@ -26,12 +28,12 @@ public:
 };
 
 static constexpr auto responseTypeNames = std::to_array({
-    QLatin1StringView("Unknown"),
-    QLatin1StringView("Organizer"),
-    QLatin1StringView("Tentative"),
-    QLatin1StringView("Accept"),
-    QLatin1StringView("Decline"),
-    QLatin1StringView("NoResponseReceived"),
+    "Unknown"_L1,
+    "Organizer"_L1,
+    "Tentative"_L1,
+    "Accept"_L1,
+    "Decline"_L1,
+    "NoResponseReceived"_L1,
 });
 
 EwsAttendeePrivate::EwsAttendeePrivate()
@@ -50,26 +52,26 @@ EwsAttendee::EwsAttendee(QXmlStreamReader &reader)
 {
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsTypeNsUri) {
-            qCWarningNC(EWSCLI_LOG) << QStringLiteral("Unexpected namespace in mailbox element:") << reader.namespaceUri();
+            qCWarningNC(EWSCLI_LOG) << u"Unexpected namespace in mailbox element:"_s << reader.namespaceUri();
             return;
         }
         const QStringView readerName = reader.name();
-        if (readerName == QLatin1StringView("Mailbox")) {
+        if (readerName == "Mailbox"_L1) {
             d->mMailbox = EwsMailbox(reader);
             if (!d->mMailbox.isValid()) {
-                qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid attendee %1 element.").arg(readerName.toString());
+                qCWarning(EWSCLI_LOG) << u"Failed to read EWS request - invalid attendee %1 element."_s.arg(readerName.toString());
                 return;
             }
-        } else if (readerName == QLatin1StringView("ResponseType")) {
+        } else if (readerName == "ResponseType"_L1) {
             bool ok;
             d->mResponse = decodeEnumString<EwsEventResponseType>(reader.readElementText(), responseTypeNames, &ok);
             if (reader.error() != QXmlStreamReader::NoError || !ok) {
-                qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid attendee %1 element.").arg(readerName.toString());
+                qCWarning(EWSCLI_LOG) << u"Failed to read EWS request - invalid attendee %1 element."_s.arg(readerName.toString());
                 return;
             }
-        } else if (readerName == QLatin1StringView("LastResponseTime")) {
+        } else if (readerName == "LastResponseTime"_L1) {
             // Unsupported - ignore
-            // qCWarningNC(EWSCLIENT_LOG) << QStringLiteral("Unsupported mailbox element %1").arg(reader.name().toString());
+            // qCWarningNC(EWSCLIENT_LOG) << u"Unsupported mailbox element %1"_s.arg(reader.name().toString());
             reader.skipCurrentElement();
         }
     }
@@ -77,9 +79,7 @@ EwsAttendee::EwsAttendee(QXmlStreamReader &reader)
     d->mValid = true;
 }
 
-EwsAttendeePrivate::~EwsAttendeePrivate()
-{
-}
+EwsAttendeePrivate::~EwsAttendeePrivate() = default;
 
 EwsAttendee::EwsAttendee(const EwsAttendee &other)
     : d(other.d)
@@ -91,9 +91,7 @@ EwsAttendee::EwsAttendee(EwsAttendee &&other)
 {
 }
 
-EwsAttendee::~EwsAttendee()
-{
-}
+EwsAttendee::~EwsAttendee() = default;
 
 EwsAttendee &EwsAttendee::operator=(const EwsAttendee &other)
 {
