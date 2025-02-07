@@ -3,20 +3,21 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2009, 2014.
+# SPDX-FileCopyrightText: 2025 Guilherme Marçal Silva <guimarcalsilva@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kio_akonadi\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-07 00:39+0000\n"
-"PO-Revision-Date: 2014-08-13 22:10-0300\n"
-"Last-Translator: André Marcelo Alvarenga <alvarenga@kde.org>\n"
-"Language-Team: Brazilian Portuguese <kde-i18n-pt_br@kde.org>\n"
+"PO-Revision-Date: 2025-02-06 00:42-0300\n"
+"Last-Translator: Guilherme Marçal Silva <guimarcalsilva@gmail.com>\n"
+"Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 24.12.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -29,15 +30,13 @@ msgid "Your emails"
 msgstr "alvarenga@kde.org"
 
 #: akonadiworker.cpp:49
-#, fuzzy, kde-format
-#| msgid "Protocol name"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Protocol name"
 msgstr "Nome do protocolo"
 
 #: akonadiworker.cpp:50 akonadiworker.cpp:51
-#, fuzzy, kde-format
-#| msgid "Socket name"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Socket name"
 msgstr "Nome do soquete"
