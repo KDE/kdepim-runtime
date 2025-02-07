@@ -179,7 +179,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 
         notification->sendEvent();
     } else {
-        Q_EMIT displayNotification(pixmap, result.join(QStringLiteral("<br>")));
+        Q_EMIT displayNotification(pixmap, result.join(QStringLiteral("<br/>")));
         deleteLater();
     }
 }

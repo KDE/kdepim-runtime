@@ -396,7 +396,7 @@ void NewMailNotifierAgent::slotShowNotifications()
             mNewMails.clear();
             return;
         } else {
-            message = texts.join("<br>"_L1);
+            message = texts.join("<br/>"_L1);
         }
     } else {
         message = i18n("New mail arrived");
