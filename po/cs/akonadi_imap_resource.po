@@ -1170,7 +1170,3 @@ msgstr "Hledat:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Pouze přihlášené"
-
-#~ msgctxt "@info:status"
-#~ msgid "KWallet Unavailable"
-#~ msgstr "KWallet je nedostupná"
