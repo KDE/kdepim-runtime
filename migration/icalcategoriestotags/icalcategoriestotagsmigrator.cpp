@@ -100,6 +100,10 @@ private:
 
     Akonadi::Tag::List calculateMissingTags(const Akonadi::Item &item) const
     {
+        if (!item.hasPayload()) {
+            return {};
+        }
+
         const auto payload = item.payload<KCalendarCore::Incidence::Ptr>();
         if (!payload) {
             return {};
