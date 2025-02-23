@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-12-18 02:40+0000\n"
+"POT-Creation-Date: 2025-02-23 02:30+0000\n"
 "PO-Revision-Date: 2011-07-14 21:42+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -85,7 +85,7 @@ msgstr "minūtes"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: configdialog.ui:80 urlconfigurationdialog.ui:111
+#: configdialog.ui:80 urlconfigurationdialog.ui:120
 #, fuzzy, kde-format
 #| msgid "Username"
 msgid "Username:"
@@ -93,7 +93,7 @@ msgstr "Lietotājvārds"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:127
+#: configdialog.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:136
 #, fuzzy, kde-format
 #| msgid "Password"
 msgid "Password:"
@@ -502,14 +502,14 @@ msgid ""
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, useDefaultCreds)
-#: searchdialog.ui:32 urlconfigurationdialog.ui:85
+#: searchdialog.ui:32 urlconfigurationdialog.ui:94
 #, fuzzy, kde-format
 #| msgid "Login Credentials"
 msgid "Use global creden&tials"
 msgstr "Pieteikšanās akreditācijas dati"
 
 #. i18n: ectx: property (text), widget (QRadioButton, useSpecificCreds)
-#: searchdialog.ui:42 urlconfigurationdialog.ui:95
+#: searchdialog.ui:42 urlconfigurationdialog.ui:104
 #, fuzzy, kde-format
 #| msgid "Login Credentials"
 msgid "Use specific credentials"
@@ -754,39 +754,39 @@ msgid "CalDA&V"
 msgstr "CalDAV"
 
 #. i18n: ectx: property (text), widget (QRadioButton, carddav)
-#: urlconfigurationdialog.ui:52
+#: urlconfigurationdialog.ui:55
 #, kde-format
 msgid "CardDAV"
 msgstr "CardDAV"
 
 #. i18n: ectx: property (text), widget (QRadioButton, groupdav)
-#: urlconfigurationdialog.ui:59
+#: urlconfigurationdialog.ui:65
 #, kde-format
 msgid "GroupDAV"
 msgstr "GroupDAV"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: urlconfigurationdialog.ui:66
+#: urlconfigurationdialog.ui:75
 #, fuzzy, kde-format
 #| msgid "Remote URL"
 msgid "Remote URL:"
 msgstr "Attālinātā URL"
 
 #. i18n: ectx: property (text), widget (QLabel, label1)
-#: urlconfigurationdialog.ui:76
+#: urlconfigurationdialog.ui:85
 #, kde-format
 msgid "Access:"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, collectionsLabel)
-#: urlconfigurationdialog.ui:146
+#: urlconfigurationdialog.ui:154
 #, fuzzy, kde-format
 #| msgid "Discovered collections"
 msgid "Discovered collections:"
 msgstr "Atklātās kolekcijas"
 
 #. i18n: ectx: property (text), widget (QPushButton, fetchButton)
-#: urlconfigurationdialog.ui:174
+#: urlconfigurationdialog.ui:182
 #, kde-format
 msgid "Fetch"
 msgstr "Ielādēt"

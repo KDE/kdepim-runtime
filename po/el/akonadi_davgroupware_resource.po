@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-12-18 02:40+0000\n"
+"POT-Creation-Date: 2025-02-23 02:30+0000\n"
 "PO-Revision-Date: 2024-09-20 13:37+0300\n"
 "Last-Translator: Antonis Geralis <capoiosct@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -88,14 +88,14 @@ msgstr "λεπτά"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: configdialog.ui:80 urlconfigurationdialog.ui:111
+#: configdialog.ui:80 urlconfigurationdialog.ui:120
 #, kde-format
 msgid "Username:"
 msgstr "Όνομα χρήστη:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:127
+#: configdialog.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "Κωδικός πρόσβασης:"
@@ -494,13 +494,13 @@ msgstr ""
 "%1"
 
 #. i18n: ectx: property (text), widget (QRadioButton, useDefaultCreds)
-#: searchdialog.ui:32 urlconfigurationdialog.ui:85
+#: searchdialog.ui:32 urlconfigurationdialog.ui:94
 #, kde-format
 msgid "Use global creden&tials"
 msgstr "Χρήση καθολικών διαπισ&τευτηρίων"
 
 #. i18n: ectx: property (text), widget (QRadioButton, useSpecificCreds)
-#: searchdialog.ui:42 urlconfigurationdialog.ui:95
+#: searchdialog.ui:42 urlconfigurationdialog.ui:104
 #, kde-format
 msgid "Use specific credentials"
 msgstr "Χρήση ειδικών διαπιστευτηρίων"
@@ -729,37 +729,37 @@ msgid "CalDA&V"
 msgstr "CalDA&V"
 
 #. i18n: ectx: property (text), widget (QRadioButton, carddav)
-#: urlconfigurationdialog.ui:52
+#: urlconfigurationdialog.ui:55
 #, kde-format
 msgid "CardDAV"
 msgstr "CardDAV"
 
 #. i18n: ectx: property (text), widget (QRadioButton, groupdav)
-#: urlconfigurationdialog.ui:59
+#: urlconfigurationdialog.ui:65
 #, kde-format
 msgid "GroupDAV"
 msgstr "GroupDAV"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: urlconfigurationdialog.ui:66
+#: urlconfigurationdialog.ui:75
 #, kde-format
 msgid "Remote URL:"
 msgstr "Απομακρυσμένο URL:"
 
 #. i18n: ectx: property (text), widget (QLabel, label1)
-#: urlconfigurationdialog.ui:76
+#: urlconfigurationdialog.ui:85
 #, kde-format
 msgid "Access:"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, collectionsLabel)
-#: urlconfigurationdialog.ui:146
+#: urlconfigurationdialog.ui:154
 #, kde-format
 msgid "Discovered collections:"
 msgstr "Ευρεθείσες συλλογές:"
 
 #. i18n: ectx: property (text), widget (QPushButton, fetchButton)
-#: urlconfigurationdialog.ui:174
+#: urlconfigurationdialog.ui:182
 #, kde-format
 msgid "Fetch"
 msgstr "Προσκόμιση"
