@@ -48,6 +48,8 @@ set(davgroupwareresource_SRCS
     ctagattribute.h
     davfreebusyhandler.h
     davgroupwareresource.h
+
+    accountsintegrator.cpp
 )
 
 install(FILES davgroupwareresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")

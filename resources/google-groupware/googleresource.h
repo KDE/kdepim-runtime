@@ -10,6 +10,7 @@
 #include <Akonadi/FreeBusyProviderBase>
 #include <Akonadi/ResourceWidgetBase>
 
+#include <QDBusObjectPath>
 #include <qwindowdefs.h>
 
 #include "calendarhandler.h"
@@ -38,6 +39,8 @@ public:
     ~GoogleResource() override;
 
     QList<QUrl> scopes() const;
+
+    void setAccount(const QDBusObjectPath &path);
 
     void cleanup() override;
 public Q_SLOTS:
