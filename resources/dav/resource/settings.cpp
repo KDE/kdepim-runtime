@@ -29,6 +29,7 @@
 
 #include <qt6keychain/keychain.h>
 using namespace QKeychain;
+using namespace Qt::Literals;
 
 class SettingsHelper
 {
@@ -123,6 +124,11 @@ void Settings::setIconName(const QString &icon)
 QString Settings::iconName() const
 {
     return mIconName;
+}
+
+void Settings::setAccountId(const QString &accountId)
+{
+    mAccountId = accountId;
 }
 
 KDAV::DavUrl::List Settings::configuredDavUrls()
@@ -231,7 +237,7 @@ void Settings::reloadConfig()
     loadMappings();
 }
 
-void Settings::newUrlConfiguration(Settings::UrlConfiguration *urlConfig)
+void Settings::newUrlConfiguration(Settings::UrlConfiguration *urlConfig, bool storePassword)
 {
     const QString key = urlConfig->mUrl + u',' + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig->mProtocol));
 
@@ -240,7 +246,7 @@ void Settings::newUrlConfiguration(Settings::UrlConfiguration *urlConfig)
     }
 
     mUrls[key] = urlConfig;
-    if (urlConfig->mUser != QLatin1StringView("$default$")) {
+    if (urlConfig->mUser != QLatin1StringView("$default$") && storePassword) {
         savePassword(key, urlConfig->mUser, urlConfig->mPassword);
     }
     updateRemoteUrls();
@@ -333,8 +339,44 @@ void Settings::buildUrlsList()
     const auto remoteUrlsLst = remoteUrls();
     for (const QString &serializedUrl : remoteUrlsLst) {
         auto urlConfig = new UrlConfiguration(serializedUrl);
+
         const QString key = urlConfig->mUrl + u',' + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig->mProtocol));
-        const QString pass = loadPassword(key, urlConfig->mUser);
+        auto passwordFromWallet = [this, urlConfig, key] {
+            return loadPassword(key, urlConfig->mUser);
+        };
+
+        auto passwordFromOnlineAccounts = [this, urlConfig] {
+            QString interface;
+
+            if (urlConfig->mProtocol == KDAV::Protocol::CalDav) {
+                interface = u"org.kde.KOnlineAccounts.CalDAV"_s;
+            } else if (urlConfig->mProtocol == KDAV::Protocol::CardDav) {
+                interface = u"org.kde.KOnlineAccounts.CardDAV"_s;
+            } else {
+                Q_UNREACHABLE();
+            }
+
+            QDBusMessage msg = QDBusMessage::createMethodCall(u"org.kde.KOnlineAccounts"_s, mAccountId, u"org.freedesktop.DBus.Properties"_s, u"Get"_s);
+            msg.setArguments({interface, u"password"_s});
+
+            QDBusReply<QDBusVariant> reply = QDBusConnection::sessionBus().call(msg);
+
+            if (reply.isValid()) {
+                qWarning() << "error reading password from account" << reply.error();
+                return QString();
+            }
+
+            return reply.value().variant().toString();
+        };
+
+        QString pass;
+
+        if (!mAccountId.isEmpty()) {
+            pass = passwordFromOnlineAccounts();
+        } else {
+            pass = passwordFromWallet();
+        }
+
         if (!pass.isNull()) {
             urlConfig->mPassword = pass;
             mUrls[key] = urlConfig;

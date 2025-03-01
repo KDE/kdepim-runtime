@@ -7,6 +7,7 @@
 */
 
 #include "googleresource.h"
+#include "accountsintegrator.h"
 #include "googleresource_debug.h"
 #include "googleresourcestate.h"
 #include "googlescopes.h"
@@ -46,6 +47,8 @@ using namespace QKeychain;
 #define ROOT_COLLECTION_REMOTEID QStringLiteral("RootCollection")
 
 Q_DECLARE_METATYPE(KGAPI2::Job *)
+
+using namespace Qt::Literals;
 
 using namespace KGAPI2;
 using namespace Akonadi;
@@ -118,6 +121,9 @@ GoogleResource::GoogleResource(const QString &id)
     m_handlers.push_back(GenericHandler::Ptr(new CalendarHandler(m_iface, &m_settings)));
     m_handlers.push_back(GenericHandler::Ptr(new PersonHandler(m_iface, &m_settings)));
     m_handlers.push_back(GenericHandler::Ptr(new TaskHandler(m_iface, &m_settings)));
+
+    auto accounts = new AccountsIntegrator(this);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Accounts"), accounts, QDBusConnection::ExportScriptableContents);
 }
 
 GoogleResource::~GoogleResource()
@@ -144,6 +150,7 @@ QList<QUrl> GoogleResource::scopes() const
 
 void GoogleResource::updateResourceName()
 {
+    qWarning() << "update name";
     const QString accountName = m_settings.account();
     setName(i18nc("%1 is account name (user@gmail.com)", "Google Groupware (%1)", accountName.isEmpty() ? i18n("Not configured") : accountName));
 }
@@ -555,6 +562,30 @@ void GoogleResource::collectionRemoved(const Collection &collection)
         qCWarning(GOOGLE_LOG) << "Could not remove collection" << collection.displayName() << "mimetypes:" << collection.contentMimeTypes();
         cancelTask(i18n("Unknown collection mimetype"));
     }
+}
+
+void GoogleResource::setAccount(const QDBusObjectPath &path)
+{
+    qWarning() << "set path" << path;
+
+    QDBusMessage msg = QDBusMessage::createMethodCall(u"org.kde.KOnlineAccounts"_s, path.path(), u"org.freedesktop.DBus.Properties"_s, u"GetAll"_s);
+    msg.setArguments({u"org.kde.KOnlineAccounts.Google"_s});
+
+    QDBusReply<QVariantMap> reply = QDBusConnection::sessionBus().call(msg);
+    qWarning() << "reply" << reply.error() << reply.value();
+    QVariantMap result = reply.value();
+
+    const QString accessToken = result[u"accessToken"_s].toString();
+    const QString refreshToken = result[u"refreshToken"_s].toString();
+    const QList<QUrl> scopes = QUrl::fromStringList(result[u"scopes"_s].toStringList());
+
+    KGAPI2::AccountPtr account(new KGAPI2::Account(u"My Google Account"_s, accessToken, refreshToken, scopes));
+
+    m_settings.storeAccount(account);
+
+    emitReadyStatus();
+
+    synchronize();
 }
 
 AKONADI_RESOURCE_MAIN(GoogleResource)

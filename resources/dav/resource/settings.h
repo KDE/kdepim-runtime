@@ -56,6 +56,7 @@ public:
     [[nodiscard]] QString defaultPassword();
     void setIconName(const QString &icon);
     [[nodiscard]] QString iconName() const;
+    void setAccountId(const QString &accountId);
 
     KDAV::DavUrl::List configuredDavUrls();
 
@@ -94,7 +95,7 @@ public:
      */
     void reloadConfig();
 
-    void newUrlConfiguration(UrlConfiguration *urlConfig);
+    void newUrlConfiguration(UrlConfiguration *urlConfig, bool storePassword = true);
     void removeUrlConfiguration(KDAV::Protocol protocol, const QString &url);
     UrlConfiguration *urlConfiguration(KDAV::Protocol protocol, const QString &url);
 
@@ -120,4 +121,5 @@ private:
     QMap<QString, QString> mCollectionsUrlsMapping;
     QList<UrlConfiguration *> mToDeleteUrlConfigs;
     QString mIconName;
+    QString mAccountId;
 };

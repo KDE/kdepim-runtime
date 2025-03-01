@@ -55,6 +55,7 @@ set(googleresource_SRCS
     taskhandler.cpp
     peopleconversionjob.cpp
     personhandler.cpp
+    accountsintegrator.cpp
     googleresource.h
     googlesettings.h
     defaultreminderattribute.h
@@ -64,6 +65,7 @@ set(googleresource_SRCS
     taskhandler.h
     peopleconversionjob.h
     personhandler.h
+    accountsintegrator.h
     ${googleresource_common_SRCS}
 )
 

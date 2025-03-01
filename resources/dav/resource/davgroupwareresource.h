@@ -18,6 +18,8 @@ class DavFreeBusyHandler;
 
 #include <QSet>
 
+#include <QDBusObjectPath>
+
 namespace KDAV
 {
 class DavItem;
@@ -42,6 +44,7 @@ public:
     void retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end) override;
 
     Settings *settings() const;
+    void setAccount(const QDBusObjectPath &path);
 
 private Q_SLOTS:
     void createInitialCache();
