@@ -626,8 +626,9 @@ void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, con
     changeCommitted(newCollection);
 }
 
-void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
+void EteSyncResource::collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &changedAttributes)
 {
+    Q_UNUSED(changedAttributes);
     qCDebug(ETESYNC_LOG) << "Collection changed" << collection.mimeType();
 
     if (credentialsRequired()) {
