@@ -96,7 +96,7 @@ void ConfigWidget::loadSettings()
                 urlConfig->mUser = url.userName;
                 urlConfig->mPassword = wizard.field(QStringLiteral("credentialsPassword")).toString();
 
-                mSettings.newUrlConfiguration(urlConfig);
+                mSettings.newUrlConfiguration(urlConfig, Settings::StorePassword);
 
                 QUrl displayUrl(url.url);
                 displayUrl.setUserInfo(QString());
@@ -177,7 +177,7 @@ void ConfigWidget::onAddButtonClicked()
             }
             urlConfig->mProtocol = dlg->protocol();
 
-            mSettings.newUrlConfiguration(urlConfig);
+            mSettings.newUrlConfiguration(urlConfig, Settings::StorePassword);
 
             const QString protocolName = Utils::translatedProtocolName(dlg->protocol());
 
@@ -214,7 +214,7 @@ void ConfigWidget::onSearchButtonClicked()
                 }
                 urlConfig->mProtocol = protocol;
 
-                mSettings.newUrlConfiguration(urlConfig);
+                mSettings.newUrlConfiguration(urlConfig, Settings::StorePassword);
 
                 addModelRow(Utils::translatedProtocolName(protocol), split.at(1));
                 mAddedUrls << QPair<QString, KDAV::Protocol>(split.at(1), protocol);
@@ -285,7 +285,7 @@ void ConfigWidget::onEditButtonClicked()
             urlConfigAccepted->mPassword = dlg->password();
         }
         urlConfigAccepted->mProtocol = dlg->protocol();
-        mSettings.newUrlConfiguration(urlConfigAccepted);
+        mSettings.newUrlConfiguration(urlConfigAccepted, Settings::StorePassword);
 
         mModel->removeRow(row);
         insertModelRow(row, Utils::translatedProtocolName(dlg->protocol()), dlg->remoteUrl());

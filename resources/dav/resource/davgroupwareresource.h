@@ -11,12 +11,15 @@
 #include <memory>
 
 #include "settings.h"
+#include <Akonadi/AccountBase>
 #include <Akonadi/FreeBusyProviderBase>
 #include <Akonadi/ResourceBase>
 
 class DavFreeBusyHandler;
 
 #include <QSet>
+
+#include <QDBusObjectPath>
 
 namespace KDAV
 {
@@ -26,7 +29,8 @@ class DavItem;
 class DavGroupwareResource : public Akonadi::ResourceBase,
                              public Akonadi::AgentBase::Observer,
                              public Akonadi::FreeBusyProviderBase,
-                             public Akonadi::AgentBase::TagObserver
+                             public Akonadi::AgentBase::TagObserver,
+                             public Akonadi::AccountBase
 {
     Q_OBJECT
 
@@ -40,6 +44,8 @@ public:
     QDateTime lastCacheUpdate() const override;
     void canHandleFreeBusy(const QString &email) const override;
     void retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end) override;
+
+    void initAccount() override;
 
     Settings *settings() const;
 

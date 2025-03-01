@@ -29,6 +29,7 @@
 
 #include <qt6keychain/keychain.h>
 using namespace QKeychain;
+using namespace Qt::Literals;
 
 class SettingsHelper
 {
@@ -112,7 +113,7 @@ void Settings::setDefaultPassword(const QString &password)
 
 QString Settings::defaultPassword()
 {
-    return loadPassword(mResourceIdentifier, QStringLiteral("$default$"));
+    return loadPasswordFromWallet(mResourceIdentifier, QStringLiteral("$default$"));
 }
 
 void Settings::setIconName(const QString &icon)
@@ -123,6 +124,11 @@ void Settings::setIconName(const QString &icon)
 QString Settings::iconName() const
 {
     return mIconName;
+}
+
+void Settings::setAccountId(const QString &accountId)
+{
+    mAccountId = accountId;
 }
 
 KDAV::DavUrl::List Settings::configuredDavUrls()
@@ -231,7 +237,7 @@ void Settings::reloadConfig()
     loadMappings();
 }
 
-void Settings::newUrlConfiguration(Settings::UrlConfiguration *urlConfig)
+void Settings::newUrlConfiguration(Settings::UrlConfiguration *urlConfig, UrlConfigurationPasswordPolicy passwordPolicy)
 {
     const QString key = urlConfig->mUrl + u',' + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig->mProtocol));
 
@@ -240,7 +246,7 @@ void Settings::newUrlConfiguration(Settings::UrlConfiguration *urlConfig)
     }
 
     mUrls[key] = urlConfig;
-    if (urlConfig->mUser != QLatin1StringView("$default$")) {
+    if (urlConfig->mUser != QLatin1StringView("$default$") && passwordPolicy == StorePassword) {
         savePassword(key, urlConfig->mUser, urlConfig->mPassword);
     }
     updateRemoteUrls();
@@ -333,8 +339,19 @@ void Settings::buildUrlsList()
     const auto remoteUrlsLst = remoteUrls();
     for (const QString &serializedUrl : remoteUrlsLst) {
         auto urlConfig = new UrlConfiguration(serializedUrl);
+
         const QString key = urlConfig->mUrl + u',' + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig->mProtocol));
-        const QString pass = loadPassword(key, urlConfig->mUser);
+
+        QString pass;
+
+        if (!mAccountId.isEmpty()) {
+            qCDebug(DAVRESOURCE_LOG) << "Reading password from DBus account" << mAccountId;
+            pass = loadPasswordFromOnlineAccount(urlConfig->mProtocol);
+        } else {
+            qCDebug(DAVRESOURCE_LOG) << "Reading password from wallet";
+            pass = loadPasswordFromWallet(key, urlConfig->mUser);
+        }
+
         if (!pass.isNull()) {
             urlConfig->mPassword = pass;
             mUrls[key] = urlConfig;
@@ -394,7 +411,7 @@ void Settings::savePassword(const QString &key, const QString &user, const QStri
     writeJob->start();
 }
 
-QString Settings::loadPassword(const QString &key, const QString &user)
+QString Settings::loadPasswordFromWallet(const QString &key, const QString &user)
 {
     QString entry;
     QString pass;
@@ -428,6 +445,33 @@ QString Settings::loadPassword(const QString &key, const QString &user)
     return pass;
 }
 
+QString Settings::loadPasswordFromOnlineAccount(KDAV::Protocol protocol)
+{
+    QString interface;
+
+    if (protocol == KDAV::Protocol::CalDav) {
+        interface = u"org.kde.KOnlineAccounts.CalDAV"_s;
+    } else if (protocol == KDAV::Protocol::CardDav) {
+        interface = u"org.kde.KOnlineAccounts.CardDAV"_s;
+    } else {
+        Q_UNREACHABLE();
+    }
+
+    Q_ASSERT(!mAccountId.isEmpty());
+
+    QDBusMessage msg = QDBusMessage::createMethodCall(u"org.kde.KOnlineAccounts"_s, mAccountId, u"org.freedesktop.DBus.Properties"_s, u"Get"_s);
+    msg.setArguments({interface, u"password"_s});
+
+    QDBusReply<QDBusVariant> reply = QDBusConnection::sessionBus().call(msg);
+
+    if (reply.isValid()) {
+        qCWarning(DAVRESOURCE_LOG) << "error reading password from account" << reply.error();
+        return QString();
+    }
+
+    return reply.value().variant().toString();
+}
+
 void Settings::updateToV2()
 {
     // Take the first URL that was configured to get the username that
@@ -450,7 +494,7 @@ void Settings::updateToV2()
 
     setDefaultUsername(urlConfig.mUser);
     QString key = urlConfig.mUrl + u',' + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig.mProtocol));
-    QString pass = loadPassword(key, urlConfig.mUser);
+    QString pass = loadPasswordFromWallet(key, urlConfig.mUser);
     if (!pass.isNull()) {
         setDefaultPassword(pass);
     }

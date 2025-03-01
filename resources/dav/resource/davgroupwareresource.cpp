@@ -34,6 +34,7 @@
 #include <KJob>
 
 #include "davresource_debug.h"
+#include <Akonadi/AccountBase>
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CachePolicy>
 #include <Akonadi/ChangeRecorder>
@@ -51,7 +52,11 @@
 
 #include <KLocalizedString>
 
+#include <QDBusMessage>
+#include <QDBusReply>
+
 using namespace Akonadi;
+using namespace Qt::Literals;
 
 using IncidencePtr = QSharedPointer<KCalendarCore::Incidence>;
 
@@ -60,6 +65,7 @@ using namespace Qt::StringLiterals;
 DavGroupwareResource::DavGroupwareResource(const QString &id)
     : ResourceBase(id)
     , FreeBusyProviderBase()
+    , AccountBase(this)
     , mFreeBusyHandler(new DavFreeBusyHandler(settings(), this))
 {
     AttributeFactory::registerAttribute<EntityDisplayAttribute>();
@@ -97,6 +103,7 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     changeRecorder()->itemFetchScope().setAncestorRetrieval(ItemFetchScope::All);
     changeRecorder()->itemFetchScope().setFetchTags(true);
 
+    settings()->setAccountId(accountId());
     settings()->setResourceIdentifier(identifier());
 
     connect(mFreeBusyHandler, &DavFreeBusyHandler::handlesFreeBusy, this, &DavGroupwareResource::onHandlesFreeBusy);
@@ -171,6 +178,75 @@ void DavGroupwareResource::retrieveFreeBusy(const QString &email, const QDateTim
     } else {
         mFreeBusyHandler->retrieveFreeBusy(email, start, end);
     }
+}
+
+void DavGroupwareResource::initAccount()
+{
+    settings()->setAccountId(accountId());
+
+    auto getProperties = [this](const QString &interface) {
+        QDBusMessage calMsg = QDBusMessage::createMethodCall(u"org.kde.KOnlineAccounts"_s, accountId(), u"org.freedesktop.DBus.Properties"_s, u"GetAll"_s);
+        calMsg.setArguments({interface});
+
+        QDBusReply<QVariantMap> calReply = QDBusConnection::sessionBus().call(calMsg);
+
+        if (!calReply.isValid()) {
+            qCWarning(DAVRESOURCE_LOG) << "Error fetching account properties" << interface << calReply.error().message();
+            return QVariantMap();
+        }
+
+        return calReply.value();
+    };
+
+    settings()->setSettingsVersion(3);
+
+    {
+        const QVariantMap accountProps = getProperties(u"org.kde.KOnlineAccounts.Accounts"_s);
+
+        const QString displayName = accountProps[u"displayName"_s].toString();
+        const QString iconName = accountProps[u"icon"_s].toString();
+
+        settings()->setDisplayName(displayName);
+        settings()->setIconName(iconName);
+    }
+
+    {
+        const QVariantMap calDavProps = getProperties(u"org.kde.KOnlineAccounts.CalDAV"_s);
+
+        const QString calUrl = calDavProps[u"url"_s].toString();
+        const QString calUsername = calDavProps[u"username"_s].toString();
+        const QString calPassword = calDavProps[u"password"_s].toString();
+
+        auto calUrlConfig = new Settings::UrlConfiguration();
+
+        calUrlConfig->mUrl = calUrl;
+        calUrlConfig->mProtocol = KDAV::Protocol::CalDav;
+        calUrlConfig->mUser = calUsername;
+        calUrlConfig->mPassword = calPassword;
+
+        settings()->newUrlConfiguration(calUrlConfig, Settings::DontStorePassword);
+    }
+
+    {
+        const QVariantMap cardDavProps = getProperties(u"org.kde.KOnlineAccounts.CardDAV"_s);
+
+        const QString cardUrl = cardDavProps[u"url"_s].toString();
+        const QString cardUsername = cardDavProps[u"username"_s].toString();
+        const QString cardPassword = cardDavProps[u"password"_s].toString();
+
+        auto cardUrlConfig = new Settings::UrlConfiguration();
+
+        cardUrlConfig->mUrl = cardUrl;
+        cardUrlConfig->mProtocol = KDAV::Protocol::CardDav;
+        cardUrlConfig->mUser = cardUsername;
+        cardUrlConfig->mPassword = cardPassword;
+
+        settings()->newUrlConfiguration(cardUrlConfig, Settings::DontStorePassword);
+    }
+
+    settings()->save();
+
+    synchronize();
 }
 
 void DavGroupwareResource::onFreeBusyRetrieved(const QString &email, const QString &freeBusy, bool success, const QString &errorText)

@@ -44,7 +44,7 @@ public:
         QString mUrl;
         QString mUser;
         QString mPassword;
-        int mProtocol;
+        KDAV::Protocol mProtocol;
     };
 
     explicit Settings(const KSharedConfigPtr &config, Options options = Option::ExportToDBus);
@@ -56,6 +56,7 @@ public:
     [[nodiscard]] QString defaultPassword();
     void setIconName(const QString &icon);
     [[nodiscard]] QString iconName() const;
+    void setAccountId(const QString &accountId);
 
     KDAV::DavUrl::List configuredDavUrls();
 
@@ -94,7 +95,11 @@ public:
      */
     void reloadConfig();
 
-    void newUrlConfiguration(UrlConfiguration *urlConfig);
+    enum UrlConfigurationPasswordPolicy {
+        StorePassword,
+        DontStorePassword,
+    };
+    void newUrlConfiguration(UrlConfiguration *urlConfig, UrlConfigurationPasswordPolicy passwordPolicy);
     void removeUrlConfiguration(KDAV::Protocol protocol, const QString &url);
     UrlConfiguration *urlConfiguration(KDAV::Protocol protocol, const QString &url);
 
@@ -108,7 +113,8 @@ private:
     void loadMappings();
     void updateRemoteUrls();
     void savePassword(const QString &key, const QString &user, const QString &password);
-    QString loadPassword(const QString &key, const QString &user);
+    QString loadPasswordFromWallet(const QString &key, const QString &user);
+    QString loadPasswordFromOnlineAccount(KDAV::Protocol protocol);
 
     void updateToV2();
     void updateToV3();
@@ -120,4 +126,5 @@ private:
     QMap<QString, QString> mCollectionsUrlsMapping;
     QList<UrlConfiguration *> mToDeleteUrlConfigs;
     QString mIconName;
+    QString mAccountId;
 };
