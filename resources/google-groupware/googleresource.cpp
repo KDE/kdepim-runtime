@@ -47,6 +47,8 @@ using namespace QKeychain;
 
 Q_DECLARE_METATYPE(KGAPI2::Job *)
 
+using namespace Qt::Literals;
+
 using namespace KGAPI2;
 using namespace Akonadi;
 
@@ -62,6 +64,7 @@ bool accountIsValid(const KGAPI2::AccountPtr &account)
 GoogleResource::GoogleResource(const QString &id)
     : ResourceWidgetBase(id)
     , AgentBase::ObserverV3()
+    , AccountBase(this)
     , m_settings(KSharedConfig::openConfig())
     , m_iface(new GoogleResourceState(this))
 {
@@ -141,6 +144,7 @@ QList<QUrl> GoogleResource::scopes() const
 
 void GoogleResource::updateResourceName()
 {
+    qWarning() << "update name";
     const QString accountName = m_settings.account();
     setName(i18nc("%1 is account name (user@gmail.com)", "Google Groupware (%1)", accountName.isEmpty() ? i18n("Not configured") : accountName));
 }
@@ -547,6 +551,28 @@ void GoogleResource::collectionRemoved(const Collection &collection)
         qCWarning(GOOGLE_LOG) << "Could not remove collection" << collection.displayName() << "mimetypes:" << collection.contentMimeTypes();
         cancelTask(i18n("Unknown collection mimetype"));
     }
+}
+
+void GoogleResource::initAccount()
+{
+    QDBusMessage msg = QDBusMessage::createMethodCall(u"org.kde.KOnlineAccounts"_s, accountId(), u"org.freedesktop.DBus.Properties"_s, u"GetAll"_s);
+    msg.setArguments({u"org.kde.KOnlineAccounts.Google"_s});
+
+    QDBusReply<QVariantMap> reply = QDBusConnection::sessionBus().call(msg);
+    qWarning() << "reply" << reply.error() << reply.value();
+    QVariantMap result = reply.value();
+
+    const QString accessToken = result[u"accessToken"_s].toString();
+    const QString refreshToken = result[u"refreshToken"_s].toString();
+    const QList<QUrl> scopes = QUrl::fromStringList(result[u"scopes"_s].toStringList());
+
+    KGAPI2::AccountPtr account(new KGAPI2::Account(u"My Google Account"_s, accessToken, refreshToken, scopes));
+
+    m_settings.storeAccount(account);
+
+    emitReadyStatus();
+
+    synchronize();
 }
 
 AKONADI_RESOURCE_MAIN(GoogleResource)

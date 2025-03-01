@@ -6,10 +6,12 @@
 
 #pragma once
 
+#include <Akonadi/AccountBase>
 #include <Akonadi/AgentBase>
 #include <Akonadi/FreeBusyProviderBase>
 #include <Akonadi/ResourceWidgetBase>
 
+#include <QDBusObjectPath>
 #include <qwindowdefs.h>
 
 #include "calendarhandler.h"
@@ -29,7 +31,8 @@ class GoogleResourceState;
 class GoogleResource : public Akonadi::ResourceWidgetBase,
                        public Akonadi::AgentBase::ObserverV3,
                        public Akonadi::AgentBase::TagObserver,
-                       public Akonadi::FreeBusyProviderBase
+                       public Akonadi::FreeBusyProviderBase,
+                       public Akonadi::AccountBase
 {
     Q_OBJECT
 
@@ -49,6 +52,9 @@ protected:
     QDateTime lastCacheUpdate() const override;
     void canHandleFreeBusy(const QString &email) const override;
     void retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end) override;
+
+    // Account
+    void initAccount() override;
 
     bool canPerformTask();
 
