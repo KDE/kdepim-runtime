@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-30 00:41+0000\n"
+"POT-Creation-Date: 2025-03-03 00:41+0000\n"
 "PO-Revision-Date: 2024-10-20 14:31+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -67,7 +67,7 @@ msgid "Cannot retrieve items - account is null"
 msgstr "Tietueita ei voi noutaa: tili on tyhjä"
 
 #: etesyncresource.cpp:277 etesyncresource.cpp:383 etesyncresource.cpp:456
-#: etesyncresource.cpp:514 etesyncresource.cpp:643 etesyncresource.cpp:701
+#: etesyncresource.cpp:514 etesyncresource.cpp:644 etesyncresource.cpp:702
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "eteSyncCollection-tietuetta ei saatu noudetuksi välimuistista ”%1”"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-30 00:41+0000\n"
+"POT-Creation-Date: 2025-03-03 00:41+0000\n"
 "PO-Revision-Date: 2025-01-12 13:31+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -68,7 +68,7 @@ msgid "Cannot retrieve items - account is null"
 msgstr "لا يمكن استرداد العناصر - الحساب فارغ"
 
 #: etesyncresource.cpp:277 etesyncresource.cpp:383 etesyncresource.cpp:456
-#: etesyncresource.cpp:514 etesyncresource.cpp:643 etesyncresource.cpp:701
+#: etesyncresource.cpp:514 etesyncresource.cpp:644 etesyncresource.cpp:702
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "تعذر الحصول على مجموعة etesync من ذاكرة التخزين المؤقت '%1'"

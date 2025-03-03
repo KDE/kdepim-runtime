@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-30 00:41+0000\n"
+"POT-Creation-Date: 2025-03-03 00:41+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -66,7 +66,7 @@ msgid "Cannot retrieve items - account is null"
 msgstr "无法获取项目 - 账户信息为空"
 
 #: etesyncresource.cpp:277 etesyncresource.cpp:383 etesyncresource.cpp:456
-#: etesyncresource.cpp:514 etesyncresource.cpp:643 etesyncresource.cpp:701
+#: etesyncresource.cpp:514 etesyncresource.cpp:644 etesyncresource.cpp:702
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "无法从缓存“%1”中获取 etesyncCollection"

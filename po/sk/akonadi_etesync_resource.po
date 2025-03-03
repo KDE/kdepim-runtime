@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_etesync_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-30 00:41+0000\n"
+"POT-Creation-Date: 2025-03-03 00:41+0000\n"
 "PO-Revision-Date: 2020-09-19 20:51+0200\n"
 "Last-Translator: Roman Paholík <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
@@ -64,7 +64,7 @@ msgid "Cannot retrieve items - account is null"
 msgstr ""
 
 #: etesyncresource.cpp:277 etesyncresource.cpp:383 etesyncresource.cpp:456
-#: etesyncresource.cpp:514 etesyncresource.cpp:643 etesyncresource.cpp:701
+#: etesyncresource.cpp:514 etesyncresource.cpp:644 etesyncresource.cpp:702
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr ""

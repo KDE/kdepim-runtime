@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-30 00:41+0000\n"
+"POT-Creation-Date: 2025-03-03 00:41+0000\n"
 "PO-Revision-Date: 2024-08-03 14:41+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -68,7 +68,7 @@ msgid "Cannot retrieve items - account is null"
 msgstr "無法取得項目 - 帳號是無效的 (null)"
 
 #: etesyncresource.cpp:277 etesyncresource.cpp:383 etesyncresource.cpp:456
-#: etesyncresource.cpp:514 etesyncresource.cpp:643 etesyncresource.cpp:701
+#: etesyncresource.cpp:514 etesyncresource.cpp:644 etesyncresource.cpp:702
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "無法從快取 '%1' 取得 etesyncCollection"
