@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-11-09 00:40+0000\n"
-"PO-Revision-Date: 2024-08-02 14:05+0300\n"
+"PO-Revision-Date: 2025-03-04 12:50+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.11.70\n"
+"X-Generator: Lokalize 25.03.70\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -264,14 +264,13 @@ msgid ""
 msgstr ""
 "<html><head/><body><p>Kullanıcı için bir Active Directory alan adı "
 "belirtilmesini sağlar.</p><p><span style=\" font-weight:600;\">Not:</span> "
-"Bir &quot;boş alan adı&quot; ve &quot;alan adı yok&quot; arasında hafif bir "
-"fark vardır.</p><p>Boş bir alan adı ile (alan adı onay kutusu seçili, "
-"düzenleme kutusunda boş alan adı), EWS özkaynağı kullanıcıyı açıkça boş "
-"bırakılmış alan adıyla geçirecektir (&quot;\\kullanıcı adı&quot;).</"
-"p><p>Alan adı ayarlanmamışsa (alan adı onay kutusu boş) kullanıcı adı, alan "
-"adı olmadan geçirilecektir (&quot;kullanıcı adı&quot;), bu sunucunun alan "
-"adını birlikte yapılandırıldığı alan adına öntanımlı olarak koymasını sağlar."
-"</p></body></html>"
+"Bir “boş alan adı” ve “alan adı yok” arasında hafif bir fark vardır.</"
+"p><p>Boş bir alan adı ile (alan adı onay kutusu seçili, düzenleme kutusunda "
+"boş alan adı), EWS özkaynağı kullanıcıyı açıkça boş bırakılmış alan adıyla "
+"geçirecektir (“kullanıcı adı”).</p><p>Alan adı ayarlanmamışsa (alan adı onay "
+"kutusu boş) kullanıcı adı, alan adı olmadan geçirilecektir (“kullanıcı "
+"adı”), bu sunucunun alan adını birlikte yapılandırıldığı alan adına "
+"öntanımlı olarak koymasını sağlar.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_HasDomain)
 #: ewsconfigdialog.ui:146
