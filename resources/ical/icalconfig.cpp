@@ -13,7 +13,6 @@ public:
     ICalConfigBase(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
         : SingleFileResourceConfigBase<SETTINGS_NAMESPACE::Settings>(config, parent, args)
     {
-        mWidget->setFilter(QStringLiteral("text/calendar"));
     }
 };
 
