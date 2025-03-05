@@ -93,7 +93,6 @@ private:
     bool mDirUrlChecked = false;
     bool mMonitorEnabled = false;
     bool mLocalFileOnly = false;
-    QPushButton *mOkButton = nullptr;
 };
 
 /**
