@@ -18,6 +18,7 @@
 
 #include <QFontDatabase>
 #include <QPushButton>
+#include <QStringList>
 #include <QTabBar>
 #include <QVBoxLayout>
 
@@ -32,6 +33,7 @@ SingleFileResourceConfigWidgetBase::SingleFileResourceConfigWidgetBase(QWidget *
     mainLayout->setContentsMargins({});
     ui.setupUi(mainWidget);
     ui.kcfg_Path->setMode(KFile::File);
+    ui.kcfg_Path->setMimeTypeFilters(QStringList(QLatin1String("text/calendar")));
     ui.statusLabel->setVisible(false);
 
     ui.tabWidget->tabBar()->hide();
