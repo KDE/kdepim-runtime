@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-22 00:40+0000\n"
+"POT-Creation-Date: 2025-03-08 02:49+0000\n"
 "PO-Revision-Date: 2024-08-22 10:26+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -308,7 +308,7 @@ msgstr ""
 "Actualitza periòdicament el fitxer. Es pot utilitzar quan no es trobe "
 "disponible el control de canvis (p. ex., per als calendaris remots)."
 
-#: singlefileresourceconfigwidgetbase.cpp:129
+#: singlefileresourceconfigwidgetbase.cpp:131
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"
