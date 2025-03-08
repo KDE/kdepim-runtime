@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-22 00:40+0000\n"
+"POT-Creation-Date: 2025-03-08 00:44+0000\n"
 "PO-Revision-Date: 2024-08-25 11:46+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
@@ -316,7 +316,7 @@ msgstr ""
 "surveillance n'est pas disponible (Par exemple pour les calendriers à "
 "distance)."
 
-#: singlefileresourceconfigwidgetbase.cpp:129
+#: singlefileresourceconfigwidgetbase.cpp:131
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

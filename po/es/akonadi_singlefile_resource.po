@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-22 00:40+0000\n"
+"POT-Creation-Date: 2025-03-08 00:44+0000\n"
 "PO-Revision-Date: 2024-08-22 17:20+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -307,7 +307,7 @@ msgstr ""
 "Actualiza periódicamente el archivo. Se puede usar cuando no está disponible "
 "el monitoreo (por ejemplo, para calendarios remotos)."
 
-#: singlefileresourceconfigwidgetbase.cpp:129
+#: singlefileresourceconfigwidgetbase.cpp:131
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

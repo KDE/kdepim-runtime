@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-22 00:40+0000\n"
+"POT-Creation-Date: 2025-03-08 00:44+0000\n"
 "PO-Revision-Date: 2024-08-23 07:13+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -291,7 +291,7 @@ msgstr ""
 "עדכון הקובץ בהפרשים קבועים. אפשר להשתמש בזה כשאין אפשרות למעקב רציף (למשל: "
 "לוחות שנה מרוחקים)."
 
-#: singlefileresourceconfigwidgetbase.cpp:129
+#: singlefileresourceconfigwidgetbase.cpp:131
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

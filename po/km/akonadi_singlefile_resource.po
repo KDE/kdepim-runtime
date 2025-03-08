@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-22 00:40+0000\n"
+"POT-Creation-Date: 2025-03-08 00:44+0000\n"
 "PO-Revision-Date: 2010-11-29 09:24+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -319,7 +319,7 @@ msgid ""
 "(e.g. for remote calendars)."
 msgstr ""
 
-#: singlefileresourceconfigwidgetbase.cpp:129
+#: singlefileresourceconfigwidgetbase.cpp:131
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Checking file information..."

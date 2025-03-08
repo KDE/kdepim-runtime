@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-22 00:40+0000\n"
+"POT-Creation-Date: 2025-03-08 00:44+0000\n"
 "PO-Revision-Date: 2024-10-20 16:50+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -300,7 +300,7 @@ msgstr ""
 "Virkistää tiedoston ajoittain. Voidaan käyttää, kun tarkkailu ei ole "
 "käytettävissä (esim. etäkalentereissa)."
 
-#: singlefileresourceconfigwidgetbase.cpp:129
+#: singlefileresourceconfigwidgetbase.cpp:131
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"
