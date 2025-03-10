@@ -28,7 +28,7 @@ class ServerInfoDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ServerInfoDialog(Settings &settings, QWidget *parent);
+    explicit ServerInfoDialog(const QString &identifier, QWidget *parent);
     ~ServerInfoDialog() override;
 
 private:

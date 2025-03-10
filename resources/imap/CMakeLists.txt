@@ -145,7 +145,6 @@ endif()
 ########### next target ###############
 
 add_executable(akonadi_imap_resource)
-ki18n_wrap_ui(akonadi_imap_resource setupserverview_desktop.ui)
 target_sources(akonadi_imap_resource PRIVATE
   main.cpp
   imapresource.cpp
@@ -213,6 +212,8 @@ endif()
 kcoreaddons_add_plugin(imapconfig
     INSTALL_NAMESPACE "pim6/akonadi/config"
 )
+
+ki18n_wrap_ui(imapconfig setupserverview_desktop.ui)
 
 target_sources(imapconfig PRIVATE
     imapconfig.cpp
