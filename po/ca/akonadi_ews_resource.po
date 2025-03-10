@@ -1306,10 +1306,3 @@ msgid "Item out of order while processing update item response."
 msgstr ""
 "Element fora de servei durant el processament de la resposta en actualitzar "
 "l'element."
-
-#~ msgid "Exchange server autodiscovery"
-#~ msgstr "Descobriment automàtic del servidor Exchange"
-
-#~ msgid "Please enter password for user '%1' and Exchange account '%2'."
-#~ msgstr ""
-#~ "Introduïu la contrasenya per a l'usuari «%1» i el compte Exchange «%2»."

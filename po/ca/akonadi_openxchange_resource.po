@@ -237,6 +237,3 @@ msgid ""
 msgstr ""
 "Usa actualitzacions incrementals en lloc de recarregar totes les dades des "
 "del servidor cada vegada"
-
-#~ msgid "Connection"
-#~ msgstr "Connexió"

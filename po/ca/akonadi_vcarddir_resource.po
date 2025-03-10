@@ -143,6 +143,3 @@ msgstr[1] "%v minuts"
 #, kde-format
 msgid "Activities"
 msgstr "Activitats"
-
-#~ msgid "Path:"
-#~ msgstr "Camí:"

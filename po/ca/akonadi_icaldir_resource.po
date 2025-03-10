@@ -130,9 +130,3 @@ msgstr[1] "%v minuts"
 #, kde-format
 msgid "Activities"
 msgstr "Activitats"
-
-#~ msgid "Directory Name"
-#~ msgstr "Nom del directori"
-
-#~ msgid "Access Rights"
-#~ msgstr "Drets d'accés"
