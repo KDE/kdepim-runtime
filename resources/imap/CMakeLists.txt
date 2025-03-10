@@ -4,6 +4,36 @@ set(WITH_GMAIL_XOAUTH2 TRUE)
 
 configure_file(config-imap.h.in ${CMAKE_CURRENT_BINARY_DIR}/config-imap.h)
 
+set(imap_common_SRCS
+    settings.cpp
+
+    imapaccount.cpp
+    imapaccount.h
+)
+
+ecm_qt_declare_logging_category(imap_common_SRCS
+    HEADER imapresource_debug.h
+    IDENTIFIER IMAPRESOURCE_LOG
+    CATEGORY_NAME org.kde.pim.imapresource
+    DESCRIPTION "imap resource (kdepim-runtime)"
+    OLD_CATEGORY_NAMES log_imapresource
+    EXPORT KDEPIMRUNTIME
+)
+ecm_qt_declare_logging_category(imap_common_SRCS
+    HEADER imapresource_trace.h
+    IDENTIFIER IMAPRESOURCE_TRACE
+    CATEGORY_NAME org.kde.pim.imapresource.trace
+    DESCRIPTION "imap resource trace (kdepim-runtime)"
+    EXPORT KDEPIMRUNTIME
+)
+
+kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings)
+kconfig_add_kcfg_files(imap_common_SRCS settingsbase.kcfgc)
+
+qt_add_dbus_adaptor(imap_common_SRCS
+    ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
+)
+
 ########### next target ###############
 
 set(imapresource_LIB_SRCS
@@ -15,7 +45,6 @@ set(imapresource_LIB_SRCS
   changeitemtask.cpp
   expungecollectiontask.cpp
   highestmodseqattribute.cpp
-  imapaccount.cpp
   imapflags.cpp
   imapresourcebase.cpp
   messagehelper.cpp
@@ -35,8 +64,6 @@ set(imapresource_LIB_SRCS
   sessionpool.cpp
   uidvalidityattribute.cpp
   uidnextattribute.cpp
-  settings.cpp
-  subscriptiondialog.cpp
   imapidlemanager.cpp
   resourcestate.cpp
   collectionmetadatahelper.cpp
@@ -50,7 +77,6 @@ set(imapresource_LIB_SRCS
   changeitemtask.h
   expungecollectiontask.h
   highestmodseqattribute.h
-  imapaccount.h
   imapflags.h
   imapresourcebase.h
   messagehelper.h
@@ -71,33 +97,14 @@ set(imapresource_LIB_SRCS
   uidvalidityattribute.h
   uidnextattribute.h
   settings.h
-  subscriptiondialog.h
   imapidlemanager.h
   resourcestate.h
   collectionmetadatahelper.h
   replacemessagejob.h
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
   ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
+  ${imap_common_SRCS}
 )
-
-ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_debug.h IDENTIFIER IMAPRESOURCE_LOG CATEGORY_NAME org.kde.pim.imapresource
-        DESCRIPTION "imap resource (kdepim-runtime)"
-        OLD_CATEGORY_NAMES log_imapresource
-        EXPORT KDEPIMRUNTIME
-)
-ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_trace.h
-        IDENTIFIER IMAPRESOURCE_TRACE
-        CATEGORY_NAME org.kde.pim.imapresource.trace
-        DESCRIPTION "resource kolab trace (kdepim-runtime)"
-        EXPORT KDEPIMRUNTIME
-)
-
-kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings)
-kconfig_add_kcfg_files(imapresource_LIB_SRCS settingsbase.kcfgc)
-
-qt_add_dbus_adaptor(imapresource_LIB_SRCS
-     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
-    )
 
 qt_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresourcebase.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a)
 qt_add_dbus_adaptor(imapresource_LIB_SRCS
@@ -143,8 +150,6 @@ target_sources(akonadi_imap_resource PRIVATE
   imapresource.cpp
   resourcestate.cpp
   settingspasswordrequester.cpp
-  setupserver.cpp
-  serverinfodialog.cpp
   passwordrequester.cpp
   gmailpasswordrequester.cpp
   outlookpasswordrequester.cpp
@@ -152,8 +157,6 @@ target_sources(akonadi_imap_resource PRIVATE
   imapresource.h
   resourcestate.h
   settingspasswordrequester.h
-  setupserver.h
-  serverinfodialog.h
   passwordrequester.h
   gmailpasswordrequester.h
   outlookpasswordrequester.h
@@ -188,9 +191,8 @@ target_link_libraries(akonadi_imap_resource
     KPim6::IdentityManagementCore
     KF6::I18n
     imapresource
-        KF6::ConfigGui
+    KF6::ConfigGui
 
-    folderarchivesettings
     KPim6::GAPICore
 )
 
@@ -205,3 +207,39 @@ if(BUILD_TESTING)
     add_subdirectory(autotests)
     add_subdirectory(tests)
 endif()
+
+################################## Config plugin ##############################
+kcoreaddons_add_plugin(imapconfig
+    INSTALL_NAMESPACE "pim6/akonadi/config"
+)
+
+target_sources(imapconfig PRIVATE
+    imapconfig.cpp
+    serverinfodialog.cpp
+    setupserver.cpp
+    subscriptiondialog.cpp
+
+    serverinfodialog.h
+    setupserver.h
+    subscriptiondialog.h
+    ${imap_common_SRCS}
+)
+
+target_link_libraries(imapconfig PUBLIC
+    KF6::Completion
+    KF6::WidgetsAddons
+    KF6::I18n
+    KF6::Notifications
+    KF6::Wallet
+    KPim6::AkonadiCore
+    KPim6::IMAP
+    KPim6::MailTransport
+    KPim6::AkonadiWidgets
+    KPim6::AkonadiAgentBase
+    KPim6::AkonadiMime
+    KPim6::IdentityManagementCore
+    KPim6::IdentityManagementWidgets
+    KF6::KIOWidgets # SslUi
+    qt6keychain
+    folderarchivesettings
+)

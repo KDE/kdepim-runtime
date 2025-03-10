@@ -42,18 +42,14 @@ public:
     explicit ImapResourceBase(const QString &id);
     ~ImapResourceBase() override;
 
-    virtual QDialog *createConfigureDialog(WId windowId) = 0;
-
     void cleanup() override;
 
     virtual Settings *settings() const;
 
 public Q_SLOTS:
-    void configure(WId windowId) override;
 
     // DBus methods
     Q_SCRIPTABLE void requestManualExpunge(qint64 collectionId);
-    Q_SCRIPTABLE int configureSubscription(qlonglong windowId = 0);
     Q_SCRIPTABLE QStringList serverCapabilities() const;
 
     // pseudo-virtual called by ResourceBase
@@ -103,11 +99,10 @@ protected:
 
 protected Q_SLOTS:
     void delayedInit();
+    void reconnect();
 
 private Q_SLOTS:
     void doSearch(const QVariant &arg);
-
-    void reconnect();
 
     void scheduleConnectionAttempt();
     void startConnect(const QVariant &); // the parameter is necessary, since this method is used by the task scheduler
@@ -144,7 +139,7 @@ private:
     friend class ImapIdleManager;
 
     QList<ResourceTask *> m_taskList; // used to be able to kill tasks
-    QScopedPointer<SubscriptionDialog, QScopedPointerDeleteLater> mSubscriptions;
+    // QScopedPointer<SubscriptionDialog, QScopedPointerDeleteLater> mSubscriptions;
     ImapIdleManager *m_idle = nullptr;
     QTimer *m_statusMessageTimer = nullptr;
     QChar m_separatorCharacter;

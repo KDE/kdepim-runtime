@@ -7,8 +7,10 @@
 
 #pragma once
 
+#include "settings.h"
 #include <QDialog>
 #include <QTextBrowser>
+
 class ImapResourceBase;
 
 class ServerInfoTextBrowser : public QTextBrowser
@@ -26,7 +28,7 @@ class ServerInfoDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ServerInfoDialog(ImapResourceBase *parentResource, QWidget *parent);
+    explicit ServerInfoDialog(Settings &settings, QWidget *parent);
     ~ServerInfoDialog() override;
 
 private:

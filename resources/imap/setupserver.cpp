@@ -118,28 +118,17 @@ static void addAuthenticationItem(QComboBox *authCombo, MailTransport::Transport
     authCombo->addItem(authenticationModeString(authtype), QVariant(authtype));
 }
 
-SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
-    : QDialog()
-    , m_parentResource(parentResource)
+SetupServer::SetupServer(Settings &settings, const QString &identifier, QWidget *parent)
+    : QWidget(parent)
+    , m_settings(settings)
+    , m_identifier(identifier)
     , m_ui(new Ui::SetupServerView)
     , mValidator(this)
 #if HAVE_ACTIVITY_SUPPORT
     , mConfigureActivitiesWidget(new PimCommonActivities::ConfigureActivitiesWidget(this))
 #endif
 {
-    m_parentResource->settings()->setWinId(parent);
-    auto mainWidget = new QWidget(this);
-    auto mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(mainWidget);
-    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
-    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
-    mOkButton->setDefault(true);
-    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(mOkButton, &QPushButton::clicked, this, &SetupServer::applySettings);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &SetupServer::reject);
-    mainLayout->addWidget(buttonBox);
-
-    m_ui->setupUi(mainWidget);
+    m_ui->setupUi(this);
     m_ui->password->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
                                                                                                              : KPassword::RevealMode::Never);
     m_ui->customPassword->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
@@ -150,7 +139,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     KLineEditEventHandler::catchReturnKey(m_ui->alternateURL);
     KLineEditEventHandler::catchReturnKey(m_ui->customUsername);
 
-    m_folderArchiveSettingPage = new FolderArchiveSettingPage(m_parentResource->identifier(), this);
+    m_folderArchiveSettingPage = new FolderArchiveSettingPage(m_identifier, this);
     m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Archive Folder"));
     m_ui->safeImapGroup->setId(m_ui->noRadio, KIMAP::LoginJob::Unencrypted);
     m_ui->safeImapGroup->setId(m_ui->sslRadio, KIMAP::LoginJob::SSLorTLS);
@@ -202,7 +191,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     m_ui->tabWidget->addTab(mConfigureActivitiesWidget, i18n("Activities"));
 #endif
 
-    readSettings();
+    loadSettings();
     slotTestChanged();
     slotComplete();
     slotCustomSieveChanged();
@@ -216,11 +205,6 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
 SetupServer::~SetupServer()
 {
     delete m_ui;
-}
-
-bool SetupServer::shouldClearCache() const
-{
-    return m_shouldClearCache;
 }
 
 void SetupServer::slotSubcriptionCheckboxChanged()
@@ -262,9 +246,9 @@ void SetupServer::slotCustomSieveChanged()
     }
 }
 
-void SetupServer::applySettings()
+void SetupServer::saveSettings()
 {
-    if (!m_parentResource->settings()->imapServer().isEmpty() && m_ui->imapServer->text() != m_parentResource->settings()->imapServer()) {
+    if (!m_settings.imapServer().isEmpty() && m_ui->imapServer->text() != m_settings.imapServer()) {
         if (KMessageBox::warningContinueCancel(this,
                                                i18n("You have changed the address of the server. Even if this is the same server as before "
                                                     "we will have to re-download all your emails from this account again. "
@@ -274,7 +258,7 @@ void SetupServer::applySettings()
             return;
         }
     }
-    if (!m_parentResource->settings()->userName().isEmpty() && m_ui->userName->text() != m_parentResource->settings()->userName()) {
+    if (!m_settings.userName().isEmpty() && m_ui->userName->text() != m_settings.userName()) {
         if (KMessageBox::warningContinueCancel(this,
                                                i18n("You have changed the user name. Even if this is a user name for the same account as before "
                                                     "we will have to re-download all your emails from this account again. "
@@ -286,8 +270,6 @@ void SetupServer::applySettings()
     }
 
     m_folderArchiveSettingPage->writeSettings();
-    m_shouldClearCache =
-        (m_parentResource->settings()->imapServer() != m_ui->imapServer->text()) || (m_parentResource->settings()->userName() != m_ui->userName->text());
 
     const MailTransport::Transport::EnumAuthenticationType authtype = getCurrentAuthMode(m_ui->authenticationCombo);
     if (!m_ui->userName->text().contains(QLatin1Char('@')) && authtype == MailTransport::Transport::EnumAuthenticationType::XOAUTH2
@@ -298,11 +280,11 @@ void SetupServer::applySettings()
         m_ui->userName->setText(m_ui->userName->text() + QLatin1StringView("@gmail.com"));
     }
 
-    m_parentResource->setName(m_ui->accountName->text());
+    m_settings.setName(m_ui->accountName->text());
 
-    m_parentResource->settings()->setImapServer(m_ui->imapServer->text());
-    m_parentResource->settings()->setImapPort(m_ui->portSpin->value());
-    m_parentResource->settings()->setUserName(m_ui->userName->text());
+    m_settings.setImapServer(m_ui->imapServer->text());
+    m_settings.setImapPort(m_ui->portSpin->value());
+    m_settings.setUserName(m_ui->userName->text());
     QString encryption;
     switch (m_ui->safeImapGroup->checkedId()) {
     case KIMAP::LoginJob::Unencrypted:
@@ -317,26 +299,26 @@ void SetupServer::applySettings()
     default:
         qFatal("Shouldn't happen");
     }
-    m_parentResource->settings()->setSafety(encryption);
+    m_settings.setSafety(encryption);
 
     qCDebug(IMAPRESOURCE_LOG) << "saving IMAP auth mode: " << authenticationModeString(authtype);
-    m_parentResource->settings()->setAuthentication(authtype);
-    m_parentResource->settings()->setPassword(m_ui->password->password());
-    m_parentResource->settings()->setSubscriptionEnabled(m_ui->subscriptionEnabled->isChecked());
-    m_parentResource->settings()->setIntervalCheckTime(m_ui->checkInterval->value());
-    m_parentResource->settings()->setDisconnectedModeEnabled(m_ui->disconnectedModeEnabled->isChecked());
-    m_parentResource->settings()->setUseProxy(m_ui->useProxyCheck->isChecked());
+    m_settings.setAuthentication(authtype);
+    m_settings.setPassword(m_ui->password->password());
+    m_settings.setSubscriptionEnabled(m_ui->subscriptionEnabled->isChecked());
+    m_settings.setIntervalCheckTime(m_ui->checkInterval->value());
+    m_settings.setDisconnectedModeEnabled(m_ui->disconnectedModeEnabled->isChecked());
+    m_settings.setUseProxy(m_ui->useProxyCheck->isChecked());
 
     MailTransport::Transport::EnumAuthenticationType alternateAuthtype = getCurrentAuthMode(m_ui->authenticationAlternateCombo);
     qCDebug(IMAPRESOURCE_LOG) << "saving Alternate server sieve auth mode: " << authenticationModeString(alternateAuthtype);
-    m_parentResource->settings()->setAlternateAuthentication(alternateAuthtype);
-    m_parentResource->settings()->setSieveSupport(m_ui->managesieveCheck->isChecked());
-    m_parentResource->settings()->setSieveReuseConfig(m_ui->sameConfigCheck->isChecked());
-    m_parentResource->settings()->setSievePort(m_ui->sievePortSpin->value());
-    m_parentResource->settings()->setSieveAlternateUrl(m_ui->alternateURL->text());
-    m_parentResource->settings()->setSieveVacationFilename(m_vacationFileName);
+    m_settings.setAlternateAuthentication(alternateAuthtype);
+    m_settings.setSieveSupport(m_ui->managesieveCheck->isChecked());
+    m_settings.setSieveReuseConfig(m_ui->sameConfigCheck->isChecked());
+    m_settings.setSievePort(m_ui->sievePortSpin->value());
+    m_settings.setSieveAlternateUrl(m_ui->alternateURL->text());
+    m_settings.setSieveVacationFilename(m_vacationFileName);
 
-    m_parentResource->settings()->setTrashCollection(m_ui->folderRequester->collection().id());
+    m_settings.setTrashCollection(m_ui->folderRequester->collection().id());
     Akonadi::Collection trash = m_ui->folderRequester->collection();
     Akonadi::SpecialMailCollections::self()->registerCollection(Akonadi::SpecialMailCollections::Trash, trash);
     auto attribute = trash.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
@@ -346,64 +328,62 @@ void SetupServer::applySettings()
         Akonadi::SpecialMailCollections::self()->unregisterCollection(mOldTrash);
     }
 
-    m_parentResource->settings()->setAutomaticExpungeEnabled(m_ui->autoExpungeCheck->isChecked());
-    m_parentResource->settings()->setUseDefaultIdentity(m_identityCombobox->isDefaultIdentity());
+    m_settings.setAutomaticExpungeEnabled(m_ui->autoExpungeCheck->isChecked());
+    m_settings.setUseDefaultIdentity(m_identityCombobox->isDefaultIdentity());
 
     if (!m_identityCombobox->isDefaultIdentity()) {
-        m_parentResource->settings()->setAccountIdentity(m_identityCombobox->currentIdentity());
+        m_settings.setAccountIdentity(m_identityCombobox->currentIdentity());
     }
 
-    m_parentResource->settings()->setIntervalCheckEnabled(m_ui->enableMailCheckBox->isChecked());
+    m_settings.setIntervalCheckEnabled(m_ui->enableMailCheckBox->isChecked());
     if (m_ui->enableMailCheckBox->isChecked()) {
-        m_parentResource->settings()->setIntervalCheckTime(m_ui->checkInterval->value());
+        m_settings.setIntervalCheckTime(m_ui->checkInterval->value());
     }
 
-    m_parentResource->settings()->setSieveCustomUsername(m_ui->customUsername->text());
+    m_settings.setSieveCustomUsername(m_ui->customUsername->text());
 
     QAbstractButton *checkedButton = m_ui->customSieveGroup->checkedButton();
 
     if (checkedButton == m_ui->imapUserPassword) {
-        m_parentResource->settings()->setSieveCustomAuthentification(QStringLiteral("ImapUserPassword"));
+        m_settings.setSieveCustomAuthentification(QStringLiteral("ImapUserPassword"));
     } else if (checkedButton == m_ui->noAuthentification) {
-        m_parentResource->settings()->setSieveCustomAuthentification(QStringLiteral("NoAuthentification"));
+        m_settings.setSieveCustomAuthentification(QStringLiteral("NoAuthentification"));
     } else if (checkedButton == m_ui->customUserPassword) {
-        m_parentResource->settings()->setSieveCustomAuthentification(QStringLiteral("CustomUserPassword"));
+        m_settings.setSieveCustomAuthentification(QStringLiteral("CustomUserPassword"));
     }
 
-    m_parentResource->settings()->setSieveCustomPassword(m_ui->customPassword->password());
+    m_settings.setSieveCustomPassword(m_ui->customPassword->password());
 
-    m_parentResource->settings()->save();
+    m_settings.save();
     qCDebug(IMAPRESOURCE_LOG) << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 
     if (m_oldResourceName != m_ui->accountName->text() && !m_ui->accountName->text().isEmpty()) {
-        m_parentResource->settings()->renameRootCollection(m_ui->accountName->text());
+        m_settings.renameRootCollection(m_ui->accountName->text());
     }
 
 #if HAVE_ACTIVITY_SUPPORT
     const PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings = mConfigureActivitiesWidget->activitiesSettings();
     qDebug() << "write activities settings " << settings;
-    m_parentResource->setActivitiesEnabled(settings.enabled);
-    m_parentResource->setActivities(settings.activities);
+    m_settings.setActivitiesEnabled(settings.enabled);
+    m_settings.setActivities(settings.activities);
 #endif
-
-    accept();
 }
 
-void SetupServer::readSettings()
+void SetupServer::loadSettings()
 {
     m_folderArchiveSettingPage->loadSettings();
-    m_ui->accountName->setText(m_parentResource->name());
+    m_ui->accountName->setText(m_settings.name());
     m_oldResourceName = m_ui->accountName->text();
 
     KUser currentUser;
 
-    m_ui->imapServer->setText(m_parentResource->settings()->imapServer());
+    m_ui->imapServer->setText(m_settings.imapServer());
 
-    m_ui->portSpin->setValue(m_parentResource->settings()->imapPort());
+    m_ui->portSpin->setValue(m_settings.imapPort());
 
-    m_ui->userName->setText(!m_parentResource->settings()->userName().isEmpty() ? m_parentResource->settings()->userName() : currentUser.loginName());
+    m_ui->userName->setText(!m_settings.userName().isEmpty() ? m_settings.userName() : currentUser.loginName());
 
-    const QString safety = m_parentResource->settings()->safety();
+    const QString safety = m_settings.safety();
     int i = 0;
     if (safety == QLatin1StringView("SSL")) {
         i = KIMAP::LoginJob::SSLorTLS;
@@ -419,15 +399,15 @@ void SetupServer::readSettings()
     }
 
     populateDefaultAuthenticationOptions();
-    i = m_parentResource->settings()->authentication();
+    i = m_settings.authentication();
     qCDebug(IMAPRESOURCE_LOG) << "read IMAP auth mode: " << authenticationModeString(static_cast<MailTransport::Transport::EnumAuthenticationType>(i));
     setCurrentAuthMode(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType)i);
 
-    i = m_parentResource->settings()->alternateAuthentication();
+    i = m_settings.alternateAuthentication();
     setCurrentAuthMode(m_ui->authenticationAlternateCombo, static_cast<MailTransport::Transport::EnumAuthenticationType>(i));
 
-    if (m_parentResource->settings()->mustFetchPassword()) {
-        auto readPasswordJob = m_parentResource->settings()->requestPassword();
+    if (m_settings.mustFetchPassword()) {
+        auto readPasswordJob = m_settings.requestPassword();
 
         connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
             if (readPasswordJob->error() == Error::NoError) {
@@ -437,7 +417,7 @@ void SetupServer::readSettings()
             passwordFetched();
         });
     } else {
-        const auto password = m_parentResource->settings()->password();
+        const auto password = m_settings.password();
         m_ui->password->lineEdit()->insert(password);
         passwordFetched();
     }
@@ -445,19 +425,19 @@ void SetupServer::readSettings()
 
 void SetupServer::passwordFetched()
 {
-    m_ui->subscriptionEnabled->setChecked(m_parentResource->settings()->subscriptionEnabled());
+    m_ui->subscriptionEnabled->setChecked(m_settings.subscriptionEnabled());
 
-    m_ui->checkInterval->setValue(m_parentResource->settings()->intervalCheckTime());
-    m_ui->disconnectedModeEnabled->setChecked(m_parentResource->settings()->disconnectedModeEnabled());
-    m_ui->useProxyCheck->setChecked(m_parentResource->settings()->useProxy());
+    m_ui->checkInterval->setValue(m_settings.intervalCheckTime());
+    m_ui->disconnectedModeEnabled->setChecked(m_settings.disconnectedModeEnabled());
+    m_ui->useProxyCheck->setChecked(m_settings.useProxy());
 
-    m_ui->managesieveCheck->setChecked(m_parentResource->settings()->sieveSupport());
-    m_ui->sameConfigCheck->setChecked(m_parentResource->settings()->sieveReuseConfig());
-    m_ui->sievePortSpin->setValue(m_parentResource->settings()->sievePort());
-    m_ui->alternateURL->setText(m_parentResource->settings()->sieveAlternateUrl());
-    m_vacationFileName = m_parentResource->settings()->sieveVacationFilename();
+    m_ui->managesieveCheck->setChecked(m_settings.sieveSupport());
+    m_ui->sameConfigCheck->setChecked(m_settings.sieveReuseConfig());
+    m_ui->sievePortSpin->setValue(m_settings.sievePort());
+    m_ui->alternateURL->setText(m_settings.sieveAlternateUrl());
+    m_vacationFileName = m_settings.sieveVacationFilename();
 
-    Akonadi::Collection trashCollection(m_parentResource->settings()->trashCollection());
+    Akonadi::Collection trashCollection(m_settings.trashCollection());
     if (trashCollection.isValid()) {
         auto fetchJob = new Akonadi::CollectionFetchJob(trashCollection, Akonadi::CollectionFetchJob::Base, this);
         connect(fetchJob, &Akonadi::CollectionFetchJob::collectionsReceived, this, &SetupServer::targetCollectionReceived);
@@ -468,25 +448,25 @@ void SetupServer::passwordFetched()
         requestJob->start();
     }
 
-    m_identityCombobox->setCurrentIdentity(m_parentResource->settings()->accountIdentity());
+    m_identityCombobox->setCurrentIdentity(m_settings.accountIdentity());
 
-    m_ui->enableMailCheckBox->setChecked(m_parentResource->settings()->intervalCheckEnabled());
+    m_ui->enableMailCheckBox->setChecked(m_settings.intervalCheckEnabled());
     if (m_ui->enableMailCheckBox->isChecked()) {
-        m_ui->checkInterval->setValue(m_parentResource->settings()->intervalCheckTime());
+        m_ui->checkInterval->setValue(m_settings.intervalCheckTime());
     } else {
         m_ui->checkInterval->setEnabled(false);
     }
 
-    m_ui->autoExpungeCheck->setChecked(m_parentResource->settings()->automaticExpungeEnabled());
+    m_ui->autoExpungeCheck->setChecked(m_settings.automaticExpungeEnabled());
 
     if (m_vacationFileName.isEmpty()) {
         m_vacationFileName = QStringLiteral("kmail-vacation.siv");
     }
 
-    m_ui->customUsername->setText(m_parentResource->settings()->sieveCustomUsername());
+    m_ui->customUsername->setText(m_settings.sieveCustomUsername());
 
-    if (m_parentResource->settings()->mustFetchSievePassword()) {
-        auto readPasswordJob = m_parentResource->settings()->requestSieveCustomPassword();
+    if (m_settings.mustFetchSievePassword()) {
+        auto readPasswordJob = m_settings.requestSieveCustomPassword();
 
         connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
             if (readPasswordJob->error() == Error::NoError) {
@@ -496,14 +476,14 @@ void SetupServer::passwordFetched()
             sievePasswordFetched();
         });
     } else {
-        m_ui->customPassword->lineEdit()->insert(m_parentResource->settings()->sievePassword());
+        m_ui->customPassword->lineEdit()->insert(m_settings.sievePassword());
         sievePasswordFetched();
     }
 }
 
 void SetupServer::sievePasswordFetched()
 {
-    const QString sieverCustomAuth(m_parentResource->settings()->sieveCustomAuthentification());
+    const QString sieverCustomAuth(m_settings.sieveCustomAuthentification());
     if (sieverCustomAuth == QLatin1StringView("ImapUserPassword")) {
         m_ui->imapUserPassword->setChecked(true);
     } else if (sieverCustomAuth == QLatin1StringView("NoAuthentification")) {
@@ -514,8 +494,8 @@ void SetupServer::sievePasswordFetched()
 
 #if HAVE_ACTIVITY_SUPPORT
     PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
-    settings.enabled = m_parentResource->activitiesEnabled();
-    settings.activities = m_parentResource->activities();
+    settings.enabled = m_settings.activitiesEnabled();
+    settings.activities = m_settings.activities();
     qDebug() << "read activities settings " << settings;
     // TODO fix me initialize list of activities
     mConfigureActivitiesWidget->setActivitiesSettings(settings);
@@ -553,7 +533,7 @@ void SetupServer::slotTest()
     m_serverTest->setProtocol(QStringLiteral("imap"));
     m_serverTest->setProgressBar(m_ui->testProgress);
     connect(m_serverTest, &MailTransport::ServerTest::finished, this, &SetupServer::slotFinished);
-    mOkButton->setEnabled(false);
+    Q_EMIT okEnabled(false);
     m_serverTest->start();
 }
 
@@ -564,7 +544,7 @@ void SetupServer::slotFinished(const QList<int> &testResult)
 #ifndef QT_NO_CURSOR
     qApp->restoreOverrideCursor();
 #endif
-    mOkButton->setEnabled(true);
+    Q_EMIT okEnabled(true);
 
     using namespace MailTransport;
 
@@ -627,7 +607,7 @@ void SetupServer::slotEnableWidgets()
 void SetupServer::slotComplete()
 {
     const bool ok = !m_ui->imapServer->text().isEmpty() && !m_ui->userName->text().isEmpty();
-    mOkButton->setEnabled(ok);
+    Q_EMIT okEnabled(ok);
 }
 
 void SetupServer::slotSafetyChanged()
@@ -695,7 +675,7 @@ void SetupServer::slotManageSubscriptions()
 
 void SetupServer::slotShowServerInfo()
 {
-    auto dialog = new ServerInfoDialog(m_parentResource, this);
+    auto dialog = new ServerInfoDialog(m_settings, this);
     dialog->show();
 }
 

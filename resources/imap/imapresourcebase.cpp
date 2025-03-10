@@ -195,18 +195,6 @@ void ImapResourceBase::updateResourceName()
     }
 }
 
-// -----------------------------------------------------------------------------
-
-void ImapResourceBase::configure(WId windowId)
-{
-    if (createConfigureDialog(windowId)->exec() == QDialog::Accepted) {
-        Q_EMIT configurationDialogAccepted();
-        reconnect();
-    } else {
-        Q_EMIT configurationDialogRejected();
-    }
-}
-
 // ----------------------------------------------------------------------------------
 
 void ImapResourceBase::startConnect(const QVariant &)
@@ -225,54 +213,6 @@ void ImapResourceBase::startConnect(const QVariant &)
     const bool result = m_pool->connect(account);
     Q_ASSERT(result);
     Q_UNUSED(result)
-}
-
-int ImapResourceBase::configureSubscription(qlonglong windowId)
-{
-    if (mSubscriptions) {
-        return 0;
-    }
-
-    if (!m_pool->account()) {
-        return -2;
-    }
-
-    auto showServersideSubscription = [this, windowId](const QString &password) {
-        mSubscriptions.reset(new SubscriptionDialog(nullptr, SubscriptionDialog::AllowToEnableSubscription));
-        if (windowId) {
-            mSubscriptions->setAttribute(Qt::WA_NativeWindow, true);
-            KWindowSystem::setMainWindow(mSubscriptions->windowHandle(), windowId);
-        }
-        mSubscriptions->setWindowTitle(i18nc("@title:window", "Serverside Subscription"));
-        mSubscriptions->setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
-        mSubscriptions->connectAccount(*m_pool->account(), password);
-        mSubscriptions->setSubscriptionEnabled(settings()->subscriptionEnabled());
-        connect(mSubscriptions.get(), &SubscriptionDialog::accepted, this, [this]() {
-            settings()->setSubscriptionEnabled(mSubscriptions->subscriptionEnabled());
-            settings()->save();
-            Q_EMIT configurationDialogAccepted();
-            reconnect();
-        });
-        connect(mSubscriptions.get(), &SubscriptionDialog::finished, this, [this]() {
-            mSubscriptions.reset();
-        });
-        mSubscriptions->show();
-    };
-
-    if (settings()->mustFetchPassword()) {
-        auto readPasswordJob = settings()->requestPassword();
-        connect(readPasswordJob, &ReadPasswordJob::finished, this, [readPasswordJob, showServersideSubscription]() {
-            if (readPasswordJob->error() != Error::NoError) {
-                return; // error handling is done in requestPassword
-            }
-            showServersideSubscription(readPasswordJob->textData());
-        });
-        readPasswordJob->start();
-    } else {
-        showServersideSubscription(settings()->password());
-    }
-
-    return 0;
 }
 
 void ImapResourceBase::onConnectDone(int errorCode, const QString &errorString)

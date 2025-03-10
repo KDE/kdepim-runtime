@@ -26,9 +26,17 @@ class Settings : public SettingsBase
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Imap.Wallet")
 public:
+    enum class Option {
+        NoOption = 0,
+        ExportToDBus = 1,
+    };
+
+    Q_DECLARE_FLAGS(Options, Option)
     static KIMAP::LoginJob::AuthenticationMode mapTransportAuthToKimap(MailTransport::Transport::EnumAuthenticationType authType);
 
     explicit Settings(WId = 0);
+    explicit Settings(const KSharedConfigPtr &config, Options options = Option::ExportToDBus);
+
     void setWinId(WId);
 
     /// Call this to decided whether you need to call requestPassword or

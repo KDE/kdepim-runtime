@@ -9,6 +9,8 @@
 
 #pragma once
 #include "config-kdepim-runtime.h"
+#include "settings.h"
+
 #include <Akonadi/Collection>
 #include <QDialog>
 
@@ -45,40 +47,41 @@ class ImapResourceBase;
  * These contain the account settings
  * @author Tom Albers <tomalbers@kde.nl>
  */
-class SetupServer : public QDialog
+class SetupServer : public QWidget
 {
     Q_OBJECT
 
 public:
     /**
      * Constructor
-     * @param parentResource The resource this dialog belongs to
-     * @param parent Parent WId
+     * @param settings The settings
+     * @param identifier The identifier of the resource
+     * @param parent The parent widget
      */
-    explicit SetupServer(ImapResourceBase *parentResource, WId parent);
+    explicit SetupServer(Settings &settings, const QString &identifier, QWidget *parent);
+
+    void loadSettings();
+    void saveSettings();
 
     /**
      * Destructor
      */
     ~SetupServer() override;
 
-    [[nodiscard]] bool shouldClearCache() const;
+Q_SIGNALS:
+    void okEnabled(bool enabled);
 
 private:
-    /**
-     * Call this if you want the settings saved from this page.
-     */
-    void applySettings();
     void slotMailCheckboxChanged();
     void slotEncryptionRadioChanged();
     void slotSubcriptionCheckboxChanged();
     void slotShowServerInfo();
-    void readSettings();
     void passwordFetched();
     void sievePasswordFetched();
     void populateDefaultAuthenticationOptions();
 
-    ImapResourceBase *const m_parentResource;
+    Settings &m_settings;
+    const QString m_identifier;
     Ui::SetupServerView *const m_ui;
     MailTransport::ServerTest *m_serverTest = nullptr;
     bool m_subscriptionsChanged = false;
@@ -89,7 +92,6 @@ private:
     QRegularExpressionValidator mValidator;
     Akonadi::Collection mOldTrash;
     FolderArchiveSettingPage *m_folderArchiveSettingPage = nullptr;
-    QPushButton *mOkButton = nullptr;
 #if HAVE_ACTIVITY_SUPPORT
     PimCommonActivities::ConfigureActivitiesWidget *const mConfigureActivitiesWidget;
 #endif

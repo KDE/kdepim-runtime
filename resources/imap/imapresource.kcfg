@@ -4,8 +4,12 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
-  <kcfgfile/>
+  <kcfgfile arg="true"/>
   <group name="network">
+    <entry name="name" type="String">
+      <label></label>
+      <default></default>
+    </entry>
     <entry name="ImapServer" type="String">
       <label>IMAP server</label>
     </entry>
@@ -118,6 +122,16 @@
     <entry name="SieveCustomAuthentification" type="String">
       <label>Defines the type of identification used by custom sieve server</label>
       <default>ImapUserPassword</default>
+    </entry>
+  </group>
+  <group name="Activities">
+    <entry name="ActivitiesEnabled" type="Bool">
+      <label>Whether the activities support of the agent is enabled</label>
+      <default>false</default>
+    </entry>
+    <entry name="Activities" type="StringList">
+      <label>The activities of the agent</label>
+      <default></default>
     </entry>
   </group>
 </kcfg>

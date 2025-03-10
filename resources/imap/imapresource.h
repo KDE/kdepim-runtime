@@ -22,12 +22,10 @@ public:
     explicit ImapResource(const QString &id);
     ~ImapResource() override;
 
-    QDialog *createConfigureDialog(WId windowId) override;
-
 protected:
     QString defaultName() const override;
     QByteArray clientId() const override;
 
 private:
-    void onConfigurationDone(int result);
+    void slotConfigurationChanged();
 };

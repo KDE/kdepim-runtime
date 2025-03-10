@@ -22,7 +22,7 @@ namespace
 {
 static const char myServerInfoDialogConfigGroupName[] = "ServerInfoDialog";
 }
-ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *parent)
+ServerInfoDialog::ServerInfoDialog(Settings &settings, QWidget *parent)
     : QDialog(parent)
     , mTextBrowser(new ServerInfoTextBrowser(this))
 {
@@ -30,7 +30,7 @@ ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *pa
     auto mainLayout = new QVBoxLayout(this);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    mTextBrowser->setPlainText(parentResource->serverCapabilities().join(QLatin1Char('\n')));
+    // mTextBrowser->setPlainText(parentResource->serverCapabilities().join(QLatin1Char('\n')));
     mainLayout->addWidget(mTextBrowser);
     auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, this);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ServerInfoDialog::accept);
