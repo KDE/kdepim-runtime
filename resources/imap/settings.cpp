@@ -66,6 +66,18 @@ KIMAP::LoginJob::AuthenticationMode Settings::mapTransportAuthToKimap(MailTransp
     return KIAuth::ClearText; // dummy value, shouldn't get here.
 }
 
+Settings::Settings(const KSharedConfigPtr &config, Options options)
+    : SettingsBase(config)
+{
+    load();
+    if (options & Option::ExportToDBus) {
+        new SettingsAdaptor(this);
+        QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
+                                                     this,
+                                                     QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
+    }
+}
+
 Settings::Settings(WId winId)
     : SettingsBase()
     , m_winId(winId)

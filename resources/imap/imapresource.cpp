@@ -14,7 +14,6 @@
 #include "sessionpool.h"
 #include "sessionuiproxy.h"
 #include "settings.h"
-#include "setupserver.h"
 #include <config-imap.h>
 
 #ifdef WITH_GMAIL_XOAUTH2
@@ -40,6 +39,19 @@ ImapResource::ImapResource(const QString &id)
     m_pool->setClientId(clientId());
 
     settings(); // make sure the D-Bus settings interface is up
+
+    if (settings()->name().isEmpty()) {
+        if (name() == identifier()) {
+            settings()->setName(defaultName());
+        } else {
+            settings()->setName(name());
+        }
+    }
+    setActivitiesEnabled(settings()->activitiesEnabled());
+    setActivities(settings()->activities());
+    setName(settings()->name());
+
+    connect(this, &ImapResource::reloadConfiguration, this, &ImapResource::slotConfigurationChanged);
 }
 
 ImapResource::~ImapResource() = default;
@@ -54,27 +66,25 @@ QByteArray ImapResource::clientId() const
     return QByteArrayLiteral("Kontact IMAP Resource");
 }
 
-QDialog *ImapResource::createConfigureDialog(WId windowId)
+void ImapResource::slotConfigurationChanged()
 {
-    auto dlg = new SetupServer(this, windowId);
-    dlg->setAttribute(Qt::WA_NativeWindow, true);
-    KWindowSystem::setMainWindow(dlg->windowHandle(), windowId);
-    dlg->setWindowTitle(i18nc("@title:window", "IMAP Account Settings"));
-    dlg->setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
-    connect(dlg, &SetupServer::finished, this, &ImapResource::onConfigurationDone);
-    return dlg;
-}
+    const auto oldImapServer = settings()->imapServer();
+    const auto oldUserName = settings()->userName();
 
-void ImapResource::onConfigurationDone(int result)
-{
-    auto dlg = qobject_cast<SetupServer *>(sender());
-    if (result) {
-        if (dlg->shouldClearCache()) {
-            clearCache();
-        }
-        settings()->save();
+    settings()->load();
+
+    const auto newImapServer = settings()->imapServer();
+    const auto newUserName = settings()->userName();
+
+    if (oldImapServer != newImapServer || oldUserName != newUserName) {
+        clearCache();
     }
-    dlg->deleteLater();
+
+    setActivitiesEnabled(settings()->activitiesEnabled());
+    setActivities(settings()->activities());
+    setName(settings()->name());
+
+    reconnect();
 }
 
 #include "moc_imapresource.cpp"

@@ -114,12 +114,12 @@ void SettingsPasswordRequester::slotTryAgainClicked()
 
 void SettingsPasswordRequester::slotOpenSettingsClicked()
 {
-    if (!m_settingsDialog) {
-        QDialog *dialog = m_resource->createConfigureDialog(m_resource->winIdForDialogs());
-        connect(dialog, &QDialog::finished, this, &SettingsPasswordRequester::onSettingsDialogFinished);
-        m_settingsDialog = dialog;
-        dialog->show();
-    }
+    // if (!m_settingsDialog) {
+    //     QDialog *dialog = m_resource->createConfigureDialog(m_resource->winIdForDialogs());
+    //     connect(dialog, &QDialog::finished, this, &SettingsPasswordRequester::onSettingsDialogFinished);
+    //     m_settingsDialog = dialog;
+    //     dialog->show();
+    // }
 }
 
 void SettingsPasswordRequester::onSettingsDialogFinished(int result)
