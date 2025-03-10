@@ -6,12 +6,17 @@
 */
 
 #include "serverinfodialog.h"
-#include "imapresource.h"
+#include "imapresource_debug.h"
 
+#include <Akonadi/ServerManager>
 #include <KConfigGroup>
 #include <KLocalizedString>
 #include <KSharedConfig>
 #include <KWindowConfig>
+#include <QDBusConnection>
+#include <QDBusInterface>
+#include <QDBusPendingCallWatcher>
+#include <QDBusPendingReply>
 #include <QDialogButtonBox>
 #include <QPainter>
 #include <QPushButton>
@@ -22,7 +27,10 @@ namespace
 {
 static const char myServerInfoDialogConfigGroupName[] = "ServerInfoDialog";
 }
-ServerInfoDialog::ServerInfoDialog(Settings &settings, QWidget *parent)
+
+using namespace Qt::StringLiterals;
+
+ServerInfoDialog::ServerInfoDialog(const QString &identifier, QWidget *parent)
     : QDialog(parent)
     , mTextBrowser(new ServerInfoTextBrowser(this))
 {
@@ -30,7 +38,25 @@ ServerInfoDialog::ServerInfoDialog(Settings &settings, QWidget *parent)
     auto mainLayout = new QVBoxLayout(this);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    // mTextBrowser->setPlainText(parentResource->serverCapabilities().join(QLatin1Char('\n')));
+    const QString service = Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Resource, identifier);
+    QDBusInterface iface(service, QStringLiteral("/"), QStringLiteral("org.kde.Akonadi.ImapResourceBase"), QDBusConnection::sessionBus(), this);
+    if (!iface.isValid()) {
+        qCDebug(IMAPRESOURCE_LOG) << "Cannot create imap dbus interface for service " << service;
+        deleteLater();
+        return;
+    }
+    QDBusPendingCall call = iface.asyncCall(u"serverCapabilities"_s, (qlonglong)parent->winId());
+    auto watcher = new QDBusPendingCallWatcher(call, this);
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher *call) {
+        QDBusPendingReply<QStringList> reply = *call;
+        if (reply.isError()) {
+            mTextBrowser->setPlainText(i18nc("@info:status", "Error while getting server capabilities: %1", reply.error().message()));
+        } else {
+            mTextBrowser->setPlainText(reply.argumentAt<0>().join(u'\n'));
+        }
+        call->deleteLater();
+    });
+
     mainLayout->addWidget(mTextBrowser);
     auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, this);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ServerInfoDialog::accept);

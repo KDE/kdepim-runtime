@@ -119,14 +119,13 @@ target_link_libraries(imapresource
     Qt::Network
     KF6::ConfigGui
     KF6::I18n
-    KF6::KIOWidgets
     KF6::Notifications
     KF6::Wallet
     KF6::WindowSystem
-    KPim6::AkonadiAgentWidgetBase
+    KPim6::AkonadiAgentWidgetBase # Widgets due to PimCommonAkonadi/ImapAclAttribute TODO FIXME
     KPim6::AkonadiCore
     KPim6::AkonadiMime
-    KPim6::IdentityManagementWidgets
+    KPim6::IdentityManagementCore
     KPim6::IMAP
     KPim6::MailTransport
     KPim6::Mime
@@ -134,17 +133,9 @@ target_link_libraries(imapresource
     qt6keychain
 )
 
-if(HAVE_ACTIVITY_SUPPORT)
-    target_link_libraries(imapresource
-        KPim6::PimCommonActivities
-    )
-endif()
-
-
 ########### next target ###############
 
 add_executable(akonadi_imap_resource)
-ki18n_wrap_ui(akonadi_imap_resource setupserverview_desktop.ui)
 target_sources(akonadi_imap_resource PRIVATE
   main.cpp
   imapresource.cpp
@@ -184,10 +175,10 @@ target_link_libraries(akonadi_imap_resource
     KPim6::AkonadiCore
     KPim6::IMAP
     akonadi-singlefileresource
-    KPim6::AkonadiWidgets
     KPim6::MailTransport
     KPim6::Mime
     KPim6::AkonadiMime
+    KPim6::AkonadiAgentWidgetBase # Widgets due to PimCommonAkonadi/ImapAclAttribute TODO FIXME
     KPim6::IdentityManagementCore
     KF6::I18n
     imapresource
@@ -213,6 +204,8 @@ kcoreaddons_add_plugin(imapconfig
     INSTALL_NAMESPACE "pim6/akonadi/config"
 )
 
+ki18n_wrap_ui(imapconfig setupserverview_desktop.ui)
+
 target_sources(imapconfig PRIVATE
     imapconfig.cpp
     serverinfodialog.cpp
@@ -235,7 +228,7 @@ target_link_libraries(imapconfig PUBLIC
     KPim6::IMAP
     KPim6::MailTransport
     KPim6::AkonadiWidgets
-    KPim6::AkonadiAgentBase
+    KPim6::AkonadiAgentWidgetBase
     KPim6::AkonadiMime
     KPim6::IdentityManagementCore
     KPim6::IdentityManagementWidgets
@@ -243,3 +236,9 @@ target_link_libraries(imapconfig PUBLIC
     qt6keychain
     folderarchivesettings
 )
+
+if(HAVE_ACTIVITY_SUPPORT)
+     target_link_libraries(imapconfig PUBLIC
+         KPim6::PimCommonActivities
+     )
+endif()

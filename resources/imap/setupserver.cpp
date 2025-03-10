@@ -675,7 +675,7 @@ void SetupServer::slotManageSubscriptions()
 
 void SetupServer::slotShowServerInfo()
 {
-    auto dialog = new ServerInfoDialog(m_settings, this);
+    auto dialog = new ServerInfoDialog(m_identifier, this);
     dialog->show();
 }
 
