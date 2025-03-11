@@ -83,6 +83,3 @@ msgstr "No s'ha pogut recuperar l'element afegit %1."
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "No s'ha pogut recuperar l'element modificat %1."
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Interval de temps d'autoguardat (en minuts)."
