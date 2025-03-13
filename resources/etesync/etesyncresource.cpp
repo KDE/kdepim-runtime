@@ -39,7 +39,7 @@ using namespace Akonadi;
 #define LONG_OFFLINE_TIME 4 * 60 * 60
 
 EteSyncResource::EteSyncResource(const QString &id)
-    : ResourceBase(id)
+    : ResourceWidgetBase(id)
 {
     Settings::instance(KSharedConfig::openConfig());
     new SettingsAdaptor(Settings::self());

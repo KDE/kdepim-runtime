@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <Akonadi/ResourceBase>
+#include <Akonadi/ResourceWidgetBase>
 #include <KLocalizedString>
 
 #include "etebaseadapter.h"
 #include "etesyncclientstate.h"
 
-class EteSyncResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
+class EteSyncResource : public Akonadi::ResourceWidgetBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
 

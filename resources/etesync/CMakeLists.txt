@@ -53,7 +53,7 @@ target_link_libraries(akonadi_etesync_resource
     ${ETEBASE_LIBRARIES}
     Qt::DBus
     Qt::Concurrent
-    KPim6::AkonadiAgentBase
+    KPim6::AkonadiAgentWidgetBase
     KF6::ConfigCore
     KF6::Contacts
     KF6::CalendarCore
