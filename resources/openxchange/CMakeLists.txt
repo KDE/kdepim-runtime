@@ -94,12 +94,12 @@ endif()
 
 
 target_link_libraries(akonadi_openxchange_resource
-    KPim6::AkonadiAgentWidgetBase
+    KPim6::AkonadiAgentBase
     KPim6::AkonadiCore
     KF6::Contacts
     KF6::KIOCore
     KF6::CalendarCore
-    KPim6::AkonadiContactWidgets
+    KPim6::AkonadiContactCore
     KF6::I18n
     Qt::Xml
 )

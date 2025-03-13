@@ -234,7 +234,7 @@ static Collection::Rights folderPermissionsToCollectionRights(const OXA::Folder 
 }
 
 OpenXchangeResource::OpenXchangeResource(const QString &id)
-    : ResourceWidgetBase(id)
+    : ResourceBase(id)
 {
     // setup the resource
     Settings::instance(KSharedConfig::openConfig());
@@ -1164,6 +1164,6 @@ void OpenXchangeResource::onFetchResourceCollectionsFinished(KJob *job)
     }
 }
 
-AKONADI_RESOURCE_MAIN(OpenXchangeResource)
+AKONADI_RESOURCE_CORE_MAIN(OpenXchangeResource)
 
 #include "moc_openxchangeresource.cpp"
