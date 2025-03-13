@@ -84,7 +84,7 @@ Collection MaildirResource::collectionForMaildir(const Maildir &md) const
 }
 
 MaildirResource::MaildirResource(const QString &id)
-    : ResourceWidgetBase(id)
+    : ResourceBase(id)
     , mSettings(new MaildirSettings(config()))
     , mFsWatcher(new KDirWatch(this))
     , mChangedCleanerTimer(new QTimer(this))

@@ -6,4 +6,4 @@
 
 #include "maildirresource.h"
 
-AKONADI_RESOURCE_MAIN(MaildirResource)
+AKONADI_RESOURCE_CORE_MAIN(MaildirResource)

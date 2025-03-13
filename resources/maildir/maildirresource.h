@@ -7,7 +7,7 @@
 #pragma once
 
 #include <Akonadi/Collection>
-#include <Akonadi/ResourceWidgetBase>
+#include <Akonadi/ResourceBase>
 
 class QTimer;
 class QFileInfo;
@@ -21,7 +21,7 @@ namespace KPIM
 class Maildir;
 }
 
-class MaildirResource : public Akonadi::ResourceWidgetBase, public Akonadi::AgentBase::ObserverV2
+class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
 

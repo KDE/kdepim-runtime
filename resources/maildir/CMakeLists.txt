@@ -46,12 +46,12 @@ if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 target_link_libraries(akonadi_maildir_resource
     maildir
-    folderarchivesettings
     KPim6::AkonadiCore
+    KPim6::AkonadiAgentBase
     KPim6::AkonadiMime
     KPim6::Mime
-    KPim6::AkonadiAgentWidgetBase
     KF6::I18n
+    KF6::ConfigGui
 )
 
 install(TARGETS akonadi_maildir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
