@@ -34,7 +34,7 @@ endif()
 
 target_link_libraries(akonadi_icaldir_resource
   KPim6::AkonadiCore
-  KPim6::AkonadiAgentBase
+  KPim6::AkonadiAgentWidgetBase
   KF6::CalendarCore
   KF6::I18n
     KF6::KIOWidgets

@@ -9,7 +9,7 @@
 #include <QQueue>
 #include <QScopedPointer>
 
-#include <Akonadi/ResourceBase>
+#include <Akonadi/ResourceWidgetBase>
 #include <Akonadi/TransportResourceBase>
 
 #include "ewsclient.h"
@@ -25,7 +25,7 @@ class EwsTagStore;
 class EwsSettings;
 class KNotification;
 
-class EwsResource : public Akonadi::ResourceBase,
+class EwsResource : public Akonadi::ResourceWidgetBase,
                     public Akonadi::AgentBase::ObserverV3,
                     public Akonadi::AgentBase::TagObserver,
                     public Akonadi::TransportResourceBase

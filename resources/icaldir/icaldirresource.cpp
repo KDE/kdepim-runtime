@@ -67,7 +67,7 @@ static bool writeToFile(const QString &fileName, Incidence::Ptr &incidence)
 }
 
 ICalDirResource::ICalDirResource(const QString &id)
-    : ResourceBase(id)
+    : ResourceWidgetBase(id)
 {
     IcalDirResourceSettings::instance(KSharedConfig::openConfig());
     // setup the resource

@@ -36,7 +36,7 @@ if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 target_link_libraries(akonadi_contacts_resource
     KPim6::AkonadiCore
-    KPim6::AkonadiAgentBase
+    KPim6::AkonadiAgentWidgetBase
     KF6::Contacts
     KF6::I18n
     KF6::KIOWidgets

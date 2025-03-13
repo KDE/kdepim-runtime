@@ -234,7 +234,7 @@ static Collection::Rights folderPermissionsToCollectionRights(const OXA::Folder 
 }
 
 OpenXchangeResource::OpenXchangeResource(const QString &id)
-    : ResourceBase(id)
+    : ResourceWidgetBase(id)
 {
     // setup the resource
     Settings::instance(KSharedConfig::openConfig());

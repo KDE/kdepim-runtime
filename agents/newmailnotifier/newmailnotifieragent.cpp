@@ -43,7 +43,7 @@ using namespace std::chrono_literals;
 using namespace Akonadi;
 using namespace Qt::Literals::StringLiterals;
 NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
-    : AgentBase(id)
+    : AgentWidgetBase(id)
 {
     connect(this, &Akonadi::AgentBase::reloadConfiguration, this, &NewMailNotifierAgent::slotReloadConfiguration);
     KLocalizedString::setApplicationDomain(QByteArrayLiteral("akonadi_newmailnotifier_agent"));

@@ -9,7 +9,7 @@
 #pragma once
 #include "config-newmailnotifier.h"
 #include "newmailnotificationhistorymanager.h"
-#include <Akonadi/AgentBase>
+#include <Akonadi/AgentWidgetBase>
 #include <Akonadi/Collection> // make sure this is included before QHash, otherwise it won't find the correct qHash implementation for some reason
 
 #include <QPixmap>
@@ -27,7 +27,7 @@ namespace KIdentityManagementCore
 class IdentityManager;
 }
 
-class NewMailNotifierAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV3
+class NewMailNotifierAgent : public Akonadi::AgentWidgetBase, public Akonadi::AgentBase::ObserverV3
 {
     Q_OBJECT
 

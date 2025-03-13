@@ -294,6 +294,6 @@ void VCardDirResource::initializeVCardDirectory() const
     }
 }
 
-AKONADI_RESOURCE_MAIN(VCardDirResource)
+AKONADI_RESOURCE_CORE_MAIN(VCardDirResource)
 
 #include "moc_vcarddirresource.cpp"

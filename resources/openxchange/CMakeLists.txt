@@ -94,7 +94,7 @@ endif()
 
 
 target_link_libraries(akonadi_openxchange_resource
-    KPim6::AkonadiAgentBase
+    KPim6::AkonadiAgentWidgetBase
     KPim6::AkonadiCore
     KF6::Contacts
     KF6::KIOCore

@@ -7,7 +7,7 @@
 #pragma once
 
 #include "akonadi-singlefileresource_export.h"
-#include <Akonadi/ResourceBase>
+#include <Akonadi/ResourceWidgetBase>
 
 #include <QFuture>
 #include <QStringList>
@@ -25,7 +25,7 @@ namespace Akonadi
  * Base class for single file based resources.
  * @see SingleFileResource
  */
-class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceBase : public ResourceBase, public AgentBase::Observer
+class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceBase : public ResourceWidgetBase, public AgentBase::Observer
 {
     Q_OBJECT
 public:

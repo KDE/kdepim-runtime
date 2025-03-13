@@ -7,7 +7,7 @@
 #pragma once
 
 class KJob;
-#include <Akonadi/ResourceBase>
+#include <Akonadi/ResourceWidgetBase>
 #include <KMime/Message>
 #include <QSet>
 
@@ -25,7 +25,7 @@ namespace QKeychain
 {
 class Job;
 }
-class POP3Resource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class POP3Resource : public Akonadi::ResourceWidgetBase, public Akonadi::AgentBase::Observer
 {
     Q_OBJECT
 

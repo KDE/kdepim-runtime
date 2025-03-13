@@ -31,7 +31,7 @@ Q_DECLARE_METATYPE(QEventLoopLocker *)
 using namespace Akonadi;
 
 SingleFileResourceBase::SingleFileResourceBase(const QString &id)
-    : ResourceBase(id)
+    : ResourceWidgetBase(id)
 {
     connect(this, &SingleFileResourceBase::reloadConfiguration, this, [this]() {
         applyConfigurationChanges();

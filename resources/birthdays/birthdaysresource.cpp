@@ -413,6 +413,6 @@ void BirthdaysResource::checkForUnknownCategories(const QString &categoryToCheck
     event->setCategories(categoryToCheck);
 }
 
-AKONADI_RESOURCE_MAIN(BirthdaysResource)
+AKONADI_RESOURCE_CORE_MAIN(BirthdaysResource)
 
 #include "moc_birthdaysresource.cpp"

@@ -24,7 +24,7 @@
 using namespace Akonadi;
 
 ContactsResource::ContactsResource(const QString &id)
-    : ResourceBase(id)
+    : ResourceWidgetBase(id)
 {
     // setup the resource
     ContactsResourceSettings::instance(KSharedConfig::openConfig());

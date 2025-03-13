@@ -8,11 +8,11 @@
 #pragma once
 
 #include "migrationscheduler.h"
-#include <Akonadi/AgentBase>
+#include <Akonadi/AgentWidgetBase>
 
 namespace Akonadi
 {
-class MigrationAgent : public AgentBase, public AgentBase::ObserverV2
+class MigrationAgent : public AgentWidgetBase, public AgentBase::ObserverV2
 {
     Q_OBJECT
 public:

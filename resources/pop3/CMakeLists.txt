@@ -51,7 +51,7 @@ target_link_libraries(akonadi_pop3_resource
     KPim6::AkonadiMime
     KPim6::Mime
     KPim6::MailTransport
-    KPim6::AkonadiAgentBase
+    KPim6::AkonadiAgentWidgetBase
     KF6::I18n
     KF6::KIOWidgets  # SslUi
     KF6::Notifications

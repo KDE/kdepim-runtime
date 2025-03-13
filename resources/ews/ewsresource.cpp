@@ -82,7 +82,7 @@ static constexpr int InitialReconnectTimeout = 15;
 static constexpr int MaxReconnectTimeout = 300;
 
 EwsResource::EwsResource(const QString &id)
-    : Akonadi::ResourceBase(id)
+    : Akonadi::ResourceWidgetBase(id)
     , mAuthStage(AuthIdle)
     , mTagsRetrieved(false)
     , mReconnectTimeout(InitialReconnectTimeout)

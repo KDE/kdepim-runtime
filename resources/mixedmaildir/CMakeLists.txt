@@ -66,7 +66,7 @@ target_link_libraries(akonadi_mixedmaildir_resource
     KF6::KIOCore
     KPim6::Mbox
     KPim6::Mime
-    KPim6::AkonadiAgentBase
+    KPim6::AkonadiAgentWidgetBase
     KF6::I18n
     akonadi-singlefileresource
 )

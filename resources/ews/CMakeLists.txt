@@ -146,7 +146,7 @@ qt_add_dbus_adaptor(ewsresource_SRCS
 
 add_executable(akonadi_ews_resource ${ewsresource_SRCS})
 target_link_libraries(akonadi_ews_resource
-    KPim6::AkonadiAgentBase
+    KPim6::AkonadiAgentWidgetBase
     KPim6::AkonadiCore
     KPim6::AkonadiMime
     KF6::KIOCore
@@ -187,7 +187,7 @@ if(HAVE_SEPARATE_MTA_RESOURCE)
 
     add_executable(akonadi_ewsmta_resource ${ewsmtaresource_SRCS})
     target_link_libraries(akonadi_ewsmta_resource
-        KPim6::AkonadiAgentBase
+        KPim6::AkonadiAgentWidgetBase
         KPim6::AkonadiCore
         KPim6::AkonadiWidgets
         KF6::I18n

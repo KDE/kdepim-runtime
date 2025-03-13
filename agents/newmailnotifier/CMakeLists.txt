@@ -81,7 +81,7 @@ target_link_libraries(akonadi_newmailnotifier_agent
   KPim6::AkonadiContactWidgets
   KF6::Codecs
   KPim6::IdentityManagementCore
-  KPim6::AkonadiAgentBase
+  KPim6::AkonadiAgentWidgetBase
   KF6::Notifications
   KF6::Service
   KF6::I18n

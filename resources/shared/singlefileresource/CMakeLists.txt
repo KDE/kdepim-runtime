@@ -43,9 +43,9 @@ PUBLIC
     KF6::Completion
     KF6::KIOWidgets
     KF6::ConfigWidgets
+    KPim6::AkonadiAgentWidgetBase
 PRIVATE
     KPim6::AkonadiCore
-    KPim6::AkonadiAgentBase
     KF6::KIOCore
     KPim6::IMAP
 )

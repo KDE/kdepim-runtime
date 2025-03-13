@@ -8,7 +8,7 @@
 
 #include <Akonadi/AgentBase>
 #include <Akonadi/FreeBusyProviderBase>
-#include <Akonadi/ResourceBase>
+#include <Akonadi/ResourceWidgetBase>
 
 #include <qwindowdefs.h>
 
@@ -26,7 +26,7 @@ class Job;
 class GoogleSettings;
 class GoogleResourceState;
 
-class GoogleResource : public Akonadi::ResourceBase,
+class GoogleResource : public Akonadi::ResourceWidgetBase,
                        public Akonadi::AgentBase::ObserverV3,
                        public Akonadi::AgentBase::TagObserver,
                        public Akonadi::FreeBusyProviderBase

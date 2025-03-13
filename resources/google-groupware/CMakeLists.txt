@@ -87,7 +87,7 @@ endif()
 target_link_libraries(akonadi_google_resource
   KPim6::AkonadiCalendar
   KPim6::AkonadiCore
-  KPim6::AkonadiAgentBase
+  KPim6::AkonadiAgentWidgetBase
   KF6::CalendarCore
   KF6::Contacts
   KF6::I18n
@@ -136,7 +136,7 @@ ki18n_wrap_ui(googleconfig googlesettingswidget.ui)
 target_link_libraries(googleconfig
     KPim6::AkonadiCore
     KPim6::AkonadiCalendar
-    KPim6::AkonadiAgentBase
+    KPim6::AkonadiAgentWidgetBase
     KF6::CalendarCore
     KF6::Contacts
     KF6::Wallet

@@ -84,7 +84,7 @@ using namespace Akonadi;
 using namespace QKeychain;
 
 ImapResourceBase::ImapResourceBase(const QString &id)
-    : ResourceBase(id)
+    : ResourceWidgetBase(id)
     , m_pool(new SessionPool(2, this))
     , m_settings(nullptr)
 {

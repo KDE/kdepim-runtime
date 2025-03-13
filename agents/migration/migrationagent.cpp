@@ -23,7 +23,7 @@
 namespace Akonadi
 {
 MigrationAgent::MigrationAgent(const QString &id)
-    : AgentBase(id)
+    : AgentWidgetBase(id)
     , mScheduler(new KUiServerJobTracker)
 {
     KLocalizedString::setApplicationDomain(QByteArrayLiteral("akonadi_migration_agent"));

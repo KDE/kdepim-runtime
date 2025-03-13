@@ -44,7 +44,7 @@ if(APPLE)
 endif()
 
 install(FILES icalresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
-target_link_libraries(akonadi_ical_resource KPim6::AkonadiCore   KF6::KIOCore KF6::CalendarCore KPim6::AkonadiAgentBase akonadi-singlefileresource)
+target_link_libraries(akonadi_ical_resource KPim6::AkonadiCore   KF6::KIOCore KF6::CalendarCore KPim6::AkonadiAgentWidgetBase akonadi-singlefileresource)
 if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_ical_resource PROPERTIES UNITY_BUILD ON)
 endif()

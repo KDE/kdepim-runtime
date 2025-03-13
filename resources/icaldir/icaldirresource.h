@@ -7,13 +7,13 @@
 
 #pragma once
 
-#include <Akonadi/ResourceBase>
+#include <Akonadi/ResourceWidgetBase>
 
 #include <KCalendarCore/Incidence>
 
 #include <QHash>
 
-class ICalDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class ICalDirResource : public Akonadi::ResourceWidgetBase, public Akonadi::AgentBase::Observer
 {
     Q_OBJECT
 

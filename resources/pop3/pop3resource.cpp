@@ -33,7 +33,7 @@ using namespace Akonadi;
 using namespace MailTransport;
 
 POP3Resource::POP3Resource(const QString &id)
-    : ResourceBase(id)
+    : ResourceWidgetBase(id)
     , mState(Idle)
     , mIntervalTimer(new QTimer(this))
     , mSettings(KSharedConfig::openConfig())

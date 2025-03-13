@@ -61,7 +61,7 @@ bool accountIsValid(const KGAPI2::AccountPtr &account)
 } // namespace
 
 GoogleResource::GoogleResource(const QString &id)
-    : ResourceBase(id)
+    : ResourceWidgetBase(id)
     , AgentBase::ObserverV3()
     , m_settings(KSharedConfig::openConfig())
     , m_iface(new GoogleResourceState(this))

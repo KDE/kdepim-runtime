@@ -37,7 +37,7 @@ target_link_libraries(akonadi_migration_agent
     googlegroupwaremigration
     icalcategoriestotagsmigration
     KPim6::AkonadiCore
-    KPim6::AkonadiAgentBase
+    KPim6::AkonadiAgentWidgetBase
     KF6::Contacts
     KF6::WindowSystem
     KF6::JobWidgets

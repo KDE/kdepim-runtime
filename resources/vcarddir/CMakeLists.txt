@@ -41,8 +41,6 @@ target_link_libraries(akonadi_vcarddir_resource
   KPim6::AkonadiAgentBase
   KF6::Contacts
   KF6::I18n
-    KF6::KIOWidgets
-  KF6::ConfigWidgets
   KF6::WindowSystem
   Qt::DBus
 )
@@ -69,7 +67,6 @@ target_sources(vcarddirconfig PRIVATE
     ${vcarddirresource_common_SRCS}
 )
 
-
 target_link_libraries(vcarddirconfig
     KPim6::AkonadiCore
     KF6::CalendarCore
@@ -77,7 +74,7 @@ target_link_libraries(vcarddirconfig
     KPim6::AkonadiWidgets
     KF6::I18n
     KF6::KIOWidgets
-    )
+)
 if(HAVE_ACTIVITY_SUPPORT)
      target_link_libraries(vcarddirconfig
          KPim6::PimCommonActivities

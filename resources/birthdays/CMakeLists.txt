@@ -43,7 +43,6 @@ target_link_libraries(akonadi_birthdays_resource
     KF6::CalendarCore
     KPim6::AkonadiAgentBase
     KF6::Contacts
-    KPim6::AkonadiWidgets
     KF6::I18n
     KF6::Codecs
 )
@@ -69,4 +68,4 @@ target_link_libraries(birthdaysconfig
     KF6::Contacts
     KPim6::AkonadiWidgets
     KF6::I18n
-    )
+)

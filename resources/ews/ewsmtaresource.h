@@ -7,12 +7,12 @@
 #pragma once
 
 #include <Akonadi/Item>
-#include <Akonadi/ResourceBase>
+#include <Akonadi/ResourceWidgetBase>
 #include <Akonadi/TransportResourceBase>
 
 class OrgKdeAkonadiEwsResourceInterface;
 
-class EwsMtaResource : public Akonadi::ResourceBase, public Akonadi::TransportResourceBase
+class EwsMtaResource : public Akonadi::ResourceWidgetBase, public Akonadi::TransportResourceBase
 {
     Q_OBJECT
 public:

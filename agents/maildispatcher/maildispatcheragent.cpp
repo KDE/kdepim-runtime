@@ -284,7 +284,7 @@ void MailDispatcherAgent::emitStatusReady()
 }
 
 #ifndef KDEPIM_PLUGIN_AGENT
-AKONADI_AGENT_MAIN(MailDispatcherAgent)
+AKONADI_AGENT_CORE_MAIN(MailDispatcherAgent)
 #endif
 
 #include "moc_maildispatcheragent.cpp"

@@ -17,7 +17,7 @@
 using namespace Akonadi;
 
 EwsMtaResource::EwsMtaResource(const QString &id)
-    : Akonadi::ResourceBase(id)
+    : Akonadi::ResourceWidgetBase(id)
 {
 }
 

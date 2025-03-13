@@ -81,7 +81,7 @@ target_link_libraries(akonadi_davgroupware_resource
     KF6::Contacts
     KPim6::AkonadiCalendar
     KF6::KIOCore
-    KPim6::AkonadiAgentBase
+    KPim6::AkonadiAgentWidgetBase
     KPim6::AkonadiCore
     KF6::CalendarCore
     KF6::Completion

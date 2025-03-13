@@ -61,7 +61,7 @@ using namespace Akonadi;
 using IncidencePtr = QSharedPointer<KCalendarCore::Incidence>;
 
 DavGroupwareResource::DavGroupwareResource(const QString &id)
-    : ResourceBase(id)
+    : ResourceWidgetBase(id)
     , FreeBusyProviderBase()
     , mFreeBusyHandler(new DavFreeBusyHandler(this))
 {

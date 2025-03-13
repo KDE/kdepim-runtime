@@ -50,7 +50,7 @@ target_link_libraries(akonadi_maildir_resource
     KPim6::AkonadiCore
     KPim6::AkonadiMime
     KPim6::Mime
-    KPim6::AkonadiAgentBase
+    KPim6::AkonadiAgentWidgetBase
     KF6::I18n
 )
 

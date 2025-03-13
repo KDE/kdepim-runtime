@@ -51,7 +51,7 @@
 using namespace Akonadi;
 
 MixedMaildirResource::MixedMaildirResource(const QString &id)
-    : ResourceBase(id)
+    : ResourceWidgetBase(id)
     , mStore(new MixedMaildirStore())
     , mCompactHelper(nullptr)
 {
