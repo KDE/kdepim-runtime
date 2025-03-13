@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <Akonadi/ResourceWidgetBase>
+#include <Akonadi/ResourceBase>
 
 #include <KContacts/Addressee>
 #include <KContacts/ContactGroup>
@@ -15,7 +15,7 @@
 
 class QDir;
 
-class ContactsResource : public Akonadi::ResourceWidgetBase, public Akonadi::AgentBase::ObserverV2
+class ContactsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
 

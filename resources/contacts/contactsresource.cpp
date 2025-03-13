@@ -24,7 +24,7 @@
 using namespace Akonadi;
 
 ContactsResource::ContactsResource(const QString &id)
-    : ResourceWidgetBase(id)
+    : ResourceBase(id)
 {
     // setup the resource
     ContactsResourceSettings::instance(KSharedConfig::openConfig());
@@ -524,6 +524,6 @@ QString ContactsResource::directoryForCollection(const Collection &collection) c
     return directory;
 }
 
-AKONADI_RESOURCE_MAIN(ContactsResource)
+AKONADI_RESOURCE_CORE_MAIN(ContactsResource)
 
 #include "moc_contactsresource.cpp"

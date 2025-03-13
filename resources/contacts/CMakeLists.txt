@@ -36,11 +36,9 @@ if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 target_link_libraries(akonadi_contacts_resource
     KPim6::AkonadiCore
-    KPim6::AkonadiAgentWidgetBase
+    KPim6::AkonadiAgentBase
     KF6::Contacts
     KF6::I18n
-    KF6::KIOWidgets
-    KF6::ConfigWidgets
 )
 
 install(TARGETS akonadi_contacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
