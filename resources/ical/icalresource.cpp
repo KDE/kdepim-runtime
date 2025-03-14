@@ -6,4 +6,4 @@
 
 #include "shared/icalresource.h"
 
-AKONADI_RESOURCE_MAIN(ICalResource)
+AKONADI_RESOURCE_CORE_MAIN(ICalResource)

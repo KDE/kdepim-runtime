@@ -34,11 +34,9 @@ endif()
 
 target_link_libraries(akonadi_icaldir_resource
   KPim6::AkonadiCore
-  KPim6::AkonadiAgentWidgetBase
+  KPim6::AkonadiAgentBase
   KF6::CalendarCore
   KF6::I18n
-    KF6::KIOWidgets
-  KF6::ConfigWidgets
 )
 
 install(TARGETS akonadi_icaldir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

@@ -116,7 +116,7 @@ target_link_libraries(imapresource
     KF6::Notifications
     KF6::Wallet
     KF6::WindowSystem
-    KPim6::AkonadiAgentBase
+    KPim6::AkonadiAgentWidgetBase
     KPim6::AkonadiCore
     KPim6::AkonadiMime
     KPim6::IdentityManagementWidgets
@@ -124,7 +124,6 @@ target_link_libraries(imapresource
     KPim6::MailTransport
     KPim6::Mime
     KPim6::PimCommonAkonadi
-    akonadi-singlefileresource
     qt6keychain
 )
 

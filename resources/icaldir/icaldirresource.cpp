@@ -67,7 +67,7 @@ static bool writeToFile(const QString &fileName, Incidence::Ptr &incidence)
 }
 
 ICalDirResource::ICalDirResource(const QString &id)
-    : ResourceWidgetBase(id)
+    : ResourceBase(id)
 {
     IcalDirResourceSettings::instance(KSharedConfig::openConfig());
     // setup the resource
@@ -305,6 +305,6 @@ void ICalDirResource::initializeICalDirectory() const
     }
 }
 
-AKONADI_RESOURCE_MAIN(ICalDirResource)
+AKONADI_RESOURCE_CORE_MAIN(ICalDirResource)
 
 #include "moc_icaldirresource.cpp"

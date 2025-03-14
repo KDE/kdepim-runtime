@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "akonadi-singlefileresource_export.h"
+#include "akonadi-singlefileresource-widget_export.h"
 
 #include "ui_singlefileresourceconfigwidget_desktop.h"
 
@@ -30,7 +30,7 @@ class SingleFileValidatingWidget;
  * Base class for the configuration dialog for single file based resources.
  * @see SingleFileResourceConfigWidget
  */
-class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigWidgetBase : public QWidget
+class AKONADI_SINGLEFILERESOURCE_WIDGET_EXPORT SingleFileResourceConfigWidgetBase : public QWidget
 {
     Q_OBJECT
 public:
@@ -102,7 +102,7 @@ private:
  * Derived classes must implement validate() andQ_EMIT changed() when
  * appropriate.
  */
-class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileValidatingWidget : public QWidget
+class AKONADI_SINGLEFILERESOURCE_WIDGET_EXPORT SingleFileValidatingWidget : public QWidget
 {
     Q_OBJECT
 public:

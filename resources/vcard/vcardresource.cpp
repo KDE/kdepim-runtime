@@ -203,6 +203,6 @@ bool VCardResource::writeToFile(const QString &fileName)
     return true;
 }
 
-AKONADI_RESOURCE_MAIN(VCardResource)
+AKONADI_RESOURCE_CORE_MAIN(VCardResource)
 
 #include "moc_vcardresource.cpp"

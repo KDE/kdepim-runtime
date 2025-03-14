@@ -61,7 +61,6 @@ target_link_libraries(akonadi_mbox_resource
     KF6::KIOCore
     KPim6::Mime
     KPim6::AkonadiAgentBase
-    KF6::Completion
     akonadi-singlefileresource
 )
 
@@ -95,7 +94,7 @@ target_link_libraries(mboxconfig
     KF6::KIOWidgets
     KF6::I18n
     KPim6::Mbox
-    akonadi-singlefileresource
+    akonadi-singlefileresource-widget
 )
 if(HAVE_ACTIVITY_SUPPORT)
     target_link_libraries(mboxconfig

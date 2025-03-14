@@ -34,7 +34,13 @@ if(APPLE)
   set_target_properties(akonadi_vcard_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi VCard Resource")
 endif()
 
-target_link_libraries(akonadi_vcard_resource KPim6::AkonadiCore KF6::KIOCore   KPim6::AkonadiAgentBase KF6::Contacts akonadi-singlefileresource KF6::Completion KF6::KIOWidgets KF6::ConfigWidgets)
+target_link_libraries(akonadi_vcard_resource
+    KPim6::AkonadiCore
+    KF6::KIOCore
+    KPim6::AkonadiAgentBase
+    KF6::Contacts
+    akonadi-singlefileresource
+)
 
 install(TARGETS akonadi_vcard_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
@@ -52,7 +58,7 @@ kcoreaddons_add_plugin(vcardconfig
 
 target_link_libraries(vcardconfig
     KPim6::AkonadiCore
-    akonadi-singlefileresource
+    akonadi-singlefileresource-widget
 )
 if(HAVE_ACTIVITY_SUPPORT)
      target_link_libraries(vcardconfig
