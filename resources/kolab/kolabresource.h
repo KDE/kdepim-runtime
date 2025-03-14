@@ -20,7 +20,6 @@ public:
     explicit KolabResource(const QString &id);
     ~KolabResource() override;
 
-    QDialog *createConfigureDialog(WId windowId) override;
     Settings *settings() const override;
 
 protected Q_SLOTS:
@@ -49,5 +48,4 @@ protected:
 
 private Q_SLOTS:
     void retrieveTags() override;
-    void onConfigurationDone(int result);
 };

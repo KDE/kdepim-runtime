@@ -39,19 +39,7 @@ ImapResource::ImapResource(const QString &id)
     m_pool->setClientId(clientId());
 
     settings(); // make sure the D-Bus settings interface is up
-
-    if (settings()->name().isEmpty()) {
-        if (name() == identifier()) {
-            settings()->setName(defaultName());
-        } else {
-            settings()->setName(name());
-        }
-    }
-    setActivitiesEnabled(settings()->activitiesEnabled());
-    setActivities(settings()->activities());
-    setName(settings()->name());
-
-    connect(this, &ImapResource::reloadConfiguration, this, &ImapResource::slotConfigurationChanged);
+    init();
 }
 
 ImapResource::~ImapResource() = default;
@@ -64,27 +52,6 @@ QString ImapResource::defaultName() const
 QByteArray ImapResource::clientId() const
 {
     return QByteArrayLiteral("Kontact IMAP Resource");
-}
-
-void ImapResource::slotConfigurationChanged()
-{
-    const auto oldImapServer = settings()->imapServer();
-    const auto oldUserName = settings()->userName();
-
-    settings()->load();
-
-    const auto newImapServer = settings()->imapServer();
-    const auto newUserName = settings()->userName();
-
-    if (oldImapServer != newImapServer || oldUserName != newUserName) {
-        clearCache();
-    }
-
-    setActivitiesEnabled(settings()->activitiesEnabled());
-    setActivities(settings()->activities());
-    setName(settings()->name());
-
-    reconnect();
 }
 
 #include "moc_imapresource.cpp"

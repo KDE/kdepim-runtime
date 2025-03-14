@@ -130,6 +130,22 @@ ImapResourceBase::ImapResourceBase(const QString &id)
     new ImapResourceBaseAdaptor(this);
 
     QMetaObject::invokeMethod(this, &ImapResourceBase::delayedInit, Qt::QueuedConnection);
+
+    connect(this, &ImapResourceBase::reloadConfiguration, this, &ImapResourceBase::slotConfigurationChanged);
+}
+
+void ImapResourceBase::init()
+{
+    if (settings()->name().isEmpty()) {
+        if (name() == identifier()) {
+            settings()->setName(defaultName());
+        } else {
+            settings()->setName(name());
+        }
+    }
+    setActivitiesEnabled(settings()->activitiesEnabled());
+    setActivities(settings()->activities());
+    setName(settings()->name());
 }
 
 void ImapResourceBase::delayedInit()
@@ -665,6 +681,27 @@ void ImapResourceBase::onCollectionModifyDone(KJob *job)
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << "Failed to modify collection: " << job->errorString();
     }
+}
+
+void ImapResourceBase::slotConfigurationChanged()
+{
+    const auto oldImapServer = settings()->imapServer();
+    const auto oldUserName = settings()->userName();
+
+    settings()->load();
+
+    const auto newImapServer = settings()->imapServer();
+    const auto newUserName = settings()->userName();
+
+    if (oldImapServer != newImapServer || oldUserName != newUserName) {
+        clearCache();
+    }
+
+    setActivitiesEnabled(settings()->activitiesEnabled());
+    setActivities(settings()->activities());
+    setName(settings()->name());
+
+    reconnect();
 }
 
 #include "moc_imapresourcebase.cpp"

@@ -50,6 +50,7 @@ KolabResource::KolabResource(const QString &id)
     setKeepLocalCollectionChanges(QSet<QByteArray>() << "ENTITYDISPLAY" << Akonadi::BlockAlarmsAttribute().type());
 
     settings(); // make sure the D-Bus settings interface is up
+    init();
 }
 
 KolabResource::~KolabResource() = default;
@@ -78,29 +79,6 @@ QString KolabResource::defaultName() const
 QByteArray KolabResource::clientId() const
 {
     return QByteArrayLiteral("Kontact Kolab Resource 5/KOLAB");
-}
-
-QDialog *KolabResource::createConfigureDialog(WId windowId)
-{
-    auto dlg = new SetupServer(this, windowId);
-    dlg->setAttribute(Qt::WA_NativeWindow, true);
-    KWindowSystem::setMainWindow(dlg->windowHandle(), windowId);
-    dlg->setWindowTitle(i18nc("@title:window", "Kolab Account Settings"));
-    dlg->setWindowIcon(QIcon::fromTheme(QStringLiteral("kolab")));
-    connect(dlg, &QDialog::finished, this, &KolabResource::onConfigurationDone);
-    return dlg;
-}
-
-void KolabResource::onConfigurationDone(int result)
-{
-    auto dlg = qobject_cast<SetupServer *>(sender());
-    if (result) {
-        if (dlg->shouldClearCache()) {
-            clearCache();
-        }
-        settings()->save();
-    }
-    dlg->deleteLater();
 }
 
 ResourceStateInterface::Ptr KolabResource::createResourceState(const TaskArguments &args)

@@ -25,7 +25,4 @@ public:
 protected:
     QString defaultName() const override;
     QByteArray clientId() const override;
-
-private:
-    void slotConfigurationChanged();
 };

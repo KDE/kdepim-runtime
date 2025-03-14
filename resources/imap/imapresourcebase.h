@@ -97,6 +97,8 @@ protected:
     virtual QString defaultName() const = 0;
     virtual QByteArray clientId() const = 0;
 
+    void init();
+
 protected Q_SLOTS:
     void delayedInit();
     void reconnect();
@@ -134,6 +136,7 @@ private:
     friend class ResourceState;
 
     bool needsNetwork() const;
+    void slotConfigurationChanged();
     void modifyCollection(const Akonadi::Collection &);
 
     friend class ImapIdleManager;
