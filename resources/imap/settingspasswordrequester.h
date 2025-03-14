@@ -7,7 +7,6 @@
 
 #pragma once
 
-class QDialog;
 #include "passwordrequesterinterface.h"
 
 class ImapResourceBase;
@@ -30,7 +29,6 @@ public:
 
 private Q_SLOTS:
     void askUserInput(const QString &serverError);
-    void onSettingsDialogFinished(int result);
 
 private:
     void slotTryAgainClicked();
@@ -38,7 +36,6 @@ private:
     QString requestManualAuth(bool *userRejected);
 
     ImapResourceBase *const m_resource;
-    QDialog *m_settingsDialog = nullptr;
 
     QList<QKeychain::ReadPasswordJob *> m_readPasswordJobs;
 };

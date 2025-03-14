@@ -7,19 +7,21 @@
 
 #include "settingspasswordrequester.h"
 
+#include <KIO/ApplicationLauncherJob>
 #include <KLocalizedString>
 #include <KNotification>
+#include <KService>
+#include <KWindowSystem>
 
+#include <mailtransport/transportbase.h>
 #include <qt6keychain/keychain.h>
 
 #include "imapresource_debug.h"
 #include "imapresourcebase.h"
 #include "settings.h"
-#include <QDialog>
-#include <kwindowsystem.h>
-#include <mailtransport/transportbase.h>
 
 using namespace QKeychain;
+using namespace Qt::StringLiterals;
 
 SettingsPasswordRequester::SettingsPasswordRequester(ImapResourceBase *resource, QObject *parent)
     : PasswordRequesterInterface(parent)
@@ -114,22 +116,10 @@ void SettingsPasswordRequester::slotTryAgainClicked()
 
 void SettingsPasswordRequester::slotOpenSettingsClicked()
 {
-    // if (!m_settingsDialog) {
-    //     QDialog *dialog = m_resource->createConfigureDialog(m_resource->winIdForDialogs());
-    //     connect(dialog, &QDialog::finished, this, &SettingsPasswordRequester::onSettingsDialogFinished);
-    //     m_settingsDialog = dialog;
-    //     dialog->show();
-    // }
-}
-
-void SettingsPasswordRequester::onSettingsDialogFinished(int result)
-{
-    m_settingsDialog = nullptr;
-    if (result == QDialog::Accepted) {
-        Q_EMIT done(ReconnectNeeded);
-    } else {
-        Q_EMIT done(UserRejected);
-    }
+    KService::Ptr service = KService::serviceByDesktopName(u"org.kde.akonadi.configdialog"_s);
+    auto job = new KIO::ApplicationLauncherJob(service, this);
+    job->setUrls({QUrl(u"akonadi:%1"_s.arg(m_resource->identifier()))});
+    job->start();
 }
 
 void SettingsPasswordRequester::cancelPasswordRequests()
