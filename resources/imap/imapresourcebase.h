@@ -28,7 +28,6 @@ class Session;
 class ImapIdleManager;
 class SessionPool;
 class ResourceState;
-class SubscriptionDialog;
 class Settings;
 
 class ImapResourceBase : public Akonadi::ResourceWidgetBase, public Akonadi::AgentBase::ObserverV3, public Akonadi::AgentSearchInterface
@@ -142,7 +141,6 @@ private:
     friend class ImapIdleManager;
 
     QList<ResourceTask *> m_taskList; // used to be able to kill tasks
-    // QScopedPointer<SubscriptionDialog, QScopedPointerDeleteLater> mSubscriptions;
     ImapIdleManager *m_idle = nullptr;
     QTimer *m_statusMessageTimer = nullptr;
     QChar m_separatorCharacter;

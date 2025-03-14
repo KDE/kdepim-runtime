@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include "settings.h"
 #include <QDialog>
 #include <QTextBrowser>
 

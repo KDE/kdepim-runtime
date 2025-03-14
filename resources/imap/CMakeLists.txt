@@ -130,6 +130,7 @@ target_link_libraries(imapresource
     KPim6::MailTransport
     KPim6::Mime
     KPim6::PimCommonAkonadi
+    KF6::KIOWidgets # SslUi
     qt6keychain
 )
 
