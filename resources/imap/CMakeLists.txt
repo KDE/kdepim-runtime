@@ -111,7 +111,7 @@ qt_add_dbus_adaptor(imapresource_LIB_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
         imapresourcebase.h ImapResourceBase
     )
-
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 
 target_link_libraries(imapresource
