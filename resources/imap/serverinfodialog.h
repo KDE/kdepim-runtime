@@ -10,8 +10,6 @@
 #include <QDialog>
 #include <QTextBrowser>
 
-class ImapResourceBase;
-
 class ServerInfoTextBrowser : public QTextBrowser
 {
     Q_OBJECT

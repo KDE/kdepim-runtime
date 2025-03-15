@@ -15,7 +15,6 @@
 #include "resourcestateinterface.h"
 #include <Akonadi/AgentSearchInterface>
 #include <Akonadi/ResourceWidgetBase>
-class QDialog;
 
 class QTimer;
 

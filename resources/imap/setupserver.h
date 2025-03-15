@@ -24,7 +24,6 @@ class ConfigureActivitiesWidget;
 #endif
 
 class KJob;
-class QPushButton;
 class QComboBox;
 namespace Ui
 {
@@ -40,7 +39,6 @@ namespace KIdentityManagementWidgets
 class IdentityCombo;
 }
 class FolderArchiveSettingPage;
-class ImapResourceBase;
 
 /**
  * @class SetupServer

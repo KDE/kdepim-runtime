@@ -15,7 +15,6 @@
 #include <QUrl>
 class KConfigDialogManager;
 class KJob;
-class QPushButton;
 
 namespace KIO
 {

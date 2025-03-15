@@ -11,12 +11,6 @@
 #include "configwidget.h"
 #include "settings.h"
 #include <QScopedPointer>
-#if HAVE_ACTIVITY_SUPPORT
-namespace PimCommonActivities
-{
-class ConfigureActivitiesWidget;
-}
-#endif
 class MaildirConfig : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
