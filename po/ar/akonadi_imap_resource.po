@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-01-04 00:41+0000\n"
+"POT-Creation-Date: 2025-03-15 00:43+0000\n"
 "PO-Revision-Date: 2025-01-16 09:17+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -85,63 +85,57 @@ msgstr "فشلت كتابة بعض قوائم ACL على ’%1‘ في خادو�
 msgid "IMAP Account"
 msgstr "حساب IMAP"
 
-#: imapresource.cpp:62
-#, kde-format
-msgctxt "@title:window"
-msgid "IMAP Account Settings"
-msgstr "إعدادات حساب IMAP"
-
 #. i18n: ectx: label, entry (ImapServer), group (network)
-#: imapresource.kcfg:10
+#: imapresource.kcfg:14
 #, kde-format
 msgid "IMAP server"
 msgstr "خادوم IMAP"
 
 #. i18n: ectx: label, entry (ImapPort), group (network)
-#: imapresource.kcfg:13
+#: imapresource.kcfg:17
 #, kde-format
 msgid "Defines the port the IMAP service is running on"
 msgstr "يحدّد المنفذ الذي تعمل خدمة IMAP عبره"
 
 #. i18n: ectx: label, entry (UserName), group (network)
-#: imapresource.kcfg:17
+#: imapresource.kcfg:21
 #, kde-format
 msgid "Username"
 msgstr "اسم المستخدم"
 
 #. i18n: ectx: label, entry (Safety), group (network)
-#: imapresource.kcfg:20
+#: imapresource.kcfg:24
 #, kde-format
 msgid "Defines the encryption type to use"
 msgstr "يحدّد نوع التّعمية لاستخدامه"
 
 #. i18n: ectx: label, entry (OverrideEncryption), group (network)
-#: imapresource.kcfg:24
+#: imapresource.kcfg:28
 #, kde-format
 msgid "Override configured encryption mode"
 msgstr "تجاوز وضع التّعمية المضبوط"
 
 #. i18n: ectx: label, entry (Authentication), group (network)
-#: imapresource.kcfg:27
+#: imapresource.kcfg:31
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "يحدّد نوع الاستيثاق لاستخدامه"
 
 #. i18n: ectx: label, entry (SubscriptionEnabled), group (network)
-#: imapresource.kcfg:31
+#: imapresource.kcfg:35
 #, kde-format
 msgid "Defines if the server side subscription is enabled"
 msgstr "يحدّد فيما إذا كان الاشتراك من جانب الخادوم مفعّلًا"
 
 #. i18n: ectx: property (text), widget (QCheckBox, useProxyCheck)
 #. i18n: ectx: label, entry (UseProxy), group (network)
-#: imapresource.kcfg:38 setupserverview_desktop.ui:560
+#: imapresource.kcfg:42 setupserverview_desktop.ui:560
 #, kde-format
 msgid "Connect using the system proxy settings"
 msgstr "اتّصل مستخدمًا إعدادات وسيط النظام"
 
 #. i18n: ectx: whatsthis, entry (UseProxy), group (network)
-#: imapresource.kcfg:39
+#: imapresource.kcfg:43
 #, kde-format
 msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
@@ -149,25 +143,25 @@ msgid ""
 msgstr "إن أُشّر عليه فستُستخدم إعدادات وسيط النظام للاتصال بخادوم البريد."
 
 #. i18n: ectx: label, entry (DisconnectedModeEnabled), group (cache)
-#: imapresource.kcfg:45
+#: imapresource.kcfg:49
 #, kde-format
 msgid "Defines if all the IMAP data should be cached locally all the time"
 msgstr "يحدّد فيما إذا كان يجب أن تُخبّأ بيانات IMAP طول الوقت"
 
 #. i18n: ectx: label, entry (IntervalCheckEnabled), group (cache)
-#: imapresource.kcfg:49
+#: imapresource.kcfg:53
 #, kde-format
 msgid "Defines if interval checking is enabled."
 msgstr "يحدّد فيما إذا كان التّحقّق كلّ فترة مفعّلًا."
 
 #. i18n: ectx: label, entry (IntervalCheckTime), group (cache)
-#: imapresource.kcfg:53
+#: imapresource.kcfg:57
 #, kde-format
 msgid "Check interval in minutes"
 msgstr "فترة الالتماس بالدّقيقة"
 
 #. i18n: ectx: label, entry (RetrieveMetadataOnFolderListing), group (cache)
-#: imapresource.kcfg:58
+#: imapresource.kcfg:62
 #, kde-format
 msgid ""
 "Defines if the annotations, ACLs and quota information of mailboxes should\n"
@@ -177,7 +171,7 @@ msgstr ""
 "أيضًا وذلك عند سرد صناديق البريد."
 
 #. i18n: ectx: label, entry (AutomaticExpungeEnabled), group (cache)
-#: imapresource.kcfg:63
+#: imapresource.kcfg:67
 #, kde-format
 msgid ""
 "Defines if the expunge command is issued automatically, otherwise it should "
@@ -188,177 +182,183 @@ msgstr ""
 "تحفيزه يدويًّا عبر واجهة D-Bus."
 
 #. i18n: ectx: label, entry (TrashCollection), group (cache)
-#: imapresource.kcfg:67
+#: imapresource.kcfg:71
 #, kde-format
 msgid "Define which folder is used for trash"
 msgstr "يحدّد أيّ مجلّد سيُستخدم للمهملات"
 
 #. i18n: ectx: label, entry (TrashCollectionMigrated), group (cache)
-#: imapresource.kcfg:71
+#: imapresource.kcfg:75
 #, kde-format
 msgid "Define if the trash collection received the special attribute"
 msgstr "يحدّد فيما إذا استلمت تجميعة المهملات الصّفةَ الخاصّة"
 
 #. i18n: ectx: label, entry (UseDefaultIdentity), group (cache)
-#: imapresource.kcfg:75
+#: imapresource.kcfg:79
 #, kde-format
 msgid "Define if account uses the default identity"
 msgstr "يحدّد إن كان الحساب يستخدم الهويّة المبدئيّة"
 
 #. i18n: ectx: label, entry (AccountIdentity), group (cache)
-#: imapresource.kcfg:79
+#: imapresource.kcfg:83
 #, kde-format
 msgid "Identity account"
 msgstr "هويّة الحساب"
 
 #. i18n: ectx: label, entry (KnownMailBoxes), group (cache)
-#: imapresource.kcfg:82
+#: imapresource.kcfg:86
 #, kde-format
 msgid "List of mailbox names reported by the server the last time"
 msgstr "قائمة بأسماء صناديق البريد التي أخبر عنها الخادوم آخر مرّة"
 
 #. i18n: ectx: label, entry (IdleRidPath), group (idle)
-#: imapresource.kcfg:87
+#: imapresource.kcfg:91
 #, kde-format
 msgid "RID path to the mailbox to watch for changes"
 msgstr "مسار RID لمراقبة تغييرات صندوق البريد"
 
 #. i18n: ectx: label, entry (SieveSupport), group (siever)
-#: imapresource.kcfg:92
+#: imapresource.kcfg:96
 #, kde-format
 msgid "Define if server supports sieve"
 msgstr "يحدّد فيما إذا كان يدعم الخادوم الغربال"
 
 #. i18n: ectx: label, entry (SieveReuseConfig), group (siever)
-#: imapresource.kcfg:96
+#: imapresource.kcfg:100
 #, kde-format
 msgid "Define if we reuse host and login configuration"
 msgstr "يحدّد فيما إذا علينا استخدام ضبط المضيف والولوج"
 
 #. i18n: ectx: label, entry (SievePort), group (siever)
-#: imapresource.kcfg:100
+#: imapresource.kcfg:104
 #, kde-format
 msgid "Define sieve port"
 msgstr "يحدّد منفذ الغربال"
 
 #. i18n: ectx: label, entry (SieveAlternateUrl), group (siever)
-#: imapresource.kcfg:104
+#: imapresource.kcfg:108
 #, kde-format
 msgid "Define alternate URL"
 msgstr "يحدّد المسار البديل"
 
 #. i18n: ectx: label, entry (AlternateAuthentication), group (siever)
-#: imapresource.kcfg:107
+#: imapresource.kcfg:111
 #, kde-format
 msgid "Defines the authentication type to use for alternate server"
 msgstr "يحدّد نوع الاستيثاق لاستخدامه للخادوم البديل"
 
 #. i18n: ectx: label, entry (SieveVacationFilename), group (siever)
-#: imapresource.kcfg:111
+#: imapresource.kcfg:115
 #, kde-format
 msgid "Define default sieve vacation filename"
 msgstr "يحدّد اسم ملفّ «عُطَل الغربال» المبدئيّ"
 
 #. i18n: ectx: label, entry (SieveCustomUsername), group (siever)
-#: imapresource.kcfg:115
+#: imapresource.kcfg:119
 #, kde-format
 msgid "Define username used from custom server sieve url"
 msgstr "يحدّد اسم المستخدم المستخدم من مسار خادوم الغربال المخصّص"
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
-#: imapresource.kcfg:119
+#: imapresource.kcfg:123
 #, kde-format
 msgid "Defines the type of identification used by custom sieve server"
 msgstr "يحدّد نوع التّعريف الذي يستخدمه خادوم الغربال المخصّص"
 
-#: imapresourcebase.cpp:216
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: imapresource.kcfg:129
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: imapresource.kcfg:133
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
+
+#: imapresourcebase.cpp:220
 #, kde-format
 msgid "No server configured yet."
 msgstr "لم يُضبط خادوم بعد."
 
-#: imapresourcebase.cpp:246 setupserver.cpp:685
-#, kde-format
-msgctxt "@title:window"
-msgid "Serverside Subscription"
-msgstr "الاشتراك من جانب الخادوم"
-
-#: imapresourcebase.cpp:284
+#: imapresourcebase.cpp:240
 #, kde-format
 msgid "Connection established."
 msgstr "أُجري الاتّصال."
 
-#: imapresourcebase.cpp:301
+#: imapresourcebase.cpp:257
 #, kde-format
 msgid "Server is not available."
 msgstr "الخادوم غير متوفّر"
 
-#: imapresourcebase.cpp:352
+#: imapresourcebase.cpp:308
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "يضيف العناصر في ’%1‘"
 
-#: imapresourcebase.cpp:359
+#: imapresourcebase.cpp:315
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "يحدّث العناصر في ’%1‘"
 
-#: imapresourcebase.cpp:366
+#: imapresourcebase.cpp:322
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "يحدّث العناصر"
 
-#: imapresourcebase.cpp:380
+#: imapresourcebase.cpp:336
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "يزيل العناصر"
 
-#: imapresourcebase.cpp:396
+#: imapresourcebase.cpp:352
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "ينقل العناصر من ’%1‘ إلى ’%2‘"
 
-#: imapresourcebase.cpp:405
+#: imapresourcebase.cpp:361
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "يجلب المجلّدات"
 
-#: imapresourcebase.cpp:412
+#: imapresourcebase.cpp:368
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "يجلبب معلومات المجلّد الإضافيّة لِ‍’%1‘"
 
-#: imapresourcebase.cpp:430
+#: imapresourcebase.cpp:386
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "يُنشئ المجلّد ’%1‘"
 
-#: imapresourcebase.cpp:436
+#: imapresourcebase.cpp:392
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "يحدّث المجلّد ’%1‘"
 
-#: imapresourcebase.cpp:449
+#: imapresourcebase.cpp:405
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "يزيل المجلّد ’%1‘"
 
-#: imapresourcebase.cpp:456
+#: imapresourcebase.cpp:412
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "ينقل المجلّد ’%1‘ من ’%2‘ إلى ’%3‘"
 
-#: imapresourcebase.cpp:486
+#: imapresourcebase.cpp:442
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
@@ -497,14 +497,20 @@ msgstr "لم تُجلب الرّسالة، كان ردّ الخادوم فارغ
 msgid "Invalid search"
 msgstr "بحث غير صالح"
 
-#: serverinfodialog.cpp:29
+#: serverinfodialog.cpp:37
 #, kde-format
 msgctxt ""
 "@title:window Dialog title for dialog showing information about a server"
 msgid "Server Info"
 msgstr "معلومات الخادوم"
 
-#: serverinfodialog.cpp:83
+#: serverinfodialog.cpp:53
+#, kde-format
+msgctxt "@info:status"
+msgid "Error while getting server capabilities: %1"
+msgstr ""
+
+#: serverinfodialog.cpp:109
 #, kde-format
 msgid "Resource not synchronized yet."
 msgstr "لم يُزامن المورد بعد."
@@ -596,13 +602,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "قُطع الاتّصال أثناء الولوج."
 
-#: settings.cpp:156
+#: settings.cpp:168
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "لم يعثر على كلمة السر لحساب IMAP %1"
 
-#: settings.cpp:162
+#: settings.cpp:174
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -610,13 +616,13 @@ msgid ""
 "\"%1\""
 msgstr "حدث خطأ أثناء استرداد كلمة سر IMAP من سلسلة مفاتيح النظام: \"%1\""
 
-#: settings.cpp:192
+#: settings.cpp:204
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "لم يعثر على كلمة السر لحساب الغربال %1"
 
-#: settings.cpp:198
+#: settings.cpp:210
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -624,7 +630,7 @@ msgid ""
 "\"%1\""
 msgstr "حدث خطأ أثناء استرداد كلمة سر الغربال من سلسلة مفاتيح النظام: \"%1\""
 
-#: settings.cpp:228
+#: settings.cpp:240
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -632,26 +638,26 @@ msgid ""
 "\"%1\""
 msgstr "حدث خطأ عند حفظ كلمة سر الغربال في سلسلة مفاتيح النظام: \"%1\""
 
-#: settings.cpp:254
+#: settings.cpp:266
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occured when saving the IMAP password in the system keychain: \"%1\""
 msgstr "حدث خطأ عند حفظ كلمة سر IMAP في سلسلة مفاتيح النظام: \"%1\""
 
-#: settings.cpp:341
+#: settings.cpp:353
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr "مشكلة مع حساب IMAP %1"
 
-#: settingspasswordrequester.cpp:75
+#: settingspasswordrequester.cpp:77
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr "يحتاج حساب البريد الإلكتروني IMAP إلى اهتمامك."
 
-#: settingspasswordrequester.cpp:79
+#: settingspasswordrequester.cpp:81
 #, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
@@ -664,7 +670,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:84
+#: settingspasswordrequester.cpp:86
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -677,13 +683,13 @@ msgstr ""
 "\n"
 "%2"
 
-#: settingspasswordrequester.cpp:91
+#: settingspasswordrequester.cpp:93
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "جرّب مجدّدًا"
 
-#: settingspasswordrequester.cpp:97
+#: settingspasswordrequester.cpp:99
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
@@ -713,18 +719,18 @@ msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr "XOAuth"
 
-#: setupserver.cpp:154
+#: setupserver.cpp:143
 #, kde-format
 msgid "Archive Folder"
 msgstr "مجلّد الأرشفة"
 
-#: setupserver.cpp:165
+#: setupserver.cpp:154
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p٪"
 
-#: setupserver.cpp:167
+#: setupserver.cpp:156
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -735,17 +741,17 @@ msgstr[3] "%v دقائق"
 msgstr[4] "%v دقيقة"
 msgstr[5] "%v دقيقة"
 
-#: setupserver.cpp:182
+#: setupserver.cpp:171
 #, kde-format
 msgid "Identity:"
 msgstr "الهويّة:"
 
-#: setupserver.cpp:202
+#: setupserver.cpp:191
 #, kde-format
 msgid "Activities"
 msgstr "الأنشطة"
 
-#: setupserver.cpp:269
+#: setupserver.cpp:253
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -755,13 +761,13 @@ msgstr ""
 "لقد غيّرت عنوان الخادوم. حتّى لو كان هذا نفس الخادوم السّابق سيكون عليك إعادة "
 "تنزيل كلّ رسائل البريد لهذا الحساب ثانيةً. أمتأكّد من المتابعة؟"
 
-#: setupserver.cpp:272
+#: setupserver.cpp:256
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "تغيّر عنوان الخادوم"
 
-#: setupserver.cpp:279
+#: setupserver.cpp:263
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -771,38 +777,44 @@ msgstr ""
 "لقد غيّرت اسم المستخدم. حتّى لو كان هذا اسم مستخدم لنفس الخادوم السّابق سيكون "
 "عليك إعادة تنزيل كلّ رسائل البريد لهذا الحساب ثانيةً. أمتأكّد من المتابعة؟"
 
-#: setupserver.cpp:282
+#: setupserver.cpp:266
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "تغيّر اسم المستخدم"
 
-#: setupserver.cpp:572
+#: setupserver.cpp:552
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "تعذّر الاتّصال بالخادوم، رجاءً افحص عنوان الخادوم."
 
-#: setupserver.cpp:584
+#: setupserver.cpp:564
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<b>‏STARTTLS مدعوم ومستحسن.</b>"
 
-#: setupserver.cpp:587
+#: setupserver.cpp:567
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<b>‏SSL/TLS مدعوم ومستحسن.</b>"
 
-#: setupserver.cpp:591
+#: setupserver.cpp:571
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
 msgstr "<b>لا أمن مدعوم. ليس مستحسنًا الاتّصال بهذا الخادوم.</b>"
 
-#: setupserver.cpp:594
+#: setupserver.cpp:574
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<b>الاتّصال بهذا الخادوم ليس ممكنًا.</b>"
+
+#: setupserver.cpp:665
+#, kde-format
+msgctxt "@title:window"
+msgid "Serverside Subscription"
+msgstr "الاشتراك من جانب الخادوم"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: setupserverview_desktop.ui:33
@@ -1159,6 +1171,10 @@ msgstr "ابحث عن:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "المشترك فيها فقط"
+
+#~ msgctxt "@title:window"
+#~ msgid "IMAP Account Settings"
+#~ msgstr "إعدادات حساب IMAP"
 
 #~ msgctxt "@info:status"
 #~ msgid ""

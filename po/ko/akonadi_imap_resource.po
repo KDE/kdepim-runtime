@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-01-04 00:41+0000\n"
+"POT-Creation-Date: 2025-03-15 00:43+0000\n"
 "PO-Revision-Date: 2024-12-24 16:51+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -83,63 +83,57 @@ msgstr "IMAP 서버의 '%1'에 일부 ACL을 추가할 수 없습니다. %2"
 msgid "IMAP Account"
 msgstr "IMAP 계정"
 
-#: imapresource.cpp:62
-#, kde-format
-msgctxt "@title:window"
-msgid "IMAP Account Settings"
-msgstr "IMAP 계정 설정"
-
 #. i18n: ectx: label, entry (ImapServer), group (network)
-#: imapresource.kcfg:10
+#: imapresource.kcfg:14
 #, kde-format
 msgid "IMAP server"
 msgstr "IMAP 서버"
 
 #. i18n: ectx: label, entry (ImapPort), group (network)
-#: imapresource.kcfg:13
+#: imapresource.kcfg:17
 #, kde-format
 msgid "Defines the port the IMAP service is running on"
 msgstr "IMAP 서비스가 실행 중인 포트 지정"
 
 #. i18n: ectx: label, entry (UserName), group (network)
-#: imapresource.kcfg:17
+#: imapresource.kcfg:21
 #, kde-format
 msgid "Username"
 msgstr "사용자 이름"
 
 #. i18n: ectx: label, entry (Safety), group (network)
-#: imapresource.kcfg:20
+#: imapresource.kcfg:24
 #, kde-format
 msgid "Defines the encryption type to use"
 msgstr "사용할 암호화 종류 선택"
 
 #. i18n: ectx: label, entry (OverrideEncryption), group (network)
-#: imapresource.kcfg:24
+#: imapresource.kcfg:28
 #, kde-format
 msgid "Override configured encryption mode"
 msgstr "설정된 암호화 모드 재정의"
 
 #. i18n: ectx: label, entry (Authentication), group (network)
-#: imapresource.kcfg:27
+#: imapresource.kcfg:31
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "사용할 인증 종류 선택"
 
 #. i18n: ectx: label, entry (SubscriptionEnabled), group (network)
-#: imapresource.kcfg:31
+#: imapresource.kcfg:35
 #, kde-format
 msgid "Defines if the server side subscription is enabled"
 msgstr "서버상 구독이 활성화되어 있는지 여부"
 
 #. i18n: ectx: property (text), widget (QCheckBox, useProxyCheck)
 #. i18n: ectx: label, entry (UseProxy), group (network)
-#: imapresource.kcfg:38 setupserverview_desktop.ui:560
+#: imapresource.kcfg:42 setupserverview_desktop.ui:560
 #, kde-format
 msgid "Connect using the system proxy settings"
 msgstr "시스템 프록시 설정을 사용하여 연결"
 
 #. i18n: ectx: whatsthis, entry (UseProxy), group (network)
-#: imapresource.kcfg:39
+#: imapresource.kcfg:43
 #, kde-format
 msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
@@ -147,25 +141,25 @@ msgid ""
 msgstr "선택하면 메일 서버에 연결할 때 시스템 프록시 설정을 사용합니다."
 
 #. i18n: ectx: label, entry (DisconnectedModeEnabled), group (cache)
-#: imapresource.kcfg:45
+#: imapresource.kcfg:49
 #, kde-format
 msgid "Defines if all the IMAP data should be cached locally all the time"
 msgstr "IMAP 데이터가 항상 로컬에 캐시되어야 할지 여부"
 
 #. i18n: ectx: label, entry (IntervalCheckEnabled), group (cache)
-#: imapresource.kcfg:49
+#: imapresource.kcfg:53
 #, kde-format
 msgid "Defines if interval checking is enabled."
 msgstr "시간별 자동 확인이 활성화되어 있는지 여부입니다."
 
 #. i18n: ectx: label, entry (IntervalCheckTime), group (cache)
-#: imapresource.kcfg:53
+#: imapresource.kcfg:57
 #, kde-format
 msgid "Check interval in minutes"
 msgstr "자동 확인 시간 간격(분 단위)"
 
 #. i18n: ectx: label, entry (RetrieveMetadataOnFolderListing), group (cache)
-#: imapresource.kcfg:58
+#: imapresource.kcfg:62
 #, kde-format
 msgid ""
 "Defines if the annotations, ACLs and quota information of mailboxes should\n"
@@ -174,7 +168,7 @@ msgstr ""
 "편지함 목록을 가져올 때 주석, ACL, 할당량 정보를 같이 가져올지 여부입니다."
 
 #. i18n: ectx: label, entry (AutomaticExpungeEnabled), group (cache)
-#: imapresource.kcfg:63
+#: imapresource.kcfg:67
 #, kde-format
 msgid ""
 "Defines if the expunge command is issued automatically, otherwise it should "
@@ -185,177 +179,183 @@ msgstr ""
 "합니다."
 
 #. i18n: ectx: label, entry (TrashCollection), group (cache)
-#: imapresource.kcfg:67
+#: imapresource.kcfg:71
 #, kde-format
 msgid "Define which folder is used for trash"
 msgstr "휴지통으로 사용할 폴더 정의"
 
 #. i18n: ectx: label, entry (TrashCollectionMigrated), group (cache)
-#: imapresource.kcfg:71
+#: imapresource.kcfg:75
 #, kde-format
 msgid "Define if the trash collection received the special attribute"
 msgstr "휴지통 모음집이 특수 속성을 수신했는지 여부"
 
 #. i18n: ectx: label, entry (UseDefaultIdentity), group (cache)
-#: imapresource.kcfg:75
+#: imapresource.kcfg:79
 #, kde-format
 msgid "Define if account uses the default identity"
 msgstr "계정에서 기본 프로필 사용 여부"
 
 #. i18n: ectx: label, entry (AccountIdentity), group (cache)
-#: imapresource.kcfg:79
+#: imapresource.kcfg:83
 #, kde-format
 msgid "Identity account"
 msgstr "프로필 계정"
 
 #. i18n: ectx: label, entry (KnownMailBoxes), group (cache)
-#: imapresource.kcfg:82
+#: imapresource.kcfg:86
 #, kde-format
 msgid "List of mailbox names reported by the server the last time"
 msgstr "서버에서 마지막으로 반환한 편지함 이름 목록"
 
 #. i18n: ectx: label, entry (IdleRidPath), group (idle)
-#: imapresource.kcfg:87
+#: imapresource.kcfg:91
 #, kde-format
 msgid "RID path to the mailbox to watch for changes"
 msgstr "변경 사항을 감시할 편지함의 RID 경로"
 
 #. i18n: ectx: label, entry (SieveSupport), group (siever)
-#: imapresource.kcfg:92
+#: imapresource.kcfg:96
 #, kde-format
 msgid "Define if server supports sieve"
 msgstr "서버가 Sieve를 지원하는지 여부"
 
 #. i18n: ectx: label, entry (SieveReuseConfig), group (siever)
-#: imapresource.kcfg:96
+#: imapresource.kcfg:100
 #, kde-format
 msgid "Define if we reuse host and login configuration"
 msgstr "호스트와 로그인 정보를 재사용할지 여부"
 
 #. i18n: ectx: label, entry (SievePort), group (siever)
-#: imapresource.kcfg:100
+#: imapresource.kcfg:104
 #, kde-format
 msgid "Define sieve port"
 msgstr "Sieve 포트 설정"
 
 #. i18n: ectx: label, entry (SieveAlternateUrl), group (siever)
-#: imapresource.kcfg:104
+#: imapresource.kcfg:108
 #, kde-format
 msgid "Define alternate URL"
 msgstr "대체 URL 설정"
 
 #. i18n: ectx: label, entry (AlternateAuthentication), group (siever)
-#: imapresource.kcfg:107
+#: imapresource.kcfg:111
 #, kde-format
 msgid "Defines the authentication type to use for alternate server"
 msgstr "대체 서버에 사용할 인증 종류 선택"
 
 #. i18n: ectx: label, entry (SieveVacationFilename), group (siever)
-#: imapresource.kcfg:111
+#: imapresource.kcfg:115
 #, kde-format
 msgid "Define default sieve vacation filename"
 msgstr "기본 Sieve 휴가 파일 이름 설정"
 
 #. i18n: ectx: label, entry (SieveCustomUsername), group (siever)
-#: imapresource.kcfg:115
+#: imapresource.kcfg:119
 #, kde-format
 msgid "Define username used from custom server sieve url"
 msgstr "사용자 정의 서버 Sieve URL에 사용되는 사용자 이름 정의"
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
-#: imapresource.kcfg:119
+#: imapresource.kcfg:123
 #, kde-format
 msgid "Defines the type of identification used by custom sieve server"
 msgstr "사용자 정의 Sieve 서버에 사용되는 인증 종류 정의"
 
-#: imapresourcebase.cpp:216
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: imapresource.kcfg:129
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: imapresource.kcfg:133
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
+
+#: imapresourcebase.cpp:220
 #, kde-format
 msgid "No server configured yet."
 msgstr "서버가 설정되지 않았습니다."
 
-#: imapresourcebase.cpp:246 setupserver.cpp:685
-#, kde-format
-msgctxt "@title:window"
-msgid "Serverside Subscription"
-msgstr "서버 측 구독"
-
-#: imapresourcebase.cpp:284
+#: imapresourcebase.cpp:240
 #, kde-format
 msgid "Connection established."
 msgstr "연결이 수립되었습니다."
 
-#: imapresourcebase.cpp:301
+#: imapresourcebase.cpp:257
 #, kde-format
 msgid "Server is not available."
 msgstr "서버를 사용할 수 없습니다."
 
-#: imapresourcebase.cpp:352
+#: imapresourcebase.cpp:308
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "'%1'에 항목을 추가하는 중"
 
-#: imapresourcebase.cpp:359
+#: imapresourcebase.cpp:315
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "'%1'의 항목을 업데이트하는 중"
 
-#: imapresourcebase.cpp:366
+#: imapresourcebase.cpp:322
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "항목 업데이트 중"
 
-#: imapresourcebase.cpp:380
+#: imapresourcebase.cpp:336
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "항목 삭제 중"
 
-#: imapresourcebase.cpp:396
+#: imapresourcebase.cpp:352
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "항목을 '%1'에서 '%2'(으)로 이동 중"
 
-#: imapresourcebase.cpp:405
+#: imapresourcebase.cpp:361
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "폴더 가져오는 중"
 
-#: imapresourcebase.cpp:412
+#: imapresourcebase.cpp:368
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "'%1'의 추가 폴더 정보를 가져오는 중"
 
-#: imapresourcebase.cpp:430
+#: imapresourcebase.cpp:386
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "폴더 '%1' 생성 중"
 
-#: imapresourcebase.cpp:436
+#: imapresourcebase.cpp:392
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "폴더 '%1' 업데이트 중"
 
-#: imapresourcebase.cpp:449
+#: imapresourcebase.cpp:405
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "폴더 '%1' 삭제 중"
 
-#: imapresourcebase.cpp:456
+#: imapresourcebase.cpp:412
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "폴더 '%1'을(를) '%2'에서 '%3'(으)로 이동하는 중"
 
-#: imapresourcebase.cpp:486
+#: imapresourcebase.cpp:442
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
@@ -498,14 +498,20 @@ msgstr "받은 메시지가 없습니다. 서버 응답이 비어 있습니다."
 msgid "Invalid search"
 msgstr "잘못된 검색"
 
-#: serverinfodialog.cpp:29
+#: serverinfodialog.cpp:37
 #, kde-format
 msgctxt ""
 "@title:window Dialog title for dialog showing information about a server"
 msgid "Server Info"
 msgstr "서버 정보"
 
-#: serverinfodialog.cpp:83
+#: serverinfodialog.cpp:53
+#, kde-format
+msgctxt "@info:status"
+msgid "Error while getting server capabilities: %1"
+msgstr ""
+
+#: serverinfodialog.cpp:109
 #, kde-format
 msgid "Resource not synchronized yet."
 msgstr "리소스를 아직 동기화하지 않았습니다."
@@ -598,13 +604,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "로그인 중 연결이 종료되었습니다."
 
-#: settings.cpp:156
+#: settings.cpp:168
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "%1 IMAP 계정의 암호를 찾을 수 없음"
 
-#: settings.cpp:162
+#: settings.cpp:174
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -612,13 +618,13 @@ msgid ""
 "\"%1\""
 msgstr "시스템 키체인에서 IMAP 암호를 가져오는 중 오류 발생: \"%1\""
 
-#: settings.cpp:192
+#: settings.cpp:204
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "%1 Sieve 계정의 암호를 찾을 수 없음"
 
-#: settings.cpp:198
+#: settings.cpp:210
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -626,7 +632,7 @@ msgid ""
 "\"%1\""
 msgstr "시스템 키체인에서 Sieve 암호를 가져오는 중 오류 발생: \"%1\""
 
-#: settings.cpp:228
+#: settings.cpp:240
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -634,26 +640,26 @@ msgid ""
 "\"%1\""
 msgstr "시스템 키체인에 Sieve 암호를 저장하는 중 오류 발생: \"%1\""
 
-#: settings.cpp:254
+#: settings.cpp:266
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occured when saving the IMAP password in the system keychain: \"%1\""
 msgstr "시스템 키체인에 IMAP 암호를 저장하는 중 오류 발생: \"%1\""
 
-#: settings.cpp:341
+#: settings.cpp:353
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr "%1 IMAP 계정 문제"
 
-#: settingspasswordrequester.cpp:75
+#: settingspasswordrequester.cpp:77
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr "IMAP 이메일 계정에 작업이 필요합니다."
 
-#: settingspasswordrequester.cpp:79
+#: settingspasswordrequester.cpp:81
 #, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
@@ -666,7 +672,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:84
+#: settingspasswordrequester.cpp:86
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -679,13 +685,13 @@ msgstr ""
 "\n"
 "%2"
 
-#: settingspasswordrequester.cpp:91
+#: settingspasswordrequester.cpp:93
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "다시 시도"
 
-#: settingspasswordrequester.cpp:97
+#: settingspasswordrequester.cpp:99
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
@@ -715,34 +721,34 @@ msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr "XOAuth"
 
-#: setupserver.cpp:154
+#: setupserver.cpp:143
 #, kde-format
 msgid "Archive Folder"
 msgstr "폴더 아카이브"
 
-#: setupserver.cpp:165
+#: setupserver.cpp:154
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: setupserver.cpp:167
+#: setupserver.cpp:156
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%v분"
 
-#: setupserver.cpp:182
+#: setupserver.cpp:171
 #, kde-format
 msgid "Identity:"
 msgstr "프로필:"
 
-#: setupserver.cpp:202
+#: setupserver.cpp:191
 #, kde-format
 msgid "Activities"
 msgstr "활동"
 
-#: setupserver.cpp:269
+#: setupserver.cpp:253
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -752,13 +758,13 @@ msgstr ""
 "서버 주소를 변경했습니다. 이전 서버와 같은 서버여도 이 계정의 모든 이메일을 "
 "다시 다운로드해야 합니다. 계속 진행하시겠습니까?"
 
-#: setupserver.cpp:272
+#: setupserver.cpp:256
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "서버 주소 변경"
 
-#: setupserver.cpp:279
+#: setupserver.cpp:263
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -768,28 +774,28 @@ msgstr ""
 "사용자 이름을 변경했습니다. 이전 사용자 이름과 같은 사용자여도 이 계정의 모"
 "든 이메일을 다시 다운로드해야 합니다. 계속 진행하시겠습니까?"
 
-#: setupserver.cpp:282
+#: setupserver.cpp:266
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "사용자 이름 변경"
 
-#: setupserver.cpp:572
+#: setupserver.cpp:552
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "서버에 연결할 수 없습니다. 서버 주소를 확인하십시오."
 
-#: setupserver.cpp:584
+#: setupserver.cpp:564
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS가 지원되며 추천합니다.</b></qt>"
 
-#: setupserver.cpp:587
+#: setupserver.cpp:567
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS가 지원되며 추천합니다.</b></qt>"
 
-#: setupserver.cpp:591
+#: setupserver.cpp:571
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -798,10 +804,16 @@ msgstr ""
 "<qt><b>보안 기능이 지원되지 않습니다. 이 서버에 연결하지 않는 것을 추천합니"
 "다.</b></qt>"
 
-#: setupserver.cpp:594
+#: setupserver.cpp:574
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>이 서버를 사용할 수 없습니다.</b></qt>"
+
+#: setupserver.cpp:665
+#, kde-format
+msgctxt "@title:window"
+msgid "Serverside Subscription"
+msgstr "서버 측 구독"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: setupserverview_desktop.ui:33
@@ -1175,6 +1187,10 @@ msgstr "찾기:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "구독 중인 항목만"
+
+#~ msgctxt "@title:window"
+#~ msgid "IMAP Account Settings"
+#~ msgstr "IMAP 계정 설정"
 
 #~ msgctxt "@info:status"
 #~ msgid ""

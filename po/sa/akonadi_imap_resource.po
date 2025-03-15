@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-01-04 00:41+0000\n"
+"POT-Creation-Date: 2025-03-15 00:43+0000\n"
 "PO-Revision-Date: 2024-12-24 20:39+0530\n"
 "Last-Translator: kali <shreekantkalwar@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -86,63 +86,57 @@ msgstr "IMAP सर्वरे '%1' कृते केचन ACL लिखि�
 msgid "IMAP Account"
 msgstr "IMAP खाता"
 
-#: imapresource.cpp:62
-#, kde-format
-msgctxt "@title:window"
-msgid "IMAP Account Settings"
-msgstr "IMAP खाता सेटिंग्स्"
-
 #. i18n: ectx: label, entry (ImapServer), group (network)
-#: imapresource.kcfg:10
+#: imapresource.kcfg:14
 #, kde-format
 msgid "IMAP server"
 msgstr "IMAP सर्वरः"
 
 #. i18n: ectx: label, entry (ImapPort), group (network)
-#: imapresource.kcfg:13
+#: imapresource.kcfg:17
 #, kde-format
 msgid "Defines the port the IMAP service is running on"
 msgstr "IMAP सेवा यस्मिन् पोर्ट् मध्ये चाल्यते तत् परिभाषयति"
 
 #. i18n: ectx: label, entry (UserName), group (network)
-#: imapresource.kcfg:17
+#: imapresource.kcfg:21
 #, kde-format
 msgid "Username"
 msgstr "उपयोक्तृनाम"
 
 #. i18n: ectx: label, entry (Safety), group (network)
-#: imapresource.kcfg:20
+#: imapresource.kcfg:24
 #, kde-format
 msgid "Defines the encryption type to use"
 msgstr "उपयोक्तुं एन्क्रिप्शन प्रकारं परिभाषयति"
 
 #. i18n: ectx: label, entry (OverrideEncryption), group (network)
-#: imapresource.kcfg:24
+#: imapresource.kcfg:28
 #, kde-format
 msgid "Override configured encryption mode"
 msgstr "विन्यस्तं एन्क्रिप्शन मोडं अधिलिखन्तु"
 
 #. i18n: ectx: label, entry (Authentication), group (network)
-#: imapresource.kcfg:27
+#: imapresource.kcfg:31
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "उपयोक्तुं प्रमाणीकरणप्रकारं परिभाषयति"
 
 #. i18n: ectx: label, entry (SubscriptionEnabled), group (network)
-#: imapresource.kcfg:31
+#: imapresource.kcfg:35
 #, kde-format
 msgid "Defines if the server side subscription is enabled"
 msgstr "सर्वरपक्षस्य सदस्यता सक्षमा अस्ति वा इति परिभाषयति"
 
 #. i18n: ectx: property (text), widget (QCheckBox, useProxyCheck)
 #. i18n: ectx: label, entry (UseProxy), group (network)
-#: imapresource.kcfg:38 setupserverview_desktop.ui:560
+#: imapresource.kcfg:42 setupserverview_desktop.ui:560
 #, kde-format
 msgid "Connect using the system proxy settings"
 msgstr "सिस्टम् प्रॉक्सी सेटिंग्स् इत्यस्य उपयोगेन संयोजयन्तु"
 
 #. i18n: ectx: whatsthis, entry (UseProxy), group (network)
-#: imapresource.kcfg:39
+#: imapresource.kcfg:43
 #, kde-format
 msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
@@ -150,25 +144,25 @@ msgid ""
 msgstr "यदि परीक्षितं तर्हि मेलसर्वरेण सह संयोजयितुं सिस्टम् प्रॉक्सी सेटिङ्ग्स् उपयुज्यन्ते ।"
 
 #. i18n: ectx: label, entry (DisconnectedModeEnabled), group (cache)
-#: imapresource.kcfg:45
+#: imapresource.kcfg:49
 #, kde-format
 msgid "Defines if all the IMAP data should be cached locally all the time"
 msgstr "परिभाषयति यत् सर्वाणि IMAP-दत्तांशं सर्वदा स्थानीयरूपेण संग्रहणीयम् अस्ति वा"
 
 #. i18n: ectx: label, entry (IntervalCheckEnabled), group (cache)
-#: imapresource.kcfg:49
+#: imapresource.kcfg:53
 #, kde-format
 msgid "Defines if interval checking is enabled."
 msgstr "अन्तरालपरीक्षणं सक्षमं वा इति परिभाषयति ।"
 
 #. i18n: ectx: label, entry (IntervalCheckTime), group (cache)
-#: imapresource.kcfg:53
+#: imapresource.kcfg:57
 #, kde-format
 msgid "Check interval in minutes"
 msgstr "निमेषेषु अन्तरालं पश्यन्तु"
 
 #. i18n: ectx: label, entry (RetrieveMetadataOnFolderListing), group (cache)
-#: imapresource.kcfg:58
+#: imapresource.kcfg:62
 #, kde-format
 msgid ""
 "Defines if the annotations, ACLs and quota information of mailboxes should\n"
@@ -178,7 +172,7 @@ msgstr ""
 "             मेलबॉक्साः सूचीकृताः भवन्ति तदा अपि पुनः प्राप्ताः भवेयुः ।"
 
 #. i18n: ectx: label, entry (AutomaticExpungeEnabled), group (cache)
-#: imapresource.kcfg:63
+#: imapresource.kcfg:67
 #, kde-format
 msgid ""
 "Defines if the expunge command is issued automatically, otherwise it should "
@@ -189,177 +183,183 @@ msgstr ""
 "             D-Bus अन्तरफलकस्य माध्यमेन मैन्युअल् रूपेण प्रेरितम् ।"
 
 #. i18n: ectx: label, entry (TrashCollection), group (cache)
-#: imapresource.kcfg:67
+#: imapresource.kcfg:71
 #, kde-format
 msgid "Define which folder is used for trash"
 msgstr "कचराणां कृते कस्य पुटस्य उपयोगः भवति इति परिभाषयन्तु"
 
 #. i18n: ectx: label, entry (TrashCollectionMigrated), group (cache)
-#: imapresource.kcfg:71
+#: imapresource.kcfg:75
 #, kde-format
 msgid "Define if the trash collection received the special attribute"
 msgstr "कचरासङ्ग्रहः विशेषगुणं प्राप्तवान् वा इति परिभाषयन्तु"
 
 #. i18n: ectx: label, entry (UseDefaultIdentity), group (cache)
-#: imapresource.kcfg:75
+#: imapresource.kcfg:79
 #, kde-format
 msgid "Define if account uses the default identity"
 msgstr "खाता पूर्वनिर्धारितपरिचयस्य उपयोगं करोति वा इति परिभाषयन्तु"
 
 #. i18n: ectx: label, entry (AccountIdentity), group (cache)
-#: imapresource.kcfg:79
+#: imapresource.kcfg:83
 #, kde-format
 msgid "Identity account"
 msgstr "परिचयलेखा"
 
 #. i18n: ectx: label, entry (KnownMailBoxes), group (cache)
-#: imapresource.kcfg:82
+#: imapresource.kcfg:86
 #, kde-format
 msgid "List of mailbox names reported by the server the last time"
 msgstr "अन्तिमवारं सर्वरेण प्रतिवेदितानां मेलबॉक्सनामानां सूची"
 
 #. i18n: ectx: label, entry (IdleRidPath), group (idle)
-#: imapresource.kcfg:87
+#: imapresource.kcfg:91
 #, kde-format
 msgid "RID path to the mailbox to watch for changes"
 msgstr "परिवर्तनं द्रष्टुं मेलबॉक्सं प्रति RID मार्गः"
 
 #. i18n: ectx: label, entry (SieveSupport), group (siever)
-#: imapresource.kcfg:92
+#: imapresource.kcfg:96
 #, kde-format
 msgid "Define if server supports sieve"
 msgstr "सर्वरः चलनी समर्थयति वा इति परिभाषयन्तु"
 
 #. i18n: ectx: label, entry (SieveReuseConfig), group (siever)
-#: imapresource.kcfg:96
+#: imapresource.kcfg:100
 #, kde-format
 msgid "Define if we reuse host and login configuration"
 msgstr "यदि वयं host तथा login विन्यासस्य पुनः उपयोगं कुर्मः वा इति परिभाषयन्तु"
 
 #. i18n: ectx: label, entry (SievePort), group (siever)
-#: imapresource.kcfg:100
+#: imapresource.kcfg:104
 #, kde-format
 msgid "Define sieve port"
 msgstr "चलनी पोर्ट परिभाषित करें"
 
 #. i18n: ectx: label, entry (SieveAlternateUrl), group (siever)
-#: imapresource.kcfg:104
+#: imapresource.kcfg:108
 #, kde-format
 msgid "Define alternate URL"
 msgstr "वैकल्पिकं URL परिभाषयन्तु"
 
 #. i18n: ectx: label, entry (AlternateAuthentication), group (siever)
-#: imapresource.kcfg:107
+#: imapresource.kcfg:111
 #, kde-format
 msgid "Defines the authentication type to use for alternate server"
 msgstr "वैकल्पिकसर्वरस्य कृते उपयोक्तुं प्रमाणीकरणप्रकारं परिभाषयति"
 
 #. i18n: ectx: label, entry (SieveVacationFilename), group (siever)
-#: imapresource.kcfg:111
+#: imapresource.kcfg:115
 #, kde-format
 msgid "Define default sieve vacation filename"
 msgstr "पूर्वनिर्धारितं चलनी अवकाशसञ्चिकानाम परिभाषयन्तु"
 
 #. i18n: ectx: label, entry (SieveCustomUsername), group (siever)
-#: imapresource.kcfg:115
+#: imapresource.kcfg:119
 #, kde-format
 msgid "Define username used from custom server sieve url"
 msgstr "कस्टम् सर्वर चलनी url तः प्रयुक्तं उपयोक्तृनाम परिभाषयन्तु"
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
-#: imapresource.kcfg:119
+#: imapresource.kcfg:123
 #, kde-format
 msgid "Defines the type of identification used by custom sieve server"
 msgstr "कस्टम् sieve सर्वरेण उपयुज्यमानस्य परिचयस्य प्रकारं परिभाषयति"
 
-#: imapresourcebase.cpp:216
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: imapresource.kcfg:129
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: imapresource.kcfg:133
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
+
+#: imapresourcebase.cpp:220
 #, kde-format
 msgid "No server configured yet."
 msgstr "अद्यापि कोऽपि सर्वरः विन्यस्तः नास्ति ।"
 
-#: imapresourcebase.cpp:246 setupserver.cpp:685
-#, kde-format
-msgctxt "@title:window"
-msgid "Serverside Subscription"
-msgstr "सर्वरसाइड सदस्यता"
-
-#: imapresourcebase.cpp:284
+#: imapresourcebase.cpp:240
 #, kde-format
 msgid "Connection established."
 msgstr "संबन्धः स्थापितः।"
 
-#: imapresourcebase.cpp:301
+#: imapresourcebase.cpp:257
 #, kde-format
 msgid "Server is not available."
 msgstr "सर्वरः उपलब्धः नास्ति ।"
 
-#: imapresourcebase.cpp:352
+#: imapresourcebase.cpp:308
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "'%1' इत्यस्मिन् मदं योजयन् ।"
 
-#: imapresourcebase.cpp:359
+#: imapresourcebase.cpp:315
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "'%1' इत्यस्मिन् द्रव्यं अद्यतनीकरोति ।"
 
-#: imapresourcebase.cpp:366
+#: imapresourcebase.cpp:322
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "वस्तूनि अद्यतनं कुर्वन्"
 
-#: imapresourcebase.cpp:380
+#: imapresourcebase.cpp:336
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "वस्तूनि निष्कासयन्"
 
-#: imapresourcebase.cpp:396
+#: imapresourcebase.cpp:352
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "'%1' तः '%2' मध्ये वस्तूनि स्थानान्तरयति।"
 
-#: imapresourcebase.cpp:405
+#: imapresourcebase.cpp:361
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "पुटं पुनः प्राप्तम्"
 
-#: imapresourcebase.cpp:412
+#: imapresourcebase.cpp:368
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "'%1' कृते अतिरिक्तपुटसूचनाः पुनः प्राप्ताः ।"
 
-#: imapresourcebase.cpp:430
+#: imapresourcebase.cpp:386
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "'%1' इति पुटस्य निर्माणम् ।"
 
-#: imapresourcebase.cpp:436
+#: imapresourcebase.cpp:392
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "'%1' पुटस्य अद्यतनीकरणम् ।"
 
-#: imapresourcebase.cpp:449
+#: imapresourcebase.cpp:405
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "'%1' पुटं निष्कासयति।"
 
-#: imapresourcebase.cpp:456
+#: imapresourcebase.cpp:412
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "'%1' पुटं '%2' तः '%3' मध्ये स्थानान्तरयति।"
 
-#: imapresourcebase.cpp:486
+#: imapresourcebase.cpp:442
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
@@ -498,14 +498,20 @@ msgstr "कोऽपि सन्देशः न प्राप्तः, स�
 msgid "Invalid search"
 msgstr "अमान्य अन्वेषणम्"
 
-#: serverinfodialog.cpp:29
+#: serverinfodialog.cpp:37
 #, kde-format
 msgctxt ""
 "@title:window Dialog title for dialog showing information about a server"
 msgid "Server Info"
 msgstr "सर्वर इन्फो"
 
-#: serverinfodialog.cpp:83
+#: serverinfodialog.cpp:53
+#, kde-format
+msgctxt "@info:status"
+msgid "Error while getting server capabilities: %1"
+msgstr ""
+
+#: serverinfodialog.cpp:109
 #, kde-format
 msgid "Resource not synchronized yet."
 msgstr "संसाधनम् अद्यापि समन्वयितं नास्ति।"
@@ -599,13 +605,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "प्रवेशकाले विच्छिन्नः।"
 
-#: settings.cpp:156
+#: settings.cpp:168
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "%1 IMAP खातेः कृते गुप्तशब्दः न प्राप्तः"
 
-#: settings.cpp:162
+#: settings.cpp:174
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -613,13 +619,13 @@ msgid ""
 "\"%1\""
 msgstr "प्रणाली कीलश्रृङ्खलातः IMAP गुप्तशब्दं पुनः प्राप्तुं त्रुटिः अभवत्: \"%1\"."
 
-#: settings.cpp:192
+#: settings.cpp:204
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "%1 sieve खातेः कृते गुप्तशब्दः न प्राप्तः"
 
-#: settings.cpp:198
+#: settings.cpp:210
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -627,7 +633,7 @@ msgid ""
 "\"%1\""
 msgstr "प्रणाली कीलश्रृङ्खलातः चलनीगुप्तशब्दं पुनः प्राप्तुं त्रुटिः अभवत्: \"%1\"."
 
-#: settings.cpp:228
+#: settings.cpp:240
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -635,26 +641,26 @@ msgid ""
 "\"%1\""
 msgstr "सिस्टम् कीलचेन् मध्ये चलनीगुप्तशब्दं रक्षन्ते सति त्रुटिः अभवत्: \"%1\"."
 
-#: settings.cpp:254
+#: settings.cpp:266
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occured when saving the IMAP password in the system keychain: \"%1\""
 msgstr "सिस्टम् कीचेन् मध्ये IMAP गुप्तशब्दं रक्षन्ते सति त्रुटिः अभवत्: \"%1\"."
 
-#: settings.cpp:341
+#: settings.cpp:353
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr "%1 IMAP खातेन समस्या"
 
-#: settingspasswordrequester.cpp:75
+#: settingspasswordrequester.cpp:77
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr "IMAP ई-मेल खाते भवतः ध्यानस्य आवश्यकता वर्तते।"
 
-#: settingspasswordrequester.cpp:79
+#: settingspasswordrequester.cpp:81
 #, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
@@ -667,7 +673,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:84
+#: settingspasswordrequester.cpp:86
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -680,13 +686,13 @@ msgstr ""
 "\n"
 "%2"
 
-#: settingspasswordrequester.cpp:91
+#: settingspasswordrequester.cpp:93
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "पुनः प्रयासं कुर्वन्तु"
 
-#: settingspasswordrequester.cpp:97
+#: settingspasswordrequester.cpp:99
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
@@ -716,35 +722,35 @@ msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr "XOAuth"
 
-#: setupserver.cpp:154
+#: setupserver.cpp:143
 #, kde-format
 msgid "Archive Folder"
 msgstr "आर्काइव फोल्डर"
 
-#: setupserver.cpp:165
+#: setupserver.cpp:154
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: setupserver.cpp:167
+#: setupserver.cpp:156
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%एकनिमेषे"
 msgstr[1] "%v निमेषाः"
 
-#: setupserver.cpp:182
+#: setupserver.cpp:171
 #, kde-format
 msgid "Identity:"
 msgstr "चिह्नं:"
 
-#: setupserver.cpp:202
+#: setupserver.cpp:191
 #, kde-format
 msgid "Activities"
 msgstr "गतिविधयः"
 
-#: setupserver.cpp:269
+#: setupserver.cpp:253
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -755,13 +761,13 @@ msgstr ""
 "अस्मात् खातेः भवतः सर्वाणि ईमेल-पत्राणि पुनः अवतरणं कर्तव्यं भविष्यति । किं भवन्तः निश्चयेन "
 "अग्रे गन्तुम् इच्छन्ति ?"
 
-#: setupserver.cpp:272
+#: setupserver.cpp:256
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "सर्वर पता परिवर्तनम्"
 
-#: setupserver.cpp:279
+#: setupserver.cpp:263
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -772,28 +778,28 @@ msgstr ""
 "अस्मात् खातेः भवतः सर्वाणि ईमेलपत्राणि पुनः अवतरणं कर्तव्यं भविष्यति । किं भवन्तः निश्चयेन "
 "अग्रे गन्तुम् इच्छन्ति ?"
 
-#: setupserver.cpp:282
+#: setupserver.cpp:266
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "उपयोक्तृनाम परिवर्तनम्"
 
-#: setupserver.cpp:572
+#: setupserver.cpp:552
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "सर्वरेण सह संयोजितुं असमर्थः, कृपया सर्वरसङ्केतं सत्यापयन्तु ।"
 
-#: setupserver.cpp:584
+#: setupserver.cpp:564
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS समर्थितं अनुशंसितं च अस्ति ।</b></qt>"
 
-#: setupserver.cpp:587
+#: setupserver.cpp:567
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS समर्थितं अनुशंसितं च ।</b></qt>"
 
-#: setupserver.cpp:591
+#: setupserver.cpp:571
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -801,10 +807,16 @@ msgid ""
 msgstr ""
 "<qt><b>कोऽपि सुरक्षा समर्थिता नास्ति। अस्मिन् सर्वरेण सह सम्बद्धता न अनुशंसिता ।</b></qt>"
 
-#: setupserver.cpp:594
+#: setupserver.cpp:574
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>अस्य सर्वरस्य उपयोगः न सम्भवति ।</b></qt>"
+
+#: setupserver.cpp:665
+#, kde-format
+msgctxt "@title:window"
+msgid "Serverside Subscription"
+msgstr "सर्वरसाइड सदस्यता"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: setupserverview_desktop.ui:33
@@ -1176,3 +1188,7 @@ msgstr "अन्वेषण:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "सदस्यता प्राप्त ही"
+
+#~ msgctxt "@title:window"
+#~ msgid "IMAP Account Settings"
+#~ msgstr "IMAP खाता सेटिंग्स्"
