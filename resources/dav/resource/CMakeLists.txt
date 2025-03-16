@@ -74,9 +74,7 @@ target_link_libraries(akonadi_davgroupware_resource
     KF6::KIOCore
     KF6::CalendarCore
     KF6::ConfigCore
-    KF6::WindowSystem
     KF6::DAV
-    KF6::Service
     KPim6::AkonadiAgentBase
     KPim6::AkonadiCore
     KPim6::AkonadiCalendarCore

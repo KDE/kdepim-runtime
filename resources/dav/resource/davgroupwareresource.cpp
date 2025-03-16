@@ -51,7 +51,6 @@
 #include <KContacts/VCardConverter>
 
 #include <KLocalizedString>
-#include <KWindowSystem>
 
 using namespace Akonadi;
 
