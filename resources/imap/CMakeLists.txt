@@ -6,6 +6,7 @@ configure_file(config-imap.h.in ${CMAKE_CURRENT_BINARY_DIR}/config-imap.h)
 
 set(imap_common_SRCS
     settings.cpp
+    settings.h
 
     imapaccount.cpp
     imapaccount.h
@@ -96,7 +97,6 @@ set(imapresource_LIB_SRCS
   sessionpool.h
   uidvalidityattribute.h
   uidnextattribute.h
-  settings.h
   imapidlemanager.h
   resourcestate.h
   collectionmetadatahelper.h
