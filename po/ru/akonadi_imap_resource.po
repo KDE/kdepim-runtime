@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-15 00:43+0000\n"
+"POT-Creation-Date: 2025-03-16 00:42+0000\n"
 "PO-Revision-Date: 2024-11-18 12:56+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -729,7 +729,7 @@ msgstr "Открыть параметры"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:82 setupserverview_desktop.ui:294
+#: setupserver.cpp:81 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -738,31 +738,31 @@ msgstr "Открытый текст"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:84 setupserverview_desktop.ui:329
+#: setupserver.cpp:83 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Анонимный"
 
-#: setupserver.cpp:86
+#: setupserver.cpp:85
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr "XOAuth"
 
-#: setupserver.cpp:143
+#: setupserver.cpp:142
 #, kde-format
 msgid "Archive Folder"
 msgstr "Архивная папка"
 
-#: setupserver.cpp:154
+#: setupserver.cpp:153
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: setupserver.cpp:156
+#: setupserver.cpp:155
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -771,17 +771,17 @@ msgstr[1] "%v минуты"
 msgstr[2] "%v минут"
 msgstr[3] "%v минута"
 
-#: setupserver.cpp:171
+#: setupserver.cpp:170
 #, kde-format
 msgid "Identity:"
 msgstr "Профиль:"
 
-#: setupserver.cpp:191
+#: setupserver.cpp:190
 #, kde-format
 msgid "Activities"
 msgstr "Комнаты"
 
-#: setupserver.cpp:253
+#: setupserver.cpp:252
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -791,13 +791,13 @@ msgstr ""
 "Адрес сервера изменён. Даже если это прежний сервер, потребуется заново "
 "загрузить все письма из этой учётной записи. Продолжить?"
 
-#: setupserver.cpp:256
+#: setupserver.cpp:255
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Изменение адреса сервера"
 
-#: setupserver.cpp:263
+#: setupserver.cpp:262
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -808,28 +808,28 @@ msgstr ""
 "записи, потребуется заново загрузить все письма из этой учётной записи. "
 "Продолжить?"
 
-#: setupserver.cpp:266
+#: setupserver.cpp:265
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Изменение имени пользователя"
 
-#: setupserver.cpp:552
+#: setupserver.cpp:551
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Не удалось подключиться к серверу, проверьте адрес сервера."
 
-#: setupserver.cpp:564
+#: setupserver.cpp:563
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS поддерживается и рекомендуется.</b></qt>"
 
-#: setupserver.cpp:567
+#: setupserver.cpp:566
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS поддерживается и рекомендуется.</b></qt>"
 
-#: setupserver.cpp:571
+#: setupserver.cpp:570
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -838,12 +838,12 @@ msgstr ""
 "<qt><b>Безопасное подключение не поддерживается и не рекомендуется для "
 "подключения к этому серверу.</b></qt>"
 
-#: setupserver.cpp:574
+#: setupserver.cpp:573
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Невозможно использовать этот сервер.</b></qt>"
 
-#: setupserver.cpp:665
+#: setupserver.cpp:664
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"

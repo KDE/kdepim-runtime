@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2024 Yaron Shahrabani <sh.yaron@gmail.com>
+# SPDX-FileCopyrightText: 2024, 2025 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-15 00:43+0000\n"
-"PO-Revision-Date: 2025-01-24 09:27+0200\n"
+"POT-Creation-Date: 2025-03-16 00:42+0000\n"
+"PO-Revision-Date: 2025-03-15 12:53+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Lokalize 24.12.0\n"
+"X-Generator: Lokalize 24.12.2\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -272,13 +272,13 @@ msgstr "הגדרת זוג הזיהוי לשימוש מול שרת ה־sieve בה
 #: imapresource.kcfg:129
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "האם התמיכה בפעילויות בסוכן פעילה"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: imapresource.kcfg:133
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "הפעילויות בסוכן"
 
 #: imapresourcebase.cpp:220
 #, kde-format
@@ -511,7 +511,7 @@ msgstr "פרטי השרת"
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
-msgstr ""
+msgstr "שגיאה במשיכת יכולות השרת: %1"
 
 #: serverinfodialog.cpp:109
 #, kde-format
@@ -704,7 +704,7 @@ msgstr "פתיחת ההגדרות"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:82 setupserverview_desktop.ui:294
+#: setupserver.cpp:81 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -713,31 +713,31 @@ msgstr "טקסט גלוי"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:84 setupserverview_desktop.ui:329
+#: setupserver.cpp:83 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "אלמוני"
 
-#: setupserver.cpp:86
+#: setupserver.cpp:85
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr "XOAuth"
 
-#: setupserver.cpp:143
+#: setupserver.cpp:142
 #, kde-format
 msgid "Archive Folder"
 msgstr "תיקיית ארכיון"
 
-#: setupserver.cpp:154
+#: setupserver.cpp:153
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: setupserver.cpp:156
+#: setupserver.cpp:155
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -746,17 +746,17 @@ msgstr[1] "שתי דקות"
 msgstr[2] "%v דקות"
 msgstr[3] "%v דקות"
 
-#: setupserver.cpp:171
+#: setupserver.cpp:170
 #, kde-format
 msgid "Identity:"
 msgstr "זהות:"
 
-#: setupserver.cpp:191
+#: setupserver.cpp:190
 #, kde-format
 msgid "Activities"
 msgstr "פעילויות"
 
-#: setupserver.cpp:253
+#: setupserver.cpp:252
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -766,13 +766,13 @@ msgstr ""
 "החלפת את כתובת השרת. אפילו אם זה אותו השרת כמו קודם יש להוריד את כל ההודעות "
 "שלך מהחשהון הזה שוב. להמשיך?"
 
-#: setupserver.cpp:256
+#: setupserver.cpp:255
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "החלפת כתובת שרת"
 
-#: setupserver.cpp:263
+#: setupserver.cpp:262
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -782,40 +782,40 @@ msgstr ""
 "שינית את שם המשתמש. אפילו אם זה אותו שם המשתמש לחשבון כמו מקודם אנחנו נצטרך "
 "להוריד את כל הודעות הדוא״ל שלך מהחשבון הזה שוב. להמשיך?"
 
-#: setupserver.cpp:266
+#: setupserver.cpp:265
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "שם המשתמש השתנה"
 
-#: setupserver.cpp:552
+#: setupserver.cpp:551
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "לא ניתן להתחבר לשרת, נא לוודא שכתובת השרת נכונה."
 
-#: setupserver.cpp:564
+#: setupserver.cpp:563
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>יש תמיכה ב־STARTLS ומומלץ להשתמש בזה.</b></qt>"
 
-#: setupserver.cpp:567
+#: setupserver.cpp:566
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>יש תמיכה ב־SSL/TLS ומומלץ להשתמש בזה.</b></qt>"
 
-#: setupserver.cpp:571
+#: setupserver.cpp:570
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
 msgstr "<qt><b>אין תמיכה באף אמצעי אבטחה. לא מומלץ להתחבר לשרת הזה.</b></qt>"
 
-#: setupserver.cpp:574
+#: setupserver.cpp:573
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>אי אפשר להשתמש בשרת הזה.</b></qt>"
 
-#: setupserver.cpp:665
+#: setupserver.cpp:664
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"

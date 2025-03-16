@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-15 00:43+0000\n"
+"POT-Creation-Date: 2025-03-16 00:42+0000\n"
 "PO-Revision-Date: 2024-11-19 19:02+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -730,7 +730,7 @@ msgstr "Отваряне на настройките"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:82 setupserverview_desktop.ui:294
+#: setupserver.cpp:81 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -739,48 +739,48 @@ msgstr "Изчистване на текста"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:84 setupserverview_desktop.ui:329
+#: setupserver.cpp:83 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Анонимен"
 
-#: setupserver.cpp:86
+#: setupserver.cpp:85
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr "XOAuth"
 
-#: setupserver.cpp:143
+#: setupserver.cpp:142
 #, kde-format
 msgid "Archive Folder"
 msgstr "Архивна папка"
 
-#: setupserver.cpp:154
+#: setupserver.cpp:153
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: setupserver.cpp:156
+#: setupserver.cpp:155
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%v минута"
 msgstr[1] "%v минути"
 
-#: setupserver.cpp:171
+#: setupserver.cpp:170
 #, kde-format
 msgid "Identity:"
 msgstr "Самоличност:"
 
-#: setupserver.cpp:191
+#: setupserver.cpp:190
 #, kde-format
 msgid "Activities"
 msgstr "Дейности"
 
-#: setupserver.cpp:253
+#: setupserver.cpp:252
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -791,13 +791,13 @@ msgstr ""
 "трябва да изтеглим отново всичките ви имейли от този акаунт. Наистина ли "
 "искате да продължите?"
 
-#: setupserver.cpp:256
+#: setupserver.cpp:255
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Промяна на адреса на сървъра"
 
-#: setupserver.cpp:263
+#: setupserver.cpp:262
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -808,30 +808,30 @@ msgstr ""
 "акаунт от преди, ще трябва да изтеглим отново всичките ви имейли от този "
 "акаунт. Наистина ли искате да продължите?"
 
-#: setupserver.cpp:266
+#: setupserver.cpp:265
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Промяна на потребителското име"
 
-#: setupserver.cpp:552
+#: setupserver.cpp:551
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Не може да се осъществи връзка със сървъра, моля, проверете адреса на "
 "сървъра."
 
-#: setupserver.cpp:564
+#: setupserver.cpp:563
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b> STARTTLS се поддържа и препоръчва. </b></qt>"
 
-#: setupserver.cpp:567
+#: setupserver.cpp:566
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b> SSL/TLS се поддържа и препоръчва. </b></qt>"
 
-#: setupserver.cpp:571
+#: setupserver.cpp:570
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -840,12 +840,12 @@ msgstr ""
 "<qt><b> Не се поддържа защита. Не се препоръчва да се свързвате с този "
 "сървър.</b></qt>"
 
-#: setupserver.cpp:574
+#: setupserver.cpp:573
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b> Не е възможно да се използва този сървър.</b></qt>"
 
-#: setupserver.cpp:665
+#: setupserver.cpp:664
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"

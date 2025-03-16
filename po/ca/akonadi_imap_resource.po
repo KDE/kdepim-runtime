@@ -1,18 +1,18 @@
 # Translation of akonadi_imap_resource.po to Catalan
-# Copyright (C) 2009-2024 This_file_is_part_of_KDE
+# Copyright (C) 2009-2025 This_file_is_part_of_KDE
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# SPDX-FileCopyrightText: 2010, 2011, 2012, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2024 Josep M. Ferrer <txemaq@gmail.com>
 # Manuel Tortosa Moreno <manutortosa@chakra-project.org>, 2009, 2010.
 # Manuel Tortosa <manutortosa@chakra-project.org>, 2010.
 # Antoni Bella Pérez <antonibella5@yahoo.com>, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022.
+# Josep M. Ferrer <txemaq@gmail.com>, 2010, 2011, 2012, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-15 00:43+0000\n"
-"PO-Revision-Date: 2024-11-18 09:04+0100\n"
+"POT-Creation-Date: 2025-03-16 00:42+0000\n"
+"PO-Revision-Date: 2025-03-15 10:32+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
@@ -290,13 +290,13 @@ msgstr ""
 #: imapresource.kcfg:129
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Si el suport d'activitats de l'agent està activat"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: imapresource.kcfg:133
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Les activitats de l'agent"
 
 #: imapresourcebase.cpp:220
 #, kde-format
@@ -539,7 +539,7 @@ msgstr "Informació del servidor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
-msgstr ""
+msgstr "Error en obtenir les capacitats del servidor: %1"
 
 #: serverinfodialog.cpp:109
 #, kde-format
@@ -742,7 +742,7 @@ msgstr "Obre la configuració"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:82 setupserverview_desktop.ui:294
+#: setupserver.cpp:81 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -751,48 +751,48 @@ msgstr "Text en clar"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:84 setupserverview_desktop.ui:329
+#: setupserver.cpp:83 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Anònim"
 
-#: setupserver.cpp:86
+#: setupserver.cpp:85
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr "XOAuth"
 
-#: setupserver.cpp:143
+#: setupserver.cpp:142
 #, kde-format
 msgid "Archive Folder"
 msgstr "Arxiva la carpeta"
 
-#: setupserver.cpp:154
+#: setupserver.cpp:153
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: setupserver.cpp:156
+#: setupserver.cpp:155
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%v minut"
 msgstr[1] "%v minuts"
 
-#: setupserver.cpp:171
+#: setupserver.cpp:170
 #, kde-format
 msgid "Identity:"
 msgstr "Identitat:"
 
-#: setupserver.cpp:191
+#: setupserver.cpp:190
 #, kde-format
 msgid "Activities"
 msgstr "Activitats"
 
-#: setupserver.cpp:253
+#: setupserver.cpp:252
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -803,13 +803,13 @@ msgstr ""
 "abans, cal tornar a baixar tots els vostres correus des d'aquest compte. "
 "Esteu segur que voleu continuar?"
 
-#: setupserver.cpp:256
+#: setupserver.cpp:255
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Canvi de l'adreça del servidor"
 
-#: setupserver.cpp:263
+#: setupserver.cpp:262
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -820,28 +820,28 @@ msgstr ""
 "compte que abans, cal tornar a baixar tots els vostres correus des d'aquest "
 "compte. Esteu segur que voleu continuar?"
 
-#: setupserver.cpp:266
+#: setupserver.cpp:265
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Canvi del nom d'usuari"
 
-#: setupserver.cpp:552
+#: setupserver.cpp:551
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "No s'ha pogut connectar amb el servidor, verifiqueu la seva adreça."
 
-#: setupserver.cpp:564
+#: setupserver.cpp:563
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS està acceptat i recomanat.</b></qt>"
 
-#: setupserver.cpp:567
+#: setupserver.cpp:566
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS està acceptat i recomanat.</b></qt>"
 
-#: setupserver.cpp:571
+#: setupserver.cpp:570
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -850,12 +850,12 @@ msgstr ""
 "<qt><b>No està acceptat cap mètode de seguretat. No és recomanable connectar "
 "amb aquest servidor.</b></qt>"
 
-#: setupserver.cpp:574
+#: setupserver.cpp:573
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>No és possible usar aquest servidor.</b></qt>"
 
-#: setupserver.cpp:665
+#: setupserver.cpp:664
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -1237,55 +1237,3 @@ msgstr "Cerca:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Només els subscrits"
-
-#~ msgctxt "@title:window"
-#~ msgid "IMAP Account Settings"
-#~ msgstr "Configuració del compte IMAP"
-
-#~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Could not access KWallet. It is necessary to store the password. Please "
-#~ "activate it."
-#~ msgstr ""
-#~ "No s'ha pogut accedir al KWallet. Cal emmagatzemar la contrasenya. "
-#~ "Activeu-lo."
-
-#~ msgctxt "@info:status"
-#~ msgid "KWallet Unavailable"
-#~ msgstr "El KWallet no està disponible"
-
-#~ msgctxt "@title:window"
-#~ msgid "Could Not Authenticate"
-#~ msgstr "No es pot autenticar"
-
-#~ msgid "Account Settings"
-#~ msgstr "Configuració del compte"
-
-#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
-#~ msgstr ""
-#~ "Introduïu la contrasenya per a l'usuari «%1» en el servidor IMAP «%2»."
-
-#~ msgid ""
-#~ "Could not access KWallet. If you want to store the password permanently "
-#~ "then you have to activate it. If you do not want to use KWallet, check "
-#~ "the box below, but note that you will be prompted for your password when "
-#~ "needed."
-#~ msgstr ""
-#~ "No podeu accedir al KWallet. Si voleu emmagatzemar la contrasenya "
-#~ "permanentment, heu d'activar-ho. Si no voleu usar KWallet, activeu la "
-#~ "casella de sota, però teniu en compte que se us preguntarà per la vostra "
-#~ "contrasenya quan sigui necessari."
-
-#~ msgid "Do not use KWallet"
-#~ msgstr "No usis KWallet"
-
-#~ msgctxt "@status"
-#~ msgid "Failed to open KWallet"
-#~ msgstr "Ha fallat en obrir el KWallet"
-
-#~ msgid "Serverside Subscription..."
-#~ msgstr "Subscripció de la banda del servidor..."
-
-#~ msgctxt "Authentication method"
-#~ msgid "Gmail"
-#~ msgstr "Gmail"
