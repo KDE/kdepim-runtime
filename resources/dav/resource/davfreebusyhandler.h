@@ -14,6 +14,7 @@
 
 class QDateTime;
 class KJob;
+class Settings;
 
 /**
  * @short The class that will manage DAV free-busy requests
@@ -26,7 +27,7 @@ public:
     /**
      * Constructs a new DavFreeBusyHandler
      */
-    explicit DavFreeBusyHandler(QObject *parent = nullptr);
+    explicit DavFreeBusyHandler(Settings *settings, QObject *parent = nullptr);
 
     /**
      * Checks if the free-busy info for @p email can be handled
@@ -75,4 +76,5 @@ private:
     QMap<QString, RequestTracker> mRequestsTracker;
     QMap<QString, QStringList> mPrincipalScheduleOutbox;
     uint mNextRequestId = 0;
+    Settings *const mSettings;
 };

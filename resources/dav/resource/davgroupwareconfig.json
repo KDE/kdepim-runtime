@@ -1,5 +1,5 @@
 {
     "X-Akonadi-PluginType": "AgentConfig",
-    "X-Akonadi-Library": "davconfig",
+    "X-Akonadi-Library": "davgroupwareconfig",
     "X-Akonadi-AgentConfig-Type": "akonadi_davgroupware_resource"
 }

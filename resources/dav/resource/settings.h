@@ -20,6 +20,13 @@ class Settings : public SettingsBase
     Q_OBJECT
 
 public:
+    enum class Option {
+        NoOption = 0,
+        ExportToDBus = 1,
+    };
+
+    Q_DECLARE_FLAGS(Options, Option)
+
     class UrlConfiguration
     {
     public:
@@ -40,10 +47,8 @@ public:
         int mProtocol;
     };
 
-    Settings();
+    Settings(const KSharedConfigPtr &config, Options options = Option::ExportToDBus);
     ~Settings() override;
-    static Settings *self();
-    void setWinId(WId wid);
     void cleanup();
 
     void setResourceIdentifier(const QString &identifier);
@@ -102,12 +107,10 @@ private:
     void updateRemoteUrls();
     void savePassword(const QString &key, const QString &user, const QString &password);
     QString loadPassword(const QString &key, const QString &user);
-    QString promptForPassword(const QString &user);
 
     void updateToV2();
     void updateToV3();
 
-    WId mWinId;
     QString mResourceIdentifier;
     QMap<QString, UrlConfiguration *> mUrls;
     QMap<QString, QString> mPasswordsCache;

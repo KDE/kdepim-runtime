@@ -18,22 +18,15 @@
 
 #include <KDAV/ProtocolInfo>
 
-#include <KPasswordLineEdit>
 #include <QByteArray>
 #include <QCoreApplication>
 #include <QDBusConnection>
 #include <QDataStream>
-#include <QDialog>
-#include <QDialogButtonBox>
 #include <QFile>
 #include <QFileInfo>
-#include <QHBoxLayout>
-#include <QLabel>
 #include <QPointer>
-#include <QPushButton>
 #include <QRegularExpression>
 #include <QUrl>
-#include <QVBoxLayout>
 
 #include <qt6keychain/keychain.h>
 using namespace QKeychain;
@@ -50,8 +43,6 @@ public:
 
     Settings *q = nullptr;
 };
-
-Q_GLOBAL_STATIC(SettingsHelper, s_globalSettings)
 
 Settings::UrlConfiguration::UrlConfiguration() = default;
 
@@ -74,27 +65,15 @@ QString Settings::UrlConfiguration::serialize()
     return serialized;
 }
 
-Settings *Settings::self()
+Settings::Settings(const KSharedConfigPtr &config, Options options)
+    : SettingsBase(config)
 {
-    if (!s_globalSettings->q) {
-        new Settings;
-        s_globalSettings->q->load();
+    if (options & Option::ExportToDBus) {
+        new SettingsAdaptor(this);
+        QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
+                                                     this,
+                                                     QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
     }
-
-    return s_globalSettings->q;
-}
-
-Settings::Settings()
-    : SettingsBase()
-    , mWinId(0)
-{
-    Q_ASSERT(!s_globalSettings->q);
-    s_globalSettings->q = this;
-
-    new SettingsAdaptor(this);
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 this,
-                                                 QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 
     if (settingsVersion() == 1) {
         updateToV2();
@@ -112,14 +91,9 @@ Settings::~Settings()
     }
 }
 
-void Settings::setWinId(WId winId)
-{
-    mWinId = winId;
-}
-
 void Settings::cleanup()
 {
-    const QString entry = mResourceIdentifier + QLatin1Char(',') + QStringLiteral("$default$");
+    const QString entry = mResourceIdentifier + u',' + QStringLiteral("$default$");
     auto deleteJob = new DeletePasswordJob(QStringLiteral("Passwords"));
     deleteJob->setKey(entry);
     deleteJob->start();
@@ -433,19 +407,7 @@ QString Settings::loadPassword(const QString &key, const QString &user)
     job.start();
     loop.exec();
 
-    if (job.error() == QKeychain::Error::EntryNotFound) {
-        pass = promptForPassword(user);
-        if (!pass.isEmpty()) {
-            if (user == QLatin1StringView("$default$")) {
-                savePassword(mResourceIdentifier, user, pass);
-            } else {
-                savePassword(key, user, pass);
-            }
-        }
-    } else if (job.error() != QKeychain::Error::NoError) {
-        // Other type of errors
-        pass = promptForPassword(user);
-    } else {
+    if (job.error() == QKeychain::Error::NoError) {
         pass = QString::fromLatin1(job.binaryData());
     }
 
@@ -454,47 +416,6 @@ QString Settings::loadPassword(const QString &key, const QString &user)
     }
 
     return pass;
-}
-
-QString Settings::promptForPassword(const QString &user)
-{
-    QPointer<QDialog> dlg = new QDialog();
-    QString password;
-
-    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, dlg);
-    auto mainLayout = new QVBoxLayout(dlg);
-    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
-    okButton->setDefault(true);
-    okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(buttonBox, &QDialogButtonBox::accepted, dlg.data(), &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, dlg.data(), &QDialog::reject);
-
-    auto mainWidget = new QWidget(dlg);
-    mainLayout->addWidget(mainWidget);
-    mainLayout->addWidget(buttonBox);
-    auto vLayout = new QVBoxLayout();
-    mainWidget->setLayout(vLayout);
-    auto label = new QLabel(i18nc("@label:textbox", "A password is required for user %1", (user == QLatin1StringView("$default$") ? defaultUsername() : user)),
-                            mainWidget);
-    vLayout->addWidget(label);
-    auto hLayout = new QHBoxLayout();
-    label = new QLabel(i18nc("@label:textbox", "Password: "), mainWidget);
-    hLayout->addWidget(label);
-    auto lineEdit = new KPasswordLineEdit();
-    lineEdit->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::OnlyNew
-                                                                                                       : KPassword::RevealMode::Never);
-    hLayout->addWidget(lineEdit);
-    vLayout->addLayout(hLayout);
-    lineEdit->setFocus();
-
-    const int result = dlg->exec();
-
-    if (result == QDialog::Accepted && !dlg.isNull()) {
-        password = lineEdit->password();
-    }
-
-    delete dlg;
-    return password;
 }
 
 void Settings::updateToV2()

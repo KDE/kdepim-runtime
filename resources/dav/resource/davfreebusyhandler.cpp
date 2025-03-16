@@ -31,14 +31,15 @@ static QDomElement firstChildElementNS(const QDomElement &parent, const QString 
     return {};
 }
 
-DavFreeBusyHandler::DavFreeBusyHandler(QObject *parent)
+DavFreeBusyHandler::DavFreeBusyHandler(Settings *settings, QObject *parent)
     : QObject(parent)
+    , mSettings(settings)
 {
 }
 
 void DavFreeBusyHandler::canHandleFreeBusy(const QString &email)
 {
-    const KDAV::DavUrl::List urls = Settings::self()->configuredDavUrls();
+    const KDAV::DavUrl::List urls = mSettings->configuredDavUrls();
     for (const KDAV::DavUrl &url : urls) {
         if (url.protocol() == KDAV::CalDav) {
             ++mRequestsTracker[email].handlingJobCount;

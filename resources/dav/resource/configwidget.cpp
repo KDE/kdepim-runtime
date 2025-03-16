@@ -4,9 +4,10 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#include "configdialog.h"
+#include "configwidget.h"
 #include "searchdialog.h"
 #include "settings.h"
+#include "setupwizard.h"
 #include "urlconfigurationdialog.h"
 #include "utils.h"
 
@@ -25,8 +26,10 @@
 #include <QVBoxLayout>
 #include <QWindow>
 
-ConfigDialog::ConfigDialog(QWidget *parent)
-    : QDialog(parent)
+ConfigWidget::ConfigWidget(Settings &settings, const QString &identifier, QWidget *parent)
+    : QWidget(parent)
+    , mSettings(settings)
+    , mIdentifier(identifier)
     , mModel(new QStandardItemModel(this))
 {
     setWindowIcon(QIcon::fromTheme(QStringLiteral("folder-remote")));
@@ -35,13 +38,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     auto mainWidget = new QWidget(this);
     mainLayout->addWidget(mainWidget);
     mUi.setupUi(mainWidget);
-
-    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
-    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
-    mOkButton->setDefault(true);
-    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::onCancelClicked);
-    mainLayout->addWidget(buttonBox);
+    mSettings.setResourceIdentifier(identifier);
 
     const QStringList headers = {i18n("Protocol"), i18n("URL")};
     mModel->setHorizontalHeaderLabels(headers);
@@ -49,7 +46,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     mUi.configuredUrls->setModel(mModel);
     mUi.configuredUrls->setRootIsDecorated(false);
 
-    const KDAV::DavUrl::List lstUrls = Settings::self()->configuredDavUrls();
+    const KDAV::DavUrl::List lstUrls = mSettings.configuredDavUrls();
     for (const KDAV::DavUrl &url : lstUrls) {
         QUrl displayUrl = url.url();
         displayUrl.setUserInfo(QString());
@@ -60,71 +57,89 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     mUi.syncRangeStartType->addItem(i18n("Months"), QVariant(QLatin1StringView("M")));
     mUi.syncRangeStartType->addItem(i18n("Years"), QVariant(QLatin1StringView("Y")));
 
-    mManager = new KConfigDialogManager(this, Settings::self());
-    mManager->updateWidgets();
+    mManager = new KConfigDialogManager(this, &mSettings);
 
-    const int typeIndex = mUi.syncRangeStartType->findData(QVariant(Settings::self()->syncRangeStartType()));
+    connect(mUi.kcfg_displayName, &QLineEdit::textChanged, this, &ConfigWidget::checkUserInput);
+    connect(mUi.configuredUrls->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ConfigWidget::checkConfiguredUrlsButtonsState);
+    connect(mUi.configuredUrls, &QAbstractItemView::doubleClicked, this, &ConfigWidget::onEditButtonClicked);
+
+    connect(mUi.syncRangeStartType, &QComboBox::currentIndexChanged, this, &ConfigWidget::onSyncRangeStartTypeChanged);
+    connect(mUi.addButton, &QPushButton::clicked, this, &ConfigWidget::onAddButtonClicked);
+    connect(mUi.searchButton, &QPushButton::clicked, this, &ConfigWidget::onSearchButtonClicked);
+    connect(mUi.removeButton, &QPushButton::clicked, this, &ConfigWidget::onRemoveButtonClicked);
+    connect(mUi.editButton, &QPushButton::clicked, this, &ConfigWidget::onEditButtonClicked);
+}
+
+ConfigWidget::~ConfigWidget() = default;
+
+void ConfigWidget::loadSettings()
+{
+    const int typeIndex = mUi.syncRangeStartType->findData(QVariant(mSettings.syncRangeStartType()));
     mUi.syncRangeStartType->setCurrentIndex(typeIndex);
 
-    connect(mUi.kcfg_displayName, &QLineEdit::textChanged, this, &ConfigDialog::checkUserInput);
-    connect(mUi.configuredUrls->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ConfigDialog::checkConfiguredUrlsButtonsState);
-    connect(mUi.configuredUrls, &QAbstractItemView::doubleClicked, this, &ConfigDialog::onEditButtonClicked);
-
-    connect(mUi.syncRangeStartType, &QComboBox::currentIndexChanged, this, &ConfigDialog::onSyncRangeStartTypeChanged);
-    connect(mUi.addButton, &QPushButton::clicked, this, &ConfigDialog::onAddButtonClicked);
-    connect(mUi.searchButton, &QPushButton::clicked, this, &ConfigDialog::onSearchButtonClicked);
-    connect(mUi.removeButton, &QPushButton::clicked, this, &ConfigDialog::onRemoveButtonClicked);
-    connect(mUi.editButton, &QPushButton::clicked, this, &ConfigDialog::onEditButtonClicked);
-
-    connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::onOkClicked);
-
     checkUserInput();
-    readConfig();
+    mManager->updateWidgets();
+
+    if (mSettings.defaultUsername().isEmpty()) {
+        auto wizard = new SetupWizard(this);
+        wizard->setAttribute(Qt::WA_DeleteOnClose);
+
+        connect(wizard, &QWizard::finished, this, [this, wizard] {
+            const SetupWizard::Url::List urls = wizard->urls();
+            for (const SetupWizard::Url &url : urls) {
+                auto urlConfig = new Settings::UrlConfiguration();
+
+                urlConfig->mUrl = url.url;
+                urlConfig->mProtocol = url.protocol;
+                urlConfig->mUser = url.userName;
+                urlConfig->mPassword = wizard->field(QStringLiteral("credentialsPassword")).toString();
+
+                mSettings.newUrlConfiguration(urlConfig);
+            }
+
+            const QString defaultUser = wizard->field(QStringLiteral("credentialsUserName")).toString();
+
+            if (!urls.isEmpty()) {
+                mSettings.setDisplayName(wizard->displayName());
+            } else {
+                mSettings.setDisplayName(defaultUser);
+            }
+
+            if (!defaultUser.isEmpty()) {
+                const auto password = wizard->field(QStringLiteral("credentialsPassword")).toString();
+                mSettings.setDefaultUsername(defaultUser);
+                mSettings.setDefaultPassword(password);
+                setPassword(password);
+            }
+
+            mManager->updateWidgets();
+        });
+        wizard->show();
+    }
 }
 
-ConfigDialog::~ConfigDialog()
-{
-    writeConfig();
-}
-
-void ConfigDialog::readConfig()
-{
-    create(); // ensure a window is created
-    windowHandle()->resize(QSize(300, 200));
-    KConfigGroup group(KSharedConfig::openStateConfig(), QStringLiteral("ConfigDialog"));
-    KWindowConfig::restoreWindowSize(windowHandle(), group);
-    resize(windowHandle()->size()); // workaround for QTBUG-40584
-}
-
-void ConfigDialog::writeConfig()
-{
-    KConfigGroup grp(KSharedConfig::openStateConfig(), QStringLiteral("ConfigDialog"));
-    KWindowConfig::saveWindowSize(windowHandle(), grp);
-    grp.sync();
-}
-
-void ConfigDialog::setPassword(const QString &password)
+void ConfigWidget::setPassword(const QString &password)
 {
     mUi.password->setPassword(password);
 }
 
-void ConfigDialog::onSyncRangeStartTypeChanged()
+void ConfigWidget::onSyncRangeStartTypeChanged()
 {
-    Settings::self()->setSyncRangeStartType(mUi.syncRangeStartType->currentData().toString());
+    mSettings.setSyncRangeStartType(mUi.syncRangeStartType->currentData().toString());
 }
 
-void ConfigDialog::checkUserInput()
+void ConfigWidget::checkUserInput()
 {
     checkConfiguredUrlsButtonsState();
 
     if (!mUi.kcfg_displayName->text().trimmed().isEmpty() && !(mModel->invisibleRootItem()->rowCount() == 0)) {
-        mOkButton->setEnabled(true);
+        Q_EMIT okEnabled(true);
     } else {
-        mOkButton->setEnabled(false);
+        Q_EMIT okEnabled(false);
     }
 }
 
-void ConfigDialog::onAddButtonClicked()
+void ConfigWidget::onAddButtonClicked()
 {
     QPointer<UrlConfigurationDialog> dlg = new UrlConfigurationDialog(this);
     dlg->setDefaultUsername(mUi.kcfg_defaultUsername->text());
@@ -132,7 +147,7 @@ void ConfigDialog::onAddButtonClicked()
     const int result = dlg->exec();
 
     if (result == QDialog::Accepted && !dlg.isNull()) {
-        if (Settings::self()->urlConfiguration(KDAV::Protocol(dlg->protocol()), dlg->remoteUrl())) {
+        if (mSettings.urlConfiguration(KDAV::Protocol(dlg->protocol()), dlg->remoteUrl())) {
             KMessageBox::error(this,
                                i18n("Another configuration entry already uses the same URL/protocol couple.\n"
                                     "Please use a different URL"));
@@ -148,7 +163,7 @@ void ConfigDialog::onAddButtonClicked()
             }
             urlConfig->mProtocol = dlg->protocol();
 
-            Settings::self()->newUrlConfiguration(urlConfig);
+            mSettings.newUrlConfiguration(urlConfig);
 
             const QString protocolName = Utils::translatedProtocolName(dlg->protocol());
 
@@ -161,7 +176,7 @@ void ConfigDialog::onAddButtonClicked()
     delete dlg;
 }
 
-void ConfigDialog::onSearchButtonClicked()
+void ConfigWidget::onSearchButtonClicked()
 {
     QPointer<SearchDialog> dlg = new SearchDialog(this);
     dlg->setUsername(mUi.kcfg_defaultUsername->text());
@@ -173,7 +188,7 @@ void ConfigDialog::onSearchButtonClicked()
         for (const QString &resultStr : results) {
             const QStringList split = resultStr.split(QLatin1Char('|'));
             KDAV::Protocol protocol = KDAV::ProtocolInfo::protocolByName(split.at(0));
-            if (!Settings::self()->urlConfiguration(protocol, split.at(1))) {
+            if (!mSettings.urlConfiguration(protocol, split.at(1))) {
                 auto urlConfig = new Settings::UrlConfiguration();
 
                 urlConfig->mUrl = split.at(1);
@@ -185,7 +200,7 @@ void ConfigDialog::onSearchButtonClicked()
                 }
                 urlConfig->mProtocol = protocol;
 
-                Settings::self()->newUrlConfiguration(urlConfig);
+                mSettings.newUrlConfiguration(urlConfig);
 
                 addModelRow(Utils::translatedProtocolName(protocol), split.at(1));
                 mAddedUrls << QPair<QString, KDAV::Protocol>(split.at(1), protocol);
@@ -197,7 +212,7 @@ void ConfigDialog::onSearchButtonClicked()
     delete dlg;
 }
 
-void ConfigDialog::onRemoveButtonClicked()
+void ConfigWidget::onRemoveButtonClicked()
 {
     const QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
     if (indexes.isEmpty()) {
@@ -213,7 +228,7 @@ void ConfigDialog::onRemoveButtonClicked()
     checkUserInput();
 }
 
-void ConfigDialog::onEditButtonClicked()
+void ConfigWidget::onEditButtonClicked()
 {
     const QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
     if (indexes.isEmpty()) {
@@ -224,7 +239,7 @@ void ConfigDialog::onEditButtonClicked()
     const QString proto = mModel->index(row, 0).data().toString();
     const QString url = mModel->index(row, 1).data().toString();
 
-    Settings::UrlConfiguration *urlConfig = Settings::self()->urlConfiguration(Utils::protocolByTranslatedName(proto), url);
+    Settings::UrlConfiguration *urlConfig = mSettings.urlConfiguration(Utils::protocolByTranslatedName(proto), url);
     if (!urlConfig) {
         return;
     }
@@ -246,7 +261,7 @@ void ConfigDialog::onEditButtonClicked()
     const int result = dlg->exec();
 
     if (result == QDialog::Accepted && !dlg.isNull()) {
-        Settings::self()->removeUrlConfiguration(Utils::protocolByTranslatedName(proto), url);
+        mSettings.removeUrlConfiguration(Utils::protocolByTranslatedName(proto), url);
         auto urlConfigAccepted = new Settings::UrlConfiguration();
         urlConfigAccepted->mUrl = dlg->remoteUrl();
         if (dlg->useDefaultCredentials()) {
@@ -256,7 +271,7 @@ void ConfigDialog::onEditButtonClicked()
             urlConfigAccepted->mPassword = dlg->password();
         }
         urlConfigAccepted->mProtocol = dlg->protocol();
-        Settings::self()->newUrlConfiguration(urlConfigAccepted);
+        mSettings.newUrlConfiguration(urlConfigAccepted);
 
         mModel->removeRow(row);
         insertModelRow(row, Utils::translatedProtocolName(dlg->protocol()), dlg->remoteUrl());
@@ -264,30 +279,20 @@ void ConfigDialog::onEditButtonClicked()
     delete dlg;
 }
 
-void ConfigDialog::onOkClicked()
+void ConfigWidget::saveSettings() const
 {
     using UrlPair = QPair<QString, KDAV::Protocol>;
     for (const UrlPair &url : std::as_const(mRemovedUrls)) {
-        Settings::self()->removeUrlConfiguration(url.second, url.first);
+        mSettings.removeUrlConfiguration(url.second, url.first);
     }
 
     mManager->updateSettings();
-    Settings::self()->setDefaultPassword(mUi.password->password());
-    accept();
+    mSettings.setDefaultPassword(mUi.password->password());
+    mSettings.setSettingsVersion(3);
+    mSettings.save();
 }
 
-void ConfigDialog::onCancelClicked()
-{
-    mRemovedUrls.clear();
-
-    using UrlPair = QPair<QString, KDAV::Protocol>;
-    for (const UrlPair &url : std::as_const(mAddedUrls)) {
-        Settings::self()->removeUrlConfiguration(url.second, url.first);
-    }
-    reject();
-}
-
-void ConfigDialog::checkConfiguredUrlsButtonsState()
+void ConfigWidget::checkConfiguredUrlsButtonsState()
 {
     const bool enabled = mUi.configuredUrls->selectionModel()->hasSelection();
 
@@ -295,12 +300,12 @@ void ConfigDialog::checkConfiguredUrlsButtonsState()
     mUi.editButton->setEnabled(enabled);
 }
 
-void ConfigDialog::addModelRow(const QString &protocol, const QString &url)
+void ConfigWidget::addModelRow(const QString &protocol, const QString &url)
 {
     insertModelRow(-1, protocol, url);
 }
 
-void ConfigDialog::insertModelRow(int index, const QString &protocol, const QString &url)
+void ConfigWidget::insertModelRow(int index, const QString &protocol, const QString &url)
 {
     QStandardItem *rootItem = mModel->invisibleRootItem();
     QList<QStandardItem *> items;
@@ -320,4 +325,4 @@ void ConfigDialog::insertModelRow(int index, const QString &protocol, const QStr
     }
 }
 
-#include "moc_configdialog.cpp"
+#include "moc_configwidget.cpp"

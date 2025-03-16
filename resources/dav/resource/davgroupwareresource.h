@@ -11,8 +11,9 @@
 
 #include <memory>
 
+#include "settings.h"
 #include <Akonadi/FreeBusyProviderBase>
-#include <Akonadi/ResourceWidgetBase>
+#include <Akonadi/ResourceBase>
 
 class DavFreeBusyHandler;
 
@@ -23,7 +24,7 @@ namespace KDAV
 class DavItem;
 }
 
-class DavGroupwareResource : public Akonadi::ResourceWidgetBase,
+class DavGroupwareResource : public Akonadi::ResourceBase,
                              public Akonadi::AgentBase::Observer,
                              public Akonadi::FreeBusyProviderBase,
                              public Akonadi::AgentBase::TagObserver
@@ -41,8 +42,7 @@ public:
     void canHandleFreeBusy(const QString &email) const override;
     void retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end) override;
 
-public Q_SLOTS:
-    void configure(WId windowId) override;
+    Settings *settings() const;
 
 private Q_SLOTS:
     void createInitialCache();
@@ -125,4 +125,5 @@ private:
     QMap<QString, QString> mCTagCache;
     DavFreeBusyHandler *const mFreeBusyHandler;
     bool mSyncErrorNotified = false;
+    mutable Settings *mSettings = nullptr;
 };

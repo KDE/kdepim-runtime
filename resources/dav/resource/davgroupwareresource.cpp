@@ -7,13 +7,10 @@
 #include "davgroupwareresource.h"
 
 #include "akonadietagcache.h"
-#include "configdialog.h"
 #include "ctagattribute.h"
 #include "davfreebusyhandler.h"
 #include "davprotocolattribute.h"
 #include "settings.h"
-#include "settingsadaptor.h"
-#include "setupwizard.h"
 #include "utils.h"
 
 #include <KDAV/DavCollection>
@@ -61,9 +58,9 @@ using namespace Akonadi;
 using IncidencePtr = QSharedPointer<KCalendarCore::Incidence>;
 
 DavGroupwareResource::DavGroupwareResource(const QString &id)
-    : ResourceWidgetBase(id)
+    : ResourceBase(id)
     , FreeBusyProviderBase()
-    , mFreeBusyHandler(new DavFreeBusyHandler(this))
+    , mFreeBusyHandler(new DavFreeBusyHandler(settings(), this))
 {
     AttributeFactory::registerAttribute<EntityDisplayAttribute>();
     AttributeFactory::registerAttribute<DavProtocolAttribute>();
@@ -81,7 +78,7 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     auto attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attribute->setIconName(QStringLiteral("folder-remote"));
 
-    int refreshInterval = Settings::self()->refreshInterval();
+    int refreshInterval = settings()->refreshInterval();
     if (refreshInterval == 0) {
         refreshInterval = -1;
     }
@@ -100,8 +97,7 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     changeRecorder()->itemFetchScope().setAncestorRetrieval(ItemFetchScope::All);
     changeRecorder()->itemFetchScope().setFetchTags(true);
 
-    Settings::self()->setWinId(winIdForDialogs());
-    Settings::self()->setResourceIdentifier(identifier());
+    settings()->setResourceIdentifier(identifier());
 
     connect(mFreeBusyHandler, &DavFreeBusyHandler::handlesFreeBusy, this, &DavGroupwareResource::onHandlesFreeBusy);
     connect(mFreeBusyHandler, &DavFreeBusyHandler::freeBusyRetrieved, this, &DavGroupwareResource::onFreeBusyRetrieved);
@@ -115,6 +111,16 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
 DavGroupwareResource::~DavGroupwareResource()
 {
     delete mFreeBusyHandler;
+    delete mSettings;
+}
+
+Settings *DavGroupwareResource::settings() const
+{
+    if (mSettings == nullptr) {
+        mSettings = new Settings(KSharedConfig::openConfig(), Settings::Option::ExportToDBus);
+    }
+
+    return mSettings;
 }
 
 void DavGroupwareResource::collectionRemoved(const Akonadi::Collection &collection)
@@ -125,7 +131,7 @@ void DavGroupwareResource::collectionRemoved(const Akonadi::Collection &collecti
         return;
     }
 
-    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
+    const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(collection.remoteId());
 
     auto job = new KDAV::DavCollectionDeleteJob(davUrl);
     job->setProperty("collection", QVariant::fromValue(collection));
@@ -135,7 +141,7 @@ void DavGroupwareResource::collectionRemoved(const Akonadi::Collection &collecti
 
 void DavGroupwareResource::cleanup()
 {
-    Settings::self()->cleanup();
+    settings()->cleanup();
     ResourceBase::cleanup();
 }
 
@@ -172,69 +178,6 @@ void DavGroupwareResource::onFreeBusyRetrieved(const QString &email, const QStri
     freeBusyRetrieved(email, freeBusy, success, errorText);
 }
 
-void DavGroupwareResource::configure(WId windowId)
-{
-    Settings::self()->setWinId(windowId);
-
-    // On the initial configuration we start the setup wizard
-    if (Settings::self()->configuredDavUrls().isEmpty()) {
-        SetupWizard wizard;
-
-        if (windowId) {
-            wizard.setAttribute(Qt::WA_NativeWindow, true);
-            KWindowSystem::setMainWindow(wizard.windowHandle(), windowId);
-        }
-
-        const int result = wizard.exec();
-        if (result == QDialog::Accepted) {
-            const SetupWizard::Url::List urls = wizard.urls();
-            for (const SetupWizard::Url &url : urls) {
-                auto urlConfig = new Settings::UrlConfiguration();
-
-                urlConfig->mUrl = url.url;
-                urlConfig->mProtocol = url.protocol;
-                urlConfig->mUser = url.userName;
-                urlConfig->mPassword = wizard.field(QStringLiteral("credentialsPassword")).toString();
-
-                Settings::self()->newUrlConfiguration(urlConfig);
-            }
-
-            if (!urls.isEmpty()) {
-                Settings::self()->setDisplayName(wizard.displayName());
-            }
-
-            QString defaultUser = wizard.field(QStringLiteral("credentialsUserName")).toString();
-            if (!defaultUser.isEmpty()) {
-                Settings::self()->setDefaultUsername(defaultUser);
-                Settings::self()->setDefaultPassword(wizard.field(QStringLiteral("credentialsPassword")).toString());
-            }
-        }
-    }
-
-    // continue with the normal config dialog
-    ConfigDialog dialog;
-
-    if (windowId) {
-        dialog.setAttribute(Qt::WA_NativeWindow, true);
-        KWindowSystem::setMainWindow(dialog.windowHandle(), windowId);
-    }
-
-    if (!Settings::self()->defaultUsername().isEmpty()) {
-        dialog.setPassword(Settings::self()->defaultPassword());
-    }
-
-    const int result = dialog.exec();
-
-    if (result == QDialog::Accepted) {
-        Settings::self()->setSettingsVersion(3);
-        Settings::self()->save();
-        synchronize();
-        Q_EMIT configurationDialogAccepted();
-    } else {
-        Q_EMIT configurationDialogRejected();
-    }
-}
-
 KJob *DavGroupwareResource::createRetrieveCollectionsJob()
 {
     qCDebug(DAVRESOURCE_LOG) << "Retrieving collections list";
@@ -246,7 +189,7 @@ KJob *DavGroupwareResource::createRetrieveCollectionsJob()
 
     Q_EMIT status(Running, i18n("Fetching collections"));
 
-    auto job = new KDAV::DavCollectionsMultiFetchJob(Settings::self()->configuredDavUrls());
+    auto job = new KDAV::DavCollectionsMultiFetchJob(settings()->configuredDavUrls());
     connect(job, &KDAV::DavCollectionsMultiFetchJob::result, this, &DavGroupwareResource::onRetrieveCollectionsFinished);
     connect(job, &KDAV::DavCollectionsMultiFetchJob::collectionDiscovered, this, &DavGroupwareResource::onCollectionDiscovered);
     return job;
@@ -308,7 +251,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
         return;
     }
 
-    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
+    const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(collection.remoteId());
 
     if (!davUrl.url().isValid()) {
         qCCritical(DAVRESOURCE_LOG) << "Can't find a configured URL, collection.remoteId() is " << collection.remoteId();
@@ -318,8 +261,8 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
     }
 
     auto job = new KDAV::DavItemsListJob(davUrl, mEtagCaches.value(collection.remoteId()));
-    if (Settings::self()->limitSyncRange()) {
-        QDateTime start = Settings::self()->getSyncRangeStart();
+    if (settings()->limitSyncRange()) {
+        QDateTime start = settings()->getSyncRangeStart();
         qCDebug(DAVRESOURCE_LOG) << "Start time for list job:" << start;
         if (start.isValid()) {
             job->setTimeRange(start.toString(QStringLiteral("yyyyMMddTHHMMssZ")), QString());
@@ -339,7 +282,7 @@ bool DavGroupwareResource::retrieveItem(const Akonadi::Item &item, const QSet<QB
         return false;
     }
 
-    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
+    const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
     if (!davUrl.url().isValid()) {
         qCDebug(DAVRESOURCE_LOG) << "Failed to get a valid DavUrl. Parent collection remote ID is" << item.parentCollection().remoteId();
         cancelTask();
@@ -380,7 +323,7 @@ void DavGroupwareResource::itemAdded(const Akonadi::Item &item, const Akonadi::C
         return;
     }
 
-    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId(), davItem.url().toDisplayString());
+    const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(collection.remoteId(), davItem.url().toDisplayString());
     qCDebug(DAVRESOURCE_LOG) << "Item " << item.id() << " will be put to " << davItem.url().toDisplayString();
     davItem.setUrl(davUrl);
 
@@ -454,7 +397,7 @@ void DavGroupwareResource::doItemChange(const Akonadi::Item &item, const Akonadi
     if (url.contains(QLatin1Char('#'))) {
         url.truncate(url.indexOf(QLatin1Char('#')));
     }
-    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), url);
+    const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), url);
 
     // We have to re-set the URL as it's not necessarily valid after createDavItem()
     davItem.setUrl(davUrl);
@@ -545,7 +488,7 @@ void DavGroupwareResource::onItemRemovalPrepared(KJob *job)
             mainItem = extraItems.takeFirst();
         }
 
-        const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), ridBase);
+        const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), ridBase);
 
         KDAV::DavItem davItem = Utils::createDavItem(mainItem, mainItem.parentCollection(), extraItems);
         davItem.setUrl(davUrl);
@@ -564,7 +507,7 @@ void DavGroupwareResource::onItemRemovalPrepared(KJob *job)
 
 void DavGroupwareResource::doItemRemoval(const Akonadi::Item &item)
 {
-    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
+    const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
 
     KDAV::DavItem davItem;
     davItem.setUrl(davUrl);
@@ -686,7 +629,7 @@ void DavGroupwareResource::itemsTagsChanged(const Item::List &items, const QSet<
             if (url.contains(QLatin1Char('#'))) {
                 url.truncate(url.indexOf(QLatin1Char('#')));
             }
-            const auto davUrl = Settings::self()->davUrlFromCollectionUrl(akonadiItem.parentCollection().remoteId(), akonadiItem.remoteId());
+            const auto davUrl = settings()->davUrlFromCollectionUrl(akonadiItem.parentCollection().remoteId(), akonadiItem.remoteId());
 
             auto davItem = Utils::createDavItem(akonadiItem, akonadiItem.parentCollection());
 
@@ -715,7 +658,7 @@ void DavGroupwareResource::collectionChanged(const Collection &collection)
 {
     qCDebug(DAVRESOURCE_LOG) << "Collection changed" << collection.remoteId();
 
-    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
+    const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(collection.remoteId());
 
     QColor color;
     if (collection.hasAttribute<Akonadi::CollectionColorAttribute>()) {
@@ -802,7 +745,7 @@ void DavGroupwareResource::onCreateInitialCacheReady(KJob *job)
 
 void DavGroupwareResource::onReloadConfig()
 {
-    Settings::self()->reloadConfig();
+    settings()->reloadConfig();
     synchronize();
 }
 
@@ -969,7 +912,7 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
     }
 
     auto collection = job->property("collection").value<Collection>();
-    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
+    const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(collection.remoteId());
     const bool protocolSupportsMultiget = KDAV::ProtocolInfo::useMultiget(davUrl.protocol());
 
     const KDAV::DavItemsListJob *listJob = qobject_cast<KDAV::DavItemsListJob *>(job);
@@ -1206,7 +1149,7 @@ void DavGroupwareResource::onItemAddedFinished(KJob *job)
     auto collection = createJob->property("collection").value<Akonadi::Collection>();
 
     if (davItem.etag().isEmpty()) {
-        const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId(), item.remoteId());
+        const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(collection.remoteId(), item.remoteId());
         davItem.setUrl(davUrl);
         auto fetchJob = new KDAV::DavItemFetchJob(davItem);
         fetchJob->setProperty("item", QVariant::fromValue(item));
@@ -1256,7 +1199,7 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
     }
 
     if (davItem.etag().isEmpty()) {
-        const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
+        const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
         davItem.setUrl(davUrl);
         auto fetchJob = new KDAV::DavItemFetchJob(davItem);
         fetchJob->setProperty("item", QVariant::fromValue(item));
@@ -1293,7 +1236,7 @@ void DavGroupwareResource::onDeletedItemRecreated(KJob *job)
     auto dependentItems = createJob->property("dependentItems").value<Akonadi::Item::List>();
 
     if (davItem.etag().isEmpty()) {
-        const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
+        const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
         davItem.setUrl(davUrl);
         auto fetchJob = new KDAV::DavItemFetchJob(davItem);
         fetchJob->setProperty("item", QVariant::fromValue(item));
@@ -1341,7 +1284,7 @@ void DavGroupwareResource::onItemRemovedFinished(KJob *job)
 
 void DavGroupwareResource::onCollectionDiscovered(KDAV::Protocol protocol, const QString &collection, const QString &config)
 {
-    Settings::self()->addCollectionUrlMapping(protocol, collection, config);
+    settings()->addCollectionUrlMapping(protocol, collection, config);
 }
 
 void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &localDependentItems, const KDAV::DavItem &rI, bool isLocalRemoval, int responseCode)
@@ -1403,7 +1346,7 @@ void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &loca
         if (urlStr.contains(QLatin1Char('#'))) {
             urlStr.truncate(urlStr.indexOf(QLatin1Char('#')));
         }
-        const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId(), urlStr);
+        const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(collection.remoteId(), urlStr);
         davItem.setUrl(davUrl);
 
         auto job = new KDAV::DavItemCreateJob(davItem);
@@ -1472,13 +1415,13 @@ void DavGroupwareResource::onConflictModifyJobFinished(KJob *job)
 
 bool DavGroupwareResource::configurationIsValid()
 {
-    if (Settings::self()->configuredDavUrls().empty()) {
+    if (settings()->configuredDavUrls().isEmpty()) {
         Q_EMIT status(NotConfigured, i18n("The resource is not configured yet"));
         cancelTask(i18n("The resource is not configured yet"));
         return false;
     }
 
-    int newICT = Settings::self()->refreshInterval();
+    int newICT = settings()->refreshInterval();
     if (newICT == 0) {
         newICT = -1;
     }
@@ -1490,10 +1433,10 @@ bool DavGroupwareResource::configurationIsValid()
         mDavCollectionRoot.setCachePolicy(cachePolicy);
     }
 
-    if (!Settings::self()->displayName().isEmpty()) {
+    if (!settings()->displayName().isEmpty()) {
         auto attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-        attribute->setDisplayName(Settings::self()->displayName());
-        setName(Settings::self()->displayName());
+        attribute->setDisplayName(settings()->displayName());
+        setName(settings()->displayName());
     }
 
     return true;
@@ -1503,7 +1446,7 @@ void DavGroupwareResource::retryAfterFailure(const QString &errorMessage)
 {
     Q_EMIT status(Broken, errorMessage);
     deferTask();
-    setTemporaryOffline(Settings::self()->refreshInterval() <= 0 ? 300 : Settings::self()->refreshInterval() * 60);
+    setTemporaryOffline(settings()->refreshInterval() <= 0 ? 300 : settings()->refreshInterval() * 60);
 }
 
 /*static*/
@@ -1525,7 +1468,7 @@ void DavGroupwareResource::setCollectionIcon(Akonadi::Collection &collection)
     }
 }
 
-AKONADI_RESOURCE_MAIN(DavGroupwareResource)
+AKONADI_RESOURCE_CORE_MAIN(DavGroupwareResource)
 
 #include "davgroupwareresource.moc"
 
