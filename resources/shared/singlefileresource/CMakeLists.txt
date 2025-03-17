@@ -1,15 +1,20 @@
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_singlefile_resource\")
 
-add_library(akonadi-singlefileresource
+set(AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES
     collectionflagsattribute.cpp
-    createandsettagsjob.cpp
+    collectionflagsattribute.h
     imapquotaattribute.cpp
+    imapquotaattribute.h
+)
+
+add_library(akonadi-singlefileresource
+    ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
+
+    createandsettagsjob.cpp
     singlefileresourcebase.cpp
 
-    collectionflagsattribute.h
     createandsettagsjob.h
-    imapquotaattribute.h
     singlefileresourcebase.h
 )
 
@@ -44,7 +49,6 @@ set(AKONADI_SINGLEFILERESOURCE_SHARED_UI
 ki18n_wrap_ui(akonadi-singlefileresource-widget_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI} settingsdialog.ui)
 
 add_library(akonadi-singlefileresource-widget
-    ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
     ${akonadi-singlefileresource-widget_SRCS}
     singlefileresourceconfigwidgetbase.cpp
     singlefileresourceconfigwidgetbase.h
