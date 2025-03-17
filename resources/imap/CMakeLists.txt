@@ -101,16 +101,14 @@ set(imapresource_LIB_SRCS
   resourcestate.h
   collectionmetadatahelper.h
   replacemessagejob.h
-  ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
-  ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
   ${imap_common_SRCS}
 )
 
 qt_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresourcebase.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a)
 qt_add_dbus_adaptor(imapresource_LIB_SRCS
-     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
-        imapresourcebase.h ImapResourceBase
-    )
+    ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
+    imapresourcebase.h ImapResourceBase
+)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 
@@ -165,27 +163,29 @@ install(
 if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_imap_resource PROPERTIES UNITY_BUILD ON)
 endif()
+
 if(APPLE)
-  set_target_properties(akonadi_imap_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
-  set_target_properties(akonadi_imap_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.Imap")
-  set_target_properties(akonadi_imap_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi IMAP Resource")
+    set_target_properties(akonadi_imap_resource PROPERTIES
+        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template
+        MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.Imap"
+        MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi IMAP Resource"
+    )
 endif()
 
 target_link_libraries(akonadi_imap_resource
     Qt::DBus
     KPim6::AkonadiCore
     KPim6::IMAP
-    akonadi-singlefileresource
     KPim6::MailTransport
     KPim6::Mime
     KPim6::AkonadiMime
     KPim6::AkonadiAgentWidgetBase # Widgets due to PimCommonAkonadi/ImapAclAttribute TODO FIXME
     KPim6::IdentityManagementCore
-    KF6::I18n
-    imapresource
-    KF6::ConfigGui
-
     KPim6::GAPICore
+    KF6::I18n
+    KF6::ConfigGui
+    akonadi-singlefileresource
+    imapresource
 )
 
 install(

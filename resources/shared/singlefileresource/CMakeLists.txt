@@ -37,14 +37,13 @@ install(TARGETS akonadi-singlefileresource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} L
 # Widget
 
 set(AKONADI_SINGLEFILERESOURCE_SHARED_UI
-  singlefileresourceconfigwidget_desktop.ui
-  singlefileresourceconfigwidget.ui
+    singlefileresourceconfigwidget_desktop.ui
+    singlefileresourceconfigwidget.ui
 )
 
 ki18n_wrap_ui(akonadi-singlefileresource-widget_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI} settingsdialog.ui)
 
 add_library(akonadi-singlefileresource-widget
-    ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
     ${akonadi-singlefileresource-widget_SRCS}
     singlefileresourceconfigwidgetbase.cpp
     singlefileresourceconfigwidgetbase.h
@@ -60,7 +59,6 @@ set_target_properties(akonadi-singlefileresource-widget PROPERTIES
 target_link_libraries(akonadi-singlefileresource-widget
 PUBLIC
     akonadi-singlefileresource
-    KF6::I18n
     KF6::Completion
     KF6::KIOWidgets
     KF6::ConfigWidgets
