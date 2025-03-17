@@ -10,7 +10,7 @@
 
 using namespace KDAV;
 
-QString translateErrorString(const Error &error)
+QString translateErrorString(const KDAV::Error &error)
 {
     QString result;
 
