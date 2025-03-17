@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-02-23 00:41+0000\n"
+"POT-Creation-Date: 2025-03-17 00:41+0000\n"
 "PO-Revision-Date: 2024-07-30 09:54+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -20,38 +20,38 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: configdialog.cpp:33
+#: configwidget.cpp:36
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "Налаштовування ресурсів DAV"
 
-#: configdialog.cpp:46
+#: configwidget.cpp:43
 #, kde-format
 msgid "Protocol"
 msgstr "Протокол"
 
-#: configdialog.cpp:46 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:43 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "Адреса"
 
-#: configdialog.cpp:59
+#: configwidget.cpp:56
 #, kde-format
 msgid "Days"
 msgstr "Дні"
 
-#: configdialog.cpp:60
+#: configwidget.cpp:57
 #, kde-format
 msgid "Months"
 msgstr "Місяці"
 
-#: configdialog.cpp:61
+#: configwidget.cpp:58
 #, kde-format
 msgid "Years"
 msgstr "Роки"
 
-#: configdialog.cpp:137
+#: configwidget.cpp:152
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -62,45 +62,45 @@ msgstr ""
 "Будь ласка, вкажіть іншу адресу."
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
-#: configdialog.ui:29
+#: configwidget.ui:29
 #, kde-format
 msgid "Display name:"
 msgstr "Екранне ім'я:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: configdialog.ui:39
+#: configwidget.ui:39
 #, kde-format
 msgid "Refresh every:"
 msgstr "Оновлювати кожні:"
 
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, kcfg_refreshInterval)
-#: configdialog.ui:48
+#: configwidget.ui:48
 #, kde-format
 msgid "Never"
 msgstr "Ніколи"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: configdialog.ui:58
+#: configwidget.ui:58
 #, kde-format
 msgid "minutes"
 msgstr "хвилин"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: configdialog.ui:80 urlconfigurationdialog.ui:120
+#: configwidget.ui:80 urlconfigurationdialog.ui:120
 #, kde-format
 msgid "Username:"
 msgstr "Користувач:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:136
+#: configwidget.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "Пароль:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_limitSyncRange)
-#: configdialog.ui:136
+#: configwidget.ui:136
 #, kde-format
 msgid ""
 "Select this if your calendars contain a lot of events and the server cannot "
@@ -110,43 +110,43 @@ msgstr ""
 "сервер не може обробити усі запити"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
-#: configdialog.ui:139
+#: configwidget.ui:139
 #, kde-format
 msgid "Limit CalDav retrieval time range"
 msgstr "Обмежити часовий діапазон отримання CalDav"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:151
+#: configwidget.ui:151
 #, kde-format
 msgid "Only sync events more recent than"
 msgstr "Синхронізувати лише події, які сталися після"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
-#: configdialog.ui:190
+#: configwidget.ui:190
 #, kde-format
 msgid "Server Configuration:"
 msgstr "Налаштування сервера:"
 
 #. i18n: ectx: property (text), widget (QPushButton, addButton)
-#: configdialog.ui:204
+#: configwidget.ui:204
 #, kde-format
 msgid "Add"
 msgstr "Додати"
 
 #. i18n: ectx: property (text), widget (QPushButton, searchButton)
-#: configdialog.ui:211 searchdialog.ui:151
+#: configwidget.ui:211 searchdialog.ui:151
 #, kde-format
 msgid "Search"
 msgstr "Шукати"
 
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: configdialog.ui:218
+#: configwidget.ui:218
 #, kde-format
 msgid "Remove"
 msgstr "Вилучити"
 
 #. i18n: ectx: property (text), widget (QPushButton, editButton)
-#: configdialog.ui:225
+#: configwidget.ui:225
 #, kde-format
 msgid "Edit"
 msgstr "Змінити"
@@ -299,73 +299,73 @@ msgstr ""
 "Під час виконання запиту виникла проблема. Підтримки потрібних вам типів "
 "MIME не передбачено."
 
-#: davfreebusyhandler.cpp:58
+#: davfreebusyhandler.cpp:59
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "Не виявлено розкладу надсилання вихідних повідомлень для %1"
 
-#: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
+#: davfreebusyhandler.cpp:188 davfreebusyhandler.cpp:199
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Некоректна відповідь від сервера"
 
-#: davfreebusyhandler.cpp:209
+#: davfreebusyhandler.cpp:210
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Не вдалося обробити отримані дані щодо вільного/зайнятого часу"
 
-#: davgroupwareresource.cpp:164
+#: davgroupwareresource.cpp:169
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr ""
 "Отримання даних щодо вільного/зайнятого часу у автономному режимі неможливе"
 
-#: davgroupwareresource.cpp:247
+#: davgroupwareresource.cpp:189
 #, kde-format
 msgid "Fetching collections"
 msgstr "Отримання збірок"
 
-#: davgroupwareresource.cpp:315
+#: davgroupwareresource.cpp:257
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Надійшов запит щодо отримання записів для невідомої збірки: %1"
 
-#: davgroupwareresource.cpp:372
+#: davgroupwareresource.cpp:314
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Некоректна збірка для запису %1."
 
-#: davgroupwareresource.cpp:704
+#: davgroupwareresource.cpp:646
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Не вдалося внести зміни до записів: %1"
 
-#: davgroupwareresource.cpp:743
+#: davgroupwareresource.cpp:685
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Не вдалося змінити збірку: %1."
 
-#: davgroupwareresource.cpp:812
+#: davgroupwareresource.cpp:754
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Не вдалося вилучити збірку: %1."
 
-#: davgroupwareresource.cpp:832
+#: davgroupwareresource.cpp:774
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Не вдалося отримати збірки: %1."
 
-#: davgroupwareresource.cpp:965 davgroupwareresource.cpp:1064
+#: davgroupwareresource.cpp:907 davgroupwareresource.cpp:1006
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Не вдалося отримати записи: %1."
 
-#: davgroupwareresource.cpp:1144
+#: davgroupwareresource.cpp:1086
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Не вдалося отримати запис: %1."
 
-#: davgroupwareresource.cpp:1164
+#: davgroupwareresource.cpp:1106
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -374,23 +374,23 @@ msgstr ""
 "Не вдалося отримати запис: не вдалося обробити дані запису. Можливо, запис "
 "вже вилучено."
 
-#: davgroupwareresource.cpp:1201
+#: davgroupwareresource.cpp:1143
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Не вдалося додати запис: %1."
 
-#: davgroupwareresource.cpp:1245 davgroupwareresource.cpp:1358
-#: davgroupwareresource.cpp:1370
+#: davgroupwareresource.cpp:1187 davgroupwareresource.cpp:1300
+#: davgroupwareresource.cpp:1312
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Не вдалося змінити запис: %1."
 
-#: davgroupwareresource.cpp:1332 davgroupwareresource.cpp:1389
+#: davgroupwareresource.cpp:1274 davgroupwareresource.cpp:1331
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Не вдалося вилучити запис: %1."
 
-#: davgroupwareresource.cpp:1476 davgroupwareresource.cpp:1477
+#: davgroupwareresource.cpp:1418 davgroupwareresource.cpp:1419
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Ресурс ще не налаштовано"
@@ -543,18 +543,6 @@ msgstr "особу з ім’ям"
 #, kde-format
 msgid "a contact with email"
 msgstr "контакт з адресою ел. пошти"
-
-#: settings.cpp:477
-#, kde-format
-msgctxt "@label:textbox"
-msgid "A password is required for user %1"
-msgstr "Потрібен пароль до облікового запису користувача %1"
-
-#: settings.cpp:481
-#, kde-format
-msgctxt "@label:textbox"
-msgid "Password: "
-msgstr "Пароль: "
 
 #: setupwizard.cpp:137
 #, kde-format
@@ -772,6 +760,14 @@ msgstr "CardDAV"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDAV"
+
+#~ msgctxt "@label:textbox"
+#~ msgid "A password is required for user %1"
+#~ msgstr "Потрібен пароль до облікового запису користувача %1"
+
+#~ msgctxt "@label:textbox"
+#~ msgid "Password: "
+#~ msgstr "Пароль: "
 
 #~ msgid "General Configuration"
 #~ msgstr "Загальні налаштування"

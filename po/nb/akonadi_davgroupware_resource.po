@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-02-23 00:41+0000\n"
+"POT-Creation-Date: 2025-03-17 00:41+0000\n"
 "PO-Revision-Date: 2014-09-19 22:47+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -19,38 +19,38 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: configdialog.cpp:33
+#: configwidget.cpp:36
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr ""
 
-#: configdialog.cpp:46
+#: configwidget.cpp:43
 #, kde-format
 msgid "Protocol"
 msgstr "Protokoll"
 
-#: configdialog.cpp:46 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:43 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "Nettadresse"
 
-#: configdialog.cpp:59
+#: configwidget.cpp:56
 #, kde-format
 msgid "Days"
 msgstr "Dager"
 
-#: configdialog.cpp:60
+#: configwidget.cpp:57
 #, kde-format
 msgid "Months"
 msgstr "Måneder"
 
-#: configdialog.cpp:61
+#: configwidget.cpp:58
 #, kde-format
 msgid "Years"
 msgstr ""
 
-#: configdialog.cpp:137
+#: configwidget.cpp:152
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -60,45 +60,45 @@ msgstr ""
 "Bruk en annen URL"
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
-#: configdialog.ui:29
+#: configwidget.ui:29
 #, kde-format
 msgid "Display name:"
 msgstr "Vist navn:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: configdialog.ui:39
+#: configwidget.ui:39
 #, kde-format
 msgid "Refresh every:"
 msgstr "Frisk opp hver:"
 
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, kcfg_refreshInterval)
-#: configdialog.ui:48
+#: configwidget.ui:48
 #, kde-format
 msgid "Never"
 msgstr "Aldri"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: configdialog.ui:58
+#: configwidget.ui:58
 #, kde-format
 msgid "minutes"
 msgstr "minutter"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: configdialog.ui:80 urlconfigurationdialog.ui:120
+#: configwidget.ui:80 urlconfigurationdialog.ui:120
 #, kde-format
 msgid "Username:"
 msgstr "Brukernavn:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:136
+#: configwidget.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "Passord:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_limitSyncRange)
-#: configdialog.ui:136
+#: configwidget.ui:136
 #, kde-format
 msgid ""
 "Select this if your calendars contain a lot of events and the server cannot "
@@ -106,43 +106,43 @@ msgid ""
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
-#: configdialog.ui:139
+#: configwidget.ui:139
 #, kde-format
 msgid "Limit CalDav retrieval time range"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:151
+#: configwidget.ui:151
 #, kde-format
 msgid "Only sync events more recent than"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
-#: configdialog.ui:190
+#: configwidget.ui:190
 #, kde-format
 msgid "Server Configuration:"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, addButton)
-#: configdialog.ui:204
+#: configwidget.ui:204
 #, kde-format
 msgid "Add"
 msgstr "Legg til"
 
 #. i18n: ectx: property (text), widget (QPushButton, searchButton)
-#: configdialog.ui:211 searchdialog.ui:151
+#: configwidget.ui:211 searchdialog.ui:151
 #, kde-format
 msgid "Search"
 msgstr "Søk"
 
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: configdialog.ui:218
+#: configwidget.ui:218
 #, kde-format
 msgid "Remove"
 msgstr "Fjern"
 
 #. i18n: ectx: property (text), widget (QPushButton, editButton)
-#: configdialog.ui:225
+#: configwidget.ui:225
 #, kde-format
 msgid "Edit"
 msgstr "Rediger"
@@ -285,95 +285,95 @@ msgid ""
 "supported."
 msgstr ""
 
-#: davfreebusyhandler.cpp:58
+#: davfreebusyhandler.cpp:59
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "Fant ingen plan-utboks for %1"
 
-#: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
+#: davfreebusyhandler.cpp:188 davfreebusyhandler.cpp:199
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Ugyldig svar fra tjeneren"
 
-#: davfreebusyhandler.cpp:209
+#: davfreebusyhandler.cpp:210
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Kan ikke tokke mottatte ledig/opptatt data"
 
-#: davgroupwareresource.cpp:164
+#: davgroupwareresource.cpp:169
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "Kan ikke hente ledig/opptatt-informasjon når frakoblet"
 
-#: davgroupwareresource.cpp:247
+#: davgroupwareresource.cpp:189
 #, kde-format
 msgid "Fetching collections"
 msgstr "Henter samlinger"
 
-#: davgroupwareresource.cpp:315
+#: davgroupwareresource.cpp:257
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Bedt om å hente elementer for en ukjent samling: %1"
 
-#: davgroupwareresource.cpp:372
+#: davgroupwareresource.cpp:314
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Ugyldig samling for element %1."
 
-#: davgroupwareresource.cpp:704
+#: davgroupwareresource.cpp:646
 #, fuzzy, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Klarer ikke legge til element: %1"
 
-#: davgroupwareresource.cpp:743
+#: davgroupwareresource.cpp:685
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr ""
 
-#: davgroupwareresource.cpp:812
+#: davgroupwareresource.cpp:754
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Klarer ikke fjerne samling: %1"
 
-#: davgroupwareresource.cpp:832
+#: davgroupwareresource.cpp:774
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Klarer ikke hente samlinger: %1"
 
-#: davgroupwareresource.cpp:965 davgroupwareresource.cpp:1064
+#: davgroupwareresource.cpp:907 davgroupwareresource.cpp:1006
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Klarer ikke hente elementer: %1"
 
-#: davgroupwareresource.cpp:1144
+#: davgroupwareresource.cpp:1086
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Klarer ikke hente element: %1"
 
-#: davgroupwareresource.cpp:1164
+#: davgroupwareresource.cpp:1106
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
 
-#: davgroupwareresource.cpp:1201
+#: davgroupwareresource.cpp:1143
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Klarer ikke legge til element: %1"
 
-#: davgroupwareresource.cpp:1245 davgroupwareresource.cpp:1358
-#: davgroupwareresource.cpp:1370
+#: davgroupwareresource.cpp:1187 davgroupwareresource.cpp:1300
+#: davgroupwareresource.cpp:1312
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Klarte ikke å endre element: %1"
 
-#: davgroupwareresource.cpp:1332 davgroupwareresource.cpp:1389
+#: davgroupwareresource.cpp:1274 davgroupwareresource.cpp:1331
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Klarer ikke å fjerne element: %1"
 
-#: davgroupwareresource.cpp:1476 davgroupwareresource.cpp:1477
+#: davgroupwareresource.cpp:1418 davgroupwareresource.cpp:1419
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Ressursen er ikke satt opp ennå"
@@ -527,18 +527,6 @@ msgstr "en person ved navn"
 #, kde-format
 msgid "a contact with email"
 msgstr "en kontakt med e-post"
-
-#: settings.cpp:477
-#, fuzzy, kde-format
-msgctxt "@label:textbox"
-msgid "A password is required for user %1"
-msgstr "Det kreves passord for bruker %1"
-
-#: settings.cpp:481
-#, fuzzy, kde-format
-msgctxt "@label:textbox"
-msgid "Password: "
-msgstr "Passord:"
 
 #: setupwizard.cpp:137
 #, kde-format
@@ -754,3 +742,13 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
+
+#, fuzzy
+#~ msgctxt "@label:textbox"
+#~ msgid "A password is required for user %1"
+#~ msgstr "Det kreves passord for bruker %1"
+
+#, fuzzy
+#~ msgctxt "@label:textbox"
+#~ msgid "Password: "
+#~ msgstr "Passord:"

@@ -1,8 +1,8 @@
-# Translation of akonadi_imap_resource.po to Spanish
-# Copyright (C) YEAR This_file_is_part_of_KDE
+# Spanish translations for akonadi_imap_resource.po package.
+# Copyright (C) 2009-2025 This_file_is_part_of_KDE
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2009, 2011, 2014, 2018, 2019, 2020, 2024 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2009, 2011, 2014, 2018, 2019, 2020, 2024, 2025 Eloy Cuadra <ecuadra@eloihr.net>
 # SPDX-FileCopyrightText: 2009, 2010, 2011, 2012, 2019 Javier Vinal <fjvinal@gmail.com>
 # SPDX-FileCopyrightText: 2010, 2012, 2013, 2014, 2015, 2016, 2017, 2018 Javier Viñal <fjvinal@gmail.com>
 msgid ""
@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-03-16 00:42+0000\n"
-"PO-Revision-Date: 2024-11-20 20:12+0100\n"
+"PO-Revision-Date: 2025-03-16 01:37+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.08.3\n"
+"X-Generator: Lokalize 24.12.3\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: addcollectiontask.cpp:33
@@ -288,13 +288,13 @@ msgstr ""
 #: imapresource.kcfg:129
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Indica si está activa la compatibilidad del agente con las actividades"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: imapresource.kcfg:133
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Las actividades del agente"
 
 #: imapresourcebase.cpp:220
 #, kde-format
@@ -381,7 +381,7 @@ msgstr "Moviendo carpeta «%1» desde «%2» hasta «%3»"
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr "Buscando..."
+msgstr "Buscando…"
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -536,7 +536,7 @@ msgstr "Información del servidor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
-msgstr ""
+msgstr "Ha ocurrido un error al obtener las capacidades del servidor: %1"
 
 #: serverinfodialog.cpp:109
 #, kde-format
@@ -1096,7 +1096,7 @@ msgstr "Activar suscripciones en el servidor"
 #: setupserverview_desktop.ui:381
 #, kde-format
 msgid "Serverside Subscription…"
-msgstr "Suscripción en el servidor..."
+msgstr "Suscripción en el servidor…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1236,104 +1236,3 @@ msgstr "Buscar:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Solo suscritos"
-
-#~ msgctxt "@title:window"
-#~ msgid "IMAP Account Settings"
-#~ msgstr "Preferencias de cuentas IMAP"
-
-#~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Could not access KWallet. It is necessary to store the password. Please "
-#~ "activate it."
-#~ msgstr ""
-#~ "No se puede acceder a KWallet, que es necesaria para guardar la "
-#~ "contraseña. Actívela."
-
-#~ msgctxt "@info:status"
-#~ msgid "KWallet Unavailable"
-#~ msgstr "KWallet no disponible"
-
-#~ msgctxt "@title:window"
-#~ msgid "Could Not Authenticate"
-#~ msgstr "No se puede autenticar"
-
-#~ msgid "Account Settings"
-#~ msgstr "Preferencias de la cuenta"
-
-#~ msgid "Please enter password for user '%1' on IMAP server '%2'."
-#~ msgstr ""
-#~ "Introduzca la contraseña para el usuario «%1» en el servidor IMAP «%2»."
-
-#~ msgid ""
-#~ "Could not access KWallet. If you want to store the password permanently "
-#~ "then you have to activate it. If you do not want to use KWallet, check "
-#~ "the box below, but note that you will be prompted for your password when "
-#~ "needed."
-#~ msgstr ""
-#~ "No se ha podido acceder a KWallet. Si desea guardar la contraseña de modo "
-#~ "permanente, deberá activarlo. Si no desea usar KWallet, marque la casilla "
-#~ "inferior, aunque debe tener en cuenta que se le pedirá la contraseña "
-#~ "cuando sea necesario."
-
-#~ msgid "Do not use KWallet"
-#~ msgstr "No usar KWallet"
-
-#~ msgctxt "@status"
-#~ msgid "Failed to open KWallet"
-#~ msgstr "No se ha podido abrir KWallet"
-
-#~ msgid "Serverside Subscription..."
-#~ msgstr "Suscripción en el servidor..."
-
-#~ msgctxt "Authentication method"
-#~ msgid "Gmail"
-#~ msgstr "Gmail"
-
-#~ msgid "Use the default identity for this account"
-#~ msgstr "Usar la identidad predeterminada para esta cuenta"
-
-#~ msgid "Use &default identity"
-#~ msgstr "Usar identidad pre&determinada"
-
-#~ msgid "Select the KMail identity used for this account"
-#~ msgstr "Seleccione la identidad de KMail usada para esta cuenta"
-
-#~ msgid "Server has not reported UIDNEXT."
-#~ msgstr "El servidor no ha declarado UIDNEXT."
-
-#~ msgid ""
-#~ "Could not retrieve namespaces from the IMAP server %1.\n"
-#~ "%2"
-#~ msgstr ""
-#~ "No se han podido obtener los espacios de nombres del servidor IMAP %1.\n"
-#~ "%2"
-
-#~ msgid ""
-#~ "Could not retrieve namespaces from the IMAP server.\n"
-#~ "%1"
-#~ msgstr ""
-#~ "No se han podido obtener los espacios de nombres del servidor IMAP.\n"
-#~ "%1"
-
-#~ msgid ""
-#~ "Could not send client ID to the IMAP server %1.\n"
-#~ "%2"
-#~ msgstr ""
-#~ "No se ha podido enviar el ID del cliente al servidor IMAP %1.\n"
-#~ "%2"
-
-#~ msgid ""
-#~ "Could not send client ID to the IMAP server.\n"
-#~ "%1"
-#~ msgstr ""
-#~ "No se ha podido enviar el ID del cliente al servidor IMAP.\n"
-#~ "%1"
-
-#~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
-#~ msgstr "<qt><b>SSL está permitido y recomendado.</b></qt>"
-
-#~ msgid "There is currently no connection to the IMAP server."
-#~ msgstr "Ahora mismo no hay ninguna conexión con el servidor IMAP."
-
-#~ msgid "There is currently no session to the IMAP server available."
-#~ msgstr "Ahora mismo no hay ninguna sesión disponible con el servidor IMAP."

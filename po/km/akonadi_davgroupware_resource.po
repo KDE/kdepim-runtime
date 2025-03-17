@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-02-23 00:41+0000\n"
+"POT-Creation-Date: 2025-03-17 00:41+0000\n"
 "PO-Revision-Date: 2011-12-21 11:31+0700\n"
 "Last-Translator: Seng Sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <supprot@khmeros.info>\n"
@@ -19,39 +19,39 @@ msgstr ""
 "X-Generator: WordForge 0.8 RC1\n"
 "X-Language: km-KH\n"
 
-#: configdialog.cpp:33
+#: configwidget.cpp:36
 #, fuzzy, kde-format
 #| msgid "DAV groupware configuration wizard"
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "អ្នក​ជំនួយ​ការ​កំណត់​រនាសម្ព័ន្ធ​​របស់ DAV groupware"
 
-#: configdialog.cpp:46
+#: configwidget.cpp:43
 #, kde-format
 msgid "Protocol"
 msgstr "ពិធីការ"
 
-#: configdialog.cpp:46 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:43 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "URL"
 
-#: configdialog.cpp:59
+#: configwidget.cpp:56
 #, kde-format
 msgid "Days"
 msgstr ""
 
-#: configdialog.cpp:60
+#: configwidget.cpp:57
 #, kde-format
 msgid "Months"
 msgstr ""
 
-#: configdialog.cpp:61
+#: configwidget.cpp:58
 #, kde-format
 msgid "Years"
 msgstr ""
 
-#: configdialog.cpp:137
+#: configwidget.cpp:152
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -61,34 +61,34 @@ msgstr ""
 "​សូម​ប្រើ URL ផ្សេង"
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
-#: configdialog.ui:29
+#: configwidget.ui:29
 #, fuzzy, kde-format
 #| msgid "Display name"
 msgid "Display name:"
 msgstr "ឈ្មោះ​បង្ហាញ"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: configdialog.ui:39
+#: configwidget.ui:39
 #, fuzzy, kde-format
 #| msgid "Refresh every"
 msgid "Refresh every:"
 msgstr "ធ្វើ​ឲ្យ​ស្រស់​រៀងរាល់"
 
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, kcfg_refreshInterval)
-#: configdialog.ui:48
+#: configwidget.ui:48
 #, kde-format
 msgid "Never"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: configdialog.ui:58
+#: configwidget.ui:58
 #, kde-format
 msgid "minutes"
 msgstr "នាទី"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: configdialog.ui:80 urlconfigurationdialog.ui:120
+#: configwidget.ui:80 urlconfigurationdialog.ui:120
 #, fuzzy, kde-format
 #| msgid "Username"
 msgid "Username:"
@@ -96,14 +96,14 @@ msgstr "ឈ្មោះ​អ្នក​ប្រើ"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:136
+#: configwidget.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:136
 #, fuzzy, kde-format
 #| msgid "Password: "
 msgid "Password:"
 msgstr "ពាក្យ​សម្ងាត់ ៖"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_limitSyncRange)
-#: configdialog.ui:136
+#: configwidget.ui:136
 #, kde-format
 msgid ""
 "Select this if your calendars contain a lot of events and the server cannot "
@@ -111,44 +111,44 @@ msgid ""
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
-#: configdialog.ui:139
+#: configwidget.ui:139
 #, kde-format
 msgid "Limit CalDav retrieval time range"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configdialog.ui:151
+#: configwidget.ui:151
 #, kde-format
 msgid "Only sync events more recent than"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
-#: configdialog.ui:190
+#: configwidget.ui:190
 #, fuzzy, kde-format
 #| msgid "Server configuration"
 msgid "Server Configuration:"
 msgstr "កា​រកំណត់​រចនាសម្ព័ន្ធ​ម៉ាស៊ីនបម្រើ"
 
 #. i18n: ectx: property (text), widget (QPushButton, addButton)
-#: configdialog.ui:204
+#: configwidget.ui:204
 #, kde-format
 msgid "Add"
 msgstr "បន្ថែម"
 
 #. i18n: ectx: property (text), widget (QPushButton, searchButton)
-#: configdialog.ui:211 searchdialog.ui:151
+#: configwidget.ui:211 searchdialog.ui:151
 #, kde-format
 msgid "Search"
 msgstr "ស្វែងរក"
 
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: configdialog.ui:218
+#: configwidget.ui:218
 #, kde-format
 msgid "Remove"
 msgstr "យកចេញ"
 
 #. i18n: ectx: property (text), widget (QPushButton, editButton)
-#: configdialog.ui:225
+#: configwidget.ui:225
 #, kde-format
 msgid "Edit"
 msgstr "កែសម្រួល"
@@ -312,98 +312,98 @@ msgstr ""
 "មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ធាតុ​មិន​ត្រូវ​បាន​បង្កើត​នៅ​លើ​ម៉ាស៊ីន​បម្រើ​ទេ ។ \n"
 "%1 (%2) ។"
 
-#: davfreebusyhandler.cpp:58
+#: davfreebusyhandler.cpp:59
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "រក​មិន​ឃើញ​​ការ​កំណត់​​ប្រអប់​ចេញ​សម្រាប់ %1 "
 
-#: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
+#: davfreebusyhandler.cpp:188 davfreebusyhandler.cpp:199
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "ការ​ឆ្លើយតប​មិន​ត្រឹមត្រូវ​ពី​​ម៉ាស៊ីន​បម្រើ"
 
-#: davfreebusyhandler.cpp:209
+#: davfreebusyhandler.cpp:210
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "មិន​អាច​ញែក​ទិន្នន័យ​​ទំនេរ/​រវល់ ដែល​បាន​ទទួល​ឡើយ"
 
-#: davgroupwareresource.cpp:164
+#: davgroupwareresource.cpp:169
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "មិន​អាច​ទៅ​យក​ព័ត៌មាន​ទំនេរ/​រវល់ ខណៈ​ពេល​នៅ​ក្រៅ​បណ្ដាញ​ឡើយ"
 
-#: davgroupwareresource.cpp:247
+#: davgroupwareresource.cpp:189
 #, kde-format
 msgid "Fetching collections"
 msgstr "ទៅ​យក​សម្រាំង"
 
-#: davgroupwareresource.cpp:315
+#: davgroupwareresource.cpp:257
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "មិនអាច​ទៅ​យក​សម្រាំង​បាន​ទេ ៖ %1"
 
-#: davgroupwareresource.cpp:372
+#: davgroupwareresource.cpp:314
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "សម្រាំង​មិន​ត្រឹមត្រូវ​សម្រាប់​ធាតុ %1 ។"
 
-#: davgroupwareresource.cpp:704
+#: davgroupwareresource.cpp:646
 #, fuzzy, kde-format
 #| msgid "Unable to add item: %1"
 msgid "Unable to modify items: %1"
 msgstr "មិនអាច​បន្ថែម​ធាតុ ៖ %1"
 
-#: davgroupwareresource.cpp:743
+#: davgroupwareresource.cpp:685
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to modify collection: %1"
 msgstr "មិនអាច​​យក​សម្រាំង​ចេញ​បាន​ទេ ៖ %1"
 
-#: davgroupwareresource.cpp:812
+#: davgroupwareresource.cpp:754
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "មិនអាច​​យក​សម្រាំង​ចេញ​បាន​ទេ ៖ %1"
 
-#: davgroupwareresource.cpp:832
+#: davgroupwareresource.cpp:774
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "មិនអាច​ទៅ​យក​សម្រាំង​បាន​ទេ ៖ %1"
 
-#: davgroupwareresource.cpp:965 davgroupwareresource.cpp:1064
+#: davgroupwareresource.cpp:907 davgroupwareresource.cpp:1006
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "មិនអាច​ទៅ​យក​ធាតុ ៖ %1"
 
-#: davgroupwareresource.cpp:1144
+#: davgroupwareresource.cpp:1086
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "មិនអាច​ទៅ​យក​ធាតុ ៖ %1"
 
-#: davgroupwareresource.cpp:1164
+#: davgroupwareresource.cpp:1106
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
 
-#: davgroupwareresource.cpp:1201
+#: davgroupwareresource.cpp:1143
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "មិនអាច​បន្ថែម​ធាតុ ៖ %1"
 
-#: davgroupwareresource.cpp:1245 davgroupwareresource.cpp:1358
-#: davgroupwareresource.cpp:1370
+#: davgroupwareresource.cpp:1187 davgroupwareresource.cpp:1300
+#: davgroupwareresource.cpp:1312
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "មិនអាច​ផ្លាស់ប្ដូរ​ធាតុ ៖ %1"
 
-#: davgroupwareresource.cpp:1332 davgroupwareresource.cpp:1389
+#: davgroupwareresource.cpp:1274 davgroupwareresource.cpp:1331
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "មិនអាច​យក​ធាតុចេញ​បាន​ទេ ៖ %1"
 
-#: davgroupwareresource.cpp:1476 davgroupwareresource.cpp:1477
+#: davgroupwareresource.cpp:1418 davgroupwareresource.cpp:1419
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "ធនធាន​មិន​ត្រូវ​បាន​កំណត់​រចនាសម្ព័ន្ធ​នៅ​ឡើយ​ទេ"
@@ -559,20 +559,6 @@ msgstr "ដាក់​ឈ្មោះ​ផ្ទាល់ខ្លួន"
 #, kde-format
 msgid "a contact with email"
 msgstr "ទាក់ទង​​តាម​អ៊ីមែល"
-
-#: settings.cpp:477
-#, fuzzy, kde-format
-#| msgid "A password is required for user %1"
-msgctxt "@label:textbox"
-msgid "A password is required for user %1"
-msgstr "ទាមទារ​ពាក្យសម្ងាត់​សម្រាប់​អ្នក​ប្រើ %1"
-
-#: settings.cpp:481
-#, fuzzy, kde-format
-#| msgid "Password: "
-msgctxt "@label:textbox"
-msgid "Password: "
-msgstr "ពាក្យ​សម្ងាត់ ៖"
 
 #: setupwizard.cpp:137
 #, fuzzy, kde-format
@@ -805,6 +791,18 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
+
+#, fuzzy
+#~| msgid "A password is required for user %1"
+#~ msgctxt "@label:textbox"
+#~ msgid "A password is required for user %1"
+#~ msgstr "ទាមទារ​ពាក្យសម្ងាត់​សម្រាប់​អ្នក​ប្រើ %1"
+
+#, fuzzy
+#~| msgid "Password: "
+#~ msgctxt "@label:textbox"
+#~ msgid "Password: "
+#~ msgstr "ពាក្យ​សម្ងាត់ ៖"
 
 #, fuzzy
 #~| msgid "General configuration"
