@@ -17,7 +17,6 @@
 #include <QPair>
 #include <QString>
 
-class QPushButton;
 class KConfigDialogManager;
 class QStandardItemModel;
 
