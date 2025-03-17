@@ -6,15 +6,14 @@
 
 #pragma once
 
-#include "akonadi-singlefileresource_export.h"
 #include "config-kdepim-runtime.h"
 #include "singlefileresourceconfigwidget.h"
 #include <Akonadi/AgentConfigurationBase>
 #include <KLocalizedString>
 #if HAVE_ACTIVITY_SUPPORT
-#include <Akonadi/AgentConfigurationBase>
 #include <PimCommonActivities/ConfigureActivitiesWidget>
 #endif
+
 template<typename Settings>
 class SingleFileResourceConfigBase : public Akonadi::AgentConfigurationBase
 {
