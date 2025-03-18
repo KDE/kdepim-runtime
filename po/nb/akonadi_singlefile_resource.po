@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-08 00:44+0000\n"
+"POT-Creation-Date: 2025-03-18 00:43+0000\n"
 "PO-Revision-Date: 2014-09-23 21:49+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -211,7 +211,7 @@ msgstr "Kan ikke laste inn fila «%1»."
 msgid "Could not save file '%1'."
 msgstr "Klarte ikke lagre fila «%1»."
 
-#: singlefileresourceconfigbase.h:31
+#: singlefileresourceconfigbase.h:30
 #, kde-format
 msgid "Activities"
 msgstr ""

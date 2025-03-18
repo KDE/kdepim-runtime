@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-08 00:44+0000\n"
+"POT-Creation-Date: 2025-03-18 00:43+0000\n"
 "PO-Revision-Date: 2024-08-22 19:03+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
@@ -219,7 +219,7 @@ msgstr "Non foi posíbel cargar o ficheiro «%1»."
 msgid "Could not save file '%1'."
 msgstr "Non foi posíbel gardar o ficheiro «%1»."
 
-#: singlefileresourceconfigbase.h:31
+#: singlefileresourceconfigbase.h:30
 #, kde-format
 msgid "Activities"
 msgstr "Actividades"

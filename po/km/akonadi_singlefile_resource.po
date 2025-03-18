@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-08 00:44+0000\n"
+"POT-Creation-Date: 2025-03-18 00:43+0000\n"
 "PO-Revision-Date: 2010-11-29 09:24+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -234,7 +234,7 @@ msgstr "មិនអាច​ផ្ទុក​ឯកសារ '%1' ។"
 msgid "Could not save file '%1'."
 msgstr "មិនអាច​រក្សាទុក​ឯកសារ '%1' ។"
 
-#: singlefileresourceconfigbase.h:31
+#: singlefileresourceconfigbase.h:30
 #, kde-format
 msgid "Activities"
 msgstr ""

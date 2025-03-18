@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-08 00:44+0000\n"
+"POT-Creation-Date: 2025-03-18 00:43+0000\n"
 "PO-Revision-Date: 2024-08-23 09:18+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -218,7 +218,7 @@ msgstr "Не вдалось завантажити файл «%1»."
 msgid "Could not save file '%1'."
 msgstr "Не вдалося зберегти файл «%1»."
 
-#: singlefileresourceconfigbase.h:31
+#: singlefileresourceconfigbase.h:30
 #, kde-format
 msgid "Activities"
 msgstr "Простори дій"

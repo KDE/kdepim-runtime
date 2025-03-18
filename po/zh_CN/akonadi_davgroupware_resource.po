@@ -740,11 +740,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#~ msgctxt "@label:textbox"
-#~ msgid "A password is required for user %1"
-#~ msgstr "需要用户 %1 的密码"
-
-#~ msgctxt "@label:textbox"
-#~ msgid "Password: "
-#~ msgstr "密码："
