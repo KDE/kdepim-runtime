@@ -1,5 +1,6 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_pop3_resource\")
 
+qcoro_enable_coroutines()
 
 set(pop3_common_SRCS
     settings.cpp
@@ -60,6 +61,7 @@ target_link_libraries(akonadi_pop3_resource
     qt6keychain
     KF6::WidgetsAddons
     Sasl2::Sasl2
+    QCoro::Core
 )
 if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_pop3_resource PROPERTIES UNITY_BUILD ON)

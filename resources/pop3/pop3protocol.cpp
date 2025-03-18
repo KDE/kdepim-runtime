@@ -8,6 +8,7 @@
  */
 #include "pop3protocol.h"
 #include "settings.h"
+#include <kio/askignoresslerrorsjob.h>
 
 extern "C" {
 #include <sasl/sasl.h>
@@ -21,15 +22,17 @@ extern "C" {
 #include <QRegularExpression>
 
 #include <KLocalizedString>
+#include <KSslErrorUiData>
 
 #include <MailTransport/Transport>
 
 #include <QSslCipher>
 #include <QSslSocket>
 #include <QThread>
+
 #include <cstring>
 
-#include <KSslErrorUiData>
+#include <QCoroSignal>
 
 #define GREETING_BUF_LEN 1024
 #define MAX_RESPONSE_LEN 512
@@ -540,7 +543,7 @@ Result POP3Protocol::loginPASS()
     return Result::pass();
 }
 
-Result POP3Protocol::startSsl()
+QCoro::Task<Result> POP3Protocol::startSsl()
 {
     mSocket->ignoreSslErrors(); // Don't worry, errors are handled manually below
     mSocket->startClientEncryption();
@@ -558,22 +561,28 @@ Result POP3Protocol::startSsl()
 
         qCDebug(POP3_LOG) << "Initial SSL handshake failed. cipher.isNull() is" << cipher.isNull() << ", cipher.usedBits() is" << cipher.usedBits()
                           << ", the socket says:" << mSocket->errorString() << "and the SSL errors are:" << errorString;
-        mContinueAfterSslError = false;
-        Q_EMIT sslError(KSslErrorUiData(mSocket));
-        if (!mContinueAfterSslError) {
+        auto job = new KIO::AskIgnoreSslErrorsJob(KSslErrorUiData(mSocket), KIO::AskIgnoreSslErrorsJob::RecallAndStoreRules, nullptr);
+        job->start();
+        co_await qCoro(job, &KJob::finished);
+
+        if (job->error()) {
+            errorString = job->errorString();
+        }
+
+        if (!job->ignored()) {
             if (errorString.isEmpty())
                 errorString = mSocket->errorString();
             qCDebug(POP3_LOG) << "TLS setup has failed. Aborting." << errorString;
             closeConnection();
-            return Result::fail(ERR_SSL_FAILURE, i18n("SSL/TLS error: %1", errorString));
+            co_return Result::fail(ERR_SSL_FAILURE, i18n("SSL/TLS error: %1", errorString));
         }
     } else {
         qCDebug(POP3_LOG) << "TLS has been enabled.";
     }
-    return Result::pass();
+    co_return Result::pass();
 }
 
-Result POP3Protocol::openConnection()
+QCoro::Task<Result> POP3Protocol::openConnection()
 {
     Q_ASSERT(QThread::currentThread() != qApp->thread());
 
@@ -597,13 +606,13 @@ Result POP3Protocol::openConnection()
         mSocket->connectToHost(m_sServer, m_iPort);
         if (!mSocket->waitForConnected(s_connectTimeout)) {
             const QString errorString = i18n("%1: %2", m_sServer, mSocket->errorString());
-            return Result::fail(mSocket->error(), errorString);
+            co_return Result::fail(mSocket->error(), errorString);
         }
 
         if (mSettings.useSSL()) {
-            const Result res = startSsl();
+            const Result res = co_await startSsl();
             if (!res.success) {
-                return res;
+                co_return res;
             }
         }
 
@@ -620,7 +629,7 @@ Result POP3Protocol::openConnection()
             delete[] greeting_buf;
             closeConnection();
             // we've got major problems, and possibly the wrong port
-            return Result::fail(ERR_CANNOT_LOGIN, errorString);
+            co_return Result::fail(ERR_CANNOT_LOGIN, errorString);
         }
         QString greeting = QLatin1StringView(greeting_buf);
         delete[] greeting_buf;
@@ -639,25 +648,25 @@ Result POP3Protocol::openConnection()
 
         if (m_try_apop && !supports_apop) {
             closeConnection();
-            return Result::fail(ERR_CANNOT_LOGIN,
-                                i18n("Your POP3 server (%1) does not support APOP.\n"
-                                     "Choose a different authentication method.",
-                                     m_sServer));
+            co_return Result::fail(ERR_CANNOT_LOGIN,
+                                   i18n("Your POP3 server (%1) does not support APOP.\n"
+                                        "Choose a different authentication method.",
+                                        m_sServer));
         }
 
         // Try to go into TLS mode
         if (mSettings.useTLS()) {
             if (command("STLS") != Ok) {
                 closeConnection();
-                return Result::fail(ERR_SSL_FAILURE,
-                                    i18n("Your POP3 server claims to "
-                                         "support TLS but negotiation "
-                                         "was unsuccessful.\nYou can "
-                                         "disable TLS in the POP account settings dialog."));
+                co_return Result::fail(ERR_SSL_FAILURE,
+                                       i18n("Your POP3 server claims to "
+                                            "support TLS but negotiation "
+                                            "was unsuccessful.\nYou can "
+                                            "disable TLS in the POP account settings dialog."));
             }
-            const Result res = startSsl();
+            const Result res = co_await startSsl();
             if (!res.success) {
-                return res;
+                co_return res;
             }
         }
 
@@ -665,20 +674,20 @@ Result POP3Protocol::openConnection()
             qCDebug(POP3_LOG) << "Trying APOP";
             const Result retval = loginAPOP(greeting.toLatin1().data() + apop_pos);
             if (retval.success || retval.error != ERR_LOGIN_FAILED_TRY_FALLBACKS) {
-                return retval;
+                co_return retval;
             }
             m_try_apop = false;
         } else if (m_try_sasl) {
             qCDebug(POP3_LOG) << "Trying SASL";
             const Result retval = loginSASL();
             if (retval.success || retval.error != ERR_LOGIN_FAILED_TRY_FALLBACKS) {
-                return retval;
+                co_return retval;
             }
             m_try_sasl = false;
         } else {
             // Fall back to conventional USER/PASS scheme
             qCDebug(POP3_LOG) << "Trying USER/PASS";
-            return loginPASS();
+            co_return loginPASS();
         }
     } while (true);
 }
@@ -882,11 +891,6 @@ Result POP3Protocol::get(const QString &_commandString)
         qCDebug(POP3_LOG) << "Finishing up";
     }
     return Result::pass();
-}
-
-void POP3Protocol::setContinueAfterSslError(bool b)
-{
-    mContinueAfterSslError = b;
 }
 
 #include "moc_pop3protocol.cpp"

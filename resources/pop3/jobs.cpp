@@ -22,7 +22,6 @@ POPSession::POPSession(Settings &settings, const QString &password)
     , mThread(new QThread)
 {
     qRegisterMetaType<Result>();
-    connect(mProtocol.get(), &POP3Protocol::sslError, this, &POPSession::handleSslError, Qt::BlockingQueuedConnection);
     mProtocol->moveToThread(mThread.get());
     mThread->start();
 }
@@ -40,12 +39,6 @@ POPSession::~POPSession()
 void POPSession::setCurrentJob(BaseJob *job)
 {
     mCurrentJob = job;
-}
-
-void POPSession::handleSslError(const KSslErrorUiData &errorData)
-{
-    const bool cont = KIO::SslUi::askIgnoreSslErrors(errorData, KIO::SslUi::RecallAndStoreRules);
-    mProtocol->setContinueAfterSslError(cont);
 }
 
 POP3Protocol *POPSession::getProtocol() const
@@ -153,8 +146,9 @@ void LoginJob::start()
     POP3Protocol *protocol = mPOPSession->getProtocol();
     QMetaObject::invokeMethod(protocol, [this, protocol]() {
         Q_ASSERT(QThread::currentThread() != qApp->thread());
-        const Result result = protocol->openConnection();
-        Q_EMIT jobDone(result);
+        protocol->openConnection().then([this](const Result result) {
+            Q_EMIT jobDone(result);
+        });
     });
 }
 

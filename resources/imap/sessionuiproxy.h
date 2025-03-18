@@ -9,17 +9,19 @@
 
 #include "kimap/sessionuiproxy.h"
 
-#include <KIO/SslUi>
+#include <KIO/AskIgnoreSslErrorsJob>
+#include <KMessageBox>
 
 class SessionUiProxy : public KIMAP::SessionUiProxy
 {
 public:
     bool ignoreSslError(const KSslErrorUiData &errorData) override
     {
-        if (KIO::SslUi::askIgnoreSslErrors(errorData, KIO::SslUi::RecallAndStoreRules)) {
-            return true;
-        } else {
-            return false;
+        auto job = new KIO::AskIgnoreSslErrorsJob(errorData, KIO::AskIgnoreSslErrorsJob::RecallAndStoreRules);
+        job->exec(); // TODO make KIMAP::SessionUiProxy async
+        if (job->error()) {
+            KMessageBox::error(nullptr, job->errorString());
         }
+        return job->ignored();
     }
 };

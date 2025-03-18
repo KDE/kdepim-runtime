@@ -123,6 +123,8 @@ set_package_properties(Qt6Keychain PROPERTIES
                                    URL "https://github.com/frankosterfeld/qtkeychain"
                                    TYPE REQUIRED)
 
+find_package(QCoro6 0.4 COMPONENTS Core Network REQUIRED)
+
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 ecm_set_disabled_deprecation_versions(QT 6.7.2 KF 6.12.0)
 

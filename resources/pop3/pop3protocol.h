@@ -12,6 +12,7 @@
 
 #include <KJob>
 
+#include <QCoroTask>
 #include <QObject>
 
 #include <sys/types.h>
@@ -47,7 +48,7 @@ public:
     /**
      * Attempt to initiate a POP3 connection via a TCP socket.
      */
-    [[nodiscard]] Result openConnection();
+    [[nodiscard]] QCoro::Task<Result> openConnection();
 
     /**
      *  Attempt to properly shut down the POP3 connection by sending
@@ -61,13 +62,7 @@ public:
      */
     [[nodiscard]] Result get(const QString &command);
 
-    /**
-     * Sets whether to continue or abort after a SSL error
-     */
-    void setContinueAfterSslError(bool b);
-
 Q_SIGNALS:
-    void sslError(const KSslErrorUiData &);
     void data(const QByteArray &data);
     void messageComplete();
 
@@ -127,7 +122,7 @@ private:
      */
     [[nodiscard]] Result loginPASS();
 
-    [[nodiscard]] Result startSsl();
+    [[nodiscard]] QCoro::Task<Result> startSsl();
 
     const Settings &mSettings;
     QSslSocket *const mSocket;
@@ -135,7 +130,6 @@ private:
     QString m_sServer, m_sPass, m_sUser;
     bool m_try_apop, m_try_sasl, supports_apop;
     bool mConnected = false;
-    bool mContinueAfterSslError = false;
     QString m_sError;
     char readBuffer[MAX_PACKET_LEN];
     qint64 readBufferLen;

@@ -38,8 +38,6 @@ public:
     void setCurrentJob(BaseJob *job);
 
 private:
-    void handleSslError(const KSslErrorUiData &);
-
     std::unique_ptr<POP3Protocol> mProtocol;
     BaseJob *mCurrentJob = nullptr;
     std::unique_ptr<QThread> mThread;
