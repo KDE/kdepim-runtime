@@ -64,6 +64,8 @@ static const QList<EwsItemPrivate::Reader::Item> ewsItemItems = {
     {EwsItemFieldBody, QStringLiteral("Body"), &EwsItemPrivate::bodyReader},
     {EwsItemFieldAttachments, QStringLiteral("Attachments"), &EwsItemPrivate::attachmentsReader},
     {EwsItemFieldDateTimeReceived, QStringLiteral("DateTimeReceived"), &ewsXmlDateTimeReader},
+    {EwsItemFieldDateTimeSent, QLatin1StringView("DateTimeSent"), &ewsXmlDateTimeReader},
+    {EwsItemFieldDateTimeCreated, QLatin1StringView("DateTimeCreated"), &ewsXmlDateTimeReader},
     {EwsItemFieldSize, QStringLiteral("Size"), &ewsXmlUIntReader},
     {EwsItemFieldCategories, QStringLiteral("Categories"), &EwsItemPrivate::categoriesReader, &EwsItemPrivate::categoriesWriter},
     {EwsItemFieldImportance, QStringLiteral("Importance"), &ewsXmlImportanceReader},
