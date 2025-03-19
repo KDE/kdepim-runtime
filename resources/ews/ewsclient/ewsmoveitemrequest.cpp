@@ -7,6 +7,8 @@
 #include "ewsmoveitemrequest.h"
 #include "ewsclient_debug.h"
 
+using namespace Qt::StringLiterals;
+
 EwsMoveItemRequest::EwsMoveItemRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
 {
@@ -21,13 +23,13 @@ void EwsMoveItemRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("MoveItem"));
+    writer.writeStartElement(ewsMsgNsUri, "MoveItem"_L1);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("ToFolderId"));
+    writer.writeStartElement(ewsMsgNsUri, "ToFolderId"_L1);
     mDestFolderId.writeFolderIds(writer);
     writer.writeEndElement();
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("ItemIds"));
+    writer.writeStartElement(ewsMsgNsUri, "ItemIds"_L1);
     for (const EwsId &id : std::as_const(mIds)) {
         id.writeItemIds(writer);
     }
@@ -84,7 +86,7 @@ EwsMoveItemRequest::Response::Response(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QLatin1StringView("Items")) {
+        if (reader.name() == "Items"_L1) {
             if (reader.readNextStartElement()) {
                 EwsItem item(reader);
                 if (!item.isValid()) {

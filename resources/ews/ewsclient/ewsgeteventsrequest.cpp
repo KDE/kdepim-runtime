@@ -7,8 +7,10 @@
 #include "ewsgeteventsrequest.h"
 #include "ewsclient_debug.h"
 
+using namespace Qt::StringLiterals;
+
 EwsGetEventsRequest::EwsGetEventsRequest(EwsClient &client, QObject *parent)
-    : EwsEventRequestBase(client, QStringLiteral("GetEvents"), parent)
+    : EwsEventRequestBase(client, "GetEvents"_L1, parent)
 {
 }
 
@@ -21,11 +23,11 @@ void EwsGetEventsRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("GetEvents"));
+    writer.writeStartElement(ewsMsgNsUri, "GetEvents"_L1);
 
-    writer.writeTextElement(ewsMsgNsUri, QStringLiteral("SubscriptionId"), mSubscriptionId);
+    writer.writeTextElement(ewsMsgNsUri, "SubscriptionId"_L1, mSubscriptionId);
 
-    writer.writeTextElement(ewsMsgNsUri, QStringLiteral("Watermark"), mWatermark);
+    writer.writeTextElement(ewsMsgNsUri, "Watermark"_L1, mWatermark);
 
     writer.writeEndElement();
 

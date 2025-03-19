@@ -9,6 +9,8 @@
 
 #include "ewsclient_debug.h"
 
+using namespace Qt::StringLiterals;
+
 EwsItemBasePrivate::EwsItemBasePrivate()
     : mValid(false)
 {
@@ -55,16 +57,15 @@ bool EwsItemBasePrivate::extendedPropertyReader(QXmlStreamReader &reader, QVaria
             return false;
         }
 
-        if (reader.name() == QLatin1StringView("FieldURI") || reader.name() == QLatin1StringView("IndexedFieldURI")
-            || reader.name() == QLatin1StringView("ExtendedFieldURI")) {
+        if (reader.name() == "FieldURI"_L1 || reader.name() == "IndexedFieldURI"_L1 || reader.name() == "ExtendedFieldURI"_L1) {
             if (!prop.read(reader)) {
                 reader.skipCurrentElement();
                 return false;
             }
             reader.skipCurrentElement();
-        } else if (reader.name() == QLatin1StringView("Value")) {
+        } else if (reader.name() == "Value"_L1) {
             value = reader.readElementText();
-        } else if (reader.name() == QLatin1StringView("Values")) {
+        } else if (reader.name() == "Values"_L1) {
             QStringList values;
             while (reader.readNextStartElement()) {
                 if (reader.namespaceUri() != ewsTypeNsUri) {
@@ -74,7 +75,7 @@ bool EwsItemBasePrivate::extendedPropertyReader(QXmlStreamReader &reader, QVaria
                     return false;
                 }
 
-                if (reader.name() == QLatin1StringView("Value")) {
+                if (reader.name() == "Value"_L1) {
                     values.append(reader.readElementText());
                 }
             }
@@ -102,7 +103,7 @@ bool EwsItemBasePrivate::extendedPropertyWriter(QXmlStreamWriter &writer, const 
          * This is not exactly true for extended properties as there may be many. Work around this
          * by avoiding writing the first element start tag and the last element end tag. */
         if (it != propHash.cbegin()) {
-            writer.writeStartElement(ewsTypeNsUri, QStringLiteral("ExtendedProperty"));
+            writer.writeStartElement(ewsTypeNsUri, "ExtendedProperty"_L1);
         }
         it.key().write(writer);
         it.key().writeExtendedValue(writer, it.value());

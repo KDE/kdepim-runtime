@@ -7,11 +7,13 @@
 #include "ewsdeleteitemrequest.h"
 #include "ewsclient_debug.h"
 
-static const QList<QString> deleteTypes = {
-    QStringLiteral("HardDelete"),
-    QStringLiteral("SoftDelete"),
-    QStringLiteral("MoveToDeletedItems"),
-};
+using namespace Qt::StringLiterals;
+
+static const constexpr auto deleteTypes = std::to_array<QLatin1StringView>({
+    "HardDelete"_L1,
+    "SoftDelete"_L1,
+    "MoveToDeletedItems"_L1,
+});
 
 EwsDeleteItemRequest::EwsDeleteItemRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
@@ -30,11 +32,11 @@ void EwsDeleteItemRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("DeleteItem"));
+    writer.writeStartElement(ewsMsgNsUri, "DeleteItem"_L1);
 
-    writer.writeAttribute(QStringLiteral("DeleteType"), deleteTypes[mType]);
+    writer.writeAttribute("DeleteType"_L1, deleteTypes[mType]);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("ItemIds"));
+    writer.writeStartElement(ewsMsgNsUri, "ItemIds"_L1);
     for (const EwsId &id : std::as_const(mIds)) {
         id.writeItemIds(writer);
     }

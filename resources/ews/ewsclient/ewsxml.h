@@ -31,7 +31,7 @@ public:
         {
         }
 
-        Item(T k, const QString &n, const ReadFunction &rfn = ReadFunction(), const WriteFunction &wfn = WriteFunction())
+        Item(T k, const QLatin1StringView &n, const ReadFunction &rfn = ReadFunction(), const WriteFunction &wfn = WriteFunction())
             : key(k)
             , elmName(n)
             , readFn(rfn)
@@ -40,7 +40,7 @@ public:
         }
 
         T key;
-        QString elmName;
+        QLatin1StringView elmName;
         ReadFunction readFn;
         WriteFunction writeFn;
     };

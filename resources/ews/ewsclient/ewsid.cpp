@@ -13,33 +13,35 @@
 #include "ewsclient.h"
 #include "ewsclient_debug.h"
 
+using namespace Qt::StringLiterals;
+
 static constexpr auto distinguishedIdNames = std::to_array({
-    QLatin1StringView("calendar"),
-    QLatin1StringView("contacts"),
-    QLatin1StringView("deleteditems"),
-    QLatin1StringView("drafts"),
-    QLatin1StringView("inbox"),
-    QLatin1StringView("journal"),
-    QLatin1StringView("notes"),
-    QLatin1StringView("outbox"),
-    QLatin1StringView("sentitems"),
-    QLatin1StringView("tasks"),
-    QLatin1StringView("msgfolderroot"),
-    QLatin1StringView("root"),
-    QLatin1StringView("junkemail"),
-    QLatin1StringView("searchfolders"),
-    QLatin1StringView("voicemail"),
-    QLatin1StringView("recoverableitemsroot"),
-    QLatin1StringView("recoverableitemsdeletions"),
-    QLatin1StringView("recoverableitemsversions"),
-    QLatin1StringView("recoverableitemspurges"),
-    QLatin1StringView("archiveroot"),
-    QLatin1StringView("archivemsgfolderroot"),
-    QLatin1StringView("archivedeleteditems"),
-    QLatin1StringView("archiverecoverableitemsroot"),
-    QLatin1StringView("archiverecoverableitemsdeletions"),
-    QLatin1StringView("archiverecoverableitemsversions"),
-    QLatin1StringView("archiverecoverableitemspurges"),
+    "calendar"_L1,
+    "contacts"_L1,
+    "deleteditems"_L1,
+    "drafts"_L1,
+    "inbox"_L1,
+    "journal"_L1,
+    "notes"_L1,
+    "outbox"_L1,
+    "sentitems"_L1,
+    "tasks"_L1,
+    "msgfolderroot"_L1,
+    "root"_L1,
+    "junkemail"_L1,
+    "searchfolders"_L1,
+    "voicemail"_L1,
+    "recoverableitemsroot"_L1,
+    "recoverableitemsdeletions"_L1,
+    "recoverableitemsversions"_L1,
+    "recoverableitemspurges"_L1,
+    "archiveroot"_L1,
+    "archivemsgfolderroot"_L1,
+    "archivedeleteditems"_L1,
+    "archiverecoverableitemsroot"_L1,
+    "archiverecoverableitemsdeletions"_L1,
+    "archiverecoverableitemsversions"_L1,
+    "archiverecoverableitemspurges"_L1,
 });
 
 EwsId::EwsId(QXmlStreamReader &reader)
@@ -49,8 +51,8 @@ EwsId::EwsId(QXmlStreamReader &reader)
     // such as "FolderId" or "ParentFolderId".
     const QXmlStreamAttributes &attrs = reader.attributes();
 
-    QStringView idRef = attrs.value(QStringLiteral("Id"));
-    QStringView changeKeyRef = attrs.value(QStringLiteral("ChangeKey"));
+    QStringView idRef = attrs.value("Id"_L1);
+    QStringView changeKeyRef = attrs.value("ChangeKey"_L1);
 
     if (idRef.isNull()) {
         return;
@@ -126,14 +128,14 @@ bool EwsId::operator<(const EwsId &other) const
 void EwsId::writeFolderIds(QXmlStreamWriter &writer) const
 {
     if (mType == Distinguished) {
-        writer.writeStartElement(ewsTypeNsUri, QStringLiteral("DistinguishedFolderId"));
-        writer.writeAttribute(QStringLiteral("Id"), distinguishedIdNames[mDid]);
+        writer.writeStartElement(ewsTypeNsUri, "DistinguishedFolderId"_L1);
+        writer.writeAttribute("Id"_L1, distinguishedIdNames[mDid]);
         writer.writeEndElement();
     } else if (mType == Real) {
-        writer.writeStartElement(ewsTypeNsUri, QStringLiteral("FolderId"));
-        writer.writeAttribute(QStringLiteral("Id"), mId);
+        writer.writeStartElement(ewsTypeNsUri, "FolderId"_L1);
+        writer.writeAttribute("Id"_L1, mId);
         if (!mChangeKey.isEmpty()) {
-            writer.writeAttribute(QStringLiteral("ChangeKey"), mChangeKey);
+            writer.writeAttribute("ChangeKey"_L1, mChangeKey);
         }
         writer.writeEndElement();
     }
@@ -142,10 +144,10 @@ void EwsId::writeFolderIds(QXmlStreamWriter &writer) const
 void EwsId::writeItemIds(QXmlStreamWriter &writer) const
 {
     if (mType == Real) {
-        writer.writeStartElement(ewsTypeNsUri, QStringLiteral("ItemId"));
-        writer.writeAttribute(QStringLiteral("Id"), mId);
+        writer.writeStartElement(ewsTypeNsUri, "ItemId"_L1);
+        writer.writeAttribute("Id"_L1, mId);
         if (!mChangeKey.isEmpty()) {
-            writer.writeAttribute(QStringLiteral("ChangeKey"), mChangeKey);
+            writer.writeAttribute("ChangeKey"_L1, mChangeKey);
         }
         writer.writeEndElement();
     }
@@ -154,9 +156,9 @@ void EwsId::writeItemIds(QXmlStreamWriter &writer) const
 void EwsId::writeAttributes(QXmlStreamWriter &writer) const
 {
     if (mType == Real) {
-        writer.writeAttribute(QStringLiteral("Id"), mId);
+        writer.writeAttribute("Id"_L1, mId);
         if (!mChangeKey.isEmpty()) {
-            writer.writeAttribute(QStringLiteral("ChangeKey"), mChangeKey);
+            writer.writeAttribute("ChangeKey"_L1, mChangeKey);
         }
     }
 }

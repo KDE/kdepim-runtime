@@ -12,41 +12,43 @@
 #include "ewsid.h"
 #include "ewsitem.h"
 
+using namespace Qt::StringLiterals;
+
 static constexpr auto messageSensitivityNames = std::to_array<QLatin1StringView>({
-    QLatin1StringView("Normal"),
-    QLatin1StringView("Personal"),
-    QLatin1StringView("Private"),
-    QLatin1StringView("Confidential"),
+    "Normal"_L1,
+    "Personal"_L1,
+    "Private"_L1,
+    "Confidential"_L1,
 });
 
 static constexpr auto messageImportanceNames = std::to_array<QLatin1StringView>({
-    QLatin1StringView("Low"),
-    QLatin1StringView("Normal"),
-    QLatin1StringView("High"),
+    "Low"_L1,
+    "Normal"_L1,
+    "High"_L1,
 });
 
 static constexpr auto calendarItemTypeNames = std::to_array<QLatin1StringView>({
-    QLatin1StringView("Single"),
-    QLatin1StringView("Occurrence"),
-    QLatin1StringView("Exception"),
-    QLatin1StringView("RecurringMaster"),
+    "Single"_L1,
+    "Occurrence"_L1,
+    "Exception"_L1,
+    "RecurringMaster"_L1,
 });
 
 static constexpr auto legacyFreeBusyStatusNames = std::to_array<QLatin1StringView>({
-    QLatin1StringView("Free"),
-    QLatin1StringView("Tentative"),
-    QLatin1StringView("Busy"),
-    QLatin1StringView("OOF"),
-    QLatin1StringView("NoData"),
+    "Free"_L1,
+    "Tentative"_L1,
+    "Busy"_L1,
+    "OOF"_L1,
+    "NoData"_L1,
 });
 
 static constexpr auto responseTypeNames = std::to_array<QLatin1StringView>({
-    QLatin1StringView("Unknown"),
-    QLatin1StringView("Organizer"),
-    QLatin1StringView("Tentative"),
-    QLatin1StringView("Accept"),
-    QLatin1StringView("Decline"),
-    QLatin1StringView("NoResponseReceived"),
+    "Unknown"_L1,
+    "Organizer"_L1,
+    "Tentative"_L1,
+    "Accept"_L1,
+    "Decline"_L1,
+    "NoResponseReceived"_L1,
 });
 
 bool ewsXmlBoolReader(QXmlStreamReader &reader, QVariant &val)
@@ -57,9 +59,9 @@ bool ewsXmlBoolReader(QXmlStreamReader &reader, QVariant &val)
         reader.skipCurrentElement();
         return false;
     }
-    if (elmText == QLatin1StringView("true")) {
+    if (elmText == "true"_L1) {
         val = true;
-    } else if (elmText == QLatin1StringView("false")) {
+    } else if (elmText == "false"_L1) {
         val = false;
     } else {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Unexpected invalid boolean value in %1 element:").arg(reader.name().toString()) << elmText;
@@ -71,7 +73,7 @@ bool ewsXmlBoolReader(QXmlStreamReader &reader, QVariant &val)
 
 bool ewsXmlBoolWriter(QXmlStreamWriter &writer, const QVariant &val)
 {
-    writer.writeCharacters(val.toBool() ? QStringLiteral("true") : QStringLiteral("false"));
+    writer.writeCharacters(val.toBool() ? "true"_L1 : "false"_L1);
 
     return true;
 }
@@ -321,9 +323,9 @@ bool readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &pare
     QString valStr = readXmlElementValue<QString>(reader, ok, parentElement);
     bool val = false;
     if (ok) {
-        if (valStr == QLatin1StringView("true")) {
+        if (valStr == "true"_L1) {
             val = true;
-        } else if (valStr == QLatin1StringView("false")) {
+        } else if (valStr == "false"_L1) {
             val = false;
         } else {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.").arg(parentElement, elmName.toString());

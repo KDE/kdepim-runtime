@@ -12,10 +12,12 @@
 
 #include "ewsclient_debug.h"
 
+using namespace Qt::StringLiterals;
+
 static constexpr auto traversalTypeNames = std::to_array({
-    QLatin1StringView("Shallow"),
-    QLatin1StringView("Deep"),
-    QLatin1StringView("SoftDeleted"),
+    "Shallow"_L1,
+    "Deep"_L1,
+    "SoftDeleted"_L1,
 });
 
 class EwsFindFolderResponse : public EwsRequest::Response
@@ -56,12 +58,12 @@ void EwsFindFolderRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("FindFolder"));
-    writer.writeAttribute(QStringLiteral("Traversal"), traversalTypeNames[mTraversal]);
+    writer.writeStartElement(ewsMsgNsUri, "FindFolder"_L1);
+    writer.writeAttribute("Traversal"_L1, traversalTypeNames[mTraversal]);
 
     mShape.write(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("ParentFolderIds"));
+    writer.writeStartElement(ewsMsgNsUri, "ParentFolderIds"_L1);
     mParentId.writeFolderIds(writer);
     writer.writeEndElement();
 
@@ -104,7 +106,7 @@ EwsFindFolderResponse::EwsFindFolderResponse(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QLatin1StringView("RootFolder")) {
+        if (reader.name() == "RootFolder"_L1) {
             if (!parseRootFolder(reader)) {
                 return;
             }
@@ -117,16 +119,16 @@ EwsFindFolderResponse::EwsFindFolderResponse(QXmlStreamReader &reader)
 
 bool EwsFindFolderResponse::parseRootFolder(QXmlStreamReader &reader)
 {
-    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1StringView("RootFolder")) {
+    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != "RootFolder"_L1) {
         return setErrorMsg(
             QStringLiteral("Failed to read EWS request - expected %1 element (got %2).").arg(QStringLiteral("RootFolder"), reader.qualifiedName().toString()));
     }
 
-    if (!reader.attributes().hasAttribute(QStringLiteral("TotalItemsInView")) || !reader.attributes().hasAttribute(QStringLiteral("TotalItemsInView"))) {
+    if (!reader.attributes().hasAttribute("TotalItemsInView"_L1) || !reader.attributes().hasAttribute("TotalItemsInView"_L1)) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - missing attributes of %1 element.").arg(QStringLiteral("RootFolder")));
     }
     bool ok;
-    unsigned totalItems = reader.attributes().value(QStringLiteral("TotalItemsInView")).toUInt(&ok);
+    unsigned totalItems = reader.attributes().value("TotalItemsInView"_L1).toUInt(&ok);
     if (!ok) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - failed to read %1 attribute.").arg(QStringLiteral("TotalItemsInView")));
     }
@@ -135,7 +137,7 @@ bool EwsFindFolderResponse::parseRootFolder(QXmlStreamReader &reader)
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected a child element in %1 element.").arg(QStringLiteral("RootFolder")));
     }
 
-    if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != QLatin1StringView("Folders")) {
+    if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != "Folders"_L1) {
         return setErrorMsg(
             QStringLiteral("Failed to read EWS request - expected %1 element (got %2).").arg(QStringLiteral("Folders"), reader.qualifiedName().toString()));
     }
@@ -180,8 +182,8 @@ EwsFolder *EwsFindFolderResponse::readFolder(QXmlStreamReader &reader)
 {
     EwsFolder *folder = nullptr;
     const QStringView readerName = reader.name();
-    if (readerName == QLatin1StringView("Folder") || readerName == QLatin1StringView("CalendarFolder") || readerName == QLatin1StringView("ContactsFolder")
-        || readerName == QLatin1StringView("TasksFolder") || readerName == QLatin1StringView("SearchFolder")) {
+    if (readerName == "Folder"_L1 || readerName == "CalendarFolder"_L1 || readerName == "ContactsFolder"_L1 || readerName == "TasksFolder"_L1
+        || readerName == "SearchFolder"_L1) {
         folder = new EwsFolder(reader);
         if (!folder->isValid()) {
             setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.").arg(QStringLiteral("Folder")));

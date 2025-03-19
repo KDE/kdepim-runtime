@@ -10,6 +10,8 @@
 
 #include "ewsclient_debug.h"
 
+using namespace Qt::StringLiterals;
+
 EwsGetFolderRequest::EwsGetFolderRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
 {
@@ -34,11 +36,11 @@ void EwsGetFolderRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("GetFolder"));
+    writer.writeStartElement(ewsMsgNsUri, "GetFolder"_L1);
 
     mShape.write(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("FolderIds"));
+    writer.writeStartElement(ewsMsgNsUri, "FolderIds"_L1);
     for (const EwsId &id : std::as_const(mIds)) {
         id.writeFolderIds(writer);
     }
@@ -100,7 +102,7 @@ EwsGetFolderRequest::Response::Response(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QLatin1StringView("Folders")) {
+        if (reader.name() == "Folders"_L1) {
             if (responseClass() == EwsResponseError) {
                 // Skip empty folders element
                 reader.skipCurrentElement();
@@ -116,7 +118,7 @@ EwsGetFolderRequest::Response::Response(QXmlStreamReader &reader)
 
 bool EwsGetFolderRequest::Response::parseFolders(QXmlStreamReader &reader)
 {
-    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1StringView("Folders")) {
+    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != "Folders"_L1) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected Folders element (got %1).").arg(reader.qualifiedName().toString()));
     }
 

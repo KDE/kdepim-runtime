@@ -14,9 +14,11 @@
 
 #include "ewsclient_debug.h"
 
-static constexpr QLatin1StringView poxAdOuReqNsUri = QLatin1StringView("http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006");
-static constexpr QLatin1StringView poxAdRespNsUri = QLatin1StringView("http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006");
-static constexpr QLatin1StringView poxAdOuRespNsUri = QLatin1StringView("http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a");
+using namespace Qt::StringLiterals;
+
+static constexpr QLatin1StringView poxAdOuReqNsUri = "http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006"_L1;
+static constexpr QLatin1StringView poxAdRespNsUri = "http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006"_L1;
+static constexpr QLatin1StringView poxAdOuRespNsUri = "http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a"_L1;
 
 EwsPoxAutodiscoverRequest::EwsPoxAutodiscoverRequest(const QUrl &url, const QString &email, const QString &userAgent, bool useNTLMv2, QObject *parent)
     : EwsJob(parent)
@@ -71,12 +73,12 @@ void EwsPoxAutodiscoverRequest::start()
 
     writer.writeDefaultNamespace(poxAdOuReqNsUri);
 
-    writer.writeStartElement(poxAdOuReqNsUri, QStringLiteral("Autodiscover"));
+    writer.writeStartElement(poxAdOuReqNsUri, "Autodiscover"_L1);
 
-    writer.writeStartElement(poxAdOuReqNsUri, QStringLiteral("Request"));
+    writer.writeStartElement(poxAdOuReqNsUri, "Request"_L1);
 
-    writer.writeTextElement(poxAdOuReqNsUri, QStringLiteral("EMailAddress"), mEmail);
-    writer.writeTextElement(poxAdOuReqNsUri, QStringLiteral("AcceptableResponseSchema"), poxAdOuRespNsUri);
+    writer.writeTextElement(poxAdOuReqNsUri, "EMailAddress"_L1, mEmail);
+    writer.writeTextElement(poxAdOuReqNsUri, "AcceptableResponseSchema"_L1, poxAdOuRespNsUri);
 
     writer.writeEndElement(); // Request
 
@@ -115,7 +117,7 @@ void EwsPoxAutodiscoverRequest::requestResult(KJob *job)
     }
 
     auto trJob = qobject_cast<KIO::TransferJob *>(job);
-    int resp = trJob->metaData()[QStringLiteral("responsecode")].toUInt();
+    int resp = trJob->metaData()["responsecode"_L1].toUInt();
 
     if (job->error() != KJob::NoError) {
         setErrorMsg(QStringLiteral("Failed to process EWS request: ") + job->errorString());
@@ -137,7 +139,7 @@ bool EwsPoxAutodiscoverRequest::readResponse(QXmlStreamReader &reader)
         return setErrorMsg(QStringLiteral("Failed to read POX response XML"));
     }
 
-    if ((reader.name() != QLatin1StringView("Autodiscover")) || (reader.namespaceUri() != poxAdRespNsUri)) {
+    if ((reader.name() != "Autodiscover"_L1) || (reader.namespaceUri() != poxAdRespNsUri)) {
         return setErrorMsg(QStringLiteral("Failed to read POX response - not an Autodiscover response"));
     }
 
@@ -145,7 +147,7 @@ bool EwsPoxAutodiscoverRequest::readResponse(QXmlStreamReader &reader)
         return setErrorMsg(QStringLiteral("Failed to read POX response - expected %1 element").arg(QStringLiteral("Response")));
     }
 
-    if ((reader.name() != QLatin1StringView("Response")) || (reader.namespaceUri() != poxAdOuRespNsUri)) {
+    if ((reader.name() != "Response"_L1) || (reader.namespaceUri() != poxAdOuRespNsUri)) {
         return setErrorMsg(
             QStringLiteral("Failed to read POX response - expected %1 element, found %2").arg(QStringLiteral("Response").arg(reader.name().toString())));
     }
@@ -155,9 +157,9 @@ bool EwsPoxAutodiscoverRequest::readResponse(QXmlStreamReader &reader)
             return setErrorMsg(QStringLiteral("Failed to read POX response - invalid namespace"));
         }
 
-        if (reader.name() == QLatin1StringView("User")) {
+        if (reader.name() == "User"_L1) {
             reader.skipCurrentElement();
-        } else if (reader.name() == QLatin1StringView("Account")) {
+        } else if (reader.name() == "Account"_L1) {
             if (!readAccount(reader)) {
                 return false;
             }
@@ -176,24 +178,24 @@ bool EwsPoxAutodiscoverRequest::readAccount(QXmlStreamReader &reader)
             return setErrorMsg(QStringLiteral("Failed to read POX response - invalid namespace"));
         }
         const QStringView readerName = reader.name();
-        if (readerName == QLatin1StringView("Action")) {
+        if (readerName == "Action"_L1) {
             QString action = reader.readElementText();
-            if (action == QLatin1StringView("settings")) {
+            if (action == "settings"_L1) {
                 mAction = Settings;
-            } else if (action == QLatin1StringView("redirectUrl")) {
+            } else if (action == "redirectUrl"_L1) {
                 mAction = RedirectUrl;
-            } else if (action == QLatin1StringView("redirectAddr")) {
+            } else if (action == "redirectAddr"_L1) {
                 mAction = RedirectAddr;
             } else {
                 return setErrorMsg(QStringLiteral("Failed to read POX response - unknown action '%1'").arg(action));
             }
-        } else if (readerName == QLatin1StringView("RedirectUrl")) {
+        } else if (readerName == "RedirectUrl"_L1) {
             mRedirectUrl = reader.readElementText();
-        } else if (readerName == QLatin1StringView("RedirectAddr")) {
+        } else if (readerName == "RedirectAddr"_L1) {
             mRedirectAddr = reader.readElementText();
-        } else if (readerName == QLatin1StringView("RedirectAddr")) {
+        } else if (readerName == "RedirectAddr"_L1) {
             mRedirectAddr = reader.readElementText();
-        } else if (readerName == QLatin1StringView("Protocol")) {
+        } else if (readerName == "Protocol"_L1) {
             if (!readProtocol(reader)) {
                 return false;
             }
@@ -213,20 +215,20 @@ bool EwsPoxAutodiscoverRequest::readProtocol(QXmlStreamReader &reader)
             return setErrorMsg(QStringLiteral("Failed to read POX response - invalid namespace"));
         }
         const QStringView readerName = reader.name();
-        if (readerName == QLatin1StringView("Type")) {
+        if (readerName == "Type"_L1) {
             QString type = reader.readElementText();
-            if (type == QLatin1StringView("EXCH")) {
+            if (type == "EXCH"_L1) {
                 proto.mType = ExchangeProto;
-            } else if (type == QLatin1StringView("EXPR")) {
+            } else if (type == "EXPR"_L1) {
                 proto.mType = ExchangeProxyProto;
-            } else if (type == QLatin1StringView("WEB")) {
+            } else if (type == "WEB"_L1) {
                 proto.mType = ExchangeWebProto;
             } else {
                 return setErrorMsg(QStringLiteral("Failed to read POX response - unknown protocol '%1'").arg(type));
             }
-        } else if (readerName == QLatin1StringView("EwsUrl")) {
+        } else if (readerName == "EwsUrl"_L1) {
             proto.mEwsUrl = reader.readElementText();
-        } else if (readerName == QLatin1StringView("OabUrl")) {
+        } else if (readerName == "OabUrl"_L1) {
             proto.mOabUrl = reader.readElementText();
         } else {
             reader.skipCurrentElement();

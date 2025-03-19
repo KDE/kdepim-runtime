@@ -12,16 +12,18 @@
 #include "ewsclient_debug.h"
 #include "ewstypes.h"
 
-const EwsServerVersion EwsServerVersion::ewsVersion2007(8, 0, QStringLiteral("Exchange2007"), QStringLiteral("Exchange 2007"));
-const EwsServerVersion EwsServerVersion::ewsVersion2007Sp1(8, 1, QStringLiteral("Exchange2007_SP1"), QStringLiteral("Exchange 2007 SP1"));
-const EwsServerVersion EwsServerVersion::ewsVersion2007Sp2(8, 2, QStringLiteral("Exchange2007_SP2"), QStringLiteral("Exchange 2007 SP2"));
-const EwsServerVersion EwsServerVersion::ewsVersion2007Sp3(8, 3, QStringLiteral("Exchange2007_SP3"), QStringLiteral("Exchange 2007 SP3"));
-const EwsServerVersion EwsServerVersion::ewsVersion2010(14, 0, QStringLiteral("Exchange2010"), QStringLiteral("Exchange 2010"));
-const EwsServerVersion EwsServerVersion::ewsVersion2010Sp1(14, 1, QStringLiteral("Exchange2010_SP1"), QStringLiteral("Exchange 2010 SP1"));
-const EwsServerVersion EwsServerVersion::ewsVersion2010Sp2(14, 2, QStringLiteral("Exchange2010_SP2"), QStringLiteral("Exchange 2010 SP2"));
-const EwsServerVersion EwsServerVersion::ewsVersion2010Sp3(14, 3, QStringLiteral("Exchange2010_SP3"), QStringLiteral("Exchange 2010 SP3"));
-const EwsServerVersion EwsServerVersion::ewsVersion2013(15, 0, QStringLiteral("Exchange2013"), QStringLiteral("Exchange 2013"));
-const EwsServerVersion EwsServerVersion::ewsVersion2016(15, 1, QStringLiteral("Exchange2016"), QStringLiteral("Exchange 2016"));
+using namespace Qt::StringLiterals;
+
+const EwsServerVersion EwsServerVersion::ewsVersion2007(8, 0, u"Exchange2007"_s, u"Exchange 2007"_s);
+const EwsServerVersion EwsServerVersion::ewsVersion2007Sp1(8, 1, u"Exchange2007_SP1"_s, u"Exchange 2007 SP1"_s);
+const EwsServerVersion EwsServerVersion::ewsVersion2007Sp2(8, 2, u"Exchange2007_SP2"_s, u"Exchange 2007 SP2"_s);
+const EwsServerVersion EwsServerVersion::ewsVersion2007Sp3(8, 3, u"Exchange2007_SP3"_s, u"Exchange 2007 SP3"_s);
+const EwsServerVersion EwsServerVersion::ewsVersion2010(14, 0, u"Exchange2010"_s, u"Exchange 2010"_s);
+const EwsServerVersion EwsServerVersion::ewsVersion2010Sp1(14, 1, u"Exchange2010_SP1"_s, u"Exchange 2010 SP1"_s);
+const EwsServerVersion EwsServerVersion::ewsVersion2010Sp2(14, 2, u"Exchange2010_SP2"_s, u"Exchange 2010 SP2"_s);
+const EwsServerVersion EwsServerVersion::ewsVersion2010Sp3(14, 3, u"Exchange2010_SP3"_s, u"Exchange 2010 SP3"_s);
+const EwsServerVersion EwsServerVersion::ewsVersion2013(15, 0, u"Exchange2013"_s, u"Exchange 2013"_s);
+const EwsServerVersion EwsServerVersion::ewsVersion2016(15, 1, u"Exchange2016"_s, u"Exchange 2016"_s);
 
 static const EwsServerVersion ewsNullVersion;
 
@@ -31,28 +33,28 @@ EwsServerVersion::EwsServerVersion(QXmlStreamReader &reader)
 {
     // <h:ServerVersionInfo MajorVersion=\"14\" MinorVersion=\"3\" MajorBuildNumber=\"248\"
     // MinorBuildNumber=\"2\" Version=\"Exchange2010_SP2\" />
-    QXmlStreamAttributes attrs = reader.attributes();
+    const QXmlStreamAttributes attrs = reader.attributes();
 
-    auto majorRef = attrs.value(QStringLiteral("MajorVersion"));
-    auto minorRef = attrs.value(QStringLiteral("MinorVersion"));
-    auto majorBuildRef = attrs.value(QStringLiteral("MajorBuildNumber"));
-    auto minorBuildRef = attrs.value(QStringLiteral("MinorBuildNumber"));
-    auto nameRef = attrs.value(QStringLiteral("Version"));
+    auto majorRef = attrs.value("MajorVersion"_L1);
+    auto minorRef = attrs.value("MinorVersion"_L1);
+    auto majorBuildRef = attrs.value("MajorBuildNumber"_L1);
+    auto minorBuildRef = attrs.value("MinorBuildNumber"_L1);
+    auto nameRef = attrs.value("Version"_L1);
 
     if (majorRef.isNull() || minorRef.isNull()) {
-        qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading server version info - missing attribute.");
+        qCWarningNC(EWSCLI_LOG) << u"Error reading server version info - missing attribute."_s;
         return;
     }
 
     bool ok;
     uint majorVer = majorRef.toUInt(&ok);
     if (!ok) {
-        qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading server version info - invalid major version number.");
+        qCWarningNC(EWSCLI_LOG) << u"Error reading server version info - invalid major version number."_s;
         return;
     }
     uint minorVer = minorRef.toUInt(&ok);
     if (!ok) {
-        qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading server version info - invalid minor version number.");
+        qCWarningNC(EWSCLI_LOG) << u"Error reading server version info - invalid minor version number."_s;
         return;
     }
 
@@ -65,8 +67,8 @@ EwsServerVersion::EwsServerVersion(QXmlStreamReader &reader)
 
 void EwsServerVersion::writeRequestServerVersion(QXmlStreamWriter &writer) const
 {
-    writer.writeStartElement(ewsTypeNsUri, QStringLiteral("RequestServerVersion"));
-    writer.writeAttribute(QStringLiteral("Version"), mName);
+    writer.writeStartElement(ewsTypeNsUri, "RequestServerVersion"_L1);
+    writer.writeAttribute("Version"_L1, mName);
     writer.writeEndElement();
 }
 
@@ -106,15 +108,15 @@ QString EwsServerVersion::toString() const
         ewsVersion2016,
     };
 
-    QString version(QStringLiteral("%1.%2").arg(mMajor).arg(mMinor));
+    QString version(u"%1.%2"_s.arg(mMajor).arg(mMinor));
 
     if (mMajorBuild + mMinorBuild > 0) {
-        version.append(QStringLiteral(".%1.%2").arg(mMajorBuild).arg(mMinorBuild));
+        version.append(u".%1.%2"_s.arg(mMajorBuild).arg(mMinorBuild));
     }
 
     for (const EwsServerVersion &ver : knownVersions) {
         if (*this == ver) {
-            version.append(QStringLiteral(" (") + ver.mFriendlyName + QLatin1Char(')'));
+            version.append(u" ("_s + ver.mFriendlyName + u')');
         }
     }
 
@@ -125,10 +127,10 @@ QDebug operator<<(QDebug debug, const EwsServerVersion &version)
 {
     QDebugStateSaver saver(debug);
     QDebug d = debug.nospace().noquote();
-    d << QStringLiteral("EwsServerVersion(");
+    d << u"EwsServerVersion("_s;
     if (version.isValid()) {
-        d << version.majorVersion() << QStringLiteral(", ") << version.minorVersion() << QStringLiteral(", ") << version.name();
+        d << version.majorVersion() << u", "_s << version.minorVersion() << u", "_s << version.name();
     }
-    d << QStringLiteral(")");
+    d << u')';
     return debug;
 }

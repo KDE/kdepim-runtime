@@ -11,6 +11,7 @@
 #include "ewsclient_debug.h"
 
 using namespace std::chrono_literals;
+using namespace Qt::StringLiterals;
 
 static constexpr auto respChunkTimeout = 250ms;
 
@@ -36,13 +37,13 @@ void EwsGetStreamingEventsRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("GetStreamingEvents"));
+    writer.writeStartElement(ewsMsgNsUri, "GetStreamingEvents"_L1);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("SubscriptionIds"));
-    writer.writeTextElement(ewsTypeNsUri, QStringLiteral("SubscriptionId"), mSubscriptionId);
+    writer.writeStartElement(ewsMsgNsUri, "SubscriptionIds"_L1);
+    writer.writeTextElement(ewsTypeNsUri, "SubscriptionId"_L1, mSubscriptionId);
     writer.writeEndElement();
 
-    writer.writeTextElement(ewsMsgNsUri, QStringLiteral("ConnectionTimeout"), QString::number(mTimeout.count()));
+    writer.writeTextElement(ewsMsgNsUri, "ConnectionTimeout"_L1, QString::number(mTimeout.count()));
 
     writer.writeEndElement();
 

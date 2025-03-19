@@ -39,21 +39,21 @@ void EwsCreateItemRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("CreateItem"));
+    writer.writeStartElement(ewsMsgNsUri, "CreateItem"_L1);
 
-    writer.writeAttribute(QStringLiteral("MessageDisposition"), messageDispositionNames[mMessageDisp]);
+    writer.writeAttribute("MessageDisposition"_L1, messageDispositionNames[mMessageDisp]);
 
     if (mMeetingDisp != EwsMeetingDispUnspecified) {
-        writer.writeAttribute(QStringLiteral("SendMeetingInvitations"), meetingDispositionNames[mMeetingDisp]);
+        writer.writeAttribute("SendMeetingInvitations"_L1, meetingDispositionNames[mMeetingDisp]);
     }
 
     if (mMessageDisp == EwsDispSaveOnly || mMessageDisp == EwsDispSendAndSaveCopy) {
-        writer.writeStartElement(ewsMsgNsUri, QStringLiteral("SavedItemFolderId"));
+        writer.writeStartElement(ewsMsgNsUri, "SavedItemFolderId"_L1);
         mSavedFolderId.writeFolderIds(writer);
         writer.writeEndElement();
     }
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("Items"));
+    writer.writeStartElement(ewsMsgNsUri, "Items"_L1);
     for (const EwsItem &item : std::as_const(mItems)) {
         item.write(writer);
     }
@@ -111,7 +111,7 @@ EwsCreateItemRequest::Response::Response(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QLatin1StringView("Items")) {
+        if (reader.name() == "Items"_L1) {
             if (reader.readNextStartElement()) {
                 EwsItem item(reader);
                 if (!item.isValid()) {

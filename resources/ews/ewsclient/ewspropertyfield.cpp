@@ -10,45 +10,24 @@
 
 #include "ewsclient_debug.h"
 
+using namespace Qt::StringLiterals;
+
 static constexpr auto distinguishedPropSetIdNames = std::to_array({
-    QLatin1StringView("Meeting"),
-    QLatin1StringView("Appointment"),
-    QLatin1StringView("Common"),
-    QLatin1StringView("PublicStrings"),
-    QLatin1StringView("Address"),
-    QLatin1StringView("InternetHeaders"),
-    QLatin1StringView("CalendarAssistant"),
-    QLatin1StringView("UnifiedMessaging"),
+    "Meeting"_L1,
+    "Appointment"_L1,
+    "Common"_L1,
+    "PublicStrings"_L1,
+    "Address"_L1,
+    "InternetHeaders"_L1,
+    "CalendarAssistant"_L1,
+    "UnifiedMessaging"_L1,
 });
 
 static constexpr auto propertyTypeNames = std::to_array({
-    QLatin1StringView("ApplicationTime"),
-    QLatin1StringView("ApplicationTimeArray"),
-    QLatin1StringView("Binary"),
-    QLatin1StringView("BinaryArray"),
-    QLatin1StringView("Boolean"),
-    QLatin1StringView("CLSID"),
-    QLatin1StringView("CLSIDArray"),
-    QLatin1StringView("Currency"),
-    QLatin1StringView("CurrencyArray"),
-    QLatin1StringView("Double"),
-    QLatin1StringView("DoubleArray"),
-    QLatin1StringView("Error"),
-    QLatin1StringView("Float"),
-    QLatin1StringView("FloatArray"),
-    QLatin1StringView("Integer"),
-    QLatin1StringView("IntegerArray"),
-    QLatin1StringView("Long"),
-    QLatin1StringView("LongArray"),
-    QLatin1StringView("Null"),
-    QLatin1StringView("Object"),
-    QLatin1StringView("ObjectArray"),
-    QLatin1StringView("Short"),
-    QLatin1StringView("ShortArray"),
-    QLatin1StringView("SystemTime"),
-    QLatin1StringView("SystemTimeArray"),
-    QLatin1StringView("String"),
-    QLatin1StringView("StringArray"),
+    "ApplicationTime"_L1, "ApplicationTimeArray"_L1, "Binary"_L1,     "BinaryArray"_L1,     "Boolean"_L1, "CLSID"_L1,       "CLSIDArray"_L1,
+    "Currency"_L1,        "CurrencyArray"_L1,        "Double"_L1,     "DoubleArray"_L1,     "Error"_L1,   "Float"_L1,       "FloatArray"_L1,
+    "Integer"_L1,         "IntegerArray"_L1,         "Long"_L1,       "LongArray"_L1,       "Null"_L1,    "Object"_L1,      "ObjectArray"_L1,
+    "Short"_L1,           "ShortArray"_L1,           "SystemTime"_L1, "SystemTimeArray"_L1, "String"_L1,  "StringArray"_L1,
 });
 
 class EwsPropertyFieldPrivate : public QSharedData
@@ -312,36 +291,36 @@ void EwsPropertyField::write(QXmlStreamWriter &writer) const
 {
     switch (d->mPropType) {
     case Field:
-        writer.writeStartElement(ewsTypeNsUri, QStringLiteral("FieldURI"));
-        writer.writeAttribute(QStringLiteral("FieldURI"), d->mUri);
+        writer.writeStartElement(ewsTypeNsUri, "FieldURI"_L1);
+        writer.writeAttribute("FieldURI"_L1, d->mUri);
         writer.writeEndElement();
         break;
     case IndexedField: {
-        writer.writeStartElement(ewsTypeNsUri, QStringLiteral("IndexedFieldURI"));
-        writer.writeAttribute(QStringLiteral("FieldURI"), d->mUri);
-        QStringList tokens = d->mUri.split(QLatin1Char(':'));
-        writer.writeAttribute(QStringLiteral("FieldIndex"), tokens[1] + QString::number(d->mIndex));
+        writer.writeStartElement(ewsTypeNsUri, "IndexedFieldURI"_L1);
+        writer.writeAttribute("FieldURI"_L1, d->mUri);
+        QStringList tokens = d->mUri.split(u':');
+        writer.writeAttribute("FieldIndex"_L1, tokens[1] + QString::number(d->mIndex));
         writer.writeEndElement();
         break;
     }
     case ExtendedField:
-        writer.writeStartElement(ewsTypeNsUri, QStringLiteral("ExtendedFieldURI"));
+        writer.writeStartElement(ewsTypeNsUri, "ExtendedFieldURI"_L1);
         if (d->mHasTag) {
-            writer.writeAttribute(QStringLiteral("PropertyTag"), QStringLiteral("0x") + QString::number(d->mTag, 16));
+            writer.writeAttribute("PropertyTag"_L1, "0x"_L1 + QString::number(d->mTag, 16));
         } else {
             if (d->mPsIdType == EwsPropertyFieldPrivate::DistinguishedPropSet) {
-                writer.writeAttribute(QStringLiteral("DistinguishedPropertySetId"), distinguishedPropSetIdNames[d->mPsDid]);
+                writer.writeAttribute("DistinguishedPropertySetId"_L1, distinguishedPropSetIdNames[d->mPsDid]);
             } else {
-                writer.writeAttribute(QStringLiteral("PropertySetId"), d->mPsId);
+                writer.writeAttribute("PropertySetId"_L1, d->mPsId);
             }
 
             if (d->mIdType == EwsPropertyFieldPrivate::PropId) {
-                writer.writeAttribute(QStringLiteral("PropertyId"), QString::number(d->mId));
+                writer.writeAttribute("PropertyId"_L1, QString::number(d->mId));
             } else {
-                writer.writeAttribute(QStringLiteral("PropertyName"), d->mName);
+                writer.writeAttribute("PropertyName"_L1, d->mName);
             }
         }
-        writer.writeAttribute(QStringLiteral("PropertyType"), propertyTypeNames[d->mType]);
+        writer.writeAttribute("PropertyType"_L1, propertyTypeNames[d->mType]);
         writer.writeEndElement();
         break;
     case UnknownField:
@@ -360,25 +339,25 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
     bool ok;
 
     // First check the property type
-    if (reader.name() == QLatin1StringView("FieldURI")) {
-        if (!attrs.hasAttribute(QStringLiteral("FieldURI"))) {
+    if (reader.name() == "FieldURI"_L1) {
+        if (!attrs.hasAttribute("FieldURI"_L1)) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - missing %1 attribute.").arg(QStringLiteral("FieldURI"));
             return false;
         }
         d->mPropType = Field;
-        d->mUri = attrs.value(QStringLiteral("FieldURI")).toString();
-    } else if (reader.name() == QLatin1StringView("IndexedFieldURI")) {
-        if (!attrs.hasAttribute(QStringLiteral("FieldURI"))) {
+        d->mUri = attrs.value("FieldURI"_L1).toString();
+    } else if (reader.name() == "IndexedFieldURI"_L1) {
+        if (!attrs.hasAttribute("FieldURI"_L1)) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - missing %1 attribute.").arg(QStringLiteral("FieldURI"));
             return false;
         }
-        if (!attrs.hasAttribute(QStringLiteral("FieldIndex"))) {
+        if (!attrs.hasAttribute("FieldIndex"_L1)) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - missing %1 attribute.").arg(QStringLiteral("FieldIndex"));
             return false;
         }
-        QString uri = attrs.value(QStringLiteral("FieldURI")).toString();
-        QStringList tokens = uri.split(QLatin1Char(':'));
-        QString indexStr = attrs.value(QStringLiteral("FieldIndex")).toString();
+        QString uri = attrs.value("FieldURI"_L1).toString();
+        QStringList tokens = uri.split(u':');
+        QString indexStr = attrs.value("FieldIndex"_L1).toString();
         if (!indexStr.startsWith(tokens[1])) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - malformed %1 attribute.").arg(QStringLiteral("FieldIndex"));
             return false;
@@ -391,12 +370,12 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
         d->mPropType = IndexedField;
         d->mUri = uri;
         d->mIndex = index;
-    } else if (reader.name() == QLatin1StringView("ExtendedFieldURI")) {
-        if (!attrs.hasAttribute(QStringLiteral("PropertyType"))) {
+    } else if (reader.name() == "ExtendedFieldURI"_L1) {
+        if (!attrs.hasAttribute("PropertyType"_L1)) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - missing %1 attribute.").arg(QStringLiteral("PropertyType"));
             return false;
         }
-        auto propTypeText = attrs.value(QStringLiteral("PropertyType"));
+        auto propTypeText = attrs.value("PropertyType"_L1);
         unsigned i;
         EwsPropertyType propType;
         for (i = 0; i < sizeof(propertyTypeNames) / sizeof(propertyTypeNames[0]); ++i) {
@@ -410,8 +389,8 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
             return false;
         }
 
-        if (attrs.hasAttribute(QStringLiteral("PropertyTag"))) {
-            unsigned tag = attrs.value(QStringLiteral("PropertyTag")).toUInt(&ok, 0);
+        if (attrs.hasAttribute("PropertyTag"_L1)) {
+            unsigned tag = attrs.value("PropertyTag"_L1).toUInt(&ok, 0);
             if (!ok) {
                 qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - error reading %1 attribute.").arg(QStringLiteral("PropertyTag"));
                 return false;
@@ -426,15 +405,15 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
             EwsPropertyFieldPrivate::PropIdType idType = EwsPropertyFieldPrivate::PropName;
             unsigned id = 0;
             QString name;
-            if (attrs.hasAttribute(QStringLiteral("PropertyId"))) {
-                id = attrs.value(QStringLiteral("PropertyId")).toUInt(&ok, 0);
+            if (attrs.hasAttribute("PropertyId"_L1)) {
+                id = attrs.value("PropertyId"_L1).toUInt(&ok, 0);
                 if (!ok) {
                     qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - error reading %1 attribute.").arg(QStringLiteral("PropertyId"));
                     return false;
                 }
                 idType = EwsPropertyFieldPrivate::PropId;
-            } else if (attrs.hasAttribute(QStringLiteral("PropertyName"))) {
-                name = attrs.value(QStringLiteral("PropertyName")).toString();
+            } else if (attrs.hasAttribute("PropertyName"_L1)) {
+                name = attrs.value("PropertyName"_L1).toString();
                 idType = EwsPropertyFieldPrivate::PropName;
             } else {
                 qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - missing one of %1 or %2 attributes.")
@@ -442,8 +421,8 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
                 return false;
             }
 
-            if (attrs.hasAttribute(QStringLiteral("DistinguishedPropertySetId"))) {
-                auto didText = attrs.value(QStringLiteral("DistinguishedPropertySetId"));
+            if (attrs.hasAttribute("DistinguishedPropertySetId"_L1)) {
+                auto didText = attrs.value("DistinguishedPropertySetId"_L1);
                 unsigned i;
                 for (i = 0; i < sizeof(distinguishedPropSetIdNames) / sizeof(distinguishedPropSetIdNames[0]); ++i) {
                     if (didText == distinguishedPropSetIdNames[i]) {
@@ -457,8 +436,8 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
                     return false;
                 }
                 psIdType = EwsPropertyFieldPrivate::DistinguishedPropSet;
-            } else if (attrs.hasAttribute(QStringLiteral("PropertySetId"))) {
-                psId = attrs.value(QStringLiteral("PropertySetId")).toString();
+            } else if (attrs.hasAttribute("PropertySetId"_L1)) {
+                psId = attrs.value("PropertySetId"_L1).toString();
                 psIdType = EwsPropertyFieldPrivate::RealPropSet;
             } else {
                 qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - missing one of %1 or %2 attributes.")
@@ -530,7 +509,7 @@ bool EwsPropertyField::writeWithValue(QXmlStreamWriter &writer, const QVariant &
 {
     switch (d->mPropType) {
     case Field: {
-        QStringList tokens = d->mUri.split(QLatin1Char(':'));
+        QStringList tokens = d->mUri.split(u':');
         if (tokens.size() != 2) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Invalid field URI: %1").arg(d->mUri);
             return false;
@@ -541,21 +520,21 @@ bool EwsPropertyField::writeWithValue(QXmlStreamWriter &writer, const QVariant &
         break;
     }
     case IndexedField: {
-        QStringList tokens = d->mUri.split(QLatin1Char(':'));
+        QStringList tokens = d->mUri.split(u':');
         if (tokens.size() != 2) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Invalid field URI: %1").arg(d->mUri);
             return false;
         }
         writer.writeStartElement(ewsTypeNsUri, tokens[1] + QStringLiteral("es"));
-        writer.writeStartElement(ewsTypeNsUri, QStringLiteral("Entry"));
-        writer.writeAttribute(QStringLiteral("Key"), tokens[1] + QString::number(d->mIndex));
+        writer.writeStartElement(ewsTypeNsUri, "Entry"_L1);
+        writer.writeAttribute("Key"_L1, tokens[1] + QString::number(d->mIndex));
         writeValue(writer, value);
         writer.writeEndElement();
         writer.writeEndElement();
         break;
     }
     case ExtendedField:
-        writer.writeStartElement(ewsTypeNsUri, QStringLiteral("ExtendedProperty"));
+        writer.writeStartElement(ewsTypeNsUri, "ExtendedProperty"_L1);
         write(writer);
         writeExtendedValue(writer, value);
         writer.writeEndElement();
@@ -573,7 +552,7 @@ void EwsPropertyField::writeValue(QXmlStreamWriter &writer, const QVariant &valu
     case QMetaType::QStringList: {
         const QStringList list = value.toStringList();
         for (const QString &str : list) {
-            writer.writeTextElement(ewsTypeNsUri, QStringLiteral("String"), str);
+            writer.writeTextElement(ewsTypeNsUri, "String"_L1, str);
         }
         break;
     }
@@ -590,15 +569,15 @@ void EwsPropertyField::writeExtendedValue(QXmlStreamWriter &writer, const QVaria
     switch (value.userType()) {
     case QMetaType::QStringList: {
         const QStringList list = value.toStringList();
-        writer.writeStartElement(ewsTypeNsUri, QStringLiteral("Values"));
+        writer.writeStartElement(ewsTypeNsUri, "Values"_L1);
         for (const QString &str : list) {
-            writer.writeTextElement(ewsTypeNsUri, QStringLiteral("Value"), str);
+            writer.writeTextElement(ewsTypeNsUri, "Value"_L1, str);
         }
         writer.writeEndElement();
         break;
     }
     case QMetaType::QString:
-        writer.writeStartElement(ewsTypeNsUri, QStringLiteral("Value"));
+        writer.writeStartElement(ewsTypeNsUri, "Value"_L1);
         writer.writeCharacters(value.toString());
         writer.writeEndElement();
         break;

@@ -7,6 +7,8 @@
 #include "ewsgetitemrequest.h"
 #include "ewsclient_debug.h"
 
+using namespace Qt::StringLiterals;
+
 EwsGetItemRequest::EwsGetItemRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
 {
@@ -31,11 +33,11 @@ void EwsGetItemRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("GetItem"));
+    writer.writeStartElement(ewsMsgNsUri, "GetItem"_L1);
 
     mShape.write(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("ItemIds"));
+    writer.writeStartElement(ewsMsgNsUri, "ItemIds"_L1);
     for (const EwsId &id : std::as_const(mIds)) {
         id.writeItemIds(writer);
     }
@@ -98,7 +100,7 @@ EwsGetItemRequest::Response::Response(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QLatin1StringView("Items")) {
+        if (reader.name() == "Items"_L1) {
             if (!parseItems(reader)) {
                 return;
             }
@@ -111,7 +113,7 @@ EwsGetItemRequest::Response::Response(QXmlStreamReader &reader)
 
 bool EwsGetItemRequest::Response::parseItems(QXmlStreamReader &reader)
 {
-    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1StringView("Items")) {
+    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != "Items"_L1) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected Items element (got %1).").arg(reader.qualifiedName().toString()));
     }
 

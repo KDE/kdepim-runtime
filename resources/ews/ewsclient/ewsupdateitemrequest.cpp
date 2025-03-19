@@ -52,23 +52,23 @@ void EwsUpdateItemRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("UpdateItem"));
+    writer.writeStartElement(ewsMsgNsUri, "UpdateItem"_L1);
 
-    writer.writeAttribute(QStringLiteral("ConflictResolution"), conflictResolutionNames[mConflictResol]);
+    writer.writeAttribute("ConflictResolution"_L1, conflictResolutionNames[mConflictResol]);
 
-    writer.writeAttribute(QStringLiteral("MessageDisposition"), messageDispositionNames[mMessageDisp]);
+    writer.writeAttribute("MessageDisposition"_L1, messageDispositionNames[mMessageDisp]);
 
     if (mMeetingDisp != EwsMeetingDispUnspecified) {
-        writer.writeAttribute(QStringLiteral("SendMeetingInvitationsOrCancellations"), meetingDispositionNames[mMeetingDisp]);
+        writer.writeAttribute("SendMeetingInvitationsOrCancellations"_L1, meetingDispositionNames[mMeetingDisp]);
     }
 
     if (mSavedFolderId.type() != EwsId::Unspecified) {
-        writer.writeStartElement(ewsMsgNsUri, QStringLiteral("SavedItemFolderId"));
+        writer.writeStartElement(ewsMsgNsUri, "SavedItemFolderId"_L1);
         mSavedFolderId.writeFolderIds(writer);
         writer.writeEndElement();
     }
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("ItemChanges"));
+    writer.writeStartElement(ewsMsgNsUri, "ItemChanges"_L1);
     for (const ItemChange &ch : std::as_const(mChanges)) {
         ch.write(writer);
     }

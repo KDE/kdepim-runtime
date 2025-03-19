@@ -13,6 +13,8 @@
 #include "ewsclient_debug.h"
 #include "ewsxml.h"
 
+using namespace Qt::StringLiterals;
+
 enum SyncFolderHierarchyResponseElementType {
     SyncFolderHierarchyResponseElementInvalid = -1,
     SyncState,
@@ -71,16 +73,16 @@ void EwsSyncFolderHierarchyRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("SyncFolderHierarchy"));
+    writer.writeStartElement(ewsMsgNsUri, "SyncFolderHierarchy"_L1);
 
     mShape.write(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("SyncFolderId"));
+    writer.writeStartElement(ewsMsgNsUri, "SyncFolderId"_L1);
     mFolderId.writeFolderIds(writer);
     writer.writeEndElement();
 
     if (!mSyncState.isNull()) {
-        writer.writeTextElement(ewsMsgNsUri, QStringLiteral("SyncState"), mSyncState);
+        writer.writeTextElement(ewsMsgNsUri, "SyncState"_L1, mSyncState);
     }
 
     writer.writeEndElement();
@@ -138,9 +140,9 @@ EwsSyncFolderHierarchyRequest::Response::Response(QXmlStreamReader &reader)
     }
 
     static const QList<EwsXml<SyncFolderHierarchyResponseElementType>::Item> items = {
-        {SyncState, QStringLiteral("SyncState"), &ewsXmlTextReader},
-        {IncludesLastFolderInRange, QStringLiteral("IncludesLastFolderInRange"), &ewsXmlBoolReader},
-        {Changes, QStringLiteral("Changes"), &EwsSyncFolderHierarchyRequest::Response::changeReader},
+        {SyncState, "SyncState"_L1, &ewsXmlTextReader},
+        {IncludesLastFolderInRange, "IncludesLastFolderInRange"_L1, &ewsXmlBoolReader},
+        {Changes, "Changes"_L1, &EwsSyncFolderHierarchyRequest::Response::changeReader},
     };
     static const EwsXml<SyncFolderHierarchyResponseElementType> staticReader(items);
 
@@ -185,23 +187,23 @@ bool EwsSyncFolderHierarchyRequest::Response::changeReader(QXmlStreamReader &rea
 EwsSyncFolderHierarchyRequest::Change::Change(QXmlStreamReader &reader)
 {
     static const QList<EwsXml<SyncFolderHierarchyChangeElementType>::Item> items = {
-        {Folder, QStringLiteral("Folder"), &ewsXmlFolderReader},
-        {Folder, QStringLiteral("CalendarFolder"), &ewsXmlFolderReader},
-        {Folder, QStringLiteral("ContactsFolder"), &ewsXmlFolderReader},
-        {Folder, QStringLiteral("SearchFolder"), &ewsXmlFolderReader},
-        {Folder, QStringLiteral("TasksFolder"), &ewsXmlFolderReader},
-        {FolderId, QStringLiteral("FolderId"), &ewsXmlIdReader},
-        {IsRead, QStringLiteral("IsRead"), &ewsXmlBoolReader},
+        {Folder, "Folder"_L1, &ewsXmlFolderReader},
+        {Folder, "CalendarFolder"_L1, &ewsXmlFolderReader},
+        {Folder, "ContactsFolder"_L1, &ewsXmlFolderReader},
+        {Folder, "SearchFolder"_L1, &ewsXmlFolderReader},
+        {Folder, "TasksFolder"_L1, &ewsXmlFolderReader},
+        {FolderId, "FolderId"_L1, &ewsXmlIdReader},
+        {IsRead, "IsRead"_L1, &ewsXmlBoolReader},
     };
     static const EwsXml<SyncFolderHierarchyChangeElementType> staticReader(items);
 
     EwsXml<SyncFolderHierarchyChangeElementType> ewsReader(staticReader);
 
-    if (reader.name() == QLatin1StringView("Create")) {
+    if (reader.name() == "Create"_L1) {
         mType = Create;
-    } else if (reader.name() == QLatin1StringView("Update")) {
+    } else if (reader.name() == "Update"_L1) {
         mType = Update;
-    } else if (reader.name() == QLatin1StringView("Delete")) {
+    } else if (reader.name() == "Delete"_L1) {
         mType = Delete;
     }
     if (!ewsReader.readItems(reader, ewsTypeNsUri)) {

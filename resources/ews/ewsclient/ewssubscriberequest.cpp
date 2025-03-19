@@ -10,21 +10,23 @@
 
 #include "ewsclient_debug.h"
 
-static const QList<QString> subscribeTypeNames = {
-    QStringLiteral("PullSubscriptionRequest"),
-    QStringLiteral("PushSubscriptionRequest"),
-    QStringLiteral("StreamingSubscriptionRequest"),
-};
+using namespace Qt::StringLiterals;
 
-static const QList<QString> eventTypeNames = {
-    QStringLiteral("CopiedEvent"),
-    QStringLiteral("CreatedEvent"),
-    QStringLiteral("DeletedEvent"),
-    QStringLiteral("ModifiedEvent"),
-    QStringLiteral("MovedEvent"),
-    QStringLiteral("NewMailEvent"),
-    QStringLiteral("FreeBusyChangedEvent"),
-};
+static const constexpr auto subscribeTypeNames = std::to_array<QLatin1StringView>({
+    "PullSubscriptionRequest"_L1,
+    "PushSubscriptionRequest"_L1,
+    "StreamingSubscriptionRequest"_L1,
+});
+
+static const constexpr auto eventTypeNames = std::to_array({
+    "CopiedEvent"_L1,
+    "CreatedEvent"_L1,
+    "DeletedEvent"_L1,
+    "ModifiedEvent"_L1,
+    "MovedEvent"_L1,
+    "NewMailEvent"_L1,
+    "FreeBusyChangedEvent"_L1,
+});
 
 EwsSubscribeRequest::EwsSubscribeRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
@@ -50,31 +52,31 @@ void EwsSubscribeRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("Subscribe"));
+    writer.writeStartElement(ewsMsgNsUri, "Subscribe"_L1);
 
     writer.writeStartElement(ewsMsgNsUri, subscribeTypeNames[mType]);
 
     if (mAllFolders) {
-        writer.writeAttribute(QStringLiteral("SubscribeToAllFolders"), QStringLiteral("true"));
+        writer.writeAttribute("SubscribeToAllFolders"_L1, "true"_L1);
     }
 
-    writer.writeStartElement(ewsTypeNsUri, QStringLiteral("FolderIds"));
+    writer.writeStartElement(ewsTypeNsUri, "FolderIds"_L1);
     for (const EwsId &id : std::as_const(mFolderIds)) {
         id.writeFolderIds(writer);
     }
     writer.writeEndElement();
 
-    writer.writeStartElement(ewsTypeNsUri, QStringLiteral("EventTypes"));
+    writer.writeStartElement(ewsTypeNsUri, "EventTypes"_L1);
     for (const EwsEventType type : std::as_const(mEventTypes)) {
-        writer.writeTextElement(ewsTypeNsUri, QStringLiteral("EventType"), eventTypeNames[type]);
+        writer.writeTextElement(ewsTypeNsUri, "EventType"_L1, eventTypeNames[type]);
     }
     writer.writeEndElement(); // EventTypes
 
     if (mType == PullSubscription) {
         if (!mWatermark.isNull()) {
-            writer.writeTextElement(ewsTypeNsUri, QStringLiteral("Watermark"), mWatermark);
+            writer.writeTextElement(ewsTypeNsUri, "Watermark"_L1, mWatermark);
         }
-        writer.writeTextElement(ewsTypeNsUri, QStringLiteral("Timeout"), QString::number(mTimeout));
+        writer.writeTextElement(ewsTypeNsUri, "Timeout"_L1, QString::number(mTimeout));
     }
 
     writer.writeEndElement(); // XxxSubscriptionRequest
@@ -121,14 +123,14 @@ EwsSubscribeRequest::Response::Response(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QLatin1StringView("SubscriptionId")) {
+        if (reader.name() == "SubscriptionId"_L1) {
             mId = reader.readElementText();
 
             if (reader.error() != QXmlStreamReader::NoError) {
                 setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.").arg(QStringLiteral("SubscriptionId")));
                 return;
             }
-        } else if (reader.name() == QLatin1StringView("Watermark")) {
+        } else if (reader.name() == "Watermark"_L1) {
             mWatermark = reader.readElementText();
 
             if (reader.error() != QXmlStreamReader::NoError) {

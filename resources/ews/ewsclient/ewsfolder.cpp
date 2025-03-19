@@ -17,13 +17,15 @@
 #define D_PTR EwsFolderPrivate *d = reinterpret_cast<EwsFolderPrivate *>(this->d.data());
 #define D_CPTR const EwsFolderPrivate *d = reinterpret_cast<const EwsFolderPrivate *>(this->d.data());
 
-static const QList<QString> folderTypeNames = {
-    QStringLiteral("Folder"),
-    QStringLiteral("CalendarFolder"),
-    QStringLiteral("ContactsFolder"),
-    QStringLiteral("SearchFolder"),
-    QStringLiteral("TasksFolder"),
-};
+using namespace Qt::StringLiterals;
+
+static constexpr const auto folderTypeNames = std::to_array({
+    "Folder"_L1,
+    "CalendarFolder"_L1,
+    "ContactsFolder"_L1,
+    "SearchFolder"_L1,
+    "TasksFolder"_L1,
+});
 
 class EwsFolderPrivate : public EwsItemBasePrivate
 {
@@ -49,20 +51,17 @@ public:
 typedef EwsXml<EwsItemFields> ItemFieldsReader;
 
 static const QList<EwsFolderPrivate::XmlProc::Item> ewsFolderItems = {
-    {EwsFolderFieldFolderId, QStringLiteral("FolderId"), &ewsXmlIdReader, &ewsXmlIdWriter},
-    {EwsFolderFieldParentFolderId, QStringLiteral("ParentFolderId"), &ewsXmlIdReader},
-    {EwsFolderFieldFolderClass, QStringLiteral("FolderClass"), &ewsXmlTextReader, &ewsXmlTextWriter},
-    {EwsFolderFieldDisplayName, QStringLiteral("DisplayName"), &ewsXmlTextReader, &ewsXmlTextWriter},
-    {EwsFolderFieldTotalCount, QStringLiteral("TotalCount"), &ewsXmlUIntReader, &ewsXmlUIntWriter},
-    {EwsFolderFieldChildFolderCount, QStringLiteral("ChildFolderCount"), &ewsXmlUIntReader},
-    {EwsItemFieldExtendedProperties,
-     QStringLiteral("ExtendedProperty"),
-     &EwsItemBasePrivate::extendedPropertyReader,
-     &EwsItemBasePrivate::extendedPropertyWriter},
-    {EwsFolderFieldUnreadCount, QStringLiteral("UnreadCount"), &ewsXmlUIntReader},
-    {EwsFolderPrivate::XmlProc::Ignore, QStringLiteral("SearchParameters")},
-    {EwsFolderFieldEffectiveRights, QStringLiteral("EffectiveRights"), &EwsFolderPrivate::effectiveRightsReader},
-    {EwsFolderPrivate::XmlProc::Ignore, QStringLiteral("ManagedFolderInformation")},
+    {EwsFolderFieldFolderId, "FolderId"_L1, &ewsXmlIdReader, &ewsXmlIdWriter},
+    {EwsFolderFieldParentFolderId, "ParentFolderId"_L1, &ewsXmlIdReader},
+    {EwsFolderFieldFolderClass, "FolderClass"_L1, &ewsXmlTextReader, &ewsXmlTextWriter},
+    {EwsFolderFieldDisplayName, "DisplayName"_L1, &ewsXmlTextReader, &ewsXmlTextWriter},
+    {EwsFolderFieldTotalCount, "TotalCount"_L1, &ewsXmlUIntReader, &ewsXmlUIntWriter},
+    {EwsFolderFieldChildFolderCount, "ChildFolderCount"_L1, &ewsXmlUIntReader},
+    {EwsItemFieldExtendedProperties, "ExtendedProperty"_L1, &EwsItemBasePrivate::extendedPropertyReader, &EwsItemBasePrivate::extendedPropertyWriter},
+    {EwsFolderFieldUnreadCount, "UnreadCount"_L1, &ewsXmlUIntReader},
+    {EwsFolderPrivate::XmlProc::Ignore, "SearchParameters"_L1},
+    {EwsFolderFieldEffectiveRights, "EffectiveRights"_L1, &EwsFolderPrivate::effectiveRightsReader},
+    {EwsFolderPrivate::XmlProc::Ignore, "ManagedFolderInformation"_L1},
 };
 
 const EwsFolderPrivate::XmlProc EwsFolderPrivate::mStaticEwsXml(ewsFolderItems);
@@ -99,7 +98,7 @@ EwsFolder::EwsFolder(QXmlStreamReader &reader)
     // Check what item type are we
     uint i = 0;
     d->mType = EwsFolderTypeUnknown;
-    for (const QString &name : std::as_const(folderTypeNames)) {
+    for (const auto &name : std::as_const(folderTypeNames)) {
         if (name == reader.name()) {
             d->mType = static_cast<EwsFolderType>(i);
             break;

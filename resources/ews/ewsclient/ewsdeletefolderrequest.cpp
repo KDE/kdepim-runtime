@@ -7,11 +7,13 @@
 #include "ewsdeletefolderrequest.h"
 #include "ewsclient_debug.h"
 
-static const QList<QString> deleteTypes = {
-    QStringLiteral("HardDelete"),
-    QStringLiteral("SoftDelete"),
-    QStringLiteral("MoveToDeletedItems"),
-};
+using namespace Qt::StringLiterals;
+
+static constexpr auto deleteTypes = std::to_array<QLatin1StringView>({
+    "HardDelete"_L1,
+    "SoftDelete"_L1,
+    "MoveToDeletedItems"_L1,
+});
 
 EwsDeleteFolderRequest::EwsDeleteFolderRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
@@ -30,11 +32,11 @@ void EwsDeleteFolderRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("DeleteFolder"));
+    writer.writeStartElement(ewsMsgNsUri, "DeleteFolder"_L1);
 
-    writer.writeAttribute(QStringLiteral("DeleteType"), deleteTypes[mType]);
+    writer.writeAttribute("DeleteType"_L1, deleteTypes[mType]);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("FolderIds"));
+    writer.writeStartElement(ewsMsgNsUri, "FolderIds"_L1);
     for (const EwsId &id : std::as_const(mIds)) {
         id.writeFolderIds(writer);
     }

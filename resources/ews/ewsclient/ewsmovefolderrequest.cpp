@@ -7,6 +7,8 @@
 #include "ewsmovefolderrequest.h"
 #include "ewsclient_debug.h"
 
+using namespace Qt::StringLiterals;
+
 EwsMoveFolderRequest::EwsMoveFolderRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
 {
@@ -21,13 +23,13 @@ void EwsMoveFolderRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("MoveFolder"));
+    writer.writeStartElement(ewsMsgNsUri, "MoveFolder"_L1);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("ToFolderId"));
+    writer.writeStartElement(ewsMsgNsUri, "ToFolderId"_L1);
     mDestFolderId.writeFolderIds(writer);
     writer.writeEndElement();
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("FolderIds"));
+    writer.writeStartElement(ewsMsgNsUri, "FolderIds"_L1);
     for (const EwsId &id : std::as_const(mIds)) {
         id.writeFolderIds(writer);
     }
@@ -37,7 +39,7 @@ void EwsMoveFolderRequest::start()
 
     endSoapDocument(writer);
 
-    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting MoveFolder request (%1 folders, to %2)").arg(mIds.size()).arg(mDestFolderId.id());
+    qCDebugNC(EWSCLI_REQUEST_LOG) << u"Starting MoveFolder request (%1 folders, to %2"_s.arg(mIds.size()).arg(mDestFolderId.id());
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 
@@ -48,7 +50,7 @@ void EwsMoveFolderRequest::start()
 
 bool EwsMoveFolderRequest::parseResult(QXmlStreamReader &reader)
 {
-    return parseResponseMessage(reader, QStringLiteral("MoveFolder"), [this](QXmlStreamReader &reader) {
+    return parseResponseMessage(reader, u"MoveFolder"_s, [this](QXmlStreamReader &reader) {
         return parseItemsResponse(reader);
     });
 }
@@ -62,9 +64,9 @@ bool EwsMoveFolderRequest::parseItemsResponse(QXmlStreamReader &reader)
 
     if (EWSCLI_REQUEST_LOG().isDebugEnabled()) {
         if (resp.isSuccess()) {
-            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got MoveFolder response - OK");
+            qCDebug(EWSCLI_REQUEST_LOG) << u"Got MoveFolder response - OK"_s;
         } else {
-            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got MoveFolder response - %1").arg(resp.responseMessage());
+            qCDebug(EWSCLI_REQUEST_LOG) << u"Got MoveFolder response - %1"_s.arg(resp.responseMessage());
         }
     }
     mResponses.append(resp);
@@ -80,11 +82,11 @@ EwsMoveFolderRequest::Response::Response(QXmlStreamReader &reader)
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
-            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2").arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
+            setErrorMsg(u"Unexpected namespace in %1 element: %2"_s.arg(u"ResponseMessage"_s, reader.namespaceUri().toString()));
             return;
         }
 
-        if (reader.name() == QLatin1StringView("Folders")) {
+        if (reader.name() == "Folders"_L1) {
             if (reader.readNextStartElement()) {
                 EwsFolder folder(reader);
                 if (!folder.isValid()) {
@@ -96,7 +98,7 @@ EwsMoveFolderRequest::Response::Response(QXmlStreamReader &reader)
                 reader.skipCurrentElement();
             }
         } else if (!readResponseElement(reader)) {
-            setErrorMsg(QStringLiteral("Failed to read EWS request - invalid response element."));
+            setErrorMsg(u"Failed to read EWS request - invalid response element."_s);
             return;
         }
     }

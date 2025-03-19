@@ -6,45 +6,47 @@
 
 #include "ewsitemshape.h"
 
+using namespace Qt::StringLiterals;
+
 void EwsItemShape::write(QXmlStreamWriter &writer) const
 {
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("ItemShape"));
+    writer.writeStartElement(ewsMsgNsUri, "ItemShape"_L1);
 
     // Write the base shape
     writeBaseShape(writer);
 
     // Write the IncludeMimeContent element (if applicable)
     if (mFlags.testFlag(IncludeMimeContent)) {
-        writer.writeTextElement(ewsTypeNsUri, QStringLiteral("IncludeMimeContent"), QStringLiteral("true"));
+        writer.writeTextElement(ewsTypeNsUri, "IncludeMimeContent"_L1, "true"_L1);
     }
 
     // Write the BodyType element
     if (mBodyType != BodyNone) {
-        QString bodyTypeText;
+        QLatin1StringView bodyTypeText;
 
         switch (mBodyType) {
         case BodyHtml:
-            bodyTypeText = QStringLiteral("HTML");
+            bodyTypeText = "HTML"_L1;
             break;
         case BodyText:
-            bodyTypeText = QStringLiteral("Text");
+            bodyTypeText = "Text"_L1;
             break;
         default:
             // case BodyBest:
-            bodyTypeText = QStringLiteral("Best");
+            bodyTypeText = "Best"_L1;
             break;
         }
-        writer.writeTextElement(ewsTypeNsUri, QStringLiteral("BodyType"), bodyTypeText);
+        writer.writeTextElement(ewsTypeNsUri, "BodyType"_L1, bodyTypeText);
     }
 
     // Write the FilterHtmlContent element (if applicable)
     if (mBodyType == BodyHtml && mFlags.testFlag(FilterHtmlContent)) {
-        writer.writeTextElement(ewsTypeNsUri, QStringLiteral("FilterHtmlContent"), QStringLiteral("true"));
+        writer.writeTextElement(ewsTypeNsUri, "FilterHtmlContent"_L1, "true"_L1);
     }
 
     // Write the ConvertHtmlCodePageToUTF8 element (if applicable)
     if (mBodyType == BodyHtml && mFlags.testFlag(ConvertHtmlToUtf8)) {
-        writer.writeTextElement(ewsTypeNsUri, QStringLiteral("ConvertHtmlCodePageToUTF8"), QStringLiteral("true"));
+        writer.writeTextElement(ewsTypeNsUri, "ConvertHtmlCodePageToUTF8"_L1, "true"_L1);
     }
 
     // Write properties (if any)

@@ -10,6 +10,8 @@
 
 #include "ewsclient_debug.h"
 
+using namespace Qt::StringLiterals;
+
 EwsUnsubscribeRequest::EwsUnsubscribeRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
 {
@@ -24,9 +26,9 @@ void EwsUnsubscribeRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("Unsubscribe"));
+    writer.writeStartElement(ewsMsgNsUri, "Unsubscribe"_L1);
 
-    writer.writeTextElement(ewsMsgNsUri, QStringLiteral("SubscriptionId"), mSubscriptionId);
+    writer.writeTextElement(ewsMsgNsUri, "SubscriptionId"_L1, mSubscriptionId);
 
     writer.writeEndElement(); // Unsubscribe
 

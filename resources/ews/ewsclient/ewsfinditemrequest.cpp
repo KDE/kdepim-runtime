@@ -12,11 +12,13 @@
 
 #include "ewsclient_debug.h"
 
+using namespace Qt::StringLiterals;
+
 static constexpr auto traversalTypeNames = std::to_array({
-    QLatin1StringView("Shallow"),
-    QLatin1StringView("Deep"),
-    QLatin1StringView("SoftDeleted"),
-    QLatin1StringView("Associated"),
+    "Shallow"_L1,
+    "Deep"_L1,
+    "SoftDeleted"_L1,
+    "Associated"_L1,
 });
 
 class EwsFindItemResponse : public EwsRequest::Response
@@ -73,30 +75,30 @@ void EwsFindItemRequest::start()
 
     startSoapDocument(writer);
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("FindItem"));
-    writer.writeAttribute(QStringLiteral("Traversal"), traversalTypeNames[mTraversal]);
+    writer.writeStartElement(ewsMsgNsUri, "FindItem"_L1);
+    writer.writeAttribute("Traversal"_L1, traversalTypeNames[mTraversal]);
 
     mShape.write(writer);
 
     if (mPagination) {
-        writer.writeStartElement(ewsMsgNsUri, QStringLiteral("IndexedPageItemView"));
+        writer.writeStartElement(ewsMsgNsUri, "IndexedPageItemView"_L1);
         if (mMaxItems > 0) {
-            writer.writeAttribute(QStringLiteral("MaxEntriesReturned"), QString::number(mMaxItems));
+            writer.writeAttribute("MaxEntriesReturned"_L1, QString::number(mMaxItems));
         }
-        writer.writeAttribute(QStringLiteral("Offset"), QString::number(mPageOffset));
-        writer.writeAttribute(QStringLiteral("BasePoint"), (mPageBasePoint == EwsBasePointEnd) ? QStringLiteral("End") : QStringLiteral("Beginning"));
+        writer.writeAttribute("Offset"_L1, QString::number(mPageOffset));
+        writer.writeAttribute("BasePoint"_L1, (mPageBasePoint == EwsBasePointEnd) ? "End"_L1 : "Beginning"_L1);
         writer.writeEndElement();
     } else if (mFractional) {
-        writer.writeStartElement(ewsMsgNsUri, QStringLiteral("FractionalPageItemView"));
+        writer.writeStartElement(ewsMsgNsUri, "FractionalPageItemView"_L1);
         if (mMaxItems > 0) {
-            writer.writeAttribute(QStringLiteral("MaxEntriesReturned"), QString::number(mMaxItems));
+            writer.writeAttribute("MaxEntriesReturned"_L1, QString::number(mMaxItems));
         }
-        writer.writeAttribute(QStringLiteral("Numerator"), QString::number(mFracNumerator));
-        writer.writeAttribute(QStringLiteral("Denominator"), QString::number(mFracDenominator));
+        writer.writeAttribute("Numerator"_L1, QString::number(mFracNumerator));
+        writer.writeAttribute("Denominator"_L1, QString::number(mFracDenominator));
         writer.writeEndElement();
     }
 
-    writer.writeStartElement(ewsMsgNsUri, QStringLiteral("ParentFolderIds"));
+    writer.writeStartElement(ewsMsgNsUri, "ParentFolderIds"_L1);
     mFolderId.writeFolderIds(writer);
     writer.writeEndElement();
 
@@ -156,7 +158,7 @@ EwsFindItemResponse::EwsFindItemResponse(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QLatin1StringView("RootFolder")) {
+        if (reader.name() == "RootFolder"_L1) {
             if (!parseRootFolder(reader)) {
                 return;
             }
@@ -169,38 +171,38 @@ EwsFindItemResponse::EwsFindItemResponse(QXmlStreamReader &reader)
 
 bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
 {
-    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1StringView("RootFolder")) {
+    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != "RootFolder"_L1) {
         return setErrorMsg(
             QStringLiteral("Failed to read EWS request - expected %1 element (got %2).").arg(QStringLiteral("RootFolder"), reader.qualifiedName().toString()));
     }
 
-    if (!reader.attributes().hasAttribute(QStringLiteral("TotalItemsInView")) || !reader.attributes().hasAttribute(QStringLiteral("TotalItemsInView"))) {
+    if (!reader.attributes().hasAttribute("TotalItemsInView"_L1) || !reader.attributes().hasAttribute("TotalItemsInView"_L1)) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - missing attributes of %1 element.").arg(QStringLiteral("RootFolder")));
     }
     bool ok;
     QXmlStreamAttributes attrs = reader.attributes();
-    mTotalItems = attrs.value(QStringLiteral("TotalItemsInView")).toUInt(&ok);
+    mTotalItems = attrs.value("TotalItemsInView"_L1).toUInt(&ok);
     if (!ok) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - failed to read %1 attribute.").arg(QStringLiteral("TotalItemsInView")));
     }
-    mIncludesLastItem = attrs.value(QStringLiteral("IncludesLastItemInRange")) == QLatin1StringView("true");
+    mIncludesLastItem = attrs.value("IncludesLastItemInRange"_L1) == "true"_L1;
 
-    if (attrs.hasAttribute(QStringLiteral("IndexedPagingOffset"))) {
-        mNextOffset = attrs.value(QStringLiteral("IndexedPagingOffset")).toInt(&ok);
+    if (attrs.hasAttribute("IndexedPagingOffset"_L1)) {
+        mNextOffset = attrs.value("IndexedPagingOffset"_L1).toInt(&ok);
         if (!ok) {
             return setErrorMsg(QStringLiteral("Failed to read EWS request - failed to read %1 attribute.").arg(QStringLiteral("IndexedPagingOffset")));
         }
     }
 
-    if (attrs.hasAttribute(QStringLiteral("NumeratorOffset"))) {
-        mNextNumerator = attrs.value(QStringLiteral("NumeratorOffset")).toInt(&ok);
+    if (attrs.hasAttribute("NumeratorOffset"_L1)) {
+        mNextNumerator = attrs.value("NumeratorOffset"_L1).toInt(&ok);
         if (!ok) {
             return setErrorMsg(QStringLiteral("Failed to read EWS request - failed to read %1 attribute.").arg(QStringLiteral("NumeratorOffset")));
         }
     }
 
-    if (attrs.hasAttribute(QStringLiteral("AbsoluteDenominator"))) {
-        mNextDenominator = attrs.value(QStringLiteral("AbsoluteDenominator")).toInt(&ok);
+    if (attrs.hasAttribute("AbsoluteDenominator"_L1)) {
+        mNextDenominator = attrs.value("AbsoluteDenominator"_L1).toInt(&ok);
         if (!ok) {
             return setErrorMsg(QStringLiteral("Failed to read EWS request - failed to read %1 attribute.").arg(QStringLiteral("AbsoluteDenominator")));
         }
@@ -210,7 +212,7 @@ bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected a child element in %1 element.").arg(QStringLiteral("RootFolder")));
     }
 
-    if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != QLatin1StringView("Items")) {
+    if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != "Items"_L1) {
         return setErrorMsg(
             QStringLiteral("Failed to read EWS request - expected %1 element (got %2).").arg(QStringLiteral("Items"), reader.qualifiedName().toString()));
     }
@@ -245,11 +247,9 @@ EwsItem *EwsFindItemResponse::readItem(QXmlStreamReader &reader)
 {
     EwsItem *item = nullptr;
     const QStringView readerName = reader.name();
-    if (readerName == QLatin1StringView("Item") || readerName == QLatin1StringView("Message") || readerName == QLatin1StringView("CalendarItem")
-        || readerName == QLatin1StringView("Contact") || readerName == QLatin1StringView("DistributionList")
-        || readerName == QLatin1StringView("MeetingMessage") || readerName == QLatin1StringView("MeetingRequest")
-        || readerName == QLatin1StringView("MeetingResponse") || readerName == QLatin1StringView("MeetingCancellation")
-        || readerName == QLatin1StringView("Task")) {
+    if (readerName == "Item"_L1 || readerName == "Message"_L1 || readerName == "CalendarItem"_L1 || readerName == "Contact"_L1
+        || readerName == "DistributionList"_L1 || readerName == "MeetingMessage"_L1 || readerName == "MeetingRequest"_L1 || readerName == "MeetingResponse"_L1
+        || readerName == "MeetingCancellation"_L1 || readerName == "Task"_L1) {
         qCDebug(EWSCLI_LOG).noquote() << QStringLiteral("Processing %1").arg(readerName.toString());
         item = new EwsItem(reader);
         if (!item->isValid()) {
