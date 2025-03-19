@@ -39,6 +39,9 @@ DavFreeBusyHandler::DavFreeBusyHandler(Settings *settings, QObject *parent)
 
 void DavFreeBusyHandler::canHandleFreeBusy(const QString &email)
 {
+    if (!mSettings) {
+        return;
+    }
     const KDAV::DavUrl::List urls = mSettings->configuredDavUrls();
     for (const KDAV::DavUrl &url : urls) {
         if (url.protocol() == KDAV::CalDav) {
