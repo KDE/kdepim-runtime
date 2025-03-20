@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-17 00:41+0000\n"
+"POT-Creation-Date: 2025-03-20 00:42+0000\n"
 "PO-Revision-Date: 2013-09-08 07:05+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -269,17 +269,17 @@ msgid ""
 "supported."
 msgstr ""
 
-#: davfreebusyhandler.cpp:59
+#: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr ""
 
-#: davfreebusyhandler.cpp:188 davfreebusyhandler.cpp:199
+#: davfreebusyhandler.cpp:191 davfreebusyhandler.cpp:202
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "مۇلازىمېتىردىن كەلگەن ئىناۋەتسىز جاۋاب"
 
-#: davfreebusyhandler.cpp:210
+#: davfreebusyhandler.cpp:213
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr ""

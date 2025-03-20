@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-17 00:41+0000\n"
+"POT-Creation-Date: 2025-03-20 00:42+0000\n"
 "PO-Revision-Date: 2024-07-31 10:15+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -295,17 +295,17 @@ msgstr ""
 "Il habeva un problema con le requesta. Le requirite typos MIME non es "
 "supportate."
 
-#: davfreebusyhandler.cpp:59
+#: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "Nulle cassa de exito programmate (schedule-outbox) trovate per %1"
 
-#: davfreebusyhandler.cpp:188 davfreebusyhandler.cpp:199
+#: davfreebusyhandler.cpp:191 davfreebusyhandler.cpp:202
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Responsas invalide ex le servitor"
 
-#: davfreebusyhandler.cpp:210
+#: davfreebusyhandler.cpp:213
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Incapace de analysar datos de libere-occupate recipite"

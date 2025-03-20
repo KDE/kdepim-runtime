@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-17 00:41+0000\n"
+"POT-Creation-Date: 2025-03-20 00:42+0000\n"
 "PO-Revision-Date: 2024-08-19 22:47+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -285,17 +285,17 @@ msgid ""
 "supported."
 msgstr "요청에 문제가 있습니다. 지정한 MIME 형식을 지원하지 않습니다."
 
-#: davfreebusyhandler.cpp:59
+#: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "%1에서 schedule-outbox를 찾을 수 없음"
 
-#: davfreebusyhandler.cpp:188 davfreebusyhandler.cpp:199
+#: davfreebusyhandler.cpp:191 davfreebusyhandler.cpp:202
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "서버에서 잘못된 응답이 돌아옴"
 
-#: davfreebusyhandler.cpp:210
+#: davfreebusyhandler.cpp:213
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "받은 free-busy 데이터를 해석할 수 없음"

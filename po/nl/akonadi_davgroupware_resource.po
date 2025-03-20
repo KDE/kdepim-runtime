@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-17 00:41+0000\n"
+"POT-Creation-Date: 2025-03-20 00:42+0000\n"
 "PO-Revision-Date: 2024-07-30 13:05+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -298,17 +298,17 @@ msgstr ""
 "Er was een probleem met het verzoek. De gevraagde MIME-typen worden niet "
 "ondersteund."
 
-#: davfreebusyhandler.cpp:59
+#: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "Geen postvak uit voor planning voor %1"
 
-#: davfreebusyhandler.cpp:188 davfreebusyhandler.cpp:199
+#: davfreebusyhandler.cpp:191 davfreebusyhandler.cpp:202
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Ongeldig antwoord van de server"
 
-#: davfreebusyhandler.cpp:210
+#: davfreebusyhandler.cpp:213
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Ontvangen vrij/bezet-gegevens kunnen niet worden verwerkt "

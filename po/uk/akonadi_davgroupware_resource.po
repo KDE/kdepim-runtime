@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-17 00:41+0000\n"
+"POT-Creation-Date: 2025-03-20 00:42+0000\n"
 "PO-Revision-Date: 2024-07-30 09:54+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -299,17 +299,17 @@ msgstr ""
 "Під час виконання запиту виникла проблема. Підтримки потрібних вам типів "
 "MIME не передбачено."
 
-#: davfreebusyhandler.cpp:59
+#: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "Не виявлено розкладу надсилання вихідних повідомлень для %1"
 
-#: davfreebusyhandler.cpp:188 davfreebusyhandler.cpp:199
+#: davfreebusyhandler.cpp:191 davfreebusyhandler.cpp:202
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Некоректна відповідь від сервера"
 
-#: davfreebusyhandler.cpp:210
+#: davfreebusyhandler.cpp:213
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Не вдалося обробити отримані дані щодо вільного/зайнятого часу"
