@@ -112,7 +112,7 @@ qt_add_dbus_adaptor(imapresource_LIB_SRCS
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 
-target_link_libraries(imapresource
+target_link_libraries(imapresource PUBLIC
     Qt::DBus
     Qt::Network
     KF6::ConfigGui
@@ -130,6 +130,7 @@ target_link_libraries(imapresource
     KPim6::PimCommonAkonadi
     KF6::KIOWidgets # SslUi
     qt6keychain
+    akonadi-singlefileresource
 )
 
 ########### next target ###############
@@ -172,7 +173,7 @@ if(APPLE)
     )
 endif()
 
-target_link_libraries(akonadi_imap_resource
+target_link_libraries(akonadi_imap_resource PUBLIC
     Qt::DBus
     KPim6::AkonadiCore
     KPim6::IMAP
@@ -184,7 +185,6 @@ target_link_libraries(akonadi_imap_resource
     KPim6::GAPICore
     KF6::I18n
     KF6::ConfigGui
-    akonadi-singlefileresource
     imapresource
 )
 
