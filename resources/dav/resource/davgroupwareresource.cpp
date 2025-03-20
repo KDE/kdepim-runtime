@@ -10,7 +10,6 @@
 #include "ctagattribute.h"
 #include "davfreebusyhandler.h"
 #include "davprotocolattribute.h"
-#include "settings.h"
 #include "utils.h"
 
 #include <KDAV/DavCollection>

@@ -6,7 +6,6 @@
 
 #include "configwidget.h"
 #include "searchdialog.h"
-#include "settings.h"
 #include "setupwizard.h"
 #include "urlconfigurationdialog.h"
 #include "utils.h"
