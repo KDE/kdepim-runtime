@@ -216,6 +216,7 @@ QStringList Settings::mappedCollections(KDAV::Protocol proto, const QString &con
 
 void Settings::reloadConfig()
 {
+    load();
     buildUrlsList();
     updateRemoteUrls();
     loadMappings();

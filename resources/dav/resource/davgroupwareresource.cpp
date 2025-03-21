@@ -744,6 +744,14 @@ void DavGroupwareResource::onCreateInitialCacheReady(KJob *job)
 void DavGroupwareResource::onReloadConfig()
 {
     settings()->reloadConfig();
+
+    // sync the name from the settings
+    if (!settings()->displayName().isEmpty()) {
+        auto attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+        attribute->setDisplayName(settings()->displayName());
+        setName(settings()->displayName());
+    }
+
     synchronize();
 }
 
