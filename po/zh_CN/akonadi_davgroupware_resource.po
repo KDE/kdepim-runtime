@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-20 00:42+0000\n"
+"POT-Creation-Date: 2025-03-21 00:42+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -18,38 +18,38 @@ msgstr ""
 "akonadi_davgroupware_resource.pot\n"
 "X-Crowdin-File-ID: 45469\n"
 
-#: configwidget.cpp:36
+#: configwidget.cpp:35
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "DAV 资源配置"
 
-#: configwidget.cpp:43
+#: configwidget.cpp:42
 #, kde-format
 msgid "Protocol"
 msgstr "协议"
 
-#: configwidget.cpp:43 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:42 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "URL"
 
-#: configwidget.cpp:56
+#: configwidget.cpp:55
 #, kde-format
 msgid "Days"
 msgstr "日"
 
-#: configwidget.cpp:57
+#: configwidget.cpp:56
 #, kde-format
 msgid "Months"
 msgstr "月"
 
-#: configwidget.cpp:58
+#: configwidget.cpp:57
 #, kde-format
 msgid "Years"
 msgstr "年"
 
-#: configwidget.cpp:152
+#: configwidget.cpp:151
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -300,80 +300,80 @@ msgstr "无效的服务器应答"
 msgid "Unable to parse free-busy data received"
 msgstr "无法解析收到的忙/闲数据"
 
-#: davgroupwareresource.cpp:169
+#: davgroupwareresource.cpp:168
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "无法离线时获得忙/闲信息"
 
-#: davgroupwareresource.cpp:189
+#: davgroupwareresource.cpp:188
 #, kde-format
 msgid "Fetching collections"
 msgstr "正在获取收藏"
 
-#: davgroupwareresource.cpp:257
+#: davgroupwareresource.cpp:256
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "收到未知集合的收取请求：%1"
 
-#: davgroupwareresource.cpp:314
+#: davgroupwareresource.cpp:313
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "项目 %1 的收藏无效。"
 
-#: davgroupwareresource.cpp:646
+#: davgroupwareresource.cpp:645
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "无法更改项目：%1"
 
-#: davgroupwareresource.cpp:685
+#: davgroupwareresource.cpp:684
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "无法修改此日历：%1"
 
-#: davgroupwareresource.cpp:754
+#: davgroupwareresource.cpp:753
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "无法删除收藏：%1"
 
-#: davgroupwareresource.cpp:774
+#: davgroupwareresource.cpp:773
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "无法获取收藏：%1"
 
-#: davgroupwareresource.cpp:907 davgroupwareresource.cpp:1006
+#: davgroupwareresource.cpp:906 davgroupwareresource.cpp:1005
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "无法获取项目：%1"
 
-#: davgroupwareresource.cpp:1086
+#: davgroupwareresource.cpp:1085
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "无法获取项目：%1"
 
-#: davgroupwareresource.cpp:1106
+#: davgroupwareresource.cpp:1105
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr "无法获取当前项目：数据解析失败，项目可能已被删除。"
 
-#: davgroupwareresource.cpp:1143
+#: davgroupwareresource.cpp:1142
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "无法添加项目：%1"
 
-#: davgroupwareresource.cpp:1187 davgroupwareresource.cpp:1300
-#: davgroupwareresource.cpp:1312
+#: davgroupwareresource.cpp:1186 davgroupwareresource.cpp:1299
+#: davgroupwareresource.cpp:1311
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "无法更改项目：%1"
 
-#: davgroupwareresource.cpp:1274 davgroupwareresource.cpp:1331
+#: davgroupwareresource.cpp:1273 davgroupwareresource.cpp:1330
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "无法删除项目：%1"
 
-#: davgroupwareresource.cpp:1418 davgroupwareresource.cpp:1419
+#: davgroupwareresource.cpp:1417 davgroupwareresource.cpp:1418
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "资源尚未配置"

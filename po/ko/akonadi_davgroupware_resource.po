@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-20 00:42+0000\n"
+"POT-Creation-Date: 2025-03-21 00:42+0000\n"
 "PO-Revision-Date: 2024-08-19 22:47+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -17,38 +17,38 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 23.08.5\n"
 
-#: configwidget.cpp:36
+#: configwidget.cpp:35
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "DAV 리소스 설정"
 
-#: configwidget.cpp:43
+#: configwidget.cpp:42
 #, kde-format
 msgid "Protocol"
 msgstr "프로토콜"
 
-#: configwidget.cpp:43 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:42 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "URL"
 
-#: configwidget.cpp:56
+#: configwidget.cpp:55
 #, kde-format
 msgid "Days"
 msgstr "일"
 
-#: configwidget.cpp:57
+#: configwidget.cpp:56
 #, kde-format
 msgid "Months"
 msgstr "개월"
 
-#: configwidget.cpp:58
+#: configwidget.cpp:57
 #, kde-format
 msgid "Years"
 msgstr "년"
 
-#: configwidget.cpp:152
+#: configwidget.cpp:151
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -300,57 +300,57 @@ msgstr "서버에서 잘못된 응답이 돌아옴"
 msgid "Unable to parse free-busy data received"
 msgstr "받은 free-busy 데이터를 해석할 수 없음"
 
-#: davgroupwareresource.cpp:169
+#: davgroupwareresource.cpp:168
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "오프라인일 때 free-busy 정보를 가져올 수 없음"
 
-#: davgroupwareresource.cpp:189
+#: davgroupwareresource.cpp:188
 #, kde-format
 msgid "Fetching collections"
 msgstr "모음집 가져오는 중"
 
-#: davgroupwareresource.cpp:257
+#: davgroupwareresource.cpp:256
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "알 수 없는 모음집에서 항목을 가져와야 함: %1"
 
-#: davgroupwareresource.cpp:314
+#: davgroupwareresource.cpp:313
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "항목 %1의 모음집이 올바르지 않습니다."
 
-#: davgroupwareresource.cpp:646
+#: davgroupwareresource.cpp:645
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "항목을 수정할 수 없음: %1"
 
-#: davgroupwareresource.cpp:685
+#: davgroupwareresource.cpp:684
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "모음집을 수정할 수 없음: %1"
 
-#: davgroupwareresource.cpp:754
+#: davgroupwareresource.cpp:753
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "모음집을 삭제하는 중: %1"
 
-#: davgroupwareresource.cpp:774
+#: davgroupwareresource.cpp:773
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "모음집을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:907 davgroupwareresource.cpp:1006
+#: davgroupwareresource.cpp:906 davgroupwareresource.cpp:1005
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "항목을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:1086
+#: davgroupwareresource.cpp:1085
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "항목을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:1106
+#: davgroupwareresource.cpp:1105
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -359,23 +359,23 @@ msgstr ""
 "항목을 가져올 수 없음: 항목 데이터를 해석할 수 없습니다. 이미 삭제되었을 수"
 "도 있습니다."
 
-#: davgroupwareresource.cpp:1143
+#: davgroupwareresource.cpp:1142
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "항목을 추가할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1187 davgroupwareresource.cpp:1300
-#: davgroupwareresource.cpp:1312
+#: davgroupwareresource.cpp:1186 davgroupwareresource.cpp:1299
+#: davgroupwareresource.cpp:1311
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "항목을 변경할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1274 davgroupwareresource.cpp:1331
+#: davgroupwareresource.cpp:1273 davgroupwareresource.cpp:1330
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "항목을 삭제할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1418 davgroupwareresource.cpp:1419
+#: davgroupwareresource.cpp:1417 davgroupwareresource.cpp:1418
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "리소스가 설정되지 않음"

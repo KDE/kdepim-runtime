@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-20 00:42+0000\n"
+"POT-Creation-Date: 2025-03-21 00:42+0000\n"
 "PO-Revision-Date: 2024-09-20 13:37+0300\n"
 "Last-Translator: Antonis Geralis <capoiosct@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -20,39 +20,39 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 24.08.1\n"
 
-#: configwidget.cpp:36
+#: configwidget.cpp:35
 #, fuzzy, kde-format
 #| msgid "DAV groupware configuration wizard"
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "Βοηθός διαμόρφωσης DAV groupware"
 
-#: configwidget.cpp:43
+#: configwidget.cpp:42
 #, kde-format
 msgid "Protocol"
 msgstr "Πρωτόκολλο"
 
-#: configwidget.cpp:43 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:42 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "URL"
 
-#: configwidget.cpp:56
+#: configwidget.cpp:55
 #, kde-format
 msgid "Days"
 msgstr "Ημέρες"
 
-#: configwidget.cpp:57
+#: configwidget.cpp:56
 #, kde-format
 msgid "Months"
 msgstr "Μήνες"
 
-#: configwidget.cpp:58
+#: configwidget.cpp:57
 #, kde-format
 msgid "Years"
 msgstr "Έτη"
 
-#: configwidget.cpp:152
+#: configwidget.cpp:151
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -314,85 +314,85 @@ msgstr "Μη έγκυρη ανταπόκριση από τον εξυπηρετ�
 msgid "Unable to parse free-busy data received"
 msgstr "Αδυναμία ανάλυσης ληφθέντων δεδομένων ελεύθερου-απασχολημένου"
 
-#: davgroupwareresource.cpp:169
+#: davgroupwareresource.cpp:168
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr ""
 "Αδυναμία ανάκτησης πληροφοριών ελεύθερου-απασχολημένου σε κατάσταση εκτός "
 "σύνδεσης"
 
-#: davgroupwareresource.cpp:189
+#: davgroupwareresource.cpp:188
 #, kde-format
 msgid "Fetching collections"
 msgstr "Προσκόμιση συλλογών"
 
-#: davgroupwareresource.cpp:257
+#: davgroupwareresource.cpp:256
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr ""
 "Έγινε ερώτηση σχετικά με ανάκτηση αντικειμένων για άγνωστες συλλογές: %1"
 
-#: davgroupwareresource.cpp:314
+#: davgroupwareresource.cpp:313
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Μη έγκυρη συλλογή για το αντικείμενο %1."
 
-#: davgroupwareresource.cpp:646
+#: davgroupwareresource.cpp:645
 #, fuzzy, kde-format
 #| msgid "Unable to add item: %1"
 msgid "Unable to modify items: %1"
 msgstr "Αδυναμία προσθήκης αντικειμένου: %1"
 
-#: davgroupwareresource.cpp:685
+#: davgroupwareresource.cpp:684
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to modify collection: %1"
 msgstr "Αδυναμία διαγραφής συλλογής: %1"
 
-#: davgroupwareresource.cpp:754
+#: davgroupwareresource.cpp:753
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Αδυναμία διαγραφής συλλογής: %1"
 
-#: davgroupwareresource.cpp:774
+#: davgroupwareresource.cpp:773
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Αδυναμία ανάκτησης συλλογών: %1"
 
-#: davgroupwareresource.cpp:907 davgroupwareresource.cpp:1006
+#: davgroupwareresource.cpp:906 davgroupwareresource.cpp:1005
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Αδυναμία ανάκτησης αντικειμένων: %1"
 
-#: davgroupwareresource.cpp:1086
+#: davgroupwareresource.cpp:1085
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Αδυναμία ανάκτησης αντικειμένου: %1"
 
-#: davgroupwareresource.cpp:1106
+#: davgroupwareresource.cpp:1105
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
 
-#: davgroupwareresource.cpp:1143
+#: davgroupwareresource.cpp:1142
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Αδυναμία προσθήκης αντικειμένου: %1"
 
-#: davgroupwareresource.cpp:1187 davgroupwareresource.cpp:1300
-#: davgroupwareresource.cpp:1312
+#: davgroupwareresource.cpp:1186 davgroupwareresource.cpp:1299
+#: davgroupwareresource.cpp:1311
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Αδυναμία τροποποίησης του αντικειμένου: %1"
 
-#: davgroupwareresource.cpp:1274 davgroupwareresource.cpp:1331
+#: davgroupwareresource.cpp:1273 davgroupwareresource.cpp:1330
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Αδυναμία αφαίρεσης αντικειμένου: %1"
 
-#: davgroupwareresource.cpp:1418 davgroupwareresource.cpp:1419
+#: davgroupwareresource.cpp:1417 davgroupwareresource.cpp:1418
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Ο πόρος δεν έχει διαμορφωθεί ακόμη"

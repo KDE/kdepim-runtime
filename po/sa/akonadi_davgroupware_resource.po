@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-20 00:42+0000\n"
+"POT-Creation-Date: 2025-03-21 00:42+0000\n"
 "PO-Revision-Date: 2024-12-20 21:52+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -19,38 +19,38 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>2);\n"
 "X-Generator: Lokalize 24.08.2\n"
 
-#: configwidget.cpp:36
+#: configwidget.cpp:35
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "DAV संसाधन विन्यासः"
 
-#: configwidget.cpp:43
+#: configwidget.cpp:42
 #, kde-format
 msgid "Protocol"
 msgstr "प्रोटोकॉल"
 
-#: configwidget.cpp:43 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:42 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "URL"
 
-#: configwidget.cpp:56
+#: configwidget.cpp:55
 #, kde-format
 msgid "Days"
 msgstr "दिवसाः"
 
-#: configwidget.cpp:57
+#: configwidget.cpp:56
 #, kde-format
 msgid "Months"
 msgstr "मासाः"
 
-#: configwidget.cpp:58
+#: configwidget.cpp:57
 #, kde-format
 msgid "Years"
 msgstr "वर्षाः"
 
-#: configwidget.cpp:152
+#: configwidget.cpp:151
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -303,57 +303,57 @@ msgstr "सर्वरतः अमान्यप्रतिसादः"
 msgid "Unable to parse free-busy data received"
 msgstr "प्राप्तं मुक्त-व्यस्तदत्तांशं विश्लेषणं कर्तुं असमर्थः"
 
-#: davgroupwareresource.cpp:169
+#: davgroupwareresource.cpp:168
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "अफलाइन-स्थितौ मुक्त-व्यस्त-सूचनाः पुनः प्राप्तुं असमर्थः"
 
-#: davgroupwareresource.cpp:189
+#: davgroupwareresource.cpp:188
 #, kde-format
 msgid "Fetching collections"
 msgstr "संग्रहान् आनयन्"
 
-#: davgroupwareresource.cpp:257
+#: davgroupwareresource.cpp:256
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "अज्ञातसङ्ग्रहस्य कृते वस्तूनि पुनः प्राप्तुं पृष्टम्: %1"
 
-#: davgroupwareresource.cpp:314
+#: davgroupwareresource.cpp:313
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "%1 मदस्य कृते अमान्यसङ्ग्रहः ।"
 
-#: davgroupwareresource.cpp:646
+#: davgroupwareresource.cpp:645
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "द्रव्यं परिवर्तयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:685
+#: davgroupwareresource.cpp:684
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "संग्रहं परिवर्तयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:754
+#: davgroupwareresource.cpp:753
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "संग्रहं हर्तुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:774
+#: davgroupwareresource.cpp:773
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "संग्रहान् पुनः प्राप्तुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:907 davgroupwareresource.cpp:1006
+#: davgroupwareresource.cpp:906 davgroupwareresource.cpp:1005
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "द्रव्यं पुनः प्राप्तुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1086
+#: davgroupwareresource.cpp:1085
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "मदं पुनः प्राप्तुं असमर्थम्: %1"
 
-#: davgroupwareresource.cpp:1106
+#: davgroupwareresource.cpp:1105
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -361,23 +361,23 @@ msgid ""
 msgstr ""
 "मदं पुनः प्राप्तुं असमर्थः: मददत्तांशं विश्लेषणं कर्तुं असफलः। भवतु नाम पूर्वमेव विलोपितम् आसीत्।"
 
-#: davgroupwareresource.cpp:1143
+#: davgroupwareresource.cpp:1142
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "मदं योजयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1187 davgroupwareresource.cpp:1300
-#: davgroupwareresource.cpp:1312
+#: davgroupwareresource.cpp:1186 davgroupwareresource.cpp:1299
+#: davgroupwareresource.cpp:1311
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "मदं परिवर्तयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1274 davgroupwareresource.cpp:1331
+#: davgroupwareresource.cpp:1273 davgroupwareresource.cpp:1330
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "मदं निष्कासयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1418 davgroupwareresource.cpp:1419
+#: davgroupwareresource.cpp:1417 davgroupwareresource.cpp:1418
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "संसाधनम् अद्यापि विन्यस्तं नास्ति"

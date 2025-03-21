@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2011, 2012, 2013, 2015, 2020, 2024 g.sora <g.sora@tiscali.it>
+# SPDX-FileCopyrightText: 2011, 2012, 2013, 2015, 2020, 2024, 2025 g.sora <g.sora@tiscali.it>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-03-16 00:42+0000\n"
-"PO-Revision-Date: 2024-11-22 17:15+0100\n"
+"PO-Revision-Date: 2025-03-20 18:27+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -286,13 +286,13 @@ msgstr ""
 #: imapresource.kcfg:129
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Si le supporto de activitates deelagente es habilitate"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: imapresource.kcfg:133
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Le activitates del agente"
 
 #: imapresourcebase.cpp:220
 #, kde-format
@@ -529,7 +529,7 @@ msgstr "Info de servitor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
-msgstr ""
+msgstr "Error durante que on obteneva capacitate de servitor: %1"
 
 #: serverinfodialog.cpp:109
 #, kde-format
