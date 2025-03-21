@@ -79,6 +79,10 @@ void ConfigWidget::loadSettings()
     checkUserInput();
     mManager->updateWidgets();
 
+    if (!mSettings.defaultUsername().isEmpty()) {
+        setPassword(mSettings.defaultPassword());
+    }
+
     if (mSettings.defaultUsername().isEmpty()) {
         auto wizard = new SetupWizard(this);
         wizard->setAttribute(Qt::WA_DeleteOnClose);
