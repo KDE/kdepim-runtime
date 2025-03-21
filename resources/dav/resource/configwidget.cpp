@@ -94,6 +94,10 @@ void ConfigWidget::loadSettings()
                 urlConfig->mPassword = wizard->field(QStringLiteral("credentialsPassword")).toString();
 
                 mSettings.newUrlConfiguration(urlConfig);
+
+                QUrl displayUrl(url.url);
+                displayUrl.setUserInfo(QString());
+                addModelRow(Utils::translatedProtocolName(url.protocol), displayUrl.toDisplayString());
             }
 
             const QString defaultUser = wizard->field(QStringLiteral("credentialsUserName")).toString();
