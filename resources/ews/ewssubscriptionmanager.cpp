@@ -154,7 +154,7 @@ void EwsSubscriptionManager::getEvents()
         auto req = new EwsGetStreamingEventsRequest(mEwsClient, this);
         req->setSubscriptionId(mSettings->eventSubscriptionId());
         req->setTimeout(streamingTimeout);
-        connect(req, &EwsRequest::result, this, &EwsSubscriptionManager::getEventsRequestFinished);
+        connect(req, &EwsRequest::result, this, &EwsSubscriptionManager::getEventsRequestFinished, Qt::QueuedConnection);
         connect(req, &EwsGetStreamingEventsRequest::eventsReceived, this, &EwsSubscriptionManager::streamingEventsReceived);
         req->start();
         mEventReq = req;
@@ -163,7 +163,7 @@ void EwsSubscriptionManager::getEvents()
         auto req = new EwsGetEventsRequest(mEwsClient, this);
         req->setSubscriptionId(mSettings->eventSubscriptionId());
         req->setWatermark(mSettings->eventSubscriptionWatermark());
-        connect(req, &EwsRequest::result, this, &EwsSubscriptionManager::getEventsRequestFinished);
+        connect(req, &EwsRequest::result, this, &EwsSubscriptionManager::getEventsRequestFinished, Qt::QueuedConnection);
         req->start();
         mEventReq = req;
     }
