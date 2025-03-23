@@ -1,15 +1,15 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Maciej Wikło <maciej.wiklo@wp.pl>, 2009, 2010.
-# SPDX-FileCopyrightText: 2011, 2012, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022, 2024 Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>
+# SPDX-FileCopyrightText: 2011, 2012, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022, 2024, 2025 Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>
 # Marta Rybczyńska <kde-i18n@rybczynska.net>, 2012, 2013.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-03-16 00:42+0000\n"
-"PO-Revision-Date: 2024-11-30 09:13+0100\n"
+"PO-Revision-Date: 2025-03-22 11:44+0100\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "Language: pl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 24.08.3\n"
+"X-Generator: Lokalize 24.12.3\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -281,13 +281,13 @@ msgstr "Określa rodzaj uwierzytelnienia używanego w własnym serwerze sieve"
 #: imapresource.kcfg:129
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Określa czy obsługa aktywności agenta jest włączona"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: imapresource.kcfg:133
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Aktywności agenta"
 
 #: imapresourcebase.cpp:220
 #, kde-format
@@ -529,7 +529,7 @@ msgstr "Dane serwera"
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
-msgstr ""
+msgstr "Błąd przy uzyskiwaniu możliwości serwera: %1"
 
 #: serverinfodialog.cpp:109
 #, kde-format
