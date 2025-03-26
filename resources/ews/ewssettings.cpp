@@ -9,6 +9,7 @@
 #include <KLocalizedString>
 #include <KWallet>
 
+#include "auth/ewsintuneauth.h"
 #include "auth/ewsoauth.h"
 #include "auth/ewspasswordauth.h"
 
@@ -151,6 +152,13 @@ EwsAbstractAuth *EwsSettings::loadAuth(QObject *parent)
 
     EwsAbstractAuth *auth = nullptr;
     const auto mode = authMode();
+#ifdef Q_OS_UNIX
+    if (mode == QLatin1StringView("intune")) {
+        qCDebugNC(EWSRES_LOG) << QStringLiteral("Using InTune authentication");
+
+        auth = new EwsInTuneAuth(parent, email(), oAuth2AppId(), oAuth2ReturnUri());
+    }
+#endif
     if (mode == QLatin1StringView("oauth2")) {
         qCDebugNC(EWSRES_LOG) << QStringLiteral("Using OAuth2 authentication");
 

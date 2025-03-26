@@ -226,6 +226,16 @@
                 </property>
                </widget>
               </item>
+              <item>
+               <widget class="QRadioButton" name="authInTuneRadioButton">
+                <property name="whatsThis">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables authentication using Microsoft InTune MDM software. This is required in many corporate environments, which mandate strong authentication using device credentials and thereby require the system to be joined to the organization and managed using InTune.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>&amp;Microsoft InTune</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </widget>
            </item>

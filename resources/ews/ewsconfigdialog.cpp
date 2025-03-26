@@ -15,6 +15,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
+#include "auth/ewsintuneauth.h"
 #include "auth/ewsoauth.h"
 #include "auth/ewspasswordauth.h"
 #include "ewsautodiscoveryjob.h"
@@ -116,7 +117,14 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     } else if (authMode == QLatin1StringView("oauth2")) {
         mUi->authOAuth2RadioButton->setChecked(true);
         mUi->pkeyAuthGroupBox->setEnabled(true);
+#ifdef Q_OS_UNIX
+    } else if (authMode == QLatin1StringView("intune")) {
+        mUi->authInTuneRadioButton->setChecked(true);
+#endif
     }
+#ifndef Q_OS_UNIX
+    mUi->authInTuneRadioButton->setEnabled(false);
+#endif
     mUi->pkeyAuthCert->setText(mSettings->pKeyCert());
     mUi->pkeyAuthCert->setNameFilter(QStringLiteral("%1 (*.pem)").arg(i18n("PEM file")));
     mUi->pkeyAuthKey->setText(mSettings->pKeyKey());
@@ -170,6 +178,7 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     connect(mUi->kcfg_Email, &QLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->authUsernameRadioButton, &QRadioButton::toggled, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->authOAuth2RadioButton, &QRadioButton::toggled, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->authInTuneRadioButton, &QRadioButton::toggled, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->kcfg_BaseUrl, &QLineEdit::textChanged, this, &EwsConfigDialog::enableTryConnect);
     connect(mUi->tryConnectButton, &QPushButton::clicked, this, &EwsConfigDialog::tryConnect);
     connect(mUi->userAgentCombo, &QComboBox::currentIndexChanged, this, &EwsConfigDialog::userAgentChanged);
@@ -218,6 +227,11 @@ void EwsConfigDialog::save()
     if (mUi->authOAuth2RadioButton->isChecked()) {
         mSettings->setAuthMode(QStringLiteral("oauth2"));
     }
+#ifdef Q_OS_UNIX
+    if (mUi->authInTuneRadioButton->isChecked()) {
+        mSettings->setAuthMode(QStringLiteral("intune"));
+    }
+#endif
     if (mUi->pkeyAuthGroupBox->isEnabled() && !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
         mSettings->setPKeyCert(mUi->pkeyAuthCert->text());
         mSettings->setPKeyKey(mUi->pkeyAuthKey->text());
@@ -450,6 +464,10 @@ EwsAbstractAuth *EwsConfigDialog::prepareAuth()
 
     if (mUi->authOAuth2RadioButton->isChecked()) {
         auth = new EwsOAuth(this, mUi->kcfg_Email->text(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
+#ifdef Q_OS_UNIX
+    } else if (mUi->authInTuneRadioButton->isChecked()) {
+        auth = new EwsInTuneAuth(this, mUi->kcfg_Email->text(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
+#endif
     } else if (mUi->authUsernameRadioButton->isChecked()) {
         auth = new EwsPasswordAuth(fullUsername(), this);
     } else {

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node name="/com/microsoft/identity/broker1">
+  <interface name="com.microsoft.identity.Broker1">
+    <method name="acquireTokenInteractively">
+      <arg name="protocol_version" type="s" direction="in"/>
+      <arg name="correlation_id" type="s" direction="in"/>
+      <arg name="request_json" type="s" direction="in"/>
+      <arg name="result" type="s" direction="out"/>
+    </method>
+    <method name="acquireTokenSilently">
+      <arg name="protocol_version" type="s" direction="in"/>
+      <arg name="correlation_id" type="s" direction="in"/>
+      <arg name="request_json" type="s" direction="in"/>
+      <arg name="result" type="s" direction="out"/>
+    </method>
+    <method name="getAccounts">
+      <arg name="protocol_version" type="s" direction="in"/>
+      <arg name="correlation_id" type="s" direction="in"/>
+      <arg name="request_json" type="s" direction="in"/>
+      <arg name="result" type="s" direction="out"/>
+    </method>
+    <method name="removeAccount">
+      <arg name="protocol_version" type="s" direction="in"/>
+      <arg name="correlation_id" type="s" direction="in"/>
+      <arg name="request_json" type="s" direction="in"/>
+      <arg name="result" type="s" direction="out"/>
+    </method>
+    <method name="acquirePrtSsoCookie">
+      <arg name="protocol_version" type="s" direction="in"/>
+      <arg name="correlation_id" type="s" direction="in"/>
+      <arg name="request_json" type="s" direction="in"/>
+      <arg name="result" type="s" direction="out"/>
+    </method>
+    <method name="generateSignedHttpRequest">
+      <arg name="protocol_version" type="s" direction="in"/>
+      <arg name="correlation_id" type="s" direction="in"/>
+      <arg name="request_json" type="s" direction="in"/>
+      <arg name="result" type="s" direction="out"/>
+    </method>
+    <method name="cancelInteractiveFlow">
+      <arg name="protocol_version" type="s" direction="in"/>
+      <arg name="correlation_id" type="s" direction="in"/>
+      <arg name="request_json" type="s" direction="in"/>
+      <arg name="result" type="s" direction="out"/>
+    </method>
+    <method name="getLinuxBrokerVersion">
+      <arg name="protocol_version" type="s" direction="in"/>
+      <arg name="correlation_id" type="s" direction="in"/>
+      <arg name="request_json" type="s" direction="in"/>
+      <arg name="result" type="s" direction="out"/>
+    </method>
+  </interface>
+</node>

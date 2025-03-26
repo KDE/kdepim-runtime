@@ -90,8 +90,14 @@ set(EWSCLIENT_SRCS
     ewsxml.h
     transferjob.h
     transferjob.cpp
-
 )
+
+if(UNIX)
+    list(APPEND EWSCLIENT_SRCS
+        auth/ewsintuneauth.cpp
+        auth/ewsintuneauth.h)
+    qt_add_dbus_interface(EWSCLIENT_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/auth/com.microsoft.identity.Broker1.xml broker1)
+endif()
 
 if(TARGET Qt::NetworkAuth)
     list(APPEND EWSCLIENT_SRCS
