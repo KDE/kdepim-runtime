@@ -238,7 +238,7 @@ void EwsFetchItemsJob::checkedItemsFetchFinished(KJob *job)
         const auto reqResponses{req->responses()};
         for (const EwsGetItemRequest::Response &resp : reqResponses) {
             if (resp.isSuccess()) {
-                qCDebugNC(EWSRES_LOG) << QStringLiteral("Checked item %1 found - readding").arg(ewsHash(it->id()));
+                qCDebugNC(EWSRES_LOG) << QStringLiteral("Checked item %1 found - re-adding").arg(ewsHash(it->id()));
                 mRemoteAddedItems.append(resp.item());
             } else {
                 qCDebugNC(EWSRES_LOG) << QStringLiteral("Checked item %1 not found - removing").arg(ewsHash(it->id()));

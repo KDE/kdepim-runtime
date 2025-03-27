@@ -242,7 +242,7 @@ public:
                 return;
             }
 
-            // Write te items to the locally cached file.
+            // Write the items to the locally cached file.
             if (!writeToFile(cacheFile())) {
                 qWarning() << "Error writing to file";
                 if (taskContext) {

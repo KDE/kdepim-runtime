@@ -342,7 +342,7 @@ Result POP3Protocol::loginAPOP(const char *challenge)
     ctx.addData(QByteArray(challenge, strlen(challenge)));
     ctx.addData(m_sPass.toLatin1());
 
-    // Genenerate APOP command
+    // Generate APOP command
     const QByteArray apop_string = "APOP " + m_sUser.toLocal8Bit() + ' ' + ctx.result().toHex();
     if (command(apop_string, buf, sizeof(buf)) == Ok) {
         return Result::pass();

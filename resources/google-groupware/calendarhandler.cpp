@@ -319,7 +319,7 @@ private Q_SLOTS:
             qCWarning(GOOGLE_CALENDAR_LOG) << "Failed to modify event:" << job->errorString();
             setError(job->error());
             setErrorText(job->errorString());
-            // don't emit result, continue wit the remaining jobs
+            // don't emit result, continue with the remaining jobs
         }
 
         mJobs.removeOne(job);

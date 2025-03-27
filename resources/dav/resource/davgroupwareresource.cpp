@@ -565,7 +565,7 @@ private:
                 setError(job->error());
                 setErrorText(job->errorText());
             } else {
-                // If we successfuly updated the DAV item, now write back the modified payload
+                // If we successfully updated the DAV item, now write back the modified payload
                 // to Akonadi.
                 const auto davItem = davJob->item();
                 akonadiItem.setRemoteRevision(davItem.etag());
@@ -631,7 +631,7 @@ void DavGroupwareResource::itemsTagsChanged(const Item::List &items, const QSet<
 
             auto davItem = Utils::createDavItem(akonadiItem, akonadiItem.parentCollection());
 
-            // We have to re-set the URL as it's not necessarily valud after createDavItem()
+            // We have to re-set the URL as it's not necessarily valid after createDavItem()
             davItem.setUrl(davUrl);
             davItem.setEtag(akonadiItem.remoteRevision());
             modifiedItems.push_back(std::make_tuple(davItem, akonadiItem));

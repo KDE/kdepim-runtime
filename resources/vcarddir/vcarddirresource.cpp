@@ -278,7 +278,7 @@ void VCardDirResource::initializeVCardDirectory() const
         if (!QDir::root().mkpath(dir.absolutePath())) {
             qCritical() << "Failed to create vCard directory" << dir.absolutePath();
         } else {
-            qDebug() << "vCard directory " << dir.absolutePath() << "successfuly created";
+            qDebug() << "vCard directory " << dir.absolutePath() << "successfully created";
         }
     }
 

@@ -91,7 +91,7 @@ using namespace Akonadi;
  * The final stage of the synchronization process builds a list of changed and deleted collections
  * for Akonadi. At this stage all collections must be processed, otherwise an error is raised. If
  * no collection moves have been executed the job is completed. Otherwise the completion is
- * singalled once all moves are done.
+ * signaled once all moves are done.
  */
 
 static const EwsPropertyField propPidTagContainerClass(0x3613, EwsPropTypeString);

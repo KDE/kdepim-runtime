@@ -171,7 +171,7 @@ ReadPasswordJob *Settings::requestPassword()
         }
         if (readPasswordJob->error() != NoError) {
             handleError(
-                i18nc("@info:status", "An error occured when retriving the IMAP password from the system keychain: \"%1\"", readPasswordJob->errorString()));
+                i18nc("@info:status", "An error occurred when retrieving the IMAP password from the system keychain: \"%1\"", readPasswordJob->errorString()));
             return;
         }
         m_password = readPasswordJob->textData();
@@ -207,7 +207,7 @@ ReadPasswordJob *Settings::requestSieveCustomPassword()
         }
         if (readPasswordJob->error() != NoError) {
             handleError(
-                i18nc("@info:status", "An error occured when retriving the sieve password from the system keychain: \"%1\"", readPasswordJob->errorString()));
+                i18nc("@info:status", "An error occurred when retrieving the sieve password from the system keychain: \"%1\"", readPasswordJob->errorString()));
             return;
         }
         m_customSievePassword = readPasswordJob->textData();
@@ -237,7 +237,7 @@ void Settings::setSieveCustomPassword(const QString &password)
     connect(writePasswordJob, &WritePasswordJob::finished, this, [this, writePasswordJob](auto) {
         if (writePasswordJob->error() != Error::NoError) {
             handleError(
-                i18nc("@info:status", "An error occured when saving the sieve password in the system keychain: \"%1\"", writePasswordJob->errorString()));
+                i18nc("@info:status", "An error occurred when saving the sieve password in the system keychain: \"%1\"", writePasswordJob->errorString()));
             return;
         }
     });
@@ -263,7 +263,7 @@ void Settings::setPassword(const QString &password)
     connect(writePasswordJob, &WritePasswordJob::finished, this, [this, writePasswordJob](auto) {
         if (writePasswordJob->error() != Error::NoError) {
             handleError(
-                i18nc("@info:status", "An error occured when saving the IMAP password in the system keychain: \"%1\"", writePasswordJob->errorString()));
+                i18nc("@info:status", "An error occurred when saving the IMAP password in the system keychain: \"%1\"", writePasswordJob->errorString()));
             return;
         }
     });

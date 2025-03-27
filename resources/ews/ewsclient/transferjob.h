@@ -22,7 +22,7 @@ public:
 
     void start() override;
 
-    /// Set username and password for a NTLMv2 authentification.
+    /// Set username and password for a NTLMv2 authentication.
     void setNTLM(const QString &username, const QString &password);
 
     /// Return the reply or null if the request wasn't sent.

@@ -609,7 +609,7 @@ void getRecurrence(T &i, const I &e)
     rrule.setFrequency(fromRecurrenceType(defaultRR->recurrenceType()));
     rrule.setInterval(defaultRR->frequency());
 
-    if (defaultRR->duration() != 0) { // Inidcates if end date is set or not
+    if (defaultRR->duration() != 0) { // Indicates if end date is set or not
         if (defaultRR->duration() > 0) {
             rrule.setCount(defaultRR->duration());
         }

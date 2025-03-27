@@ -289,7 +289,7 @@ void ICalDirResource::initializeICalDirectory() const
         if (!QDir::root().mkpath(dir.absolutePath())) {
             qCritical() << "Failed to create ical directory" << dir.absolutePath();
         } else {
-            qDebug() << "iCal directory " << dir.absolutePath() << "successfuly created";
+            qDebug() << "iCal directory " << dir.absolutePath() << "successfully created";
         }
     }
 

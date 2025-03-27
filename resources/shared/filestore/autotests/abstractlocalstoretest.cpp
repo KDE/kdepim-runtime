@@ -320,7 +320,7 @@ void AbstractLocalStoreTest::testDeleteCollection()
     QVERIFY(!job->exec());
     QVERIFY(mStore->mLastProcessedJob == nullptr);
 
-    // test with ivalid collection (has remoteId, but no parent collection remoteId)
+    // test with invalid collection (has remoteId, but no parent collection remoteId)
     Collection collection;
     collection.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->deleteCollection(collection);

@@ -47,10 +47,10 @@ public Q_SLOTS:
      * @p taskContext specifies whether the method is being
      * called from within a task or not.
      *
-     * @return Returns a QFuture that will be fufilled once the
+     * @return Returns a QFuture that will be fulfilled once the
      * file has been read. The boolean value indicates whether
      * the file was read successfully (@p true) or whenther an
-     * error has occured (@p false).
+     * error has occurred (@p false).
      */
     [[nodiscard]] virtual QFuture<bool> readFile(bool taskContext = false) = 0;
     /*

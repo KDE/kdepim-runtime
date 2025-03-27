@@ -1005,7 +1005,7 @@ void Incidence::saveTo(const KCalendarCore::Incidence::Ptr &incidence)
             recur->setDuration(mRecurrence.range.toInt());
         } else if (mRecurrence.rangeType == QLatin1StringView("date")) {
             recur->setEndDate(stringToDate(mRecurrence.range));
-        } // "none" is default since tje set*ly methods set infinite recurrence
+        } // "none" is default since the set*ly methods set infinite recurrence
 
         incidence->recurrence()->setExDates(mRecurrence.exclusions);
     }
