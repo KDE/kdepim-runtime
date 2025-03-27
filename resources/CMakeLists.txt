@@ -1,5 +1,5 @@
 # Libkolabxml
-find_package(Libkolabxml 1.1 QUIET CONFIG)
+find_package(Libkolabxml 1.1 CONFIG)
 set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
 
 # Etebase library
