@@ -40,6 +40,15 @@ IcalDirSettingsWidget::IcalDirSettingsWidget(const KSharedConfigPtr &config, QWi
     connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &IcalDirSettingsWidget::validate);
 
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(IcalDirResourceSettings::self()->path()));
+    // We don't allow editing the existing path
+    ui.kcfg_Path->setEnabled(IcalDirResourceSettings::self()->path().isEmpty());
+    ui.kcfg_Path->setToolTip(
+        i18nc("@info:tooltip", "A directory path or URL containing at least 1 calendar file. Once created, this location cannot be modified."));
+    ui.kcfg_Path->setWhatsThis(xi18nc("@info:whatsthis",
+                                      "Enter the path or URL to a directory containing at least 1 calendar file. "
+                                      "<p><note> Unfortunately, this path cannot be changed once the resource is created. "
+                                      "To change the location, delete this resource and then create a new one with the updated path.</note></p>"));
+
     KLocalization::setupSpinBoxFormatString(ui.kcfg_AutosaveInterval, ki18np("%v minute", "%v minutes"));
     mManager = new KConfigDialogManager(mainWidget, IcalDirResourceSettings::self());
     ui.readOnlyLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));

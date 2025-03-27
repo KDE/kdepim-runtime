@@ -247,7 +247,13 @@ void ICalDirResource::retrieveCollections()
     }
 
     auto attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-    attr->setDisplayName(name() == identifier() ? i18n("Calendar Folder") : name());
+    const QFileInfo fi(iCalDirectoryName());
+    const auto baseName = fi.baseName();
+    auto displayName = i18nc("@label", "Calendar Folder");
+    if (!baseName.isEmpty()) {
+        displayName = i18nc("@label", "%1 Calendar Folder", baseName);
+    }
+    attr->setDisplayName(name() == identifier() ? displayName : name());
     attr->setIconName(QStringLiteral("office-calendar"));
 
     const Collection::List list{c};
