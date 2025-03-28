@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-16 00:42+0000\n"
+"POT-Creation-Date: 2025-03-28 00:42+0000\n"
 "PO-Revision-Date: 2025-03-20 09:54+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -609,11 +609,15 @@ msgid "Password not found for %1 IMAP account"
 msgstr "لم يعثر على كلمة السر لحساب IMAP %1"
 
 #: settings.cpp:174
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when retriving the IMAP password from the system "
+#| "keychain: \"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when retriving the IMAP password from the system keychain: "
-"\"%1\""
+"An error occurred when retrieving the IMAP password from the system "
+"keychain: \"%1\""
 msgstr "حدث خطأ أثناء استرداد كلمة سر IMAP من سلسلة مفاتيح النظام: \"%1\""
 
 #: settings.cpp:204
@@ -623,26 +627,39 @@ msgid "Password not found for %1 sieve account"
 msgstr "لم يعثر على كلمة السر لحساب الغربال %1"
 
 #: settings.cpp:210
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when retriving the sieve password from the system "
+#| "keychain: \"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when retriving the sieve password from the system keychain: "
-"\"%1\""
+"An error occurred when retrieving the sieve password from the system "
+"keychain: \"%1\""
 msgstr "حدث خطأ أثناء استرداد كلمة سر الغربال من سلسلة مفاتيح النظام: \"%1\""
 
 #: settings.cpp:240
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when saving the sieve password in the system keychain: "
+#| "\"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when saving the sieve password in the system keychain: "
+"An error occurred when saving the sieve password in the system keychain: "
 "\"%1\""
 msgstr "حدث خطأ عند حفظ كلمة سر الغربال في سلسلة مفاتيح النظام: \"%1\""
 
 #: settings.cpp:266
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when saving the IMAP password in the system keychain: "
+#| "\"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when saving the IMAP password in the system keychain: \"%1\""
+"An error occurred when saving the IMAP password in the system keychain: "
+"\"%1\""
 msgstr "حدث خطأ عند حفظ كلمة سر IMAP في سلسلة مفاتيح النظام: \"%1\""
 
 #: settings.cpp:353

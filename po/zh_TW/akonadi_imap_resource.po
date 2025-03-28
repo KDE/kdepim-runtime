@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-16 00:42+0000\n"
+"POT-Creation-Date: 2025-03-28 00:42+0000\n"
 "PO-Revision-Date: 2025-03-26 18:16+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -608,11 +608,15 @@ msgid "Password not found for %1 IMAP account"
 msgstr "找不到 IMAP 帳號 %1 的密碼"
 
 #: settings.cpp:174
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when retriving the IMAP password from the system "
+#| "keychain: \"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when retriving the IMAP password from the system keychain: "
-"\"%1\""
+"An error occurred when retrieving the IMAP password from the system "
+"keychain: \"%1\""
 msgstr "從系統鑰匙圈取得 IMAP 密碼時發生錯誤：「%1」"
 
 #: settings.cpp:204
@@ -622,26 +626,39 @@ msgid "Password not found for %1 sieve account"
 msgstr "找不到 sieve 帳號 %1 的密碼"
 
 #: settings.cpp:210
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when retriving the sieve password from the system "
+#| "keychain: \"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when retriving the sieve password from the system keychain: "
-"\"%1\""
+"An error occurred when retrieving the sieve password from the system "
+"keychain: \"%1\""
 msgstr "從系統鑰匙圈取得 sieve 密碼時發生錯誤：「%1」"
 
 #: settings.cpp:240
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when saving the sieve password in the system keychain: "
+#| "\"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when saving the sieve password in the system keychain: "
+"An error occurred when saving the sieve password in the system keychain: "
 "\"%1\""
 msgstr "將 sieve 密碼儲存至系統鑰匙圈時發生錯誤：「%1」"
 
 #: settings.cpp:266
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when saving the IMAP password in the system keychain: "
+#| "\"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when saving the IMAP password in the system keychain: \"%1\""
+"An error occurred when saving the IMAP password in the system keychain: "
+"\"%1\""
 msgstr "將 IMAP 密碼儲存至系統鑰匙圈時發生錯誤：「%1」"
 
 #: settings.cpp:353

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-16 00:42+0000\n"
+"POT-Creation-Date: 2025-03-28 00:42+0000\n"
 "PO-Revision-Date: 2010-10-22 23:55-0700\n"
 "Last-Translator: Fumiaki Okushi <okushi@kde.gr.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -632,8 +632,8 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid ""
-"An error occured when retriving the IMAP password from the system keychain: "
-"\"%1\""
+"An error occurred when retrieving the IMAP password from the system "
+"keychain: \"%1\""
 msgstr ""
 
 #: settings.cpp:204
@@ -646,15 +646,15 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid ""
-"An error occured when retriving the sieve password from the system keychain: "
-"\"%1\""
+"An error occurred when retrieving the sieve password from the system "
+"keychain: \"%1\""
 msgstr ""
 
 #: settings.cpp:240
 #, kde-format
 msgctxt "@info:status"
 msgid ""
-"An error occured when saving the sieve password in the system keychain: "
+"An error occurred when saving the sieve password in the system keychain: "
 "\"%1\""
 msgstr ""
 
@@ -662,7 +662,8 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid ""
-"An error occured when saving the IMAP password in the system keychain: \"%1\""
+"An error occurred when saving the IMAP password in the system keychain: "
+"\"%1\""
 msgstr ""
 
 #: settings.cpp:353

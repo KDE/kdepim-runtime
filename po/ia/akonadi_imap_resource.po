@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-16 00:42+0000\n"
+"POT-Creation-Date: 2025-03-28 00:42+0000\n"
 "PO-Revision-Date: 2025-03-20 18:27+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -633,11 +633,15 @@ msgid "Password not found for %1 IMAP account"
 msgstr "Contrasigno non trovate perconto de IMAP %1"
 
 #: settings.cpp:174
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when retriving the IMAP password from the system "
+#| "keychain: \"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when retriving the IMAP password from the system keychain: "
-"\"%1\""
+"An error occurred when retrieving the IMAP password from the system "
+"keychain: \"%1\""
 msgstr ""
 "Un error occurreva quando il recuperava le contrasigno de IMAP ex le "
 "portaclaves de systema \"%1\""
@@ -649,30 +653,43 @@ msgid "Password not found for %1 sieve account"
 msgstr "Contrasigno nontrovate per le conto de sieve (cribro)  %1"
 
 #: settings.cpp:210
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when retriving the sieve password from the system "
+#| "keychain: \"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when retriving the sieve password from the system keychain: "
-"\"%1\""
+"An error occurred when retrieving the sieve password from the system "
+"keychain: \"%1\""
 msgstr ""
 "Un error occurreva quando il recuperava le contrasigno de sieve ex le "
 "portaclaves de systema \"%1\""
 
 #: settings.cpp:240
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when saving the sieve password in the system keychain: "
+#| "\"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when saving the sieve password in the system keychain: "
+"An error occurred when saving the sieve password in the system keychain: "
 "\"%1\""
 msgstr ""
 "Un error occurreva quando il salveguardava le contrasigno de sieve ex le "
 "portaclaves de systema \"%1\""
 
 #: settings.cpp:266
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when saving the IMAP password in the system keychain: "
+#| "\"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when saving the IMAP password in the system keychain: \"%1\""
+"An error occurred when saving the IMAP password in the system keychain: "
+"\"%1\""
 msgstr ""
 "Un error occurreva quando il salveguardava le contrasigno de IMAP ex le "
 "portaclaves de systema \"%1\""

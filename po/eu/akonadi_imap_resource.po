@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-16 00:42+0000\n"
+"POT-Creation-Date: 2025-03-28 00:42+0000\n"
 "PO-Revision-Date: 2025-03-25 21:46+0100\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -638,11 +638,15 @@ msgid "Password not found for %1 IMAP account"
 msgstr "Ez da aurkitu %1 IMAP kontuaren pasahitza"
 
 #: settings.cpp:174
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when retriving the IMAP password from the system "
+#| "keychain: \"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when retriving the IMAP password from the system keychain: "
-"\"%1\""
+"An error occurred when retrieving the IMAP password from the system "
+"keychain: \"%1\""
 msgstr ""
 "Errore bat gertatu da sistemaren gako-katetik IMAP pasahitza "
 "berreskuratzean: \"%1\""
@@ -654,30 +658,43 @@ msgid "Password not found for %1 sieve account"
 msgstr "Eza da %1 «sieve» kontuaren pasahitza aurkitu"
 
 #: settings.cpp:210
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when retriving the sieve password from the system "
+#| "keychain: \"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when retriving the sieve password from the system keychain: "
-"\"%1\""
+"An error occurred when retrieving the sieve password from the system "
+"keychain: \"%1\""
 msgstr ""
 "Errore bat gertatu da sistemaren gako-katetik «sieve» pasahitza "
 "berreskuratzean: \"%1\""
 
 #: settings.cpp:240
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when saving the sieve password in the system keychain: "
+#| "\"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when saving the sieve password in the system keychain: "
+"An error occurred when saving the sieve password in the system keychain: "
 "\"%1\""
 msgstr ""
 "Errore bat gertatu da sistemaren gako-katean «sieve» pasahitza "
 "berreskuratzean: \"%1\""
 
 #: settings.cpp:266
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid ""
+#| "An error occured when saving the IMAP password in the system keychain: "
+#| "\"%1\""
 msgctxt "@info:status"
 msgid ""
-"An error occured when saving the IMAP password in the system keychain: \"%1\""
+"An error occurred when saving the IMAP password in the system keychain: "
+"\"%1\""
 msgstr ""
 "Errore bat gertatu da sistemaren gako-katean IMAP pasahitza berreskuratzean: "
 "\"%1\""
