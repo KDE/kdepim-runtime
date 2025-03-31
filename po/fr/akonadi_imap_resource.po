@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-03-28 00:42+0000\n"
-"PO-Revision-Date: 2025-03-16 10:27+0100\n"
+"PO-Revision-Date: 2025-03-29 10:57+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
@@ -668,11 +668,7 @@ msgid "Password not found for %1 IMAP account"
 msgstr "Impossible de trouver le mot de passe pour le compte « IMAP » %1"
 
 #: settings.cpp:174
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when retriving the IMAP password from the system "
-#| "keychain: \"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the IMAP password from the system "
@@ -688,11 +684,7 @@ msgid "Password not found for %1 sieve account"
 msgstr "Impossible de trouver le mot de passe pour le compte « Sieve » %1"
 
 #: settings.cpp:210
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when retriving the sieve password from the system "
-#| "keychain: \"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the sieve password from the system "
@@ -702,11 +694,7 @@ msgstr ""
 "partir du trousseau de clés du système : « %1 »"
 
 #: settings.cpp:240
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when saving the sieve password in the system keychain: "
-#| "\"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the sieve password in the system keychain: "
@@ -716,18 +704,14 @@ msgstr ""
 "dans le trousseau du système : « %1 »"
 
 #: settings.cpp:266
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when saving the IMAP password in the system keychain: "
-#| "\"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the IMAP password in the system keychain: "
 "\"%1\""
 msgstr ""
 "Une erreur est survenue lors de l'enregistrement du mot de passe « IMAP » "
-"dans le trousseau système : %1"
+"dans le trousseau système : « %1 »"
 
 #: settings.cpp:353
 #, kde-format
