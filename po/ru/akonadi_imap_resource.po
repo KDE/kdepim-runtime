@@ -9,13 +9,13 @@
 # Julia Dronova <juliette.tux@gmail.com>, 2012.
 # Alexander Lakhin <exclusion@gmail.com>, 2013.
 # Alexander Yavorsky <kekcuha@gmail.com>, 2018, 2020.
-# SPDX-FileCopyrightText: 2024 Olesya Gerasimenko <translation-team@basealt.ru>
+# SPDX-FileCopyrightText: 2024, 2025 Olesya Gerasimenko <translation-team@basealt.ru>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-03-28 00:42+0000\n"
-"PO-Revision-Date: 2024-11-18 12:56+0300\n"
+"PO-Revision-Date: 2025-04-01 14:37+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
 "Language: ru\n"
@@ -637,51 +637,55 @@ msgstr "Отключение во время входа."
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
-msgstr ""
+msgstr "Не найден пароль для учётной записи IMAP %1"
 
 #: settings.cpp:174
-#, kde-format
+#, fuzzy, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the IMAP password from the system "
 "keychain: \"%1\""
 msgstr ""
+"При получении пароля IMAP из системной связки ключей произошла ошибка: «%1»"
 
 #: settings.cpp:204
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
-msgstr ""
+msgstr "Не найден пароль для учётной записи sieve %1"
 
 #: settings.cpp:210
-#, kde-format
+#, fuzzy, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the sieve password from the system "
 "keychain: \"%1\""
 msgstr ""
+"При получении пароля sieve из системной связки ключей произошла ошибка: «%1»"
 
 #: settings.cpp:240
-#, kde-format
+#, fuzzy, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the sieve password in the system keychain: "
 "\"%1\""
 msgstr ""
+"При сохранении пароля sieve в системной связке ключей произошла ошибка: «%1»"
 
 #: settings.cpp:266
-#, kde-format
+#, fuzzy, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the IMAP password in the system keychain: "
 "\"%1\""
 msgstr ""
+"При сохранении пароля IMAP в системной связке ключей произошла ошибка: «%1»"
 
 #: settings.cpp:353
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
-msgstr ""
+msgstr "Проблема с учётной записью IMAP %1"
 
 #: settingspasswordrequester.cpp:77
 #, kde-format
