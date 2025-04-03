@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-10-27 00:40+0000\n"
+"POT-Creation-Date: 2025-04-03 00:42+0000\n"
 "PO-Revision-Date: 2024-08-21 00:37+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -27,9 +27,18 @@ msgstr "UID '%1'와(과) 일치하는 항목이 없습니다."
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "읽기 전용 디렉터리에 쓰려고 하는 중: '%1'"
 
-#: icaldirresource.cpp:250
-#, kde-format
+#: icaldirresource.cpp:252
+#, fuzzy, kde-format
+#| msgid "Calendar Folder"
+msgctxt "@label"
 msgid "Calendar Folder"
+msgstr "달력 폴더"
+
+#: icaldirresource.cpp:254
+#, fuzzy, kde-format
+#| msgid "Calendar Folder"
+msgctxt "@label"
+msgid "%1 Calendar Folder"
 msgstr "달력 폴더"
 
 #. i18n: ectx: label, entry (Path), group (General)
@@ -112,13 +121,31 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "자동 저장 지연 시간:"
 
-#: icaldirsettingswidget.cpp:43
+#: icaldirsettingswidget.cpp:46
+#, kde-format
+msgctxt "@info:tooltip"
+msgid ""
+"A directory path or URL containing at least 1 calendar file. Once created, "
+"this location cannot be modified."
+msgstr ""
+
+#: icaldirsettingswidget.cpp:48
+#, kde-kuit-format
+msgctxt "@info:whatsthis"
+msgid ""
+"Enter the path or URL to a directory containing at least 1 calendar file. "
+"<p><note> Unfortunately, this path cannot be changed once the resource is "
+"created. To change the location, delete this resource and then create a new "
+"one with the updated path.</note></p>"
+msgstr ""
+
+#: icaldirsettingswidget.cpp:52
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%v분"
 
-#: icaldirsettingswidget.cpp:49
+#: icaldirsettingswidget.cpp:58
 #, kde-format
 msgid "Activities"
 msgstr "활동"

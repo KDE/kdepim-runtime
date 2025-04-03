@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-10-27 00:40+0000\n"
+"POT-Creation-Date: 2025-04-03 00:42+0000\n"
 "PO-Revision-Date: 2016-08-31 22:45+0100\n"
 "Last-Translator: Roman Paholik <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
@@ -25,9 +25,18 @@ msgstr "Výskyt s uid '%1' nenájdený."
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Snaha o zápis do adresára len na čítanie: '%1'"
 
-#: icaldirresource.cpp:250
-#, kde-format
+#: icaldirresource.cpp:252
+#, fuzzy, kde-format
+#| msgid "Calendar Folder"
+msgctxt "@label"
 msgid "Calendar Folder"
+msgstr "Priečinok kalendára"
+
+#: icaldirresource.cpp:254
+#, fuzzy, kde-format
+#| msgid "Calendar Folder"
+msgctxt "@label"
+msgid "%1 Calendar Folder"
 msgstr "Priečinok kalendára"
 
 #. i18n: ectx: label, entry (Path), group (General)
@@ -116,7 +125,25 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "Oneskorenie automatického uloženia:"
 
-#: icaldirsettingswidget.cpp:43
+#: icaldirsettingswidget.cpp:46
+#, kde-format
+msgctxt "@info:tooltip"
+msgid ""
+"A directory path or URL containing at least 1 calendar file. Once created, "
+"this location cannot be modified."
+msgstr ""
+
+#: icaldirsettingswidget.cpp:48
+#, kde-kuit-format
+msgctxt "@info:whatsthis"
+msgid ""
+"Enter the path or URL to a directory containing at least 1 calendar file. "
+"<p><note> Unfortunately, this path cannot be changed once the resource is "
+"created. To change the location, delete this resource and then create a new "
+"one with the updated path.</note></p>"
+msgstr ""
+
+#: icaldirsettingswidget.cpp:52
 #, fuzzy, kde-format
 #| msgid " minute"
 #| msgid_plural " minutes"
@@ -126,7 +153,7 @@ msgstr[0] " minúta"
 msgstr[1] " minúty"
 msgstr[2] " minút"
 
-#: icaldirsettingswidget.cpp:49
+#: icaldirsettingswidget.cpp:58
 #, kde-format
 msgid "Activities"
 msgstr ""
