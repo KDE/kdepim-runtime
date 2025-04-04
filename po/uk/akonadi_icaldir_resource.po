@@ -3,13 +3,13 @@
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# Yuri Chornoivan <yurchor@ukr.net>, 2012, 2014, 2016, 2021, 2024.
+# Yuri Chornoivan <yurchor@ukr.net>, 2012, 2014, 2016, 2021, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-03 00:42+0000\n"
-"PO-Revision-Date: 2024-08-17 09:57+0300\n"
+"PO-Revision-Date: 2025-04-03 17:40+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -31,18 +31,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Спроба запису до каталогу з правами «лише для читання»: «%1»"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "Тека календаря"
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "Тека календаря"
+msgstr "Тека календаря %1"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -134,6 +132,8 @@ msgid ""
 "A directory path or URL containing at least 1 calendar file. Once created, "
 "this location cannot be modified."
 msgstr ""
+"Шлях або адреса каталогу, що містить принаймні 1 файл календаря. Після "
+"створення цей запис не можна буде змінювати."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-kuit-format
@@ -144,6 +144,10 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></p>"
 msgstr ""
+"Введіть шлях або адресу каталогу, що містить принаймні 1 файл календаря. "
+"<p><note> На жаль, цей шлях не можна буде змінити після створення ресурсу. "
+"Щоб змінити місце зберігання, вилучіть цей ресурс, а потім створіть ресурс "
+"із оновленим шляхом.</note></p>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2024 Yaron Shahrabani <sh.yaron@gmail.com>
+# SPDX-FileCopyrightText: 2024, 2025 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-03 00:42+0000\n"
-"PO-Revision-Date: 2024-08-18 08:29+0300\n"
+"PO-Revision-Date: 2025-04-03 20:45+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 24.12.2\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -29,18 +29,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "מתבצע ניסיון לכתוב לתיקייה לקריאה בלבד: ‚%1’"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "תיקיית לוחות שנה"
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "תיקיית לוחות שנה"
+msgstr "תיקיית לוחות שנה %1"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -130,6 +128,8 @@ msgid ""
 "A directory path or URL containing at least 1 calendar file. Once created, "
 "this location cannot be modified."
 msgstr ""
+"נתיב תיקייה או כתובת אתר שמכילים לוח שנה אחד לפחות. לאחר היצירה, לא ניתן "
+"לשנות את המקום הזה."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-kuit-format
@@ -140,6 +140,9 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></p>"
 msgstr ""
+"נא למלא נתיב או כתובת אתר שמכילים קובץ לוח שנה אחד לפחות. <p><note> לרוע "
+"המזל, אי אפשר לשנות את הנתיב הזה לאחר יצירת המשאב. כדי לשנות את המקום, יש "
+"למחוק את המשאב ואז ליצור אחד חדש עם הנתיב העדכני.</note></p>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

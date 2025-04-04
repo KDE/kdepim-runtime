@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-03 00:42+0000\n"
-"PO-Revision-Date: 2024-08-17 07:37+0200\n"
+"PO-Revision-Date: 2025-04-03 07:23+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.5\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -33,18 +33,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Poskus pisanja v mapo, ki je samo za branje: '%1'"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "Koledarska mapa"
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "Koledarska mapa"
+msgstr "%1 Koledarska mapa"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -136,6 +134,8 @@ msgid ""
 "A directory path or URL containing at least 1 calendar file. Once created, "
 "this location cannot be modified."
 msgstr ""
+"Pot imenika ali URL, ki vsebuje vsaj 1 koledarsko datoteko. Ko je ta "
+"lokacija ustvarjena, je ni več mogoče spreminjati."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-kuit-format
@@ -146,6 +146,10 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></p>"
 msgstr ""
+"Vnesite pot ali URL do imenika, ki vsebuje vsaj 1 koledarsko datoteko. "
+"<p><note> Na žalost te poti ni mogoče spremeniti, ko je vir ustvarjen. Če "
+"želite spremeniti lokacijo, izbrišite ta vir in nato ustvarite novega s "
+"posodobljeno potjo.</note></p>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

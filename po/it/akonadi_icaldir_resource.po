@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2012, 2014, 2016, 2021, 2024.
+# SPDX-FileCopyrightText: 2012, 2014, 2016, 2021, 2024, 2025 Luigi Toscano <luigi.toscano@tiscali.it>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-03 00:42+0000\n"
-"PO-Revision-Date: 2024-08-17 13:11+0200\n"
+"PO-Revision-Date: 2025-04-03 14:16+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 25.03.70\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -28,18 +28,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Tentativo di scrivere su una directory a sola lettura: «%1»"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "Cartella di calendario"
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "Cartella di calendario"
+msgstr "Cartella di calendario %1"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -131,6 +129,8 @@ msgid ""
 "A directory path or URL containing at least 1 calendar file. Once created, "
 "this location cannot be modified."
 msgstr ""
+"Un percorso o URL di una cartella che contiene almeno un file di calendario. "
+"Una volta creata, questa posizione non può essere modificata."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-kuit-format
@@ -141,6 +141,10 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></p>"
 msgstr ""
+"Inserisci il percorso o URL per una cartella che contiene almeno un file di "
+"calendario. <p><note>Sfortunatamente questo percorso non può essere cambiato "
+"dopo che la risorsa è stata creata. Per cambiare la posizione, elimina "
+"questa risorsa e creane una nuova con il percorso aggiornato.</note></p>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

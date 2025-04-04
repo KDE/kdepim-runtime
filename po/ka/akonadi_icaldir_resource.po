@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-03 00:42+0000\n"
-"PO-Revision-Date: 2024-08-17 04:24+0200\n"
+"PO-Revision-Date: 2025-04-03 04:26+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.5\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -29,18 +29,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "საქაღალდე, რომელშიც ჩაწერას ცდილობთ, მხოლოდ კითხვადია: %1"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "კალენდრის საქაღალდე"
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "კალენდრის საქაღალდე"
+msgstr "%1 კალენდრის საქაღალდე"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -132,6 +130,8 @@ msgid ""
 "A directory path or URL containing at least 1 calendar file. Once created, "
 "this location cannot be modified."
 msgstr ""
+"საქაღალდის ბილიკი, ან ბმული, რომელიც, სულ ცოტა, 1 კალენდრის ფაილს შეიცავს. "
+"როცა შექმნით, მის მდებარეობას ვერ შეცვლით."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-kuit-format
@@ -142,6 +142,10 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></p>"
 msgstr ""
+"შეიყვანეთ ბილიკი ან ბმული საქაღალდემდე, რომელიც, სულ ცოტა, 1 კალენდრის ფაილს "
+"შეიცავს. <p><note> სამწუხაროდ, ამ ბილიკს ვერ შეცვლით მას შემდეგ, რაც რესურსი "
+"შეიქმნება. იმისათვის, რომ მდებარეობა შეცვალოთ, წაშალეთ რესურსი და შექმენით "
+"ახალი, განახლებული ბილიკით.</note></p>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

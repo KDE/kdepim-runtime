@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2012, 2015, 2020, 2021, 2024 Giovanni Sora <g.sora@tiscali.it>
+# SPDX-FileCopyrightText: 2012, 2015, 2020, 2021, 2024, 2025 Giovanni Sora <g.sora@tiscali.it>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-03 00:42+0000\n"
-"PO-Revision-Date: 2024-08-28 16:39+0200\n"
+"PO-Revision-Date: 2025-04-03 16:57+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -28,18 +28,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Tentante de scriber in un directorio de sol lectura: '%1'"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "Dossier de calendario"
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "Dossier de calendario"
+msgstr "%1 Dossier de calendario"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -131,6 +129,8 @@ msgid ""
 "A directory path or URL containing at least 1 calendar file. Once created, "
 "this location cannot be modified."
 msgstr ""
+"Un percurso de directorio o URL continente al minus 1 file de calendario. Un "
+"vice create,iste location nonpote esser modificate."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-kuit-format
@@ -141,6 +141,10 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></p>"
 msgstr ""
+"Inserta lepercurso oURL a un directorio continente al minus 1 file de "
+"calendario. <p><note> Infortunatemente, iste percurso non pote esser "
+"modificate un vice que le ressource es create. Per cambiar le location, dele "
+"iste ressource e pois crea un nove con le percurso actualisate.</note></p>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format
