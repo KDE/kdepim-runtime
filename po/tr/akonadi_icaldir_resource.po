@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-03 00:42+0000\n"
-"PO-Revision-Date: 2024-08-18 20:26+0300\n"
+"PO-Revision-Date: 2025-04-04 18:07+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.11.70\n"
+"X-Generator: Lokalize 25.07.70\n"
 "X-POOTLE-MTIME: 1502203052.000000\n"
 
 #: icaldirresource.cpp:121
@@ -29,18 +29,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Saltokunur bir dizine yazılmaya çalışılıyor: “%1”"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
-msgstr "Takvim Klasörü"
+msgstr "Takvim klasörü"
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "Takvim Klasörü"
+msgstr "%1 takvimi klasörü"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -130,6 +128,8 @@ msgid ""
 "A directory path or URL containing at least 1 calendar file. Once created, "
 "this location cannot be modified."
 msgstr ""
+"En az 1 takvim dosyası içeren bir dizin yolu veya URL. Bu konum üzerinde, "
+"oluşturulduktan sonra değişiklik yapılamaz."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-kuit-format
@@ -140,6 +140,10 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></p>"
 msgstr ""
+"En az 1 takvim dosyası içeren bir dizin yolu veya URL. <p><note>Bu konum "
+"üzerinde, oluşturulduktan sonra değişiklik yapılamaz. Konumu değiştirmek "
+"için bu özkaynağı silin ve güncel yolu içeren yeni bir tane oluşturun.</"
+"note></p>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

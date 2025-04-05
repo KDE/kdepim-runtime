@@ -31,14 +31,12 @@ msgstr "Forsøker å skrive til en skrivebeskyttet mappe: «%1»"
 
 #: icaldirresource.cpp:252
 #, fuzzy, kde-format
-#| msgid "Calendar Folder"
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "Kalendermappe"
 
 #: icaldirresource.cpp:254
 #, fuzzy, kde-format
-#| msgid "Calendar Folder"
 msgctxt "@label"
 msgid "%1 Calendar Folder"
 msgstr "Kalendermappe"
