@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2012, 2014, 2016, 2021, 2024 Stefan Asserhäll <stefan.asserhall@gmail.com>
+# SPDX-FileCopyrightText: 2012, 2014, 2016, 2021, 2024, 2025 Stefan Asserhäll <stefan.asserhall@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-03 00:42+0000\n"
-"PO-Revision-Date: 2024-08-17 08:28+0200\n"
+"PO-Revision-Date: 2025-04-05 14:07+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 24.12.3\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -28,18 +28,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Försöker skriva till en skrivskyddad katalog: '%1'"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "Kalenderkatalog"
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "Kalenderkatalog"
+msgstr "Kalenderkatalog %1"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -129,6 +127,8 @@ msgid ""
 "A directory path or URL containing at least 1 calendar file. Once created, "
 "this location cannot be modified."
 msgstr ""
+"En katalogsökväg eller webbadress som innehåller minst en kalenderfil. När "
+"den väl har skapats kan den inte ändras."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-kuit-format
@@ -139,6 +139,10 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></p>"
 msgstr ""
+"Ange sökvägen eller webbadressen till en katalog som innehåller minst en "
+"kalenderfil. <p><note> Tyvärr kan sökvägen inte ändras när resursen väl har "
+"skapats. Om du vill ändra platsen, ta bort den här resursen och skapa sedan "
+"en ny med den uppdaterade sökvägen.</note></p>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

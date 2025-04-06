@@ -2,7 +2,7 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 # Joëlle Cornavin <jcorn@free.fr>, 2012, 2013.
-# SPDX-FileCopyrightText: 2013, 2021, 2024 Xavier Besnard <xavier.besnard@kde.org>
+# SPDX-FileCopyrightText: 2013, 2021, 2024, 2025 Xavier Besnard <xavier.besnard@kde.org>
 # Maxime Corteel <mcorteel@gmail.com>, 2014.
 # Vincent Pinon <vpinon@kde.org>, 2017.
 #
@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-03 00:42+0000\n"
-"PO-Revision-Date: 2024-08-18 09:39+0200\n"
+"PO-Revision-Date: 2025-04-04 14:02+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Accelerator-Marker: &\n"
 "X-Environment: kde\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 24.12.3\n"
 "X-Text-Markup: kde4\n"
 
 #: icaldirresource.cpp:121
@@ -35,18 +35,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Tentative d'écriture dans un dossier en lecture seule : « %1 »"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
-msgstr "Dossier de calendrier"
+msgstr "Dossier d'agenda"
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "Dossier de calendrier"
+msgstr "Dossier d'agenda %1"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -139,6 +137,8 @@ msgid ""
 "A directory path or URL containing at least 1 calendar file. Once created, "
 "this location cannot be modified."
 msgstr ""
+"Un chemin d'accès au dossier ou une URL contenant au moins 1 fichier "
+"d'agenda. Une fois créé, il est impossible de modifier cet emplacement."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-kuit-format
@@ -149,6 +149,11 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></p>"
 msgstr ""
+"Veuillez saisir l'emplacement ou l'URL d'un dossier contenant au moins 1 "
+"fichier d'agenda. <p><note> Malheureusement, il est impossible de modifier "
+"cet emplacement une fois la ressource créée. Pour modifier l'emplacement, "
+"veuillez supprimer cette ressource, puis en créer une nouvelle avec un "
+"emplacement mis à jour.</note></p>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format
