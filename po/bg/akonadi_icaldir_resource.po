@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the kdepim-runtime package.
 #
 # Automatically generated, 2022.
-# SPDX-FileCopyrightText: 2022, 2024 Mincho Kondarev <mkondarev@yahoo.de>
+# SPDX-FileCopyrightText: 2022, 2024, 2025 Mincho Kondarev <mkondarev@yahoo.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-03 00:42+0000\n"
-"PO-Revision-Date: 2024-11-10 11:22+0100\n"
+"PO-Revision-Date: 2025-04-06 16:09+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.11.70\n"
+"X-Generator: Lokalize 25.07.70\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -30,18 +30,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Опит за запис в директория само за четене: „%1“"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "Календарна папка"
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "Календарна папка"
+msgstr "%1 календарна папка"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -134,6 +132,8 @@ msgid ""
 "A directory path or URL containing at least 1 calendar file. Once created, "
 "this location cannot be modified."
 msgstr ""
+"Път до директория или URL адрес, съдържащ поне 1 файл с календар. Веднъж "
+"създадено, това местоположение не може да се променя."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-kuit-format
@@ -144,6 +144,10 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></p>"
 msgstr ""
+"Въведете пътя или URL адреса до директория, съдържаща поне 1 файл с "
+"календар. <p><note> За съжаление този път не може да бъде променен, след "
+"като ресурсът е създаден. За да промените местоположението, изтрийте този "
+"ресурс и след това създайте нов с актуализирания път.</note></p>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

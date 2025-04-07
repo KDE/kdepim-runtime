@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2024 Shinjo Park <kde@peremen.name>
+# SPDX-FileCopyrightText: 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2024, 2025 Shinjo Park <kde@peremen.name>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-03-28 00:42+0000\n"
-"PO-Revision-Date: 2024-12-24 16:51+0100\n"
+"PO-Revision-Date: 2025-04-06 23:03+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -266,13 +266,13 @@ msgstr "사용자 정의 Sieve 서버에 사용되는 인증 종류 정의"
 #: imapresource.kcfg:129
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "에이전트의 활동 지원이 활성화되어 있는지 여부"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: imapresource.kcfg:133
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "에이전트의 활동"
 
 #: imapresourcebase.cpp:220
 #, kde-format
@@ -509,7 +509,7 @@ msgstr "서버 정보"
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
-msgstr ""
+msgstr "서버 기능을 가져오는 중 오류 발생: %1"
 
 #: serverinfodialog.cpp:109
 #, kde-format
@@ -611,11 +611,7 @@ msgid "Password not found for %1 IMAP account"
 msgstr "%1 IMAP 계정의 암호를 찾을 수 없음"
 
 #: settings.cpp:174
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when retriving the IMAP password from the system "
-#| "keychain: \"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the IMAP password from the system "
@@ -629,11 +625,7 @@ msgid "Password not found for %1 sieve account"
 msgstr "%1 Sieve 계정의 암호를 찾을 수 없음"
 
 #: settings.cpp:210
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when retriving the sieve password from the system "
-#| "keychain: \"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the sieve password from the system "
@@ -641,11 +633,7 @@ msgid ""
 msgstr "시스템 키체인에서 Sieve 암호를 가져오는 중 오류 발생: \"%1\""
 
 #: settings.cpp:240
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when saving the sieve password in the system keychain: "
-#| "\"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the sieve password in the system keychain: "
@@ -653,11 +641,7 @@ msgid ""
 msgstr "시스템 키체인에 Sieve 암호를 저장하는 중 오류 발생: \"%1\""
 
 #: settings.cpp:266
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when saving the IMAP password in the system keychain: "
-#| "\"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the IMAP password in the system keychain: "

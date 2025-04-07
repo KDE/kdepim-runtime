@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2013, 2014, 2016, 2020, 2021, 2024 Shinjo Park <kde@peremen.name>
+# SPDX-FileCopyrightText: 2013, 2014, 2016, 2020, 2021, 2024, 2025 Shinjo Park <kde@peremen.name>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-03 00:42+0000\n"
-"PO-Revision-Date: 2024-08-21 00:37+0200\n"
+"PO-Revision-Date: 2025-04-06 23:02+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -28,18 +28,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "읽기 전용 디렉터리에 쓰려고 하는 중: '%1'"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
-msgstr "달력 폴더"
+msgstr "캘린더 폴더"
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "달력 폴더"
+msgstr "캘린더 폴더 %1개"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -128,6 +126,8 @@ msgid ""
 "A directory path or URL containing at least 1 calendar file. Once created, "
 "this location cannot be modified."
 msgstr ""
+"캘린더 파일이 하나 이상 포함된 디렉터리 경로나 URL입니다. 한 번 생성하면 이 "
+"위치를 수정할 수 없습니다."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-kuit-format
@@ -138,6 +138,9 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></p>"
 msgstr ""
+"캘린더 파일이 하나 이상 포함된 디렉터리 경로나 URL을 입력하십시오.<p><note>"
+"한 번 리소스를 생성하면 이 경로를 변경할 수 없습니다. 경로를 변경하려면 리소"
+"스를 삭제하고 새로운 경로로 리소스를 다시 만드십시오.</note></p>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format
