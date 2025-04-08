@@ -6,20 +6,20 @@
 # Maris Nartiss <maris.kde@gmail.com>, 2009.
 # Viesturs Zarins <viesturs.zarins@mii.lu.lv>, 2010.
 # Einars Sprugis <einars8@gmail.com>, 2011, 2012.
-# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
+# SPDX-FileCopyrightText: 2024, 2025 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-03-28 00:42+0000\n"
-"PO-Revision-Date: 2024-12-27 17:36+0200\n"
+"PO-Revision-Date: 2025-04-06 17:31+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.12.0\n"
+"X-Generator: Lokalize 24.12.3\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
@@ -279,13 +279,13 @@ msgstr "Nosaka identifikācijas tipu, ko lietot ar pielāgoto „sieve“ server
 #: imapresource.kcfg:129
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Vai aģenta aktivitāšu atbalsts ir ieslēgts"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: imapresource.kcfg:133
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Aģenta aktivitātes"
 
 #: imapresourcebase.cpp:220
 #, kde-format
@@ -519,7 +519,7 @@ msgstr "Servera informācija"
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
-msgstr ""
+msgstr "Kļūda, iegūstot informāciju par servera spējām: %1"
 
 #: serverinfodialog.cpp:109
 #, kde-format
@@ -622,11 +622,7 @@ msgid "Password not found for %1 IMAP account"
 msgstr "„%1“ IMAP kontam nav atrasta parole"
 
 #: settings.cpp:174
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when retriving the IMAP password from the system "
-#| "keychain: \"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the IMAP password from the system "
@@ -640,11 +636,7 @@ msgid "Password not found for %1 sieve account"
 msgstr "Nav atrasta parole „%1“ „Sieve“ kontam"
 
 #: settings.cpp:210
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when retriving the sieve password from the system "
-#| "keychain: \"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the sieve password from the system "
@@ -652,23 +644,15 @@ msgid ""
 msgstr "Kļūda, no sistēmas atslēgu saišķa izgūstot „Sieve“ paroli: „%1“"
 
 #: settings.cpp:240
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when saving the sieve password in the system keychain: "
-#| "\"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the sieve password in the system keychain: "
 "\"%1\""
-msgstr "Kļūda, no sistēmas atslēgu saišķa izgūstot „Sieve“ paroli: „%1“"
+msgstr "Kļūda, no sistēmas atslēgu saišķa saglabājot „Sieve“ paroli: „%1“"
 
 #: settings.cpp:266
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when saving the IMAP password in the system keychain: "
-#| "\"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the IMAP password in the system keychain: "

@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
+# SPDX-FileCopyrightText: 2024, 2025 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-03 00:42+0000\n"
-"PO-Revision-Date: 2024-12-27 16:51+0200\n"
+"PO-Revision-Date: 2025-04-06 17:23+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Lokalize 24.12.0\n"
+"X-Generator: Lokalize 24.12.3\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -29,18 +29,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Mēģinājums rakstīt tikai lasāmā mapē: „%1“"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "Kalendāra mape"
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "Kalendāra mape"
+msgstr "%1 kalendāra mape"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -129,6 +127,8 @@ msgid ""
 "A directory path or URL containing at least 1 calendar file. Once created, "
 "this location cannot be modified."
 msgstr ""
+"Ceļš uz mapi vai URL, kas satur vismaz vienu kalendāra datni. Pēc izveides "
+"šo ceļu mainīt vairs nevarēsiet."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-kuit-format
@@ -139,6 +139,10 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></p>"
 msgstr ""
+"Ierakstiet ceļu URL uz mapi, kas satur vismaz vienu kalendāra datni."
+"<p><note>Diemžēl pēc resursa izveides šo mapi mainīt vairs nevar. Lai "
+"mainītu vietu, dzēsiet šo resursu un tad izveidojiet jaunu ar jauno ceļu.</"
+"note></p>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format
