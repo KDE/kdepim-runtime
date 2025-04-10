@@ -34,6 +34,12 @@ SingleFileResourceConfigWidgetBase::SingleFileResourceConfigWidgetBase(QWidget *
     ui.setupUi(mainWidget);
     ui.kcfg_Path->setMode(KFile::File);
     ui.kcfg_Path->setMimeTypeFilters(QStringList(QLatin1String("text/calendar")));
+    ui.kcfg_Path->setToolTip(i18nc("@info:tooltip", "A file path or URL containing the calendar file. Once created, this location cannot be modified."));
+    ui.kcfg_Path->setWhatsThis(xi18nc("@info:whatsthis",
+                                      "Enter the path or URL to a file containing a valid calendar file. "
+                                      "<p><note> Unfortunately, this path cannot be changed once the resource is created. "
+                                      "To change the location, delete this resource and then create a new one with the updated path.</note></p>"));
+
     ui.statusLabel->setVisible(false);
 
     ui.tabWidget->tabBar()->hide();
