@@ -38,7 +38,7 @@ msgstr "日历文件夹"
 #, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr ""
+msgstr "%1 日历文件夹"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -124,7 +124,7 @@ msgctxt "@info:tooltip"
 msgid ""
 "A directory path or URL containing at least 1 calendar file. Once created, "
 "this location cannot be modified."
-msgstr ""
+msgstr "包含至少 1 个日历文件的目录路径或 URL。一旦创建，该位置不能被修改。"
 
 #: icaldirsettingswidget.cpp:48
 #, kde-kuit-format
@@ -135,6 +135,9 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></p>"
 msgstr ""
+"输入至少包含 1 个日历文件的目录或URL。<p><note> 这个地址会在该资源被创建后被"
+"禁止修改。若您希望修改该地址，请删除该资源并在您希望修改的地址重新进行创建。"
+"</note></p>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format
