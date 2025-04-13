@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-18 00:43+0000\n"
+"POT-Creation-Date: 2025-04-13 00:41+0000\n"
 "PO-Revision-Date: 2024-12-25 19:37+0530\n"
 "Last-Translator: kali <shreekantkalwar@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -299,7 +299,25 @@ msgstr ""
 "समये समये सञ्चिकां अद्यतनं करोति । यदा निरीक्षणं उपलब्धं नास्ति (उदा. दूरस्थपञ्चाङ्गानां कृते) "
 "तदा उपयोक्तुं शक्यते ।"
 
-#: singlefileresourceconfigwidgetbase.cpp:131
+#: singlefileresourceconfigwidgetbase.cpp:37
+#, kde-format
+msgctxt "@info:tooltip"
+msgid ""
+"A file path or URL containing the calendar file. Once created, this location "
+"cannot be modified."
+msgstr ""
+
+#: singlefileresourceconfigwidgetbase.cpp:39
+#, kde-kuit-format
+msgctxt "@info:whatsthis"
+msgid ""
+"Enter the path or URL to a file containing a valid calendar file. <p><note> "
+"Unfortunately, this path cannot be changed once the resource is created. To "
+"change the location, delete this resource and then create a new one with the "
+"updated path.</note></p>"
+msgstr ""
+
+#: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-18 00:43+0000\n"
+"POT-Creation-Date: 2025-04-13 00:41+0000\n"
 "PO-Revision-Date: 2024-12-24 16:51+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -295,7 +295,25 @@ msgstr ""
 "파일을 주기적으로 업데이트합니다. 감시를 사용할 수 없을 때 사용할 수 있습니다"
 "(예: 원격 캘린더)."
 
-#: singlefileresourceconfigwidgetbase.cpp:131
+#: singlefileresourceconfigwidgetbase.cpp:37
+#, kde-format
+msgctxt "@info:tooltip"
+msgid ""
+"A file path or URL containing the calendar file. Once created, this location "
+"cannot be modified."
+msgstr ""
+
+#: singlefileresourceconfigwidgetbase.cpp:39
+#, kde-kuit-format
+msgctxt "@info:whatsthis"
+msgid ""
+"Enter the path or URL to a file containing a valid calendar file. <p><note> "
+"Unfortunately, this path cannot be changed once the resource is created. To "
+"change the location, delete this resource and then create a new one with the "
+"updated path.</note></p>"
+msgstr ""
+
+#: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-18 00:43+0000\n"
+"POT-Creation-Date: 2025-04-13 00:41+0000\n"
 "PO-Revision-Date: 2023-11-14 13:35-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -307,7 +307,25 @@ msgstr ""
 "Atualizar periodicamente o arquivo. Pode ser usado quando o monitoramento "
 "não estiver disponível. (ex.: para calendários remotos)."
 
-#: singlefileresourceconfigwidgetbase.cpp:131
+#: singlefileresourceconfigwidgetbase.cpp:37
+#, kde-format
+msgctxt "@info:tooltip"
+msgid ""
+"A file path or URL containing the calendar file. Once created, this location "
+"cannot be modified."
+msgstr ""
+
+#: singlefileresourceconfigwidgetbase.cpp:39
+#, kde-kuit-format
+msgctxt "@info:whatsthis"
+msgid ""
+"Enter the path or URL to a file containing a valid calendar file. <p><note> "
+"Unfortunately, this path cannot be changed once the resource is created. To "
+"change the location, delete this resource and then create a new one with the "
+"updated path.</note></p>"
+msgstr ""
+
+#: singlefileresourceconfigwidgetbase.cpp:137
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Checking file information..."
