@@ -1,14 +1,14 @@
 # translation of akonadi_singlefile_resource.po to Italian
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2010, 2011, 2012, 2014, 2016, 2017, 2018, 2021, 2023, 2024.
+# SPDX-FileCopyrightText: 2010, 2011, 2012, 2014, 2016, 2017, 2018, 2021, 2023, 2024, 2025 Luigi Toscano <luigi.toscano@tiscali.it>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-13 00:41+0000\n"
-"PO-Revision-Date: 2024-08-23 23:11+0200\n"
+"PO-Revision-Date: 2025-04-13 16:00+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 24.12.0\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -311,6 +311,8 @@ msgid ""
 "A file path or URL containing the calendar file. Once created, this location "
 "cannot be modified."
 msgstr ""
+"Un percorso o URL di un file che contiene il file di calendario. Una volta "
+"creata, questa posizione non può essere modificata."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
 #, kde-kuit-format
@@ -321,6 +323,10 @@ msgid ""
 "change the location, delete this resource and then create a new one with the "
 "updated path.</note></p>"
 msgstr ""
+"Inserisci il percorso o URL per un file che contiene un file di calendario "
+"valido. <p><note>Sfortunatamente questo percorso non può essere cambiato "
+"dopo che la risorsa è stata creata. Per cambiare la posizione, elimina "
+"questa risorsa e creane una nuova con il percorso aggiornato.</note></p>"
 
 #: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format

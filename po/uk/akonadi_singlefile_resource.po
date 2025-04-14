@@ -3,13 +3,13 @@
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# Yuri Chornoivan <yurchor@ukr.net>, 2009, 2010, 2011, 2012, 2014, 2016, 2017, 2018, 2021, 2023, 2024.
+# Yuri Chornoivan <yurchor@ukr.net>, 2009, 2010, 2011, 2012, 2014, 2016, 2017, 2018, 2021, 2023, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-13 00:41+0000\n"
-"PO-Revision-Date: 2024-08-23 09:18+0300\n"
+"PO-Revision-Date: 2025-04-13 09:11+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -312,6 +312,8 @@ msgid ""
 "A file path or URL containing the calendar file. Once created, this location "
 "cannot be modified."
 msgstr ""
+"Шлях або адреса із файлом календаря. Після створення цей запис не можна буде "
+"змінювати."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
 #, kde-kuit-format
@@ -322,6 +324,10 @@ msgid ""
 "change the location, delete this resource and then create a new one with the "
 "updated path.</note></p>"
 msgstr ""
+"Введіть шлях або адресу файла, що містить коректні дані календаря. <p><note> "
+"На жаль, цей шлях не можна буде змінити після створення ресурсу. Щоб змінити "
+"місце зберігання, вилучіть цей ресурс, а потім створіть ресурс із оновленим "
+"шляхом.</note></p>"
 
 #: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format

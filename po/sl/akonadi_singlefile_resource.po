@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-13 00:41+0000\n"
-"PO-Revision-Date: 2024-08-22 07:49+0200\n"
+"PO-Revision-Date: 2025-04-13 08:39+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.6\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -313,6 +313,8 @@ msgid ""
 "A file path or URL containing the calendar file. Once created, this location "
 "cannot be modified."
 msgstr ""
+"Pot datoteke ali URL, ki vsebuje datoteko koledarja. Ko je ta lokacija "
+"ustvarjena, je ni več mogoče spreminjati."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
 #, kde-kuit-format
@@ -323,6 +325,10 @@ msgid ""
 "change the location, delete this resource and then create a new one with the "
 "updated path.</note></p>"
 msgstr ""
+"Vnesite pot ali URL do datoteke, ki vsebuje veljavno koledarsko datoteko. "
+"<p><note> Na žalost te poti ni mogoče spremeniti, ko je vir ustvarjen. Če "
+"želite spremeniti lokacijo, izbrišite ta vir in nato ustvarite novega s "
+"posodobljeno potjo.</note></p>"
 
 #: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format
