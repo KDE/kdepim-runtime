@@ -173,12 +173,3 @@ msgstr "Sonuç öge içerisine kaydedilemedi."
 #, kde-format
 msgid "Failed to fetch item."
 msgstr "Öge getirilemedi."
-
-#~ msgid "Mail Dispatcher Agent Settings"
-#~ msgstr "E-posta Yönetim Aracı Ayarları"
-
-#~ msgid "Select the collection to be used as outbox:"
-#~ msgstr "Giden kutusu olarak kullanılacak koleksiyonu seç:"
-
-#~ msgid "Select the collection to move sent messages into:"
-#~ msgstr "Gönderilen iletilerin taşınacağı koleksiyonu seçin:"

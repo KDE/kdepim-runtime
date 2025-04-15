@@ -234,38 +234,3 @@ msgid ""
 msgstr ""
 "Her zaman sunucudan tüm verileri yeniden yüklemek yerine artımlı "
 "güncellenemeler kullan"
-
-#~ msgid "Connection"
-#~ msgstr "Bağlantı"
-
-#~ msgid "Open-Xchange Configuration"
-#~ msgstr "Open-Xchange Yapılandırması"
-
-#~ msgctxt "NAME OF TRANSLATORS"
-#~ msgid "Your names"
-#~ msgstr "H. İbrahim Güngör"
-
-#~ msgctxt "EMAIL OF TRANSLATORS"
-#~ msgid "Your emails"
-#~ msgstr "ibrahim@pardus.org.tr"
-
-#~ msgid "About..."
-#~ msgstr "Hakkında..."
-
-#~ msgid "Akonadi Open-Xchange Resource"
-#~ msgstr "Akonadi Open-Xchange Kaynağı"
-
-#~ msgid "(c) 2009 by Tobias Koenig (credativ GmbH)"
-#~ msgstr "(c) 2009 by Tobias Koenig (credativ GmbH)"
-
-#~ msgid "Tobias Koenig"
-#~ msgstr "Tobias Koenig"
-
-#~ msgid "Current maintainer"
-#~ msgstr "Projeyi yürüten"
-
-#~ msgid "credativ GmbH"
-#~ msgstr "credativ GmbH"
-
-#~ msgid "Funded and supported"
-#~ msgstr "Kuran ve destekleyen"

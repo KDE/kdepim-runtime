@@ -341,9 +341,3 @@ msgstr "Kilit dosyası"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Temizleme işlemi başlamadan önce silinen iletilerin sayısı."
-
-#~ msgid "Activities"
-#~ msgstr "Etkinlikler"
-
-#~ msgid "URL:"
-#~ msgstr "URL:"

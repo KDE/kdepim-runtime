@@ -179,6 +179,3 @@ msgstr "Gerçek arka uç verisi değiştirmeyin."
 #, kde-format
 msgid "Activities"
 msgstr "Etkinlikler"
-
-#~ msgid "Filename:"
-#~ msgstr "Dosya adı:"

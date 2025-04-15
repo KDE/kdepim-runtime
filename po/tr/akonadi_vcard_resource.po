@@ -79,9 +79,3 @@ msgstr "Dosyayı periyodik olarak güncelleyin."
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "Dakika türünden kendiliğinden güncelleme periyodu."
-
-#~ msgid "Filename:"
-#~ msgstr "Dosya adı:"
-
-#~ msgid "Select Address Book"
-#~ msgstr "Adres Defterini Seç"

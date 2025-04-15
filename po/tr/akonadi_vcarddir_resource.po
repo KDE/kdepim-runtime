@@ -143,6 +143,3 @@ msgstr[1] "%v dakika"
 #, kde-format
 msgid "Activities"
 msgstr "Etkinlikler"
-
-#~ msgid "Path:"
-#~ msgstr "Yol:"

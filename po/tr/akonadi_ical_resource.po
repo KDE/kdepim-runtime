@@ -81,12 +81,3 @@ msgstr "Eklenen %1 ögesi getirilemedi."
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Değiştirilen %1 ögesi getirilemedi."
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Dakika türünden kendiliğinden kaydetme aralığı."
-
-#~ msgid "Filename:"
-#~ msgstr "Dosya adı:"
-
-#~ msgid "Select Calendar"
-#~ msgstr "Takvim Seç"

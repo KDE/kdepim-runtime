@@ -1264,6 +1264,3 @@ msgstr "Öge güncelleme başarısız."
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Öge yanıtı işlenirken öge bozuldu."
-
-#~ msgid "Exchange server autodiscovery"
-#~ msgstr "Exchange sunucusunu kendiliğinden algıla"

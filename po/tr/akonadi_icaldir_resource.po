@@ -156,9 +156,3 @@ msgstr[1] "%v dakika"
 #, kde-format
 msgid "Activities"
 msgstr "Etkinlikler"
-
-#~ msgid "Directory Name"
-#~ msgstr "Dizin Adı"
-
-#~ msgid "Access Rights"
-#~ msgstr "Erişim Hakları"

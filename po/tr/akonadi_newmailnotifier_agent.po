@@ -274,12 +274,3 @@ msgstr "Okundu Olarak İmle"
 #, kde-format
 msgid "Delete"
 msgstr "Sil"
-
-#~ msgid "New Mail Notifier settings"
-#~ msgstr "Yeni Posta Bildirici ayarları"
-
-#~ msgid "Show button to display mail"
-#~ msgstr "Postayı görüntülemek için bir düğme göster"
-
-#~ msgid "Starting Jovie Text-to-Speech Service Failed %1"
-#~ msgstr "Jovie Metin Okuma Hizmeti Başlatma Başarısız %1"
