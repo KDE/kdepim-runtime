@@ -411,13 +411,13 @@ void SetupServer::loadSettings()
         connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
             if (readPasswordJob->error() == Error::NoError) {
                 const auto password = readPasswordJob->textData();
-                m_ui->password->lineEdit()->insert(password);
+                m_ui->password->setPassword(password);
             }
             passwordFetched();
         });
     } else {
         const auto password = m_settings.password();
-        m_ui->password->lineEdit()->insert(password);
+        m_ui->password->setPassword(password);
         passwordFetched();
     }
 }
@@ -470,12 +470,12 @@ void SetupServer::passwordFetched()
         connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
             if (readPasswordJob->error() == Error::NoError) {
                 const auto password = readPasswordJob->textData();
-                m_ui->customPassword->lineEdit()->insert(password);
+                m_ui->customPassword->setPassword(password);
             }
             sievePasswordFetched();
         });
     } else {
-        m_ui->customPassword->lineEdit()->insert(m_settings.sievePassword());
+        m_ui->customPassword->setPassword(m_settings.sievePassword());
         sievePasswordFetched();
     }
 }
