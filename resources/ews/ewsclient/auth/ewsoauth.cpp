@@ -291,7 +291,11 @@ EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const Q
 {
     mOAuth2.setReplyHandler(&mReplyHandler);
     mOAuth2.setAuthorizationUrl(o365AuthorizationUrl);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+    mOAuth2.setTokenUrl(o365AccessTokenUrl);
+#else
     mOAuth2.setAccessTokenUrl(o365AccessTokenUrl);
+#endif
     mOAuth2.setClientIdentifier(appId);
     mWebProfile.setUrlRequestInterceptor(&mRequestInterceptor);
     mWebProfile.installUrlSchemeHandler("urn", &mSchemeHandler);
@@ -302,7 +306,11 @@ EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const Q
     });
     connect(&mOAuth2, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser, this, &EwsOAuthPrivate::authorizeWithBrowser);
     connect(&mOAuth2, &QOAuth2AuthorizationCodeFlow::granted, this, &EwsOAuthPrivate::granted);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+    connect(&mOAuth2, &QOAuth2AuthorizationCodeFlow::serverReportedErrorOccurred, this, &EwsOAuthPrivate::error);
+#else
     connect(&mOAuth2, &QOAuth2AuthorizationCodeFlow::error, this, &EwsOAuthPrivate::error);
+#endif
     connect(&mRequestInterceptor, &EwsOAuthRequestInterceptor::redirectUriIntercepted, this, &EwsOAuthPrivate::redirectUriIntercepted, Qt::QueuedConnection);
     connect(&mReplyHandler, &EwsOAuthReplyHandler::replyError, this, [this](const QString &err) {
         error(QStringLiteral("Network reply error"), err, QUrl());
@@ -316,7 +324,11 @@ bool EwsOAuthPrivate::authenticate(bool interactive)
     qCInfoNC(EWSCLI_LOG) << QStringLiteral("Starting OAuth2 authentication");
 
     if (!mOAuth2.refreshToken().isEmpty()) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+        mOAuth2.refreshTokens();
+#else
         mOAuth2.refreshAccessToken();
+#endif
         return true;
     } else if (interactive) {
         mOAuth2.grant();
