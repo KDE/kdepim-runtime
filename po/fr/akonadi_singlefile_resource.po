@@ -6,7 +6,7 @@
 # Joëlle Cornavin <jcornavin@laposte.net>, 2010.
 # Anne-Marie Mahfouf <annemarie.mahfouf@free.fr>, 2010.
 # Geoffray Levasseur <geoffray.levasseurbrandin@numericable.fr>, 2012, 2013, 2014.
-# SPDX-FileCopyrightText: 2013, 2021, 2023, 2024 Xavier Besnard <xavier.besnard@kde.org>
+# SPDX-FileCopyrightText: 2013, 2021, 2023, 2024, 2025 Xavier Besnard <xavier.besnard@kde.org>
 # Vincent Pinon <vpinon@kde.org>, 2017.
 # Simon Depiets <sdepiets@gmail.com>, 2018, 2020.
 #
@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-13 00:41+0000\n"
-"PO-Revision-Date: 2024-08-25 11:46+0200\n"
+"PO-Revision-Date: 2025-04-14 09:52+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Accelerator-Marker: &\n"
 "X-Environment: kde\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 24.12.3\n"
 "X-Text-Markup: kde4\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
@@ -323,6 +323,8 @@ msgid ""
 "A file path or URL containing the calendar file. Once created, this location "
 "cannot be modified."
 msgstr ""
+"Un chemin d'accès au fichier ou une URL contenant le fichier d'agenda. Une "
+"fois créé, il est impossible de modifier cet emplacement."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
 #, kde-kuit-format
@@ -333,6 +335,11 @@ msgid ""
 "change the location, delete this resource and then create a new one with the "
 "updated path.</note></p>"
 msgstr ""
+"Veuillez saisir l'emplacement ou l'URL d'un fichier contenant un fichier "
+"valable de calendrier. <p><note> Malheureusement, il est impossible de "
+"modifier cet emplacement une fois la ressource créée. Pour modifier "
+"l'emplacement, veuillez supprimer cette ressource, puis créer une nouvelle "
+"avec l'emplacement mis à jour.</note></p>"
 
 #: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format

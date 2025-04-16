@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2010, 2013, 2014, 2016, 2017, 2019, 2020, 2021, 2022, 2023, 2024 Shinjo Park <kde@peremen.name>
+# SPDX-FileCopyrightText: 2010, 2013, 2014, 2016, 2017, 2019, 2020, 2021, 2022, 2023, 2024, 2025 Shinjo Park <kde@peremen.name>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-13 00:41+0000\n"
-"PO-Revision-Date: 2024-12-24 16:51+0100\n"
+"PO-Revision-Date: 2025-04-15 23:38+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -302,6 +302,8 @@ msgid ""
 "A file path or URL containing the calendar file. Once created, this location "
 "cannot be modified."
 msgstr ""
+"캘린더 파일의 파일 경로나 URL입니다. 한 번 생성하면 이 위치를 수정할 수 없습"
+"니다."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
 #, kde-kuit-format
@@ -312,6 +314,9 @@ msgid ""
 "change the location, delete this resource and then create a new one with the "
 "updated path.</note></p>"
 msgstr ""
+"올바른 캘린더 파일의 경로나 URL을 입력하십시오.<p><note>한 번 리소스를 생성하"
+"면 이 경로를 변경할 수 없습니다. 경로를 변경하려면 리소스를 삭제하고 새로운 "
+"경로로 리소스를 다시 만드십시오.</note></p>"
 
 #: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format

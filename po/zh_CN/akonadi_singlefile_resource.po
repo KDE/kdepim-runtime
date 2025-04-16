@@ -291,7 +291,7 @@ msgctxt "@info:tooltip"
 msgid ""
 "A file path or URL containing the calendar file. Once created, this location "
 "cannot be modified."
-msgstr ""
+msgstr "指向日历文件的文件路径或 URL。该位置不能在创建后修改。"
 
 #: singlefileresourceconfigwidgetbase.cpp:39
 #, kde-kuit-format
@@ -302,6 +302,8 @@ msgid ""
 "change the location, delete this resource and then create a new one with the "
 "updated path.</note></p>"
 msgstr ""
+"输入有效的日历文件路径或URL。<p><note> 资源被创建后该地址将不能修改。若您希望"
+"修改该地址，请删除该资源并在您希望修改的地址处重新进行创建。</note></p>"
 
 #: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format

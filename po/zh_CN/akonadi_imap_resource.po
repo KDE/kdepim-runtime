@@ -265,13 +265,13 @@ msgstr "定义自定义过滤服务器的要使用的身份类型"
 #: imapresource.kcfg:129
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "是否启用代理的活动支持"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: imapresource.kcfg:133
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "代理的活动"
 
 #: imapresourcebase.cpp:220
 #, kde-format
@@ -503,7 +503,7 @@ msgstr "服务器信息"
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
-msgstr ""
+msgstr "获取服务器兼容性时出错： %1"
 
 #: serverinfodialog.cpp:109
 #, kde-format
@@ -609,7 +609,7 @@ msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the IMAP password from the system "
 "keychain: \"%1\""
-msgstr ""
+msgstr "从系统密钥链中获取 IMAP 密码时发生错误：“%1”"
 
 #: settings.cpp:204
 #, kde-format
@@ -623,7 +623,7 @@ msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the sieve password from the system "
 "keychain: \"%1\""
-msgstr ""
+msgstr "从系统密钥链中获取 Sieve 密码时发生错误：“%1”"
 
 #: settings.cpp:240
 #, kde-format
@@ -631,7 +631,7 @@ msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the sieve password in the system keychain: "
 "\"%1\""
-msgstr ""
+msgstr "保存系统密钥链中的 Sieve 密码时发生错误：“%1”"
 
 #: settings.cpp:266
 #, kde-format
@@ -639,7 +639,7 @@ msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the IMAP password in the system keychain: "
 "\"%1\""
-msgstr ""
+msgstr "保存系统密钥链中的 IMAP 密码时发生错误：“%1”"
 
 #: settings.cpp:353
 #, kde-format
