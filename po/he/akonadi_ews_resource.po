@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-11-09 00:40+0000\n"
+"POT-Creation-Date: 2025-04-17 00:41+0000\n"
 "PO-Revision-Date: 2025-01-24 09:27+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -28,7 +28,7 @@ msgstr "כתובת דוא״ל שגויה"
 msgid "Exchange protocol information not found"
 msgstr "פרטי פרוטוקול Exchange לא נמצאו"
 
-#: ewsclient/auth/ewsoauth.cpp:513
+#: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -38,7 +38,7 @@ msgstr ""
 "פרטי הגישה ב־Microsoft Exchange לחשבון <b>%1</b> לא תקפים יותר. צריך לעבו "
 "ראימות כדי להמשיך להשתמש בו."
 
-#: ewsclient/auth/ewsoauth.cpp:522
+#: ewsclient/auth/ewsoauth.cpp:534
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

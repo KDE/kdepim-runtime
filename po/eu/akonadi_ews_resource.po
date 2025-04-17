@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-11-09 00:40+0000\n"
+"POT-Creation-Date: 2025-04-17 00:41+0000\n"
 "PO-Revision-Date: 2024-08-06 01:03+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -30,7 +30,7 @@ msgstr "E-posta helbide akastuna"
 msgid "Exchange protocol information not found"
 msgstr "Ez da aurkitu Exchange protokoloaren informaziorik"
 
-#: ewsclient/auth/ewsoauth.cpp:513
+#: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -40,7 +40,7 @@ msgstr ""
 "<b>%1</b> konturako Microsoft Exchange egiaztagiriak dagoeneko ez du balio. "
 "Autentifikazioa egin behar duzu hura erabiltzen jarraitzeko."
 
-#: ewsclient/auth/ewsoauth.cpp:522
+#: ewsclient/auth/ewsoauth.cpp:534
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kde-l10n-es\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-11-09 00:40+0000\n"
+"POT-Creation-Date: 2025-04-17 00:41+0000\n"
 "PO-Revision-Date: 2024-08-02 17:37+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -28,7 +28,7 @@ msgstr "Dirección de correo incorrecta"
 msgid "Exchange protocol information not found"
 msgstr "No se encuentra la información del protocolo Exchange"
 
-#: ewsclient/auth/ewsoauth.cpp:513
+#: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -38,7 +38,7 @@ msgstr ""
 "Las credenciales de Microsoft Exchange para la cuenta <b>%1</b> ya no son "
 "válidas. Debe autenticarse para usarlas."
 
-#: ewsclient/auth/ewsoauth.cpp:522
+#: ewsclient/auth/ewsoauth.cpp:534
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

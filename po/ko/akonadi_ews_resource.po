@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-11-09 00:40+0000\n"
+"POT-Creation-Date: 2025-04-17 00:41+0000\n"
 "PO-Revision-Date: 2024-08-19 22:47+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -27,7 +27,7 @@ msgstr "잘못된 이메일 주소"
 msgid "Exchange protocol information not found"
 msgstr "Exchange 프로토콜 정보를 찾을 수 없음"
 
-#: ewsclient/auth/ewsoauth.cpp:513
+#: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -37,7 +37,7 @@ msgstr ""
 "계정 <b>%1</b>의 Microsoft Exchange 인증 정보가 더 이상 유효하지 않습니다. 계"
 "정을 계속 사용하려면 인증해야 합니다."
 
-#: ewsclient/auth/ewsoauth.cpp:522
+#: ewsclient/auth/ewsoauth.cpp:534
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
