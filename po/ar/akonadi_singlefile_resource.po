@@ -1,14 +1,14 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 # walid <01walid@gmail.com>, 2009.
-# SPDX-FileCopyrightText: 2009, 2022, 2024 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+# SPDX-FileCopyrightText: 2009, 2022, 2024, 2025 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 # Safa Alfulaij <safa1996alfulaij@gmail.com>, 2018.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-13 00:41+0000\n"
-"PO-Revision-Date: 2024-09-26 13:19+0400\n"
+"PO-Revision-Date: 2025-04-17 08:24+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -301,6 +301,7 @@ msgid ""
 "A file path or URL containing the calendar file. Once created, this location "
 "cannot be modified."
 msgstr ""
+"مسار ملف أو رابط يحتوي على ملف تقويم. بعد إنشائه، لا يمكن تعديل هذا الموقع."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
 #, kde-kuit-format
@@ -311,6 +312,9 @@ msgid ""
 "change the location, delete this resource and then create a new one with the "
 "updated path.</note></p>"
 msgstr ""
+"أدخل المسار أو عنوان رابط لمجلد يحتوي على ملف تقويم صالح.<p><note> للأسف، لا "
+"يمكن تغيير هذا المسار بعد إنشاء المورد. لتغيير الموقع، احذف هذا المورد ثم "
+"أنشئ موردًا جديدًا بالمسار المُحدّث.</note></p>"
 
 #: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format
