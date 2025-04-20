@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the kdepim-runtime package.
 #
 # Automatically generated, 2022.
-# SPDX-FileCopyrightText: 2022, 2023, 2024 Mincho Kondarev <mkondarev@yahoo.de>
+# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Mincho Kondarev <mkondarev@yahoo.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-13 00:41+0000\n"
-"PO-Revision-Date: 2024-11-10 13:18+0100\n"
+"PO-Revision-Date: 2025-04-18 13:58+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.11.70\n"
+"X-Generator: Lokalize 25.07.70\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -310,6 +310,8 @@ msgid ""
 "A file path or URL containing the calendar file. Once created, this location "
 "cannot be modified."
 msgstr ""
+"Път до директория или URL адрес, съдържащ файл с календар. Веднъж създадено, "
+"това местоположение не може да се променя."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
 #, kde-kuit-format
@@ -320,6 +322,10 @@ msgid ""
 "change the location, delete this resource and then create a new one with the "
 "updated path.</note></p>"
 msgstr ""
+"Въведете пътя или URL адреса до директория, съдържаща валиден файл с "
+"календар. <p><note> За съжаление този път не може да бъде променен, след "
+"като ресурсът е създаден. За да промените местоположението, изтрийте този "
+"ресурс и след това създайте нов с актуализирания път.</note></p>"
 
 #: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format

@@ -5,13 +5,13 @@
 # Franklin Weng <franklin@goodhorse.idv.tw>, 2011, 2012, 2014, 2015.
 # Jeff Huang <s8321414@gmail.com>, 2016, 2017.
 # pan93412 <pan93412@gmail.com>, 2018.
-# SPDX-FileCopyrightText: 2023, 2024 Kisaragi Hiu <mail@kisaragi-hiu.com>
+# SPDX-FileCopyrightText: 2023, 2024, 2025 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-13 00:41+0000\n"
-"PO-Revision-Date: 2024-08-25 01:57+0900\n"
+"PO-Revision-Date: 2025-04-19 15:05+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "dot tw>\n"
-"X-Generator: Lokalize 24.04.70\n"
+"X-Generator: Lokalize 24.12.3\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
@@ -297,7 +297,7 @@ msgctxt "@info:tooltip"
 msgid ""
 "A file path or URL containing the calendar file. Once created, this location "
 "cannot be modified."
-msgstr ""
+msgstr "包含行事曆檔案的路徑或網址。建立之後這個位置將無法被修改。"
 
 #: singlefileresourceconfigwidgetbase.cpp:39
 #, kde-kuit-format
@@ -308,6 +308,9 @@ msgid ""
 "change the location, delete this resource and then create a new one with the "
 "updated path.</note></p>"
 msgstr ""
+"輸入包含有效行事曆檔案的路徑或網址。<p><note>不幸的，這個路徑在資源建立之後是"
+"無法變更的。如果有變更路徑的需要，請刪除這個資源之後再次用希望的新路徑建立一"
+"個新的資源。</note></p>"
 
 #: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format
