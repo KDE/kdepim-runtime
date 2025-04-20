@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-01-04 00:41+0000\n"
-"PO-Revision-Date: 2025-01-08 12:08+0100\n"
+"PO-Revision-Date: 2025-04-18 16:29+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
@@ -31,7 +31,7 @@ msgstr ""
 #, kde-format
 msgid "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'."
 msgstr ""
-"Impossible d'ajouter le dossier IMAP « %1 » pour un dossier parent non "
+"Impossible d'ajouter le dossier « IMAP » « %1 » pour un dossier parent non "
 "existant « %2 »."
 
 #: addcollectiontask.cpp:67
@@ -995,7 +995,7 @@ msgstr ""
 #: setupserverview_desktop.ui:192
 #, kde-format
 msgid "Managesieve port:"
-msgstr "Portage de « Managesieve » :"
+msgstr "Portage de « managesieve » :"
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: setupserverview_desktop.ui:210
