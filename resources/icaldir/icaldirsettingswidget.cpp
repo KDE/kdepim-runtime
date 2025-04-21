@@ -46,8 +46,8 @@ IcalDirSettingsWidget::IcalDirSettingsWidget(const KSharedConfigPtr &config, QWi
         i18nc("@info:tooltip", "A directory path or URL containing at least 1 calendar file. Once created, this location cannot be modified."));
     ui.kcfg_Path->setWhatsThis(xi18nc("@info:whatsthis",
                                       "Enter the path or URL to a directory containing at least 1 calendar file. "
-                                      "<p><note> Unfortunately, this path cannot be changed once the resource is created. "
-                                      "To change the location, delete this resource and then create a new one with the updated path.</note></p>"));
+                                      "<para><note> Unfortunately, this path cannot be changed once the resource is created. "
+                                      "To change the location, delete this resource and then create a new one with the updated path.</note></para>"));
 
     KLocalization::setupSpinBoxFormatString(ui.kcfg_AutosaveInterval, ki18np("%v minute", "%v minutes"));
     mManager = new KConfigDialogManager(mainWidget, IcalDirResourceSettings::self());
