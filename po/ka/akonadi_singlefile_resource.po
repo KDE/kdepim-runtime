@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-22 00:41+0000\n"
-"PO-Revision-Date: 2025-04-13 03:40+0200\n"
+"PO-Revision-Date: 2025-04-22 04:58+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -312,13 +312,7 @@ msgstr ""
 "შეცვლით."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
-#| msgid ""
-#| "Enter the path or URL to a file containing a valid calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a file containing a valid calendar file. "
@@ -327,9 +321,9 @@ msgid ""
 "one with the updated path.</note></para>"
 msgstr ""
 "შეიყვანეთ ბილიკი ან ბმული ფაილამდე, რომელიც სწორ კალენდრის ფაილს შიეცავს. "
-"<p><note>სამწუხაროდ, რესურსის შექმნის შემდეგ, ამ ბილიკს ვეღარ შეცვლით. "
+"<para><note>სამწუხაროდ, რესურსის შექმნის შემდეგ, ამ ბილიკს ვეღარ შეცვლით. "
 "მდებარეობის შესაცვლელად, წაშალეთ ეს რესურსი და შექმენით ახალი, განახლებული "
-"ბილიკით.</note></p>"
+"ბილიკით.</note></para>"
 
 #: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format

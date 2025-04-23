@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-22 00:41+0000\n"
-"PO-Revision-Date: 2025-04-04 02:23+0100\n"
+"PO-Revision-Date: 2025-04-23 00:52+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.12.3\n"
+"X-Generator: Lokalize 25.04.0\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -137,13 +137,7 @@ msgstr ""
 "Una vez creado, esta dirección no se puede modificar."
 
 #: icaldirsettingswidget.cpp:48
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
-#| msgid ""
-#| "Enter the path or URL to a directory containing at least 1 calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory containing at least 1 calendar file. "
@@ -152,9 +146,9 @@ msgid ""
 "one with the updated path.</note></para>"
 msgstr ""
 "Introduzca la ruta o la URL de un directorio que contiene al menos un "
-"archivo de calendario. <p><note>Lamentablemente, esta ruta no se puede "
+"archivo de calendario.<para><note>Lamentablemente, esta ruta no se puede "
 "cambiar una vez que se crea el recurso. Para cambiar la ubicación, borre "
-"este recurso y vuelva a crear uno nuevo con la ruta correcta.</note></p>"
+"este recurso y vuelva a crear uno nuevo con la ruta correcta.</note></para>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

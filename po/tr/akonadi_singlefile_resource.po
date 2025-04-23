@@ -6,21 +6,21 @@
 # obsoleteman <tulliana@gmail.com>, 2009.
 # Volkan Gezer <volkangezer@gmail.com>, 2013, 2015, 2017.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-22 00:41+0000\n"
-"PO-Revision-Date: 2024-08-22 13:52+0300\n"
-"Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
+"PO-Revision-Date: 2025-04-22 19:55+0300\n"
+"Last-Translator: Emir SARI <emir_sari@îcloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.11.70\n"
+"X-Generator: Lokalize 25.04.0\n"
 "X-POOTLE-MTIME: 1413102277.000000\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
@@ -315,13 +315,7 @@ msgstr ""
 "sonra bu konum üzerinde değişiklik yapılamaz."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
-#| msgid ""
-#| "Enter the path or URL to a file containing a valid calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a file containing a valid calendar file. "
@@ -329,10 +323,10 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></para>"
 msgstr ""
-"Geçerli bir takvim dosyası içeren bir dosya yolu veya URL girin. <p><note>Ne "
-"yazık ki, bir kez oluşturulduktan sonra bu konum üzerinde değişiklik "
-"yapılamaz. Konumu değiştirmek için bu özkaynağı silin ve güncellenmiş yolu "
-"içeren yeni bir tane oluşturun.</note></p>"
+"Geçerli bir takvim dosyası içeren bir dosya yolu veya URL girin. "
+"<para><note>Ne yazık ki, bir kez oluşturulduktan sonra bu konum üzerinde "
+"değişiklik yapılamaz. Konumu değiştirmek için bu özkaynağı silin ve "
+"güncellenmiş yolu içeren yeni bir tane oluşturun.</note></para>"
 
 #: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format

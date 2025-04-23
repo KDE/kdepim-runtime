@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-22 00:41+0000\n"
-"PO-Revision-Date: 2025-04-03 17:40+0300\n"
+"PO-Revision-Date: 2025-04-22 09:23+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -136,13 +136,7 @@ msgstr ""
 "створення цей запис не можна буде змінювати."
 
 #: icaldirsettingswidget.cpp:48
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
-#| msgid ""
-#| "Enter the path or URL to a directory containing at least 1 calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory containing at least 1 calendar file. "
@@ -151,9 +145,9 @@ msgid ""
 "one with the updated path.</note></para>"
 msgstr ""
 "Введіть шлях або адресу каталогу, що містить принаймні 1 файл календаря. "
-"<p><note> На жаль, цей шлях не можна буде змінити після створення ресурсу. "
-"Щоб змінити місце зберігання, вилучіть цей ресурс, а потім створіть ресурс "
-"із оновленим шляхом.</note></p>"
+"<para><note> На жаль, цей шлях не можна буде змінити після створення "
+"ресурсу. Щоб змінити місце зберігання, вилучіть цей ресурс, а потім створіть "
+"ресурс із оновленим шляхом.</note></para>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

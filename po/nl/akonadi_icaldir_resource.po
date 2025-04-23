@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-22 00:41+0000\n"
-"PO-Revision-Date: 2025-04-04 12:34+0200\n"
+"PO-Revision-Date: 2025-04-22 12:35+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.12.3\n"
+"X-Generator: Lokalize 25.04.0\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -133,13 +133,7 @@ msgstr ""
 "aangemaakt, kan deze locatie niet meer gewijzigd worden."
 
 #: icaldirsettingswidget.cpp:48
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
-#| msgid ""
-#| "Enter the path or URL to a directory containing at least 1 calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory containing at least 1 calendar file. "
@@ -148,9 +142,9 @@ msgid ""
 "one with the updated path.</note></para>"
 msgstr ""
 "Voer het pad of URL naar een map in die minstens 1 agendabestand bevat. "
-"<p><note> Helaas kan dit pad niet meer gewijzigd worden nadat eenmaal de "
+"<para><note> Helaas kan dit pad niet meer gewijzigd worden nadat eenmaal de "
 "hulpbron is aangemaakt. Om de locatie te wijzigen, verwijder deze hulpbron "
-"en maak daarna een nieuwe aan met het bijgewerkte pad.</note></p>"
+"en maak daarna een nieuwe aan met het bijgewerkte pad.</note></para>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-22 00:41+0000\n"
-"PO-Revision-Date: 2025-04-03 20:45+0300\n"
+"PO-Revision-Date: 2025-04-22 08:04+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Lokalize 24.12.2\n"
+"X-Generator: Lokalize 24.12.3\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -132,13 +132,7 @@ msgstr ""
 "לשנות את המקום הזה."
 
 #: icaldirsettingswidget.cpp:48
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
-#| msgid ""
-#| "Enter the path or URL to a directory containing at least 1 calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory containing at least 1 calendar file. "
@@ -146,9 +140,9 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></para>"
 msgstr ""
-"נא למלא נתיב או כתובת אתר שמכילים קובץ לוח שנה אחד לפחות. <p><note> לרוע "
+"נא למלא נתיב או כתובת אתר שמכילים קובץ לוח שנה אחד לפחות. <para><note> לרוע "
 "המזל, אי אפשר לשנות את הנתיב הזה לאחר יצירת המשאב. כדי לשנות את המקום, יש "
-"למחוק את המשאב ואז ליצור אחד חדש עם הנתיב העדכני.</note></p>"
+"למחוק את המשאב ואז ליצור אחד חדש עם הנתיב העדכני.</note></para>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-22 00:41+0000\n"
-"PO-Revision-Date: 2025-04-03 09:37+0200\n"
+"PO-Revision-Date: 2025-04-22 09:08+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
@@ -137,13 +137,7 @@ msgstr ""
 "Una vegada creada, esta ubicació no es pot modificar."
 
 #: icaldirsettingswidget.cpp:48
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
-#| msgid ""
-#| "Enter the path or URL to a directory containing at least 1 calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory containing at least 1 calendar file. "
@@ -152,9 +146,9 @@ msgid ""
 "one with the updated path.</note></para>"
 msgstr ""
 "Introduïu el camí o l'URL cap a un directori que continga almenys 1 fitxer "
-"de calendari. <p><note> Desgraciadament, este camí no es pot canviar una "
+"de calendari. <para><note> Desgraciadament, este camí no es pot canviar una "
 "vegada s'haja creat el recurs. Per a canviar la ubicació, suprimiu este "
-"recurs i creeu-ne un de nou amb el camí actualitzat.</note></p>"
+"recurs i creeu-ne un de nou amb el camí actualitzat.</note></para>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

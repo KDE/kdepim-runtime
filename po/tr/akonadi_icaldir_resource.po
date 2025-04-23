@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-22 00:41+0000\n"
-"PO-Revision-Date: 2025-04-04 18:07+0300\n"
-"Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
+"PO-Revision-Date: 2025-04-22 19:55+0300\n"
+"Last-Translator: Emir SARI <emir_sari@îcloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.07.70\n"
+"X-Generator: Lokalize 25.04.0\n"
 "X-POOTLE-MTIME: 1502203052.000000\n"
 
 #: icaldirresource.cpp:121
@@ -132,13 +132,7 @@ msgstr ""
 "oluşturulduktan sonra değişiklik yapılamaz."
 
 #: icaldirsettingswidget.cpp:48
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
-#| msgid ""
-#| "Enter the path or URL to a directory containing at least 1 calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory containing at least 1 calendar file. "
@@ -146,10 +140,10 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></para>"
 msgstr ""
-"En az 1 takvim dosyası içeren bir dizin yolu veya URL. <p><note>Bu konum "
+"En az 1 takvim dosyası içeren bir dizin yolu veya URL. <para><note>Bu konum "
 "üzerinde, oluşturulduktan sonra değişiklik yapılamaz. Konumu değiştirmek "
 "için bu özkaynağı silin ve güncel yolu içeren yeni bir tane oluşturun.</"
-"note></p>"
+"note></para>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

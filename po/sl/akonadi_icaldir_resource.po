@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-22 00:41+0000\n"
-"PO-Revision-Date: 2025-04-03 07:23+0200\n"
+"PO-Revision-Date: 2025-04-22 06:39+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -138,13 +138,7 @@ msgstr ""
 "lokacija ustvarjena, je ni več mogoče spreminjati."
 
 #: icaldirsettingswidget.cpp:48
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
-#| msgid ""
-#| "Enter the path or URL to a directory containing at least 1 calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory containing at least 1 calendar file. "
@@ -153,9 +147,9 @@ msgid ""
 "one with the updated path.</note></para>"
 msgstr ""
 "Vnesite pot ali URL do imenika, ki vsebuje vsaj 1 koledarsko datoteko. "
-"<p><note> Na žalost te poti ni mogoče spremeniti, ko je vir ustvarjen. Če "
+"<para><note> Na žalost te poti ni mogoče spremeniti, ko je vir ustvarjen. Če "
 "želite spremeniti lokacijo, izbrišite ta vir in nato ustvarite novega s "
-"posodobljeno potjo.</note></p>"
+"posodobljeno potjo.</note></para>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format

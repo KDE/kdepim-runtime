@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-22 00:41+0000\n"
-"PO-Revision-Date: 2025-04-03 04:26+0200\n"
+"PO-Revision-Date: 2025-04-22 04:57+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -134,13 +134,7 @@ msgstr ""
 "როცა შექმნით, მის მდებარეობას ვერ შეცვლით."
 
 #: icaldirsettingswidget.cpp:48
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
-#| msgid ""
-#| "Enter the path or URL to a directory containing at least 1 calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory containing at least 1 calendar file. "
@@ -149,9 +143,9 @@ msgid ""
 "one with the updated path.</note></para>"
 msgstr ""
 "შეიყვანეთ ბილიკი ან ბმული საქაღალდემდე, რომელიც, სულ ცოტა, 1 კალენდრის ფაილს "
-"შეიცავს. <p><note> სამწუხაროდ, ამ ბილიკს ვერ შეცვლით მას შემდეგ, რაც რესურსი "
-"შეიქმნება. იმისათვის, რომ მდებარეობა შეცვალოთ, წაშალეთ რესურსი და შექმენით "
-"ახალი, განახლებული ბილიკით.</note></p>"
+"შეიცავს. <para><note> სამწუხაროდ, ამ ბილიკს ვერ შეცვლით მას შემდეგ, რაც "
+"რესურსი შეიქმნება. იმისათვის, რომ მდებარეობა შეცვალოთ, წაშალეთ რესურსი და "
+"შექმენით ახალი, განახლებული ბილიკით.</note></para>"
 
 #: icaldirsettingswidget.cpp:52
 #, kde-format
