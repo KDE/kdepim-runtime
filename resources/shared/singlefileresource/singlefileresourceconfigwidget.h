@@ -32,6 +32,10 @@ public:
 
     bool save() const override
     {
+        // basic validation: if the user pressed Ok without specifying any url
+        if (ui.kcfg_Path->url().toString().isEmpty()) {
+            return false;
+        }
         mManager->updateSettings();
         mSettings->setPath(ui.kcfg_Path->url().toString());
         mSettings->save();
