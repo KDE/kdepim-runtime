@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-22 00:41+0000\n"
-"PO-Revision-Date: 2025-04-18 13:58+0200\n"
+"PO-Revision-Date: 2025-04-23 22:04+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -314,13 +314,7 @@ msgstr ""
 "това местоположение не може да се променя."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
-#| msgid ""
-#| "Enter the path or URL to a file containing a valid calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a file containing a valid calendar file. "
@@ -329,9 +323,9 @@ msgid ""
 "one with the updated path.</note></para>"
 msgstr ""
 "Въведете пътя или URL адреса до директория, съдържаща валиден файл с "
-"календар. <p><note> За съжаление този път не може да бъде променен, след "
+"календар. <para><note> За съжаление този път не може да бъде променен, след "
 "като ресурсът е създаден. За да промените местоположението, изтрийте този "
-"ресурс и след това създайте нов с актуализирания път.</note></p>"
+"ресурс и след това създайте нов с актуализирания път.</note></para>"
 
 #: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format
