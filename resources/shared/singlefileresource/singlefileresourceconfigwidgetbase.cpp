@@ -104,6 +104,10 @@ void SingleFileResourceConfigWidgetBase::validate()
 
     const QUrl currentUrl = ui.kcfg_Path->url();
     if (ui.kcfg_Path->text().trimmed().isEmpty() || currentUrl.isEmpty()) {
+        ui.kcfg_MonitorFile->setChecked(false);
+        ui.kcfg_MonitorFile->setEnabled(true);
+        ui.kcfg_ReadOnly->setChecked(false);
+        ui.kcfg_ReadOnly->setEnabled(true);
         Q_EMIT okEnabled(false);
         return;
     }
@@ -112,6 +116,8 @@ void SingleFileResourceConfigWidgetBase::validate()
         if (mMonitorEnabled) {
             ui.kcfg_MonitorFile->setEnabled(true);
         }
+        ui.kcfg_ReadOnly->setChecked(false);
+        ui.kcfg_ReadOnly->setEnabled(true);
         ui.statusLabel->setVisible(false);
 
         // The read-only checkbox used to be disabled if the file is read-only,
@@ -128,6 +134,8 @@ void SingleFileResourceConfigWidgetBase::validate()
 
         ui.kcfg_MonitorFile->setChecked(false);
         ui.kcfg_MonitorFile->setEnabled(false);
+        ui.kcfg_ReadOnly->setChecked(true);
+        ui.kcfg_ReadOnly->setEnabled(false);
         ui.statusLabel->setText(i18nc("@info:status", "Checking file information…"));
         ui.statusLabel->setVisible(true);
 
