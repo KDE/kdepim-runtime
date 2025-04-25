@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-22 00:41+0000\n"
-"PO-Revision-Date: 2025-04-17 08:24+0400\n"
+"PO-Revision-Date: 2025-04-24 10:55+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -304,13 +304,7 @@ msgstr ""
 "مسار ملف أو رابط يحتوي على ملف تقويم. بعد إنشائه، لا يمكن تعديل هذا الموقع."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
-#| msgid ""
-#| "Enter the path or URL to a file containing a valid calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a file containing a valid calendar file. "
@@ -318,9 +312,9 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></para>"
 msgstr ""
-"أدخل المسار أو عنوان رابط لمجلد يحتوي على ملف تقويم صالح.<p><note> للأسف، لا "
-"يمكن تغيير هذا المسار بعد إنشاء المورد. لتغيير الموقع، احذف هذا المورد ثم "
-"أنشئ موردًا جديدًا بالمسار المُحدّث.</note></p>"
+"أدخل المسار أو عنوان رابط لمجلد يحتوي على ملف تقويم صالح.<para><note> للأسف، "
+"لا يمكن تغيير هذا المسار بعد إنشاء المورد. لتغيير الموقع، احذف هذا المورد ثم "
+"أنشئ موردًا جديدًا بالمسار المُحدّث.</note></para>"
 
 #: singlefileresourceconfigwidgetbase.cpp:137
 #, kde-format
