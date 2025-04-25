@@ -131,6 +131,10 @@ public:
             Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
             future = QtFuture::makeReadyValueFuture(true);
         } else { // !mCurrentUrl.isLocalFile()
+            if (mSettings->displayName().isEmpty() && (name().isEmpty() || name() == identifier()) && !mCurrentUrl.isEmpty()) {
+                setName(mCurrentUrl.adjusted(QUrl::StripTrailingSlash).fileName());
+            }
+
             if (mDownloadJob) {
                 const QString message = i18n("Another download is still in progress.");
                 qWarning() << message;
