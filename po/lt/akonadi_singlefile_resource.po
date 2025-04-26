@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-04-22 00:41+0000\n"
+"POT-Creation-Date: 2025-04-26 00:42+0000\n"
 "PO-Revision-Date: 2011-10-28 20:35+0300\n"
 "Last-Translator: Remigijus\n"
 "Language-Team: Lithuanian <kde-i18n-doc@kde.org>\n"
@@ -170,7 +170,7 @@ msgstr "Neparinktas failas."
 msgid "The resource not configured yet"
 msgstr ""
 
-#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:226
 #: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
@@ -187,37 +187,37 @@ msgstr "Nepavyko sukurti failo „%1“."
 msgid "Could not read file '%1'"
 msgstr "Nepavyko perskaityti failo „%1“."
 
-#: singlefileresource.h:135
+#: singlefileresource.h:139
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Kitas atsiuntimas vykdomas."
 
-#: singlefileresource.h:145 singlefileresource.h:236
+#: singlefileresource.h:149 singlefileresource.h:240
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Kitas failo išsiuntimas vykdomas."
 
-#: singlefileresource.h:163
+#: singlefileresource.h:167
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Nutolusio failo atsiuntimas."
 
-#: singlefileresource.h:186
+#: singlefileresource.h:190
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Bandoma rašyti į tik skaitomą failą: „%1“."
 
-#: singlefileresource.h:198
+#: singlefileresource.h:202
 #, kde-format
 msgid "No file specified."
 msgstr "Nenurodytas failas."
 
-#: singlefileresource.h:226
+#: singlefileresource.h:230
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Atsiuntimas vykdomas."
 
-#: singlefileresource.h:266
+#: singlefileresource.h:270
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Išsiunčiama failas iš laikinos talpyklos į nutolusią vietą."
@@ -345,7 +345,7 @@ msgid ""
 "one with the updated path.</note></para>"
 msgstr ""
 
-#: singlefileresourceconfigwidgetbase.cpp:137
+#: singlefileresourceconfigwidgetbase.cpp:145
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Checking file information..."

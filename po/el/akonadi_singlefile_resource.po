@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-04-22 00:41+0000\n"
+"POT-Creation-Date: 2025-04-26 00:42+0000\n"
 "PO-Revision-Date: 2017-04-20 16:56+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -155,7 +155,7 @@ msgstr "Δεν επιλέχθηκε αρχείο."
 msgid "The resource not configured yet"
 msgstr "Ο πόρος δεν έχει διαμορφωθεί ακόμη"
 
-#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:226
 #: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
@@ -172,37 +172,37 @@ msgstr "Αδυναμία δημιουργίας του αρχείου '%1'."
 msgid "Could not read file '%1'"
 msgstr "Αδυναμία ανάγνωσης του αρχείου '%1'."
 
-#: singlefileresource.h:135
+#: singlefileresource.h:139
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Μία άλλη λήψη είναι σε εξέλιξη."
 
-#: singlefileresource.h:145 singlefileresource.h:236
+#: singlefileresource.h:149 singlefileresource.h:240
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Μία άλλη αποστολή αρχείου είναι σε εξέλιξη."
 
-#: singlefileresource.h:163
+#: singlefileresource.h:167
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Λήψη απομακρυσμένου αρχείου."
 
-#: singlefileresource.h:186
+#: singlefileresource.h:190
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Προσπάθεια εγγραφής σε αρχείο μόνο ανάγνωσης: '%1'."
 
-#: singlefileresource.h:198
+#: singlefileresource.h:202
 #, kde-format
 msgid "No file specified."
 msgstr "Δεν καθορίστηκε αρχείο."
 
-#: singlefileresource.h:226
+#: singlefileresource.h:230
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Μία λήψη είναι ακόμη σε εξέλιξη."
 
-#: singlefileresource.h:266
+#: singlefileresource.h:270
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Αποστολή αρχείου λανθάνουσας μνήμης σε απομακρυσμένη τοποθεσία."
@@ -331,7 +331,7 @@ msgid ""
 "one with the updated path.</note></para>"
 msgstr ""
 
-#: singlefileresourceconfigwidgetbase.cpp:137
+#: singlefileresourceconfigwidgetbase.cpp:145
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-04-22 00:41+0000\n"
+"POT-Creation-Date: 2025-04-26 00:42+0000\n"
 "PO-Revision-Date: 2025-04-23 00:53+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -148,7 +148,7 @@ msgstr "No se ha seleccionado ningún archivo."
 msgid "The resource not configured yet"
 msgstr "El recurso no está configurado todavía"
 
-#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:226
 #: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
@@ -165,37 +165,37 @@ msgstr "No se ha podido crear el archivo «%1»."
 msgid "Could not read file '%1'"
 msgstr "No se ha podido leer el archivo «%1»"
 
-#: singlefileresource.h:135
+#: singlefileresource.h:139
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Otra descarga está todavía en curso."
 
-#: singlefileresource.h:145 singlefileresource.h:236
+#: singlefileresource.h:149 singlefileresource.h:240
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Otro envío de archivo está todavía en curso."
 
-#: singlefileresource.h:163
+#: singlefileresource.h:167
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Descargando archivo remoto."
 
-#: singlefileresource.h:186
+#: singlefileresource.h:190
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Tratando de escribir en un archivo de solo lectura: «%1»."
 
-#: singlefileresource.h:198
+#: singlefileresource.h:202
 #, kde-format
 msgid "No file specified."
 msgstr "No se ha especificado ningún archivo."
 
-#: singlefileresource.h:226
+#: singlefileresource.h:230
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Todavía hay una descarga en curso."
 
-#: singlefileresource.h:266
+#: singlefileresource.h:270
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Enviando archivo en caché a una ubicación remota."
@@ -330,7 +330,7 @@ msgstr ""
 "haya creado el recurso. Para modificar la ubicación, borre este recurso y "
 "cree uno nuevo con la ruta actualizada.</note></para>"
 
-#: singlefileresourceconfigwidgetbase.cpp:137
+#: singlefileresourceconfigwidgetbase.cpp:145
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

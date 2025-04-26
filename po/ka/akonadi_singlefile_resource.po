@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-04-22 00:41+0000\n"
+"POT-Creation-Date: 2025-04-26 00:42+0000\n"
 "PO-Revision-Date: 2025-04-22 04:58+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -145,7 +145,7 @@ msgstr "ფაილი არჩეული არაა."
 msgid "The resource not configured yet"
 msgstr "რესურსი ჯერ მორგებული არაა"
 
-#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:226
 #: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
@@ -162,37 +162,37 @@ msgstr "ფაილის შექმნის შეცდომა: \"%1\"."
 msgid "Could not read file '%1'"
 msgstr "ფაილის წაკითხვის შეცდომა: \"%1\""
 
-#: singlefileresource.h:135
+#: singlefileresource.h:139
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "სხვა გადმოწერა უკვე მიმდინარეობს."
 
-#: singlefileresource.h:145 singlefileresource.h:236
+#: singlefileresource.h:149 singlefileresource.h:240
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "სხვა ატვირთვა უკვე მიმდინარეობს."
 
-#: singlefileresource.h:163
+#: singlefileresource.h:167
 #, kde-format
 msgid "Downloading remote file."
 msgstr "გარე ფაილის გადმოწერა."
 
-#: singlefileresource.h:186
+#: singlefileresource.h:190
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "მხოლოდ კითხვად ფაილში ჩაწერის შეცდომა: %1."
 
-#: singlefileresource.h:198
+#: singlefileresource.h:202
 #, kde-format
 msgid "No file specified."
 msgstr "ფაილი მითითებული არაა."
 
-#: singlefileresource.h:226
+#: singlefileresource.h:230
 #, kde-format
 msgid "A download is still in progress."
 msgstr "სხვა გადმოწერა ჯერ კიდევ მიმდინარეობს."
 
-#: singlefileresource.h:266
+#: singlefileresource.h:270
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "დაქეშილი ფაილების დაშორებულ ადგილას ატვირთვა."
@@ -325,7 +325,7 @@ msgstr ""
 "მდებარეობის შესაცვლელად, წაშალეთ ეს რესურსი და შექმენით ახალი, განახლებული "
 "ბილიკით.</note></para>"
 
-#: singlefileresourceconfigwidgetbase.cpp:137
+#: singlefileresourceconfigwidgetbase.cpp:145
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

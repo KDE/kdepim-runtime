@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-04-22 00:41+0000\n"
+"POT-Creation-Date: 2025-04-26 00:42+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -118,40 +118,52 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "自动保存延迟："
 
-#: icaldirsettingswidget.cpp:46
-#, kde-format
+#: icaldirsettingswidget.cpp:43
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip"
+#| msgid ""
+#| "A directory path or URL containing at least 1 calendar file. Once "
+#| "created, this location cannot be modified."
 msgctxt "@info:tooltip"
-msgid ""
-"A directory path or URL containing at least 1 calendar file. Once created, "
-"this location cannot be modified."
+msgid "A directory path or URL containing calendar files"
 msgstr "包含至少 1 个日历文件的目录路径或 URL。该位置不能在创建后修改。"
 
-#: icaldirsettingswidget.cpp:48
+#: icaldirsettingswidget.cpp:46
 #, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
 #| msgid ""
-#| "Enter the path or URL to a directory containing at least 1 calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#| "Select the directory whose contents should be represented by this "
+#| "resource. If the directory does not exist, it will be created."
 msgctxt "@info:whatsthis"
 msgid ""
-"Enter the path or URL to a directory containing at least 1 calendar file. "
-"<para><note> Unfortunately, this path cannot be changed once the resource is "
-"created. To change the location, delete this resource and then create a new "
-"one with the updated path.</note></para>"
-msgstr ""
-"输入至少包含 1 个日历文件的目录或URL。<p><note> 资源被创建后该地址将不能修"
-"改。若您希望修改该地址，请删除该资源并在您希望修改的地址重新进行创建。</"
-"note></p>"
+"Enter the path or URL to a directory whose contents should be represented by "
+"this resource. The directory will be created if it does not exist."
+msgstr "选择此资源代表内容的目录。若此目录不存在，将会自动创建。"
 
-#: icaldirsettingswidget.cpp:52
+#: icaldirsettingswidget.cpp:48
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%v 分钟"
 
-#: icaldirsettingswidget.cpp:58
+#: icaldirsettingswidget.cpp:54
 #, kde-format
 msgid "Activities"
 msgstr "活动"
+
+#, fuzzy
+#~| msgctxt "@info:whatsthis"
+#~| msgid ""
+#~| "Enter the path or URL to a directory containing at least 1 calendar "
+#~| "file. <p><note> Unfortunately, this path cannot be changed once the "
+#~| "resource is created. To change the location, delete this resource and "
+#~| "then create a new one with the updated path.</note></p>"
+#~ msgctxt "@info:whatsthis"
+#~ msgid ""
+#~ "Enter the path or URL to a directory containing at least 1 calendar file. "
+#~ "<para><note> Unfortunately, this path cannot be changed once the resource "
+#~ "is created. To change the location, delete this resource and then create "
+#~ "a new one with the updated path.</note></para>"
+#~ msgstr ""
+#~ "输入至少包含 1 个日历文件的目录或URL。<p><note> 资源被创建后该地址将不能修"
+#~ "改。若您希望修改该地址，请删除该资源并在您希望修改的地址重新进行创建。</"
+#~ "note></p>"

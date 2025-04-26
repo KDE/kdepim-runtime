@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-04-22 00:41+0000\n"
+"POT-Creation-Date: 2025-04-26 00:42+0000\n"
 "PO-Revision-Date: 2025-04-22 08:04+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -121,30 +121,32 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "הפרש בין שמירות אוטומטיות:"
 
-#: icaldirsettingswidget.cpp:46
-#, kde-format
+#: icaldirsettingswidget.cpp:43
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip"
+#| msgid ""
+#| "A directory path or URL containing at least 1 calendar file. Once "
+#| "created, this location cannot be modified."
 msgctxt "@info:tooltip"
-msgid ""
-"A directory path or URL containing at least 1 calendar file. Once created, "
-"this location cannot be modified."
+msgid "A directory path or URL containing calendar files"
 msgstr ""
 "נתיב תיקייה או כתובת אתר שמכילים לוח שנה אחד לפחות. לאחר היצירה, לא ניתן "
 "לשנות את המקום הזה."
 
-#: icaldirsettingswidget.cpp:48
-#, kde-kuit-format
+#: icaldirsettingswidget.cpp:46
+#, fuzzy, kde-kuit-format
+#| msgid ""
+#| "Select the directory whose contents should be represented by this "
+#| "resource. If the directory does not exist, it will be created."
 msgctxt "@info:whatsthis"
 msgid ""
-"Enter the path or URL to a directory containing at least 1 calendar file. "
-"<para><note> Unfortunately, this path cannot be changed once the resource is "
-"created. To change the location, delete this resource and then create a new "
-"one with the updated path.</note></para>"
+"Enter the path or URL to a directory whose contents should be represented by "
+"this resource. The directory will be created if it does not exist."
 msgstr ""
-"נא למלא נתיב או כתובת אתר שמכילים קובץ לוח שנה אחד לפחות. <para><note> לרוע "
-"המזל, אי אפשר לשנות את הנתיב הזה לאחר יצירת המשאב. כדי לשנות את המקום, יש "
-"למחוק את המשאב ואז ליצור אחד חדש עם הנתיב העדכני.</note></para>"
+"נא לבחור את התיקייה שהתוכן שלה ייוצג על ידי המשאב הזה. אם התיקייה לא קיימת, "
+"היא תיווצר."
 
-#: icaldirsettingswidget.cpp:52
+#: icaldirsettingswidget.cpp:48
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -153,7 +155,18 @@ msgstr[1] "שתי דקות"
 msgstr[2] "%v דקות"
 msgstr[3] "%v דקות"
 
-#: icaldirsettingswidget.cpp:58
+#: icaldirsettingswidget.cpp:54
 #, kde-format
 msgid "Activities"
 msgstr "פעילויות"
+
+#~ msgctxt "@info:whatsthis"
+#~ msgid ""
+#~ "Enter the path or URL to a directory containing at least 1 calendar file. "
+#~ "<para><note> Unfortunately, this path cannot be changed once the resource "
+#~ "is created. To change the location, delete this resource and then create "
+#~ "a new one with the updated path.</note></para>"
+#~ msgstr ""
+#~ "נא למלא נתיב או כתובת אתר שמכילים קובץ לוח שנה אחד לפחות. <para><note> "
+#~ "לרוע המזל, אי אפשר לשנות את הנתיב הזה לאחר יצירת המשאב. כדי לשנות את "
+#~ "המקום, יש למחוק את המשאב ואז ליצור אחד חדש עם הנתיב העדכני.</note></para>"

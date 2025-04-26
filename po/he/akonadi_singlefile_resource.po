@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-04-22 00:41+0000\n"
+"POT-Creation-Date: 2025-04-26 00:42+0000\n"
 "PO-Revision-Date: 2025-04-22 08:05+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -138,7 +138,7 @@ msgstr "לא נבחר קובץ."
 msgid "The resource not configured yet"
 msgstr "המשאב לא מוגדר עדיין"
 
-#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:226
 #: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
@@ -155,37 +155,37 @@ msgstr "לא ניתן ליצור את הקובץ ‚%1’."
 msgid "Could not read file '%1'"
 msgstr "לא ניתן לקרוא את הקובץ ‚%1’."
 
-#: singlefileresource.h:135
+#: singlefileresource.h:139
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "הורדה אחרת מתבצעת."
 
-#: singlefileresource.h:145 singlefileresource.h:236
+#: singlefileresource.h:149 singlefileresource.h:240
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "העלאת קובץ אחרת מתבצעת."
 
-#: singlefileresource.h:163
+#: singlefileresource.h:167
 #, kde-format
 msgid "Downloading remote file."
 msgstr "מתבצעת הורדת קובץ מרוחק."
 
-#: singlefileresource.h:186
+#: singlefileresource.h:190
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "מתבצע ניסיון לכתוב לקובץ לקריאה בלבד: ‚%1’."
 
-#: singlefileresource.h:198
+#: singlefileresource.h:202
 #, kde-format
 msgid "No file specified."
 msgstr "לא צוין קובץ."
 
-#: singlefileresource.h:226
+#: singlefileresource.h:230
 #, kde-format
 msgid "A download is still in progress."
 msgstr "הורדה עדיין מתבצעת ברקע."
 
-#: singlefileresource.h:266
+#: singlefileresource.h:270
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "הקובץ שנשמר בזיכרון המטמון נשלח למקום מרוחק."
@@ -314,7 +314,7 @@ msgstr ""
 "אי אפשר לשנות את הנתיב הזה לאחר יצירת המשאב. כדי לשנות את המקום, יש למחוק את "
 "המשאב ואז ליצור אחד חדש עם הנתיב העדכני.</note></para>"
 
-#: singlefileresourceconfigwidgetbase.cpp:137
+#: singlefileresourceconfigwidgetbase.cpp:145
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

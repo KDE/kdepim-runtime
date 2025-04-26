@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-04-22 00:41+0000\n"
+"POT-Creation-Date: 2025-04-26 00:42+0000\n"
 "PO-Revision-Date: 2025-04-06 17:23+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -120,37 +120,30 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "Automātiskās saglabāšanas aizkave:"
 
-#: icaldirsettingswidget.cpp:46
-#, kde-format
+#: icaldirsettingswidget.cpp:43
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip"
+#| msgid ""
+#| "A directory path or URL containing at least 1 calendar file. Once "
+#| "created, this location cannot be modified."
 msgctxt "@info:tooltip"
-msgid ""
-"A directory path or URL containing at least 1 calendar file. Once created, "
-"this location cannot be modified."
+msgid "A directory path or URL containing calendar files"
 msgstr ""
 "Ceļš uz mapi vai URL, kas satur vismaz vienu kalendāra datni. Pēc izveides "
 "šo ceļu mainīt vairs nevarēsiet."
 
-#: icaldirsettingswidget.cpp:48
+#: icaldirsettingswidget.cpp:46
 #, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
 #| msgid ""
-#| "Enter the path or URL to a directory containing at least 1 calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#| "Select the directory whose contents should be represented by this "
+#| "resource. If the directory does not exist, it will be created."
 msgctxt "@info:whatsthis"
 msgid ""
-"Enter the path or URL to a directory containing at least 1 calendar file. "
-"<para><note> Unfortunately, this path cannot be changed once the resource is "
-"created. To change the location, delete this resource and then create a new "
-"one with the updated path.</note></para>"
-msgstr ""
-"Ierakstiet ceļu URL uz mapi, kas satur vismaz vienu kalendāra datni."
-"<p><note>Diemžēl pēc resursa izveides šo mapi mainīt vairs nevar. Lai "
-"mainītu vietu, dzēsiet šo resursu un tad izveidojiet jaunu ar jauno ceļu.</"
-"note></p>"
+"Enter the path or URL to a directory whose contents should be represented by "
+"this resource. The directory will be created if it does not exist."
+msgstr "Norādiet resursa attēlojamo mapi. Ja šāda mape nepastāv, to izveidos."
 
-#: icaldirsettingswidget.cpp:52
+#: icaldirsettingswidget.cpp:48
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -158,7 +151,26 @@ msgstr[0] "%v minūte"
 msgstr[1] "%v minūtes"
 msgstr[2] "%v minūšu"
 
-#: icaldirsettingswidget.cpp:58
+#: icaldirsettingswidget.cpp:54
 #, kde-format
 msgid "Activities"
 msgstr "Aktivitātes"
+
+#, fuzzy
+#~| msgctxt "@info:whatsthis"
+#~| msgid ""
+#~| "Enter the path or URL to a directory containing at least 1 calendar "
+#~| "file. <p><note> Unfortunately, this path cannot be changed once the "
+#~| "resource is created. To change the location, delete this resource and "
+#~| "then create a new one with the updated path.</note></p>"
+#~ msgctxt "@info:whatsthis"
+#~ msgid ""
+#~ "Enter the path or URL to a directory containing at least 1 calendar file. "
+#~ "<para><note> Unfortunately, this path cannot be changed once the resource "
+#~ "is created. To change the location, delete this resource and then create "
+#~ "a new one with the updated path.</note></para>"
+#~ msgstr ""
+#~ "Ierakstiet ceļu URL uz mapi, kas satur vismaz vienu kalendāra datni."
+#~ "<p><note>Diemžēl pēc resursa izveides šo mapi mainīt vairs nevar. Lai "
+#~ "mainītu vietu, dzēsiet šo resursu un tad izveidojiet jaunu ar jauno ceļu."
+#~ "</note></p>"
