@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-08 00:44+0000\n"
+"POT-Creation-Date: 2025-04-26 02:35+0000\n"
 "PO-Revision-Date: 2024-12-24 16:51+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -139,7 +139,7 @@ msgstr "파일이 선택되지 않았음."
 msgid "The resource not configured yet"
 msgstr "리소스가 설정되지 않음"
 
-#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:226
 #: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
@@ -156,37 +156,37 @@ msgstr "파일 '%1'을(를) 만들 수 없습니다."
 msgid "Could not read file '%1'"
 msgstr "파일 '%1'(을)를 읽을 수 없습니다"
 
-#: singlefileresource.h:135
+#: singlefileresource.h:139
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "다른 다운로드 작업이 진행 중입니다."
 
-#: singlefileresource.h:145 singlefileresource.h:236
+#: singlefileresource.h:149 singlefileresource.h:240
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "다른 업로드 작업이 진행 중입니다."
 
-#: singlefileresource.h:163
+#: singlefileresource.h:167
 #, kde-format
 msgid "Downloading remote file."
 msgstr "원격 파일 다운로드 중."
 
-#: singlefileresource.h:186
+#: singlefileresource.h:190
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "읽기 전용 파일에 쓰려고 하는 중: '%1'."
 
-#: singlefileresource.h:198
+#: singlefileresource.h:202
 #, kde-format
 msgid "No file specified."
 msgstr "파일을 지정하지 않았습니다."
 
-#: singlefileresource.h:226
+#: singlefileresource.h:230
 #, kde-format
 msgid "A download is still in progress."
 msgstr "다운로드 작업이 진행 중입니다."
 
-#: singlefileresource.h:266
+#: singlefileresource.h:270
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "원격지로 캐시된 파일을 업로드하고 있습니다."
@@ -295,7 +295,7 @@ msgstr ""
 "파일을 주기적으로 업데이트합니다. 감시를 사용할 수 없을 때 사용할 수 있습니다"
 "(예: 원격 캘린더)."
 
-#: singlefileresourceconfigwidgetbase.cpp:131
+#: singlefileresourceconfigwidgetbase.cpp:139
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

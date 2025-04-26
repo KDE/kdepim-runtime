@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-08 00:44+0000\n"
+"POT-Creation-Date: 2025-04-26 02:35+0000\n"
 "PO-Revision-Date: 2017-01-14 19:23+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -152,7 +152,7 @@ msgstr "Nema izabranog fajla."
 msgid "The resource not configured yet"
 msgstr "Resurs još nije podešen."
 
-#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:226
 #: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
@@ -169,37 +169,37 @@ msgstr "Ne mogu da napravim fajl „%1“."
 msgid "Could not read file '%1'"
 msgstr "Ne mogu da čitam fajl „%1“."
 
-#: singlefileresource.h:135
+#: singlefileresource.h:139
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Drugo preuzimanje je još u toku."
 
-#: singlefileresource.h:145 singlefileresource.h:236
+#: singlefileresource.h:149 singlefileresource.h:240
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Drugo otpremanje je još u toku."
 
-#: singlefileresource.h:163
+#: singlefileresource.h:167
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Preuzimam udaljeni fajl."
 
-#: singlefileresource.h:186
+#: singlefileresource.h:190
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Pokušaj upisivanja u fajl samo‑za‑čitanje: „%1“."
 
-#: singlefileresource.h:198
+#: singlefileresource.h:202
 #, kde-format
 msgid "No file specified."
 msgstr "Nema zadatog fajla."
 
-#: singlefileresource.h:226
+#: singlefileresource.h:230
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Preuzimanje je još u toku."
 
-#: singlefileresource.h:266
+#: singlefileresource.h:270
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Otpremam keširani fajl na udaljenu lokaciju."
@@ -307,7 +307,7 @@ msgid ""
 "(e.g. for remote calendars)."
 msgstr ""
 
-#: singlefileresourceconfigwidgetbase.cpp:131
+#: singlefileresourceconfigwidgetbase.cpp:139
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Checking file information..."

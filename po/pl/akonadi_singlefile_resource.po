@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-08 00:44+0000\n"
+"POT-Creation-Date: 2025-04-26 02:35+0000\n"
 "PO-Revision-Date: 2024-08-24 12:10+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -145,7 +145,7 @@ msgstr "Nie wybrano pliku."
 msgid "The resource not configured yet"
 msgstr "Zasób nie jest jeszcze ustawiony"
 
-#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:226
 #: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
@@ -162,37 +162,37 @@ msgstr "Nie można utworzyć pliku \"%1\"."
 msgid "Could not read file '%1'"
 msgstr "Nie można czytać pliku \"%1\""
 
-#: singlefileresource.h:135
+#: singlefileresource.h:139
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Wciąż pobierany jest inny plik."
 
-#: singlefileresource.h:145 singlefileresource.h:236
+#: singlefileresource.h:149 singlefileresource.h:240
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Wciąż wysyłany jest inny plik."
 
-#: singlefileresource.h:163
+#: singlefileresource.h:167
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Pobieranie zdalnego pliku."
 
-#: singlefileresource.h:186
+#: singlefileresource.h:190
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Próba zapisu pliku tylko do odczytu: \"%1\"."
 
-#: singlefileresource.h:198
+#: singlefileresource.h:202
 #, kde-format
 msgid "No file specified."
 msgstr "Nie wybrano pliku."
 
-#: singlefileresource.h:226
+#: singlefileresource.h:230
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Pobieranie jeszcze się nie zakończyło."
 
-#: singlefileresource.h:266
+#: singlefileresource.h:270
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Wysyłanie zapisało plik w pamięci podręcznej serwera."
@@ -301,7 +301,7 @@ msgstr ""
 "Okresowo uaktualnia plik. Może być użyte, gdy monitoring jest niedostępny "
 "(np. dla zdalnych kalendarzy)."
 
-#: singlefileresourceconfigwidgetbase.cpp:131
+#: singlefileresourceconfigwidgetbase.cpp:139
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-08 00:44+0000\n"
+"POT-Creation-Date: 2025-04-26 02:35+0000\n"
 "PO-Revision-Date: 2024-08-22 13:52+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -147,7 +147,7 @@ msgstr "Seçili dosya yok."
 msgid "The resource not configured yet"
 msgstr "Özkaynak henüz yapılandırılmadı"
 
-#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:226
 #: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
@@ -164,37 +164,37 @@ msgstr "“%1” dosyası oluşturulamadı."
 msgid "Could not read file '%1'"
 msgstr "“%1” dosyası okunamadı"
 
-#: singlefileresource.h:135
+#: singlefileresource.h:139
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Başka bir indirme işlemi sürüyor."
 
-#: singlefileresource.h:145 singlefileresource.h:236
+#: singlefileresource.h:149 singlefileresource.h:240
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Başka bir yükleme işlemi sürüyor."
 
-#: singlefileresource.h:163
+#: singlefileresource.h:167
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Uzak dosya indiriliyor."
 
-#: singlefileresource.h:186
+#: singlefileresource.h:190
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Saltokunur bir dosyaya yazılmaya çalışılıyor: “%1”."
 
-#: singlefileresource.h:198
+#: singlefileresource.h:202
 #, kde-format
 msgid "No file specified."
 msgstr "Belirtilen dosya yok."
 
-#: singlefileresource.h:226
+#: singlefileresource.h:230
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Bir indirme işlemi hâlâ sürüyor."
 
-#: singlefileresource.h:266
+#: singlefileresource.h:270
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Önbelleğe alınan dosya uzak konuma yükleniyor."
@@ -304,7 +304,7 @@ msgstr ""
 "Dosyayı periyodik olarak günceller. İzleme olanaklı olmadığında "
 "kullanılabilir (örneğin uzak takvimler için)."
 
-#: singlefileresourceconfigwidgetbase.cpp:131
+#: singlefileresourceconfigwidgetbase.cpp:139
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-08 00:44+0000\n"
+"POT-Creation-Date: 2025-04-26 02:35+0000\n"
 "PO-Revision-Date: 2014-08-14 00:02+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -153,7 +153,7 @@ msgstr "Keen Datei utsöcht"
 msgid "The resource not configured yet"
 msgstr "De Ressource is noch nich inricht."
 
-#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:226
 #: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
@@ -170,37 +170,37 @@ msgstr "Datei \"%1\" lett sik nich opstellen."
 msgid "Could not read file '%1'"
 msgstr "De Datei \"%1\" lett sik nich lesen."
 
-#: singlefileresource.h:135
+#: singlefileresource.h:139
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Dor warrt noch wat anners daallaadt."
 
-#: singlefileresource.h:145 singlefileresource.h:236
+#: singlefileresource.h:149 singlefileresource.h:240
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Dor warrt noch wat anners hoochlaadt."
 
-#: singlefileresource.h:163
+#: singlefileresource.h:167
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Feern Datei warrt daallaadt."
 
-#: singlefileresource.h:186
+#: singlefileresource.h:190
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Schrieven op bloots-leesbor Datei \"%1\" nich mööglich."
 
-#: singlefileresource.h:198
+#: singlefileresource.h:202
 #, kde-format
 msgid "No file specified."
 msgstr "Keen Datei angeven."
 
-#: singlefileresource.h:226
+#: singlefileresource.h:230
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Dor warrt noch wat daallaadt."
 
-#: singlefileresource.h:266
+#: singlefileresource.h:270
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Twischenspiekert Datei warrt na anner Reekner hoochlaadt."
@@ -312,7 +312,7 @@ msgid ""
 "(e.g. for remote calendars)."
 msgstr ""
 
-#: singlefileresourceconfigwidgetbase.cpp:131
+#: singlefileresourceconfigwidgetbase.cpp:139
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Checking file information..."

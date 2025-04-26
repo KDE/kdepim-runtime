@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-08 00:44+0000\n"
+"POT-Creation-Date: 2025-04-26 02:35+0000\n"
 "PO-Revision-Date: 2024-12-25 19:37+0530\n"
 "Last-Translator: kali <shreekantkalwar@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -143,7 +143,7 @@ msgstr "न सञ्चिका चयनिता।"
 msgid "The resource not configured yet"
 msgstr "संसाधनम् अद्यापि न विन्यस्तम्"
 
-#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:222
+#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:226
 #: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
@@ -160,37 +160,37 @@ msgstr "'%1' सञ्चिकां निर्मातुं न शक्�
 msgid "Could not read file '%1'"
 msgstr "'%1' सञ्चिकां पठितुं न शक्यते ।"
 
-#: singlefileresource.h:135
+#: singlefileresource.h:139
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "अन्यत् डाउनलोड् अद्यापि प्रचलति ।"
 
-#: singlefileresource.h:145 singlefileresource.h:236
+#: singlefileresource.h:149 singlefileresource.h:240
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "अन्यत् सञ्चिकायाः अपलोड् अद्यापि प्रचलति ।"
 
-#: singlefileresource.h:163
+#: singlefileresource.h:167
 #, kde-format
 msgid "Downloading remote file."
 msgstr "दूरस्थसञ्चिकां डाउनलोड् करणम्।"
 
-#: singlefileresource.h:186
+#: singlefileresource.h:190
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "केवलं पठनीयसञ्चिकायां लिखितुं प्रयतते: '%1' ।"
 
-#: singlefileresource.h:198
+#: singlefileresource.h:202
 #, kde-format
 msgid "No file specified."
 msgstr "न सञ्चिका निर्दिष्टा ।"
 
-#: singlefileresource.h:226
+#: singlefileresource.h:230
 #, kde-format
 msgid "A download is still in progress."
 msgstr "अद्यापि एकं डाउनलोड् प्रचलति।"
 
-#: singlefileresource.h:266
+#: singlefileresource.h:270
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "दूरस्थस्थाने संग्रहीतसञ्चिकां अपलोड् करणम् ।"
@@ -299,7 +299,7 @@ msgstr ""
 "समये समये सञ्चिकां अद्यतनं करोति । यदा निरीक्षणं उपलब्धं नास्ति (उदा. दूरस्थपञ्चाङ्गानां कृते) "
 "तदा उपयोक्तुं शक्यते ।"
 
-#: singlefileresourceconfigwidgetbase.cpp:131
+#: singlefileresourceconfigwidgetbase.cpp:139
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"
