@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:42+0000\n"
-"PO-Revision-Date: 2025-04-23 00:52+0100\n"
+"PO-Revision-Date: 2025-04-26 11:19+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -52,7 +52,7 @@ msgstr "Ruta al directorio iCal"
 #: icaldirresource.kcfg:14
 #, kde-format
 msgid "Autosave interval time (in minutes)."
-msgstr "Intervalo de autoguardado (en minutos)."
+msgstr "Intervalo de tiempo para guardar automáticamente (en minutos)."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: icaldirresource.kcfg:18
@@ -124,32 +124,23 @@ msgstr ""
 #: icaldirsagentsettingswidget.ui:124
 #, kde-format
 msgid "Autosave delay:"
-msgstr "Retraso de autoguardado:"
+msgstr "Demora para guardar automáticamente:"
 
 #: icaldirsettingswidget.cpp:43
-#, fuzzy, kde-format
-#| msgctxt "@info:tooltip"
-#| msgid ""
-#| "A directory path or URL containing at least 1 calendar file. Once "
-#| "created, this location cannot be modified."
+#, kde-format
 msgctxt "@info:tooltip"
 msgid "A directory path or URL containing calendar files"
-msgstr ""
-"Una ruta o URL de directorio que contiene al menos un archivo de calendario. "
-"Una vez creado, esta dirección no se puede modificar."
+msgstr "Una ruta o URL de directorio que contiene archivos de calendario"
 
 #: icaldirsettingswidget.cpp:46
-#, fuzzy, kde-kuit-format
-#| msgid ""
-#| "Select the directory whose contents should be represented by this "
-#| "resource. If the directory does not exist, it will be created."
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory whose contents should be represented by "
 "this resource. The directory will be created if it does not exist."
 msgstr ""
-"Seleccione el directorio cuyo contenido debería representarse por este "
-"recurso. Si el directorio no existe, se creará."
+"Introduzca la ruta o URL de un directorio cuyo contenido debería "
+"representarse por este recurso. Se creará el directorio si no existe."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-format
@@ -162,16 +153,3 @@ msgstr[1] "%v minutos"
 #, kde-format
 msgid "Activities"
 msgstr "Actividades"
-
-#~ msgctxt "@info:whatsthis"
-#~ msgid ""
-#~ "Enter the path or URL to a directory containing at least 1 calendar file. "
-#~ "<para><note> Unfortunately, this path cannot be changed once the resource "
-#~ "is created. To change the location, delete this resource and then create "
-#~ "a new one with the updated path.</note></para>"
-#~ msgstr ""
-#~ "Introduzca la ruta o la URL de un directorio que contiene al menos un "
-#~ "archivo de calendario.<para><note>Lamentablemente, esta ruta no se puede "
-#~ "cambiar una vez que se crea el recurso. Para cambiar la ubicación, borre "
-#~ "este recurso y vuelva a crear uno nuevo con la ruta correcta.</note></"
-#~ "para>"

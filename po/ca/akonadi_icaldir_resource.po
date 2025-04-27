@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:42+0000\n"
-"PO-Revision-Date: 2025-04-22 09:08+0200\n"
+"PO-Revision-Date: 2025-04-26 09:49+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
@@ -127,29 +127,20 @@ msgid "Autosave delay:"
 msgstr "Temps d'autodesat:"
 
 #: icaldirsettingswidget.cpp:43
-#, fuzzy, kde-format
-#| msgctxt "@info:tooltip"
-#| msgid ""
-#| "A directory path or URL containing at least 1 calendar file. Once "
-#| "created, this location cannot be modified."
+#, kde-format
 msgctxt "@info:tooltip"
 msgid "A directory path or URL containing calendar files"
-msgstr ""
-"Un camí de directori o un URL que contingui almenys 1 fitxer de calendari. "
-"Un cop creada, aquesta ubicació no es pot modificar."
+msgstr "Un camí de directori o un URL que contingui fitxers de calendari"
 
 #: icaldirsettingswidget.cpp:46
-#, fuzzy, kde-kuit-format
-#| msgid ""
-#| "Select the directory whose contents should be represented by this "
-#| "resource. If the directory does not exist, it will be created."
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory whose contents should be represented by "
 "this resource. The directory will be created if it does not exist."
 msgstr ""
-"Seleccioneu el directori el contingut del qual s'ha de representar amb "
-"aquest recurs. Si el directori no existeix, es crearà."
+"Introduïu el camí o l'URL a un directori el contingut del qual s'ha de "
+"representar amb aquest recurs. El directori es crearà si no existeix."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-format

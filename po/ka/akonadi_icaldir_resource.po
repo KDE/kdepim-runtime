@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:42+0000\n"
-"PO-Revision-Date: 2025-04-22 04:57+0200\n"
+"PO-Revision-Date: 2025-04-26 04:56+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -124,29 +124,20 @@ msgid "Autosave delay:"
 msgstr "ავტომატური შენახვის ინტერვალი:"
 
 #: icaldirsettingswidget.cpp:43
-#, fuzzy, kde-format
-#| msgctxt "@info:tooltip"
-#| msgid ""
-#| "A directory path or URL containing at least 1 calendar file. Once "
-#| "created, this location cannot be modified."
+#, kde-format
 msgctxt "@info:tooltip"
 msgid "A directory path or URL containing calendar files"
-msgstr ""
-"საქაღალდის ბილიკი, ან ბმული, რომელიც, სულ ცოტა, 1 კალენდრის ფაილს შეიცავს. "
-"როცა შექმნით, მის მდებარეობას ვერ შეცვლით."
+msgstr "საქაღალდის ბილიკი, ან ბმული, რომელიც კალენდრის ფაილებს შეიცავს"
 
 #: icaldirsettingswidget.cpp:46
-#, fuzzy, kde-kuit-format
-#| msgid ""
-#| "Select the directory whose contents should be represented by this "
-#| "resource. If the directory does not exist, it will be created."
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory whose contents should be represented by "
 "this resource. The directory will be created if it does not exist."
 msgstr ""
-"აირჩიეთ დირექტორია, რომლის შინაარსი უნდა იყოს წარმოდგენილი ამ რესურსით. თუ "
-"დირექტორია არ არსებობს, ის შეიქმნება."
+"შეიყვანეთ ბილიკი, ან URI საქაღალდემდე, რომლის შემცველობაც ამ რესურსმა უნდა "
+"წარმოადგინოს. თუ საქაღალდე არ არსებობს, ის შეიქმნება."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-format

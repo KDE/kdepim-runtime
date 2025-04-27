@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:42+0000\n"
-"PO-Revision-Date: 2025-04-22 09:08+0200\n"
+"PO-Revision-Date: 2025-04-26 09:49+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
@@ -127,29 +127,20 @@ msgid "Autosave delay:"
 msgstr "Temps d'autoguardat:"
 
 #: icaldirsettingswidget.cpp:43
-#, fuzzy, kde-format
-#| msgctxt "@info:tooltip"
-#| msgid ""
-#| "A directory path or URL containing at least 1 calendar file. Once "
-#| "created, this location cannot be modified."
+#, kde-format
 msgctxt "@info:tooltip"
 msgid "A directory path or URL containing calendar files"
-msgstr ""
-"Un camí de directori o un URL que continga almenys 1 fitxer de calendari. "
-"Una vegada creada, esta ubicació no es pot modificar."
+msgstr "Un camí de directori o un URL que continga fitxers de calendari"
 
 #: icaldirsettingswidget.cpp:46
-#, fuzzy, kde-kuit-format
-#| msgid ""
-#| "Select the directory whose contents should be represented by this "
-#| "resource. If the directory does not exist, it will be created."
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory whose contents should be represented by "
 "this resource. The directory will be created if it does not exist."
 msgstr ""
-"Seleccioneu el directori el contingut del qual s'ha de representar amb este "
-"recurs. Si el directori no existix, es crearà."
+"Introduïu el camí o l'URL cap a un directori el contingut del qual s'ha de "
+"representar amb este recurs. El directori es crearà si no existix."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-format
@@ -162,16 +153,3 @@ msgstr[1] "%v minuts"
 #, kde-format
 msgid "Activities"
 msgstr "Activitats"
-
-#~ msgctxt "@info:whatsthis"
-#~ msgid ""
-#~ "Enter the path or URL to a directory containing at least 1 calendar file. "
-#~ "<para><note> Unfortunately, this path cannot be changed once the resource "
-#~ "is created. To change the location, delete this resource and then create "
-#~ "a new one with the updated path.</note></para>"
-#~ msgstr ""
-#~ "Introduïu el camí o l'URL cap a un directori que continga almenys 1 "
-#~ "fitxer de calendari. <para><note> Desgraciadament, este camí no es pot "
-#~ "canviar una vegada s'haja creat el recurs. Per a canviar la ubicació, "
-#~ "suprimiu este recurs i creeu-ne un de nou amb el camí actualitzat.</"
-#~ "note></para>"

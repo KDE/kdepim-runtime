@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:42+0000\n"
-"PO-Revision-Date: 2025-04-22 12:35+0200\n"
+"PO-Revision-Date: 2025-04-26 16:35+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -123,29 +123,21 @@ msgid "Autosave delay:"
 msgstr "Vertraging in automatisch opslaan:"
 
 #: icaldirsettingswidget.cpp:43
-#, fuzzy, kde-format
-#| msgctxt "@info:tooltip"
-#| msgid ""
-#| "A directory path or URL containing at least 1 calendar file. Once "
-#| "created, this location cannot be modified."
+#, kde-format
 msgctxt "@info:tooltip"
 msgid "A directory path or URL containing calendar files"
-msgstr ""
-"Een pad naar een map of URL die minstens 1 agendabestand bevat. Eenmaal "
-"aangemaakt, kan deze locatie niet meer gewijzigd worden."
+msgstr "Een pad naar een map of URL die agendabestanden bevat"
 
 #: icaldirsettingswidget.cpp:46
-#, fuzzy, kde-kuit-format
-#| msgid ""
-#| "Select the directory whose contents should be represented by this "
-#| "resource. If the directory does not exist, it will be created."
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory whose contents should be represented by "
 "this resource. The directory will be created if it does not exist."
 msgstr ""
-"Selecteer de map waarvan de inhoud gerepresenteerd zou moeten zijn door deze "
-"hulpbron. Als de map niet bestaat, dan wordt deze aangemaakt."
+"Voer het pad of URL in naar een map waarvan de inhoud gerepresenteerd zou "
+"moeten zijn door deze hulpbron. Als de map niet bestaat, dan wordt deze "
+"aangemaakt."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-format
