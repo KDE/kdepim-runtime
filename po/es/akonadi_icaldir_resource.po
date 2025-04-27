@@ -1,15 +1,15 @@
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for akonadi_icaldir_resource.po package.
+# Copyright (C) 2012-2025 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# Javier Vinal <fjvinalgmail.com>, 2012.
-# Javier Viñal <fjvinal@gmail.com>, 2012, 2014, 2016.
-# SPDX-FileCopyrightText: 2021, 2024 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2012, 2014, 2016 Javier Viñal <fjvinal@gmail.com>
+# SPDX-FileCopyrightText: 2021, 2024, 2025 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-27 00:40+0000\n"
-"PO-Revision-Date: 2024-08-18 00:55+0200\n"
+"PO-Revision-Date: 2025-04-26 11:19+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.04.0\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -44,7 +44,7 @@ msgstr "Ruta al directorio iCal"
 #: icaldirresource.kcfg:14
 #, kde-format
 msgid "Autosave interval time (in minutes)."
-msgstr "Intervalo de autoguardado (en minutos)."
+msgstr "Intervalo de tiempo para guardar automáticamente (en minutos)."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: icaldirresource.kcfg:18
@@ -116,7 +116,7 @@ msgstr ""
 #: icaldirsagentsettingswidget.ui:124
 #, kde-format
 msgid "Autosave delay:"
-msgstr "Retraso de autoguardado:"
+msgstr "Demora para guardar automáticamente:"
 
 #: icaldirsettingswidget.cpp:43
 #, kde-format
@@ -129,9 +129,3 @@ msgstr[1] "%v minutos"
 #, kde-format
 msgid "Activities"
 msgstr "Actividades"
-
-#~ msgid "Directory Name"
-#~ msgstr "Nombre de directorio"
-
-#~ msgid "Access Rights"
-#~ msgstr "Derechos de acceso"
