@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:42+0000\n"
-"PO-Revision-Date: 2025-04-13 16:00+0200\n"
+"PO-Revision-Date: 2025-04-27 14:30+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -315,13 +315,7 @@ msgstr ""
 "creata, questa posizione non può essere modificata."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
-#| msgid ""
-#| "Enter the path or URL to a file containing a valid calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a file containing a valid calendar file. "
@@ -330,9 +324,9 @@ msgid ""
 "one with the updated path.</note></para>"
 msgstr ""
 "Inserisci il percorso o URL per un file che contiene un file di calendario "
-"valido. <p><note>Sfortunatamente questo percorso non può essere cambiato "
+"valido. <para><note>Sfortunatamente questo percorso non può essere cambiato "
 "dopo che la risorsa è stata creata. Per cambiare la posizione, elimina "
-"questa risorsa e creane una nuova con il percorso aggiornato.</note></p>"
+"questa risorsa e creane una nuova con il percorso aggiornato.</note></para>"
 
 #: singlefileresourceconfigwidgetbase.cpp:145
 #, kde-format
