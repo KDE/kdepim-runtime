@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:42+0000\n"
-"PO-Revision-Date: 2025-04-24 10:55+0400\n"
+"PO-Revision-Date: 2025-04-28 17:37+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -122,28 +122,20 @@ msgid "Autosave delay:"
 msgstr "فترة الحفظ الآليّ:"
 
 #: icaldirsettingswidget.cpp:43
-#, fuzzy, kde-format
-#| msgctxt "@info:tooltip"
-#| msgid ""
-#| "A directory path or URL containing at least 1 calendar file. Once "
-#| "created, this location cannot be modified."
+#, kde-format
 msgctxt "@info:tooltip"
 msgid "A directory path or URL containing calendar files"
-msgstr ""
-"مسار دليل أو رابط يحتوي على ملف تقويم واحد على الأقل. بعد إنشائه، لا يمكن "
-"تعديل هذا الموقع."
+msgstr "مسار دليل أو رابط يحتوي ملفات التقويم"
 
 #: icaldirsettingswidget.cpp:46
-#, fuzzy, kde-kuit-format
-#| msgid ""
-#| "Select the directory whose contents should be represented by this "
-#| "resource. If the directory does not exist, it will be created."
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory whose contents should be represented by "
 "this resource. The directory will be created if it does not exist."
 msgstr ""
-"اختر الدّليل الذي على هذا المورد تمثيل محتواه. سيُنشأ واحد إن لم يكن موجودًا."
+"أدخل المسار أو رابط للدليل الذي يُفترض أن يُمثل هذا المورد محتوياته. سيُنشئ "
+"الدليل إذا لم يكن موجودًا."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-format
