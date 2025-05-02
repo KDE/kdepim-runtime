@@ -1,16 +1,16 @@
 # Translation of akonadi_ews_resource.po to Catalan
-# Copyright (C) 2017-2024 This_file_is_part_of_KDE
+# Copyright (C) 2017-2025 This_file_is_part_of_KDE
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
+# SPDX-FileCopyrightText: 2017, 2020, 2021, 2023, 2024, 2025 Josep M. Ferrer <txemaq@gmail.com>
 # Antoni Bella Pérez <antonibella5@yahoo.com>, 2017, 2018, 2019, 2020, 2021.
-# SPDX-FileCopyrightText: 2017, 2020, 2021, 2023, 2024 Josep M. Ferrer <txemaq@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-01 00:42+0000\n"
-"PO-Revision-Date: 2024-08-02 12:47+0200\n"
+"PO-Revision-Date: 2025-05-01 10:30+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -31,32 +31,24 @@ msgid "Exchange protocol information not found"
 msgstr "No s'ha trobat la informació del protocol Exchange"
 
 #: ewsclient/auth/ewsintuneauth.cpp:303
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
-#| "valid. You need to authenticate in order to continue using it."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "InTune credentials for the Microsoft Exchange account <b>%1</b> are no "
 "longer valid. You need to authenticate in order to continue using it."
 msgstr ""
-"Les credencials del Microsoft Exchange per al compte <b>%1</b> ja no són "
-"vàlides. Caldrà que us autentiqueu per a continuar-lo emprant."
+"Les credencials de l'InTune per al compte <b>%1</b> de Microsoft Exchange ja "
+"no són vàlides. Caldrà que us autentiqueu per a continuar-lo emprant."
 
 #: ewsclient/auth/ewsintuneauth.cpp:312
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
-#| "Please update it in the account settings page."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Failed to obtain InTune credentials for Microsoft Exchange account <b>%1</"
 "b>. Please update it in the account settings page."
 msgstr ""
-"Ha fallat en obtenir les credencials per al compte <b>%1</b> de Microsoft "
-"Exchange. Actualitzeu-les a la pàgina de configuració del compte."
+"Ha fallat en obtenir les credencials d'InTune per al compte <b>%1</b> de "
+"Microsoft Exchange. Actualitzeu-les a la pàgina de configuració del compte."
 
 #: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
@@ -403,12 +395,17 @@ msgid ""
 "system to be joined to the organization and managed using InTune.</p></"
 "body></html>"
 msgstr ""
+"<html><head/><body><p>Permet l'autenticació utilitzant el programari InTune "
+"MDM de Microsoft. Això és necessari en molts entorns corporatius, que "
+"requereixen una autenticació forta utilitzant credencials de dispositiu i, "
+"per tant, requereixen que el sistema s'uneixi a l'organització i es gestioni "
+"utilitzant InTune.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authInTuneRadioButton)
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "&Microsoft InTune"
-msgstr ""
+msgstr "InTune de &Microsoft"
 
 #. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
 #: ewsconfigdialog.ui:245

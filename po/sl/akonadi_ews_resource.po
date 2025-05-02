@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-01 00:42+0000\n"
-"PO-Revision-Date: 2024-08-02 05:26+0200\n"
+"PO-Revision-Date: 2025-05-01 06:01+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.6\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -29,32 +29,24 @@ msgid "Exchange protocol information not found"
 msgstr "Podatkov o protokolu za izmenjavo ni mogoče najti"
 
 #: ewsclient/auth/ewsintuneauth.cpp:303
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
-#| "valid. You need to authenticate in order to continue using it."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "InTune credentials for the Microsoft Exchange account <b>%1</b> are no "
 "longer valid. You need to authenticate in order to continue using it."
 msgstr ""
-"Poverilnice Microsoft Exchangea za račun <b>%1</b> niso več veljavne. Za "
-"nadaljevanje uporabe morate preveriti pristnost."
+"Poverilnice InTune za račun Microsoft Exchange <b>%1</b> niso več veljavne. "
+"Če želite račun še naprej uporabljati, morate opraviti avtentikacijo."
 
 #: ewsclient/auth/ewsintuneauth.cpp:312
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
-#| "Please update it in the account settings page."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Failed to obtain InTune credentials for Microsoft Exchange account <b>%1</"
 "b>. Please update it in the account settings page."
 msgstr ""
-"Poverilnic za račun Microsoft Exchange <b>%1 </b> ni bilo mogoče pridobiti. "
-"Posodobite jih na strani z nastavitvami računa."
+"Pridobitev poverilnic InTune za račun Microsoft Exchange <b>%1</b> ni "
+"uspela. Posodobite jih na strani z nastavitvami računa."
 
 #: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
@@ -397,12 +389,17 @@ msgid ""
 "system to be joined to the organization and managed using InTune.</p></"
 "body></html>"
 msgstr ""
+"<html><head/><body><p>Omogoča preverjanje pristnosti z uporabo programske "
+"opreme Microsoft InTune MDM. To je potrebno v številnih poslovnih okoljih, "
+"ki zahtevajo močno avtentikacijo z uporabo poverilnic naprave in zato "
+"zahtevajo, da je sistem povezan z organizacijo in upravljan z InTune.</p></"
+"body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authInTuneRadioButton)
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "&Microsoft InTune"
-msgstr ""
+msgstr "&Microsoft InTune"
 
 #. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
 #: ewsconfigdialog.ui:245

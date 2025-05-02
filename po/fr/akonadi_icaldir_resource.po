@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:42+0000\n"
-"PO-Revision-Date: 2025-04-23 11:37+0200\n"
+"PO-Revision-Date: 2025-04-30 14:57+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
@@ -131,29 +131,20 @@ msgid "Autosave delay:"
 msgstr "Délai d'enregistrement automatique :"
 
 #: icaldirsettingswidget.cpp:43
-#, fuzzy, kde-format
-#| msgctxt "@info:tooltip"
-#| msgid ""
-#| "A directory path or URL containing at least 1 calendar file. Once "
-#| "created, this location cannot be modified."
+#, kde-format
 msgctxt "@info:tooltip"
 msgid "A directory path or URL containing calendar files"
-msgstr ""
-"Un chemin d'accès au dossier ou une URL contenant au moins 1 fichier "
-"d'agenda. Une fois créé, il est impossible de modifier cet emplacement."
+msgstr "Un emplacement de dossier ou une URL contenant des fichiers d'agendas"
 
 #: icaldirsettingswidget.cpp:46
-#, fuzzy, kde-kuit-format
-#| msgid ""
-#| "Select the directory whose contents should be represented by this "
-#| "resource. If the directory does not exist, it will be created."
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory whose contents should be represented by "
 "this resource. The directory will be created if it does not exist."
 msgstr ""
-"Sélectionnez le dossier dont le contenu devra être représenté par cette "
-"ressource. Si le dossier n'existe pas, il va être créé."
+"Sélectionnez un emplacement ou une URL de dossier dont le contenu devra être "
+"représenté par cette ressource. Si le dossier n'existe pas, il va être créé."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-format

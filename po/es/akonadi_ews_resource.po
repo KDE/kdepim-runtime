@@ -1,21 +1,22 @@
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for akonadi_ews_resource.po package.
+# Copyright (C) 2017-2025 This_file_is_part_of_KDE
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# Javier Vinal <fjvibal@gmail.com>, 2017, 2018.
-# SPDX-FileCopyrightText: 2019, 2020, 2021, 2023, 2024 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2017, 2018 Javier Vinal <fjvibal@gmail.com>
+# SPDX-FileCopyrightText: 2019, 2020, 2021, 2023, 2024, 2025 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
-"Project-Id-Version: kde-l10n-es\n"
+"Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-01 00:42+0000\n"
-"PO-Revision-Date: 2024-08-02 17:37+0200\n"
+"PO-Revision-Date: 2025-05-02 02:08+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.04.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
@@ -29,32 +30,25 @@ msgid "Exchange protocol information not found"
 msgstr "No se encuentra la información del protocolo Exchange"
 
 #: ewsclient/auth/ewsintuneauth.cpp:303
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
-#| "valid. You need to authenticate in order to continue using it."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "InTune credentials for the Microsoft Exchange account <b>%1</b> are no "
 "longer valid. You need to authenticate in order to continue using it."
 msgstr ""
-"Las credenciales de Microsoft Exchange para la cuenta <b>%1</b> ya no son "
-"válidas. Debe autenticarse para usarlas."
+"Las credenciales de InTune para la cuenta <b>%1</b> de Microsoft Exchange ya "
+"no son válidas. Debe autenticarse para usarlas."
 
 #: ewsclient/auth/ewsintuneauth.cpp:312
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
-#| "Please update it in the account settings page."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Failed to obtain InTune credentials for Microsoft Exchange account <b>%1</"
 "b>. Please update it in the account settings page."
 msgstr ""
-"Ha fallado la obtención de credenciales para la cuenta de Microsoft Exchange "
-"<b>%1</b>. Actualice en la página de preferencias de la cuenta."
+"Ha fallado la obtención de credenciales de InTune para la cuenta de "
+"Microsoft Exchange <b>%1</b>. Actualice en la página de preferencias de la "
+"cuenta."
 
 #: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
@@ -402,12 +396,17 @@ msgid ""
 "system to be joined to the organization and managed using InTune.</p></"
 "body></html>"
 msgstr ""
+"<html><head/><body><p>Permite autenticación mediante el software MDM de "
+"Microsoft InTune. Esto es necesario en muchos entornos corporativos, ya "
+"obliga a usar autenticación fuerte mediante credenciales de dispositivo, por "
+"lo que requiere que el sistema se una a la organización y que se gestione "
+"con InTune.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authInTuneRadioButton)
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "&Microsoft InTune"
-msgstr ""
+msgstr "&Microsoft InTune"
 
 #. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
 #: ewsconfigdialog.ui:245
@@ -801,7 +800,7 @@ msgstr "Cancelar"
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr "Ejecutando el autodescubrimiento del servidor Microsoft Exchange..."
+msgstr "Ejecutando el autodescubrimiento del servidor Microsoft Exchange…"
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -812,7 +811,7 @@ msgstr "Conectando a Exchange"
 #: ewsprogressdialog.cpp:53
 #, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "Conectando al servidor Microsoft Exchange..."
+msgstr "Conectando al servidor Microsoft Exchange…"
 
 #: ewsresource.cpp:143
 #, kde-format
@@ -1349,23 +1348,3 @@ msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr ""
 "Item desordenado al procesar la respuesta de actualización de elementos."
-
-#~ msgid "Exchange server autodiscovery"
-#~ msgstr "Autodescubrimiento del servidor Exchange"
-
-#~ msgid "Please enter password for user '%1' and Exchange account '%2'."
-#~ msgstr ""
-#~ "Por favor, introduzca la contraseña para el usuario «%1» y cuenta de "
-#~ "Exchange «%2»."
-
-#~ msgctxt "@info:status The resource is ready"
-#~ msgid "Ready"
-#~ msgstr "Listo"
-
-#~ msgctxt "@info:status"
-#~ msgid "No password configured."
-#~ msgstr "No se ha configurado ninguna contraseña"
-
-#~ msgctxt "@info:status"
-#~ msgid "No server configured yet."
-#~ msgstr "No se ha configurado todavía ningún servidor."
