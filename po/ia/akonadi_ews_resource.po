@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2020, 2021, 2023, 2024 giovanni <g.sora@tiscali.it>
+# SPDX-FileCopyrightText: 2020, 2021, 2023, 2024, 2025 giovanni <g.sora@tiscali.it>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-01 00:42+0000\n"
-"PO-Revision-Date: 2024-09-03 14:38+0200\n"
+"PO-Revision-Date: 2025-05-09 16:51+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -28,32 +28,24 @@ msgid "Exchange protocol information not found"
 msgstr "Information de protocollo de Exchange non trovate"
 
 #: ewsclient/auth/ewsintuneauth.cpp:303
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
-#| "valid. You need to authenticate in order to continue using it."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "InTune credentials for the Microsoft Exchange account <b>%1</b> are no "
 "longer valid. You need to authenticate in order to continue using it."
 msgstr ""
-"Credentiales de Microsoft  Exchange per le conto <b>%1</b> non es plus "
-"valide. Tu necessita authenticar per continuar a usar lo."
+"Credentiales de Microsoft  InTune per le conto de Micsoroft Exchange  <b>%1</"
+"b> non es plus valide. Tu necessita authenticar per continuar a usar lo."
 
 #: ewsclient/auth/ewsintuneauth.cpp:312
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
-#| "Please update it in the account settings page."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Failed to obtain InTune credentials for Microsoft Exchange account <b>%1</"
 "b>. Please update it in the account settings page."
 msgstr ""
-"Falleva a obtener credentiales per conto de Microsoft Exchange <b>%1</b>, "
-"Pro favor actualisa lo in le pagina de preferentia de conto."
+"Falleva a obtener credentiales de InTunes per conto de Microsoft Exchange <b>"
+"%1</b>, Pro favor actualisa lo in le pagina de preferentia de conto."
 
 #: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
@@ -401,12 +393,17 @@ msgid ""
 "system to be joined to the organization and managed using InTune.</p></"
 "body></html>"
 msgstr ""
+"<html><head/><body><p>Habilita authentication usante software InTune MDM de "
+"Microsoft. Isto es requirite in multe ambientes de interprisa, le qual ha "
+"mandate authentication forte usante credentiales de dispositivo e dunque "
+"require que le systema es  juncte al organization e gerite usante InTune.</"
+"p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authInTuneRadioButton)
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "&Microsoft InTune"
-msgstr ""
+msgstr "&Microsoft InTune"
 
 #. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
 #: ewsconfigdialog.ui:245
