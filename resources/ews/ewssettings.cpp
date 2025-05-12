@@ -63,7 +63,7 @@ void EwsSettings::requestMap()
             // TODO remove me in 2025, this is a fallback to read password stored
             // in KWallet and store it back in QtKeychain.
             auto wallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(), 0, KWallet::Wallet::Synchronous);
-            if (wallet->hasFolder(ewsWalletFolder)) {
+            if (wallet && wallet->hasFolder(ewsWalletFolder)) {
                 wallet->setFolder(ewsWalletFolder);
                 QMap<QString, QString> map;
                 wallet->readMap(config()->name(), map);
