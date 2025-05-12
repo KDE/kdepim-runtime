@@ -52,6 +52,11 @@ void OutlookPasswordRequester::requestPassword(RequestType request, const QStrin
     auto readJob = new ReadPasswordJob(walletFolder, this);
     readJob->setKey(mResource->settings()->config()->name());
     connect(readJob, &ReadPasswordJob::finished, this, [this, readJob, request]() {
+        if (!mTokenRequester) {
+            qCDebug(IMAPRESOURCE_LOG) << "The pasword request was cancelled.";
+            return;
+        }
+
         if (readJob->error() == QKeychain::Error::EntryNotFound) {
             qCDebug(IMAPRESOURCE_LOG) << "No Outlook OAuth2 tokens found in KWallet, requesting new token...";
             mTokenRequester->requestToken(mResource->settings()->userName());
