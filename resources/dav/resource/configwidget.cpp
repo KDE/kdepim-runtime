@@ -12,11 +12,12 @@
 
 #include <KDAV/ProtocolInfo>
 
+#include <KAuthorized>
 #include <KConfigDialogManager>
 #include <KLocalizedString>
 #include <KMessageBox>
-
 #include <KWindowConfig>
+
 #include <QDialogButtonBox>
 #include <QPointer>
 #include <QStandardItem>
@@ -75,6 +76,8 @@ void ConfigWidget::loadSettings()
 {
     const int typeIndex = mUi.syncRangeStartType->findData(QVariant(mSettings.syncRangeStartType()));
     mUi.syncRangeStartType->setCurrentIndex(typeIndex);
+    mUi.password->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::Always
+                                                                                                           : KPassword::RevealMode::Never);
 
     checkUserInput();
     mManager->updateWidgets();
