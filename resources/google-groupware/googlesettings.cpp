@@ -47,7 +47,7 @@ void GoogleSettings::init()
     qCWarning(GOOGLE_LOG) << "Trying to read password for" << account();
 
     // First read from QtKeyChain
-    auto job = new QKeychain::ReadPasswordJob(googleWalletFolder, this);
+    auto job = new QKeychain::ReadPasswordJob(googleWalletFolder);
     job->setKey(account());
     connect(job, &QKeychain::Job::finished, this, [this, job]() {
         if (job->error() != QKeychain::Error::NoError) {
@@ -113,7 +113,7 @@ WritePasswordJob *GoogleSettings::storeAccount(AccountPtr account)
     QDataStream ds(&mapData, QIODevice::WriteOnly);
     ds << map;
 
-    auto writeJob = new WritePasswordJob(googleWalletFolder, this);
+    auto writeJob = new WritePasswordJob(googleWalletFolder);
     writeJob->setKey(m_account->accountName());
     writeJob->setBinaryData(mapData);
 
@@ -132,7 +132,7 @@ WritePasswordJob *GoogleSettings::storeAccount(AccountPtr account)
 void GoogleSettings::cleanup()
 {
     if (m_account) {
-        auto deleteJob = new DeletePasswordJob(googleWalletFolder, this);
+        auto deleteJob = new DeletePasswordJob(googleWalletFolder);
         deleteJob->setKey(m_account->accountName());
         deleteJob->start();
     }
