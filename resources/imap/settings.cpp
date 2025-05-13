@@ -347,7 +347,7 @@ void Settings::onRootCollectionFetched(KJob *job)
 
 void Settings::handleError(const QString &errorMessage)
 {
-    auto notification = new KNotification(QStringLiteral("keychain"), KNotification::Persistent);
+    auto notification = new KNotification(QStringLiteral("imapAuthFailed"), KNotification::Persistent);
     notification->setComponentName(QStringLiteral("akonadi_imap_resource"));
     notification->setIconName(QStringLiteral("network-server"));
     notification->setTitle(i18nc("@title", "Problem with %1 IMAP account", config()->name()));
