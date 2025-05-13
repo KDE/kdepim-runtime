@@ -29,6 +29,8 @@
 #include <QStandardPaths>
 #include <QUrl>
 
+#include <tuple>
+
 enum GroupwareServers {
     Citadel,
     DAVical,
@@ -297,9 +299,9 @@ int PredefinedProviderPage::nextId() const
  * ServerTypePage
  */
 
-bool compareServiceOffers(const QPair<QString, QString> &off1, const QPair<QString, QString> &off2)
+bool compareServiceOffers(const std::tuple<QString, QString, QString> &off1, const std::tuple<QString, QString, QString> &off2)
 {
-    return off1.first.toLower() < off2.first.toLower();
+    return std::get<0>(off1).toLower() < std::get<0>(off2).toLower();
 }
 
 ServerTypePage::ServerTypePage(QWidget *parent)
@@ -315,17 +317,17 @@ ServerTypePage::ServerTypePage(QWidget *parent)
         QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("akonadi/davgroupware-providers"), QStandardPaths::LocateDirectory);
     const QStringList providers = KFileUtils::findAllUniqueFiles(dirs, QStringList{QStringLiteral("*.desktop")});
 
-    QList<QPair<QString, QString>> offers;
+    QList<std::tuple<QString, QString, QString>> offers;
     offers.reserve(providers.count());
     for (const QString &fileName : providers) {
         const KDesktopFile provider(fileName);
-        offers.append(QPair<QString, QString>(provider.readName(), fileName));
+        offers.append(std::tuple<QString, QString, QString>(provider.readName(), fileName, provider.readIcon()));
     }
     std::sort(offers.begin(), offers.end(), compareServiceOffers);
-    QListIterator<QPair<QString, QString>> it(offers);
+    QListIterator<std::tuple<QString, QString, QString>> it(offers);
     while (it.hasNext()) {
-        QPair<QString, QString> p = it.next();
-        mProvidersCombo->addItem(p.first, p.second);
+        std::tuple<QString, QString, QString> p = it.next();
+        mProvidersCombo->addItem(QIcon::fromTheme(std::get<2>(p)), std::get<0>(p), std::get<1>(p));
     }
     registerField(QStringLiteral("provider"), mProvidersCombo, "currentText");
 

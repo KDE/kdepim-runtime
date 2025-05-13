@@ -741,6 +741,25 @@ void DavGroupwareResource::onCreateInitialCacheReady(KJob *job)
     taskDone();
 }
 
+static QString iconForDavUrl(const KDAV::DavUrl &davUrl)
+{
+    QString icon;
+    if (davUrl.url().isValid()) {
+        const QString host = davUrl.url().host();
+        if (host == QStringLiteral("zoho.com") || host.endsWith(QStringLiteral(".zoho.com"))) {
+            icon = QStringLiteral("account-zoho");
+        } else if (host == QStringLiteral("icloud.com") || host.endsWith(QStringLiteral(".icloud.com"))) {
+            icon = QStringLiteral("account-apple");
+        } else if (host == QStringLiteral("nextcloud.com") || host.endsWith(QStringLiteral(".nextcloud.com"))
+                   || host.startsWith(QStringLiteral("nextcloud."))) {
+            icon = QStringLiteral("account-nextcloud");
+        } else if (host == QStringLiteral("yahoo.com") || host.endsWith(QStringLiteral(".yahoo.com"))) {
+            icon = QStringLiteral("account-yahoo");
+        }
+    }
+    return icon;
+}
+
 void DavGroupwareResource::onReloadConfig()
 {
     settings()->reloadConfig();
@@ -750,6 +769,7 @@ void DavGroupwareResource::onReloadConfig()
         auto attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         attribute->setDisplayName(settings()->displayName());
         setName(settings()->displayName());
+        attribute->setIconName(iconForDavUrl(settings()->configuredDavUrls().first()));
     }
 
     synchronize();
@@ -1443,6 +1463,7 @@ bool DavGroupwareResource::configurationIsValid()
         auto attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         attribute->setDisplayName(settings()->displayName());
         setName(settings()->displayName());
+        attribute->setIconName(iconForDavUrl(settings()->configuredDavUrls().first()));
     }
 
     return true;

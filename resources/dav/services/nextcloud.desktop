@@ -39,6 +39,7 @@ Name[x-test]=xxNextcloudxx
 Name[zh_CN]=NextCloud
 Name[zh_TW]=Nextcloud
 Type=Service
+Icon=account-nextcloud
 
 X-DavGroupware-SupportedProtocols=CalDav,CardDav
 X-DavGroupware-CalDavPath=/remote.php/dav
