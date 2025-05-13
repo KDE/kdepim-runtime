@@ -30,18 +30,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Pokus o zápis do adresáře pouze pro čtení: '%1'"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
-msgstr "Složka kalendáře"
+msgstr ""
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "Složka kalendáře"
+msgstr ""
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -131,17 +129,12 @@ msgid "A directory path or URL containing calendar files"
 msgstr ""
 
 #: icaldirsettingswidget.cpp:46
-#, fuzzy, kde-kuit-format
-#| msgid ""
-#| "Select the directory whose contents should be represented by this "
-#| "resource. If the directory does not exist, it will be created."
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory whose contents should be represented by "
 "this resource. The directory will be created if it does not exist."
 msgstr ""
-"Vyberte adresář, jehož obsah by měl odpovídat tomuto zdroji. Pokud adresář "
-"neexistuje, bude vytvořen."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-format

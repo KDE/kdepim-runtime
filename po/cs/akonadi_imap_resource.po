@@ -1183,7 +1183,3 @@ msgstr "Hledat:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Pouze přihlášené"
-
-#~ msgctxt "@title:window"
-#~ msgid "IMAP Account Settings"
-#~ msgstr "Nastavení účtu IMAP"

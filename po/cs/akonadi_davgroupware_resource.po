@@ -724,11 +724,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDAV"
-
-#~ msgctxt "@label:textbox"
-#~ msgid "A password is required for user %1"
-#~ msgstr "Pro uživatele %1 je požadováno heslo"
-
-#~ msgctxt "@label:textbox"
-#~ msgid "Password: "
-#~ msgstr "Heslo: "

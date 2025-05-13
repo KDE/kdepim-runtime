@@ -28,30 +28,20 @@ msgid "Exchange protocol information not found"
 msgstr "未找到 Exchange 协议信息"
 
 #: ewsclient/auth/ewsintuneauth.cpp:303
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
-#| "valid. You need to authenticate in order to continue using it."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "InTune credentials for the Microsoft Exchange account <b>%1</b> are no "
 "longer valid. You need to authenticate in order to continue using it."
-msgstr "您的微软 Exchange 账户 <b>%1</b> 授权已失效，请重新授权。"
+msgstr ""
 
 #: ewsclient/auth/ewsintuneauth.cpp:312
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
-#| "Please update it in the account settings page."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Failed to obtain InTune credentials for Microsoft Exchange account <b>%1</"
 "b>. Please update it in the account settings page."
 msgstr ""
-"无法获取微软 Exchange 账户 <b>%1</b> 的授权信息，请在账户设置页面更新该账户的"
-"信息。"
 
 #: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
