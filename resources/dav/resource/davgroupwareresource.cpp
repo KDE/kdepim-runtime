@@ -55,6 +55,8 @@ using namespace Akonadi;
 
 using IncidencePtr = QSharedPointer<KCalendarCore::Incidence>;
 
+using namespace Qt::StringLiterals;
+
 DavGroupwareResource::DavGroupwareResource(const QString &id)
     : ResourceBase(id)
     , FreeBusyProviderBase()
@@ -741,20 +743,24 @@ void DavGroupwareResource::onCreateInitialCacheReady(KJob *job)
     taskDone();
 }
 
-static QString iconForDavUrl(const KDAV::DavUrl &davUrl)
+QString DavGroupwareResource::iconForDavUrl(const KDAV::DavUrl &davUrl)
 {
     QString icon;
     if (davUrl.url().isValid()) {
         const QString host = davUrl.url().host();
-        if (host == QStringLiteral("zoho.com") || host.endsWith(QStringLiteral(".zoho.com"))) {
-            icon = QStringLiteral("account-zoho");
-        } else if (host == QStringLiteral("icloud.com") || host.endsWith(QStringLiteral(".icloud.com"))) {
-            icon = QStringLiteral("account-apple");
-        } else if (host == QStringLiteral("nextcloud.com") || host.endsWith(QStringLiteral(".nextcloud.com"))
-                   || host.startsWith(QStringLiteral("nextcloud."))) {
-            icon = QStringLiteral("account-nextcloud");
-        } else if (host == QStringLiteral("yahoo.com") || host.endsWith(QStringLiteral(".yahoo.com"))) {
-            icon = QStringLiteral("account-yahoo");
+
+        if ((host == "icloud.com"_L1) || host.endsWith(".icloud.com"_L1)) {
+            icon = u"account-apple"_s;
+        } else if ((host == "fastmail.com"_L1) || host.endsWith(".fastmail.com"_L1)) {
+            icon = u"account-fastmail"_s;
+        } else if ((host == "nextcloud.com"_L1) || host.endsWith(".nextcloud.com"_L1) || host.startsWith("nextcloud."_L1)) {
+            icon = u"account-nextcloud"_s;
+        } else if ((host == "yahoo.com"_L1) || host.endsWith(".yahoo.com"_L1)) {
+            icon = u"account-yahoo"_s;
+        } else if ((host == "zimbra.com"_L1) || host.endsWith(".zimbra.com"_L1)) {
+            icon = u"account-zimbra"_s;
+        } else if ((host == "zoho.com"_L1) || host.endsWith(".zoho.com"_L1)) {
+            icon = u"account-zoho"_s;
         }
     }
     return icon;
@@ -764,13 +770,19 @@ void DavGroupwareResource::onReloadConfig()
 {
     settings()->reloadConfig();
 
-    // sync the name from the settings
+    // sync the settings
+
+    auto attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+
     if (!settings()->displayName().isEmpty()) {
-        auto attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         attribute->setDisplayName(settings()->displayName());
         setName(settings()->displayName());
-        attribute->setIconName(iconForDavUrl(settings()->configuredDavUrls().first()));
     }
+    QString icon = settings()->iconName();
+    if (icon.isEmpty()) {
+        icon = iconForDavUrl(settings()->configuredDavUrls().first());
+    }
+    attribute->setIconName(icon);
 
     synchronize();
 }
@@ -1459,12 +1471,16 @@ bool DavGroupwareResource::configurationIsValid()
         mDavCollectionRoot.setCachePolicy(cachePolicy);
     }
 
+    auto attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     if (!settings()->displayName().isEmpty()) {
-        auto attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         attribute->setDisplayName(settings()->displayName());
         setName(settings()->displayName());
-        attribute->setIconName(iconForDavUrl(settings()->configuredDavUrls().first()));
     }
+    QString icon = settings()->iconName();
+    if (icon.isEmpty()) {
+        icon = iconForDavUrl(settings()->configuredDavUrls().first());
+    }
+    attribute->setIconName(icon);
 
     return true;
 }

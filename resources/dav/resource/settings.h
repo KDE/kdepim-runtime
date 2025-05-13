@@ -54,6 +54,8 @@ public:
     void setResourceIdentifier(const QString &identifier);
     void setDefaultPassword(const QString &password);
     QString defaultPassword();
+    void setIconName(const QString &icon);
+    [[nodiscard]] QString iconName() const;
 
     KDAV::DavUrl::List configuredDavUrls();
 
@@ -117,4 +119,5 @@ private:
     QString mCollectionsUrlsMappingCache;
     QMap<QString, QString> mCollectionsUrlsMapping;
     QList<UrlConfiguration *> mToDeleteUrlConfigs;
+    QString mIconName;
 };

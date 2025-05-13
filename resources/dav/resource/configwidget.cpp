@@ -109,7 +109,7 @@ void ConfigWidget::loadSettings()
 
             const QString defaultUser = wizard->field(QStringLiteral("credentialsUserName")).toString();
 
-            if (!urls.isEmpty()) {
+            if (!wizard->displayName().isEmpty()) {
                 mSettings.setDisplayName(wizard->displayName());
             } else {
                 mSettings.setDisplayName(defaultUser);
@@ -120,6 +120,11 @@ void ConfigWidget::loadSettings()
                 mSettings.setDefaultUsername(defaultUser);
                 mSettings.setDefaultPassword(password);
                 setPassword(password);
+            }
+
+            if (!wizard->iconName().isEmpty()) {
+                setWindowIcon(QIcon::fromTheme(wizard->iconName()));
+                mSettings.setIconName(wizard->iconName());
             }
 
             mManager->updateWidgets();

@@ -116,6 +116,16 @@ QString Settings::defaultPassword()
     return loadPassword(mResourceIdentifier, QStringLiteral("$default$"));
 }
 
+void Settings::setIconName(const QString &icon)
+{
+    mIconName = icon;
+}
+
+QString Settings::iconName() const
+{
+    return mIconName;
+}
+
 KDAV::DavUrl::List Settings::configuredDavUrls()
 {
     if (mUrls.isEmpty()) {

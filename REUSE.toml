@@ -1,0 +1,6 @@
+[[annotations]]
+# Simple logos => no copyright but trademarks still apply
+path = ["images/*-apps-account-*.png"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "None"
+SPDX-License-Identifier = "CC0-1.0"

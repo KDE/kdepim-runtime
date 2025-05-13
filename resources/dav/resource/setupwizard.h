@@ -51,6 +51,7 @@ public:
 
     Url::List urls() const;
     QString displayName() const;
+    QString iconName() const;
 };
 
 class PredefinedProviderPage : public QWizardPage

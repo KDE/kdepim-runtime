@@ -31,6 +31,12 @@
 
 #include <tuple>
 
+struct ProviderInfo {
+    QString readName;
+    QString fileName;
+    QString readIcon;
+};
+
 enum GroupwareServers {
     Citadel,
     DAVical,
@@ -158,6 +164,21 @@ QString SetupWizard::displayName() const
     }
 
     return service->name();
+}
+
+QString SetupWizard::iconName() const
+{
+    const QString desktopFilePath = property("providerDesktopFilePath").toString();
+    if (desktopFilePath.isEmpty()) {
+        return {};
+    }
+
+    KService::Ptr service = KService::serviceByStorageId(desktopFilePath);
+    if (!service) {
+        return {};
+    }
+
+    return service->icon();
 }
 
 SetupWizard::Url::List SetupWizard::urls() const
@@ -299,9 +320,9 @@ int PredefinedProviderPage::nextId() const
  * ServerTypePage
  */
 
-bool compareServiceOffers(const std::tuple<QString, QString, QString> &off1, const std::tuple<QString, QString, QString> &off2)
+bool compareServiceOffers(const ProviderInfo &off1, const ProviderInfo &off2)
 {
-    return std::get<0>(off1).toLower() < std::get<0>(off2).toLower();
+    return off1.readName.toLower() < off2.readName.toLower();
 }
 
 ServerTypePage::ServerTypePage(QWidget *parent)
@@ -317,17 +338,17 @@ ServerTypePage::ServerTypePage(QWidget *parent)
         QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("akonadi/davgroupware-providers"), QStandardPaths::LocateDirectory);
     const QStringList providers = KFileUtils::findAllUniqueFiles(dirs, QStringList{QStringLiteral("*.desktop")});
 
-    QList<std::tuple<QString, QString, QString>> offers;
+    QList<ProviderInfo> offers;
     offers.reserve(providers.count());
     for (const QString &fileName : providers) {
         const KDesktopFile provider(fileName);
-        offers.append(std::tuple<QString, QString, QString>(provider.readName(), fileName, provider.readIcon()));
+        offers.append({provider.readName(), fileName, provider.readIcon()});
     }
     std::sort(offers.begin(), offers.end(), compareServiceOffers);
-    QListIterator<std::tuple<QString, QString, QString>> it(offers);
+    QListIterator<ProviderInfo> it(offers);
     while (it.hasNext()) {
-        std::tuple<QString, QString, QString> p = it.next();
-        mProvidersCombo->addItem(QIcon::fromTheme(std::get<2>(p)), std::get<0>(p), std::get<1>(p));
+        ProviderInfo p = it.next();
+        mProvidersCombo->addItem(QIcon::fromTheme(p.readIcon), p.readName, p.fileName);
     }
     registerField(QStringLiteral("provider"), mProvidersCombo, "currentText");
 

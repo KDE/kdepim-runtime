@@ -119,6 +119,7 @@ private:
      * Collections which only support one mime type have an icon indicating what they support.
      */
     static void setCollectionIcon(Akonadi::Collection &collection);
+    QString iconForDavUrl(const KDAV::DavUrl &davUrl);
 
     Akonadi::Collection mDavCollectionRoot;
     QMap<QString, std::shared_ptr<KDAV::EtagCache>> mEtagCaches;
