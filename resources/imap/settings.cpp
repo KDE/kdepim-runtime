@@ -61,9 +61,9 @@ KIMAP::LoginJob::AuthenticationMode Settings::mapTransportAuthToKimap(MailTransp
     case MTAuth::XOAUTH2:
         return KIAuth::XOAuth2;
     default:
-        qFatal("mapping from Transport::EnumAuthenticationType ->  KIMAP::LoginJob::AuthenticationMode not possible");
+        qWarning() << "mapping from Transport::EnumAuthenticationType ->  KIMAP::LoginJob::AuthenticationMode not possible" << authType;
+        return KIAuth::ClearText; // dummy value, shouldn't get here.
     }
-    return KIAuth::ClearText; // dummy value, shouldn't get here.
 }
 
 Settings::Settings(WId winId)
