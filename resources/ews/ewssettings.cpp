@@ -35,7 +35,7 @@ void EwsSettings::requestPassword()
         Q_EMIT passwordRequestFinished(mPassword);
     }
 
-    auto readJob = new ReadPasswordJob(ewsWalletFolder, this);
+    auto readJob = new ReadPasswordJob(ewsWalletFolder);
     readJob->setKey(config()->name());
     connect(readJob, &ReadPasswordJob::finished, this, [this, readJob]() {
         if (readJob->error() != QKeychain::Error::NoError) {
@@ -52,7 +52,7 @@ void EwsSettings::requestMap()
 {
     qCDebug(EWSRES_LOG) << "requestMap: start";
 
-    auto readJob = new ReadPasswordJob(ewsWalletFolder, this);
+    auto readJob = new ReadPasswordJob(ewsWalletFolder);
     readJob->setKey(config()->name() + "_map"_L1);
 
     connect(readJob, &ReadPasswordJob::finished, this, [this, readJob]() {
@@ -96,7 +96,7 @@ void EwsSettings::setPassword(const QString &password)
 
     mPassword = password;
 
-    auto writeJob = new WritePasswordJob(ewsWalletFolder, this);
+    auto writeJob = new WritePasswordJob(ewsWalletFolder);
     writeJob->setKey(config()->name());
     writeJob->setTextData(mPassword);
 
@@ -120,7 +120,7 @@ void EwsSettings::setMap(const QMap<QString, QString> &map)
     QDataStream ds(&mapData, QIODevice::WriteOnly);
     ds << map;
 
-    auto writeJob = new WritePasswordJob(ewsWalletFolder, this);
+    auto writeJob = new WritePasswordJob(ewsWalletFolder);
     writeJob->setKey(config()->name() + "_map"_L1);
     writeJob->setBinaryData(mapData);
 

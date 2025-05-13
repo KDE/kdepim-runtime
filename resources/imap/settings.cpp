@@ -158,7 +158,7 @@ ReadPasswordJob *Settings::requestPassword()
 {
     Q_ASSERT(mustFetchPassword());
 
-    auto readPasswordJob = new ReadPasswordJob{QStringLiteral("imap"), this};
+    auto readPasswordJob = new ReadPasswordJob{QStringLiteral("imap")};
     readPasswordJob->setKey(config()->name());
 
     connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
@@ -194,7 +194,7 @@ bool Settings::mustFetchSievePassword() const
 
 ReadPasswordJob *Settings::requestSieveCustomPassword()
 {
-    auto readPasswordJob = new ReadPasswordJob{QStringLiteral("imap"), this};
+    auto readPasswordJob = new ReadPasswordJob{QStringLiteral("imap")};
     readPasswordJob->setKey(QLatin1StringView("custom_sieve_") + config()->name());
 
     connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
@@ -230,7 +230,7 @@ void Settings::setSieveCustomPassword(const QString &password)
 
     m_customSievePassword = password;
 
-    auto writePasswordJob = new WritePasswordJob{QStringLiteral("imap"), this};
+    auto writePasswordJob = new WritePasswordJob{QStringLiteral("imap")};
     writePasswordJob->setKey(QLatin1StringView("custom_sieve_") + config()->name());
     writePasswordJob->setTextData(password);
 
@@ -256,7 +256,7 @@ void Settings::setPassword(const QString &password)
 
     m_password = password;
 
-    auto writePasswordJob = new WritePasswordJob{QStringLiteral("imap"), this};
+    auto writePasswordJob = new WritePasswordJob{QStringLiteral("imap")};
     writePasswordJob->setKey(config()->name());
     writePasswordJob->setTextData(password);
 

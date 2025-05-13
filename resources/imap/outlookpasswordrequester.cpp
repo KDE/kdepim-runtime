@@ -49,7 +49,7 @@ void OutlookPasswordRequester::requestPassword(RequestType request, const QStrin
         onTokenRequestFinished(result);
     });
 
-    auto readJob = new ReadPasswordJob(walletFolder, this);
+    auto readJob = new ReadPasswordJob(walletFolder);
     readJob->setKey(mResource->settings()->config()->name());
     connect(readJob, &ReadPasswordJob::finished, this, [this, readJob, request]() {
         if (!mTokenRequester) {
@@ -121,7 +121,7 @@ void OutlookPasswordRequester::storeResultToWallet(const MailTransport::TokenRes
     QDataStream ds(&mapData, QIODeviceBase::WriteOnly);
     ds << QMap<QString, QString>{{QStringLiteral("accessToken"), result.accessToken()}, {QStringLiteral("refreshToken"), result.refreshToken()}};
 
-    auto writeJob = new WritePasswordJob(walletFolder, this);
+    auto writeJob = new WritePasswordJob(walletFolder);
     writeJob->setKey(mResource->settings()->config()->name());
     writeJob->setBinaryData(mapData);
     connect(writeJob, &WritePasswordJob::finished, this, [this, writeJob, name]() {

@@ -33,7 +33,7 @@ void Settings::setResourceId(const QString &resourceIdentifier)
 
 void Settings::setPassword(const QString &password)
 {
-    auto writeJob = new WritePasswordJob(QStringLiteral("pop3"), this);
+    auto writeJob = new WritePasswordJob(QStringLiteral("pop3"));
     connect(writeJob, &QKeychain::Job::finished, this, [](QKeychain::Job *baseJob) {
         if (baseJob->error()) {
             qCWarning(POP3RESOURCE_LOG) << "Error writing password using QKeychain:" << baseJob->errorString();

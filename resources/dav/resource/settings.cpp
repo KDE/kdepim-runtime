@@ -374,7 +374,7 @@ void Settings::savePassword(const QString &key, const QString &user, const QStri
     const QString entry = key + QLatin1Char(',') + user;
     mPasswordsCache[entry] = password;
 
-    auto writeJob = new WritePasswordJob(QStringLiteral("Passwords"), this);
+    auto writeJob = new WritePasswordJob(QStringLiteral("Passwords"));
     connect(writeJob, &QKeychain::Job::finished, this, [](QKeychain::Job *baseJob) {
         if (baseJob->error()) {
             qCWarning(DAVRESOURCE_LOG) << "Error writing password using QKeychain:" << baseJob->errorString();

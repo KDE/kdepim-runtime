@@ -236,7 +236,7 @@ void POP3Resource::doStateStep()
         const bool passwordNeeded = mSettings.authenticationMethod() != MailTransport::Transport::EnumAuthenticationType::GSSAPI;
         const bool loadPasswordFromWallet = !mAskAgain && passwordNeeded && !mSettings.login().isEmpty() && mPassword.isEmpty();
         if (loadPasswordFromWallet) {
-            auto readJob = new ReadPasswordJob(QStringLiteral("pop3"), this);
+            auto readJob = new ReadPasswordJob(QStringLiteral("pop3"));
             connect(readJob, &QKeychain::Job::finished, this, &POP3Resource::walletOpenedForLoading);
             readJob->setKey(identifier());
             readJob->start();
@@ -347,7 +347,7 @@ void POP3Resource::doStateStep()
         if (mSavePassword) {
             qCDebug(POP3RESOURCE_LOG) << "Writing password back to the wallet.";
             Q_EMIT status(Running, i18n("Saving password to the wallet."));
-            auto writeJob = new WritePasswordJob(QStringLiteral("pop3"), this);
+            auto writeJob = new WritePasswordJob(QStringLiteral("pop3"));
             connect(writeJob, &QKeychain::Job::finished, this, [this](QKeychain::Job *baseJob) {
                 if (baseJob->error()) {
                     qCWarning(POP3RESOURCE_LOG) << "Error writing password using QKeychain:" << baseJob->errorString();

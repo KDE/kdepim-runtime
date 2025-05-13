@@ -180,7 +180,7 @@ void AccountWidget::loadSettings()
 
     passwordEdit->setEnabled(false);
     passwordLabel->setEnabled(false);
-    auto readJob = new ReadPasswordJob(QStringLiteral("pop3"), this);
+    auto readJob = new ReadPasswordJob(QStringLiteral("pop3"));
     connect(readJob, &QKeychain::Job::finished, this, &AccountWidget::walletOpenedForLoading);
     readJob->setKey(mIdentifier);
     readJob->start();
