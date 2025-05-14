@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-01-04 00:41+0000\n"
+"POT-Creation-Date: 2025-05-14 02:38+0000\n"
 "PO-Revision-Date: 2014-07-13 18:25+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -438,7 +438,7 @@ msgstr ""
 "De Naricht ut \"%1\" lett sik op den IMAP-Server nich för't Wegdoon "
 "markeren. Se dukt bi de nakamen Synkroniseren wedder op."
 
-#: outlookpasswordrequester.cpp:62 outlookpasswordrequester.cpp:71
+#: outlookpasswordrequester.cpp:67 outlookpasswordrequester.cpp:76
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
