@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-28 00:42+0000\n"
+"POT-Creation-Date: 2025-05-14 00:44+0000\n"
 "PO-Revision-Date: 2025-03-28 22:30+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -413,7 +413,7 @@ msgid ""
 msgstr ""
 "סימון ההודעה מ־‚%1’ למחיקה בשרת ה־IMAP נכשל. היא תופיע מחדש בסנכרון הבא."
 
-#: outlookpasswordrequester.cpp:62 outlookpasswordrequester.cpp:71
+#: outlookpasswordrequester.cpp:67 outlookpasswordrequester.cpp:76
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."

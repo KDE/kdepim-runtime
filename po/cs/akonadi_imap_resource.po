@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-28 00:42+0000\n"
+"POT-Creation-Date: 2025-05-14 00:44+0000\n"
 "PO-Revision-Date: 2024-08-20 08:36+0200\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -410,7 +410,7 @@ msgstr ""
 "Označení zprávy z '%1' pro smazání z IMAP serveru selhalo. Objeví se znovu "
 "při následující synchronizaci."
 
-#: outlookpasswordrequester.cpp:62 outlookpasswordrequester.cpp:71
+#: outlookpasswordrequester.cpp:67 outlookpasswordrequester.cpp:76
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."

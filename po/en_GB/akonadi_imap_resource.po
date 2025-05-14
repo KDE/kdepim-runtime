@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-28 00:42+0000\n"
+"POT-Creation-Date: 2025-05-14 00:44+0000\n"
 "PO-Revision-Date: 2024-11-23 12:06+0000\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
@@ -417,7 +417,7 @@ msgstr ""
 "Failed to mark the message from '%1' for deletion on the IMAP server. It "
 "will reappear on next sync."
 
-#: outlookpasswordrequester.cpp:62 outlookpasswordrequester.cpp:71
+#: outlookpasswordrequester.cpp:67 outlookpasswordrequester.cpp:76
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."

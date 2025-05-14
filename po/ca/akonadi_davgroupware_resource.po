@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-22 00:42+0000\n"
+"POT-Creation-Date: 2025-05-14 00:44+0000\n"
 "PO-Revision-Date: 2024-07-31 12:00+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -22,38 +22,38 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
 
-#: configwidget.cpp:35
+#: configwidget.cpp:36
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "Configuració del recurs DAV"
 
-#: configwidget.cpp:42
+#: configwidget.cpp:43
 #, kde-format
 msgid "Protocol"
 msgstr "Protocol"
 
-#: configwidget.cpp:42 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:43 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "URL"
 
-#: configwidget.cpp:55
+#: configwidget.cpp:56
 #, kde-format
 msgid "Days"
 msgstr "Dies"
 
-#: configwidget.cpp:56
+#: configwidget.cpp:57
 #, kde-format
 msgid "Months"
 msgstr "Mesos"
 
-#: configwidget.cpp:57
+#: configwidget.cpp:58
 #, kde-format
 msgid "Years"
 msgstr "Anys"
 
-#: configwidget.cpp:159
+#: configwidget.cpp:162
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"

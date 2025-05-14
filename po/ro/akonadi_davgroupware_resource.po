@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-22 00:42+0000\n"
+"POT-Creation-Date: 2025-05-14 00:44+0000\n"
 "PO-Revision-Date: 2022-02-06 14:21+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian\n"
@@ -18,39 +18,39 @@ msgstr ""
 "20)) ? 1 : 2;\n"
 "X-Generator: Lokalize 21.12.2\n"
 
-#: configwidget.cpp:35
+#: configwidget.cpp:36
 #, fuzzy, kde-format
 #| msgid "Server Configuration"
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "Configurare server"
 
-#: configwidget.cpp:42
+#: configwidget.cpp:43
 #, kde-format
 msgid "Protocol"
 msgstr "Protocol"
 
-#: configwidget.cpp:42 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:43 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "URL"
 
-#: configwidget.cpp:55
+#: configwidget.cpp:56
 #, kde-format
 msgid "Days"
 msgstr "Zile"
 
-#: configwidget.cpp:56
+#: configwidget.cpp:57
 #, kde-format
 msgid "Months"
 msgstr "Luni"
 
-#: configwidget.cpp:57
+#: configwidget.cpp:58
 #, kde-format
 msgid "Years"
 msgstr "Ani"
 
-#: configwidget.cpp:159
+#: configwidget.cpp:162
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
