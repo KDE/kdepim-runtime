@@ -67,7 +67,7 @@ bool EwsCreateFolderRequest::parseItemsResponse(QXmlStreamReader &reader)
         if (resp.isSuccess()) {
             qCDebug(EWSCLI_REQUEST_LOG) << "Got CreateFolder response - OK";
         } else {
-            qCDebug(EWSCLI_REQUEST_LOG) << "Got CreateFolder response - %1" << resp.responseMessage();
+            qCDebug(EWSCLI_REQUEST_LOG) << u"Got CreateFolder response - %1"_s.arg(resp.responseMessage());
         }
     }
     mResponses.append(resp);
