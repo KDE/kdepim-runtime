@@ -847,7 +847,7 @@ void EwsResource::collectionAdded(const Collection &collection, const Collection
 
     auto req = new EwsCreateFolderRequest(mEwsClient, this);
     req->setParentFolderId(EwsId(parent.remoteId()));
-    req->setFolders(EwsFolder::List() << folder);
+    req->setFolders({folder});
     req->setProperty("collection", QVariant::fromValue<Collection>(collection));
     connect(req, &EwsCreateFolderRequest::result, this, &EwsResource::folderCreateRequestFinished);
     req->start();
