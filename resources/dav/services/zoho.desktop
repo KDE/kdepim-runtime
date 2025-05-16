@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Zoho
+Type=Service
+Icon=account-zoho
+
+X-DavGroupware-Provider=Zoho
+X-DavGroupware-ProviderUsesSSL=1
+X-DavGroupware-SupportedProtocols=CalDav
+X-DavGroupware-CalDavHost=calendar.zoho.com
