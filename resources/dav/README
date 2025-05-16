@@ -48,3 +48,12 @@ not listed here.
 * Google calendar
   https://www.google.com/calendar/dav/<CALENDAR_ID>/events
   - CalDAV working.
+
+* Fastmail
+  https://caldav.fastmail.com
+  - CalDAV working.
+    Get the URL from your Settings->Calendars screen. Find the calendar that
+    you want to add to the client, and click on the Export link. There will be
+    a popup that displays the CalDAV URL. This is the URL you'll need to enter
+    in to your client for CalDAV setup.
+    eg. https://caldav.fastmail.com/dav/calendars/user/FULL_EMAIL_ADDRESS/UUID_OF_CALENDAR
