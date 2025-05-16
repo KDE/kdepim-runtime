@@ -1,6 +1,6 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2010, 2011, 2013, 2016, 2017, 2018, 2019, 2020, 2024 Tommi Nieminen <translator@legisign.org>
+# SPDX-FileCopyrightText: 2010, 2011, 2013, 2016, 2017, 2018, 2019, 2020, 2024, 2025 Tommi Nieminen <translator@legisign.org>
 # Lasse Liehu <lasse.liehu@gmail.com>, 2012, 2013, 2014, 2015, 2016.
 #
 # KDE Finnish translation sprint participants:
@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-14 00:44+0000\n"
-"PO-Revision-Date: 2024-12-07 15:01+0200\n"
+"PO-Revision-Date: 2025-04-20 16:31+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -283,13 +283,13 @@ msgstr "Määrittää mukautetun Sieve-palvelimen käyttämän tunnistautumistav
 #: imapresource.kcfg:129
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Onko agentin aktiviteettituki käytössä"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: imapresource.kcfg:133
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Agentin aktiviteetit"
 
 #: imapresourcebase.cpp:220
 #, kde-format
@@ -535,7 +535,7 @@ msgstr "Palvelintiedot"
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
-msgstr ""
+msgstr "Virhe noudettaessa palvelimen ominaisuuksia: %1"
 
 #: serverinfodialog.cpp:109
 #, kde-format
@@ -638,11 +638,7 @@ msgid "Password not found for %1 IMAP account"
 msgstr "IMAP-tilille %1 ei löytynyt salasanaa"
 
 #: settings.cpp:174
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when retriving the IMAP password from the system "
-#| "keychain: \"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the IMAP password from the system "
@@ -657,11 +653,7 @@ msgid "Password not found for %1 sieve account"
 msgstr "Sieve-tilille %1 ei löytynyt salasanaa"
 
 #: settings.cpp:210
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when retriving the sieve password from the system "
-#| "keychain: \"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the sieve password from the system "
@@ -670,11 +662,7 @@ msgstr ""
 "Tapahtui virhe noudettaessa järjestelmän avainrenkaasta Sieve-salasanaa: ”%1”"
 
 #: settings.cpp:240
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when saving the sieve password in the system keychain: "
-#| "\"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the sieve password in the system keychain: "
@@ -684,11 +672,7 @@ msgstr ""
 "”%1”"
 
 #: settings.cpp:266
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when saving the IMAP password in the system keychain: "
-#| "\"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the IMAP password in the system keychain: "
