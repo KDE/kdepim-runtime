@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Fastmail
+Type=Service
+Icon=account-fastmail
+
+X-DavGroupware-SupportedProtocols=CalDav,CardDav
+X-DavGroupware-ProviderUsesSSL=1
+X-DavGroupware-CalDavHost=caldav.fastmail.com
+X-DavGroupware-CardDavHost=carddav.fastmail.com
