@@ -87,18 +87,17 @@ void ConfigWidget::loadSettings()
     }
 
     if (mSettings.defaultUsername().isEmpty()) {
-        auto wizard = new SetupWizard(this);
-        wizard->setAttribute(Qt::WA_DeleteOnClose);
+        SetupWizard wizard(this);
 
-        connect(wizard, &QWizard::finished, this, [this, wizard] {
-            const SetupWizard::Url::List urls = wizard->urls();
+        connect(&wizard, &QWizard::finished, this, [this, &wizard] {
+            const SetupWizard::Url::List urls = wizard.urls();
             for (const SetupWizard::Url &url : urls) {
                 auto urlConfig = new Settings::UrlConfiguration();
 
                 urlConfig->mUrl = url.url;
                 urlConfig->mProtocol = url.protocol;
                 urlConfig->mUser = url.userName;
-                urlConfig->mPassword = wizard->field(QStringLiteral("credentialsPassword")).toString();
+                urlConfig->mPassword = wizard.field(QStringLiteral("credentialsPassword")).toString();
 
                 mSettings.newUrlConfiguration(urlConfig);
 
@@ -107,29 +106,29 @@ void ConfigWidget::loadSettings()
                 addModelRow(Utils::translatedProtocolName(url.protocol), displayUrl.toDisplayString());
             }
 
-            const QString defaultUser = wizard->field(QStringLiteral("credentialsUserName")).toString();
+            const QString defaultUser = wizard.field(QStringLiteral("credentialsUserName")).toString();
 
-            if (!wizard->displayName().isEmpty()) {
-                mSettings.setDisplayName(wizard->displayName());
+            if (!wizard.displayName().isEmpty()) {
+                mSettings.setDisplayName(wizard.displayName());
             } else {
                 mSettings.setDisplayName(defaultUser);
             }
 
             if (!defaultUser.isEmpty()) {
-                const auto password = wizard->field(QStringLiteral("credentialsPassword")).toString();
+                const auto password = wizard.field(QStringLiteral("credentialsPassword")).toString();
                 mSettings.setDefaultUsername(defaultUser);
                 mSettings.setDefaultPassword(password);
                 setPassword(password);
             }
 
-            if (!wizard->iconName().isEmpty()) {
-                setWindowIcon(QIcon::fromTheme(wizard->iconName()));
-                mSettings.setIconName(wizard->iconName());
+            if (!wizard.iconName().isEmpty()) {
+                setWindowIcon(QIcon::fromTheme(wizard.iconName()));
+                mSettings.setIconName(wizard.iconName());
             }
 
             mManager->updateWidgets();
         });
-        wizard->show();
+        wizard.exec();
     }
 }
 
