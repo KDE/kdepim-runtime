@@ -57,3 +57,7 @@ not listed here.
     a popup that displays the CalDAV URL. This is the URL you'll need to enter
     in to your client for CalDAV setup.
     eg. https://caldav.fastmail.com/dav/calendars/user/FULL_EMAIL_ADDRESS/UUID_OF_CALENDAR
+
+* Zoho
+  https://calendar.zoho.com
+  - CalDAV working.
