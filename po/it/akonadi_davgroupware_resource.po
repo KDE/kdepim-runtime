@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-14 00:44+0000\n"
+"POT-Creation-Date: 2025-05-18 00:43+0000\n"
 "PO-Revision-Date: 2024-07-31 22:22+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -49,7 +49,7 @@ msgstr "Mesi"
 msgid "Years"
 msgstr "Anni"
 
-#: configwidget.cpp:162
+#: configwidget.cpp:167
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -92,7 +92,7 @@ msgstr "Nome utente:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:136
+#: configwidget.ui:108 setupwizard.cpp:243 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "Password:"
@@ -304,61 +304,61 @@ msgstr "Risposta non valida dal server"
 msgid "Unable to parse free-busy data received"
 msgstr "Impossibile elaborare i dati libero/occupato ricevuti"
 
-#: davgroupwareresource.cpp:168
+#: davgroupwareresource.cpp:170
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr ""
 "Impossibile recuperare le informazioni libero/occupato in modalità fuori "
 "linea"
 
-#: davgroupwareresource.cpp:188
+#: davgroupwareresource.cpp:190
 #, kde-format
 msgid "Fetching collections"
 msgstr "Recupero delle collezioni"
 
-#: davgroupwareresource.cpp:256
+#: davgroupwareresource.cpp:258
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr ""
 "È stato richiesto di recuperare gli elementi di una collezione sconosciuta: "
 "%1"
 
-#: davgroupwareresource.cpp:313
+#: davgroupwareresource.cpp:315
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Collezione non valida per l'elemento %1."
 
-#: davgroupwareresource.cpp:645
+#: davgroupwareresource.cpp:647
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Impossibile modificar gli elementi: %1"
 
-#: davgroupwareresource.cpp:684
+#: davgroupwareresource.cpp:686
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Impossibile modificare la collezione: %1"
 
-#: davgroupwareresource.cpp:761
+#: davgroupwareresource.cpp:793
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Impossibile rimuovere la collezione: %1"
 
-#: davgroupwareresource.cpp:781
+#: davgroupwareresource.cpp:813
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Impossibile recuperare le collezioni: %1"
 
-#: davgroupwareresource.cpp:914 davgroupwareresource.cpp:1013
+#: davgroupwareresource.cpp:946 davgroupwareresource.cpp:1045
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Impossibile recuperare gli elementi: %1"
 
-#: davgroupwareresource.cpp:1093
+#: davgroupwareresource.cpp:1125
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Impossibile recuperare l'elemento: %1"
 
-#: davgroupwareresource.cpp:1113
+#: davgroupwareresource.cpp:1145
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -367,23 +367,23 @@ msgstr ""
 "Impossibile recuperare l'elemento: analisi dei dati dell'elemento non "
 "riuscita. Forse è stato già eliminato."
 
-#: davgroupwareresource.cpp:1150
+#: davgroupwareresource.cpp:1182
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Impossibile aggiungere l'elemento: %1"
 
-#: davgroupwareresource.cpp:1194 davgroupwareresource.cpp:1307
-#: davgroupwareresource.cpp:1319
+#: davgroupwareresource.cpp:1226 davgroupwareresource.cpp:1339
+#: davgroupwareresource.cpp:1351
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Impossibile modificare l'elemento: %1"
 
-#: davgroupwareresource.cpp:1281 davgroupwareresource.cpp:1338
+#: davgroupwareresource.cpp:1313 davgroupwareresource.cpp:1370
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Impossibile rimuovere l'elemento: %1"
 
-#: davgroupwareresource.cpp:1425 davgroupwareresource.cpp:1426
+#: davgroupwareresource.cpp:1457 davgroupwareresource.cpp:1458
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "La risorsa non è ancora configurata"
@@ -539,44 +539,44 @@ msgstr "una persona con nome"
 msgid "a contact with email"
 msgstr "un contatto con indirizzo di posta"
 
-#: setupwizard.cpp:137
+#: setupwizard.cpp:145
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "Configurazione guidata DAV groupware"
 
-#: setupwizard.cpp:210
+#: setupwizard.cpp:233
 #, kde-format
 msgid "Login Credentials"
 msgstr "Credenziali di accesso"
 
-#: setupwizard.cpp:211
+#: setupwizard.cpp:234
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "Inserisci le credenziali per accedere al server groupware"
 
-#: setupwizard.cpp:215
+#: setupwizard.cpp:238
 #, kde-format
 msgid "User:"
 msgstr "Utente:"
 
-#: setupwizard.cpp:255
+#: setupwizard.cpp:278
 #, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "No, scegli un altro server"
 
-#: setupwizard.cpp:257
+#: setupwizard.cpp:280
 #, kde-format
 msgid "Predefined provider found"
 msgstr "Trovato provider predefinito"
 
-#: setupwizard.cpp:258
+#: setupwizard.cpp:281
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "Seleziona se vuoi usare il provider rilevato automaticamente"
 
-#: setupwizard.cpp:277
+#: setupwizard.cpp:300
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -587,83 +587,83 @@ msgstr ""
 "servizi di %1 basandosi sull'indirizzo email che hai usato per l'accesso.\n"
 "Vuoi proseguire?"
 
-#: setupwizard.cpp:282
+#: setupwizard.cpp:305
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Si, usa %1 come provider"
 
-#: setupwizard.cpp:308
+#: setupwizard.cpp:331
 #, kde-format
 msgid "Groupware Server"
 msgstr "Server groupware "
 
-#: setupwizard.cpp:309
+#: setupwizard.cpp:332
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "Seleziona il server groupware per il quale configurare la risorsa"
 
-#: setupwizard.cpp:338
+#: setupwizard.cpp:361
 #, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Usa uno di questi server:"
 
-#: setupwizard.cpp:347
+#: setupwizard.cpp:370
 #, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Configura manualmente la risorsa"
 
-#: setupwizard.cpp:381
+#: setupwizard.cpp:404
 #, kde-format
 msgid "Connection"
 msgstr "Connessione"
 
-#: setupwizard.cpp:382
+#: setupwizard.cpp:405
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Inserisci le informazioni di connessione per il server groupware"
 
-#: setupwizard.cpp:389
+#: setupwizard.cpp:412
 #, kde-format
 msgid "Host"
 msgstr "Host"
 
-#: setupwizard.cpp:392
+#: setupwizard.cpp:415
 #, kde-format
 msgid "Installation path"
 msgstr "Percorso di installazione"
 
-#: setupwizard.cpp:395
+#: setupwizard.cpp:418
 #, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Usa connessione sicura"
 
-#: setupwizard.cpp:423
+#: setupwizard.cpp:446
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "URL finale (CalDav)"
 
-#: setupwizard.cpp:428
+#: setupwizard.cpp:451
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "URL finale (CardDav)"
 
-#: setupwizard.cpp:433
+#: setupwizard.cpp:456
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "URL finale (GroupDav)"
 
-#: setupwizard.cpp:497
+#: setupwizard.cpp:520
 #, kde-format
 msgid "Test Connection"
 msgstr "Prova la connessione"
 
-#: setupwizard.cpp:498
+#: setupwizard.cpp:521
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -672,18 +672,18 @@ msgstr ""
 "Puoi provare subito se il server groupware è accessibile con la "
 "configurazione attuale"
 
-#: setupwizard.cpp:503
+#: setupwizard.cpp:526
 #, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Prova la connessione"
 
-#: setupwizard.cpp:543
+#: setupwizard.cpp:566
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Si è verificato un errore: %1"
 
-#: setupwizard.cpp:546
+#: setupwizard.cpp:569
 #, kde-format
 msgid "Connected successfully"
 msgstr "Connesso correttamente"

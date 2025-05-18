@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-14 00:44+0000\n"
+"POT-Creation-Date: 2025-05-18 00:43+0000\n"
 "PO-Revision-Date: 2024-12-20 21:52+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -50,7 +50,7 @@ msgstr "मासाः"
 msgid "Years"
 msgstr "वर्षाः"
 
-#: configwidget.cpp:162
+#: configwidget.cpp:167
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -92,7 +92,7 @@ msgstr "उपयोक्तृनाम :"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:136
+#: configwidget.ui:108 setupwizard.cpp:243 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "समाभाष्:"
@@ -303,57 +303,57 @@ msgstr "सर्वरतः अमान्यप्रतिसादः"
 msgid "Unable to parse free-busy data received"
 msgstr "प्राप्तं मुक्त-व्यस्तदत्तांशं विश्लेषणं कर्तुं असमर्थः"
 
-#: davgroupwareresource.cpp:168
+#: davgroupwareresource.cpp:170
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "अफलाइन-स्थितौ मुक्त-व्यस्त-सूचनाः पुनः प्राप्तुं असमर्थः"
 
-#: davgroupwareresource.cpp:188
+#: davgroupwareresource.cpp:190
 #, kde-format
 msgid "Fetching collections"
 msgstr "संग्रहान् आनयन्"
 
-#: davgroupwareresource.cpp:256
+#: davgroupwareresource.cpp:258
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "अज्ञातसङ्ग्रहस्य कृते वस्तूनि पुनः प्राप्तुं पृष्टम्: %1"
 
-#: davgroupwareresource.cpp:313
+#: davgroupwareresource.cpp:315
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "%1 मदस्य कृते अमान्यसङ्ग्रहः ।"
 
-#: davgroupwareresource.cpp:645
+#: davgroupwareresource.cpp:647
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "द्रव्यं परिवर्तयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:684
+#: davgroupwareresource.cpp:686
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "संग्रहं परिवर्तयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:761
+#: davgroupwareresource.cpp:793
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "संग्रहं हर्तुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:781
+#: davgroupwareresource.cpp:813
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "संग्रहान् पुनः प्राप्तुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:914 davgroupwareresource.cpp:1013
+#: davgroupwareresource.cpp:946 davgroupwareresource.cpp:1045
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "द्रव्यं पुनः प्राप्तुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1093
+#: davgroupwareresource.cpp:1125
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "मदं पुनः प्राप्तुं असमर्थम्: %1"
 
-#: davgroupwareresource.cpp:1113
+#: davgroupwareresource.cpp:1145
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -361,23 +361,23 @@ msgid ""
 msgstr ""
 "मदं पुनः प्राप्तुं असमर्थः: मददत्तांशं विश्लेषणं कर्तुं असफलः। भवतु नाम पूर्वमेव विलोपितम् आसीत्।"
 
-#: davgroupwareresource.cpp:1150
+#: davgroupwareresource.cpp:1182
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "मदं योजयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1194 davgroupwareresource.cpp:1307
-#: davgroupwareresource.cpp:1319
+#: davgroupwareresource.cpp:1226 davgroupwareresource.cpp:1339
+#: davgroupwareresource.cpp:1351
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "मदं परिवर्तयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1281 davgroupwareresource.cpp:1338
+#: davgroupwareresource.cpp:1313 davgroupwareresource.cpp:1370
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "मदं निष्कासयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1425 davgroupwareresource.cpp:1426
+#: davgroupwareresource.cpp:1457 davgroupwareresource.cpp:1458
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "संसाधनम् अद्यापि विन्यस्तं नास्ति"
@@ -530,44 +530,44 @@ msgstr "नामकः व्यक्तिः"
 msgid "a contact with email"
 msgstr "ईमेलेन सह सम्पर्कः"
 
-#: setupwizard.cpp:137
+#: setupwizard.cpp:145
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "DAV groupware विन्यासविजार्डः"
 
-#: setupwizard.cpp:210
+#: setupwizard.cpp:233
 #, kde-format
 msgid "Login Credentials"
 msgstr "प्रवेशप्रमाणपत्रम्"
 
-#: setupwizard.cpp:211
+#: setupwizard.cpp:234
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "समूहवेयर सर्वरे प्रवेशार्थं स्वस्य प्रमाणपत्राणि प्रविशन्तु"
 
-#: setupwizard.cpp:215
+#: setupwizard.cpp:238
 #, kde-format
 msgid "User:"
 msgstr "उपयोक्ता :"
 
-#: setupwizard.cpp:255
+#: setupwizard.cpp:278
 #, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "न, अन्यं सर्वरं चिनुत"
 
-#: setupwizard.cpp:257
+#: setupwizard.cpp:280
 #, kde-format
 msgid "Predefined provider found"
 msgstr "पूर्वनिर्धारितः प्रदाता प्राप्तः"
 
-#: setupwizard.cpp:258
+#: setupwizard.cpp:281
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "यदि भवान् स्वयमेव ज्ञातप्रदातुः उपयोगं कर्तुम् इच्छति तर्हि चिनोतु"
 
-#: setupwizard.cpp:277
+#: setupwizard.cpp:300
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -578,83 +578,83 @@ msgstr ""
 "%1 सेवानां कृते स्वयमेव खातं विन्यस्तुं शक्नोति ।\n"
 "किं त्वं तत् कर्तुम् इच्छसि ?"
 
-#: setupwizard.cpp:282
+#: setupwizard.cpp:305
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "आम्, %1 इत्यस्य उपयोगं प्रदातृरूपेण कुर्वन्तु"
 
-#: setupwizard.cpp:308
+#: setupwizard.cpp:331
 #, kde-format
 msgid "Groupware Server"
 msgstr "ग्रुपवेयर सर्वर"
 
-#: setupwizard.cpp:309
+#: setupwizard.cpp:332
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "संसाधनं विन्यस्तं भविष्यति इति groupware सर्वरं चिनोतु"
 
-#: setupwizard.cpp:338
+#: setupwizard.cpp:361
 #, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "तेषु सर्वरेषु एकस्य उपयोगं कुर्वन्तु:"
 
-#: setupwizard.cpp:347
+#: setupwizard.cpp:370
 #, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "संसाधनं मैन्युअल् रूपेण विन्यस्यताम्"
 
-#: setupwizard.cpp:381
+#: setupwizard.cpp:404
 #, kde-format
 msgid "Connection"
 msgstr "संबन्धः"
 
-#: setupwizard.cpp:382
+#: setupwizard.cpp:405
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "समूहवेयर सर्वरस्य कृते संयोजनसूचना प्रविशन्तु"
 
-#: setupwizard.cpp:389
+#: setupwizard.cpp:412
 #, kde-format
 msgid "Host"
 msgstr "निमन्त्रकः"
 
-#: setupwizard.cpp:392
+#: setupwizard.cpp:415
 #, kde-format
 msgid "Installation path"
 msgstr "संस्थापनमार्गः"
 
-#: setupwizard.cpp:395
+#: setupwizard.cpp:418
 #, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "सुरक्षितसंयोजनस्य उपयोगं कुर्वन्तु"
 
-#: setupwizard.cpp:423
+#: setupwizard.cpp:446
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "अन्तिमः URL (CalDav)"
 
-#: setupwizard.cpp:428
+#: setupwizard.cpp:451
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "अन्तिमः URL (CardDav)"
 
-#: setupwizard.cpp:433
+#: setupwizard.cpp:456
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "अन्तिमः URL (GroupDav)"
 
-#: setupwizard.cpp:497
+#: setupwizard.cpp:520
 #, kde-format
 msgid "Test Connection"
 msgstr "परीक्षणसंयोजनम्"
 
-#: setupwizard.cpp:498
+#: setupwizard.cpp:521
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -663,18 +663,18 @@ msgstr ""
 "इदानीं भवान् परीक्षितुं शक्नोति यत् वर्तमानविन्यासेन सह groupware सर्वरं अभिगन्तुं शक्यते वा "
 "इति"
 
-#: setupwizard.cpp:503
+#: setupwizard.cpp:526
 #, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "परीक्षणसंयोजनम्"
 
-#: setupwizard.cpp:543
+#: setupwizard.cpp:566
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "त्रुटिः अभवत्: %1"
 
-#: setupwizard.cpp:546
+#: setupwizard.cpp:569
 #, kde-format
 msgid "Connected successfully"
 msgstr "सफलतया सम्बद्धम्"

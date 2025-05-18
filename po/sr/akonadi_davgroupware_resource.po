@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-14 00:44+0000\n"
+"POT-Creation-Date: 2025-05-18 00:43+0000\n"
 "PO-Revision-Date: 2017-01-22 23:51+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -55,7 +55,7 @@ msgstr "месеци"
 msgid "Years"
 msgstr "године"
 
-#: configwidget.cpp:162
+#: configwidget.cpp:167
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -97,7 +97,7 @@ msgstr "Корисничко име:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:136
+#: configwidget.ui:108 setupwizard.cpp:243 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "Лозинка:"
@@ -310,82 +310,82 @@ msgstr "Лош одговор са сервера."
 msgid "Unable to parse free-busy data received"
 msgstr "Не могу да рашчланим примљене податке слободног-заузетог."
 
-#: davgroupwareresource.cpp:168
+#: davgroupwareresource.cpp:170
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "Не могу да добавим податке слободног-заузетог ван везе."
 
-#: davgroupwareresource.cpp:188
+#: davgroupwareresource.cpp:190
 #, kde-format
 msgid "Fetching collections"
 msgstr "Добављам збирке"
 
-#: davgroupwareresource.cpp:256
+#: davgroupwareresource.cpp:258
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Затражено је добављање ставки из непознате збирке: %1"
 
-#: davgroupwareresource.cpp:313
+#: davgroupwareresource.cpp:315
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Лоша збирка за ставку %1."
 
-#: davgroupwareresource.cpp:645
+#: davgroupwareresource.cpp:647
 #, fuzzy, kde-format
 #| msgid "Unable to add item: %1"
 msgid "Unable to modify items: %1"
 msgstr "Не могу да додам ставку: %1"
 
-#: davgroupwareresource.cpp:684
+#: davgroupwareresource.cpp:686
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to modify collection: %1"
 msgstr "Не могу да уклоним збирку: %1"
 
-#: davgroupwareresource.cpp:761
+#: davgroupwareresource.cpp:793
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Не могу да уклоним збирку: %1"
 
-#: davgroupwareresource.cpp:781
+#: davgroupwareresource.cpp:813
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Не могу да добавим збирке: %1"
 
-#: davgroupwareresource.cpp:914 davgroupwareresource.cpp:1013
+#: davgroupwareresource.cpp:946 davgroupwareresource.cpp:1045
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Не могу да добавим ставке: %1"
 
-#: davgroupwareresource.cpp:1093
+#: davgroupwareresource.cpp:1125
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Не могу да добавим ставку: %1"
 
-#: davgroupwareresource.cpp:1113
+#: davgroupwareresource.cpp:1145
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
 
-#: davgroupwareresource.cpp:1150
+#: davgroupwareresource.cpp:1182
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Не могу да додам ставку: %1"
 
-#: davgroupwareresource.cpp:1194 davgroupwareresource.cpp:1307
-#: davgroupwareresource.cpp:1319
+#: davgroupwareresource.cpp:1226 davgroupwareresource.cpp:1339
+#: davgroupwareresource.cpp:1351
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Не могу да изменим ставку: %1"
 
-#: davgroupwareresource.cpp:1281 davgroupwareresource.cpp:1338
+#: davgroupwareresource.cpp:1313 davgroupwareresource.cpp:1370
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Не могу да уклоним ставку: %1"
 
-#: davgroupwareresource.cpp:1425 davgroupwareresource.cpp:1426
+#: davgroupwareresource.cpp:1457 davgroupwareresource.cpp:1458
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Ресурс још увек није подешен."
@@ -542,49 +542,49 @@ msgstr "особу по имену"
 msgid "a contact with email"
 msgstr "контакт са е‑поштом"
 
-#: setupwizard.cpp:137
+#: setupwizard.cpp:145
 #, fuzzy, kde-format
 #| msgid "DAV groupware configuration wizard"
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "Чаробњак за подешавање ДАВ групвера"
 
-#: setupwizard.cpp:210
+#: setupwizard.cpp:233
 #, kde-format
 msgid "Login Credentials"
 msgstr "Пријавни акредитиви"
 
-#: setupwizard.cpp:211
+#: setupwizard.cpp:234
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "Унесите своје акредитиве за пријављивање на групверски сервер"
 
-#: setupwizard.cpp:215
+#: setupwizard.cpp:238
 #, fuzzy, kde-format
 #| msgid "User"
 msgid "User:"
 msgstr "Корисник"
 
-#: setupwizard.cpp:255
+#: setupwizard.cpp:278
 #, fuzzy, kde-format
 #| msgid "No, choose another server"
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Не, изабраћу други сервер"
 
-#: setupwizard.cpp:257
+#: setupwizard.cpp:280
 #, kde-format
 msgid "Predefined provider found"
 msgstr "Нађен предефинисани провајдер"
 
-#: setupwizard.cpp:258
+#: setupwizard.cpp:281
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr ""
 "Изаберите ово ако желите да користите аутоматски откривеног провајдера."
 
 # >> %1 provider name
-#: setupwizard.cpp:277
+#: setupwizard.cpp:300
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -595,77 +595,77 @@ msgstr ""
 "може да подеси аутоматски налог за сервисе са %1.\n"
 "Желите ли да се тако уради?"
 
-#: setupwizard.cpp:282
+#: setupwizard.cpp:305
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Да, користи %1 као провајдера"
 
-#: setupwizard.cpp:308
+#: setupwizard.cpp:331
 #, kde-format
 msgid "Groupware Server"
 msgstr "Групверски сервер"
 
-#: setupwizard.cpp:309
+#: setupwizard.cpp:332
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "Изаберите групверски сервер за који треба подесити ресурс."
 
-#: setupwizard.cpp:338
+#: setupwizard.cpp:361
 #, fuzzy, kde-format
 #| msgid "Use one of those servers:"
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Користи један од ових сервера:"
 
-#: setupwizard.cpp:347
+#: setupwizard.cpp:370
 #, fuzzy, kde-format
 #| msgid "Configure the resource manually"
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Подеси ресурс ручно"
 
-#: setupwizard.cpp:381
+#: setupwizard.cpp:404
 #, kde-format
 msgid "Connection"
 msgstr "Повезивање"
 
-#: setupwizard.cpp:382
+#: setupwizard.cpp:405
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Унесите податке за повезивање на групверски сервер"
 
-#: setupwizard.cpp:389
+#: setupwizard.cpp:412
 #, kde-format
 msgid "Host"
 msgstr "Домаћин"
 
-#: setupwizard.cpp:392
+#: setupwizard.cpp:415
 #, kde-format
 msgid "Installation path"
 msgstr "Инсталациона путања"
 
-#: setupwizard.cpp:395
+#: setupwizard.cpp:418
 #, fuzzy, kde-format
 #| msgid "Use secure connection"
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Безбедно повезивање"
 
-#: setupwizard.cpp:423
+#: setupwizard.cpp:446
 #, fuzzy, kde-format
 #| msgid "Final URL (CalDav)"
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "Крајњи УРЛ (калДАВ)"
 
-#: setupwizard.cpp:428
+#: setupwizard.cpp:451
 #, fuzzy, kde-format
 #| msgid "Final URL (CardDav)"
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "Крајњи УРЛ (кардДАВ)"
 
-#: setupwizard.cpp:433
+#: setupwizard.cpp:456
 #, fuzzy, kde-format
 #| msgid "Final URL (GroupDav)"
 msgctxt "@label:textbox"
@@ -674,12 +674,12 @@ msgstr "Крајњи УРЛ (групДАВ)"
 
 # >! Contexts.
 # >> @title:window
-#: setupwizard.cpp:497
+#: setupwizard.cpp:520
 #, kde-format
 msgid "Test Connection"
 msgstr "Испробај везу"
 
-#: setupwizard.cpp:498
+#: setupwizard.cpp:521
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -690,19 +690,19 @@ msgstr ""
 
 # >! Contexts.
 # >> @title:window
-#: setupwizard.cpp:503
+#: setupwizard.cpp:526
 #, fuzzy, kde-format
 #| msgid "Test Connection"
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Испробај везу"
 
-#: setupwizard.cpp:543
+#: setupwizard.cpp:566
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Дошло је до грешке: %1"
 
-#: setupwizard.cpp:546
+#: setupwizard.cpp:569
 #, kde-format
 msgid "Connected successfully"
 msgstr "Успешно повезивање"

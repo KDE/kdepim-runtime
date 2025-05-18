@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-14 00:44+0000\n"
+"POT-Creation-Date: 2025-05-18 00:43+0000\n"
 "PO-Revision-Date: 2024-08-19 22:47+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -48,7 +48,7 @@ msgstr "개월"
 msgid "Years"
 msgstr "년"
 
-#: configwidget.cpp:162
+#: configwidget.cpp:167
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -90,7 +90,7 @@ msgstr "사용자 이름:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:108 setupwizard.cpp:220 urlconfigurationdialog.ui:136
+#: configwidget.ui:108 setupwizard.cpp:243 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "암호:"
@@ -300,57 +300,57 @@ msgstr "서버에서 잘못된 응답이 돌아옴"
 msgid "Unable to parse free-busy data received"
 msgstr "받은 free-busy 데이터를 해석할 수 없음"
 
-#: davgroupwareresource.cpp:168
+#: davgroupwareresource.cpp:170
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "오프라인일 때 free-busy 정보를 가져올 수 없음"
 
-#: davgroupwareresource.cpp:188
+#: davgroupwareresource.cpp:190
 #, kde-format
 msgid "Fetching collections"
 msgstr "모음집 가져오는 중"
 
-#: davgroupwareresource.cpp:256
+#: davgroupwareresource.cpp:258
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "알 수 없는 모음집에서 항목을 가져와야 함: %1"
 
-#: davgroupwareresource.cpp:313
+#: davgroupwareresource.cpp:315
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "항목 %1의 모음집이 올바르지 않습니다."
 
-#: davgroupwareresource.cpp:645
+#: davgroupwareresource.cpp:647
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "항목을 수정할 수 없음: %1"
 
-#: davgroupwareresource.cpp:684
+#: davgroupwareresource.cpp:686
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "모음집을 수정할 수 없음: %1"
 
-#: davgroupwareresource.cpp:761
+#: davgroupwareresource.cpp:793
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "모음집을 삭제하는 중: %1"
 
-#: davgroupwareresource.cpp:781
+#: davgroupwareresource.cpp:813
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "모음집을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:914 davgroupwareresource.cpp:1013
+#: davgroupwareresource.cpp:946 davgroupwareresource.cpp:1045
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "항목을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:1093
+#: davgroupwareresource.cpp:1125
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "항목을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:1113
+#: davgroupwareresource.cpp:1145
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -359,23 +359,23 @@ msgstr ""
 "항목을 가져올 수 없음: 항목 데이터를 해석할 수 없습니다. 이미 삭제되었을 수"
 "도 있습니다."
 
-#: davgroupwareresource.cpp:1150
+#: davgroupwareresource.cpp:1182
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "항목을 추가할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1194 davgroupwareresource.cpp:1307
-#: davgroupwareresource.cpp:1319
+#: davgroupwareresource.cpp:1226 davgroupwareresource.cpp:1339
+#: davgroupwareresource.cpp:1351
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "항목을 변경할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1281 davgroupwareresource.cpp:1338
+#: davgroupwareresource.cpp:1313 davgroupwareresource.cpp:1370
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "항목을 삭제할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1425 davgroupwareresource.cpp:1426
+#: davgroupwareresource.cpp:1457 davgroupwareresource.cpp:1458
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "리소스가 설정되지 않음"
@@ -528,44 +528,44 @@ msgstr "다음 이름을 가지는 사람"
 msgid "a contact with email"
 msgstr "다음 이메일 주소를 가지는 사람"
 
-#: setupwizard.cpp:137
+#: setupwizard.cpp:145
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "DAV 그룹웨어 설정 마법사"
 
-#: setupwizard.cpp:210
+#: setupwizard.cpp:233
 #, kde-format
 msgid "Login Credentials"
 msgstr "로그인 자격 증명"
 
-#: setupwizard.cpp:211
+#: setupwizard.cpp:234
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "그룹웨어 서버에 연결하려면 자격 증명을 입력하십시오"
 
-#: setupwizard.cpp:215
+#: setupwizard.cpp:238
 #, kde-format
 msgid "User:"
 msgstr "사용자:"
 
-#: setupwizard.cpp:255
+#: setupwizard.cpp:278
 #, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "아니요, 다른 서버를 선택합니다"
 
-#: setupwizard.cpp:257
+#: setupwizard.cpp:280
 #, kde-format
 msgid "Predefined provider found"
 msgstr "미리 정의된 공급자를 찾았음"
 
-#: setupwizard.cpp:258
+#: setupwizard.cpp:281
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "미리 정의된 공급자를 사용하려면 선택하십시오"
 
-#: setupwizard.cpp:277
+#: setupwizard.cpp:300
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -576,83 +576,83 @@ msgstr ""
 "%1 서비스에 사용하는 계정을 자동으로 설정할 수 있습니다.\n"
 "계속 진행하시겠습니까?"
 
-#: setupwizard.cpp:282
+#: setupwizard.cpp:305
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "예, %1을(를) 공급자로 사용합니다"
 
-#: setupwizard.cpp:308
+#: setupwizard.cpp:331
 #, kde-format
 msgid "Groupware Server"
 msgstr "그룹웨어 서버"
 
-#: setupwizard.cpp:309
+#: setupwizard.cpp:332
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "리소스를 구성할 그룹웨어 서버 선택"
 
-#: setupwizard.cpp:338
+#: setupwizard.cpp:361
 #, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "다음 서버 중 하나 사용:"
 
-#: setupwizard.cpp:347
+#: setupwizard.cpp:370
 #, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "리소스를 수동으로 설정"
 
-#: setupwizard.cpp:381
+#: setupwizard.cpp:404
 #, kde-format
 msgid "Connection"
 msgstr "연결"
 
-#: setupwizard.cpp:382
+#: setupwizard.cpp:405
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "그룹웨어 서버 연결 정보 입력"
 
-#: setupwizard.cpp:389
+#: setupwizard.cpp:412
 #, kde-format
 msgid "Host"
 msgstr "호스트"
 
-#: setupwizard.cpp:392
+#: setupwizard.cpp:415
 #, kde-format
 msgid "Installation path"
 msgstr "설치 경로"
 
-#: setupwizard.cpp:395
+#: setupwizard.cpp:418
 #, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "보안 연결 사용"
 
-#: setupwizard.cpp:423
+#: setupwizard.cpp:446
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "최종 URL(CalDav)"
 
-#: setupwizard.cpp:428
+#: setupwizard.cpp:451
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "최종 URL(CardDav)"
 
-#: setupwizard.cpp:433
+#: setupwizard.cpp:456
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "최종 URL(GroupDav)"
 
-#: setupwizard.cpp:497
+#: setupwizard.cpp:520
 #, kde-format
 msgid "Test Connection"
 msgstr "연결 시험"
 
-#: setupwizard.cpp:498
+#: setupwizard.cpp:521
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -660,18 +660,18 @@ msgid ""
 msgstr ""
 "현재 설정으로 그룹웨어 서비스에 접근할 수 있는지 테스트해 볼 수 있습니다"
 
-#: setupwizard.cpp:503
+#: setupwizard.cpp:526
 #, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "연결 시험"
 
-#: setupwizard.cpp:543
+#: setupwizard.cpp:566
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "오류 발생: %1"
 
-#: setupwizard.cpp:546
+#: setupwizard.cpp:569
 #, kde-format
 msgid "Connected successfully"
 msgstr "성공적으로 연결됨"
