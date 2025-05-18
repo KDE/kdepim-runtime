@@ -1,5 +1,10 @@
 [Desktop Entry]
 Name=Fastmail
+Name[ca]=Fastmail
+Name[es]=Fastmail
+Name[gl]=Fastmail
+Name[sl]=Fastmail
+Name[tr]=Fastmail
 Type=Service
 Icon=account-fastmail
 
