@@ -3,10 +3,13 @@ Name=Fastmail
 Name[ar]=Fastmail
 Name[ca]=Fastmail
 Name[es]=Fastmail
+Name[fr]=Fastmail
 Name[gl]=Fastmail
 Name[he]=Fastmail
+Name[nl]=Fastmail
 Name[sl]=Fastmail
 Name[tr]=Fastmail
+Name[zh_TW]=Fastmail
 Type=Service
 Icon=account-fastmail
 
