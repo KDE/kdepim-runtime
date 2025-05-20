@@ -44,7 +44,6 @@ enum GroupwareServers {
     Kopano,
     OpenGroupware,
     ScalableOGo,
-    Scalix,
     Zimbra,
 };
 
