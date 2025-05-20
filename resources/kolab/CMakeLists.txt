@@ -1,3 +1,8 @@
+if(CMAKE_CXX_CLANG_TIDY OR "${CMAKE_CXX_COMPILER}" MATCHES "clazy")
+  # kolab is deprecreated => we don't care about clang-tidy or clazy issues
+  return()
+endif()
+
 add_subdirectory(pimkolab)
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../imap

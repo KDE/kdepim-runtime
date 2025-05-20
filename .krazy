@@ -1,2 +1,5 @@
 EXTRA defines,null,qenums,tipsandthis
 STRICT super
+
+# SKIP deprecated kolab
+SKIP resources/kolab/

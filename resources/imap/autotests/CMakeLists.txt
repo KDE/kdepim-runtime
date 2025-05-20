@@ -4,6 +4,12 @@ if(NOT TARGET KPim6::kimaptest6)
   return()
 endif()
 
+# clang-tidy and clazy fails have link failures:
+# /usr/bin/ld: libkimaptest6.a: error adding symbols: file format not recognized
+if(CMAKE_CXX_CLANG_TIDY OR "${CMAKE_CXX_COMPILER}" MATCHES "clazy")
+  return()
+endif()
+
 kde_enable_exceptions()
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 

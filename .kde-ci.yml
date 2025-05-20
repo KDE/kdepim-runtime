@@ -36,3 +36,7 @@ Dependencies:
  - 'on': ['Linux', 'FreeBSD']
    'require':
     'plasma/plasma-activities': '@latest-kf6'
+
+Options:
+ cppcheck-ignore-files:
+  - 'src/resources/kolab/'
