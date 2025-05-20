@@ -41,10 +41,10 @@ enum GroupwareServers {
     Citadel,
     DAVical,
     eGroupware,
+    Kopano,
     OpenGroupware,
     ScalableOGo,
     Scalix,
-    Zarafa,
     Zimbra,
 };
 

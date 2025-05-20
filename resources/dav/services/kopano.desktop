@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Kopano
+Type=Service
+Icon=account-kopano
+
+X-DavGroupware-SupportedProtocols=CalDav
+X-DavGroupware-CalDavPath=/caldav/$user$

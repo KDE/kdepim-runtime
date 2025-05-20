@@ -753,6 +753,9 @@ QString DavGroupwareResource::iconForDavUrl(const KDAV::DavUrl &davUrl)
             icon = u"account-apple"_s;
         } else if ((host == "fastmail.com"_L1) || host.endsWith(".fastmail.com"_L1)) {
             icon = u"account-fastmail"_s;
+        } else if (host.contains("kopano"_L1)) {
+            // Kopano is self-hosted
+            icon = u"account-kopano"_s;
         } else if ((host == "nextcloud.com"_L1) || host.endsWith(".nextcloud.com"_L1) || host.startsWith("nextcloud."_L1)) {
             icon = u"account-nextcloud"_s;
         } else if ((host == "yahoo.com"_L1) || host.endsWith(".yahoo.com"_L1)) {

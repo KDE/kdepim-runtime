@@ -1,3 +1,13 @@
+version = 1
+SPDX-PackageName = "kdepim-runtime"
+SPDX-PackageDownloadLocation = "https://invent.kde.org/pim/kdepim-runtime"
+
+[[annotations]]
+path = ["**.desktop"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "None"
+SPDX-License-Identifier = "GPL-2.0-or-later"
+
 [[annotations]]
 # Simple logos => no copyright but trademarks still apply
 path = ["images/*-apps-account-*.png"]
