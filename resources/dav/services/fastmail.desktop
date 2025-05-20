@@ -4,6 +4,7 @@ Name[ar]=Fastmail
 Name[bg]=Fastmail
 Name[ca]=Fastmail
 Name[es]=Fastmail
+Name[fr]=Fastmail
 Name[gl]=Fastmail
 Name[he]=Fastmail
 Name[ka]=Fastmail
@@ -12,6 +13,7 @@ Name[sl]=Fastmail
 Name[tr]=Fastmail
 Name[uk]=Fastmail
 Name[x-test]=xxFastmailxx
+Name[zh_TW]=Fastmail
 Type=Service
 Icon=account-fastmail
 
