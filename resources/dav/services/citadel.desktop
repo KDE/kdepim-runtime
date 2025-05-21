@@ -51,6 +51,7 @@ Name[x-test]=xxCitadelxx
 Name[zh_CN]=Citadel
 Name[zh_TW]=Citadel
 Type=Service
+Icon=account-citadel
 
 X-DavGroupware-SupportedProtocols=GroupDav
 X-DavGroupware-GroupDavPath=/groupdav

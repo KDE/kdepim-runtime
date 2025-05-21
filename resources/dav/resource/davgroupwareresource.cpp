@@ -753,6 +753,9 @@ QString DavGroupwareResource::iconForDavUrl(const KDAV::DavUrl &davUrl)
             icon = u"account-apple"_s;
         } else if ((host == "fastmail.com"_L1) || host.endsWith(".fastmail.com"_L1)) {
             icon = u"account-fastmail"_s;
+        } else if (host.contains("citadel"_L1)) {
+            // citadel is self-hosted
+            icon = u"account-citadel"_s;
         } else if (host.contains("kopano"_L1)) {
             // Kopano is self-hosted
             icon = u"account-kopano"_s;
