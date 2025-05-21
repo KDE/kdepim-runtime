@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-18 00:43+0000\n"
+"POT-Creation-Date: 2025-05-21 00:43+0000\n"
 "PO-Revision-Date: 2025-01-26 21:24+0100\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
@@ -51,7 +51,7 @@ msgstr "Meses"
 msgid "Years"
 msgstr "Anos"
 
-#: configwidget.cpp:167
+#: configwidget.cpp:166
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -94,7 +94,7 @@ msgstr "Nome de usuaria:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:108 setupwizard.cpp:243 urlconfigurationdialog.ui:136
+#: configwidget.ui:108 setupwizard.cpp:242 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "Contrasinal:"
@@ -341,27 +341,27 @@ msgstr "Non é posíbel modificar os elementos: %1"
 msgid "Unable to modify collection: %1"
 msgstr "Non é posíbel modificar a colección: %1"
 
-#: davgroupwareresource.cpp:793
+#: davgroupwareresource.cpp:796
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Non é posíbel retirar a colección: %1"
 
-#: davgroupwareresource.cpp:813
+#: davgroupwareresource.cpp:816
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Non é posíbel obter as coleccións: %1"
 
-#: davgroupwareresource.cpp:946 davgroupwareresource.cpp:1045
+#: davgroupwareresource.cpp:949 davgroupwareresource.cpp:1048
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Non é posíbel obter os elementos: %1"
 
-#: davgroupwareresource.cpp:1125
+#: davgroupwareresource.cpp:1128
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Non é posíbel obter o elemento: %1"
 
-#: davgroupwareresource.cpp:1145
+#: davgroupwareresource.cpp:1148
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -370,23 +370,23 @@ msgstr ""
 "Non é posíbel obter o elemento: non se puideron procesar os seus datos. "
 "Igual se eliminaron."
 
-#: davgroupwareresource.cpp:1182
+#: davgroupwareresource.cpp:1185
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Non é posíbel engadir o elemento: %1"
 
-#: davgroupwareresource.cpp:1226 davgroupwareresource.cpp:1339
-#: davgroupwareresource.cpp:1351
+#: davgroupwareresource.cpp:1229 davgroupwareresource.cpp:1342
+#: davgroupwareresource.cpp:1354
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Non é posíbel cambiar o elemento: %1"
 
-#: davgroupwareresource.cpp:1313 davgroupwareresource.cpp:1370
+#: davgroupwareresource.cpp:1316 davgroupwareresource.cpp:1373
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Non é posíbel retirar o elemento: %1"
 
-#: davgroupwareresource.cpp:1457 davgroupwareresource.cpp:1458
+#: davgroupwareresource.cpp:1460 davgroupwareresource.cpp:1461
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "O recurso aínda non está configurado"
@@ -541,45 +541,45 @@ msgstr "unha persoa chamada"
 msgid "a contact with email"
 msgstr "un contacto co correo"
 
-#: setupwizard.cpp:145
+#: setupwizard.cpp:144
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "Asistente para a configuración dun grupo DAV"
 
-#: setupwizard.cpp:233
+#: setupwizard.cpp:232
 #, kde-format
 msgid "Login Credentials"
 msgstr "Credenciais de acceso"
 
-#: setupwizard.cpp:234
+#: setupwizard.cpp:233
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr ""
 "Insira as súas credenciais para acceder ao servidor de traballo en grupo"
 
-#: setupwizard.cpp:238
+#: setupwizard.cpp:237
 #, kde-format
 msgid "User:"
 msgstr "Usuario:"
 
-#: setupwizard.cpp:278
+#: setupwizard.cpp:277
 #, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Non, escoller outro servidor."
 
-#: setupwizard.cpp:280
+#: setupwizard.cpp:279
 #, kde-format
 msgid "Predefined provider found"
 msgstr "Atopouse un fornecedor predefinido."
 
-#: setupwizard.cpp:281
+#: setupwizard.cpp:280
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "Indique se quere usar o fornecedor detectado."
 
-#: setupwizard.cpp:300
+#: setupwizard.cpp:299
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -591,85 +591,85 @@ msgstr ""
 "%1.\n"
 "Quere facelo?"
 
-#: setupwizard.cpp:305
+#: setupwizard.cpp:304
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Si, usar %1 como fornecedor"
 
-#: setupwizard.cpp:331
+#: setupwizard.cpp:330
 #, kde-format
 msgid "Groupware Server"
 msgstr "Servidor de Traballo en Grupo"
 
-#: setupwizard.cpp:332
+#: setupwizard.cpp:331
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr ""
 "Seleccione o servidor de traballo en grupo para o que desexa configurar este "
 "recurso"
 
-#: setupwizard.cpp:361
+#: setupwizard.cpp:360
 #, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Usar un deses servidores:"
 
-#: setupwizard.cpp:370
+#: setupwizard.cpp:369
 #, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Configurar o recurso manualmente."
 
-#: setupwizard.cpp:404
+#: setupwizard.cpp:403
 #, kde-format
 msgid "Connection"
 msgstr "Conexión"
 
-#: setupwizard.cpp:405
+#: setupwizard.cpp:404
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Insira a información da conexión do servidor de traballo en grupo"
 
-#: setupwizard.cpp:412
+#: setupwizard.cpp:411
 #, kde-format
 msgid "Host"
 msgstr "Servidor"
 
-#: setupwizard.cpp:415
+#: setupwizard.cpp:414
 #, kde-format
 msgid "Installation path"
 msgstr "Ruta de instalación"
 
-#: setupwizard.cpp:418
+#: setupwizard.cpp:417
 #, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Usar unha conexión segura."
 
-#: setupwizard.cpp:446
+#: setupwizard.cpp:445
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "URL final (CalDav)"
 
-#: setupwizard.cpp:451
+#: setupwizard.cpp:450
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "URL final (CardDav)"
 
-#: setupwizard.cpp:456
+#: setupwizard.cpp:455
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "URL final (GroupDav)"
 
-#: setupwizard.cpp:520
+#: setupwizard.cpp:519
 #, kde-format
 msgid "Test Connection"
 msgstr "Probar a conexión"
 
-#: setupwizard.cpp:521
+#: setupwizard.cpp:520
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -678,18 +678,18 @@ msgstr ""
 "Pode probar agora se é posíbel acceder ao servidor de traballo en grupo coa "
 "configuración actual"
 
-#: setupwizard.cpp:526
+#: setupwizard.cpp:525
 #, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Probar a conexión"
 
-#: setupwizard.cpp:566
+#: setupwizard.cpp:565
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Produciuse un erro: %1"
 
-#: setupwizard.cpp:569
+#: setupwizard.cpp:568
 #, kde-format
 msgid "Connected successfully"
 msgstr "Conectouse"

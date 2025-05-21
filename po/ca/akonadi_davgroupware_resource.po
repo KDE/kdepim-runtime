@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-18 00:43+0000\n"
+"POT-Creation-Date: 2025-05-21 00:43+0000\n"
 "PO-Revision-Date: 2024-07-31 12:00+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -53,7 +53,7 @@ msgstr "Mesos"
 msgid "Years"
 msgstr "Anys"
 
-#: configwidget.cpp:167
+#: configwidget.cpp:166
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -96,7 +96,7 @@ msgstr "Nom d'usuari:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:108 setupwizard.cpp:243 urlconfigurationdialog.ui:136
+#: configwidget.ui:108 setupwizard.cpp:242 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "Contrasenya:"
@@ -348,27 +348,27 @@ msgstr "No s'han pogut modificar els elements: %1"
 msgid "Unable to modify collection: %1"
 msgstr "No s'ha pogut modificar la col·lecció: %1"
 
-#: davgroupwareresource.cpp:793
+#: davgroupwareresource.cpp:796
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "No s'han pogut eliminar les col·leccions: %1"
 
-#: davgroupwareresource.cpp:813
+#: davgroupwareresource.cpp:816
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "No s'han pogut recuperar les col·leccions: %1"
 
-#: davgroupwareresource.cpp:946 davgroupwareresource.cpp:1045
+#: davgroupwareresource.cpp:949 davgroupwareresource.cpp:1048
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "No s'han pogut recuperar els elements: %1"
 
-#: davgroupwareresource.cpp:1125
+#: davgroupwareresource.cpp:1128
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "No s'ha pogut recuperar l'element: %1"
 
-#: davgroupwareresource.cpp:1145
+#: davgroupwareresource.cpp:1148
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -377,23 +377,23 @@ msgstr ""
 "No s'ha pogut recuperar l'element: ha fallat en analitzar les dades de "
 "l'element. Potser ja s'ha suprimit."
 
-#: davgroupwareresource.cpp:1182
+#: davgroupwareresource.cpp:1185
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "No s'ha pogut afegir l'element: %1"
 
-#: davgroupwareresource.cpp:1226 davgroupwareresource.cpp:1339
-#: davgroupwareresource.cpp:1351
+#: davgroupwareresource.cpp:1229 davgroupwareresource.cpp:1342
+#: davgroupwareresource.cpp:1354
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "No s'ha pogut canviar l'element: %1"
 
-#: davgroupwareresource.cpp:1313 davgroupwareresource.cpp:1370
+#: davgroupwareresource.cpp:1316 davgroupwareresource.cpp:1373
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "No s'ha pogut eliminar l'element: %1"
 
-#: davgroupwareresource.cpp:1457 davgroupwareresource.cpp:1458
+#: davgroupwareresource.cpp:1460 davgroupwareresource.cpp:1461
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "El recurs encara no està configurat"
@@ -549,46 +549,46 @@ msgstr "una persona anomenada"
 msgid "a contact with email"
 msgstr "un contacte amb el correu electrònic"
 
-#: setupwizard.cpp:145
+#: setupwizard.cpp:144
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "Assistent de configuració de treball en grup DAV"
 
-#: setupwizard.cpp:233
+#: setupwizard.cpp:232
 #, kde-format
 msgid "Login Credentials"
 msgstr "Credencials d'inici de sessió"
 
-#: setupwizard.cpp:234
+#: setupwizard.cpp:233
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr ""
 "Introduïu les vostres credencials per a iniciar la sessió amb el servidor de "
 "treball en grup"
 
-#: setupwizard.cpp:238
+#: setupwizard.cpp:237
 #, kde-format
 msgid "User:"
 msgstr "Usuari:"
 
-#: setupwizard.cpp:278
+#: setupwizard.cpp:277
 #, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "No, trio un altre servidor"
 
-#: setupwizard.cpp:280
+#: setupwizard.cpp:279
 #, kde-format
 msgid "Predefined provider found"
 msgstr "S'ha trobat un proveïdor predefinit"
 
-#: setupwizard.cpp:281
+#: setupwizard.cpp:280
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "Seleccioneu-ho si voleu usar el proveïdor detectat automàticament"
 
-#: setupwizard.cpp:300
+#: setupwizard.cpp:299
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -600,85 +600,85 @@ msgstr ""
 "compte per als serveis %1.\n"
 "Voleu fer-ho?"
 
-#: setupwizard.cpp:305
+#: setupwizard.cpp:304
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Sí, usa %1 com a proveïdor"
 
-#: setupwizard.cpp:331
+#: setupwizard.cpp:330
 #, kde-format
 msgid "Groupware Server"
 msgstr "Servidor de treball en grup"
 
-#: setupwizard.cpp:332
+#: setupwizard.cpp:331
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr ""
 "Seleccioneu el servidor de treball en grup per al qual s'ha de configurar el "
 "recurs"
 
-#: setupwizard.cpp:361
+#: setupwizard.cpp:360
 #, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Usa un d'aquests servidors:"
 
-#: setupwizard.cpp:370
+#: setupwizard.cpp:369
 #, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Configura el recurs manualment"
 
-#: setupwizard.cpp:404
+#: setupwizard.cpp:403
 #, kde-format
 msgid "Connection"
 msgstr "Connexió"
 
-#: setupwizard.cpp:405
+#: setupwizard.cpp:404
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Introduïu la informació de connexió per al servidor de treball en grup"
 
-#: setupwizard.cpp:412
+#: setupwizard.cpp:411
 #, kde-format
 msgid "Host"
 msgstr "Màquina"
 
-#: setupwizard.cpp:415
+#: setupwizard.cpp:414
 #, kde-format
 msgid "Installation path"
 msgstr "Camí d'instal·lació"
 
-#: setupwizard.cpp:418
+#: setupwizard.cpp:417
 #, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Usa una connexió segura"
 
-#: setupwizard.cpp:446
+#: setupwizard.cpp:445
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "URL final (CalDav)"
 
-#: setupwizard.cpp:451
+#: setupwizard.cpp:450
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "URL final (CardDav)"
 
-#: setupwizard.cpp:456
+#: setupwizard.cpp:455
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "URL final (GroupDav)"
 
-#: setupwizard.cpp:520
+#: setupwizard.cpp:519
 #, kde-format
 msgid "Test Connection"
 msgstr "Prova de connexió"
 
-#: setupwizard.cpp:521
+#: setupwizard.cpp:520
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -687,18 +687,18 @@ msgstr ""
 "Ara podeu provar si es pot accedir al servidor de treball en grup amb la "
 "configuració actual"
 
-#: setupwizard.cpp:526
+#: setupwizard.cpp:525
 #, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Prova de connexió"
 
-#: setupwizard.cpp:566
+#: setupwizard.cpp:565
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "S'ha detectat un error: %1"
 
-#: setupwizard.cpp:569
+#: setupwizard.cpp:568
 #, kde-format
 msgid "Connected successfully"
 msgstr "S'ha connectat satisfactòriament"
