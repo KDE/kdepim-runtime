@@ -3,22 +3,22 @@
 # Xosé <xosecalvo@gmail.com>, 2009, 2010.
 # Adrian Chaves Fernandez <adriyetichaves@gmail.com>, 2013, 2015, 2016, 2017.
 # Marce Villarino <mvillarino@kde-espana.org>, 2014.
-# SPDX-FileCopyrightText: 2023, 2024 Adrián Chaves (Gallaecio)
+# SPDX-FileCopyrightText: 2023, 2024, 2025 Adrián Chaves (Gallaecio)
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:42+0000\n"
-"PO-Revision-Date: 2024-08-22 19:03+0200\n"
-"Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
+"PO-Revision-Date: 2025-05-21 09:07+0200\n"
+"Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.gal>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.04.1\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -312,6 +312,8 @@ msgid ""
 "A file path or URL containing the calendar file. Once created, this location "
 "cannot be modified."
 msgstr ""
+"A ruta ou URL dun ficheiro de calendario. Unha vez creado, a localización "
+"non pode modificarse."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
 #, kde-kuit-format
@@ -322,6 +324,10 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></para>"
 msgstr ""
+"Insira a ruta ou URL dun ficheiro de calendario válido.<para><note> Por "
+"desgraza, a ruta non pode cambiarse unha vez creado o recurso. Para cambiar "
+"a localización, elimine o recurso e cree un novo coa ruta actualizada.</"
+"note></para>"
 
 #: singlefileresourceconfigwidgetbase.cpp:145
 #, kde-format
