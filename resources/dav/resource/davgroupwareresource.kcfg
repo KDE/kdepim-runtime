@@ -27,15 +27,15 @@
       <default></default>
     </entry>
     <entry name="limitSyncRange" type="Bool">
-      <label>Limit the events retrieval to the specified time range</label>
+      <label>Limit the data retrieval to the specified time range</label>
       <default>true</default>
     </entry>
     <entry name="syncRangeStartNumber" type="String">
-      <label>Period for which to retrieve events, quantity</label>
+      <label>Period for which to retrieve data, quantity</label>
       <default>3</default>
     </entry>
     <entry name="syncRangeStartType" type="String">
-      <label>Period for which to retrieve events, type</label>
+      <label>Period for which to retrieve data, type</label>
       <default>M</default>
     </entry>
     <entry name="collectionsUrlsMappings" type="String">

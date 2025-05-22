@@ -62,7 +62,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -84,13 +84,12 @@
    <item row="2" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,1">
      <item>
-      <widget class="QLineEdit" name="kcfg_defaultUsername">
-      </widget>
+      <widget class="QLineEdit" name="kcfg_defaultUsername"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -112,13 +111,12 @@
    <item row="3" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="2,1">
      <item>
-      <widget class="KPasswordLineEdit" name="password">
-      </widget>
+      <widget class="KPasswordLineEdit" name="password"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -133,10 +131,13 @@
    <item row="4" column="1">
     <widget class="QCheckBox" name="kcfg_limitSyncRange">
      <property name="toolTip">
-      <string>Select this if your calendars contain a lot of events and the server cannot fulfill the requests</string>
+      <string>Select this to reduce the load on the server and speed-up your syncs</string>
+     </property>
+     <property name="whatsThis">
+      <string>Limiting the time span range will lessen the load on the remote server and speed-up your initial sync.</string>
      </property>
      <property name="text">
-      <string>Limit CalDav retrieval time range</string>
+      <string>Limit retrieval time range</string>
      </property>
     </widget>
    </item>
@@ -148,7 +149,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Only sync events more recent than</string>
+        <string>Only sync data more recent than</string>
        </property>
       </widget>
      </item>
@@ -172,7 +173,7 @@
      <item>
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -229,7 +230,7 @@
        <item>
         <spacer name="verticalSpacer_2">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
