@@ -108,7 +108,7 @@ msgstr ""
 #: newmailnotifiersettingswidget.cpp:55
 #, kde-format
 msgid "Choose which fields to show:"
-msgstr "Escolliu quins camps mostrar:"
+msgstr "Trieu quins camps mostrar:"
 
 #: newmailnotifiersettingswidget.cpp:60
 #, kde-format
