@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-21 00:43+0000\n"
+"POT-Creation-Date: 2025-05-23 00:43+0000\n"
 "PO-Revision-Date: 2024-08-19 22:47+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -330,27 +330,27 @@ msgstr "항목을 수정할 수 없음: %1"
 msgid "Unable to modify collection: %1"
 msgstr "모음집을 수정할 수 없음: %1"
 
-#: davgroupwareresource.cpp:796
+#: davgroupwareresource.cpp:799
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "모음집을 삭제하는 중: %1"
 
-#: davgroupwareresource.cpp:816
+#: davgroupwareresource.cpp:819
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "모음집을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:949 davgroupwareresource.cpp:1048
+#: davgroupwareresource.cpp:952 davgroupwareresource.cpp:1051
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "항목을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:1128
+#: davgroupwareresource.cpp:1131
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "항목을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:1148
+#: davgroupwareresource.cpp:1151
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -359,23 +359,23 @@ msgstr ""
 "항목을 가져올 수 없음: 항목 데이터를 해석할 수 없습니다. 이미 삭제되었을 수"
 "도 있습니다."
 
-#: davgroupwareresource.cpp:1185
+#: davgroupwareresource.cpp:1188
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "항목을 추가할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1229 davgroupwareresource.cpp:1342
-#: davgroupwareresource.cpp:1354
+#: davgroupwareresource.cpp:1232 davgroupwareresource.cpp:1345
+#: davgroupwareresource.cpp:1357
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "항목을 변경할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1316 davgroupwareresource.cpp:1373
+#: davgroupwareresource.cpp:1319 davgroupwareresource.cpp:1376
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "항목을 삭제할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1460 davgroupwareresource.cpp:1461
+#: davgroupwareresource.cpp:1463 davgroupwareresource.cpp:1464
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "리소스가 설정되지 않음"

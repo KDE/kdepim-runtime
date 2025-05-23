@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-21 00:43+0000\n"
+"POT-Creation-Date: 2025-05-23 00:43+0000\n"
 "PO-Revision-Date: 2010-12-26 09:02+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
@@ -316,50 +316,50 @@ msgstr ""
 msgid "Unable to modify collection: %1"
 msgstr ""
 
-#: davgroupwareresource.cpp:796
+#: davgroupwareresource.cpp:799
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr ""
 
-#: davgroupwareresource.cpp:816
+#: davgroupwareresource.cpp:819
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr ""
 
-#: davgroupwareresource.cpp:949 davgroupwareresource.cpp:1048
+#: davgroupwareresource.cpp:952 davgroupwareresource.cpp:1051
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr ""
 
-#: davgroupwareresource.cpp:1128
+#: davgroupwareresource.cpp:1131
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr ""
 
-#: davgroupwareresource.cpp:1148
+#: davgroupwareresource.cpp:1151
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
 
-#: davgroupwareresource.cpp:1185
+#: davgroupwareresource.cpp:1188
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr ""
 
-#: davgroupwareresource.cpp:1229 davgroupwareresource.cpp:1342
-#: davgroupwareresource.cpp:1354
+#: davgroupwareresource.cpp:1232 davgroupwareresource.cpp:1345
+#: davgroupwareresource.cpp:1357
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr ""
 
-#: davgroupwareresource.cpp:1316 davgroupwareresource.cpp:1373
+#: davgroupwareresource.cpp:1319 davgroupwareresource.cpp:1376
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr ""
 
-#: davgroupwareresource.cpp:1460 davgroupwareresource.cpp:1461
+#: davgroupwareresource.cpp:1463 davgroupwareresource.cpp:1464
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr ""
