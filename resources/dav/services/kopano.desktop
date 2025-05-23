@@ -5,6 +5,7 @@ Name[bg]=Kopano
 Name[ca]=Kopano
 Name[ca@valencia]=Kopano
 Name[es]=Kopano
+Name[gl]=Kopano
 Name[he]=Kopano
 Name[it]=Kopano
 Name[ka]=Kopano
@@ -13,6 +14,7 @@ Name[sl]=Kopano
 Name[tr]=Kopano
 Name[uk]=Kopano
 Name[x-test]=xxKopanoxx
+Name[zh_TW]=Kopano
 Type=Service
 Icon=account-kopano
 
