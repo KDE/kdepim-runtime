@@ -1,7 +1,7 @@
 # Translation for akonadi_imap_resource.po to Euskara/Basque (eu).
 # Copyright (C) 2022-2025 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
-# SPDX-FileCopyrightText: 2024, 2025 KDE euskaratzeko proiektuko arduraduna <xalba@ni.eus>
+# SPDX-FileCopyrightText: 2024, 2025 KDE euskaratzeko proiektuaren arduraduna <xalba@ni.eus>
 #
 # Translators:
 # Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022, 2023, 2024, 2025.
@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-14 00:44+0000\n"
-"PO-Revision-Date: 2025-03-25 21:46+0100\n"
+"PO-Revision-Date: 2025-05-23 22:53+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.12.3\n"
+"X-Generator: Lokalize 25.04.1\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -638,11 +638,7 @@ msgid "Password not found for %1 IMAP account"
 msgstr "Ez da aurkitu %1 IMAP kontuaren pasahitza"
 
 #: settings.cpp:174
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when retriving the IMAP password from the system "
-#| "keychain: \"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the IMAP password from the system "
@@ -658,11 +654,7 @@ msgid "Password not found for %1 sieve account"
 msgstr "Eza da %1 «sieve» kontuaren pasahitza aurkitu"
 
 #: settings.cpp:210
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when retriving the sieve password from the system "
-#| "keychain: \"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the sieve password from the system "
@@ -672,11 +664,7 @@ msgstr ""
 "berreskuratzean: \"%1\""
 
 #: settings.cpp:240
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when saving the sieve password in the system keychain: "
-#| "\"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the sieve password in the system keychain: "
@@ -686,11 +674,7 @@ msgstr ""
 "berreskuratzean: \"%1\""
 
 #: settings.cpp:266
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when saving the IMAP password in the system keychain: "
-#| "\"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the IMAP password in the system keychain: "

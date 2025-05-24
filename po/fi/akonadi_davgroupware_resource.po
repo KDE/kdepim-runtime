@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-23 00:43+0000\n"
+"POT-Creation-Date: 2025-05-24 00:43+0000\n"
 "PO-Revision-Date: 2024-10-20 14:31+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -95,59 +95,65 @@ msgstr "Käyttäjätunnus:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:108 setupwizard.cpp:242 urlconfigurationdialog.ui:136
+#: configwidget.ui:107 setupwizard.cpp:242 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "Salasana:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_limitSyncRange)
-#: configwidget.ui:136
+#: configwidget.ui:134
+#, kde-format
+msgid "Select this to reduce the load on the server and speed-up your syncs"
+msgstr ""
+
+#. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
+#: configwidget.ui:137
 #, kde-format
 msgid ""
-"Select this if your calendars contain a lot of events and the server cannot "
-"fulfill the requests"
+"Limiting the time span range will lessen the load on the remote server and "
+"speed-up your initial sync."
 msgstr ""
-"Valitse tämä, jos kalenterissasi on paljon tapahtumia eikä palvelin toteuta "
-"pyyntöjä"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
-#: configwidget.ui:139
-#, kde-format
-msgid "Limit CalDav retrieval time range"
+#: configwidget.ui:140
+#, fuzzy, kde-format
+#| msgid "Limit CalDav retrieval time range"
+msgid "Limit retrieval time range"
 msgstr "Rajaa CalDav-noudon aikaväliä"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:151
-#, kde-format
-msgid "Only sync events more recent than"
+#: configwidget.ui:152
+#, fuzzy, kde-format
+#| msgid "Only sync events more recent than"
+msgid "Only sync data more recent than"
 msgstr "Synkronoi vain tapahtumat, jotka ovat uudempia kuin"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
-#: configwidget.ui:190
+#: configwidget.ui:191
 #, kde-format
 msgid "Server Configuration:"
 msgstr "Palvelinasetukset:"
 
 #. i18n: ectx: property (text), widget (QPushButton, addButton)
-#: configwidget.ui:204
+#: configwidget.ui:205
 #, kde-format
 msgid "Add"
 msgstr "Lisää"
 
 #. i18n: ectx: property (text), widget (QPushButton, searchButton)
-#: configwidget.ui:211 searchdialog.ui:151
+#: configwidget.ui:212 searchdialog.ui:151
 #, kde-format
 msgid "Search"
 msgstr "Etsi"
 
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: configwidget.ui:218
+#: configwidget.ui:219
 #, kde-format
 msgid "Remove"
 msgstr "Poista"
 
 #. i18n: ectx: property (text), widget (QPushButton, editButton)
-#: configwidget.ui:225
+#: configwidget.ui:226
 #, kde-format
 msgid "Edit"
 msgstr "Muokkaa"
@@ -419,20 +425,23 @@ msgstr "Käyttäjätunnus"
 
 #. i18n: ectx: label, entry (limitSyncRange), group (General)
 #: davgroupwareresource.kcfg:30
-#, kde-format
-msgid "Limit the events retrieval to the specified time range"
+#, fuzzy, kde-format
+#| msgid "Limit the events retrieval to the specified time range"
+msgid "Limit the data retrieval to the specified time range"
 msgstr "Rajaa tapahtumien noudon annetulle aikavälille"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
-#, kde-format
-msgid "Period for which to retrieve events, quantity"
+#, fuzzy, kde-format
+#| msgid "Period for which to retrieve events, quantity"
+msgid "Period for which to retrieve data, quantity"
 msgstr "Ajanjakso, jolta tapahtumia noudetaan, määrä"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
-#, kde-format
-msgid "Period for which to retrieve events, type"
+#, fuzzy, kde-format
+#| msgid "Period for which to retrieve events, type"
+msgid "Period for which to retrieve data, type"
 msgstr "Ajanjakso, jolta tapahtumia noudetaan, tyyppi"
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
@@ -752,6 +761,13 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
+
+#~ msgid ""
+#~ "Select this if your calendars contain a lot of events and the server "
+#~ "cannot fulfill the requests"
+#~ msgstr ""
+#~ "Valitse tämä, jos kalenterissasi on paljon tapahtumia eikä palvelin "
+#~ "toteuta pyyntöjä"
 
 #~ msgctxt "@label:textbox"
 #~ msgid "A password is required for user %1"

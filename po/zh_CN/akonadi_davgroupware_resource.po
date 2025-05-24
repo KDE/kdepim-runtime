@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-23 00:43+0000\n"
+"POT-Creation-Date: 2025-05-24 00:43+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -91,57 +91,65 @@ msgstr "用户名："
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:108 setupwizard.cpp:242 urlconfigurationdialog.ui:136
+#: configwidget.ui:107 setupwizard.cpp:242 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "密码："
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_limitSyncRange)
-#: configwidget.ui:136
+#: configwidget.ui:134
+#, kde-format
+msgid "Select this to reduce the load on the server and speed-up your syncs"
+msgstr ""
+
+#. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
+#: configwidget.ui:137
 #, kde-format
 msgid ""
-"Select this if your calendars contain a lot of events and the server cannot "
-"fulfill the requests"
-msgstr "如果您的日历包含许多事件并且服务器无法完成请求，选择此项"
+"Limiting the time span range will lessen the load on the remote server and "
+"speed-up your initial sync."
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
-#: configwidget.ui:139
-#, kde-format
-msgid "Limit CalDav retrieval time range"
+#: configwidget.ui:140
+#, fuzzy, kde-format
+#| msgid "Limit CalDav retrieval time range"
+msgid "Limit retrieval time range"
 msgstr "限制 CalDav 获取时间范围"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:151
-#, kde-format
-msgid "Only sync events more recent than"
+#: configwidget.ui:152
+#, fuzzy, kde-format
+#| msgid "Only sync events more recent than"
+msgid "Only sync data more recent than"
 msgstr "只同步事件新于"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
-#: configwidget.ui:190
+#: configwidget.ui:191
 #, kde-format
 msgid "Server Configuration:"
 msgstr "服务器配置："
 
 #. i18n: ectx: property (text), widget (QPushButton, addButton)
-#: configwidget.ui:204
+#: configwidget.ui:205
 #, kde-format
 msgid "Add"
 msgstr "添加"
 
 #. i18n: ectx: property (text), widget (QPushButton, searchButton)
-#: configwidget.ui:211 searchdialog.ui:151
+#: configwidget.ui:212 searchdialog.ui:151
 #, kde-format
 msgid "Search"
 msgstr "搜索"
 
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: configwidget.ui:218
+#: configwidget.ui:219
 #, kde-format
 msgid "Remove"
 msgstr "删除"
 
 #. i18n: ectx: property (text), widget (QPushButton, editButton)
-#: configwidget.ui:225
+#: configwidget.ui:226
 #, kde-format
 msgid "Edit"
 msgstr "编辑"
@@ -410,20 +418,23 @@ msgstr "用户名"
 
 #. i18n: ectx: label, entry (limitSyncRange), group (General)
 #: davgroupwareresource.kcfg:30
-#, kde-format
-msgid "Limit the events retrieval to the specified time range"
+#, fuzzy, kde-format
+#| msgid "Limit the events retrieval to the specified time range"
+msgid "Limit the data retrieval to the specified time range"
 msgstr "限制获取在指定时间范围内的时间"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
-#, kde-format
-msgid "Period for which to retrieve events, quantity"
+#, fuzzy, kde-format
+#| msgid "Period for which to retrieve events, quantity"
+msgid "Period for which to retrieve data, quantity"
 msgstr "获取事件的周期, 数量"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
-#, kde-format
-msgid "Period for which to retrieve events, type"
+#, fuzzy, kde-format
+#| msgid "Period for which to retrieve events, type"
+msgid "Period for which to retrieve data, type"
 msgstr "获取事件的周期, 类型"
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
@@ -740,3 +751,8 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
+
+#~ msgid ""
+#~ "Select this if your calendars contain a lot of events and the server "
+#~ "cannot fulfill the requests"
+#~ msgstr "如果您的日历包含许多事件并且服务器无法完成请求，选择此项"

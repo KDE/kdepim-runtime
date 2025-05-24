@@ -1,16 +1,16 @@
 # Translation for akonadi_ews_resource.po
-# Copyright (C) 2022-2024 This file is copyright:
+# Copyright (C) 2022-2025 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
-# SPDX-FileCopyrightText: 2023, 2024 KDE euskaratzeko proiektuko ardurandu <xalba@ni.eus>
+# SPDX-FileCopyrightText: 2023, 2024, 2025 KDE euskaratzeko proiektuaren ardurandu <xalba@ni.eus>
 #
 # Translator:
-# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022, 2023, 2024.
+# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022, 2023, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-01 00:42+0000\n"
-"PO-Revision-Date: 2024-08-06 01:03+0200\n"
+"PO-Revision-Date: 2025-05-23 23:12+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.04.1\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -31,32 +31,24 @@ msgid "Exchange protocol information not found"
 msgstr "Ez da aurkitu Exchange protokoloaren informaziorik"
 
 #: ewsclient/auth/ewsintuneauth.cpp:303
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
-#| "valid. You need to authenticate in order to continue using it."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "InTune credentials for the Microsoft Exchange account <b>%1</b> are no "
 "longer valid. You need to authenticate in order to continue using it."
 msgstr ""
-"<b>%1</b> konturako Microsoft Exchange egiaztagiriak dagoeneko ez du balio. "
-"Autentifikazioa egin behar duzu hura erabiltzen jarraitzeko."
+"<b>%1</b> Microsoft Exchange kontuaren InTune egiaztagiriak dagoeneko ez "
+"dute balio. Autentifikazioa egin behar duzu hura erabiltzen jarraitzeko."
 
 #: ewsclient/auth/ewsintuneauth.cpp:312
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
-#| "Please update it in the account settings page."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Failed to obtain InTune credentials for Microsoft Exchange account <b>%1</"
 "b>. Please update it in the account settings page."
 msgstr ""
-"<b>%1</b> konturako Microsoft Exchange egiaztagiria lortzea huts egin du. "
-"Mesedez, eguneratu ezazu kontuaren ezarpenen orrian."
+"<b>%1</b> Microsoft Exchange kontuaren InTune egiaztagiria lortzea huts egin "
+"du. Mesedez, kontuaren ezarpenen orrian eguneratu ezazu."
 
 #: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
@@ -404,12 +396,17 @@ msgid ""
 "system to be joined to the organization and managed using InTune.</p></"
 "body></html>"
 msgstr ""
+"<html><head/><body><p>Microsoft InTune MDM softwarea erabiliz "
+"autentifikazioa gaitzen du. Hori beharrezkoa da, gailuen egiaztagiriak "
+"erabiliz autentifikazio sendoa agintzen duten ingurune korporatibo askotan, "
+"eta, beraz, sistema erakundera batzea eta InTune erabiliz kudeatzea eskatzen "
+"dute.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authInTuneRadioButton)
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "&Microsoft InTune"
-msgstr ""
+msgstr "&Microsoft InTune"
 
 #. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
 #: ewsconfigdialog.ui:245

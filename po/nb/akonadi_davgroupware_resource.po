@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-23 00:43+0000\n"
+"POT-Creation-Date: 2025-05-24 00:43+0000\n"
 "PO-Revision-Date: 2014-09-19 22:47+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -92,57 +92,63 @@ msgstr "Brukernavn:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:108 setupwizard.cpp:242 urlconfigurationdialog.ui:136
+#: configwidget.ui:107 setupwizard.cpp:242 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "Passord:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_limitSyncRange)
-#: configwidget.ui:136
+#: configwidget.ui:134
+#, kde-format
+msgid "Select this to reduce the load on the server and speed-up your syncs"
+msgstr ""
+
+#. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
+#: configwidget.ui:137
 #, kde-format
 msgid ""
-"Select this if your calendars contain a lot of events and the server cannot "
-"fulfill the requests"
+"Limiting the time span range will lessen the load on the remote server and "
+"speed-up your initial sync."
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
-#: configwidget.ui:139
+#: configwidget.ui:140
 #, kde-format
-msgid "Limit CalDav retrieval time range"
+msgid "Limit retrieval time range"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:151
+#: configwidget.ui:152
 #, kde-format
-msgid "Only sync events more recent than"
+msgid "Only sync data more recent than"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
-#: configwidget.ui:190
+#: configwidget.ui:191
 #, kde-format
 msgid "Server Configuration:"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, addButton)
-#: configwidget.ui:204
+#: configwidget.ui:205
 #, kde-format
 msgid "Add"
 msgstr "Legg til"
 
 #. i18n: ectx: property (text), widget (QPushButton, searchButton)
-#: configwidget.ui:211 searchdialog.ui:151
+#: configwidget.ui:212 searchdialog.ui:151
 #, kde-format
 msgid "Search"
 msgstr "Søk"
 
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: configwidget.ui:218
+#: configwidget.ui:219
 #, kde-format
 msgid "Remove"
 msgstr "Fjern"
 
 #. i18n: ectx: property (text), widget (QPushButton, editButton)
-#: configwidget.ui:225
+#: configwidget.ui:226
 #, kde-format
 msgid "Edit"
 msgstr "Rediger"
@@ -411,19 +417,19 @@ msgstr "Brukernavn"
 #. i18n: ectx: label, entry (limitSyncRange), group (General)
 #: davgroupwareresource.kcfg:30
 #, kde-format
-msgid "Limit the events retrieval to the specified time range"
+msgid "Limit the data retrieval to the specified time range"
 msgstr ""
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
 #, kde-format
-msgid "Period for which to retrieve events, quantity"
+msgid "Period for which to retrieve data, quantity"
 msgstr ""
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
 #, kde-format
-msgid "Period for which to retrieve events, type"
+msgid "Period for which to retrieve data, type"
 msgstr ""
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
