@@ -567,7 +567,7 @@ msgstr ""
 #: sessionpool.cpp:425 sessionpool.cpp:496
 #, kde-format
 msgid "Disconnected from server during login."
-msgstr "Heu estat desconnectat del servidor durant l'inici de la sessió."
+msgstr "Heu sigut desconnectat del servidor durant l'inici de la sessió."
 
 #: sessionpool.cpp:303
 #, kde-format

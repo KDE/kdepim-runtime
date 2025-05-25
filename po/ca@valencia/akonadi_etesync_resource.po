@@ -57,8 +57,8 @@ msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
 "credentials."
 msgstr ""
-"S'han canviat les vostres credencials d'EteSync. Feu clic en D'acord per a "
-"tornar a introduir les credencials."
+"S'han canviat les vostres credencials d'EteSync. Cliqueu damunt «D'acord» "
+"per a tornar a introduir les credencials."
 
 #: etesyncresource.cpp:222
 #, kde-format
