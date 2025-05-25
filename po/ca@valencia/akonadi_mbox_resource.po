@@ -342,6 +342,3 @@ msgstr "Fitxer de bloqueig"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Nombre de missatges suprimits abans d'iniciar una purga."
-
-#~ msgid "Activities"
-#~ msgstr "Activitats"

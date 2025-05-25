@@ -1,24 +1,24 @@
 # Translation of akonadi_davgroupware_resource.po to Catalan (Valencian)
-# Copyright (C) 2009-2024 This_file_is_part_of_KDE
+# Copyright (C) 2009-2025 This_file_is_part_of_KDE
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# Manuel Tortosa Moreno <manutortosa@gmail.com>, 2009, 2010.
-# SPDX-FileCopyrightText: 2010, 2011, 2012, 2015, 2017, 2018, 2020, 2021, 2022, 2024 Josep M. Ferrer <txemaq@gmail.com>
 # SPDX-FileCopyrightText: 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2024 Antoni Bella Pérez <antonibella5@yahoo.com>
+# Manuel Tortosa Moreno <manutortosa@gmail.com>, 2009, 2010.
+# Josep M. Ferrer <txemaq@gmail.com>, 2010, 2011, 2012, 2015, 2017, 2018, 2020, 2021, 2022, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-24 00:43+0000\n"
-"PO-Revision-Date: 2024-07-31 12:00+0200\n"
+"PO-Revision-Date: 2025-05-24 11:17+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 22.12.3\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
 
@@ -106,6 +106,8 @@ msgstr "Contrasenya:"
 #, kde-format
 msgid "Select this to reduce the load on the server and speed-up your syncs"
 msgstr ""
+"Seleccioneu açò per a reduir la càrrega al servidor i accelerar les "
+"sincronitzacions"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:137
@@ -114,20 +116,20 @@ msgid ""
 "Limiting the time span range will lessen the load on the remote server and "
 "speed-up your initial sync."
 msgstr ""
+"Limitar l'interval de temps disminuirà la càrrega al servidor remot i "
+"accelerarà la sincronització inicial."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:140
-#, fuzzy, kde-format
-#| msgid "Limit CalDav retrieval time range"
+#, kde-format
 msgid "Limit retrieval time range"
-msgstr "Limita CalDav amb un interval de temps de recuperació"
+msgstr "Interval límit de temps de recuperació"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configwidget.ui:152
-#, fuzzy, kde-format
-#| msgid "Only sync events more recent than"
+#, kde-format
 msgid "Only sync data more recent than"
-msgstr "Només sincronitza els esdeveniments més recents que"
+msgstr "Només sincronitza les dades més recents que"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
 #: configwidget.ui:191
@@ -436,25 +438,21 @@ msgstr "Nom d'usuari"
 
 #. i18n: ectx: label, entry (limitSyncRange), group (General)
 #: davgroupwareresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Limit the events retrieval to the specified time range"
+#, kde-format
 msgid "Limit the data retrieval to the specified time range"
-msgstr ""
-"Limita la recuperació d'esdeveniments a l'interval de temps especificat"
+msgstr "Limita la recuperació de dades a l'interval de temps especificat"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, quantity"
+#, kde-format
 msgid "Period for which to retrieve data, quantity"
-msgstr "Període per al qual voleu recuperar esdeveniments, quantitat"
+msgstr "Període per al qual voleu recuperar les dades, quantitat"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, type"
+#, kde-format
 msgid "Period for which to retrieve data, type"
-msgstr "Període per al qual voleu recuperar esdeveniments, tipus"
+msgstr "Període per al qual voleu recuperar les dades, tipus"
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
 #: davgroupwareresource.kcfg:42
@@ -779,18 +777,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#~ msgid ""
-#~ "Select this if your calendars contain a lot of events and the server "
-#~ "cannot fulfill the requests"
-#~ msgstr ""
-#~ "Seleccioneu esta opció si els vostres calendaris contenen una gran "
-#~ "quantitat d'esdeveniments i el servidor no pot complir amb les peticions"
-
-#~ msgctxt "@label:textbox"
-#~ msgid "A password is required for user %1"
-#~ msgstr "Es requerix una contrasenya per a l'usuari %1"
-
-#~ msgctxt "@label:textbox"
-#~ msgid "Password: "
-#~ msgstr "Contrasenya: "

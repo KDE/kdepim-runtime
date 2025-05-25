@@ -2,7 +2,7 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2009, 2010, 2011, 2024 Freek de Kruijf <freekdekruijf@kde.nl>
+# SPDX-FileCopyrightText: 2009, 2010, 2011, 2024, 2025 Freek de Kruijf <freekdekruijf@kde.nl>
 # Hannie Lafeber-Dumoleyn <hannie@kde.nl>, 2010.
 # Freek de Kruijf <freekdekruijf@kde.nl>, 2011, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021.
 msgid ""
@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-24 00:43+0000\n"
-"PO-Revision-Date: 2024-07-30 13:05+0200\n"
+"PO-Revision-Date: 2025-05-24 11:40+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.04.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: configwidget.cpp:36
@@ -103,6 +103,8 @@ msgstr "Wachtwoord:"
 #, kde-format
 msgid "Select this to reduce the load on the server and speed-up your syncs"
 msgstr ""
+"Dit selecteren om de load op de server te verminderen en uw synchronisaties "
+"te versnellen"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:137
@@ -111,20 +113,20 @@ msgid ""
 "Limiting the time span range will lessen the load on the remote server and "
 "speed-up your initial sync."
 msgstr ""
+"Beperken van de tijdspanne zal de load op de server op afstand verminderen "
+"en uw initiële synchronisatie versnellen."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:140
-#, fuzzy, kde-format
-#| msgid "Limit CalDav retrieval time range"
+#, kde-format
 msgid "Limit retrieval time range"
-msgstr "CalDav tijdsbereik van opvragen beperken"
+msgstr "Reeks in tijdsbereik beperken"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configwidget.ui:152
-#, fuzzy, kde-format
-#| msgid "Only sync events more recent than"
+#, kde-format
 msgid "Only sync data more recent than"
-msgstr "Alleen afspraken synchroniseren recenter dan"
+msgstr "Gegevens alleen synchroniseren recenter dan"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
 #: configwidget.ui:191
@@ -431,24 +433,21 @@ msgstr "Gebruikersnaam"
 
 #. i18n: ectx: label, entry (limitSyncRange), group (General)
 #: davgroupwareresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Limit the events retrieval to the specified time range"
+#, kde-format
 msgid "Limit the data retrieval to the specified time range"
-msgstr "Het opvragen van afspraken beperken tot de gespecificeerde tijdsbereik"
+msgstr "Het ophalen van gegevens beperken tot het gespecificeerde tijdsbereik"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, quantity"
+#, kde-format
 msgid "Period for which to retrieve data, quantity"
-msgstr "Periode waarvoor afspraken worden opgehaald, aantal"
+msgstr "Periode waarvoor gegevens worden opgehaald, aantal"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, type"
+#, kde-format
 msgid "Period for which to retrieve data, type"
-msgstr "Periode waarvoor afspraken worden opgehaald, type"
+msgstr "Periode waarvoor gegevens worden opgehaald, type"
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
 #: davgroupwareresource.kcfg:42

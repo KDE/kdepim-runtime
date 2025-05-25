@@ -3,13 +3,13 @@
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# Yuri Chornoivan <yurchor@ukr.net>, 2010, 2011, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2024.
+# Yuri Chornoivan <yurchor@ukr.net>, 2010, 2011, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-24 00:43+0000\n"
-"PO-Revision-Date: 2024-07-30 09:54+0300\n"
+"PO-Revision-Date: 2025-05-24 10:26+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -104,6 +104,8 @@ msgstr "Пароль:"
 #, kde-format
 msgid "Select this to reduce the load on the server and speed-up your syncs"
 msgstr ""
+"Виберіть цей варіант для зменшення навантаження на сервер та пришвидшення "
+"синхронізації"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:137
@@ -112,20 +114,20 @@ msgid ""
 "Limiting the time span range will lessen the load on the remote server and "
 "speed-up your initial sync."
 msgstr ""
+"Звуження діапазону часу зменшить навантаження на віддалений сервер і "
+"пришвидшить початкову синхронізацію."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:140
-#, fuzzy, kde-format
-#| msgid "Limit CalDav retrieval time range"
+#, kde-format
 msgid "Limit retrieval time range"
-msgstr "Обмежити часовий діапазон отримання CalDav"
+msgstr "Обмежити часовий діапазон отримання"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configwidget.ui:152
-#, fuzzy, kde-format
-#| msgid "Only sync events more recent than"
+#, kde-format
 msgid "Only sync data more recent than"
-msgstr "Синхронізувати лише події, які сталися після"
+msgstr "Синхронізувати лише дані, вік яких менше"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
 #: configwidget.ui:191
@@ -433,24 +435,21 @@ msgstr "Ім'я користувача"
 
 #. i18n: ectx: label, entry (limitSyncRange), group (General)
 #: davgroupwareresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Limit the events retrieval to the specified time range"
+#, kde-format
 msgid "Limit the data retrieval to the specified time range"
-msgstr "Обмежити отримання записів подій вказаним діапазоном часу"
+msgstr "Обмежити отримання записів даних вказаним діапазоном часу"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, quantity"
+#, kde-format
 msgid "Period for which to retrieve data, quantity"
-msgstr "Період подій, записи яких слід отримати, кількість"
+msgstr "Період дані, записи яких слід отримати, кількість"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, type"
+#, kde-format
 msgid "Period for which to retrieve data, type"
-msgstr "Період подій, записи яких слід отримати, тип"
+msgstr "Період даних, записи яких слід отримати, тип"
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
 #: davgroupwareresource.kcfg:42

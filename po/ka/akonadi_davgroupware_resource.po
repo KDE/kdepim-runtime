@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-24 00:43+0000\n"
-"PO-Revision-Date: 2024-07-30 06:36+0200\n"
+"PO-Revision-Date: 2025-05-24 04:48+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.6\n"
 
 #: configwidget.cpp:36
 #, kde-format
@@ -101,6 +101,8 @@ msgstr "პაროლი:"
 #, kde-format
 msgid "Select this to reduce the load on the server and speed-up your syncs"
 msgstr ""
+"ჩართეთ ეს, რომ შეამციროთ დატვირთვა სერვერზე და გააჩქაროთ თქვენი "
+"სინქრონიზაციები"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:137
@@ -109,20 +111,20 @@ msgid ""
 "Limiting the time span range will lessen the load on the remote server and "
 "speed-up your initial sync."
 msgstr ""
+"დროის შუალედის შეზღუდვა შეამცირებს დატვირთვას დაშორებულ სერვერთან და საწყისი "
+"სინქრონიზაცია უფრო სწრაფად მოხდება."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:140
-#, fuzzy, kde-format
-#| msgid "Limit CalDav retrieval time range"
+#, kde-format
 msgid "Limit retrieval time range"
-msgstr "CalDav-ის მიღების დროის დიაპაზონის ლიმიტი"
+msgstr "მიღების დროის შუალედის შეზღუდვა"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configwidget.ui:152
-#, fuzzy, kde-format
-#| msgid "Only sync events more recent than"
+#, kde-format
 msgid "Only sync data more recent than"
-msgstr "მხოლოდ უახლესი მოვლენების სინქი"
+msgstr "მოხდება სინქრონიზაცია მონაცემების, რომლებიც უფრო ახალია, ვიდრე"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
 #: configwidget.ui:191
@@ -420,24 +422,21 @@ msgstr "მომხმარებელი"
 
 #. i18n: ectx: label, entry (limitSyncRange), group (General)
 #: davgroupwareresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Limit the events retrieval to the specified time range"
+#, kde-format
 msgid "Limit the data retrieval to the specified time range"
-msgstr "მოვლენების მიღების მითითებულ დროის დიაპაზონზე შეზღუდვა"
+msgstr "მოვლენების მიღების შეზღუდვა მითითებულ დროის დიაპაზონზე"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, quantity"
+#, kde-format
 msgid "Period for which to retrieve data, quantity"
-msgstr "პერიოდი, რომლის განმავლობაშიც მოვლენების მიღება გნებავთ. რაოდენობა"
+msgstr "პერიოდი, რომლისთვისაც მონაცემები და რაოდენობა უნდა მივიღო"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, type"
+#, kde-format
 msgid "Period for which to retrieve data, type"
-msgstr "პერიოდი, რომლის განმავლობაშიც მოვლენების მიღება გნებავთ. ტიპი"
+msgstr "პერიოდი, რომლისთვისაც მონაცემები და ტიპი უნდა მივიღო"
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
 #: davgroupwareresource.kcfg:42

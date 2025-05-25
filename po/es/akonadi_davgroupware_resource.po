@@ -1,23 +1,24 @@
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for akonadi_davgroupware_resource.po package.
+# Copyright (C) 2009-2025 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2009, 2011, 2019, 2020, 2021, 2024 Eloy Cuadra <ecuadra@eloihr.net>
-# Kira J. Fernandez <kirajfdez@gmail.com>, 2010.
-# Javier Vinal <fjvinal@gmail.com>, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
-# Javier Viñal <francisco-javie.vinal@seg-social.es>, 2013.
+# SPDX-FileCopyrightText: 2009, 2011, 2019, 2020, 2021, 2024, 2025 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2010 Kira J. Fernandez <kirajfdez@gmail.com>
+# SPDX-FileCopyrightText: 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018 Javier Vinal <fjvinal@gmail.com>
+# SPDX-FileCopyrightText: 2013 Javier Viñal <francisco-javie.vinal@seg-social.es>
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-24 00:43+0000\n"
-"PO-Revision-Date: 2024-07-30 16:37+0200\n"
+"PO-Revision-Date: 2025-05-24 11:27+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.04.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: configwidget.cpp:36
@@ -103,6 +104,8 @@ msgstr "Contraseña:"
 #, kde-format
 msgid "Select this to reduce the load on the server and speed-up your syncs"
 msgstr ""
+"Seleccione esto para reducir la carga del servidor y acelerar las "
+"sincronizaciones"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:137
@@ -111,20 +114,20 @@ msgid ""
 "Limiting the time span range will lessen the load on the remote server and "
 "speed-up your initial sync."
 msgstr ""
+"Limitar el intervalo de tiempo reducirá la carga del servidor remoto y "
+"acelerará la sincronización inicial."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:140
-#, fuzzy, kde-format
-#| msgid "Limit CalDav retrieval time range"
+#, kde-format
 msgid "Limit retrieval time range"
-msgstr "Limitar el intervalo de recuperación de CalDav"
+msgstr "Limitar el intervalo de recuperación"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configwidget.ui:152
-#, fuzzy, kde-format
-#| msgid "Only sync events more recent than"
+#, kde-format
 msgid "Only sync data more recent than"
-msgstr "Solo sincronizar eventos más recientes que"
+msgstr "Sincronizar solo los datos más recientes que"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
 #: configwidget.ui:191
@@ -432,24 +435,21 @@ msgstr "Nombre de usuario"
 
 #. i18n: ectx: label, entry (limitSyncRange), group (General)
 #: davgroupwareresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Limit the events retrieval to the specified time range"
+#, kde-format
 msgid "Limit the data retrieval to the specified time range"
-msgstr "Limitar la recuperación de eventos al intervalo especificado"
+msgstr "Limitar la recuperación de datos al intervalo especificado"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, quantity"
+#, kde-format
 msgid "Period for which to retrieve data, quantity"
-msgstr "Periodo para el que recuperar eventos, cantidad"
+msgstr "Periodo para el que recuperar datos, cantidad"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, type"
+#, kde-format
 msgid "Period for which to retrieve data, type"
-msgstr "Periodo para el que recuperar eventos, tipo"
+msgstr "Periodo para el que recuperar datos, tipo"
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
 #: davgroupwareresource.kcfg:42
@@ -774,30 +774,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#~ msgid ""
-#~ "Select this if your calendars contain a lot of events and the server "
-#~ "cannot fulfill the requests"
-#~ msgstr ""
-#~ "Seleccione esto si sus calendarios contienen muchos eventos y el servidor "
-#~ "no puede procesar las peticiones"
-
-#~ msgctxt "@label:textbox"
-#~ msgid "A password is required for user %1"
-#~ msgstr "Se necesita una contraseña para el usuario %1"
-
-#~ msgctxt "@label:textbox"
-#~ msgid "Password: "
-#~ msgstr "Contraseña: "
-
-#~ msgid "General Configuration"
-#~ msgstr "Configuración general"
-
-#~ msgid "Synchronization"
-#~ msgstr "Sincronización"
-
-#~ msgid "Remote calendar access protocol"
-#~ msgstr "Protocolo de acceso al calendario remoto"
-
-#~ msgid "Remote calendar access"
-#~ msgstr "Acceso al calendario remoto"

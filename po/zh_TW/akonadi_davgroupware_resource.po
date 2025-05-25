@@ -1,7 +1,7 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2023, 2024 Kisaragi Hiu <mail@kisaragi-hiu.com>
+# SPDX-FileCopyrightText: 2023, 2024, 2025 Kisaragi Hiu <mail@kisaragi-hiu.com>
 # Frank Weng (a.k.a. Franklin) <franklin at goodhorse dot idv dot tw>, 2010.
 # Franklin Weng <franklin@goodhorse.idv.tw>, 2011, 2013, 2014, 2015.
 # Jeff Huang <s8321414@gmail.com>, 2016, 2017.
@@ -12,14 +12,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-24 00:43+0000\n"
-"PO-Revision-Date: 2024-08-03 14:41+0900\n"
+"PO-Revision-Date: 2025-05-24 21:29+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.04.70\n"
+"X-Generator: Lokalize 25.07.70\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: configwidget.cpp:36
@@ -104,7 +104,7 @@ msgstr "密碼："
 #: configwidget.ui:134
 #, kde-format
 msgid "Select this to reduce the load on the server and speed-up your syncs"
-msgstr ""
+msgstr "選取此選項來降低對伺服器的負載並加快您的同步"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:137
@@ -112,21 +112,19 @@ msgstr ""
 msgid ""
 "Limiting the time span range will lessen the load on the remote server and "
 "speed-up your initial sync."
-msgstr ""
+msgstr "限制日期檢索範圍會降低遠端伺服器的負載，並加快您的初始同步。"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:140
-#, fuzzy, kde-format
-#| msgid "Limit CalDav retrieval time range"
+#, kde-format
 msgid "Limit retrieval time range"
-msgstr "限制 CalDev 日期檢索範圍"
+msgstr "限制日期檢索範圍"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configwidget.ui:152
-#, fuzzy, kde-format
-#| msgid "Only sync events more recent than"
+#, kde-format
 msgid "Only sync data more recent than"
-msgstr "僅同步活動近於"
+msgstr "僅同步資料近於"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
 #: configwidget.ui:191
@@ -420,24 +418,21 @@ msgstr "使用者名稱"
 
 #. i18n: ectx: label, entry (limitSyncRange), group (General)
 #: davgroupwareresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Limit the events retrieval to the specified time range"
+#, kde-format
 msgid "Limit the data retrieval to the specified time range"
-msgstr "限制取回的活動在指定的時間範圍內"
+msgstr "限制取回的資料在指定的時間範圍內"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, quantity"
+#, kde-format
 msgid "Period for which to retrieve data, quantity"
-msgstr "要取回活動的量與週期"
+msgstr "要取回資料的量與週期"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, type"
+#, kde-format
 msgid "Period for which to retrieve data, type"
-msgstr "要取回活動的量與類型"
+msgstr "要取回資料的量與類型"
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
 #: davgroupwareresource.kcfg:42

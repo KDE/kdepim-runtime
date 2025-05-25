@@ -215,7 +215,7 @@ msgid ""
 "Choose a different authentication method."
 msgstr ""
 "El vostre servidor POP3 (%1) no accepta el SASL.\n"
-"Escolliu un mètode d'autenticació diferent."
+"Trieu un mètode d'autenticació diferent."
 
 #: pop3protocol.cpp:528 pop3protocol.cpp:617
 #, kde-format
@@ -268,7 +268,7 @@ msgid ""
 "Choose a different authentication method."
 msgstr ""
 "El vostre servidor POP3 (%1) no accepta l'APOP.\n"
-"Escolliu un mètode d'autenticació diferent."
+"Trieu un mètode d'autenticació diferent."
 
 #: pop3protocol.cpp:653
 #, kde-format
