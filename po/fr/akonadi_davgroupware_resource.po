@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Guillaume Pujol <guill.p@gmail.com>, 2009, 2010.
 # Geoffray Levasseur <geoffray.levasseurbrandin@numericable.fr>, 2012, 2013, 2014.
-# SPDX-FileCopyrightText: 2013, 2021, 2024 Xavier Besnard <xavier.besnard@kde.org>
+# SPDX-FileCopyrightText: 2013, 2021, 2024, 2025 Xavier Besnard <xavier.besnard@kde.org>
 # Joëlle Cornavin <jcornavin@laposte.net>, 2011.
 # Sebastien Renard <renard@kde.org>, 2013.
 # Vincent Pinon <vpinon@kde.org>, 2017.
@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-24 00:43+0000\n"
-"PO-Revision-Date: 2024-08-01 15:34+0200\n"
+"PO-Revision-Date: 2025-05-25 11:40+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
@@ -22,9 +22,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.08.5\n"
-"X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
+"X-Environment: kde\n"
+"X-Generator: Lokalize 25.04.1\n"
 "X-Text-Markup: kde4\n"
 
 #: configwidget.cpp:36
@@ -110,6 +110,8 @@ msgstr "Mot de passe :"
 #, kde-format
 msgid "Select this to reduce the load on the server and speed-up your syncs"
 msgstr ""
+"Sélectionnez cette option pour réduire la charge sur le serveur et accélérer "
+"vos synchronisations"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:137
@@ -118,6 +120,8 @@ msgid ""
 "Limiting the time span range will lessen the load on the remote server and "
 "speed-up your initial sync."
 msgstr ""
+"La limitation de l'intervalle de temps réduira la charge sur le serveur "
+"distant et accélérera votre synchronisation initiale."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:140
