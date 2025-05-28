@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:42+0000\n"
-"PO-Revision-Date: 2025-04-20 16:30+0300\n"
+"PO-Revision-Date: 2025-05-25 16:32+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -128,20 +128,17 @@ msgstr "Automaattitallennuksen viive:"
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "A directory path or URL containing calendar files"
-msgstr ""
+msgstr "Kalenteritiedostoja sisältävä kansio tai verkko-osoite"
 
 #: icaldirsettingswidget.cpp:46
-#, fuzzy, kde-kuit-format
-#| msgid ""
-#| "Select the directory whose contents should be represented by this "
-#| "resource. If the directory does not exist, it will be created."
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory whose contents should be represented by "
 "this resource. The directory will be created if it does not exist."
 msgstr ""
-"Valitse kansio, jonka sisältöä tämä tietolähde edustaa. Ellei kansiota ole "
-"olemassa, se luodaan."
+"Anna kansion sijainti tai verkko-osoite, jonka sisällön tulisi edustaa tätä "
+"resurssia. Kansio luodaan, ellei sitä ole olemassa."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-format

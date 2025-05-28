@@ -1,6 +1,6 @@
 # Copyright © 2010, 2011, 2012 This_file_is_part_of_KDE
 # This file is distributed under the same license as the kdepim-runtime package.
-# SPDX-FileCopyrightText: 2010, 2011, 2012, 2013, 2016, 2017, 2018, 2021, 2023, 2024 Tommi Nieminen <translator@legisign.org>
+# SPDX-FileCopyrightText: 2010, 2011, 2012, 2013, 2016, 2017, 2018, 2021, 2023, 2024, 2025 Tommi Nieminen <translator@legisign.org>
 # Lasse Liehu <lasse.liehu@gmail.com>, 2012, 2013, 2014.
 #
 # KDE Finnish translation sprint participants:
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:42+0000\n"
-"PO-Revision-Date: 2024-10-20 16:50+0300\n"
+"PO-Revision-Date: 2025-05-25 16:34+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -307,6 +307,8 @@ msgid ""
 "A file path or URL containing the calendar file. Once created, this location "
 "cannot be modified."
 msgstr ""
+"Kalenterin sisältävän tiedoston sijainti tai verkko-osoite. Luonnin jälkeen "
+"sijaintia ei voi enää muuttaa."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
 #, kde-kuit-format
@@ -317,6 +319,10 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></para>"
 msgstr ""
+"Anna kelvollisen kalenteritiedoston sisältävän kansion sijainti tai verkko-"
+"osoite.<para><note>Sijaintia ei valitettavasti resurssin luonnin jälkeen voi "
+"enää muuttaa kuin poistamalla resurssin ja luomalla sen uudelleen eri "
+"paikkaan.</note></para>"
 
 #: singlefileresourceconfigwidgetbase.cpp:145
 #, kde-format

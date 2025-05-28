@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2017, 2018, 2020, 2021, 2023, 2024 Tommi Nieminen <translator@legisign.org>
+# SPDX-FileCopyrightText: 2017, 2018, 2020, 2021, 2023, 2024, 2025 Tommi Nieminen <translator@legisign.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-01 00:42+0000\n"
-"PO-Revision-Date: 2024-10-20 14:31+0300\n"
+"PO-Revision-Date: 2025-05-25 16:30+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -28,32 +28,24 @@ msgid "Exchange protocol information not found"
 msgstr "Exchange-yhteyskäytäntötietoa ei löytynyt"
 
 #: ewsclient/auth/ewsintuneauth.cpp:303
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
-#| "valid. You need to authenticate in order to continue using it."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "InTune credentials for the Microsoft Exchange account <b>%1</b> are no "
 "longer valid. You need to authenticate in order to continue using it."
 msgstr ""
-"Microsoft Exchange -tunnistautumistiedot eivät enää kelpaa tilillä <b>%1</"
-"b>. Käytön jatkamiseksi sinun on tunnistauduttava."
+"Intune-tunnistautumistiedot eivät enää kelpaa Microsoft Exchange -tilille <b>"
+"%1</b>. Käytön jatkamiseksi sinun on tunnistauduttava."
 
 #: ewsclient/auth/ewsintuneauth.cpp:312
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
-#| "Please update it in the account settings page."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Failed to obtain InTune credentials for Microsoft Exchange account <b>%1</"
 "b>. Please update it in the account settings page."
 msgstr ""
-"Microsoft Exchange -tilin <b>%1</b> tunnistautumistietoja ei saatu. Päivitä "
-"tiedot tilin asetussivulla."
+"InTune-tunnistautumistietoja ei saatu Microsoft Exchange -tilille <b>%1</b>. "
+"Päivitä tiedot tilin asetussivulla."
 
 #: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
@@ -396,12 +388,16 @@ msgid ""
 "system to be joined to the organization and managed using InTune.</p></"
 "body></html>"
 msgstr ""
+"<html><head/><body><p>Mahdollistaa tunnistautumisen Microsoft InTune MDM -"
+"ohjelmalla. Monessa yritysympäristössä vaaditaan vahvaa todennusta "
+"laitetunnistein, ja siksi järjestelmä tulee liittää organisaatioon ja "
+"hallinnoida sitä InTunella.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authInTuneRadioButton)
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "&Microsoft InTune"
-msgstr ""
+msgstr "Mi&crosoft InTune"
 
 #. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
 #: ewsconfigdialog.ui:245
