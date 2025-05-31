@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-14 00:44+0000\n"
-"PO-Revision-Date: 2025-04-20 16:31+0300\n"
+"PO-Revision-Date: 2025-05-29 15:09+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -271,7 +271,8 @@ msgstr "Määrittää Sieve-lomatiedon oletustiedostonimen"
 #, kde-format
 msgid "Define username used from custom server sieve url"
 msgstr ""
-"Määritä käyttäjätunnus, jota käyettään mukautetun palvelimen Sieve-URL:stä"
+"Määritä käyttäjätunnus, jota mukautetun palvelimen Sieve-osoitteesta "
+"käytetään"
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
 #: imapresource.kcfg:123
