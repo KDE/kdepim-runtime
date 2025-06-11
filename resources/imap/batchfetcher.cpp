@@ -19,7 +19,7 @@ BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,
     , m_scope(scope)
     , m_session(session)
     , m_batchSize(batchSize)
-    , m_messageHelper(messageHelper)
+    , m_messageHelper(std::move(messageHelper))
 {
 }
 
@@ -44,6 +44,11 @@ void BatchFetcher::setSearchUids(const KIMAP::ImapInterval &interval)
 void BatchFetcher::setGmailExtensionsEnabled(bool enable)
 {
     m_gmailEnabled = enable;
+}
+
+QList<qint64> BatchFetcher::expungedMessages() const
+{
+    return m_expungedMessages;
 }
 
 static const int maxAmountOfUidToSearchInOneTime = 2000;
@@ -88,6 +93,7 @@ void BatchFetcher::onUidSearchDone(KJob *job)
     auto search = static_cast<KIMAP::SearchJob *>(job);
     m_uidBased = search->isUidBased();
     m_currentSet.add(search->results());
+    m_expungedMessages += search->expunged();
 
     // More to search?
     start();
@@ -150,6 +156,7 @@ void BatchFetcher::fetchNextBatch()
     fetch->setScope(m_scope);
     fetch->setGmailExtensionsEnabled(m_gmailEnabled);
     connect(fetch, &KIMAP::FetchJob::messagesAvailable, this, &BatchFetcher::onMessagesAvailable);
+    connect(fetch, &KIMAP::FetchJob::messageExpunged, this, &BatchFetcher::onMessageExpunged);
     connect(fetch, &KJob::result, this, &BatchFetcher::onHeadersFetchDone);
     m_fetchInProgress = true;
     fetch->start();
@@ -173,6 +180,11 @@ void BatchFetcher::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messa
     if (!addedItems.isEmpty()) {
         Q_EMIT itemsRetrieved(addedItems);
     }
+}
+
+void BatchFetcher::onMessageExpunged(qint64 id)
+{
+    m_expungedMessages.push_back(id);
 }
 
 void BatchFetcher::onHeadersFetchDone(KJob *job)

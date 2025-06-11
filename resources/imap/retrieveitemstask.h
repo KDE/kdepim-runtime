@@ -56,13 +56,14 @@ private:
     void triggerExpunge(const QString &mailBox);
     void triggerFinalSelect(const QString &mailBox);
     void retrieveItems(const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope &scope, bool incremental = false, bool uidBased = false);
-    void listFlagsForImapSet(const KIMAP::ImapSet &set);
+    void listFlagsForImapSet(const KIMAP::ImapSet &set, bool searchUidsFirst = true);
     void taskComplete();
     Akonadi::Item::List imapSetToItems(const KIMAP::ImapSet &set);
 
     KIMAP::Session *m_session = nullptr;
     bool m_incremental = true;
     qint64 m_localHighestModSeq = -1;
+    qint64 m_localMessageCount = -1;
     BatchFetcher *m_batchFetcher = nullptr;
     Akonadi::Collection m_modifiedCollection;
     bool m_uidBasedFetch = true;

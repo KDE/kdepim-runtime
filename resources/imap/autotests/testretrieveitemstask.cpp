@@ -20,6 +20,8 @@
 #include <QSignalSpy>
 #include <QTest>
 
+#include <algorithm>
+
 class TestRetrieveItemsTask : public ImapTestBase
 {
     Q_OBJECT
@@ -226,10 +228,10 @@ private Q_SLOTS:
                  << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
                  << "S: A000005 OK select done"
                  << "C: A000006 UID SEARCH UID 8:9"
-                 << "S: * SEARCH 8 9"
+                 << "S: * SEARCH 8"
                  << "S: A000006 OK search done"
-                 << "C: A000007 UID FETCH 8:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
-                 << "S: * 5 FETCH ( FLAGS (\\Seen) UID 9 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+                 << "C: A000007 UID FETCH 8 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+                 << "S: * 5 FETCH ( FLAGS (\\Seen) UID 8 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                     "RFC822.SIZE 75 BODY[] {75}\r\n"
                     "From: Foo <foo@kde.org>\r\n"
                     "To: Bar <bar@kde.org>\r\n"
@@ -239,13 +241,13 @@ private Q_SLOTS:
                     " )"
                  << "S: A000007 OK fetch done"
                  << "C: A000008 UID SEARCH UID 1:7"
-                 << "S: * SEARCH 1 2 3 4 5 6 7"
+                 << "S: * SEARCH 1 2 3 4"
                  << "S: A000008 OK search done"
-                 << "C: A000009 UID FETCH 1:7 (FLAGS UID)"
-                 << "S: * 1 FETCH"
-                 << "S: * 2 FETCH"
-                 << "S: * 3 FETCH"
-                 << "S: * 4 FETCH"
+                 << "C: A000009 UID FETCH 1:4 (FLAGS UID)"
+                 << "S: * 1 FETCH (FLAGS (\\Seen) UID 1)"
+                 << "S: * 2 FETCH (FLAGS (\\Seen) UID 2)"
+                 << "S: * 3 FETCH (FLAGS (\\Seen) UID 3)"
+                 << "S: * 4 FETCH (FLAGS (\\Seen) UID 4)"
                  << "S: A000009 OK fetch done";
 
         callNames.clear();
@@ -269,10 +271,10 @@ private Q_SLOTS:
                  << "S: * 5 EXISTS"
                  << "S: * 0 RECENT"
                  << "S: * OK [ UIDVALIDITY 1149151135  ]"
-                 << "S: * OK [ UIDNEXT 9  ]"
+                 << "S: * OK [ UIDNEXT 10  ]"
                  << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
                  << "S: A000005 OK select done"
-                 << "C: A000006 UID SEARCH UID 8:9"
+                 << "C: A000006 UID SEARCH UID 8:10"
                  << "S: * SEARCH 8 9"
                  << "S: A000006 OK search done"
                  << "C: A000007 UID FETCH 8:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
@@ -294,16 +296,17 @@ private Q_SLOTS:
                     " )"
                  << "S: A000007 OK fetch done"
                  << "C: A000008 UID SEARCH UID 1:7"
-                 << "S: * SEARCH 1 2 3 4 5 6 7"
+                 << "S: * SEARCH 1 2 3"
                  << "S: A000008 OK search done"
-                 << "C: A000009 UID FETCH 1:7 (FLAGS UID)"
-                 << "S: * 1 FETCH"
-                 << "S: * 2 FETCH"
-                 << "S: * 3 FETCH"
+                 << "C: A000009 UID FETCH 1:3 (FLAGS UID)"
+                 << "S: * 1 FETCH ( FLAGS (\\Seen) UID 1 )"
+                 << "S: * 2 FETCH ( FLAGS (\\Seen) UID 2 )"
+                 << "S: * 3 FETCH ( FLAGS (\\Seen) UID 3 )"
                  << "S: A000009 OK fetch done";
 
         callNames.clear();
-        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
+        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges")
+                  << QStringLiteral("itemsRetrievalDone");
 
         // A new message has been added and an old one removed, we can't do an incremental update
         QTest::newRow("uidnext changed, fetch new messages and list flags") << collection << scenario << callNames;
@@ -423,11 +426,8 @@ private Q_SLOTS:
                  << "S: * OK [ UIDVALIDITY 1149151135  ]"
                  << "S: * OK [ UIDNEXT 9  ]"
                  << "S: A000005 OK select done"
-                 << "C: A000006 UID SEARCH UID 1:9"
-                 << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
-                 << "S: A000006 OK search done"
-                 << "C: A000007 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
-                 << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+                 << "C: A000006 FETCH 1 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+                 << "S: * 1 FETCH ( FLAGS (\\Seen) UID 8 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                     "RFC822.SIZE 75 BODY[] {75}\r\n"
                     "From: Foo <foo@kde.org>\r\n"
                     "To: Bar <bar@kde.org>\r\n"
@@ -435,7 +435,7 @@ private Q_SLOTS:
                     "\r\n"
                     "Test\r\n"
                     " )"
-                 << "S: A000007 OK fetch done";
+                 << "S: A000006 OK fetch done";
 
         callNames.clear();
         callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
@@ -448,6 +448,10 @@ private Q_SLOTS:
         collection.setCachePolicy(policy);
         stats.setCount(104);
         collection.setStatistics(stats);
+        QByteArray oldUidSearch = "S: * SEARCH";
+        for (int uid = 1; uid <= 104; ++uid) {
+            oldUidSearch += ' ' + QByteArray::number(uid);
+        }
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
@@ -488,17 +492,24 @@ private Q_SLOTS:
                     " )"
                  // 4 more would follow but are excluded for clarity
                  << "S: A000008 OK fetch done"
-                 << "C: A000009 UID SEARCH UID 1:104"
-                 << "S: * SEARCH 1 2 99 100"
-                 << "S: A000009 OK search done"
-                 << "C: A000010 UID FETCH 1:2,99:100 (FLAGS UID)"
+                 << "C: A000009 UID SEARCH UID 1:104" << oldUidSearch << "S: A000009 OK search done"
+                 << "C: A000010 UID FETCH 1:100 (FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 1 )"
+                 // 99 more would follow but are excluded for clarity
+                 << "S: A000010 OK fetch done"
+                 << "C: A000011 UID FETCH 101:104 (FLAGS UID)"
+                 << "S: * 101 FETCH ( FLAGS (\\Seen) UID 101 )"
                  // 3 more would follow but are excluded for clarity
-                 << "S: A000010 OK fetch done";
+                 << "S: A000011 OK fetch done";
 
         callNames.clear();
-        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental")
-                  << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
+        callNames << QStringLiteral("itemsRetrievedIncremental") // first batch of new messages
+                  << QStringLiteral("itemsRetrievedIncremental") // second batch of new messages
+                  << QStringLiteral("itemsRetrievedIncremental") // first batch of flags updates
+                  << QStringLiteral("itemsRetrievedIncremental") // second batch of flags updates
+                  << QStringLiteral("applyCollectionChanges") // retrieval done, apply collection changes
+                  << QStringLiteral("itemsRetrievedIncremental") // final call to ensure incremental update
+                  << QStringLiteral("itemsRetrievalDone"); // sync done, no more calls expected
 
         QTest::newRow("test batch processing") << collection << scenario << callNames;
 
@@ -523,15 +534,12 @@ private Q_SLOTS:
                  << "S: * OK [ UIDNEXT 9 ]"
                  << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
                  << "S: A000005 OK select done"
-                 << "C: A000006 UID SEARCH UID 1:9"
-                 << "S: * SEARCH 1 2 3 4"
-                 << "S: A000006 OK search done"
-                 << "C: A000007 UID FETCH 1:4 (FLAGS UID)"
+                 << "C: A000006 FETCH 1:4 (FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 1 )"
                  << "S: * 2 FETCH ( FLAGS (\\Seen) UID 2 )"
                  << "S: * 3 FETCH ( FLAGS (\\Seen) UID 3 )"
                  << "S: * 4 FETCH ( FLAGS (\\Seen) UID 4 )"
-                 << "S: A000007 OK fetch done";
+                 << "S: A000006 OK fetch done";
         callNames.clear();
         callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
 
@@ -723,6 +731,183 @@ private Q_SLOTS:
                   << QStringLiteral("itemsRetrievalDone");
 
         QTest::newRow("qresync added, modified and vanished") << collection << scenario << callNames;
+
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
+        collection.setCachePolicy(policy);
+        collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(6);
+        collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456789);
+        stats.setCount(5);
+        collection.setStatistics(stats);
+        scenario.clear();
+
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 EXPUNGE"
+                 << "S: A000004 OK expunge done"
+                 << "C: A000005 SELECT \"INBOX/Foo\""
+                 << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
+                 << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
+                 << "S: * 4 EXISTS"
+                 << "S: * 0 RECENT"
+                 << "S: * OK [ UIDVALIDITY 1149151135  ]"
+                 << "S: * OK [ UIDNEXT 10  ]"
+                 << "S: A000005 OK select done"
+                 << "C: A000006 UID SEARCH UID 6:10"
+                 << "S: * SEARCH 9"
+                 << "S: A000006 OK search done"
+                 << "C: A000007 UID FETCH 9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+                 << "S: * 4 FETCH ( FLAGS (\\Seen) UID 9 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+                    "RFC822.SIZE 75 BODY[] {75}\r\n"
+                    "From: Foo <foo@kde.org>\r\n"
+                    "To: Bar <bar@kde.org>\r\n"
+                    "Subject: Test Mail\r\n"
+                    "\r\n"
+                    "Test\r\n"
+                    " )"
+                 << "S: A000007 OK fetch done"
+                 << "C: A000009 UID FETCH 1:5 (FLAGS UID)"
+                 << R"(S: * 1 FETCH ( FLAGS (\Seen) UID 1 ))"
+                 << R"(S: * 2 FETCH ( FLAGS (\Seen) UID 2 ))"
+                 << R"(S: * 3 FETCH ( FLAGS (\Seen) UID 3 ))"
+                 << "S: A000009 OK fetch done";
+        callNames.clear();
+        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges")
+                  << QStringLiteral("itemsRetrievalDone");
+
+        QTest::newRow("one message added two removed on server") << collection << scenario << callNames;
+    }
+
+    void shouldSyncMailboxChanges_data()
+    {
+        QTest::addColumn<int>("oldMessages");
+        QTest::addColumn<int>("newMessages");
+        QTest::addColumn<bool>("expungeDuringFetch");
+
+        QTest::newRow("net loss with two arrivals") << 1 << 2 << false;
+        QTest::newRow("net gain with one deletion") << 4 << 2 << false;
+        QTest::newRow("equal count with two replacements") << 3 << 2 << false;
+        QTest::newRow("expunge during UID FETCH within local cap") << 4 << 2 << true;
+        QTest::newRow("expunge during UID FETCH below SELECT cap") << 3 << 1 << true;
+        QTest::newRow("expunge last old message during UID FETCH") << 1 << 1 << true;
+    }
+
+    void shouldSyncMailboxChanges()
+    {
+        QFETCH(int, oldMessages);
+        QFETCH(int, newMessages);
+        QFETCH(bool, expungeDuringFetch);
+
+        auto collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
+        collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(6);
+        Akonadi::CollectionStatistics statistics;
+        statistics.setCount(5);
+        collection.setStatistics(statistics);
+
+        const int selectedCount = oldMessages + newMessages;
+        const int expungedCount = expungeDuringFetch ? 1 : 0;
+        const int oldRemaining = oldMessages - expungedCount;
+        const QByteArray newUidSet = newMessages == 1 ? QByteArray("9") : QByteArray("9:10");
+        QList<QByteArray> scenario;
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 EXPUNGE"
+                 << "S: A000004 OK expunge done"
+                 << "C: A000005 SELECT \"INBOX/Foo\""
+                 << R"(S: * FLAGS (\Seen))"
+                 << "S: * " + QByteArray::number(selectedCount) + " EXISTS" << "S: * 0 RECENT"
+                 << "S: * OK [UIDVALIDITY 1149151135]"
+                 << "S: * OK [UIDNEXT " + QByteArray::number(9 + newMessages) + "]" << "S: A000005 OK select done"
+                 << "C: A000006 UID SEARCH UID 6:" + QByteArray::number(9 + newMessages) << (newMessages == 1 ? "S: * SEARCH 9" : "S: * SEARCH 9 10")
+                 << "S: A000006 OK search done"
+                 << "C: A000007 UID FETCH " + newUidSet + " (RFC822.SIZE INTERNALDATE BODY.PEEK[HEADER] FLAGS UID)";
+        if (expungeDuringFetch) {
+            // EXPUNGE is permitted during UID FETCH; subsequent sequence numbers shift.
+            scenario << "S: * 1 EXPUNGE";
+        }
+        QSet<QString> expectedUids;
+        for (int uid = 1 + expungedCount; uid <= oldMessages; ++uid) {
+            expectedUids.insert(QString::number(uid));
+        }
+        for (int i = 0; i < newMessages; ++i) {
+            const int uid = 9 + i;
+            expectedUids.insert(QString::number(uid));
+            scenario << "S: * " + QByteArray::number(oldMessages - expungedCount + i + 1) + " FETCH (FLAGS (\\Seen) UID " + QByteArray::number(uid)
+                    + " INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" RFC822.SIZE 75 BODY[HEADER] {69}\r\n"
+                      "From: Foo <foo@kde.org>\r\n"
+                      "To: Bar <bar@kde.org>\r\n"
+                      "Subject: Test Mail\r\n"
+                      "\r\n"
+                      " )";
+        }
+        scenario << "S: A000007 OK fetch done";
+
+        // QByteArray oldUidSearch = "S: * SEARCH";
+        // for (int uid = 1 + expungedCount; uid <= oldMessages; ++uid) {
+        //     oldUidSearch += ' ' + QByteArray::number(uid);
+        // }
+        // scenario << "C: A000008 UID SEARCH UID 1:5"
+        //          << oldUidSearch
+        //          << "S: A000008 OK search done";
+        if (oldRemaining > 0) {
+            QByteArray oldUidSet = QByteArray::number(1 + expungedCount);
+            if (oldRemaining > 1) {
+                oldUidSet += ':' + QByteArray::number(oldMessages);
+            }
+            scenario << "C: A000009 UID FETCH " + oldUidSet + " (FLAGS UID)";
+            for (int sequence = 1; sequence <= oldRemaining; ++sequence) {
+                const int uid = sequence + expungedCount;
+                scenario << "S: * " + QByteArray::number(sequence) + " FETCH (FLAGS (\\Seen) UID " + QByteArray::number(uid) + ")";
+            }
+            scenario << "S: A000009 OK fetch done";
+        }
+
+        FakeServer server;
+        server.setScenario(scenario);
+        server.startAndWait();
+        SessionPool pool(1);
+        pool.setPasswordRequester(createDefaultRequester());
+        QSignalSpy connectedSpy(&pool, &SessionPool::connectDone);
+        QVERIFY(pool.connect(createDefaultAccount()));
+        QVERIFY(connectedSpy.wait());
+
+        auto state = DummyResourceState::Ptr(new DummyResourceState);
+        state->setServerCapabilities(pool.serverCapabilities());
+        state->setCollection(collection);
+        auto task = new RetrieveItemsTask(state);
+        task->start(&pool);
+        const auto finished = [&state] {
+            const auto calls = state->calls();
+            return std::any_of(calls.cbegin(), calls.cend(), [](const auto &call) {
+                return call.first == "itemsRetrievalDone" || call.first == "cancelTask";
+            });
+        };
+        QTRY_VERIFY(finished());
+        QVERIFY(server.isAllScenarioDone());
+        server.quit();
+
+        QSet<QString> retrievedUids;
+        QStringList callNames;
+        const auto calls = state->calls();
+        for (const auto &call : calls) {
+            QVERIFY2(call.first != "cancelTask", qPrintable(call.second.toString()));
+            callNames << QString::fromUtf8(call.first);
+            if (call.first == "itemsRetrieved") {
+                const auto items = call.second.value<Akonadi::Item::List>();
+                for (const auto &item : items) {
+                    retrievedUids.insert(item.remoteId());
+                }
+            }
+        }
+        QStringList expectedCalls{QStringLiteral("itemsRetrieved")};
+        if (oldRemaining > 0) {
+            expectedCalls << QStringLiteral("itemsRetrieved");
+        }
+        expectedCalls << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
+        QCOMPARE(callNames, expectedCalls);
+        QCOMPARE(retrievedUids, expectedUids);
     }
 
     void shouldIntrospectCollection()
@@ -750,7 +935,7 @@ private Q_SLOTS:
         task->start(&pool);
 
         QTRY_COMPARE(state->calls().count(), callNames.size());
-        qDebug() << state->calls();
+        // qDebug() << state->calls();
         for (int i = 0; i < callNames.size(); i++) {
             QString command = QString::fromUtf8(state->calls().at(i).first);
             QVariant parameter = state->calls().at(i).second;

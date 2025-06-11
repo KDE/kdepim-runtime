@@ -28,6 +28,7 @@
 #include <KIMAP/SelectJob>
 #include <KIMAP/Session>
 #include <KIMAP/StatusJob>
+#include <kimap/statusjob.h>
 
 RetrieveItemsTask::RetrieveItemsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent)
@@ -336,11 +337,11 @@ void RetrieveItemsTask::prepareRetrieval()
         scope.mode = KIMAP::FetchJob::FetchScope::Full;
     }
 
-    const qint64 realMessageCount = col.statistics().count();
+    m_localMessageCount = col.statistics().count();
 
     qCDebug(IMAPRESOURCE_LOG) << "Starting message retrieval. Elapsed(ms): " << m_time.elapsed();
     qCDebug(IMAPRESOURCE_LOG) << "UidValidity: " << m_uidValidity << "Local UidValidity: " << oldUidValidity;
-    qCDebug(IMAPRESOURCE_LOG) << "MessageCount: " << m_messageCount << "Local message count: " << realMessageCount;
+    qCDebug(IMAPRESOURCE_LOG) << "MessageCount: " << m_messageCount << "Local message count: " << m_localMessageCount;
     qCDebug(IMAPRESOURCE_LOG) << "UidNext: " << m_nextUid << "Local UidNext: " << oldNextUid;
     qCDebug(IMAPRESOURCE_LOG) << "HighestModSeq: " << m_highestModSeq << "Local HighestModSeq: " << oldHighestModSeq;
 
@@ -363,10 +364,9 @@ void RetrieveItemsTask::prepareRetrieval()
         // Shortcut:
         // If no messages are present on the server, clear local cache and finish
         m_incremental = false;
-
         // the result of previous qresync SELECT is irrelevant, we pass the flag to false to avoid triggering itemsRetrievedIncremental in onItemsRetrieved
         m_qresyncSelect = false;
-        if (realMessageCount > 0) {
+        if (m_localMessageCount > 0) {
             qCDebug(IMAPRESOURCE_LOG) << "No messages present so we are done, deleting local messages.";
             itemsRetrieved(Akonadi::Item::List());
         } else {
@@ -386,18 +386,17 @@ void RetrieveItemsTask::prepareRetrieval()
         }
         qCDebug(IMAPRESOURCE_LOG) << "Fetching complete mailbox " << m_mailBox;
         setTotalItems(m_messageCount);
-        retrieveItems(KIMAP::ImapSet(1, m_nextUid), scope, false, true);
+        retrieveItems(KIMAP::ImapSet(1, m_messageCount), scope, false, false);
     } else if (m_nextUid <= 0) {
         // This is a compatibility codepath for Courier IMAP. It probably introduces problems, but at least it syncs.
         // Since we don't have uidnext available, we simply use the messagecount. This will miss simultaneously added/removed messages.
         // qCDebug(IMAPRESOURCE_LOG) << "Running courier imap compatibility codepath";
-
         // the result of previous qresync SELECT is irrelevant, we pass the flag to false to avoid triggering itemsRetrievedIncremental in onItemsRetrieved
         m_qresyncSelect = false;
-        if (m_messageCount > realMessageCount) {
+        if (m_messageCount > m_localMessageCount) {
             // Get new messages
-            retrieveItems(KIMAP::ImapSet(realMessageCount + 1, m_messageCount), scope, false, false);
-        } else if (m_messageCount == realMessageCount) {
+            retrieveItems(KIMAP::ImapSet(m_localMessageCount + 1, m_messageCount), scope, false, false);
+        } else if (m_messageCount == m_localMessageCount) {
             m_uidBasedFetch = false;
             m_incremental = true;
             setTotalItems(m_messageCount);
@@ -414,7 +413,7 @@ void RetrieveItemsTask::prepareRetrieval()
         // Only fetch the new messages
         // We can make an incremental update and use modseq.
         qCDebug(IMAPRESOURCE_LOG) << "Incrementally fetching new messages: UidNext: " << m_nextUid << " Old UidNext: " << oldNextUid << " message count "
-                                  << m_messageCount << realMessageCount;
+                                  << m_messageCount << m_localMessageCount;
         retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), m_nextUid), scope, true, true);
     } else if (m_qresyncSelect) {
         // QRESYNC optimisation :
@@ -422,23 +421,23 @@ void RetrieveItemsTask::prepareRetrieval()
         // We can end the task here
         qCDebug(IMAPRESOURCE_LOG) << "No additional messages have been found by QRESYNC SELECT, retrieval complete";
         taskComplete();
-    } else if (m_nextUid > oldNextUid && ((realMessageCount + m_nextUid - oldNextUid) == m_messageCount) && realMessageCount > 0) {
+    } else if (m_nextUid > oldNextUid && ((m_localMessageCount + m_nextUid - oldNextUid) == m_messageCount) && m_localMessageCount > 0) {
         // Optimization:
         // New messages are available, but we know no messages have been removed.
         // Fetch new messages, and then check for changed flags and removed messages
         // We can make an incremental update and use modseq.
         qCDebug(IMAPRESOURCE_LOG) << "Incrementally fetching new messages: UidNext: " << m_nextUid << " Old UidNext: " << oldNextUid << " message count "
-                                  << m_messageCount << realMessageCount;
-        setTotalItems(qMax(1ll, m_messageCount - realMessageCount));
+                                  << m_messageCount << m_localMessageCount;
+        setTotalItems(qMax(1LL, m_messageCount - m_localMessageCount));
         m_flagsChanged = !(m_highestModSeq == oldHighestModSeq);
         retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), m_nextUid), scope, true, true);
-    } else if (m_nextUid > oldNextUid && m_messageCount > (realMessageCount + m_nextUid - oldNextUid) && realMessageCount > 0) {
+    } else if (m_nextUid > oldNextUid && m_messageCount > (m_localMessageCount + m_nextUid - oldNextUid) && m_localMessageCount > 0) {
         // Error recovery:
         // New messages are available, but not enough to justify the difference between the local and remote message count.
         // This can be triggered if we i.e. clear the local cache, but the keep the annotations.
         // If we didn't catch this case, we end up inserting flags only for every missing message.
         qCWarning(IMAPRESOURCE_LOG) << m_mailBox << ": detected inconsistency in local cache, we're missing some messages. Server: " << m_messageCount
-                                    << " Local: " << realMessageCount;
+                                    << " Local: " << m_localMessageCount;
         qCWarning(IMAPRESOURCE_LOG) << m_mailBox << ": refetching complete mailbox";
         setTotalItems(m_messageCount);
         retrieveItems(KIMAP::ImapSet(1, m_nextUid), scope, false, true);
@@ -447,7 +446,7 @@ void RetrieveItemsTask::prepareRetrieval()
         qCDebug(IMAPRESOURCE_LOG) << "Fetching new messages: UidNext: " << m_nextUid << " Old UidNext: " << oldNextUid;
         setTotalItems(m_messageCount);
         retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), m_nextUid), scope, false, true);
-    } else if (m_messageCount == realMessageCount && oldNextUid == m_nextUid) {
+    } else if (m_messageCount == m_localMessageCount && oldNextUid == m_nextUid) {
         // Optimization:
         // We know no messages were added or removed (if the message count and uidnext is still the same)
         // We only check the flags incrementally and can make use of modseq
@@ -464,22 +463,24 @@ void RetrieveItemsTask::prepareRetrieval()
         }
         setTotalItems(m_messageCount);
         listFlagsForImapSet(KIMAP::ImapSet(1, m_nextUid));
-    } else if (m_messageCount > realMessageCount) {
+    } else if (m_messageCount > m_localMessageCount) {
         // Error recovery:
         // We didn't detect any new messages based on the uid, but according to the message count there are new ones.
         // Our local cache is invalid and has to be refetched.
         qCWarning(IMAPRESOURCE_LOG) << m_mailBox << ": detected inconsistency in local cache, we're missing some messages. Server: " << m_messageCount
-                                    << " Local: " << realMessageCount;
+                                    << " Local: " << m_localMessageCount;
         qCWarning(IMAPRESOURCE_LOG) << m_mailBox << ": refetching complete mailbox";
         setTotalItems(m_messageCount);
         retrieveItems(KIMAP::ImapSet(1, m_nextUid), scope, false, true);
     } else {
         // Shortcut:
         // No new messages are available. Directly check for changed flags and removed messages.
-        m_uidBasedFetch = true;
+        // Since we are checking all messages anyway, don't use UID FETCH to avoid searching for UIDs,
+        // we can do batching based on sequence numbers.
+        m_uidBasedFetch = false;
         m_incremental = false;
         setTotalItems(m_messageCount);
-        listFlagsForImapSet(KIMAP::ImapSet(1, m_nextUid));
+        listFlagsForImapSet(KIMAP::ImapSet(1, m_messageCount));
     }
 }
 
@@ -520,6 +521,17 @@ void RetrieveItemsTask::onItemsRetrieved(const Akonadi::Item::List &addedItems)
 
 void RetrieveItemsTask::onRetrievalDone(KJob *job)
 {
+    Q_ASSERT(m_batchFetcher != nullptr);
+
+    // Get count of messages that got expunged during the batch fetcher run
+    qint64 lastSequence = qMin(m_localMessageCount, m_messageCount);
+    const auto expungedMessages = m_batchFetcher->expungedMessages();
+    for (auto seq : expungedMessages) {
+        if (seq < lastSequence) {
+            lastSequence--;
+        }
+    }
+
     m_batchFetcher = nullptr;
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << job->errorString();
@@ -527,7 +539,7 @@ void RetrieveItemsTask::onRetrievalDone(KJob *job)
         return;
     }
 
-    // This is the lowest sequence number that we just fetched.
+    // Lower bound of the requested range, in UIDs or sequence numbers depending on the fetch mode.
     const auto alreadyFetchedBegin = job->property("alreadyFetched").value<KIMAP::ImapSet::Id>();
 
     // If this is the first fetch of a folder, skip getting flags, we
@@ -544,12 +556,21 @@ void RetrieveItemsTask::onRetrievalDone(KJob *job)
         taskComplete();
         return;
     }
-    // Fetch flags of all items that were not fetched by the fetchJob. After
-    // that /all/ items in the folder are synced.
-    listFlagsForImapSet(KIMAP::ImapSet(1, alreadyFetchedBegin - 1));
+
+    // all other messages have been EXPUNGEd in the meantime, so we are done
+    if (lastSequence == 0) {
+        taskComplete();
+        return;
+    }
+
+    // Fetch flags of the messages preceding the range we just retrieved, preserving its fetch mode.
+    // UID commands can receive EXPUNGE responses, so SELECT's message count is no longer a safe
+    // sequence-number bound. UIDs remain valid even when messages have been expunged.
+    m_uidBasedFetch = false;
+    listFlagsForImapSet(KIMAP::ImapSet(1, lastSequence), false);
 }
 
-void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet &set)
+void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet &set, bool searchUidsFirst)
 {
     qCDebug(IMAPRESOURCE_LOG) << "Listing flags " << set.intervals().at(0).begin() << set.intervals().at(0).end();
     qCDebug(IMAPRESOURCE_LOG) << "Starting flag retrieval. Elapsed(ms): " << m_time.elapsed();
@@ -570,7 +591,7 @@ void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet &set)
 
     m_batchFetcher = createBatchFetcher(resourceState()->messageHelper(), set, scope, 10 * batchSize(), m_session);
     m_batchFetcher->setUidBased(m_uidBasedFetch);
-    if (m_uidBasedFetch && scope.changedSince == 0 && set.intervals().size() == 1) {
+    if (m_uidBasedFetch && searchUidsFirst && scope.changedSince == 0 && set.intervals().size() == 1) {
         m_batchFetcher->setSearchUids(set.intervals().front());
     }
     connect(m_batchFetcher, &BatchFetcher::itemsRetrieved, this, &RetrieveItemsTask::onItemsRetrieved);

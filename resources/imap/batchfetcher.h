@@ -29,10 +29,13 @@ public:
     void setSearchUids(const KIMAP::ImapInterval &interval);
     void setGmailExtensionsEnabled(bool enable);
 
+    QList<qint64> expungedMessages() const;
+
 Q_SIGNALS:
     void itemsRetrieved(const Akonadi::Item::List &);
 
 private Q_SLOTS:
+    void onMessageExpunged(qint64 id);
     void onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messages);
     void onHeadersFetchDone(KJob *job);
     void onUidSearchDone(KJob *job);
@@ -51,4 +54,5 @@ private:
     KIMAP::ImapInterval m_searchUidInterval;
     bool m_gmailEnabled = false;
     bool m_searchInChunks = false;
+    QVector<qint64> m_expungedMessages;
 };
