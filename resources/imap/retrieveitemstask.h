@@ -66,6 +66,7 @@ private:
     bool m_fetchMissingBodies = false;
     bool m_incremental = true;
     qint64 m_localHighestModSeq = -1;
+    qint64 m_localMessageCount = -1;
     BatchFetcher *m_batchFetcher = nullptr;
     Akonadi::Collection m_modifiedCollection;
     bool m_uidBasedFetch = true;

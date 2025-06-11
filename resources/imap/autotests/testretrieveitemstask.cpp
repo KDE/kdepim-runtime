@@ -229,15 +229,12 @@ private Q_SLOTS:
                     "Test\r\n"
                     " )"
                  << "S: A000007 OK fetch done"
-                 << "C: A000008 UID SEARCH UID 1:7"
-                 << "S: * SEARCH 1 2 3 4 5 6 7"
-                 << "S: A000008 OK search done"
-                 << "C: A000009 UID FETCH 1:7 (FLAGS UID)"
+                 << "C: A000008 FETCH 1:4 (FLAGS UID)"
                  << "S: * 1 FETCH"
                  << "S: * 2 FETCH"
                  << "S: * 3 FETCH"
                  << "S: * 4 FETCH"
-                 << "S: A000009 OK fetch done";
+                 << "S: A000008 OK fetch done";
 
         callNames.clear();
         callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental")
@@ -260,10 +257,10 @@ private Q_SLOTS:
                  << "S: * 5 EXISTS"
                  << "S: * 0 RECENT"
                  << "S: * OK [ UIDVALIDITY 1149151135  ]"
-                 << "S: * OK [ UIDNEXT 9  ]"
+                 << "S: * OK [ UIDNEXT 10  ]"
                  << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
                  << "S: A000005 OK select done"
-                 << "C: A000006 UID SEARCH UID 8:9"
+                 << "C: A000006 UID SEARCH UID 8:10"
                  << "S: * SEARCH 8 9"
                  << "S: A000006 OK search done"
                  << "C: A000007 UID FETCH 8:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
@@ -284,17 +281,17 @@ private Q_SLOTS:
                     "Test\r\n"
                     " )"
                  << "S: A000007 OK fetch done"
-                 << "C: A000008 UID SEARCH UID 1:7"
-                 << "S: * SEARCH 1 2 3 4 5 6 7"
-                 << "S: A000008 OK search done"
-                 << "C: A000009 UID FETCH 1:7 (FLAGS UID)"
-                 << "S: * 1 FETCH"
-                 << "S: * 2 FETCH"
-                 << "S: * 3 FETCH"
-                 << "S: A000009 OK fetch done";
+                 << "C: A000008 FETCH 1:5 (FLAGS UID)"
+                 << "S: * 1 FETCH ( FLAGS (\\Seen) UID 1 )"
+                 << "S: * 2 FETCH ( FLAGS (\\Seen) UID 2 )"
+                 << "S: * 3 FETCH ( FLAGS (\\Seen) UID 3 )"
+                 << "S: * 4 FETCH ( FLAGS (\\Seen) UID 8 )"
+                 << "S: * 5 FETCH ( FLAGS (\\Seen) UID 9 )"
+                 << "S: A000008 OK fetch done";
 
         callNames.clear();
-        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
+        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges")
+                  << QStringLiteral("itemsRetrievalDone");
 
         // A new message has been added and an old one removed, we can't do an incremental update
         QTest::newRow("uidnext changed, fetch new messages and list flags") << collection << scenario << callNames;
@@ -414,11 +411,8 @@ private Q_SLOTS:
                  << "S: * OK [ UIDVALIDITY 1149151135  ]"
                  << "S: * OK [ UIDNEXT 9  ]"
                  << "S: A000005 OK select done"
-                 << "C: A000006 UID SEARCH UID 1:9"
-                 << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
-                 << "S: A000006 OK search done"
-                 << "C: A000007 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
-                 << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+                 << "C: A000006 FETCH 1 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+                 << "S: * 1 FETCH ( FLAGS (\\Seen) UID 8 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                     "RFC822.SIZE 75 BODY[] {75}\r\n"
                     "From: Foo <foo@kde.org>\r\n"
                     "To: Bar <bar@kde.org>\r\n"
@@ -426,7 +420,7 @@ private Q_SLOTS:
                     "\r\n"
                     "Test\r\n"
                     " )"
-                 << "S: A000007 OK fetch done";
+                 << "S: A000006 OK fetch done";
 
         callNames.clear();
         callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
@@ -479,17 +473,23 @@ private Q_SLOTS:
                     " )"
                  // 4 more would follow but are excluded for clarity
                  << "S: A000008 OK fetch done"
-                 << "C: A000009 UID SEARCH UID 1:104"
-                 << "S: * SEARCH 1 2 99 100"
-                 << "S: A000009 OK search done"
-                 << "C: A000010 UID FETCH 1:2,99:100 (FLAGS UID)"
+                 << "C: A000009 FETCH 1:100 (FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 1 )"
+                 // 99 more would follow but are excluded for clarity
+                 << "S: A000009 OK fetch done"
+                 << "C: A000010 FETCH 101:104 (FLAGS UID)"
+                 << "S: * 1 FETCH ( FLAGS (\\Seen) UID 101 )"
                  // 3 more would follow but are excluded for clarity
                  << "S: A000010 OK fetch done";
 
         callNames.clear();
-        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental")
-                  << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
+        callNames << QStringLiteral("itemsRetrievedIncremental") // first batch of new messages
+                  << QStringLiteral("itemsRetrievedIncremental") // second batch of new messages
+                  << QStringLiteral("itemsRetrievedIncremental") // first batch of flags updates
+                  << QStringLiteral("itemsRetrievedIncremental") // second batch of flags updates
+                  << QStringLiteral("applyCollectionChanges") // retrieval done, apply collection changes
+                  << QStringLiteral("itemsRetrievedIncremental") // final call to ensure incremental update
+                  << QStringLiteral("itemsRetrievalDone"); // sync done, no more calls expected
 
         QTest::newRow("test batch processing") << collection << scenario << callNames;
 
@@ -514,15 +514,12 @@ private Q_SLOTS:
                  << "S: * OK [ UIDNEXT 9 ]"
                  << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
                  << "S: A000005 OK select done"
-                 << "C: A000006 UID SEARCH UID 1:9"
-                 << "S: * SEARCH 1 2 3 4"
-                 << "S: A000006 OK search done"
-                 << "C: A000007 UID FETCH 1:4 (FLAGS UID)"
+                 << "C: A000006 FETCH 1:4 (FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 1 )"
                  << "S: * 2 FETCH ( FLAGS (\\Seen) UID 2 )"
                  << "S: * 3 FETCH ( FLAGS (\\Seen) UID 3 )"
                  << "S: * 4 FETCH ( FLAGS (\\Seen) UID 4 )"
-                 << "S: A000007 OK fetch done";
+                 << "S: A000006 OK fetch done";
         callNames.clear();
         callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
 
@@ -596,7 +593,7 @@ private Q_SLOTS:
         task->start(&pool);
 
         QTRY_COMPARE(state->calls().count(), callNames.size());
-        qDebug() << state->calls();
+        // qDebug() << state->calls();
         for (int i = 0; i < callNames.size(); i++) {
             QString command = QString::fromUtf8(state->calls().at(i).first);
             QVariant parameter = state->calls().at(i).second;
