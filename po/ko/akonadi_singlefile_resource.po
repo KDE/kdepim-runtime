@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:42+0000\n"
-"PO-Revision-Date: 2025-04-15 23:38+0200\n"
+"PO-Revision-Date: 2025-06-10 23:51+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 24.12.3\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -306,13 +306,7 @@ msgstr ""
 "니다."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:whatsthis"
-#| msgid ""
-#| "Enter the path or URL to a file containing a valid calendar file. "
-#| "<p><note> Unfortunately, this path cannot be changed once the resource is "
-#| "created. To change the location, delete this resource and then create a "
-#| "new one with the updated path.</note></p>"
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a file containing a valid calendar file. "
@@ -320,9 +314,9 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></para>"
 msgstr ""
-"올바른 캘린더 파일의 경로나 URL을 입력하십시오.<p><note>한 번 리소스를 생성하"
-"면 이 경로를 변경할 수 없습니다. 경로를 변경하려면 리소스를 삭제하고 새로운 "
-"경로로 리소스를 다시 만드십시오.</note></p>"
+"올바른 캘린더 파일의 경로나 URL을 입력하십시오.<para><note>한 번 리소스를 생"
+"성하면 이 경로를 변경할 수 없습니다. 경로를 변경하려면 리소스를 삭제하고 새로"
+"운 경로로 리소스를 다시 만드십시오.</note></para>"
 
 #: singlefileresourceconfigwidgetbase.cpp:145
 #, kde-format

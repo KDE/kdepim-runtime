@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2017, 2019, 2020, 2021, 2023, 2024 Shinjo Park <kde@peremen.name>
+# SPDX-FileCopyrightText: 2017, 2019, 2020, 2021, 2023, 2024, 2025 Shinjo Park <kde@peremen.name>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-01 00:42+0000\n"
-"PO-Revision-Date: 2024-08-19 22:47+0200\n"
+"PO-Revision-Date: 2025-06-10 23:50+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 24.12.3\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -28,32 +28,24 @@ msgid "Exchange protocol information not found"
 msgstr "Exchange 프로토콜 정보를 찾을 수 없음"
 
 #: ewsclient/auth/ewsintuneauth.cpp:303
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
-#| "valid. You need to authenticate in order to continue using it."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "InTune credentials for the Microsoft Exchange account <b>%1</b> are no "
 "longer valid. You need to authenticate in order to continue using it."
 msgstr ""
-"계정 <b>%1</b>의 Microsoft Exchange 인증 정보가 더 이상 유효하지 않습니다. 계"
-"정을 계속 사용하려면 인증해야 합니다."
+"Microsoft Exchange 계정 <b>%1</b>의 InTune 자격 증명이 더 이상 유효하지 않습"
+"니다. 계정을 계속 사용하려면 인증해야 합니다."
 
 #: ewsclient/auth/ewsintuneauth.cpp:312
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
-#| "Please update it in the account settings page."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Failed to obtain InTune credentials for Microsoft Exchange account <b>%1</"
 "b>. Please update it in the account settings page."
 msgstr ""
-"Microsoft Exchange 계정 <b>%1</b>의 인증 정보를 가져올 수 없습니다. 계정 설"
-"정 페이지에서 업데이트하십시오."
+"Microsoft Exchange 계정 <b>%1</b>의 InTune 자격 증명을 가져올 수 없습니다. 계"
+"정 설정 페이지에서 업데이트하십시오."
 
 #: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
@@ -62,7 +54,7 @@ msgid ""
 "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
 "valid. You need to authenticate in order to continue using it."
 msgstr ""
-"계정 <b>%1</b>의 Microsoft Exchange 인증 정보가 더 이상 유효하지 않습니다. 계"
+"계정 <b>%1</b>의 Microsoft Exchange 자격 증명이 더 이상 유효하지 않습니다. 계"
 "정을 계속 사용하려면 인증해야 합니다."
 
 #: ewsclient/auth/ewsoauth.cpp:534
@@ -72,7 +64,7 @@ msgid ""
 "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
 "Please update it in the account settings page."
 msgstr ""
-"Microsoft Exchange 계정 <b>%1</b>의 인증 정보를 가져올 수 없습니다. 계정 설"
+"Microsoft Exchange 계정 <b>%1</b>의 자격 증명을 가져올 수 없습니다. 계정 설"
 "정 페이지에서 업데이트하십시오."
 
 #: ewsclient/auth/ewspasswordauth.cpp:57
@@ -392,12 +384,16 @@ msgid ""
 "system to be joined to the organization and managed using InTune.</p></"
 "body></html>"
 msgstr ""
+"<html><head/><body><p>Microsoft InTune MDM 소프트웨어를 사용하는 인증을 활성"
+"화합니다. 여러 기업 환경에서 필수적이며, 장치 자격 증명을 사용한 강력한 인증"
+"이 필요하며 시스템이 InTune을 사용하여 조직에 등록 및 관리되고 있어야 합니다."
+"</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authInTuneRadioButton)
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "&Microsoft InTune"
-msgstr ""
+msgstr "Microsoft InTune(&M)"
 
 #. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
 #: ewsconfigdialog.ui:245
