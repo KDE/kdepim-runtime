@@ -760,18 +760,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#~ msgid ""
-#~ "Select this if your calendars contain a lot of events and the server "
-#~ "cannot fulfill the requests"
-#~ msgstr ""
-#~ "Изберете това, ако календарите ви съдържат много събития и сървърът не "
-#~ "може да изпълни заявките"
-
-#~ msgctxt "@label:textbox"
-#~ msgid "A password is required for user %1"
-#~ msgstr "За потребител %1 се изисква парола"
-
-#~ msgctxt "@label:textbox"
-#~ msgid "Password: "
-#~ msgstr "Парола: "
