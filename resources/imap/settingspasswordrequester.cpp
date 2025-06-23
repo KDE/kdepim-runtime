@@ -55,7 +55,6 @@ void SettingsPasswordRequester::requestPassword(RequestType request, const QStri
                 m_readPasswordJobs.removeAll(job);
             });
             m_readPasswordJobs << job;
-            job->start();
         } else {
             auto password = m_resource->settings()->password();
             if (password.isEmpty()) {
