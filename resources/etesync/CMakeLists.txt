@@ -50,9 +50,9 @@ target_link_libraries(akonadi_etesync_resource
     KF6::Contacts
     KF6::CalendarCore
     KF6::KIOCore
-    KF6::Wallet
     KF6::I18n
     KF6::Notifications
+    qt6keychain
 )
 
 ecm_install_icons(
@@ -114,5 +114,5 @@ target_link_libraries(etesyncconfig PUBLIC
     KPim6::AkonadiCore
     KPim6::AkonadiWidgets
     KPim6::AkonadiAgentWidgetBase
-    KF6::Wallet
+    qt6keychain
 )

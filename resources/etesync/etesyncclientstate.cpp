@@ -9,9 +9,12 @@
 
 #include "etesync_debug.h"
 
-using namespace KWallet;
+#include <KLocalizedString>
+#include <qt6keychain/keychain.h>
 
-static const QString etebaseWalletFolder = QStringLiteral("Akonadi Etebase");
+using namespace QKeychain;
+
+static constexpr QLatin1StringView etebaseKeychainFolder("Akonadi Etebase");
 
 EteSyncClientState::EteSyncClientState(Settings *const settings, const QString &agentId)
     : mSettings(settings)
@@ -28,7 +31,7 @@ void EteSyncClientState::init()
     mUsername = mSettings->username();
 
     if (mServerUrl.isEmpty() || mUsername.isEmpty()) {
-        Q_EMIT clientInitialised(false);
+        Q_EMIT clientInitialised(false, i18nc("@info:status", "Empty account configuration"));
         return;
     }
 
@@ -37,39 +40,15 @@ void EteSyncClientState::init()
     if (!mClient) {
         qCDebug(ETESYNC_LOG) << "Could not initialise Etebase client";
         qCDebug(ETESYNC_LOG) << "Etebase error" << etebase_error_get_message();
-        Q_EMIT clientInitialised(false);
+        Q_EMIT clientInitialised(false, i18nc("@info:status", "Etebase error when initializing client: %1", QLatin1StringView(etebase_error_get_message())));
         return;
     }
 
     // Initialize etebase file cache
-    mEtebaseCache = etebase_fs_cache_new(mSettings->basePath(), mUsername + QStringLiteral("_") + mAgentId);
+    mEtebaseCache = etebase_fs_cache_new(mSettings->basePath(), mUsername + u'_' + mAgentId);
 
     // Load Etebase account from cache
     loadAccount();
-
-    Q_EMIT clientInitialised(true);
-}
-
-bool EteSyncClientState::openWalletFolder()
-{
-    mWallet = Wallet::openWallet(Wallet::NetworkWallet(), 0, Wallet::Synchronous); // Pass 0 for winId
-    if (mWallet) {
-        qCDebug(ETESYNC_LOG) << "Wallet opened";
-    } else {
-        qCWarning(ETESYNC_LOG) << "Failed to open wallet!";
-        return false;
-    }
-    if (!mWallet->hasFolder(etebaseWalletFolder) && !mWallet->createFolder(etebaseWalletFolder)) {
-        qCWarning(ETESYNC_LOG) << "Failed to create wallet folder" << etebaseWalletFolder;
-        return false;
-    }
-
-    if (!mWallet->setFolder(etebaseWalletFolder)) {
-        qWarning() << "Failed to open wallet folder" << etebaseWalletFolder;
-        return false;
-    }
-    qCDebug(ETESYNC_LOG) << "Wallet opened" << etebaseWalletFolder;
-    return true;
 }
 
 bool EteSyncClientState::login(const QString &serverUrl, const QString &username, const QString &password)
@@ -98,7 +77,7 @@ void EteSyncClientState::logout()
     if (etebase_account_logout(mAccount.get())) {
         qCDebug(ETESYNC_LOG) << "Could not logout";
     }
-    deleteWalletEntry();
+    deleteKeychainEntry();
 }
 
 EteSyncClientState::AccountStatus EteSyncClientState::accountStatus()
@@ -136,7 +115,6 @@ void EteSyncClientState::refreshToken()
         return;
     }
     tokenRefreshed(true);
-    return;
 }
 
 void EteSyncClientState::saveSettings()
@@ -149,73 +127,68 @@ void EteSyncClientState::saveSettings()
 
 void EteSyncClientState::saveAccount()
 {
-    if (!mWallet) {
-        qCDebug(ETESYNC_LOG) << "Save account - wallet not opened";
-        if (!openWalletFolder()) {
-            return;
-        }
-    }
-
     QByteArray encryptionKey(32, '\0');
     etebase_utils_randombytes(encryptionKey.data(), encryptionKey.size());
-    if (mWallet->writeEntry(mUsername, encryptionKey)) {
-        qCDebug(ETESYNC_LOG) << "Could not store encryption key for account" << mUsername << "in KWallet";
-        return;
-    }
 
-    qCDebug(ETESYNC_LOG) << "Wrote encryption key to wallet";
+    auto job = new QKeychain::WritePasswordJob(etebaseKeychainFolder);
+    job->setKey(mUsername);
+    job->setBinaryData(encryptionKey);
 
-    if (etebase_fs_cache_save_account(mEtebaseCache.get(), mAccount.get(), encryptionKey.constData(), encryptionKey.size())) {
-        qCDebug(ETESYNC_LOG) << "Could not save account to cache";
-        qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_code() << etebase_error_get_message();
-    }
+    connect(job, &QKeychain::Job::finished, this, [this, encryptionKey, job] {
+        if (job->error() != QKeychain::Error::NoError) {
+            qCWarning(ETESYNC_LOG) << "Could not store encryption key for account" << mUsername << "in keychain" << job->error();
+            return;
+        }
+
+        qCDebug(ETESYNC_LOG) << "Wrote encryption key to keychain";
+
+        if (etebase_fs_cache_save_account(mEtebaseCache.get(), mAccount.get(), encryptionKey.constData(), encryptionKey.size())) {
+            qCDebug(ETESYNC_LOG) << "Could not save account to cache";
+            qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_code() << etebase_error_get_message();
+        }
+    });
+    job->start();
 }
 
 void EteSyncClientState::loadAccount()
 {
-    if (!mWallet) {
-        qCDebug(ETESYNC_LOG) << "Get account - wallet not opened";
-        if (!openWalletFolder()) {
+    auto job = new QKeychain::ReadPasswordJob(etebaseKeychainFolder);
+    job->setKey(mUsername);
+    connect(job, &QKeychain::Job::finished, this, [this, job] {
+        if (job->error() != QKeychain::Error::NoError) {
+            qCWarning(ETESYNC_LOG) << "Unable to read password:" << job->errorString();
+            Q_EMIT clientInitialised(false, i18nc("@info:status", "Unable to read password: %1", job->errorString()));
             return;
         }
-    }
 
-    if (!mWallet->entryList().contains(mUsername)) {
-        qCDebug(ETESYNC_LOG) << "Encryption key for account" << mUsername << "not found in KWallet";
-        return;
-    }
+        const auto encryptionKey = job->binaryData();
+        mAccount = EtebaseAccountPtr(etebase_fs_cache_load_account(mEtebaseCache.get(), mClient.get(), encryptionKey.constData(), encryptionKey.size()));
 
-    QByteArray encryptionKey;
-    if (mWallet->readEntry(mUsername, encryptionKey)) {
-        qCDebug(ETESYNC_LOG) << "Could not read encryption key for account" << mUsername << "from KWallet";
-        return;
-    }
+        if (!mAccount) {
+            qCDebug(ETESYNC_LOG) << "Could not get etebase account from cache";
+            Q_EMIT clientInitialised(false, i18nc("@info:status", "Could not get etebase account from cache"));
+            return;
+        }
 
-    qCDebug(ETESYNC_LOG) << "Read encryption key from wallet";
-
-    mAccount = EtebaseAccountPtr(etebase_fs_cache_load_account(mEtebaseCache.get(), mClient.get(), encryptionKey.constData(), encryptionKey.size()));
-
-    if (!mAccount) {
-        qCDebug(ETESYNC_LOG) << "Could not get etebase account from caache";
-    }
+        Q_EMIT clientInitialised(true);
+    });
+    job->start();
 }
 
-void EteSyncClientState::deleteWalletEntry()
+void EteSyncClientState::deleteKeychainEntry()
 {
-    qCDebug(ETESYNC_LOG) << "Deleting wallet entry";
+    qCDebug(ETESYNC_LOG) << "Deleting keychain entry";
 
-    if (!mWallet) {
-        qCDebug(ETESYNC_LOG) << "Delete wallet entry - wallet not opened";
-        if (!openWalletFolder()) {
+    auto job = new QKeychain::DeletePasswordJob(etebaseKeychainFolder);
+    job->setKey(mUsername);
+    connect(job, &QKeychain::Job::finished, this, [this, job] {
+        if (job->error() != QKeychain::Error::NoError) {
+            qCDebug(ETESYNC_LOG) << "Unable to delete keychain entry";
             return;
         }
-    }
-
-    if (mWallet->removeEntry(mUsername)) {
-        qCDebug(ETESYNC_LOG) << "Unable to delete wallet entry";
-    }
-
-    qCDebug(ETESYNC_LOG) << "Deleted wallet entry";
+        qCDebug(ETESYNC_LOG) << "Deleted keychain entry";
+    });
+    job->start();
 }
 
 void EteSyncClientState::saveEtebaseCollectionCache(const EtebaseCollection *etesyncCollection) const

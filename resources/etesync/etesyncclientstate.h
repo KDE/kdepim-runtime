@@ -9,7 +9,6 @@
 #include "etebaseadapter.h"
 #include "settings.h"
 
-#include <KWallet>
 #include <QPointer>
 
 class EteSyncClientState : public QObject
@@ -31,8 +30,7 @@ public:
     bool login(const QString &serverUrl, const QString &username, const QString &password);
     void logout();
     AccountStatus accountStatus();
-    bool openWalletFolder();
-    void deleteWalletEntry();
+    void deleteKeychainEntry();
     void saveAccount();
     void loadAccount();
     void saveEtebaseCollectionCache(const EtebaseCollection *etesyncCollection) const;
@@ -67,7 +65,7 @@ public Q_SLOTS:
     void refreshToken();
 
 Q_SIGNALS:
-    void clientInitialised(bool successful);
+    void clientInitialised(bool successful, const QString &error = {});
     void tokenRefreshed(bool successful);
 
 private:
@@ -79,5 +77,4 @@ private:
     QString mPassword;
     QString mServerUrl;
     const QString mAgentId;
-    QPointer<KWallet::Wallet> mWallet;
 };

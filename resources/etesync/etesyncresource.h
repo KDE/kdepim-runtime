@@ -22,9 +22,6 @@ public:
     ~EteSyncResource() override = default;
 
     void cleanup() override;
-Q_SIGNALS:
-
-    void clientInitialised(bool successful);
 
 protected Q_SLOTS:
     void retrieveCollections() override;
@@ -55,7 +52,7 @@ protected:
 
 private Q_SLOTS:
     void onReloadConfiguration();
-    void initialiseDone(bool successful);
+    void initialiseDone(bool successful, const QString &error);
     void slotItemsRetrieved(KJob *job);
     void slotCollectionsRetrieved(KJob *job);
     void slotTokenRefreshed(bool successful);

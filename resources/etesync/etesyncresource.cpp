@@ -339,11 +339,18 @@ void EteSyncResource::onReloadConfiguration()
     }
 }
 
-void EteSyncResource::initialiseDone(bool successful)
+void EteSyncResource::initialiseDone(bool successful, const QString &error)
 {
     qCDebug(ETESYNC_LOG) << "Resource initialised";
     if (successful) {
         synchronize();
+    } else {
+        Q_ASSERT(!error.isEmpty());
+        if (mClientState && (mClientState->username().isEmpty() || mClientState->serverUrl().isEmpty())) {
+            Q_EMIT status(NotConfigured, error);
+        } else {
+            Q_EMIT status(Broken, error);
+        }
     }
 }
 
