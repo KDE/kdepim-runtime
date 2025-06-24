@@ -21,7 +21,7 @@
 
 #include <QStandardPaths>
 
-QTEST_AKONADIMAIN(Pop3Test)
+QTEST_AKONADI_CORE_MAIN(Pop3Test)
 
 using namespace Akonadi;
 

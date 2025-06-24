@@ -68,6 +68,6 @@ void SyncTest::testSync()
     }
 }
 
-QTEST_AKONADIMAIN(SyncTest)
+QTEST_AKONADI_CORE_MAIN(SyncTest)
 
 #include "moc_synctest.cpp"
