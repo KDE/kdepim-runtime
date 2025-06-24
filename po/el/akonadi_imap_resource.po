@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-14 00:44+0000\n"
+"POT-Creation-Date: 2025-06-24 00:43+0000\n"
 "PO-Revision-Date: 2024-09-20 13:46+0300\n"
 "Last-Translator: Antonis Geralis <capoiosct@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -703,13 +703,13 @@ msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr ""
 
-#: settingspasswordrequester.cpp:77
+#: settingspasswordrequester.cpp:76
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr ""
 
-#: settingspasswordrequester.cpp:81
+#: settingspasswordrequester.cpp:80
 #, fuzzy, kde-format
 #| msgid ""
 #| "The server for account \"%2\" refused the supplied username and password. "
@@ -729,7 +729,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:86
+#: settingspasswordrequester.cpp:85
 #, fuzzy, kde-format
 #| msgid ""
 #| "The server for account \"%2\" refused the supplied username and password. "
@@ -749,13 +749,13 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:93
+#: settingspasswordrequester.cpp:92
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Προσπαθήστε ξανά"
 
-#: settingspasswordrequester.cpp:99
+#: settingspasswordrequester.cpp:98
 #, fuzzy, kde-format
 #| msgid "Identity Settings"
 msgctxt "@action:button"

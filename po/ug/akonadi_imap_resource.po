@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-14 00:44+0000\n"
+"POT-Creation-Date: 2025-06-24 00:43+0000\n"
 "PO-Revision-Date: 2013-09-08 07:05+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -635,13 +635,13 @@ msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr ""
 
-#: settingspasswordrequester.cpp:77
+#: settingspasswordrequester.cpp:76
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr ""
 
-#: settingspasswordrequester.cpp:81
+#: settingspasswordrequester.cpp:80
 #, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
@@ -650,7 +650,7 @@ msgid ""
 "%1"
 msgstr ""
 
-#: settingspasswordrequester.cpp:86
+#: settingspasswordrequester.cpp:85
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -659,7 +659,7 @@ msgid ""
 "%2"
 msgstr ""
 
-#: settingspasswordrequester.cpp:93
+#: settingspasswordrequester.cpp:92
 #, fuzzy, kde-format
 #| msgctxt "Input username/password manually and not store them"
 #| msgid "Try Again"
@@ -667,7 +667,7 @@ msgctxt "@action:button"
 msgid "Try again"
 msgstr "قايتا سىناش"
 
-#: settingspasswordrequester.cpp:99
+#: settingspasswordrequester.cpp:98
 #, fuzzy, kde-format
 #| msgid "Identity Settings"
 msgctxt "@action:button"
