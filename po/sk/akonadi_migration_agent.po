@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_migration_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-14 00:39+0000\n"
+"POT-Creation-Date: 2025-06-25 00:43+0000\n"
 "PO-Revision-Date: 2013-11-18 21:27+0100\n"
 "Last-Translator: Roman Paholík <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
@@ -48,13 +48,13 @@ msgctxt "PIM-Maintenance is paused."
 msgid "Paused."
 msgstr "Pozastavené."
 
-#: migrationscheduler.cpp:145
+#: migrationscheduler.cpp:144
 #, kde-format
 msgctxt "Name of the migrator in this row"
 msgid "Name"
 msgstr "Názov"
 
-#: migrationscheduler.cpp:147
+#: migrationscheduler.cpp:146
 #, fuzzy, kde-format
 #| msgctxt "Progress of the mgirator in %"
 #| msgid "Progress"
@@ -62,7 +62,7 @@ msgctxt "Progress of the migrator in %"
 msgid "Progress"
 msgstr "Priebeh"
 
-#: migrationscheduler.cpp:149
+#: migrationscheduler.cpp:148
 #, fuzzy, kde-format
 #| msgctxt "Current status of the migrator (done, in progress, ...)"
 #| msgid "Status"

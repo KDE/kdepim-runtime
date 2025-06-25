@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-07-14 00:39+0000\n"
+"POT-Creation-Date: 2025-06-25 00:43+0000\n"
 "PO-Revision-Date: 2024-11-18 14:41+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -54,19 +54,19 @@ msgctxt "PIM-Maintenance is paused."
 msgid "Paused."
 msgstr "Приостановлено."
 
-#: migrationscheduler.cpp:145
+#: migrationscheduler.cpp:144
 #, kde-format
 msgctxt "Name of the migrator in this row"
 msgid "Name"
 msgstr "Название"
 
-#: migrationscheduler.cpp:147
+#: migrationscheduler.cpp:146
 #, kde-format
 msgctxt "Progress of the migrator in %"
 msgid "Progress"
 msgstr "Ход выполнения"
 
-#: migrationscheduler.cpp:149
+#: migrationscheduler.cpp:148
 #, kde-format
 msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
