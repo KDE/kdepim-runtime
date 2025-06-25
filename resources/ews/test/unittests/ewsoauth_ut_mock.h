@@ -120,7 +120,7 @@ class QWebEngineView : public QWidget
 {
     Q_OBJECT
 public:
-    using AuthFunc = std::function<void(const QUrl &, QVariantMap &)>;
+    using AuthFunc = std::function<void(const QUrl &, QMap<QString, QVariant> &)>;
 
     explicit QWebEngineView(QWidget *parent);
     ~QWebEngineView() override;
@@ -215,7 +215,7 @@ public:
     void setReplyHandler(QAbstractOAuthReplyHandler *handler);
     void setAuthorizationUrl(const QUrl &url);
     void setClientIdentifier(const QString &identifier);
-    void setModifyParametersFunction(const std::function<void(QAbstractOAuth::Stage, QMap<QString, QVariant> *)> &func);
+    void setModifyParametersFunction(const std::function<void(QAbstractOAuth::Stage, QMultiMap<QString, QVariant> *)> &func);
     QString token() const;
     void setToken(const QString &token);
     Status status() const;
@@ -228,7 +228,7 @@ protected:
     QAbstractOAuthReplyHandler *mReplyHandler;
     QUrl mAuthUrl;
     QString mClientId;
-    std::function<void(QAbstractOAuth::Stage, QMap<QString, QVariant> *)> mModifyParamsFunc;
+    std::function<void(QAbstractOAuth::Stage, QMultiMap<QString, QVariant> *)> mModifyParamsFunc;
     QString mToken;
     QString mRefreshToken;
     QUrl mTokenUrl;
@@ -248,7 +248,11 @@ public:
 
 Q_SIGNALS:
     void authorizationCallbackReceived(QMap<QString, QVariant> const &params);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+    void serverReportedErrorOccurred(const QString &error, const QString &errorDescription, const QUrl &uri);
+#else
     void error(const QString &error, const QString &errorDescription, const QUrl &uri);
+#endif
 };
 
 class QOAuth2AuthorizationCodeFlow : public QAbstractOAuth2
@@ -260,22 +264,28 @@ public:
     explicit QOAuth2AuthorizationCodeFlow(QObject *parent = nullptr);
     ~QOAuth2AuthorizationCodeFlow() override;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+    void setTokenUrl(const QUrl &url);
+#else
     void setAccessTokenUrl(const QUrl &url);
+#endif
     void grant();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+    void refreshTokens();
+#else
     void refreshAccessToken();
+#endif
 
     QString redirectUri() const;
     void setTokenFunction(const TokenFunc &func);
     void setState(const QString &state);
-
-    static QUrlQuery mapToSortedQuery(QMap<QString, QVariant> const &map);
 
     static QPointer<QOAuth2AuthorizationCodeFlow> instance;
 
 protected:
     void authCallbackReceived(QMap<QString, QVariant> const &params);
     void replyDataCallbackReceived(const QByteArray &data);
-    void tokenCallbackReceived(const QVariantMap &tokens);
+    void tokenCallbackReceived(const QMap<QString, QVariant> &tokens);
     void doRefreshAccessToken();
 
     TokenFunc mTokenFunc;

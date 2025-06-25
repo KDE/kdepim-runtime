@@ -25,6 +25,8 @@ static const QString accessToken1 = QStringLiteral("IERbOTo5NSdtY5HMntWTH1wgrRt9
 static const QString refreshToken1 = QStringLiteral("YW7lJFWcEISynbraq4NiLLke3rOieFdvoJEDxpjCXorJblIGM56OJSu1PZXMCQL5W3KLxS9ydxqLHxRTSdw");
 static const QString idToken1 = QStringLiteral("gz7l0chu9xIi1MMgPkpHGQTmo3W7L1rQbmWAxEL5VSKHeqdIJ7E3K7vmMYTl/C1fWihB5XiLjD2GSVQoOzTfCw");
 
+using namespace Qt::StringLiterals;
+
 class UtEwsOAuth : public QObject
 {
     Q_OBJECT
@@ -268,8 +270,8 @@ int UtEwsOAuth::performAuthAction(EwsOAuth &oAuth, int timeout, std::function<bo
 
 void UtEwsOAuth::setUpAccessFunction(const QString &refreshToken)
 {
-    Mock::QWebEngineView::instance->setAuthFunction([&](const QUrl &, QVariantMap &map) {
-        map[QStringLiteral("code")] = QUrl::toPercentEncoding(refreshToken);
+    Mock::QWebEngineView::instance->setAuthFunction([&](const QUrl &, QMap<QString, QVariant> &map) {
+        map.insert(u"code"_s, QUrl::toPercentEncoding(refreshToken));
     });
 }
 
@@ -283,7 +285,7 @@ void UtEwsOAuth::setUpTokenFunction(const QString &accessToken,
 {
     Mock::QOAuth2AuthorizationCodeFlow::instance->setTokenFunction(
         [=, &tokenReplyData](QString &data, QMap<Mock::QNetworkRequest::KnownHeaders, QVariant> &headers) {
-            QVariantMap map;
+            QMap<QString, QVariant> map;
             map[QStringLiteral("token_type")] = QStringLiteral("Bearer");
             map[QStringLiteral("scope")] = QStringLiteral("ReadWrite.All");
             map[QStringLiteral("expires_in")] = QString::number(tokenLifetime);

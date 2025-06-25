@@ -9,6 +9,33 @@
 #include <QUrlQuery>
 Q_LOGGING_CATEGORY(EWSCLI_LOG, "org.kde.pim.ews.client", QtInfoMsg)
 
+using namespace Qt::StringLiterals;
+
+static QUrlQuery mapToSortedQuery(QMap<QString, QVariant> const &map)
+{
+    QUrlQuery query;
+    QStringList keys = map.keys();
+    keys.sort();
+    for (const auto &key : std::as_const(keys)) {
+        query.addQueryItem(key, map[key].toString());
+    }
+    return query;
+}
+
+static QUrlQuery mapToSortedQuery(QMultiMap<QString, QVariant> const &map)
+{
+    QUrlQuery query;
+    QStringList keys = map.keys();
+    keys.sort();
+    for (const auto &key : std::as_const(keys)) {
+        const auto values = map.values(key);
+        for (const auto &value : values) {
+            query.addQueryItem(key, value.toString());
+        }
+    }
+    return query;
+}
+
 namespace Mock
 {
 QPointer<QWebEngineView> QWebEngineView::instance;
@@ -35,6 +62,8 @@ void QWebEngineUrlRequestInfo::redirect(const QUrl &)
 
 void QWebEngineUrlRequestInfo::setHttpHeader(const QByteArray &header, const QByteArray &value)
 {
+    Q_UNUSED(header);
+    Q_UNUSED(value);
 }
 
 QWebEngineUrlRequestInterceptor::QWebEngineUrlRequestInterceptor(QObject *parent)
@@ -104,11 +133,11 @@ void QWebEngineView::load(const QUrl &url)
 
     simulatePageLoad(url);
 
-    QVariantMap params;
+    QMap<QString, QVariant> params;
     if (mAuthFunction) {
         mAuthFunction(url, params);
 
-        simulatePageLoad(QUrl(mRedirectUri + QStringLiteral("?") + QOAuth2AuthorizationCodeFlow::mapToSortedQuery(params).toString()));
+        simulatePageLoad(QUrl(mRedirectUri + u'?' + mapToSortedQuery(params).toString()));
     } else {
         qWarning() << "No authentication callback defined";
     }
@@ -185,7 +214,7 @@ void QAbstractOAuth::setClientIdentifier(const QString &identifier)
     mClientId = identifier;
 }
 
-void QAbstractOAuth::setModifyParametersFunction(const std::function<void(QAbstractOAuth::Stage, QMap<QString, QVariant> *)> &func)
+void QAbstractOAuth::setModifyParametersFunction(const std::function<void(QAbstractOAuth::Stage, QMultiMap<QString, QVariant> *)> &func)
 {
     mModifyParamsFunc = func;
 }
@@ -232,19 +261,23 @@ QOAuth2AuthorizationCodeFlow::QOAuth2AuthorizationCodeFlow(QObject *parent)
 
 QOAuth2AuthorizationCodeFlow::~QOAuth2AuthorizationCodeFlow() = default;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+void QOAuth2AuthorizationCodeFlow::setTokenUrl(const QUrl &url)
+#else
 void QOAuth2AuthorizationCodeFlow::setAccessTokenUrl(const QUrl &url)
+#endif
 {
     mTokenUrl = url;
 }
 
 void QOAuth2AuthorizationCodeFlow::grant()
 {
-    QMap<QString, QVariant> map;
-    map[QStringLiteral("response_type")] = QStringLiteral("code");
-    map[QStringLiteral("client_id")] = QUrl::toPercentEncoding(mClientId);
-    map[QStringLiteral("redirect_uri")] = QUrl::toPercentEncoding(mReplyHandler->callback());
-    map[QStringLiteral("scope")] = QString();
-    map[QStringLiteral("state")] = mState;
+    QMultiMap<QString, QVariant> map;
+    map.insert(u"response_type"_s, u"code"_s);
+    map.insert(u"client_id"_s, QUrl::toPercentEncoding(mClientId));
+    map.insert(u"redirect_uri"_s, QUrl::toPercentEncoding(mReplyHandler->callback()));
+    map.insert(u"scope"_s, QString());
+    map.insert(u"state"_s, mState);
 
     Q_EMIT logEvent(QStringLiteral("ModifyParams:RequestingAuthorization:") + mapToSortedQuery(map).toString());
 
@@ -252,7 +285,7 @@ void QOAuth2AuthorizationCodeFlow::grant()
         mModifyParamsFunc(Stage::RequestingAuthorization, &map);
     }
 
-    mResource = QUrl::fromPercentEncoding(map[QStringLiteral("resource")].toByteArray());
+    mResource = QUrl::fromPercentEncoding(map.values("resource"_L1).at(0).toByteArray());
 
     QUrl url(mAuthUrl);
     url.setQuery(mapToSortedQuery(map));
@@ -264,7 +297,11 @@ void QOAuth2AuthorizationCodeFlow::grant()
     Q_EMIT authorizeWithBrowser(url);
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+void QOAuth2AuthorizationCodeFlow::refreshTokens()
+#else
 void QOAuth2AuthorizationCodeFlow::refreshAccessToken()
+#endif
 {
     mStatus = Status::RefreshingToken;
 
@@ -273,11 +310,11 @@ void QOAuth2AuthorizationCodeFlow::refreshAccessToken()
 
 void QOAuth2AuthorizationCodeFlow::doRefreshAccessToken()
 {
-    QMap<QString, QVariant> map;
-    map[QStringLiteral("grant_type")] = QStringLiteral("authorization_code");
-    map[QStringLiteral("code")] = QUrl::toPercentEncoding(mRefreshToken);
-    map[QStringLiteral("client_id")] = QUrl::toPercentEncoding(mClientId);
-    map[QStringLiteral("redirect_uri")] = QUrl::toPercentEncoding(mReplyHandler->callback());
+    QMultiMap<QString, QVariant> map;
+    map.insert(QStringLiteral("grant_type"), QStringLiteral("authorization_code"));
+    map.insert(QStringLiteral("code"), QUrl::toPercentEncoding(mRefreshToken));
+    map.insert(QStringLiteral("client_id"), QUrl::toPercentEncoding(mClientId));
+    map.insert(QStringLiteral("redirect_uri"), QUrl::toPercentEncoding(mReplyHandler->callback()));
 
     Q_EMIT logEvent(QStringLiteral("ModifyParams:RequestingAccessToken:") + mapToSortedQuery(map).toString());
 
@@ -309,36 +346,29 @@ void QOAuth2AuthorizationCodeFlow::doRefreshAccessToken()
     }
 }
 
-QUrlQuery QOAuth2AuthorizationCodeFlow::mapToSortedQuery(QMap<QString, QVariant> const &map)
-{
-    QUrlQuery query;
-    QStringList keys = map.keys();
-    keys.sort();
-    for (const auto &key : std::as_const(keys)) {
-        query.addQueryItem(key, map[key].toString());
-    }
-    return query;
-}
-
 void QOAuth2AuthorizationCodeFlow::authCallbackReceived(QMap<QString, QVariant> const &params)
 {
     Q_EMIT logEvent(QStringLiteral("AuthorizatioCallbackReceived:") + mapToSortedQuery(params).toString());
 
-    mRefreshToken = params[QStringLiteral("code")].toString();
+    mRefreshToken = params["code"_L1].toString();
     if (!mRefreshToken.isEmpty()) {
         mStatus = Status::TemporaryCredentialsReceived;
         doRefreshAccessToken();
     } else {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+        Q_EMIT serverReportedErrorOccurred(QString(), QString(), QUrl());
+#else
         Q_EMIT error(QString(), QString(), QUrl());
+#endif
     }
 }
 
-void QOAuth2AuthorizationCodeFlow::tokenCallbackReceived(const QVariantMap &tokens)
+void QOAuth2AuthorizationCodeFlow::tokenCallbackReceived(const QMap<QString, QVariant> &tokens)
 {
     Q_EMIT logEvent(QStringLiteral("TokenCallback:") + mapToSortedQuery(tokens).toString());
 
-    mToken = tokens[QStringLiteral("access_token")].toString();
-    mRefreshToken = tokens[QStringLiteral("refresh_token")].toString();
+    mToken = tokens["access_token"_L1].toString();
+    mRefreshToken = tokens["refresh_token"_L1].toString();
 
     mStatus = Status::Granted;
 

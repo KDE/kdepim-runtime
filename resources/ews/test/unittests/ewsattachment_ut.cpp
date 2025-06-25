@@ -404,8 +404,6 @@ void UtEwsAttachment::write()
     QString xmlData;
     QXmlStreamWriter writer(&xmlData);
 
-    writer.setCodec("UTF-8");
-
     writer.writeStartDocument();
 
     writer.writeDefaultNamespace(xmlTypeNsUri);
