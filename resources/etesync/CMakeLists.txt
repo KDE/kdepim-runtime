@@ -8,20 +8,12 @@ kconfig_add_kcfg_files(etesyncresource_common_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/settings.kcfgc
 )
 
-set(etesyncconfig_SRCS
-  setupwizard.cpp
-  ${etesyncresource_common_SRCS}
-)
-
 set(etesyncresource_SRCS
     etesyncresource.cpp etesyncresource.h
     etesyncclientstate.cpp etesyncclientstate.h
     journalsfetchjob.cpp journalsfetchjob.h
     entriesfetchjob.cpp entriesfetchjob.h
-    loginjob.cpp loginjob.h 
-    setupwizard.cpp
-
-    ${etesyncconfig_SRCS}
+    ${etesyncresource_common_SRCS}
 )
 
 ecm_qt_declare_logging_category(etesyncresource_SRCS
@@ -53,15 +45,14 @@ target_link_libraries(akonadi_etesync_resource
     ${ETEBASE_LIBRARIES}
     Qt::DBus
     Qt::Concurrent
-    KPim6::AkonadiAgentWidgetBase
+    KPim6::AkonadiAgentBase
     KF6::ConfigCore
     KF6::Contacts
     KF6::CalendarCore
     KF6::KIOCore
-    KF6::ConfigWidgets
-    KF6::WindowSystem
     KF6::Wallet
     KF6::I18n
+    KF6::Notifications
 )
 
 ecm_install_icons(
@@ -77,8 +68,51 @@ ecm_install_icons(
     THEME hicolor
 )
 
+install(FILES akonadi_etesync_resource.notifyrc
+        DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR})
+
 install(TARGETS akonadi_etesync_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES etesyncresource.desktop
     DESTINATION ${KDE_INSTALL_DATAROOTDIR}/akonadi/agents
+)
+
+################################## Config plugin ##############################
+kcoreaddons_add_plugin(etesyncconfig
+    INSTALL_NAMESPACE "pim6/akonadi/config"
+)
+
+set(etesyncconfig_CONFIG_SRC 
+    etesyncconfig.cpp
+    setupwizard.cpp setupwizard.h
+    loginjob.cpp loginjob.h
+    etesyncclientstate.cpp etesyncclientstate.h
+)
+ecm_qt_declare_logging_category(etesyncconfig_CONFIG_SRC
+    HEADER etesync_debug.h      
+    IDENTIFIER ETESYNC_LOG      
+    CATEGORY_NAME org.kde.pim.etesync 
+    DESCRIPTION "EteSync Config Plugin Logging"
+)
+
+target_sources(etesyncconfig PRIVATE
+    ${etesyncconfig_CONFIG_SRC}
+    ${etesyncresource_common_SRCS}
+)
+
+target_include_directories(etesyncconfig PRIVATE ${ETEBASE_INCLUDE_DIRS})
+
+target_link_libraries(etesyncconfig PUBLIC
+    ${ETEBASE_LIBRARIES}
+    Qt::Concurrent
+    KF6::ConfigCore
+    KF6::ConfigWidgets
+    KF6::CoreAddons
+    KF6::I18n
+    KF6::WidgetsAddons
+    KF6::WindowSystem
+    KPim6::AkonadiCore
+    KPim6::AkonadiWidgets
+    KPim6::AkonadiAgentWidgetBase
+    KF6::Wallet
 )

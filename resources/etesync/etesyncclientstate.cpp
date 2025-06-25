@@ -5,6 +5,7 @@
  */
 
 #include "etesyncclientstate.h"
+#include "settings.h"
 
 #include "etesync_debug.h"
 
@@ -12,18 +13,19 @@ using namespace KWallet;
 
 static const QString etebaseWalletFolder = QStringLiteral("Akonadi Etebase");
 
-EteSyncClientState::EteSyncClientState(const QString &agentId, WId winId)
-    : mAgentId(agentId)
-    , mWinId(winId)
+EteSyncClientState::EteSyncClientState(Settings *const settings, const QString &agentId)
+    : mSettings(settings)
+    , mAgentId(agentId)
 {
 }
 
 void EteSyncClientState::init()
 {
     // Load settings
-    Settings::self()->load();
-    mServerUrl = Settings::self()->baseUrl();
-    mUsername = Settings::self()->username();
+    Q_ASSERT(mSettings != nullptr);
+    mSettings->load();
+    mServerUrl = mSettings->baseUrl();
+    mUsername = mSettings->username();
 
     if (mServerUrl.isEmpty() || mUsername.isEmpty()) {
         Q_EMIT clientInitialised(false);
@@ -40,7 +42,7 @@ void EteSyncClientState::init()
     }
 
     // Initialize etebase file cache
-    mEtebaseCache = etebase_fs_cache_new(Settings::self()->basePath(), mUsername + QStringLiteral("_") + mAgentId);
+    mEtebaseCache = etebase_fs_cache_new(mSettings->basePath(), mUsername + QStringLiteral("_") + mAgentId);
 
     // Load Etebase account from cache
     loadAccount();
@@ -50,7 +52,7 @@ void EteSyncClientState::init()
 
 bool EteSyncClientState::openWalletFolder()
 {
-    mWallet = Wallet::openWallet(Wallet::NetworkWallet(), mWinId, Wallet::Synchronous);
+    mWallet = Wallet::openWallet(Wallet::NetworkWallet(), 0, Wallet::Synchronous); // Pass 0 for winId
     if (mWallet) {
         qCDebug(ETESYNC_LOG) << "Wallet opened";
     } else {
@@ -87,7 +89,7 @@ bool EteSyncClientState::login(const QString &serverUrl, const QString &username
         qCDebug(ETESYNC_LOG) << "Etebase error" << etebase_error_get_message();
         return false;
     }
-    mEtebaseCache = etebase_fs_cache_new(Settings::self()->basePath(), mUsername + QStringLiteral("_") + mAgentId);
+    mEtebaseCache = etebase_fs_cache_new(mSettings->basePath(), mUsername + QStringLiteral("_") + mAgentId);
     return true;
 }
 
@@ -139,10 +141,10 @@ void EteSyncClientState::refreshToken()
 
 void EteSyncClientState::saveSettings()
 {
-    Settings::self()->setBaseUrl(mServerUrl);
-    Settings::self()->setUsername(mUsername);
+    mSettings->setBaseUrl(mServerUrl);
+    mSettings->setUsername(mUsername);
 
-    Settings::self()->save();
+    mSettings->save();
 }
 
 void EteSyncClientState::saveAccount()

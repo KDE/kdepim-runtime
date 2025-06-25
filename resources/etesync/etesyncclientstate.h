@@ -17,7 +17,7 @@ class EteSyncClientState : public QObject
     Q_OBJECT
 public:
     typedef std::unique_ptr<EteSyncClientState> Ptr;
-    explicit EteSyncClientState(const QString &agentId, WId winId);
+    explicit EteSyncClientState(Settings *const settings, const QString &agentId);
 
     enum AccountStatus {
         OK,
@@ -74,10 +74,10 @@ private:
     EtebaseClientPtr mClient;
     EtebaseAccountPtr mAccount;
     EtebaseFileSystemCachePtr mEtebaseCache;
+    Settings *mSettings = nullptr;
     QString mUsername;
     QString mPassword;
     QString mServerUrl;
     const QString mAgentId;
-    WId mWinId;
     QPointer<KWallet::Wallet> mWallet;
 };

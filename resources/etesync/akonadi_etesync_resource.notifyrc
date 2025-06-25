@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: 2025 Pablo Ariño <progpabarino@gmail.com>
+# SPDX-License-Identifier: LGPL-2.0-or-later
+
+[Global]
+IconName=akonadi-etesync
+Name=EteSync Account
+Comment=Connects to an EteSync sync account
+
+[Event/etesyncError]
+Name=EteSync Error
+Comment=An error occurred while syncing with EteSync
+Urgency=Normal
+Action=Popup

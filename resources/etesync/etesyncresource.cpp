@@ -6,9 +6,7 @@
 
 #include "etesyncresource.h"
 
-#include <KContacts/Addressee>
-#include <kwindowsystem.h>
-
+#include <Akonadi/AgentBase>
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CachePolicy>
 #include <Akonadi/ChangeRecorder>
@@ -19,7 +17,8 @@
 #include <Akonadi/ItemFetchScope>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
-#include <KMessageBox>
+#include <KContacts/Addressee>
+#include <KNotification>
 #include <QDBusConnection>
 
 #include "entriesfetchjob.h"
@@ -27,10 +26,10 @@
 #include "journalsfetchjob.h"
 #include "settings.h"
 #include "settingsadaptor.h"
-#include "setupwizard.h"
 
 using namespace EteSyncAPI;
 using namespace Akonadi;
+using namespace Qt::StringLiterals;
 
 #define ROOT_COLLECTION_REMOTEID QStringLiteral("EteSyncRootCollection")
 // Resource offline time for temporary errors (30 min)
@@ -39,12 +38,22 @@ using namespace Akonadi;
 #define LONG_OFFLINE_TIME 4 * 60 * 60
 
 EteSyncResource::EteSyncResource(const QString &id)
-    : ResourceWidgetBase(id)
+    : ResourceBase(id)
 {
-    Settings::instance(KSharedConfig::openConfig());
-    new SettingsAdaptor(Settings::self());
+    mSettings = std::make_unique<Settings>(config());
+    new SettingsAdaptor(mSettings.get());
 
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), Settings::self(), QDBusConnection::ExportAdaptors);
+    if (mSettings->name().isEmpty()) {
+        if (name() == identifier()) {
+            mSettings->setName(defaultName());
+        } else {
+            mSettings->setName(name());
+        }
+    } else {
+        setName(mSettings->name());
+    }
+
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), mSettings.get(), QDBusConnection::ExportAdaptors);
 
     setName(i18n("EteSync Resource"));
 
@@ -58,7 +67,7 @@ EteSyncResource::EteSyncResource(const QString &id)
     // Make resource directory
     initialiseDirectory(baseDirectoryPath());
 
-    mClientState = EteSyncClientState::Ptr(new EteSyncClientState(identifier(), winIdForDialogs()));
+    mClientState = EteSyncClientState::Ptr(new EteSyncClientState(mSettings.get(), identifier()));
     connect(mClientState.get(), &EteSyncClientState::clientInitialised, this, &EteSyncResource::initialiseDone);
     mClientState->init();
 
@@ -74,33 +83,6 @@ void EteSyncResource::cleanup()
     mClientState->logout();
     mClientState->deleteEtebaseUserCache();
     ResourceBase::cleanup();
-}
-
-void EteSyncResource::configure(WId windowId)
-{
-    SetupWizard wizard(mClientState.get());
-
-    if (windowId) {
-        wizard.setAttribute(Qt::WA_NativeWindow, true);
-        KWindowSystem::setMainWindow(wizard.windowHandle(), windowId);
-    }
-    const int result = wizard.exec();
-    if (result == QDialog::Accepted) {
-        mClientState->saveSettings();
-
-        // Save account cache
-        mClientState->saveAccount();
-
-        mCredentialsRequired = false;
-        qCDebug(ETESYNC_LOG) << "Setting online";
-        setOnline(true);
-        synchronize();
-        Q_EMIT configurationDialogAccepted();
-    } else {
-        qCDebug(ETESYNC_LOG) << "Setting offline";
-        setOnline(false);
-        Q_EMIT configurationDialogRejected();
-    }
 }
 
 void EteSyncResource::retrieveCollections()
@@ -143,6 +125,11 @@ Collection EteSyncResource::createRootCollection()
     attr->setIconName(QStringLiteral("akonadi-etesync"));
 
     return rootCollection;
+}
+
+QString EteSyncResource::defaultName() const
+{
+    return i18n("EteSync Account");
 }
 
 void EteSyncResource::slotCollectionsRetrieved(KJob *job)
@@ -220,7 +207,7 @@ bool EteSyncResource::credentialsRequired()
         showErrorDialog(i18n("Your EteSync credentials were changed. Please click OK to re-enter your credentials."),
                         i18n(etebase_error_get_message()),
                         i18n("Credentials Changed"));
-        configure(winIdForDialogs());
+        Q_EMIT status(Akonadi::AgentBase::NotConfigured, i18n("Your EteSync credentials were changed or are missing."));
     }
     return mCredentialsRequired;
 }
@@ -239,11 +226,14 @@ void EteSyncResource::slotTokenRefreshed(bool successful)
 
 void EteSyncResource::showErrorDialog(const QString &errorText, const QString &errorDetails, const QString &title)
 {
-    QWidget *parent = QWidget::find(winIdForDialogs());
-    QDialog *dialog = new QDialog(parent, Qt::Dialog);
-    dialog->setAttribute(Qt::WA_NativeWindow, true);
-    KWindowSystem::setMainWindow(dialog->windowHandle(), winIdForDialogs());
-    KMessageBox::detailedError(dialog, errorText, errorDetails, title);
+    qCWarning(ETESYNC_LOG) << "showErrorDialog: Title:" << title << "Error:" << errorText << "Details:" << errorDetails;
+
+    const auto notification = new KNotification(QStringLiteral("etesyncError"), KNotification::CloseOnTimeout);
+    notification->setComponentName(QStringLiteral("akonadi_etesync_resource"));
+    notification->setTitle(title);
+    notification->setText(errorText + u'\n' + errorDetails);
+    notification->setIconName(u"dialog-warning"_s);
+    notification->sendEvent();
 }
 
 QString getEtebaseTypeForCollection(const Akonadi::Collection &collection)
@@ -331,7 +321,22 @@ void EteSyncResource::aboutToQuit()
 void EteSyncResource::onReloadConfiguration()
 {
     qCDebug(ETESYNC_LOG) << "Resource config reload";
-    synchronize();
+    if (mSettings) {
+        mSettings->load();
+    }
+    if (mClientState) {
+        mClientState->init();
+    }
+
+    // Validate credentials on reload
+    mCredentialsRequired = mClientState->account() == nullptr;
+    setOnline(!mCredentialsRequired);
+    if (mClientState->account()) {
+        qCDebug(ETESYNC_LOG) << "Account is valid. Going online.";
+        synchronize();
+    } else {
+        qCWarning(ETESYNC_LOG) << "Invalid or missing account after config reload!";
+    }
 }
 
 void EteSyncResource::initialiseDone(bool successful)
@@ -344,7 +349,7 @@ void EteSyncResource::initialiseDone(bool successful)
 
 QString EteSyncResource::baseDirectoryPath() const
 {
-    return Settings::self()->basePath();
+    return mSettings->basePath();
 }
 
 void EteSyncResource::initialiseDirectory(const QString &path) const
@@ -729,6 +734,6 @@ void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
     changeProcessed();
 }
 
-AKONADI_RESOURCE_MAIN(EteSyncResource)
+AKONADI_RESOURCE_CORE_MAIN(EteSyncResource)
 
 #include "moc_etesyncresource.cpp"
