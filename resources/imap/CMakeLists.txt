@@ -118,7 +118,6 @@ target_link_libraries(imapresource PUBLIC
     KF6::ConfigGui
     KF6::I18n
     KF6::Notifications
-    KF6::Wallet
     KF6::WindowSystem
     KPim6::AkonadiAgentWidgetBase # Widgets due to PimCommonAkonadi/ImapAclAttribute TODO FIXME
     KPim6::AkonadiCore
@@ -224,7 +223,6 @@ target_link_libraries(imapconfig PUBLIC
     KF6::WidgetsAddons
     KF6::I18n
     KF6::Notifications
-    KF6::Wallet
     KPim6::AkonadiCore
     KPim6::IMAP
     KPim6::MailTransport
