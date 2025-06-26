@@ -180,8 +180,11 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
 
     auto postJob = qobject_cast<KIO::StoredTransferJob *>(job);
     QDomDocument response;
-    response.setContent(postJob->data(), true);
-
+    if (const auto result = response.setContent(postJob->data(), QDomDocument::ParseOption::UseNamespaceProcessing); !result) {
+        qCDebug(DAVRESOURCE_LOG) << "Unable to load document.Parse error in line " << result.errorLine << ", col " << result.errorColumn << ": "
+                                 << qPrintable(result.errorMessage);
+        return;
+    }
     QDomElement scheduleResponse = response.documentElement();
 
     // We are only expecting one response tag
