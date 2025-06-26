@@ -73,9 +73,6 @@ public:
     void clearCachedPassword();
     void cleanup();
 
-    QString passwordWalletFallback();
-    QString sievePasswordWalletFallback();
-
 public Q_SLOTS:
     Q_SCRIPTABLE virtual void setPassword(const QString &password);
     Q_SCRIPTABLE virtual void setSieveCustomPassword(const QString &password);
