@@ -139,10 +139,9 @@ target_link_libraries(googleconfig
     KPim6::AkonadiAgentWidgetBase
     KF6::CalendarCore
     KF6::Contacts
-    KF6::Wallet
     KF6::I18n
     KF6::WindowSystem
-        KF6::Notifications
+    KF6::Notifications
     KPim6::GAPICalendar
     KPim6::GAPIPeople
     KPim6::GAPICore

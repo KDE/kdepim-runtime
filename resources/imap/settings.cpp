@@ -23,9 +23,6 @@
 
 #include <qt6keychain/keychain.h>
 
-#include <KWallet>
-using KWallet::Wallet;
-
 using namespace QKeychain;
 
 /**
@@ -115,44 +112,6 @@ bool Settings::mustFetchPassword() const
     return m_password.isEmpty() && (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType)authentication()) != KIMAP::LoginJob::GSSAPI);
 }
 
-QString Settings::passwordWalletFallback()
-{
-    Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId, Wallet::Synchronous);
-    if (!wallet || !wallet->hasFolder(QStringLiteral("imap"))) {
-        return {};
-    }
-
-    wallet->setFolder(QStringLiteral("imap"));
-    QString password;
-    wallet->readPassword(config()->name(), password);
-    if (password.isEmpty()) {
-        return {};
-    }
-
-    setPassword(password);
-
-    return password;
-}
-
-QString Settings::sievePasswordWalletFallback()
-{
-    Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId, Wallet::Synchronous);
-    if (!wallet || !wallet->hasFolder(QStringLiteral("imap"))) {
-        return {};
-    }
-
-    wallet->setFolder(QStringLiteral("imap"));
-    QString password;
-    wallet->readPassword(QStringLiteral("custom_sieve_") + config()->name(), password);
-    if (password.isEmpty()) {
-        return {};
-    }
-
-    setSieveCustomPassword(password);
-
-    return password;
-}
-
 ReadPasswordJob *Settings::requestPassword()
 {
     Q_ASSERT(mustFetchPassword());
@@ -162,10 +121,7 @@ ReadPasswordJob *Settings::requestPassword()
 
     connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
         if (readPasswordJob->error() == EntryNotFound) {
-            m_password = passwordWalletFallback();
-            if (m_password.isEmpty()) {
-                handleError(i18nc("@info:status", "Password not found for %1 IMAP account", config()->name()));
-            }
+            handleError(i18nc("@info:status", "Password not found for %1 IMAP account", config()->name()));
             return;
         }
         if (readPasswordJob->error() != NoError) {
@@ -198,10 +154,7 @@ ReadPasswordJob *Settings::requestSieveCustomPassword()
 
     connect(readPasswordJob, &ReadPasswordJob::finished, this, [this, readPasswordJob](auto) {
         if (readPasswordJob->error() == EntryNotFound) {
-            m_customSievePassword = sievePasswordWalletFallback();
-            if (m_customSievePassword.isEmpty()) {
-                handleError(i18nc("@info:status", "Password not found for %1 sieve account", config()->name()));
-            }
+            handleError(i18nc("@info:status", "Password not found for %1 sieve account", config()->name()));
             return;
         }
         if (readPasswordJob->error() != NoError) {

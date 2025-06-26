@@ -7,7 +7,6 @@
 #include "ewssettings.h"
 
 #include <KLocalizedString>
-#include <KWallet>
 
 #include "auth/ewsintuneauth.h"
 #include "auth/ewsoauth.h"
@@ -59,20 +58,8 @@ void EwsSettings::requestMap()
         QMap<QString, QString> map;
         if (readJob->error() != QKeychain::Error::NoError) {
             qCDebug(EWSRES_LOG) << "requestPassword: Failed to read map" << readJob->error();
-
-            // TODO remove me in 2025, this is a fallback to read password stored
-            // in KWallet and store it back in QtKeychain.
-            auto wallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(), 0, KWallet::Wallet::Synchronous);
-            if (wallet && wallet->hasFolder(ewsWalletFolder)) {
-                wallet->setFolder(ewsWalletFolder);
-                QMap<QString, QString> map;
-                wallet->readMap(config()->name(), map);
-                wallet->removeEntry(config()->name());
-                Q_EMIT mapRequestFinished(map);
-
-                setMap(map);
-                return;
-            }
+            Q_EMIT mapRequestFinished(map);
+            return;
         }
 
         const auto value = readJob->binaryData();

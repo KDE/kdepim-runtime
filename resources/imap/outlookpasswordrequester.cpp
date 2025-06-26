@@ -58,7 +58,7 @@ void OutlookPasswordRequester::requestPassword(RequestType request, const QStrin
         }
 
         if (readJob->error() == QKeychain::Error::EntryNotFound) {
-            qCDebug(IMAPRESOURCE_LOG) << "No Outlook OAuth2 tokens found in KWallet, requesting new token...";
+            qCDebug(IMAPRESOURCE_LOG) << "No Outlook OAuth2 tokens found in password store, requesting new token...";
             mTokenRequester->requestToken(mResource->settings()->userName());
             return;
         } else if (readJob->error() != QKeychain::Error::NoError) {
@@ -84,19 +84,19 @@ void OutlookPasswordRequester::requestPassword(RequestType request, const QStrin
             const auto refreshToken = map[QStringLiteral("refreshToken")];
 
             if (!refreshToken.isEmpty()) {
-                qCDebug(IMAPRESOURCE_LOG) << "Found an Outlook OAuth2 refresh token in KWallet, refreshing access token...";
+                qCDebug(IMAPRESOURCE_LOG) << "Found an Outlook OAuth2 refresh token in password store, refreshing access token...";
                 mTokenRequester->refreshToken(refreshToken);
             } else {
-                qCDebug(IMAPRESOURCE_LOG) << "No Outlook OAuth2 refresh token found in KWallet, requesting new token...";
+                qCDebug(IMAPRESOURCE_LOG) << "No Outlook OAuth2 refresh token found in password store, requesting new token...";
                 mTokenRequester->requestToken(mResource->settings()->userName());
             }
         } else {
             const auto accessToken = map[QStringLiteral("accessToken")];
             if (accessToken.isEmpty()) {
-                qCDebug(IMAPRESOURCE_LOG) << "No Outlook OAuth2 access token found in KWallet, requesting new token...";
+                qCDebug(IMAPRESOURCE_LOG) << "No Outlook OAuth2 access token found in password store, requesting new token...";
                 mTokenRequester->requestToken(mResource->settings()->userName());
             } else {
-                qCDebug(IMAPRESOURCE_LOG) << "Found an Outlook OAuth2 access token in KWallet, using it...";
+                qCDebug(IMAPRESOURCE_LOG) << "Found an Outlook OAuth2 access token in password store, using it...";
                 mRequestInProgress = false;
                 Q_EMIT done(PasswordRetrieved, accessToken);
             }
@@ -126,10 +126,10 @@ void OutlookPasswordRequester::storeResultToWallet(const MailTransport::TokenRes
     writeJob->setBinaryData(mapData);
     connect(writeJob, &WritePasswordJob::finished, this, [writeJob, name]() {
         if (writeJob->error() != QKeychain::Error::NoError) {
-            qCWarning(IMAPRESOURCE_LOG) << "Failed to store Outlook OAuth2 token to KWallet.";
+            qCWarning(IMAPRESOURCE_LOG) << "Failed to store Outlook OAuth2 token to password store.";
             return;
         }
-        qCDebug(IMAPRESOURCE_LOG).nospace().noquote() << "Storing Outlook OAuth2 token to KWallet (" << walletFolder << "/" << name << ")";
+        qCDebug(IMAPRESOURCE_LOG).nospace().noquote() << "Storing Outlook OAuth2 token to password store (" << walletFolder << "/" << name << ")";
     });
     writeJob->start();
 }

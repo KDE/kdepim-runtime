@@ -153,7 +153,6 @@ target_link_libraries(akonadi_ews_resource
     KPim6::Mime
     KF6::CalendarCore
     KF6::Contacts
-    KF6::Wallet
     KF6::WidgetsAddons
     KF6::I18n
     KF6::WindowSystem

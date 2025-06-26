@@ -9,7 +9,6 @@
 #include "migrationstatuswidget.h"
 
 #include "migration/gid/gidmigrator.h"
-#include "migration/googlegroupware/googleresourcemigrator.h"
 #include "migration/icalcategoriestotags/icalcategoriestotagsmigrator.h"
 
 #include <KContacts/Addressee>
@@ -26,7 +25,6 @@ MigrationAgent::MigrationAgent(const QString &id)
 {
     KLocalizedString::setApplicationDomain(QByteArrayLiteral("akonadi_migration_agent"));
     mScheduler.addMigrator(QSharedPointer<GidMigrator>::create(KContacts::Addressee::mimeType()));
-    mScheduler.addMigrator(QSharedPointer<GoogleResourceMigrator>::create());
     mScheduler.addMigrator(QSharedPointer<ICalCategoriesToTagsMigrator>::create());
 }
 

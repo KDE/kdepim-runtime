@@ -124,7 +124,6 @@ target_link_libraries(kolabconfig PUBLIC
     KF6::WidgetsAddons
     KF6::I18n
     KF6::Notifications
-    KF6::Wallet
     KPim6::AkonadiCore
     KPim6::IMAP
     KPim6::MailTransport

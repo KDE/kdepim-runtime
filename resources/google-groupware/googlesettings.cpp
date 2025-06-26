@@ -68,7 +68,7 @@ KGAPI2::AccountPtr GoogleSettings::fetchAccountFromKeychain(const QString &accou
     QMap<QString, QString> map;
     auto value = job->binaryData();
     if (value.isEmpty()) {
-        qCWarning(GOOGLE_LOG) << "Account" << accountName << "not found in KWallet";
+        qCWarning(GOOGLE_LOG) << "Account" << accountName << "not found in password store";
         return {};
     }
 
