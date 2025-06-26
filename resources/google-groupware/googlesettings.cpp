@@ -51,7 +51,7 @@ void GoogleSettings::init()
     job->setKey(account());
     connect(job, &QKeychain::Job::finished, this, [this, job]() {
         if (job->error() != QKeychain::Error::NoError) {
-            qCWarning(GOOGLE_LOG) << "Unable to read password" << job->error();
+            qCWarning(GOOGLE_LOG) << "Unable to read password:" << job->errorString();
             Q_EMIT accountReady(false);
             return;
         }
@@ -118,8 +118,8 @@ WritePasswordJob *GoogleSettings::storeAccount(AccountPtr account)
     writeJob->setBinaryData(mapData);
 
     connect(writeJob, &WritePasswordJob::finished, this, [this, writeJob]() {
-        if (writeJob->error()) {
-            qCWarning(GOOGLE_LOG) << "Unable to write password" << writeJob->error();
+        if (writeJob->error() != QKeychain::Error::NoError) {
+            qCWarning(GOOGLE_LOG) << "Unable to write password:" << writeJob->errorString();
             return;
         }
         SettingsBase::setAccount(m_account->accountName());
