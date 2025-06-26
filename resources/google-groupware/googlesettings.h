@@ -59,7 +59,7 @@ public:
     void cleanup();
 
 Q_SIGNALS:
-    void accountReady(bool ready);
+    void accountReady(bool ready, const QString &error = {});
     void accountChanged();
     void okEnabled(bool enabled);
 

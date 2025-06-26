@@ -27,7 +27,8 @@ public:
     {
         Akonadi::AgentConfigurationBase::load();
         mSettings.init();
-        connect(&mSettings, &GoogleSettings::accountReady, this, [this](bool ready) {
+        connect(&mSettings, &GoogleSettings::accountReady, this, [this](bool ready, const QString &error) {
+            Q_UNUSED(error);
             if (ready) {
                 mWidget.loadSettings();
             }

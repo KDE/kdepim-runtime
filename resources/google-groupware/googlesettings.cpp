@@ -40,7 +40,7 @@ void GoogleSettings::init()
 {
     if (account().isEmpty()) {
         qCWarning(GOOGLE_LOG) << Q_FUNC_INFO << "No username set";
-        Q_EMIT accountReady(false);
+        Q_EMIT accountReady(false, i18nc("@info:status", "No username set"));
         return;
     }
 
@@ -52,7 +52,7 @@ void GoogleSettings::init()
     connect(job, &QKeychain::Job::finished, this, [this, job]() {
         if (job->error() != QKeychain::Error::NoError) {
             qCWarning(GOOGLE_LOG) << "Unable to read password:" << job->errorString();
-            Q_EMIT accountReady(false);
+            Q_EMIT accountReady(false, i18nc("@info:status", "Unable to read password: %1", job->errorString()));
             return;
         }
 

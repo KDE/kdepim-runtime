@@ -85,12 +85,14 @@ GoogleResource::GoogleResource(const QString &id)
 
     Q_EMIT status(NotConfigured, i18n("Fetching password…"));
 
-    connect(&m_settings, &GoogleSettings::accountReady, this, [this](bool ready) {
+    connect(&m_settings, &GoogleSettings::accountReady, this, [this](bool ready, const QString &error) {
         if (accountId() > 0) {
             return;
         }
         if (!ready) {
-            Q_EMIT status(Broken, i18n("Can't fetch password"));
+            Q_ASSERT(!error.isEmpty());
+
+            Q_EMIT status(Broken, error);
             return;
         }
 
