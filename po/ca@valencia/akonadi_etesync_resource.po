@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-03 00:41+0000\n"
+"POT-Creation-Date: 2025-06-26 00:43+0000\n"
 "PO-Revision-Date: 2024-07-30 10:10+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -21,37 +21,43 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Generator: Lokalize 24.05.2\n"
 
-#: etesyncresource.cpp:49
+#: etesyncresource.cpp:58
 #, kde-format
 msgid "EteSync Resource"
 msgstr "Recurs d'EteSync"
 
-#: etesyncresource.cpp:187
+#: etesyncresource.cpp:132
+#, fuzzy, kde-format
+#| msgid "EteSync Resource"
+msgid "EteSync Account"
+msgstr "Recurs d'EteSync"
+
+#: etesyncresource.cpp:174
 #, kde-format
 msgid "Temporary server error"
 msgstr "Error temporal del servidor"
 
-#: etesyncresource.cpp:191
+#: etesyncresource.cpp:178
 #, kde-format
 msgid "You do not have permission to perform this action."
 msgstr "No teniu permís per a executar esta acció."
 
-#: etesyncresource.cpp:194
+#: etesyncresource.cpp:181
 #, kde-format
 msgid "Permission denied"
 msgstr "S'ha denegat el permís"
 
-#: etesyncresource.cpp:198
+#: etesyncresource.cpp:185
 #, kde-format
 msgid "A server error occurred."
 msgstr "S'ha produït un error del servidor."
 
-#: etesyncresource.cpp:201
+#: etesyncresource.cpp:188
 #, kde-format
 msgid "Server error"
 msgstr "S'ha produït un error del servidor"
 
-#: etesyncresource.cpp:220
+#: etesyncresource.cpp:207
 #, kde-format
 msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
@@ -60,33 +66,43 @@ msgstr ""
 "S'han canviat les vostres credencials d'EteSync. Cliqueu damunt «D'acord» "
 "per a tornar a introduir les credencials."
 
-#: etesyncresource.cpp:222
+#: etesyncresource.cpp:209
 #, kde-format
 msgid "Credentials Changed"
 msgstr "S'han canviat les credencials"
 
-#: etesyncresource.cpp:270
+#: etesyncresource.cpp:210
+#, fuzzy, kde-format
+#| msgid ""
+#| "Your EteSync credentials were changed. Please click OK to re-enter your "
+#| "credentials."
+msgid "Your EteSync credentials were changed or are missing."
+msgstr ""
+"S'han canviat les vostres credencials d'EteSync. Cliqueu damunt «D'acord» "
+"per a tornar a introduir les credencials."
+
+#: etesyncresource.cpp:260
 #, kde-format
 msgid "Cannot retrieve items - account is null"
 msgstr "No s'han pogut els elements - el compte és nul"
 
-#: etesyncresource.cpp:277 etesyncresource.cpp:383 etesyncresource.cpp:456
-#: etesyncresource.cpp:514 etesyncresource.cpp:644 etesyncresource.cpp:702
+#: etesyncresource.cpp:267 etesyncresource.cpp:388 etesyncresource.cpp:461
+#: etesyncresource.cpp:519 etesyncresource.cpp:649 etesyncresource.cpp:707
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "No s'ha pogut obtindre «etesyncCollection» de la memòria cau «%1»"
 
-#: etesyncresource.cpp:411
+#: etesyncresource.cpp:416
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
 msgstr "No s'ha pogut crear «etesyncItem» «%1» nou"
 
-#: etesyncresource.cpp:463 etesyncresource.cpp:521
+#: etesyncresource.cpp:468 etesyncresource.cpp:526
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
 msgstr "No s'ha pogut obtindre «etesyncItem» de la memòria cau «%1»"
 
-#: etesyncresource.cpp:583
+#: etesyncresource.cpp:588
 #, kde-format
 msgid "Could not create new etesyncCollection"
 msgstr "No s'ha pogut crear un «etesyncCollection» nou"
@@ -97,14 +113,14 @@ msgid "Something went wrong"
 msgstr "Alguna cosa ha anat malament"
 
 #. i18n: ectx: label, entry (BaseUrl), group (General)
-#: etesyncresource.kcfg:10
+#: etesyncresource.kcfg:14
 #, kde-format
 msgid "Server URL"
 msgstr "URL del servidor"
 
 #. i18n: ectx: tooltip, entry (BaseUrl), group (General)
 #. i18n: ectx: whatsthis, entry (BaseUrl), group (General)
-#: etesyncresource.kcfg:11 etesyncresource.kcfg:12
+#: etesyncresource.kcfg:15 etesyncresource.kcfg:16
 #, kde-format
 msgid ""
 "The URL of the EteSync server, should be something like https://myserver.org/"
@@ -113,7 +129,7 @@ msgstr ""
 "elmeuservidor.org/"
 
 #. i18n: ectx: label, entry (Username), group (General)
-#: etesyncresource.kcfg:15
+#: etesyncresource.kcfg:19
 #, kde-format
 msgctxt "the username to login on server"
 msgid "Username"
@@ -121,13 +137,13 @@ msgstr "Nom d'usuari"
 
 #. i18n: ectx: tooltip, entry (Username), group (General)
 #. i18n: ectx: whatsthis, entry (Username), group (General)
-#: etesyncresource.kcfg:16 etesyncresource.kcfg:17
+#: etesyncresource.kcfg:20 etesyncresource.kcfg:21
 #, kde-format
 msgid "The username that is used to log into the EteSync server"
 msgstr "El nom d'usuari que s'utilitza per a accedir al servidor EteSync"
 
 #. i18n: ectx: label, entry (BasePath), group (General)
-#: etesyncresource.kcfg:20
+#: etesyncresource.kcfg:24
 #, kde-format
 msgid "Path to base directory"
 msgstr "Camí cap al directori base"

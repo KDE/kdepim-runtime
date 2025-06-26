@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-03-03 00:41+0000\n"
+"POT-Creation-Date: 2025-06-26 00:43+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -18,70 +18,84 @@ msgstr ""
 "pot\n"
 "X-Crowdin-File-ID: 45607\n"
 
-#: etesyncresource.cpp:49
+#: etesyncresource.cpp:58
 #, kde-format
 msgid "EteSync Resource"
 msgstr "EteSync 资源"
 
-#: etesyncresource.cpp:187
+#: etesyncresource.cpp:132
+#, fuzzy, kde-format
+#| msgid "EteSync Resource"
+msgid "EteSync Account"
+msgstr "EteSync 资源"
+
+#: etesyncresource.cpp:174
 #, kde-format
 msgid "Temporary server error"
 msgstr "临时服务器错误"
 
-#: etesyncresource.cpp:191
+#: etesyncresource.cpp:178
 #, kde-format
 msgid "You do not have permission to perform this action."
 msgstr "您无权执行此操作。"
 
-#: etesyncresource.cpp:194
+#: etesyncresource.cpp:181
 #, kde-format
 msgid "Permission denied"
 msgstr "权限不足"
 
-#: etesyncresource.cpp:198
+#: etesyncresource.cpp:185
 #, kde-format
 msgid "A server error occurred."
 msgstr "服务器出错。"
 
-#: etesyncresource.cpp:201
+#: etesyncresource.cpp:188
 #, kde-format
 msgid "Server error"
 msgstr "服务器错误"
 
-#: etesyncresource.cpp:220
+#: etesyncresource.cpp:207
 #, kde-format
 msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
 "credentials."
 msgstr "您的 EteSync 账户信息已被修改，请点击“确定”重新输入您的账户信息。"
 
-#: etesyncresource.cpp:222
+#: etesyncresource.cpp:209
 #, kde-format
 msgid "Credentials Changed"
 msgstr "账户信息已被修改"
 
-#: etesyncresource.cpp:270
+#: etesyncresource.cpp:210
+#, fuzzy, kde-format
+#| msgid ""
+#| "Your EteSync credentials were changed. Please click OK to re-enter your "
+#| "credentials."
+msgid "Your EteSync credentials were changed or are missing."
+msgstr "您的 EteSync 账户信息已被修改，请点击“确定”重新输入您的账户信息。"
+
+#: etesyncresource.cpp:260
 #, kde-format
 msgid "Cannot retrieve items - account is null"
 msgstr "无法获取项目 - 账户信息为空"
 
-#: etesyncresource.cpp:277 etesyncresource.cpp:383 etesyncresource.cpp:456
-#: etesyncresource.cpp:514 etesyncresource.cpp:644 etesyncresource.cpp:702
+#: etesyncresource.cpp:267 etesyncresource.cpp:388 etesyncresource.cpp:461
+#: etesyncresource.cpp:519 etesyncresource.cpp:649 etesyncresource.cpp:707
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "无法从缓存“%1”中获取 etesyncCollection"
 
-#: etesyncresource.cpp:411
+#: etesyncresource.cpp:416
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
 msgstr "无法创建新的 etesyncItem“%1”"
 
-#: etesyncresource.cpp:463 etesyncresource.cpp:521
+#: etesyncresource.cpp:468 etesyncresource.cpp:526
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
 msgstr "无法从缓存“%1”中获取 etesyncItem"
 
-#: etesyncresource.cpp:583
+#: etesyncresource.cpp:588
 #, kde-format
 msgid "Could not create new etesyncCollection"
 msgstr "无法创建新的 etesyncCollection"
@@ -92,21 +106,21 @@ msgid "Something went wrong"
 msgstr "发生错误"
 
 #. i18n: ectx: label, entry (BaseUrl), group (General)
-#: etesyncresource.kcfg:10
+#: etesyncresource.kcfg:14
 #, kde-format
 msgid "Server URL"
 msgstr "服务器 URL"
 
 #. i18n: ectx: tooltip, entry (BaseUrl), group (General)
 #. i18n: ectx: whatsthis, entry (BaseUrl), group (General)
-#: etesyncresource.kcfg:11 etesyncresource.kcfg:12
+#: etesyncresource.kcfg:15 etesyncresource.kcfg:16
 #, kde-format
 msgid ""
 "The URL of the EteSync server, should be something like https://myserver.org/"
 msgstr "EteSync 服务器的 URL，形同于 https://myserver.org/"
 
 #. i18n: ectx: label, entry (Username), group (General)
-#: etesyncresource.kcfg:15
+#: etesyncresource.kcfg:19
 #, kde-format
 msgctxt "the username to login on server"
 msgid "Username"
@@ -114,13 +128,13 @@ msgstr "用户名"
 
 #. i18n: ectx: tooltip, entry (Username), group (General)
 #. i18n: ectx: whatsthis, entry (Username), group (General)
-#: etesyncresource.kcfg:16 etesyncresource.kcfg:17
+#: etesyncresource.kcfg:20 etesyncresource.kcfg:21
 #, kde-format
 msgid "The username that is used to log into the EteSync server"
 msgstr "用于登录 EteSync 服务器的用户名"
 
 #. i18n: ectx: label, entry (BasePath), group (General)
-#: etesyncresource.kcfg:20
+#: etesyncresource.kcfg:24
 #, kde-format
 msgid "Path to base directory"
 msgstr "底层目录的路径"
