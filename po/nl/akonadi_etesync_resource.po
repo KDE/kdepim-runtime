@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2020, 2024 Freek de Kruijf <freekdekruijf@kde.nl>
+# SPDX-FileCopyrightText: 2020, 2024, 2025 Freek de Kruijf <freekdekruijf@kde.nl>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-26 00:43+0000\n"
-"PO-Revision-Date: 2024-07-30 13:05+0200\n"
+"POT-Creation-Date: 2025-06-27 00:43+0000\n"
+"PO-Revision-Date: 2025-06-26 12:40+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -15,7 +15,34 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.04.2\n"
+
+#: etesyncclientstate.cpp:34
+#, fuzzy, kde-format
+#| msgctxt "@title:window"
+#| msgid "EteSync configuration wizard"
+msgctxt "@info:status"
+msgid "Empty account configuration"
+msgstr "EteSync-configuratie-assistent"
+
+#: etesyncclientstate.cpp:43
+#, kde-format
+msgctxt "@info:status"
+msgid "Etebase error when initializing client: %1"
+msgstr ""
+
+#: etesyncclientstate.cpp:160
+#, kde-format
+msgctxt "@info:status"
+msgid "Unable to read password: %1"
+msgstr ""
+
+#: etesyncclientstate.cpp:169
+#, fuzzy, kde-format
+#| msgid "Could not get etesyncItem from cache '%1'"
+msgctxt "@info:status"
+msgid "Could not get etebase account from cache"
+msgstr "Kon etesyncItem niet ophalen uit cache '%1'"
 
 #: etesyncresource.cpp:58
 #, kde-format
@@ -23,10 +50,9 @@ msgid "EteSync Resource"
 msgstr "EteSync-hulpbron"
 
 #: etesyncresource.cpp:132
-#, fuzzy, kde-format
-#| msgid "EteSync Resource"
+#, kde-format
 msgid "EteSync Account"
-msgstr "EteSync-hulpbron"
+msgstr "EteSync-account"
 
 #: etesyncresource.cpp:174
 #, kde-format
@@ -68,42 +94,37 @@ msgid "Credentials Changed"
 msgstr "Credentials gewijzigd"
 
 #: etesyncresource.cpp:210
-#, fuzzy, kde-format
-#| msgid ""
-#| "Your EteSync credentials were changed. Please click OK to re-enter your "
-#| "credentials."
+#, kde-format
 msgid "Your EteSync credentials were changed or are missing."
-msgstr ""
-"Uw credentials voor EteSync zijn gewijzigd. Klik op OK om uw credentials "
-"opnieuw in te voeren."
+msgstr "Uw credentials voor EteSync zijn gewijzigd of ontbreken."
 
 #: etesyncresource.cpp:260
 #, kde-format
 msgid "Cannot retrieve items - account is null"
 msgstr "Kan items niet ophalen - account is nul"
 
-#: etesyncresource.cpp:267 etesyncresource.cpp:388 etesyncresource.cpp:461
-#: etesyncresource.cpp:519 etesyncresource.cpp:649 etesyncresource.cpp:707
+#: etesyncresource.cpp:267 etesyncresource.cpp:395 etesyncresource.cpp:468
+#: etesyncresource.cpp:526 etesyncresource.cpp:656 etesyncresource.cpp:714
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "Kon etesyncCollection uit cache '%1' niet ophalen"
 
-#: etesyncresource.cpp:416
+#: etesyncresource.cpp:423
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
 msgstr "Kon nieuw etesyncItem '%1' niet aanmaken"
 
-#: etesyncresource.cpp:468 etesyncresource.cpp:526
+#: etesyncresource.cpp:475 etesyncresource.cpp:533
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
 msgstr "Kon etesyncItem niet ophalen uit cache '%1'"
 
-#: etesyncresource.cpp:588
+#: etesyncresource.cpp:595
 #, kde-format
 msgid "Could not create new etesyncCollection"
 msgstr "Kon nieuw etesyncCollection niet aanmaken"
 
-#: etesyncresource.h:62
+#: etesyncresource.h:59
 #, kde-format
 msgid "Something went wrong"
 msgstr "Er ging iets fout"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-10-27 00:40+0000\n"
+"POT-Creation-Date: 2025-06-27 00:43+0000\n"
 "PO-Revision-Date: 2025-01-12 14:10+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -127,34 +127,29 @@ msgstr "عنصر غير صالح."
 msgid "Fetching password…"
 msgstr "جلب كلمة السر..."
 
-#: googleresource.cpp:93
-#, kde-format
-msgid "Can't fetch password"
-msgstr "لا يمكن جلب كلمة السر"
-
-#: googleresource.cpp:134
+#: googleresource.cpp:136
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "جاهز"
 
-#: googleresource.cpp:146
+#: googleresource.cpp:148
 #, kde-format
 msgid "Not configured"
 msgstr "غير مضبوط"
 
-#: googleresource.cpp:146
+#: googleresource.cpp:148
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "البرمجيات التعاونية من غوغل (%1)"
 
-#: googleresource.cpp:197
+#: googleresource.cpp:199
 #, kde-format
 msgid "Account has been logged out."
 msgstr "خرجت من الحساب"
 
-#: googleresource.cpp:200
+#: googleresource.cpp:202
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -163,7 +158,7 @@ msgstr ""
 "خرجت البرمجيات التعاونية من غوغل من حسابك. يرجى تسجيل الدخول لتمكين مزامنة "
 "جهات اتصال غوغل والتقويم مرة أخرى."
 
-#: googleresource.cpp:201
+#: googleresource.cpp:203
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -172,40 +167,53 @@ msgstr ""
 "خرجت البرمجيات التعاونية من غوغل من الحساب %1. يرجى تسجيل الدخول لتمكين "
 "مزامنة جهات اتصال غوغل والتقويم مرة أخرى."
 
-#: googleresource.cpp:205
+#: googleresource.cpp:207
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 يحتاج إلى اهتمامك."
 
-#: googleresource.cpp:210
+#: googleresource.cpp:212
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "لِج"
 
-#: googleresource.cpp:222 googleresource.cpp:223
+#: googleresource.cpp:224 googleresource.cpp:225
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "المورد غير مضبوط"
 
-#: googleresource.cpp:238
+#: googleresource.cpp:240
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "فشل إنعاش الأمارات"
 
-#: googleresource.cpp:427 googleresource.cpp:441 googleresource.cpp:455
-#: googleresource.cpp:470 googleresource.cpp:484 googleresource.cpp:498
-#: googleresource.cpp:512
+#: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
+#: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
+#: googleresource.cpp:514
 #, kde-format
 msgid "Invalid payload type"
 msgstr "نوع الحمولة غير صالح"
 
-#: googleresource.cpp:526 googleresource.cpp:540 googleresource.cpp:554
+#: googleresource.cpp:528 googleresource.cpp:542 googleresource.cpp:556
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "نوع MIME للتّجميعة مجهول"
+
+#: googlesettings.cpp:43
+#, kde-format
+msgctxt "@info:status"
+msgid "No username set"
+msgstr ""
+
+#: googlesettings.cpp:55
+#, fuzzy, kde-format
+#| msgid "Failed to reparent subtasks: %1"
+msgctxt "@info:status"
+msgid "Unable to read password: %1"
+msgstr "فشل إعادة تعيين المهام الفرعية: %1"
 
 #: googlesettingswidget.cpp:41
 #, kde-format
@@ -471,6 +479,9 @@ msgstr "تغيير قائمة المهام '%1'"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "إزالة قائمة المهام '%1'"
+
+#~ msgid "Can't fetch password"
+#~ msgstr "لا يمكن جلب كلمة السر"
 
 #~ msgid "Configured account does not exist"
 #~ msgstr "الحساب المضبوط غير موجود"
