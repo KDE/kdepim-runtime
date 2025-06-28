@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-24 00:43+0000\n"
+"POT-Creation-Date: 2025-06-28 00:42+0000\n"
 "PO-Revision-Date: 2025-05-24 11:35+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -302,12 +302,12 @@ msgstr "Problema con la richiesta. I tipi MIME richiesti non sono supportati."
 msgid "No schedule-outbox found for %1"
 msgstr "Casella di posta in uscita per la programmazione non trovata per %1"
 
-#: davfreebusyhandler.cpp:191 davfreebusyhandler.cpp:202
+#: davfreebusyhandler.cpp:194 davfreebusyhandler.cpp:205
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Risposta non valida dal server"
 
-#: davfreebusyhandler.cpp:213
+#: davfreebusyhandler.cpp:216
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Impossibile elaborare i dati libero/occupato ricevuti"

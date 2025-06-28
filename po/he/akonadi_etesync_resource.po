@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-06-27 00:43+0000\n"
-"PO-Revision-Date: 2025-06-26 09:38+0300\n"
+"PO-Revision-Date: 2025-06-27 11:18+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -19,31 +19,28 @@ msgstr ""
 "X-Generator: Lokalize 25.04.2\n"
 
 #: etesyncclientstate.cpp:34
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "EteSync configuration wizard"
+#, kde-format
 msgctxt "@info:status"
 msgid "Empty account configuration"
-msgstr "אשף הגדרת EteSync"
+msgstr "הגדרות חשבון EteSync"
 
 #: etesyncclientstate.cpp:43
 #, kde-format
 msgctxt "@info:status"
 msgid "Etebase error when initializing client: %1"
-msgstr ""
+msgstr "שגיאת Etebase באתחול הלקוח: %1"
 
 #: etesyncclientstate.cpp:160
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr ""
+msgstr "לא ניתן לקרוא את הסיסמה: %1"
 
 #: etesyncclientstate.cpp:169
-#, fuzzy, kde-format
-#| msgid "Could not get etesyncItem from cache '%1'"
+#, kde-format
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
-msgstr "לא ניתן למשוך etesyncItem (פריט) מזיכרון המטמון ‚%1’"
+msgstr "לא ניתן למשוך חשבון etebase (מסד נתונים) מזיכרון המטמון"
 
 #: etesyncresource.cpp:58
 #, kde-format

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-24 00:43+0000\n"
+"POT-Creation-Date: 2025-06-28 00:42+0000\n"
 "PO-Revision-Date: 2025-05-29 23:32+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -306,12 +306,12 @@ msgstr ""
 msgid "No schedule-outbox found for %1"
 msgstr "Ez da %1(e)rako programazioaren irteera-ontzirik aurkitu"
 
-#: davfreebusyhandler.cpp:191 davfreebusyhandler.cpp:202
+#: davfreebusyhandler.cpp:194 davfreebusyhandler.cpp:205
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Zerbitzariaren erantzun baliogabea"
 
-#: davfreebusyhandler.cpp:213
+#: davfreebusyhandler.cpp:216
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr ""

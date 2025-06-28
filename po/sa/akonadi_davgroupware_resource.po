@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-24 00:43+0000\n"
+"POT-Creation-Date: 2025-06-28 00:42+0000\n"
 "PO-Revision-Date: 2024-12-20 21:52+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -299,12 +299,12 @@ msgstr "अनुरोधस्य समस्या आसीत् । अ�
 msgid "No schedule-outbox found for %1"
 msgstr "%1 कृते कोऽपि schedule-outbox न प्राप्तः"
 
-#: davfreebusyhandler.cpp:191 davfreebusyhandler.cpp:202
+#: davfreebusyhandler.cpp:194 davfreebusyhandler.cpp:205
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "सर्वरतः अमान्यप्रतिसादः"
 
-#: davfreebusyhandler.cpp:213
+#: davfreebusyhandler.cpp:216
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "प्राप्तं मुक्त-व्यस्तदत्तांशं विश्लेषणं कर्तुं असमर्थः"

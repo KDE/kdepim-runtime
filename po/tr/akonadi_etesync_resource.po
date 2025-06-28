@@ -1,48 +1,45 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-06-27 00:43+0000\n"
-"PO-Revision-Date: 2024-07-30 17:32+0300\n"
-"Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
+"PO-Revision-Date: 2025-06-27 10:04+0300\n"
+"Last-Translator: Emir SARI <emir_sari@îcloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.07.70\n"
+"X-Generator: Lokalize 25.04.2\n"
 
 #: etesyncclientstate.cpp:34
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "EteSync configuration wizard"
+#, kde-format
 msgctxt "@info:status"
 msgid "Empty account configuration"
-msgstr "EteSync yapılandırma sihirbazı"
+msgstr "Hesap yapılandırması boş"
 
 #: etesyncclientstate.cpp:43
 #, kde-format
 msgctxt "@info:status"
 msgid "Etebase error when initializing client: %1"
-msgstr ""
+msgstr "İstemci ilklendirilirken EteBase hatası: %1"
 
 #: etesyncclientstate.cpp:160
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr ""
+msgstr "Parola okunamıyor: %1"
 
 #: etesyncclientstate.cpp:169
-#, fuzzy, kde-format
-#| msgid "Could not get etesyncItem from cache '%1'"
+#, kde-format
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
-msgstr "“%1” önbelleğinden etesyncItem alınamadı"
+msgstr "Önbellekten EteBase hesabı alınamadı"
 
 #: etesyncresource.cpp:58
 #, kde-format
@@ -50,10 +47,9 @@ msgid "EteSync Resource"
 msgstr "EteSync Özkaynağı"
 
 #: etesyncresource.cpp:132
-#, fuzzy, kde-format
-#| msgid "EteSync Resource"
+#, kde-format
 msgid "EteSync Account"
-msgstr "EteSync Özkaynağı"
+msgstr "EteSync Hesabı"
 
 #: etesyncresource.cpp:174
 #, kde-format
@@ -95,14 +91,9 @@ msgid "Credentials Changed"
 msgstr "Bilgiler Değişti"
 
 #: etesyncresource.cpp:210
-#, fuzzy, kde-format
-#| msgid ""
-#| "Your EteSync credentials were changed. Please click OK to re-enter your "
-#| "credentials."
+#, kde-format
 msgid "Your EteSync credentials were changed or are missing."
-msgstr ""
-"EteSync kimlik bilgileriniz değiştrilmiş. Bilgilerinizi yeniden girmek için "
-"Tamam’a tıklayın."
+msgstr "EteSync kimlik bilgileriniz değiştirilmiş veya eksik."
 
 #: etesyncresource.cpp:260
 #, kde-format

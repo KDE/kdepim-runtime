@@ -198,11 +198,10 @@ msgid "No username set"
 msgstr ""
 
 #: googlesettings.cpp:55
-#, fuzzy, kde-format
-#| msgid "Failed to reparent subtasks: %1"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr "无法重新归类子任务至父项：%1"
+msgstr ""
 
 #: googlesettingswidget.cpp:41
 #, kde-format
@@ -438,6 +437,3 @@ msgstr "正在修改任务列表“%1”"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "正在删除任务列表“%1”"
-
-#~ msgid "Can't fetch password"
-#~ msgstr "无法获取密码"

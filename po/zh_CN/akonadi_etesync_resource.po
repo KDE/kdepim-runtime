@@ -19,12 +19,10 @@ msgstr ""
 "X-Crowdin-File-ID: 45607\n"
 
 #: etesyncclientstate.cpp:34
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "EteSync configuration wizard"
+#, kde-format
 msgctxt "@info:status"
 msgid "Empty account configuration"
-msgstr "EteSync 配置向导"
+msgstr ""
 
 #: etesyncclientstate.cpp:43
 #, kde-format
@@ -39,11 +37,10 @@ msgid "Unable to read password: %1"
 msgstr ""
 
 #: etesyncclientstate.cpp:169
-#, fuzzy, kde-format
-#| msgid "Could not get etesyncItem from cache '%1'"
+#, kde-format
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
-msgstr "无法从缓存“%1”中获取 etesyncItem"
+msgstr ""
 
 #: etesyncresource.cpp:58
 #, kde-format
