@@ -1,15 +1,16 @@
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for akonadi_google_resource.po package.
+# Copyright (C) 2012-2025 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
 # Javier Vinal <fjvinalgmail.com>, 2012.
-# Javier Viñal <fjvinal@gmail.com>, 2012, 2013, 2014, 2015, 2016.
-# SPDX-FileCopyrightText: 2020, 2021, 2023, 2024 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2012, 2013, 2014, 2015, 2016 Javier Viñal <fjvinal@gmail.com>
+# SPDX-FileCopyrightText: 2020, 2021, 2023, 2024, 2025 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-06-27 00:43+0000\n"
-"PO-Revision-Date: 2024-08-18 00:55+0200\n"
+"PO-Revision-Date: 2025-06-28 00:25+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.04.2\n"
 
 #: calendarhandler.cpp:91
 #, kde-format
@@ -117,7 +118,7 @@ msgstr "Elemento no válido."
 #: googleresource.cpp:86
 #, kde-format
 msgid "Fetching password…"
-msgstr "Obteniendo contraseña..."
+msgstr "Obteniendo contraseña…"
 
 #: googleresource.cpp:136
 #, kde-format
@@ -200,14 +201,13 @@ msgstr "Tipo MIME de la colección no conocido"
 #, kde-format
 msgctxt "@info:status"
 msgid "No username set"
-msgstr ""
+msgstr "No se ha definido un nombre de usuario"
 
 #: googlesettings.cpp:55
-#, fuzzy, kde-format
-#| msgid "Failed to reparent subtasks: %1"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr "No se ha podido cambiar la tarea padre de las subtareas: %1"
+msgstr "No se ha podido leer la contraseña: %1"
 
 #: googlesettingswidget.cpp:41
 #, kde-format
@@ -232,7 +232,7 @@ msgstr "Cuenta:"
 #: googlesettingswidget.ui:42
 #, kde-format
 msgid "Configure…"
-msgstr "Configurar..."
+msgstr "Configurar…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49
@@ -449,58 +449,3 @@ msgstr "Cambiando la lista de tareas «%1»"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "Eliminando la lista de tareas «%1»"
-
-#~ msgid "Can't fetch password"
-#~ msgstr "No se puede obtener la contraseña"
-
-#~ msgid "Configured account does not exist"
-#~ msgstr "La cuenta configurada no existe"
-
-#~ msgid "Waiting for KWallet..."
-#~ msgstr "Esperando a KWallet..."
-
-#~ msgid "Can't access KWallet"
-#~ msgstr "No se puede acceder a KWallet"
-
-#~ msgctxt "@info:status"
-#~ msgid "Retrieving %1 contact photo for group '%2'"
-#~ msgid_plural "Retrieving %1 contact photos for group '%2'"
-#~ msgstr[0] "Obteniendo %1 foto de contacto del grupo «%2»"
-#~ msgstr[1] "Obteniendo %1 fotos de contactos del grupo «%2»"
-
-#~ msgid "Refresh"
-#~ msgstr "Refrescar"
-
-#~ msgid "Aborted"
-#~ msgstr "Interrumpido"
-
-#~ msgid "Invalid payload MIME type. Expected %1, found %2"
-#~ msgstr "Tipo MIME de carga útil no válido. Se esperaba %1, se encontró %2"
-
-#~ msgid "&Add"
-#~ msgstr "&Añadir"
-
-#~ msgid "&Remove"
-#~ msgstr "Elimina&r"
-
-#~ msgid ""
-#~ "Do you really want to revoke access to account <b>%1</b>?<p>This will "
-#~ "revoke access to all resources using this account!</p>"
-#~ msgstr ""
-#~ "¿Quiere usted realmente revocar el acceso a la cuenta <b>%1</b>?<p>¡Esto "
-#~ "revocará el acceso a todos los recursos que usen dicha cuenta!</p>"
-
-#~ msgid "Revoke Access?"
-#~ msgstr "¿Revocar acceso?"
-
-#~ msgctxt "%1 is account name (user@gmail.com)"
-#~ msgid "Google Calendars and Tasks (%1)"
-#~ msgstr "Calendarios y tareas de Google (%1)"
-
-#~ msgid "The top-level collection cannot contain any tasks or events"
-#~ msgstr "La colección de nivel superior no puede contener tareas o eventos"
-
-#~ msgid "Invalid payload type. Expected event or todo, got %1"
-#~ msgstr ""
-#~ "Tipo de carga útil no válido %1. Se esperaba evento a tarea pendiente, se "
-#~ "obtuvo %1"

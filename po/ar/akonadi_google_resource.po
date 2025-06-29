@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-06-27 00:43+0000\n"
-"PO-Revision-Date: 2025-01-12 14:10+0400\n"
+"PO-Revision-Date: 2025-06-28 17:42+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -188,7 +188,7 @@ msgstr "المورد غير مضبوط"
 #: googleresource.cpp:240
 #, kde-format
 msgid "Failed to refresh tokens"
-msgstr "فشل إنعاش الأمارات"
+msgstr "فشل تحديث الأمارات"
 
 #: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
 #: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
@@ -206,14 +206,13 @@ msgstr "نوع MIME للتّجميعة مجهول"
 #, kde-format
 msgctxt "@info:status"
 msgid "No username set"
-msgstr ""
+msgstr "لم يحدد اسم المستخدم"
 
 #: googlesettings.cpp:55
-#, fuzzy, kde-format
-#| msgid "Failed to reparent subtasks: %1"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr "فشل إعادة تعيين المهام الفرعية: %1"
+msgstr "فشل في قراءة كلمة السر: %1"
 
 #: googlesettingswidget.cpp:41
 #, kde-format
@@ -248,7 +247,7 @@ msgstr "اضبط…"
 #: googlesettingswidget.ui:49
 #, kde-format
 msgid "Enable interval refresh"
-msgstr "فعّل الإنعاش كلّ فترة"
+msgstr "فعّل التحديث كلّ فترة"
 
 #. i18n: ectx: property (text), widget (QLabel, refreshLabel)
 #: googlesettingswidget.ui:56

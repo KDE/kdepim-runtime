@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_etesync_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-06-27 00:43+0000\n"
-"PO-Revision-Date: 2025-06-26 23:25+0100\n"
+"PO-Revision-Date: 2025-06-28 00:24+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -20,31 +20,28 @@ msgstr ""
 "X-Generator: Lokalize 25.04.2\n"
 
 #: etesyncclientstate.cpp:34
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "EteSync configuration wizard"
+#, kde-format
 msgctxt "@info:status"
 msgid "Empty account configuration"
-msgstr "Asistente de configuración de EteSync"
+msgstr "Configuración de la cuenta vacía"
 
 #: etesyncclientstate.cpp:43
 #, kde-format
 msgctxt "@info:status"
 msgid "Etebase error when initializing client: %1"
-msgstr ""
+msgstr "Ha ocurrido un error de Etebase al inicializar el cliente: %1"
 
 #: etesyncclientstate.cpp:160
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr ""
+msgstr "No se ha podido leer la contraseña: %1"
 
 #: etesyncclientstate.cpp:169
-#, fuzzy, kde-format
-#| msgid "Could not get etesyncItem from cache '%1'"
+#, kde-format
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
-msgstr "No se ha podido obtener «etesyncItem» de la caché «%1»"
+msgstr "No se ha podido obtener la cuenta de Etebase de la caché"
 
 #: etesyncresource.cpp:58
 #, kde-format
