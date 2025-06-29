@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-27 00:40+0000\n"
-"PO-Revision-Date: 2025-01-12 14:10+0400\n"
+"PO-Revision-Date: 2025-06-28 17:42+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -193,7 +193,7 @@ msgstr "المورد غير مضبوط"
 #: googleresource.cpp:238
 #, kde-format
 msgid "Failed to refresh tokens"
-msgstr "فشل إنعاش الأمارات"
+msgstr "فشل تحديث الأمارات"
 
 #: googleresource.cpp:427 googleresource.cpp:441 googleresource.cpp:455
 #: googleresource.cpp:470 googleresource.cpp:484 googleresource.cpp:498
@@ -240,7 +240,7 @@ msgstr "اضبط…"
 #: googlesettingswidget.ui:49
 #, kde-format
 msgid "Enable interval refresh"
-msgstr "فعّل الإنعاش كلّ فترة"
+msgstr "فعّل التحديث كلّ فترة"
 
 #. i18n: ectx: property (text), widget (QLabel, refreshLabel)
 #: googlesettingswidget.ui:56

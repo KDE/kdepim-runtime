@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-02-23 00:41+0000\n"
-"PO-Revision-Date: 2024-09-26 13:17+0400\n"
+"PO-Revision-Date: 2025-06-28 17:11+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -69,7 +69,7 @@ msgstr "اسم العرض:"
 #: configdialog.ui:39
 #, kde-format
 msgid "Refresh every:"
-msgstr "أنعش كلّ:"
+msgstr "حدّث كلّ:"
 
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, kcfg_refreshInterval)
 #: configdialog.ui:48
@@ -403,7 +403,7 @@ msgstr "اسم العرض"
 #: davgroupwareresource.kcfg:18
 #, kde-format
 msgid "Refresh every"
-msgstr "أنعش كلّ"
+msgstr "حدّث كلّ"
 
 #. i18n: ectx: label, entry (remoteUrls), group (General)
 #: davgroupwareresource.kcfg:22
