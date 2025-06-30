@@ -759,6 +759,9 @@ QString DavGroupwareResource::iconForDavUrl(const KDAV::DavUrl &davUrl)
         } else if (host.contains("egroupware"_L1)) {
             // egroupware is self-hosted
             icon = u"account-egroupware"_s;
+        } else if (host.contains("davical"_L1)) {
+            // davical is self-hosted
+            icon = u"account-davical"_s;
         } else if (host.contains("kopano"_L1)) {
             // Kopano is self-hosted
             icon = u"account-kopano"_s;
