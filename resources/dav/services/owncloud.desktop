@@ -51,6 +51,7 @@ Name[x-test]=xxownCloudxx
 Name[zh_CN]=ownCloud
 Name[zh_TW]=ownCloud
 Type=Service
+Icon=account-owncloud
 
 X-DavGroupware-SupportedProtocols=CalDav,CardDav
 X-DavGroupware-CalDavPath=/remote.php/dav

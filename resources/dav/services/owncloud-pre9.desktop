@@ -43,6 +43,7 @@ Name[x-test]=xxownCloud (> 5.0 and < 9.0)xx
 Name[zh_CN]=ownCloud (5.0 以上 9.0 以下)
 Name[zh_TW]=ownCloud (> 5.0 且 < 9.0)
 Type=Service
+Icon=account-owncloud
 
 X-DavGroupware-SupportedProtocols=CalDav,CardDav
 X-DavGroupware-CalDavPath=/remote.php/caldav
