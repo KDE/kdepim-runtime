@@ -18,8 +18,8 @@
 #include <KMime/Message>
 
 #include "newmailnotifier_debug.h"
-#include <KLineEdit>
 #include <KLocalizedString>
+#include <QLineEdit>
 #include <QPushButton>
 
 #include <QHBoxLayout>
@@ -120,7 +120,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     mCollectionFilter->setSortCaseSensitivity(Qt::CaseSensitive);
     mCollectionFilter->setSortLocaleAware(true);
 
-    auto searchLine = new KLineEdit(this);
+    auto searchLine = new QLineEdit(this);
     KLineEditEventHandler::catchReturnKey(searchLine);
     searchLine->setPlaceholderText(i18nc("@info:placeholder", "Search…"));
     searchLine->setClearButtonEnabled(true);
