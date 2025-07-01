@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-28 00:42+0000\n"
+"POT-Creation-Date: 2025-07-01 00:42+0000\n"
 "PO-Revision-Date: 2025-05-24 19:28+0300\n"
 "Last-Translator: Emir SARI <emir_sari@îcloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -344,50 +344,50 @@ msgstr "Ögeler değiştirilemiyor: %1"
 msgid "Unable to modify collection: %1"
 msgstr "Koleksiyon değiştirilemiyor: %1"
 
-#: davgroupwareresource.cpp:799
+#: davgroupwareresource.cpp:807
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Koleksiyon kaldırılamıyor: %1"
 
-#: davgroupwareresource.cpp:819
+#: davgroupwareresource.cpp:827
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Koleksiyonlar alınamıyor: %1"
 
-#: davgroupwareresource.cpp:952 davgroupwareresource.cpp:1051
+#: davgroupwareresource.cpp:960 davgroupwareresource.cpp:1059
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Ögeler alınamıyor: %1"
 
-#: davgroupwareresource.cpp:1131
+#: davgroupwareresource.cpp:1139
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Öge alınamıyor: %1"
 
-#: davgroupwareresource.cpp:1151
+#: davgroupwareresource.cpp:1159
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr "Öge alınamıyor: Öge verisi ayrıştırılamadı. Silinmiş olabilir."
 
-#: davgroupwareresource.cpp:1188
+#: davgroupwareresource.cpp:1196
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Öge eklenemiyor: %1"
 
-#: davgroupwareresource.cpp:1232 davgroupwareresource.cpp:1345
-#: davgroupwareresource.cpp:1357
+#: davgroupwareresource.cpp:1240 davgroupwareresource.cpp:1353
+#: davgroupwareresource.cpp:1365
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Öge değiştirilemiyor: %1"
 
-#: davgroupwareresource.cpp:1319 davgroupwareresource.cpp:1376
+#: davgroupwareresource.cpp:1327 davgroupwareresource.cpp:1384
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Öge kaldırılamıyor: %1"
 
-#: davgroupwareresource.cpp:1463 davgroupwareresource.cpp:1464
+#: davgroupwareresource.cpp:1471 davgroupwareresource.cpp:1472
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Kaynak henüz yapılandırılmamış"

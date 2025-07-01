@@ -3,13 +3,13 @@
 #
 # Viesturs Zarins <viesturs.zarins@mii.lu.lv>, 2010.
 # Einars Sprugis <einars8@gmail.com>, 2012.
-# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
+# SPDX-FileCopyrightText: 2024, 2025 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-05-12 00:39+0000\n"
-"PO-Revision-Date: 2024-12-28 11:36+0200\n"
+"PO-Revision-Date: 2025-06-27 15:50+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Lokalize 24.12.0\n"
+"X-Generator: Lokalize 25.04.2\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
 #, kde-format
@@ -48,7 +48,7 @@ msgstr "E-pasta vēstule ir veiksmīgi nosūtīta"
 #, kde-format
 msgctxt "Notification when the email was sent"
 msgid "Your E-Mail has been sent successfully."
-msgstr "Jūsu e-pasts ir veiksmīgi nosūtīts."
+msgstr "Jūsu e-pasta vēstule ir nosūtīta."
 
 #: maildispatcheragent.cpp:110
 #, kde-format
