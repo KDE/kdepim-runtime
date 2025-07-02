@@ -4,13 +4,13 @@
 # This file is distributed under the same license as the kdepim-runtime package.
 #
 # Automatically generated, 2022.
-# SPDX-FileCopyrightText: 2023, 2024 Kisaragi Hiu <mail@kisaragi-hiu.com>
+# SPDX-FileCopyrightText: 2023, 2024, 2025 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-06-27 00:43+0000\n"
-"PO-Revision-Date: 2024-08-03 14:41+0900\n"
+"PO-Revision-Date: 2025-07-01 19:57+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -18,34 +18,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 24.04.70\n"
+"X-Generator: Lokalize 25.07.70\n"
 
 #: etesyncclientstate.cpp:34
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "EteSync configuration wizard"
+#, kde-format
 msgctxt "@info:status"
 msgid "Empty account configuration"
-msgstr "EteSync 設定精靈"
+msgstr "空白帳號設定"
 
 #: etesyncclientstate.cpp:43
 #, kde-format
 msgctxt "@info:status"
 msgid "Etebase error when initializing client: %1"
-msgstr ""
+msgstr "Etebase 初始化用戶端時發生錯誤：%1"
 
 #: etesyncclientstate.cpp:160
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr ""
+msgstr "無法讀取密碼：%1"
 
 #: etesyncclientstate.cpp:169
-#, fuzzy, kde-format
-#| msgid "Could not get etesyncItem from cache '%1'"
+#, kde-format
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
-msgstr "無法從快取 '%1' 取得 etesyncItem"
+msgstr "無法從快取取得 etebase 帳號"
 
 #: etesyncresource.cpp:58
 #, kde-format
@@ -53,10 +50,9 @@ msgid "EteSync Resource"
 msgstr "EteSync 資源"
 
 #: etesyncresource.cpp:132
-#, fuzzy, kde-format
-#| msgid "EteSync Resource"
+#, kde-format
 msgid "EteSync Account"
-msgstr "EteSync 資源"
+msgstr "EteSync 帳號"
 
 #: etesyncresource.cpp:174
 #, kde-format
@@ -96,12 +92,9 @@ msgid "Credentials Changed"
 msgstr "認證資訊已變更"
 
 #: etesyncresource.cpp:210
-#, fuzzy, kde-format
-#| msgid ""
-#| "Your EteSync credentials were changed. Please click OK to re-enter your "
-#| "credentials."
+#, kde-format
 msgid "Your EteSync credentials were changed or are missing."
-msgstr "您的 EteSync 認證資訊已變更。請點擊確認來重新輸入您的認證資訊。"
+msgstr "您的 EteSync 認證資訊已變更或是缺乏。"
 
 #: etesyncresource.cpp:260
 #, kde-format
