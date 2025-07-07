@@ -11,6 +11,7 @@
 #include "googleresource.h"
 #include "googlesettings.h"
 
+#include <Akonadi/AttributeFactory>
 #include <Akonadi/BlockAlarmsAttribute>
 #include <Akonadi/CollectionColorAttribute>
 #include <Akonadi/CollectionModifyJob>
@@ -73,6 +74,7 @@ void CalendarHandler::setupCollection(Collection &collection, const CalendarPtr 
     attr->setIconName(QStringLiteral("view-calendar"));
     // Setting color
     if (calendar->backgroundColor().isValid()) {
+        AttributeFactory::registerAttribute<CollectionColorAttribute>();
         auto colorAttr = collection.attribute<CollectionColorAttribute>(Collection::AddIfMissing);
         colorAttr->setColor(calendar->backgroundColor());
     }
