@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-27 00:43+0000\n"
+"POT-Creation-Date: 2025-07-08 00:43+0000\n"
 "PO-Revision-Date: 2020-05-10 10:02+0300\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -17,31 +17,31 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 19.12.3\n"
 
-#: calendarhandler.cpp:91
+#: calendarhandler.cpp:93
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving calendars"
 msgstr "Kalendrite hankimine"
 
-#: calendarhandler.cpp:142
+#: calendarhandler.cpp:144
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
 msgstr "Kalendri \"%1\" sündmuste hankimine"
 
-#: calendarhandler.cpp:220 taskhandler.cpp:170
+#: calendarhandler.cpp:222 taskhandler.cpp:169
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
 msgstr "Sündmuse lisamine kalendrisse \"%1\""
 
-#: calendarhandler.cpp:246
+#: calendarhandler.cpp:248
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing event in calendar '%1'"
 msgstr "Sündmuse muutmine kalendris \"%1\""
 
-#: calendarhandler.cpp:258
+#: calendarhandler.cpp:260
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 event"
@@ -49,7 +49,7 @@ msgid_plural "Removing %1 events"
 msgstr[0] "%1 sündmuse eemaldamine"
 msgstr[1] "%1 sündmuse eemaldamine"
 
-#: calendarhandler.cpp:274
+#: calendarhandler.cpp:276
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
@@ -57,7 +57,7 @@ msgid_plural "Moving %1 events from calendar '%2' to calendar '%3'"
 msgstr[0] "%1 sündmuse liigutamine kalendrist \"%2\" kalendrisse \"%3\""
 msgstr[1] "%1 sündmuse liigutamine kalendrist \"%2\" kalendrisse \"%3\""
 
-#: calendarhandler.cpp:341
+#: calendarhandler.cpp:343
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Changing contact"
@@ -65,25 +65,25 @@ msgctxt "@info:status"
 msgid "Changing events tags"
 msgstr "Kontakti muutmine"
 
-#: calendarhandler.cpp:345
+#: calendarhandler.cpp:347
 #, fuzzy, kde-format
 #| msgid "Failed to refresh tokens"
 msgid "Failed to change tags on events"
 msgstr "Pääsmike värskendamine nurjus"
 
-#: calendarhandler.cpp:357
+#: calendarhandler.cpp:359
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating calendar '%1'"
 msgstr "Kalendri \"%1\" loomine"
 
-#: calendarhandler.cpp:385
+#: calendarhandler.cpp:387
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing calendar '%1'"
 msgstr "Kalendri \"%1\" muutmine"
 
-#: calendarhandler.cpp:398
+#: calendarhandler.cpp:400
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing calendar '%1'"
@@ -396,25 +396,25 @@ msgstr "Kogu kalendrite ID-d"
 msgid "IDs of task lists in collection"
 msgstr "Kogu ülesandeloendite ID-d"
 
-#: taskhandler.cpp:70
+#: taskhandler.cpp:69
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving task lists"
 msgstr "Ülesandeloendite hankimine"
 
-#: taskhandler.cpp:103
+#: taskhandler.cpp:102
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
 msgstr "Loendi \"%1\" ülesannete hankimine"
 
-#: taskhandler.cpp:195
+#: taskhandler.cpp:194
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
 msgstr "Ülesande muutmine loendis \"%1\""
 
-#: taskhandler.cpp:215
+#: taskhandler.cpp:214
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 task"
@@ -422,34 +422,34 @@ msgid_plural "Removing %1 tasks"
 msgstr[0] "%1 ülesande eemaldamine"
 msgstr[1] "%1 ülesande eemaldamine"
 
-#: taskhandler.cpp:225
+#: taskhandler.cpp:224
 #, kde-format
 msgid "Failed to delete task: %1"
 msgstr "Ülesande kustutamine nurjus: %1"
 
-#: taskhandler.cpp:261
+#: taskhandler.cpp:260
 #, kde-format
 msgid "Failed to reparent subtasks: %1"
 msgstr "Alamülesannetele uue eellase määramine nurjus: %1"
 
-#: taskhandler.cpp:292
+#: taskhandler.cpp:291
 #, kde-format
 msgid "Moving tasks between task lists is not supported"
 msgstr "Ülesannete liigutamine ülesandeloendite vahel ei ole toetatud"
 
-#: taskhandler.cpp:297
+#: taskhandler.cpp:296
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new task list '%1'"
 msgstr "Uue ülesandeloendi \"%1\" loomine"
 
-#: taskhandler.cpp:322
+#: taskhandler.cpp:321
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task list '%1'"
 msgstr "Ülesandeloendi \"%1\" muutmine"
 
-#: taskhandler.cpp:335
+#: taskhandler.cpp:334
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
