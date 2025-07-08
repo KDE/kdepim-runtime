@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-27 00:43+0000\n"
+"POT-Creation-Date: 2025-07-08 02:39+0000\n"
 "PO-Revision-Date: 2025-07-01 19:59+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -19,68 +19,68 @@ msgstr ""
 "X-Generator: Lokalize 25.07.70\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: calendarhandler.cpp:91
+#: calendarhandler.cpp:93
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving calendars"
 msgstr "正在取得行事曆"
 
-#: calendarhandler.cpp:142
+#: calendarhandler.cpp:144
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
 msgstr "正在為行事曆 '%1' 取得事件"
 
-#: calendarhandler.cpp:220 taskhandler.cpp:170
+#: calendarhandler.cpp:222 taskhandler.cpp:169
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
 msgstr "正在新增事件到行事曆 '%1'"
 
-#: calendarhandler.cpp:246
+#: calendarhandler.cpp:248
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing event in calendar '%1'"
 msgstr "正在變更行事曆 '%1' 中的事件"
 
-#: calendarhandler.cpp:258
+#: calendarhandler.cpp:260
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 event"
 msgid_plural "Removing %1 events"
 msgstr[0] "正在移除 %1 個事件"
 
-#: calendarhandler.cpp:274
+#: calendarhandler.cpp:276
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
 msgid_plural "Moving %1 events from calendar '%2' to calendar '%3'"
 msgstr[0] "正在從行事曆 '%2' 移動 %1 個事件到行事曆 '%3'"
 
-#: calendarhandler.cpp:341
+#: calendarhandler.cpp:343
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
 msgstr "正在變更事件標籤"
 
-#: calendarhandler.cpp:345
+#: calendarhandler.cpp:347
 #, kde-format
 msgid "Failed to change tags on events"
 msgstr "變更事件上的標籤時失敗"
 
-#: calendarhandler.cpp:357
+#: calendarhandler.cpp:359
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating calendar '%1'"
 msgstr "正在建立行事曆 '%1'"
 
-#: calendarhandler.cpp:385
+#: calendarhandler.cpp:387
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing calendar '%1'"
 msgstr "正在變更行事曆 '%1'"
 
-#: calendarhandler.cpp:398
+#: calendarhandler.cpp:400
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing calendar '%1'"
@@ -379,59 +379,59 @@ msgstr "收藏中行事曆的代碼"
 msgid "IDs of task lists in collection"
 msgstr "收藏中工作清單的代碼"
 
-#: taskhandler.cpp:70
+#: taskhandler.cpp:69
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving task lists"
 msgstr "正在取得工作列表"
 
-#: taskhandler.cpp:103
+#: taskhandler.cpp:102
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
 msgstr "正在取得列表 '%1' 的工作"
 
-#: taskhandler.cpp:195
+#: taskhandler.cpp:194
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
 msgstr "正在變更列表 '%1' 中的工作"
 
-#: taskhandler.cpp:215
+#: taskhandler.cpp:214
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 task"
 msgid_plural "Removing %1 tasks"
 msgstr[0] "正在移除 %1 個工作"
 
-#: taskhandler.cpp:225
+#: taskhandler.cpp:224
 #, kde-format
 msgid "Failed to delete task: %1"
 msgstr "刪除工作失敗：%1"
 
-#: taskhandler.cpp:261
+#: taskhandler.cpp:260
 #, kde-format
 msgid "Failed to reparent subtasks: %1"
 msgstr "移動子工作失敗：%1"
 
-#: taskhandler.cpp:292
+#: taskhandler.cpp:291
 #, kde-format
 msgid "Moving tasks between task lists is not supported"
 msgstr "在事件清單間移動事件的功能尚未支援"
 
-#: taskhandler.cpp:297
+#: taskhandler.cpp:296
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new task list '%1'"
 msgstr "正在建立新工作列表 '%1'"
 
-#: taskhandler.cpp:322
+#: taskhandler.cpp:321
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task list '%1'"
 msgstr "正在變更工作列表 '%1'"
 
-#: taskhandler.cpp:335
+#: taskhandler.cpp:334
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing task list '%1'"

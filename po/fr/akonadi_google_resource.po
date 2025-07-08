@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-27 00:43+0000\n"
+"POT-Creation-Date: 2025-07-08 02:39+0000\n"
 "PO-Revision-Date: 2025-01-14 14:59+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
@@ -24,31 +24,31 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: calendarhandler.cpp:91
+#: calendarhandler.cpp:93
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving calendars"
 msgstr "Réception des agendas"
 
-#: calendarhandler.cpp:142
+#: calendarhandler.cpp:144
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
 msgstr "Réception des évènements pour le calendrier « %1 »"
 
-#: calendarhandler.cpp:220 taskhandler.cpp:170
+#: calendarhandler.cpp:222 taskhandler.cpp:169
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
 msgstr "Ajout de l'évènement dans le calendrier « %1 »"
 
-#: calendarhandler.cpp:246
+#: calendarhandler.cpp:248
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing event in calendar '%1'"
 msgstr "Modification d'un évènement dans le calendrier « %1 »"
 
-#: calendarhandler.cpp:258
+#: calendarhandler.cpp:260
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 event"
@@ -56,7 +56,7 @@ msgid_plural "Removing %1 events"
 msgstr[0] "Suppression de %1 évènement"
 msgstr[1] "Suppression de %1 évènements"
 
-#: calendarhandler.cpp:274
+#: calendarhandler.cpp:276
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
@@ -66,31 +66,31 @@ msgstr[0] ""
 msgstr[1] ""
 "Déplacement des évènements %1 de l'agenda « %2 » vers l'évènement « %3 »"
 
-#: calendarhandler.cpp:341
+#: calendarhandler.cpp:343
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
 msgstr "Modification des étiquettes concernant les évènements"
 
-#: calendarhandler.cpp:345
+#: calendarhandler.cpp:347
 #, kde-format
 msgid "Failed to change tags on events"
 msgstr ""
 "Il a été impossible de modifier les étiquettes concernant les évènements"
 
-#: calendarhandler.cpp:357
+#: calendarhandler.cpp:359
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating calendar '%1'"
 msgstr "Création de l'agenda « %1 »"
 
-#: calendarhandler.cpp:385
+#: calendarhandler.cpp:387
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing calendar '%1'"
 msgstr "Modification de l'agenda « %1 »"
 
-#: calendarhandler.cpp:398
+#: calendarhandler.cpp:400
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing calendar '%1'"
@@ -400,25 +400,25 @@ msgstr "Identifiant des agendas dans une collection"
 msgid "IDs of task lists in collection"
 msgstr "Identifiants des listes de tâches dans une collection"
 
-#: taskhandler.cpp:70
+#: taskhandler.cpp:69
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving task lists"
 msgstr "Réception des listes de tâches"
 
-#: taskhandler.cpp:103
+#: taskhandler.cpp:102
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
 msgstr "Réception des tâches pour la liste « %1 »"
 
-#: taskhandler.cpp:195
+#: taskhandler.cpp:194
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
 msgstr "Modification de la tâche dans la liste « %1 »"
 
-#: taskhandler.cpp:215
+#: taskhandler.cpp:214
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 task"
@@ -426,35 +426,35 @@ msgid_plural "Removing %1 tasks"
 msgstr[0] "Suppression de %1 tâche"
 msgstr[1] "Suppression de %1 tâches"
 
-#: taskhandler.cpp:225
+#: taskhandler.cpp:224
 #, kde-format
 msgid "Failed to delete task: %1"
 msgstr "Il est impossible de supprimer la tâche : %1"
 
-#: taskhandler.cpp:261
+#: taskhandler.cpp:260
 #, kde-format
 msgid "Failed to reparent subtasks: %1"
 msgstr "Impossible de rétablir les liens des sous-tâches : %1"
 
-#: taskhandler.cpp:292
+#: taskhandler.cpp:291
 #, kde-format
 msgid "Moving tasks between task lists is not supported"
 msgstr ""
 "Le déplacement de tâches entre listes de tâches n'est pas pris en charge"
 
-#: taskhandler.cpp:297
+#: taskhandler.cpp:296
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new task list '%1'"
 msgstr "Création d'une nouvelle liste de tâches « %1 »"
 
-#: taskhandler.cpp:322
+#: taskhandler.cpp:321
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task list '%1'"
 msgstr "Modification la liste de tâches « %1 »"
 
-#: taskhandler.cpp:335
+#: taskhandler.cpp:334
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing task list '%1'"

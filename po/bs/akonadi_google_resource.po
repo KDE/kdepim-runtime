@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bosnianuniversetranslation\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-27 00:43+0000\n"
+"POT-Creation-Date: 2025-07-08 02:39+0000\n"
 "PO-Revision-Date: 2014-02-09 17:00+0100\n"
 "Last-Translator: Samir Ribić <megaribi@epn.ba>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: calendarhandler.cpp:91
+#: calendarhandler.cpp:93
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Retrieving photos"
@@ -28,25 +28,25 @@ msgctxt "@info:status"
 msgid "Retrieving calendars"
 msgstr "Preuzimam fotografije"
 
-#: calendarhandler.cpp:142
+#: calendarhandler.cpp:144
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
 msgstr ""
 
-#: calendarhandler.cpp:220 taskhandler.cpp:170
+#: calendarhandler.cpp:222 taskhandler.cpp:169
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
 msgstr ""
 
-#: calendarhandler.cpp:246
+#: calendarhandler.cpp:248
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing event in calendar '%1'"
 msgstr ""
 
-#: calendarhandler.cpp:258
+#: calendarhandler.cpp:260
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Removing contact"
@@ -57,7 +57,7 @@ msgstr[0] "Brisanje kontakta"
 msgstr[1] "Brisanje kontakta"
 msgstr[2] "Brisanje kontakta"
 
-#: calendarhandler.cpp:274
+#: calendarhandler.cpp:276
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
@@ -66,7 +66,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: calendarhandler.cpp:341
+#: calendarhandler.cpp:343
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Removing contact"
@@ -74,25 +74,25 @@ msgctxt "@info:status"
 msgid "Changing events tags"
 msgstr "Brisanje kontakta"
 
-#: calendarhandler.cpp:345
+#: calendarhandler.cpp:347
 #, fuzzy, kde-format
 #| msgid "Failed to create a new event: %1"
 msgid "Failed to change tags on events"
 msgstr "neuspjelo kreiranje novog događaja: %1"
 
-#: calendarhandler.cpp:357
+#: calendarhandler.cpp:359
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating calendar '%1'"
 msgstr ""
 
-#: calendarhandler.cpp:385
+#: calendarhandler.cpp:387
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing calendar '%1'"
 msgstr ""
 
-#: calendarhandler.cpp:398
+#: calendarhandler.cpp:400
 #, fuzzy, kde-format
 #| msgid "Remove Calendar?"
 msgctxt "@info:status"
@@ -432,7 +432,7 @@ msgstr "IDs kalendara iz zbirke"
 msgid "IDs of task lists in collection"
 msgstr "IDs liste duznosti iz zbirke"
 
-#: taskhandler.cpp:70
+#: taskhandler.cpp:69
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Retrieving photos"
@@ -440,19 +440,19 @@ msgctxt "@info:status"
 msgid "Retrieving task lists"
 msgstr "Preuzimam fotografije"
 
-#: taskhandler.cpp:103
+#: taskhandler.cpp:102
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
 msgstr ""
 
-#: taskhandler.cpp:195
+#: taskhandler.cpp:194
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
 msgstr ""
 
-#: taskhandler.cpp:215
+#: taskhandler.cpp:214
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Removing contact"
@@ -463,35 +463,35 @@ msgstr[0] "Brisanje kontakta"
 msgstr[1] "Brisanje kontakta"
 msgstr[2] "Brisanje kontakta"
 
-#: taskhandler.cpp:225
+#: taskhandler.cpp:224
 #, kde-format
 msgid "Failed to delete task: %1"
 msgstr "Neuspjelo brisanje dužnosti: %1"
 
-#: taskhandler.cpp:261
+#: taskhandler.cpp:260
 #, fuzzy, kde-format
 #| msgid "Failed to create a task: %1"
 msgid "Failed to reparent subtasks: %1"
 msgstr "neuspjelo kreiranje dužnosti: %1"
 
-#: taskhandler.cpp:292
+#: taskhandler.cpp:291
 #, kde-format
 msgid "Moving tasks between task lists is not supported"
 msgstr "Premještanje zadataka između listi zadataka nije podržan"
 
-#: taskhandler.cpp:297
+#: taskhandler.cpp:296
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new task list '%1'"
 msgstr ""
 
-#: taskhandler.cpp:322
+#: taskhandler.cpp:321
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task list '%1'"
 msgstr ""
 
-#: taskhandler.cpp:335
+#: taskhandler.cpp:334
 #, fuzzy, kde-format
 #| msgid "Remove tasklist?"
 msgctxt "@info:status"
