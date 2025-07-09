@@ -1,10 +1,10 @@
-# SPDX-FileCopyrightText: 2020, 2024 Xavier Besnard <xavier.besnard@kde.org>
+# SPDX-FileCopyrightText: 2020, 2024, 2025 Xavier Besnard <xavier.besnard@kde.org>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-06-27 00:43+0000\n"
-"PO-Revision-Date: 2024-08-01 15:34+0200\n"
+"PO-Revision-Date: 2025-06-28 09:13+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
@@ -12,34 +12,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 25.04.2\n"
 
 #: etesyncclientstate.cpp:34
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "EteSync configuration wizard"
+#, kde-format
 msgctxt "@info:status"
 msgid "Empty account configuration"
-msgstr "Assistant de configuration pour EteSync"
+msgstr "Configuration de compte vide"
 
 #: etesyncclientstate.cpp:43
 #, kde-format
 msgctxt "@info:status"
 msgid "Etebase error when initializing client: %1"
-msgstr ""
+msgstr "Erreur de Etebase lors de l'initialisation du client : %1"
 
 #: etesyncclientstate.cpp:160
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr ""
+msgstr "Impossible de lire le mot de passe : %1"
 
 #: etesyncclientstate.cpp:169
-#, fuzzy, kde-format
-#| msgid "Could not get etesyncItem from cache '%1'"
+#, kde-format
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
-msgstr "Impossible de charger « etesyncItem » à partir du cache « %1 »"
+msgstr "Impossible d'obtenir un compte Etebase à partir du cache"
 
 #: etesyncresource.cpp:58
 #, kde-format
@@ -47,10 +44,9 @@ msgid "EteSync Resource"
 msgstr "Ressource « EteSync »"
 
 #: etesyncresource.cpp:132
-#, fuzzy, kde-format
-#| msgid "EteSync Resource"
+#, kde-format
 msgid "EteSync Account"
-msgstr "Ressource « EteSync »"
+msgstr "Compte pour EteSync"
 
 #: etesyncresource.cpp:174
 #, kde-format
@@ -92,14 +88,9 @@ msgid "Credentials Changed"
 msgstr "Modifications des identifiants"
 
 #: etesyncresource.cpp:210
-#, fuzzy, kde-format
-#| msgid ""
-#| "Your EteSync credentials were changed. Please click OK to re-enter your "
-#| "credentials."
+#, kde-format
 msgid "Your EteSync credentials were changed or are missing."
-msgstr ""
-"Vos identifiants « EteSync » ont été modifiés. Veuillez cliquer sur « Ok » "
-"pour les re-saisir."
+msgstr "Vos identifiants pour EteSync ont été modifiés ou sont manquants."
 
 #: etesyncresource.cpp:260
 #, kde-format
