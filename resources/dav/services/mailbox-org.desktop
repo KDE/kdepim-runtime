@@ -35,6 +35,7 @@ Name[x-test]=xxmailbox.orgxx
 Name[zh_CN]=mailbox.org
 Name[zh_TW]=mailbox.org
 Type=Service
+Icon=account-mailboxorg
 
 X-DavGroupware-SupportedProtocols=CalDav,CardDav
 X-DavGroupware-ProviderUsesSSL=1
