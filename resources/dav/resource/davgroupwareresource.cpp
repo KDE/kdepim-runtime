@@ -767,7 +767,7 @@ QString DavGroupwareResource::iconForDavUrl(const KDAV::DavUrl &davUrl)
             icon = u"account-kopano"_s;
         } else if ((host == "mailbox.org"_L1) || host.endsWith(".mailbox.org"_L1)) {
             icon = u"account-mailboxorg"_s;
-        } else if ((host == "nextcloud.com"_L1) || host.endsWith(".nextcloud.com"_L1) || host.startsWith("nextcloud."_L1)) {
+        } else if (host.contains("nextcloud"_L1)) {
             icon = u"account-nextcloud"_s;
         } else if (host.contains("owncloud"_L1)) {
             icon = u"account-owncloud"_s;
