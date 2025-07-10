@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-01 00:42+0000\n"
+"POT-Creation-Date: 2025-07-10 00:43+0000\n"
 "PO-Revision-Date: 2025-05-24 04:48+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -340,27 +340,27 @@ msgstr "ჩანაწერების შეცვლის შეცდო�
 msgid "Unable to modify collection: %1"
 msgstr "კოლექციის შეცვლის შეცდომა: %1"
 
-#: davgroupwareresource.cpp:807
+#: davgroupwareresource.cpp:809
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "კოლექციის წაშლის შეცდომა: %1"
 
-#: davgroupwareresource.cpp:827
+#: davgroupwareresource.cpp:829
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "კოლექციების მიღების შეცდომა: %1"
 
-#: davgroupwareresource.cpp:960 davgroupwareresource.cpp:1059
+#: davgroupwareresource.cpp:962 davgroupwareresource.cpp:1061
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "ჩანაწერების მიღების შეცდომა: %1"
 
-#: davgroupwareresource.cpp:1139
+#: davgroupwareresource.cpp:1141
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "ჩანაწერის მიღების შეცდომა: %1"
 
-#: davgroupwareresource.cpp:1159
+#: davgroupwareresource.cpp:1161
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -369,23 +369,23 @@ msgstr ""
 "ელემენტის მიღება შეუძლებელია: ელემენტის მონაცემების დამუშავება შეუძლებელია. "
 "შეიძლება, ის უკვე წაშლილია."
 
-#: davgroupwareresource.cpp:1196
+#: davgroupwareresource.cpp:1198
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "ჩანაწერის დამატების შეცდომა: %1"
 
-#: davgroupwareresource.cpp:1240 davgroupwareresource.cpp:1353
-#: davgroupwareresource.cpp:1365
+#: davgroupwareresource.cpp:1242 davgroupwareresource.cpp:1355
+#: davgroupwareresource.cpp:1367
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "ჩანაწერის შეცვლის შეცდომა: %1"
 
-#: davgroupwareresource.cpp:1327 davgroupwareresource.cpp:1384
+#: davgroupwareresource.cpp:1329 davgroupwareresource.cpp:1386
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "ჩანაწერის წაშლის შეცდომა: %1"
 
-#: davgroupwareresource.cpp:1471 davgroupwareresource.cpp:1472
+#: davgroupwareresource.cpp:1473 davgroupwareresource.cpp:1474
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "რესურსი ჯერ მორგებული არაა"
