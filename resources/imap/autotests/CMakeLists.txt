@@ -4,9 +4,9 @@ if(NOT TARGET KPim6::kimaptest6)
   return()
 endif()
 
-# clang-tidy and clazy fails have link failures:
+# clang-tidy, clazy, include-what-you-use link fails with:
 # /usr/bin/ld: libkimaptest6.a: error adding symbols: file format not recognized
-if(CMAKE_CXX_CLANG_TIDY OR "${CMAKE_CXX_COMPILER}" MATCHES "clazy")
+if(CMAKE_CXX_CLANG_TIDY OR CMAKE_CXX_INCLUDE_WHAT_YOU_USE OR "${CMAKE_CXX_COMPILER}" MATCHES "clazy")
   return()
 endif()
 
