@@ -100,7 +100,7 @@ msgstr "密码："
 #: configwidget.ui:134
 #, kde-format
 msgid "Select this to reduce the load on the server and speed-up your syncs"
-msgstr ""
+msgstr "选择此选项以减轻服务器负担并加速同步"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:137
@@ -108,19 +108,19 @@ msgstr ""
 msgid ""
 "Limiting the time span range will lessen the load on the remote server and "
 "speed-up your initial sync."
-msgstr ""
+msgstr "限制时间范围将减轻远程服务器的负载，并加速您的初始同步。"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:140
 #, kde-format
 msgid "Limit retrieval time range"
-msgstr ""
+msgstr "限制检索时间范围"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configwidget.ui:152
 #, kde-format
 msgid "Only sync data more recent than"
-msgstr ""
+msgstr "仅同步数据新于"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
 #: configwidget.ui:191
@@ -418,19 +418,19 @@ msgstr "用户名"
 #: davgroupwareresource.kcfg:30
 #, kde-format
 msgid "Limit the data retrieval to the specified time range"
-msgstr ""
+msgstr "将数据检索限制在指定时间范围内"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
 #, kde-format
 msgid "Period for which to retrieve data, quantity"
-msgstr ""
+msgstr "数据检索周期（数量）"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
 #, kde-format
 msgid "Period for which to retrieve data, type"
-msgstr ""
+msgstr "数据检索周期（类型）"
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
 #: davgroupwareresource.kcfg:42
