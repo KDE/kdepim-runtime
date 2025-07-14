@@ -22,25 +22,25 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Empty account configuration"
-msgstr ""
+msgstr "清空账户配置"
 
 #: etesyncclientstate.cpp:43
 #, kde-format
 msgctxt "@info:status"
 msgid "Etebase error when initializing client: %1"
-msgstr ""
+msgstr "Etebase 初始化客户端时发生错误：%1"
 
 #: etesyncclientstate.cpp:160
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr ""
+msgstr "无法读取密码： %1"
 
 #: etesyncclientstate.cpp:169
 #, kde-format
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
-msgstr ""
+msgstr "无法从缓存中获取 etebase 帐户"
 
 #: etesyncresource.cpp:58
 #, kde-format
@@ -50,7 +50,7 @@ msgstr "EteSync 资源"
 #: etesyncresource.cpp:132
 #, kde-format
 msgid "EteSync Account"
-msgstr ""
+msgstr "EteSync 帐户"
 
 #: etesyncresource.cpp:174
 #, kde-format
@@ -92,7 +92,7 @@ msgstr "账户信息已被修改"
 #: etesyncresource.cpp:210
 #, kde-format
 msgid "Your EteSync credentials were changed or are missing."
-msgstr ""
+msgstr "您的 EteSync 凭据已被更改或丢失。"
 
 #: etesyncresource.cpp:260
 #, kde-format

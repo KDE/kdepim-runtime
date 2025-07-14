@@ -1296,7 +1296,7 @@ msgstr "სიის &თავიდან ჩატვირთვა"
 #, kde-format
 msgctxt "@action:button"
 msgid "&Reset"
-msgstr "&საწყისი მნიშვნელობებზე დაბრუნება"
+msgstr "ჩამოყ&რა"
 
 #: ewssubscriptionwidget.cpp:326
 #, kde-format

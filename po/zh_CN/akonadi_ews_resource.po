@@ -35,6 +35,8 @@ msgid ""
 "InTune credentials for the Microsoft Exchange account <b>%1</b> are no "
 "longer valid. You need to authenticate in order to continue using it."
 msgstr ""
+"用于 Microsoft Exchange 账户 <b>%1</b> 的 InTune 凭据已无效。您需要重新进行身"
+"份验证才能继续使用。"
 
 #: ewsclient/auth/ewsintuneauth.cpp:312
 #, kde-kuit-format
@@ -43,6 +45,8 @@ msgid ""
 "Failed to obtain InTune credentials for Microsoft Exchange account <b>%1</"
 "b>. Please update it in the account settings page."
 msgstr ""
+"无法获取 Microsoft Exchange 账户 <b>%1</b> 的 InTune 凭据。请前往账户设置页面"
+"更新凭据。"
 
 #: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
@@ -369,12 +373,15 @@ msgid ""
 "system to be joined to the organization and managed using InTune.</p></"
 "body></html>"
 msgstr ""
+"<html><head/><body><p>启用通过 Microsoft InTune MDM 软件进行身份验证。在许多"
+"企业环境中，此功能是必需的，因为这些环境强制要求使用设备凭据进行强身份验证，"
+"从而要求系统必须加入组织并通过 InTune 进行管理。</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authInTuneRadioButton)
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "&Microsoft InTune"
-msgstr ""
+msgstr "&Microsoft InTune"
 
 #. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
 #: ewsconfigdialog.ui:245
