@@ -302,6 +302,9 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></para>"
 msgstr ""
+"请输入包含有效日历文件的路径或URL。<para><note> 注意：此路径在资源创建后无法"
+"修改。如需更改存储位置，请删除当前资源并使用更新后的路径重新创建。</note></"
+"para>"
 
 #: singlefileresourceconfigwidgetbase.cpp:145
 #, kde-format

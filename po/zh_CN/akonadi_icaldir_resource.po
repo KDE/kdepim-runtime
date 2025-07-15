@@ -122,7 +122,7 @@ msgstr "自动保存延迟："
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "A directory path or URL containing calendar files"
-msgstr ""
+msgstr "包含日历文件的目录路径或 URL"
 
 #: icaldirsettingswidget.cpp:46
 #, kde-kuit-format
@@ -131,6 +131,8 @@ msgid ""
 "Enter the path or URL to a directory whose contents should be represented by "
 "this resource. The directory will be created if it does not exist."
 msgstr ""
+"请输入一个目录的路径或URL，该目录的内容将由该资源表示。如果该目录不存在，则会"
+"自动创建。"
 
 #: icaldirsettingswidget.cpp:48
 #, kde-format
