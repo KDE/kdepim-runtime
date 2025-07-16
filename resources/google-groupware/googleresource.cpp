@@ -20,6 +20,7 @@
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CachePolicy>
 #include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionColorAttribute>
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/ItemFetchScope>
@@ -69,6 +70,7 @@ GoogleResource::GoogleResource(const QString &id)
     m_settings.setResourceId(identifier());
 
     AttributeFactory::registerAttribute<DefaultReminderAttribute>();
+    AttributeFactory::registerAttribute<CollectionColorAttribute>();
 
     connect(this, &GoogleResource::reloadConfiguration, this, &GoogleResource::reloadConfig);
 
