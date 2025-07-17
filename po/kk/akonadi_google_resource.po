@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-08 00:43+0000\n"
+"POT-Creation-Date: 2025-07-17 00:42+0000\n"
 "PO-Revision-Date: 2013-06-15 04:42+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -121,24 +121,24 @@ msgstr "Дайын"
 msgid "Invalid item."
 msgstr "Ішіндегі аталым жарамсыз"
 
-#: googleresource.cpp:86
+#: googleresource.cpp:88
 #, kde-format
 msgid "Fetching password…"
 msgstr ""
 
-#: googleresource.cpp:136
+#: googleresource.cpp:138
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Дайын"
 
-#: googleresource.cpp:148
+#: googleresource.cpp:150
 #, fuzzy, kde-format
 #| msgid "not configured"
 msgid "Not configured"
 msgstr "бапталмаған"
 
-#: googleresource.cpp:148
+#: googleresource.cpp:150
 #, fuzzy, kde-format
 #| msgctxt "%1 is account name (user@gmail.com)"
 #| msgid "Google Contacts (%1)"
@@ -146,57 +146,57 @@ msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google контакттары (%1)"
 
-#: googleresource.cpp:199
+#: googleresource.cpp:201
 #, fuzzy, kde-format
 #| msgid "Configured account has been removed"
 msgid "Account has been logged out."
 msgstr "Бапталған тіркелгі өшірілген"
 
-#: googleresource.cpp:202
+#: googleresource.cpp:204
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
 
-#: googleresource.cpp:203
+#: googleresource.cpp:205
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
 
-#: googleresource.cpp:207
+#: googleresource.cpp:209
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr ""
 
-#: googleresource.cpp:212
+#: googleresource.cpp:214
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr ""
 
-#: googleresource.cpp:224 googleresource.cpp:225
+#: googleresource.cpp:226 googleresource.cpp:227
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Ресурс бапталмаған"
 
-#: googleresource.cpp:240
+#: googleresource.cpp:242
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Жазуларды жаңарту жаңылысы"
 
-#: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
-#: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
-#: googleresource.cpp:514
+#: googleresource.cpp:431 googleresource.cpp:445 googleresource.cpp:459
+#: googleresource.cpp:474 googleresource.cpp:488 googleresource.cpp:502
+#: googleresource.cpp:516
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Ішіндегісінің түрі жарамсыз"
 
-#: googleresource.cpp:528 googleresource.cpp:542 googleresource.cpp:556
+#: googleresource.cpp:530 googleresource.cpp:544 googleresource.cpp:558
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Беймәлім жинақ MIME түрі"

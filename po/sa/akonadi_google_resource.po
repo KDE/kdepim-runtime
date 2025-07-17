@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-08 00:43+0000\n"
+"POT-Creation-Date: 2025-07-17 00:42+0000\n"
 "PO-Revision-Date: 2024-12-20 21:52+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -114,34 +114,34 @@ msgstr "आत्त"
 msgid "Invalid item."
 msgstr "अमान्य मद।"
 
-#: googleresource.cpp:86
+#: googleresource.cpp:88
 #, kde-format
 msgid "Fetching password…"
 msgstr "गुप्तशब्दं आनयन्…"
 
-#: googleresource.cpp:136
+#: googleresource.cpp:138
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "आत्त"
 
-#: googleresource.cpp:148
+#: googleresource.cpp:150
 #, kde-format
 msgid "Not configured"
 msgstr "न विन्यस्तम्"
 
-#: googleresource.cpp:148
+#: googleresource.cpp:150
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "गूगल ग्रुपवेयर (%1) 1.1."
 
-#: googleresource.cpp:199
+#: googleresource.cpp:201
 #, kde-format
 msgid "Account has been logged out."
 msgstr "खातं लॉग आउट् कृतम् अस्ति।"
 
-#: googleresource.cpp:202
+#: googleresource.cpp:204
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -150,7 +150,7 @@ msgstr ""
 "भवतः खातेः Google Groupware बहिः गतः अस्ति। कृपया पुनः Google Contacts तथा "
 "Calendar sync इत्येतत् सक्षमं कर्तुं लॉग इन कुर्वन्तु।"
 
-#: googleresource.cpp:203
+#: googleresource.cpp:205
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -159,37 +159,37 @@ msgstr ""
 "Google Groupware %1 खातेन बहिः कृतम् अस्ति । कृपया पुनः Google Contacts तथा "
 "Calendar sync इत्येतत् सक्षमं कर्तुं लॉग इन कुर्वन्तु।"
 
-#: googleresource.cpp:207
+#: googleresource.cpp:209
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 भवतः ध्यानस्य आवश्यकता अस्ति।"
 
-#: googleresource.cpp:212
+#: googleresource.cpp:214
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "प्रवेशं कुर्वन्तु"
 
-#: googleresource.cpp:224 googleresource.cpp:225
+#: googleresource.cpp:226 googleresource.cpp:227
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "संसाधनं विन्यस्तं नास्ति"
 
-#: googleresource.cpp:240
+#: googleresource.cpp:242
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "टोकन ताजगीं कर्तुं असफलम्"
 
-#: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
-#: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
-#: googleresource.cpp:514
+#: googleresource.cpp:431 googleresource.cpp:445 googleresource.cpp:459
+#: googleresource.cpp:474 googleresource.cpp:488 googleresource.cpp:502
+#: googleresource.cpp:516
 #, kde-format
 msgid "Invalid payload type"
 msgstr "अमान्य पेलोड् प्रकार"
 
-#: googleresource.cpp:528 googleresource.cpp:542 googleresource.cpp:556
+#: googleresource.cpp:530 googleresource.cpp:544 googleresource.cpp:558
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "अज्ञात संग्रह अनुकरणप्रकार"

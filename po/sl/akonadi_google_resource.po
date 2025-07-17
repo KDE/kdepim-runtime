@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-08 00:43+0000\n"
+"POT-Creation-Date: 2025-07-17 00:42+0000\n"
 "PO-Revision-Date: 2025-06-27 06:12+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -121,34 +121,34 @@ msgstr "Pripravljen"
 msgid "Invalid item."
 msgstr "Neveljavni predmet."
 
-#: googleresource.cpp:86
+#: googleresource.cpp:88
 #, kde-format
 msgid "Fetching password…"
 msgstr "Pridobivanje gesla…"
 
-#: googleresource.cpp:136
+#: googleresource.cpp:138
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Pripravljen"
 
-#: googleresource.cpp:148
+#: googleresource.cpp:150
 #, kde-format
 msgid "Not configured"
 msgstr "Ni nastavljeno"
 
-#: googleresource.cpp:148
+#: googleresource.cpp:150
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google Groupware (%1)"
 
-#: googleresource.cpp:199
+#: googleresource.cpp:201
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Račun je bil odjavljen."
 
-#: googleresource.cpp:202
+#: googleresource.cpp:204
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -157,7 +157,7 @@ msgstr ""
 "Google Groupware je bil odjavljen iz vašega računa. Znova se prijavite, da "
 "omogočite ponovno usklajevanje Google Contacts in Calendar."
 
-#: googleresource.cpp:203
+#: googleresource.cpp:205
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -166,37 +166,37 @@ msgstr ""
 "Google Groupware je bil odjavljen iz računa %1. Znova se prijavite, da "
 "omogočite ponovno usklajevanje Google Contacts in Calendar."
 
-#: googleresource.cpp:207
+#: googleresource.cpp:209
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 potrebuje vaša pozornost."
 
-#: googleresource.cpp:212
+#: googleresource.cpp:214
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Prijavi se"
 
-#: googleresource.cpp:224 googleresource.cpp:225
+#: googleresource.cpp:226 googleresource.cpp:227
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Vir ni nastavljen"
 
-#: googleresource.cpp:240
+#: googleresource.cpp:242
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Žetonov ni bilo mogoče osvežiti"
 
-#: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
-#: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
-#: googleresource.cpp:514
+#: googleresource.cpp:431 googleresource.cpp:445 googleresource.cpp:459
+#: googleresource.cpp:474 googleresource.cpp:488 googleresource.cpp:502
+#: googleresource.cpp:516
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Neveljavna vrsta vsebine"
 
-#: googleresource.cpp:528 googleresource.cpp:542 googleresource.cpp:556
+#: googleresource.cpp:530 googleresource.cpp:544 googleresource.cpp:558
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Neznana vrsta MIME zbirke"
