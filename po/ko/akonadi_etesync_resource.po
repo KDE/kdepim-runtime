@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
-# SPDX-FileCopyrightText: 2021, 2024 Shinjo Park <kde@peremen.name>
+# SPDX-FileCopyrightText: 2021, 2024, 2025 Shinjo Park <kde@peremen.name>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-06-27 00:43+0000\n"
-"PO-Revision-Date: 2024-08-19 22:47+0200\n"
+"PO-Revision-Date: 2025-07-21 01:01+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -15,34 +15,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 24.12.3\n"
 
 #: etesyncclientstate.cpp:34
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "EteSync configuration wizard"
+#, kde-format
 msgctxt "@info:status"
 msgid "Empty account configuration"
-msgstr "EteSync 설정 마법사"
+msgstr "빈 계정 설정"
 
 #: etesyncclientstate.cpp:43
 #, kde-format
 msgctxt "@info:status"
 msgid "Etebase error when initializing client: %1"
-msgstr ""
+msgstr "클라이언트를 초기화하는 중 Etebase 오류: %1"
 
 #: etesyncclientstate.cpp:160
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr ""
+msgstr "암호를 읽을 수 없음: %1"
 
 #: etesyncclientstate.cpp:169
-#, fuzzy, kde-format
-#| msgid "Could not get etesyncItem from cache '%1'"
+#, kde-format
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
-msgstr "캐시 '%1'에서 etesyncItem을 가져올 수 없음"
+msgstr "캐시에서 etebase 계정을 가져올 수 없음"
 
 #: etesyncresource.cpp:58
 #, kde-format
@@ -50,10 +47,9 @@ msgid "EteSync Resource"
 msgstr "EteSync 리소스"
 
 #: etesyncresource.cpp:132
-#, fuzzy, kde-format
-#| msgid "EteSync Resource"
+#, kde-format
 msgid "EteSync Account"
-msgstr "EteSync 리소스"
+msgstr "EteSync 계정"
 
 #: etesyncresource.cpp:174
 #, kde-format
@@ -95,14 +91,9 @@ msgid "Credentials Changed"
 msgstr "자격 증명 변경됨"
 
 #: etesyncresource.cpp:210
-#, fuzzy, kde-format
-#| msgid ""
-#| "Your EteSync credentials were changed. Please click OK to re-enter your "
-#| "credentials."
+#, kde-format
 msgid "Your EteSync credentials were changed or are missing."
-msgstr ""
-"EteSync 자격 증명이 변경되었습니다. 확인을 눌러서 자격 증명을 다시 입력하십시"
-"오."
+msgstr "EteSync 자격 증명이 변경되었거나 없습니다."
 
 #: etesyncresource.cpp:260
 #, kde-format
