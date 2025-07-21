@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2013, 2014, 2017, 2020, 2021, 2023, 2024 Shinjo Park <kde@peremen.name>
+# SPDX-FileCopyrightText: 2013, 2014, 2017, 2020, 2021, 2023, 2024, 2025 Shinjo Park <kde@peremen.name>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-07-08 02:39+0000\n"
-"PO-Revision-Date: 2024-08-21 00:37+0200\n"
+"PO-Revision-Date: 2025-07-21 01:01+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 24.12.3\n"
 
 #: calendarhandler.cpp:93
 #, kde-format
@@ -196,14 +196,13 @@ msgstr "알 수 없는 모음집 MIME 형식"
 #, kde-format
 msgctxt "@info:status"
 msgid "No username set"
-msgstr ""
+msgstr "사용자 이름이 설정되지 않았음"
 
 #: googlesettings.cpp:55
-#, fuzzy, kde-format
-#| msgid "Failed to reparent subtasks: %1"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr "하위 할 일의 부모를 변경할 수 없음: %1"
+msgstr "암호를 읽을 수 없음: %1"
 
 #: googlesettingswidget.cpp:41
 #, kde-format
