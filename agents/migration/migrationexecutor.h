@@ -27,16 +27,11 @@ public:
     void add(const QSharedPointer<MigratorBase> &);
     void start() override;
 
-protected:
-    bool doResume() override;
-    bool doSuspend() override;
-
 private:
     void onStoppedProcessing();
     void executeNext();
     QQueue<QWeakPointer<MigratorBase>> mQueue;
     QWeakPointer<MigratorBase> mCurrentMigrator;
-    bool mSuspended = false;
     int mTotalAmount = 0;
     int mAlreadyProcessed = 0;
 };

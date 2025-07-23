@@ -11,7 +11,6 @@
 MigrationExecutor::MigrationExecutor()
     : KJob()
 {
-    setCapabilities(Suspendable);
 }
 
 void MigrationExecutor::start()
@@ -29,7 +28,7 @@ void MigrationExecutor::add(const QSharedPointer<MigratorBase> &migrator)
 
 void MigrationExecutor::executeNext()
 {
-    if (mCurrentMigrator || mSuspended) {
+    if (mCurrentMigrator) {
         return;
     }
     QSharedPointer<MigratorBase> migrator;
@@ -57,36 +56,6 @@ void MigrationExecutor::onStoppedProcessing()
     setPercent(mAlreadyProcessed * 100.0 / mTotalAmount);
     mCurrentMigrator.clear();
     executeNext();
-}
-
-bool MigrationExecutor::doSuspend()
-{
-    if (mCurrentMigrator) {
-        QSharedPointer<MigratorBase> migrator = mCurrentMigrator.toStrongRef();
-        if (migrator) {
-            migrator->pause();
-        } else {
-            mCurrentMigrator.clear();
-        }
-    }
-    Q_EMIT infoMessage(this, i18nc("PIM-Maintenance is paused.", "Paused."));
-    mSuspended = true;
-    return true;
-}
-
-bool MigrationExecutor::doResume()
-{
-    mSuspended = false;
-    if (mCurrentMigrator) {
-        QSharedPointer<MigratorBase> migrator = mCurrentMigrator.toStrongRef();
-        if (migrator) {
-            migrator->resume();
-        } else {
-            mCurrentMigrator.clear();
-        }
-    }
-    executeNext();
-    return true;
 }
 
 #include "moc_migrationexecutor.cpp"

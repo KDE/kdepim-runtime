@@ -233,39 +233,6 @@ private Q_SLOTS:
         QCOMPARE(jobTracker.mJobs.size(), 0);
     }
 
-    void testSuspend()
-    {
-        TestJobTracker jobTracker;
-        MigrationScheduler scheduler(&jobTracker);
-        QSharedPointer<Testmigrator> m1(new Testmigrator(QStringLiteral("id1")));
-        m1->mAutostart = true;
-        scheduler.addMigrator(m1);
-        jobTracker.mJobs.first()->suspend();
-        QCOMPARE(m1->migrationState(), MigratorBase::Paused);
-        jobTracker.mJobs.first()->resume();
-        QCOMPARE(m1->migrationState(), MigratorBase::InProgress);
-    }
-
-    /*
-     * Even if the migrator doesn't implement suspend, the executor suspends after completing the current job and waits with starting the second job.
-     */
-    void testJobFinishesDuringSuspend()
-    {
-        TestJobTracker jobTracker;
-        MigrationScheduler scheduler(&jobTracker);
-        QSharedPointer<Testmigrator> m1(new Testmigrator(QStringLiteral("id1")));
-        m1->mAutostart = true;
-        scheduler.addMigrator(m1);
-        QSharedPointer<Testmigrator> m2(new Testmigrator(QStringLiteral("id2")));
-        m2->mAutostart = true;
-        scheduler.addMigrator(m2);
-        jobTracker.mJobs.first()->suspend();
-        m1->complete();
-        QCOMPARE(m2->migrationState(), MigratorBase::None);
-        jobTracker.mJobs.first()->resume();
-        QCOMPARE(m2->migrationState(), MigratorBase::InProgress);
-    }
-
     void testProgressReporting()
     {
         TestJobTracker jobTracker;
