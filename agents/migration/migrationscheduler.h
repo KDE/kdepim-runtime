@@ -92,7 +92,7 @@ class MigrationScheduler : public QObject
 {
     Q_OBJECT
 public:
-    explicit MigrationScheduler(KJobTrackerInterface *jobTracker = nullptr, QObject *parent = nullptr);
+    explicit MigrationScheduler(QObject *parent = nullptr);
     ~MigrationScheduler() override;
 
     void addMigrator(const QSharedPointer<MigratorBase> &migrator);
@@ -112,5 +112,4 @@ private:
     QScopedPointer<MigratorModel> mModel;
     QHash<QString, QSharedPointer<LogModel>> mLogModel;
     QPointer<MigrationExecutor> mAutostartExecutor;
-    KJobTrackerInterface *mJobTracker = nullptr;
 };

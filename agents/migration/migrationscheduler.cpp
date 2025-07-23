@@ -206,10 +206,9 @@ QList<QSharedPointer<MigratorBase>> MigratorModel::migrators() const
     return migrators;
 }
 
-MigrationScheduler::MigrationScheduler(KJobTrackerInterface *jobTracker, QObject *parent)
+MigrationScheduler::MigrationScheduler(QObject *parent)
     : QObject(parent)
     , mModel(new MigratorModel)
-    , mJobTracker(jobTracker)
 {
 }
 
@@ -246,9 +245,6 @@ void MigrationScheduler::checkForAutostart(const QSharedPointer<MigratorBase> &m
     if (migrator->migrationState() != MigratorBase::Complete) {
         if (!mAutostartExecutor) {
             mAutostartExecutor = new MigrationExecutor;
-            if (mJobTracker) {
-                mJobTracker->registerJob(mAutostartExecutor);
-            }
 
             mAutostartExecutor->start();
         }

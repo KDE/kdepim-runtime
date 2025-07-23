@@ -14,7 +14,6 @@
 
 #include <KContacts/Addressee>
 #include <KLocalizedString>
-#include <KUiServerJobTracker>
 #include <KWindowSystem>
 #include <QDialog>
 #include <QDialogButtonBox>
@@ -24,7 +23,6 @@ namespace Akonadi
 {
 MigrationAgent::MigrationAgent(const QString &id)
     : AgentWidgetBase(id)
-    , mScheduler(new KUiServerJobTracker)
 {
     KLocalizedString::setApplicationDomain(QByteArrayLiteral("akonadi_migration_agent"));
     mScheduler.addMigrator(QSharedPointer<GidMigrator>::create(KContacts::Addressee::mimeType()));
