@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2009, 2010, 2011, 2013, 2014, 2015, 2018, 2019.
-# Marcus Vinícius de Andrade Gama <marcus.gama@gmail.com>, 2010.
+# SPDX-FileCopyrightText: 2010, 2025 Marcus Vinícius de Andrade Gama <marcus.gama@gmail.com>
 # Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2010, 2016, 2019, 2020, 2021.
 # Marcus Gama <marcus.gama@gmail.com>, 2011.
 # Frederico Goncalves Guimaraes <frederico@teia.bio.br>, 2017.
@@ -13,15 +13,15 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-07-10 02:34+0000\n"
-"PO-Revision-Date: 2021-08-23 13:32-0300\n"
-"Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
-"Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
+"PO-Revision-Date: 2025-07-23 19:00-0300\n"
+"Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
+"Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 20.04.2\n"
+"X-Generator: Lokalize 25.04.3\n"
 
 #: configwidget.cpp:36
 #, kde-format
@@ -106,6 +106,7 @@ msgstr "Senha:"
 #, kde-format
 msgid "Select this to reduce the load on the server and speed-up your syncs"
 msgstr ""
+"Selecione isto para reduzir a carga no servidor e acelerar sua sincronização"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:137
@@ -114,18 +115,18 @@ msgid ""
 "Limiting the time span range will lessen the load on the remote server and "
 "speed-up your initial sync."
 msgstr ""
+"Limitar o intervalo de tempo diminuirá a carga no servidor remoto eacelerará "
+"sua sincronização inicial."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:140
-#, fuzzy, kde-format
-#| msgid "Limit CalDav retrieval time range"
+#, kde-format
 msgid "Limit retrieval time range"
-msgstr "Limitar o intervalo de datas de recepção do CalDav"
+msgstr "Limitar o intervalo de datas de recepção"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configwidget.ui:152
-#, fuzzy, kde-format
-#| msgid "Only sync events more recent than"
+#, kde-format
 msgid "Only sync data more recent than"
 msgstr "Sincronizar apenas os eventos mais recentes que"
 
@@ -342,10 +343,9 @@ msgid "Invalid collection for item %1."
 msgstr "A coleção do item %1 é inválida."
 
 #: davgroupwareresource.cpp:647
-#, fuzzy, kde-format
-#| msgid "Unable to add item: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
-msgstr "Não foi possível adicionar o item: %1"
+msgstr "Não foi possível modificar os itens: %1"
 
 #: davgroupwareresource.cpp:686
 #, kde-format
@@ -434,24 +434,21 @@ msgstr "Nome de usuário"
 
 #. i18n: ectx: label, entry (limitSyncRange), group (General)
 #: davgroupwareresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Limit the events retrieval to the specified time range"
+#, kde-format
 msgid "Limit the data retrieval to the specified time range"
-msgstr "Limitar a recepção de eventos ao período de datas indicado"
+msgstr "Limitar a recuperação de dados ao intervalo de tempo especificado"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, quantity"
+#, kde-format
 msgid "Period for which to retrieve data, quantity"
-msgstr "Período para o qual obter os eventos (quantidade)"
+msgstr "Período para o qual obter os eventos, quantidade"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, type"
+#, kde-format
 msgid "Period for which to retrieve data, type"
-msgstr "Período para o qual obter os eventos (tipo)"
+msgstr "Período para o qual obter os eventos, tipo"
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
 #: davgroupwareresource.kcfg:42
@@ -577,8 +574,7 @@ msgid "User:"
 msgstr "Usuário:"
 
 #: setupwizard.cpp:277
-#, fuzzy, kde-format
-#| msgid "No, choose another server"
+#, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Não, escolher outro servidor"
@@ -621,15 +617,13 @@ msgstr ""
 "Selecione o servidor groupware para o qual deverá estar configurado o recurso"
 
 #: setupwizard.cpp:360
-#, fuzzy, kde-format
-#| msgid "Use one of those servers:"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Usar um destes servidores:"
 
 #: setupwizard.cpp:369
-#, fuzzy, kde-format
-#| msgid "Configure the resource manually"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Configurar o recurso manualmente"
@@ -655,29 +649,25 @@ msgid "Installation path"
 msgstr "Caminho de instalação"
 
 #: setupwizard.cpp:417
-#, fuzzy, kde-format
-#| msgid "Use secure connection"
+#, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Usar conexão segura"
 
 #: setupwizard.cpp:445
-#, fuzzy, kde-format
-#| msgid "Final URL (CalDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "URL final (CalDav)"
 
 #: setupwizard.cpp:450
-#, fuzzy, kde-format
-#| msgid "Final URL (CardDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "URL final (CardDav)"
 
 #: setupwizard.cpp:455
-#, fuzzy, kde-format
-#| msgid "Final URL (GroupDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "URL final (GroupDav)"
@@ -697,8 +687,7 @@ msgstr ""
 "configuração atual"
 
 #: setupwizard.cpp:525
-#, fuzzy, kde-format
-#| msgid "Test Connection"
+#, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Testar conexão"
