@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-25 00:43+0000\n"
+"POT-Creation-Date: 2025-07-25 00:43+0000\n"
 "PO-Revision-Date: 2024-05-12 10:35+0100\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: migrationagent.cpp:48
+#: migrationagent.cpp:46
 #, kde-format
 msgctxt ""
 "Title of the window that shows the status of the migration agent and offers "
@@ -27,28 +27,22 @@ msgctxt ""
 msgid "Migration Status"
 msgstr "Statuso de Transmeto"
 
-#: migrationexecutor.cpp:20
+#: migrationexecutor.cpp:19
 #, kde-format
 msgctxt "User visible name of ongoing Akonadi migration jobs"
 msgid "PIM Maintenance"
 msgstr "PIM-Funkciteno"
 
-#: migrationexecutor.cpp:41
+#: migrationexecutor.cpp:40
 #, kde-format
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress…"
 msgstr "En progreso…"
 
-#: migrationexecutor.cpp:47
+#: migrationexecutor.cpp:46
 #, kde-format
 msgid "PIM Maintenance"
 msgstr "PIM-Funkciteno"
-
-#: migrationexecutor.cpp:72
-#, kde-format
-msgctxt "PIM-Maintenance is paused."
-msgid "Paused."
-msgstr "Paŭzita."
 
 #: migrationscheduler.cpp:144
 #, kde-format
@@ -78,3 +72,7 @@ msgstr "Protokoldosiero"
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"
 msgstr "Informo pri Transmeto"
+
+#~ msgctxt "PIM-Maintenance is paused."
+#~ msgid "Paused."
+#~ msgstr "Paŭzita."

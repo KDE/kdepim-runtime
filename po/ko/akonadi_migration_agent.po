@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-25 00:43+0000\n"
+"POT-Creation-Date: 2025-07-25 00:43+0000\n"
 "PO-Revision-Date: 2024-08-19 22:47+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 23.08.5\n"
 
-#: migrationagent.cpp:48
+#: migrationagent.cpp:46
 #, kde-format
 msgctxt ""
 "Title of the window that shows the status of the migration agent and offers "
@@ -25,28 +25,22 @@ msgctxt ""
 msgid "Migration Status"
 msgstr "이전 상태"
 
-#: migrationexecutor.cpp:20
+#: migrationexecutor.cpp:19
 #, kde-format
 msgctxt "User visible name of ongoing Akonadi migration jobs"
 msgid "PIM Maintenance"
 msgstr "PIM 관리"
 
-#: migrationexecutor.cpp:41
+#: migrationexecutor.cpp:40
 #, kde-format
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress…"
 msgstr "진행 중…"
 
-#: migrationexecutor.cpp:47
+#: migrationexecutor.cpp:46
 #, kde-format
 msgid "PIM Maintenance"
 msgstr "PIM 관리"
-
-#: migrationexecutor.cpp:72
-#, kde-format
-msgctxt "PIM-Maintenance is paused."
-msgid "Paused."
-msgstr "일시 정지됨."
 
 #: migrationscheduler.cpp:144
 #, kde-format
@@ -76,6 +70,10 @@ msgstr "로그 파일"
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"
 msgstr "이전 정보"
+
+#~ msgctxt "PIM-Maintenance is paused."
+#~ msgid "Paused."
+#~ msgstr "일시 정지됨."
 
 #~ msgid "PIM-Maintanence"
 #~ msgstr "PIM 관리"

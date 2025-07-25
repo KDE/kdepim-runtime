@@ -4,20 +4,21 @@
 #
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2013, 2014, 2018.
 # Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2020, 2021, 2023.
+# SPDX-FileCopyrightText: 2025 Marcus Gama <marcus.gama@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_googlecalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-07-17 00:42+0000\n"
-"PO-Revision-Date: 2023-12-01 17:09-0300\n"
-"Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
+"PO-Revision-Date: 2025-07-23 19:09-0300\n"
+"Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 25.04.3\n"
 
 #: calendarhandler.cpp:93
 #, kde-format
@@ -60,18 +61,15 @@ msgstr[0] "Movendo %1 evento do calendário '%2' para o calendário '%3'"
 msgstr[1] "Movendo %1 eventos do calendário '%2' para o calendário '%3'"
 
 #: calendarhandler.cpp:343
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Changing contact"
+#, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr "Alterando contato"
+msgstr "Alterando etiquetas de eventos"
 
 #: calendarhandler.cpp:347
-#, fuzzy, kde-format
-#| msgid "Failed to refresh tokens"
+#, kde-format
 msgid "Failed to change tags on events"
-msgstr "Não foi possível atualizar os itens"
+msgstr "Falha ao alterar etiquetas em eventos"
 
 #: calendarhandler.cpp:359
 #, kde-format
@@ -102,10 +100,9 @@ msgid "Cannot handle item unlinking"
 msgstr "Não foi possível lidar com a desvinculação do item"
 
 #: generichandler.cpp:34
-#, fuzzy, kde-format
-#| msgid "Cannot handle item linking"
+#, kde-format
 msgid "Cannot handle item tag changes"
-msgstr "Não foi possível lidar com a vinculação do item"
+msgstr "Não foi possível lidar com as alterações de etiquetas de item"
 
 #: generichandler.cpp:61
 #, kde-format
@@ -119,8 +116,7 @@ msgid "Invalid item."
 msgstr "Item inválido."
 
 #: googleresource.cpp:88
-#, fuzzy, kde-format
-#| msgid "Fetching password..."
+#, kde-format
 msgid "Fetching password…"
 msgstr "Obtendo senha..."
 
@@ -203,23 +199,20 @@ msgstr "O tipo MIME da coleção não é conhecido"
 #, kde-format
 msgctxt "@info:status"
 msgid "No username set"
-msgstr ""
+msgstr "Nenhum nome de usuário definido"
 
 #: googlesettings.cpp:55
-#, fuzzy, kde-format
-#| msgid "Failed to reparent subtasks: %1"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr "Falha ao reassociar subtarefas: %1"
+msgstr "Não foi possível ler a senha: %1"
 
 #: googlesettingswidget.cpp:41
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minuto"
-msgstr[1] " minutos"
+msgstr[0] "%v minutos"
+msgstr[1] "%v minutos"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
@@ -235,8 +228,7 @@ msgstr "Conta:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, fuzzy, kde-format
-#| msgid "Configure..."
+#, kde-format
 msgid "Configure…"
 msgstr "Configurar..."
 

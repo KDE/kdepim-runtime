@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-25 00:43+0000\n"
+"POT-Creation-Date: 2025-07-25 00:43+0000\n"
 "PO-Revision-Date: 2024-12-28 15:59+0200\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "2);\n"
 "X-Generator: Lokalize 24.12.0\n"
 
-#: migrationagent.cpp:48
+#: migrationagent.cpp:46
 #, kde-format
 msgctxt ""
 "Title of the window that shows the status of the migration agent and offers "
@@ -26,28 +26,22 @@ msgctxt ""
 msgid "Migration Status"
 msgstr "Migrācijas statuss"
 
-#: migrationexecutor.cpp:20
+#: migrationexecutor.cpp:19
 #, kde-format
 msgctxt "User visible name of ongoing Akonadi migration jobs"
 msgid "PIM Maintenance"
 msgstr "PIM apkope"
 
-#: migrationexecutor.cpp:41
+#: migrationexecutor.cpp:40
 #, kde-format
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress…"
 msgstr "Notiek darbība…"
 
-#: migrationexecutor.cpp:47
+#: migrationexecutor.cpp:46
 #, kde-format
 msgid "PIM Maintenance"
 msgstr "PIM apkope"
-
-#: migrationexecutor.cpp:72
-#, kde-format
-msgctxt "PIM-Maintenance is paused."
-msgid "Paused."
-msgstr "Pauzēts."
 
 #: migrationscheduler.cpp:144
 #, kde-format
@@ -77,3 +71,7 @@ msgstr "Žurnāla datne"
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"
 msgstr "Migrācijas informācija"
+
+#~ msgctxt "PIM-Maintenance is paused."
+#~ msgid "Paused."
+#~ msgstr "Pauzēts."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-25 00:43+0000\n"
+"POT-Creation-Date: 2025-07-25 00:43+0000\n"
 "PO-Revision-Date: 2024-11-18 14:41+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -23,7 +23,7 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: migrationagent.cpp:48
+#: migrationagent.cpp:46
 #, kde-format
 msgctxt ""
 "Title of the window that shows the status of the migration agent and offers "
@@ -31,28 +31,22 @@ msgctxt ""
 msgid "Migration Status"
 msgstr "Процесс миграции"
 
-#: migrationexecutor.cpp:20
+#: migrationexecutor.cpp:19
 #, kde-format
 msgctxt "User visible name of ongoing Akonadi migration jobs"
 msgid "PIM Maintenance"
 msgstr "Обслуживание базы личных данных"
 
-#: migrationexecutor.cpp:41
+#: migrationexecutor.cpp:40
 #, kde-format
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress…"
 msgstr "В процессе выполнения…"
 
-#: migrationexecutor.cpp:47
+#: migrationexecutor.cpp:46
 #, kde-format
 msgid "PIM Maintenance"
 msgstr "Обслуживание базы личных данных"
-
-#: migrationexecutor.cpp:72
-#, kde-format
-msgctxt "PIM-Maintenance is paused."
-msgid "Paused."
-msgstr "Приостановлено."
 
 #: migrationscheduler.cpp:144
 #, kde-format
@@ -82,3 +76,7 @@ msgstr "Файл журнала"
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"
 msgstr "Информация о задаче"
+
+#~ msgctxt "PIM-Maintenance is paused."
+#~ msgid "Paused."
+#~ msgstr "Приостановлено."
