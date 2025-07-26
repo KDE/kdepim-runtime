@@ -40,7 +40,6 @@ target_link_libraries(akonadi_migration_agent
     KPim6::AkonadiAgentWidgetBase
     KF6::Contacts
     KF6::WindowSystem
-    KF6::JobWidgets
 )
 
 install(TARGETS akonadi_migration_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

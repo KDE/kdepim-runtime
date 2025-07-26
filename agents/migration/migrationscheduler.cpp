@@ -7,7 +7,6 @@
 
 #include "migrationscheduler.h"
 
-#include <KJobTrackerInterface>
 #include <KLocalizedString>
 #include <QDebug>
 #include <QIcon>
