@@ -71,7 +71,3 @@ msgstr "日志文件"
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"
 msgstr "迁移信息"
-
-#~ msgctxt "PIM-Maintenance is paused."
-#~ msgid "Paused."
-#~ msgstr "已暂停。"
