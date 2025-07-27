@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bosnianuniversetranslation\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-25 00:43+0000\n"
+"POT-Creation-Date: 2025-07-27 00:42+0000\n"
 "PO-Revision-Date: 2013-10-26 21:00+0000\n"
 "Last-Translator: Nermina Ahmić <nahmic1@etf.unsa.ba>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -47,13 +47,13 @@ msgstr "U toku..."
 msgid "PIM Maintenance"
 msgstr "PIM-Održavanje"
 
-#: migrationscheduler.cpp:144
+#: migrationscheduler.cpp:143
 #, kde-format
 msgctxt "Name of the migrator in this row"
 msgid "Name"
 msgstr "Ime"
 
-#: migrationscheduler.cpp:146
+#: migrationscheduler.cpp:145
 #, fuzzy, kde-format
 #| msgctxt "Progress of the mgirator in %"
 #| msgid "Progress"
@@ -61,7 +61,7 @@ msgctxt "Progress of the migrator in %"
 msgid "Progress"
 msgstr "Napredak"
 
-#: migrationscheduler.cpp:148
+#: migrationscheduler.cpp:147
 #, fuzzy, kde-format
 #| msgctxt "Current status of the migrator (done, in progress, ...)"
 #| msgid "Status"

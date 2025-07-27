@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-25 00:43+0000\n"
+"POT-Creation-Date: 2025-07-27 00:42+0000\n"
 "PO-Revision-Date: 2014-03-12 01:12+0100\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -44,13 +44,13 @@ msgstr "In de Maak..."
 msgid "PIM Maintenance"
 msgstr "PIM-Pleeg"
 
-#: migrationscheduler.cpp:144
+#: migrationscheduler.cpp:143
 #, kde-format
 msgctxt "Name of the migrator in this row"
 msgid "Name"
 msgstr "Naam"
 
-#: migrationscheduler.cpp:146
+#: migrationscheduler.cpp:145
 #, fuzzy, kde-format
 #| msgctxt "Progress of the mgirator in %"
 #| msgid "Progress"
@@ -58,7 +58,7 @@ msgctxt "Progress of the migrator in %"
 msgid "Progress"
 msgstr "Vörankamen"
 
-#: migrationscheduler.cpp:148
+#: migrationscheduler.cpp:147
 #, fuzzy, kde-format
 #| msgctxt "Current status of the migrator (done, in progress, ...)"
 #| msgid "Status"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: l 10n\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-25 00:43+0000\n"
+"POT-Creation-Date: 2025-07-27 00:42+0000\n"
 "PO-Revision-Date: 2014-03-27 00:20+0200\n"
 "Last-Translator: Liudas Ališauskas <liudas@aksioma.lt>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -47,13 +47,13 @@ msgstr "Vykdoma..."
 msgid "PIM Maintenance"
 msgstr "PIM priežiūra"
 
-#: migrationscheduler.cpp:144
+#: migrationscheduler.cpp:143
 #, kde-format
 msgctxt "Name of the migrator in this row"
 msgid "Name"
 msgstr "Pavadinimas"
 
-#: migrationscheduler.cpp:146
+#: migrationscheduler.cpp:145
 #, fuzzy, kde-format
 #| msgctxt "Progress of the mgirator in %"
 #| msgid "Progress"
@@ -61,7 +61,7 @@ msgctxt "Progress of the migrator in %"
 msgid "Progress"
 msgstr "Eiga"
 
-#: migrationscheduler.cpp:148
+#: migrationscheduler.cpp:147
 #, fuzzy, kde-format
 #| msgctxt "Current status of the migrator (done, in progress, ...)"
 #| msgid "Status"
