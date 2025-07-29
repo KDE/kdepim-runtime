@@ -141,7 +141,6 @@ private:
         SubscriptionSync
     };
 
-    void finishItemsFetch(FetchItemState *state);
     void fetchSpecialFolders();
     void specialFoldersCollectionsRetrieved(const Akonadi::Collection::List &folders);
 

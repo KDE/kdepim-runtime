@@ -26,7 +26,6 @@ public:
 
     void init();
     void saveSettings();
-    void invalidateToken();
     bool login(const QString &serverUrl, const QString &username, const QString &password);
     void logout();
     AccountStatus accountStatus();

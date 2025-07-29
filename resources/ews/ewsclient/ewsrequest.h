@@ -89,8 +89,6 @@ private:
     bool readSoapBody(QXmlStreamReader &reader);
     bool readSoapFault(QXmlStreamReader &reader);
     bool readHeader(QXmlStreamReader &reader);
-    bool readResponseAttr(const QXmlStreamAttributes &attrs, EwsResponseClass &responseClass);
-    QString getOAuthToken();
     QPair<QStringView, QString> parseNamespacedString(const QString &str, const QXmlStreamNamespaceDeclarations &namespaces);
     EwsResponseCode parseEwsResponseCode(const QPair<QStringView, QString> &code);
 

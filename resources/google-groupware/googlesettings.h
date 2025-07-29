@@ -64,7 +64,6 @@ Q_SIGNALS:
     void okEnabled(bool enabled);
 
 private:
-    void slotWalletOpened(bool success);
     WId m_winId = 0;
     QString m_resourceId;
     bool m_isReady = false;

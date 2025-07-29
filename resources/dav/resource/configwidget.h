@@ -50,7 +50,6 @@ private:
     void onRemoveButtonClicked();
     void onEditButtonClicked();
     void checkConfiguredUrlsButtonsState();
-    void onOkClicked();
 
     void addModelRow(const QString &protocol, const QString &url);
     void insertModelRow(int index, const QString &protocol, const QString &url);

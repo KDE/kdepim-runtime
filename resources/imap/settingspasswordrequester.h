@@ -33,7 +33,6 @@ private Q_SLOTS:
 private:
     void slotTryAgainClicked();
     void slotOpenSettingsClicked();
-    QString requestManualAuth(bool *userRejected);
 
     ImapResourceBase *const m_resource;
 

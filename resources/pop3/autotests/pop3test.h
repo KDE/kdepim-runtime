@@ -20,7 +20,6 @@ class Pop3Test : public QObject
 {
     Q_OBJECT
 
-    void replymMaildirSettingsInterface(QString arg1);
 private Q_SLOTS:
     void initTestCase();
     void cleanupTestCase();

@@ -35,7 +35,5 @@ public:
 protected:
     EwsItemBase(const QSharedDataPointer<EwsItemBasePrivate> &priv);
 
-    void resetFields();
-
     QSharedDataPointer<EwsItemBasePrivate> d;
 };
