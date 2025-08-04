@@ -608,7 +608,7 @@ msgstr "استخدم عميل مستخدم مخ&صّص"
 #: ewsconfigdialog.ui:543
 #, kde-format
 msgid "Clear Synchronization State"
-msgstr "امسح حالة المزامنة"
+msgstr "امحُ حالة المزامنة"
 
 #. i18n: ectx: property (text), widget (QLabel, clearSyncStateLabel)
 #: ewsconfigdialog.ui:549
@@ -624,13 +624,13 @@ msgstr ""
 #: ewsconfigdialog.ui:574
 #, kde-format
 msgid "Clear Folder Tree State"
-msgstr "امسح حالة شجرة المجلّدات"
+msgstr "امحُ حالة شجرة المجلّدات"
 
 #. i18n: ectx: property (text), widget (QPushButton, clearFolderItemSyncStateButton)
 #: ewsconfigdialog.ui:581
 #, kde-format
 msgid "Clear Folder Item State"
-msgstr "امسح حالة عنصر المجلّد"
+msgstr "امحُ حالة عنصر المجلّد"
 
 #. i18n: ectx: attribute (title), widget (QWidget, statusTab)
 #: ewsconfigdialog.ui:608
