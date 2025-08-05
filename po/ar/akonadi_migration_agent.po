@@ -64,7 +64,7 @@ msgstr "الحالة"
 #: migrationstatuswidget.cpp:97
 #, kde-format
 msgid "Logfile"
-msgstr "ملفّ السّجلّ"
+msgstr "ملفّ السجل"
 
 #: migrationstatuswidget.cpp:106
 #, kde-format

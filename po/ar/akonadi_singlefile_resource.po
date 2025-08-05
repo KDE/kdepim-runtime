@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:42+0000\n"
-"PO-Revision-Date: 2025-04-24 10:55+0400\n"
+"PO-Revision-Date: 2025-08-03 22:57+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -73,7 +73,7 @@ msgid ""
 "If read-only mode is enabled, no changes will be written to the directory "
 "selected above."
 msgstr ""
-"إن كان وضع القراءة فقط مفعّلًا، فلن تُحفظ أيّة تغييرات إلى الدّليل المحدّد أعلاه."
+"إن كان وضع القراءة فقط ممكّنًا، فلن تُحفظ أيّة تغييرات إلى الدّليل المحدّد أعلاه."
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_ReadOnly)
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -84,8 +84,8 @@ msgid ""
 "selected above. Read-only mode will be automatically enabled if you do not "
 "have write access to the directory."
 msgstr ""
-"إن كان وضع القراءة فقط مفعّلًا، فلن تُحفظ أيّة تغييرات إلى الدّليل المحدّد أعلاه. "
-"سيُفعّل وضع القراءة آليًّا إن لم يكن لديك تصريح الكتابة في الدّليل."
+"إن كان وضع القراءة فقط ممكّنًا، فلن تُحفظ أيّة تغييرات إلى الدّليل المحدّد أعلاه. "
+"سيُمكّن وضع القراءة آليًّا إن لم يكن لديك تصريح الكتابة في الدّليل."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: settingsdialog.ui:93 singlefileresourceconfigwidget_desktop.ui:92
@@ -127,7 +127,7 @@ msgstr "فترة الحفظ الآليّ (بالدّقيقة)."
 #: settingsdialog.ui:155
 #, kde-format
 msgid "Select autosave interval time for the resource data (in minutes)."
-msgstr "حدد الفاصل الزمني للحفظ التلقائي لبيانات المورد (بالدقائق)."
+msgstr "حدد الفاصل الزمني للحفظ الآليّ لبيانات المورد (بالدقائق)."
 
 #: singlefileresource.h:68
 #, kde-format
@@ -251,7 +251,7 @@ msgid ""
 "is automatically enabled when the selected file does not support write "
 "access or when displaying a calendar from remote URL."
 msgstr ""
-"إن كان وضع القراءة فقط مفعّلًا، فلن تُحفظ أيّة تغييرات. سيُفعّل وضع القراءة آليًّا "
+"إن كان وضع القراءة فقط ممكّنًا، فلن تُحفظ أيّة تغييرات. سيُمكّن وضع القراءة آليًّا "
 "إن لم يكن لديك تصريح الكتابة في الدّليل أو عندما عرض تقويم من رابط غير محلي."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
@@ -276,7 +276,7 @@ msgstr ""
 #: singlefileresourceconfigwidget_desktop.ui:149
 #, kde-format
 msgid "Automatically &update every"
-msgstr "&تحديث تلقائي كل"
+msgstr "&تحديث آليّ كل"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
 #: singlefileresourceconfigwidget_desktop.ui:159

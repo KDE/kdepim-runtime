@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-01 00:42+0000\n"
-"PO-Revision-Date: 2025-05-04 06:24+0400\n"
+"PO-Revision-Date: 2025-08-03 22:53+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -546,8 +546,8 @@ msgid ""
 "delivered instantly.</p><p><br/></p><p>This option requires Exchange server "
 "version 2010 SP1 or later.</p></body></html>"
 msgstr ""
-"<html dir=\"rtl\"><head/><body><p>سلوك إخطارات البثّ يشابه سلوك وضع الدّفع، "
-"حيث يبقى الاتّصال حيًّا وإخطارات تغييرات العناصر تصل آنيًّا.</p><p><br/></"
+"<html dir=\"rtl\"><head/><body><p>سلوك إشعارات البثّ يشابه سلوك وضع الدّفع، "
+"حيث يبقى الاتّصال حيًّا وإشعارات تغييرات العناصر تصل آنيًّا.</p><p><br/></"
 "p><p>يتطلّب هذا الخيار إصدارة 2010 الحزمة الخدميّة الأولى فما فوق من إكسچينج»»."
 "</p></body></html>"
 
@@ -555,7 +555,7 @@ msgstr ""
 #: ewsconfigdialog.ui:483
 #, kde-format
 msgid "&Use streaming notifications"
-msgstr "ا&ستخدم إخطارات البثّ"
+msgstr "ا&ستخدم إشعارات البثّ"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_EnableNTLMv2)
 #: ewsconfigdialog.ui:502
@@ -577,7 +577,7 @@ msgstr ""
 #: ewsconfigdialog.ui:505
 #, kde-format
 msgid "Enable NTLMv2"
-msgstr "فعّل NTLM الإصدارة الثّانية"
+msgstr "مكّن NTLM الإصدارة الثّانية"
 
 #. i18n: ectx: property (whatsThis), widget (QGroupBox, userAgentGroupBox)
 #: ewsconfigdialog.ui:515
@@ -1193,7 +1193,7 @@ msgstr "يضبط فترة التماس البريد الجديد."
 #: ewsresource.kcfg:48
 #, kde-format
 msgid "Enable Server-Side Subscriptions"
-msgstr "فعّل الاشتراكات من جانب الخادوم"
+msgstr "مكّن الاشتراكات من جانب الخادوم"
 
 #. i18n: ectx: label, entry (ServerSubscriptionList), group (General)
 #: ewsresource.kcfg:51
@@ -1205,7 +1205,7 @@ msgstr "قائمة المجلّدات للاشتراك فيها"
 #: ewsresource.kcfg:55
 #, kde-format
 msgid "Enable NTLMv2 authentication"
-msgstr "فعّل استيثاق NTLM الإصدارة الثّانية"
+msgstr "مكّن استيثاق NTLM الإصدارة الثّانية"
 
 #. i18n: ectx: label, entry (UserAgent), group (General)
 #: ewsresource.kcfg:59
@@ -1253,7 +1253,7 @@ msgstr "فشل جلب قائمة المجلّدات."
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
-msgstr "فعّل الاشتراكات من جانب الخادوم"
+msgstr "مكّن الاشتراكات من جانب الخادوم"
 
 #: ewssubscriptionwidget.cpp:294
 #, kde-format

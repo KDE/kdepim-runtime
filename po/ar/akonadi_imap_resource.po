@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-06-24 00:43+0000\n"
-"PO-Revision-Date: 2025-04-05 13:47+0400\n"
+"PO-Revision-Date: 2025-08-03 22:51+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -125,7 +125,7 @@ msgstr "يحدّد نوع الاستيثاق لاستخدامه"
 #: imapresource.kcfg:35
 #, kde-format
 msgid "Defines if the server side subscription is enabled"
-msgstr "يحدّد فيما إذا كان الاشتراك من جانب الخادوم مفعّلًا"
+msgstr "يحدّد فيما إذا كان الاشتراك من جانب الخادوم ممكّنًا"
 
 #. i18n: ectx: property (text), widget (QCheckBox, useProxyCheck)
 #. i18n: ectx: label, entry (UseProxy), group (network)
@@ -152,7 +152,7 @@ msgstr "يحدّد فيما إذا كان يجب أن تُخبّأ بيانات 
 #: imapresource.kcfg:53
 #, kde-format
 msgid "Defines if interval checking is enabled."
-msgstr "يحدّد فيما إذا كان التّحقّق كلّ فترة مفعّلًا."
+msgstr "يحدّد فيما إذا كان التّحقّق كلّ فترة ممكّنًا."
 
 #. i18n: ectx: label, entry (IntervalCheckTime), group (cache)
 #: imapresource.kcfg:57
@@ -894,7 +894,7 @@ msgstr "&نزّل كلّ الرّسائل للاستخدام بلا اتّصال
 #: setupserverview_desktop.ui:122
 #, kde-format
 msgid "Enable &interval mail checking"
-msgstr "&فعّل التماس البريد كلّ فترة"
+msgstr "&مكّن التماس البريد كلّ فترة"
 
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: setupserverview_desktop.ui:129
@@ -1045,7 +1045,7 @@ msgstr "إعدادات IMAP"
 #: setupserverview_desktop.ui:371
 #, kde-format
 msgid "Enable server-side subscriptions"
-msgstr "فعّل الاشتراكات من جانب الخادوم"
+msgstr "مكّن الاشتراكات من جانب الخادوم"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
@@ -1160,7 +1160,7 @@ msgstr "أ&عِد تحميل القائمة"
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
-msgstr "فعّل الاشتراكات من جانب الخادوم"
+msgstr "مكّن الاشتراكات من جانب الخادوم"
 
 #: subscriptiondialog.cpp:71
 #, kde-format
