@@ -94,7 +94,7 @@ msgstr "اسم المستخدم المستخدم للولوج إلى خادوم 
 #: configwidget.ui:72
 #, kde-format
 msgid "Password:"
-msgstr "كلمة السّرّ:"
+msgstr "كلمة السر:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, kcfg_Password)
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Password)
@@ -104,7 +104,7 @@ msgstr "كلمة السّرّ:"
 #: openxchangeresource.kcfg:22
 #, kde-format
 msgid "The password that is used to log into the Open-Xchange server"
-msgstr "كلمة السّرّ المستخدمة للولوج إلى خادوم «أوبن إكس-چينج»"
+msgstr "كلمة السر المستخدمة للولوج إلى خادوم «أوبن إكس-چينج»"
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
@@ -205,7 +205,7 @@ msgstr "اسم المستخدم"
 #: openxchangeresource.kcfg:20
 #, kde-format
 msgid "Password"
-msgstr "كلمة السّرّ"
+msgstr "كلمة السر"
 
 #. i18n: ectx: label, entry (UseIncrementalUpdates), group (General)
 #: openxchangeresource.kcfg:26

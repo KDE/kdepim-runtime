@@ -267,7 +267,7 @@ msgstr ""
 #, kde-format
 msgctxt "authentication type"
 msgid "&Username/Password"
-msgstr "ا&سم المستخدم/كلمة السّرّ"
+msgstr "ا&سم المستخدم/كلمة السر"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_HasDomain)
 #: ewsconfigdialog.ui:143
@@ -314,7 +314,7 @@ msgstr "اسم المستخدم:"
 #: ewsconfigdialog.ui:179
 #, kde-format
 msgid "Password:"
-msgstr "كلمة السّرّ:"
+msgstr "كلمة السر:"
 
 #. i18n: ectx: property (whatsThis), widget (KPasswordLineEdit, passwordEdit)
 #: ewsconfigdialog.ui:186
@@ -324,7 +324,7 @@ msgid ""
 "p><p><span style=\" font-weight:600;\">Note:</span> This can be left empty "
 "when using Kerberos authentication.</p></body></html>"
 msgstr ""
-"<html dir=\"rtl\"><head/><body><p>كلمة السّرّ المستخدمة للولوج إلى خادوم "
+"<html dir=\"rtl\"><head/><body><p>كلمة السر المستخدمة للولوج إلى خادوم "
 "«إكسچينج».</p><p><span style=\" font-weight:600;\">لاحظ:</span> يمكن ترك هذا "
 "فارغًا عند استخدام استيثاق Kerberos.</p></body></html>"
 
@@ -349,7 +349,7 @@ msgid ""
 "properly configured on your system.</p></body></html>"
 msgstr ""
 "<html><head/><body><p><span style=\" font-weight:600;\">لاحظ:</span> اسم "
-"المستخدم وكلمة السّرّ ليسا ضروريّين (يمكن أن يكونا فارغين) في حال كان Kerberos "
+"المستخدم وكلمة السر ليسا ضروريّين (يمكن أن يكونا فارغين) في حال كان Kerberos "
 "مضبوطًا كما ينبغي في النّظام.</p></body></html>"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, authOAuth2RadioButton)
