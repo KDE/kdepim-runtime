@@ -547,12 +547,12 @@ msgstr "تعذّر إنشاء اتّصال إضافيّ بخادوم IMAP ‏%1.
 #: sessionpool.cpp:333
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
-msgstr "تعذّرت قراءة كلمة السّرّ: رفض المستخدم النّفاذ إلى الحافظة"
+msgstr "تعذّرت قراءة كلمة السر: رفض المستخدم النّفاذ إلى الحافظة"
 
 #: sessionpool.cpp:341
 #, kde-format
 msgid "Empty password"
-msgstr "كلمة السّرّ فارغة"
+msgstr "كلمة السر فارغة"
 
 #: sessionpool.cpp:353
 #, kde-format
@@ -869,14 +869,14 @@ msgstr "ا&سم المستخدم:"
 #: setupserverview_desktop.ui:91
 #, kde-format
 msgid "The password."
-msgstr "كلمة السّرّ."
+msgstr "كلمة السر."
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #. i18n: ectx: property (text), widget (QLabel, label_13)
 #: setupserverview_desktop.ui:94 setupserverview_desktop.ui:270
 #, kde-format
 msgid "Password:"
-msgstr "كلمة السّرّ:"
+msgstr "كلمة السر:"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, checkOptions)
 #: setupserverview_desktop.ui:108
@@ -960,13 +960,13 @@ msgstr "لا استيثاق"
 #: setupserverview_desktop.ui:243
 #, kde-format
 msgid "&Username and Password"
-msgstr "ا&سم المستخدم وكلمة السّرّ"
+msgstr "ا&سم المستخدم وكلمة السر"
 
 #. i18n: ectx: property (text), widget (QRadioButton, imapUserPassword)
 #: setupserverview_desktop.ui:257
 #, kde-format
 msgid "I&MAP Username and Password"
-msgstr "اسم مس&تخدم IMAP وكلمة السّرّ"
+msgstr "اسم مس&تخدم IMAP وكلمة السر"
 
 #. i18n: ectx: property (text), widget (QLabel, label_12)
 #: setupserverview_desktop.ui:277

@@ -230,7 +230,7 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
-"تعذّر الولوج إلى %1. قد تكون كلمة السّرّ خاطئة.\n"
+"تعذّر الولوج إلى %1. قد تكون كلمة السر خاطئة.\n"
 "\n"
 "%2"
 
@@ -322,7 +322,7 @@ msgstr "رجاءً أدخِل اسم مستخدم وكلمة سرّ حساب ’
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
-msgstr "هذا الطّلب جرى بسبب تعذّر تحميل كلمة السّرّ من المحفظة."
+msgstr "هذا الطّلب جرى بسبب تعذّر تحميل كلمة السر من المحفظة."
 
 #: pop3resource.cpp:164
 #, kde-format
@@ -367,7 +367,7 @@ msgstr "يحفظ الرّسائل المنزّلة."
 #: pop3resource.cpp:349
 #, kde-format
 msgid "Saving password to the wallet."
-msgstr "يحفظ كلمة السّرّ في المحفظة."
+msgstr "يحفظ كلمة السر في المحفظة."
 
 #: pop3resource.cpp:391
 #, kde-format
@@ -584,7 +584,7 @@ msgstr "اسم المستخدم الذي يحدّدك على خادوم البر
 #: popsettings.ui:137
 #, kde-format
 msgid "P&assword:"
-msgstr "&كلمة السّرّ:"
+msgstr "&كلمة السر:"
 
 #. i18n: ectx: property (toolTip), widget (KPasswordLineEdit, passwordEdit)
 #: popsettings.ui:147
@@ -596,7 +596,7 @@ msgstr "كلمة سرّ النّفاذ إلى خادوم البريد"
 #: popsettings.ui:150
 #, kde-format
 msgid "Password: The password given to you by your mail provider."
-msgstr "كلمة السّرّ: كلمة السّرّ المعطاة إليك من مزوّد البريد."
+msgstr "كلمة السر: كلمة السر المعطاة إليك من مزوّد البريد."
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget_5)
 #: popsettings.ui:157

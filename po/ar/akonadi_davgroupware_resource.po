@@ -95,7 +95,7 @@ msgstr "اسم المستخدم:"
 #: configwidget.ui:107 setupwizard.cpp:242 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
-msgstr "كلمة السّرّ:"
+msgstr "كلمة السر:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:134
@@ -158,7 +158,7 @@ msgstr "حرّر"
 #: daverror-kdepim-runtime.cpp:26
 #, kde-format
 msgid "Invalid username/password"
-msgstr "اسم المستخدم/كلمة السّرّ غير صالحة"
+msgstr "اسم المستخدم/كلمة السر غير صالحة"
 
 #: daverror-kdepim-runtime.cpp:28
 #, kde-format
@@ -515,7 +515,7 @@ msgstr "اسم المستخدم"
 #: searchdialog.ui:77
 #, kde-format
 msgid "Password"
-msgstr "كلمة السّرّ"
+msgstr "كلمة السر"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: searchdialog.ui:96
