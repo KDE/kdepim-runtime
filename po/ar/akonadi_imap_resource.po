@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-06-24 00:43+0000\n"
-"PO-Revision-Date: 2025-08-03 22:51+0400\n"
+"PO-Revision-Date: 2025-08-09 21:08+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -132,7 +132,7 @@ msgstr "يحدّد فيما إذا كان الاشتراك من جانب الخ�
 #: imapresource.kcfg:42 setupserverview_desktop.ui:560
 #, kde-format
 msgid "Connect using the system proxy settings"
-msgstr "اتّصل مستخدمًا إعدادات وسيط النظام"
+msgstr "اتّصل مستخدمًا إعدادات وكيل النظام"
 
 #. i18n: ectx: whatsthis, entry (UseProxy), group (network)
 #: imapresource.kcfg:43
@@ -140,7 +140,7 @@ msgstr "اتّصل مستخدمًا إعدادات وسيط النظام"
 msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
-msgstr "إن أُشّر عليه فستُستخدم إعدادات وسيط النظام للاتصال بخادوم البريد."
+msgstr "إن أُشّر عليه فستُستخدم إعدادات وكيل النظام للاتصال بخادوم البريد."
 
 #. i18n: ectx: label, entry (DisconnectedModeEnabled), group (cache)
 #: imapresource.kcfg:49
