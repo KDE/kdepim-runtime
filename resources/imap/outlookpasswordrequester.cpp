@@ -124,7 +124,7 @@ void OutlookPasswordRequester::storeResultToWallet(const MailTransport::TokenRes
     auto writeJob = new WritePasswordJob(walletFolder);
     writeJob->setKey(mResource->settings()->config()->name());
     writeJob->setBinaryData(mapData);
-    connect(writeJob, &WritePasswordJob::finished, this, [this, writeJob, name]() {
+    connect(writeJob, &WritePasswordJob::finished, this, [writeJob, name]() {
         if (writeJob->error() != QKeychain::Error::NoError) {
             qCWarning(IMAPRESOURCE_LOG) << "Failed to store Outlook OAuth2 token to KWallet.";
             return;

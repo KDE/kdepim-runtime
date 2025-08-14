@@ -31,7 +31,6 @@ void NewMailNotifierReplyMessageJob::start()
     QDBusReply<bool> reply = QDBusConnection::sessionBus().interface()->isServiceRegistered(kmailInterface);
     if (!reply.isValid() || !reply.value()) {
         // Program is not already running, so start it
-        QString errmsg;
         if (!QDBusConnection::sessionBus().interface()->startService(QStringLiteral("org.kde.kmail")).isValid()) {
             qCDebug(NEWMAILNOTIFIER_LOG) << " Can not start kmail";
             setError(UserDefinedError);
