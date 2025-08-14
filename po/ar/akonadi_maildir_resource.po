@@ -65,7 +65,7 @@ msgid ""
 "Error opening %1; either this is not a valid maildir folder, or you do not "
 "have sufficient access permissions."
 msgstr ""
-"خطأ أثناء فتح %1، إمّا أنّه ليس مجلّد MailDir صالح، أو أنّك لا تملك تصاريح "
+"خطأ أثناء فتح %1، إمّا أنّه ليس مجلّد MailDir صالح، أو أنّك لا تملك أذونات "
 "النّفاذ الكافية."
 
 #: libmaildir/maildir.cpp:452 libmaildir/maildir.cpp:474

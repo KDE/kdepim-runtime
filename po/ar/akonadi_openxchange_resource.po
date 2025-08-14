@@ -158,7 +158,7 @@ msgstr "لم يُعثر على الكائن. لربّما حذفه مشارك آ
 #: openxchangeresource.cpp:811
 #, kde-format
 msgid "You don't have the permission to perform this action on this object."
-msgstr "لا تصريح لديك لتنفيذ هذا الإجراء على هذا الكائن."
+msgstr "لا إذْن لديك لتنفيذ هذا الإجراء على هذا الكائن."
 
 #: openxchangeresource.cpp:814
 #, kde-format

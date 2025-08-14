@@ -95,7 +95,7 @@ msgid ""
 "access."
 msgstr ""
 "إن كان وضع القراءة فقط ممكّنًا، فلن تُحفظ أيّة تغييرات. سيُمكّن وضع القراءة آليًّا "
-"إن لم يكن لديك تصريح الكتابة في الدّليل."
+"إن لم يكن لديك إذْن الكتابة في الدّليل."
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
 #: icaldirsagentsettingswidget.ui:108

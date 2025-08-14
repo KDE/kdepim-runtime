@@ -64,7 +64,7 @@ msgstr ""
 #: settingsdialog.ui:81
 #, kde-format
 msgid "Access Rights"
-msgstr "تصاريح النّفاذ"
+msgstr "أذونات النّفاذ"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_ReadOnly)
 #: settingsdialog.ui:87
@@ -85,7 +85,7 @@ msgid ""
 "have write access to the directory."
 msgstr ""
 "إن كان وضع القراءة فقط ممكّنًا، فلن تُحفظ أيّة تغييرات إلى الدّليل المحدّد أعلاه. "
-"سيُمكّن وضع القراءة آليًّا إن لم يكن لديك تصريح الكتابة في الدّليل."
+"سيُمكّن وضع القراءة آليًّا إن لم يكن لديك إذْن الكتابة في الدّليل."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: settingsdialog.ui:93 singlefileresourceconfigwidget_desktop.ui:92
@@ -252,7 +252,7 @@ msgid ""
 "access or when displaying a calendar from remote URL."
 msgstr ""
 "إن كان وضع القراءة فقط ممكّنًا، فلن تُحفظ أيّة تغييرات. سيُمكّن وضع القراءة آليًّا "
-"إن لم يكن لديك تصريح الكتابة في الدّليل أو عندما عرض تقويم من رابط غير محلي."
+"إن لم يكن لديك إذْن الكتابة في الدّليل أو عندما عرض تقويم من رابط غير محلي."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
