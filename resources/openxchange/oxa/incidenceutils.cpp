@@ -216,7 +216,7 @@ static void parseRecurrence(const QDomElement &element, const KCalendarCore::Inc
             monthlyValueMonth = text.toInt();
             monthly2ValueMonth = text.toInt();
         } else if (tagName == QLatin1StringView("days")) {
-            int tmp = text.toInt(); // OX encodes days binary: 1=Su, 2=Mo, 4=Tu, ...
+            const int tmp = text.toInt(); // OX encodes days binary: 1=Su, 2=Mo, 4=Tu, ...
             for (int i = 0; i < 7; ++i) {
                 if (tmp & (1 << i)) {
                     days.setBit((i + 6) % 7);
