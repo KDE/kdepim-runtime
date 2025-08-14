@@ -38,7 +38,7 @@ msgstr "%p٪"
 #: ../kmigratorbase.cpp:116
 #, kde-format
 msgid "Creating instance of type %1"
-msgstr "ينشئ سيرورة من النّوع %1"
+msgstr "ينشئ نسخة من النّوع %1"
 
 #: ../migratorbase.cpp:128
 #, kde-format

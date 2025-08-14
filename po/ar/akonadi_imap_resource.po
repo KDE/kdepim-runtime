@@ -453,13 +453,13 @@ msgid ""
 "<p>Your access rights to folder <b>%1</b> have been restricted, it will no "
 "longer be possible to add messages to this folder.</p>"
 msgstr ""
-"<p>قُصّرت تصاريح النّفاذ إلى المجلّد <b>%1</b>، لم يعد ممكنًا إضافة الرّسائل في "
+"<p>قُصّرت أذونات النّفاذ إلى المجلّد <b>%1</b>، لم يعد ممكنًا إضافة الرّسائل في "
 "هذا المجلّد.</p>"
 
 #: retrievecollectionmetadatatask.cpp:182
 #, kde-format
 msgid "Access rights revoked"
-msgstr "سُحبت تصاريح النّفاذ"
+msgstr "سُحبت أذونات النّفاذ"
 
 #: retrievecollectionstask.cpp:155
 #, kde-format
