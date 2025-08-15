@@ -78,7 +78,7 @@ msgstr "أُلبث التّرحيل"
 #: ../migratorbase.cpp:233
 #, kde-format
 msgid "This migration has already been started once but was aborted"
-msgstr "بدأ التّرحيل قبل الآن بالفعل ولكنّه أُجهض"
+msgstr "بدأ التّرحيل قبل الآن فعلًا ولكنّه أُجهض"
 
 #: ../migratorbase.cpp:270
 #, kde-format

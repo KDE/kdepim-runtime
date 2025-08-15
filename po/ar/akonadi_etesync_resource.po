@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-06-27 00:43+0000\n"
-"PO-Revision-Date: 2025-06-28 17:44+0400\n"
+"PO-Revision-Date: 2025-08-14 09:24+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -203,7 +203,7 @@ msgstr "الخادم:"
 msgid ""
 "🛈 The password field is empty because EteSync does not store it for security "
 "reasons."
-msgstr "🛈 حقل كلمة السر فارغ لأن EteSync لا يقوم بتخزينه لأسباب أمنية."
+msgstr "🛈 حقل كلمة السر فارغ لأن EteSync لا يخزنه لأسباب أمنية."
 
 #: setupwizard.cpp:135
 #, kde-format
