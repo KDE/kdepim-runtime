@@ -150,12 +150,12 @@ msgstr "تعذّر حذف المجلّد ’%1‘."
 #: contactsresource.cpp:437
 #, kde-format
 msgid "Unable to move file '%1' to '%2', '%2' already exists."
-msgstr "تعذّ نقل الملفّ ’%1‘ إلى ’%2‘، ف‍’%2‘ موجود بالفعل."
+msgstr "تعذّ نقل الملفّ ’%1‘ إلى ’%2‘، ف‍’%2‘ موجود فعلًا."
 
 #: contactsresource.cpp:451
 #, kde-format
 msgid "Unable to move directory '%1' to '%2', '%2' already exists."
-msgstr "تعذّ نقل الدّليل ’%1‘ إلى ’%2‘، ف‍’%2‘ موجود بالفعل."
+msgstr "تعذّ نقل الدّليل ’%1‘ إلى ’%2‘، ف‍’%2‘ موجود فعلًا."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: contactsresource.kcfg:10

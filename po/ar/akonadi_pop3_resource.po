@@ -481,7 +481,7 @@ msgstr "تعذّر إكمال جلب الرّسائل."
 #: pop3resource.cpp:954
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
-msgstr "التماس البريد يجري بالفعل، لا يمكن بدء التماس آخر."
+msgstr "التماس البريد يجري فعلًا، لا يمكن بدء التماس آخر."
 
 #: pop3resource.cpp:975
 #, kde-format
