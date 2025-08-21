@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-06-27 00:43+0000\n"
-"PO-Revision-Date: 2025-08-14 09:24+0400\n"
+"PO-Revision-Date: 2025-08-20 22:07+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -40,7 +40,7 @@ msgstr "فشل في قراءة كلمة السر: %1"
 #, kde-format
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
-msgstr "تعذر الحصول على حساب etebase من ذاكرة التخزين المؤقت"
+msgstr "تعذر الحصول على حساب etebase من الخبيئة"
 
 #: etesyncresource.cpp:58
 #, kde-format

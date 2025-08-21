@@ -55,10 +55,10 @@ msgid ""
 "Since some servers do not correctly announce their capabilities you still "
 "have the possibility to turn leaving fetched messages on the server on."
 msgstr ""
-"لا يبدو بأنّ الخادوم يدعم أرقام الرّسائل الفريدة، إلّا أنّ هذا الدعم مطلوب لترك "
-"الرّسائل على الخادوم.\n"
+"لا يبدو بأنّ الخادم يدعم أرقام الرّسائل الفريدة، إلّا أنّ هذا الدعم مطلوب لترك "
+"الرّسائل على الخادم.\n"
 "بسبب عدم إخبار بعض الخواديم عن إمكانيّاتها، ما تزال لديك الفرصة بتفعيل ترك "
-"الرّسائل التي جُلبت من الخادوم إن كان يدعم ذلك."
+"الرّسائل التي جُلبت من الخادم إن كان يدعم ذلك."
 
 #: accountwidget.cpp:260
 #, kde-format
@@ -76,20 +76,20 @@ msgstr ""
 "رجاءً اعلم بأنّ هذه الميزة قد تتسبّب لبعض خواديم POP3 التي\n"
 " لا تدعم ”خطوط الأنابيب“ بإرسال بريد معطوب،إلّا أنّه يمكن ضبط \n"
 "هذا إذ أنّ بعض الخواديم تدعم ”خطوط الأنابيب“ولكن لا تُخبر عن \n"
-"إمكانيّاتها. لاختبار ما إذا كان خادوم POP3 يُخبر عن دعم ...، استخدم\n"
-" زرّ ”اكتشف آليًّا“ أسفل الحواريّ، فإن كان الخادوم لا يُخبر عنه، ولكنّك\n"
+"إمكانيّاتها. لاختبار ما إذا كان خادم POP3 يُخبر عن دعم ...، استخدم\n"
+" زرّ ”اكتشف آليًّا“ أسفل الحواريّ، فإن كان الخادم لا يُخبر عنه، ولكنّك\n"
 " تريد أن تزيد السرعة قليلًا، فعليك إجراء بعض الاختبارات بإرسال مجموعة\n"
 " من الرّسائل إليك وتنزيلها بعد ذلك."
 
 #: accountwidget.cpp:293
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
-msgstr "رجاءً حدّد خادومًا ومنفذًا من لسان ”عامّ“ أوّلًا."
+msgstr "رجاءً حدّد خادمًا ومنفذًا من لسان ”عامّ“ أوّلًا."
 
 #: accountwidget.cpp:326
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
-msgstr "تعذّر الاتّصال بالخادوم، رجاءً افحص عنوان الخادوم."
+msgstr "تعذّر الاتّصال بالخادم، رجاءً افحص عنوان الخادم."
 
 #: accountwidget.cpp:370
 #, kde-format
@@ -103,12 +103,12 @@ msgid ""
 "should first test it by sending yourself a larger number of test messages "
 "which you all download in one go from the POP server."
 msgstr ""
-"لا يبدو بأنّ الخادوم يدعم ”خطوط الأنابيب“، ولهذا عُطّل هذا الخيار.\n"
+"لا يبدو بأنّ الخادم يدعم ”خطوط الأنابيب“، ولهذا عُطّل هذا الخيار.\n"
 "بسبب عدم إخبار بعض الخواديم عن إمكانيّاتها كما ينبغي، ما تزال لديك الفرصة "
 "بتفعيل ”خطوط الأنابيب“. جاءً اعلم بأنّ هذه الميزة قد تتسبّب لبعض خواديم POP3 "
 "التي لا تدعم ”خطوط الأنابيب“ بإرسال بريد معطوب. لذلك قبل استخدام الخاصيّة "
 "للبريد الهامّ عليك أوّلًا اختبارها بإرسال مجموعة كبيرة من الرّسائل الاختباريّة "
-"والتي ستُنزّلها لاحقًا مرّة واحدة من خادوم POP."
+"والتي ستُنزّلها لاحقًا مرّة واحدة من خادم POP."
 
 #: accountwidget.cpp:390
 #, kde-format
@@ -119,10 +119,10 @@ msgid ""
 "Since some servers do not correctly announce their capabilities you still "
 "have the possibility to turn leaving fetched messages on the server on."
 msgstr ""
-"لا يبدو بأنّ الخادوم يدعم أرقام الرّسائل الفريدة، إلّا أنّ هذا الدعم مطلوب لترك "
-"الرّسائل على الخادوم، ولهذا عُطّل هذا الخيار\n"
+"لا يبدو بأنّ الخادم يدعم أرقام الرّسائل الفريدة، إلّا أنّ هذا الدعم مطلوب لترك "
+"الرّسائل على الخادم، ولهذا عُطّل هذا الخيار\n"
 "بسبب عدم إخبار بعض الخواديم عن إمكانيّاتها، ما تزال لديك الفرصة بتفعيل ترك "
-"الرّسائل التي جُلبت من الخادوم إن كان يدعم ذلك."
+"الرّسائل التي جُلبت من الخادم إن كان يدعم ذلك."
 
 #: accountwidget.cpp:422
 #, kde-format
@@ -154,12 +154,12 @@ msgstr "تعذّر بدء SASL، أُجهض التماس البريد."
 #: pop3protocol.cpp:189
 #, kde-format
 msgid "The server said: \"%1\""
-msgstr "قال الخادوم: ”%1“"
+msgstr "قال الخادم: ”%1“"
 
 #: pop3protocol.cpp:211
 #, kde-format
 msgid "The server terminated the connection."
-msgstr "أنهى الخادوم الاتّصال."
+msgstr "أنهى الخادم الاتّصال."
 
 #: pop3protocol.cpp:213
 #, kde-format
@@ -167,13 +167,13 @@ msgid ""
 "Invalid response from server:\n"
 "\"%1\""
 msgstr ""
-"ردّ غير صالح من الخادوم:\n"
+"ردّ غير صالح من الخادم:\n"
 "‏”%1“"
 
 #: pop3protocol.cpp:253 pop3protocol.cpp:257
 #, kde-format
 msgid "Could not send to server.\n"
-msgstr "تعذّر الإرسال إلى الخادوم.\n"
+msgstr "تعذّر الإرسال إلى الخادم.\n"
 
 #: pop3protocol.cpp:356
 #, kde-format
@@ -183,7 +183,7 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
-"فشل الولوج عبر APOP. قد لا يدعم الخادوم %1 ‏APOP، مع أنّه يدّعي دعمه له، أو أنّ "
+"فشل الولوج عبر APOP. قد لا يدعم الخادم %1 ‏APOP، مع أنّه يدّعي دعمه له، أو أنّ "
 "تكون كلمة السر خاطئة.\n"
 "\n"
 "%2"
@@ -201,7 +201,7 @@ msgid ""
 "\n"
 "%3"
 msgstr ""
-"فشل الولوج عبر SASL ‏(%1). قد لا يدعم الخادوم %2، أو أنّ كلمة السر خاطئة.\n"
+"فشل الولوج عبر SASL ‏(%1). قد لا يدعم الخادم %2، أو أنّ كلمة السر خاطئة.\n"
 "\n"
 "%3"
 
@@ -211,7 +211,7 @@ msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
 "Choose a different authentication method."
 msgstr ""
-"لا يدعم خادوم POP3 ‏(%1) استيثاق SASL.\n"
+"لا يدعم خادم POP3 ‏(%1) استيثاق SASL.\n"
 "اختر طريقة استيثاق أخرى."
 
 #: pop3protocol.cpp:528 pop3protocol.cpp:617
@@ -247,7 +247,7 @@ msgstr "‏%1:‏ %2"
 #: pop3protocol.cpp:618
 #, kde-format
 msgid "The server terminated the connection immediately."
-msgstr "أنهى الخادوم الاتّصال مباشرة."
+msgstr "أنهى الخادم الاتّصال مباشرة."
 
 #: pop3protocol.cpp:619
 #, kde-format
@@ -255,7 +255,7 @@ msgid ""
 "Server does not respond properly:\n"
 "%1\n"
 msgstr ""
-"لم يردّ الخادوم كما ينبغي:\n"
+"لم يردّ الخادم كما ينبغي:\n"
 "%1\n"
 
 #: pop3protocol.cpp:643
@@ -264,7 +264,7 @@ msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
 "Choose a different authentication method."
 msgstr ""
-"لا يدعم خادوم POP3 ‏(%1) استيثاق APOP\n"
+"لا يدعم خادم POP3 ‏(%1) استيثاق APOP\n"
 "اختر طريقة استيثاق أخرى."
 
 #: pop3protocol.cpp:653
@@ -273,7 +273,7 @@ msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
 "You can disable TLS in the POP account settings dialog."
 msgstr ""
-"يدّعي خادوم POP3 دعم TLS ولكن التّفاوض لم ينجح.\n"
+"يدّعي خادم POP3 دعم TLS ولكن التّفاوض لم ينجح.\n"
 "يمكنك تعطيل TLS من حواريّ إعدادات حساب POP."
 
 #: pop3protocol.cpp:733
@@ -301,7 +301,7 @@ msgstr "فقد الاتصال بخادم بوب3 %1"
 msgid ""
 "Error during communication with the POP3 server while trying to download "
 "mail: %1"
-msgstr "خطأ أثناء التّواصل مع خادوم POP3 أثناء محاولة تنزيل البريد: %1"
+msgstr "خطأ أثناء التّواصل مع خادم POP3 أثناء محاولة تنزيل البريد: %1"
 
 #: pop3resource.cpp:95
 #, kde-format
@@ -404,17 +404,17 @@ msgstr "خطأ أثناء تنفيذ الأمر المسبق."
 #: pop3resource.cpp:457
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
-msgstr "تعذّر الاتصال بخادوم \"%1\"."
+msgstr "تعذّر الاتصال بخادم \"%1\"."
 
 #: pop3resource.cpp:466
 #, kde-format
 msgid "Error while getting the list of messages on the server."
-msgstr "خطا أثناء جلب قائمة الرّسائل من الخادوم."
+msgstr "خطا أثناء جلب قائمة الرّسائل من الخادم."
 
 #: pop3resource.cpp:480
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
-msgstr "خطأ أثناء جلب قائمة معرّفات البريد الفريدة من الخادوم."
+msgstr "خطأ أثناء جلب قائمة معرّفات البريد الفريدة من الخادم."
 
 #: pop3resource.cpp:493
 #, kde-format
@@ -425,14 +425,14 @@ msgid ""
 "the feature to leave the mails on the server will therefore not work "
 "properly."
 msgstr ""
-"لا يدعم خادوم POP3 (الحساب: %1) أمر UIDL: هذا الأمر مطلوب لتحديد أيّ الرسائل "
-"في الخادوم رآها «بريدك» قبل الآن (وذلك بطريقة موثوقة)،\n"
-"ولهذا لن تعمل ميزة ترك الرّسائل في الخادوم كما ينبغي."
+"لا يدعم خادم POP3 (الحساب: %1) أمر UIDL: هذا الأمر مطلوب لتحديد أيّ الرسائل "
+"في الخادم رآها «بريدك» قبل الآن (وذلك بطريقة موثوقة)،\n"
+"ولهذا لن تعمل ميزة ترك الرّسائل في الخادم كما ينبغي."
 
 #: pop3resource.cpp:508
 #, kde-format
 msgid "Error while fetching mails from the server."
-msgstr "خطأ أثناء جلب البريد من الخادوم."
+msgstr "خطأ أثناء جلب البريد من الخادم."
 
 #: pop3resource.cpp:568
 #, kde-format
@@ -440,7 +440,7 @@ msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
 msgstr ""
 "يجلب الرّسالة %1 من أصل %2 ‏(%3 من أصل %4 ك.بايت) لِ‍ %5 (بقي %6 ك.بايت في "
-"الخادوم)."
+"الخادم)."
 
 #: pop3resource.cpp:577
 #, kde-format
@@ -455,7 +455,7 @@ msgstr "تعذّر تخزين البريد المنزّل."
 #: pop3resource.cpp:748
 #, kde-format
 msgid "Failed to delete the messages from the server."
-msgstr "فشل حذف الرّسائل من الخادوم."
+msgstr "فشل حذف الرّسائل من الخادم."
 
 #: pop3resource.cpp:804
 #, kde-format
@@ -550,13 +550,13 @@ msgstr "اسم الحساب: يحدّد هذا اسم الاسم المعروض 
 #: popsettings.ui:97
 #, kde-format
 msgid "Incoming &mail server:"
-msgstr "&خادوم البريد الوارد:"
+msgstr "&خادم البريد الوارد:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, hostEdit)
 #: popsettings.ui:107
 #, kde-format
 msgid "Address of the mail POP3 server"
-msgstr "عنوان خادوم بريد POP3"
+msgstr "عنوان خادم بريد POP3"
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, hostEdit)
 #: popsettings.ui:110
@@ -565,7 +565,7 @@ msgid ""
 "The address of the POP3 server, e.g. pop3.yourprovider.org. You should get "
 "this address from your mail provider."
 msgstr ""
-"عنوان خادوم بريد POP3، مثلًا pop3.yourprovider.org. عليك أخذ هذا العنوان من "
+"عنوان خادم بريد POP3، مثلًا pop3.yourprovider.org. عليك أخذ هذا العنوان من "
 "مزوّد البريد."
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
@@ -578,7 +578,7 @@ msgstr "ا&سم المستخدم:"
 #: popsettings.ui:127
 #, kde-format
 msgid "The username that identifies you against the mail server"
-msgstr "اسم المستخدم الذي يحدّدك على خادوم البريد"
+msgstr "اسم المستخدم الذي يحدّدك على خادم البريد"
 
 #. i18n: ectx: property (text), widget (QLabel, passwordLabel)
 #: popsettings.ui:137
@@ -590,7 +590,7 @@ msgstr "&كلمة السر:"
 #: popsettings.ui:147
 #, kde-format
 msgid "Password for access to the mail server"
-msgstr "كلمة سرّ النّفاذ إلى خادوم البريد"
+msgstr "كلمة سرّ النّفاذ إلى خادم البريد"
 
 #. i18n: ectx: property (whatsThis), widget (KPasswordLineEdit, passwordEdit)
 #: popsettings.ui:150
@@ -639,7 +639,7 @@ msgstr "إعدادات POP"
 #: popsettings.ui:239
 #, kde-format
 msgid "If checked the message is not deleted from the mail server"
-msgstr "إن أُشّر عليه فلن تُحذف الرّسالة من خادوم البريد"
+msgstr "إن أُشّر عليه فلن تُحذف الرّسالة من خادم البريد"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, leaveOnServerCheck)
 #: popsettings.ui:242
@@ -649,31 +649,31 @@ msgid ""
 "the original mails on the server."
 msgstr ""
 "أشّر على هذا الخيار إن أردت جلب نسخ من الرّسائل فقط وترك البريد الأصليّ في "
-"الخادوم."
+"الخادم."
 
 #. i18n: ectx: property (text), widget (QCheckBox, leaveOnServerCheck)
 #: popsettings.ui:245
 #, kde-format
 msgid "Lea&ve fetched messages on the server"
-msgstr "ا&ترك الرّسائل التي جُلبت في الخادوم"
+msgstr "ا&ترك الرّسائل التي جُلبت في الخادم"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, leaveOnServerDaysCheck)
 #: popsettings.ui:258
 #, kde-format
 msgid "The original message is deleted from the server after x days"
-msgstr "تُحذف الرّسالة الأصليّة من الخادوم بعد كذا يوم"
+msgstr "تُحذف الرّسالة الأصليّة من الخادم بعد كذا يوم"
 
 #. i18n: ectx: property (text), widget (QCheckBox, leaveOnServerDaysCheck)
 #: popsettings.ui:261
 #, kde-format
 msgid "Days to leave messages on the server:"
-msgstr "أيّام ترك الرّسائل في الخادوم:"
+msgstr "أيّام ترك الرّسائل في الخادم:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, leaveOnServerCountCheck)
 #: popsettings.ui:284
 #, kde-format
 msgid "Only the x most recent messages are kept on the server"
-msgstr "فقط كذا من الرّسائل الأكثر حداثة ستبقى على الخادوم"
+msgstr "فقط كذا من الرّسائل الأكثر حداثة ستبقى على الخادم"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, leaveOnServerCountCheck)
 #: popsettings.ui:287
@@ -682,7 +682,7 @@ msgid ""
 "Check this option if you want to only keep the x most recent messages on the "
 "server and delete all older."
 msgstr ""
-"أشّر على هذا الخيار إن أردت إبقاء كذا من أكثر الرّسائل حداثة على الخادوم فقط "
+"أشّر على هذا الخيار إن أردت إبقاء كذا من أكثر الرّسائل حداثة على الخادم فقط "
 "وحذف البقيّة."
 
 #. i18n: ectx: property (text), widget (QCheckBox, leaveOnServerCountCheck)
@@ -845,7 +845,7 @@ msgstr "الاستيثاق:"
 msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
-msgstr "إن أُشّر عليه فستُستخدم إعدادات وكيل النظام للاتصال بخادوم البريد."
+msgstr "إن أُشّر عليه فستُستخدم إعدادات وكيل النظام للاتصال بخادم البريد."
 
 #. i18n: ectx: property (text), widget (QCheckBox, proxyCheck)
 #: popsettings.ui:505

@@ -27,7 +27,7 @@ msgstr "تعذّرت إضافة مجلّد IMAP ‏’%1‘ لمجلّد أبّ 
 #: addcollectiontask.cpp:67
 #, kde-format
 msgid "Failed to create the folder '%1' on the IMAP server. "
-msgstr "فشل إنشاء المجلّد ’%1‘ على خادوم IMAP. "
+msgstr "فشل إنشاء المجلّد ’%1‘ على خادم IMAP. "
 
 #: addcollectiontask.cpp:87 movecollectiontask.cpp:119
 #, kde-format
@@ -35,31 +35,31 @@ msgid ""
 "Failed to subscribe to the folder '%1' on the IMAP server. It will disappear "
 "on next sync. Use the subscription dialog to overcome that"
 msgstr ""
-"فشل الاشتراك بالمجلّد ’%1‘ على خادوم IMAP. سيختفي مع المزامنة التّالية. استخدم "
+"فشل الاشتراك بالمجلّد ’%1‘ على خادم IMAP. سيختفي مع المزامنة التّالية. استخدم "
 "حواريّ الاشتراك للتّعامل مع هذا"
 
 #: addcollectiontask.cpp:130 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
-msgstr "فشلت كتابة بعض الملاحظات على ’%1‘ في خادوم IMAP. ‏%2"
+msgstr "فشلت كتابة بعض الملاحظات على ’%1‘ في خادم IMAP. ‏%2"
 
 #: additemtask.cpp:115 changeitemtask.cpp:181 changeitemtask.cpp:205
 #: moveitemstask.cpp:255
 #, kde-format
 msgid "Could not determine the UID for the newly created message on the server"
-msgstr "تعذّر تحديد المعرّف الفريد للرّسالة الجديدة المنشأة على الخادوم"
+msgstr "تعذّر تحديد المعرّف الفريد للرّسالة الجديدة المنشأة على الخادم"
 
 #: changecollectiontask.cpp:39
 #, kde-format
 msgid "Cannot modify IMAP folder '%1', it does not exist on the server."
-msgstr "لا يمكن تعديل مجلّد IMAP ‏’%1‘، فهو لم يعد موجودًا في الخادوم."
+msgstr "لا يمكن تعديل مجلّد IMAP ‏’%1‘، فهو لم يعد موجودًا في الخادم."
 
 #: changecollectiontask.cpp:51
 #, kde-format
 msgid ""
 "ACLs for '%1' need to be retrieved from the IMAP server first. Skipping ACL "
 "change"
-msgstr "يجب أوّلًا جلب قوائم ACL لِ‍ ’%1‘ من خادوم IMAP. سأتخطّى تغيير قائمة ACL."
+msgstr "يجب أوّلًا جلب قوائم ACL لِ‍ ’%1‘ من خادم IMAP. سأتخطّى تغيير قائمة ACL."
 
 #: changecollectiontask.cpp:237
 #, kde-format
@@ -72,13 +72,13 @@ msgid ""
 "Failed to subscribe to the renamed folder '%1' on the IMAP server. It will "
 "disappear on next sync. Use the subscription dialog to overcome that"
 msgstr ""
-"فشل الاشتراك بالمجلّد ’%1‘ الذي غُيّر اسمه في خادوم IMAP. سيختفي مع المزامنة "
+"فشل الاشتراك بالمجلّد ’%1‘ الذي غُيّر اسمه في خادم IMAP. سيختفي مع المزامنة "
 "الآتية. استخدم حواريّ الاشتراك للتّعامل مع هذا"
 
 #: changecollectiontask.cpp:267
 #, kde-format
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
-msgstr "فشلت كتابة بعض قوائم ACL على ’%1‘ في خادوم IMAP. ‏%2"
+msgstr "فشلت كتابة بعض قوائم ACL على ’%1‘ في خادم IMAP. ‏%2"
 
 #: imapresource.cpp:49
 #, kde-format
@@ -89,7 +89,7 @@ msgstr "حساب IMAP"
 #: imapresource.kcfg:14
 #, kde-format
 msgid "IMAP server"
-msgstr "خادوم IMAP"
+msgstr "خادم IMAP"
 
 #. i18n: ectx: label, entry (ImapPort), group (network)
 #: imapresource.kcfg:17
@@ -125,7 +125,7 @@ msgstr "يحدّد نوع الاستيثاق لاستخدامه"
 #: imapresource.kcfg:35
 #, kde-format
 msgid "Defines if the server side subscription is enabled"
-msgstr "يحدّد فيما إذا كان الاشتراك من جانب الخادوم ممكّنًا"
+msgstr "يحدّد فيما إذا كان الاشتراك من جانب الخادم ممكّنًا"
 
 #. i18n: ectx: property (text), widget (QCheckBox, useProxyCheck)
 #. i18n: ectx: label, entry (UseProxy), group (network)
@@ -140,7 +140,7 @@ msgstr "اتّصل مستخدمًا إعدادات وكيل النظام"
 msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
-msgstr "إن أُشّر عليه فستُستخدم إعدادات وكيل النظام للاتصال بخادوم البريد."
+msgstr "إن أُشّر عليه فستُستخدم إعدادات وكيل النظام للاتصال بخادم البريد."
 
 #. i18n: ectx: label, entry (DisconnectedModeEnabled), group (cache)
 #: imapresource.kcfg:49
@@ -209,7 +209,7 @@ msgstr "هويّة الحساب"
 #: imapresource.kcfg:86
 #, kde-format
 msgid "List of mailbox names reported by the server the last time"
-msgstr "قائمة بأسماء صناديق البريد التي أخبر عنها الخادوم آخر مرّة"
+msgstr "قائمة بأسماء صناديق البريد التي أخبر عنها الخادم آخر مرّة"
 
 #. i18n: ectx: label, entry (IdleRidPath), group (idle)
 #: imapresource.kcfg:91
@@ -221,7 +221,7 @@ msgstr "مسار RID لمراقبة تغييرات صندوق البريد"
 #: imapresource.kcfg:96
 #, kde-format
 msgid "Define if server supports sieve"
-msgstr "يحدّد فيما إذا كان يدعم الخادوم الغربال"
+msgstr "يحدّد فيما إذا كان يدعم الخادم الغربال"
 
 #. i18n: ectx: label, entry (SieveReuseConfig), group (siever)
 #: imapresource.kcfg:100
@@ -245,7 +245,7 @@ msgstr "يحدّد المسار البديل"
 #: imapresource.kcfg:111
 #, kde-format
 msgid "Defines the authentication type to use for alternate server"
-msgstr "يحدّد نوع الاستيثاق لاستخدامه للخادوم البديل"
+msgstr "يحدّد نوع الاستيثاق لاستخدامه للخادم البديل"
 
 #. i18n: ectx: label, entry (SieveVacationFilename), group (siever)
 #: imapresource.kcfg:115
@@ -257,13 +257,13 @@ msgstr "يحدّد اسم ملفّ «عُطَل الغربال» المبدئي�
 #: imapresource.kcfg:119
 #, kde-format
 msgid "Define username used from custom server sieve url"
-msgstr "يحدّد اسم المستخدم المستخدم من مسار خادوم الغربال المخصّص"
+msgstr "يحدّد اسم المستخدم المستخدم من مسار خادم الغربال المخصّص"
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
 #: imapresource.kcfg:123
 #, kde-format
 msgid "Defines the type of identification used by custom sieve server"
-msgstr "يحدّد نوع التّعريف الذي يستخدمه خادوم الغربال المخصّص"
+msgstr "يحدّد نوع التّعريف الذي يستخدمه خادم الغربال المخصّص"
 
 #. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
 #: imapresource.kcfg:129
@@ -280,7 +280,7 @@ msgstr "أنشطة الوكيل"
 #: imapresourcebase.cpp:220
 #, kde-format
 msgid "No server configured yet."
-msgstr "لم يُضبط خادوم بعد."
+msgstr "لم يُضبط خادم بعد."
 
 #: imapresourcebase.cpp:240
 #, kde-format
@@ -290,7 +290,7 @@ msgstr "أُجري الاتّصال."
 #: imapresourcebase.cpp:257
 #, kde-format
 msgid "Server is not available."
-msgstr "الخادوم غير متوفّر"
+msgstr "الخادم غير متوفّر"
 
 #: imapresourcebase.cpp:308
 #, kde-format
@@ -367,34 +367,34 @@ msgstr "يبحث…"
 #: movecollectiontask.cpp:29
 #, kde-format
 msgid "Cannot move IMAP folder '%1', it does not exist on the server."
-msgstr "لا يمكن نقل مجلّد IMAP ‏’%1‘، فهو لم يعد موجودًا في الخادوم."
+msgstr "لا يمكن نقل مجلّد IMAP ‏’%1‘، فهو لم يعد موجودًا في الخادم."
 
 #: movecollectiontask.cpp:35
 #, kde-format
 msgid ""
 "Cannot move IMAP folder '%1' out of '%2', '%2' does not exist on the server."
-msgstr "لا يمكن نقل مجلّد IMAP ‏’%1‘ من ’%2‘، فَ‍ ’%2‘ لم يعد موجودًا في الخادوم."
+msgstr "لا يمكن نقل مجلّد IMAP ‏’%1‘ من ’%2‘، فَ‍ ’%2‘ لم يعد موجودًا في الخادم."
 
 #: movecollectiontask.cpp:41
 #, kde-format
 msgid ""
 "Cannot move IMAP folder '%1' to '%2', '%2' does not exist on the server."
-msgstr "لا يمكن نقل مجلّد IMAP ‏’%1‘ إلى ’%2‘، فَ‍ ’%2‘ لم يعد موجودًا في الخادوم."
+msgstr "لا يمكن نقل مجلّد IMAP ‏’%1‘ إلى ’%2‘، فَ‍ ’%2‘ لم يعد موجودًا في الخادم."
 
 #: moveitemstask.cpp:41
 #, kde-format
 msgid "Cannot move message, it does not exist on the server."
-msgstr "لا يمكن نقل الرّسالة، فهي لم تعد موجودة في الخادوم."
+msgstr "لا يمكن نقل الرّسالة، فهي لم تعد موجودة في الخادم."
 
 #: moveitemstask.cpp:48
 #, kde-format
 msgid "Cannot move message out of '%1', '%1' does not exist on the server."
-msgstr "لا يمكن نقل الرّسالة من ’%1‘، فَ‍ ’%1‘ لم يعد موجودًا في الخادوم."
+msgstr "لا يمكن نقل الرّسالة من ’%1‘، فَ‍ ’%1‘ لم يعد موجودًا في الخادم."
 
 #: moveitemstask.cpp:55
 #, kde-format
 msgid "Cannot move message to '%1', '%1' does not exist on the server."
-msgstr "لا يمكن نقل الرّسالة إلى ’%1‘، فَ‍ ’%1‘ لم يعد موجودًا في الخادوم."
+msgstr "لا يمكن نقل الرّسالة إلى ’%1‘، فَ‍ ’%1‘ لم يعد موجودًا في الخادم."
 
 #: moveitemstask.cpp:113
 #, kde-format
@@ -407,7 +407,7 @@ msgid ""
 "Failed to mark the message from '%1' for deletion on the IMAP server. It "
 "will reappear on next sync."
 msgstr ""
-"فشل تعليم الرّسالة من ’%1‘ للحذف على خادوم IMAP. ستظهر ثانيةً عند المزامنة "
+"فشل تعليم الرّسالة من ’%1‘ للحذف على خادم IMAP. ستظهر ثانيةً عند المزامنة "
 "التّالية."
 
 #: outlookpasswordrequester.cpp:67 outlookpasswordrequester.cpp:76
@@ -435,7 +435,7 @@ msgstr "يعيد جلب العناصر."
 #: resourcetask.cpp:69
 #, kde-format
 msgid "Unable to connect to the IMAP server."
-msgstr "تعذّر الاتصال بخادوم IMAP."
+msgstr "تعذّر الاتصال بخادم IMAP."
 
 #: resourcetask.cpp:113 resourcetask.cpp:125
 #, kde-format
@@ -490,7 +490,7 @@ msgstr "لم تُجلب الرّسالة، فشلت قراءة الرّسالة.
 #: retrieveitemtask.cpp:115
 #, kde-format
 msgid "No message retrieved, server reply was empty."
-msgstr "لم تُجلب الرّسالة، كان ردّ الخادوم فارغًا."
+msgstr "لم تُجلب الرّسالة، كان ردّ الخادم فارغًا."
 
 #: searchtask.cpp:193
 #, kde-format
@@ -502,7 +502,7 @@ msgstr "بحث غير صالح"
 msgctxt ""
 "@title:window Dialog title for dialog showing information about a server"
 msgid "Server Info"
-msgstr "معلومات الخادوم"
+msgstr "معلومات الخادم"
 
 #: serverinfodialog.cpp:53
 #, kde-format
@@ -521,7 +521,7 @@ msgid ""
 "Could not connect to the IMAP-server %1.\n"
 "%2"
 msgstr ""
-"تعذّر الاتّصال بخادوم IMAP ‏%1.\n"
+"تعذّر الاتّصال بخادم IMAP ‏%1.\n"
 "%2"
 
 #: sessionpool.cpp:254
@@ -530,19 +530,19 @@ msgid ""
 "Could not connect to the IMAP server.\n"
 "%1"
 msgstr ""
-"تعذّر الاتّصال بخادوم IMAP.\n"
+"تعذّر الاتّصال بخادم IMAP.\n"
 "%1"
 
 #: sessionpool.cpp:279 sessionpool.cpp:320 sessionpool.cpp:389
 #: sessionpool.cpp:425 sessionpool.cpp:496
 #, kde-format
 msgid "Disconnected from server during login."
-msgstr "قُطع الاتّصال بالخادوم أثناء الولوج."
+msgstr "قُطع الاتّصال بالخادم أثناء الولوج."
 
 #: sessionpool.cpp:303
 #, kde-format
 msgid "Could not create another extra connection to the IMAP-server %1."
-msgstr "تعذّر إنشاء اتّصال إضافيّ بخادوم IMAP ‏%1."
+msgstr "تعذّر إنشاء اتّصال إضافيّ بخادم IMAP ‏%1."
 
 #: sessionpool.cpp:333
 #, kde-format
@@ -567,7 +567,7 @@ msgid ""
 "Could not connect to the IMAP-server.\n"
 "%1"
 msgstr ""
-"تعذّر الاتّصال بخادوم IMAP.\n"
+"تعذّر الاتّصال بخادم IMAP.\n"
 "%1"
 
 #: sessionpool.cpp:433
@@ -576,7 +576,7 @@ msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
 "%2"
 msgstr ""
-"تعذّر اختبار الإمكانيّات التي يدعمها خادوم IMAP ‏%1.\n"
+"تعذّر اختبار الإمكانيّات التي يدعمها خادم IMAP ‏%1.\n"
 "%2"
 
 #: sessionpool.cpp:441
@@ -585,7 +585,7 @@ msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
 "%1"
 msgstr ""
-"تعذّر اختبار الإمكانيّات التي يدعمها خادوم IMAP.\n"
+"تعذّر اختبار الإمكانيّات التي يدعمها خادم IMAP.\n"
 "%1"
 
 #: sessionpool.cpp:461
@@ -594,8 +594,8 @@ msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
 "Please ask your sysadmin to upgrade the server."
 msgstr ""
-"لا يمكن استخدام خادوم IMAP ‏%1، بعض الإمكانيّات الضّروريّة ناقصة: %2. رجاءً اسأل "
-"مدير النّظام لتحديث الخادوم."
+"لا يمكن استخدام خادم IMAP ‏%1، بعض الإمكانيّات الضّروريّة ناقصة: %2. رجاءً اسأل "
+"مدير النّظام لتحديث الخادم."
 
 #: sessionpool.cpp:533
 #, kde-format
@@ -760,14 +760,14 @@ msgid ""
 "as before we will have to re-download all your emails from this account "
 "again. Are you sure you want to proceed?"
 msgstr ""
-"لقد غيّرت عنوان الخادوم. حتّى لو كان هذا نفس الخادوم السّابق سيكون عليك إعادة "
+"لقد غيّرت عنوان الخادم. حتّى لو كان هذا نفس الخادم السّابق سيكون عليك إعادة "
 "تنزيل كلّ رسائل البريد لهذا الحساب ثانيةً. أمتأكّد من المتابعة؟"
 
 #: setupserver.cpp:255
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
-msgstr "تغيّر عنوان الخادوم"
+msgstr "تغيّر عنوان الخادم"
 
 #: setupserver.cpp:262
 #, kde-format
@@ -776,7 +776,7 @@ msgid ""
 "account as before we will have to re-download all your emails from this "
 "account again. Are you sure you want to proceed?"
 msgstr ""
-"لقد غيّرت اسم المستخدم. حتّى لو كان هذا اسم مستخدم لنفس الخادوم السّابق سيكون "
+"لقد غيّرت اسم المستخدم. حتّى لو كان هذا اسم مستخدم لنفس الخادم السّابق سيكون "
 "عليك إعادة تنزيل كلّ رسائل البريد لهذا الحساب ثانيةً. أمتأكّد من المتابعة؟"
 
 #: setupserver.cpp:265
@@ -788,7 +788,7 @@ msgstr "تغيّر اسم المستخدم"
 #: setupserver.cpp:551
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
-msgstr "تعذّر الاتّصال بالخادوم، رجاءً افحص عنوان الخادوم."
+msgstr "تعذّر الاتّصال بالخادم، رجاءً افحص عنوان الخادم."
 
 #: setupserver.cpp:563
 #, kde-format
@@ -805,18 +805,18 @@ msgstr "<b>‏SSL/TLS مدعوم ومستحسن.</b>"
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
-msgstr "<b>لا أمن مدعوم. ليس مستحسنًا الاتّصال بهذا الخادوم.</b>"
+msgstr "<b>لا أمن مدعوم. ليس مستحسنًا الاتّصال بهذا الخادم.</b>"
 
 #: setupserver.cpp:573
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
-msgstr "<b>الاتّصال بهذا الخادوم ليس ممكنًا.</b>"
+msgstr "<b>الاتّصال بهذا الخادم ليس ممكنًا.</b>"
 
 #: setupserver.cpp:664
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
-msgstr "الاشتراك من جانب الخادوم"
+msgstr "الاشتراك من جانب الخادم"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: setupserverview_desktop.ui:33
@@ -844,14 +844,14 @@ msgid ""
 "a specific encryption scheme, you can add \":port\" to indicate that. For "
 "example: \"imap.foo.com:144\"."
 msgstr ""
-"يحدّد خادوم IMAP. إن أردت الاتّصال بمنفذ غير قياسيّ لمخطّط تعمية محدّد، يمكنك "
+"يحدّد خادم IMAP. إن أردت الاتّصال بمنفذ غير قياسيّ لمخطّط تعمية محدّد، يمكنك "
 "إضافة ”‎:port“ للإشارة إليه، هكذا مثلًا: ”imap.foo.com:144“."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: setupserverview_desktop.ui:60
 #, kde-format
 msgid "I&MAP Server:"
-msgstr "&خادوم IMAP:"
+msgstr "&خادم IMAP:"
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label_2)
 #: setupserverview_desktop.ui:74
@@ -912,7 +912,7 @@ msgstr "التّرشيح"
 #: setupserverview_desktop.ui:166
 #, kde-format
 msgid "Server supports Sieve"
-msgstr "يدعم الخادوم الغربال"
+msgstr "يدعم الخادم الغربال"
 
 #. i18n: ectx: property (text), widget (QCheckBox, sameConfigCheck)
 #: setupserverview_desktop.ui:173
@@ -928,9 +928,9 @@ msgid ""
 "Old server implementations still use port 2000, while newer standard conform "
 "server can only be accessed via port 4190."
 msgstr ""
-"تغيّر منفذ الخادوم عندما تحوّل ManageSieve إلى معيار RFC كامل. ما زالت "
-"الخواديم القديمة تستخدم المنفذ 2000، بينما لا يمكن النّفاذ إلى الخواديم التي "
-"تتّبع المعيار الجديد إلّا عبر المنفذ 4190."
+"تغيّر منفذ الخادم عندما تحوّل ManageSieve إلى معيار RFC كامل. ما زالت الخواديم "
+"القديمة تستخدم المنفذ 2000، بينما لا يمكن النّفاذ إلى الخواديم التي تتّبع "
+"المعيار الجديد إلّا عبر المنفذ 4190."
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: setupserverview_desktop.ui:192
@@ -942,7 +942,7 @@ msgstr "منفذ Managesieve:"
 #: setupserverview_desktop.ui:210
 #, kde-format
 msgid "Alternate Server:"
-msgstr "الخادوم البديل:"
+msgstr "الخادم البديل:"
 
 #. i18n: ectx: property (title), widget (QGroupBox, authentication)
 #: setupserverview_desktop.ui:223
@@ -1045,13 +1045,13 @@ msgstr "إعدادات IMAP"
 #: setupserverview_desktop.ui:371
 #, kde-format
 msgid "Enable server-side subscriptions"
-msgstr "مكّن الاشتراكات من جانب الخادوم"
+msgstr "مكّن الاشتراكات من جانب الخادم"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
 #, kde-format
 msgid "Serverside Subscription…"
-msgstr "الاشتراك من جانب الخادوم…"
+msgstr "الاشتراك من جانب الخادم…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -1081,7 +1081,7 @@ msgstr "اكتشف آليًّا"
 #: setupserverview_desktop.ui:423
 #, kde-format
 msgid "Server Info"
-msgstr "معلومات الخادوم"
+msgstr "معلومات الخادم"
 
 #. i18n: ectx: property (text), widget (QLabel, label_9)
 #: setupserverview_desktop.ui:432
@@ -1160,7 +1160,7 @@ msgstr "أ&عِد تحميل القائمة"
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
-msgstr "مكّن الاشتراكات من جانب الخادوم"
+msgstr "مكّن الاشتراكات من جانب الخادم"
 
 #: subscriptiondialog.cpp:71
 #, kde-format

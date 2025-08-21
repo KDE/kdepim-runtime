@@ -60,7 +60,7 @@ msgstr "نجح الاتّصال"
 #: configwidget.ui:29
 #, kde-format
 msgid "Server URL:"
-msgstr "مسار الخادوم:"
+msgstr "مسار الخادم:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, kcfg_BaseUrl)
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_BaseUrl)
@@ -72,7 +72,7 @@ msgstr "مسار الخادوم:"
 msgid ""
 "The URL of the Open-Xchange server, should be something like https://"
 "myserver.org/"
-msgstr "مسار خادوم «أوبن إكس-چينج»، يجب أن يشبه https://myserver.org/‎"
+msgstr "مسار خادم «أوبن إكس-چينج»، يجب أن يشبه https://myserver.org/‎"
 
 #. i18n: ectx: property (text), widget (QLabel, label_Username)
 #: configwidget.ui:52
@@ -88,7 +88,7 @@ msgstr "اسم المستخدم:"
 #: openxchangeresource.kcfg:17
 #, kde-format
 msgid "The username that is used to log into the Open-Xchange server"
-msgstr "اسم المستخدم المستخدم للولوج إلى خادوم «أوبن إكس-چينج»"
+msgstr "اسم المستخدم المستخدم للولوج إلى خادم «أوبن إكس-چينج»"
 
 #. i18n: ectx: property (text), widget (QLabel, label_Password)
 #: configwidget.ui:72
@@ -104,7 +104,7 @@ msgstr "كلمة السر:"
 #: openxchangeresource.kcfg:22
 #, kde-format
 msgid "The password that is used to log into the Open-Xchange server"
-msgstr "كلمة السر المستخدمة للولوج إلى خادوم «أوبن إكس-چينج»"
+msgstr "كلمة السر المستخدمة للولوج إلى خادم «أوبن إكس-چينج»"
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
@@ -140,7 +140,7 @@ msgstr "مجلّد النّظام"
 #: openxchangeresource.cpp:617
 #, kde-format
 msgid "Unable to connect to server"
-msgstr "تعذّر الاتّصال بالخادوم"
+msgstr "تعذّر الاتّصال بالخادم"
 
 #: openxchangeresource.cpp:805
 #, kde-format
@@ -186,13 +186,13 @@ msgstr ""
 #: openxchangeresource.cpp:823
 #, kde-format
 msgid "Internal server error. Please contact your administrator."
-msgstr "خطأ داخليّ في الخادوم. رجاءً راسل المدير."
+msgstr "خطأ داخليّ في الخادم. رجاءً راسل المدير."
 
 #. i18n: ectx: label, entry (BaseUrl), group (General)
 #: openxchangeresource.kcfg:10
 #, kde-format
 msgid "Server URL"
-msgstr "مسار الخادوم"
+msgstr "مسار الخادم"
 
 #. i18n: ectx: label, entry (Username), group (General)
 #: openxchangeresource.kcfg:15
@@ -221,7 +221,7 @@ msgid ""
 "Use incremental updates instead of reloading all data from the server each "
 "time"
 msgstr ""
-"استخدم تحديثات تزايديّة بدلًا من إعادة تحميل كلّ البيانات من الخادوم في كلّ مرّة"
+"استخدم تحديثات تزايديّة بدلًا من إعادة تحميل كلّ البيانات من الخادم في كلّ مرّة"
 
 #~ msgid "Connection"
 #~ msgstr "الاتّصال"
