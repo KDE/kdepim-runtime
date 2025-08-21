@@ -3,7 +3,7 @@
 [Global]
 IconName=network-server
 Name=IMAP E-Mail Server
-Name[ar]=خادوم البريد الإلكترونيّ IMAP
+Name[ar]=خادم البريد الإلكترونيّ IMAP
 Name[bg]=Пощенски сървър IMAP
 Name[bs]=IMAP server za e-poštu
 Name[ca]=Servidor de correu IMAP
@@ -57,7 +57,7 @@ Name[x-test]=xxIMAP E-Mail Serverxx
 Name[zh_CN]=IMAP 邮件服务器
 Name[zh_TW]=IMAP 信件伺服器
 Comment=Connects to an IMAP e-mail server
-Comment[ar]=يتصّل مع خادوم IMAP للبريد الإلكترونيّ
+Comment[ar]=يتصّل مع خادم IMAP للبريد الإلكترونيّ
 Comment[bg]=Свързване с пощенски сървър IMAP
 Comment[bs]=Povezivanje na IMAP e-mail server
 Comment[ca]=Connecta a un servidor de correu IMAP
@@ -112,7 +112,7 @@ Comment[zh_TW]=連線到 IMAP 信件伺服器
 
 [Event/imapAuthFailed]
 Name=IMAP E-Mail authentication failure
-Name[ar]=فشل مصادقة البريد الإلكتروني IMAP
+Name[ar]=فشل استيثاق البريد الإلكتروني IMAP
 Name[bg]=Неуспешно удостоверяване на IMAP Е-поща
 Name[ca]=Ha fallat l'autenticació del correu electrònic IMAP
 Name[ca@valencia]=No s'ha pogut fer l'autenticació del correu electrònic IMAP
@@ -145,7 +145,7 @@ Name[x-test]=xxIMAP E-Mail authentication failurexx
 Name[zh_CN]=IMAP 电子邮件身份验证失败
 Name[zh_TW]=IMAP 電子郵件認證失敗
 Comment=IMAP e-mail couldn't authenticate with the server
-Comment[ar]=لم يتمكن بريد IMAP الإلكتروني من المصادقة مع الخادم
+Comment[ar]=لم يتمكن بريد IMAP الإلكتروني من الاستيثاق مع الخادم
 Comment[bg]=IMAP Е-поща не може да се удостовери със сървъра
 Comment[ca]=El correu electrònic IMAP no s'ha pogut autenticar amb el servidor
 Comment[ca@valencia]=El correu electrònic IMAP no s'ha pogut autenticar amb el servidor

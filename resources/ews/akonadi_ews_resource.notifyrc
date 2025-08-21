@@ -1,7 +1,7 @@
 [Global]
 IconName=akonadi
 Comment=Microsoft Exchange Server (EWS)
-Comment[ar]=خادوم «مايكروسوفت إكسچينج» (EWS)
+Comment[ar]=خادم «مايكروسوفت إكسچينج» (EWS)
 Comment[bg]=Microsoft Exchange Server (EWS)
 Comment[ca]=Servidor Microsoft Exchange (EWS)
 Comment[ca@valencia]=Servidor Microsoft Exchange (EWS)
@@ -42,7 +42,7 @@ Comment[zh_TW]=Microsoft Exchange 伺服器 (EWS)
 
 [Event/auth-expired]
 Name=Microsoft Exchange authentication expired
-Name[ar]=انتهى استيثاق خادوم «مايكروسوفت إكسچينج»
+Name[ar]=انتهى استيثاق خادم «مايكروسوفت إكسچينج»
 Name[bg]=Удостоверението на Microsoft Exchange authentication е изтекло
 Name[ca]=L'autenticació del Microsoft Exchange ha expirat
 Name[ca@valencia]=L'autenticació de Microsoft Exchange ha expirat
