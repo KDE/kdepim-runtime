@@ -129,7 +129,7 @@ msgstr "اقصر مزامنة البيانات على الأحدث من"
 #: configwidget.ui:191
 #, kde-format
 msgid "Server Configuration:"
-msgstr "ضبط الخادوم:"
+msgstr "ضبط الخادم:"
 
 #. i18n: ectx: property (text), widget (QPushButton, addButton)
 #: configwidget.ui:205
@@ -195,7 +195,7 @@ msgstr "لا يدعم ميفاق التّجميعات MULTIGET"
 msgid ""
 "The server encountered an error that prevented it from completing your "
 "request: %1 (%2)"
-msgstr "واجه الخادوم خطأً منعه من إكمال الطّلب: %1 ‏(%2)"
+msgstr "واجه الخادم خطأً منعه من إكمال الطّلب: %1 ‏(%2)"
 
 # %1 هو واحد من الأخطاء أعلاه (كلها تبدأ بحرف يميني قوي)
 #: daverror-kdepim-runtime.cpp:48
@@ -205,7 +205,7 @@ msgid ""
 "from the server.\n"
 "%1 (%2)."
 msgstr ""
-"حدثت مشكلة بالطّلب. لم تُحذف التّجميعة من الخادوم.\n"
+"حدثت مشكلة بالطّلب. لم تُحذف التّجميعة من الخادم.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:54
@@ -231,7 +231,7 @@ msgid ""
 "on the server.\n"
 "%1 (%2)."
 msgstr ""
-"حدثت مشكلة بالطّلب. لم تُعدّل التّجميعة في الخادوم.\n"
+"حدثت مشكلة بالطّلب. لم تُعدّل التّجميعة في الخادم.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:70
@@ -252,7 +252,7 @@ msgid ""
 "%1"
 msgstr ""
 "\n"
-"أعاد الخادوم معلومات أكثر:\n"
+"أعاد الخادم معلومات أكثر:\n"
 "%1"
 
 # %1 هو واحد من الأخطاء أعلاه (كلها تبدأ بحرف يميني قوي)
@@ -263,7 +263,7 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"حدثت مشكلة بالطّلب. لم يُنشأ العنصر في الخادوم.\n"
+"حدثت مشكلة بالطّلب. لم يُنشأ العنصر في الخادم.\n"
 "%1 (%2)."
 
 # %1 هو واحد من الأخطاء أعلاه (كلها تبدأ بحرف يميني قوي)
@@ -274,7 +274,7 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"حدثت مشكلة بالطّلب. لم يُحذف العنصر من الخادوم.\n"
+"حدثت مشكلة بالطّلب. لم يُحذف العنصر من الخادم.\n"
 "%1 (%2)."
 
 # %1 هو واحد من الأخطاء أعلاه (كلها تبدأ بحرف يميني قوي)
@@ -285,7 +285,7 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"حدثت مشكلة بالطّلب. لم يُعدّل العنصر في الخادوم.\n"
+"حدثت مشكلة بالطّلب. لم يُعدّل العنصر في الخادم.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:100
@@ -308,7 +308,7 @@ msgstr "لم يُعثر على صندوق صادر مجدول لِ‍ %1"
 #: davfreebusyhandler.cpp:194 davfreebusyhandler.cpp:205
 #, kde-format
 msgid "Invalid response from the server"
-msgstr "ردّ غير صالح من الخادوم"
+msgstr "ردّ غير صالح من الخادم"
 
 #: davfreebusyhandler.cpp:216
 #, kde-format
@@ -555,7 +555,7 @@ msgstr "مؤهّلات الولوج"
 #: setupwizard.cpp:233
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
-msgstr "أدخِل المؤهّلات للولوج إلى خادوم البرمجيّات التّعاونيّة"
+msgstr "أدخِل المؤهّلات للولوج إلى خادم البرمجيّات التّعاونيّة"
 
 #: setupwizard.cpp:237
 #, kde-format
@@ -597,12 +597,12 @@ msgstr "نعم، استخدم %1 كمزوّد"
 #: setupwizard.cpp:330
 #, kde-format
 msgid "Groupware Server"
-msgstr "خادوم البرمجيّات التّعاونيّة"
+msgstr "خادم البرمجيّات التّعاونيّة"
 
 #: setupwizard.cpp:331
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
-msgstr "اختر خادوم البرمجيّات التعاونيّة الذي على المورد أن يُضبط لأجله"
+msgstr "اختر خادم البرمجيّات التعاونيّة الذي على المورد أن يُضبط لأجله"
 
 #: setupwizard.cpp:360
 #, kde-format
@@ -624,7 +624,7 @@ msgstr "الاتّصال"
 #: setupwizard.cpp:404
 #, kde-format
 msgid "Enter the connection information for the groupware server"
-msgstr "أدخِل معلومات اتّصال خادوم البرمجيّات التّعاونيّة"
+msgstr "أدخِل معلومات اتّصال خادم البرمجيّات التّعاونيّة"
 
 #: setupwizard.cpp:411
 #, kde-format
@@ -671,7 +671,7 @@ msgid ""
 "You can test now whether the groupware server can be accessed with the "
 "current configuration"
 msgstr ""
-"يمكنك الآن اختبار فيما إذا كان يمكن النّفاذ إلى خادوم البرمجيّات التّعاونيّة "
+"يمكنك الآن اختبار فيما إذا كان يمكن النّفاذ إلى خادم البرمجيّات التّعاونيّة "
 "بالضّبط الحاليّ"
 
 #: setupwizard.cpp:525
