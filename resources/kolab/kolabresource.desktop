@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Kolab Groupware Server
-Name[ar]=خادوم البرمجيّات التّعاونيّة Kolab
+Name[ar]=خادم البرمجيّات التّعاونيّة Kolab
 Name[bg]=Сървър Kolab Groupware
 Name[bs]=Server kolaborativnog softvera
 Name[ca]=Servidor de treball en grup Kolab
@@ -53,7 +53,7 @@ Name[x-test]=xxKolab Groupware Serverxx
 Name[zh_CN]=Kolab 群件服务器
 Name[zh_TW]=Kolab 群組伺服器
 Comment=Provides access to Kolab groupware folders and e-mail on a Kolab IMAP Server.
-Comment[ar]=يوفّر نفاذًا إلى مجلّدات وبريد البرمجيّات التّعاونيّة Kolab على خادوم Kolab IMAP.
+Comment[ar]=يوفّر نفاذًا إلى مجلّدات وبريد البرمجيّات التّعاونيّة Kolab على خادم Kolab IMAP.
 Comment[bg]=Предоставя достъп до папки на Kolab groupware и поща на  IMAP сървър на Kolab.
 Comment[ca]=Proporciona accés a les carpetes i al correu electrònic del treball en grup Kolab en un servidor IMAP del Kolab.
 Comment[ca@valencia]=Proporciona accés a les carpetes i al correu electrònic del treball en grup Kolab en un servidor IMAP de Kolab.

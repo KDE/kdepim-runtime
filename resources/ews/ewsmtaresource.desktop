@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Microsoft Exchange Server (EWS) Mail Transport
-Name[ar]=نقل البريد لخادوم «مايكروسوفت إكسچينج» (EWS)
+Name[ar]=نقل البريد لخادم «مايكروسوفت إكسچينج» (EWS)
 Name[bg]=Транспорт на поща на Microsoft Exchange Server (EWS)
 Name[ca]=Transport de correu del servidor Microsoft Exchange (EWS)
 Name[ca@valencia]=Transport de correu del servidor Microsoft Exchange (EWS)
@@ -42,7 +42,7 @@ Name[x-test]=xxMicrosoft Exchange Server (EWS) Mail Transportxx
 Name[zh_CN]=微软 Exchange 服务器（EWS）邮件传输
 Name[zh_TW]=Microsoft Exchange 伺服器 (EWS) 郵件轉移
 Comment=Allows sending e-mail through the Microsoft Exchange server using EWS
-Comment[ar]=يتيح إرسال البريد الإلكترونيّ عبر خادوم «مايكروسوفت إكسچينج» باستخدام EWS
+Comment[ar]=يتيح إرسال البريد الإلكترونيّ عبر خادم «مايكروسوفت إكسچينج» باستخدام EWS
 Comment[bg]=Позволява изпращането на поща чрез сървър на Microsoft Exchange, използвайки EWS
 Comment[ca]=Permet l'enviament de correu electrònic a través d'un servidor Microsoft Exchange emprant EWS
 Comment[ca@valencia]=Permet l'enviament de correu electrònic a través d'un servidor Microsoft Exchange emprant EWS
