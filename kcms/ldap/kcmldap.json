@@ -37,7 +37,7 @@
         "Description[zh_TW]": "設定可用的 LDAP 伺服器",
         "Icon": "kontact",
         "Name": "LDAP Server Settings",
-        "Name[ar]": "إعدادات خادوم LDAP",
+        "Name[ar]": "إعدادات خادم LDAP",
         "Name[bg]": "Настройки на сървър LDAP",
         "Name[ca@valencia]": "Configureu el servidor LDAP",
         "Name[ca]": "Configuració del servidor LDAP",
