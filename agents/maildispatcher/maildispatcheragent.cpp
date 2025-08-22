@@ -117,7 +117,7 @@ void MailDispatcherAgent::dispatch()
 }
 
 MailDispatcherAgent::MailDispatcherAgent(const QString &id)
-    : AgentBase(id)
+    : AgentWidgetBase(id)
     , mQueue(new OutboxQueue(this))
     , mSentActionHandler(new SentActionHandler(this))
 {
@@ -284,7 +284,7 @@ void MailDispatcherAgent::emitStatusReady()
 }
 
 #ifndef KDEPIM_PLUGIN_AGENT
-AKONADI_AGENT_CORE_MAIN(MailDispatcherAgent)
+AKONADI_AGENT_MAIN(MailDispatcherAgent)
 #endif
 
 #include "moc_maildispatcheragent.cpp"

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <Akonadi/AgentBase>
+#include <Akonadi/AgentWidgetBase>
 #include <Akonadi/Item>
 
 class OutboxQueue;
@@ -16,7 +16,7 @@ class SentActionHandler;
 /**
  * @short This agent dispatches mail put into the outbox collection.
  */
-class MailDispatcherAgent : public Akonadi::AgentBase
+class MailDispatcherAgent : public Akonadi::AgentWidgetBase
 {
     Q_OBJECT
 
