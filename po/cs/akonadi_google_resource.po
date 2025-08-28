@@ -449,6 +449,3 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr ""
-
-#~ msgid "Can't fetch password"
-#~ msgstr "Heslo nelze získat"
