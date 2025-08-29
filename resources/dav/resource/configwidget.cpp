@@ -108,10 +108,13 @@ void ConfigWidget::loadSettings()
 
             const QString defaultUser = wizard.field(QStringLiteral("credentialsUserName")).toString();
 
-            if (!wizard.displayName().isEmpty()) {
-                mSettings.setDisplayName(wizard.displayName());
-            } else {
-                mSettings.setDisplayName(defaultUser);
+            // See bug508544: do not auto-fill display name in manual-mode
+            if (!wizard.property("useManualSetup").toBool()) {
+                if (!wizard.displayName().isEmpty()) {
+                    mSettings.setDisplayName(wizard.displayName());
+                } else {
+                    mSettings.setDisplayName(defaultUser);
+                }
             }
 
             if (!defaultUser.isEmpty()) {
