@@ -90,7 +90,7 @@ public:
     bool validatePage() override;
 
 private:
-    void manualConfigToggled(bool toggled);
+    void manualConfigToggled(bool state);
     QButtonGroup *mServerGroup = nullptr;
     QComboBox *mProvidersCombo = nullptr;
 };

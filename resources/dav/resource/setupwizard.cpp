@@ -29,8 +29,6 @@
 #include <QStandardPaths>
 #include <QUrl>
 
-#include <tuple>
-
 struct ProviderInfo {
     QString readName;
     QString fileName;
@@ -148,6 +146,7 @@ SetupWizard::SetupWizard(QWidget *parent)
     setPage(W_ServerTypePage, new ServerTypePage);
     setPage(W_ConnectionPage, new ConnectionPage);
     setPage(W_CheckPage, new CheckPage);
+    setProperty("useManualSetup", false);
 }
 
 QString SetupWizard::displayName() const
@@ -380,6 +379,7 @@ void ServerTypePage::manualConfigToggled(bool state)
 {
     setFinalPage(state);
     wizard()->button(QWizard::NextButton)->setEnabled(!state);
+    wizard()->setProperty("useManualSetup", state);
 }
 
 bool ServerTypePage::validatePage()
