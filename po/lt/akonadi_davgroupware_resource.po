@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-10 00:43+0000\n"
+"POT-Creation-Date: 2025-08-31 00:43+0000\n"
 "PO-Revision-Date: 2015-12-29 21:05+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Years"
 msgstr ""
 
-#: configwidget.cpp:166
+#: configwidget.cpp:169
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -100,7 +100,7 @@ msgstr "Naudotojo vardas"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:107 setupwizard.cpp:242 urlconfigurationdialog.ui:136
+#: configwidget.ui:107 setupwizard.cpp:241 urlconfigurationdialog.ui:136
 #, fuzzy, kde-format
 #| msgid "Password: "
 msgid "Password:"
@@ -569,48 +569,48 @@ msgstr "asmuo vardu"
 msgid "a contact with email"
 msgstr "turinys su el. laišku"
 
-#: setupwizard.cpp:144
+#: setupwizard.cpp:142
 #, fuzzy, kde-format
 #| msgid "DAV groupware configuration wizard"
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "Grupinio darbo DAV sąrankos vediklis"
 
-#: setupwizard.cpp:232
+#: setupwizard.cpp:231
 #, kde-format
 msgid "Login Credentials"
 msgstr "Prisijungimo duomenys"
 
-#: setupwizard.cpp:233
+#: setupwizard.cpp:232
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr ""
 "Įveskite prisijungimo duomenis, kad prisijungtumėte grupinio darbo serveryje"
 
-#: setupwizard.cpp:237
+#: setupwizard.cpp:236
 #, fuzzy, kde-format
 #| msgid "User"
 msgid "User:"
 msgstr "Naudotojas"
 
-#: setupwizard.cpp:277
+#: setupwizard.cpp:276
 #, fuzzy, kde-format
 #| msgid "No, choose another server"
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Ne, parinkti kitą serverį"
 
-#: setupwizard.cpp:279
+#: setupwizard.cpp:278
 #, kde-format
 msgid "Predefined provider found"
 msgstr "Rastas numatytas teikėjas"
 
-#: setupwizard.cpp:280
+#: setupwizard.cpp:279
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "Pažymėkite jei norite naudoti automatiškai aptiktą teikėją"
 
-#: setupwizard.cpp:299
+#: setupwizard.cpp:298
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -621,30 +621,30 @@ msgstr ""
 "automatiškai sukonfigūruoti paskyrą paslaugai %1.\n"
 "Ar jūs norite tai daryti?"
 
-#: setupwizard.cpp:304
+#: setupwizard.cpp:303
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Taip, kaip teikėją naudoti %1"
 
-#: setupwizard.cpp:330
+#: setupwizard.cpp:329
 #, kde-format
 msgid "Groupware Server"
 msgstr "Grupinio darbo serveris"
 
-#: setupwizard.cpp:331
+#: setupwizard.cpp:330
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr ""
 "Pasirinkite grupinio darbo serverį, kurio išteklius reikia sukonfigūruoti"
 
-#: setupwizard.cpp:360
+#: setupwizard.cpp:359
 #, fuzzy, kde-format
 #| msgid "Use one of those servers:"
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Naudoti vieną iš šių serverių:"
 
-#: setupwizard.cpp:369
+#: setupwizard.cpp:368
 #, fuzzy, kde-format
 #| msgid "Configure the resource manually"
 msgctxt "@option:radio"

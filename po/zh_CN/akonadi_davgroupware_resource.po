@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-10 00:43+0000\n"
+"POT-Creation-Date: 2025-08-31 00:43+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -49,7 +49,7 @@ msgstr "月"
 msgid "Years"
 msgstr "年"
 
-#: configwidget.cpp:166
+#: configwidget.cpp:169
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -91,7 +91,7 @@ msgstr "用户名："
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:107 setupwizard.cpp:242 urlconfigurationdialog.ui:136
+#: configwidget.ui:107 setupwizard.cpp:241 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "密码："
@@ -532,44 +532,44 @@ msgstr "名为...的人"
 msgid "a contact with email"
 msgstr "带电子邮件...联系人"
 
-#: setupwizard.cpp:144
+#: setupwizard.cpp:142
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "DAV 群件配置向导"
 
-#: setupwizard.cpp:232
+#: setupwizard.cpp:231
 #, kde-format
 msgid "Login Credentials"
 msgstr "登录身份"
 
-#: setupwizard.cpp:233
+#: setupwizard.cpp:232
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "输入群件服务器的登录身份"
 
-#: setupwizard.cpp:237
+#: setupwizard.cpp:236
 #, kde-format
 msgid "User:"
 msgstr "用户："
 
-#: setupwizard.cpp:277
+#: setupwizard.cpp:276
 #, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "不，选择另一个服务器"
 
-#: setupwizard.cpp:279
+#: setupwizard.cpp:278
 #, kde-format
 msgid "Predefined provider found"
 msgstr "发现预定义的提供方"
 
-#: setupwizard.cpp:280
+#: setupwizard.cpp:279
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "选择您是否想使用自动检测的提供方"
 
-#: setupwizard.cpp:299
+#: setupwizard.cpp:298
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -580,28 +580,28 @@ msgstr ""
 "本向导程序可以为 %1 个服务自动配置账户。\n"
 "您想要自动配置吗？"
 
-#: setupwizard.cpp:304
+#: setupwizard.cpp:303
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "是的，使用 %1 作为提供方"
 
-#: setupwizard.cpp:330
+#: setupwizard.cpp:329
 #, kde-format
 msgid "Groupware Server"
 msgstr "群件服务器"
 
-#: setupwizard.cpp:331
+#: setupwizard.cpp:330
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "选择资源要配置的群件服务器"
 
-#: setupwizard.cpp:360
+#: setupwizard.cpp:359
 #, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "使用以下服务器之一："
 
-#: setupwizard.cpp:369
+#: setupwizard.cpp:368
 #, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"

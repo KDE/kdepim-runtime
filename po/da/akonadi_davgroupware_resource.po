@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-10 00:43+0000\n"
+"POT-Creation-Date: 2025-08-31 00:43+0000\n"
 "PO-Revision-Date: 2024-07-18 11:11+0200\n"
 "Last-Translator: rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -49,7 +49,7 @@ msgstr "Måneder"
 msgid "Years"
 msgstr "År"
 
-#: configwidget.cpp:166
+#: configwidget.cpp:169
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -91,7 +91,7 @@ msgstr "Brugernavn:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:107 setupwizard.cpp:242 urlconfigurationdialog.ui:136
+#: configwidget.ui:107 setupwizard.cpp:241 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "Adgangskode: "
@@ -550,45 +550,45 @@ msgstr "en person ved navn"
 msgid "a contact with email"
 msgstr "en kontakt med e-mail"
 
-#: setupwizard.cpp:144
+#: setupwizard.cpp:142
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "Konfigurationsguide til DAV-groupware"
 
-#: setupwizard.cpp:232
+#: setupwizard.cpp:231
 #, kde-format
 msgid "Login Credentials"
 msgstr "Login-akkreditiver"
 
-#: setupwizard.cpp:233
+#: setupwizard.cpp:232
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "Angiv dine akkreditiver til login på groupware-serveren"
 
-#: setupwizard.cpp:237
+#: setupwizard.cpp:236
 #, kde-format
 msgid "User:"
 msgstr "Bruger:"
 
-#: setupwizard.cpp:277
+#: setupwizard.cpp:276
 #, fuzzy, kde-format
 #| msgid "No, choose another server"
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Nej, vælg en anden server"
 
-#: setupwizard.cpp:279
+#: setupwizard.cpp:278
 #, kde-format
 msgid "Predefined provider found"
 msgstr "Prædefineret udbyder fundet"
 
-#: setupwizard.cpp:280
+#: setupwizard.cpp:279
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "Vælg om du vil bruge den autodetekterede udbyder"
 
-#: setupwizard.cpp:299
+#: setupwizard.cpp:298
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -599,29 +599,29 @@ msgstr ""
 "automatisk konfigurere en konto til %1-tjenester.\n"
 "Vil du gøre dette?"
 
-#: setupwizard.cpp:304
+#: setupwizard.cpp:303
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Ja, brug %1 som udbyder"
 
-#: setupwizard.cpp:330
+#: setupwizard.cpp:329
 #, kde-format
 msgid "Groupware Server"
 msgstr "Groupware-server"
 
-#: setupwizard.cpp:331
+#: setupwizard.cpp:330
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "Vælg den groupware-server som ressourcen skal konfigureres til"
 
-#: setupwizard.cpp:360
+#: setupwizard.cpp:359
 #, fuzzy, kde-format
 #| msgid "Use one of those servers:"
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Brug en af disse servere:"
 
-#: setupwizard.cpp:369
+#: setupwizard.cpp:368
 #, fuzzy, kde-format
 #| msgid "Configure the resource manually"
 msgctxt "@option:radio"

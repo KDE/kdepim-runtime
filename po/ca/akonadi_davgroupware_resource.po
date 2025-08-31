@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-10 00:43+0000\n"
+"POT-Creation-Date: 2025-08-31 00:43+0000\n"
 "PO-Revision-Date: 2025-05-24 11:17+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -53,7 +53,7 @@ msgstr "Mesos"
 msgid "Years"
 msgstr "Anys"
 
-#: configwidget.cpp:166
+#: configwidget.cpp:169
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -96,7 +96,7 @@ msgstr "Nom d'usuari:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:107 setupwizard.cpp:242 urlconfigurationdialog.ui:136
+#: configwidget.ui:107 setupwizard.cpp:241 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "Contrasenya:"
@@ -556,46 +556,46 @@ msgstr "una persona anomenada"
 msgid "a contact with email"
 msgstr "un contacte amb el correu electrònic"
 
-#: setupwizard.cpp:144
+#: setupwizard.cpp:142
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "Assistent de configuració de treball en grup DAV"
 
-#: setupwizard.cpp:232
+#: setupwizard.cpp:231
 #, kde-format
 msgid "Login Credentials"
 msgstr "Credencials d'inici de sessió"
 
-#: setupwizard.cpp:233
+#: setupwizard.cpp:232
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr ""
 "Introduïu les vostres credencials per a iniciar la sessió amb el servidor de "
 "treball en grup"
 
-#: setupwizard.cpp:237
+#: setupwizard.cpp:236
 #, kde-format
 msgid "User:"
 msgstr "Usuari:"
 
-#: setupwizard.cpp:277
+#: setupwizard.cpp:276
 #, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "No, trio un altre servidor"
 
-#: setupwizard.cpp:279
+#: setupwizard.cpp:278
 #, kde-format
 msgid "Predefined provider found"
 msgstr "S'ha trobat un proveïdor predefinit"
 
-#: setupwizard.cpp:280
+#: setupwizard.cpp:279
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "Seleccioneu-ho si voleu usar el proveïdor detectat automàticament"
 
-#: setupwizard.cpp:299
+#: setupwizard.cpp:298
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -607,30 +607,30 @@ msgstr ""
 "compte per als serveis %1.\n"
 "Voleu fer-ho?"
 
-#: setupwizard.cpp:304
+#: setupwizard.cpp:303
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Sí, usa %1 com a proveïdor"
 
-#: setupwizard.cpp:330
+#: setupwizard.cpp:329
 #, kde-format
 msgid "Groupware Server"
 msgstr "Servidor de treball en grup"
 
-#: setupwizard.cpp:331
+#: setupwizard.cpp:330
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr ""
 "Seleccioneu el servidor de treball en grup per al qual s'ha de configurar el "
 "recurs"
 
-#: setupwizard.cpp:360
+#: setupwizard.cpp:359
 #, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Usa un d'aquests servidors:"
 
-#: setupwizard.cpp:369
+#: setupwizard.cpp:368
 #, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource.po\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-10 00:43+0000\n"
+"POT-Creation-Date: 2025-08-31 00:43+0000\n"
 "PO-Revision-Date: 2013-10-24 06:02+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: bs <bs@kde.org>\n"
@@ -52,7 +52,7 @@ msgstr ""
 msgid "Years"
 msgstr ""
 
-#: configwidget.cpp:166
+#: configwidget.cpp:169
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -94,7 +94,7 @@ msgstr "Korisničko ime:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:107 setupwizard.cpp:242 urlconfigurationdialog.ui:136
+#: configwidget.ui:107 setupwizard.cpp:241 urlconfigurationdialog.ui:136
 #, kde-format
 msgid "Password:"
 msgstr "Lozinka:"
@@ -562,47 +562,47 @@ msgstr "osobu s imenom"
 msgid "a contact with email"
 msgstr "kontakt s e-mailom"
 
-#: setupwizard.cpp:144
+#: setupwizard.cpp:142
 #, fuzzy, kde-format
 #| msgid "DAV groupware configuration wizard"
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "Konfiguracioni čarobnjak za DAV grupni sistem"
 
-#: setupwizard.cpp:232
+#: setupwizard.cpp:231
 #, kde-format
 msgid "Login Credentials"
 msgstr "Akreditivi za prijavljivanje"
 
-#: setupwizard.cpp:233
+#: setupwizard.cpp:232
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "Unesite akreditive za prijavu na grupni server"
 
-#: setupwizard.cpp:237
+#: setupwizard.cpp:236
 #, fuzzy, kde-format
 #| msgid "User"
 msgid "User:"
 msgstr "Korisnik"
 
-#: setupwizard.cpp:277
+#: setupwizard.cpp:276
 #, fuzzy, kde-format
 #| msgid "No, choose another server"
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Ne, odaberi drugi server"
 
-#: setupwizard.cpp:279
+#: setupwizard.cpp:278
 #, kde-format
 msgid "Predefined provider found"
 msgstr "Nađen predefinisani provajder"
 
-#: setupwizard.cpp:280
+#: setupwizard.cpp:279
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "Odaberite ako želite da se koristi automatski prepozati provajder"
 
-#: setupwizard.cpp:299
+#: setupwizard.cpp:298
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -613,29 +613,29 @@ msgstr ""
 "može automatski konfigurisati nalog za %1 servise.\n"
 "Da li želite da to uradite?"
 
-#: setupwizard.cpp:304
+#: setupwizard.cpp:303
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Da, koristi %1 kao provajdere"
 
-#: setupwizard.cpp:330
+#: setupwizard.cpp:329
 #, kde-format
 msgid "Groupware Server"
 msgstr "Groupware Server"
 
-#: setupwizard.cpp:331
+#: setupwizard.cpp:330
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "Odaberite grupni server za koga se konfiguriše resurs"
 
-#: setupwizard.cpp:360
+#: setupwizard.cpp:359
 #, fuzzy, kde-format
 #| msgid "Use one of those servers:"
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Koristi jedan od ovih servera:"
 
-#: setupwizard.cpp:369
+#: setupwizard.cpp:368
 #, fuzzy, kde-format
 #| msgid "Configure the resource manually"
 msgctxt "@option:radio"

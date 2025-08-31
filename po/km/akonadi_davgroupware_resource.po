@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-10 00:43+0000\n"
+"POT-Creation-Date: 2025-08-31 00:43+0000\n"
 "PO-Revision-Date: 2011-12-21 11:31+0700\n"
 "Last-Translator: Seng Sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <supprot@khmeros.info>\n"
@@ -51,7 +51,7 @@ msgstr ""
 msgid "Years"
 msgstr ""
 
-#: configwidget.cpp:166
+#: configwidget.cpp:169
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -96,7 +96,7 @@ msgstr "ឈ្មោះ​អ្នក​ប្រើ"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: configwidget.ui:107 setupwizard.cpp:242 urlconfigurationdialog.ui:136
+#: configwidget.ui:107 setupwizard.cpp:241 urlconfigurationdialog.ui:136
 #, fuzzy, kde-format
 #| msgid "Password: "
 msgid "Password:"
@@ -566,47 +566,47 @@ msgstr "ដាក់​ឈ្មោះ​ផ្ទាល់ខ្លួន"
 msgid "a contact with email"
 msgstr "ទាក់ទង​​តាម​អ៊ីមែល"
 
-#: setupwizard.cpp:144
+#: setupwizard.cpp:142
 #, fuzzy, kde-format
 #| msgid "DAV groupware configuration wizard"
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "អ្នក​ជំនួយ​ការ​កំណត់​រនាសម្ព័ន្ធ​​របស់ DAV groupware"
 
-#: setupwizard.cpp:232
+#: setupwizard.cpp:231
 #, kde-format
 msgid "Login Credentials"
 msgstr "ចូលដោយ​សម្ងាត់"
 
-#: setupwizard.cpp:233
+#: setupwizard.cpp:232
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
 msgstr "បញ្ចូល​ភាព​សម្ងាត់​របស់​អ្នក ដើម្បី​ចូល​ក្នុង​ម៉ាស៊ីនបម្រើ groupware"
 
-#: setupwizard.cpp:237
+#: setupwizard.cpp:236
 #, fuzzy, kde-format
 #| msgid "User"
 msgid "User:"
 msgstr "អ្នកប្រើ"
 
-#: setupwizard.cpp:277
+#: setupwizard.cpp:276
 #, fuzzy, kde-format
 #| msgid "No, choose another server"
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "ទេ ជ្រើស​ម៉ាស៊ីន​បម្រើ​ផ្សេង"
 
-#: setupwizard.cpp:279
+#: setupwizard.cpp:278
 #, kde-format
 msgid "Predefined provider found"
 msgstr "រក​ឃើញ​ក្រុមហ៊ុន​ផ្ដល់ដែលបាន​កំណត់​​ជា​មុន"
 
-#: setupwizard.cpp:280
+#: setupwizard.cpp:279
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "ជ្រើស​ប្រសិនបើ​អ្នក​ចង់​ប្រើក្រុមហ៊ុន​ផ្ដល់​ដែល​រកឃើញ​ដោយ​ស្វ័យ​ប្រវត្តិ"
 
-#: setupwizard.cpp:299
+#: setupwizard.cpp:298
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -617,29 +617,29 @@ msgstr ""
 "ប្រវត្តិ​ សម្រាប់​សេវា %1 ។\n"
 "តើ​អ្នក​ចង់​ធ្វើ​ដូច្នេះ​ដែរឬទេ ?"
 
-#: setupwizard.cpp:304
+#: setupwizard.cpp:303
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "បាទ/ចាស ប្រើ %1 ដូច​របស់​ក្រុមហ៊ុន​ផ្ដល់"
 
-#: setupwizard.cpp:330
+#: setupwizard.cpp:329
 #, kde-format
 msgid "Groupware Server"
 msgstr "ម៉ាស៊ីន​បម្រើ Groupware"
 
-#: setupwizard.cpp:331
+#: setupwizard.cpp:330
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "ជ្រើស​ម៉ាស៊ីន​បម្រើ groupware ដែល​ធនធាន​នឹង​​ត្រូវ​បាន​កំណត់​រចនាសម្ព័ន្ធ"
 
-#: setupwizard.cpp:360
+#: setupwizard.cpp:359
 #, fuzzy, kde-format
 #| msgid "Use one of those servers:"
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "ប្រើ​មួយ​របស់​ម៉ាស៊ីនបម្រើ​ទាំងនោះ ៖"
 
-#: setupwizard.cpp:369
+#: setupwizard.cpp:368
 #, fuzzy, kde-format
 #| msgid "Configure the resource manually"
 msgctxt "@option:radio"
