@@ -97,7 +97,7 @@ bool ImapTestBase::waitForSignal(QObject *obj, const char *member, int timeout) 
 
 Akonadi::Collection ImapTestBase::createCollectionChain(const QString &remoteId) const
 {
-    QChar separator = remoteId.length() > 0 ? remoteId.at(0) : QLatin1Char('/');
+    QChar separator = remoteId.length() > 0 ? remoteId.at(0) : u'/';
 
     Akonadi::Collection parent(1);
     parent.setRemoteId(QStringLiteral("root-id"));

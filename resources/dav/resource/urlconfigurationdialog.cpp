@@ -185,8 +185,8 @@ void UrlConfigurationDialog::onFetchButtonClicked()
     mUi.discoveredUrls->setEnabled(false);
     initModel();
 
-    if (!remoteUrl().endsWith(QLatin1Char('/'))) {
-        setRemoteUrl(remoteUrl() + QLatin1Char('/'));
+    if (!remoteUrl().endsWith(u'/')) {
+        setRemoteUrl(remoteUrl() + u'/');
     }
 
     if (!remoteUrl().startsWith(QLatin1StringView("https://")) && !remoteUrl().startsWith(QLatin1StringView("http://"))) {
@@ -210,8 +210,8 @@ void UrlConfigurationDialog::onFetchButtonClicked()
 
 void UrlConfigurationDialog::onOkButtonClicked()
 {
-    if (!remoteUrl().endsWith(QLatin1Char('/'))) {
-        setRemoteUrl(remoteUrl() + QLatin1Char('/'));
+    if (!remoteUrl().endsWith(u'/')) {
+        setRemoteUrl(remoteUrl() + u'/');
     }
 }
 

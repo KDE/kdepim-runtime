@@ -171,7 +171,7 @@ EwsAbstractAuth *EwsSettings::loadAuth(QObject *parent)
         if (!hasDomain()) {
             user = username();
         } else {
-            user = domain() + QLatin1Char('\\') + username();
+            user = domain() + u'\\' + username();
         }
         auth = new EwsPasswordAuth(user, parent);
     }

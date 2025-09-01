@@ -283,7 +283,7 @@ QString ICalDirResource::iCalDirectoryName() const
 
 QString ICalDirResource::iCalDirectoryFileName(const QString &file) const
 {
-    return IcalDirResourceSettings::self()->path() + QLatin1Char('/') + file;
+    return IcalDirResourceSettings::self()->path() + u'/' + file;
 }
 
 void ICalDirResource::initializeICalDirectory() const

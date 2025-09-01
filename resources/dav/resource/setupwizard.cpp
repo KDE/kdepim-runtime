@@ -67,7 +67,7 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
         return {};
     }
 
-    QString pathPattern = service->property<QString>(pathPropertyName) + QLatin1Char('/');
+    QString pathPattern = service->property<QString>(pathPropertyName) + u'/';
 
     const QString username = wizard->field(QStringLiteral("credentialsUserName")).toString();
     QString localPart(username);
@@ -78,14 +78,14 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
     const QString localPath = wizard->field(QStringLiteral("installationPath")).toString();
     if (!localPath.isEmpty()) {
         if (providerName == QLatin1StringView("davical")) {
-            if (!localPath.endsWith(QLatin1Char('/'))) {
-                pathPattern.append(localPath + QLatin1Char('/'));
+            if (!localPath.endsWith(u'/')) {
+                pathPattern.append(localPath + u'/');
             } else {
                 pathPattern.append(localPath);
             }
         } else {
-            if (!localPath.startsWith(QLatin1Char('/'))) {
-                pathPattern.prepend(QLatin1Char('/') + localPath);
+            if (!localPath.startsWith(u'/')) {
+                pathPattern.prepend(u'/' + localPath);
             } else {
                 pathPattern.prepend(localPath);
             }
@@ -118,7 +118,7 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
         if (host.isEmpty()) {
             return {};
         }
-        const QStringList hostParts = host.split(QLatin1Char(':'));
+        const QStringList hostParts = host.split(u':');
         url.setHost(hostParts.at(0));
         url.setPath(pathPattern);
 

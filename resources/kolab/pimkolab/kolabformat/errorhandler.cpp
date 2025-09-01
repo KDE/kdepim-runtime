@@ -40,7 +40,7 @@ QMutex mutex;
 
 void logMessage(const QString &message, const QString &file, int line, ErrorHandler::Severity s)
 {
-    ErrorHandler::instance().addError(s, message, file + QLatin1Char(' ') + QString::number(line));
+    ErrorHandler::instance().addError(s, message, file + u' ' + QString::number(line));
 }
 
 ErrorHandler::ErrorHandler()
@@ -52,7 +52,7 @@ ErrorHandler::ErrorHandler()
 QDebug ErrorHandler::debugStream(ErrorHandler::Severity severity, int line, const char *file)
 {
     QMutexLocker locker(&mutex);
-    ErrorHandler::instance().m_debugStream->m_location = QString(QLatin1StringView(file) + QLatin1Char('(') + QString::number(line) + QLatin1Char(')'));
+    ErrorHandler::instance().m_debugStream->m_location = QString(QLatin1StringView(file) + QLatin1Char('(') + QString::number(line) + u')');
     ErrorHandler::instance().m_debugStream->m_severity = severity;
     return QDebug(ErrorHandler::instance().m_debugStream.data());
 }
@@ -61,7 +61,7 @@ void ErrorHandler::addError(ErrorHandler::Severity s, const QString &message, co
 {
     QMutexLocker locker(&mutex);
     QString filename = location;
-    const QStringList lst = filename.split(QLatin1Char('/'));
+    const QStringList lst = filename.split(u'/');
     if (!lst.isEmpty()) {
         filename = lst.last();
     }

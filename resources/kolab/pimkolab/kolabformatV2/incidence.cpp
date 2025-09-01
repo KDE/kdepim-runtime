@@ -937,7 +937,7 @@ void Incidence::saveTo(const KCalendarCore::Incidence::Ptr &incidence)
     if (organizer().displayName.isEmpty()) {
         incidence->setOrganizer(organizer().smtpAddress);
     } else {
-        incidence->setOrganizer(organizer().displayName + QLatin1Char('<') + organizer().smtpAddress + QLatin1Char('>'));
+        incidence->setOrganizer(organizer().displayName + QLatin1Char('<') + organizer().smtpAddress + u'>');
     }
 
     incidence->clearAttendees();

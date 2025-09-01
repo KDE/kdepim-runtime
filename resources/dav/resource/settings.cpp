@@ -48,7 +48,7 @@ Settings::UrlConfiguration::UrlConfiguration() = default;
 
 Settings::UrlConfiguration::UrlConfiguration(const QString &serialized)
 {
-    const QStringList splitString = serialized.split(QLatin1Char('|'));
+    const QStringList splitString = serialized.split(u'|');
 
     if (splitString.size() == 3) {
         mUrl = splitString.at(2);
@@ -60,8 +60,8 @@ Settings::UrlConfiguration::UrlConfiguration(const QString &serialized)
 QString Settings::UrlConfiguration::serialize()
 {
     QString serialized = mUser;
-    serialized.append(QLatin1Char('|')).append(KDAV::ProtocolInfo::protocolName(KDAV::Protocol(mProtocol)));
-    serialized.append(QLatin1Char('|')).append(mUrl);
+    serialized.append(u'|').append(KDAV::ProtocolInfo::protocolName(KDAV::Protocol(mProtocol)));
+    serialized.append(u'|').append(mUrl);
     return serialized;
 }
 
@@ -136,7 +136,7 @@ KDAV::DavUrl::List Settings::configuredDavUrls()
     QMap<QString, UrlConfiguration *>::const_iterator it = mUrls.cbegin();
     const QMap<QString, UrlConfiguration *>::const_iterator itEnd = mUrls.cend();
     for (; it != itEnd; ++it) {
-        const QStringList split = it.key().split(QLatin1Char(','));
+        const QStringList split = it.key().split(u',');
         davUrls << configuredDavUrl(KDAV::ProtocolInfo::protocolByName(split.at(1)), split.at(0));
     }
 
@@ -153,7 +153,7 @@ KDAV::DavUrl Settings::configuredDavUrl(KDAV::Protocol proto, const QString &sea
 
     if (!finalUrl.isEmpty()) {
         fullUrl = QUrl::fromUserInput(finalUrl);
-        if (finalUrl.startsWith(QLatin1Char('/'))) {
+        if (finalUrl.startsWith(u'/')) {
             QUrl searchQUrl(searchUrl);
             fullUrl.setHost(searchQUrl.host());
             fullUrl.setScheme(searchQUrl.scheme());
@@ -180,7 +180,7 @@ KDAV::DavUrl Settings::davUrlFromCollectionUrl(const QString &collectionUrl, con
     const QString targetUrl = finalUrl.isEmpty() ? collectionUrl : finalUrl;
 
     if (mCollectionsUrlsMapping.contains(collectionUrl)) {
-        const QStringList split = mCollectionsUrlsMapping.value(collectionUrl).split(QLatin1Char(','));
+        const QStringList split = mCollectionsUrlsMapping.value(collectionUrl).split(u',');
         if (split.size() == 2) {
             davUrl = configuredDavUrl(KDAV::ProtocolInfo::protocolByName(split.at(1)), split.at(0), targetUrl);
         }
@@ -195,7 +195,7 @@ void Settings::addCollectionUrlMapping(KDAV::Protocol proto, const QString &coll
         loadMappings();
     }
 
-    const QString value = configuredUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
+    const QString value = configuredUrl + u',' + KDAV::ProtocolInfo::protocolName(proto);
     mCollectionsUrlsMapping.insert(collectionUrl, value);
 
     // Update the cache now
@@ -220,7 +220,7 @@ QStringList Settings::mappedCollections(KDAV::Protocol proto, const QString &con
         loadMappings();
     }
 
-    const QString value = configuredUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
+    const QString value = configuredUrl + u',' + KDAV::ProtocolInfo::protocolName(proto);
     return mCollectionsUrlsMapping.keys(value);
 }
 
@@ -234,7 +234,7 @@ void Settings::reloadConfig()
 
 void Settings::newUrlConfiguration(Settings::UrlConfiguration *urlConfig)
 {
-    const QString key = urlConfig->mUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig->mProtocol));
+    const QString key = urlConfig->mUrl + u',' + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig->mProtocol));
 
     if (mUrls.contains(key)) {
         removeUrlConfiguration(KDAV::Protocol(urlConfig->mProtocol), urlConfig->mUrl);
@@ -249,7 +249,7 @@ void Settings::newUrlConfiguration(Settings::UrlConfiguration *urlConfig)
 
 void Settings::removeUrlConfiguration(KDAV::Protocol proto, const QString &url)
 {
-    const QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
+    const QString key = url + u',' + KDAV::ProtocolInfo::protocolName(proto);
 
     if (!mUrls.contains(key)) {
         return;
@@ -262,7 +262,7 @@ void Settings::removeUrlConfiguration(KDAV::Protocol proto, const QString &url)
 
 Settings::UrlConfiguration *Settings::urlConfiguration(KDAV::Protocol proto, const QString &url)
 {
-    const QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
+    const QString key = url + u',' + KDAV::ProtocolInfo::protocolName(proto);
 
     UrlConfiguration *ret = nullptr;
     if (mUrls.contains(key)) {
@@ -282,7 +282,7 @@ Settings::UrlConfiguration *Settings::urlConfiguration(KDAV::Protocol proto, con
 
 QString Settings::username(KDAV::Protocol proto, const QString &url) const
 {
-    const QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
+    const QString key = url + u',' + KDAV::ProtocolInfo::protocolName(proto);
 
     if (mUrls.contains(key)) {
         if (mUrls[key]->mUser == QLatin1StringView("$default$")) {
@@ -297,7 +297,7 @@ QString Settings::username(KDAV::Protocol proto, const QString &url) const
 
 QString Settings::password(KDAV::Protocol proto, const QString &url)
 {
-    const QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
+    const QString key = url + u',' + KDAV::ProtocolInfo::protocolName(proto);
 
     if (mUrls.contains(key)) {
         if (mUrls[key]->mUser == QLatin1StringView("$default$")) {
@@ -316,11 +316,11 @@ QDateTime Settings::getSyncRangeStart() const
     start.setTime(QTime());
     const int delta = -syncRangeStartNumber().toUInt();
 
-    if (syncRangeStartType() == QLatin1Char('D')) {
+    if (syncRangeStartType() == u'D') {
         start = start.addDays(delta);
-    } else if (syncRangeStartType() == QLatin1Char('M')) {
+    } else if (syncRangeStartType() == u'M') {
         start = start.addMonths(delta);
-    } else if (syncRangeStartType() == QLatin1Char('Y')) {
+    } else if (syncRangeStartType() == u'Y') {
         start = start.addYears(delta);
     } else {
         start = QDateTime();
@@ -334,7 +334,7 @@ void Settings::buildUrlsList()
     const auto remoteUrlsLst = remoteUrls();
     for (const QString &serializedUrl : remoteUrlsLst) {
         auto urlConfig = new UrlConfiguration(serializedUrl);
-        const QString key = urlConfig->mUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig->mProtocol));
+        const QString key = urlConfig->mUrl + u',' + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig->mProtocol));
         const QString pass = loadPassword(key, urlConfig->mUser);
         if (!pass.isNull()) {
             urlConfig->mPassword = pass;
@@ -348,7 +348,7 @@ void Settings::buildUrlsList()
 void Settings::loadMappings()
 {
     const QString collectionsMappingCacheBase = QStringLiteral("akonadi-davgroupware/%1_c2u.dat").arg(QCoreApplication::applicationName());
-    mCollectionsUrlsMappingCache = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + collectionsMappingCacheBase;
+    mCollectionsUrlsMappingCache = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + u'/' + collectionsMappingCacheBase;
     QFile collectionsMappingsCache(mCollectionsUrlsMappingCache);
 
     if (collectionsMappingsCache.exists()) {
@@ -381,7 +381,7 @@ void Settings::updateRemoteUrls()
 
 void Settings::savePassword(const QString &key, const QString &user, const QString &password)
 {
-    const QString entry = key + QLatin1Char(',') + user;
+    const QString entry = key + u',' + user;
     mPasswordsCache[entry] = password;
 
     auto writeJob = new WritePasswordJob(QStringLiteral("Passwords"));
@@ -401,9 +401,9 @@ QString Settings::loadPassword(const QString &key, const QString &user)
     QString pass;
 
     if (user == QLatin1StringView("$default$")) {
-        entry = mResourceIdentifier + QLatin1Char(',') + user;
+        entry = mResourceIdentifier + u',' + user;
     } else {
-        entry = key + QLatin1Char(',') + user;
+        entry = key + u',' + user;
     }
 
     if (mPasswordsCache.contains(entry)) {
@@ -450,7 +450,7 @@ void Settings::updateToV2()
     }
 
     setDefaultUsername(urlConfig.mUser);
-    QString key = urlConfig.mUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig.mProtocol));
+    QString key = urlConfig.mUrl + u',' + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig.mProtocol));
     QString pass = loadPassword(key, urlConfig.mUser);
     if (!pass.isNull()) {
         setDefaultPassword(pass);
@@ -466,12 +466,12 @@ void Settings::updateToV3()
 
     const auto remoteUrlsLst = remoteUrls();
     for (const QString &url : remoteUrlsLst) {
-        QStringList splitUrl = url.split(QLatin1Char('|'));
+        QStringList splitUrl = url.split(u'|');
 
         if (splitUrl.size() == 3) {
             const KDAV::Protocol protocol = Utils::protocolByTranslatedName(splitUrl.at(1));
             splitUrl[1] = KDAV::ProtocolInfo::protocolName(protocol);
-            updatedUrls << splitUrl.join(QLatin1Char('|'));
+            updatedUrls << splitUrl.join(u'|');
         }
     }
 

@@ -496,7 +496,7 @@ const QChar ResourceTask::separatorCharacter() const
         } else {
             remoteId = collection().remoteId();
         }
-        return ((remoteId != rootRemoteId()) && !remoteId.isEmpty()) ? remoteId.at(0) : QLatin1Char('/');
+        return ((remoteId != rootRemoteId()) && !remoteId.isEmpty()) ? remoteId.at(0) : u'/';
     }
 }
 

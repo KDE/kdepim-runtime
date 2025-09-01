@@ -40,7 +40,7 @@ void EwsAutodiscoveryJob::start()
 
 void EwsAutodiscoveryJob::parseEmail()
 {
-    const int atIndex = mEmail.indexOf(QLatin1Char('@'));
+    const int atIndex = mEmail.indexOf(u'@');
     if (atIndex < 0) {
         setErrorMsg(i18n("Incorrect email address"));
         emitResult();

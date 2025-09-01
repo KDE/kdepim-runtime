@@ -1088,7 +1088,7 @@ void Contact::setFields(const KContacts::Addressee *addressee)
     for (QStringList::ConstIterator it = customs.constBegin(), end = customs.constEnd(); it != end; ++it) {
         // KContacts::Addressee doesn't offer a real way to iterate over customs, other than splitting strings ourselves
         // The format is "app-name:value".
-        int pos = (*it).indexOf(QLatin1Char('-'));
+        int pos = (*it).indexOf(u'-');
         if (pos == -1) {
             continue;
         }
@@ -1097,7 +1097,7 @@ void Contact::setFields(const KContacts::Addressee *addressee)
             continue;
         }
         QString name = (*it).mid(pos + 1);
-        pos = name.indexOf(QLatin1Char(':'));
+        pos = name.indexOf(u':');
         if (pos == -1) {
             continue;
         }

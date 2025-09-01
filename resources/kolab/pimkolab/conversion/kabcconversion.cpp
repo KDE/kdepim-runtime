@@ -399,7 +399,7 @@ static QString emailTypesToStringList(int emailTypes)
     if (emailTypes & Kolab::Email::Work) {
         types << QStringLiteral("work");
     }
-    return types.join(QLatin1Char(','));
+    return types.join(u',');
 }
 
 static int emailTypesFromStringlist(const QString &types)
@@ -768,8 +768,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
 
     Kolab::Crypto crypto;
 
-    const QStringList protocolPrefs =
-        addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("CRYPTOPROTOPREF")).split(QLatin1Char(','), Qt::SkipEmptyParts);
+    const QStringList protocolPrefs = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("CRYPTOPROTOPREF")).split(u',', Qt::SkipEmptyParts);
     const uint cryptoFormats = stringListToCryptoMessageFormats(protocolPrefs);
     int formats = 0;
     if (cryptoFormats & InlineOpenPGPFormat) {

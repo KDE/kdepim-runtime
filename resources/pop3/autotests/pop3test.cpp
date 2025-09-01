@@ -69,14 +69,14 @@ void Pop3Test::initTestCase()
     //
     // Configure the maildir resource
     //
-    QString maildirRootPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1StringView("tester");
+    QString maildirRootPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + u'/' + QLatin1StringView("tester");
     mMaildirPath = maildirRootPath + QLatin1StringView("/new");
     QDir::current().mkpath(mMaildirPath);
     QDir::current().mkpath(maildirRootPath + QLatin1StringView("/tmp"));
 
     QString service = QLatin1StringView("org.freedesktop.Akonadi.Resource.") + mMaildirIdentifier;
     if (Akonadi::ServerManager::hasInstanceIdentifier()) {
-        service += QLatin1Char('.') + Akonadi::ServerManager::instanceIdentifier();
+        service += u'.' + Akonadi::ServerManager::instanceIdentifier();
     }
 
     mMaildirSettingsInterface = new OrgKdeAkonadiMaildirSettingsInterface(service, QStringLiteral("/Settings"), QDBusConnection::sessionBus(), this);
@@ -500,7 +500,7 @@ void Pop3Test::testBigFetch()
         newMail.append(QString::number(i + 1).toLatin1());
         mails << newMail;
         uids << QStringLiteral("UID%1").arg(i + 1);
-        allowedRetrs += QString::number(i + 1) + QLatin1Char(',');
+        allowedRetrs += QString::number(i + 1) + u',';
     }
     allowedRetrs.chop(1);
 
@@ -799,7 +799,7 @@ void Pop3Test::testMixedLeaveRules()
         newMail.append(QString::number(i + 1).toLatin1());
         mails << newMail;
         uids << QStringLiteral("UID%1").arg(i + 1);
-        allowedRetrs += QString::number(i + 1) + QLatin1Char(',');
+        allowedRetrs += QString::number(i + 1) + u',';
     }
     allowedRetrs.chop(1);
 

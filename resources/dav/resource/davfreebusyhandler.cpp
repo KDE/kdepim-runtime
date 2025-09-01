@@ -112,7 +112,7 @@ void DavFreeBusyHandler::onPrincipalSearchJobFinished(KJob *job)
     for (const KDAV::DavPrincipalSearchJob::Result &result : std::as_const(results)) {
         qCDebug(DAVRESOURCE_LOG) << result.value;
         QUrl url(davJob->property("url").toString());
-        if (result.value.startsWith(QLatin1Char('/'))) {
+        if (result.value.startsWith(u'/')) {
             // href is only a path, use request url to complete
             url.setPath(result.value, QUrl::TolerantMode);
         } else {

@@ -28,7 +28,7 @@ static const char *testStringHeaders = "From: theDukeOfMonmouth@uk.gov\n \nTo: t
 
 void MaildirTest::init()
 {
-    QString tmpPath(QDir::tempPath() + QLatin1Char('/') + QLatin1StringView(testDir));
+    QString tmpPath(QDir::tempPath() + u'/' + QLatin1StringView(testDir));
     QDir().mkpath(tmpPath);
     m_temp = new QTemporaryDir(tmpPath);
 
@@ -57,7 +57,7 @@ void MaildirTest::cleanup()
 void MaildirTest::fillDirectory(const QString &name, int limit)
 {
     QFile file;
-    QDir::setCurrent(m_temp->path() + QLatin1Char('/') + name);
+    QDir::setCurrent(m_temp->path() + u'/' + name);
     for (int i = 0; i < limit; i++) {
         file.setFileName(QLatin1StringView("testmail-") + QString::number(i));
         file.open(QIODevice::WriteOnly);
@@ -184,7 +184,7 @@ void MaildirTest::testMaildirAppend()
 void MaildirTest::testMaildirCreation()
 {
     QString p(QStringLiteral("CREATETEST"));
-    QString tmpPath(QDir::tempPath() + QLatin1Char('/') + p);
+    QString tmpPath(QDir::tempPath() + u'/' + p);
     QDir().mkpath(tmpPath);
     std::unique_ptr<QTemporaryDir> temp(new QTemporaryDir(tmpPath));
     Maildir d(temp->path() + p);
@@ -401,7 +401,7 @@ void MaildirTest::testMaildirFlagsWriting()
     // create an initially new mail
     QFile file;
     QDir::setCurrent(m_temp->path());
-    file.setFileName(origDir + QLatin1Char('/') + origFileName);
+    file.setFileName(origDir + u'/' + origFileName);
     file.open(QIODevice::WriteOnly);
     file.write(testString);
     file.flush();
@@ -411,7 +411,7 @@ void MaildirTest::testMaildirFlagsWriting()
     Maildir d(m_temp->path());
     const QStringList entries = d.entryList();
     QCOMPARE(entries.size(), 1);
-    QVERIFY(QFile::exists(origDir + QLatin1Char('/') + entries[0]));
+    QVERIFY(QFile::exists(origDir + u'/' + entries[0]));
     const QString newKey = d.changeEntryFlags(entries[0], Akonadi::Item::Flags() << Akonadi::MessageFlags::Seen);
     // make sure the new key exists
     QCOMPARE(newKey, d.entryList()[0]);

@@ -266,7 +266,7 @@ QString VCardDirResource::vCardDirectoryName() const
 
 QString VCardDirResource::vCardDirectoryFileName(const QString &file) const
 {
-    return VcardDirResourceSettings::self()->path() + QLatin1Char('/') + file;
+    return VcardDirResourceSettings::self()->path() + u'/' + file;
 }
 
 void VCardDirResource::initializeVCardDirectory() const

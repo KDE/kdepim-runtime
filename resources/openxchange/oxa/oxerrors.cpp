@@ -12,8 +12,8 @@ using namespace OXA;
 
 OXErrors::EditErrorID OXErrors::getEditErrorID(const QString &errorText)
 {
-    const int b1Pos = errorText.indexOf(QLatin1Char('['));
-    const int b2Pos = errorText.indexOf(QLatin1Char(']'));
+    const int b1Pos = errorText.indexOf(u'[');
+    const int b2Pos = errorText.indexOf(u']');
     const QString errorID = errorText.mid(b1Pos + 1, b2Pos - b1Pos - 1);
 
     bool ok;

@@ -351,8 +351,8 @@ void DavGroupwareResource::itemChanged(const Akonadi::Item &item, const QSet<QBy
     }
 
     QString ridBase = item.remoteId();
-    if (ridBase.contains(QLatin1Char('#'))) {
-        ridBase.truncate(ridBase.indexOf(QLatin1Char('#')));
+    if (ridBase.contains(u'#')) {
+        ridBase.truncate(ridBase.indexOf(u'#'));
     }
 
     auto cache = mEtagCaches.value(collection.remoteId());
@@ -394,8 +394,8 @@ void DavGroupwareResource::doItemChange(const Akonadi::Item &item, const Akonadi
     }
 
     QString url = item.remoteId();
-    if (url.contains(QLatin1Char('#'))) {
-        url.truncate(url.indexOf(QLatin1Char('#')));
+    if (url.contains(u'#')) {
+        url.truncate(url.indexOf(u'#'));
     }
     const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), url);
 
@@ -428,10 +428,10 @@ void DavGroupwareResource::itemRemoved(const Akonadi::Item &item)
     }
 
     QString ridBase = item.remoteId();
-    if (ridBase.contains(QLatin1Char('#'))) {
+    if (ridBase.contains(u'#')) {
         // A bit tricky: we must remove an incidence contained in a resource
         // containing multiple ones.
-        ridBase.truncate(ridBase.indexOf(QLatin1Char('#')));
+        ridBase.truncate(ridBase.indexOf(u'#'));
 
         auto cache = mEtagCaches.value(collection.remoteId());
         Akonadi::Item::List extraItems;
@@ -474,7 +474,7 @@ void DavGroupwareResource::onItemRemovalPrepared(KJob *job)
         Akonadi::Item mainItem;
         Akonadi::Item::List extraItems;
         QString ridBase = item.remoteId();
-        ridBase.truncate(ridBase.indexOf(QLatin1Char('#')));
+        ridBase.truncate(ridBase.indexOf(u'#'));
 
         for (const Akonadi::Item &kept : keptItems) {
             if (kept.remoteId() == ridBase && extraItems.isEmpty()) {
@@ -626,8 +626,8 @@ void DavGroupwareResource::itemsTagsChanged(const Item::List &items, const QSet<
             akonadiItem.setPayload(incidence);
 
             auto url = akonadiItem.remoteId();
-            if (url.contains(QLatin1Char('#'))) {
-                url.truncate(url.indexOf(QLatin1Char('#')));
+            if (url.contains(u'#')) {
+                url.truncate(url.indexOf(u'#'));
             }
             const auto davUrl = settings()->davUrlFromCollectionUrl(akonadiItem.parentCollection().remoteId(), akonadiItem.remoteId());
 
@@ -1007,8 +1007,8 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
     const auto listJobDeleteItems{listJob->deletedItems()};
     for (const QString &rmd : listJobDeleteItems) {
         // We don't want to delete dependent items if the main item was seen
-        if (rmd.contains(QLatin1Char('#'))) {
-            const QString base = rmd.left(rmd.indexOf(QLatin1Char('#')));
+        if (rmd.contains(u'#')) {
+            const QString base = rmd.left(rmd.indexOf(u'#'));
             if (seenRids.contains(base)) {
                 continue;
             }
@@ -1397,8 +1397,8 @@ void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &loca
         KDAV::DavItem davItem = Utils::createDavItem(localItem, collection, localDependentItems);
 
         QString urlStr = localItem.remoteId();
-        if (urlStr.contains(QLatin1Char('#'))) {
-            urlStr.truncate(urlStr.indexOf(QLatin1Char('#')));
+        if (urlStr.contains(u'#')) {
+            urlStr.truncate(urlStr.indexOf(u'#'));
         }
         const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(collection.remoteId(), urlStr);
         davItem.setUrl(davUrl);

@@ -33,8 +33,8 @@ static QString createUniqueId()
 {
     const qint64 time = QDateTime::currentMSecsSinceEpoch() / 1000;
     const int r = QRandomGenerator::global()->bounded(1000);
-    const QString id = QLatin1Char('R') + QString::number(r);
-    const QString uid = QString::number(time) + QLatin1Char('.') + id;
+    const QString id = u'R' + QString::number(r);
+    const QString uid = QString::number(time) + u'.' + id;
     return uid;
 }
 

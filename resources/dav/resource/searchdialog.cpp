@@ -134,7 +134,7 @@ void SearchDialog::onSearchJobFinished(KJob *job)
 
     const QList<KDAV::DavPrincipalSearchJob::Result> results = davJob->results();
     for (const KDAV::DavPrincipalSearchJob::Result &result : results) {
-        if (result.value.startsWith(QLatin1Char('/'))) {
+        if (result.value.startsWith(u'/')) {
             url.setPath(result.value, QUrl::TolerantMode);
         } else {
             QUrl tmp(result.value);
@@ -176,7 +176,7 @@ void SearchDialog::onCollectionsFetchJobFinished(KJob *job)
 
     for (const KDAV::DavCollection &collection : collections) {
         auto item = new QStandardItem(collection.displayName());
-        QString data(KDAV::ProtocolInfo::protocolName(collection.url().protocol()) + QLatin1Char('|') + collection.url().toDisplayString());
+        QString data(KDAV::ProtocolInfo::protocolName(collection.url().protocol()) + u'|' + collection.url().toDisplayString());
         item->setData(data, Qt::UserRole + 1);
         item->setToolTip(collection.url().toDisplayString());
         if (collection.url().protocol() == KDAV::CalDav) {

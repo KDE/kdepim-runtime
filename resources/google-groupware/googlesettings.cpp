@@ -76,7 +76,7 @@ KGAPI2::AccountPtr GoogleSettings::fetchAccountFromKeychain(const QString &accou
     QDataStream ds(value);
     ds >> map;
 
-    const QStringList scopes = map[QStringLiteral("scopes")].split(QLatin1Char(','), Qt::SkipEmptyParts);
+    const QStringList scopes = map[QStringLiteral("scopes")].split(u',', Qt::SkipEmptyParts);
     QList<QUrl> scopeUrls;
     scopeUrls.reserve(scopes.count());
     for (const QString &scope : scopes) {
@@ -105,7 +105,7 @@ WritePasswordJob *GoogleSettings::storeAccount(AccountPtr account)
     const QMap<QString, QString> map = {
         {QStringLiteral("accessToken"), m_account->accessToken()},
         {QStringLiteral("refreshToken"), m_account->refreshToken()},
-        {QStringLiteral("scopes"), scopes.join(QLatin1Char(','))},
+        {QStringLiteral("scopes"), scopes.join(u',')},
     };
 
     // Legacy: store the map exactly like Kwallet is doing it

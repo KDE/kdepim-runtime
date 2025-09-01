@@ -271,7 +271,7 @@ void SetupServer::saveSettings()
     m_folderArchiveSettingPage->writeSettings();
 
     const MailTransport::Transport::EnumAuthenticationType authtype = getCurrentAuthMode(m_ui->authenticationCombo);
-    if (!m_ui->userName->text().contains(QLatin1Char('@')) && authtype == MailTransport::Transport::EnumAuthenticationType::XOAUTH2
+    if (!m_ui->userName->text().contains(u'@') && authtype == MailTransport::Transport::EnumAuthenticationType::XOAUTH2
         && m_ui->imapServer->text().contains(QLatin1StringView("gmail.com"))) {
         // Normalize gmail username so that it matches the JSON account info returned by GMail authentication.
         // If we don't do this, we will look up cached auth without @gmail.com and save it with @gmail.com => very frequent auth dialog popping up.

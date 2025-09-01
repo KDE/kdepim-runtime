@@ -508,7 +508,7 @@ bool EwsRecurrence::readDow(QXmlStreamReader &reader, QBitArray &dow)
 {
     bool ok;
     QString text = reader.readElementText();
-    const QStringList days = text.split(QLatin1Char(' '));
+    const QStringList days = text.split(u' ');
     for (const QString &day : days) {
         auto dowIndex = decodeEnumString<short>(day, dayOfWeekNames, &ok);
         if (reader.error() != QXmlStreamReader::NoError || !ok) {

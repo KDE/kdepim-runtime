@@ -135,7 +135,7 @@ MessageStatus &KMIndexData::status()
 
 QStringList KMIndexData::tagList() const
 {
-    return mCachedStringParts[KMIndexReader::MsgTagPart].split(QLatin1Char(','), Qt::SkipEmptyParts);
+    return mCachedStringParts[KMIndexReader::MsgTagPart].split(u',', Qt::SkipEmptyParts);
 }
 
 quint64 KMIndexData::uid() const

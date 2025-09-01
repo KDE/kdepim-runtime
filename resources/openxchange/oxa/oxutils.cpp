@@ -25,14 +25,14 @@ QString OXUtils::writeNumber(qlonglong value)
 
 QString OXUtils::writeString(const QString &value)
 {
-    QStringList lines = value.split(QLatin1Char('\n'));
+    QStringList lines = value.split(u'\n');
 
     for (int i = 0; i < lines.count(); ++i) {
-        lines[i].replace(QLatin1Char('\\'), QStringLiteral("\\\\"));
-        lines[i].replace(QLatin1Char('"'), QStringLiteral("\\\""));
+        lines[i].replace(u'\\', QStringLiteral("\\\\"));
+        lines[i].replace(u'"', QStringLiteral("\\\""));
     }
 
-    return lines.join(QLatin1Char('\n'));
+    return lines.join(u'\n');
 }
 
 QString OXUtils::writeName(const QString &value)

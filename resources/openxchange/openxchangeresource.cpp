@@ -96,7 +96,7 @@ private:
     template<typename T>
     static inline RemoteInformation loadImpl(const T &entity)
     {
-        const QStringList parts = entity.remoteRevision().split(QLatin1Char(':'), Qt::KeepEmptyParts);
+        const QStringList parts = entity.remoteRevision().split(u':', Qt::KeepEmptyParts);
 
         OXA::Folder::Module module = OXA::Folder::Unbound;
 
@@ -143,7 +143,7 @@ private:
         parts.append(mLastModified);
 
         entity.setRemoteId(QString::number(mObjectId));
-        entity.setRemoteRevision(parts.join(QLatin1Char(':')));
+        entity.setRemoteRevision(parts.join(u':'));
     }
 
     qlonglong mObjectId;
@@ -157,9 +157,9 @@ public:
     ObjectsLastSync()
     {
         if (!Settings::self()->objectsLastSync().isEmpty()) {
-            const QStringList pairs = Settings::self()->objectsLastSync().split(QLatin1Char(':'), Qt::KeepEmptyParts);
+            const QStringList pairs = Settings::self()->objectsLastSync().split(u':', Qt::KeepEmptyParts);
             for (const QString &pair : pairs) {
-                const QStringList entry = pair.split(QLatin1Char('='), Qt::KeepEmptyParts);
+                const QStringList entry = pair.split(u'=', Qt::KeepEmptyParts);
                 mObjectsMap.insert(entry.at(0).toLongLong(), entry.at(1).toULongLong());
             }
         }
@@ -173,10 +173,10 @@ public:
         QMapIterator<qlonglong, qulonglong> it(mObjectsMap);
         while (it.hasNext()) {
             it.next();
-            pairs.append(QString::number(it.key()) + QLatin1Char('=') + QString::number(it.value()));
+            pairs.append(QString::number(it.key()) + u'=' + QString::number(it.value()));
         }
 
-        Settings::self()->setObjectsLastSync(pairs.join(QLatin1Char(':')));
+        Settings::self()->setObjectsLastSync(pairs.join(u':'));
         Settings::self()->save();
     }
 
@@ -333,7 +333,7 @@ void OpenXchangeResource::cleanup()
     // be nice and remove cache file when resource is removed
     QFile::remove(OXA::Users::self()->cacheFilePath());
 
-    QFile::remove(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1Char('/') + Settings::self()->config()->name());
+    QFile::remove(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + u'/' + Settings::self()->config()->name());
 
     ResourceBase::cleanup();
 }
@@ -907,7 +907,7 @@ static Collection folderToCollection(const OXA::Folder &folder, const Collection
     remoteInformation.store(collection);
 
     // set a unique name to make Akonadi happy
-    collection.setName(folder.title() + QLatin1Char('_') + QUuid::createUuid().toString());
+    collection.setName(folder.title() + u'_' + QUuid::createUuid().toString());
 
     auto attribute = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attribute->setDisplayName(folder.title());

@@ -132,9 +132,9 @@ void BirthdaysResource::contactRetrieved(KJob *job)
         }
         auto contact = contactItem.payload<KContacts::Addressee>();
         KCalendarCore::Incidence::Ptr ev;
-        if (currentItems().at(0).remoteId().startsWith(QLatin1Char('b'))) {
+        if (currentItems().at(0).remoteId().startsWith(u'b')) {
             ev = createBirthday(contact, contactItem.id());
-        } else if (currentItems().at(0).remoteId().startsWith(QLatin1Char('a'))) {
+        } else if (currentItems().at(0).remoteId().startsWith(u'a')) {
             ev = createAnniversary(contact, contactItem.id());
         }
         if (!ev) {
@@ -187,9 +187,9 @@ void BirthdaysResource::contactsRetrieved(KJob *job)
         auto &contact = *it;
 
         KCalendarCore::Incidence::Ptr ev;
-        if (remoteId.startsWith(QLatin1Char('b'))) {
+        if (remoteId.startsWith(u'b')) {
             ev = createBirthday(contact, contactId);
-        } else if (remoteId.startsWith(QLatin1Char('a'))) {
+        } else if (remoteId.startsWith(u'a')) {
             ev = createAnniversary(contact, contactId);
         }
         if (!ev) {
@@ -344,11 +344,11 @@ KCalendarCore::Event::Ptr BirthdaysResource::createAnniversary(const KContacts::
             QString tname, temail;
             KEmailAddress::extractEmailAddressAndName(spouseName, temail, tname);
             tname = KEmailAddress::quoteNameIfNecessary(tname);
-            if ((tname[0] == QLatin1Char('"')) && (tname[tname.length() - 1] == QLatin1Char('"'))) {
+            if ((tname[0] == QLatin1Char('"')) && (tname[tname.length() - 1] == u'"')) {
                 tname.remove(0, 1);
                 tname.chop(1);
             }
-            tname.remove(QLatin1Char('\\')); // remove escape chars
+            tname.remove(u'\\'); // remove escape chars
             KContacts::Addressee spouse;
             spouse.setNameFromString(tname);
             QString name_2 = spouse.nickName();

@@ -86,7 +86,7 @@ static QString intListToString(const QList<int> &intList)
 {
     QString idList;
     for (const int id : intList) {
-        idList += QString::number(id) + QLatin1Char(',');
+        idList += QString::number(id) + u',';
     }
     idList.chop(1);
     return idList;

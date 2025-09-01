@@ -367,7 +367,7 @@ void EwsResource::queueFetchItemsJob(const Akonadi::Collection &col, QueuedFetch
 
     mFetchItemsJobQueue.enqueue({col, type, startFn});
 
-    qCDebugNC(EWSRES_LOG) << QStringLiteral("Sync queue state: ") << dumpResourceToString().replace(QLatin1Char('\n'), QLatin1Char(' '));
+    qCDebugNC(EWSRES_LOG) << QStringLiteral("Sync queue state: ") << dumpResourceToString().replace(QLatin1Char('\n'), u' ');
 
     if (queueEmpty) {
         startFetchItemsJob(col, startFn);

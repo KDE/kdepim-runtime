@@ -151,11 +151,11 @@ void MaildirResource::attemptConfigRestoring(KJob *job)
         // test the path
         if (path.isEmpty()) {
             qCDebug(MAILDIRRESOURCE_LOG) << "build a new path";
-            const QString dataDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/');
+            const QString dataDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + u'/';
             // we use "id" to get an unique path
             path = dataDir;
             if (!defaultResourceType().isEmpty()) {
-                path += defaultResourceType() + QLatin1Char('/');
+                path += defaultResourceType() + u'/';
             }
             path += id;
             qCDebug(MAILDIRRESOURCE_LOG) << "set the path" << path;
@@ -556,7 +556,7 @@ void MaildirResource::collectionAdded(const Collection &collection, const Collec
         changeProcessed();
         return;
     } else {
-        const QString collectionName(collection.name().remove(QLatin1Char('/')));
+        const QString collectionName(collection.name().remove(u'/'));
         const QString newFolderPath = md.addSubFolder(collectionName);
         if (newFolderPath.isEmpty()) {
             changeProcessed();
@@ -601,7 +601,7 @@ void MaildirResource::collectionChanged(const Collection &collection)
         md.create();
     }
 
-    const QString collectionName(collection.name().remove(QLatin1Char('/')));
+    const QString collectionName(collection.name().remove(u'/'));
     if (!md.rename(collectionName)) {
         Q_EMIT error(i18n("Unable to rename maildir folder '%1'.", collection.name()));
         changeProcessed();
@@ -839,7 +839,7 @@ QString MaildirResource::maildirPathForCollection(const Collection &collection) 
     QString path = collection.remoteId();
     Akonadi::Collection parent = collection.parentCollection();
     while (!parent.remoteId().isEmpty()) {
-        path.prepend(parent.remoteId() + QLatin1Char('/'));
+        path.prepend(parent.remoteId() + u'/');
         parent = parent.parentCollection();
     }
 

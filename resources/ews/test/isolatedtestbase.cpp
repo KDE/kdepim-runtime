@@ -90,21 +90,21 @@ TestAgentInstance::TestAgentInstance(const QString &url)
     const QString akonadiInstanceIdentifier = QProcessEnvironment::systemEnvironment().value(QStringLiteral("AKONADI_INSTANCE"));
 
     mEwsSettingsInterface.reset(
-        new OrgKdeAkonadiEwsSettingsInterface(QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier + QLatin1Char('.') + akonadiInstanceIdentifier,
+        new OrgKdeAkonadiEwsSettingsInterface(QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier + u'.' + akonadiInstanceIdentifier,
                                               QStringLiteral("/Settings"),
                                               QDBusConnection::sessionBus(),
                                               this));
     QVERIFY(mEwsSettingsInterface->isValid());
 
     mEwsWalletInterface.reset(
-        new OrgKdeAkonadiEwsWalletInterface(QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier + QLatin1Char('.') + akonadiInstanceIdentifier,
+        new OrgKdeAkonadiEwsWalletInterface(QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier + u'.' + akonadiInstanceIdentifier,
                                             QStringLiteral("/Settings"),
                                             QDBusConnection::sessionBus(),
                                             this));
     QVERIFY(mEwsWalletInterface->isValid());
 
     mEwsResourceInterface.reset(
-        new OrgKdeAkonadiEwsResourceInterface(QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier + QLatin1Char('.') + akonadiInstanceIdentifier,
+        new OrgKdeAkonadiEwsResourceInterface(QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier + u'.' + akonadiInstanceIdentifier,
                                               QStringLiteral("/"),
                                               QDBusConnection::sessionBus(),
                                               this));

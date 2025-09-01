@@ -435,7 +435,7 @@ Result POP3Protocol::loginSASL()
         }
 
         do {
-            result = sasl_client_start(conn, sasl_list.join(QLatin1Char(' ')).toLatin1().constData(), &client_interact, &out, &outlen, &mechusing);
+            result = sasl_client_start(conn, sasl_list.join(u' ').toLatin1().constData(), &client_interact, &out, &outlen, &mechusing);
 
             if (result == SASL_INTERACT) {
                 if (!saslInteract(client_interact)) {
@@ -458,7 +458,7 @@ Result POP3Protocol::loginSASL()
         QString firstCommand = QLatin1StringView("AUTH ") + QString::fromLatin1(mechusing);
         msg = QByteArray::fromRawData(out, outlen).toBase64();
         if (!msg.isEmpty()) {
-            firstCommand += QLatin1Char(' ');
+            firstCommand += u' ';
             firstCommand += QString::fromLatin1(msg.data(), msg.size());
         }
 
@@ -551,7 +551,7 @@ Result POP3Protocol::startSsl()
     if (!encryptionStarted || !errors.isEmpty() || !mSocket->isEncrypted() || cipher.isNull() || cipher.usedBits() == 0) {
         QString errorString = std::accumulate(errors.begin(), errors.end(), QString(), [](QString cur, const QSslError &error) {
             if (!cur.isEmpty())
-                cur += QLatin1Char('\n');
+                cur += u'\n';
             cur += error.errorString();
             return cur;
         });
@@ -721,7 +721,7 @@ Result POP3Protocol::get(const QString &_commandString)
     // Sizes are in bytes.
     // No support for the STAT command has been implemented.
 
-    Q_ASSERT(_commandString.startsWith(QLatin1Char('/')));
+    Q_ASSERT(_commandString.startsWith(u'/'));
     const QString commandString = _commandString.mid(1);
     Q_ASSERT(!commandString.isEmpty());
 
@@ -729,11 +729,11 @@ Result POP3Protocol::get(const QString &_commandString)
     char destbuf[MAX_PACKET_LEN];
     const int maxCommands = mSettings.pipelining() ? MAX_COMMANDS : 1;
 
-    if (commandString.indexOf(QLatin1Char('/')) == -1 && commandString != QLatin1StringView("index") && commandString != QLatin1StringView("uidl")) {
+    if (commandString.indexOf(u'/') == -1 && commandString != QLatin1StringView("index") && commandString != QLatin1StringView("uidl")) {
         return Result::fail(ERR_INTERNAL, i18n("Internal error: missing argument for command %1", commandString));
     }
 
-    const int slashPos = commandString.indexOf(QLatin1Char('/'));
+    const int slashPos = commandString.indexOf(u'/');
     const QString cmd = commandString.left(slashPos);
     const QString path = commandString.mid(slashPos + 1);
 
@@ -769,7 +769,7 @@ Result POP3Protocol::get(const QString &_commandString)
         }
         qCDebug(POP3_LOG) << "Finishing up list";
     } else if (cmd == QLatin1StringView("remove")) {
-        const QStringList waitingCommands = path.split(QLatin1Char(','));
+        const QStringList waitingCommands = path.split(u',');
         int activeCommands = 0;
         QStringList::ConstIterator it = waitingCommands.begin();
         while (it != waitingCommands.end() || activeCommands > 0) {
@@ -782,7 +782,7 @@ Result POP3Protocol::get(const QString &_commandString)
             activeCommands--;
         }
     } else if (cmd == QLatin1StringView("download")) {
-        const QStringList waitingCommands = path.split(QLatin1Char(','), Qt::SkipEmptyParts);
+        const QStringList waitingCommands = path.split(u',', Qt::SkipEmptyParts);
         if (waitingCommands.isEmpty()) {
             qCDebug(POP3_LOG) << "tried to request" << cmd << "for" << path << "with no specific item to get";
             closeConnection();

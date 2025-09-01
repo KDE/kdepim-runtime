@@ -149,7 +149,7 @@ public:
             return false;
         }
 
-        path = dest.path() + QLatin1Char('/') + newName;
+        path = dest.path() + u'/' + newName;
         return true;
     }
 
@@ -243,7 +243,7 @@ bool Maildir::isValid(bool createMissingFolders) const
     } else {
         const QStringList lstMaildir = subFolderList();
         for (const QString &sf : lstMaildir) {
-            const Maildir subMd = Maildir(path() + QLatin1Char('/') + sf);
+            const Maildir subMd = Maildir(path() + u'/' + sf);
             if (!subMd.isValid(createMissingFolders)) {
                 d->lastError = subMd.lastError();
                 return false;
@@ -302,7 +302,7 @@ QString Maildir::addSubFolder(const QString &path)
         dir.cd(d->subDirPath());
     }
 
-    const QString fullPath = dir.path() + QLatin1Char('/') + path;
+    const QString fullPath = dir.path() + u'/' + path;
     Maildir subdir(fullPath);
     if (subdir.create()) {
         return fullPath;
@@ -328,10 +328,10 @@ bool Maildir::removeSubFolder(const QString &folderName)
     }
 
     // remove it recursively
-    bool result = QDir(dir.absolutePath() + QLatin1Char('/') + folderName).removeRecursively();
+    bool result = QDir(dir.absolutePath() + u'/' + folderName).removeRecursively();
     QString subfolderName = subDirNameForFolderName(folderName);
     if (dir.exists(subfolderName)) {
-        result &= QDir(dir.absolutePath() + QLatin1Char('/') + subfolderName).removeRecursively();
+        result &= QDir(dir.absolutePath() + u'/' + subfolderName).removeRecursively();
     }
     return result;
 }
@@ -346,7 +346,7 @@ Maildir Maildir::subFolder(const QString &subFolder) const
             dir.cd(d->subDirPath());
         }
     }
-    return Maildir(dir.path() + QLatin1Char('/') + subFolder);
+    return Maildir(dir.path() + u'/' + subFolder);
 }
 
 Maildir Maildir::parent() const
@@ -356,7 +356,7 @@ Maildir Maildir::parent() const
     }
     QDir dir(d->path);
     dir.cdUp();
-    if (!dir.dirName().startsWith(QLatin1Char('.')) || !dir.dirName().endsWith(QLatin1StringView(".directory"))) {
+    if (!dir.dirName().startsWith(u'.') || !dir.dirName().endsWith(QLatin1StringView(".directory"))) {
         return Maildir();
     }
     const QString parentName = dir.dirName().mid(1, dir.dirName().size() - 11);
@@ -418,7 +418,7 @@ QString Maildir::subDirPath() const
 {
     QDir dir(d->path);
     dir.cdUp();
-    return dir.path() + QLatin1Char('/') + d->subDirPath();
+    return dir.path() + u'/' + d->subDirPath();
 }
 
 QStringList Maildir::subFolderList() const
@@ -541,7 +541,7 @@ static QString createUniqueFileName()
     const int r = QRandomGenerator::global()->bounded(1000);
     const QString identifier = QLatin1StringView("R") + QString::number(r);
 
-    QString fileName = QString::number(time) + QLatin1Char('.') + identifier + QLatin1Char('.');
+    QString fileName = QString::number(time) + QLatin1Char('.') + identifier + u'.';
 
     return fileName;
 }
@@ -685,7 +685,7 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
             const QString currentPath = d->path + QLatin1StringView("/cur/");
             while (QFile::exists(currentPath + newFinalKey)) {
                 i++;
-                newFinalKey = QString::number(i) + QLatin1Char('-') + newUniqueKey;
+                newFinalKey = QString::number(i) + u'-' + newUniqueKey;
             }
             finalKey = currentPath + newFinalKey;
         } else {
@@ -717,13 +717,13 @@ Akonadi::Item::Flags Maildir::readEntryFlags(const QString &key) const
         const int flagSize(mailDirFlags.size());
         for (int i = 0; i < flagSize; ++i) {
             const QChar flag = mailDirFlags.at(i);
-            if (flag == QLatin1Char('P')) {
+            if (flag == u'P') {
                 flags << Akonadi::MessageFlags::Forwarded;
-            } else if (flag == QLatin1Char('R')) {
+            } else if (flag == u'R') {
                 flags << Akonadi::MessageFlags::Replied;
-            } else if (flag == QLatin1Char('S')) {
+            } else if (flag == u'S') {
                 flags << Akonadi::MessageFlags::Seen;
-            } else if (flag == QLatin1Char('F')) {
+            } else if (flag == u'F') {
                 flags << Akonadi::MessageFlags::Flagged;
             }
         }

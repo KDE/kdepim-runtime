@@ -35,7 +35,7 @@ void SyncTest::initTestCase()
 
     QString service = QLatin1StringView("org.freedesktop.Akonadi.Resource.") + mMaildirIdentifier;
     if (Akonadi::ServerManager::hasInstanceIdentifier()) {
-        service += QLatin1Char('.') + Akonadi::ServerManager::instanceIdentifier();
+        service += u'.' + Akonadi::ServerManager::instanceIdentifier();
     }
 
     OrgKdeAkonadiMaildirSettingsInterface interface(service, QStringLiteral("/"), QDBusConnection::sessionBus());

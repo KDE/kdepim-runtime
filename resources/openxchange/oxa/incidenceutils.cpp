@@ -43,7 +43,7 @@ static void parseMembersAttribute(const QDomElement &element, const KCalendarCor
                 }
 
                 name = uid;
-                email = uid + QLatin1Char('@') + DavManager::self()->baseUrl().host();
+                email = uid + u'@' + DavManager::self()->baseUrl().host();
             } else {
                 name = user.name();
                 email = user.email();
@@ -232,7 +232,7 @@ static void parseRecurrence(const QDomElement &element, const KCalendarCore::Inc
             yearlyMonth = text.toInt() + 1; // starts at 0
             yearly2Month = text.toInt() + 1;
         } else if ((tagName == QLatin1StringView("deleteexceptions")) || (tagName == QLatin1StringView("changeexceptions"))) {
-            const QStringList exceptionDates = text.split(QLatin1Char(','));
+            const QStringList exceptionDates = text.split(u',');
             deleteExceptions.reserve(exceptionDates.count());
             for (const QString &date : exceptionDates) {
                 deleteExceptions.append(OXUtils::readDate(date));
@@ -482,7 +482,7 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
         dates.append(OXUtils::writeDate(date));
     }
 
-    DAVUtils::addOxElement(document, parent, QStringLiteral("deleteexceptions"), dates.join(QLatin1Char(',')));
+    DAVUtils::addOxElement(document, parent, QStringLiteral("deleteexceptions"), dates.join(u','));
 
     // TODO: changeexceptions
 }

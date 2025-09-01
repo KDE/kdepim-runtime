@@ -71,7 +71,7 @@ void KolabBase::setFields(const KContacts::Addressee *addressee)
 
     setUid(addressee->uid());
     setBody(addressee->note());
-    setCategories(addressee->categories().join(QLatin1Char(',')));
+    setCategories(addressee->categories().join(u','));
 
     // Set creation-time and last-modification-time
     const QString creationString = addressee->custom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate"));
@@ -123,7 +123,7 @@ void KolabBase::saveTo(KContacts::Addressee *addressee) const
 {
     addressee->setUid(uid());
     addressee->setNote(body());
-    addressee->setCategories(categories().split(QLatin1Char(','), Qt::SkipEmptyParts));
+    addressee->setCategories(categories().split(u',', Qt::SkipEmptyParts));
     if (mTimeZone.isValid()) {
         addressee->setRevision(lastModified().toTimeZone(mTimeZone));
     }

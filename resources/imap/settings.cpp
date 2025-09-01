@@ -320,7 +320,7 @@ void Settings::loadAccount(ImapAccount *account) const
 
 QString Settings::rootRemoteId() const
 {
-    return QStringLiteral("imap://") + userName() + QLatin1Char('@') + imapServer() + QLatin1Char('/');
+    return QStringLiteral("imap://") + userName() + QLatin1Char('@') + imapServer() + u'/';
 }
 
 void Settings::renameRootCollection(const QString &newName)

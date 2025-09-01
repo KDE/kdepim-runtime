@@ -205,7 +205,7 @@ bool EwsRequest::readSoapBody(QXmlStreamReader &reader)
 }
 QPair<QStringView, QString> EwsRequest::parseNamespacedString(const QString &str, const QXmlStreamNamespaceDeclarations &namespaces)
 {
-    const auto tokens = str.split(QLatin1Char(':'));
+    const auto tokens = str.split(u':');
     switch (tokens.count()) {
     case 1:
         return {QStringView(), str};

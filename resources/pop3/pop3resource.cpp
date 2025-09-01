@@ -390,7 +390,7 @@ void POP3Resource::localFolderRequestJobFinished(KJob *job)
     if (job->error()) {
         cancelSync(i18n("Error while trying to get the local inbox folder, "
                         "aborting mail check.")
-                   + QLatin1Char('\n') + job->errorString());
+                   + u'\n' + job->errorString());
         return;
     }
     if (mTestLocalInbox) {
@@ -418,7 +418,7 @@ void POP3Resource::targetCollectionFetchJobFinished(KJob *job)
         } else {
             cancelSync(i18n("Error while trying to get the folder for incoming mail, "
                             "aborting mail check.")
-                       + QLatin1Char('\n') + job->errorString());
+                       + u'\n' + job->errorString());
             mTestLocalInbox = false;
             return;
         }
@@ -440,7 +440,7 @@ void POP3Resource::targetCollectionFetchJobFinished(KJob *job)
 void POP3Resource::precommandResult(KJob *job)
 {
     if (job->error()) {
-        cancelSync(i18n("Error while executing precommand.") + QLatin1Char('\n') + job->errorString());
+        cancelSync(i18n("Error while executing precommand.") + u'\n' + job->errorString());
         return;
     } else {
         advanceState(RequestPassword);
@@ -454,7 +454,7 @@ void POP3Resource::loginJobResult(KJob *job)
         if (job->error() == POP3Protocol::ERR_CANNOT_LOGIN) {
             mAskAgain = true;
         }
-        cancelSync(i18n("Unable to login to the server \"%1\".", mSettings.host()) + QLatin1Char('\n') + job->errorString());
+        cancelSync(i18n("Unable to login to the server \"%1\".", mSettings.host()) + u'\n' + job->errorString());
     } else {
         advanceState(List);
     }
@@ -463,7 +463,7 @@ void POP3Resource::loginJobResult(KJob *job)
 void POP3Resource::listJobResult(KJob *job)
 {
     if (job->error()) {
-        cancelSync(i18n("Error while getting the list of messages on the server.") + QLatin1Char('\n') + job->errorString());
+        cancelSync(i18n("Error while getting the list of messages on the server.") + u'\n' + job->errorString());
     } else {
         auto listJob = qobject_cast<ListJob *>(job);
         Q_ASSERT(listJob);
@@ -477,7 +477,7 @@ void POP3Resource::listJobResult(KJob *job)
 void POP3Resource::uidListJobResult(KJob *job)
 {
     if (job->error()) {
-        cancelSync(i18n("Error while getting list of unique mail identifiers from the server.") + QLatin1Char('\n') + job->errorString());
+        cancelSync(i18n("Error while getting list of unique mail identifiers from the server.") + u'\n' + job->errorString());
     } else {
         auto listJob = qobject_cast<UIDListJob *>(job);
         Q_ASSERT(listJob);
@@ -505,7 +505,7 @@ void POP3Resource::uidListJobResult(KJob *job)
 void POP3Resource::fetchJobResult(KJob *job)
 {
     if (job->error()) {
-        cancelSync(i18n("Error while fetching mails from the server.") + QLatin1Char('\n') + job->errorString());
+        cancelSync(i18n("Error while fetching mails from the server.") + u'\n' + job->errorString());
         return;
     } else {
         qCDebug(POP3RESOURCE_LOG) << "Downloaded" << mDownloadedIDs.size() << "mails";
@@ -597,7 +597,7 @@ void POP3Resource::itemCreateJobResult(KJob *job)
     Q_ASSERT(createJob);
 
     if (job->error()) {
-        cancelSync(i18n("Unable to store downloaded mails.") + QLatin1Char('\n') + job->errorString());
+        cancelSync(i18n("Unable to store downloaded mails.") + u'\n' + job->errorString());
         return;
     }
 
@@ -745,7 +745,7 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
 void POP3Resource::deleteJobResult(KJob *job)
 {
     if (job->error()) {
-        cancelSync(i18n("Failed to delete the messages from the server.") + QLatin1Char('\n') + job->errorString());
+        cancelSync(i18n("Failed to delete the messages from the server.") + u'\n' + job->errorString());
         return;
     }
 
@@ -817,7 +817,7 @@ bool POP3Resource::shouldAdvanceToQuitState() const
 void POP3Resource::quitJobResult(KJob *job)
 {
     if (job->error()) {
-        cancelSync(i18n("Unable to complete the mail fetch.") + QLatin1Char('\n') + job->errorString());
+        cancelSync(i18n("Unable to complete the mail fetch.") + u'\n' + job->errorString());
         return;
     }
 

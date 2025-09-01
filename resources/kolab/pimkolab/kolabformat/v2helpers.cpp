@@ -225,7 +225,7 @@ QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString
         const QString tagName = e.tagName();
         if (tagName == QLatin1StringView("language")) {
             language = e.text();
-        } else if (tagName == QLatin1Char('e')) {
+        } else if (tagName == u'e') {
             dictionary.append(e.text());
         }
     }

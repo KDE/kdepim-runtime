@@ -226,10 +226,10 @@ QString UtEwsOAuth::formatJsonSorted(const QVariantMap &map)
     QStringList elems;
     for (const auto &key : std::as_const(keys)) {
         QString val = map[key].toString();
-        val.replace(QLatin1Char('"'), QStringLiteral("\\\""));
+        val.replace(u'"', QStringLiteral("\\\""));
         elems.append(QStringLiteral("\"%1\":\"%2\"").arg(key, val));
     }
-    return QStringLiteral("{") + elems.join(QLatin1Char(',')) + QStringLiteral("}");
+    return QStringLiteral("{") + elems.join(u',') + QStringLiteral("}");
 }
 
 int UtEwsOAuth::performAuthAction(EwsOAuth &oAuth, int timeout, std::function<bool(EwsOAuth *)> actionFn)

@@ -26,9 +26,9 @@ static const QMap<QString, QCA::CertificateInfoTypeKnown> stringToKnownCertInfoT
 static QMultiMap<QCA::CertificateInfoType, QString> parseCertSubjectInfo(const QString &info)
 {
     QMultiMap<QCA::CertificateInfoType, QString> map;
-    const auto infos{info.split(QLatin1Char(','), Qt::SkipEmptyParts)};
+    const auto infos{info.split(u',', Qt::SkipEmptyParts)};
     for (const auto &token : infos) {
-        const auto keyval = token.trimmed().split(QLatin1Char('='));
+        const auto keyval = token.trimmed().split(u'=');
         if (keyval.count() == 2) {
             if (stringToKnownCertInfoType.contains(keyval[0])) {
                 map.insert(stringToKnownCertInfoType[keyval[0]], keyval[1]);
@@ -42,7 +42,7 @@ static QMultiMap<QCA::CertificateInfoType, QString> parseCertSubjectInfo(const Q
 static QString escapeSlashes(const QString &str)
 {
     QString result = str;
-    return result.replace(QLatin1Char('/'), QStringLiteral("\\/"));
+    return result.replace(u'/', QStringLiteral("\\/"));
 }
 
 EwsPKeyAuthJob::EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword, QObject *parent)

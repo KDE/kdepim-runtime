@@ -390,7 +390,7 @@ EwsItem::EwsItem(QXmlStreamReader &reader)
         d->mType = EwsItemTypeItem;
         const auto subtype = reader.attributes().value(QStringLiteral("xsi:type"));
         if (!subtype.isEmpty()) {
-            auto tokens = subtype.split(QLatin1Char(':'));
+            auto tokens = subtype.split(u':');
             const auto type = tokens.size() == 1 ? tokens[0] : tokens[1];
             if (type == QLatin1StringView("AbchPersonItemType")) {
                 d->mType = EwsItemTypeAbchPerson;

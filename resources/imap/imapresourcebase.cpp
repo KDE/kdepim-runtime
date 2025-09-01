@@ -197,8 +197,7 @@ void ImapResourceBase::updateResourceName()
 {
     if (name() == identifier()) {
         const QString agentType = AgentManager::self()->instance(identifier()).type().identifier();
-        const QString agentsrcFile =
-            QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QLatin1Char('/') + QLatin1StringView("akonadi/agentsrc");
+        const QString agentsrcFile = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + u'/' + QLatin1StringView("akonadi/agentsrc");
 
         const QSettings agentsrc(agentsrcFile, QSettings::IniFormat);
         const int instanceCounter = agentsrc.value(QStringLiteral("InstanceCounters/%1/InstanceCounter").arg(agentType), -1).toInt();
@@ -488,7 +487,7 @@ void ImapResourceBase::setSeparatorCharacter(QChar separator)
 
 bool ImapResourceBase::needsNetwork() const
 {
-    const QString hostName = settings()->imapServer().section(QLatin1Char(':'), 0, 0);
+    const QString hostName = settings()->imapServer().section(u':', 0, 0);
     // ### is there a better way to do this?
     if (hostName == QLatin1StringView("127.0.0.1") || hostName == QLatin1StringView("localhost") || hostName == QHostInfo::localHostName()) {
         return false;
