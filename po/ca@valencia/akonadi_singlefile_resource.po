@@ -36,8 +36,8 @@ msgid ""
 "Select settings of the directory whose contents should be represented by "
 "this resource."
 msgstr ""
-"Selecciona les opcions de configuració del directori el contingut del qual "
-"s'ha de representar per a este recurs."
+"Tria les opcions de configuració del directori el contingut del qual s'ha de "
+"representar per a este recurs."
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: settingsdialog.ui:39
@@ -64,7 +64,7 @@ msgid ""
 "Select the directory whose contents should be represented by this resource. "
 "If the directory does not exist, it will be created."
 msgstr ""
-"Seleccioneu el directori el contingut del qual s'ha de representar amb este "
+"Trieu el directori el contingut del qual s'ha de representar amb este "
 "recurs. Si el directori no existix, es crearà."
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -138,7 +138,7 @@ msgstr "Interval de temps d'autoguardat (en minuts)."
 #, kde-format
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr ""
-"Seleccioneu l'interval de temps d'autoguardat per a les dades del recurs (en "
+"Trieu l'interval de temps d'autoguardat per a les dades del recurs (en "
 "minuts)."
 
 #: singlefileresource.h:68
@@ -246,8 +246,8 @@ msgid ""
 "Select a local file or a remote URL to download a file from. A new local "
 "file will be created if it doesn't exist."
 msgstr ""
-"Seleccioneu un fitxer local o un URL remot des d'on descarregar un fitxer. "
-"Es crearà un fitxer local nou si no existix."
+"Trieu un fitxer local o un URL remot des d'on descarregar un fitxer. Es "
+"crearà un fitxer local nou si no existix."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79

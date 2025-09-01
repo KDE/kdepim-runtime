@@ -75,8 +75,7 @@ msgstr "No s'ha pogut iniciar l'aplicació KMail."
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Select which folders to monitor for new message notifications:"
-msgstr ""
-"Seleccioneu quines carpetes vigilar per a les notificacions de missatge nou:"
+msgstr "Trieu quines carpetes vigilar per a les notificacions de missatge nou:"
 
 #: newmailnotifierselectcollectionwidget.cpp:125
 #, kde-format

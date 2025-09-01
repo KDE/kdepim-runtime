@@ -106,7 +106,7 @@ msgstr "Contrasenya:"
 #, kde-format
 msgid "Select this to reduce the load on the server and speed-up your syncs"
 msgstr ""
-"Seleccioneu açò per a reduir la càrrega al servidor i accelerar les "
+"Trieu açò per a reduir la càrrega al servidor i accelerar les "
 "sincronitzacions"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
@@ -129,7 +129,7 @@ msgstr "Interval límit de temps de recuperació"
 #: configwidget.ui:152
 #, kde-format
 msgid "Only sync data more recent than"
-msgstr "Només sincronitza les dades més recents que"
+msgstr "Sincronitza només les dades més recents que"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
 #: configwidget.ui:191
@@ -593,7 +593,7 @@ msgstr "S'ha trobat un proveïdor predefinit"
 #: setupwizard.cpp:279
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
-msgstr "Seleccioneu-ho si voleu utilitzar el proveïdor detectat automàticament"
+msgstr "Trieu-ho si voleu utilitzar el proveïdor detectat automàticament"
 
 #: setupwizard.cpp:298
 #, kde-format
@@ -621,8 +621,7 @@ msgstr "Servidor de treball en grup"
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr ""
-"Seleccioneu el servidor de treball en grup per al qual s'ha de configurar el "
-"recurs"
+"Trieu el servidor de treball en grup per al qual s'ha de configurar el recurs"
 
 #: setupwizard.cpp:359
 #, kde-format

@@ -284,8 +284,7 @@ msgstr "Configureu el directori de correu"
 #: settings.ui:21
 #, kde-format
 msgid "Select the folder containing the maildir information:"
-msgstr ""
-"Seleccioneu la carpeta que conté la informació del directori de correu:"
+msgstr "Trieu la carpeta que conté la informació del directori de correu:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: settings.ui:31

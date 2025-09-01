@@ -80,7 +80,7 @@ msgid ""
 "Select the directory whose contents should be represented by this resource. "
 "If the directory does not exist, it will be created."
 msgstr ""
-"Seleccioneu el directori el contingut del qual s'ha de representar amb este "
+"Trieu el directori el contingut del qual s'ha de representar amb este "
 "recurs. Si el directori no existix, es crearà."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
