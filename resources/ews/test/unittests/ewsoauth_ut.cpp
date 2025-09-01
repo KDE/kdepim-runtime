@@ -75,12 +75,12 @@ void UtEwsOAuth::initialInteractiveSuccessful()
         oAuth->init();
         return true;
     });
-    QVERIFY(initStatus == 1);
+    QCOMPARE(initStatus, 1);
 
     const auto authStatus = performAuthAction(oAuth, 2000, [](EwsOAuth *oAuth) {
         return oAuth->authenticate(true);
     });
-    QVERIFY(authStatus == 0);
+    QCOMPARE(authStatus, 0);
 
     const auto authUrlString = Mock::authUrlString(authUrl, testClientId, testReturnUri, testEmail, resource, testState);
     const QStringList expectedEvents = {
@@ -99,7 +99,7 @@ void UtEwsOAuth::initialInteractiveSuccessful()
         Mock::tokenCallbackString(accessToken1, refreshToken1, idToken1, time, tokenLifetime, extTokenLifetime, resource)};
     dumpEvents(events, expectedEvents);
 
-    QVERIFY(events == expectedEvents);
+    QCOMPARE(events, expectedEvents);
 }
 
 void UtEwsOAuth::initialRefreshSuccessful()
@@ -130,12 +130,12 @@ void UtEwsOAuth::initialRefreshSuccessful()
         oAuth->init();
         return true;
     });
-    QVERIFY(initStatus == 1);
+    QCOMPARE(initStatus, 1);
 
     const auto authStatus = performAuthAction(oAuth, 2000, [](EwsOAuth *oAuth) {
         return oAuth->authenticate(true);
     });
-    QVERIFY(authStatus == 0);
+    QCOMPARE(authStatus, 0);
 
     const auto authUrlString = Mock::authUrlString(authUrl, testClientId, testReturnUri, testEmail, resource, testState);
     const QStringList expectedEvents = {Mock::requestWalletMapString(),
@@ -145,7 +145,7 @@ void UtEwsOAuth::initialRefreshSuccessful()
                                         Mock::tokenCallbackString(accessToken1, refreshToken1, idToken1, time, tokenLifetime, extTokenLifetime, resource)};
     dumpEvents(events, expectedEvents);
 
-    QVERIFY(events == expectedEvents);
+    QCOMPARE(events, expectedEvents);
 }
 
 void UtEwsOAuth::refreshSuccessful()
@@ -174,12 +174,12 @@ void UtEwsOAuth::refreshSuccessful()
         oAuth->init();
         return true;
     });
-    QVERIFY(initStatus == 1);
+    QCOMPARE(initStatus, 1);
 
     const auto authStatus = performAuthAction(oAuth, 2000, [](EwsOAuth *oAuth) {
         return oAuth->authenticate(true);
     });
-    QVERIFY(authStatus == 0);
+    QCOMPARE(authStatus, 0);
 
     const auto authUrlString = Mock::authUrlString(authUrl, testClientId, testReturnUri, testEmail, resource, testState);
     const QStringList expectedEvents = {
@@ -198,7 +198,7 @@ void UtEwsOAuth::refreshSuccessful()
         Mock::tokenCallbackString(accessToken1, refreshToken1, idToken1, time, tokenLifetime, extTokenLifetime, resource)};
     dumpEvents(events, expectedEvents);
 
-    QVERIFY(events == expectedEvents);
+    QCOMPARE(events, expectedEvents);
 
     events.clear();
 
@@ -207,7 +207,7 @@ void UtEwsOAuth::refreshSuccessful()
     const auto reauthStatus = performAuthAction(oAuth, 2000, [](EwsOAuth *oAuth) {
         return oAuth->authenticate(false);
     });
-    QVERIFY(reauthStatus == 0);
+    QCOMPARE(reauthStatus, 0);
 
     const QStringList expectedEventsRefresh = {
         Mock::modifyParamsTokenString(testClientId, testReturnUri, refreshToken1),
@@ -216,7 +216,7 @@ void UtEwsOAuth::refreshSuccessful()
         Mock::tokenCallbackString(accessToken1, refreshToken1, idToken1, time, tokenLifetime, extTokenLifetime, resource)};
     dumpEvents(events, expectedEvents);
 
-    QVERIFY(events == expectedEventsRefresh);
+    QCOMPARE(events, expectedEventsRefresh);
 }
 
 QString UtEwsOAuth::formatJsonSorted(const QVariantMap &map)

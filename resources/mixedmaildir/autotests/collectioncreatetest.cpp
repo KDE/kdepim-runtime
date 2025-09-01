@@ -112,7 +112,7 @@ void CollectionCreateTest::testEmptyDir()
 
     collection1 = job->collection();
     QVERIFY(!collection1.remoteId().isEmpty());
-    QVERIFY(collection1.parentCollection() == mStore->topLevelCollection());
+    QCOMPARE(collection1.parentCollection(), mStore->topLevelCollection());
 
     QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1"));
     KPIM::Maildir md1 = topLevelMd.subFolder(collection1.remoteId());
@@ -128,7 +128,7 @@ void CollectionCreateTest::testEmptyDir()
 
     collection2 = job->collection();
     QVERIFY(!collection2.remoteId().isEmpty());
-    QVERIFY(collection2.parentCollection() == mStore->topLevelCollection());
+    QCOMPARE(collection2.parentCollection(), mStore->topLevelCollection());
 
     QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1") << QStringLiteral("collection2"));
     KPIM::Maildir md2 = topLevelMd.subFolder(collection2.remoteId());
@@ -145,7 +145,7 @@ void CollectionCreateTest::testEmptyDir()
 
     collection1_1 = job->collection();
     QVERIFY(!collection1_1.remoteId().isEmpty());
-    QVERIFY(collection1_1.parentCollection() == collection1);
+    QCOMPARE(collection1_1.parentCollection(), collection1);
 
     QCOMPARE(md1.subFolderList(), QStringList() << QStringLiteral("collection1_1"));
     KPIM::Maildir md1_1 = md1.subFolder(collection1_1.remoteId());
@@ -161,7 +161,7 @@ void CollectionCreateTest::testEmptyDir()
 
     collection1_2 = job->collection();
     QVERIFY(!collection1_2.remoteId().isEmpty());
-    QVERIFY(collection1_2.parentCollection() == collection1);
+    QCOMPARE(collection1_2.parentCollection(), collection1);
 
     QCOMPARE(md1.subFolderList(), QStringList() << QStringLiteral("collection1_1") << QStringLiteral("collection1_2"));
     KPIM::Maildir md1_2 = md1.subFolder(collection1_2.remoteId());
@@ -194,7 +194,7 @@ void CollectionCreateTest::testMaildirTree()
 
     collection1 = job->collection();
     QVERIFY(!collection1.remoteId().isEmpty());
-    QVERIFY(collection1.parentCollection() == mStore->topLevelCollection());
+    QCOMPARE(collection1.parentCollection(), mStore->topLevelCollection());
 
     Collection collection2;
     collection2.setName(QStringLiteral("collection2"));
@@ -206,7 +206,7 @@ void CollectionCreateTest::testMaildirTree()
 
     collection2 = job->collection();
     QVERIFY(!collection2.remoteId().isEmpty());
-    QVERIFY(collection2.parentCollection() == mStore->topLevelCollection());
+    QCOMPARE(collection2.parentCollection(), mStore->topLevelCollection());
 
     QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1") << QStringLiteral("collection2"));
     KPIM::Maildir md2 = topLevelMd.subFolder(collection2.remoteId());
@@ -285,7 +285,7 @@ void CollectionCreateTest::testMixedTree()
 
     collection2 = job->collection();
     QVERIFY(!collection2.remoteId().isEmpty());
-    QVERIFY(collection2.parentCollection() == mStore->topLevelCollection());
+    QCOMPARE(collection2.parentCollection(), mStore->topLevelCollection());
 
     // mbox does not show up as a maildir subfolder
     QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection2"));

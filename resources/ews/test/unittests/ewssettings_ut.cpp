@@ -246,7 +246,7 @@ void UtEwsSettings::readNoPassword()
 
     QVERIFY(error != true);
 
-    QVERIFY(loop.exec() == 0);
+    QCOMPARE(loop.exec(), 0);
 
     QVERIFY(password.isNull());
     QVERIFY(hasFolderCalled);
@@ -287,7 +287,7 @@ void UtEwsSettings::readNullWallet()
 
     QVERIFY(error != true);
 
-    QVERIFY(loop.exec() == 0);
+    QCOMPARE(loop.exec(), 0);
 
     QVERIFY(password.isNull());
 }
@@ -342,7 +342,7 @@ void UtEwsSettings::readTimeout()
 
     QVERIFY(error != true);
 
-    QVERIFY(loop.exec() == 0);
+    QCOMPARE(loop.exec(), 0);
 
     QVERIFY(password.isNull());
     QVERIFY(!hasFolderCalled);
@@ -406,13 +406,13 @@ void UtEwsSettings::readTimeoutInterrupted()
 
     QVERIFY(error != true);
 
-    QVERIFY(loop.exec() == 0);
+    QCOMPARE(loop.exec(), 0);
 
-    QVERIFY(password == QLatin1StringView("foo"));
+    QCOMPARE(password, QLatin1StringView("foo"));
     QVERIFY(!hasFolderCalled);
 
     // Check for second passwordRequestFinished signal
-    QVERIFY(loop.exec() == 2);
+    QCOMPARE(loop.exec(), 2);
 }
 
 void UtEwsSettings::readValidPassword()
@@ -475,9 +475,9 @@ void UtEwsSettings::readValidPassword()
 
     QVERIFY(error != true);
 
-    QVERIFY(loop.exec() == 0);
+    QCOMPARE(loop.exec(), 0);
 
-    QVERIFY(password == QLatin1StringView("foo"));
+    QCOMPARE(password, QLatin1StringView("foo"));
     QVERIFY(hasFolderCalled);
     QVERIFY(setFolderCalled);
 }
@@ -520,7 +520,7 @@ void UtEwsSettings::writeNullPassword()
 
     QVERIFY(error != true);
 
-    QVERIFY(loop.exec() == 0);
+    QCOMPARE(loop.exec(), 0);
 }
 
 void UtEwsSettings::writeNullWallet()
@@ -560,7 +560,7 @@ void UtEwsSettings::writeNullWallet()
 
     QVERIFY(error != true);
 
-    QVERIFY(loop.exec() == 0);
+    QCOMPARE(loop.exec(), 0);
 }
 
 void UtEwsSettings::writeTimeout()
@@ -621,7 +621,7 @@ void UtEwsSettings::writeTimeout()
 
     QVERIFY(error != true);
 
-    QVERIFY(loop.exec() == 2);
+    QCOMPARE(loop.exec(), 2);
 
     QVERIFY(password.isNull());
     QVERIFY(!hasFolderCalled);
@@ -688,9 +688,9 @@ void UtEwsSettings::writeValidPassword()
 
     QVERIFY(error != true);
 
-    QVERIFY(loop.exec() == 0);
+    QCOMPARE(loop.exec(), 0);
 
-    QVERIFY(password == QLatin1StringView("foo"));
+    QCOMPARE(password, QLatin1StringView("foo"));
     QVERIFY(hasFolderCalled);
     QVERIFY(setFolderCalled);
     QVERIFY(createFolderCalled);
@@ -761,9 +761,9 @@ void UtEwsSettings::readValidMap()
 
     QVERIFY(error != true);
 
-    QVERIFY(loop.exec() == 0);
+    QCOMPARE(loop.exec(), 0);
 
-    QVERIFY(map == expectedMap);
+    QCOMPARE(map, expectedMap);
     QVERIFY(hasFolderCalled);
     QVERIFY(setFolderCalled);
 }
@@ -828,9 +828,9 @@ void UtEwsSettings::writeValidMap()
 
     QVERIFY(error != true);
 
-    QVERIFY(loop.exec() == 0);
+    QCOMPARE(loop.exec(), 0);
 
-    QVERIFY(map == expectedMap);
+    QCOMPARE(map, expectedMap);
     QVERIFY(hasFolderCalled);
     QVERIFY(setFolderCalled);
     QVERIFY(createFolderCalled);

@@ -32,9 +32,9 @@ void TestDataTest::testResources()
 
     for (const QString &testDataName : testDataNames) {
         if (testDataName.startsWith(QLatin1StringView("mbox"))) {
-            QVERIFY(TestDataUtil::folderType(testDataName) == TestDataUtil::MBoxFolder);
+            QCOMPARE(TestDataUtil::folderType(testDataName), TestDataUtil::MBoxFolder);
         } else {
-            QVERIFY(TestDataUtil::folderType(testDataName) == TestDataUtil::MaildirFolder);
+            QCOMPARE(TestDataUtil::folderType(testDataName), TestDataUtil::MaildirFolder);
         }
     }
 

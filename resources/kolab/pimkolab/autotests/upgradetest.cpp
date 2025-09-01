@@ -68,7 +68,7 @@ void UpgradeTest::testIncidence()
 
     // write KCalendarCore V3
     KMime::Message::Ptr v3message = Kolab::KolabObjectWriter::writeIncidence(v2result, Kolab::KolabV3);
-    QVERIFY(Kolab::error() == Kolab::NoError);
+    QCOMPARE(Kolab::error(), Kolab::NoError);
     //     qDebug() << v3message->encodedContent();
     // load KCalendarCore V3
     Kolab::KolabObjectReader reader2;

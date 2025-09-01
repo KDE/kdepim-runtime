@@ -274,7 +274,7 @@ private Q_SLOTS:
         QCOMPARE(sessionSpy.count(), 3);
 
         QCOMPARE(sessionSpy.at(2).at(0).toLongLong(), requestId);
-        QVERIFY(sessionSpy.at(2).at(1).value<KIMAP::Session *>() == nullptr);
+        QCOMPARE(sessionSpy.at(2).at(1).value<KIMAP::Session *>(), nullptr);
         QCOMPARE(sessionSpy.at(2).at(2).toInt(), (int)SessionPool::NoAvailableSessionError);
         QVERIFY(!sessionSpy.at(2).at(3).toString().isEmpty());
 
@@ -291,7 +291,7 @@ private Q_SLOTS:
 
         QCOMPARE(sessionSpy.at(3).at(0).toLongLong(), requestId);
         // Only one session was available, so that should be the one we get gack
-        QVERIFY(sessionSpy.at(3).at(1).value<KIMAP::Session *>() == session);
+        QCOMPARE(sessionSpy.at(3).at(1).value<KIMAP::Session *>(), session);
         QCOMPARE(sessionSpy.at(3).at(2).toInt(), 0);
         QCOMPARE(sessionSpy.at(3).at(3).toString(), QString());
 
@@ -742,7 +742,7 @@ private Q_SLOTS:
         pool.requestSession();
         QTest::qWait(100);
         QCOMPARE(sessionSpy.count(), 2);
-        QVERIFY(sessionSpy.at(1).at(1).value<KIMAP::Session *>() == nullptr);
+        QCOMPARE(sessionSpy.at(1).at(1).value<KIMAP::Session *>(), nullptr);
         QCOMPARE(lostSpy.count(), 1);
 
         // The pool itself is still connected

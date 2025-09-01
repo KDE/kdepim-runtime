@@ -141,7 +141,7 @@ void FormatTest::testIncidence()
     if (*(realIncidence.data()) != *(convertedIncidence.data())) {
         showDiff(format.toString(realIncidence), format.toString(convertedIncidence));
     }
-    QVERIFY(*(realIncidence.data()) == *(convertedIncidence.data()));
+    QCOMPARE(*(realIncidence.data()), *(convertedIncidence.data()));
 
     // Write
     Kolab::overrideTimestamp(Kolab::cDateTime(2012, 5, 5, 5, 5, 5, true));

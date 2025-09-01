@@ -46,7 +46,7 @@ void DeleteItemsAttributeTest::shouldDeserializeValue()
     const QByteArray ba = attr.serialized();
     DeletedItemsAttribute result;
     result.deserialize(ba);
-    QVERIFY(result == attr);
+    QCOMPARE(result, attr);
 }
 
 void DeleteItemsAttributeTest::shouldCloneAttribute()
@@ -56,7 +56,7 @@ void DeleteItemsAttributeTest::shouldCloneAttribute()
     attr.addDeletedItemOffset(154);
     attr.addDeletedItemOffset(225);
     DeletedItemsAttribute *result = attr.clone();
-    QVERIFY(*result == attr);
+    QCOMPARE(*result, attr);
     delete result;
 }
 

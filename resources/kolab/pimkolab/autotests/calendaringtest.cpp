@@ -206,7 +206,7 @@ void CalendaringTest::testTimesInIntervalBenchmark()
     }
     const std::vector<Kolab::cDateTime> &result =
         Kolab::Calendaring::timeInInterval(event, Kolab::cDateTime(2011, 1, 1, 1, 1, 1), Kolab::cDateTime(2013, 1, 1, 1, 1, 1));
-    QVERIFY(result.size() == 500);
+    QCOMPARE(result.size(), 500);
     //     qDebug() << QTest::toString(result);
 }
 

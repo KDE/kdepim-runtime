@@ -537,7 +537,7 @@ void Pop3Test::testSeenUIDCleanup()
     cleanupMaildir(items);
 
     QVERIFY(sortedEqual(uids, mPOP3SettingsInterface->seenUidList().value()));
-    QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
+    QCOMPARE(mPOP3SettingsInterface->seenUidTimeList().value().size(), mPOP3SettingsInterface->seenUidList().value().size());
 
     //
     // Now, pretend that the messages were removed from the server in the meantime
@@ -553,7 +553,7 @@ void Pop3Test::testSeenUIDCleanup()
     cleanupMaildir(items);
 
     QVERIFY(mPOP3SettingsInterface->seenUidList().value().isEmpty());
-    QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
+    QCOMPARE(mPOP3SettingsInterface->seenUidTimeList().value().size(), mPOP3SettingsInterface->seenUidList().value().size());
 
     mPOP3SettingsInterface->setLeaveOnServer(false).waitForFinished();
     mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
@@ -576,7 +576,7 @@ void Pop3Test::testSimpleLeaveOnServer()
 
     // The resource should have saved the UIDs of the seen messages
     QVERIFY(sortedEqual(uids, mPOP3SettingsInterface->seenUidList().value()));
-    QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
+    QCOMPARE(mPOP3SettingsInterface->seenUidTimeList().value().size(), mPOP3SettingsInterface->seenUidList().value().size());
     const auto seenUidTimeListValue{mPOP3SettingsInterface->seenUidTimeList().value()};
     for (int seenTime : seenUidTimeListValue) {
         // Those message were just downloaded from the fake server, so they are at maximum
@@ -603,7 +603,7 @@ void Pop3Test::testSimpleLeaveOnServer()
     items = checkMailsOnAkonadiServer(newMails);
     checkMailsInMaildir(newMails);
     QVERIFY(sortedEqual(newUids, mPOP3SettingsInterface->seenUidList().value()));
-    QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
+    QCOMPARE(mPOP3SettingsInterface->seenUidTimeList().value().size(), mPOP3SettingsInterface->seenUidList().value().size());
 
     //
     // Ok, next test: When turning off leaving on the server, all mails should be deleted, but
@@ -621,7 +621,7 @@ void Pop3Test::testSimpleLeaveOnServer()
     checkMailsInMaildir(newMails);
     cleanupMaildir(items);
     QVERIFY(mPOP3SettingsInterface->seenUidList().value().isEmpty());
-    QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
+    QCOMPARE(mPOP3SettingsInterface->seenUidTimeList().value().size(), mPOP3SettingsInterface->seenUidList().value().size());
     mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
     mPOP3SettingsInterface->setSeenUidTimeList(QList<int>()).waitForFinished();
 }
@@ -645,7 +645,7 @@ void Pop3Test::testTimeBasedLeaveRule()
     checkMailsInMaildir(mails);
 
     QVERIFY(sortedEqual(uids, mPOP3SettingsInterface->seenUidList().value()));
-    QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
+    QCOMPARE(mPOP3SettingsInterface->seenUidTimeList().value().size(), mPOP3SettingsInterface->seenUidList().value().size());
 
     //
     // Now, modify the seenUidTimeList on the server for UID2 to pretend it
@@ -665,7 +665,7 @@ void Pop3Test::testTimeBasedLeaveRule()
 
     uids.removeAll(QStringLiteral("UID2"));
     QVERIFY(sortedEqual(uids, mPOP3SettingsInterface->seenUidList().value()));
-    QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
+    QCOMPARE(mPOP3SettingsInterface->seenUidTimeList().value().size(), mPOP3SettingsInterface->seenUidList().value().size());
     const auto seenUidTimeListValue{mPOP3SettingsInterface->seenUidTimeList().value()};
     for (int seenTime : seenUidTimeListValue) {
         QVERIFY(seenTime >= time(nullptr) - 10 * 60);
@@ -720,7 +720,7 @@ void Pop3Test::testCountBasedLeaveRule()
 
     const QStringList uidsLeft = {QStringLiteral("UID2"), QStringLiteral("UID4"), QStringLiteral("UID5")};
     QVERIFY(sortedEqual(uidsLeft, mPOP3SettingsInterface->seenUidList().value()));
-    QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
+    QCOMPARE(mPOP3SettingsInterface->seenUidTimeList().value().size(), mPOP3SettingsInterface->seenUidList().value().size());
 
     mPOP3SettingsInterface->setLeaveOnServer(false).waitForFinished();
     mPOP3SettingsInterface->setLeaveOnServerCount(0).waitForFinished();
@@ -774,7 +774,7 @@ void Pop3Test::testSizeBasedLeaveRule()
 
     const QStringList uidsLeft = {QStringLiteral("UID2")};
     QVERIFY(sortedEqual(uidsLeft, mPOP3SettingsInterface->seenUidList().value()));
-    QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
+    QCOMPARE(mPOP3SettingsInterface->seenUidTimeList().value().size(), mPOP3SettingsInterface->seenUidList().value().size());
 
     mPOP3SettingsInterface->setLeaveOnServer(false).waitForFinished();
     mPOP3SettingsInterface->setLeaveOnServerCount(0).waitForFinished();
@@ -852,7 +852,7 @@ void Pop3Test::testMixedLeaveRules()
 
     const QStringList uidsLeft = {QStringLiteral("UID1"), QStringLiteral("UID2"), QStringLiteral("UID3")};
     QVERIFY(sortedEqual(uidsLeft, mPOP3SettingsInterface->seenUidList().value()));
-    QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
+    QCOMPARE(mPOP3SettingsInterface->seenUidTimeList().value().size(), mPOP3SettingsInterface->seenUidList().value().size());
 
     mPOP3SettingsInterface->setLeaveOnServer(false).waitForFinished();
     mPOP3SettingsInterface->setLeaveOnServerCount(0).waitForFinished();

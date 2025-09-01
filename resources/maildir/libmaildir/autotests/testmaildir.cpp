@@ -95,9 +95,9 @@ void MaildirTest::testMaildirInstantiation()
     Maildir d2(d);
     Maildir d3;
     d3 = d;
-    QVERIFY(d == d2);
-    QVERIFY(d3 == d2);
-    QVERIFY(d == d3);
+    QCOMPARE(d, d2);
+    QCOMPARE(d3, d2);
+    QCOMPARE(d, d3);
     QCOMPARE(d.path(), QString(QLatin1StringView("/foo/bar/Mail")));
     QCOMPARE(d.name(), QString(QLatin1StringView("Mail")));
 

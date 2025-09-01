@@ -117,20 +117,20 @@ TestAgentInstance::TestAgentInstance(const QString &url)
                                                            std::bind(&OrgKdeAkonadiEwsSettingsInterface::baseUrl, mEwsSettingsInterface.data()),
                                                            QStringLiteral("Base URL"));
     QVERIFY(baseUrlReply.isValid());
-    QVERIFY(baseUrlReply.value() == url);
+    QCOMPARE(baseUrlReply.value(), url);
 
     const auto hasDomainReply = dBusSetAndWaitReply<bool>(std::bind(&OrgKdeAkonadiEwsSettingsInterface::setHasDomain, mEwsSettingsInterface.data(), false),
                                                           std::bind(&OrgKdeAkonadiEwsSettingsInterface::hasDomain, mEwsSettingsInterface.data()),
                                                           QStringLiteral("has domain"));
     QVERIFY(hasDomainReply.isValid());
-    QVERIFY(hasDomainReply.value() == false);
+    QCOMPARE(hasDomainReply.value(), false);
 
     const auto username = QStringLiteral("test");
     const auto usernameReply = dBusSetAndWaitReply<QString>(std::bind(&OrgKdeAkonadiEwsSettingsInterface::setUsername, mEwsSettingsInterface.data(), username),
                                                             std::bind(&OrgKdeAkonadiEwsSettingsInterface::username, mEwsSettingsInterface.data()),
                                                             QStringLiteral("Username"));
     QVERIFY(usernameReply.isValid());
-    QVERIFY(usernameReply.value() == username);
+    QCOMPARE(usernameReply.value(), username);
 
     mEwsWalletInterface->setTestPassword(QStringLiteral("test"));
     AgentManager::self()->instance(mIdentifier).reconfigure();

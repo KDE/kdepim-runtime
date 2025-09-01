@@ -28,7 +28,7 @@ void TestIdxReader::testError()
 {
     KMIndexReader reader(QStringLiteral("IDoNotExist"));
 
-    QVERIFY(reader.error() == true);
+    QCOMPARE(reader.error(), true);
 }
 
 void TestIdxReader::testReadHeader()
@@ -42,15 +42,15 @@ void TestIdxReader::testReadHeader()
     tmp.close();
     KMIndexReader reader(tmp.fileName());
 
-    QVERIFY(reader.error() == false);
+    QCOMPARE(reader.error(), false);
 
     int version = 0;
     bool success = reader.readHeader(&version);
 
-    QVERIFY(success == true);
+    QCOMPARE(success, true);
     QCOMPARE(version, 1506);
 
-    QVERIFY(reader.error() == false);
+    QCOMPARE(reader.error(), false);
 }
 
 void TestIdxReader::testRead()
@@ -63,11 +63,11 @@ void TestIdxReader::testRead()
     tmp.write(QByteArray::fromBase64(mailDirTwoEmailOneTagFlags));
     tmp.close();
     KMIndexReader reader(tmp.fileName());
-    QVERIFY(reader.error() == false);
+    QCOMPARE(reader.error(), false);
     bool success = reader.readIndex();
-    QVERIFY(success == true);
+    QCOMPARE(success, true);
 
-    QVERIFY(reader.messages().size() == 2);
+    QCOMPARE(reader.messages().size(), 2);
 
     KMIndexDataPtr msg = reader.messages().front();
 
@@ -87,7 +87,7 @@ void TestIdxReader::testRead()
     QVERIFY(status.isImportant());
     QVERIFY(msg->status().isImportant());
     QVERIFY(!msg->status().isRead());
-    QVERIFY(msg->tagList().size() == 0);
+    QCOMPARE(msg->tagList().size(), 0);
 }
 
 #include "moc_testidxreader.cpp"
