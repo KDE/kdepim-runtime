@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-24 00:43+0000\n"
+"POT-Creation-Date: 2025-09-02 00:44+0000\n"
 "PO-Revision-Date: 2025-03-29 13:50+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -294,88 +294,88 @@ msgstr "Дали поддръжката на дейностите на аген�
 msgid "The activities of the agent"
 msgstr "Дейности на агента"
 
-#: imapresourcebase.cpp:220
+#: imapresourcebase.cpp:219
 #, kde-format
 msgid "No server configured yet."
 msgstr "Все още няма конфигуриран сървър."
 
-#: imapresourcebase.cpp:240
+#: imapresourcebase.cpp:239
 #, kde-format
 msgid "Connection established."
 msgstr "Установена е връзка."
 
-#: imapresourcebase.cpp:257
+#: imapresourcebase.cpp:256
 #, kde-format
 msgid "Server is not available."
 msgstr "Сървърът не е наличен."
 
-#: imapresourcebase.cpp:308
+#: imapresourcebase.cpp:307
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Добавяне на елемент в „%1“"
 
-#: imapresourcebase.cpp:315
+#: imapresourcebase.cpp:314
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Актуализиране на елемента в „%1“"
 
-#: imapresourcebase.cpp:322
+#: imapresourcebase.cpp:321
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Актуализиране на елементи"
 
-#: imapresourcebase.cpp:336
+#: imapresourcebase.cpp:335
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Премахване на елементи"
 
-#: imapresourcebase.cpp:352
+#: imapresourcebase.cpp:351
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Преместване на елементи от „%1“ в „%2“"
 
-#: imapresourcebase.cpp:361
+#: imapresourcebase.cpp:360
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Извличане на папки"
 
-#: imapresourcebase.cpp:368
+#: imapresourcebase.cpp:367
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Извличане на допълнителна информация за папката за „%1“"
 
-#: imapresourcebase.cpp:386
+#: imapresourcebase.cpp:385
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Създава се папка „%1“"
 
-#: imapresourcebase.cpp:392
+#: imapresourcebase.cpp:391
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Актуализиране на папката „%1“"
 
-#: imapresourcebase.cpp:405
+#: imapresourcebase.cpp:404
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Премахване на папка „%1“"
 
-#: imapresourcebase.cpp:412
+#: imapresourcebase.cpp:411
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Преместване на папка „%1“ от „%2“ в „%3“"
 
-#: imapresourcebase.cpp:442
+#: imapresourcebase.cpp:441
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"

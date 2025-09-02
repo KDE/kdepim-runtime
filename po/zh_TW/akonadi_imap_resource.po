@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-24 00:43+0000\n"
+"POT-Creation-Date: 2025-09-02 00:44+0000\n"
 "PO-Revision-Date: 2025-04-07 14:23+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -277,88 +277,88 @@ msgstr "代理程式對於活動的支援是否已啟用"
 msgid "The activities of the agent"
 msgstr "代理程式的活動"
 
-#: imapresourcebase.cpp:220
+#: imapresourcebase.cpp:219
 #, kde-format
 msgid "No server configured yet."
 msgstr "還沒設定伺服器。"
 
-#: imapresourcebase.cpp:240
+#: imapresourcebase.cpp:239
 #, kde-format
 msgid "Connection established."
 msgstr "連線已建立。"
 
-#: imapresourcebase.cpp:257
+#: imapresourcebase.cpp:256
 #, kde-format
 msgid "Server is not available."
 msgstr "伺服器無法使用。"
 
-#: imapresourcebase.cpp:308
+#: imapresourcebase.cpp:307
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "於 %1 內新增項目"
 
-#: imapresourcebase.cpp:315
+#: imapresourcebase.cpp:314
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "於 %1 內更新項目"
 
-#: imapresourcebase.cpp:322
+#: imapresourcebase.cpp:321
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "更新項目中"
 
-#: imapresourcebase.cpp:336
+#: imapresourcebase.cpp:335
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "移除項目中"
 
-#: imapresourcebase.cpp:352
+#: imapresourcebase.cpp:351
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "將項目從 %1 移到 %2"
 
-#: imapresourcebase.cpp:361
+#: imapresourcebase.cpp:360
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "取得資料夾中"
 
-#: imapresourcebase.cpp:368
+#: imapresourcebase.cpp:367
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "取得 %1 的額外資料夾資訊中"
 
-#: imapresourcebase.cpp:386
+#: imapresourcebase.cpp:385
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "建立資料夾 %1 中"
 
-#: imapresourcebase.cpp:392
+#: imapresourcebase.cpp:391
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "更新資料夾 %1 中"
 
-#: imapresourcebase.cpp:405
+#: imapresourcebase.cpp:404
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "移除資料夾 %1 中"
 
-#: imapresourcebase.cpp:412
+#: imapresourcebase.cpp:411
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "將資料夾 %1 從 %2 移動到 %3 中"
 
-#: imapresourcebase.cpp:442
+#: imapresourcebase.cpp:441
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-24 00:43+0000\n"
+"POT-Creation-Date: 2025-09-02 00:44+0000\n"
 "PO-Revision-Date: 2025-03-29 22:40+0100\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -298,88 +298,88 @@ msgstr "Se il supporto per le attività dell'agente è abilitato"
 msgid "The activities of the agent"
 msgstr "Le attività dell'agente"
 
-#: imapresourcebase.cpp:220
+#: imapresourcebase.cpp:219
 #, kde-format
 msgid "No server configured yet."
 msgstr "Nessun server è stato ancora configurato."
 
-#: imapresourcebase.cpp:240
+#: imapresourcebase.cpp:239
 #, kde-format
 msgid "Connection established."
 msgstr "Connessione stabilita."
 
-#: imapresourcebase.cpp:257
+#: imapresourcebase.cpp:256
 #, kde-format
 msgid "Server is not available."
 msgstr "Il server non è disponibile."
 
-#: imapresourcebase.cpp:308
+#: imapresourcebase.cpp:307
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Aggiunta elemento in «%1»"
 
-#: imapresourcebase.cpp:315
+#: imapresourcebase.cpp:314
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Aggiornamento elemento in «%1»"
 
-#: imapresourcebase.cpp:322
+#: imapresourcebase.cpp:321
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Aggiornamento elementi"
 
-#: imapresourcebase.cpp:336
+#: imapresourcebase.cpp:335
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Rimozione elementi"
 
-#: imapresourcebase.cpp:352
+#: imapresourcebase.cpp:351
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Spostamento elementi da «%1» a «%2»"
 
-#: imapresourcebase.cpp:361
+#: imapresourcebase.cpp:360
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Recupero delle cartelle"
 
-#: imapresourcebase.cpp:368
+#: imapresourcebase.cpp:367
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Recupero informazioni supplementari della cartella «%1»"
 
-#: imapresourcebase.cpp:386
+#: imapresourcebase.cpp:385
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Creazione cartella «%1»"
 
-#: imapresourcebase.cpp:392
+#: imapresourcebase.cpp:391
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Aggiornamento cartella «%1»"
 
-#: imapresourcebase.cpp:405
+#: imapresourcebase.cpp:404
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Rimozione cartella «%1»"
 
-#: imapresourcebase.cpp:412
+#: imapresourcebase.cpp:411
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Spostamento cartella «%1» da «%2» a «%3»"
 
-#: imapresourcebase.cpp:442
+#: imapresourcebase.cpp:441
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
