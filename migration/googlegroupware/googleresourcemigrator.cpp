@@ -195,14 +195,22 @@ void GoogleResourceMigrator::startWork()
 
 void GoogleResourceMigrator::removeLegacyInstances(const QString &account, const Instances &instances)
 {
+    // There is no need to backup and restore wallet content if nothing needs to be removed
+    bool isCalendarResourceValid = instances.calendarResource.isValid();
+    bool isContactResourceValid = instances.contactResource.isValid();
+
+    if (!isCalendarResourceValid && !isContactResourceValid) {
+        return;
+    }
+
     // Legacy resources wipe KWallet data when removed, so we need to back the data up
     // before removing them and restore it afterwards
     const auto kwalletData = backupKWalletData(account);
 
-    if (instances.calendarResource.isValid()) {
+    if (isCalendarResourceValid) {
         removeInstanceAndWait(instances.calendarResource);
     }
-    if (instances.contactResource.isValid()) {
+    if (isContactResourceValid) {
         removeInstanceAndWait(instances.contactResource);
     }
 
