@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-09-02 00:44+0000\n"
-"PO-Revision-Date: 2025-03-22 11:44+0100\n"
+"PO-Revision-Date: 2025-09-06 06:05+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
-"Language-Team: Polish <kde-i18n-doc@kde.org>\n"
+"Language-Team: pl\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 25.08.0\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -632,11 +633,7 @@ msgid "Password not found for %1 IMAP account"
 msgstr "Nie znaleziono hasła dla konta IMAP %1"
 
 #: settings.cpp:174
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when retriving the IMAP password from the system "
-#| "keychain: \"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the IMAP password from the system "
@@ -652,11 +649,7 @@ msgid "Password not found for %1 sieve account"
 msgstr "Nie znaleziono hasła dla konta sieve %1"
 
 #: settings.cpp:210
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when retriving the sieve password from the system "
-#| "keychain: \"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the sieve password from the system "
@@ -666,11 +659,7 @@ msgstr ""
 "\"%1\""
 
 #: settings.cpp:240
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when saving the sieve password in the system keychain: "
-#| "\"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the sieve password in the system keychain: "
@@ -680,11 +669,7 @@ msgstr ""
 "kluczy: \"%1\""
 
 #: settings.cpp:266
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "An error occured when saving the IMAP password in the system keychain: "
-#| "\"%1\""
+#, kde-format
 msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the IMAP password in the system keychain: "
