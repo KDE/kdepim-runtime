@@ -318,7 +318,7 @@ int PredefinedProviderPage::nextId() const
  * ServerTypePage
  */
 
-bool compareServiceOffers(const ProviderInfo &off1, const ProviderInfo &off2)
+static bool compareServiceOffers(const ProviderInfo &off1, const ProviderInfo &off2)
 {
     return off1.readName.toLower() < off2.readName.toLower();
 }
