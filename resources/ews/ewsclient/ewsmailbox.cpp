@@ -8,7 +8,7 @@
 
 #include <QSharedData>
 
-#include <KMime/HeaderParsing>
+#include <KMime/Types>
 
 #include "ewsclient_debug.h"
 
