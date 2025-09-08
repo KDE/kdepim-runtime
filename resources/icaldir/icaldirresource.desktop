@@ -39,7 +39,6 @@ Name[sr@latin]=I‑kalendarski fascikla
 Name[sv]=iCal-kalenderkatalog
 Name[tr]=iCal Takvim Klasörü
 Name[uk]=Тека календаря iCal
-Name[x-test]=xxiCal Calendar Folderxx
 Name[zh_CN]=iCal 日历文件夹
 Name[zh_TW]=iCal 行事曆資料夾
 Comment=Provides access to calendar items, each stored in a single file, in a given directory
@@ -80,7 +79,6 @@ Comment[sl]=Nudi dostop do koledarskih vnosov, ki so shranjeni vsak posebej v sv
 Comment[sv]=Ger tillgång till kalenderobjekt, vart och ett lagrat i en enda fil i en angiven katalog
 Comment[tr]=Belirtilen dizinde tek bir yerel dosyada depolanmış bir alarm takvimine erişim sağlar
 Comment[uk]=Надає доступ до записів календаря, кожен з яких зберігається у окремому файлі у вказаному каталозі
-Comment[x-test]=xxProvides access to calendar items, each stored in a single file, in a given directoryxx
 Comment[zh_CN]=提供对被存储在给定目录下单独文件中的日历内容的访问支持
 Comment[zh_TW]=提供存取行事曆的項目。每個項目都以單一檔案存放在指定的目錄中
 
