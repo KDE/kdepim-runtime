@@ -10,8 +10,6 @@
 #include "googleresource_debug.h"
 #include "googlescopes.h"
 
-#include <QDialogButtonBox>
-
 #include <KGAPI/Account>
 #include <KGAPI/AuthJob>
 #include <KGAPI/Calendar/Calendar>
@@ -20,7 +18,6 @@
 #include <KGAPI/Tasks/TaskListFetchJob>
 #include <KLocalization>
 #include <KMessageBox>
-#include <KWindowSystem>
 
 #include <qt6keychain/keychain.h>
 

@@ -46,7 +46,6 @@
 #include <QNetworkInformation>
 #include <QPointer>
 #include <QPushButton>
-#include <QVBoxLayout>
 
 #include <qt6keychain/keychain.h>
 

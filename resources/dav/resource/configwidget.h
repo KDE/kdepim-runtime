@@ -8,10 +8,6 @@
 
 #include "ui_configwidget.h"
 
-#include <KDAV/Enums>
-
-#include <QDialog>
-
 #include "settings.h"
 #include <QList>
 #include <QPair>

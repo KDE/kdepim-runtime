@@ -30,8 +30,6 @@
 
 #include <KLocalizedString>
 #include <KNotification>
-#include <QDialog>
-#include <QIcon>
 
 #include <KGAPI/Account>
 #include <KGAPI/AccountInfo>

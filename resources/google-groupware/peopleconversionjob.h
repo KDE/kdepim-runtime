@@ -7,7 +7,6 @@
 
 #include <Akonadi/Item>
 #include <KGAPI/People/Person>
-#include <KGAPI/Types>
 
 #pragma once
 

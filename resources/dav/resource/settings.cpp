@@ -24,7 +24,6 @@
 #include <QDataStream>
 #include <QFile>
 #include <QFileInfo>
-#include <QPointer>
 #include <QRegularExpression>
 #include <QUrl>
 

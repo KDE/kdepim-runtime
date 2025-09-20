@@ -13,7 +13,6 @@
 
 #include <KGAPI/Account>
 #include <KLocalizedString>
-#include <KMessageBox>
 
 #include <QDataStream>
 #include <QIODevice>

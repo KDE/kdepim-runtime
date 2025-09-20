@@ -24,8 +24,6 @@
 #include <Akonadi/CollectionAnnotationsAttribute>
 
 #include <KLocalizedString>
-#include <KWindowSystem>
-#include <QIcon>
 
 #include "kolabaddtagtask.h"
 #include "kolabchangeitemstagstask.h"

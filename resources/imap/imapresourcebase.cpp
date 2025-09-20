@@ -16,9 +16,6 @@
 
 #include "imapresource_debug.h"
 #include <KLocalizedString>
-#include <QIcon>
-
-#include <KWindowSystem>
 
 #include <Akonadi/MessageParts>
 

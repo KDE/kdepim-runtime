@@ -9,8 +9,6 @@
 #include "etebaseadapter.h"
 #include "settings.h"
 
-#include <QPointer>
-
 class EteSyncClientState : public QObject
 {
     Q_OBJECT

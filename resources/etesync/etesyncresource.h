@@ -8,7 +8,6 @@
 
 #include <Akonadi/ResourceBase>
 #include <KLocalizedString>
-#include <KNotification>
 
 #include "etesyncclientstate.h"
 #include "settings.h"

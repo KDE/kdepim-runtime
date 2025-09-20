@@ -8,7 +8,6 @@
 
 #include "folderarchiveaccountinfo.h"
 #include "folderarchivesettings_export.h"
-#include <QComboBox>
 #include <QWidget>
 
 class QCheckBox;

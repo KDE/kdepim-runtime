@@ -22,10 +22,7 @@
 #include "settingspasswordrequester.h"
 #endif
 
-#include <QIcon>
-
 #include <KLocalizedString>
-#include <KWindowSystem>
 
 ImapResource::ImapResource(const QString &id)
     : ImapResourceBase(id)

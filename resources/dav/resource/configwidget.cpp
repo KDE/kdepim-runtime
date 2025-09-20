@@ -16,15 +16,12 @@
 #include <KConfigDialogManager>
 #include <KLocalizedString>
 #include <KMessageBox>
-#include <KWindowConfig>
 
-#include <QDialogButtonBox>
 #include <QPointer>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QStringList>
 #include <QVBoxLayout>
-#include <QWindow>
 
 ConfigWidget::ConfigWidget(Settings &settings, const QString &identifier, QWidget *parent)
     : QWidget(parent)

@@ -9,7 +9,6 @@
 
 #include "googlesettings.h"
 #include "ui_googlesettingswidget.h"
-#include <KGAPI/Types>
 
 namespace KGAPI2
 {

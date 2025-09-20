@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include <KDAV/Enums>
 #include <KDAV/EtagCache>
 
 #include <memory>

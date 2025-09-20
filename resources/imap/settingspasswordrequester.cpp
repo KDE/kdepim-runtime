@@ -11,7 +11,6 @@
 #include <KLocalizedString>
 #include <KNotification>
 #include <KService>
-#include <KWindowSystem>
 
 #include <mailtransport/transportbase.h>
 #include <qt6keychain/keychain.h>

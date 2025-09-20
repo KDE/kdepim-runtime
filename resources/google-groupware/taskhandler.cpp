@@ -17,7 +17,6 @@
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
 
-#include <KGAPI/Account>
 #include <KGAPI/Tasks/Task>
 #include <KGAPI/Tasks/TaskCreateJob>
 #include <KGAPI/Tasks/TaskDeleteJob>

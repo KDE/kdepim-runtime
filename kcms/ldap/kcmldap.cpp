@@ -11,7 +11,6 @@
 
 #include <QVBoxLayout>
 
-#include <KAboutData>
 #include <KLDAPWidgets/LdapConfigureWidgetNg>
 #include <KLocalizedString>
 #include <KPluginFactory>
