@@ -5,7 +5,6 @@
  */
 
 #include "etesyncclientstate.h"
-#include "settings.h"
 
 #include "etesync_debug.h"
 

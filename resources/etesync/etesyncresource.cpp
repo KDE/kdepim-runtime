@@ -24,7 +24,6 @@
 #include "entriesfetchjob.h"
 #include "etesync_debug.h"
 #include "journalsfetchjob.h"
-#include "settings.h"
 #include "settingsadaptor.h"
 
 using namespace EteSyncAPI;
