@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-27 00:43+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2025-07-14 11:12+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -17,66 +17,66 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 23.08.5\n"
 
-#: etesyncclientstate.cpp:34
+#: etesyncclientstate.cpp:33
 #, kde-format
 msgctxt "@info:status"
 msgid "Empty account configuration"
 msgstr "Tyhjä tiliasetus"
 
-#: etesyncclientstate.cpp:43
+#: etesyncclientstate.cpp:42
 #, kde-format
 msgctxt "@info:status"
 msgid "Etebase error when initializing client: %1"
 msgstr "Etebase-virhe valmisteltaessa asiakasta: %1"
 
-#: etesyncclientstate.cpp:160
+#: etesyncclientstate.cpp:159
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
 msgstr "Salasanaa ei voitu lukea: %1"
 
-#: etesyncclientstate.cpp:169
+#: etesyncclientstate.cpp:168
 #, kde-format
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
 msgstr "Etebase-tiliä ei saatu välimuistista"
 
-#: etesyncresource.cpp:58
+#: etesyncresource.cpp:57
 #, kde-format
 msgid "EteSync Resource"
 msgstr "EteSync-resurssi"
 
-#: etesyncresource.cpp:132
+#: etesyncresource.cpp:131
 #, kde-format
 msgid "EteSync Account"
 msgstr "EteSync-tili"
 
-#: etesyncresource.cpp:174
+#: etesyncresource.cpp:173
 #, kde-format
 msgid "Temporary server error"
 msgstr "Väliaikainen palvelinvirhe"
 
-#: etesyncresource.cpp:178
+#: etesyncresource.cpp:177
 #, kde-format
 msgid "You do not have permission to perform this action."
 msgstr "Sinulla ei ole käyttöoikeuksia tähän toimenpiteeseen."
 
-#: etesyncresource.cpp:181
+#: etesyncresource.cpp:180
 #, kde-format
 msgid "Permission denied"
 msgstr "Ei käyttöoikeutta"
 
-#: etesyncresource.cpp:185
+#: etesyncresource.cpp:184
 #, kde-format
 msgid "A server error occurred."
 msgstr "Sattui palvelinvirhe."
 
-#: etesyncresource.cpp:188
+#: etesyncresource.cpp:187
 #, kde-format
 msgid "Server error"
 msgstr "Palvelinvirhe"
 
-#: etesyncresource.cpp:207
+#: etesyncresource.cpp:206
 #, kde-format
 msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
@@ -85,43 +85,43 @@ msgstr ""
 "EteSync-todennustietosi ovat muuttuneet. Syötä ne uudelleen napsauttamalla "
 "OK."
 
-#: etesyncresource.cpp:209
+#: etesyncresource.cpp:208
 #, kde-format
 msgid "Credentials Changed"
 msgstr "Todennustiedot ovat muuttuneet"
 
-#: etesyncresource.cpp:210
+#: etesyncresource.cpp:209
 #, kde-format
 msgid "Your EteSync credentials were changed or are missing."
 msgstr "EteSync-todennustiedot ovat muuttuneet tai puuttuvat."
 
-#: etesyncresource.cpp:260
+#: etesyncresource.cpp:259
 #, kde-format
 msgid "Cannot retrieve items - account is null"
 msgstr "Tietueita ei voi noutaa: tili on tyhjä"
 
-#: etesyncresource.cpp:267 etesyncresource.cpp:395 etesyncresource.cpp:468
-#: etesyncresource.cpp:526 etesyncresource.cpp:656 etesyncresource.cpp:714
+#: etesyncresource.cpp:266 etesyncresource.cpp:394 etesyncresource.cpp:467
+#: etesyncresource.cpp:525 etesyncresource.cpp:655 etesyncresource.cpp:713
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "eteSyncCollection-tietuetta ei saatu noudetuksi välimuistista ”%1”"
 
-#: etesyncresource.cpp:423
+#: etesyncresource.cpp:422
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
 msgstr "Uutta etesyncItem-tietuetta ”%1” ei saatu luoduksi"
 
-#: etesyncresource.cpp:475 etesyncresource.cpp:533
+#: etesyncresource.cpp:474 etesyncresource.cpp:532
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
 msgstr "eteSyncItem-tietuetta ei saatu noudetuksi välimuistista ”%1”"
 
-#: etesyncresource.cpp:595
+#: etesyncresource.cpp:594
 #, kde-format
 msgid "Could not create new etesyncCollection"
 msgstr "Uutta etesyncCollection-tietuetta ei voitu luoda"
 
-#: etesyncresource.h:59
+#: etesyncresource.h:58
 #, kde-format
 msgid "Something went wrong"
 msgstr "Jotakin meni vikaan"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-31 00:43+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2024-09-20 13:37+0300\n"
 "Last-Translator: Antonis Geralis <capoiosct@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -20,39 +20,39 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 24.08.1\n"
 
-#: configwidget.cpp:36
+#: configwidget.cpp:33
 #, fuzzy, kde-format
 #| msgid "DAV groupware configuration wizard"
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "Βοηθός διαμόρφωσης DAV groupware"
 
-#: configwidget.cpp:43
+#: configwidget.cpp:40
 #, kde-format
 msgid "Protocol"
 msgstr "Πρωτόκολλο"
 
-#: configwidget.cpp:43 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:40 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "URL"
 
-#: configwidget.cpp:56
+#: configwidget.cpp:53
 #, kde-format
 msgid "Days"
 msgstr "Ημέρες"
 
-#: configwidget.cpp:57
+#: configwidget.cpp:54
 #, kde-format
 msgid "Months"
 msgstr "Μήνες"
 
-#: configwidget.cpp:58
+#: configwidget.cpp:55
 #, kde-format
 msgid "Years"
 msgstr "Έτη"
 
-#: configwidget.cpp:169
+#: configwidget.cpp:166
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"

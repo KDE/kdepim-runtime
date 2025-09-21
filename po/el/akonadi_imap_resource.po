@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-02 00:44+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2024-09-20 13:46+0300\n"
 "Last-Translator: Antonis Geralis <capoiosct@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -95,7 +95,7 @@ msgstr ""
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr "Αποτυχία εγγραφής κάποιων ACL για το '%1' στον εξυπηρετητή IMAP. %2"
 
-#: imapresource.cpp:49
+#: imapresource.cpp:46
 #, kde-format
 msgid "IMAP Account"
 msgstr "Λογαριασμός IMAP"
@@ -303,88 +303,88 @@ msgstr ""
 msgid "The activities of the agent"
 msgstr ""
 
-#: imapresourcebase.cpp:219
+#: imapresourcebase.cpp:216
 #, kde-format
 msgid "No server configured yet."
 msgstr "Δεν έχει γίνει ακόμα διαμόρφωση του εξυπηρετητή."
 
-#: imapresourcebase.cpp:239
+#: imapresourcebase.cpp:236
 #, kde-format
 msgid "Connection established."
 msgstr "Η σύνδεση επιτεύχθηκε."
 
-#: imapresourcebase.cpp:256
+#: imapresourcebase.cpp:253
 #, kde-format
 msgid "Server is not available."
 msgstr "Ο εξυπηρετητής δεν είναι διαθέσιμος."
 
-#: imapresourcebase.cpp:307
+#: imapresourcebase.cpp:304
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Προσθήκη αντικειμένου στο '%1'"
 
-#: imapresourcebase.cpp:314
+#: imapresourcebase.cpp:311
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Ενημέρωση αντικειμένου στο '%1'"
 
-#: imapresourcebase.cpp:321
+#: imapresourcebase.cpp:318
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Ενημέρωση αντικειμένων"
 
-#: imapresourcebase.cpp:335
+#: imapresourcebase.cpp:332
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Αφαίρεση αντικειμένων"
 
-#: imapresourcebase.cpp:351
+#: imapresourcebase.cpp:348
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Μετακίνηση αντικειμένων από «%1» στο «%2»"
 
-#: imapresourcebase.cpp:360
+#: imapresourcebase.cpp:357
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Ανάκτηση φακέλων"
 
-#: imapresourcebase.cpp:367
+#: imapresourcebase.cpp:364
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Ανάκτηση επιπλέον πληροφοριών φακέλων για το '%1'"
 
-#: imapresourcebase.cpp:385
+#: imapresourcebase.cpp:382
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Δημιουργία φακέλου '%1'"
 
-#: imapresourcebase.cpp:391
+#: imapresourcebase.cpp:388
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Ενημέρωση φακέλου '%1'"
 
-#: imapresourcebase.cpp:404
+#: imapresourcebase.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Αφαίρεση φακέλου '%1'"
 
-#: imapresourcebase.cpp:411
+#: imapresourcebase.cpp:408
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Μετακίνηση φακέλου '%1' από το '%2' στο '%3'"
 
-#: imapresourcebase.cpp:441
+#: imapresourcebase.cpp:438
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
@@ -703,13 +703,13 @@ msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr ""
 
-#: settingspasswordrequester.cpp:76
+#: settingspasswordrequester.cpp:75
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr ""
 
-#: settingspasswordrequester.cpp:80
+#: settingspasswordrequester.cpp:79
 #, fuzzy, kde-format
 #| msgid ""
 #| "The server for account \"%2\" refused the supplied username and password. "
@@ -729,7 +729,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:85
+#: settingspasswordrequester.cpp:84
 #, fuzzy, kde-format
 #| msgid ""
 #| "The server for account \"%2\" refused the supplied username and password. "
@@ -749,13 +749,13 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:92
+#: settingspasswordrequester.cpp:91
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Προσπαθήστε ξανά"
 
-#: settingspasswordrequester.cpp:98
+#: settingspasswordrequester.cpp:97
 #, fuzzy, kde-format
 #| msgid "Identity Settings"
 msgctxt "@action:button"
@@ -764,7 +764,7 @@ msgstr "Ρυθμίσεις ταυτότητας"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:81 setupserverview_desktop.ui:294
+#: setupserver.cpp:80 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -773,31 +773,31 @@ msgstr "Μη κρυπτογραφημένο κείμενο"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:83 setupserverview_desktop.ui:329
+#: setupserver.cpp:82 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Ανώνυμο"
 
-#: setupserver.cpp:85
+#: setupserver.cpp:84
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr ""
 
-#: setupserver.cpp:142
+#: setupserver.cpp:141
 #, kde-format
 msgid "Archive Folder"
 msgstr "Αρχειοθέτηση φακέλου"
 
-#: setupserver.cpp:153
+#: setupserver.cpp:152
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: setupserver.cpp:155
+#: setupserver.cpp:154
 #, fuzzy, kde-format
 #| msgid " minute"
 #| msgid_plural " minutes"
@@ -806,17 +806,17 @@ msgid_plural "%v minutes"
 msgstr[0] " λεπτό"
 msgstr[1] " λεπτά"
 
-#: setupserver.cpp:170
+#: setupserver.cpp:169
 #, kde-format
 msgid "Identity:"
 msgstr "Ταυτότητα:"
 
-#: setupserver.cpp:190
+#: setupserver.cpp:189
 #, kde-format
 msgid "Activities"
 msgstr ""
 
-#: setupserver.cpp:252
+#: setupserver.cpp:251
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -828,13 +828,13 @@ msgstr ""
 "μηνυμάτων σας από αυτόν τον λογαριασμό. Είστε βέβαιοι ότι θέλετε να "
 "συνεχίσετε;"
 
-#: setupserver.cpp:255
+#: setupserver.cpp:254
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Η διεύθυνση του εξυπηρετητή άλλαξε"
 
-#: setupserver.cpp:262
+#: setupserver.cpp:261
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -846,32 +846,32 @@ msgstr ""
 "μηνυμάτων σας από αυτόν τον λογαριασμό. Είστε βέβαιοι ότι θέλετε να "
 "συνεχίσετε;"
 
-#: setupserver.cpp:265
+#: setupserver.cpp:264
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Το όνομα χρήστη άλλαξε"
 
-#: setupserver.cpp:551
+#: setupserver.cpp:550
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Αδυναμία σύνδεσης με τον εξυπηρετητή, επιβεβαιώστε τη διεύθυνση του "
 "εξυπηρετητή."
 
-#: setupserver.cpp:563
+#: setupserver.cpp:562
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>Το TLS υποστηρίζεται και συνιστάται.</b></qt>"
 
-#: setupserver.cpp:566
+#: setupserver.cpp:565
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>Το TLS υποστηρίζεται και συνιστάται.</b></qt>"
 
-#: setupserver.cpp:570
+#: setupserver.cpp:569
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -880,12 +880,12 @@ msgstr ""
 "<qt><b>Δεν υποστηρίζεται καμία ασφάλεια. Δεν προτείνεται η σύνδεση με αυτόν "
 "τον εξυπηρετητή.</b></qt>"
 
-#: setupserver.cpp:573
+#: setupserver.cpp:572
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Δεν είναι δυνατή η χρήση αυτού του εξυπηρετητή.</b></qt>"
 
-#: setupserver.cpp:664
+#: setupserver.cpp:663
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"

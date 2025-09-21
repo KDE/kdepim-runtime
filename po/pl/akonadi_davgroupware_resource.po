@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-31 00:43+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2025-09-06 05:56+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: pl\n"
@@ -21,38 +21,38 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 25.08.0\n"
 
-#: configwidget.cpp:36
+#: configwidget.cpp:33
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "Ustawienia zasobu DAV"
 
-#: configwidget.cpp:43
+#: configwidget.cpp:40
 #, kde-format
 msgid "Protocol"
 msgstr "Protokół"
 
-#: configwidget.cpp:43 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:40 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "Adres URL"
 
-#: configwidget.cpp:56
+#: configwidget.cpp:53
 #, kde-format
 msgid "Days"
 msgstr "Dni"
 
-#: configwidget.cpp:57
+#: configwidget.cpp:54
 #, kde-format
 msgid "Months"
 msgstr "Miesiące"
 
-#: configwidget.cpp:58
+#: configwidget.cpp:55
 #, kde-format
 msgid "Years"
 msgstr "Lata"
 
-#: configwidget.cpp:169
+#: configwidget.cpp:166
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-02 00:44+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2025-03-29 13:50+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr "Неуспешно записване на някои ACL за „%1“ на IMAP сървъра. %2"
 
-#: imapresource.cpp:49
+#: imapresource.cpp:46
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP акаунт"
@@ -294,88 +294,88 @@ msgstr "Дали поддръжката на дейностите на аген�
 msgid "The activities of the agent"
 msgstr "Дейности на агента"
 
-#: imapresourcebase.cpp:219
+#: imapresourcebase.cpp:216
 #, kde-format
 msgid "No server configured yet."
 msgstr "Все още няма конфигуриран сървър."
 
-#: imapresourcebase.cpp:239
+#: imapresourcebase.cpp:236
 #, kde-format
 msgid "Connection established."
 msgstr "Установена е връзка."
 
-#: imapresourcebase.cpp:256
+#: imapresourcebase.cpp:253
 #, kde-format
 msgid "Server is not available."
 msgstr "Сървърът не е наличен."
 
-#: imapresourcebase.cpp:307
+#: imapresourcebase.cpp:304
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Добавяне на елемент в „%1“"
 
-#: imapresourcebase.cpp:314
+#: imapresourcebase.cpp:311
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Актуализиране на елемента в „%1“"
 
-#: imapresourcebase.cpp:321
+#: imapresourcebase.cpp:318
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Актуализиране на елементи"
 
-#: imapresourcebase.cpp:335
+#: imapresourcebase.cpp:332
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Премахване на елементи"
 
-#: imapresourcebase.cpp:351
+#: imapresourcebase.cpp:348
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Преместване на елементи от „%1“ в „%2“"
 
-#: imapresourcebase.cpp:360
+#: imapresourcebase.cpp:357
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Извличане на папки"
 
-#: imapresourcebase.cpp:367
+#: imapresourcebase.cpp:364
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Извличане на допълнителна информация за папката за „%1“"
 
-#: imapresourcebase.cpp:385
+#: imapresourcebase.cpp:382
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Създава се папка „%1“"
 
-#: imapresourcebase.cpp:391
+#: imapresourcebase.cpp:388
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Актуализиране на папката „%1“"
 
-#: imapresourcebase.cpp:404
+#: imapresourcebase.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Премахване на папка „%1“"
 
-#: imapresourcebase.cpp:411
+#: imapresourcebase.cpp:408
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Преместване на папка „%1“ от „%2“ в „%3“"
 
-#: imapresourcebase.cpp:441
+#: imapresourcebase.cpp:438
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
@@ -684,13 +684,13 @@ msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr "Проблем с %1 IMAP акаунт"
 
-#: settingspasswordrequester.cpp:76
+#: settingspasswordrequester.cpp:75
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr "Един IMAP имейл акаунт изисква вашето внимание."
 
-#: settingspasswordrequester.cpp:80
+#: settingspasswordrequester.cpp:79
 #, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
@@ -703,7 +703,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:85
+#: settingspasswordrequester.cpp:84
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -717,13 +717,13 @@ msgstr ""
 "\n"
 "%2"
 
-#: settingspasswordrequester.cpp:92
+#: settingspasswordrequester.cpp:91
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Повторно опитване"
 
-#: settingspasswordrequester.cpp:98
+#: settingspasswordrequester.cpp:97
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
@@ -731,7 +731,7 @@ msgstr "Отваряне на настройките"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:81 setupserverview_desktop.ui:294
+#: setupserver.cpp:80 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -740,48 +740,48 @@ msgstr "Изчистване на текста"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:83 setupserverview_desktop.ui:329
+#: setupserver.cpp:82 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Анонимен"
 
-#: setupserver.cpp:85
+#: setupserver.cpp:84
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr "XOAuth"
 
-#: setupserver.cpp:142
+#: setupserver.cpp:141
 #, kde-format
 msgid "Archive Folder"
 msgstr "Архивна папка"
 
-#: setupserver.cpp:153
+#: setupserver.cpp:152
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: setupserver.cpp:155
+#: setupserver.cpp:154
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%v минута"
 msgstr[1] "%v минути"
 
-#: setupserver.cpp:170
+#: setupserver.cpp:169
 #, kde-format
 msgid "Identity:"
 msgstr "Самоличност:"
 
-#: setupserver.cpp:190
+#: setupserver.cpp:189
 #, kde-format
 msgid "Activities"
 msgstr "Дейности"
 
-#: setupserver.cpp:252
+#: setupserver.cpp:251
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -792,13 +792,13 @@ msgstr ""
 "трябва да изтеглим отново всичките ви имейли от този акаунт. Наистина ли "
 "искате да продължите?"
 
-#: setupserver.cpp:255
+#: setupserver.cpp:254
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Промяна на адреса на сървъра"
 
-#: setupserver.cpp:262
+#: setupserver.cpp:261
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -809,30 +809,30 @@ msgstr ""
 "акаунт от преди, ще трябва да изтеглим отново всичките ви имейли от този "
 "акаунт. Наистина ли искате да продължите?"
 
-#: setupserver.cpp:265
+#: setupserver.cpp:264
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Промяна на потребителското име"
 
-#: setupserver.cpp:551
+#: setupserver.cpp:550
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Не може да се осъществи връзка със сървъра, моля, проверете адреса на "
 "сървъра."
 
-#: setupserver.cpp:563
+#: setupserver.cpp:562
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b> STARTTLS се поддържа и препоръчва. </b></qt>"
 
-#: setupserver.cpp:566
+#: setupserver.cpp:565
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b> SSL/TLS се поддържа и препоръчва. </b></qt>"
 
-#: setupserver.cpp:570
+#: setupserver.cpp:569
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -841,12 +841,12 @@ msgstr ""
 "<qt><b> Не се поддържа защита. Не се препоръчва да се свързвате с този "
 "сървър.</b></qt>"
 
-#: setupserver.cpp:573
+#: setupserver.cpp:572
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b> Не е възможно да се използва този сървър.</b></qt>"
 
-#: setupserver.cpp:664
+#: setupserver.cpp:663
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"

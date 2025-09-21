@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-02 00:44+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2010-01-16 08:40+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: ਪੰਜਾਬੀ <punjabi-users@lists.sf.net>\n"
@@ -74,7 +74,7 @@ msgstr ""
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr ""
 
-#: imapresource.cpp:49
+#: imapresource.cpp:46
 #, kde-format
 msgid "IMAP Account"
 msgstr ""
@@ -270,88 +270,88 @@ msgstr ""
 msgid "The activities of the agent"
 msgstr ""
 
-#: imapresourcebase.cpp:219
+#: imapresourcebase.cpp:216
 #, kde-format
 msgid "No server configured yet."
 msgstr "ਕੋਈ ਸਰਵਰ ਹਾਲੇ ਸੰਰਚਿਤ ਨਹੀਂ ਹੈ।"
 
-#: imapresourcebase.cpp:239
+#: imapresourcebase.cpp:236
 #, kde-format
 msgid "Connection established."
 msgstr "ਕੁਨੈਕਸ਼ਨ ਬਣਾਇਆ।"
 
-#: imapresourcebase.cpp:256
+#: imapresourcebase.cpp:253
 #, kde-format
 msgid "Server is not available."
 msgstr ""
 
-#: imapresourcebase.cpp:307
+#: imapresourcebase.cpp:304
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:314
+#: imapresourcebase.cpp:311
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:321
+#: imapresourcebase.cpp:318
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr ""
 
-#: imapresourcebase.cpp:335
+#: imapresourcebase.cpp:332
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr ""
 
-#: imapresourcebase.cpp:351
+#: imapresourcebase.cpp:348
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr ""
 
-#: imapresourcebase.cpp:360
+#: imapresourcebase.cpp:357
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr ""
 
-#: imapresourcebase.cpp:367
+#: imapresourcebase.cpp:364
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:385
+#: imapresourcebase.cpp:382
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:391
+#: imapresourcebase.cpp:388
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:404
+#: imapresourcebase.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:411
+#: imapresourcebase.cpp:408
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr ""
 
-#: imapresourcebase.cpp:441
+#: imapresourcebase.cpp:438
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
@@ -631,13 +631,13 @@ msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr ""
 
-#: settingspasswordrequester.cpp:76
+#: settingspasswordrequester.cpp:75
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr ""
 
-#: settingspasswordrequester.cpp:80
+#: settingspasswordrequester.cpp:79
 #, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
@@ -646,7 +646,7 @@ msgid ""
 "%1"
 msgstr ""
 
-#: settingspasswordrequester.cpp:85
+#: settingspasswordrequester.cpp:84
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -655,13 +655,13 @@ msgid ""
 "%2"
 msgstr ""
 
-#: settingspasswordrequester.cpp:92
+#: settingspasswordrequester.cpp:91
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr ""
 
-#: settingspasswordrequester.cpp:98
+#: settingspasswordrequester.cpp:97
 #, fuzzy, kde-format
 #| msgid "Settings"
 msgctxt "@action:button"
@@ -670,7 +670,7 @@ msgstr "ਸੈਟਿੰਗ"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:81 setupserverview_desktop.ui:294
+#: setupserver.cpp:80 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, fuzzy, kde-format
 #| msgid "Clear text"
@@ -680,7 +680,7 @@ msgstr "ਸਾਫ਼ ਟੈਕਸਟ"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:83 setupserverview_desktop.ui:329
+#: setupserver.cpp:82 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, fuzzy, kde-format
 #| msgid "Anonymous"
@@ -688,25 +688,25 @@ msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "ਅਗਿਆਤ"
 
-#: setupserver.cpp:85
+#: setupserver.cpp:84
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr ""
 
-#: setupserver.cpp:142
+#: setupserver.cpp:141
 #, fuzzy, kde-format
 #| msgid "Shared Folders"
 msgid "Archive Folder"
 msgstr "ਸਾਂਝੇ ਕੀਤੇ ਫੋਲਡਰ"
 
-#: setupserver.cpp:153
+#: setupserver.cpp:152
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: setupserver.cpp:155
+#: setupserver.cpp:154
 #, fuzzy, kde-format
 #| msgid " minutes"
 msgid "%v minute"
@@ -714,18 +714,18 @@ msgid_plural "%v minutes"
 msgstr[0] " ਮਿੰਟ"
 msgstr[1] " ਮਿੰਟ"
 
-#: setupserver.cpp:170
+#: setupserver.cpp:169
 #, fuzzy, kde-format
 #| msgid "Settings"
 msgid "Identity:"
 msgstr "ਸੈਟਿੰਗ"
 
-#: setupserver.cpp:190
+#: setupserver.cpp:189
 #, kde-format
 msgid "Activities"
 msgstr ""
 
-#: setupserver.cpp:252
+#: setupserver.cpp:251
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -733,14 +733,14 @@ msgid ""
 "again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:255
+#: setupserver.cpp:254
 #, fuzzy, kde-format
 #| msgid "Username"
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "ਯੂਜ਼ਰ ਨਾਂ"
 
-#: setupserver.cpp:262
+#: setupserver.cpp:261
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -748,41 +748,41 @@ msgid ""
 "account again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:265
+#: setupserver.cpp:264
 #, fuzzy, kde-format
 #| msgid "Username"
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "ਯੂਜ਼ਰ ਨਾਂ"
 
-#: setupserver.cpp:551
+#: setupserver.cpp:550
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 
-#: setupserver.cpp:563
+#: setupserver.cpp:562
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr ""
 
-#: setupserver.cpp:566
+#: setupserver.cpp:565
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr ""
 
-#: setupserver.cpp:570
+#: setupserver.cpp:569
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
 msgstr ""
 
-#: setupserver.cpp:573
+#: setupserver.cpp:572
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr ""
 
-#: setupserver.cpp:664
+#: setupserver.cpp:663
 #, fuzzy, kde-format
 #| msgid "Enable Subscriptions?"
 msgctxt "@title:window"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-31 00:43+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2024-12-19 16:27+0200\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -19,38 +19,38 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
-#: configwidget.cpp:36
+#: configwidget.cpp:33
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "DAV resursu konfigurators"
 
-#: configwidget.cpp:43
+#: configwidget.cpp:40
 #, kde-format
 msgid "Protocol"
 msgstr "Protokols"
 
-#: configwidget.cpp:43 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:40 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "URL"
 
-#: configwidget.cpp:56
+#: configwidget.cpp:53
 #, kde-format
 msgid "Days"
 msgstr "Dienas"
 
-#: configwidget.cpp:57
+#: configwidget.cpp:54
 #, kde-format
 msgid "Months"
 msgstr "Mēneši"
 
-#: configwidget.cpp:58
+#: configwidget.cpp:55
 #, kde-format
 msgid "Years"
 msgstr "Gadi"
 
-#: configwidget.cpp:169
+#: configwidget.cpp:166
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"

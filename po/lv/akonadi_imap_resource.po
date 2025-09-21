@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-02 00:44+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2025-04-06 17:31+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr "Neizdevās ierakstīt IMAP serverī dažus „%1“ vajadzīgos ACL. %2"
 
-#: imapresource.cpp:49
+#: imapresource.cpp:46
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP konts"
@@ -287,88 +287,88 @@ msgstr "Vai aģenta aktivitāšu atbalsts ir ieslēgts"
 msgid "The activities of the agent"
 msgstr "Aģenta aktivitātes"
 
-#: imapresourcebase.cpp:219
+#: imapresourcebase.cpp:216
 #, kde-format
 msgid "No server configured yet."
 msgstr "Nav konfigurēts neviens serveris."
 
-#: imapresourcebase.cpp:239
+#: imapresourcebase.cpp:236
 #, kde-format
 msgid "Connection established."
 msgstr "Savienojums ir izveidots."
 
-#: imapresourcebase.cpp:256
+#: imapresourcebase.cpp:253
 #, kde-format
 msgid "Server is not available."
 msgstr "Serveris nav pieejams."
 
-#: imapresourcebase.cpp:307
+#: imapresourcebase.cpp:304
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Pievieno vienumu pie „%1“"
 
-#: imapresourcebase.cpp:314
+#: imapresourcebase.cpp:311
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Atjaunina vienumu, kas atrodas „%1“"
 
-#: imapresourcebase.cpp:321
+#: imapresourcebase.cpp:318
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Atjaunina vienumus"
 
-#: imapresourcebase.cpp:335
+#: imapresourcebase.cpp:332
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Noņem vienumus"
 
-#: imapresourcebase.cpp:351
+#: imapresourcebase.cpp:348
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Pārvieto vienumu no „%1“ uz „%2“"
 
-#: imapresourcebase.cpp:360
+#: imapresourcebase.cpp:357
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Izgūst mapes"
 
-#: imapresourcebase.cpp:367
+#: imapresourcebase.cpp:364
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Izūst „%1“ papildu mapes informāciju"
 
-#: imapresourcebase.cpp:385
+#: imapresourcebase.cpp:382
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Izveido mapi „%1“"
 
-#: imapresourcebase.cpp:391
+#: imapresourcebase.cpp:388
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Atjaunina mapi „%1“"
 
-#: imapresourcebase.cpp:404
+#: imapresourcebase.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Noņem mapi „%1“"
 
-#: imapresourcebase.cpp:411
+#: imapresourcebase.cpp:408
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Pārvieto mapi „%1“ no „%2“ uz „%3“"
 
-#: imapresourcebase.cpp:441
+#: imapresourcebase.cpp:438
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
@@ -665,13 +665,13 @@ msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr "Konstatēta problēma ar „%1“ IMAP kontu"
 
-#: settingspasswordrequester.cpp:76
+#: settingspasswordrequester.cpp:75
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr "IMAP e-pasta kontam nepieciešama jūsu uzmanība."
 
-#: settingspasswordrequester.cpp:80
+#: settingspasswordrequester.cpp:79
 #, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
@@ -684,7 +684,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:85
+#: settingspasswordrequester.cpp:84
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -697,13 +697,13 @@ msgstr ""
 "\n"
 "%2"
 
-#: settingspasswordrequester.cpp:92
+#: settingspasswordrequester.cpp:91
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Mēģināt vēlreiz"
 
-#: settingspasswordrequester.cpp:98
+#: settingspasswordrequester.cpp:97
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
@@ -711,7 +711,7 @@ msgstr "Atvērt iestatījumus"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:81 setupserverview_desktop.ui:294
+#: setupserver.cpp:80 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -720,31 +720,31 @@ msgstr "Atklāts teksts"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:83 setupserverview_desktop.ui:329
+#: setupserver.cpp:82 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Anonīms"
 
-#: setupserver.cpp:85
+#: setupserver.cpp:84
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
 msgstr "XOAuth"
 
-#: setupserver.cpp:142
+#: setupserver.cpp:141
 #, kde-format
 msgid "Archive Folder"
 msgstr "Arhīva mape"
 
-#: setupserver.cpp:153
+#: setupserver.cpp:152
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p %"
 
-#: setupserver.cpp:155
+#: setupserver.cpp:154
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -752,17 +752,17 @@ msgstr[0] "%v minūte"
 msgstr[1] "%v minūtes"
 msgstr[2] "%v minūšu"
 
-#: setupserver.cpp:170
+#: setupserver.cpp:169
 #, kde-format
 msgid "Identity:"
 msgstr "Identitāte:"
 
-#: setupserver.cpp:190
+#: setupserver.cpp:189
 #, kde-format
 msgid "Activities"
 msgstr "Aktivitātes"
 
-#: setupserver.cpp:252
+#: setupserver.cpp:251
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -773,13 +773,13 @@ msgstr ""
 "iepriekš, jums vajadzēs no jauna lejupielādēt visas šī konta e-pasta "
 "vēstules. Vai vēlaties turpināt?"
 
-#: setupserver.cpp:255
+#: setupserver.cpp:254
 #, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Servera adreses maiņa"
 
-#: setupserver.cpp:262
+#: setupserver.cpp:261
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -790,28 +790,28 @@ msgstr ""
 "serverim, kam tas bija iepriekš, jums vajadzēs no jauna lejupielādēt visas "
 "šī konta e-pasta vēstules. Vai vēlaties turpināt?"
 
-#: setupserver.cpp:265
+#: setupserver.cpp:264
 #, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Lietotājvārda maiņa"
 
-#: setupserver.cpp:551
+#: setupserver.cpp:550
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Neizdevās savienoties ar serveri. Pārbaudiet servera adresi."
 
-#: setupserver.cpp:563
+#: setupserver.cpp:562
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS ir atbalstīts un ieteicams.</b></qt>"
 
-#: setupserver.cpp:566
+#: setupserver.cpp:565
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS ir atbalstīts un ieteicams.</b></qt>"
 
-#: setupserver.cpp:570
+#: setupserver.cpp:569
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -820,12 +820,12 @@ msgstr ""
 "<qt><b>Nav atrasti nekādi drošības līdzekļi, tāpēc nav ieteicams savienoties "
 "ar šo serveri.</b></qt>"
 
-#: setupserver.cpp:573
+#: setupserver.cpp:572
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Izmantot šo serveri nav iespējams.</b></qt>"
 
-#: setupserver.cpp:664
+#: setupserver.cpp:663
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-15 00:46+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2024-08-03 14:41+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -64,8 +64,8 @@ msgctxt "%f is a variable for agent. Do not change it"
 msgid "A message was received from %f"
 msgstr "已從 %f 取得信件"
 
-#: newmailnotifieropenfolderjob.cpp:37 newmailnotifierreplymessagejob.cpp:37
-#: newmailnotifiershowmessagejob.cpp:36
+#: newmailnotifieropenfolderjob.cpp:36 newmailnotifierreplymessagejob.cpp:37
+#: newmailnotifiershowmessagejob.cpp:35
 #, kde-format
 msgid "Unable to start KMail application."
 msgstr "無法啟動 KMail 應用程式。"

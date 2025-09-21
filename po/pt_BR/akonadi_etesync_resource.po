@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-27 00:43+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2025-07-23 19:03-0300\n"
 "Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -18,66 +18,66 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 25.04.3\n"
 
-#: etesyncclientstate.cpp:34
+#: etesyncclientstate.cpp:33
 #, kde-format
 msgctxt "@info:status"
 msgid "Empty account configuration"
 msgstr "Configuração de conta vazia"
 
-#: etesyncclientstate.cpp:43
+#: etesyncclientstate.cpp:42
 #, kde-format
 msgctxt "@info:status"
 msgid "Etebase error when initializing client: %1"
 msgstr "Erro etebase ao iniciar o cliente: %1"
 
-#: etesyncclientstate.cpp:160
+#: etesyncclientstate.cpp:159
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
 msgstr "Não foi possível ler a senha: %1"
 
-#: etesyncclientstate.cpp:169
+#: etesyncclientstate.cpp:168
 #, kde-format
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
 msgstr "Não foi possível obter a conta etebase do cache"
 
-#: etesyncresource.cpp:58
+#: etesyncresource.cpp:57
 #, kde-format
 msgid "EteSync Resource"
 msgstr "Recurso do EteSync"
 
-#: etesyncresource.cpp:132
+#: etesyncresource.cpp:131
 #, kde-format
 msgid "EteSync Account"
 msgstr "Conta EteSync"
 
-#: etesyncresource.cpp:174
+#: etesyncresource.cpp:173
 #, kde-format
 msgid "Temporary server error"
 msgstr "Erro temporário do servidor"
 
-#: etesyncresource.cpp:178
+#: etesyncresource.cpp:177
 #, kde-format
 msgid "You do not have permission to perform this action."
 msgstr "Você não tem permissões para executar esta ação."
 
-#: etesyncresource.cpp:181
+#: etesyncresource.cpp:180
 #, kde-format
 msgid "Permission denied"
 msgstr "Permissão negada"
 
-#: etesyncresource.cpp:185
+#: etesyncresource.cpp:184
 #, kde-format
 msgid "A server error occurred."
 msgstr "Ocorreu um erro no servidor."
 
-#: etesyncresource.cpp:188
+#: etesyncresource.cpp:187
 #, kde-format
 msgid "Server error"
 msgstr "Erro do servidor"
 
-#: etesyncresource.cpp:207
+#: etesyncresource.cpp:206
 #, kde-format
 msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
@@ -86,43 +86,43 @@ msgstr ""
 "Suas credenciais do EteSync foram alteradas. Clique em OK para digitar "
 "novamente suas credenciais."
 
-#: etesyncresource.cpp:209
+#: etesyncresource.cpp:208
 #, kde-format
 msgid "Credentials Changed"
 msgstr "Credenciais alteradas"
 
-#: etesyncresource.cpp:210
+#: etesyncresource.cpp:209
 #, kde-format
 msgid "Your EteSync credentials were changed or are missing."
 msgstr "Suas credenciais do EteSync foram alteradas ou estão faltando."
 
-#: etesyncresource.cpp:260
+#: etesyncresource.cpp:259
 #, kde-format
 msgid "Cannot retrieve items - account is null"
 msgstr "Não foi possível obter os itens - a conta é nula"
 
-#: etesyncresource.cpp:267 etesyncresource.cpp:395 etesyncresource.cpp:468
-#: etesyncresource.cpp:526 etesyncresource.cpp:656 etesyncresource.cpp:714
+#: etesyncresource.cpp:266 etesyncresource.cpp:394 etesyncresource.cpp:467
+#: etesyncresource.cpp:525 etesyncresource.cpp:655 etesyncresource.cpp:713
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "Não foi possível obter o etesyncCollection do cache '%1'"
 
-#: etesyncresource.cpp:423
+#: etesyncresource.cpp:422
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
 msgstr "Não foi possível criar um novo etesyncItem '%1'"
 
-#: etesyncresource.cpp:475 etesyncresource.cpp:533
+#: etesyncresource.cpp:474 etesyncresource.cpp:532
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
 msgstr "Não foi possível obter o etesyncItem do cache '%1'"
 
-#: etesyncresource.cpp:595
+#: etesyncresource.cpp:594
 #, kde-format
 msgid "Could not create new etesyncCollection"
 msgstr "Não foi possível criar um novo etesyncCollection"
 
-#: etesyncresource.h:59
+#: etesyncresource.h:58
 #, kde-format
 msgid "Something went wrong"
 msgstr "Alguma coisa deu errado"

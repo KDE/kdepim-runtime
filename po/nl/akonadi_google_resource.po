@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-17 00:42+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2025-06-27 11:33+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -29,7 +29,7 @@ msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
 msgstr "Gebeurtenissen voor agenda '%1' ophalen"
 
-#: calendarhandler.cpp:222 taskhandler.cpp:169
+#: calendarhandler.cpp:222 taskhandler.cpp:168
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
@@ -113,34 +113,34 @@ msgstr "Gereed"
 msgid "Invalid item."
 msgstr "Ongeldig item."
 
-#: googleresource.cpp:88
+#: googleresource.cpp:86
 #, kde-format
 msgid "Fetching password…"
 msgstr "Wachtwoord ophalen…"
 
-#: googleresource.cpp:138
+#: googleresource.cpp:136
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Gereed"
 
-#: googleresource.cpp:150
+#: googleresource.cpp:148
 #, kde-format
 msgid "Not configured"
 msgstr "Niet geconfigureerd"
 
-#: googleresource.cpp:150
+#: googleresource.cpp:148
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google Groupware (%1)"
 
-#: googleresource.cpp:201
+#: googleresource.cpp:199
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Account is afgemeld."
 
-#: googleresource.cpp:204
+#: googleresource.cpp:202
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -149,7 +149,7 @@ msgstr ""
 "Google Groupware is afgemeld uit uw account. Meld u weer aan om Google "
 "contactpersonen en agenda opnieuw te synchroniseren."
 
-#: googleresource.cpp:205
+#: googleresource.cpp:203
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -158,54 +158,54 @@ msgstr ""
 "Google Groupware is afgemeld uit account %1. Meld u weer aan om Google "
 "contactpersonen en agenda opnieuw te synchroniseren."
 
-#: googleresource.cpp:209
+#: googleresource.cpp:207
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 heeft uw aandacht nodig."
 
-#: googleresource.cpp:214
+#: googleresource.cpp:212
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Aanmelden"
 
-#: googleresource.cpp:226 googleresource.cpp:227
+#: googleresource.cpp:224 googleresource.cpp:225
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Hulpbron is niet ingesteld"
 
-#: googleresource.cpp:242
+#: googleresource.cpp:240
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Tokens verversen is mislukt"
 
-#: googleresource.cpp:431 googleresource.cpp:445 googleresource.cpp:459
-#: googleresource.cpp:474 googleresource.cpp:488 googleresource.cpp:502
-#: googleresource.cpp:516
+#: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
+#: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
+#: googleresource.cpp:514
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Ongeldig type inhoud"
 
-#: googleresource.cpp:530 googleresource.cpp:544 googleresource.cpp:558
+#: googleresource.cpp:528 googleresource.cpp:542 googleresource.cpp:556
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Onbekende mimetype van verzameling"
 
-#: googlesettings.cpp:43
+#: googlesettings.cpp:42
 #, kde-format
 msgctxt "@info:status"
 msgid "No username set"
 msgstr "Geen gebruikersnaam gezet"
 
-#: googlesettings.cpp:55
+#: googlesettings.cpp:54
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
 msgstr "Kan wachtwoord niet lezen: %1"
 
-#: googlesettingswidget.cpp:41
+#: googlesettingswidget.cpp:38
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -213,7 +213,7 @@ msgstr[0] "%v minuut"
 msgstr[1] "%v minuten"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:100 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>Not configured</b>"
 msgstr "<b>Niet geconfigureerd</b>"
@@ -387,25 +387,25 @@ msgstr "ID's van agenda's in verzameling"
 msgid "IDs of task lists in collection"
 msgstr "ID's van takenlijsten in verzameling"
 
-#: taskhandler.cpp:69
+#: taskhandler.cpp:68
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving task lists"
 msgstr "Taaklijsten worden opgehaald"
 
-#: taskhandler.cpp:102
+#: taskhandler.cpp:101
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
 msgstr "Taken voor lijst '%1' worden opgehaald"
 
-#: taskhandler.cpp:194
+#: taskhandler.cpp:193
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
 msgstr "Taken in lijst '%1' worden gewijzigd"
 
-#: taskhandler.cpp:214
+#: taskhandler.cpp:213
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 task"
@@ -413,34 +413,34 @@ msgid_plural "Removing %1 tasks"
 msgstr[0] "%1 taak wordt verwijderd"
 msgstr[1] "%1 taken worden verwijderd"
 
-#: taskhandler.cpp:224
+#: taskhandler.cpp:223
 #, kde-format
 msgid "Failed to delete task: %1"
 msgstr "Taak verwijderen is mislukt: %1"
 
-#: taskhandler.cpp:260
+#: taskhandler.cpp:259
 #, kde-format
 msgid "Failed to reparent subtasks: %1"
 msgstr "Van nieuwe ouder voorzien is mislukt van subtaken: %1"
 
-#: taskhandler.cpp:291
+#: taskhandler.cpp:290
 #, kde-format
 msgid "Moving tasks between task lists is not supported"
 msgstr "Taken tussen takenlijsten verplaatsen wordt niet ondersteund"
 
-#: taskhandler.cpp:296
+#: taskhandler.cpp:295
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new task list '%1'"
 msgstr "Nieuwe takenlijst '%1' wordt aangemaakt"
 
-#: taskhandler.cpp:321
+#: taskhandler.cpp:320
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task list '%1'"
 msgstr "Takenlijst '%1' wordt gewijzigd"
 
-#: taskhandler.cpp:334
+#: taskhandler.cpp:333
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing task list '%1'"

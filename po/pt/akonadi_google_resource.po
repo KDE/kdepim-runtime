@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-17 00:42+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2023-05-07 13:51+0100\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -25,7 +25,7 @@ msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
 msgstr "A obter os eventos do calendário '%1'"
 
-#: calendarhandler.cpp:222 taskhandler.cpp:169
+#: calendarhandler.cpp:222 taskhandler.cpp:168
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
@@ -112,36 +112,36 @@ msgstr "Pronto"
 msgid "Invalid item."
 msgstr "O item é inválido."
 
-#: googleresource.cpp:88
+#: googleresource.cpp:86
 #, fuzzy, kde-format
 #| msgid "Fetching password..."
 msgid "Fetching password…"
 msgstr "A obter a senha..."
 
-#: googleresource.cpp:138
+#: googleresource.cpp:136
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Pronto"
 
-#: googleresource.cpp:150
+#: googleresource.cpp:148
 #, fuzzy, kde-format
 #| msgid "not configured"
 msgid "Not configured"
 msgstr "não configurado"
 
-#: googleresource.cpp:150
+#: googleresource.cpp:148
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "'Groupware' do Google (%1)"
 
-#: googleresource.cpp:201
+#: googleresource.cpp:199
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Foi encerrada a sessão da conta."
 
-#: googleresource.cpp:204
+#: googleresource.cpp:202
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -151,7 +151,7 @@ msgstr ""
 "autentique-se para activar a sincronização dos contactos e calendário da "
 "Google de novo."
 
-#: googleresource.cpp:205
+#: googleresource.cpp:203
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -160,55 +160,55 @@ msgstr ""
 "A sessão do Google Groupware da conta %1 foi encerrada. Por favor autentique-"
 "se para activar a sincronização dos contactos e calendário da Google de novo."
 
-#: googleresource.cpp:209
+#: googleresource.cpp:207
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "O %1 necessita da sua atenção."
 
-#: googleresource.cpp:214
+#: googleresource.cpp:212
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Autenticar"
 
-#: googleresource.cpp:226 googleresource.cpp:227
+#: googleresource.cpp:224 googleresource.cpp:225
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "O recurso não está configurado"
 
-#: googleresource.cpp:242
+#: googleresource.cpp:240
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Não foi possível actualizar os itens"
 
-#: googleresource.cpp:431 googleresource.cpp:445 googleresource.cpp:459
-#: googleresource.cpp:474 googleresource.cpp:488 googleresource.cpp:502
-#: googleresource.cpp:516
+#: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
+#: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
+#: googleresource.cpp:514
 #, kde-format
 msgid "Invalid payload type"
 msgstr "O tipo de conteúdo é inválido"
 
-#: googleresource.cpp:530 googleresource.cpp:544 googleresource.cpp:558
+#: googleresource.cpp:528 googleresource.cpp:542 googleresource.cpp:556
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "O tipo MIME da colecção é desconhecido"
 
-#: googlesettings.cpp:43
+#: googlesettings.cpp:42
 #, kde-format
 msgctxt "@info:status"
 msgid "No username set"
 msgstr ""
 
-#: googlesettings.cpp:55
+#: googlesettings.cpp:54
 #, fuzzy, kde-format
 #| msgid "Failed to reparent subtasks: %1"
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
 msgstr "Não foi possível mudar a mãe das sub-tarefas: %1"
 
-#: googlesettingswidget.cpp:41
+#: googlesettingswidget.cpp:38
 #, fuzzy, kde-format
 #| msgid " minute"
 #| msgid_plural " minutes"
@@ -218,7 +218,7 @@ msgstr[0] " minuto"
 msgstr[1] " minutos"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:100 googlesettingswidget.ui:30
 #, fuzzy, kde-format
 #| msgid "<b>not configured</b>"
 msgid "<b>Not configured</b>"
@@ -394,25 +394,25 @@ msgstr "ID's dos calendários na colecção"
 msgid "IDs of task lists in collection"
 msgstr "ID's das listas de tarefas na colecção"
 
-#: taskhandler.cpp:69
+#: taskhandler.cpp:68
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving task lists"
 msgstr "A obter as listas de tarefas"
 
-#: taskhandler.cpp:102
+#: taskhandler.cpp:101
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
 msgstr "A obter as tarefas da lista '%1'"
 
-#: taskhandler.cpp:194
+#: taskhandler.cpp:193
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
 msgstr "A modificar a tarefa na lista '%1'"
 
-#: taskhandler.cpp:214
+#: taskhandler.cpp:213
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 task"
@@ -420,34 +420,34 @@ msgid_plural "Removing %1 tasks"
 msgstr[0] "A remover %1 tarefa"
 msgstr[1] "A remover %1 tarefas"
 
-#: taskhandler.cpp:224
+#: taskhandler.cpp:223
 #, kde-format
 msgid "Failed to delete task: %1"
 msgstr "Não foi possível apagar a tarefa: %1"
 
-#: taskhandler.cpp:260
+#: taskhandler.cpp:259
 #, kde-format
 msgid "Failed to reparent subtasks: %1"
 msgstr "Não foi possível mudar a mãe das sub-tarefas: %1"
 
-#: taskhandler.cpp:291
+#: taskhandler.cpp:290
 #, kde-format
 msgid "Moving tasks between task lists is not supported"
 msgstr "Não é suportado mover as tarefas entre listas"
 
-#: taskhandler.cpp:296
+#: taskhandler.cpp:295
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new task list '%1'"
 msgstr "A criar a nova lista de tarefas '%1'"
 
-#: taskhandler.cpp:321
+#: taskhandler.cpp:320
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task list '%1'"
 msgstr "A modificar a lista de tarefas '%1'"
 
-#: taskhandler.cpp:334
+#: taskhandler.cpp:333
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing task list '%1'"

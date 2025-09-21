@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-27 00:43+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2024-12-20 21:52+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>2);\n"
 "X-Generator: Lokalize 24.08.2\n"
 
-#: etesyncclientstate.cpp:34
+#: etesyncclientstate.cpp:33
 #, fuzzy, kde-format
 #| msgctxt "@title:window"
 #| msgid "EteSync configuration wizard"
@@ -27,62 +27,62 @@ msgctxt "@info:status"
 msgid "Empty account configuration"
 msgstr "EteSync विन्यासविजार्डः"
 
-#: etesyncclientstate.cpp:43
+#: etesyncclientstate.cpp:42
 #, kde-format
 msgctxt "@info:status"
 msgid "Etebase error when initializing client: %1"
 msgstr ""
 
-#: etesyncclientstate.cpp:160
+#: etesyncclientstate.cpp:159
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
 msgstr ""
 
-#: etesyncclientstate.cpp:169
+#: etesyncclientstate.cpp:168
 #, fuzzy, kde-format
 #| msgid "Could not get etesyncItem from cache '%1'"
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
 msgstr "'%1' सञ्चिकातः etesyncItem प्राप्तुं न शक्तवान् ।"
 
-#: etesyncresource.cpp:58
+#: etesyncresource.cpp:57
 #, kde-format
 msgid "EteSync Resource"
 msgstr "EteSync संसाधन"
 
-#: etesyncresource.cpp:132
+#: etesyncresource.cpp:131
 #, fuzzy, kde-format
 #| msgid "EteSync Resource"
 msgid "EteSync Account"
 msgstr "EteSync संसाधन"
 
-#: etesyncresource.cpp:174
+#: etesyncresource.cpp:173
 #, kde-format
 msgid "Temporary server error"
 msgstr "अस्थायी सर्वर त्रुटि"
 
-#: etesyncresource.cpp:178
+#: etesyncresource.cpp:177
 #, kde-format
 msgid "You do not have permission to perform this action."
 msgstr "एतत् कर्म कर्तुं भवतः अनुमतिः नास्ति ।"
 
-#: etesyncresource.cpp:181
+#: etesyncresource.cpp:180
 #, kde-format
 msgid "Permission denied"
 msgstr "अनुमतिः अङ्गीकृता"
 
-#: etesyncresource.cpp:185
+#: etesyncresource.cpp:184
 #, kde-format
 msgid "A server error occurred."
 msgstr "सर्वरदोषः अभवत् ।"
 
-#: etesyncresource.cpp:188
+#: etesyncresource.cpp:187
 #, kde-format
 msgid "Server error"
 msgstr "सर्वर त्रुटिः"
 
-#: etesyncresource.cpp:207
+#: etesyncresource.cpp:206
 #, kde-format
 msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
@@ -91,12 +91,12 @@ msgstr ""
 "भवतः EteSync प्रमाणपत्राणि परिवर्तितानि आसन् । कृपया स्वस्य प्रमाणपत्राणि पुनः प्रविष्टुं "
 "OK नुदन्तु ।"
 
-#: etesyncresource.cpp:209
+#: etesyncresource.cpp:208
 #, kde-format
 msgid "Credentials Changed"
 msgstr "प्रमाणपत्राणि परिवर्तितानि"
 
-#: etesyncresource.cpp:210
+#: etesyncresource.cpp:209
 #, fuzzy, kde-format
 #| msgid ""
 #| "Your EteSync credentials were changed. Please click OK to re-enter your "
@@ -106,33 +106,33 @@ msgstr ""
 "भवतः EteSync प्रमाणपत्राणि परिवर्तितानि आसन् । कृपया स्वस्य प्रमाणपत्राणि पुनः प्रविष्टुं "
 "OK नुदन्तु ।"
 
-#: etesyncresource.cpp:260
+#: etesyncresource.cpp:259
 #, kde-format
 msgid "Cannot retrieve items - account is null"
 msgstr "वस्तूनि पुनः प्राप्तुं न शक्यते - खातं शून्यम् अस्ति"
 
-#: etesyncresource.cpp:267 etesyncresource.cpp:395 etesyncresource.cpp:468
-#: etesyncresource.cpp:526 etesyncresource.cpp:656 etesyncresource.cpp:714
+#: etesyncresource.cpp:266 etesyncresource.cpp:394 etesyncresource.cpp:467
+#: etesyncresource.cpp:525 etesyncresource.cpp:655 etesyncresource.cpp:713
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "'%1' सञ्चिकातः etesyncCollection प्राप्तुं न शक्तवान् ।"
 
-#: etesyncresource.cpp:423
+#: etesyncresource.cpp:422
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
 msgstr "नूतनं etesyncItem '%1' निर्मातुं न शक्तवान्."
 
-#: etesyncresource.cpp:475 etesyncresource.cpp:533
+#: etesyncresource.cpp:474 etesyncresource.cpp:532
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
 msgstr "'%1' सञ्चिकातः etesyncItem प्राप्तुं न शक्तवान् ।"
 
-#: etesyncresource.cpp:595
+#: etesyncresource.cpp:594
 #, kde-format
 msgid "Could not create new etesyncCollection"
 msgstr "नूतनं etesyncCollection निर्मातुं न शक्तवान्"
 
-#: etesyncresource.h:59
+#: etesyncresource.h:58
 #, kde-format
 msgid "Something went wrong"
 msgstr "किमपि भ्रष्टं जातम्"

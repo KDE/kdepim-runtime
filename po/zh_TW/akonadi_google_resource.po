@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-17 00:42+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2025-07-01 19:59+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -31,7 +31,7 @@ msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
 msgstr "正在為行事曆 '%1' 取得事件"
 
-#: calendarhandler.cpp:222 taskhandler.cpp:169
+#: calendarhandler.cpp:222 taskhandler.cpp:168
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
@@ -112,34 +112,34 @@ msgstr "已就緒"
 msgid "Invalid item."
 msgstr "無效的項目。"
 
-#: googleresource.cpp:88
+#: googleresource.cpp:86
 #, kde-format
 msgid "Fetching password…"
 msgstr "正在抓取密碼…"
 
-#: googleresource.cpp:138
+#: googleresource.cpp:136
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "已就緒"
 
-#: googleresource.cpp:150
+#: googleresource.cpp:148
 #, kde-format
 msgid "Not configured"
 msgstr "未設定"
 
-#: googleresource.cpp:150
+#: googleresource.cpp:148
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google 協作工具 (%1)"
 
-#: googleresource.cpp:201
+#: googleresource.cpp:199
 #, kde-format
 msgid "Account has been logged out."
 msgstr "帳號已被登出。"
 
-#: googleresource.cpp:204
+#: googleresource.cpp:202
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -147,7 +147,7 @@ msgid ""
 msgstr ""
 "Google 協作工具已從您的帳號登出。請登入來重新啟用 Google 聯絡人與行事曆同步。"
 
-#: googleresource.cpp:205
+#: googleresource.cpp:203
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -155,61 +155,61 @@ msgid ""
 msgstr ""
 "Google 協作工具已從帳號 %1 登出。請登入來重新啟用 Google 聯絡人與行事曆同步。"
 
-#: googleresource.cpp:209
+#: googleresource.cpp:207
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 需要您的注意。"
 
-#: googleresource.cpp:214
+#: googleresource.cpp:212
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "登入"
 
-#: googleresource.cpp:226 googleresource.cpp:227
+#: googleresource.cpp:224 googleresource.cpp:225
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "資源未設定"
 
-#: googleresource.cpp:242
+#: googleresource.cpp:240
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "刷新權杖時失敗"
 
-#: googleresource.cpp:431 googleresource.cpp:445 googleresource.cpp:459
-#: googleresource.cpp:474 googleresource.cpp:488 googleresource.cpp:502
-#: googleresource.cpp:516
+#: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
+#: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
+#: googleresource.cpp:514
 #, kde-format
 msgid "Invalid payload type"
 msgstr "無效的資料（payload）型態"
 
-#: googleresource.cpp:530 googleresource.cpp:544 googleresource.cpp:558
+#: googleresource.cpp:528 googleresource.cpp:542 googleresource.cpp:556
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "未知的收藏 MIME 型態"
 
-#: googlesettings.cpp:43
+#: googlesettings.cpp:42
 #, kde-format
 msgctxt "@info:status"
 msgid "No username set"
 msgstr "未設定使用者名稱"
 
-#: googlesettings.cpp:55
+#: googlesettings.cpp:54
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
 msgstr "無法讀取密碼：%1"
 
-#: googlesettingswidget.cpp:41
+#: googlesettingswidget.cpp:38
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%v 分鐘"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:100 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>Not configured</b>"
 msgstr "<b>未設定</b>"
@@ -379,59 +379,59 @@ msgstr "收藏中行事曆的代碼"
 msgid "IDs of task lists in collection"
 msgstr "收藏中工作清單的代碼"
 
-#: taskhandler.cpp:69
+#: taskhandler.cpp:68
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving task lists"
 msgstr "正在取得工作列表"
 
-#: taskhandler.cpp:102
+#: taskhandler.cpp:101
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
 msgstr "正在取得列表 '%1' 的工作"
 
-#: taskhandler.cpp:194
+#: taskhandler.cpp:193
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
 msgstr "正在變更列表 '%1' 中的工作"
 
-#: taskhandler.cpp:214
+#: taskhandler.cpp:213
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 task"
 msgid_plural "Removing %1 tasks"
 msgstr[0] "正在移除 %1 個工作"
 
-#: taskhandler.cpp:224
+#: taskhandler.cpp:223
 #, kde-format
 msgid "Failed to delete task: %1"
 msgstr "刪除工作失敗：%1"
 
-#: taskhandler.cpp:260
+#: taskhandler.cpp:259
 #, kde-format
 msgid "Failed to reparent subtasks: %1"
 msgstr "移動子工作失敗：%1"
 
-#: taskhandler.cpp:291
+#: taskhandler.cpp:290
 #, kde-format
 msgid "Moving tasks between task lists is not supported"
 msgstr "在事件清單間移動事件的功能尚未支援"
 
-#: taskhandler.cpp:296
+#: taskhandler.cpp:295
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new task list '%1'"
 msgstr "正在建立新工作列表 '%1'"
 
-#: taskhandler.cpp:321
+#: taskhandler.cpp:320
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task list '%1'"
 msgstr "正在變更工作列表 '%1'"
 
-#: taskhandler.cpp:334
+#: taskhandler.cpp:333
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing task list '%1'"

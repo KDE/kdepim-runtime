@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-17 00:42+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2025-06-30 00:18+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -32,7 +32,7 @@ msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
 msgstr "'%1' egutegiko ekitaldiak eskuratzen"
 
-#: calendarhandler.cpp:222 taskhandler.cpp:169
+#: calendarhandler.cpp:222 taskhandler.cpp:168
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
@@ -115,34 +115,34 @@ msgstr "Prest"
 msgid "Invalid item."
 msgstr "Elementu baliogabea."
 
-#: googleresource.cpp:88
+#: googleresource.cpp:86
 #, kde-format
 msgid "Fetching password…"
 msgstr "Pasahitza ekartzen..."
 
-#: googleresource.cpp:138
+#: googleresource.cpp:136
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Prest"
 
-#: googleresource.cpp:150
+#: googleresource.cpp:148
 #, kde-format
 msgid "Not configured"
 msgstr "Konfiguratu gabe"
 
-#: googleresource.cpp:150
+#: googleresource.cpp:148
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google Groupware (%1)"
 
-#: googleresource.cpp:201
+#: googleresource.cpp:199
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Kontua saio-itxi da."
 
-#: googleresource.cpp:204
+#: googleresource.cpp:202
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -151,7 +151,7 @@ msgstr ""
 "Zure kontutik Google Groupware-tik saioa itxi da. Mesedez saioa ireki Google "
 "Kontaktuak eta Google Egutegiak berriz sinkronizatu daitezen."
 
-#: googleresource.cpp:205
+#: googleresource.cpp:203
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -160,54 +160,54 @@ msgstr ""
 "%1 kontutik Google Groupware-tik saioa itxi da. Mesedez saioa ireki Google "
 "Kontaktuak eta Google Egutegiak berriz sinkronizatu daitezen."
 
-#: googleresource.cpp:209
+#: googleresource.cpp:207
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1(e)k zure arreta behar du."
 
-#: googleresource.cpp:214
+#: googleresource.cpp:212
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Hasi saioa"
 
-#: googleresource.cpp:226 googleresource.cpp:227
+#: googleresource.cpp:224 googleresource.cpp:225
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Baliabidea ez dago konfiguratuta"
 
-#: googleresource.cpp:242
+#: googleresource.cpp:240
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Tokenak freskatzea huts egin du"
 
-#: googleresource.cpp:431 googleresource.cpp:445 googleresource.cpp:459
-#: googleresource.cpp:474 googleresource.cpp:488 googleresource.cpp:502
-#: googleresource.cpp:516
+#: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
+#: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
+#: googleresource.cpp:514
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Zama-erabilgarri mota baliogabea"
 
-#: googleresource.cpp:530 googleresource.cpp:544 googleresource.cpp:558
+#: googleresource.cpp:528 googleresource.cpp:542 googleresource.cpp:556
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Bildumaren MIME-mota ezezaguna"
 
-#: googlesettings.cpp:43
+#: googlesettings.cpp:42
 #, kde-format
 msgctxt "@info:status"
 msgid "No username set"
 msgstr "Ez da erabiltzaile-izena ezarri"
 
-#: googlesettings.cpp:55
+#: googlesettings.cpp:54
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
 msgstr "Ez da pasahitza irakurtzeko gai: %1"
 
-#: googlesettingswidget.cpp:41
+#: googlesettingswidget.cpp:38
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -215,7 +215,7 @@ msgstr[0] "minutu %v"
 msgstr[1] "%v minutu"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:100 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>Not configured</b>"
 msgstr "<b>Konfiguratu gabe</b>"
@@ -389,25 +389,25 @@ msgstr "Bildumako egutegien IDak"
 msgid "IDs of task lists in collection"
 msgstr "Bildumako zeregin-zerrenden IDak"
 
-#: taskhandler.cpp:69
+#: taskhandler.cpp:68
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving task lists"
 msgstr "Zeregin-zerrendak eskuratzen"
 
-#: taskhandler.cpp:102
+#: taskhandler.cpp:101
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
 msgstr "'%1' zerrendako zereginak eskuratzen"
 
-#: taskhandler.cpp:194
+#: taskhandler.cpp:193
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
 msgstr "'%1' zerrendako zeregina aldatzen"
 
-#: taskhandler.cpp:214
+#: taskhandler.cpp:213
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 task"
@@ -415,34 +415,34 @@ msgid_plural "Removing %1 tasks"
 msgstr[0] "Zeregin %1 kentzen"
 msgstr[1] "%1 zeregin kentzen"
 
-#: taskhandler.cpp:224
+#: taskhandler.cpp:223
 #, kde-format
 msgid "Failed to delete task: %1"
 msgstr "Zeregina ezabatzea huts egin du: %1"
 
-#: taskhandler.cpp:260
+#: taskhandler.cpp:259
 #, kde-format
 msgid "Failed to reparent subtasks: %1"
 msgstr "Azpi-zereginari gurasoa aldatzea huts egin du: %1"
 
-#: taskhandler.cpp:291
+#: taskhandler.cpp:290
 #, kde-format
 msgid "Moving tasks between task lists is not supported"
 msgstr "Ez dago zereginak zeregin-zerrenden artean leku aldatzeko euskarririk"
 
-#: taskhandler.cpp:296
+#: taskhandler.cpp:295
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new task list '%1'"
 msgstr "'%1' zeregin-zerrenda sortzen"
 
-#: taskhandler.cpp:321
+#: taskhandler.cpp:320
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task list '%1'"
 msgstr "'%1' zeregin-zerrenda aldatzen"
 
-#: taskhandler.cpp:334
+#: taskhandler.cpp:333
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing task list '%1'"

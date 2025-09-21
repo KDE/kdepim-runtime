@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-17 00:42+0000\n"
+"POT-Creation-Date: 2025-09-21 00:43+0000\n"
 "PO-Revision-Date: 2024-12-20 21:52+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -31,7 +31,7 @@ msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
 msgstr "'%1' पञ्चाङ्गस्य कृते घटनाः पुनः प्राप्ताः ।"
 
-#: calendarhandler.cpp:222 taskhandler.cpp:169
+#: calendarhandler.cpp:222 taskhandler.cpp:168
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
@@ -114,34 +114,34 @@ msgstr "आत्त"
 msgid "Invalid item."
 msgstr "अमान्य मद।"
 
-#: googleresource.cpp:88
+#: googleresource.cpp:86
 #, kde-format
 msgid "Fetching password…"
 msgstr "गुप्तशब्दं आनयन्…"
 
-#: googleresource.cpp:138
+#: googleresource.cpp:136
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "आत्त"
 
-#: googleresource.cpp:150
+#: googleresource.cpp:148
 #, kde-format
 msgid "Not configured"
 msgstr "न विन्यस्तम्"
 
-#: googleresource.cpp:150
+#: googleresource.cpp:148
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "गूगल ग्रुपवेयर (%1) 1.1."
 
-#: googleresource.cpp:201
+#: googleresource.cpp:199
 #, kde-format
 msgid "Account has been logged out."
 msgstr "खातं लॉग आउट् कृतम् अस्ति।"
 
-#: googleresource.cpp:204
+#: googleresource.cpp:202
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -150,7 +150,7 @@ msgstr ""
 "भवतः खातेः Google Groupware बहिः गतः अस्ति। कृपया पुनः Google Contacts तथा "
 "Calendar sync इत्येतत् सक्षमं कर्तुं लॉग इन कुर्वन्तु।"
 
-#: googleresource.cpp:205
+#: googleresource.cpp:203
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -159,55 +159,55 @@ msgstr ""
 "Google Groupware %1 खातेन बहिः कृतम् अस्ति । कृपया पुनः Google Contacts तथा "
 "Calendar sync इत्येतत् सक्षमं कर्तुं लॉग इन कुर्वन्तु।"
 
-#: googleresource.cpp:209
+#: googleresource.cpp:207
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 भवतः ध्यानस्य आवश्यकता अस्ति।"
 
-#: googleresource.cpp:214
+#: googleresource.cpp:212
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "प्रवेशं कुर्वन्तु"
 
-#: googleresource.cpp:226 googleresource.cpp:227
+#: googleresource.cpp:224 googleresource.cpp:225
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "संसाधनं विन्यस्तं नास्ति"
 
-#: googleresource.cpp:242
+#: googleresource.cpp:240
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "टोकन ताजगीं कर्तुं असफलम्"
 
-#: googleresource.cpp:431 googleresource.cpp:445 googleresource.cpp:459
-#: googleresource.cpp:474 googleresource.cpp:488 googleresource.cpp:502
-#: googleresource.cpp:516
+#: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
+#: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
+#: googleresource.cpp:514
 #, kde-format
 msgid "Invalid payload type"
 msgstr "अमान्य पेलोड् प्रकार"
 
-#: googleresource.cpp:530 googleresource.cpp:544 googleresource.cpp:558
+#: googleresource.cpp:528 googleresource.cpp:542 googleresource.cpp:556
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "अज्ञात संग्रह अनुकरणप्रकार"
 
-#: googlesettings.cpp:43
+#: googlesettings.cpp:42
 #, kde-format
 msgctxt "@info:status"
 msgid "No username set"
 msgstr ""
 
-#: googlesettings.cpp:55
+#: googlesettings.cpp:54
 #, fuzzy, kde-format
 #| msgid "Failed to reparent subtasks: %1"
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
 msgstr "उपकार्यं पुनः स्थापयितुं असफलम्: %1"
 
-#: googlesettingswidget.cpp:41
+#: googlesettingswidget.cpp:38
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -215,7 +215,7 @@ msgstr[0] "%एकनिमेषे"
 msgstr[1] "%v निमेषाः"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingswidget.cpp:103 googlesettingswidget.ui:30
+#: googlesettingswidget.cpp:100 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>Not configured</b>"
 msgstr "<b>न विन्यस्तम्</b>"
@@ -389,25 +389,25 @@ msgstr "संग्रहे पञ्चाङ्गानां IDs"
 msgid "IDs of task lists in collection"
 msgstr "संग्रहे कार्यसूचीनां IDs"
 
-#: taskhandler.cpp:69
+#: taskhandler.cpp:68
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving task lists"
 msgstr "कार्यसूचीनां पुनः प्राप्तिः"
 
-#: taskhandler.cpp:102
+#: taskhandler.cpp:101
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
 msgstr "'%1' सूचीयाः कार्याणि पुनः प्राप्तम् ।"
 
-#: taskhandler.cpp:194
+#: taskhandler.cpp:193
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
 msgstr "'%1' इति सूचीयां कार्यं परिवर्तयति।"
 
-#: taskhandler.cpp:214
+#: taskhandler.cpp:213
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 task"
@@ -415,34 +415,34 @@ msgid_plural "Removing %1 tasks"
 msgstr[0] "%1 कार्यं निष्कासयति"
 msgstr[1] "%1 कार्याणि निष्कासयन्"
 
-#: taskhandler.cpp:224
+#: taskhandler.cpp:223
 #, kde-format
 msgid "Failed to delete task: %1"
 msgstr "कार्यं विलोपयितुं असफलम्: %1"
 
-#: taskhandler.cpp:260
+#: taskhandler.cpp:259
 #, kde-format
 msgid "Failed to reparent subtasks: %1"
 msgstr "उपकार्यं पुनः स्थापयितुं असफलम्: %1"
 
-#: taskhandler.cpp:291
+#: taskhandler.cpp:290
 #, kde-format
 msgid "Moving tasks between task lists is not supported"
 msgstr "कार्यसूचीनां मध्ये कार्याणां स्थानान्तरणं समर्थितं नास्ति"
 
-#: taskhandler.cpp:296
+#: taskhandler.cpp:295
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new task list '%1'"
 msgstr "नूतनकार्यसूचीं '%1' रचयन् ।"
 
-#: taskhandler.cpp:321
+#: taskhandler.cpp:320
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task list '%1'"
 msgstr "कार्यसूचीं '%1' परिवर्तयति।"
 
-#: taskhandler.cpp:334
+#: taskhandler.cpp:333
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
