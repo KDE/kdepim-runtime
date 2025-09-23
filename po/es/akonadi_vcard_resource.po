@@ -1,16 +1,15 @@
-# translation of akonadi_vcard_resource.po to Spanish
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for akonadi_vcard_resource.po package.
+# Copyright (C) 2009-2025 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2009, 2023, 2024 Eloy Cuadra <ecuadra@eloihr.net>
-# Javier Vinal <fjvinal@gmail.com>, 2010.
-# Javier Viñal <fjvinal@gmail.com>, 2010, 2013, 2014.
+# SPDX-FileCopyrightText: 2009, 2023, 2024, 2025 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2010, 2013, 2014 Javier Viñal <fjvinal@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-17 00:39+0000\n"
-"PO-Revision-Date: 2024-08-18 00:57+0200\n"
+"PO-Revision-Date: 2025-09-23 01:29+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -76,9 +75,3 @@ msgstr "Actualizar el archivo periódicamente"
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "Período para actualizar automáticamente (en minutos)."
-
-#~ msgid "Filename:"
-#~ msgstr "Nombre de archivo:"
-
-#~ msgid "Select Address Book"
-#~ msgstr "Seleccionar libreta de direcciones"

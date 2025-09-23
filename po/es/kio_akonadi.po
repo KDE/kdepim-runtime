@@ -1,15 +1,15 @@
-# translation of kio_akonadi.po to Spanish
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for kio_akonadi.po package.
+# Copyright (C) 2009-2025 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2009, 2024 Eloy Cuadra <ecuadra@eloihr.net>
-# Javier Vinal <fjvinal@gmail.com>, 2014, 2016.
+# SPDX-FileCopyrightText: 2009, 2024, 2025 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2014, 2016 Javier Vinal <fjvinal@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kio_akonadi\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-06-07 00:39+0000\n"
-"PO-Revision-Date: 2024-06-07 20:01+0200\n"
+"PO-Revision-Date: 2025-09-23 01:30+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"

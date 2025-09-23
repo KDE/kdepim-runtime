@@ -1,16 +1,15 @@
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for akonadi_openxchange_resource.po package.
+# Copyright (C) 2010-2025 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# Javier, 2010.
-# Javier Vinal <fjvinalgmail.com>, 2010, 2012.
-# Javier Viñal <fjvinal@gmail.com>, 2010, 2012.
-# SPDX-FileCopyrightText: 2024 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2010, 2012 Javier Viñal <fjvinal@gmail.com>
+# SPDX-FileCopyrightText: 2024, 2025 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: akonadi_openxchange_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-02 00:41+0000\n"
-"PO-Revision-Date: 2024-08-02 17:38+0200\n"
+"PO-Revision-Date: 2025-09-23 01:28+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -114,7 +113,7 @@ msgstr ""
 #: configwidget.ui:98
 #, kde-format
 msgid "Test Connection…"
-msgstr "Probar conexión..."
+msgstr "Probar conexión…"
 
 #: openxchangeresource.cpp:250
 #, kde-format
@@ -233,9 +232,3 @@ msgid ""
 msgstr ""
 "Use actualizaciones incrementales en lugar de recargar todos los datos del "
 "servidor en cada ocasión"
-
-#~ msgid "Connection"
-#~ msgstr "Conexión"
-
-#~ msgid "Open-Xchange Configuration"
-#~ msgstr "Configuración de Open-Xchange"

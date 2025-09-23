@@ -1,15 +1,15 @@
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for akonadi_newmailnotifier_agent.po package.
+# Copyright (C) 2011-2025 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# Javier Vinal <fjvinal@gmail.com>, 2011, 2013, 2014, 2015, 2016, 2017, 2018.
-# Javier Viñal <francisco-javie.vinal@seg-social.es>, 2013.
-# SPDX-FileCopyrightText: 2020, 2021, 2022, 2023, 2024 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2011, 2013, 2014, 2015, 2016, 2017, 2018 Javier Vinal <fjvinal@gmail.com>
+# SPDX-FileCopyrightText: 2020, 2021, 2022, 2023, 2024, 2025 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-02 00:40+0000\n"
-"PO-Revision-Date: 2024-07-30 16:38+0200\n"
+"PO-Revision-Date: 2025-09-23 01:28+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -81,7 +81,7 @@ msgstr ""
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Search…"
-msgstr "Buscar..."
+msgstr "Buscar…"
 
 #: newmailnotifierselectcollectionwidget.cpp:140
 #, kde-format
@@ -260,7 +260,7 @@ msgstr "En: %1 (%2)"
 #: specialnotifierjob.cpp:150
 #, kde-format
 msgid "Show mail…"
-msgstr "Mostrar mensaje..."
+msgstr "Mostrar mensaje…"
 
 #: specialnotifierjob.cpp:153
 #, kde-format
@@ -271,9 +271,3 @@ msgstr "Marcar como leído"
 #, kde-format
 msgid "Delete"
 msgstr "Borrar"
-
-#~ msgid "New Mail Notifier settings"
-#~ msgstr "Preferencias del notificador de correo nuevo"
-
-#~ msgid "Show button to display mail"
-#~ msgstr "Mostrar botón para visualizar el correo"

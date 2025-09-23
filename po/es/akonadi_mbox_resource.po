@@ -1,16 +1,15 @@
-# translation of akonadi_mbox_resource.po to Spanish
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for akonadi_mbox_resource.po package.
+# Copyright (C) 2009-2025 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2009, 2023, 2024 Eloy Cuadra <ecuadra@eloihr.net>
-# Javier Vinal <fjvinal@gmail.com>, 2009, 2010.
-# Javier Viñal <fjvinal@gmail.com>, 2010, 2011, 2012, 2014, 2015, 2016, 2019.
+# SPDX-FileCopyrightText: 2009, 2023, 2024, 2025 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2009, 2010, 2011, 2012, 2014, 2015, 2016, 2019 Javier Viñal <fjvinal@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-08-22 00:40+0000\n"
-"PO-Revision-Date: 2024-08-18 00:56+0200\n"
+"PO-Revision-Date: 2025-09-23 01:27+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -339,9 +338,3 @@ msgstr "Archivo de bloqueo"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Número de mensajes borrados antes de iniciar una purga."
-
-#~ msgid "Activities"
-#~ msgstr "Actividades"
-
-#~ msgid "URL:"
-#~ msgstr "URL:"

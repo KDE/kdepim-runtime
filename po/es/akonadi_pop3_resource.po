@@ -1,16 +1,15 @@
-# translation of akonadi_pop3_resource.po to Spanish
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for akonadi_pop3_resource.po package.
+# Copyright (C) 2009-2025 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# Javier Vinal <fjvinal@gmail.com>, 2009, 2010, 2011.
-# Javier Viñal <fjvinal@gmail.com>, 2010, 2012, 2013, 2014, 2015, 2016, 2018.
-# SPDX-FileCopyrightText: 2019, 2020, 2021, 2024 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018 Javier Viñal <fjvinal@gmail.com>
+# SPDX-FileCopyrightText: 2019, 2020, 2021, 2024, 2025 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-27 00:40+0000\n"
-"PO-Revision-Date: 2024-08-18 00:57+0200\n"
+"PO-Revision-Date: 2025-09-23 01:29+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -876,62 +875,3 @@ msgstr "Conectar usando las preferencias del proxy del sistema"
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "Define el tipo de autenticación a usar"
-
-#~ msgid "Internal error, number expected: %1"
-#~ msgstr "Error interno. Se esperaba un número: %1"
-
-#~ msgid "Unexpected response from POP3 server."
-#~ msgstr "Respuesta no esperada del servidor POP3."
-
-#~ msgid ""
-#~ "The server does not seem to support fetching message headers, but this is "
-#~ "a requirement for filtering messages on the server.\n"
-#~ "Since some servers do not correctly announce their capabilities you still "
-#~ "have the possibility to turn filtering messages on the server on."
-#~ msgstr ""
-#~ "El servidor no parece admitir obtener los encabezados de los mensajes, "
-#~ "pero es un requisito para filtrar los mensajes en el servidor.\n"
-#~ "Ya que algunos servidores no anuncian correctamente sus capacidades, aún "
-#~ "puede tener la posibilidad de permitir activar el filtrado de mensajes en "
-#~ "el servidor."
-
-#~ msgid ""
-#~ "The server does not seem to support fetching message headers, but this is "
-#~ "a requirement for filtering messages on the server; therefore, this "
-#~ "option has been disabled.\n"
-#~ "Since some servers do not correctly announce their capabilities you still "
-#~ "have the possibility to turn filtering messages on the server on."
-#~ msgstr ""
-#~ "El servidor no parece admitir obtener los encabezados de los mensajes, "
-#~ "pero es un requisito para filtrar los mensajes en el servidor. Por tanto, "
-#~ "se ha desactivado esta opción.\n"
-#~ "Ya que algunos servidores no anuncian correctamente sus capacidades, aún "
-#~ "puede tener la posibilidad de permitir activar el filtrado de mensajes en "
-#~ "el servidor."
-
-#~ msgid " byte"
-#~ msgid_plural " bytes"
-#~ msgstr[0] " bytes"
-#~ msgstr[1] " bytes"
-
-#~ msgid ""
-#~ "If you select this option, POP Filters will be used to decide what to do "
-#~ "with messages. You can then select to download, delete or keep them on "
-#~ "the server."
-#~ msgstr ""
-#~ "Si selecciona esta opción, los filtros POP se usarán para decidir qué "
-#~ "hacer con los mensajes. Podrá entonces elegir si descargarlos, borrarlos "
-#~ "o dejarlos en el servidor."
-
-#~ msgid "&Filter messages larger than:"
-#~ msgstr "&Filtrar mensajes más grandes que:"
-
-#~ msgid "You are asked here because the wallet password storage is disabled."
-#~ msgstr ""
-#~ "Se le ha preguntado porque la contraseña de la cartera está desactivada."
-
-#~ msgid "Wallet disabled in system settings"
-#~ msgstr "Cartera desactivada en preferencias del sistema"
-
-#~ msgid "POP3 Account Settings"
-#~ msgstr "Preferencias de cuenta POP3"

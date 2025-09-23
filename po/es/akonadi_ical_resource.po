@@ -1,17 +1,15 @@
-# translation of akonadi_ical_resource.po to Spanish
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for akonadi_ical_resource.po package.
+# Copyright (C) 2009-2025 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2009, 2023 Eloy Cuadra <ecuadra@eloihr.net>
-# Javier, 2010.
-# Javier Viñal <fjvinal@gmail.com>, 2010.
-# Javier Vinal <fjvinal@gmail.com>, 2010, 2015.
+# SPDX-FileCopyrightText: 2009, 2023, 2025 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2010, 2015 Javier Viñal <fjvinal@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-12-18 00:41+0000\n"
-"PO-Revision-Date: 2023-10-06 12:41+0200\n"
+"PO-Revision-Date: 2025-09-23 01:25+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -82,12 +80,3 @@ msgstr "No se puede recuperar el elemento añadido %1."
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "No se puede recuperar el elemento modificado %1."
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Intervalo de tiempo para guardar automáticamente (en minutos)."
-
-#~ msgid "Filename:"
-#~ msgstr "Nombre de archivo:"
-
-#~ msgid "Select Calendar"
-#~ msgstr "Seleccionar calendario"

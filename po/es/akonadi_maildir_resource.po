@@ -1,16 +1,15 @@
-# translation of akonadi_maildir_resource.po to Spanish
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for akonadi_maildir_resource.po package.
+# Copyright (C) 2009-2025 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2009, 2024 Eloy Cuadra <ecuadra@eloihr.net>
-# Javier Vinal <fjvinal@gmail.com>, 2009, 2010, 2011.
-# Javier Viñal <fjvinal@gmail.com>, 2010, 2013, 2014, 2015.
+# SPDX-FileCopyrightText: 2009, 2024, 2025 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2009, 2010, 2011, 2013, 2014, 2015 Javier Viñal <fjvinal@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-12 00:39+0000\n"
-"PO-Revision-Date: 2024-08-18 00:55+0200\n"
+"PO-Revision-Date: 2025-09-23 01:26+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -232,6 +231,3 @@ msgstr "Seleccionar la carpeta que contiene la información de maildir:"
 #, kde-format
 msgid "Open in read-only mode"
 msgstr "Abrir en modo de solo lectura"
-
-#~ msgid "Select a MailDir folder"
-#~ msgstr "Seleccionar una carpeta MailDir"
