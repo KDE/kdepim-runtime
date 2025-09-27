@@ -49,11 +49,11 @@ static bool compareMimeMessage(const KMime::Message::Ptr &msg, const KMime::Mess
         KCOMPARE(part->contentType()->mimeType(), expectedPart->contentType()->mimeType());
         KCOMPARE(part->contentDisposition()->filename(), expectedPart->contentDisposition()->filename());
 
-        KCOMPARE(part->decodedContent().isEmpty(), false);
+        KCOMPARE(part->decodedBody().isEmpty(), false);
 
-        QString content(QString::fromUtf8(part->decodedContent()));
+        QString content(QString::fromUtf8(part->decodedBody()));
         normalizeMimemessage(content);
-        QString expected(QString::fromUtf8(expectedPart->decodedContent()));
+        QString expected(QString::fromUtf8(expectedPart->decodedBody()));
         normalizeMimemessage(expected);
         //         showDiff(expected, content);
 

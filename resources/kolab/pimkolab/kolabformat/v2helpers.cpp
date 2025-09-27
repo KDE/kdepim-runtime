@@ -25,7 +25,7 @@ void getAttachments(KCalendarCore::Incidence::Ptr incidence, const QStringList &
             qCWarning(PIMKOLAB_LOG) << "could not find attachment: " << name.toUtf8() << type;
             continue;
         }
-        const QByteArray c = content->decodedContent().toBase64();
+        const QByteArray c = content->decodedBody().toBase64();
         KCalendarCore::Attachment attachment(c, QString::fromLatin1(type));
         attachment.setLabel(name);
         incidence->addAttachment(attachment);
@@ -44,7 +44,7 @@ static QImage getPicture(const QString &pictureAttachmentName, const KMime::Mess
         qCWarning(PIMKOLAB_LOG) << "could not find picture: " << pictureAttachmentName;
         return {};
     }
-    QByteArray imgData = imgContent->decodedContent();
+    QByteArray imgData = imgContent->decodedBody();
     QBuffer buffer(&imgData);
     buffer.open(QIODevice::ReadOnly);
     QImage image;
@@ -101,7 +101,7 @@ KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, const KMime::
     if (!soundAttachmentName.isEmpty()) {
         KMime::Content *content = Mime::findContentByName(data, soundAttachmentName /*"sound"*/, type);
         if (content) {
-            const QByteArray &sData = content->decodedContent();
+            const QByteArray &sData = content->decodedBody();
             contact.setSound(sData);
         } else {
             qCWarning(PIMKOLAB_LOG) << "could not find sound: " << soundAttachmentName;

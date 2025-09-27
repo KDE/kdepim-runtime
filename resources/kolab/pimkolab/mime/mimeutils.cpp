@@ -216,9 +216,9 @@ Kolab::Attachment getAttachment(const std::string &id, const KMime::Message::Ptr
         qCCritical(PIMKOLAB_LOG) << "could not find attachment: " << name << type;
         return {};
     }
-    // Debug() << id << content->decodedContent().toBase64().toStdString();
+    // Debug() << id << content->decodedBody().toBase64().toStdString();
     Kolab::Attachment attachment;
-    attachment.setData(content->decodedContent().toStdString(), type.toStdString());
+    attachment.setData(content->decodedBody().toStdString(), type.toStdString());
     attachment.setLabel(name.toStdString());
     return attachment;
 }
@@ -232,7 +232,7 @@ Kolab::Attachment getAttachmentByName(const QString &name, const KMime::Message:
         return {};
     }
     Kolab::Attachment attachment;
-    attachment.setData(content->decodedContent().toStdString(), type.toStdString());
+    attachment.setData(content->decodedBody().toStdString(), type.toStdString());
     attachment.setLabel(name.toStdString());
     return attachment;
 }

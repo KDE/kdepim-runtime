@@ -50,7 +50,7 @@ void BenchmarkTests::parsingBenchmarkComparison()
     const KMime::Message::Ptr kolabItem = readMimeFile(TESTFILEDIR + QLatin1StringView("/v2/event/complex.ics.mime"));
     KMime::Content *xmlContent = findContentByType(kolabItem, "application/x-vnd.kolab.event");
     QVERIFY(xmlContent);
-    const QByteArray xmlData = xmlContent->decodedContent();
+    const QByteArray xmlData = xmlContent->decodedBody();
     //     qDebug() << xmlData;
     const QDomDocument xmlDoc = KolabV2::Event::loadDocument(QString::fromUtf8(xmlData));
     QVERIFY(!xmlDoc.isNull());

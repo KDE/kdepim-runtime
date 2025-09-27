@@ -147,6 +147,6 @@ std::vector<Event> ITipHandler::fromIMip(const std::string &input)
         qCWarning(PIMKOLAB_LOG) << "could not find text/calendar part";
         return {};
     }
-    return fromITip(Conversion::toStdString(QString::fromUtf8(c->decodedContent())));
+    return fromITip(Conversion::toStdString(QString::fromUtf8(c->decodedBody())));
 }
 }

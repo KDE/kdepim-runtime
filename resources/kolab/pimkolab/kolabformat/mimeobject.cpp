@@ -258,7 +258,7 @@ QVariant MIMEObjectPrivate::readKolabV2(const KMime::Message::Ptr &msg, Kolab::O
             printMessageDebugInfo(msg);
             return InvalidObject;
         }
-        const QByteArray &xmlData = xmlContent->decodedContent();
+        const QByteArray &xmlData = xmlContent->decodedBody();
         QString dictionaryLanguage;
         const QStringList entries = Kolab::readLegacyDictionaryConfiguration(xmlData, dictionaryLanguage);
         mObjectType = objectType;
@@ -277,7 +277,7 @@ QVariant MIMEObjectPrivate::readKolabV2(const KMime::Message::Ptr &msg, Kolab::O
         printMessageDebugInfo(msg);
         return {};
     }
-    const QByteArray &xmlData = xmlContent->decodedContent();
+    const QByteArray &xmlData = xmlContent->decodedBody();
     if (xmlData.isEmpty()) {
         qCCritical(PIMKOLAB_LOG) << "no content in message part with type" << getTypeString(objectType);
         printMessageDebugInfo(msg);
@@ -352,7 +352,7 @@ QVariant MIMEObjectPrivate::readKolabV3(const KMime::Message::Ptr &msg, Kolab::O
         printMessageDebugInfo(msg);
         return InvalidObject;
     }
-    const QByteArray &content = xmlContent->decodedContent();
+    const QByteArray &content = xmlContent->decodedBody();
     const std::string xml = std::string(content.data(), content.size());
     QVariant variant;
     switch (objectType) {

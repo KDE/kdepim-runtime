@@ -57,7 +57,7 @@ static inline IncidencePtr incidenceFromKolabImpl(const KMime::Message::Ptr &dat
         Critical() << "couldn't find part";
         return IncidencePtr();
     }
-    const QByteArray &xmlData = xmlContent->decodedContent();
+    const QByteArray &xmlData = xmlContent->decodedBody();
 
     QStringList attachments;
     IncidencePtr ptr = fromXML<IncidencePtr, Converter>(xmlData, attachments); // TODO do we care about timezone?
