@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
+# SPDX-FileCopyrightText: 2024, 2025 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-09-21 00:43+0000\n"
-"PO-Revision-Date: 2024-12-19 16:36+0200\n"
+"PO-Revision-Date: 2025-09-26 16:24+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
@@ -16,34 +16,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Lokalize 24.12.0\n"
+"X-Generator: Lokalize 25.08.0\n"
 
 #: etesyncclientstate.cpp:33
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "EteSync configuration wizard"
+#, kde-format
 msgctxt "@info:status"
 msgid "Empty account configuration"
-msgstr "„EteSync“ konfigurācijas vednis"
+msgstr "„EteSync“ konta konfigurācija"
 
 #: etesyncclientstate.cpp:42
 #, kde-format
 msgctxt "@info:status"
 msgid "Etebase error when initializing client: %1"
-msgstr ""
+msgstr "„Etebase“ kļūda, inicializējot klientu: %1"
 
 #: etesyncclientstate.cpp:159
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr ""
+msgstr "Neizdodas nolasīt paroli: %1"
 
 #: etesyncclientstate.cpp:168
-#, fuzzy, kde-format
-#| msgid "Could not get etesyncItem from cache '%1'"
+#, kde-format
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
-msgstr "No kešatmiņas „%1“ nevarēja iegūt „etesyncItem“"
+msgstr "Neizdevās no kešatmiņas izgūt „etebase“ kontu"
 
 #: etesyncresource.cpp:57
 #, kde-format
@@ -51,10 +48,9 @@ msgid "EteSync Resource"
 msgstr "„EteSync“ resurss"
 
 #: etesyncresource.cpp:131
-#, fuzzy, kde-format
-#| msgid "EteSync Resource"
+#, kde-format
 msgid "EteSync Account"
-msgstr "„EteSync“ resurss"
+msgstr "„EteSync“ konts"
 
 #: etesyncresource.cpp:173
 #, kde-format
@@ -96,14 +92,9 @@ msgid "Credentials Changed"
 msgstr "Mainījušies ierakstīšanās dati"
 
 #: etesyncresource.cpp:209
-#, fuzzy, kde-format
-#| msgid ""
-#| "Your EteSync credentials were changed. Please click OK to re-enter your "
-#| "credentials."
+#, kde-format
 msgid "Your EteSync credentials were changed or are missing."
-msgstr ""
-"Ir mainīti jūsu „EteSync“ ierakstīšanās dati. Spiediet uz „Labi“, lai no "
-"jauna ievadītu ierakstīšanās datus."
+msgstr "Ir mainīti vai trūkst jūsu „EteSync“ ierakstīšanās dati."
 
 #: etesyncresource.cpp:259
 #, kde-format

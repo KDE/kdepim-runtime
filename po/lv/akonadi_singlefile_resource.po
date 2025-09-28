@@ -7,20 +7,20 @@
 # Maris Nartiss <maris.kde@gmail.com>, 2009.
 # Viesturs Zarins <viesturs.zarins@mii.lu.lv>, 2010.
 # Einars Sprugis <einars8@gmail.com>, 2012.
-# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
+# SPDX-FileCopyrightText: 2024, 2025 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:42+0000\n"
-"PO-Revision-Date: 2024-12-30 16:17+0200\n"
+"PO-Revision-Date: 2025-09-26 16:30+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.12.0\n"
+"X-Generator: Lokalize 25.08.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
@@ -311,6 +311,8 @@ msgid ""
 "A file path or URL containing the calendar file. Once created, this location "
 "cannot be modified."
 msgstr ""
+"Ceļš vai URL adrese uz datni, kas satur kalendāra datni. Pēc tās "
+"izveidošanas tās atrašanās vietu mainīt vairs nevarēs."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
 #, kde-kuit-format
@@ -321,6 +323,10 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></para>"
 msgstr ""
+"Norādiet ceļu vai URL adresi uz vietu, kas satur derīgu kalendāra datni. "
+"<para><note> Diemžēl pēc resursa izveidošanas šo ceļu vairs nevar mainīt. "
+"Lai mainītu vietu, dzēsiet šo resursu un izveidojiet jaunu ar jauno vēlamo "
+"ceļu.</note></para>"
 
 #: singlefileresourceconfigwidgetbase.cpp:145
 #, kde-format

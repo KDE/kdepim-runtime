@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2024 Toms Trasuns <toms.trasuns@posteo.net>
+# SPDX-FileCopyrightText: 2024, 2025 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-01 00:42+0000\n"
-"PO-Revision-Date: 2024-12-26 19:37+0200\n"
+"PO-Revision-Date: 2025-09-26 16:26+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Lokalize 24.12.0\n"
+"X-Generator: Lokalize 25.08.0\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -29,32 +29,24 @@ msgid "Exchange protocol information not found"
 msgstr "„Exchange“ protokola informācija nav atrasta"
 
 #: ewsclient/auth/ewsintuneauth.cpp:303
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
-#| "valid. You need to authenticate in order to continue using it."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "InTune credentials for the Microsoft Exchange account <b>%1</b> are no "
 "longer valid. You need to authenticate in order to continue using it."
 msgstr ""
-"„Microsoft Exchange“ konta <b>%1</b> ierakstīšanās dati vairs nav derīgi. "
-"Lai turpinātu kontu lietot, jums ir jāautentificējas."
+"„InTune“ ierakstīšanās dati „Microsoft Exchange“ kontam <b>%1</b> vairs nav "
+"derīgi. Lai turpinātu kontu lietot, jums ir jāautentificējas."
 
 #: ewsclient/auth/ewsintuneauth.cpp:312
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
-#| "Please update it in the account settings page."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Failed to obtain InTune credentials for Microsoft Exchange account <b>%1</"
 "b>. Please update it in the account settings page."
 msgstr ""
-"Neizdevās iegūt „Microsoft Exchange“ konta <b>%1</b> ierakstīšanās datus. "
-"Atjauniniet tos konta iestatījumu lapā."
+"Neizdevās iegūt „InTune“ ierakstīšanās datus „Microsoft Exchange“ kontam <b>"
+"%1</b>. Atjauniniet tos konta iestatījumu lapā."
 
 #: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
@@ -398,12 +390,17 @@ msgid ""
 "system to be joined to the organization and managed using InTune.</p></"
 "body></html>"
 msgstr ""
+"<html><head/><body><p>Ieslēdz autentifikāciju, izmantojot „Microsoft InTune“ "
+"MDM programmatūru. Tas ir nepieciešams daudzās korporatīvās vidēs, kurās ir "
+"noteikta stingra autentifikācija, izmantojot ierīces ierakstīšanās datus, "
+"tāpēc sistēmai ir jābūt pievienotai organizācijā un pārvaldītai caur "
+"„InTune“.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authInTuneRadioButton)
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "&Microsoft InTune"
-msgstr ""
+msgstr "&Microsoft InTune"
 
 #. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
 #: ewsconfigdialog.ui:245
