@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-05-01 00:42+0000\n"
-"PO-Revision-Date: 2025-08-02 21:20+0300\n"
+"PO-Revision-Date: 2025-10-05 12:23+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Lokalize 25.04.3\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -384,7 +384,7 @@ msgid ""
 "system to be joined to the organization and managed using InTune.</p></"
 "body></html>"
 msgstr ""
-"<html><head/><body><p>הפעלת אימות באמצעות תוכנת Microsoft InTune MDM.נחוץ "
+"<html><head/><body><p>הפעלת אימות באמצעות תוכנת Microsoft InTune MDM. נחוץ "
 "למגוון סביבות תאגידיות שאוכפות אימות נוקשה באמצעות פרטי המכשיר ולכן דורשים "
 "לצרף את המערכת לסביבה הארגונית ולנהל אותה עם InTune.</p></body></html>"
 
@@ -1100,8 +1100,8 @@ msgid ""
 "The URL of the Microsoft Exchange server, should be something like https://"
 "myserver.org/EWS/Exchange.asmx"
 msgstr ""
-"כתובת שרת ה־Microsoft Exchange, אמורה להיות משהו בסגנון  https://myserver."
-"org/EWS/Exchange.asmx‎"
+"כתובת שרת ה־Microsoft Exchange, אמורה להיות משהו בסגנון https://myserver.org/"
+"EWS/Exchange.asmx‎"
 
 #. i18n: ectx: label, entry (Username), group (General)
 #: ewsresource.kcfg:16
