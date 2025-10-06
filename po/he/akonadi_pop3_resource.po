@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2024 Yaron Shahrabani <sh.yaron@gmail.com>
+# SPDX-FileCopyrightText: 2024, 2025 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2024-10-27 00:40+0000\n"
-"PO-Revision-Date: 2024-08-18 08:28+0300\n"
+"PO-Revision-Date: 2025-10-05 12:33+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #: accountwidget.cpp:83
 #, kde-format
@@ -377,7 +377,7 @@ msgid ""
 "reset to the main Inbox folder.</qt>"
 msgstr ""
 "<qt>התיקייה שמחקת שויכה לחשבון <b>%1</b> שמעביר אליו הודעות דוא״ל. התיקייה "
-"שאליה החשבון מעביר  reset to the main Inbox folder.</qt>"
+"שאליה החשבון מעביר אופסה לתיקיית הדוא״ל הנכנס הראשית.</qt>"
 
 #: pop3resource.cpp:419
 #, kde-format
