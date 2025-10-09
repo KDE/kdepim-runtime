@@ -65,7 +65,7 @@ bool EwsTagStore::unserializeTag(const QByteArray &data, Akonadi::Tag &tag) cons
         stream >> name >> gid;
         stream >> numAttrs;
         if (stream.status() != QDataStream::Ok) {
-            QStringLiteral("Error reading tag version 1");
+            qCWarningNC(EWSRES_LOG) << QStringLiteral("Error reading tag version 1");
             return false;
         }
 
@@ -73,7 +73,7 @@ bool EwsTagStore::unserializeTag(const QByteArray &data, Akonadi::Tag &tag) cons
             QByteArray attrType, attrData;
             stream >> attrType >> attrData;
             if (stream.status() != QDataStream::Ok) {
-                QStringLiteral("Error reading tag version 1");
+                qCWarningNC(EWSRES_LOG) << QStringLiteral("Error reading tag version 1");
                 return false;
             }
             Attribute *attr = AttributeFactory::createAttribute(attrType);
