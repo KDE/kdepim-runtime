@@ -466,7 +466,7 @@ void ImapResourceBase::doSetOnline(bool online)
             m_idle = nullptr;
         }
         settings()->clearCachedPassword();
-    } else if (online && !m_pool->isConnected()) {
+    } else if (!m_pool->isConnected()) {
         scheduleConnectionAttempt();
     }
     ResourceBase::doSetOnline(online);
