@@ -47,13 +47,13 @@ public:
         int mProtocol;
     };
 
-    Settings(const KSharedConfigPtr &config, Options options = Option::ExportToDBus);
+    explicit Settings(const KSharedConfigPtr &config, Options options = Option::ExportToDBus);
     ~Settings() override;
     void cleanup();
 
     void setResourceIdentifier(const QString &identifier);
     void setDefaultPassword(const QString &password);
-    QString defaultPassword();
+    [[nodiscard]] QString defaultPassword();
     void setIconName(const QString &icon);
     [[nodiscard]] QString iconName() const;
 

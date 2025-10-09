@@ -50,7 +50,7 @@ class EwsOAuthUrlSchemeHandler final : public QWebEngineUrlSchemeHandler
 {
     Q_OBJECT
 public:
-    EwsOAuthUrlSchemeHandler(QObject *parent = nullptr)
+    explicit EwsOAuthUrlSchemeHandler(QObject *parent = nullptr)
         : QWebEngineUrlSchemeHandler(parent)
     {
     }

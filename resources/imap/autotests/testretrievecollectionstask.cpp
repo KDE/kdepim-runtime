@@ -22,7 +22,7 @@ class TestRetrieveCollectionsTask : public ImapTestBase
 {
     Q_OBJECT
 public:
-    TestRetrieveCollectionsTask(QObject *parent = nullptr)
+    explicit TestRetrieveCollectionsTask(QObject *parent = nullptr)
         : ImapTestBase(parent)
         , m_nextCollectionId(1)
     {
