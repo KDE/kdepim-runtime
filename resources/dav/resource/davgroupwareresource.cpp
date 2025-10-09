@@ -1452,8 +1452,8 @@ void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &loca
                 etag->setEtag(remoteDependentItems.at(i).remoteId(), remoteEtag);
             }
 
-            auto j = new Akonadi::ItemModifyJob(remoteDependentItems);
-            j->setIgnorePayload(true);
+            auto modifyJob = new Akonadi::ItemModifyJob(remoteDependentItems);
+            modifyJob->setIgnorePayload(true);
         }
     }
 }
