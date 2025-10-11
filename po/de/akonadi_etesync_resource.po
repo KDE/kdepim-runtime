@@ -1,9 +1,8 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
-# Burkhard Lück <lueck@hube-lueck.de>, 2020, 2021.
-# Alois Spitzbart <spitz234@hotmail.com>, 2022.
+# SPDX-FileCopyrightText: 2020, 2021 Burkhard Lück <lueck@hube-lueck.de>
+# SPDX-FileCopyrightText: 2022 Alois Spitzbart <spitz234@hotmail.com>
 # SPDX-FileCopyrightText: 2024 Johannes Obermayr <johannesobermayr@gmx.de>
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_etesync_resource\n"
