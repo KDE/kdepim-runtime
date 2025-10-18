@@ -3,9 +3,9 @@
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# Manuel Tortosa Moreno <manutortosa@chakra-project.org>, 2009, 2010.
-# Josep M. Ferrer <txemaq@gmail.com>, 2010, 2012, 2015, 2023.
-# Antoni Bella Pérez <antonibella5@yahoo.com>, 2014.
+# SPDX-FileCopyrightText: 2009, 2010 Manuel Tortosa Moreno <manutortosa@chakra-project.org>
+# SPDX-FileCopyrightText: 2010, 2012, 2015, 2023 Josep M. Ferrer <txemaq@gmail.com>
+# SPDX-FileCopyrightText: 2014 Antoni Bella Pérez <antonibella5@yahoo.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
@@ -83,6 +83,3 @@ msgstr "No s'ha pogut recuperar l'element afegit %1."
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "No s'ha pogut recuperar l'element modificat %1."
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Interval de temps d'autoguardat (en minuts)."
