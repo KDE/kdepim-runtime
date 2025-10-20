@@ -129,8 +129,15 @@ bool EwsSubscriptionFilterModel::hasCheckedChildren(const QModelIndex &index) co
 
 void EwsSubscriptionFilterModel::setFilterSelected(bool enabled)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+    beginFilterChange();
+#endif
     mFilterSelected = enabled;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+    endFilterChange(QSortFilterProxyModel::Direction::Rows);
+#else
     invalidateFilter();
+#endif
 }
 
 EwsSubscriptionWidgetPrivate::EwsSubscriptionWidgetPrivate(EwsClient &client, EwsSettings *settings, QObject *parent)
