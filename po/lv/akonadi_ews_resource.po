@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-01 00:42+0000\n"
+"POT-Creation-Date: 2025-10-21 00:43+0000\n"
 "PO-Revision-Date: 2025-09-26 16:26+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -1250,43 +1250,43 @@ msgstr "Ceļš uz „PKey“ autentifikācijas PEM sertifikātu"
 msgid "Path to PKey authentication PEM private key"
 msgstr "Ceļš uz „PKey“ autentifikācijas PEM privāto atslēgu"
 
-#: ewssubscriptionwidget.cpp:171
+#: ewssubscriptionwidget.cpp:178
 #, kde-format
 msgctxt "@info"
 msgid "Exchange server not configured."
 msgstr "„Exchange“ serveris nav konfigurēts."
 
-#: ewssubscriptionwidget.cpp:180 ewssubscriptionwidget.cpp:201
+#: ewssubscriptionwidget.cpp:187 ewssubscriptionwidget.cpp:208
 #, kde-format
 msgctxt "@info"
 msgid "Failed to retrieve folder list."
 msgstr "Neizdevās izgūt mapju sarakstu."
 
-#: ewssubscriptionwidget.cpp:286
+#: ewssubscriptionwidget.cpp:293
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
 msgstr "Ieslēgt servera puses abonementus"
 
-#: ewssubscriptionwidget.cpp:294
+#: ewssubscriptionwidget.cpp:301
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Filter folders"
 msgstr "Filtrēt mapes"
 
-#: ewssubscriptionwidget.cpp:314
+#: ewssubscriptionwidget.cpp:321
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
 msgstr "Pārlādēt &sarakstu"
 
-#: ewssubscriptionwidget.cpp:317
+#: ewssubscriptionwidget.cpp:324
 #, kde-format
 msgctxt "@action:button"
 msgid "&Reset"
 msgstr "&Atiestatīt"
 
-#: ewssubscriptionwidget.cpp:326
+#: ewssubscriptionwidget.cpp:333
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"

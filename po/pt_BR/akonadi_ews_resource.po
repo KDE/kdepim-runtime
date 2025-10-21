@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-01 00:42+0000\n"
+"POT-Creation-Date: 2025-10-21 00:43+0000\n"
 "PO-Revision-Date: 2025-07-23 19:06-0300\n"
 "Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -1271,43 +1271,43 @@ msgstr "Caminho do certificado PEM de autenticação por PKey"
 msgid "Path to PKey authentication PEM private key"
 msgstr "Caminho da chave privada PEM de autenticação por PKey"
 
-#: ewssubscriptionwidget.cpp:171
+#: ewssubscriptionwidget.cpp:178
 #, kde-format
 msgctxt "@info"
 msgid "Exchange server not configured."
 msgstr "O servidor Exchange não está configurado."
 
-#: ewssubscriptionwidget.cpp:180 ewssubscriptionwidget.cpp:201
+#: ewssubscriptionwidget.cpp:187 ewssubscriptionwidget.cpp:208
 #, kde-format
 msgctxt "@info"
 msgid "Failed to retrieve folder list."
 msgstr "Não foi possível obter a lista de pastas."
 
-#: ewssubscriptionwidget.cpp:286
+#: ewssubscriptionwidget.cpp:293
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
 msgstr "Ativar as inscrições no servidor"
 
-#: ewssubscriptionwidget.cpp:294
+#: ewssubscriptionwidget.cpp:301
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Filter folders"
 msgstr "Pastas dos filtros"
 
-#: ewssubscriptionwidget.cpp:314
+#: ewssubscriptionwidget.cpp:321
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
 msgstr "Atualizar a &lista"
 
-#: ewssubscriptionwidget.cpp:317
+#: ewssubscriptionwidget.cpp:324
 #, kde-format
 msgctxt "@action:button"
 msgid "&Reset"
 msgstr "&Restaurar"
 
-#: ewssubscriptionwidget.cpp:326
+#: ewssubscriptionwidget.cpp:333
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"

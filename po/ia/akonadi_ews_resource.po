@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-01 00:42+0000\n"
+"POT-Creation-Date: 2025-10-21 00:43+0000\n"
 "PO-Revision-Date: 2025-05-09 16:51+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -1267,43 +1267,43 @@ msgstr "Percurso a certificato PEM de authentication PKey"
 msgid "Path to PKey authentication PEM private key"
 msgstr "Percurso a clav private PEM de authentication PKey"
 
-#: ewssubscriptionwidget.cpp:171
+#: ewssubscriptionwidget.cpp:178
 #, kde-format
 msgctxt "@info"
 msgid "Exchange server not configured."
 msgstr "Srvitor de Exchange non configurate."
 
-#: ewssubscriptionwidget.cpp:180 ewssubscriptionwidget.cpp:201
+#: ewssubscriptionwidget.cpp:187 ewssubscriptionwidget.cpp:208
 #, kde-format
 msgctxt "@info"
 msgid "Failed to retrieve folder list."
 msgstr "Falleva a recuperar lista de dossier."
 
-#: ewssubscriptionwidget.cpp:286
+#: ewssubscriptionwidget.cpp:293
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
 msgstr "Habilita subscriptiones le latere servitor"
 
-#: ewssubscriptionwidget.cpp:294
+#: ewssubscriptionwidget.cpp:301
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Filter folders"
 msgstr "Filtra dossieres"
 
-#: ewssubscriptionwidget.cpp:314
+#: ewssubscriptionwidget.cpp:321
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
 msgstr "Recarga &Lista"
 
-#: ewssubscriptionwidget.cpp:317
+#: ewssubscriptionwidget.cpp:324
 #, kde-format
 msgctxt "@action:button"
 msgid "&Reset"
 msgstr "&Re-fixa"
 
-#: ewssubscriptionwidget.cpp:326
+#: ewssubscriptionwidget.cpp:333
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"

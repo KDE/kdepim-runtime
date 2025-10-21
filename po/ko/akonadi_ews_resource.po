@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-01 00:42+0000\n"
+"POT-Creation-Date: 2025-10-21 00:43+0000\n"
 "PO-Revision-Date: 2025-06-10 23:50+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -1234,43 +1234,43 @@ msgstr "PKey 인증 PEM 인증서 경로"
 msgid "Path to PKey authentication PEM private key"
 msgstr "PKey 인증 PEM 비밀 키 경로"
 
-#: ewssubscriptionwidget.cpp:171
+#: ewssubscriptionwidget.cpp:178
 #, kde-format
 msgctxt "@info"
 msgid "Exchange server not configured."
 msgstr "Exchange 서버가 설정되지 않았습니다."
 
-#: ewssubscriptionwidget.cpp:180 ewssubscriptionwidget.cpp:201
+#: ewssubscriptionwidget.cpp:187 ewssubscriptionwidget.cpp:208
 #, kde-format
 msgctxt "@info"
 msgid "Failed to retrieve folder list."
 msgstr "폴더 목록을 가져올 수 없습니다."
 
-#: ewssubscriptionwidget.cpp:286
+#: ewssubscriptionwidget.cpp:293
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
 msgstr "서버 측 구독 사용"
 
-#: ewssubscriptionwidget.cpp:294
+#: ewssubscriptionwidget.cpp:301
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Filter folders"
 msgstr "폴더 필터"
 
-#: ewssubscriptionwidget.cpp:314
+#: ewssubscriptionwidget.cpp:321
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
 msgstr "목록 새로 고침(&L)"
 
-#: ewssubscriptionwidget.cpp:317
+#: ewssubscriptionwidget.cpp:324
 #, kde-format
 msgctxt "@action:button"
 msgid "&Reset"
 msgstr "초기화(&R)"
 
-#: ewssubscriptionwidget.cpp:326
+#: ewssubscriptionwidget.cpp:333
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"

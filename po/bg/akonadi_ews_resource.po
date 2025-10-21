@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-01 00:42+0000\n"
+"POT-Creation-Date: 2025-10-21 00:43+0000\n"
 "PO-Revision-Date: 2025-05-08 18:26+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -1273,43 +1273,43 @@ msgstr "Път към PKey удостоверяване PEM сертификат
 msgid "Path to PKey authentication PEM private key"
 msgstr "Път към частния ключ за удостоверяване на PKey"
 
-#: ewssubscriptionwidget.cpp:171
+#: ewssubscriptionwidget.cpp:178
 #, kde-format
 msgctxt "@info"
 msgid "Exchange server not configured."
 msgstr "Exchange сървърът не е конфигуриран."
 
-#: ewssubscriptionwidget.cpp:180 ewssubscriptionwidget.cpp:201
+#: ewssubscriptionwidget.cpp:187 ewssubscriptionwidget.cpp:208
 #, kde-format
 msgctxt "@info"
 msgid "Failed to retrieve folder list."
 msgstr "Извличането на списъка с папки не бе успешно."
 
-#: ewssubscriptionwidget.cpp:286
+#: ewssubscriptionwidget.cpp:293
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
 msgstr "Активиране на абонаментите от страна на сървъра"
 
-#: ewssubscriptionwidget.cpp:294
+#: ewssubscriptionwidget.cpp:301
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Filter folders"
 msgstr "Филтриране на папки"
 
-#: ewssubscriptionwidget.cpp:314
+#: ewssubscriptionwidget.cpp:321
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
 msgstr "Презаре&ждане на списъка"
 
-#: ewssubscriptionwidget.cpp:317
+#: ewssubscriptionwidget.cpp:324
 #, kde-format
 msgctxt "@action:button"
 msgid "&Reset"
 msgstr "&Възстановяване"
 
-#: ewssubscriptionwidget.cpp:326
+#: ewssubscriptionwidget.cpp:333
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"
