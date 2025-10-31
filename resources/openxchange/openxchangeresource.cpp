@@ -170,10 +170,8 @@ public:
         QStringList pairs;
         pairs.reserve(mObjectsMap.count());
 
-        QMapIterator<qlonglong, qulonglong> it(mObjectsMap);
-        while (it.hasNext()) {
-            it.next();
-            pairs.append(QString::number(it.key()) + u'=' + QString::number(it.value()));
+        for (const auto &[key, value] : mObjectsMap.asKeyValueRange()) {
+            pairs.append(QString::number(key) + u'=' + QString::number(value));
         }
 
         Settings::self()->setObjectsLastSync(pairs.join(u':'));

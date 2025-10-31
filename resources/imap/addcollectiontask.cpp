@@ -97,9 +97,7 @@ void AddCollectionTask::onSubscribeDone(KJob *job)
         return;
     }
 
-    QMapIterator<QByteArray, QByteArray> i(attribute->annotations());
-    while (i.hasNext()) {
-        i.next();
+    for (const auto &[key, value] : attribute->annotations().asKeyValueRange()) {
         auto job = new KIMAP::SetMetaDataJob(m_session);
         if (serverCapabilities().contains(QLatin1StringView("METADATA"))) {
             job->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
@@ -108,11 +106,11 @@ void AddCollectionTask::onSubscribeDone(KJob *job)
         }
         job->setMailBox(mailBoxForCollection(m_collection));
 
-        if (!i.key().startsWith("/shared") && !i.key().startsWith("/private")) {
+        if (!key.startsWith("/shared") && !key.startsWith("/private")) {
             // Support for legacy annotations that don't include the prefix
-            job->addMetaData(QByteArray("/shared") + i.key(), i.value());
+            job->addMetaData(QByteArray("/shared") + key, value);
         } else {
-            job->addMetaData(i.key(), i.value());
+            job->addMetaData(key, value);
         }
 
         connect(job, &KIMAP::SetMetaDataJob::result, this, &AddCollectionTask::onSetMetaDataDone);
