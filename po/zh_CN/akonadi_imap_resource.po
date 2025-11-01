@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-21 00:43+0000\n"
+"POT-Creation-Date: 2025-11-01 00:47+0000\n"
 "PO-Revision-Date: 2024-04-23 19:24\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -37,7 +37,7 @@ msgstr ""
 "订阅 IMAP 服务器上文件夹“%1”失败。这些信件下次同步时会消失。请使用订阅对话框"
 "来解决这个问题。"
 
-#: addcollectiontask.cpp:130 changecollectiontask.cpp:276
+#: addcollectiontask.cpp:128 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
 msgstr "将 %1 的批注写入 IMAP 服务器失败。%2"

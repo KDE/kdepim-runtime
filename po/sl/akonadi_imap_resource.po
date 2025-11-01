@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-21 00:43+0000\n"
+"POT-Creation-Date: 2025-11-01 00:47+0000\n"
 "PO-Revision-Date: 2025-03-28 07:20+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -41,7 +41,7 @@ msgstr ""
 "Naročanje na mapo '%1' na strežniku IMAP ni uspelo. Ob naslednji uskladitvi "
 "bo izginila. Da se temu izognete, uporabite pogovorno okno za naročanje"
 
-#: addcollectiontask.cpp:130 changecollectiontask.cpp:276
+#: addcollectiontask.cpp:128 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
 msgstr "Zapisovanje nekaterih zabeležk za '%1' na strežniku IMAP ni uspelo. %2"

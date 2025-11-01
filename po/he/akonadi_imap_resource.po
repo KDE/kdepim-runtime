@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-21 00:43+0000\n"
+"POT-Creation-Date: 2025-11-01 00:47+0000\n"
 "PO-Revision-Date: 2025-03-28 22:30+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -37,7 +37,7 @@ msgstr ""
 "ההרשמה לתיקייה ‚%1’ בשרת ה־IMAP נכשלה. היא תיעלם בסנכרון הבא. אפשר להשתמש "
 "בחלונית המינוי כדי להתגבר על זה"
 
-#: addcollectiontask.cpp:130 changecollectiontask.cpp:276
+#: addcollectiontask.cpp:128 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
 msgstr "כתיבת הסברים ל־‚%1’ בשרת ה־IMAP נכשלה. %2"

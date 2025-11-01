@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-21 00:43+0000\n"
+"POT-Creation-Date: 2025-11-01 00:47+0000\n"
 "PO-Revision-Date: 2025-04-06 23:03+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -36,7 +36,7 @@ msgstr ""
 "IMAP 서버의 폴더 '%1'을(를) 구독할 수 없습니다. 다음 동기화에서 삭제됩니다. "
 "구독 대화 상자를 사용하십시오."
 
-#: addcollectiontask.cpp:130 changecollectiontask.cpp:276
+#: addcollectiontask.cpp:128 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
 msgstr "IMAP 서버의 '%1'에 일부 주석을 추가할 수 없습니다. %2"

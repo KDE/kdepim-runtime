@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-21 00:43+0000\n"
+"POT-Creation-Date: 2025-11-01 00:47+0000\n"
 "PO-Revision-Date: 2019-12-18 18:36+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -37,7 +37,7 @@ msgstr ""
 "Kausta \"%1\" tellimine IMAP serveris nurjus. See ilmub uuesti järgmisel "
 "sünkroniseerimisel. Probleemi lahendamiseks kasuta tellimisdialoogi."
 
-#: addcollectiontask.cpp:130 changecollectiontask.cpp:276
+#: addcollectiontask.cpp:128 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
 msgstr "\"%1\" mõne annotatsiooni kirjutamine IMAP serveris nurjus. %2"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-02 00:41+0000\n"
+"POT-Creation-Date: 2025-11-01 00:47+0000\n"
 "PO-Revision-Date: 2024-08-03 14:41+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -113,69 +113,69 @@ msgstr "用於登入 Open-Xchange 伺服器的密碼"
 msgid "Test Connection…"
 msgstr "測試連線…"
 
-#: openxchangeresource.cpp:250
+#: openxchangeresource.cpp:248
 #, kde-format
 msgid "Open-Xchange"
 msgstr "Open-Xchange"
 
-#: openxchangeresource.cpp:278
+#: openxchangeresource.cpp:276
 #, kde-format
 msgid "Private Folder"
 msgstr "私人資料夾"
 
-#: openxchangeresource.cpp:286
+#: openxchangeresource.cpp:284
 #, kde-format
 msgid "Public Folder"
 msgstr "公開資料夾"
 
-#: openxchangeresource.cpp:294
+#: openxchangeresource.cpp:292
 #, kde-format
 msgid "Shared Folder"
 msgstr "共享資料夾"
 
-#: openxchangeresource.cpp:302
+#: openxchangeresource.cpp:300
 #, kde-format
 msgid "System Folder"
 msgstr "系統資料夾"
 
-#: openxchangeresource.cpp:617
+#: openxchangeresource.cpp:615
 #, kde-format
 msgid "Unable to connect to server"
 msgstr "無法連線到伺服器"
 
-#: openxchangeresource.cpp:805
+#: openxchangeresource.cpp:803
 #, kde-format
 msgid ""
 "The object was edited by another participant in the meantime. Please check."
 msgstr "此物件目前正被另一個參與者編輯中。請確認。"
 
-#: openxchangeresource.cpp:808
+#: openxchangeresource.cpp:806
 #, kde-format
 msgid ""
 "Object not found. Maybe it was deleted by another participant in the "
 "meantime."
 msgstr "找不到物件。它可能同時被另一個參與者刪除了。"
 
-#: openxchangeresource.cpp:811
+#: openxchangeresource.cpp:809
 #, kde-format
 msgid "You don't have the permission to perform this action on this object."
 msgstr "您沒有權限對此物件執行此動作。"
 
-#: openxchangeresource.cpp:814
+#: openxchangeresource.cpp:812
 #, kde-format
 msgid ""
 "A conflict detected. Please check if there are other objects in conflict "
 "with this one."
 msgstr "偵測到衝突。請確認是否有另一個物件與此物件衝突。"
 
-#: openxchangeresource.cpp:817
+#: openxchangeresource.cpp:815
 #, kde-format
 msgid ""
 "A mandatory data field is missing. Please check. Otherwise contact your "
 "administrator."
 msgstr "缺少了一個必要的資料欄位。請確認，否則請聯繫您的管理員。"
 
-#: openxchangeresource.cpp:820
+#: openxchangeresource.cpp:818
 #, kde-format
 msgid ""
 "An appointment conflict detected.\n"
@@ -184,7 +184,7 @@ msgstr ""
 "偵測到一個約會衝突。\n"
 "請檢查是否有另一個約會與此約會衝突。"
 
-#: openxchangeresource.cpp:823
+#: openxchangeresource.cpp:821
 #, kde-format
 msgid "Internal server error. Please contact your administrator."
 msgstr "內部伺服器錯誤。請聯繫您的管理員。"

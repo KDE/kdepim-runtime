@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_openxchange_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-02 00:41+0000\n"
+"POT-Creation-Date: 2025-11-01 00:47+0000\n"
 "PO-Revision-Date: 2012-07-04 09:11+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -114,69 +114,69 @@ msgstr "ពាក្យ​សម្ងាត់​ដែល​ត្រូវ​
 msgid "Test Connection…"
 msgstr "សាកល្បង​ការ​តភ្ជាប់..."
 
-#: openxchangeresource.cpp:250
+#: openxchangeresource.cpp:248
 #, kde-format
 msgid "Open-Xchange"
 msgstr "Open-Xchange"
 
-#: openxchangeresource.cpp:278
+#: openxchangeresource.cpp:276
 #, kde-format
 msgid "Private Folder"
 msgstr "ថត​ឯកជន"
 
-#: openxchangeresource.cpp:286
+#: openxchangeresource.cpp:284
 #, kde-format
 msgid "Public Folder"
 msgstr "ថត​សាធារណៈ"
 
-#: openxchangeresource.cpp:294
+#: openxchangeresource.cpp:292
 #, kde-format
 msgid "Shared Folder"
 msgstr "ថត​រួម"
 
-#: openxchangeresource.cpp:302
+#: openxchangeresource.cpp:300
 #, kde-format
 msgid "System Folder"
 msgstr "ថត​ប្រព័ន្ធ"
 
-#: openxchangeresource.cpp:617
+#: openxchangeresource.cpp:615
 #, kde-format
 msgid "Unable to connect to server"
 msgstr "មិនអាច​តភ្ជាប់​ទៅកាន់ម៉ាស៊ីន​បម្រើបាន​ទេ"
 
-#: openxchangeresource.cpp:805
+#: openxchangeresource.cpp:803
 #, kde-format
 msgid ""
 "The object was edited by another participant in the meantime. Please check."
 msgstr "វត្ថុ​ត្រូវ​បានកែសម្រួល​ដោយ​អ្នក​ចូលរួម​ផ្សេង​នៅ​​ពេលនោះ ។ សូម​ពិនិត្យ​មើល ។"
 
-#: openxchangeresource.cpp:808
+#: openxchangeresource.cpp:806
 #, kde-format
 msgid ""
 "Object not found. Maybe it was deleted by another participant in the "
 "meantime."
 msgstr "រក​មិន​ឃើញ​វត្ថុ ។ ប្រហែល​ជា​វា​ត្រូវបាន​លុប​ដោយ​អ្នក​ចូលរួម​ផ្សេង​នៅ​ពេល​នោះ ។"
 
-#: openxchangeresource.cpp:811
+#: openxchangeresource.cpp:809
 #, kde-format
 msgid "You don't have the permission to perform this action on this object."
 msgstr "អ្នក​មិនមាន​សិទ្ធិ​ ដើម្បី​អនុវត្ត​សកម្មភាព​នេះ​នៅ​លើ​វត្ថុ​នេះ​ទេ ។"
 
-#: openxchangeresource.cpp:814
+#: openxchangeresource.cpp:812
 #, kde-format
 msgid ""
 "A conflict detected. Please check if there are other objects in conflict "
 "with this one."
 msgstr "រក​ឃើញវត្ថុ​​​​ស្ទួន​គ្នា ។ សូម​ពិនិត្យ​មើល ប្រសិន​បើ​មាន​វត្ថុ​ផ្សេង​ស្ទួន​ជា​មួយ​វត្ថុ​មួយ​នេះ ។"
 
-#: openxchangeresource.cpp:817
+#: openxchangeresource.cpp:815
 #, kde-format
 msgid ""
 "A mandatory data field is missing. Please check. Otherwise contact your "
 "administrator."
 msgstr "បាត់​វាល​ទិន្នន័យ​ដែល​ចាំបាច់​ ។ សូម​ពិនិត្យ​មើល ។ បើ​មិន​ដូច្នេះ​ទេ ទាក់ទង​អ្នកគ្រប់គ្រង​របស់​អ្នក ។"
 
-#: openxchangeresource.cpp:820
+#: openxchangeresource.cpp:818
 #, kde-format
 msgid ""
 "An appointment conflict detected.\n"
@@ -185,7 +185,7 @@ msgstr ""
 "រក​ឃើញ​ការ​ណាត់​ជួប​ស្ទួន​គ្នា ។\n"
 "សូម​ពិនិត្យ​មើល ប្រសិន​បើ​​មាន​ការ​ណាត់​ផ្សេង​ស្ទួន​ជា​មួយ​នឹង​ការ​ណាត់​នេះ ។"
 
-#: openxchangeresource.cpp:823
+#: openxchangeresource.cpp:821
 #, kde-format
 msgid "Internal server error. Please contact your administrator."
 msgstr "កំហុស​ម៉ាស៊ីន​បម្រើ​ខាង​ក្នុង ។ សូម​ទាក់ទង​អ្នក​គ្រប់គ្រង​របស់​អ្នក ។"

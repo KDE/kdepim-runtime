@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-08-02 00:41+0000\n"
+"POT-Creation-Date: 2025-11-01 00:47+0000\n"
 "PO-Revision-Date: 2024-08-02 05:53+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -112,55 +112,55 @@ msgstr "Open-Xchange-ზე შესასვლელად საჭირო
 msgid "Test Connection…"
 msgstr "შეერთების შემოწმება…"
 
-#: openxchangeresource.cpp:250
+#: openxchangeresource.cpp:248
 #, kde-format
 msgid "Open-Xchange"
 msgstr "Open-Xchange"
 
-#: openxchangeresource.cpp:278
+#: openxchangeresource.cpp:276
 #, kde-format
 msgid "Private Folder"
 msgstr "პირადი საქაღალდე"
 
-#: openxchangeresource.cpp:286
+#: openxchangeresource.cpp:284
 #, kde-format
 msgid "Public Folder"
 msgstr "საჯარო საქაღალდე"
 
-#: openxchangeresource.cpp:294
+#: openxchangeresource.cpp:292
 #, kde-format
 msgid "Shared Folder"
 msgstr "გაზიარებული საქაღალდე"
 
-#: openxchangeresource.cpp:302
+#: openxchangeresource.cpp:300
 #, kde-format
 msgid "System Folder"
 msgstr "სისტემური საქაღალდე"
 
-#: openxchangeresource.cpp:617
+#: openxchangeresource.cpp:615
 #, kde-format
 msgid "Unable to connect to server"
 msgstr "სერვერთან დაკავშირებს შეცდომა"
 
-#: openxchangeresource.cpp:805
+#: openxchangeresource.cpp:803
 #, kde-format
 msgid ""
 "The object was edited by another participant in the meantime. Please check."
 msgstr "ამასობაში ობიექტი სხვა მონაწილის მიერ შეიცვალა. გადაამოწმეთ."
 
-#: openxchangeresource.cpp:808
+#: openxchangeresource.cpp:806
 #, kde-format
 msgid ""
 "Object not found. Maybe it was deleted by another participant in the "
 "meantime."
 msgstr "ობიექტი ვერ ვიპოვე. შეიძლება, ამ დროში, ის სხვა მონაწილემ წაშალა."
 
-#: openxchangeresource.cpp:811
+#: openxchangeresource.cpp:809
 #, kde-format
 msgid "You don't have the permission to perform this action on this object."
 msgstr "ამ ობიექტზე ამ ქმედების განხორციელების წვდომა არ გაგაჩნიათ."
 
-#: openxchangeresource.cpp:814
+#: openxchangeresource.cpp:812
 #, kde-format
 msgid ""
 "A conflict detected. Please check if there are other objects in conflict "
@@ -168,7 +168,7 @@ msgid ""
 msgstr ""
 "აღმოჩენილია კონფლიქტი. გადაამოწმეთ, ამ ობიექტს სხვა ობიექტებიც ხომ არ ერჩიან."
 
-#: openxchangeresource.cpp:817
+#: openxchangeresource.cpp:815
 #, kde-format
 msgid ""
 "A mandatory data field is missing. Please check. Otherwise contact your "
@@ -177,7 +177,7 @@ msgstr ""
 "აკლია აუცილებელი მონაცემის ველი. გადაამოწმეთ ან დაუკავშირდით თქვენს "
 "ადმინისტრატორს."
 
-#: openxchangeresource.cpp:820
+#: openxchangeresource.cpp:818
 #, kde-format
 msgid ""
 "An appointment conflict detected.\n"
@@ -186,7 +186,7 @@ msgstr ""
 "აღმოჩენილია შეხვედრის კონფლიქტი.\n"
 "გადაამოწმეთ, სხვა შეხვედრაც ხომ არ ერჩის."
 
-#: openxchangeresource.cpp:823
+#: openxchangeresource.cpp:821
 #, kde-format
 msgid "Internal server error. Please contact your administrator."
 msgstr "შიდა შეცდომა. დაუკავშირდით ადმინისტრატორს."
