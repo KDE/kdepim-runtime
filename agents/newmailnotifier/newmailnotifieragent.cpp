@@ -533,7 +533,7 @@ void NewMailNotifierAgent::slotSay(const QString &message)
     if (mTextToSpeech->availableEngines().isEmpty()) {
         qCWarning(NEWMAILNOTIFIER_LOG) << "No texttospeech engine available";
     } else {
-        mTextToSpeech->say(message);
+        mTextToSpeech->enqueue(message);
     }
 #endif
 }
