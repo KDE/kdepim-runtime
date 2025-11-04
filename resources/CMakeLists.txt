@@ -43,7 +43,7 @@ add_subdirectory(imap)
 if(Libkolabxml_FOUND)
     # The boost-provided CMake files are unreliable
     set(Boost_NO_BOOST_CMAKE ON)
-    find_package(Boost MODULE REQUIRED COMPONENTS atomic thread system)
+    find_package(Boost MODULE REQUIRED COMPONENTS atomic thread)
     unset(Boost_NO_BOOST_CMAKE)
     add_subdirectory(kolab)
 endif()
