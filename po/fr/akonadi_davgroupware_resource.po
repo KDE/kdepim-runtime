@@ -316,7 +316,7 @@ msgstr ""
 #: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
-msgstr "Pas de boîte d'envoi de calendrier trouvée pour %1"
+msgstr "Pas de boite d'envoi de calendrier trouvée pour %1"
 
 #: davfreebusyhandler.cpp:194 davfreebusyhandler.cpp:205
 #, kde-format
@@ -466,7 +466,7 @@ msgid ""
 "String representation of the mappings between discovered collections and "
 "configured URLs"
 msgstr ""
-"Représentation des chaînes de correspondance entre les collections "
+"Représentation des chaines de correspondance entre les collections "
 "découvertes et les URL configurées"
 
 #. i18n: ectx: label, entry (readOnly), group (General)

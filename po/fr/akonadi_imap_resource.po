@@ -46,7 +46,7 @@ msgid ""
 "on next sync. Use the subscription dialog to overcome that"
 msgstr ""
 "Impossible de s'abonner au dossier « %1 » sur le serveur IMAP. Il "
-"disparaîtra lors de la prochaine synchronisation. Utilisez la boîte de "
+"disparaitra lors de la prochaine synchronisation. Utilisez la boite de "
 "dialogue d'abonnement pour éviter ce problème"
 
 #: addcollectiontask.cpp:128 changecollectiontask.cpp:276
@@ -92,7 +92,7 @@ msgid ""
 "disappear on next sync. Use the subscription dialog to overcome that"
 msgstr ""
 "Impossible de s'abonner au dossier renommé « %1 » sur le serveur IMAP. Il "
-"disparaîtra lors de la prochaine synchronisation. Utilisez la boîte de "
+"disparaitra lors de la prochaine synchronisation. Utilisez la boite de "
 "dialogue d'abonnement pour éviter ce problème"
 
 #: changecollectiontask.cpp:267
@@ -191,9 +191,9 @@ msgid ""
 "Defines if the annotations, ACLs and quota information of mailboxes should\n"
 "             also be retrieved when the mailboxes get listed."
 msgstr ""
-"Définit si les annotations, les ACL et les informations de quota des boîtes "
+"Définit si les annotations, les ACL et les informations de quota des boites "
 "aux lettres devront\n"
-"             également être extraites lorsque les boîtes aux lettres sont "
+"             également être extraites lorsque les boites aux lettres sont "
 "listées."
 
 #. i18n: ectx: label, entry (AutomaticExpungeEnabled), group (cache)
@@ -237,14 +237,14 @@ msgstr "Compte d'identité"
 #, kde-format
 msgid "List of mailbox names reported by the server the last time"
 msgstr ""
-"Liste des noms de boîtes aux lettres signalés la dernière fois par le serveur"
+"Liste des noms de boites aux lettres signalés la dernière fois par le serveur"
 
 #. i18n: ectx: label, entry (IdleRidPath), group (idle)
 #: imapresource.kcfg:91
 #, kde-format
 msgid "RID path to the mailbox to watch for changes"
 msgstr ""
-"Emplacement « RID » de la boîte aux lettres pour la surveillance des "
+"Emplacement « RID » de la boite aux lettres pour la surveillance des "
 "modifications"
 
 #. i18n: ectx: label, entry (SieveSupport), group (siever)
@@ -457,7 +457,7 @@ msgid ""
 "will reappear on next sync."
 msgstr ""
 "Impossible de marquer le message depuis « %1 » pour le supprimer sur le "
-"serveur IMAP. Il réapparaîtra lors de la prochaine synchronisation."
+"serveur IMAP. Il réapparaitra lors de la prochaine synchronisation."
 
 #: outlookpasswordrequester.cpp:67 outlookpasswordrequester.cpp:76
 #, kde-format
