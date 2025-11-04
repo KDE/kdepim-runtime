@@ -146,18 +146,6 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
 
     mSelectCollection->setObjectName("mSelectCollection"_L1);
     tab->addTab(mSelectCollection, i18n("Folders"));
-
-    KAboutData aboutData = KAboutData(QStringLiteral("newmailnotifieragent"),
-                                      i18n("New Mail Notifier Agent"),
-                                      QStringLiteral(KDEPIM_RUNTIME_VERSION),
-                                      i18n("Notify about new mails."),
-                                      KAboutLicense::GPL_V2,
-                                      i18n("Copyright (C) 2013-%1 Laurent Montel", QStringLiteral("2023")));
-
-    aboutData.setProductName(QByteArrayLiteral("Akonadi/New Mail Notifier"));
-    aboutData.addAuthor(i18nc("@info:credit", "Laurent Montel"), i18n("Maintainer"), QStringLiteral("montel@kde.org"));
-    aboutData.setTranslator(i18nc("NAME OF TRANSLATORS", "Your names"), i18nc("EMAIL OF TRANSLATORS", "Your emails"));
-    setKAboutData(aboutData);
 }
 
 NewMailNotifierSettingsWidget::~NewMailNotifierSettingsWidget()
