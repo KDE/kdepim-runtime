@@ -176,7 +176,7 @@ msgstr "Auteur"
 #, kde-format
 msgctxt "@info:shell"
 msgid "Show reporting dialog"
-msgstr "Afficher la boîte de dialogue de rapport"
+msgstr "Afficher la boite de dialogue de rapport"
 
 #: main.cpp:38
 #, kde-format

@@ -89,7 +89,7 @@ msgstr "Prêt à diffuser les messages."
 #: maildispatcheragent.kcfg:10
 #, kde-format
 msgid "Outbox collection id"
-msgstr "Identifiant de la collection de la boîte d'envoi"
+msgstr "Identifiant de la collection de la boite d'envoi"
 
 #. i18n: ectx: label, entry (SentMail), group (General)
 #: maildispatcheragent.kcfg:14
@@ -100,7 +100,7 @@ msgstr "Identifiant de la collection des élément envoyés"
 #: outboxqueue.cpp:265
 #, kde-format
 msgid "Could not access the outbox folder (%1)."
-msgstr "Impossible d'accéder au dossier de la boîte d'envoi (%1)."
+msgstr "Impossible d'accéder au dossier de la boite d'envoi (%1)."
 
 #: sendjob.cpp:49 sendjob.cpp:50
 #, kde-format
@@ -134,7 +134,7 @@ msgstr "Réponse D-Bus non valable de la ressource %1."
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr ""
 "Dossier par défaut des courriers électroniques envoyés non valable. "
-"Conservation des messages dans la boîte d'envoi."
+"Conservation des messages dans la boite d'envoi."
 
 #: sendjob.cpp:241
 #, kde-format
@@ -160,7 +160,7 @@ msgstr "Réponse D-Bus non valable de « mailfilteragent »."
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr ""
-"Envoi réussi, mais impossible d'enlever le message de la boîte d'envoi."
+"Envoi réussi, mais impossible d'enlever le message de la boite d'envoi."
 
 #: sendjob.cpp:335
 #, kde-format

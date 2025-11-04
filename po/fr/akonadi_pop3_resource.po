@@ -87,7 +87,7 @@ msgstr ""
 "mais n'annoncent pas correctement leurs capacités. Pour déterminer si votre "
 "serveur POP3\n"
 "annonce ou non la prise en charge du « pipelining », cliquez sur le bouton "
-"« Détection automatique » au bas de la boîte de dialogue ;\n"
+"« Détection automatique » au bas de la boite de dialogue ;\n"
 "si votre serveur ne l'annonce pas mais que vous voulez davantage de vitesse, "
 "alors\n"
 "vous devrez faire certains tests en vous envoyant un lot\n"
@@ -295,7 +295,7 @@ msgid ""
 msgstr ""
 "Votre serveur « POP3 » indique prendre en charge la méthode "
 "d'authentification « TLS » mais la négociation n'a pas abouti.\n"
-"Vous pouvez la désactiver dans la boîte de dialogue de configuration "
+"Vous pouvez la désactiver dans la boite de dialogue de configuration "
 "concernant le compte « POP »."
 
 #: pop3protocol.cpp:733
@@ -404,7 +404,7 @@ msgstr "Enregistrement du mot de passe dans le portefeuille."
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
-"Erreur en essayant de retrouver le dossier local de boîte de réception. "
+"Erreur en essayant de retrouver le dossier local de boite de réception. "
 "Abandon de la vérification du courrier électronique."
 
 #: pop3resource.cpp:398
@@ -416,7 +416,7 @@ msgid ""
 msgstr ""
 "<qt>Le dossier que vous avez supprimé était associé au compte <b>%1</b> qui "
 "y distribuait du courrier électronique. Le dossier où le compte distribue le "
-"nouveau courrier électronique a été réinitialisé dans le dossier de boîte de "
+"nouveau courrier électronique a été réinitialisé dans le dossier de boite de "
 "réception principale.</qt>"
 
 #: pop3resource.cpp:419

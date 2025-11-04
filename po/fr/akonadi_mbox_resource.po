@@ -106,7 +106,7 @@ msgstr ""
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "weight:600;\">Remarque : </span> L'inconvénient de cette méthode est que si "
 "le fichier est modifié par un autre programme, on ne peut plus faire "
-"confiance à la liste des messages supprimés et ceux-ci peuvent réapparaître."
+"confiance à la liste des messages supprimés et ceux-ci peuvent réapparaitre."
 "</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QPushButton, compactButton)

@@ -228,7 +228,7 @@ msgstr "Nom du compte :"
 #, kde-format
 msgid "This is the account name that will appear in all Akonadi applications"
 msgstr ""
-"Il s'agit du nom de compte qui apparaîtra dans toutes les applications "
+"Il s'agit du nom de compte qui apparaitra dans toutes les applications "
 "Akonadi"
 
 #. i18n: ectx: property (text), widget (QLabel, emailLabel)
@@ -618,10 +618,10 @@ msgid ""
 msgstr ""
 "<html><head/><body><p>Certaines organisations restreignent l'accès au "
 "courriel uniquement à certains clients approuvés, tels que Microsoft "
-"Outlook. Côté serveur, ceci est réalisé en analysant la chaîne « User-"
+"Outlook. Côté serveur, ceci est réalisé en analysant la chaine « User-"
 "Agent » et en n'autorisant que la liste des clients approuvés.</p><p>Ce "
 "paramètre permet d'émuler un quelconque client connu ou de fournir une "
-"chaîne « User-Agent » personnalisée.</p><p>Soyez bien conscient que le fait "
+"chaine « User-Agent » personnalisée.</p><p>Soyez bien conscient que le fait "
 "de contourner des recommandations d'entreprise peuvent avoir des "
 "conséquences personnelles.</p></body></html>"
 
@@ -1262,7 +1262,7 @@ msgstr "Activer l'authentification NTLMv2"
 #: ewsresource.kcfg:59
 #, kde-format
 msgid "Forces a non-default User-Agent string"
-msgstr "Force une chaîne « User-Agent » différente de la valeur par défaut"
+msgstr "Force une chaine « User-Agent » différente de la valeur par défaut"
 
 #. i18n: ectx: label, entry (OAuth2AppId), group (General)
 #: ewsresource.kcfg:65
