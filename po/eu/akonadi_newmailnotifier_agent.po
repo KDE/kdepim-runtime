@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-21 00:43+0000\n"
+"POT-Creation-Date: 2025-11-05 00:45+0000\n"
 "PO-Revision-Date: 2024-08-06 01:05+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -19,6 +19,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 24.05.2\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Iñigo Salvador Azurmendi"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "xalba@ni.eus"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -198,44 +208,6 @@ msgstr "Jakinarazi"
 msgid "Folders"
 msgstr "Karpetak"
 
-#: newmailnotifiersettingswidget.cpp:151
-#, kde-format
-msgid "New Mail Notifier Agent"
-msgstr "Posta berriak jakinarazteko agentea"
-
-#: newmailnotifiersettingswidget.cpp:153
-#, kde-format
-msgid "Notify about new mails."
-msgstr "Posta berrien berri eman."
-
-#: newmailnotifiersettingswidget.cpp:155
-#, kde-format
-msgid "Copyright (C) 2013-%1 Laurent Montel"
-msgstr "Copyright (C) 2013-%1 Laurent Montel"
-
-#: newmailnotifiersettingswidget.cpp:158
-#, kde-format
-msgctxt "@info:credit"
-msgid "Laurent Montel"
-msgstr "Laurent Montel"
-
-#: newmailnotifiersettingswidget.cpp:158
-#, kde-format
-msgid "Maintainer"
-msgstr "Mantentzailea"
-
-#: newmailnotifiersettingswidget.cpp:159
-#, kde-format
-msgctxt "NAME OF TRANSLATORS"
-msgid "Your names"
-msgstr "Iñigo Salvador Azurmendi"
-
-#: newmailnotifiersettingswidget.cpp:159
-#, kde-format
-msgctxt "EMAIL OF TRANSLATORS"
-msgid "Your emails"
-msgstr "xalba@ni.eus"
-
 #: specialnotifierjob.cpp:111
 #, kde-format
 msgid "From: %1"
@@ -270,3 +242,19 @@ msgstr "Markatu irakurritako gisa"
 #, kde-format
 msgid "Delete"
 msgstr "Ezabatu"
+
+#~ msgid "New Mail Notifier Agent"
+#~ msgstr "Posta berriak jakinarazteko agentea"
+
+#~ msgid "Notify about new mails."
+#~ msgstr "Posta berrien berri eman."
+
+#~ msgid "Copyright (C) 2013-%1 Laurent Montel"
+#~ msgstr "Copyright (C) 2013-%1 Laurent Montel"
+
+#~ msgctxt "@info:credit"
+#~ msgid "Laurent Montel"
+#~ msgstr "Laurent Montel"
+
+#~ msgid "Maintainer"
+#~ msgstr "Mantentzailea"

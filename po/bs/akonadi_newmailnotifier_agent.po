@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent.po\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-21 00:43+0000\n"
+"POT-Creation-Date: 2025-11-05 00:45+0000\n"
 "PO-Revision-Date: 2014-02-09 17:02+0100\n"
 "Last-Translator: Samir Ribić <megaribi@epn.ba>\n"
 "Language-Team: bs <bs@kde.org>\n"
@@ -19,6 +19,16 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Launchpad (build 16877)\n"
 "X-Launchpad-Export-Date: 2013-12-28 05:36+0000\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Samir Ribić"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "samir.ribic@etf.unsa.ba"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -216,47 +226,6 @@ msgstr "Obavještenje"
 msgid "Folders"
 msgstr "Direktoriji"
 
-#: newmailnotifiersettingswidget.cpp:151
-#, kde-format
-msgid "New Mail Notifier Agent"
-msgstr "Notifikacijski agent o novoj pošti"
-
-#: newmailnotifiersettingswidget.cpp:153
-#, fuzzy, kde-format
-#| msgid "Notifies about new mail."
-msgid "Notify about new mails."
-msgstr "Informiše o novoj poštiu"
-
-#: newmailnotifiersettingswidget.cpp:155
-#, fuzzy, kde-format
-#| msgid "Copyright (C) 2013 Laurent Montel"
-msgid "Copyright (C) 2013-%1 Laurent Montel"
-msgstr "Copyright (C) 2013 Laurent Montel"
-
-#: newmailnotifiersettingswidget.cpp:158
-#, fuzzy, kde-format
-#| msgid "Laurent Montel"
-msgctxt "@info:credit"
-msgid "Laurent Montel"
-msgstr "Laurent Montel"
-
-#: newmailnotifiersettingswidget.cpp:158
-#, kde-format
-msgid "Maintainer"
-msgstr "Održava"
-
-#: newmailnotifiersettingswidget.cpp:159
-#, kde-format
-msgctxt "NAME OF TRANSLATORS"
-msgid "Your names"
-msgstr "Samir Ribić"
-
-#: newmailnotifiersettingswidget.cpp:159
-#, kde-format
-msgctxt "EMAIL OF TRANSLATORS"
-msgid "Your emails"
-msgstr "samir.ribic@etf.unsa.ba"
-
 #: specialnotifierjob.cpp:111
 #, kde-format
 msgid "From: %1"
@@ -292,6 +261,28 @@ msgstr ""
 #, kde-format
 msgid "Delete"
 msgstr ""
+
+#~ msgid "New Mail Notifier Agent"
+#~ msgstr "Notifikacijski agent o novoj pošti"
+
+#, fuzzy
+#~| msgid "Notifies about new mail."
+#~ msgid "Notify about new mails."
+#~ msgstr "Informiše o novoj poštiu"
+
+#, fuzzy
+#~| msgid "Copyright (C) 2013 Laurent Montel"
+#~ msgid "Copyright (C) 2013-%1 Laurent Montel"
+#~ msgstr "Copyright (C) 2013 Laurent Montel"
+
+#, fuzzy
+#~| msgid "Laurent Montel"
+#~ msgctxt "@info:credit"
+#~ msgid "Laurent Montel"
+#~ msgstr "Laurent Montel"
+
+#~ msgid "Maintainer"
+#~ msgstr "Održava"
 
 #~ msgid "New Mail Notifier settings"
 #~ msgstr "Novi postavke Posta obavijest"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-21 00:43+0000\n"
+"POT-Creation-Date: 2025-11-05 00:45+0000\n"
 "PO-Revision-Date: 2024-08-03 14:41+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -20,6 +20,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 24.04.70\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Franklin Weng"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "franklin@nospam.goodhorse.idv.tw"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -198,44 +208,6 @@ msgstr "通知"
 msgid "Folders"
 msgstr "資料夾"
 
-#: newmailnotifiersettingswidget.cpp:151
-#, kde-format
-msgid "New Mail Notifier Agent"
-msgstr "新信件通知代理程式"
-
-#: newmailnotifiersettingswidget.cpp:153
-#, kde-format
-msgid "Notify about new mails."
-msgstr "新郵件通知。"
-
-#: newmailnotifiersettingswidget.cpp:155
-#, kde-format
-msgid "Copyright (C) 2013-%1 Laurent Montel"
-msgstr "Copyright (C) 2013-%1 Laurent Montel"
-
-#: newmailnotifiersettingswidget.cpp:158
-#, kde-format
-msgctxt "@info:credit"
-msgid "Laurent Montel"
-msgstr "Laurent Montel"
-
-#: newmailnotifiersettingswidget.cpp:158
-#, kde-format
-msgid "Maintainer"
-msgstr "維護者"
-
-#: newmailnotifiersettingswidget.cpp:159
-#, kde-format
-msgctxt "NAME OF TRANSLATORS"
-msgid "Your names"
-msgstr "Franklin Weng"
-
-#: newmailnotifiersettingswidget.cpp:159
-#, kde-format
-msgctxt "EMAIL OF TRANSLATORS"
-msgid "Your emails"
-msgstr "franklin@nospam.goodhorse.idv.tw"
-
 #: specialnotifierjob.cpp:111
 #, kde-format
 msgid "From: %1"
@@ -270,3 +242,19 @@ msgstr "標記為已讀"
 #, kde-format
 msgid "Delete"
 msgstr "刪除"
+
+#~ msgid "New Mail Notifier Agent"
+#~ msgstr "新信件通知代理程式"
+
+#~ msgid "Notify about new mails."
+#~ msgstr "新郵件通知。"
+
+#~ msgid "Copyright (C) 2013-%1 Laurent Montel"
+#~ msgstr "Copyright (C) 2013-%1 Laurent Montel"
+
+#~ msgctxt "@info:credit"
+#~ msgid "Laurent Montel"
+#~ msgstr "Laurent Montel"
+
+#~ msgid "Maintainer"
+#~ msgstr "維護者"

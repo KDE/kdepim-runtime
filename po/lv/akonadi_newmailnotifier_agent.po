@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-21 00:43+0000\n"
+"POT-Creation-Date: 2025-11-05 00:45+0000\n"
 "PO-Revision-Date: 2024-12-28 17:24+0200\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -18,6 +18,16 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 "X-Generator: Lokalize 24.12.0\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Toms Trasūns"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "toms.trasuns@posteo.net"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -198,44 +208,6 @@ msgstr "Paziņot"
 msgid "Folders"
 msgstr "Mapes"
 
-#: newmailnotifiersettingswidget.cpp:151
-#, kde-format
-msgid "New Mail Notifier Agent"
-msgstr "Jauna ziņa informācijas aģents"
-
-#: newmailnotifiersettingswidget.cpp:153
-#, kde-format
-msgid "Notify about new mails."
-msgstr "Informēt par jaunu pastu."
-
-#: newmailnotifiersettingswidget.cpp:155
-#, kde-format
-msgid "Copyright (C) 2013-%1 Laurent Montel"
-msgstr "Autortiesības (C) 2013—%1 Laurent Montel"
-
-#: newmailnotifiersettingswidget.cpp:158
-#, kde-format
-msgctxt "@info:credit"
-msgid "Laurent Montel"
-msgstr "Laurent Montel"
-
-#: newmailnotifiersettingswidget.cpp:158
-#, kde-format
-msgid "Maintainer"
-msgstr "Uzturētājs"
-
-#: newmailnotifiersettingswidget.cpp:159
-#, kde-format
-msgctxt "NAME OF TRANSLATORS"
-msgid "Your names"
-msgstr "Toms Trasūns"
-
-#: newmailnotifiersettingswidget.cpp:159
-#, kde-format
-msgctxt "EMAIL OF TRANSLATORS"
-msgid "Your emails"
-msgstr "toms.trasuns@posteo.net"
-
 #: specialnotifierjob.cpp:111
 #, kde-format
 msgid "From: %1"
@@ -270,3 +242,19 @@ msgstr "Atzīmēt kā lasītu"
 #, kde-format
 msgid "Delete"
 msgstr "Dzēst"
+
+#~ msgid "New Mail Notifier Agent"
+#~ msgstr "Jauna ziņa informācijas aģents"
+
+#~ msgid "Notify about new mails."
+#~ msgstr "Informēt par jaunu pastu."
+
+#~ msgid "Copyright (C) 2013-%1 Laurent Montel"
+#~ msgstr "Autortiesības (C) 2013—%1 Laurent Montel"
+
+#~ msgctxt "@info:credit"
+#~ msgid "Laurent Montel"
+#~ msgstr "Laurent Montel"
+
+#~ msgid "Maintainer"
+#~ msgstr "Uzturētājs"

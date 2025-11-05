@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-21 00:43+0000\n"
+"POT-Creation-Date: 2025-11-05 00:45+0000\n"
 "PO-Revision-Date: 2015-12-29 20:26+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -21,6 +21,16 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
 "X-Generator: Lokalize 1.5\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Liudas Ališauskas"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "liudas@akmc.lt"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -220,47 +230,6 @@ msgstr "Perspėti"
 msgid "Folders"
 msgstr "Aplankai"
 
-#: newmailnotifiersettingswidget.cpp:151
-#, kde-format
-msgid "New Mail Notifier Agent"
-msgstr "Pranešimų apie naują el. paštą agentas"
-
-#: newmailnotifiersettingswidget.cpp:153
-#, fuzzy, kde-format
-#| msgid "Notifies about new mail."
-msgid "Notify about new mails."
-msgstr "Praneša apie naujus el. laiškus."
-
-#: newmailnotifiersettingswidget.cpp:155
-#, fuzzy, kde-format
-#| msgid "Copyright (C) 2013 Laurent Montel"
-msgid "Copyright (C) 2013-%1 Laurent Montel"
-msgstr "Copyright (C) 2013 Laurent Montel"
-
-#: newmailnotifiersettingswidget.cpp:158
-#, fuzzy, kde-format
-#| msgid "Laurent Montel"
-msgctxt "@info:credit"
-msgid "Laurent Montel"
-msgstr "Laurent Montel"
-
-#: newmailnotifiersettingswidget.cpp:158
-#, kde-format
-msgid "Maintainer"
-msgstr "Prižiūrėtojas"
-
-#: newmailnotifiersettingswidget.cpp:159
-#, kde-format
-msgctxt "NAME OF TRANSLATORS"
-msgid "Your names"
-msgstr "Liudas Ališauskas"
-
-#: newmailnotifiersettingswidget.cpp:159
-#, kde-format
-msgctxt "EMAIL OF TRANSLATORS"
-msgid "Your emails"
-msgstr "liudas@akmc.lt"
-
 #: specialnotifierjob.cpp:111
 #, kde-format
 msgid "From: %1"
@@ -296,6 +265,28 @@ msgstr ""
 #, kde-format
 msgid "Delete"
 msgstr ""
+
+#~ msgid "New Mail Notifier Agent"
+#~ msgstr "Pranešimų apie naują el. paštą agentas"
+
+#, fuzzy
+#~| msgid "Notifies about new mail."
+#~ msgid "Notify about new mails."
+#~ msgstr "Praneša apie naujus el. laiškus."
+
+#, fuzzy
+#~| msgid "Copyright (C) 2013 Laurent Montel"
+#~ msgid "Copyright (C) 2013-%1 Laurent Montel"
+#~ msgstr "Copyright (C) 2013 Laurent Montel"
+
+#, fuzzy
+#~| msgid "Laurent Montel"
+#~ msgctxt "@info:credit"
+#~ msgid "Laurent Montel"
+#~ msgstr "Laurent Montel"
+
+#~ msgid "Maintainer"
+#~ msgstr "Prižiūrėtojas"
 
 #~ msgid "New Mail Notifier settings"
 #~ msgstr "Pranešimų apie naują el. paštą nuostatos"

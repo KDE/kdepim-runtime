@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-21 00:43+0000\n"
+"POT-Creation-Date: 2025-11-05 00:45+0000\n"
 "PO-Revision-Date: 2017-04-20 16:35+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -20,6 +20,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 2.0\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Δημήτριος Γλενταδάκης"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "dglent@free.fr"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -203,45 +213,6 @@ msgstr "Ειδοποίηση"
 msgid "Folders"
 msgstr "Φάκελοι"
 
-#: newmailnotifiersettingswidget.cpp:151
-#, kde-format
-msgid "New Mail Notifier Agent"
-msgstr "Πράκτορας νέας αλληλογραφίας"
-
-#: newmailnotifiersettingswidget.cpp:153
-#, kde-format
-msgid "Notify about new mails."
-msgstr "Ειδοποιεί για την άφιξη νέας αλληλογραφίας."
-
-#: newmailnotifiersettingswidget.cpp:155
-#, fuzzy, kde-format
-#| msgid "Copyright (C) 2013-2017 Laurent Montel"
-msgid "Copyright (C) 2013-%1 Laurent Montel"
-msgstr "Πνευματικά δικαιώματα (C) 2013-2017 Laurent Montel"
-
-#: newmailnotifiersettingswidget.cpp:158
-#, kde-format
-msgctxt "@info:credit"
-msgid "Laurent Montel"
-msgstr "Laurent Montel"
-
-#: newmailnotifiersettingswidget.cpp:158
-#, kde-format
-msgid "Maintainer"
-msgstr "Συντηρητής"
-
-#: newmailnotifiersettingswidget.cpp:159
-#, kde-format
-msgctxt "NAME OF TRANSLATORS"
-msgid "Your names"
-msgstr "Δημήτριος Γλενταδάκης"
-
-#: newmailnotifiersettingswidget.cpp:159
-#, kde-format
-msgctxt "EMAIL OF TRANSLATORS"
-msgid "Your emails"
-msgstr "dglent@free.fr"
-
 #: specialnotifierjob.cpp:111
 #, kde-format
 msgid "From: %1"
@@ -277,6 +248,24 @@ msgstr ""
 #, kde-format
 msgid "Delete"
 msgstr ""
+
+#~ msgid "New Mail Notifier Agent"
+#~ msgstr "Πράκτορας νέας αλληλογραφίας"
+
+#~ msgid "Notify about new mails."
+#~ msgstr "Ειδοποιεί για την άφιξη νέας αλληλογραφίας."
+
+#, fuzzy
+#~| msgid "Copyright (C) 2013-2017 Laurent Montel"
+#~ msgid "Copyright (C) 2013-%1 Laurent Montel"
+#~ msgstr "Πνευματικά δικαιώματα (C) 2013-2017 Laurent Montel"
+
+#~ msgctxt "@info:credit"
+#~ msgid "Laurent Montel"
+#~ msgstr "Laurent Montel"
+
+#~ msgid "Maintainer"
+#~ msgstr "Συντηρητής"
 
 #~ msgid "New Mail Notifier settings"
 #~ msgstr "Ρυθμίσεις ειδοποιήσεων νέας αλληλογραφίας"

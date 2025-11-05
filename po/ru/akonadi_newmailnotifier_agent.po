@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-21 00:43+0000\n"
+"POT-Creation-Date: 2025-11-05 00:45+0000\n"
 "PO-Revision-Date: 2024-11-18 14:42+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -24,6 +24,16 @@ msgstr ""
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Александр Поташев,Олеся Герасименко,Александр Яворский"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "aspotashev@gmail.com,gammaray@gmail.com,kekcuha@gmail.com"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -207,44 +217,6 @@ msgstr "Уведомление"
 msgid "Folders"
 msgstr "Папки"
 
-#: newmailnotifiersettingswidget.cpp:151
-#, kde-format
-msgid "New Mail Notifier Agent"
-msgstr "Агент уведомлений о новой почте"
-
-#: newmailnotifiersettingswidget.cpp:153
-#, kde-format
-msgid "Notify about new mails."
-msgstr "Уведомляет при получении новой почты."
-
-#: newmailnotifiersettingswidget.cpp:155
-#, kde-format
-msgid "Copyright (C) 2013-%1 Laurent Montel"
-msgstr "© Laurent Montel, 2013–%1"
-
-#: newmailnotifiersettingswidget.cpp:158
-#, kde-format
-msgctxt "@info:credit"
-msgid "Laurent Montel"
-msgstr "Laurent Montel"
-
-#: newmailnotifiersettingswidget.cpp:158
-#, kde-format
-msgid "Maintainer"
-msgstr "Сопровождающий"
-
-#: newmailnotifiersettingswidget.cpp:159
-#, kde-format
-msgctxt "NAME OF TRANSLATORS"
-msgid "Your names"
-msgstr "Александр Поташев,Олеся Герасименко,Александр Яворский"
-
-#: newmailnotifiersettingswidget.cpp:159
-#, kde-format
-msgctxt "EMAIL OF TRANSLATORS"
-msgid "Your emails"
-msgstr "aspotashev@gmail.com,gammaray@gmail.com,kekcuha@gmail.com"
-
 #: specialnotifierjob.cpp:111
 #, kde-format
 msgid "From: %1"
@@ -279,6 +251,22 @@ msgstr "Отметить как прочитанное"
 #, kde-format
 msgid "Delete"
 msgstr "Удалить"
+
+#~ msgid "New Mail Notifier Agent"
+#~ msgstr "Агент уведомлений о новой почте"
+
+#~ msgid "Notify about new mails."
+#~ msgstr "Уведомляет при получении новой почты."
+
+#~ msgid "Copyright (C) 2013-%1 Laurent Montel"
+#~ msgstr "© Laurent Montel, 2013–%1"
+
+#~ msgctxt "@info:credit"
+#~ msgid "Laurent Montel"
+#~ msgstr "Laurent Montel"
+
+#~ msgid "Maintainer"
+#~ msgstr "Сопровождающий"
 
 #~ msgid "New Mail Notifier settings"
 #~ msgstr "Параметры уведомлений о новой почте"
