@@ -14,9 +14,9 @@ msgstr ""
 "X-Crowdin-Project: kdeorg\n"
 "X-Crowdin-Project-ID: 269464\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf6-trunk/messages/kdepim-runtime/"
+"X-Crowdin-File: /kf6-stable/messages/kdepim-runtime/"
 "akonadi_newmailnotifier_agent.pot\n"
-"X-Crowdin-File-ID: 45311\n"
+"X-Crowdin-File-ID: 51934\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -239,19 +239,3 @@ msgstr "标记为已读"
 #, kde-format
 msgid "Delete"
 msgstr "删除"
-
-#~ msgid "New Mail Notifier Agent"
-#~ msgstr "新邮件通知代理"
-
-#~ msgid "Notify about new mails."
-#~ msgstr "通知新邮件。"
-
-#~ msgid "Copyright (C) 2013-%1 Laurent Montel"
-#~ msgstr "Copyright (C) 2013-%1 Laurent Montel"
-
-#~ msgctxt "@info:credit"
-#~ msgid "Laurent Montel"
-#~ msgstr "Laurent Montel"
-
-#~ msgid "Maintainer"
-#~ msgstr "维护者"
