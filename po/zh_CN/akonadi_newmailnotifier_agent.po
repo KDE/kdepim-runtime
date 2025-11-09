@@ -239,19 +239,3 @@ msgstr "标记为已读"
 #, kde-format
 msgid "Delete"
 msgstr "删除"
-
-#~ msgid "New Mail Notifier Agent"
-#~ msgstr "新邮件通知代理"
-
-#~ msgid "Notify about new mails."
-#~ msgstr "通知新邮件。"
-
-#~ msgid "Copyright (C) 2013-%1 Laurent Montel"
-#~ msgstr "Copyright (C) 2013-%1 Laurent Montel"
-
-#~ msgctxt "@info:credit"
-#~ msgid "Laurent Montel"
-#~ msgstr "Laurent Montel"
-
-#~ msgid "Maintainer"
-#~ msgstr "维护者"
