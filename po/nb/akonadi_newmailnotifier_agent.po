@@ -241,14 +241,3 @@ msgstr ""
 #, kde-format
 msgid "Delete"
 msgstr ""
-
-#~ msgid "New Mail Notifier Agent"
-#~ msgstr "Postvarsler-agent"
-
-#, fuzzy
-#~ msgctxt "@info:credit"
-#~ msgid "Laurent Montel"
-#~ msgstr "Laurent Montel"
-
-#~ msgid "Maintainer"
-#~ msgstr "Vedlikeholder"
