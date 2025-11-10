@@ -446,6 +446,3 @@ msgstr "Промяна на списъка със задачи „%1“"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "Премахване на списъка със задачи „%1“"
-
-#~ msgid "Can't fetch password"
-#~ msgstr "Не може да се извлече паролата"
