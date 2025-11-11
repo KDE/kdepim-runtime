@@ -239,19 +239,3 @@ msgstr "Označit jako přečtené"
 #, kde-format
 msgid "Delete"
 msgstr "Smazat"
-
-#~ msgid "New Mail Notifier Agent"
-#~ msgstr "Upozornění na novou poštu"
-
-#~ msgid "Notify about new mails."
-#~ msgstr "Upozornit na novou poštu."
-
-#~ msgid "Copyright (C) 2013-%1 Laurent Montel"
-#~ msgstr "Autorská práva (C) 2013-%1 Laurent Montel"
-
-#~ msgctxt "@info:credit"
-#~ msgid "Laurent Montel"
-#~ msgstr "Laurent Montel"
-
-#~ msgid "Maintainer"
-#~ msgstr "Správce"
