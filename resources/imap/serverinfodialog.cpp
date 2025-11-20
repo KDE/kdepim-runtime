@@ -45,7 +45,7 @@ ServerInfoDialog::ServerInfoDialog(const QString &identifier, QWidget *parent)
         deleteLater();
         return;
     }
-    QDBusPendingCall call = iface.asyncCall(u"serverCapabilities"_s, (qlonglong)parent->winId());
+    QDBusPendingCall call = iface.asyncCall(u"serverCapabilities"_s);
     auto watcher = new QDBusPendingCallWatcher(call, this);
     connect(watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher *call) {
         QDBusPendingReply<QStringList> reply = *call;
