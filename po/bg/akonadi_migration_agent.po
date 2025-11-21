@@ -72,7 +72,3 @@ msgstr "Файл-регистър"
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"
 msgstr "Данни за миграция"
-
-#~ msgctxt "PIM-Maintenance is paused."
-#~ msgid "Paused."
-#~ msgstr "На пауза."

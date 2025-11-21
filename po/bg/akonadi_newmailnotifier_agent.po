@@ -240,19 +240,3 @@ msgstr "Маркиране като прочетено"
 #, kde-format
 msgid "Delete"
 msgstr "Изтриване"
-
-#~ msgid "New Mail Notifier Agent"
-#~ msgstr "Уведомяване за нова поща"
-
-#~ msgid "Notify about new mails."
-#~ msgstr "Уведомява за нова поща"
-
-#~ msgid "Copyright (C) 2013-%1 Laurent Montel"
-#~ msgstr "Copyright (C) 2013-%1 Laurent Montel"
-
-#~ msgctxt "@info:credit"
-#~ msgid "Laurent Montel"
-#~ msgstr "Laurent Montel"
-
-#~ msgid "Maintainer"
-#~ msgstr "Поддръжка"
