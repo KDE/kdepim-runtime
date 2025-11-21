@@ -795,7 +795,7 @@ void DavGroupwareResource::onReloadConfig()
         setName(settings()->displayName());
     }
     QString icon = settings()->iconName();
-    if (icon.isEmpty()) {
+    if (icon.isEmpty() && !settings()->configuredDavUrls().isEmpty()) {
         icon = iconForDavUrl(settings()->configuredDavUrls().first());
     }
     attribute->setIconName(icon);
@@ -1493,7 +1493,7 @@ bool DavGroupwareResource::configurationIsValid()
         setName(settings()->displayName());
     }
     QString icon = settings()->iconName();
-    if (icon.isEmpty()) {
+    if (icon.isEmpty() && !settings()->configuredDavUrls().isEmpty()) {
         icon = iconForDavUrl(settings()->configuredDavUrls().first());
     }
     attribute->setIconName(icon);
