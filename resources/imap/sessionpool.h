@@ -25,7 +25,6 @@ class PasswordRequesterInterface;
 class SessionPool : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(ConnectError)
 
 public:
     enum ErrorCodes {
@@ -40,6 +39,7 @@ public:
         CouldNotConnectError,
         CancelledError
     };
+    Q_ENUM(ErrorCodes)
 
     enum SessionTermination {
         LogoutSession,
