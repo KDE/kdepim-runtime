@@ -104,7 +104,7 @@ void TaskHandler::retrieveItems(const Collection &collection)
     // max. last 25 days, otherwise we get an error.
     int lastSyncDelta = -1;
     if (!collection.remoteRevision().isEmpty()) {
-        lastSyncDelta = QDateTime::currentDateTimeUtc().toSecsSinceEpoch() - collection.remoteRevision().toULongLong();
+        lastSyncDelta = QDateTime::currentSecsSinceEpoch() - collection.remoteRevision().toULongLong();
     }
 
     auto job = new TaskFetchJob(collection.remoteId(), m_settings->accountPtr(), this);

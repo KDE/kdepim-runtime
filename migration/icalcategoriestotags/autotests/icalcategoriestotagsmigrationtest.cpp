@@ -66,7 +66,7 @@ private Q_SLOTS:
         AKVERIFYEXEC(fetchJob);
 
         QCOMPARE(fetchJob->items().size(), 1);
-        const auto fetchedItem = fetchJob->items().first();
+        const auto fetchedItem = fetchJob->items().constFirst();
 
         auto tags = fetchedItem.tags();
         std::sort(tags.begin(), tags.end(), [](const auto &lhs, const auto &rhs) {

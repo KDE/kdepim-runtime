@@ -29,9 +29,7 @@ void NewMailNotificationHistoryManagerTest::generateHtmlFromUniqueEmail()
     info.identifier = 45;
     w.addEmailInfoNotificationHistory(info);
     QString reference = QStringLiteral("<b> %1 </b><br>%2 <a href=\"openmail:%3\">[Show Mail]</a><br>")
-                            .arg(QDate::currentDate().toString())
-                            .arg(info.message)
-                            .arg(QString::number(info.identifier));
+                            .arg(QDate::currentDate().toString(), info.message, QString::number(info.identifier));
     QCOMPARE(w.joinHistory(), reference);
 
     info.message = QStringLiteral("Mail 2");
@@ -41,9 +39,7 @@ void NewMailNotificationHistoryManagerTest::generateHtmlFromUniqueEmail()
     const QString betweenTwoMail = QStringLiteral("<br>");
     reference += betweenTwoMail;
     reference += QStringLiteral("<b> %1 </b><br>%2 <a href=\"openmail:%3\">[Show Mail]</a><br>")
-                     .arg(QDate::currentDate().toString())
-                     .arg(info.message)
-                     .arg(QString::number(info.identifier));
+                     .arg(QDate::currentDate().toString(), info.message, QString::number(info.identifier));
     QCOMPARE(w.joinHistory(), reference);
 }
 
@@ -58,9 +54,7 @@ void NewMailNotificationHistoryManagerTest::generateHtmlFromFolders()
     w.addFoldersInfoNotificationHistory({info});
 
     QString reference = QStringLiteral("<b> %1 </b><br>%2 <a href=\"openfolder:%3\">[Open Folder]</a><br>")
-                            .arg(QDate::currentDate().toString())
-                            .arg(info.message)
-                            .arg(QString::number(info.identifier));
+                            .arg(QDate::currentDate().toString(), info.message, QString::number(info.identifier));
     QCOMPARE(w.joinHistory(), reference);
 }
 

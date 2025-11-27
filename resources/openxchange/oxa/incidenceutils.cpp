@@ -436,7 +436,7 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
     case KCalendarCore::Recurrence::rMonthlyDay:
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("monthly"));
         DAVUtils::addOxElement(document, parent, QStringLiteral("interval"), OXUtils::writeNumber(recurrence->frequency()));
-        DAVUtils::addOxElement(document, parent, QStringLiteral("day_in_month"), OXUtils::writeNumber(recurrence->monthDays().first()));
+        DAVUtils::addOxElement(document, parent, QStringLiteral("day_in_month"), OXUtils::writeNumber(recurrence->monthDays().constFirst()));
         break;
     case KCalendarCore::Recurrence::rMonthlyPos: {
         const KCalendarCore::RecurrenceRule::WDayPos wdp = recurrence->monthPositions().constFirst();

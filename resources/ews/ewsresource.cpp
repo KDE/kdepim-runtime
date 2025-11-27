@@ -239,7 +239,7 @@ void EwsResource::adjustInboxRemoteIdFetchFinished(KJob *job)
         auto fetchJob = qobject_cast<CollectionFetchJob *>(job);
         Q_ASSERT(fetchJob);
         if (!fetchJob->collections().isEmpty()) {
-            Collection c = fetchJob->collections()[0];
+            Collection c = fetchJob->collections().at(0);
             c.setRemoteId(fetchJob->property("inboxId").toString());
             auto modifyJob = new CollectionModifyJob(c, this);
             modifyJob->start();

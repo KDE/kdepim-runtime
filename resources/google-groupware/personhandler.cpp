@@ -406,7 +406,7 @@ void PersonHandler::itemChanged(const Item &item, const QSet<QByteArray> & /*par
 
     const auto job = new PeopleConversionJob({item}, this);
     connect(job, &PeopleConversionJob::finished, this, [this, item, job] {
-        const auto person = job->people().first();
+        const auto person = job->people().constFirst();
         sendModifyJob(item, person);
         job->deleteLater();
     });
@@ -517,7 +517,7 @@ void PersonHandler::collectionAdded(const Collection &collection, const Collecti
         }
 
         const auto createJob = qobject_cast<People::ContactGroupCreateJob *>(job);
-        const auto group = createJob->items().first().dynamicCast<People::ContactGroup>();
+        const auto group = createJob->items().constFirst().dynamicCast<People::ContactGroup>();
 
         updateContactGroupCollection(collection, group);
         emitReadyStatus();
@@ -542,7 +542,7 @@ void PersonHandler::collectionChanged(const Collection &collection)
         }
 
         const auto modifyJob = qobject_cast<People::ContactGroupModifyJob *>(job);
-        const auto group = modifyJob->items().first().dynamicCast<People::ContactGroup>();
+        const auto group = modifyJob->items().constFirst().dynamicCast<People::ContactGroup>();
 
         updateContactGroupCollection(collection, group);
         emitReadyStatus();
