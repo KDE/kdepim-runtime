@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-11-28 00:43+0000\n"
 "PO-Revision-Date: 2024-07-30 21:06+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -29,6 +29,11 @@ msgstr "Oliver Kellogg"
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "olivermkellogg@gmail.com"
+
+#, kde-format
+msgctxt "%f is a variable for agent. Do not change it"
+msgid "A message was received from %f"
+msgstr "Mesaĝo estis ricevita de %f"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -67,12 +72,6 @@ msgstr[1] "%1 novaj retpoŝtoj en %2 de \"%3\""
 #, kde-format
 msgid "New mail arrived"
 msgstr "Nova poŝto alvenis"
-
-#: newmailnotifieragentsettings.kcfg:34
-#, kde-format
-msgctxt "%f is a variable for agent. Do not change it"
-msgid "A message was received from %f"
-msgstr "Mesaĝo estis ricevita de %f"
 
 #: newmailnotifieropenfolderjob.cpp:36 newmailnotifierreplymessagejob.cpp:37
 #: newmailnotifiershowmessagejob.cpp:35

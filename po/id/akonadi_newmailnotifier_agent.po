@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-11-28 00:43+0000\n"
 "PO-Revision-Date: 2021-05-01 10:57+0700\n"
 "Last-Translator: Wantoyo <wantoyek@gmail.com>\n"
 "Language-Team: Indonesian <kde-i18n-doc@kde.org>\n"
@@ -25,6 +25,11 @@ msgstr "Wantoyo"
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "wantoyek@gmail.com"
+
+#, kde-format
+msgctxt "%f is a variable for agent. Do not change it"
+msgid "A message was received from %f"
+msgstr "Sebuah pesan baru diterima dari %f"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, fuzzy, kde-format
@@ -67,12 +72,6 @@ msgstr[1] "%1 email baru di %2 dari \"%3\""
 #, kde-format
 msgid "New mail arrived"
 msgstr "Email baru telah tiba"
-
-#: newmailnotifieragentsettings.kcfg:34
-#, kde-format
-msgctxt "%f is a variable for agent. Do not change it"
-msgid "A message was received from %f"
-msgstr "Sebuah pesan baru diterima dari %f"
 
 #: newmailnotifieropenfolderjob.cpp:36 newmailnotifierreplymessagejob.cpp:37
 #: newmailnotifiershowmessagejob.cpp:35

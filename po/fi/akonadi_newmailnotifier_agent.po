@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-11-28 00:43+0000\n"
 "PO-Revision-Date: 2024-10-20 14:36+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -28,6 +28,12 @@ msgstr "Lasse Liehu, Tommi Nieminen"
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "lasse.liehu@gmail.com, translator@legisign.org"
+
+# Konteksti johtaa hieman harhaan: tämä kohta on kohdassa saapuvan postin asetukset > Muut toimenpiteet > Puhuttava teksti > Viesti. %s viittaa aiheeseen, %f lähettäjään.
+#, kde-format
+msgctxt "%f is a variable for agent. Do not change it"
+msgid "A message was received from %f"
+msgstr "Viesti vastaanotettu henkilöltä %f"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -66,13 +72,6 @@ msgstr[1] "%1 uutta viestiä tilin ”%3” kansiossa %2"
 #, kde-format
 msgid "New mail arrived"
 msgstr "Uutta postia saapunut"
-
-# Konteksti johtaa hieman harhaan: tämä kohta on kohdassa saapuvan postin asetukset > Muut toimenpiteet > Puhuttava teksti > Viesti. %s viittaa aiheeseen, %f lähettäjään.
-#: newmailnotifieragentsettings.kcfg:34
-#, kde-format
-msgctxt "%f is a variable for agent. Do not change it"
-msgid "A message was received from %f"
-msgstr "Viesti vastaanotettu henkilöltä %f"
 
 #: newmailnotifieropenfolderjob.cpp:36 newmailnotifierreplymessagejob.cpp:37
 #: newmailnotifiershowmessagejob.cpp:35

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-11-28 00:43+0000\n"
 "PO-Revision-Date: 2025-09-14 14:09+0530\n"
 "Last-Translator: Kishore G <kishore96@gmail.com>\n"
 "Language-Team: Tamil <kde-l10n-ta@kde.org>\n"
@@ -26,6 +26,11 @@ msgstr ""
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr ""
+
+#, kde-format
+msgctxt "%f is a variable for agent. Do not change it"
+msgid "A message was received from %f"
+msgstr "%f தனிலிருந்து புதிய அஞ்சல் பெறப்பட்டது"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -64,12 +69,6 @@ msgstr[1] ""
 #, kde-format
 msgid "New mail arrived"
 msgstr "புதிய அஞ்சல் உள்ளது"
-
-#: newmailnotifieragentsettings.kcfg:34
-#, kde-format
-msgctxt "%f is a variable for agent. Do not change it"
-msgid "A message was received from %f"
-msgstr "%f தனிலிருந்து புதிய அஞ்சல் பெறப்பட்டது"
 
 #: newmailnotifieropenfolderjob.cpp:36 newmailnotifierreplymessagejob.cpp:37
 #: newmailnotifiershowmessagejob.cpp:35

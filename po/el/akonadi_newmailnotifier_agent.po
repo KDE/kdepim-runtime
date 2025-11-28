@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-11-28 00:43+0000\n"
 "PO-Revision-Date: 2017-04-20 16:35+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -30,6 +30,11 @@ msgstr "Δημήτριος Γλενταδάκης"
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "dglent@free.fr"
+
+#, kde-format
+msgctxt "%f is a variable for agent. Do not change it"
+msgid "A message was received from %f"
+msgstr "Ελήφθη μήνυμα από %f"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -69,12 +74,6 @@ msgstr[1] "%1 νέα μηνύματα στο «%2» από «%3»"
 #, kde-format
 msgid "New mail arrived"
 msgstr "Έφτασε νέα αλληλογραφία"
-
-#: newmailnotifieragentsettings.kcfg:34
-#, kde-format
-msgctxt "%f is a variable for agent. Do not change it"
-msgid "A message was received from %f"
-msgstr "Ελήφθη μήνυμα από %f"
 
 #: newmailnotifieropenfolderjob.cpp:36 newmailnotifierreplymessagejob.cpp:37
 #: newmailnotifiershowmessagejob.cpp:35

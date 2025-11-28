@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-11-28 00:43+0000\n"
 "PO-Revision-Date: 2014-08-13 00:18+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -28,6 +28,13 @@ msgstr "Sönke Dibbern"
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "s_dibbern@web.de"
+
+#, fuzzy, kde-format
+#| msgctxt "%s is a variable for agent. Do not change it"
+#| msgid "A message was received from %s"
+msgctxt "%f is a variable for agent. Do not change it"
+msgid "A message was received from %f"
+msgstr "En Naricht vun %s is ankamen"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -71,14 +78,6 @@ msgstr[1] "%1 nieg Nettbreven binnen %2 vun \"%3\""
 #, kde-format
 msgid "New mail arrived"
 msgstr "Nieg Nettpost ankamen"
-
-#: newmailnotifieragentsettings.kcfg:34
-#, fuzzy, kde-format
-#| msgctxt "%s is a variable for agent. Do not change it"
-#| msgid "A message was received from %s"
-msgctxt "%f is a variable for agent. Do not change it"
-msgid "A message was received from %f"
-msgstr "En Naricht vun %s is ankamen"
 
 #: newmailnotifieropenfolderjob.cpp:36 newmailnotifierreplymessagejob.cpp:37
 #: newmailnotifiershowmessagejob.cpp:35

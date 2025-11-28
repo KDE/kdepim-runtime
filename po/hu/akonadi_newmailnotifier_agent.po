@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-11-28 00:43+0000\n"
 "PO-Revision-Date: 2014-09-04 15:55+0200\n"
 "Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -27,6 +27,13 @@ msgstr "Kiszel Kristóf,Úr Balázs"
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "ulysses@kubuntu.org,urbalazs@gmail.com"
+
+#, fuzzy, kde-format
+#| msgctxt "%s is a variable for agent. Do not change it"
+#| msgid "A message was received from %s"
+msgctxt "%f is a variable for agent. Do not change it"
+msgid "A message was received from %f"
+msgstr "Üzenet érkezett innen: %s"
 
 #: newmailnotificationhistorydialog.cpp:26
 #, kde-format
@@ -70,14 +77,6 @@ msgstr[1] "%1 új e-mail itt: %2, tőle: „%3”"
 #, kde-format
 msgid "New mail arrived"
 msgstr "Új levél érkezett"
-
-#: newmailnotifieragentsettings.kcfg:34
-#, fuzzy, kde-format
-#| msgctxt "%s is a variable for agent. Do not change it"
-#| msgid "A message was received from %s"
-msgctxt "%f is a variable for agent. Do not change it"
-msgid "A message was received from %f"
-msgstr "Üzenet érkezett innen: %s"
 
 #: newmailnotifieropenfolderjob.cpp:36 newmailnotifierreplymessagejob.cpp:37
 #: newmailnotifiershowmessagejob.cpp:35
