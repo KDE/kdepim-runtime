@@ -885,9 +885,3 @@ msgstr "Connecta emprant la configuració del servidor intermediari del sistema"
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "Definiu el tipus d'autenticació a usar"
-
-#~ msgid "Internal error, number expected: %1"
-#~ msgstr "Error intern, s'esperava el número: %1"
-
-#~ msgid "Unexpected response from POP3 server."
-#~ msgstr "Resposta inesperada des del servidor POP3."
