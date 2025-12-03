@@ -305,8 +305,8 @@ msgid ""
 "Error during communication with the POP3 server while trying to download "
 "mail: %1"
 msgstr ""
-"Error durant la comunicació amb el servidor POP3 en intentar baixar el "
-"correu: %1"
+"S'ha produït un error durant la comunicació amb el servidor POP3 en intentar "
+"baixar el correu: %1"
 
 #: pop3resource.cpp:95
 #, kde-format
@@ -380,8 +380,8 @@ msgstr "S'està guardant la contrasenya a la cartera."
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
-"S'ha produït un error en intentar obtindre la carpeta de la safata d'entrada "
-"local, s'interromp la comprovació del correu."
+"S'ha produït un error mentre s'intentava obtindre la carpeta de la safata "
+"d'entrada local, s'interromp la comprovació del correu."
 
 #: pop3resource.cpp:398
 #, kde-format
@@ -399,8 +399,8 @@ msgstr ""
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr ""
-"S'ha produït un error en intentar obtindre la carpeta per al correu entrant, "
-"s'interromp la comprovació del correu."
+"S'ha produït un error mentre s'intentava obtindre la carpeta per al correu "
+"entrant, s'interromp la comprovació del correu."
 
 #: pop3resource.cpp:432
 #, kde-format
@@ -412,7 +412,7 @@ msgstr ""
 #: pop3resource.cpp:443
 #, kde-format
 msgid "Error while executing precommand."
-msgstr "S'ha produït un error en executar l'ordre prèvia."
+msgstr "S'ha produït un error mentre s'executava l'ordre prèvia."
 
 #: pop3resource.cpp:457
 #, kde-format
@@ -422,13 +422,14 @@ msgstr "No s'ha pogut iniciar la sessió en el servidor «%1»."
 #: pop3resource.cpp:466
 #, kde-format
 msgid "Error while getting the list of messages on the server."
-msgstr "S'ha produït un error en obtindre la llista de missatges del servidor."
+msgstr ""
+"S'ha produït un error mentre s'obtenia la llista de missatges del servidor."
 
 #: pop3resource.cpp:480
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr ""
-"S'ha produït un error en obtindre la llista d'identificadors únics de "
+"S'ha produït un error mentre s'obtenia la llista d'identificadors únics de "
 "missatges del servidor."
 
 #: pop3resource.cpp:493
@@ -449,7 +450,7 @@ msgstr ""
 #: pop3resource.cpp:508
 #, kde-format
 msgid "Error while fetching mails from the server."
-msgstr "S'ha produït un error en recuperar els correus del servidor."
+msgstr "S'ha produït un error mentre es recuperaven els correus del servidor."
 
 #: pop3resource.cpp:568
 #, kde-format
@@ -472,7 +473,7 @@ msgstr "No s'han pogut emmagatzemar els correus baixats."
 #: pop3resource.cpp:748
 #, kde-format
 msgid "Failed to delete the messages from the server."
-msgstr "No s'han pogut suprimir els missatges del servidor."
+msgstr "Ha fallat mentre se suprimien els missatges del servidor."
 
 #: pop3resource.cpp:804
 #, kde-format

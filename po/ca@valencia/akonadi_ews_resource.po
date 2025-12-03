@@ -47,8 +47,9 @@ msgid ""
 "Failed to obtain InTune credentials for Microsoft Exchange account <b>%1</"
 "b>. Please update it in the account settings page."
 msgstr ""
-"No s'han pogut obtindre les credencials d'InTune per al compte <b>%1</b> de "
-"Microsoft Exchange. Actualitzeu-les en la pàgina de configuració del compte."
+"Ha fallat mentre s'obtenien les credencials d'InTune per al compte <b>%1</b> "
+"de Microsoft Exchange. Actualitzeu-les en la pàgina de configuració del "
+"compte."
 
 #: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
@@ -67,8 +68,8 @@ msgid ""
 "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
 "Please update it in the account settings page."
 msgstr ""
-"No s'han pogut obtindre les credencials per al compte <b>%1</b> de Microsoft "
-"Exchange. Actualitzeu-les en la pàgina de configuració del compte."
+"Ha fallat mentre s'obtenien les credencials per al compte <b>%1</b> de "
+"Microsoft Exchange. Actualitzeu-les en la pàgina de configuració del compte."
 
 #: ewsclient/auth/ewspasswordauth.cpp:57
 #, kde-format
@@ -183,8 +184,8 @@ msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
 "Do you still want to save your settings?"
 msgstr ""
-"No s'ha pogut connectar amb Exchange. Açò pot ser causat per paràmetres "
-"incorrectes. Voleu guardar la configuració?"
+"Ha fallat mentre es connectava amb Exchange. Açò pot ser causat per "
+"paràmetres incorrectes. Voleu guardar la configuració?"
 
 #: ewsconfigdialog.cpp:388
 #, kde-format
@@ -702,42 +703,44 @@ msgstr "Quant a"
 msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
 msgstr ""
-"No s'ha pogut processar la sol·licitud per a la recuperació dels elements"
+"Ha fallat mentre es processava la sol·licitud per a la recuperació dels "
+"elements"
 
 #: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
 #: ewsresource.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
-msgstr "No s'han pogut recuperar els elements"
+msgstr "Ha fallat mentre es recuperaven els elements"
 
 #: ewsfetchitempayloadjob.cpp:78
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - incorrect number of responses"
-msgstr "No s'han pogut recuperar els elements -nombre incorrecte de respostes-"
+msgstr ""
+"Ha fallat mentre es recuperaven els elements -nombre incorrecte de respostes-"
 
 #: ewsfetchitempayloadjob.cpp:91
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Akonadi item not found for item %1"
 msgstr ""
-"No s'han pogut recuperar els elements -no s'ha trobat l'element Akonadi per "
-"a l'element %1-"
+"Ha fallat mentre es recuperaven els elements -no s'ha trobat l'element "
+"Akonadi per a l'element %1-"
 
 #: ewsfetchitempayloadjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Unknown item type for item %1"
 msgstr ""
-"No s'han pogut recuperar els elements -tipus d'element desconegut per a "
-"l'element %1-"
+"Ha fallat mentre es recuperaven els elements -tipus d'element desconegut per "
+"a l'element %1-"
 
 #: ewsfetchitempayloadjob.cpp:104
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to fetch item payload"
-msgstr "No s'ha pogut recuperar el contingut de l'element"
+msgstr "Ha fallat mentre es recuperava el contingut de l'element"
 
 #: ewsfetchitemsjob.cpp:98
 #, kde-format
@@ -851,20 +854,21 @@ msgstr "S'estan recuperant elements"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
-msgstr "No s'han pogut recuperar els elements -error intern-"
+msgstr "Ha fallat mentre es recuperaven els elements -error intern-"
 
 #: ewsresource.cpp:462
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
-msgstr "No s'han pogut recuperar les carpetes -error intern-"
+msgstr "Ha fallat mentre es recuperaven les carpetes -error intern-"
 
 #: ewsresource.cpp:468
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
 msgstr ""
-"No s'ha pogut processar la sol·licitud per a la recuperació de les carpetes"
+"Ha fallat mentre es processava la sol·licitud per a la recuperació de les "
+"carpetes"
 
 #: ewsresource.cpp:485
 #, kde-format
@@ -891,59 +895,61 @@ msgstr "S'estan actualitzant les etiquetes dels elements"
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
 msgstr ""
-"No s'ha pogut processar la sol·licitud per a l'actualització de les "
+"Ha fallat mentre es processava la sol·licitud per a l'actualització de les "
 "etiquetes de l'element"
 
 #: ewsresource.cpp:580
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
-msgstr "No s'han pogut actualitzar les etiquetes de l'element -error intern-"
+msgstr ""
+"Ha fallat mentre s'actualitzaven les etiquetes de l'element -error intern-"
 
 #: ewsresource.cpp:594
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
 msgstr ""
-"No s'ha pogut processar la sol·licitud per a l'actualització de l'element"
+"Ha fallat mentre es processava la sol·licitud per a l'actualització de "
+"l'element"
 
 #: ewsresource.cpp:601
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
-msgstr "No s'ha pogut actualitzar l'element -error intern-"
+msgstr "Ha fallat mentre s'actualitzava l'element -error intern-"
 
 #: ewsresource.cpp:636
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
-msgstr "No s'ha pogut processar la sol·licitud per a moure l'element"
+msgstr "Ha fallat mentre es processava la sol·licitud per a moure l'element"
 
 #: ewsresource.cpp:643
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
-msgstr "No s'ha pogut moure l'element -error intern-"
+msgstr "Ha fallat mentre es movia l'element -error intern-"
 
 #: ewsresource.cpp:650
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
 msgstr ""
-"No s'ha pogut moure l'element -nombre de respostes no vàlides rebudes pel "
-"servidor-"
+"Ha fallat mentre es movia l'element -nombre de respostes no vàlides rebudes "
+"pel servidor-"
 
 #: ewsresource.cpp:743
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
-msgstr "No s'ha pogut processar la sol·licitud per a suprimir l'element"
+msgstr "Ha fallat mentre es processava la sol·licitud per a suprimir l'element"
 
 #: ewsresource.cpp:750
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
-msgstr "No s'ha pogut suprimir l'element -error intern-"
+msgstr "Ha fallat mentre se suprimia l'element -error intern-"
 
 #: ewsresource.cpp:757
 #, kde-format
@@ -951,8 +957,8 @@ msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
 msgstr ""
-"No s'ha pogut suprimir l'element -nombre de respostes no vàlides rebudes pel "
-"servidor-"
+"Ha fallat mentre se suprimia l'element -nombre de respostes no vàlides "
+"rebudes pel servidor-"
 
 #: ewsresource.cpp:802 ewsresource.cpp:1015
 #, kde-format
@@ -964,51 +970,51 @@ msgstr "El tipus d'element no admet la creació"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
-msgstr "No s'ha pogut processar la sol·licitud per a crear l'element"
+msgstr "Ha fallat mentre es processava la sol·licitud per a crear l'element"
 
 #: ewsresource.cpp:819
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
-msgstr "No s'ha pogut crear l'element -error intern-"
+msgstr "Ha fallat mentre es creava l'element -error intern-"
 
 #: ewsresource.cpp:840
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr ""
-"No s'ha pogut afegir la col·lecció -no s'ha pogut determinar el tipus de "
-"carpeta EWS-"
+"Ha fallat mentre s'afegia la col·lecció -no s'ha pogut determinar el tipus "
+"de carpeta EWS-"
 
 #: ewsresource.cpp:859
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
-msgstr "No s'ha pogut processar la sol·licitud per a crear la carpeta"
+msgstr "Ha fallat mentre es processava la sol·licitud per a crear la carpeta"
 
 #: ewsresource.cpp:865
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
-msgstr "No s'ha pogut crear la carpeta -error intern-"
+msgstr "Ha fallat mentre es creava la carpeta -error intern-"
 
 #: ewsresource.cpp:877
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
-msgstr "No s'ha pogut crear la carpeta"
+msgstr "Ha fallat mentre es creava la carpeta"
 
 #: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
-msgstr "No s'ha pogut processar la sol·licitud per a moure la carpeta"
+msgstr "Ha fallat mentre es processava la sol·licitud per a moure la carpeta"
 
 #: ewsresource.cpp:906
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
-msgstr "No s'ha pogut moure la carpeta -error intern-"
+msgstr "Ha fallat mentre es movia la carpeta -error intern-"
 
 #: ewsresource.cpp:912
 #, kde-format
@@ -1016,26 +1022,27 @@ msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
 msgstr ""
-"No s'ha pogut moure la carpeta -nombre de respostes no vàlides rebudes pel "
-"servidor-"
+"Ha fallat mentre es movia la carpeta -nombre de respostes no vàlides rebudes "
+"pel servidor-"
 
 #: ewsresource.cpp:923
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
-msgstr "No s'ha pogut moure la carpeta"
+msgstr "Ha fallat mentre es movia la carpeta"
 
 #: ewsresource.cpp:951
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
-msgstr "No s'ha pogut processar la sol·licitud per a actualitzar la carpeta"
+msgstr ""
+"Ha fallat mentre es processava la sol·licitud per a actualitzar la carpeta"
 
 #: ewsresource.cpp:957
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
-msgstr "No s'ha pogut actualitzar la carpeta -error intern-"
+msgstr "Ha fallat mentre s'actualitzava la carpeta -error intern-"
 
 #: ewsresource.cpp:963
 #, kde-format
@@ -1043,44 +1050,45 @@ msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
 msgstr ""
-"No s'ha pogut actualitzar la carpeta -nombre de respostes no vàlides rebudes "
-"pel servidor-"
+"Ha fallat mentre s'actualitzava la carpeta -nombre de respostes no vàlides "
+"rebudes pel servidor-"
 
 #: ewsresource.cpp:974
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
-msgstr "No s'ha pogut actualitzar la carpeta"
+msgstr "Ha fallat mentre s'actualitzava la carpeta"
 
 #: ewsresource.cpp:991
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
-msgstr "No s'ha pogut processar la sol·licitud per a suprimir la carpeta"
+msgstr ""
+"Ha fallat mentre es processava la sol·licitud per a suprimir la carpeta"
 
 #: ewsresource.cpp:997
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
-msgstr "No s'ha pogut suprimir la carpeta -error intern-"
+msgstr "Ha fallat mentre se suprimia la carpeta -error intern-"
 
 #: ewsresource.cpp:1005
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
-msgstr "No s'ha pogut suprimir la subcarpeta"
+msgstr "Ha fallat mentre se suprimia la subcarpeta"
 
 #: ewsresource.cpp:1029 ewsresource.cpp:1063
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
-msgstr "No s'ha pogut processar la sol·licitud per a enviar l'element"
+msgstr "Ha fallat mentre es processava la sol·licitud per a enviar l'element"
 
 #: ewsresource.cpp:1035 ewsresource.cpp:1069
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
-msgstr "No s'ha pogut enviar l'element -error intern-"
+msgstr "Ha fallat mentre s'enviava l'element -error intern-"
 
 #: ewsresource.cpp:1074
 #, kde-format
@@ -1099,30 +1107,31 @@ msgstr "S'estan actualitzant les etiquetes dels elements"
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr ""
-"No s'ha pogut processar la sol·licitud per a l'actualització de les "
+"Ha fallat mentre es processava la sol·licitud per a l'actualització de les "
 "etiquetes dels elements"
 
 #: ewsresource.cpp:1285
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
-msgstr "No s'han pogut actualitzar les etiquetes dels elements -error intern-"
+msgstr ""
+"Ha fallat mentre s'actualitzaven les etiquetes dels elements -error intern-"
 
 #: ewsresource.cpp:1322
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr ""
-"No s'ha pogut processar la sol·licitud per a l'actualització global de les "
-"etiquetes"
+"Ha fallat mentre es processava la sol·licitud per a l'actualització global "
+"de les etiquetes"
 
 #: ewsresource.cpp:1338
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr ""
-"No s'ha pogut processar la sol·licitud per a la recuperació global de les "
-"etiquetes"
+"Ha fallat mentre es processava la sol·licitud per a la recuperació global de "
+"les etiquetes"
 
 #: ewsresource.cpp:1416
 #, kde-format
@@ -1300,7 +1309,7 @@ msgstr "El servidor Exchange no està configurat."
 #, kde-format
 msgctxt "@info"
 msgid "Failed to retrieve folder list."
-msgstr "No s'ha pogut recuperar la llista de carpetes."
+msgstr "Ha fallat mentre es recuperava la llista de carpetes."
 
 #: ewssubscriptionwidget.cpp:293
 #, kde-format
@@ -1336,7 +1345,7 @@ msgstr "Només els subscrits"
 #: mail/ewscreatemailjob.cpp:218
 #, kde-format
 msgid "Failed to create mail item"
-msgstr "No s'ha pogut crear l'element de correu"
+msgstr "Ha fallat mentre es creava l'element de correu"
 
 #: mail/ewsmodifymailjob.cpp:92
 #, kde-format

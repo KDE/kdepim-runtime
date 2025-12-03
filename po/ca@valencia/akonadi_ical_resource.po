@@ -72,7 +72,7 @@ msgstr "No s'ha carregat el calendari."
 #: shared/icalresourcebase.cpp:143
 #, kde-format
 msgid "Failed to save calendar file to %1"
-msgstr "No s'ha pogut guardar el fitxer de calendari a %1"
+msgstr "Ha fallat mentre es guardava el fitxer de calendari a %1"
 
 #: shared/icalresourcebase.h:93
 #, kde-format

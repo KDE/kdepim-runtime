@@ -243,19 +243,3 @@ msgstr "Marca com a llegit"
 #, kde-format
 msgid "Delete"
 msgstr "Suprimix"
-
-#~ msgid "New Mail Notifier Agent"
-#~ msgstr "Agent del notificador de correu nou"
-
-#~ msgid "Notify about new mails."
-#~ msgstr "Notifica sobre correu nou."
-
-#~ msgid "Copyright (C) 2013-%1 Laurent Montel"
-#~ msgstr "Copyright (C) 2013-%1, Laurent Montel"
-
-#~ msgctxt "@info:credit"
-#~ msgid "Laurent Montel"
-#~ msgstr "Laurent Montel"
-
-#~ msgid "Maintainer"
-#~ msgstr "Mantenidor"
