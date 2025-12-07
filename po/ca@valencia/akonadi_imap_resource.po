@@ -5,21 +5,21 @@
 #
 # SPDX-FileCopyrightText: 2009, 2010 Manuel Tortosa Moreno <manutortosa@chakra-project.org>
 # SPDX-FileCopyrightText: 2010 Manuel Tortosa <manutortosa@chakra-project.org>
-# SPDX-FileCopyrightText: 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022 Antoni Bella Pérez <antonibella5@yahoo.com>
+# SPDX-FileCopyrightText: 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2025 Antoni Bella Pérez <antonibella5@yahoo.com>
 # SPDX-FileCopyrightText: 2010, 2011, 2012, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2024, 2025 Josep M. Ferrer <txemaq@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 14:41+0000\n"
-"PO-Revision-Date: 2025-03-28 10:56+0100\n"
-"Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
+"PO-Revision-Date: 2025-12-06 14:49+0100\n"
+"Last-Translator: Antoni Bella Pérez <antonibella5@yahoo.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 25.08.3\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
 
@@ -49,7 +49,8 @@ msgstr ""
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
 msgstr ""
-"No s'ha pogut escriure algunes anotacions per a «%1» en el servidor IMAP. %2"
+"Ha fallat mentre s'escrivien algunes anotacions per a «%1» en el servidor "
+"IMAP. %2"
 
 #: additemtask.cpp:115 changeitemtask.cpp:181 changeitemtask.cpp:205
 #: moveitemstask.cpp:255
@@ -92,7 +93,8 @@ msgstr ""
 #: changecollectiontask.cpp:267
 #, kde-format
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
-msgstr "No s'ha pogut escriure algunes ACL per a «%1» en el servidor IMAP, %2"
+msgstr ""
+"Ha fallat mentre s'escrivien algunes ACL per a «%1» en el servidor IMAP, %2"
 
 #: imapresource.cpp:46
 #, kde-format
@@ -146,7 +148,8 @@ msgstr "Definix si la subscripció de la banda del servidor està habilitada"
 #: imapresource.kcfg:42 setupserverview_desktop.ui:560
 #, kde-format
 msgid "Connect using the system proxy settings"
-msgstr "Connecta emprant la configuració del servidor intermediari del sistema"
+msgstr ""
+"Connecta emprant la configuració de l'amfitrió intermediari del sistema"
 
 #. i18n: ectx: whatsthis, entry (UseProxy), group (network)
 #: imapresource.kcfg:43
@@ -248,7 +251,7 @@ msgstr "Definix si el servidor accepta «sieve»"
 #, kde-format
 msgid "Define if we reuse host and login configuration"
 msgstr ""
-"Definix si es torna a utilitzar la configuració de màquina i inici de sessió"
+"Definix si es torna a utilitzar la configuració d'amfitrió i inici de sessió"
 
 #. i18n: ectx: label, entry (SievePort), group (siever)
 #: imapresource.kcfg:104
@@ -432,7 +435,8 @@ msgstr ""
 #: moveitemstask.cpp:113
 #, kde-format
 msgid "Failed to move item, it has no message payload. Remote id: %1"
-msgstr "No s'ha pogut moure l'element, no té contingut. Identitat remota: %1"
+msgstr ""
+"Ha fallat mentre es movia l'element, no té contingut. Identitat remota: %1"
 
 #: moveitemstask.cpp:190
 #, kde-format
@@ -440,21 +444,22 @@ msgid ""
 "Failed to mark the message from '%1' for deletion on the IMAP server. It "
 "will reappear on next sync."
 msgstr ""
-"No s'ha pogut marcar el missatge de «%1» per a supressió en el servidor "
-"IMAP, reapareixerà en la pròxima sincronització."
+"Ha fallat mentre es marcava el missatge de «%1» per a supressió en el "
+"servidor IMAP, reapareixerà en la pròxima sincronització."
 
 #: outlookpasswordrequester.cpp:67 outlookpasswordrequester.cpp:76
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
-msgstr "No s'ha pogut llegir la contrasenya del clauer."
+msgstr "Ha fallat mentre es llegia la contrasenya del clauer."
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr ""
-"No s'ha pogut suprimir la carpeta, s'està restaurant la llista de carpetes."
+"Ha fallat mentre se suprimia la carpeta, s'està restaurant la llista de "
+"carpetes."
 
 #: removecollectionrecursivetask.cpp:146
 #, kde-format
@@ -521,7 +526,8 @@ msgstr "L'ID remot està buit o no és vàlid"
 #: retrieveitemtask.cpp:78 retrieveitemtask.cpp:94
 #, kde-format
 msgid "No message retrieved, failed to read the message."
-msgstr "No s'ha recuperat cap missatge, ha fallat en llegir el missatge."
+msgstr ""
+"No s'ha recuperat cap missatge, ha fallat mentre es llegia el missatge."
 
 #: retrieveitemtask.cpp:115
 #, kde-format
@@ -544,7 +550,8 @@ msgstr "Informació del servidor"
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
-msgstr "S'ha produït un error en obtindre les capacitats del servidor: %1"
+msgstr ""
+"S'ha produït un error mentre s'obtenien les capacitats del servidor: %1"
 
 #: serverinfodialog.cpp:109
 #, kde-format
@@ -656,8 +663,8 @@ msgid ""
 "An error occurred when retrieving the IMAP password from the system "
 "keychain: \"%1\""
 msgstr ""
-"S'ha produït un error en recuperar la contrasenya IMAP des del clauer del "
-"sistema: «%1»"
+"S'ha produït un error mentre es recuperava la contrasenya IMAP des del "
+"clauer del sistema: «%1»"
 
 #: settings.cpp:204
 #, kde-format
@@ -672,8 +679,8 @@ msgid ""
 "An error occurred when retrieving the sieve password from the system "
 "keychain: \"%1\""
 msgstr ""
-"S'ha produït un error en recuperar la contrasenya Sieve des del clauer del "
-"sistema: «%1»"
+"S'ha produït un error mentre es recuperava la contrasenya Sieve des del "
+"clauer del sistema: «%1»"
 
 #: settings.cpp:240
 #, kde-format
@@ -682,8 +689,8 @@ msgid ""
 "An error occurred when saving the sieve password in the system keychain: "
 "\"%1\""
 msgstr ""
-"S'ha produït un error en guardar la contrasenya Sieve al clauer del sistema: "
-"«%1»"
+"S'ha produït un error mentre es guardava la contrasenya Sieve al clauer del "
+"sistema: «%1»"
 
 #: settings.cpp:266
 #, kde-format
@@ -692,8 +699,8 @@ msgid ""
 "An error occurred when saving the IMAP password in the system keychain: "
 "\"%1\""
 msgstr ""
-"S'ha produït un error en guardar la contrasenya IMAP al clauer del sistema: "
-"«%1»"
+"S'ha produït un error mentre es guardava la contrasenya IMAP al clauer del "
+"sistema: «%1»"
 
 #: settings.cpp:353
 #, kde-format
@@ -728,8 +735,8 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
-"El servidor ha refusat el nom d'usuari i la contrasenya subministrats per al "
-"compte %1.\n"
+"El servidor IMAP ha refusat el nom d'usuari i la contrasenya subministrats "
+"per al compte %1.\n"
 "Voleu tornar-ho a intentar o obrir la configuració?\n"
 "\n"
 "%2"
@@ -969,7 +976,7 @@ msgstr "El servidor accepta «sieve»"
 #: setupserverview_desktop.ui:173
 #, kde-format
 msgid "Reuse host and login configuration"
-msgstr "Torna a utilitzar la configuració de màquina i inici de sessió"
+msgstr "Torna a utilitzar la configuració d'amfitrió i inici de sessió"
 
 #. i18n: ectx: property (text), widget (QLabel, label_14)
 #: setupserverview_desktop.ui:180
