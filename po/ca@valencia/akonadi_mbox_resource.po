@@ -33,12 +33,12 @@ msgstr[1] "(%1 missatges marcats per a supressió)"
 #: compactpage.cpp:78
 #, kde-format
 msgid "Failed to fetch the collection."
-msgstr "No s'ha pogut recuperar la col·lecció."
+msgstr "Ha fallat mentre es recuperava la col·lecció."
 
 #: compactpage.cpp:94
 #, kde-format
 msgid "Failed to load the mbox file"
-msgstr "No s'ha pogut carregar el fitxer «mbox»"
+msgstr "Ha fallat mentre es carregava el fitxer «mbox»"
 
 #: compactpage.cpp:96
 #, kde-format
@@ -251,7 +251,7 @@ msgstr "No s'ha carregat MBox."
 #: mboxresource.cpp:158
 #, kde-format
 msgid "Failed to read message with uid '%1'."
-msgstr "No s'ha pogut llegir el missatge amb UID «%1»."
+msgstr "Ha fallat mentre es llegia el missatge amb UID «%1»."
 
 #: mboxresource.cpp:192
 #, kde-format
@@ -284,7 +284,7 @@ msgstr ""
 #: mboxresource.cpp:297
 #, kde-format
 msgid "Failed to save mbox file to %1"
-msgstr "No s'ha pogut guardar el fitxer «mbox» a %1"
+msgstr "Ha fallat mentre es guardava el fitxer «mbox» a %1"
 
 #: mboxresource.cpp:356
 #, kde-format
@@ -292,8 +292,8 @@ msgid ""
 "Failed to update the changed item because the old item could not be deleted "
 "Reason: %1"
 msgstr ""
-"No s'ha pogut actualitzar l'element canviat perquè l'element antic no s'ha "
-"pogut suprimir. Motiu: %1"
+"Ha fallat mentre s'actualitzava l'element canviat perquè l'element antic no "
+"s'ha pogut suprimir. Motiu: %1"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: mboxresource.kcfg:10

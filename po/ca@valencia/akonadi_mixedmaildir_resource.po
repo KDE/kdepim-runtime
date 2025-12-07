@@ -163,7 +163,7 @@ msgstr "No s'ha pogut eliminar la carpeta %1 de la carpeta %2"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to load MBox folder %1"
-msgstr "No s'ha pogut carregar la carpeta MBox %1"
+msgstr "Ha fallat mentre es carregava la carpeta MBox %1"
 
 #: mixedmaildirstore.cpp:1177 mixedmaildirstore.cpp:1193
 #: mixedmaildirstore.cpp:1228 mixedmaildirstore.cpp:1236
@@ -199,13 +199,14 @@ msgstr "No s'han pogut eliminar correus de la carpeta %1"
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while reading mails from folder %1"
-msgstr "S'ha produït un error en llegir els correus des de la carpeta %1"
+msgstr ""
+"S'ha produït un error mentre es llegien els correus des de la carpeta %1"
 
 #: mixedmaildirstore.cpp:1700
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to load Maildirs folder %1"
-msgstr "No s'ha pogut carregar la carpeta per al directori de correu %1"
+msgstr "Ha fallat mentre es carregava la carpeta per al directori de correu %1"
 
 #: mixedmaildirstore.cpp:1759 mixedmaildirstore.cpp:1771
 #: mixedmaildirstore.cpp:1785 mixedmaildirstore.cpp:1819

@@ -50,7 +50,8 @@ msgstr "Falta l'identificador"
 #: ../migratorbase.cpp:141
 #, kde-format
 msgid "Failed to start migration because migrator is not ready"
-msgstr "No s'ha pogut iniciar la migració perquè el migrador no està llest"
+msgstr ""
+"Ha fallat mentre s'iniciava la migració perquè el migrador no està llest"
 
 #: ../migratorbase.cpp:147
 #, kde-format

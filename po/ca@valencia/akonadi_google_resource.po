@@ -71,7 +71,7 @@ msgstr "S'estan canviant les etiquetes dels esdeveniments"
 #: calendarhandler.cpp:347
 #, kde-format
 msgid "Failed to change tags on events"
-msgstr "No s'han pogut canviar les etiquetes dels esdeveniments"
+msgstr "Ha fallat mentre es canviaven les etiquetes dels esdeveniments"
 
 #: calendarhandler.cpp:359
 #, kde-format
@@ -185,7 +185,7 @@ msgstr "El recurs no està configurat"
 #: googleresource.cpp:240
 #, kde-format
 msgid "Failed to refresh tokens"
-msgstr "No s'han pogut actualitzar els testimonis"
+msgstr "Ha fallat mentre s'actualitzaven els testimonis"
 
 #: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
 #: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
@@ -422,12 +422,12 @@ msgstr[1] "S'estan eliminant %1 tasques"
 #: taskhandler.cpp:223
 #, kde-format
 msgid "Failed to delete task: %1"
-msgstr "No s'ha pogut suprimir la tasca: %1"
+msgstr "Ha fallat mentre se suprimia la tasca: %1"
 
 #: taskhandler.cpp:259
 #, kde-format
 msgid "Failed to reparent subtasks: %1"
-msgstr "No s'han pogut canviar els pares de les subtasques: %1"
+msgstr "Ha fallat mentre es canviaven els pares de les subtasques: %1"
 
 #: taskhandler.cpp:290
 #, kde-format

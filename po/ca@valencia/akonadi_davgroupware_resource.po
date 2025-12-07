@@ -223,7 +223,7 @@ msgstr "Respostes no vàlides del dorsal"
 #: daverror-kdepim-runtime.cpp:57
 #, kde-format
 msgid "Error setting focus for XQuery"
-msgstr "S'ha produït un error en establir el focus a XQuery"
+msgstr "S'ha produït un error mentre s'establia el focus a XQuery"
 
 #: daverror-kdepim-runtime.cpp:60
 #, kde-format
@@ -249,7 +249,7 @@ msgstr "No hi ha cap propietat que calga canviar o eliminar"
 #: daverror-kdepim-runtime.cpp:73
 #, kde-format
 msgid "There was an error when modifying the properties"
-msgstr "S'ha produït un error en modificar les propietats"
+msgstr "S'ha produït un error mentre es modificaven les propietats"
 
 #: daverror-kdepim-runtime.cpp:75
 #, kde-format
@@ -382,8 +382,8 @@ msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
-"No s'ha pogut recuperar l'element: ha fallat en l'anàlisi sintàctica de les "
-"dades de l'element. Potser ja s'ha suprimit."
+"No s'ha pogut recuperar l'element: ha fallat durant l'anàlisi de les dades "
+"de l'element. Potser ja s'ha suprimit."
 
 #: davgroupwareresource.cpp:1198
 #, kde-format
@@ -499,7 +499,7 @@ msgid ""
 "An error occurred when executing search:\n"
 "%1"
 msgstr ""
-"S'ha produït un error en executar la busca:\n"
+"S'ha produït un error mentre s'executava la busca:\n"
 "%1"
 
 #. i18n: ectx: property (text), widget (QRadioButton, useDefaultCreds)
@@ -648,7 +648,7 @@ msgstr "Introduïu la informació de connexió per al servidor de treball en gru
 #: setupwizard.cpp:411
 #, kde-format
 msgid "Host"
-msgstr "Màquina"
+msgstr "Amfitrió"
 
 #: setupwizard.cpp:414
 #, kde-format
