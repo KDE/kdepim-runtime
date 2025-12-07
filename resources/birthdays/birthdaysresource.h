@@ -20,7 +20,7 @@ class Addressee;
 
 class QDate;
 
-class BirthdaysResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class BirthdaysResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
 

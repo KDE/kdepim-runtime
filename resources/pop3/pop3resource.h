@@ -25,7 +25,7 @@ namespace QKeychain
 {
 class Job;
 }
-class POP3Resource : public Akonadi::ResourceWidgetBase, public Akonadi::AgentBase::Observer
+class POP3Resource : public Akonadi::ResourceWidgetBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
 

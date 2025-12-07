@@ -24,7 +24,7 @@ class DavItem;
 }
 
 class DavGroupwareResource : public Akonadi::ResourceBase,
-                             public Akonadi::AgentBase::Observer,
+                             public Akonadi::AgentBase::ObserverV2,
                              public Akonadi::FreeBusyProviderBase,
                              public Akonadi::AgentBase::TagObserver
 {

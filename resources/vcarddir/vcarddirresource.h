@@ -11,7 +11,7 @@
 #include <KContacts/Addressee>
 #include <KContacts/VCardConverter>
 
-class VCardDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class VCardDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
 

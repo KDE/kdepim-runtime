@@ -34,7 +34,7 @@ class ImapResourceBase : public Akonadi::ResourceWidgetBase, public Akonadi::Age
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.ImapResourceBase")
 protected:
-    using Akonadi::AgentBase::Observer::collectionChanged;
+    using Akonadi::AgentBase::ObserverV2::collectionChanged;
 
 public:
     explicit ImapResourceBase(const QString &id);

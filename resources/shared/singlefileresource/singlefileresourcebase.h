@@ -25,7 +25,7 @@ namespace Akonadi
  * Base class for single file based resources.
  * @see SingleFileResource
  */
-class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceBase : public ResourceBase, public AgentBase::Observer
+class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceBase : public ResourceBase, public AgentBase::ObserverV2
 {
     Q_OBJECT
 public:

@@ -14,7 +14,7 @@ class KolabResource : public ImapResourceBase, public Akonadi::AgentBase::TagObs
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Imap.Resource")
 
-    using Akonadi::AgentBase::Observer::collectionChanged;
+    using Akonadi::AgentBase::ObserverV2::collectionChanged;
 
 public:
     explicit KolabResource(const QString &id);

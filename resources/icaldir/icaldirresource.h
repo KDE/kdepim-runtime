@@ -13,7 +13,7 @@
 
 #include <QHash>
 
-class ICalDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class ICalDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
 
