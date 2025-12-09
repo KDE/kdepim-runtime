@@ -7,6 +7,7 @@
 #include "newmailnotificationhistorymanager.h"
 #include <KLocalizedString>
 #include <QDateTime>
+#include <QDebug>
 #include <QLocale>
 
 NewMailNotificationHistoryManager::NewMailNotificationHistoryManager(QObject *parent)

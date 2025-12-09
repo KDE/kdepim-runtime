@@ -7,9 +7,8 @@
 
 #include "newmailnotifier_export.h"
 #include <Akonadi/Item>
-#include <QDebug>
 #include <QObject>
-
+class QDebug;
 class NEWMAILNOTIFIER_EXPORT NewMailNotificationHistoryManager : public QObject
 {
     Q_OBJECT
