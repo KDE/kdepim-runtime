@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-28 00:43+0000\n"
+"POT-Creation-Date: 2025-12-10 00:44+0000\n"
 "PO-Revision-Date: 2024-07-30 21:06+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -41,12 +41,12 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Historio de Sciigoj"
 
-#: newmailnotificationhistorymanager.cpp:32
+#: newmailnotificationhistorymanager.cpp:33
 #, kde-format
 msgid "[Open Folder]"
 msgstr "[Malfermi Dosierujon]"
 
-#: newmailnotificationhistorymanager.cpp:42
+#: newmailnotificationhistorymanager.cpp:43
 #, kde-format
 msgid "[Show Mail]"
 msgstr "[Montri Retpoŝton]"
