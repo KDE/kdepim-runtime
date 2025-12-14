@@ -52,17 +52,4 @@ bool BirthdaysConfigAgentWidget::save() const
     return true;
 }
 
-QSize BirthdaysConfigAgentWidget::restoreDialogSize() const
-{
-    const auto group = config()->group(QLatin1StringView(myConfigGroupName));
-    const QSize size = group.readEntry("Size", QSize(600, 400));
-    return size;
-}
-
-void BirthdaysConfigAgentWidget::saveDialogSize(const QSize &size)
-{
-    auto group = config()->group(QLatin1StringView(myConfigGroupName));
-    group.writeEntry("Size", size);
-}
-
 #include "moc_birthdaysconfigagentwidget.cpp"

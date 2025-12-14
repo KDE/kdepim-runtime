@@ -96,17 +96,4 @@ bool ContactsSettingsWidget::save() const
     return true;
 }
 
-QSize ContactsSettingsWidget::restoreDialogSize() const
-{
-    auto group = config()->group(QLatin1StringView(myConfigGroupName));
-    const QSize size = group.readEntry("Size", QSize(600, 400));
-    return size;
-}
-
-void ContactsSettingsWidget::saveDialogSize(const QSize &size)
-{
-    auto group = config()->group(QLatin1StringView(myConfigGroupName));
-    group.writeEntry("Size", size);
-}
-
 #include "moc_contactssettingswidget.cpp"
