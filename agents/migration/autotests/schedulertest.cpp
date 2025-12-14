@@ -5,15 +5,14 @@
  *
  */
 
-#include <KJobTrackerInterface>
-using namespace Qt::Literals::StringLiterals;
-
 #include <QDebug>
 #include <QSignalSpy>
 #include <QTest>
 
 #include "../migrationscheduler.h"
 #include "migration/migratorbase.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 Q_DECLARE_METATYPE(QModelIndex)
 
@@ -62,40 +61,6 @@ public:
     }
 
     bool mAutostart;
-};
-
-class TestJobTracker : public KJobTrackerInterface
-{
-public:
-    TestJobTracker()
-        : mPercent(0)
-    {
-    }
-
-    void registerJob(KJob *job) override
-    {
-        KJobTrackerInterface::registerJob(job);
-        mJobs << job;
-    }
-
-    void unregisterJob(KJob *job) override
-    {
-        mJobs.removeAll(job);
-    }
-
-    void finished(KJob *job) override
-    {
-        mJobs.removeAll(job);
-    }
-
-    void percent(KJob *job, long unsigned int percent) override
-    {
-        Q_UNUSED(job)
-        mPercent = percent;
-    }
-
-    QList<KJob *> mJobs;
-    int mPercent;
 };
 
 class SchedulerTest : public QObject
@@ -213,36 +178,6 @@ private Q_SLOTS:
         QCOMPARE(m2->migrationState(), MigratorBase::None);
         m1->complete();
         QCOMPARE(m2->migrationState(), MigratorBase::InProgress);
-    }
-
-    void testJobTracker()
-    {
-        TestJobTracker jobTracker;
-        MigrationScheduler scheduler(&jobTracker);
-        QSharedPointer<Testmigrator> m1(new Testmigrator(QStringLiteral("id1")));
-        m1->mAutostart = true;
-        scheduler.addMigrator(m1);
-
-        QCOMPARE(jobTracker.mJobs.size(), 1);
-
-        m1->complete();
-
-        // Give the job some time to delete itself
-        QTest::qWait(500);
-
-        QCOMPARE(jobTracker.mJobs.size(), 0);
-    }
-
-    void testProgressReporting()
-    {
-        TestJobTracker jobTracker;
-        MigrationScheduler scheduler(&jobTracker);
-        QSharedPointer<Testmigrator> m1(new Testmigrator(QStringLiteral("id1")));
-        m1->mAutostart = true;
-        scheduler.addMigrator(m1);
-        QCOMPARE(jobTracker.mPercent, 0);
-        m1->complete();
-        QCOMPARE(jobTracker.mPercent, 100);
     }
 };
 

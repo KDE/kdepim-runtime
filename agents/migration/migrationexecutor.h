@@ -16,8 +16,6 @@
  * An executor can contain multiple jobs that are scheduled by the executor.
  *
  * The executor is responsible for starting/pausing/stopping the individual migrators.
- *
- * This job is used to give overall progress information and start/stop controls to KUIServer via KUiServerJobTracker.
  */
 class MigrationExecutor : public KJob
 {

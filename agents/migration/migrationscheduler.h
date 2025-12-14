@@ -14,7 +14,6 @@
 #include <QStandardItemModel>
 
 class MigrationExecutor;
-class KJobTrackerInterface;
 class MigratorModel;
 
 class LogModel : public QStandardItemModel
