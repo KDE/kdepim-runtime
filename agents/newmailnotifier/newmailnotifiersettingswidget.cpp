@@ -12,7 +12,6 @@ using namespace Qt::Literals::StringLiterals;
 
 #include "kdepim-runtime-version.h"
 
-#include <KAboutData>
 #include <KLineEditEventHandler>
 #include <KLocalizedString>
 #include <KNotifyConfigWidget>
