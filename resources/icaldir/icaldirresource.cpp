@@ -303,11 +303,14 @@ void ICalDirResource::initializeICalDirectory() const
     QFile file(dir.absolutePath() + QStringLiteral("/WARNING_README.txt"));
     if (!file.exists()) {
         // ... if not, create it
-        file.open(QIODevice::WriteOnly);
-        file.write(
-            "Important Warning!!!\n\n"
-            "Don't create or copy files inside this folder manually, they are managed by the Akonadi framework!\n");
-        file.close();
+        if (file.open(QIODevice::WriteOnly)) {
+            file.write(
+                "Important Warning!!!\n\n"
+                "Don't create or copy files inside this folder manually, they are managed by the Akonadi framework!\n");
+            file.close();
+        } else {
+            qWarning() << " Impossible to open: " << file.fileName();
+        }
     }
 }
 

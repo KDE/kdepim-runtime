@@ -149,7 +149,12 @@ void VCardDirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
         const QByteArray data = mConverter.createVCard(addressee);
 
         QFile file(vCardDirectoryFileName(addressee.uid()));
-        file.open(QIODevice::WriteOnly);
+        if (!file.open(QIODevice::WriteOnly)) {
+            qWarning() << " Impossible to write in file" << file.fileName();
+            Q_EMIT error(i18n("Impossible to write in file: '%1'", file.fileName()));
+            cancelTask();
+            return;
+        }
         file.write(data);
         file.close();
 
@@ -286,11 +291,14 @@ void VCardDirResource::initializeVCardDirectory() const
     QFile file(dir.absolutePath() + QStringLiteral("/WARNING_README.txt"));
     if (!file.exists()) {
         // ... if not, create it
-        file.open(QIODevice::WriteOnly);
-        file.write(
-            "Important Warning!!!\n\n"
-            "Don't create or copy vCards inside this folder manually, they are managed by the Akonadi framework!\n");
-        file.close();
+        if (file.open(QIODevice::WriteOnly)) {
+            file.write(
+                "Important Warning!!!\n\n"
+                "Don't create or copy vCards inside this folder manually, they are managed by the Akonadi framework!\n");
+            file.close();
+        } else {
+            qCritical() << "Failed to open: " << file.fileName();
+        }
     }
 }
 

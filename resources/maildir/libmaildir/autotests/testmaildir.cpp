@@ -338,7 +338,7 @@ void MaildirTest::testMaildirFlagsReading()
                 + markers[i];
         }
         file.setFileName(fileName);
-        file.open(QIODevice::WriteOnly);
+        QVERIFY(file.open(QIODevice::WriteOnly));
         file.write(testString);
         file.flush();
         file.close();
@@ -402,7 +402,7 @@ void MaildirTest::testMaildirFlagsWriting()
     QFile file;
     QDir::setCurrent(m_temp->path());
     file.setFileName(origDir + u'/' + origFileName);
-    file.open(QIODevice::WriteOnly);
+    QVERIFY(file.open(QIODevice::WriteOnly));
     file.write(testString);
     file.flush();
     file.close();
