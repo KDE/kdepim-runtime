@@ -21,7 +21,7 @@
 #include <KIMAP/SearchJob>
 #include <KIMAP/Session>
 
-KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items, const QString &username)
+std::shared_ptr<KMime::Message> TagConverter::createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items, const QString &username)
 {
     QStringList itemRemoteIds;
     itemRemoteIds.reserve(items.count());
@@ -34,14 +34,15 @@ KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const A
 
     // save message to the server.
     const QLatin1StringView productId("Akonadi-Kolab-Resource");
-    const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeTag(tag, itemRemoteIds, Kolab::KolabV3, productId);
+    const std::shared_ptr<KMime::Message> message = Kolab::KolabObjectWriter::writeTag(tag, itemRemoteIds, Kolab::KolabV3, productId);
     return message;
 }
 
 struct TagMerger : public Merger {
     ~TagMerger() override = default;
 
-    [[nodiscard]] KMime::Message::Ptr merge(const KMime::Message::Ptr &newMessage, const QList<KMime::Message::Ptr> &conflictingMessages) const override
+    [[nodiscard]] std::shared_ptr<KMime::Message> merge(const std::shared_ptr<KMime::Message> &newMessage,
+                                                        const QList<std::shared_ptr<KMime::Message>> &conflictingMessages) const override
     {
         qCDebug(KOLABRESOURCE_LOG) << "Got " << conflictingMessages.size() << " conflicting relation configuration objects. Overwriting with local version.";
         return newMessage;
@@ -54,7 +55,7 @@ TagChangeHelper::TagChangeHelper(KolabRelationResourceTask *parent)
 {
 }
 
-void TagChangeHelper::start(const Akonadi::Tag &tag, const KMime::Message::Ptr &message, KIMAP::Session *session)
+void TagChangeHelper::start(const Akonadi::Tag &tag, const std::shared_ptr<KMime::Message> &message, KIMAP::Session *session)
 {
     Q_ASSERT(tag.isValid());
     const QString mailBox = mTask->mailBoxForCollection(mTask->relationCollection());

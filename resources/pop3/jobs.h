@@ -134,7 +134,7 @@ public:
     void start() override;
 
 Q_SIGNALS:
-    void messageFinished(int id, KMime::Message::Ptr message);
+    void messageFinished(int id, std::shared_ptr<KMime::Message> message);
 
 private:
     void slotData(const QByteArray &data) override;

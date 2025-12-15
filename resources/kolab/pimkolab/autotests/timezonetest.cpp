@@ -64,7 +64,7 @@ void TimezoneTest::testKolabObjectWriter()
 {
     KCalendarCore::Event::Ptr event(new KCalendarCore::Event());
     event->setDtStart(QDateTime(QDate(2012, 11, 11), QTime(1, 1), QTimeZone("Africa/Lagos")));
-    KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeEvent(event);
+    std::shared_ptr<KMime::Message> msg = Kolab::KolabObjectWriter::writeEvent(event);
     Kolab::KolabObjectReader reader(msg);
     KCalendarCore::Event::Ptr result = reader.getEvent();
     qDebug() << result->dtStart().timeZone().id();
@@ -80,7 +80,7 @@ void TimezoneTest::testKolabObjectWriter()
 //
 //     //Parse mime message
 //     bool ok = false;
-//     const KMime::Message::Ptr &msg = readMimeFile( mimeFileName, ok );
+//     const std::shared_ptr<KMime::Message> &msg = readMimeFile( mimeFileName, ok );
 //     QVERIFY(ok);
 //     Kolab::KolabObjectReader reader;
 //     Kolab::ObjectType t = reader.parseMimeMessage(msg);

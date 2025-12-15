@@ -29,7 +29,7 @@ void KolabAddTagTask::startRelationTask(KIMAP::Session *session)
     qCDebug(KOLABRESOURCE_LOG) << "converted tag";
 
     const QLatin1StringView productId("Akonadi-Kolab-Resource");
-    const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeTag(resourceState()->tag(), QStringList(), Kolab::KolabV3, productId);
+    const std::shared_ptr<KMime::Message> message = Kolab::KolabObjectWriter::writeTag(resourceState()->tag(), QStringList(), Kolab::KolabV3, productId);
     mMessageId = message->messageID()->asUnicodeString().toUtf8();
 
     auto job = new KIMAP::AppendJob(session);

@@ -76,7 +76,7 @@ private Q_SLOTS:
     void uidListJobResult(KJob *job);
 
     // For state Download
-    void messageFinished(int messageId, KMime::Message::Ptr message);
+    void messageFinished(int messageId, std::shared_ptr<KMime::Message> message);
     void fetchJobResult(KJob *job);
     void messageDownloadProgress(KJob *job, KJob::Unit unit, qulonglong totalBytes);
 

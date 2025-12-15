@@ -123,7 +123,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
             item.setRemoteId(colId + QLatin1StringView("::") + colRid + QLatin1StringView("::") + QString::number(entry.messageOffset()));
             item.setMimeType(QStringLiteral("message/rfc822"));
             item.setSize(entry.messageSize());
-            item.setPayload(KMime::Message::Ptr(mail));
+            item.setPayload(std::shared_ptr<KMime::Message>(mail));
             Akonadi::MessageFlags::copyMessageFlags(*mail, item);
             Q_EMIT percent(count++ / entryListSize);
             items << item;
@@ -160,7 +160,7 @@ bool MboxResource::retrieveItems(const Akonadi::Item::List &items, const QSet<QB
         }
 
         Item i(item);
-        i.setPayload(KMime::Message::Ptr(mail));
+        i.setPayload(std::shared_ptr<KMime::Message>(mail));
         Akonadi::MessageFlags::copyMessageFlags(*mail, i);
         rv.push_back(i);
     }
@@ -188,12 +188,12 @@ void MboxResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collectio
     }
 
     // we can only deal with mail
-    if (!item.hasPayload<KMime::Message::Ptr>()) {
+    if (!item.hasPayload<std::shared_ptr<KMime::Message>>()) {
         cancelTask(i18n("Only email messages can be added to the MBox resource."));
         return;
     }
 
-    const KMBox::MBoxEntry entry = mMBox->appendMessage(item.payload<KMime::Message::Ptr>());
+    const KMBox::MBoxEntry entry = mMBox->appendMessage(item.payload<std::shared_ptr<KMime::Message>>());
     if (!entry.isValid()) {
         cancelTask(i18n("Mail message not added to the MBox."));
         return;

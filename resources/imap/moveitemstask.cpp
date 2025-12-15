@@ -100,7 +100,7 @@ void MoveItemsTask::startMove(KIMAP::Session *session)
     const Akonadi::Item::List lstItems = items();
     for (const Akonadi::Item &item : lstItems) {
         try {
-            auto msg = item.payload<KMime::Message::Ptr>();
+            auto msg = item.payload<std::shared_ptr<KMime::Message>>();
             const QByteArray messageId = msg->messageID()->asUnicodeString().toUtf8();
             if (!messageId.isEmpty()) {
                 m_messageIds.insert(item.id(), messageId);

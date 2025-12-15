@@ -14,7 +14,7 @@
 
 #include "imapflags.h"
 
-ReplaceMessageJob::ReplaceMessageJob(const KMime::Message::Ptr &msg,
+ReplaceMessageJob::ReplaceMessageJob(const std::shared_ptr<KMime::Message> &msg,
                                      KIMAP::Session *session,
                                      const QString &mailbox,
                                      qint64 uidNext,

@@ -180,8 +180,9 @@ void MailDispatcherAgent::itemFetched(const Item &item)
         mCurrentJob->setMarkAborted();
     }
 
-    Q_EMIT status(AgentBase::Running,
-                  i18nc("Message with given subject is being sent.", "Sending: %1", item.payload<KMime::Message::Ptr>()->subject()->asUnicodeString()));
+    Q_EMIT status(
+        AgentBase::Running,
+        i18nc("Message with given subject is being sent.", "Sending: %1", item.payload<std::shared_ptr<KMime::Message>>()->subject()->asUnicodeString()));
 
     connect(mCurrentJob, &KJob::result, this, &MailDispatcherAgent::sendResult);
     connect(mCurrentJob, &SendJob::percentChanged, this, &MailDispatcherAgent::sendPercent);

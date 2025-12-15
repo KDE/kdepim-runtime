@@ -46,10 +46,10 @@ static KCalPtr fromXML(const QByteArray &xmlData, QStringList &attachments)
     return i;
 }
 
-void getAttachments(KCalendarCore::Incidence::Ptr incidence, const QStringList &attachments, const KMime::Message::Ptr &mimeData);
+void getAttachments(KCalendarCore::Incidence::Ptr incidence, const QStringList &attachments, const std::shared_ptr<KMime::Message> &mimeData);
 
 template<typename IncidencePtr, typename Converter>
-static inline IncidencePtr incidenceFromKolabImpl(const KMime::Message::Ptr &data, const QByteArray &mimetype, const QString &timezoneId)
+static inline IncidencePtr incidenceFromKolabImpl(const std::shared_ptr<KMime::Message> &data, const QByteArray &mimetype, const QString &timezoneId)
 {
     Q_UNUSED(timezoneId)
     KMime::Content *xmlContent = Mime::findContentByType(data, mimetype);
@@ -66,14 +66,14 @@ static inline IncidencePtr incidenceFromKolabImpl(const KMime::Message::Ptr &dat
     return ptr;
 }
 
-KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, const KMime::Message::Ptr &data);
+KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, const std::shared_ptr<KMime::Message> &data);
 KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, QString &pictureAttachmentName, QString &logoAttachmentName, QString &soundAttachmentName);
 
-KMime::Message::Ptr contactToKolabFormat(const KolabV2::Contact &contact, const QString &productId);
+std::shared_ptr<KMime::Message> contactToKolabFormat(const KolabV2::Contact &contact, const QString &productId);
 
 KContacts::ContactGroup contactGroupFromKolab(const QByteArray &xmlData);
 
-KMime::Message::Ptr distListToKolabFormat(const KolabV2::DistributionList &distList, const QString &productId);
+std::shared_ptr<KMime::Message> distListToKolabFormat(const KolabV2::DistributionList &distList, const QString &productId);
 
 QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString &language);
 }

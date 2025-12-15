@@ -108,8 +108,8 @@ void OutboxQueue::addIfComplete(const Item &item)
 
     // This check requires fetchFullPayload. -> slow (?)
     /*
-    if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-      qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have KMime::Message::Ptr payload.";
+    if ( !item.hasPayload<std::shared_ptr<KMime::Message>>() ) {
+      qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have std::shared_ptr<KMime::Message> payload.";
       return;
     }
     */

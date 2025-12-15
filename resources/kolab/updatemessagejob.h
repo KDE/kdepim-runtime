@@ -13,7 +13,8 @@
 struct Merger {
     virtual ~Merger() = default;
 
-    virtual KMime::Message::Ptr merge(const KMime::Message::Ptr &newMessage, const QList<KMime::Message::Ptr> &conflictingMessages) const = 0;
+    virtual std::shared_ptr<KMime::Message> merge(const std::shared_ptr<KMime::Message> &newMessage,
+                                                  const QList<std::shared_ptr<KMime::Message>> &conflictingMessages) const = 0;
 };
 
 /**
@@ -23,7 +24,7 @@ class UpdateMessageJob : public KJob
 {
     Q_OBJECT
 public:
-    UpdateMessageJob(const KMime::Message::Ptr &msg,
+    UpdateMessageJob(const std::shared_ptr<KMime::Message> &msg,
                      KIMAP::Session *session,
                      const QByteArray &kolabUid,
                      const QSharedPointer<Merger> &merger,
@@ -52,7 +53,7 @@ private Q_SLOTS:
 
 private:
     KIMAP::Session *mSession = nullptr;
-    KMime::Message::Ptr mMessage;
+    std::shared_ptr<KMime::Message> mMessage;
     const QString mMailbox;
     qint64 mUidNext;
     qint64 mOldUid;
@@ -61,6 +62,6 @@ private:
     const QByteArray mMessageId;
     const QByteArray mKolabUid;
     QList<qint64> mFoundUids;
-    QList<KIMAP::MessagePtr> mMessagesToMerge;
+    QList<std::shared_ptr<KMime::Message>> mMessagesToMerge;
     QSharedPointer<Merger> mMerger;
 };

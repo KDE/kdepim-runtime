@@ -14,7 +14,7 @@
 
 #include <QTest>
 
-KMime::Message::Ptr readMimeFile(const QString &fileName)
+std::shared_ptr<KMime::Message> readMimeFile(const QString &fileName)
 {
     QFile file(fileName);
     file.open(QFile::ReadOnly);
@@ -24,10 +24,10 @@ KMime::Message::Ptr readMimeFile(const QString &fileName)
     auto msg = new KMime::Message;
     msg->setContent(data);
     msg->parse();
-    return KMime::Message::Ptr(msg);
+    return std::shared_ptr<KMime::Message>(msg);
 }
 
-KMime::Content *findContentByType(const KMime::Message::Ptr &data, const QByteArray &type)
+KMime::Content *findContentByType(const std::shared_ptr<KMime::Message> &data, const QByteArray &type)
 {
     const KMime::Content::List list = data->contents();
     for (KMime::Content *c : list) {
@@ -47,7 +47,7 @@ void BenchmarkTests::parsingBenchmarkComparison_data()
 
 void BenchmarkTests::parsingBenchmarkComparison()
 {
-    const KMime::Message::Ptr kolabItem = readMimeFile(TESTFILEDIR + QLatin1StringView("/v2/event/complex.ics.mime"));
+    const std::shared_ptr<KMime::Message> kolabItem = readMimeFile(TESTFILEDIR + QLatin1StringView("/v2/event/complex.ics.mime"));
     KMime::Content *xmlContent = findContentByType(kolabItem, "application/x-vnd.kolab.event");
     QVERIFY(xmlContent);
     const QByteArray xmlData = xmlContent->decodedBody();

@@ -66,7 +66,7 @@ void showDiff(const QString &expected, const QString &converted)
     qDebug() << "CONVERTED: " << converted;
 }
 
-KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
+std::shared_ptr<KMime::Message> readMimeFile(const QString &fileName, bool &ok)
 {
     //   qDebug() << fileName;
     QFile file(fileName);
@@ -77,7 +77,7 @@ KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
     }
     const QByteArray data = file.readAll();
 
-    KMime::Message::Ptr msg = KMime::Message::Ptr(new KMime::Message);
+    std::shared_ptr<KMime::Message> msg = std::shared_ptr<KMime::Message>(new KMime::Message);
     msg->setContent(data);
     msg->parse();
 

@@ -18,7 +18,7 @@ class ReplaceMessageJob : public KJob
 {
     Q_OBJECT
 public:
-    ReplaceMessageJob(const KMime::Message::Ptr &msg,
+    ReplaceMessageJob(const std::shared_ptr<KMime::Message> &msg,
                       KIMAP::Session *session,
                       const QString &mailbox,
                       qint64 uidNext = -1,
@@ -41,7 +41,7 @@ private Q_SLOTS:
 
 private:
     KIMAP::Session *mSession = nullptr;
-    const KMime::Message::Ptr mMessage;
+    const std::shared_ptr<KMime::Message> mMessage;
     const QString mMailbox;
     qint64 mUidNext;
     KIMAP::ImapSet mOldUids;

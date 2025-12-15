@@ -181,7 +181,7 @@ static QByteArray getMimeType(Kolab::ObjectType type)
     return {};
 }
 
-static Kolab::ObjectType detectType(const KMime::Message::Ptr &msg)
+static Kolab::ObjectType detectType(const std::shared_ptr<KMime::Message> &msg)
 {
     const auto mimetypes{Mime::getContentMimeTypeList(msg)};
     for (const QByteArray &type : mimetypes) {
@@ -193,7 +193,7 @@ static Kolab::ObjectType detectType(const KMime::Message::Ptr &msg)
     return InvalidObject;
 }
 
-static void printMessageDebugInfo(const KMime::Message::Ptr &msg)
+static void printMessageDebugInfo(const std::shared_ptr<KMime::Message> &msg)
 {
     // TODO replace by Debug stream for Mimemessage
     qCDebug(PIMKOLAB_LOG) << "MessageId: " << msg->messageID()->asUnicodeString();
@@ -207,9 +207,9 @@ class MIMEObjectPrivate
 public:
     MIMEObjectPrivate() = default;
 
-    QVariant readKolabV2(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType);
-    QVariant readKolabV3(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType);
-    QVariant parseMimeMessage(const KMime::Message::Ptr &msg);
+    QVariant readKolabV2(const std::shared_ptr<KMime::Message> &msg, Kolab::ObjectType objectType);
+    QVariant readKolabV3(const std::shared_ptr<KMime::Message> &msg, Kolab::ObjectType objectType);
+    QVariant parseMimeMessage(const std::shared_ptr<KMime::Message> &msg);
     QVariant parseMimeMessage(const std::string &s);
 
     ObjectType mObjectType = InvalidObject;
@@ -221,7 +221,7 @@ public:
 };
 //@endcond
 
-static std::vector<Kolab::Attachment> getAttachments(const std::vector<Kolab::Attachment> &attachments, const KMime::Message::Ptr &msg)
+static std::vector<Kolab::Attachment> getAttachments(const std::vector<Kolab::Attachment> &attachments, const std::shared_ptr<KMime::Message> &msg)
 {
     std::vector<Kolab::Attachment> allAttachments;
     for (const Kolab::Attachment &attachment : attachments) {
@@ -237,7 +237,7 @@ static std::vector<Kolab::Attachment> getAttachments(const std::vector<Kolab::At
     return allAttachments;
 }
 
-static std::vector<Kolab::Attachment> getAttachments(const QStringList &attachmentNames, const KMime::Message::Ptr &msg)
+static std::vector<Kolab::Attachment> getAttachments(const QStringList &attachmentNames, const std::shared_ptr<KMime::Message> &msg)
 {
     std::vector<Kolab::Attachment> allAttachments;
     for (const QString &name : attachmentNames) {
@@ -249,7 +249,7 @@ static std::vector<Kolab::Attachment> getAttachments(const QStringList &attachme
     return allAttachments;
 }
 
-QVariant MIMEObjectPrivate::readKolabV2(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType)
+QVariant MIMEObjectPrivate::readKolabV2(const std::shared_ptr<KMime::Message> &msg, Kolab::ObjectType objectType)
 {
     if (objectType == DictionaryConfigurationObject) {
         KMime::Content *xmlContent = Mime::findContentByType(msg, "application/xml");
@@ -344,7 +344,7 @@ QVariant MIMEObjectPrivate::readKolabV2(const KMime::Message::Ptr &msg, Kolab::O
     return variant;
 }
 
-QVariant MIMEObjectPrivate::readKolabV3(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType)
+QVariant MIMEObjectPrivate::readKolabV3(const std::shared_ptr<KMime::Message> &msg, Kolab::ObjectType objectType)
 {
     KMime::Content *const xmlContent = Mime::findContentByType(msg, getMimeType(objectType));
     if (!xmlContent) {
@@ -404,7 +404,7 @@ QVariant MIMEObjectPrivate::readKolabV3(const KMime::Message::Ptr &msg, Kolab::O
     return variant;
 }
 
-QVariant MIMEObjectPrivate::parseMimeMessage(const KMime::Message::Ptr &msg)
+QVariant MIMEObjectPrivate::parseMimeMessage(const std::shared_ptr<KMime::Message> &msg)
 {
     ErrorHandler::clearErrors();
     mObjectType = InvalidObject;
@@ -458,7 +458,7 @@ QVariant MIMEObjectPrivate::parseMimeMessage(const KMime::Message::Ptr &msg)
 
 QVariant MIMEObjectPrivate::parseMimeMessage(const std::string &s)
 {
-    KMime::Message::Ptr msg(new KMime::Message);
+    std::shared_ptr<KMime::Message> msg(new KMime::Message);
     msg->setContent(QByteArray(s.c_str()));
     msg->parse();
     return parseMimeMessage(msg);
@@ -509,7 +509,7 @@ static T convertAttachmentsToReferences(const T &incidence, std::vector<std::str
     return removedAttachments;
 }
 
-static void addAttachments(KMime::Message::Ptr msg, const std::vector<Attachment> &attachments, std::vector<std::string> &attachmentCids)
+static void addAttachments(std::shared_ptr<KMime::Message> msg, const std::vector<Attachment> &attachments, std::vector<std::string> &attachmentCids)
 {
     int index = 0;
     for (const Attachment &attachment : attachments) {
@@ -579,7 +579,7 @@ std::string MIMEObject::writeEvent(const Event &event, Version version, const st
     ErrorHandler::clearErrors();
     const std::string productId = getProductId(pId);
 
-    KMime::Message::Ptr msg;
+    std::shared_ptr<KMime::Message> msg;
     Kolab::XMLObject xmlObject;
     std::vector<std::string> attachmentCids;
     if (version == KolabV3) {
@@ -604,7 +604,7 @@ std::string MIMEObject::writeTodo(const Todo &todo, Version version, const std::
     ErrorHandler::clearErrors();
     const std::string productId = getProductId(pId);
 
-    KMime::Message::Ptr msg;
+    std::shared_ptr<KMime::Message> msg;
     Kolab::XMLObject xmlObject;
     std::vector<std::string> attachmentCids;
     if (version == KolabV3) {
@@ -629,7 +629,7 @@ std::string MIMEObject::writeJournal(const Journal &journal, Version version, co
     ErrorHandler::clearErrors();
     const std::string productId = getProductId(pId);
 
-    KMime::Message::Ptr msg;
+    std::shared_ptr<KMime::Message> msg;
     Kolab::XMLObject xmlObject;
     std::vector<std::string> attachmentCids;
     if (version == KolabV3) {
@@ -654,7 +654,7 @@ std::string MIMEObject::writeContact(const Contact &contact, Version version, co
     ErrorHandler::clearErrors();
     const std::string productId = getProductId(pId);
 
-    KMime::Message::Ptr msg;
+    std::shared_ptr<KMime::Message> msg;
     Kolab::XMLObject xmlObject;
     const std::string xml = xmlObject.writeContact(contact, version, productId);
 
@@ -685,7 +685,7 @@ std::string MIMEObject::writeDistlist(const DistList &distlist, Version version,
     ErrorHandler::clearErrors();
     const std::string productId = getProductId(pId);
 
-    KMime::Message::Ptr msg;
+    std::shared_ptr<KMime::Message> msg;
     Kolab::XMLObject xmlObject;
     const std::string xml = xmlObject.writeDistlist(distlist, version, productId);
     if (version == KolabV3) {
@@ -707,7 +707,7 @@ std::string MIMEObject::writeConfiguration(const Configuration &configuration, V
     ErrorHandler::clearErrors();
     const std::string productId = getProductId(pId);
 
-    KMime::Message::Ptr msg;
+    std::shared_ptr<KMime::Message> msg;
     Kolab::XMLObject xmlObject;
     const std::string xml = xmlObject.writeConfiguration(configuration, version, productId);
     std::string kolabType;
@@ -749,7 +749,7 @@ std::string MIMEObject::writeFreebusy(const Freebusy &freebusy, Version version,
     ErrorHandler::clearErrors();
     const std::string productId = getProductId(pId);
 
-    KMime::Message::Ptr msg;
+    std::shared_ptr<KMime::Message> msg;
     Kolab::XMLObject xmlObject;
     const std::string xml = xmlObject.writeFreebusy(freebusy, version, productId);
     if (version == KolabV3) {

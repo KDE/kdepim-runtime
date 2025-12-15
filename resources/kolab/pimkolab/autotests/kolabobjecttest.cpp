@@ -20,7 +20,7 @@ void KolabObjectTest::preserveLatin1()
     event->setSummary(summary);
     QCOMPARE(event->summary(), summary);
     // std::cout << event->summary().toStdString() << std::endl;
-    KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeEvent(event);
+    std::shared_ptr<KMime::Message> msg = Kolab::KolabObjectWriter::writeEvent(event);
     //     qDebug() << msg->encodedContent();
     KCalendarCore::Event::Ptr readEvent = Kolab::KolabObjectReader(msg).getEvent();
     QVERIFY(readEvent);
@@ -37,7 +37,7 @@ void KolabObjectTest::preserveUnicode()
     event->setSummary(summary);
     QCOMPARE(event->summary(), summary);
     //     std::cout << event->summary().toStdString() << std::endl;
-    KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeEvent(event);
+    std::shared_ptr<KMime::Message> msg = Kolab::KolabObjectWriter::writeEvent(event);
     //     qDebug() << msg->encodedContent();
     KCalendarCore::Event::Ptr readEvent = Kolab::KolabObjectReader(msg).getEvent();
     QVERIFY(readEvent);
@@ -67,7 +67,7 @@ void KolabObjectTest::dontCrashWithEmptyIncidence()
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Critical);
     Kolab::KolabObjectWriter::writeIncidence(KCalendarCore::Event::Ptr());
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Critical);
-    Kolab::KolabObjectWriter::writeNote(KMime::Message::Ptr());
+    Kolab::KolabObjectWriter::writeNote(std::shared_ptr<KMime::Message>());
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Critical);
 }
 

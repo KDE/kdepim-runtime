@@ -17,7 +17,7 @@
 // Check if the expected uid message is still there => no modification, replace message.
 // otherwise search for up-to-date message by subject containing UID, merge contents, and replace message
 
-UpdateMessageJob::UpdateMessageJob(const KMime::Message::Ptr &msg,
+UpdateMessageJob::UpdateMessageJob(const std::shared_ptr<KMime::Message> &msg,
                                    KIMAP::Session *session,
                                    const QByteArray &kolabUid,
                                    const QSharedPointer<Merger> &merger,
@@ -83,7 +83,7 @@ void UpdateMessageJob::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &m
 {
     // Filter deleted messages
     for (auto it = messages.cbegin(), end = messages.cend(); it != end; ++it) {
-        // const KMime::Message::Ptr msg = messages[number];
+        // const std::shared_ptr<KMime::Message> msg = messages[number];
         if (!it->flags.contains(ImapFlags::Deleted)) {
             mFoundUids << it->uid;
         }

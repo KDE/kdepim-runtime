@@ -52,7 +52,7 @@ void UpgradeTest::testIncidence()
     QFETCH(bool, forceType);
 
     bool ok = false;
-    const KMime::Message::Ptr &msg = readMimeFile(filename, ok);
+    const std::shared_ptr<KMime::Message> &msg = readMimeFile(filename, ok);
     QVERIFY(ok);
     Kolab::KolabObjectReader reader;
     if (forceType) {
@@ -67,7 +67,7 @@ void UpgradeTest::testIncidence()
     QVERIFY(!v2result.isNull());
 
     // write KCalendarCore V3
-    KMime::Message::Ptr v3message = Kolab::KolabObjectWriter::writeIncidence(v2result, Kolab::KolabV3);
+    std::shared_ptr<KMime::Message> v3message = Kolab::KolabObjectWriter::writeIncidence(v2result, Kolab::KolabV3);
     QCOMPARE(Kolab::error(), Kolab::NoError);
     //     qDebug() << v3message->encodedContent();
     // load KCalendarCore V3
@@ -135,7 +135,7 @@ void UpgradeTest::testContact()
 
     // Parse mime message
     bool ok = false;
-    const KMime::Message::Ptr &msg = readMimeFile(filename, ok);
+    const std::shared_ptr<KMime::Message> &msg = readMimeFile(filename, ok);
     QVERIFY(ok);
     Kolab::KolabObjectReader reader;
     Kolab::ObjectType t = reader.parseMimeMessage(msg);
@@ -147,7 +147,7 @@ void UpgradeTest::testContact()
     QVERIFY(!v2Addressee.isEmpty());
 
     // Write
-    const KMime::Message::Ptr &v3message = Kolab::KolabObjectWriter::writeContact(v2Addressee, Kolab::KolabV3);
+    const std::shared_ptr<KMime::Message> &v3message = Kolab::KolabObjectWriter::writeContact(v2Addressee, Kolab::KolabV3);
 
     // load V3
     Kolab::KolabObjectReader reader2;

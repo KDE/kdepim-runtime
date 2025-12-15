@@ -132,13 +132,13 @@ void ItemModifyTest::testExpectedFail()
         remoteId1 = KRandom::randomString(20);
     } while (entrySet1.contains(remoteId1));
 
-    KMime::Message::Ptr msgPtr(new KMime::Message);
+    std::shared_ptr<KMime::Message> msgPtr(new KMime::Message);
 
     Item item1;
     item1.setMimeType(KMime::Message::mimeType());
     item1.setRemoteId(remoteId1);
     item1.setParentCollection(collection1);
-    item1.setPayload<KMime::Message::Ptr>(msgPtr);
+    item1.setPayload<std::shared_ptr<KMime::Message>>(msgPtr);
 
     job = mStore->modifyItem(item1);
 
@@ -164,7 +164,7 @@ void ItemModifyTest::testExpectedFail()
     item2.setMimeType(KMime::Message::mimeType());
     item2.setRemoteId(QString::number(remoteId2));
     item2.setParentCollection(collection2);
-    item2.setPayload<KMime::Message::Ptr>(msgPtr);
+    item2.setPayload<std::shared_ptr<KMime::Message>>(msgPtr);
 
     job = mStore->modifyItem(item2);
 
@@ -208,7 +208,7 @@ void ItemModifyTest::testIgnorePayload()
 
     const QByteArray data1 = md1.readEntry(entryList1.first());
 
-    KMime::Message::Ptr msgPtr(new KMime::Message);
+    std::shared_ptr<KMime::Message> msgPtr(new KMime::Message);
     msgPtr->subject()->from7BitString("Modify Test");
     msgPtr->assemble();
 
@@ -216,7 +216,7 @@ void ItemModifyTest::testIgnorePayload()
     item1.setMimeType(KMime::Message::mimeType());
     item1.setRemoteId(entryList1.first());
     item1.setParentCollection(collection1);
-    item1.setPayload<KMime::Message::Ptr>(msgPtr);
+    item1.setPayload<std::shared_ptr<KMime::Message>>(msgPtr);
 
     job = mStore->modifyItem(item1);
     job->setIgnorePayload(true);
@@ -239,7 +239,7 @@ void ItemModifyTest::testIgnorePayload()
     item2.setMimeType(KMime::Message::mimeType());
     item2.setRemoteId(QStringLiteral("0"));
     item2.setParentCollection(collection2);
-    item2.setPayload<KMime::Message::Ptr>(msgPtr);
+    item2.setPayload<std::shared_ptr<KMime::Message>>(msgPtr);
 
     job = mStore->modifyItem(item2);
     job->setIgnorePayload(true);
@@ -288,7 +288,7 @@ void ItemModifyTest::testModifyPayload()
 
     const QByteArray data1 = md1.readEntry(entryList1.first());
 
-    KMime::Message::Ptr msgPtr(new KMime::Message);
+    std::shared_ptr<KMime::Message> msgPtr(new KMime::Message);
     msgPtr->setContent(KMime::CRLFtoLF(data1));
     msgPtr->subject()->from7BitString("Modify Test");
     msgPtr->assemble();
@@ -297,7 +297,7 @@ void ItemModifyTest::testModifyPayload()
     item1.setMimeType(KMime::Message::mimeType());
     item1.setRemoteId(entryList1.first());
     item1.setParentCollection(collection1);
-    item1.setPayload<KMime::Message::Ptr>(msgPtr);
+    item1.setPayload<std::shared_ptr<KMime::Message>>(msgPtr);
 
     job = mStore->modifyItem(item1);
     // changing subject, so indicate a header change
@@ -336,7 +336,7 @@ void ItemModifyTest::testModifyPayload()
     item2.setMimeType(KMime::Message::mimeType());
     item2.setRemoteId(QStringLiteral("0"));
     item2.setParentCollection(collection2);
-    item2.setPayload<KMime::Message::Ptr>(msgPtr);
+    item2.setPayload<std::shared_ptr<KMime::Message>>(msgPtr);
 
     job = mStore->modifyItem(item2);
     // changing subject, so indicate a header change
@@ -416,7 +416,7 @@ void ItemModifyTest::testModifyFlags()
     const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
     QVariant var;
     Collection::List collections;
-    KMime::Message::Ptr msgPtr(new KMime::Message);
+    std::shared_ptr<KMime::Message> msgPtr(new KMime::Message);
 
     // test modifying a flag of a maildir items changes the entry name but not the
     // message contents
@@ -438,7 +438,7 @@ void ItemModifyTest::testModifyFlags()
     item1.setMimeType(KMime::Message::mimeType());
     item1.setRemoteId(entryList1.first());
     item1.setParentCollection(collection1);
-    item1.setPayload<KMime::Message::Ptr>(msgPtr);
+    item1.setPayload<std::shared_ptr<KMime::Message>>(msgPtr);
     item1.setFlag("\\SEEN");
 
     job = mStore->modifyItem(item1);
@@ -508,7 +508,7 @@ void ItemModifyTest::testModifyFlags()
     item2.setMimeType(KMime::Message::mimeType());
     item2.setRemoteId(QStringLiteral("0"));
     item2.setParentCollection(collection2);
-    item2.setPayload<KMime::Message::Ptr>(msgPtr);
+    item2.setPayload<std::shared_ptr<KMime::Message>>(msgPtr);
     item2.setFlag("\\SEEN");
 
     job = mStore->modifyItem(item2);
@@ -571,7 +571,7 @@ void ItemModifyTest::testModifyFlagsAndPayload()
     const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
     QVariant var;
     Collection::List collections;
-    KMime::Message::Ptr msgPtr(new KMime::Message);
+    std::shared_ptr<KMime::Message> msgPtr(new KMime::Message);
 
     // test modifying a flag of a maildir items changes the entry name but not the
     // message contents
@@ -593,7 +593,7 @@ void ItemModifyTest::testModifyFlagsAndPayload()
     item1.setMimeType(KMime::Message::mimeType());
     item1.setRemoteId(entryList1.first());
     item1.setParentCollection(collection1);
-    item1.setPayload<KMime::Message::Ptr>(msgPtr);
+    item1.setPayload<std::shared_ptr<KMime::Message>>(msgPtr);
     item1.setFlag("\\SEEN");
 
     job = mStore->modifyItem(item1);
@@ -649,8 +649,8 @@ void ItemModifyTest::testModifyFlagsAndPayload()
     QEXPECT_FAIL("", "ItemFetch handling needs to be fixed to also fetch flags", Continue);
     QVERIFY(fetchedItem.flags().contains("\\SEEN"));
 
-    QVERIFY(fetchedItem.hasPayload<KMime::Message::Ptr>());
-    auto fetchedMsgPtr = fetchedItem.payload<KMime::Message::Ptr>();
+    QVERIFY(fetchedItem.hasPayload<std::shared_ptr<KMime::Message>>());
+    auto fetchedMsgPtr = fetchedItem.payload<std::shared_ptr<KMime::Message>>();
     QCOMPARE(msgPtr->encodedContent(), fetchedMsgPtr->encodedContent());
 
     // TODO test for mbox.

@@ -520,7 +520,7 @@ void POP3Resource::fetchJobResult(KJob *job)
     }
 }
 
-void POP3Resource::messageFinished(int messageId, KMime::Message::Ptr message)
+void POP3Resource::messageFinished(int messageId, std::shared_ptr<KMime::Message> message)
 {
     if (mState != Download) {
         // This can happen if the slave does not get notified in time about the fact
@@ -533,7 +533,7 @@ void POP3Resource::messageFinished(int messageId, KMime::Message::Ptr message)
 
     Akonadi::Item item;
     item.setMimeType(QStringLiteral("message/rfc822"));
-    item.setPayload<KMime::Message::Ptr>(message);
+    item.setPayload<std::shared_ptr<KMime::Message>>(message);
 
     auto attr = item.attribute<Akonadi::Pop3ResourceAttribute>(Akonadi::Item::AddIfMissing);
     attr->setPop3AccountName(identifier());

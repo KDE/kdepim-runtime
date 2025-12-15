@@ -39,7 +39,7 @@ private Q_SLOTS:
         item = Akonadi::Item(1);
         item.setRemoteId(QStringLiteral("5"));
 
-        KMime::Message::Ptr message(new KMime::Message);
+        std::shared_ptr<KMime::Message> message(new KMime::Message);
 
         QString messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
 
@@ -87,7 +87,7 @@ private Q_SLOTS:
         item = Akonadi::Item(1);
         item.setRemoteId(QStringLiteral("5"));
 
-        message = KMime::Message::Ptr(new KMime::Message);
+        message = std::shared_ptr<KMime::Message>(new KMime::Message);
 
         messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...");
 
@@ -125,7 +125,7 @@ private Q_SLOTS:
         item = Akonadi::Item(1);
         item.setRemoteId(QStringLiteral("5"));
 
-        message = KMime::Message::Ptr(new KMime::Message);
+        message = std::shared_ptr<KMime::Message>(new KMime::Message);
 
         messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
 
@@ -162,7 +162,7 @@ private Q_SLOTS:
 
         item = Akonadi::Item(1);
         item.setRemoteId(QStringLiteral("5"));
-        message = KMime::Message::Ptr(new KMime::Message);
+        message = std::shared_ptr<KMime::Message>(new KMime::Message);
         messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...");
         message->setContent(messageContent.toUtf8());
         message->parse();
@@ -252,7 +252,7 @@ private Q_SLOTS:
         item = Akonadi::Item(1);
         item.setRemoteId(QStringLiteral("5"));
 
-        KMime::Message::Ptr message(new KMime::Message);
+        std::shared_ptr<KMime::Message> message(new KMime::Message);
 
         QString messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
 
@@ -282,7 +282,7 @@ private Q_SLOTS:
         item = Akonadi::Item(1);
         item.setRemoteId(QStringLiteral("5"));
 
-        message = KMime::Message::Ptr(new KMime::Message);
+        message = std::shared_ptr<KMime::Message>(new KMime::Message);
 
         messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...");
 
@@ -318,7 +318,7 @@ private Q_SLOTS:
         item = Akonadi::Item(1);
         item.setRemoteId(QStringLiteral("5"));
 
-        message = KMime::Message::Ptr(new KMime::Message);
+        message = std::shared_ptr<KMime::Message>(new KMime::Message);
 
         messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
 
@@ -353,7 +353,7 @@ private Q_SLOTS:
 
         item = Akonadi::Item(1);
         item.setRemoteId(QStringLiteral("5"));
-        message = KMime::Message::Ptr(new KMime::Message);
+        message = std::shared_ptr<KMime::Message>(new KMime::Message);
         messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...");
         message->setContent(messageContent.toUtf8());
         message->parse();

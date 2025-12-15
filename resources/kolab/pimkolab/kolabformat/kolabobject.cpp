@@ -224,7 +224,7 @@ KolabObjectReader::KolabObjectReader()
 {
 }
 
-KolabObjectReader::KolabObjectReader(const KMime::Message::Ptr &msg)
+KolabObjectReader::KolabObjectReader(const std::shared_ptr<KMime::Message> &msg)
     : d(new KolabObjectReaderPrivate)
 {
     parseMimeMessage(msg);
@@ -243,7 +243,7 @@ void KolabObjectReader::setVersion(Version version)
     d->mDoOverrideVersion = true;
 }
 
-void printMessageDebugInfo(const KMime::Message::Ptr &msg)
+void printMessageDebugInfo(const std::shared_ptr<KMime::Message> &msg)
 {
     // TODO replace by Debug stream for Mimemessage
     qCDebug(PIMKOLAB_LOG) << "MessageId: " << msg->messageID()->asUnicodeString();
@@ -251,7 +251,7 @@ void printMessageDebugInfo(const KMime::Message::Ptr &msg)
     //     Debug() << msg->encodedContent();
 }
 
-ObjectType KolabObjectReader::parseMimeMessage(const KMime::Message::Ptr &msg)
+ObjectType KolabObjectReader::parseMimeMessage(const std::shared_ptr<KMime::Message> &msg)
 {
     ErrorHandler::clearErrors();
     d->mObjectType = InvalidObject;
@@ -421,15 +421,15 @@ QStringList KolabObjectReader::getTagMembers() const
     return d->mTagMembers;
 }
 
-static KMime::Message::Ptr createMimeMessage(const std::string &mimeMessage)
+static std::shared_ptr<KMime::Message> createMimeMessage(const std::string &mimeMessage)
 {
-    KMime::Message::Ptr msg(new KMime::Message);
+    std::shared_ptr<KMime::Message> msg(new KMime::Message);
     msg->setContent(QByteArray(mimeMessage.c_str()));
     msg->parse();
     return msg;
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeEvent(const KCalendarCore::Event::Ptr &i, Version v, const QString &productId, const QString &)
+std::shared_ptr<KMime::Message> KolabObjectWriter::writeEvent(const KCalendarCore::Event::Ptr &i, Version v, const QString &productId, const QString &)
 {
     ErrorHandler::clearErrors();
     if (!i) {
@@ -442,7 +442,7 @@ KMime::Message::Ptr KolabObjectWriter::writeEvent(const KCalendarCore::Event::Pt
     return createMimeMessage(mimeMessage);
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeTodo(const KCalendarCore::Todo::Ptr &i, Version v, const QString &productId, const QString &)
+std::shared_ptr<KMime::Message> KolabObjectWriter::writeTodo(const KCalendarCore::Todo::Ptr &i, Version v, const QString &productId, const QString &)
 {
     ErrorHandler::clearErrors();
     if (!i) {
@@ -455,7 +455,7 @@ KMime::Message::Ptr KolabObjectWriter::writeTodo(const KCalendarCore::Todo::Ptr 
     return createMimeMessage(mimeMessage);
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeJournal(const KCalendarCore::Journal::Ptr &i, Version v, const QString &productId, const QString &)
+std::shared_ptr<KMime::Message> KolabObjectWriter::writeJournal(const KCalendarCore::Journal::Ptr &i, Version v, const QString &productId, const QString &)
 {
     ErrorHandler::clearErrors();
     if (!i) {
@@ -468,7 +468,8 @@ KMime::Message::Ptr KolabObjectWriter::writeJournal(const KCalendarCore::Journal
     return createMimeMessage(mimeMessage);
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeIncidence(const KCalendarCore::Incidence::Ptr &i, Version v, const QString &productId, const QString &tz)
+std::shared_ptr<KMime::Message>
+KolabObjectWriter::writeIncidence(const KCalendarCore::Incidence::Ptr &i, Version v, const QString &productId, const QString &tz)
 {
     if (!i) {
         qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
@@ -487,7 +488,7 @@ KMime::Message::Ptr KolabObjectWriter::writeIncidence(const KCalendarCore::Incid
     return {};
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeContact(const KContacts::Addressee &addressee, Version v, const QString &productId)
+std::shared_ptr<KMime::Message> KolabObjectWriter::writeContact(const KContacts::Addressee &addressee, Version v, const QString &productId)
 {
     ErrorHandler::clearErrors();
     const Kolab::Contact &contact = Kolab::Conversion::fromKABC(addressee);
@@ -496,7 +497,7 @@ KMime::Message::Ptr KolabObjectWriter::writeContact(const KContacts::Addressee &
     return createMimeMessage(mimeMessage);
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeDistlist(const KContacts::ContactGroup &kDistList, Version v, const QString &productId)
+std::shared_ptr<KMime::Message> KolabObjectWriter::writeDistlist(const KContacts::ContactGroup &kDistList, Version v, const QString &productId)
 {
     ErrorHandler::clearErrors();
     const Kolab::DistList &distlist = Kolab::Conversion::fromKABC(kDistList);
@@ -505,7 +506,7 @@ KMime::Message::Ptr KolabObjectWriter::writeDistlist(const KContacts::ContactGro
     return createMimeMessage(mimeMessage);
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeDictionary(const QStringList &entries, const QString &lang, Version v, const QString &productId)
+std::shared_ptr<KMime::Message> KolabObjectWriter::writeDictionary(const QStringList &entries, const QString &lang, Version v, const QString &productId)
 {
     ErrorHandler::clearErrors();
 
@@ -522,7 +523,7 @@ KMime::Message::Ptr KolabObjectWriter::writeDictionary(const QStringList &entrie
     return createMimeMessage(mimeMessage);
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeFreebusy(const Freebusy &freebusy, Version v, const QString &productId)
+std::shared_ptr<KMime::Message> KolabObjectWriter::writeFreebusy(const Freebusy &freebusy, Version v, const QString &productId)
 {
     ErrorHandler::clearErrors();
     Kolab::MIMEObject mimeObject;
@@ -530,7 +531,7 @@ KMime::Message::Ptr KolabObjectWriter::writeFreebusy(const Freebusy &freebusy, V
     return createMimeMessage(mimeMessage);
 }
 
-KMime::Message::Ptr writeRelationHelper(const Kolab::Relation &relation, const QByteArray &uid, const QString &productId)
+std::shared_ptr<KMime::Message> writeRelationHelper(const Kolab::Relation &relation, const QByteArray &uid, const QString &productId)
 {
     ErrorHandler::clearErrors();
     Kolab::MIMEObject mimeObject;
@@ -541,7 +542,7 @@ KMime::Message::Ptr writeRelationHelper(const Kolab::Relation &relation, const Q
     return createMimeMessage(mimeMessage);
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeTag(const Akonadi::Tag &tag, const QStringList &members, Version v, const QString &productId)
+std::shared_ptr<KMime::Message> KolabObjectWriter::writeTag(const Akonadi::Tag &tag, const QStringList &members, Version v, const QString &productId)
 {
     ErrorHandler::clearErrors();
     if (v != KolabV3) {

@@ -41,7 +41,7 @@ private Q_SLOTS:
         item = Akonadi::Item(2);
         item.setParentCollection(collection);
 
-        KMime::Message::Ptr message(new KMime::Message);
+        std::shared_ptr<KMime::Message> message(new KMime::Message);
 
         messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
 
@@ -58,7 +58,7 @@ private Q_SLOTS:
 
         QTest::newRow("trivial case") << item << collection << scenario << callNames;
 
-        message = KMime::Message::Ptr(new KMime::Message);
+        message = std::shared_ptr<KMime::Message>(new KMime::Message);
 
         messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...");
 
@@ -90,7 +90,7 @@ private Q_SLOTS:
         callNames << QStringLiteral("itemChangeCommitted");
         QTest::newRow("no APPENDUID, message contained non-unique Message-ID") << item << collection << scenario << callNames;
 
-        message = KMime::Message::Ptr(new KMime::Message);
+        message = std::shared_ptr<KMime::Message>(new KMime::Message);
 
         messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
 

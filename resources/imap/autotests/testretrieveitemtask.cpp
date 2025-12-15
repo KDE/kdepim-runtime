@@ -90,7 +90,7 @@ private Q_SLOTS:
             QCOMPARE(parameter.value<Akonadi::Item>().id(), item.id());
             QCOMPARE(parameter.value<Akonadi::Item>().remoteId(), item.remoteId());
 
-            QString payload = QString::fromUtf8(parameter.value<Akonadi::Item>().payload<KMime::Message::Ptr>()->encodedContent());
+            QString payload = QString::fromUtf8(parameter.value<Akonadi::Item>().payload<std::shared_ptr<KMime::Message>>()->encodedContent());
 
             QCOMPARE(payload, message);
         } else if (callName == QLatin1StringView("cancelTask")) {

@@ -48,13 +48,13 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
     const Akonadi::Item::List lst = qobject_cast<Akonadi::ItemFetchJob *>(job)->items();
     if (lst.count() == 1) {
         mItem = lst.first();
-        if (!mItem.hasPayload<KMime::Message::Ptr>()) {
+        if (!mItem.hasPayload<std::shared_ptr<KMime::Message>>()) {
             qCDebug(NEWMAILNOTIFIER_LOG) << " message has not payload.";
             deleteLater();
             return;
         }
 
-        const auto mb = mItem.payload<KMime::Message::Ptr>();
+        const auto mb = mItem.payload<std::shared_ptr<KMime::Message>>();
         mFrom = mb->from()->asUnicodeString();
         mSubject = mb->subject()->asUnicodeString();
         if (NewMailNotifierAgentSettings::showPhoto()) {

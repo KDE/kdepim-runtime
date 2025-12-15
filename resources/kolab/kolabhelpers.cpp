@@ -85,7 +85,7 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
         break;
     }
     case Kolab::NoteType: {
-        auto message = KMime::Message::Ptr::create();
+        auto message = std::make_shared<KMime::Message>();
         auto subject = new KMime::Headers::Subject();
         subject->fromUnicodeString(i18n("Notes are not supported"));
         message->setHeader(subject);
@@ -116,14 +116,14 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
     if (!imapItem.hasPayload()) {
         return imapItem;
     }
-    if (!imapItem.hasPayload<KMime::Message::Ptr>()) {
+    if (!imapItem.hasPayload<std::shared_ptr<KMime::Message>>()) {
         qCWarning(KOLABRESOURCE_LOG) << "Payload is not a MessagePtr!";
         Q_ASSERT(false);
         ok = false;
         return imapItem;
     }
 
-    const auto payload = imapItem.payload<KMime::Message::Ptr>();
+    const auto payload = imapItem.payload<std::shared_ptr<KMime::Message>>();
     const Kolab::KolabObjectReader reader(payload);
     if (checkForErrors(imapItem)) {
         ok = true;
@@ -250,7 +250,7 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
     ok = true;
     // imap messages don't need to be translated
     if (item.mimeType() == KMime::Message::mimeType()) {
-        // Q_ASSERT(item.hasPayload<KMime::Message::Ptr>());
+        // Q_ASSERT(item.hasPayload<std::shared_ptr<KMime::Message>>());
         return item;
     }
     const QLatin1StringView productId("Akonadi-Kolab-Resource");
@@ -263,7 +263,7 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
         case Kolab::TodoObject:
         case Kolab::JournalObject: {
             qCDebug(KOLABRESOURCE_LOG) << "converted event";
-            const KMime::Message::Ptr message =
+            const std::shared_ptr<KMime::Message> message =
                 Kolab::KolabObjectWriter::writeIncidence(item.payload<KCalendarCore::Incidence::Ptr>(), Kolab::KolabV3, productId, QStringLiteral("UTC"));
             imapItem.setPayload(message);
             break;
@@ -275,14 +275,15 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
         }
         case Kolab::ContactObject: {
             qCDebug(KOLABRESOURCE_LOG) << "converted contact";
-            const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeContact(item.payload<KContacts::Addressee>(), Kolab::KolabV3, productId);
+            const std::shared_ptr<KMime::Message> message =
+                Kolab::KolabObjectWriter::writeContact(item.payload<KContacts::Addressee>(), Kolab::KolabV3, productId);
             imapItem.setPayload(message);
             break;
         }
         case Kolab::DistlistObject: {
             const KContacts::ContactGroup contactGroup = convertToGidOnly(item.payload<KContacts::ContactGroup>());
             qCDebug(KOLABRESOURCE_LOG) << "converted distlist";
-            const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeDistlist(contactGroup, Kolab::KolabV3, productId);
+            const std::shared_ptr<KMime::Message> message = Kolab::KolabObjectWriter::writeDistlist(contactGroup, Kolab::KolabV3, productId);
             imapItem.setPayload(message);
             break;
         }
@@ -480,11 +481,11 @@ QString KolabHelpers::createMemberUrl(const Akonadi::Item &item, const QString &
     qCDebug(KOLABRESOURCE_TRACE) << item.id() << item.mimeType() << item.gid() << item.hasPayload();
     Kolab::RelationMember member;
     if (item.mimeType() == KMime::Message::mimeType()) {
-        if (!item.hasPayload<KMime::Message::Ptr>()) {
+        if (!item.hasPayload<std::shared_ptr<KMime::Message>>()) {
             qCWarning(KOLABRESOURCE_LOG) << "Email without payload, failed to add to tag: " << item.id() << item.remoteId();
             return {};
         }
-        auto msg = item.payload<KMime::Message::Ptr>();
+        auto msg = item.payload<std::shared_ptr<KMime::Message>>();
         member.uid = item.remoteId().toLong();
         member.user = user;
         member.subject = msg->subject()->asUnicodeString();

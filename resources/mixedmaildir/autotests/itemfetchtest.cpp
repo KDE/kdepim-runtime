@@ -48,7 +48,7 @@ static Item::List itemsFromSpy(QSignalSpy *spy)
 }
 
 // copied from mail serializer plugin, SPDX-FileCopyrightText: 2007 Till Adam <adam@kde.org>
-static QSet<QByteArray> messageParts(const KMime::Message::Ptr &msgPtr)
+static QSet<QByteArray> messageParts(const std::shared_ptr<KMime::Message> &msgPtr)
 {
     QSet<QByteArray> set;
     // FIXME: we actually want "has any header" here, but the kmime api doesn't offer that yet
@@ -217,10 +217,10 @@ void ItemFetchTest::testListingMaildir()
     QCOMPARE(items[2].parentCollection(), collection1);
     QCOMPARE(items[3].parentCollection(), collection1);
 
-    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[1].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[2].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[3].hasPayload<std::shared_ptr<KMime::Message>>());
 
     for (const Item &item : std::as_const(items)) {
         const auto flags{item.flags()};
@@ -287,10 +287,10 @@ void ItemFetchTest::testListingMaildir()
     QCOMPARE(items[2].parentCollection(), collection2);
     QCOMPARE(items[3].parentCollection(), collection2);
 
-    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[1].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[2].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[3].hasPayload<std::shared_ptr<KMime::Message>>());
 
     // see data/README
     for (const Item &item : std::as_const(items)) {
@@ -355,10 +355,10 @@ void ItemFetchTest::testListingMaildir()
     QCOMPARE(items[2].parentCollection(), collection3);
     QCOMPARE(items[3].parentCollection(), collection3);
 
-    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[1].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[2].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[3].hasPayload<std::shared_ptr<KMime::Message>>());
 
     // see data/README
     for (const Item &item : std::as_const(items)) {
@@ -417,10 +417,10 @@ void ItemFetchTest::testListingMaildir()
     QCOMPARE(items[2].parentCollection(), collection4);
     QCOMPARE(items[3].parentCollection(), collection4);
 
-    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[1].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[2].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[3].hasPayload<std::shared_ptr<KMime::Message>>());
 
     // see data/README
     for (const Item &item : std::as_const(items)) {
@@ -495,11 +495,11 @@ void ItemFetchTest::testListingMaildir()
     QCOMPARE(items[3].parentCollection(), collection5);
     QCOMPARE(items[4].parentCollection(), collection5);
 
-    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[4].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[1].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[2].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[3].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[4].hasPayload<std::shared_ptr<KMime::Message>>());
 
     // not flags from index, no flags from file names
     QCOMPARE(items[0].flags(), QSet<QByteArray>());
@@ -594,10 +594,10 @@ void ItemFetchTest::testListingMBox()
     QCOMPARE(items[2].parentCollection(), collection1);
     QCOMPARE(items[3].parentCollection(), collection1);
 
-    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[1].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[2].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[3].hasPayload<std::shared_ptr<KMime::Message>>());
 
     QCOMPARE(items[0].flags(), QSet<QByteArray>());
     QCOMPARE(items[1].flags(), QSet<QByteArray>());
@@ -654,10 +654,10 @@ void ItemFetchTest::testListingMBox()
     QCOMPARE(items[2].parentCollection(), collection2);
     QCOMPARE(items[3].parentCollection(), collection2);
 
-    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[1].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[2].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[3].hasPayload<std::shared_ptr<KMime::Message>>());
 
     // see data/README
     QCOMPARE(items[0].flags(), QSet<QByteArray>());
@@ -719,10 +719,10 @@ void ItemFetchTest::testListingMBox()
     QCOMPARE(items[2].parentCollection(), collection3);
     QCOMPARE(items[3].parentCollection(), collection3);
 
-    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[1].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[2].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[3].hasPayload<std::shared_ptr<KMime::Message>>());
 
     // see data/README
     QCOMPARE(items[0].flags(), QSet<QByteArray>());
@@ -771,10 +771,10 @@ void ItemFetchTest::testListingMBox()
     QCOMPARE(items[2].parentCollection(), collection4);
     QCOMPARE(items[3].parentCollection(), collection4);
 
-    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[1].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[2].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[3].hasPayload<std::shared_ptr<KMime::Message>>());
 
     // see data/README
     QCOMPARE(items[0].flags(), QSet<QByteArray>() << "\\SEEN");
@@ -828,10 +828,10 @@ void ItemFetchTest::testListingMBox()
     QCOMPARE(items[2].parentCollection(), collection5);
     QCOMPARE(items[3].parentCollection(), collection5);
 
-    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[1].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[2].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[3].hasPayload<std::shared_ptr<KMime::Message>>());
 
     QCOMPARE(items[0].flags(), QSet<QByteArray>());
     QCOMPARE(items[1].flags(), QSet<QByteArray>());
@@ -842,14 +842,14 @@ void ItemFetchTest::testListingMBox()
     QVERIFY(!var.isValid());
 
     // test that a new message in an mbox with index it not marked as deleted
-    KMime::Message::Ptr msgPtr(new KMime::Message);
+    std::shared_ptr<KMime::Message> msgPtr(new KMime::Message);
     msgPtr->subject()->from7BitString("Test 5");
     msgPtr->to()->from7BitString("kevin.krammer@gmx.at");
     msgPtr->assemble();
 
     Item item3_5;
     item3_5.setMimeType(KMime::Message::mimeType());
-    item3_5.setPayload<KMime::Message::Ptr>(msgPtr);
+    item3_5.setPayload<std::shared_ptr<KMime::Message>>(msgPtr);
 
     FileStore::ItemCreateJob *itemCreate = mStore->createItem(item3_5, collection3);
     QVERIFY(itemCreate->exec());
@@ -880,11 +880,11 @@ void ItemFetchTest::testListingMBox()
     QCOMPARE(items[3].parentCollection(), collection3);
     QCOMPARE(items[4].parentCollection(), collection3);
 
-    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[4].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[1].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[2].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[3].hasPayload<std::shared_ptr<KMime::Message>>());
+    QVERIFY(!items[4].hasPayload<std::shared_ptr<KMime::Message>>());
 
     // see data/README
     QCOMPARE(items[0].flags(), QSet<QByteArray>());
@@ -951,9 +951,9 @@ void ItemFetchTest::testSingleItemFetchMaildir()
 
         Item item = items.first();
         QCOMPARE(item, item1);
-        QVERIFY(item.hasPayload<KMime::Message::Ptr>());
+        QVERIFY(item.hasPayload<std::shared_ptr<KMime::Message>>());
 
-        KMime::Message::Ptr msgPtr = item.payload<KMime::Message::Ptr>();
+        std::shared_ptr<KMime::Message> msgPtr = item.payload<std::shared_ptr<KMime::Message>>();
         QVERIFY(msgPtr != 0);
 
         const QSet<QByteArray> parts = messageParts(msgPtr);
@@ -985,9 +985,9 @@ void ItemFetchTest::testSingleItemFetchMaildir()
 
         Item item = items.first();
         QCOMPARE(item, item1);
-        QVERIFY(item.hasPayload<KMime::Message::Ptr>());
+        QVERIFY(item.hasPayload<std::shared_ptr<KMime::Message>>());
 
-        KMime::Message::Ptr msgPtr = item.payload<KMime::Message::Ptr>();
+        std::shared_ptr<KMime::Message> msgPtr = item.payload<std::shared_ptr<KMime::Message>>();
         QVERIFY(msgPtr != 0);
 
         const QSet<QByteArray> parts = messageParts(msgPtr);
@@ -1018,9 +1018,9 @@ void ItemFetchTest::testSingleItemFetchMaildir()
 
         Item item = items.first();
         QCOMPARE(item, item1);
-        QVERIFY(item.hasPayload<KMime::Message::Ptr>());
+        QVERIFY(item.hasPayload<std::shared_ptr<KMime::Message>>());
 
-        KMime::Message::Ptr msgPtr = item.payload<KMime::Message::Ptr>();
+        std::shared_ptr<KMime::Message> msgPtr = item.payload<std::shared_ptr<KMime::Message>>();
         QVERIFY(msgPtr != 0);
 
         const QSet<QByteArray> parts = messageParts(msgPtr);
@@ -1082,9 +1082,9 @@ void ItemFetchTest::testSingleItemFetchMBox()
 
         Item item = items.first();
         QCOMPARE(item, item1);
-        QVERIFY(item.hasPayload<KMime::Message::Ptr>());
+        QVERIFY(item.hasPayload<std::shared_ptr<KMime::Message>>());
 
-        KMime::Message::Ptr msgPtr = item.payload<KMime::Message::Ptr>();
+        std::shared_ptr<KMime::Message> msgPtr = item.payload<std::shared_ptr<KMime::Message>>();
         QVERIFY(msgPtr != 0);
 
         const QSet<QByteArray> parts = messageParts(msgPtr);
@@ -1116,9 +1116,9 @@ void ItemFetchTest::testSingleItemFetchMBox()
 
         Item item = items.first();
         QCOMPARE(item, item1);
-        QVERIFY(item.hasPayload<KMime::Message::Ptr>());
+        QVERIFY(item.hasPayload<std::shared_ptr<KMime::Message>>());
 
-        KMime::Message::Ptr msgPtr = item.payload<KMime::Message::Ptr>();
+        std::shared_ptr<KMime::Message> msgPtr = item.payload<std::shared_ptr<KMime::Message>>();
         QVERIFY(msgPtr != 0);
 
         const QSet<QByteArray> parts = messageParts(msgPtr);
@@ -1154,9 +1154,9 @@ void ItemFetchTest::testSingleItemFetchMBox()
 
         Item item = items.first();
         QCOMPARE(item, item1);
-        QVERIFY(item.hasPayload<KMime::Message::Ptr>());
+        QVERIFY(item.hasPayload<std::shared_ptr<KMime::Message>>());
 
-        KMime::Message::Ptr msgPtr = item.payload<KMime::Message::Ptr>();
+        std::shared_ptr<KMime::Message> msgPtr = item.payload<std::shared_ptr<KMime::Message>>();
         QVERIFY(msgPtr != 0);
 
         const QSet<QByteArray> parts = messageParts(msgPtr);

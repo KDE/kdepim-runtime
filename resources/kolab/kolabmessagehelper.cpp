@@ -18,7 +18,7 @@ KolabMessageHelper::KolabMessageHelper(const Akonadi::Collection &col)
 
 KolabMessageHelper::~KolabMessageHelper() = default;
 
-Akonadi::Item KolabMessageHelper::createItemFromMessage(const KMime::Message::Ptr &message,
+Akonadi::Item KolabMessageHelper::createItemFromMessage(const std::shared_ptr<KMime::Message> &message,
                                                         const qint64 uid,
                                                         const qint64 size,
                                                         const QMap<QByteArray, QVariant> &attrs,

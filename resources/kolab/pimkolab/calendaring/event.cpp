@@ -47,7 +47,7 @@ std::string Event::write() const
 
 bool Event::fromMime(const std::string &input)
 {
-    KMime::Message::Ptr msg = KMime::Message::Ptr(new KMime::Message);
+    std::shared_ptr<KMime::Message> msg = std::shared_ptr<KMime::Message>(new KMime::Message);
     msg->setContent(KMime::CRLFtoLF(Kolab::Conversion::fromStdString(input).toUtf8()));
     msg->parse();
     msg->content(KMime::ContentIndex());

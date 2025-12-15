@@ -16,7 +16,7 @@ namespace Kolab
 {
 namespace Mime
 {
-KMime::Content *findContentByType(const KMime::Message::Ptr &data, const QByteArray &type)
+KMime::Content *findContentByType(const std::shared_ptr<KMime::Message> &data, const QByteArray &type)
 {
     if (type.isEmpty()) {
         qCCritical(PIMKOLAB_LOG) << "Empty type";
@@ -33,7 +33,7 @@ KMime::Content *findContentByType(const KMime::Message::Ptr &data, const QByteAr
     return nullptr;
 }
 
-KMime::Content *findContentByName(const KMime::Message::Ptr &data, const QString &name, QByteArray &type)
+KMime::Content *findContentByName(const std::shared_ptr<KMime::Message> &data, const QString &name, QByteArray &type)
 {
     Q_ASSERT(!data->contents().isEmpty());
     const auto contents = data->contents();
@@ -47,7 +47,7 @@ KMime::Content *findContentByName(const KMime::Message::Ptr &data, const QString
     return nullptr;
 }
 
-KMime::Content *findContentById(const KMime::Message::Ptr &data, const QByteArray &id, QByteArray &type, QString &name)
+KMime::Content *findContentById(const std::shared_ptr<KMime::Message> &data, const QByteArray &id, QByteArray &type, QString &name)
 {
     if (id.isEmpty()) {
         qCCritical(PIMKOLAB_LOG) << "looking for empty cid";
@@ -66,7 +66,7 @@ KMime::Content *findContentById(const KMime::Message::Ptr &data, const QByteArra
     return nullptr;
 }
 
-QList<QByteArray> getContentMimeTypeList(const KMime::Message::Ptr &data)
+QList<QByteArray> getContentMimeTypeList(const std::shared_ptr<KMime::Message> &data)
 {
     QList<QByteArray> typeList;
     Q_ASSERT(!data->contents().isEmpty());
@@ -86,16 +86,16 @@ QString fromCid(const QString &cid)
     return cid.right(cid.size() - 4);
 }
 
-KMime::Message::Ptr createMessage(const QByteArray &mimetype,
-                                  const QByteArray &xKolabType,
-                                  const QByteArray &xml,
-                                  bool v3,
-                                  const QByteArray &productId,
-                                  const QByteArray &fromEmail,
-                                  const QString &fromName,
-                                  const QString &subject)
+std::shared_ptr<KMime::Message> createMessage(const QByteArray &mimetype,
+                                              const QByteArray &xKolabType,
+                                              const QByteArray &xml,
+                                              bool v3,
+                                              const QByteArray &productId,
+                                              const QByteArray &fromEmail,
+                                              const QString &fromName,
+                                              const QString &subject)
 {
-    KMime::Message::Ptr message = createMessage(xKolabType, v3, productId);
+    std::shared_ptr<KMime::Message> message = createMessage(xKolabType, v3, productId);
     message->subject()->fromUnicodeString(subject);
     if (!fromEmail.isEmpty()) {
         KMime::Types::Mailbox mb;
@@ -107,14 +107,14 @@ KMime::Message::Ptr createMessage(const QByteArray &mimetype,
     return message;
 }
 
-KMime::Message::Ptr createMessage(const std::string &mimetype,
-                                  const std::string &xKolabType,
-                                  const std::string &xml,
-                                  bool v3,
-                                  const std::string &productId,
-                                  const std::string &fromEmail,
-                                  const std::string &fromName,
-                                  const std::string &subject)
+std::shared_ptr<KMime::Message> createMessage(const std::string &mimetype,
+                                              const std::string &xKolabType,
+                                              const std::string &xml,
+                                              bool v3,
+                                              const std::string &productId,
+                                              const std::string &fromEmail,
+                                              const std::string &fromName,
+                                              const std::string &subject)
 {
     return createMessage(QByteArray(mimetype.c_str()),
                          QByteArray(xKolabType.c_str()),
@@ -126,10 +126,10 @@ KMime::Message::Ptr createMessage(const std::string &mimetype,
                          QString::fromStdString(subject));
 }
 
-KMime::Message::Ptr
+std::shared_ptr<KMime::Message>
 createMessage(const QString &subject, const QString &mimetype, const QString &xKolabType, const QByteArray &xml, bool v3, const QString &prodid)
 {
-    KMime::Message::Ptr message = createMessage(xKolabType.toLatin1(), v3, prodid.toLatin1());
+    std::shared_ptr<KMime::Message> message = createMessage(xKolabType.toLatin1(), v3, prodid.toLatin1());
     if (!subject.isEmpty()) {
         message->subject()->fromUnicodeString(subject);
     }
@@ -156,9 +156,9 @@ KMime::Content *createExplanationPart(bool v3)
     return content;
 }
 
-KMime::Message::Ptr createMessage(const QByteArray &xKolabType, bool v3, const QByteArray &prodid)
+std::shared_ptr<KMime::Message> createMessage(const QByteArray &xKolabType, bool v3, const QByteArray &prodid)
 {
-    KMime::Message::Ptr message(new KMime::Message);
+    std::shared_ptr<KMime::Message> message(new KMime::Message);
     message->date()->setDateTime(QDateTime::currentDateTimeUtc());
     auto h = new KMime::Headers::Generic(X_KOLAB_TYPE_HEADER);
     h->fromUnicodeString(QString::fromUtf8(xKolabType));
@@ -203,7 +203,7 @@ KMime::Content *createAttachmentPart(const QByteArray &cid, const QByteArray &mi
     return content;
 }
 
-Kolab::Attachment getAttachment(const std::string &id, const KMime::Message::Ptr &mimeData)
+Kolab::Attachment getAttachment(const std::string &id, const std::shared_ptr<KMime::Message> &mimeData)
 {
     if (!QString::fromStdString(id).contains(QLatin1StringView("cid:"))) {
         qCCritical(PIMKOLAB_LOG) << "not a cid reference";
@@ -223,7 +223,7 @@ Kolab::Attachment getAttachment(const std::string &id, const KMime::Message::Ptr
     return attachment;
 }
 
-Kolab::Attachment getAttachmentByName(const QString &name, const KMime::Message::Ptr &mimeData)
+Kolab::Attachment getAttachmentByName(const QString &name, const std::shared_ptr<KMime::Message> &mimeData)
 {
     QByteArray type;
     KMime::Content *content = findContentByName(mimeData, name, type);

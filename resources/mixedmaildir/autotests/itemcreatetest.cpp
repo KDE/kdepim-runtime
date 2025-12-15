@@ -86,7 +86,7 @@ void ItemCreateTest::testExpectedFail()
 
     const QStringList dataEntryList = dataMd.entryList();
     QCOMPARE(dataEntryList.count(), 4);
-    KMime::Message::Ptr msgPtr(new KMime::Message);
+    std::shared_ptr<KMime::Message> msgPtr(new KMime::Message);
     msgPtr->setContent(KMime::CRLFtoLF(dataMd.readEntry(dataEntryList.first())));
 
     QVERIFY(topDir.mkdir(QLatin1StringView("store")));
@@ -98,7 +98,7 @@ void ItemCreateTest::testExpectedFail()
     // test failure of adding item to top level collection
     Item item;
     item.setMimeType(KMime::Message::mimeType());
-    item.setPayload<KMime::Message::Ptr>(msgPtr);
+    item.setPayload<std::shared_ptr<KMime::Message>>(msgPtr);
 
     job = mStore->createItem(item, mStore->topLevelCollection());
 
@@ -129,9 +129,9 @@ void ItemCreateTest::testMBox()
 
     const QStringList dataEntryList = dataMd.entryList();
     QCOMPARE(dataEntryList.count(), 4);
-    KMime::Message::Ptr msgPtr1(new KMime::Message);
+    std::shared_ptr<KMime::Message> msgPtr1(new KMime::Message);
     msgPtr1->setContent(KMime::CRLFtoLF(dataMd.readEntry(dataEntryList.first())));
-    KMime::Message::Ptr msgPtr2(new KMime::Message);
+    std::shared_ptr<KMime::Message> msgPtr2(new KMime::Message);
     msgPtr2->setContent(KMime::CRLFtoLF(dataMd.readEntry(dataEntryList.last())));
 
     QVERIFY(topDir.mkdir(QLatin1StringView("store")));
@@ -174,7 +174,7 @@ void ItemCreateTest::testMBox()
     Item item1;
     item1.setId(QRandomGenerator::global()->generate());
     item1.setMimeType(KMime::Message::mimeType());
-    item1.setPayload<KMime::Message::Ptr>(msgPtr1);
+    item1.setPayload<std::shared_ptr<KMime::Message>>(msgPtr1);
 
     job = mStore->createItem(item1, collection2);
 
@@ -198,7 +198,7 @@ void ItemCreateTest::testMBox()
     Item item2;
     item2.setId(QRandomGenerator::global()->generate());
     item2.setMimeType(KMime::Message::mimeType());
-    item2.setPayload<KMime::Message::Ptr>(msgPtr2);
+    item2.setPayload<std::shared_ptr<KMime::Message>>(msgPtr2);
 
     job = mStore->createItem(item2, collection2);
 
@@ -326,9 +326,9 @@ void ItemCreateTest::testMaildir()
 
     const QStringList dataEntryList = dataMd.entryList();
     QCOMPARE(dataEntryList.count(), 4);
-    KMime::Message::Ptr msgPtr1(new KMime::Message);
+    std::shared_ptr<KMime::Message> msgPtr1(new KMime::Message);
     msgPtr1->setContent(KMime::CRLFtoLF(dataMd.readEntry(dataEntryList.first())));
-    KMime::Message::Ptr msgPtr2(new KMime::Message);
+    std::shared_ptr<KMime::Message> msgPtr2(new KMime::Message);
     msgPtr2->setContent(KMime::CRLFtoLF(dataMd.readEntry(dataEntryList.last())));
 
     QVERIFY(topDir.mkdir(QLatin1StringView("store")));
@@ -378,7 +378,7 @@ void ItemCreateTest::testMaildir()
     Item item1;
     item1.setId(QRandomGenerator::global()->generate());
     item1.setMimeType(KMime::Message::mimeType());
-    item1.setPayload<KMime::Message::Ptr>(msgPtr1);
+    item1.setPayload<std::shared_ptr<KMime::Message>>(msgPtr1);
 
     job = mStore->createItem(item1, collection2);
 
@@ -405,7 +405,7 @@ void ItemCreateTest::testMaildir()
     Item item2;
     item2.setId(QRandomGenerator::global()->generate());
     item2.setMimeType(KMime::Message::mimeType());
-    item2.setPayload<KMime::Message::Ptr>(msgPtr2);
+    item2.setPayload<std::shared_ptr<KMime::Message>>(msgPtr2);
 
     job = mStore->createItem(item2, collection2);
 

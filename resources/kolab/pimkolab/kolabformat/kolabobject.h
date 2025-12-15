@@ -54,10 +54,10 @@ class KOLAB_EXPORT KolabObjectReader
 {
 public:
     KolabObjectReader();
-    explicit KolabObjectReader(const KMime::Message::Ptr &msg);
+    explicit KolabObjectReader(const std::shared_ptr<KMime::Message> &msg);
     ~KolabObjectReader();
 
-    ObjectType parseMimeMessage(const KMime::Message::Ptr &msg);
+    ObjectType parseMimeMessage(const std::shared_ptr<KMime::Message> &msg);
 
     /**
      * Set to override the autodetected object type, before parsing the message.
@@ -113,18 +113,18 @@ private:
 class KOLAB_EXPORT KolabObjectWriter
 {
 public:
-    static KMime::Message::Ptr
+    static std::shared_ptr<KMime::Message>
     writeEvent(const KCalendarCore::Event::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
-    static KMime::Message::Ptr
+    static std::shared_ptr<KMime::Message>
     writeTodo(const KCalendarCore::Todo::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
-    static KMime::Message::Ptr
+    static std::shared_ptr<KMime::Message>
     writeJournal(const KCalendarCore::Journal::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
-    static KMime::Message::Ptr
+    static std::shared_ptr<KMime::Message>
     writeIncidence(const KCalendarCore::Incidence::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
-    static KMime::Message::Ptr writeContact(const KContacts::Addressee &, Version v = KolabV3, const QString &productId = QString());
-    static KMime::Message::Ptr writeDistlist(const KContacts::ContactGroup &, Version v = KolabV3, const QString &productId = QString());
-    static KMime::Message::Ptr writeDictionary(const QStringList &, const QString &lang, Version v = KolabV3, const QString &productId = QString());
-    static KMime::Message::Ptr writeFreebusy(const Kolab::Freebusy &, Version v = KolabV3, const QString &productId = QString());
-    static KMime::Message::Ptr writeTag(const Akonadi::Tag &, const QStringList &items, Version v = KolabV3, const QString &productId = QString());
+    static std::shared_ptr<KMime::Message> writeContact(const KContacts::Addressee &, Version v = KolabV3, const QString &productId = QString());
+    static std::shared_ptr<KMime::Message> writeDistlist(const KContacts::ContactGroup &, Version v = KolabV3, const QString &productId = QString());
+    static std::shared_ptr<KMime::Message> writeDictionary(const QStringList &, const QString &lang, Version v = KolabV3, const QString &productId = QString());
+    static std::shared_ptr<KMime::Message> writeFreebusy(const Kolab::Freebusy &, Version v = KolabV3, const QString &productId = QString());
+    static std::shared_ptr<KMime::Message> writeTag(const Akonadi::Tag &, const QStringList &items, Version v = KolabV3, const QString &productId = QString());
 };
 } // Namespace

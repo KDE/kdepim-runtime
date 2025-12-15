@@ -70,7 +70,7 @@ void KolabRetrieveTagTask::onMessagesAvailable(const QMap<qint64, KIMAP::Message
         if (it->flags.contains(ImapFlags::Deleted)) {
             continue;
         }
-        const KMime::Message::Ptr msg = it->message;
+        const std::shared_ptr<KMime::Message> msg = it->message;
         const Kolab::KolabObjectReader reader(msg);
         switch (reader.getType()) {
         case Kolab::RelationConfigurationObject:

@@ -206,7 +206,7 @@ bool MaildirResource::retrieveItems(const Akonadi::Item::List &items, const QSet
         }
 
         Item i(item);
-        i.setPayload(KMime::Message::Ptr(mail));
+        i.setPayload(std::shared_ptr<KMime::Message>(mail));
         Akonadi::MessageFlags::copyMessageFlags(*mail, i);
         rv.push_back(i);
     }
@@ -261,11 +261,11 @@ void MaildirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
     }
 
     // we can only deal with mail
-    if (!item.hasPayload<KMime::Message::Ptr>()) {
+    if (!item.hasPayload<std::shared_ptr<KMime::Message>>()) {
         cancelTask(i18n("Error: Unsupported type."));
         return;
     }
-    const auto mail = item.payload<KMime::Message::Ptr>();
+    const auto mail = item.payload<std::shared_ptr<KMime::Message>>();
 
     stopMaildirScan(dir);
 
@@ -336,8 +336,8 @@ void MaildirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
 
         if (bodyChanged || headChanged) { // head or body changed
             // we can only deal with mail
-            if (item.hasPayload<KMime::Message::Ptr>()) {
-                const auto mail = item.payload<KMime::Message::Ptr>();
+            if (item.hasPayload<std::shared_ptr<KMime::Message>>()) {
+                const auto mail = item.payload<std::shared_ptr<KMime::Message>>();
                 QByteArray data = mail->encodedContent();
                 if (headChanged && !bodyChanged) {
                     // only the head has changed, get the current version of the mail
@@ -819,7 +819,7 @@ void MaildirResource::fsWatchFileFetchResult(KJob *job)
     mail->setContent(KMime::CRLFtoLF(data));
     mail->parse();
 
-    item.setPayload(KMime::Message::Ptr(mail));
+    item.setPayload(std::shared_ptr<KMime::Message>(mail));
     Akonadi::MessageFlags::copyMessageFlags(*mail, item);
 
     auto mjob = new ItemModifyJob(item);

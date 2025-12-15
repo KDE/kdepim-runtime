@@ -15,7 +15,7 @@
 #include <vector>
 using namespace std;
 
-KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
+std::shared_ptr<KMime::Message> readMimeFile(const QString &fileName, bool &ok)
 {
     QFile file(fileName);
     ok = file.open(QFile::ReadOnly);
@@ -24,7 +24,7 @@ KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
         return {};
     }
     const QByteArray data = file.readAll();
-    KMime::Message::Ptr msg = KMime::Message::Ptr(new KMime::Message);
+    std::shared_ptr<KMime::Message> msg = std::shared_ptr<KMime::Message>(new KMime::Message);
     msg->setContent(KMime::CRLFtoLF(data));
     msg->parse();
     return msg;
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
         cout << "File: " << *it << endl;
 
         bool ok;
-        KMime::Message::Ptr message = readMimeFile(QString::fromStdString(*it), ok);
+        std::shared_ptr<KMime::Message> message = readMimeFile(QString::fromStdString(*it), ok);
 
         if (!ok) {
             returnValue = -1;

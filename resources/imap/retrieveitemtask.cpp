@@ -95,7 +95,7 @@ void RetrieveItemTask::onMessagesReceived(const QMap<qint64, KIMAP::Message> &me
         return;
     }
     i.setMimeType(remoteItem.mimeType());
-    i.setPayload(remoteItem.payload<KMime::Message::Ptr>());
+    i.setPayload(remoteItem.payload<std::shared_ptr<KMime::Message>>());
     const auto flags{remoteItem.flags()};
     for (const QByteArray &flag : flags) {
         i.setFlag(flag);

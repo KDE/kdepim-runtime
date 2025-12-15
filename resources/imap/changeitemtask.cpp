@@ -38,14 +38,14 @@ void ChangeItemTask::doStart(KIMAP::Session *session)
     qCDebug(IMAPRESOURCE_LOG) << mailBox << m_oldUid << parts();
 
     if (parts().contains("PLD:RFC822")) {
-        if (!item().hasPayload<KMime::Message::Ptr>()) {
+        if (!item().hasPayload<std::shared_ptr<KMime::Message>>()) {
             qCWarning(IMAPRESOURCE_LOG) << "Payload changed, no payload available.";
             changeProcessed();
             return;
         }
 
         // save message to the server.
-        auto msg = item().payload<KMime::Message::Ptr>();
+        auto msg = item().payload<std::shared_ptr<KMime::Message>>();
         m_messageId = msg->messageID()->asUnicodeString().toUtf8();
 
         auto job = new KIMAP::AppendJob(session);

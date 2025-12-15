@@ -301,7 +301,7 @@ Akonadi::Item::List Pop3Test::checkMailsOnAkonadiServer(const QList<QByteArray> 
     QSet<QByteArray> itemMailBodies;
 
     for (const Item &item : items) {
-        auto itemMail = item.payload<KMime::Message::Ptr>();
+        auto itemMail = item.payload<std::shared_ptr<KMime::Message>>();
         QByteArray itemMailBody = itemMail->body();
 
         // For some reason, the body in the maildir has one additional newline.
@@ -312,7 +312,7 @@ Akonadi::Item::List Pop3Test::checkMailsOnAkonadiServer(const QList<QByteArray> 
     }
 
     for (const QByteArray &mail : mails) {
-        KMime::Message::Ptr ourMail(new KMime::Message());
+        std::shared_ptr<KMime::Message> ourMail(new KMime::Message());
         ourMail->setContent(KMime::CRLFtoLF(mail));
         ourMail->parse();
         QByteArray ourMailBody = ourMail->body();

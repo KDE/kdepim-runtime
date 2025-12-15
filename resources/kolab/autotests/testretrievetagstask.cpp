@@ -74,7 +74,7 @@ private slots:
         members << QLatin1StringView(
             "imap:///user/john.doe%40example.org/INBOX/"
             "20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200&subject=Re%3A+test");
-        KMime::Message::Ptr msg = writer.writeTag(tag, members);
+        std::shared_ptr<KMime::Message> msg = writer.writeTag(tag, members);
         // qCDebug(KOLABRESOURCE_LOG) << msg->encodedContent();
 
         const QByteArray &content = msg->encodedContent(true);

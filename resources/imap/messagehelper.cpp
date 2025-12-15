@@ -13,7 +13,7 @@
 
 MessageHelper::~MessageHelper() = default;
 
-Akonadi::Item MessageHelper::createItemFromMessage(const KMime::Message::Ptr &message,
+Akonadi::Item MessageHelper::createItemFromMessage(const std::shared_ptr<KMime::Message> &message,
                                                    const qint64 uid,
                                                    const qint64 size,
                                                    const QMap<QByteArray, QVariant> &attrs,
@@ -42,7 +42,7 @@ Akonadi::Item MessageHelper::createItemFromMessage(const KMime::Message::Ptr &me
         }
         i.setRemoteId(QString::number(uid));
         i.setMimeType(KMime::Message::mimeType());
-        i.setPayload(KMime::Message::Ptr(message));
+        i.setPayload(std::shared_ptr<KMime::Message>(message));
         i.setSize(size);
 
         Akonadi::MessageFlags::copyMessageFlags(*message, i);

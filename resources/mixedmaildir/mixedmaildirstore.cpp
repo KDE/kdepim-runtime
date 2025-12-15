@@ -126,7 +126,7 @@ public:
         return mMBox.readMessageHeaders(KMBox::MBoxEntry(offset));
     }
 
-    qint64 appendEntry(const KMime::Message::Ptr &entry)
+    qint64 appendEntry(const std::shared_ptr<KMime::Message> &entry)
     {
         const KMBox::MBoxEntry result = mMBox.appendMessage(entry);
         if (result.isValid() && mHasIndexData) {
@@ -856,7 +856,7 @@ bool MixedMaildirStorePrivate::fillItem(MBoxPtr &mbox, bool includeHeaders, bool
     // TODO: size?
 
     if (includeHeaders || includeBody) {
-        KMime::Message::Ptr messagePtr(new KMime::Message());
+        std::shared_ptr<KMime::Message> messagePtr(new KMime::Message());
         if (includeBody) {
             const QByteArray data = mbox->readRawEntry(offset);
             messagePtr->setContent(KMime::CRLFtoLF(data));
@@ -866,7 +866,7 @@ bool MixedMaildirStorePrivate::fillItem(MBoxPtr &mbox, bool includeHeaders, bool
         }
         messagePtr->parse();
 
-        item.setPayload<KMime::Message::Ptr>(messagePtr);
+        item.setPayload<std::shared_ptr<KMime::Message>>(messagePtr);
         Akonadi::MessageFlags::copyMessageFlags(*messagePtr, item);
     }
     return true;
@@ -885,7 +885,7 @@ bool MixedMaildirStorePrivate::fillItem(const MaildirPtr &md, bool includeHeader
     item.setModificationTime(md->maildir().lastModified(item.remoteId()));
 
     if (includeHeaders || includeBody) {
-        KMime::Message::Ptr messagePtr(new KMime::Message());
+        std::shared_ptr<KMime::Message> messagePtr(new KMime::Message());
         if (includeBody) {
             const QByteArray data = md->readEntry(item.remoteId());
             if (data.isEmpty()) {
@@ -903,7 +903,7 @@ bool MixedMaildirStorePrivate::fillItem(const MaildirPtr &md, bool includeHeader
         }
         messagePtr->parse();
 
-        item.setPayload<KMime::Message::Ptr>(messagePtr);
+        item.setPayload<std::shared_ptr<KMime::Message>>(messagePtr);
         Akonadi::MessageFlags::copyMessageFlags(*messagePtr, item);
     }
     return true;
@@ -1497,7 +1497,7 @@ bool MixedMaildirStorePrivate::visit(FileStore::ItemCreateJob *job)
             job->setProperty("onDiskIndexInvalidated", var);
         }
 
-        qint64 result = mbox->appendEntry(item.payload<KMime::Message::Ptr>());
+        qint64 result = mbox->appendEntry(item.payload<std::shared_ptr<KMime::Message>>());
         if (result < 0) {
             errorText = i18nc("@info:status", "Cannot add emails to folder %1", job->collection().name());
             qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
@@ -1527,7 +1527,7 @@ bool MixedMaildirStorePrivate::visit(FileStore::ItemCreateJob *job)
             job->setProperty("onDiskIndexInvalidated", var);
         }
 
-        const QString result = mdPtr->addEntry(item.payload<KMime::Message::Ptr>()->encodedContent());
+        const QString result = mdPtr->addEntry(item.payload<std::shared_ptr<KMime::Message>>()->encodedContent());
         if (result.isEmpty()) {
             errorText = i18nc("@info:status", "Cannot add emails to folder %1", job->collection().name());
             qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
@@ -1814,7 +1814,7 @@ bool MixedMaildirStorePrivate::visit(FileStore::ItemModifyJob *job)
             job->setProperty("onDiskIndexInvalidated", var);
         }
 
-        qint64 newOffset = mbox->appendEntry(item.payload<KMime::Message::Ptr>());
+        qint64 newOffset = mbox->appendEntry(item.payload<std::shared_ptr<KMime::Message>>());
         if (newOffset < 0) {
             errorText = i18nc("@info:status", "Cannot modify emails in folder %1", collection.name());
             qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
@@ -1880,7 +1880,7 @@ bool MixedMaildirStorePrivate::visit(FileStore::ItemModifyJob *job)
         }
 
         if (payloadChanged) {
-            mdPtr->writeEntry(newKey, item.payload<KMime::Message::Ptr>()->encodedContent());
+            mdPtr->writeEntry(newKey, item.payload<std::shared_ptr<KMime::Message>>()->encodedContent());
         }
     }
 
@@ -1957,7 +1957,7 @@ bool MixedMaildirStorePrivate::visit(FileStore::ItemMoveJob *job)
             return false;
         }
 
-        if (!item.hasPayload<KMime::Message::Ptr>() || !item.loadedPayloadParts().contains(MessagePart::Body)) {
+        if (!item.hasPayload<std::shared_ptr<KMime::Message>>() || !item.loadedPayloadParts().contains(MessagePart::Body)) {
             if (!fillItem(mbox, true, true, item)) {
                 errorText = i18nc("@info:status", "Cannot move email from folder %1", sourceCollection.name());
                 qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << sourceFolderType;
@@ -2005,7 +2005,7 @@ bool MixedMaildirStorePrivate::visit(FileStore::ItemMoveJob *job)
                 collections << targetCollection;
             }
 
-            qint64 remoteId = targetMBox->appendEntry(item.payload<KMime::Message::Ptr>());
+            qint64 remoteId = targetMBox->appendEntry(item.payload<std::shared_ptr<KMime::Message>>());
             if (remoteId < 0) {
                 errorText = i18nc("@info:status", "Cannot move emails to folder %1", targetCollection.name());
                 qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << targetFolderType;
@@ -2079,7 +2079,7 @@ bool MixedMaildirStorePrivate::visit(FileStore::ItemMoveJob *job)
 
         if (targetFolderType == MBoxFolder) {
             /*      qCDebug(MIXEDMAILDIR_LOG) << "target is MBox";*/
-            if (!item.hasPayload<KMime::Message::Ptr>() || !item.loadedPayloadParts().contains(MessagePart::Body)) {
+            if (!item.hasPayload<std::shared_ptr<KMime::Message>>() || !item.loadedPayloadParts().contains(MessagePart::Body)) {
                 if (!fillItem(sourceMdPtr, true, true, item)) {
                     errorText = i18nc("@info:status", "Cannot move email from folder %1", sourceCollection.name());
                     qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << sourceFolderType;
@@ -2115,7 +2115,7 @@ bool MixedMaildirStorePrivate::visit(FileStore::ItemMoveJob *job)
                 collections << targetCollection;
             }
 
-            const qint64 remoteId = mbox->appendEntry(item.payload<KMime::Message::Ptr>());
+            const qint64 remoteId = mbox->appendEntry(item.payload<std::shared_ptr<KMime::Message>>());
             if (remoteId < 0) {
                 errorText = i18nc("@info:status", "Cannot move emails to folder %1", targetCollection.name());
                 qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << targetFolderType;
@@ -2305,7 +2305,7 @@ void MixedMaildirStore::checkCollectionMove(FileStore::CollectionMoveJob *job, i
 
 void MixedMaildirStore::checkItemCreate(FileStore::ItemCreateJob *job, int &errorCode, QString &errorText) const
 {
-    if (!job->item().hasPayload<KMime::Message::Ptr>()) {
+    if (!job->item().hasPayload<std::shared_ptr<KMime::Message>>()) {
         errorCode = FileStore::Job::InvalidJobContext;
         errorText = i18nc("@info:status", "Cannot add email to folder %1 because there is no email content", job->collection().name());
     }
@@ -2313,7 +2313,7 @@ void MixedMaildirStore::checkItemCreate(FileStore::ItemCreateJob *job, int &erro
 
 void MixedMaildirStore::checkItemModify(FileStore::ItemModifyJob *job, int &errorCode, QString &errorText) const
 {
-    if (!job->ignorePayload() && !job->item().hasPayload<KMime::Message::Ptr>()) {
+    if (!job->ignorePayload() && !job->item().hasPayload<std::shared_ptr<KMime::Message>>()) {
         errorCode = FileStore::Job::InvalidJobContext;
         errorText = i18nc("@info:status", "Cannot modify email in folder %1 because there is no email content", job->item().parentCollection().name());
     }

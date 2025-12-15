@@ -26,7 +26,7 @@ class Tag;
 class KolabRelationResourceTask;
 
 struct TagConverter {
-    KMime::Message::Ptr createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items, const QString &username);
+    std::shared_ptr<KMime::Message> createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items, const QString &username);
 };
 
 class TagChangeHelper : public QObject
@@ -35,7 +35,7 @@ class TagChangeHelper : public QObject
 public:
     explicit TagChangeHelper(KolabRelationResourceTask *parent = nullptr);
 
-    void start(const Akonadi::Tag &tag, const KMime::Message::Ptr &message, KIMAP::Session *session);
+    void start(const Akonadi::Tag &tag, const std::shared_ptr<KMime::Message> &message, KIMAP::Session *session);
 
 Q_SIGNALS:
     void applyCollectionChanges(const Akonadi::Collection &collection);

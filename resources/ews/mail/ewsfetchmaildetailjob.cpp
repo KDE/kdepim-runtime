@@ -60,7 +60,7 @@ void EwsFetchMailDetailJob::processItems(const EwsGetItemRequest::Response::List
         }
 
         const EwsItem &ewsItem = resp.item();
-        KMime::Message::Ptr msg(new KMime::Message);
+        std::shared_ptr<KMime::Message> msg(new KMime::Message);
 
         // Rebuild the message headers
         QVariant v = ewsItem[EwsItemFieldSubject];
@@ -125,7 +125,7 @@ void EwsFetchMailDetailJob::processItems(const EwsGetItemRequest::Response::List
         }
 
         msg->assemble();
-        item.setPayload(KMime::Message::Ptr(msg));
+        item.setPayload(std::shared_ptr<KMime::Message>(msg));
 
         v = ewsItem[EwsItemFieldSize];
         if (v.isValid()) {

@@ -31,7 +31,7 @@ AddItemTask::~AddItemTask() = default;
 
 void AddItemTask::doStart(KIMAP::Session *session)
 {
-    if (!item().hasPayload<KMime::Message::Ptr>()) {
+    if (!item().hasPayload<std::shared_ptr<KMime::Message>>()) {
         changeProcessed();
         return;
     }
@@ -44,7 +44,7 @@ void AddItemTask::doStart(KIMAP::Session *session)
     qCDebug(IMAPRESOURCE_LOG) << "Got notification about item added for local id " << item().id() << " and remote id " << item().remoteId();
 
     // save message to the server.
-    auto msg = item().payload<KMime::Message::Ptr>();
+    auto msg = item().payload<std::shared_ptr<KMime::Message>>();
     m_messageId = msg->messageID()->asUnicodeString().toUtf8();
 
     auto job = new KIMAP::AppendJob(session);

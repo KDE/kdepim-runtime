@@ -14,7 +14,7 @@ class KolabMessageHelper : public MessageHelper
 public:
     explicit KolabMessageHelper(const Akonadi::Collection &collection);
     ~KolabMessageHelper() override;
-    Akonadi::Item createItemFromMessage(const KMime::Message::Ptr &message,
+    Akonadi::Item createItemFromMessage(const std::shared_ptr<KMime::Message> &message,
                                         const qint64 uid,
                                         const qint64 size,
                                         const QMap<QByteArray, QVariant> &attrs,

@@ -129,7 +129,7 @@ void MixedMaildirResource::itemChanged(const Item &item, const QSet<QByteArray> 
     storeItem.setRemoteId(mCompactHelper->currentRemoteId(item));
 
     FileStore::ItemModifyJob *job = mStore->modifyItem(storeItem);
-    job->setIgnorePayload(!item.hasPayload<KMime::Message::Ptr>());
+    job->setIgnorePayload(!item.hasPayload<std::shared_ptr<KMime::Message>>());
     job->setParts(parts);
     job->setProperty("originalRemoteId", storeItem.remoteId());
     connect(job, &FileStore::ItemModifyJob::result, this, &MixedMaildirResource::itemChangedResult);

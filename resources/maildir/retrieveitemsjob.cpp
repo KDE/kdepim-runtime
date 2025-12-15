@@ -106,7 +106,7 @@ void RetrieveItemsJob::processEntry()
             item.setFlag(flag);
         }
 
-        item.setPayload(KMime::Message::Ptr(msg));
+        item.setPayload(std::shared_ptr<KMime::Message>(msg));
         Akonadi::MessageFlags::copyMessageFlags(*msg, item);
         auto localItemIter = m_localItems.find(fileName);
         Akonadi::TransactionSequence *trx = transaction();

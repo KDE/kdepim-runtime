@@ -33,9 +33,9 @@ Q_DECLARE_METATYPE(TagListAndMembers);
 Q_DECLARE_METATYPE(Members);
 
 struct TestTagConverter : public TagConverter {
-    virtual KMime::Message::Ptr createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items)
+    virtual std::shared_ptr<KMime::Message> createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items)
     {
-        return KMime::Message::Ptr(new KMime::Message());
+        return std::shared_ptr<KMime::Message>(new KMime::Message());
     }
 };
 
@@ -108,7 +108,7 @@ private slots:
             QTest::newRow("nothing changed") << scenario << callNames << Akonadi::Tag::List() << expectedMembers << state;
         }
         {
-            KMime::Message::Ptr msg(new KMime::Message());
+            std::shared_ptr<KMime::Message> msg(new KMime::Message());
 
             const QByteArray &content = msg->encodedContent(true);
             QList<QByteArray> scenario;
@@ -204,12 +204,12 @@ private slots:
     {
         TagConverter converter;
         Akonadi::Item item(KMime::Message::mimeType());
-        KMime::Message::Ptr msg = KMime::Message::Ptr(new KMime::Message());
+        std::shared_ptr<KMime::Message> msg = std::shared_ptr<KMime::Message>(new KMime::Message());
         msg->subject(true)->from7BitString("subject");
 
         msg->messageID(true)->from7BitString("<messageid@example.com>");
         msg->date(true)->setDateTime(QDateTime(QDate(2014, 12, 10), QTime(9, 8, 7)));
-        item.setPayload<KMime::Message::Ptr>(msg);
+        item.setPayload<std::shared_ptr<KMime::Message>>(msg);
         item.setRemoteId(QLatin1StringView("20"));
         item.setParentCollection(createCollectionChain("/INBOX"));
         const QString member = KolabHelpers::createMemberUrl(item, QLatin1StringView("localuser@localhost"));

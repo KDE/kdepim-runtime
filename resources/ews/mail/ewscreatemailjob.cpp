@@ -37,14 +37,14 @@ EwsCreateMailJob::~EwsCreateMailJob() = default;
 
 void EwsCreateMailJob::doStart()
 {
-    if (!mItem.hasPayload<KMime::Message::Ptr>()) {
+    if (!mItem.hasPayload<std::shared_ptr<KMime::Message>>()) {
         setErrorMsg(QStringLiteral("Expected MIME message payload"));
         emitResult();
     }
 
     auto req = new EwsCreateItemRequest(mClient, this);
 
-    auto msg = mItem.payload<KMime::Message::Ptr>();
+    auto msg = mItem.payload<std::shared_ptr<KMime::Message>>();
     /* Exchange doesn't just store whatever MIME content that was sent to it - it will parse it and send
      * further the version assembled back from the parsed parts. It seems that this parsing doesn't work well
      * with the quoted-printable encoding, which KMail prefers. This results in malformed encoding, which the

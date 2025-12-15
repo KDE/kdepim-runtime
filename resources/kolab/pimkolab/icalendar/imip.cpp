@@ -21,14 +21,14 @@
  */
 
 // From MailClient::send
-KMime::Message::Ptr createMessage(const QString &from,
-                                  const QString &_to,
-                                  const QString &cc,
-                                  const QString &subject,
-                                  const QString &body,
-                                  bool hidden,
-                                  bool bccMe,
-                                  const QString &attachment /*, const QString &mailTransport */)
+std::shared_ptr<KMime::Message> createMessage(const QString &from,
+                                              const QString &_to,
+                                              const QString &cc,
+                                              const QString &subject,
+                                              const QString &body,
+                                              bool hidden,
+                                              bool bccMe,
+                                              const QString &attachment /*, const QString &mailTransport */)
 {
     Q_UNUSED(hidden)
 
@@ -46,10 +46,10 @@ KMime::Message::Ptr createMessage(const QString &from,
                           << attachment
         /*<< "\nmailTransport: " << mailTransport*/;
 
-    // Now build the message we like to send. The message KMime::Message::Ptr instance
+    // Now build the message we like to send. The message std::shared_ptr<KMime::Message> instance
     // will be the root message that has 2 additional message. The body itself and
     // the attached cal.ics calendar file.
-    KMime::Message::Ptr message = KMime::Message::Ptr(new KMime::Message);
+    std::shared_ptr<KMime::Message> message = std::shared_ptr<KMime::Message>(new KMime::Message);
     message->contentTransferEncoding()->setEncoding(KMime::Headers::CE7Bit);
 
     // Set the headers

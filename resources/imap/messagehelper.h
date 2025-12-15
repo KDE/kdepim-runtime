@@ -16,7 +16,7 @@ public:
     using Ptr = QSharedPointer<MessageHelper>;
 
     virtual ~MessageHelper();
-    virtual Akonadi::Item createItemFromMessage(const KMime::Message::Ptr &message,
+    virtual Akonadi::Item createItemFromMessage(const std::shared_ptr<KMime::Message> &message,
                                                 const qint64 uid,
                                                 const qint64 size,
                                                 const QMap<QByteArray, QVariant> &attrs,

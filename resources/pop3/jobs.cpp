@@ -325,7 +325,7 @@ void FetchJob::handleJobDone(const Result &result)
 
 void FetchJob::slotMessageComplete()
 {
-    KMime::Message::Ptr msg(new KMime::Message);
+    std::shared_ptr<KMime::Message> msg(new KMime::Message);
     msg->setContent(KMime::CRLFtoLF(mCurrentMessage));
     msg->parse();
 

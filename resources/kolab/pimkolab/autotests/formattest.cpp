@@ -24,7 +24,7 @@
 #include "kolabformat/kolabobject.h"
 #include "pimkolab_debug.h"
 #include "testutils.h"
-static bool compareMimeMessage(const KMime::Message::Ptr &msg, const KMime::Message::Ptr &expectedMsg)
+static bool compareMimeMessage(const std::shared_ptr<KMime::Message> &msg, const std::shared_ptr<KMime::Message> &expectedMsg)
 {
     // headers
     KCOMPARE(msg->subject()->asUnicodeString(), expectedMsg->subject()->asUnicodeString());
@@ -110,7 +110,7 @@ void FormatTest::testIncidence()
 
     // Parse mime message
     bool ok = false;
-    const KMime::Message::Ptr &msg = readMimeFile(mimeFileName, ok);
+    const std::shared_ptr<KMime::Message> &msg = readMimeFile(mimeFileName, ok);
     QVERIFY(ok);
     Kolab::KolabObjectReader reader;
     Kolab::ObjectType t = reader.parseMimeMessage(msg);
@@ -145,7 +145,7 @@ void FormatTest::testIncidence()
 
     // Write
     Kolab::overrideTimestamp(Kolab::cDateTime(2012, 5, 5, 5, 5, 5, true));
-    KMime::Message::Ptr convertedMime = Kolab::KolabObjectWriter::writeIncidence(realIncidence, version);
+    std::shared_ptr<KMime::Message> convertedMime = Kolab::KolabObjectWriter::writeIncidence(realIncidence, version);
 
     if (!compareMimeMessage(convertedMime, msg)) {
         showDiff(QString::fromUtf8(msg->encodedContent()), QString::fromUtf8(convertedMime->encodedContent()));
@@ -235,7 +235,7 @@ void FormatTest::testContact()
 
     // Parse mime message
     bool ok = false;
-    const KMime::Message::Ptr &msg = readMimeFile(mimeFileName, ok);
+    const std::shared_ptr<KMime::Message> &msg = readMimeFile(mimeFileName, ok);
     QVERIFY(ok);
     Kolab::KolabObjectReader reader;
     Kolab::ObjectType t = reader.parseMimeMessage(msg);
@@ -277,7 +277,7 @@ void FormatTest::testContact()
     // Write
     if (mode == ReadWrite) {
         Kolab::overrideTimestamp(Kolab::cDateTime(2012, 5, 5, 5, 5, 5, true));
-        const KMime::Message::Ptr &convertedMime = Kolab::KolabObjectWriter::writeContact(realAddressee, version);
+        const std::shared_ptr<KMime::Message> &convertedMime = Kolab::KolabObjectWriter::writeContact(realAddressee, version);
 
         if (!compareMimeMessage(convertedMime, msg)) {
             QString expected = QString::fromUtf8(msg->encodedContent());
@@ -314,7 +314,7 @@ void FormatTest::testDistlist()
 
     // Parse mime message
     bool ok = false;
-    const KMime::Message::Ptr &msg = readMimeFile(mimeFileName, ok);
+    const std::shared_ptr<KMime::Message> &msg = readMimeFile(mimeFileName, ok);
     QVERIFY(ok);
     Kolab::KolabObjectReader reader;
     Kolab::ObjectType t = reader.parseMimeMessage(msg);
@@ -349,7 +349,7 @@ void FormatTest::testDistlist()
     QCOMPARE(realAddressee, convertedAddressee);
 
     // Write
-    const KMime::Message::Ptr &convertedMime = Kolab::KolabObjectWriter::writeDistlist(realAddressee, version);
+    const std::shared_ptr<KMime::Message> &convertedMime = Kolab::KolabObjectWriter::writeDistlist(realAddressee, version);
 
     if (!compareMimeMessage(convertedMime, msg)) {
         QString expected = QString::fromUtf8(msg->encodedContent());
@@ -381,7 +381,7 @@ void FormatTest::testNote()
 
     // Parse mime message
     bool ok = false;
-    const KMime::Message::Ptr &msg = readMimeFile(mimeFileName, ok);
+    const std::shared_ptr<KMime::Message> &msg = readMimeFile(mimeFileName, ok);
     QVERIFY(ok);
     Kolab::KolabObjectReader reader;
     Kolab::ObjectType t = reader.parseMimeMessage(msg);
@@ -389,11 +389,11 @@ void FormatTest::testNote()
     QCOMPARE(reader.getVersion(), version);
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Debug);
 
-    KMime::Message::Ptr convertedNote = reader.getNote();
+    std::shared_ptr<KMime::Message> convertedNote = reader.getNote();
     QVERIFY(convertedNote.data());
 
     // Parse note
-    const KMime::Message::Ptr &realNote = readMimeFile(noteFileName, ok);
+    const std::shared_ptr<KMime::Message> &realNote = readMimeFile(noteFileName, ok);
     QVERIFY(ok);
     QVERIFY(realNote.data());
 
@@ -406,7 +406,7 @@ void FormatTest::testNote()
     // showDiff(expected, converted);
 
     // Write
-    const KMime::Message::Ptr &convertedMime = Kolab::KolabObjectWriter::writeNote(realNote, version);
+    const std::shared_ptr<KMime::Message> &convertedMime = Kolab::KolabObjectWriter::writeNote(realNote, version);
     QVERIFY(convertedMime.data());
     QVERIFY(msg.data());
 
@@ -452,7 +452,7 @@ void FormatTest::generateMimefile()
 void FormatTest::generateVCard()
 {
     //     bool ok = false;
-    //     const KMime::Message::Ptr &msg = readMimeFile( QString::fromLatin1("../")+getPath("v2/contacts/pictureJPGHorde.vcf.mime"), ok );
+    //     const std::shared_ptr<KMime::Message> &msg = readMimeFile( QString::fromLatin1("../")+getPath("v2/contacts/pictureJPGHorde.vcf.mime"), ok );
     //     qDebug() << msg->encodedContent();
     //     Kolab::KolabObjectReader reader;
     //     Kolab::ObjectType t = reader.parseMimeMessage(msg);
@@ -462,7 +462,7 @@ void FormatTest::generateVCard()
     //     qDebug() << converter.createVCard(convertedAddressee);
 
     //     bool ok = false;
-    //     const KMime::Message::Ptr &msg = readMimeFile( getPath("v3/contacts/distlist.vcf.mime"), ok );
+    //     const std::shared_ptr<KMime::Message> &msg = readMimeFile( getPath("v3/contacts/distlist.vcf.mime"), ok );
     //     qDebug() << msg->encodedContent();
     //     Kolab::KolabObjectReader reader;
     //     Kolab::ObjectType t = reader.parseMimeMessage(msg);

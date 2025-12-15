@@ -57,7 +57,7 @@ bool EwsMailHandler::setItemPayload(Akonadi::Item &item, const EwsItem &ewsItem)
 
     mimeContent.replace("\r\n", "\n");
 
-    KMime::Message::Ptr msg(new KMime::Message);
+    std::shared_ptr<KMime::Message> msg(new KMime::Message);
     msg->setContent(mimeContent);
     msg->parse();
     // Some messages might just be empty (just headers). This results in the body being empty.
@@ -67,7 +67,7 @@ bool EwsMailHandler::setItemPayload(Akonadi::Item &item, const EwsItem &ewsItem)
     if (msg->body().isEmpty()) {
         msg->setBody("\n");
     }
-    item.setPayload<KMime::Message::Ptr>(msg);
+    item.setPayload<std::shared_ptr<KMime::Message>>(msg);
     return true;
 }
 

@@ -12,7 +12,7 @@
 
 namespace Kolab
 {
-void getAttachments(KCalendarCore::Incidence::Ptr incidence, const QStringList &attachments, const KMime::Message::Ptr &mimeData)
+void getAttachments(KCalendarCore::Incidence::Ptr incidence, const QStringList &attachments, const std::shared_ptr<KMime::Message> &mimeData)
 {
     if (!incidence) {
         qCCritical(PIMKOLAB_LOG) << "Invalid incidence";
@@ -33,7 +33,7 @@ void getAttachments(KCalendarCore::Incidence::Ptr incidence, const QStringList &
     }
 }
 
-static QImage getPicture(const QString &pictureAttachmentName, const KMime::Message::Ptr &data, QByteArray &type)
+static QImage getPicture(const QString &pictureAttachmentName, const std::shared_ptr<KMime::Message> &data, QByteArray &type)
 {
     if (!data) {
         qCCritical(PIMKOLAB_LOG) << "empty message";
@@ -76,7 +76,7 @@ static QImage getPicture(const QString &pictureAttachmentName, const KMime::Mess
     return image;
 }
 
-KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, const KMime::Message::Ptr &data)
+KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, const std::shared_ptr<KMime::Message> &data)
 {
     if (!data) {
         qCCritical(PIMKOLAB_LOG) << "empty message";
@@ -139,9 +139,9 @@ static QByteArray createPicture(const QImage &img, const QString & /*format*/, Q
     return pic;
 }
 
-KMime::Message::Ptr contactToKolabFormat(const KolabV2::Contact &contact, const QString &productId)
+std::shared_ptr<KMime::Message> contactToKolabFormat(const KolabV2::Contact &contact, const QString &productId)
 {
-    KMime::Message::Ptr message = Mime::createMessage(QByteArray(KOLAB_TYPE_CONTACT), false, productId.toLatin1());
+    std::shared_ptr<KMime::Message> message = Mime::createMessage(QByteArray(KOLAB_TYPE_CONTACT), false, productId.toLatin1());
     if (!message) {
         qCCritical(PIMKOLAB_LOG) << "empty message";
         return {};
@@ -184,9 +184,9 @@ KContacts::ContactGroup contactGroupFromKolab(const QByteArray &xmlData)
     return contactGroup;
 }
 
-KMime::Message::Ptr distListToKolabFormat(const KolabV2::DistributionList &distList, const QString &productId)
+std::shared_ptr<KMime::Message> distListToKolabFormat(const KolabV2::DistributionList &distList, const QString &productId)
 {
-    KMime::Message::Ptr message = Mime::createMessage(KOLAB_TYPE_DISTLIST_V2, false, productId.toLatin1());
+    std::shared_ptr<KMime::Message> message = Mime::createMessage(KOLAB_TYPE_DISTLIST_V2, false, productId.toLatin1());
     if (!message) {
         qCCritical(PIMKOLAB_LOG) << "empty message";
         return {};
