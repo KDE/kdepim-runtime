@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2025-04-18 16:29+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
@@ -661,13 +661,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Déconnecté pendant la connexion."
 
-#: settings.cpp:168
+#: settings.cpp:167
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "Impossible de trouver le mot de passe pour le compte « IMAP » %1"
 
-#: settings.cpp:174
+#: settings.cpp:173
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -677,13 +677,13 @@ msgstr ""
 "Une erreur est survenue lors de la recherche du mot de passe « IMAP » à "
 "partir du trousseau de clés du système : « %1 »"
 
-#: settings.cpp:204
+#: settings.cpp:203
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "Impossible de trouver le mot de passe pour le compte « Sieve » %1"
 
-#: settings.cpp:210
+#: settings.cpp:209
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -693,7 +693,7 @@ msgstr ""
 "Une erreur est survenue lors de la recherche du mot de passe de Sieve à "
 "partir du trousseau de clés du système : « %1 »"
 
-#: settings.cpp:240
+#: settings.cpp:239
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -703,7 +703,7 @@ msgstr ""
 "Une erreur est survenue lors de l'enregistrement du mot de passe de Sieve "
 "dans le trousseau du système : « %1 »"
 
-#: settings.cpp:266
+#: settings.cpp:265
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -713,7 +713,7 @@ msgstr ""
 "Une erreur est survenue lors de l'enregistrement du mot de passe « IMAP » "
 "dans le trousseau système : « %1 »"
 
-#: settings.cpp:353
+#: settings.cpp:352
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"

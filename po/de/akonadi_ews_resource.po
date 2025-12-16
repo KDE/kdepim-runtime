@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2024-08-21 21:49+0200\n"
 "Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -60,7 +60,7 @@ msgstr ""
 "abgerufen werden. Bitte aktualisieren Sie sie auf der Seite "
 "Kontoeinstellungen."
 
-#: ewsclient/auth/ewsoauth.cpp:525
+#: ewsclient/auth/ewsoauth.cpp:524
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -71,7 +71,7 @@ msgstr ""
 "mehr gültig. Sie müssen sich authentifizieren, um das Konto weiter verwenden "
 "zu können."
 
-#: ewsclient/auth/ewsoauth.cpp:534
+#: ewsclient/auth/ewsoauth.cpp:533
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

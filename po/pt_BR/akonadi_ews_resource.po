@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2025-11-08 21:10-0300\n"
 "Last-Translator: Guilherme Marçal Silva <guimarcalsilva@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -51,7 +51,7 @@ msgstr ""
 "Não foi possível obter as credenciais inTune da conta do Microsoft Exchange "
 "<b>%1</b>. Atualize-a na página de configurações da conta."
 
-#: ewsclient/auth/ewsoauth.cpp:525
+#: ewsclient/auth/ewsoauth.cpp:524
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -61,7 +61,7 @@ msgstr ""
 "As credenciais do Microsoft Exchange para a conta <b>%1</b> não são mais "
 "válidas. É necessário se autenticar para continuar a usá-la."
 
-#: ewsclient/auth/ewsoauth.cpp:534
+#: ewsclient/auth/ewsoauth.cpp:533
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

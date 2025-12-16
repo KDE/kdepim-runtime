@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2025-05-29 15:09+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -632,13 +632,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Yhteys katkaistiin tunnistauduttaessa."
 
-#: settings.cpp:168
+#: settings.cpp:167
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "IMAP-tilille %1 ei löytynyt salasanaa"
 
-#: settings.cpp:174
+#: settings.cpp:173
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -647,13 +647,13 @@ msgid ""
 msgstr ""
 "Tapahtui virhe noudettaessa järjestelmän avainrenkaasta IMAP-salasanaa: ”%1”"
 
-#: settings.cpp:204
+#: settings.cpp:203
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "Sieve-tilille %1 ei löytynyt salasanaa"
 
-#: settings.cpp:210
+#: settings.cpp:209
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -662,7 +662,7 @@ msgid ""
 msgstr ""
 "Tapahtui virhe noudettaessa järjestelmän avainrenkaasta Sieve-salasanaa: ”%1”"
 
-#: settings.cpp:240
+#: settings.cpp:239
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -672,7 +672,7 @@ msgstr ""
 "Tapahtui virhe tallennettaessa Sieve-salasanaa järjestelmän avainrenkaaseen: "
 "”%1”"
 
-#: settings.cpp:266
+#: settings.cpp:265
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -682,7 +682,7 @@ msgstr ""
 "Tapahtui virhe tallennettaessa IMAP-salasanaa järjestelmän avainrenkaaseen: "
 "”%1”"
 
-#: settings.cpp:353
+#: settings.cpp:352
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2025-05-01 12:42+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -52,7 +52,7 @@ msgstr ""
 "Exchange <b>%1</b>. Будь ласка, оновіть їх на сторінці параметрів облікового "
 "запису."
 
-#: ewsclient/auth/ewsoauth.cpp:525
+#: ewsclient/auth/ewsoauth.cpp:524
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -63,7 +63,7 @@ msgstr ""
 "втратили чинність. Вам слід знову пройти розпізнавання, щоб продовжити "
 "користуватися сервером."
 
-#: ewsclient/auth/ewsoauth.cpp:534
+#: ewsclient/auth/ewsoauth.cpp:533
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

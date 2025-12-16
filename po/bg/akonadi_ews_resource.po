@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2025-10-24 22:07+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -51,7 +51,7 @@ msgstr ""
 "Exchange <b> %1 </b>. Моля, актуализирайте го на страницата с настройки на "
 "акаунта."
 
-#: ewsclient/auth/ewsoauth.cpp:525
+#: ewsclient/auth/ewsoauth.cpp:524
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -61,7 +61,7 @@ msgstr ""
 "Идентификационните данни на Microsoft Exchange за акаунта <b> %1 </b> вече "
 "не са валидни. Трябва да удостоверите, за да продължите да го използвате."
 
-#: ewsclient/auth/ewsoauth.cpp:534
+#: ewsclient/auth/ewsoauth.cpp:533
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2025-05-01 17:31+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 "取得 Microsoft Exchange 帳號 <b>%1</b> 的 InTune 認證資訊時失敗。請在帳號設定"
 "頁面更新認證資訊。"
 
-#: ewsclient/auth/ewsoauth.cpp:525
+#: ewsclient/auth/ewsoauth.cpp:524
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -57,7 +57,7 @@ msgstr ""
 "帳號 <b>%1</b> 的 Microsoft Exchange 登入資訊不再有效。您必須重新認證才能繼續"
 "使用它。"
 
-#: ewsclient/auth/ewsoauth.cpp:534
+#: ewsclient/auth/ewsoauth.cpp:533
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

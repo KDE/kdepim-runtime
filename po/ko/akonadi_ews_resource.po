@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2025-06-10 23:50+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 "Microsoft Exchange 계정 <b>%1</b>의 InTune 자격 증명을 가져올 수 없습니다. 계"
 "정 설정 페이지에서 업데이트하십시오."
 
-#: ewsclient/auth/ewsoauth.cpp:525
+#: ewsclient/auth/ewsoauth.cpp:524
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -57,7 +57,7 @@ msgstr ""
 "계정 <b>%1</b>의 Microsoft Exchange 자격 증명이 더 이상 유효하지 않습니다. 계"
 "정을 계속 사용하려면 인증해야 합니다."
 
-#: ewsclient/auth/ewsoauth.cpp:534
+#: ewsclient/auth/ewsoauth.cpp:533
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

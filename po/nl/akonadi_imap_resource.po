@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2025-03-28 17:40+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -634,13 +634,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Verbinding verbroken bij aanmelden."
 
-#: settings.cpp:168
+#: settings.cpp:167
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "Wachtwoord voor %1 IMAP-account niet gevonden"
 
-#: settings.cpp:174
+#: settings.cpp:173
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -650,13 +650,13 @@ msgstr ""
 "Er was een fout bij het ophalen van het IMAP-wachtwoord uit de sleutelring "
 "van het systeem: \"%1\""
 
-#: settings.cpp:204
+#: settings.cpp:203
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "Wachtwoord voor %1 sieve-account niet gevonden"
 
-#: settings.cpp:210
+#: settings.cpp:209
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -666,7 +666,7 @@ msgstr ""
 "Er was een fout bij het ophalen van het sieve-wachtwoord uit de sleutelring "
 "van het systeem: \"%1\""
 
-#: settings.cpp:240
+#: settings.cpp:239
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -676,7 +676,7 @@ msgstr ""
 "Er was een fout bij het opslaan van het sieve-wachtwoord in de sleutelring "
 "van het systeem: \"%1\""
 
-#: settings.cpp:266
+#: settings.cpp:265
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -686,7 +686,7 @@ msgstr ""
 "Er was een fout bij het opslaan van het IMAP-wachtwoord in de sleutelring "
 "van het systeem: \"%1\""
 
-#: settings.cpp:353
+#: settings.cpp:352
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"

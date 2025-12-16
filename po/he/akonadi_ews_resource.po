@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2025-10-05 12:23+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -48,7 +48,7 @@ msgstr ""
 "משיכת פרטי הגישה לחשבון ה־Microsoft Exchange‏ <b>%1</b> מ־InTune נכשלה. נא "
 "לעדכן אותם בעמוד הגדרות החשבון."
 
-#: ewsclient/auth/ewsoauth.cpp:525
+#: ewsclient/auth/ewsoauth.cpp:524
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -58,7 +58,7 @@ msgstr ""
 "פרטי הגישה ב־Microsoft Exchange לחשבון <b>%1</b> לא תקפים יותר. צריך לעבו "
 "ראימות כדי להמשיך להשתמש בו."
 
-#: ewsclient/auth/ewsoauth.cpp:534
+#: ewsclient/auth/ewsoauth.cpp:533
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

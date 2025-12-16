@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2025-09-06 06:02+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: pl\n"
@@ -48,7 +48,7 @@ msgstr ""
 "Nie udało się uzyskać danych dostępowych InTune do konta Microsoft Exchange "
 "<b>%1</b>. Uaktualnij je na stronie ustawień konta."
 
-#: ewsclient/auth/ewsoauth.cpp:525
+#: ewsclient/auth/ewsoauth.cpp:524
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -58,7 +58,7 @@ msgstr ""
 "Dane dostępowe Microsoft Exchange dla konta <b>%1</b> przestały być "
 "poprawne. Musisz się uwierzytelnić, aby móc nadal z niego korzystać."
 
-#: ewsclient/auth/ewsoauth.cpp:534
+#: ewsclient/auth/ewsoauth.cpp:533
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

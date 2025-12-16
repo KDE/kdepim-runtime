@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2024 Yaron Shahrabani <sh.yaron@gmail.com>
+# SPDX-FileCopyrightText: 2024, 2025 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-12-16 06:51+0000\n"
-"PO-Revision-Date: 2024-08-18 08:27+0300\n"
+"PO-Revision-Date: 2025-12-16 09:51+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.08.3\n"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: vcarddiragentsettingswidget.ui:33
@@ -106,7 +106,7 @@ msgstr "מתבצע ניסיון לכתוב לתיקייה לקריאה בלבד:
 #: vcarddirresource.cpp:154
 #, kde-format
 msgid "Impossible to write in file: '%1'"
-msgstr ""
+msgstr "לא ניתן לכתוב בקובץ: ‚%1’"
 
 #: vcarddirresource.cpp:244
 #, kde-format

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2024-08-02 22:29+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -58,7 +58,7 @@ msgstr ""
 "Malsukcesis akiri akreditaĵojn por Microsoft Exchange-konto <b>%1</b>. "
 "Bonvolu ĝisdatigi ĝin en la paĝo pri agordoj de konto."
 
-#: ewsclient/auth/ewsoauth.cpp:525
+#: ewsclient/auth/ewsoauth.cpp:524
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -68,7 +68,7 @@ msgstr ""
 "Microsoft Exchange-akreditaĵoj por la konto <b>%1</b> ne plu validas. Vi "
 "devas aŭtentikigi por daŭre uzi ĝin."
 
-#: ewsclient/auth/ewsoauth.cpp:534
+#: ewsclient/auth/ewsoauth.cpp:533
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

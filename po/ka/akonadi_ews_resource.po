@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2025-05-01 03:45+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -49,7 +49,7 @@ msgstr ""
 "InTune-ის ავტორიზაციის დეტალების მიღება Microsoft Exchange-ის ანგარიშისთვის "
 "<b>%1</b> ჩავარდა. განაახლეთ ისინი ანგარიშის მორგების გვერდზე."
 
-#: ewsclient/auth/ewsoauth.cpp:525
+#: ewsclient/auth/ewsoauth.cpp:524
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -59,7 +59,7 @@ msgstr ""
 "Microsoft Exchange-ის ავტორიზაციის დეტალები ანგარიშისთვის <b>%1</b>სწორი "
 "აღარაა. მისი გამოყენების გასაგრძელებლად ავთენტიკაცია თავიდან უნდა გაიაროთ."
 
-#: ewsclient/auth/ewsoauth.cpp:534
+#: ewsclient/auth/ewsoauth.cpp:533
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2025-03-28 02:58+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -618,13 +618,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "კავშირი გაითიშა სერვერზე შესვლის დროს."
 
-#: settings.cpp:168
+#: settings.cpp:167
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "პაროლი ვერ მოიძებნა IMAP ანგარიშისთვის %1"
 
-#: settings.cpp:174
+#: settings.cpp:173
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -632,13 +632,13 @@ msgid ""
 "keychain: \"%1\""
 msgstr "შეცდომა IMAP პაროლის მიღებისას სისტემური ბრელოკიდან: \"%1\""
 
-#: settings.cpp:204
+#: settings.cpp:203
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "პაროლი ვერ მოიძებნა %1 sieve ანგარიშისთვის"
 
-#: settings.cpp:210
+#: settings.cpp:209
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -646,7 +646,7 @@ msgid ""
 "keychain: \"%1\""
 msgstr "შეცდომა Sieve-ის პაროლის მიღებისას სისტემური ბრელოკიდან: \"%1\""
 
-#: settings.cpp:240
+#: settings.cpp:239
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -654,7 +654,7 @@ msgid ""
 "\"%1\""
 msgstr "შეცდომა sieve-ის პაროლის შენახვისას სისტემურ ბრელოკში: \"%1\""
 
-#: settings.cpp:266
+#: settings.cpp:265
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -662,7 +662,7 @@ msgid ""
 "\"%1\""
 msgstr "შეცდომა IMAP პაროლის შენახვისას სისტემურ ბრელოკში: \"%1\""
 
-#: settings.cpp:353
+#: settings.cpp:352
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2025-09-02 09:40+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -47,7 +47,7 @@ msgstr ""
 "Verkrijgen van InTune credentials voor Microsoft Exchange account <b>%1</b> "
 "is mislukt. Werk het bij in de pagina accountinstellingen."
 
-#: ewsclient/auth/ewsoauth.cpp:525
+#: ewsclient/auth/ewsoauth.cpp:524
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -57,7 +57,7 @@ msgstr ""
 "Microsoft Exchange credentials voor het account <b>%1</b> zijn niet langer "
 "geldig. U moet zich authenticeren om met gebruik door te gaan."
 
-#: ewsclient/auth/ewsoauth.cpp:534
+#: ewsclient/auth/ewsoauth.cpp:533
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

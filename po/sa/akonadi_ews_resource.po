@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 13:25+0000\n"
 "PO-Revision-Date: 2024-12-25 19:45+0530\n"
 "Last-Translator: kali <shreekantkalwar@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -57,7 +57,7 @@ msgstr ""
 "Microsoft Exchange खातेः <b>%1</b> कृते प्रमाणपत्राणि प्राप्तुं असफलम् । कृपया "
 "खातासेटिंग्स् पृष्ठे अद्यतनं कुर्वन्तु।"
 
-#: ewsclient/auth/ewsoauth.cpp:525
+#: ewsclient/auth/ewsoauth.cpp:524
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -67,7 +67,7 @@ msgstr ""
 "<b>%1</b> खातेः Microsoft Exchange प्रमाणपत्राणि अधुना वैधं न भवन्ति । तस्य उपयोगं "
 "निरन्तरं कर्तुं भवद्भिः प्रमाणीकरणं करणीयम् ।"
 
-#: ewsclient/auth/ewsoauth.cpp:534
+#: ewsclient/auth/ewsoauth.cpp:533
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
