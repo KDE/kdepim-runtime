@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-10 00:44+0000\n"
+"POT-Creation-Date: 2025-12-16 06:51+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -17,16 +17,6 @@ msgstr ""
 "X-Crowdin-File: /kf6-trunk/messages/kdepim-runtime/"
 "akonadi_newmailnotifier_agent.pot\n"
 "X-Crowdin-File-ID: 45311\n"
-
-#, kde-format
-msgctxt "NAME OF TRANSLATORS"
-msgid "Your names"
-msgstr "KDE 中国"
-
-#, kde-format
-msgctxt "EMAIL OF TRANSLATORS"
-msgid "Your emails"
-msgstr "kde-china@kde.org"
 
 #, kde-format
 msgctxt "%f is a variable for agent. Do not change it"
@@ -50,7 +40,7 @@ msgid "[Show Mail]"
 msgstr "[显示邮件]"
 
 #: newmailnotificationhistorywidget.cpp:24
-#: newmailnotifiersettingswidget.cpp:114
+#: newmailnotifiersettingswidget.cpp:113
 #, kde-format
 msgctxt "@option:check"
 msgid "Enabled"
@@ -100,7 +90,7 @@ msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "全部不选(&U)"
 
-#: newmailnotifiersettingswidget.cpp:34
+#: newmailnotifiersettingswidget.cpp:33
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
@@ -109,97 +99,97 @@ msgstr ""
 "<qt><p>您可以在此定义消息。您可以使用：</p><ul><li>%s 设置主题</li><li>%f 设"
 "置发件人</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:55
+#: newmailnotifiersettingswidget.cpp:54
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "选择要显示的区域："
 
-#: newmailnotifiersettingswidget.cpp:60
+#: newmailnotifiersettingswidget.cpp:59
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "显示图片"
 
-#: newmailnotifiersettingswidget.cpp:64
+#: newmailnotifiersettingswidget.cpp:63
 #, kde-format
 msgctxt "@option:check"
 msgid "Show From"
 msgstr "显示发信人"
 
-#: newmailnotifiersettingswidget.cpp:68
+#: newmailnotifiersettingswidget.cpp:67
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "显示主题"
 
-#: newmailnotifiersettingswidget.cpp:72
+#: newmailnotifiersettingswidget.cpp:71
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "显示文件夹"
 
-#: newmailnotifiersettingswidget.cpp:76
+#: newmailnotifiersettingswidget.cpp:75
 #, kde-format
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "当邮件由我发出时不通知"
 
-#: newmailnotifiersettingswidget.cpp:80
+#: newmailnotifiersettingswidget.cpp:79
 #, kde-format
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr "保持持续的通知"
 
-#: newmailnotifiersettingswidget.cpp:84
+#: newmailnotifiersettingswidget.cpp:83
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr "显示操作按钮"
 
-#: newmailnotifiersettingswidget.cpp:92
+#: newmailnotifiersettingswidget.cpp:91
 #, kde-format
 msgctxt "@option:check"
 msgid "Reply Mail"
 msgstr "回复邮件"
 
-#: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:163
+#: newmailnotifiersettingswidget.cpp:99 specialnotifierjob.cpp:163
 #, kde-format
 msgid "Reply to Author"
 msgstr "回复作者"
 
-#: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:166
+#: newmailnotifiersettingswidget.cpp:99 specialnotifierjob.cpp:166
 #, kde-format
 msgid "Reply to All"
 msgstr "回复所有人"
 
-#: newmailnotifiersettingswidget.cpp:109
+#: newmailnotifiersettingswidget.cpp:108
 #, kde-format
 msgid "Display"
 msgstr "显示"
 
-#: newmailnotifiersettingswidget.cpp:118
+#: newmailnotifiersettingswidget.cpp:117
 #, kde-format
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">工作方式解释</a>"
 
-#: newmailnotifiersettingswidget.cpp:127
+#: newmailnotifiersettingswidget.cpp:126
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "消息："
 
-#: newmailnotifiersettingswidget.cpp:139
+#: newmailnotifiersettingswidget.cpp:138
 #, kde-format
 msgid "Text to Speak"
 msgstr "要朗读的文本"
 
-#: newmailnotifiersettingswidget.cpp:145
+#: newmailnotifiersettingswidget.cpp:144
 #, kde-format
 msgid "Notify"
 msgstr "通知"
 
-#: newmailnotifiersettingswidget.cpp:148
+#: newmailnotifiersettingswidget.cpp:147
 #, kde-format
 msgid "Folders"
 msgstr "文件夹"
@@ -238,3 +228,11 @@ msgstr "标记为已读"
 #, kde-format
 msgid "Delete"
 msgstr "删除"
+
+#~ msgctxt "NAME OF TRANSLATORS"
+#~ msgid "Your names"
+#~ msgstr "KDE 中国"
+
+#~ msgctxt "EMAIL OF TRANSLATORS"
+#~ msgid "Your emails"
+#~ msgstr "kde-china@kde.org"

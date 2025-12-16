@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 06:51+0000\n"
 "PO-Revision-Date: 2024-08-17 07:39+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -105,12 +105,17 @@ msgstr "Zamik samodejnega shranjevanja:"
 msgid "Contact with uid '%1' not found."
 msgstr "Stik z uporabniškim določilnikom '%1' ni najden."
 
-#: vcarddirresource.cpp:134 vcarddirresource.cpp:168 vcarddirresource.cpp:204
+#: vcarddirresource.cpp:134 vcarddirresource.cpp:173 vcarddirresource.cpp:209
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Poskus pisanja v mapo, ki je samo za branje: '%1'"
 
-#: vcarddirresource.cpp:239
+#: vcarddirresource.cpp:154
+#, kde-format
+msgid "Impossible to write in file: '%1'"
+msgstr ""
+
+#: vcarddirresource.cpp:244
 #, kde-format
 msgid "Contacts Folder"
 msgstr "Mapa s stiki"

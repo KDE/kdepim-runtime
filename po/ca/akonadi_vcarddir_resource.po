@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 06:51+0000\n"
 "PO-Revision-Date: 2024-08-17 11:21+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -104,12 +104,17 @@ msgstr "Temps d'autodesat:"
 msgid "Contact with uid '%1' not found."
 msgstr "No s'ha trobat cap contacte amb UID «%1»."
 
-#: vcarddirresource.cpp:134 vcarddirresource.cpp:168 vcarddirresource.cpp:204
+#: vcarddirresource.cpp:134 vcarddirresource.cpp:173 vcarddirresource.cpp:209
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "S'està intentant escriure en un directori de només lectura: «%1»"
 
-#: vcarddirresource.cpp:239
+#: vcarddirresource.cpp:154
+#, kde-format
+msgid "Impossible to write in file: '%1'"
+msgstr ""
+
+#: vcarddirresource.cpp:244
 #, kde-format
 msgid "Contacts Folder"
 msgstr "Carpeta de contactes"

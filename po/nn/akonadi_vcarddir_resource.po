@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcarddir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 06:51+0000\n"
 "PO-Revision-Date: 2010-02-11 17:18+0100\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
@@ -93,12 +93,17 @@ msgstr ""
 msgid "Contact with uid '%1' not found."
 msgstr "Fann ikkje kontakt med UID-en «%1»."
 
-#: vcarddirresource.cpp:134 vcarddirresource.cpp:168 vcarddirresource.cpp:204
+#: vcarddirresource.cpp:134 vcarddirresource.cpp:173 vcarddirresource.cpp:209
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Prøver å skriva til ein skriveverna katalog: «%1»"
 
-#: vcarddirresource.cpp:239
+#: vcarddirresource.cpp:154
+#, kde-format
+msgid "Impossible to write in file: '%1'"
+msgstr ""
+
+#: vcarddirresource.cpp:244
 #, kde-format
 msgid "Contacts Folder"
 msgstr ""

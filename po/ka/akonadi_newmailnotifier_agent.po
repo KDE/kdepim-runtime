@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-10 00:44+0000\n"
+"POT-Creation-Date: 2025-12-16 06:51+0000\n"
 "PO-Revision-Date: 2024-07-30 06:36+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -17,16 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.3.2\n"
-
-#, kde-format
-msgctxt "NAME OF TRANSLATORS"
-msgid "Your names"
-msgstr "Temuri Doghonadze"
-
-#, kde-format
-msgctxt "EMAIL OF TRANSLATORS"
-msgid "Your emails"
-msgstr "Temuri.doghonadze@gmail.com"
 
 #, kde-format
 msgctxt "%f is a variable for agent. Do not change it"
@@ -50,7 +40,7 @@ msgid "[Show Mail]"
 msgstr "[ელფოსტის ჩვენება]"
 
 #: newmailnotificationhistorywidget.cpp:24
-#: newmailnotifiersettingswidget.cpp:114
+#: newmailnotifiersettingswidget.cpp:113
 #, kde-format
 msgctxt "@option:check"
 msgid "Enabled"
@@ -103,7 +93,7 @@ msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "მონიშვნის &ყველაფერზე მოხსნა"
 
-#: newmailnotifiersettingswidget.cpp:34
+#: newmailnotifiersettingswidget.cpp:33
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
@@ -112,97 +102,97 @@ msgstr ""
 "<qt><p>აქ შეგიძლიათ შეტყობინება განსაზღვროთ. შეგიძლიათ, გამოიყენოთ::</"
 "p><ul><li>%s თემს დაყენება</li><li>%f საიდან დაყენება</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:55
+#: newmailnotifiersettingswidget.cpp:54
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "აირჩიეთ, რომელი ველები ვაჩვენო:"
 
-#: newmailnotifiersettingswidget.cpp:60
+#: newmailnotifiersettingswidget.cpp:59
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "ფოტოს ჩვენება"
 
-#: newmailnotifiersettingswidget.cpp:64
+#: newmailnotifiersettingswidget.cpp:63
 #, kde-format
 msgctxt "@option:check"
 msgid "Show From"
 msgstr "გამომგზავნის ჩვენება"
 
-#: newmailnotifiersettingswidget.cpp:68
+#: newmailnotifiersettingswidget.cpp:67
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "სათაურის ჩვენება"
 
-#: newmailnotifiersettingswidget.cpp:72
+#: newmailnotifiersettingswidget.cpp:71
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "საქაღალდეების ჩვენება"
 
-#: newmailnotifiersettingswidget.cpp:76
+#: newmailnotifiersettingswidget.cpp:75
 #, kde-format
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "არ შემატყობინო, თუ ელფოსტა მე გავაგზავნე"
 
-#: newmailnotifiersettingswidget.cpp:80
+#: newmailnotifiersettingswidget.cpp:79
 #, kde-format
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr "მუდმივი შეტყობინების შენარჩუნება"
 
-#: newmailnotifiersettingswidget.cpp:84
+#: newmailnotifiersettingswidget.cpp:83
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr "ქმედების ღილაკების ჩვენება"
 
-#: newmailnotifiersettingswidget.cpp:92
+#: newmailnotifiersettingswidget.cpp:91
 #, kde-format
 msgctxt "@option:check"
 msgid "Reply Mail"
 msgstr "პასუხი"
 
-#: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:163
+#: newmailnotifiersettingswidget.cpp:99 specialnotifierjob.cpp:163
 #, kde-format
 msgid "Reply to Author"
 msgstr "ავტორისთვის პასუხი"
 
-#: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:166
+#: newmailnotifiersettingswidget.cpp:99 specialnotifierjob.cpp:166
 #, kde-format
 msgid "Reply to All"
 msgstr "ყველასთვის პასუხი"
 
-#: newmailnotifiersettingswidget.cpp:109
+#: newmailnotifiersettingswidget.cpp:108
 #, kde-format
 msgid "Display"
 msgstr "ჩვენება"
 
-#: newmailnotifiersettingswidget.cpp:118
+#: newmailnotifiersettingswidget.cpp:117
 #, kde-format
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">როგორ მუშაობს?</a>"
 
-#: newmailnotifiersettingswidget.cpp:127
+#: newmailnotifiersettingswidget.cpp:126
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "შეტყობინება:"
 
-#: newmailnotifiersettingswidget.cpp:139
+#: newmailnotifiersettingswidget.cpp:138
 #, kde-format
 msgid "Text to Speak"
 msgstr "სათქმელი ტექსტი"
 
-#: newmailnotifiersettingswidget.cpp:145
+#: newmailnotifiersettingswidget.cpp:144
 #, kde-format
 msgid "Notify"
 msgstr "შემატყობინე"
 
-#: newmailnotifiersettingswidget.cpp:148
+#: newmailnotifiersettingswidget.cpp:147
 #, kde-format
 msgid "Folders"
 msgstr "საქაღალდეები"
@@ -241,6 +231,14 @@ msgstr "წაკითხულად მონიშვნა"
 #, kde-format
 msgid "Delete"
 msgstr "წაშლა"
+
+#~ msgctxt "NAME OF TRANSLATORS"
+#~ msgid "Your names"
+#~ msgstr "Temuri Doghonadze"
+
+#~ msgctxt "EMAIL OF TRANSLATORS"
+#~ msgid "Your emails"
+#~ msgstr "Temuri.doghonadze@gmail.com"
 
 #~ msgid "New Mail Notifier Agent"
 #~ msgstr "ახალი ელფოსტის გაფრთხილების აგენტი"

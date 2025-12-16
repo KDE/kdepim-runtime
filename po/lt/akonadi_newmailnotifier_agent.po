@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-10 00:44+0000\n"
+"POT-Creation-Date: 2025-12-16 06:51+0000\n"
 "PO-Revision-Date: 2015-12-29 20:26+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -21,16 +21,6 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
 "X-Generator: Lokalize 1.5\n"
-
-#, kde-format
-msgctxt "NAME OF TRANSLATORS"
-msgid "Your names"
-msgstr "Liudas Ališauskas"
-
-#, kde-format
-msgctxt "EMAIL OF TRANSLATORS"
-msgid "Your emails"
-msgstr "liudas@akmc.lt"
 
 #, kde-format
 msgctxt "%f is a variable for agent. Do not change it"
@@ -55,7 +45,7 @@ msgid "[Show Mail]"
 msgstr ""
 
 #: newmailnotificationhistorywidget.cpp:24
-#: newmailnotifiersettingswidget.cpp:114
+#: newmailnotifiersettingswidget.cpp:113
 #, fuzzy, kde-format
 #| msgid "Enabled"
 msgctxt "@option:check"
@@ -116,7 +106,7 @@ msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "&Nuimti visus pažymėjimus"
 
-#: newmailnotifiersettingswidget.cpp:34
+#: newmailnotifiersettingswidget.cpp:33
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
@@ -125,106 +115,106 @@ msgstr ""
 "<qt><p>Čia galite nustatyti pranešimą. Galite naudoti:</p><ul><li>%s "
 "nustatyti temai</li><li>%f nustatyti nuo ko</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:55
+#: newmailnotifiersettingswidget.cpp:54
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "Pasirinkti, kuriuos laukus rodyti:"
 
-#: newmailnotifiersettingswidget.cpp:60
+#: newmailnotifiersettingswidget.cpp:59
 #, fuzzy, kde-format
 #| msgid "Show Photo"
 msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "Rodyti nuotrauką"
 
-#: newmailnotifiersettingswidget.cpp:64
+#: newmailnotifiersettingswidget.cpp:63
 #, fuzzy, kde-format
 #| msgid "Show From"
 msgctxt "@option:check"
 msgid "Show From"
 msgstr "Rodyti nuo ko"
 
-#: newmailnotifiersettingswidget.cpp:68
+#: newmailnotifiersettingswidget.cpp:67
 #, fuzzy, kde-format
 #| msgid "Show Subject"
 msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "Rodyti temą"
 
-#: newmailnotifiersettingswidget.cpp:72
+#: newmailnotifiersettingswidget.cpp:71
 #, fuzzy, kde-format
 #| msgid "Show Folders"
 msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "Rodyti aplankus"
 
-#: newmailnotifiersettingswidget.cpp:76
+#: newmailnotifiersettingswidget.cpp:75
 #, fuzzy, kde-format
 #| msgid "Do not notify when email was sent by me"
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "Neperspėti kai el. laiškas buvo siųstas mano paties"
 
-#: newmailnotifiersettingswidget.cpp:80
+#: newmailnotifiersettingswidget.cpp:79
 #, kde-format
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:84
+#: newmailnotifiersettingswidget.cpp:83
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:92
+#: newmailnotifiersettingswidget.cpp:91
 #, fuzzy, kde-format
 #| msgid "&Select All"
 msgctxt "@option:check"
 msgid "Reply Mail"
 msgstr "&Pažymėti viską"
 
-#: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:163
+#: newmailnotifiersettingswidget.cpp:99 specialnotifierjob.cpp:163
 #, kde-format
 msgid "Reply to Author"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:100 specialnotifierjob.cpp:166
+#: newmailnotifiersettingswidget.cpp:99 specialnotifierjob.cpp:166
 #, fuzzy, kde-format
 #| msgid "&Select All"
 msgid "Reply to All"
 msgstr "&Pažymėti viską"
 
-#: newmailnotifiersettingswidget.cpp:109
+#: newmailnotifiersettingswidget.cpp:108
 #, kde-format
 msgid "Display"
 msgstr "Rodymas"
 
-#: newmailnotifiersettingswidget.cpp:118
+#: newmailnotifiersettingswidget.cpp:117
 #, fuzzy, kde-format
 #| msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Kaip tai veikia?</a>"
 
-#: newmailnotifiersettingswidget.cpp:127
+#: newmailnotifiersettingswidget.cpp:126
 #, fuzzy, kde-format
 #| msgid "Message:"
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "Pranešimas:"
 
-#: newmailnotifiersettingswidget.cpp:139
+#: newmailnotifiersettingswidget.cpp:138
 #, kde-format
 msgid "Text to Speak"
 msgstr "Tekstas į kalbą"
 
-#: newmailnotifiersettingswidget.cpp:145
+#: newmailnotifiersettingswidget.cpp:144
 #, kde-format
 msgid "Notify"
 msgstr "Perspėti"
 
-#: newmailnotifiersettingswidget.cpp:148
+#: newmailnotifiersettingswidget.cpp:147
 #, kde-format
 msgid "Folders"
 msgstr "Aplankai"
@@ -264,6 +254,14 @@ msgstr ""
 #, kde-format
 msgid "Delete"
 msgstr ""
+
+#~ msgctxt "NAME OF TRANSLATORS"
+#~ msgid "Your names"
+#~ msgstr "Liudas Ališauskas"
+
+#~ msgctxt "EMAIL OF TRANSLATORS"
+#~ msgid "Your emails"
+#~ msgstr "liudas@akmc.lt"
 
 #~ msgid "New Mail Notifier Agent"
 #~ msgstr "Pranešimų apie naują el. paštą agentas"

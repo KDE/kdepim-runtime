@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 06:51+0000\n"
 "PO-Revision-Date: 2024-08-28 16:41+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -100,12 +100,17 @@ msgstr "Retardo de salvamento automatic:"
 msgid "Contact with uid '%1' not found."
 msgstr "On non trovava contacto con uid '%1'."
 
-#: vcarddirresource.cpp:134 vcarddirresource.cpp:168 vcarddirresource.cpp:204
+#: vcarddirresource.cpp:134 vcarddirresource.cpp:173 vcarddirresource.cpp:209
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Tentante de scriber in un directorio de sol lectura: '%1'"
 
-#: vcarddirresource.cpp:239
+#: vcarddirresource.cpp:154
+#, kde-format
+msgid "Impossible to write in file: '%1'"
+msgstr ""
+
+#: vcarddirresource.cpp:244
 #, kde-format
 msgid "Contacts Folder"
 msgstr "Dossier de contactos"

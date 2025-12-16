@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcarddir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-16 06:51+0000\n"
 "PO-Revision-Date: 2014-04-02 22:40+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -101,12 +101,17 @@ msgstr "Töövtiet för't automaatsche Sekern:"
 msgid "Contact with uid '%1' not found."
 msgstr "Kontakt mit de UID \"%1\" nich funnen."
 
-#: vcarddirresource.cpp:134 vcarddirresource.cpp:168 vcarddirresource.cpp:204
+#: vcarddirresource.cpp:134 vcarddirresource.cpp:173 vcarddirresource.cpp:209
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Schrievversöök na en bloots leesbor Orner: \"%1\""
 
-#: vcarddirresource.cpp:239
+#: vcarddirresource.cpp:154
+#, kde-format
+msgid "Impossible to write in file: '%1'"
+msgstr ""
+
+#: vcarddirresource.cpp:244
 #, kde-format
 msgid "Contacts Folder"
 msgstr "Kontaktenorner"
