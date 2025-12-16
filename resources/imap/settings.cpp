@@ -9,7 +9,6 @@
 #include "imapaccount.h"
 #include "settingsadaptor.h"
 #include <config-imap.h>
-#include <qt6keychain/keychain.h>
 
 #include "imapresource_debug.h"
 

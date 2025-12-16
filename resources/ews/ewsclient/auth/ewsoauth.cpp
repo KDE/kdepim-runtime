@@ -16,7 +16,6 @@ using namespace Mock;
 #include <QDialog>
 #include <QHBoxLayout>
 #include <QIcon>
-#include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkReply>
 #include <QOAuth2AuthorizationCodeFlow>
