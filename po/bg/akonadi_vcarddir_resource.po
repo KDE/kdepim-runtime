@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the kdepim-runtime package.
 #
 # Automatically generated, 2022.
-# SPDX-FileCopyrightText: 2022, 2024 Mincho Kondarev <mkondarev@yahoo.de>
+# SPDX-FileCopyrightText: 2022, 2024, 2025 Mincho Kondarev <mkondarev@yahoo.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-12-16 06:51+0000\n"
-"PO-Revision-Date: 2024-11-10 11:23+0100\n"
+"PO-Revision-Date: 2025-12-16 21:44+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.11.70\n"
+"X-Generator: Lokalize 25.07.70\n"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: vcarddiragentsettingswidget.ui:33
@@ -110,7 +110,7 @@ msgstr "Опит за запис в директория само за чете�
 #: vcarddirresource.cpp:154
 #, kde-format
 msgid "Impossible to write in file: '%1'"
-msgstr ""
+msgstr "Не е възможно да се запише във файла: „%1“"
 
 #: vcarddirresource.cpp:244
 #, kde-format
