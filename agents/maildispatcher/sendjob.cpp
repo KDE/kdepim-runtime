@@ -124,8 +124,8 @@ void SendJob::doTraditionalTransport()
     mCurrentJob = job;
 
     // Message.
-    Q_ASSERT(mItem.hasPayload<Message::Ptr>());
-    const auto message = mItem.payload<Message::Ptr>();
+    Q_ASSERT(mItem.hasPayload<std::shared_ptr<Message>>());
+    const auto message = mItem.payload<std::shared_ptr<Message>>();
     bool needAssemble = false;
     if (message->removeHeader("Bcc")) {
         needAssemble = true;

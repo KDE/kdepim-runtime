@@ -26,7 +26,7 @@ ResourceSendJob::~ResourceSendJob() = default;
 
 void ResourceSendJob::doStart()
 {
-    Message::Ptr msg = Message::Ptr(new Message);
+    auto msg = std::make_shared<Message>();
     msg->setContent(data());
     auto job = new MessageQueueJob;
     job->setMessage(msg);
