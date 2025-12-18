@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-16 13:25+0000\n"
+"POT-Creation-Date: 2025-12-18 00:44+0000\n"
 "PO-Revision-Date: 2025-04-02 15:14+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -626,13 +626,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Disconnecteva durante accesso de authentication."
 
-#: settings.cpp:167
+#: settings.cpp:124
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "Contrasigno non trovate perconto de IMAP %1"
 
-#: settings.cpp:173
+#: settings.cpp:129
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -642,13 +642,13 @@ msgstr ""
 "Un error occurreva quando il recuperava le contrasigno de IMAP ex le "
 "portaclaves de systema:  \"%1\""
 
-#: settings.cpp:203
+#: settings.cpp:157
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "Contrasigno nontrovate per le conto de sieve (cribro)  %1"
 
-#: settings.cpp:209
+#: settings.cpp:162
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -658,7 +658,7 @@ msgstr ""
 "Un error occurreva quando il recuperava le contrasigno de sieve ex le "
 "portaclaves de systema: \"%1\""
 
-#: settings.cpp:239
+#: settings.cpp:192
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -668,7 +668,7 @@ msgstr ""
 "Un error occurreva quando il salveguardava le contrasigno de sieve in le "
 "portaclaves de systema:  \"%1\""
 
-#: settings.cpp:265
+#: settings.cpp:218
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -678,7 +678,7 @@ msgstr ""
 "Un error occurreva quando il salveguardava le contrasigno de IMAP in le "
 "portaclaves de systema : \"%1\""
 
-#: settings.cpp:352
+#: settings.cpp:305
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"

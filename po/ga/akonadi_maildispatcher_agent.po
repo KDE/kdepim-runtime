@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-18 00:44+0000\n"
 "PO-Revision-Date: 2009-12-24 06:59-0500\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n < 11 ? "
 "3 : 4\n"
 
-#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
+#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
 #, fuzzy, kde-format
 #| msgid "Sending messages (1 item in queue)..."
 #| msgid_plural "Sending messages (%1 items in queue)..."
@@ -66,19 +66,19 @@ msgstr "Ar líne, teachtaireachtaí sa chiú á seoladh anois."
 msgid "Offline, message sending suspended."
 msgstr ""
 
-#: maildispatcheragent.cpp:184
+#: maildispatcheragent.cpp:185
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
 msgstr ""
 
-#: maildispatcheragent.cpp:249
+#: maildispatcheragent.cpp:250
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
 msgstr ""
 
-#: maildispatcheragent.cpp:282
+#: maildispatcheragent.cpp:283
 #, kde-format
 msgid "Ready to dispatch messages."
 msgstr "Réidh le teachtaireachtaí a chur chun bealaigh."

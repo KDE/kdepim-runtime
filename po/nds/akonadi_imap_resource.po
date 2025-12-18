@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-16 13:25+0000\n"
+"POT-Creation-Date: 2025-12-18 00:44+0000\n"
 "PO-Revision-Date: 2014-07-13 18:25+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -640,13 +640,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Bi't Anmellen vun Server afkoppelt"
 
-#: settings.cpp:167
+#: settings.cpp:124
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr ""
 
-#: settings.cpp:173
+#: settings.cpp:129
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -654,13 +654,13 @@ msgid ""
 "keychain: \"%1\""
 msgstr ""
 
-#: settings.cpp:203
+#: settings.cpp:157
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr ""
 
-#: settings.cpp:209
+#: settings.cpp:162
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -668,7 +668,7 @@ msgid ""
 "keychain: \"%1\""
 msgstr ""
 
-#: settings.cpp:239
+#: settings.cpp:192
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -676,7 +676,7 @@ msgid ""
 "\"%1\""
 msgstr ""
 
-#: settings.cpp:265
+#: settings.cpp:218
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -684,7 +684,7 @@ msgid ""
 "\"%1\""
 msgstr ""
 
-#: settings.cpp:352
+#: settings.cpp:305
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"

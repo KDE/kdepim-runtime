@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-18 00:44+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -18,7 +18,7 @@ msgstr ""
 "akonadi_maildispatcher_agent.pot\n"
 "X-Crowdin-File-ID: 45417\n"
 
-#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
+#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
 #, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
@@ -61,19 +61,19 @@ msgstr "在线，正在发送队列中的信件。"
 msgid "Offline, message sending suspended."
 msgstr "离线，信件发送已中止。"
 
-#: maildispatcheragent.cpp:184
+#: maildispatcheragent.cpp:185
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
 msgstr "正在发送：%1"
 
-#: maildispatcheragent.cpp:249
+#: maildispatcheragent.cpp:250
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
 msgstr "发送邮件失败"
 
-#: maildispatcheragent.cpp:282
+#: maildispatcheragent.cpp:283
 #, kde-format
 msgid "Ready to dispatch messages."
 msgstr "准备签发信件。"

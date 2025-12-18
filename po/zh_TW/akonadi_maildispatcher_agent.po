@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-18 00:44+0000\n"
 "PO-Revision-Date: 2024-05-18 16:43+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 24.04.70\n"
 
-#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
+#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
 #, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
@@ -62,19 +62,19 @@ msgstr "回到線上，傳送佇列中的信件中。"
 msgid "Offline, message sending suspended."
 msgstr "已離線，傳送信件動作已暫停。"
 
-#: maildispatcheragent.cpp:184
+#: maildispatcheragent.cpp:185
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
 msgstr "傳送中：%1"
 
-#: maildispatcheragent.cpp:249
+#: maildispatcheragent.cpp:250
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
 msgstr "傳送信件失敗"
 
-#: maildispatcheragent.cpp:282
+#: maildispatcheragent.cpp:283
 #, kde-format
 msgid "Ready to dispatch messages."
 msgstr "已準備好發送信件。"

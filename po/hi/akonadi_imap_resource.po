@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-16 13:25+0000\n"
+"POT-Creation-Date: 2025-12-18 00:44+0000\n"
 "PO-Revision-Date: 2024-12-15 15:57+0530\n"
 "Last-Translator: Kali <EMAIL@ADDRESS>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
@@ -576,13 +576,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr ""
 
-#: settings.cpp:167
+#: settings.cpp:124
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr ""
 
-#: settings.cpp:173
+#: settings.cpp:129
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -590,13 +590,13 @@ msgid ""
 "keychain: \"%1\""
 msgstr ""
 
-#: settings.cpp:203
+#: settings.cpp:157
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr ""
 
-#: settings.cpp:209
+#: settings.cpp:162
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -604,7 +604,7 @@ msgid ""
 "keychain: \"%1\""
 msgstr ""
 
-#: settings.cpp:239
+#: settings.cpp:192
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -612,7 +612,7 @@ msgid ""
 "\"%1\""
 msgstr ""
 
-#: settings.cpp:265
+#: settings.cpp:218
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -620,7 +620,7 @@ msgid ""
 "\"%1\""
 msgstr ""
 
-#: settings.cpp:352
+#: settings.cpp:305
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2025-12-18 00:44+0000\n"
 "PO-Revision-Date: 2024-05-16 13:29+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 
-#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:224
+#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
 #, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
@@ -66,19 +66,19 @@ msgstr "متّصل، يُرسل الرّسائل في الطّابور."
 msgid "Offline, message sending suspended."
 msgstr "غيّر متّصل، أُرجئ إرسال الرّسائل."
 
-#: maildispatcheragent.cpp:184
+#: maildispatcheragent.cpp:185
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
 msgstr "يُرسل: %1"
 
-#: maildispatcheragent.cpp:249
+#: maildispatcheragent.cpp:250
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
 msgstr "فشل إرسال البريد"
 
-#: maildispatcheragent.cpp:282
+#: maildispatcheragent.cpp:283
 #, kde-format
 msgid "Ready to dispatch messages."
 msgstr "جهاز لإرسال الرّسائل."

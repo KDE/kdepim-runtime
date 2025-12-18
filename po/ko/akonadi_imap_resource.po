@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-16 13:25+0000\n"
+"POT-Creation-Date: 2025-12-18 00:44+0000\n"
 "PO-Revision-Date: 2025-04-06 23:03+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -604,13 +604,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "로그인 중 연결이 종료되었습니다."
 
-#: settings.cpp:167
+#: settings.cpp:124
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "%1 IMAP 계정의 암호를 찾을 수 없음"
 
-#: settings.cpp:173
+#: settings.cpp:129
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -618,13 +618,13 @@ msgid ""
 "keychain: \"%1\""
 msgstr "시스템 키체인에서 IMAP 암호를 가져오는 중 오류 발생: \"%1\""
 
-#: settings.cpp:203
+#: settings.cpp:157
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "%1 Sieve 계정의 암호를 찾을 수 없음"
 
-#: settings.cpp:209
+#: settings.cpp:162
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -632,7 +632,7 @@ msgid ""
 "keychain: \"%1\""
 msgstr "시스템 키체인에서 Sieve 암호를 가져오는 중 오류 발생: \"%1\""
 
-#: settings.cpp:239
+#: settings.cpp:192
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -640,7 +640,7 @@ msgid ""
 "\"%1\""
 msgstr "시스템 키체인에 Sieve 암호를 저장하는 중 오류 발생: \"%1\""
 
-#: settings.cpp:265
+#: settings.cpp:218
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -648,7 +648,7 @@ msgid ""
 "\"%1\""
 msgstr "시스템 키체인에 IMAP 암호를 저장하는 중 오류 발생: \"%1\""
 
-#: settings.cpp:352
+#: settings.cpp:305
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"

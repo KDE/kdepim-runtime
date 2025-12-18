@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-16 13:25+0000\n"
+"POT-Creation-Date: 2025-12-18 00:44+0000\n"
 "PO-Revision-Date: 2025-08-09 21:08+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -602,13 +602,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "قُطع الاتّصال أثناء الولوج."
 
-#: settings.cpp:167
+#: settings.cpp:124
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "لم يعثر على كلمة السر لحساب IMAP %1"
 
-#: settings.cpp:173
+#: settings.cpp:129
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -616,13 +616,13 @@ msgid ""
 "keychain: \"%1\""
 msgstr "حدث خطأ أثناء استرداد كلمة سر IMAP من سلسلة مفاتيح النظام: \"%1\""
 
-#: settings.cpp:203
+#: settings.cpp:157
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "لم يعثر على كلمة السر لحساب الغربال %1"
 
-#: settings.cpp:209
+#: settings.cpp:162
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -631,7 +631,7 @@ msgid ""
 msgstr ""
 "حدث خطأ أثناء استرداد كلمة سر الغربال من برنامج سلسلة مفاتيح النظام: \"%1\""
 
-#: settings.cpp:239
+#: settings.cpp:192
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -639,7 +639,7 @@ msgid ""
 "\"%1\""
 msgstr "حدث خطأ عند حفظ كلمة سر الغربال في سلسلة مفاتيح النظام: \"%1\""
 
-#: settings.cpp:265
+#: settings.cpp:218
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -647,7 +647,7 @@ msgid ""
 "\"%1\""
 msgstr "حدث خطأ عند حفظ كلمة سر IMAP في سلسلة مفاتيح النظام: \"%1\""
 
-#: settings.cpp:352
+#: settings.cpp:305
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"

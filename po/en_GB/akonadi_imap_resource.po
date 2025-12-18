@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-16 13:25+0000\n"
+"POT-Creation-Date: 2025-12-18 00:44+0000\n"
 "PO-Revision-Date: 2024-11-23 12:06+0000\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
@@ -611,13 +611,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Disconnected during login."
 
-#: settings.cpp:167
+#: settings.cpp:124
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "Password not found for %1 IMAP account"
 
-#: settings.cpp:173
+#: settings.cpp:129
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid ""
@@ -631,13 +631,13 @@ msgstr ""
 "An error occurred when retrieving the IMAP password from the system "
 "keychain: \"%1\""
 
-#: settings.cpp:203
+#: settings.cpp:157
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "Password not found for %1 sieve account"
 
-#: settings.cpp:209
+#: settings.cpp:162
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid ""
@@ -651,7 +651,7 @@ msgstr ""
 "An error occurred when retrieving the sieve password from the system "
 "keychain: \"%1\""
 
-#: settings.cpp:239
+#: settings.cpp:192
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid ""
@@ -665,7 +665,7 @@ msgstr ""
 "An error occurred when saving the sieve password in the system keychain: "
 "\"%1\""
 
-#: settings.cpp:265
+#: settings.cpp:218
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid ""
@@ -679,7 +679,7 @@ msgstr ""
 "An error occurred when saving the IMAP password in the system keychain: "
 "\"%1\""
 
-#: settings.cpp:352
+#: settings.cpp:305
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
