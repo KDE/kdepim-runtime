@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Joëlle Cornavin <jcornavi@club-internet.fr>, 2009.
 # Joëlle Cornavin <jcornavin@laposte.net>, 2009, 2010.
-# SPDX-FileCopyrightText: 2013, 2021, 2024 Xavier Besnard <xavier.besnard@kde.org>
+# SPDX-FileCopyrightText: 2013, 2021, 2024, 2025 Xavier Besnard <xavier.besnard@kde.org>
 # Geoffray Levasseur <geoffray.levasseurbrandin@numericable.fr>, 2014.
 #
 msgid ""
@@ -21,7 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Accelerator-Marker: &\n"
 "X-Environment: kde\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 25.12.0\n"
 "X-Text-Markup: kde4\n"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
