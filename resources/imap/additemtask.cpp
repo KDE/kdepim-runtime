@@ -49,7 +49,7 @@ void AddItemTask::doStart(KIMAP::Session *session)
 
     auto job = new KIMAP::AppendJob(session);
     job->setMailBox(mailBox);
-    job->setContent(msg->encodedContent(true));
+    job->setContent(msg->encodedContent(KMime::NewlineType::CRLF));
     job->setFlags(fromAkonadiToSupportedImapFlags(item().flags().values(), collection()));
     job->setInternalDate(msg->date()->dateTime());
     connect(job, &KIMAP::AppendJob::result, this, &AddItemTask::onAppendMessageDone);

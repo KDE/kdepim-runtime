@@ -51,7 +51,7 @@ void ChangeItemTask::doStart(KIMAP::Session *session)
         auto job = new KIMAP::AppendJob(session);
 
         job->setMailBox(mailBox);
-        job->setContent(msg->encodedContent(true));
+        job->setContent(msg->encodedContent(KMime::NewlineType::CRLF));
         const QList<QByteArray> flags = fromAkonadiToSupportedImapFlags(item().flags().values(), item().parentCollection());
         job->setFlags(flags);
         qCDebug(IMAPRESOURCE_LOG) << "Appending new message: " << flags;

@@ -34,7 +34,7 @@ void ReplaceMessageJob::start()
 {
     auto job = new KIMAP::AppendJob(mSession);
     job->setMailBox(mMailbox);
-    job->setContent(mMessage->encodedContent(true));
+    job->setContent(mMessage->encodedContent(KMime::NewlineType::CRLF));
     job->setInternalDate(mMessage->date()->dateTime());
     connect(job, &KJob::result, this, &ReplaceMessageJob::onAppendMessageDone);
     job->start();

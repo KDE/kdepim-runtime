@@ -152,7 +152,7 @@ void SendJob::doTraditionalTransport()
     if (needAssemble) {
         message->assemble();
     }
-    const QByteArray content = message->encodedContent(true) + "\r\n";
+    const QByteArray content = message->encodedContent(KMime::NewlineType::CRLF) + "\r\n";
     Q_ASSERT(!content.isEmpty());
 
     // Addresses.

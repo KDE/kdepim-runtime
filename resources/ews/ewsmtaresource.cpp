@@ -68,16 +68,16 @@ void EwsMtaResource::sendItem(const Akonadi::Item &item)
      * As a workaround force encoding of the body (or in case of multipart - all parts) to Base64. */
     if (msg->contents().isEmpty()) {
         msg->changeEncoding(KMime::Headers::CEbase64);
-        msg->contentTransferEncoding(true)->setEncoding(KMime::Headers::CEbase64);
+        msg->contentTransferEncoding(KMime::CreatePolicy::Create)->setEncoding(KMime::Headers::CEbase64);
     } else {
         const auto contents = msg->contents();
         for (KMime::Content *content : contents) {
             content->changeEncoding(KMime::Headers::CEbase64);
-            content->contentTransferEncoding(true)->setEncoding(KMime::Headers::CEbase64);
+            content->contentTransferEncoding(KMime::CreatePolicy::Create)->setEncoding(KMime::Headers::CEbase64);
         }
     }
     msg->assemble();
-    QByteArray mimeContent = msg->encodedContent(true);
+    QByteArray mimeContent = msg->encodedContent(KMime::NewlineType::CRLF);
     mEwsResource->sendMessage(item.remoteId(), mimeContent);
 }
 
