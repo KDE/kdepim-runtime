@@ -70,9 +70,9 @@ std::shared_ptr<KMime::Message> createMessage(const QString &from,
         message->contentType()->setParameter(QByteArrayLiteral("method"), QStringLiteral("request"));
 
         if (!attachment.isEmpty()) {
-            auto disposition = new KMime::Headers::ContentDisposition();
+            auto disposition = std::make_unique<KMime::Headers::ContentDisposition>();
             disposition->setDisposition(KMime::Headers::CDinline);
-            message->setHeader(disposition);
+            message->setHeader(std::move(disposition));
             message->contentTransferEncoding()->setEncoding(KMime::Headers::CEquPr);
             message->setBody(KMime::CRLFtoLF(attachment.toUtf8()));
         }
@@ -86,28 +86,28 @@ std::shared_ptr<KMime::Message> createMessage(const QString &from,
         ct->setBoundary(KMime::multiPartBoundary());
 
         // Set the first multipart, the body message.
-        auto bodyMessage = new KMime::Content;
+        auto bodyMessage = std::make_unique<KMime::Content>();
         auto bodyDisposition = new KMime::Headers::ContentDisposition();
         bodyDisposition->setDisposition(KMime::Headers::CDinline);
         bodyMessage->contentType()->setMimeType("text/plain");
         bodyMessage->contentType()->setCharset("utf-8");
         bodyMessage->contentTransferEncoding()->setEncoding(KMime::Headers::CEquPr);
         bodyMessage->setBody(KMime::CRLFtoLF(body.toUtf8()));
-        message->appendContent(bodyMessage);
+        message->appendContent(std::move(bodyMessage));
 
         // Set the sedcond multipart, the attachment.
         if (!attachment.isEmpty()) {
-            auto attachMessage = new KMime::Content;
-            auto attachDisposition = new KMime::Headers::ContentDisposition();
+            auto attachMessage = std::make_unique<KMime::Content>();
+            auto attachDisposition = std::make_unique<KMime::Headers::ContentDisposition>();
             attachDisposition->setDisposition(KMime::Headers::CDattachment);
             attachMessage->contentType()->setMimeType("text/calendar");
             attachMessage->contentType()->setCharset("utf-8");
             attachMessage->contentType()->setName(QStringLiteral("cal.ics"));
             attachMessage->contentType()->setParameter(QByteArrayLiteral("method"), QStringLiteral("request"));
-            attachMessage->setHeader(attachDisposition);
+            attachMessage->setHeader(std::move(attachDisposition));
             attachMessage->contentTransferEncoding()->setEncoding(KMime::Headers::CEquPr);
             attachMessage->setBody(KMime::CRLFtoLF(attachment.toUtf8()));
-            message->appendContent(attachMessage);
+            message->appendContent(std::move(attachMessage));
         }
     }
 

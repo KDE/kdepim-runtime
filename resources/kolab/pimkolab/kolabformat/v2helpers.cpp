@@ -149,26 +149,26 @@ std::shared_ptr<KMime::Message> contactToKolabFormat(const KolabV2::Contact &con
     message->subject()->fromUnicodeString(contact.uid());
     message->from()->fromUnicodeString(contact.fullEmail());
 
-    KMime::Content *content = Mime::createMainPart(KOLAB_TYPE_CONTACT, contact.saveXML().toUtf8());
-    message->appendContent(content);
+    auto content = Mime::createMainPart(KOLAB_TYPE_CONTACT, contact.saveXML().toUtf8());
+    message->appendContent(std::move(content));
 
     if (!contact.picture().isNull()) {
         QByteArray type;
         const QByteArray &pic = createPicture(contact.picture(), contact.pictureFormat(), type);
         content = Mime::createAttachmentPart(QByteArray(), type, /*"kolab-picture.png"*/ contact.pictureAttachmentName(), pic);
-        message->appendContent(content);
+        message->appendContent(std::move(content));
     }
 
     if (!contact.logo().isNull()) {
         QByteArray type;
         const QByteArray &pic = createPicture(contact.logo(), contact.logoFormat(), type);
         content = Mime::createAttachmentPart(QByteArray(), type, /*"kolab-logo.png"*/ contact.logoAttachmentName(), pic);
-        message->appendContent(content);
+        message->appendContent(std::move(content));
     }
 
     if (!contact.sound().isEmpty()) {
         content = Mime::createAttachmentPart(QByteArray(), "audio/unknown", /*"sound"*/ contact.soundAttachmentName(), contact.sound());
-        message->appendContent(content);
+        message->appendContent(std::move(content));
     }
 
     message->assemble();
@@ -194,8 +194,8 @@ std::shared_ptr<KMime::Message> distListToKolabFormat(const KolabV2::Distributio
     message->subject()->fromUnicodeString(distList.uid());
     message->from()->fromUnicodeString(distList.uid());
 
-    KMime::Content *content = Mime::createMainPart(KOLAB_TYPE_DISTLIST_V2, distList.saveXML().toUtf8());
-    message->appendContent(content);
+    auto content = Mime::createMainPart(KOLAB_TYPE_DISTLIST_V2, distList.saveXML().toUtf8());
+    message->appendContent(std::move(content));
 
     message->assemble();
     return message;

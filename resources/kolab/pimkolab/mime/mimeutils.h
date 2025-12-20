@@ -49,9 +49,10 @@ std::shared_ptr<KMime::Message>
 createMessage(const QString &subject, const QString &mimetype, const QString &xKolabType, const QByteArray &xml, bool v3, const QString &prodid);
 std::shared_ptr<KMime::Message> createMessage(const QByteArray &mimeType, bool v3, const QByteArray &prodid);
 
-KMime::Content *createExplanationPart();
-KMime::Content *createMainPart(const QByteArray &mimeType, const QByteArray &decodedContent);
-KMime::Content *createAttachmentPart(const QByteArray &cid, const QByteArray &mimeType, const QString &fileName, const QByteArray &decodedContent);
+std::unique_ptr<KMime::Content> createExplanationPart();
+std::unique_ptr<KMime::Content> createMainPart(const QByteArray &mimeType, const QByteArray &decodedContent);
+std::unique_ptr<KMime::Content>
+createAttachmentPart(const QByteArray &cid, const QByteArray &mimeType, const QString &fileName, const QByteArray &decodedContent);
 QString fromCid(const QString &cid);
 }
 } // Namespace

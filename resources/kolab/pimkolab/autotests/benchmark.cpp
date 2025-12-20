@@ -29,7 +29,7 @@ std::shared_ptr<KMime::Message> readMimeFile(const QString &fileName)
 
 KMime::Content *findContentByType(const std::shared_ptr<KMime::Message> &data, const QByteArray &type)
 {
-    const KMime::Content::List list = data->contents();
+    const auto list = data->contents();
     for (KMime::Content *c : list) {
         if (c->contentType()->mimeType() == type) {
             return c;

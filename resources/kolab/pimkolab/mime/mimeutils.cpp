@@ -134,17 +134,17 @@ createMessage(const QString &subject, const QString &mimetype, const QString &xK
         message->subject()->fromUnicodeString(subject);
     }
 
-    KMime::Content *content = createMainPart(mimetype.toLatin1(), xml);
-    message->appendContent(content);
+    auto content = createMainPart(mimetype.toLatin1(), xml);
+    message->appendContent(std::move(content));
 
     message->assemble();
     return message;
 }
 
-KMime::Content *createExplanationPart(bool v3)
+std::unique_ptr<KMime::Content> createExplanationPart(bool v3)
 {
     Q_UNUSED(v3)
-    auto content = new KMime::Content();
+    auto content = std::make_unique<KMime::Content>();
     content->contentType()->setMimeType("text/plain");
     content->contentType()->setCharset("us-ascii");
     content->contentTransferEncoding()->setEncoding(KMime::Headers::CE7Bit);
@@ -160,13 +160,13 @@ std::shared_ptr<KMime::Message> createMessage(const QByteArray &xKolabType, bool
 {
     std::shared_ptr<KMime::Message> message(new KMime::Message);
     message->date()->setDateTime(QDateTime::currentDateTimeUtc());
-    auto h = new KMime::Headers::Generic(X_KOLAB_TYPE_HEADER);
+    auto h = std::make_unique<KMime::Headers::Generic>(X_KOLAB_TYPE_HEADER);
     h->fromUnicodeString(QString::fromUtf8(xKolabType));
-    message->appendHeader(h);
+    message->appendHeader(std::move(h));
     if (v3) {
-        auto hv3 = new KMime::Headers::Generic(X_KOLAB_MIME_VERSION_HEADER);
+        auto hv3 = std::make_unique<KMime::Headers::Generic>(X_KOLAB_MIME_VERSION_HEADER);
         hv3->fromUnicodeString(KOLAB_VERSION_V3);
-        message->appendHeader(hv3);
+        message->appendHeader(std::move(hv3));
     }
     message->userAgent()->from7BitString(prodid);
     message->contentType()->setMimeType("multipart/mixed");
@@ -175,9 +175,9 @@ std::shared_ptr<KMime::Message> createMessage(const QByteArray &xKolabType, bool
     return message;
 }
 
-KMime::Content *createMainPart(const QByteArray &mimeType, const QByteArray &decodedContent)
+std::unique_ptr<KMime::Content> createMainPart(const QByteArray &mimeType, const QByteArray &decodedContent)
 {
-    auto content = new KMime::Content();
+    auto content = std::make_unique<KMime::Content>();
     content->contentType()->setMimeType(mimeType);
     content->contentType()->setName(KOLAB_OBJECT_FILENAME);
     content->contentType()->setRFC2047Charset("us-ascii");
@@ -188,9 +188,10 @@ KMime::Content *createMainPart(const QByteArray &mimeType, const QByteArray &dec
     return content;
 }
 
-KMime::Content *createAttachmentPart(const QByteArray &cid, const QByteArray &mimeType, const QString &fileName, const QByteArray &base64EncodedContent)
+std::unique_ptr<KMime::Content>
+createAttachmentPart(const QByteArray &cid, const QByteArray &mimeType, const QString &fileName, const QByteArray &base64EncodedContent)
 {
-    auto content = new KMime::Content();
+    auto content = std::make_unique<KMime::Content>();
     if (!cid.isEmpty()) {
         content->contentID()->setIdentifier(cid);
     }
