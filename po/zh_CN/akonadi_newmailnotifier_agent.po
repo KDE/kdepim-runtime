@@ -228,11 +228,3 @@ msgstr "标记为已读"
 #, kde-format
 msgid "Delete"
 msgstr "删除"
-
-#~ msgctxt "NAME OF TRANSLATORS"
-#~ msgid "Your names"
-#~ msgstr "KDE 中国"
-
-#~ msgctxt "EMAIL OF TRANSLATORS"
-#~ msgid "Your emails"
-#~ msgstr "kde-china@kde.org"
