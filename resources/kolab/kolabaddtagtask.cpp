@@ -34,7 +34,7 @@ void KolabAddTagTask::startRelationTask(KIMAP::Session *session)
 
     auto job = new KIMAP::AppendJob(session);
     job->setMailBox(mailBoxForCollection(relationCollection()));
-    job->setContent(message->encodedContent(true));
+    job->setContent(message->encodedContent(KMime::NewlineType::CRLF));
     job->setInternalDate(message->date()->dateTime());
     connect(job, &KJob::result, this, &KolabAddTagTask::onAppendMessageDone);
     job->start();

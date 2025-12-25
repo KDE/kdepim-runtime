@@ -86,12 +86,12 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
     }
     case Kolab::NoteType: {
         auto message = std::make_shared<KMime::Message>();
-        auto subject = new KMime::Headers::Subject();
+        auto subject = std::make_unique<KMime::Headers::Subject>();
         subject->fromUnicodeString(i18n("Notes are not supported"));
-        message->setHeader(subject);
-        auto contentType = new KMime::Headers::ContentType();
+        message->setHeader(std::move(subject));
+        auto contentType = std::make_unique<KMime::Headers::ContentType>();
         contentType->setMimeType("text/plain");
-        message->setHeader(subject);
+        message->setHeader(std::move(contentType));
         message->setBody(i18n("Support for notes have been removed.").toUtf8());
         item.setMimeType(QStringLiteral("text/x-vnd.akonadi.note"));
         item.setPayload(message);
