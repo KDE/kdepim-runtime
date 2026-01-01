@@ -1,6 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2009 Tobias Koenig <tokoe@kde.org>
-    SPDX-FileCopyrightText: 2018-2025 Laurent Montel <montel@kde.org>
+    SPDX-FileCopyrightText: 2018-2026 Laurent Montel <montel@kde.org>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
