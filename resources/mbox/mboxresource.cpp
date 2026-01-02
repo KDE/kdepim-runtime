@@ -153,15 +153,16 @@ bool MboxResource::retrieveItems(const Akonadi::Item::List &items, const QSet<QB
     for (const auto &item : items) {
         const QString rid = item.remoteId();
         const quint64 offset = itemOffset(rid);
-        KMime::Message *mail = mMBox->readMessage(KMBox::MBoxEntry(offset));
+        auto mail = mMBox->readMessage(KMBox::MBoxEntry(offset));
         if (!mail) {
             Q_EMIT error(i18n("Failed to read message with uid '%1'.", rid));
             return false;
         }
 
         Item i(item);
-        i.setPayload(std::shared_ptr<KMime::Message>(mail));
-        Akonadi::MessageFlags::copyMessageFlags(*mail, i);
+        KMime::Message *mailRaw = mail.get();
+        i.setPayload(std::shared_ptr<KMime::Message>(std::move(mail)));
+        Akonadi::MessageFlags::copyMessageFlags(*mailRaw, i);
         rv.push_back(i);
     }
     itemsRetrieved(rv);
