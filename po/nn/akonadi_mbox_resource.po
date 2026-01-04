@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-01-04 00:45+0000\n"
 "PO-Revision-Date: 2010-02-08 22:07+0100\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
@@ -191,13 +191,13 @@ msgstr "Komprimeringsfrekvens"
 msgid "Lock method"
 msgstr "Låsemetode"
 
-#: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
+#: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:187
 #, kde-format
 msgctxt "@info:status"
 msgid "MBox not configured."
 msgstr ""
 
-#: mboxresource.cpp:143 mboxresource.cpp:182
+#: mboxresource.cpp:143 mboxresource.cpp:183
 #, kde-format
 msgid "MBox not loaded."
 msgstr "mbox er ikkje lasta inn."
@@ -207,22 +207,22 @@ msgstr "mbox er ikkje lasta inn."
 msgid "Failed to read message with uid '%1'."
 msgstr "Klarte ikkje lesa meldinga med UID-en «%1»."
 
-#: mboxresource.cpp:192
+#: mboxresource.cpp:193
 #, kde-format
 msgid "Only email messages can be added to the MBox resource."
 msgstr "Berre e-postmeldingar kan leggjast til i mbox-ressursen."
 
-#: mboxresource.cpp:198
+#: mboxresource.cpp:199
 #, kde-format
 msgid "Mail message not added to the MBox."
 msgstr "E-postmeldinga er ikkje lagt til mbox."
 
-#: mboxresource.cpp:237
+#: mboxresource.cpp:238
 #, kde-format
 msgid "Could not fetch the collection: %1"
 msgstr "Klarte ikkje henta samlinga: %1"
 
-#: mboxresource.cpp:266
+#: mboxresource.cpp:267
 #, kde-format
 msgid ""
 "The MBox file was changed by another program. A copy of the new file was "
@@ -235,12 +235,12 @@ msgstr ""
 "kan du bruka låsing, og passa på at alle programma som har tilgang til mbox-"
 "postkassen brukar same låsemetode."
 
-#: mboxresource.cpp:297
+#: mboxresource.cpp:298
 #, kde-format
 msgid "Failed to save mbox file to %1"
 msgstr "Klarte ikkje lagra mbox-fila til %1"
 
-#: mboxresource.cpp:356
+#: mboxresource.cpp:357
 #, kde-format
 msgid ""
 "Failed to update the changed item because the old item could not be deleted "

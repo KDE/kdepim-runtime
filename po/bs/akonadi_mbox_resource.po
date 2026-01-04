@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-01-04 00:45+0000\n"
 "PO-Revision-Date: 2012-10-05 23:32+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -278,13 +278,13 @@ msgstr "Frekvencija sažimanja"
 msgid "Lock method"
 msgstr "Metod zaključavanja"
 
-#: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
+#: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:187
 #, fuzzy, kde-format
 msgctxt "@info:status"
 msgid "MBox not configured."
 msgstr "MBox nije učitan."
 
-#: mboxresource.cpp:143 mboxresource.cpp:182
+#: mboxresource.cpp:143 mboxresource.cpp:183
 #, kde-format
 msgid "MBox not loaded."
 msgstr "MBox nije učitan."
@@ -294,22 +294,22 @@ msgstr "MBox nije učitan."
 msgid "Failed to read message with uid '%1'."
 msgstr "Čitanje poruke sa uid '%1' nije uspjelo."
 
-#: mboxresource.cpp:192
+#: mboxresource.cpp:193
 #, kde-format
 msgid "Only email messages can be added to the MBox resource."
 msgstr "Samo se poruke e-pošte mogu dodati MBox resursu."
 
-#: mboxresource.cpp:198
+#: mboxresource.cpp:199
 #, kde-format
 msgid "Mail message not added to the MBox."
 msgstr "Poruka nije dodana MBoxu."
 
-#: mboxresource.cpp:237
+#: mboxresource.cpp:238
 #, kde-format
 msgid "Could not fetch the collection: %1"
 msgstr "Nije uspjelo dobavljanje kolekcije: %1"
 
-#: mboxresource.cpp:266
+#: mboxresource.cpp:267
 #, kde-format
 msgid ""
 "The MBox file was changed by another program. A copy of the new file was "
@@ -322,12 +322,12 @@ msgstr ""
 "koristite zaključavanje i uvjerite se da svi programi koji imaju pristup "
 "mboxu koriste isti metod zaključavanja."
 
-#: mboxresource.cpp:297
+#: mboxresource.cpp:298
 #, kde-format
 msgid "Failed to save mbox file to %1"
 msgstr "Sačuvavanje mbox datoteke na %1 nije uspjelo"
 
-#: mboxresource.cpp:356
+#: mboxresource.cpp:357
 #, kde-format
 msgid ""
 "Failed to update the changed item because the old item could not be deleted "

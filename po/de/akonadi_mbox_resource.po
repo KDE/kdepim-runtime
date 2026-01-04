@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-01-04 00:45+0000\n"
 "PO-Revision-Date: 2024-08-21 21:55+0200\n"
 "Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -237,13 +237,13 @@ msgstr "Komprimierhäufigkeit"
 msgid "Lock method"
 msgstr "Sperrmethode"
 
-#: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:186
+#: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:187
 #, kde-format
 msgctxt "@info:status"
 msgid "MBox not configured."
 msgstr "Die Mbox-Datei ist nicht eingerichtet."
 
-#: mboxresource.cpp:143 mboxresource.cpp:182
+#: mboxresource.cpp:143 mboxresource.cpp:183
 #, kde-format
 msgid "MBox not loaded."
 msgstr "Mbox-Datei nicht geladen."
@@ -253,24 +253,24 @@ msgstr "Mbox-Datei nicht geladen."
 msgid "Failed to read message with uid '%1'."
 msgstr "Fehler beim Lesen der Nachricht mit der Kennung „%1“."
 
-#: mboxresource.cpp:192
+#: mboxresource.cpp:193
 #, kde-format
 msgid "Only email messages can be added to the MBox resource."
 msgstr ""
 "Zu einer Mbox-Ressource können ausschließlich E-Mail-Nachrichten hinzugefügt "
 "werden."
 
-#: mboxresource.cpp:198
+#: mboxresource.cpp:199
 #, kde-format
 msgid "Mail message not added to the MBox."
 msgstr "E-Mail-Nachricht wurde nicht zur Mbox-Datei hinhzugefügt."
 
-#: mboxresource.cpp:237
+#: mboxresource.cpp:238
 #, kde-format
 msgid "Could not fetch the collection: %1"
 msgstr "Die 'Collection' kann nicht abgerufen werden: %1"
 
-#: mboxresource.cpp:266
+#: mboxresource.cpp:267
 #, kde-format
 msgid ""
 "The MBox file was changed by another program. A copy of the new file was "
@@ -285,12 +285,12 @@ msgstr ""
 "sicherstellen, dass alle Programme die gleiche Sperrmethode für die Mbox-"
 "Datei verwenden!"
 
-#: mboxresource.cpp:297
+#: mboxresource.cpp:298
 #, kde-format
 msgid "Failed to save mbox file to %1"
 msgstr "Fehler beim Speichern der Mbox-Datei nach %1."
 
-#: mboxresource.cpp:356
+#: mboxresource.cpp:357
 #, kde-format
 msgid ""
 "Failed to update the changed item because the old item could not be deleted "
