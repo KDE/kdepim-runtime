@@ -5,7 +5,7 @@
 # Joëlle Cornavin <jcornavi@club-internet.fr>, 2009.
 # Joëlle Cornavin <jcornavin@laposte.net>, 2010, 2011.
 # Geoffray Levasseur <geoffray.levasseurbrandin@numericable.fr>, 2012, 2013, 2014.
-# SPDX-FileCopyrightText: 2013, 2020, 2021, 2022, 2024, 2025 Xavier Besnard <xavier.besnard@kde.org>
+# SPDX-FileCopyrightText: 2013, 2020, 2021, 2022, 2024, 2025, 2026 Xavier Besnard <xavier.besnard@kde.org>
 # Vincent Pinon <vpinon@kde.org>, 2017.
 # Simon Depiets <sdepiets@gmail.com>, 2018, 2019.
 #
@@ -14,9 +14,9 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-12-18 00:44+0000\n"
-"PO-Revision-Date: 2025-04-18 16:29+0200\n"
+"PO-Revision-Date: 2026-01-06 16:30+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
-"Language-Team: French <French <kde-francophone@kde.org>>\n"
+"Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Accelerator-Marker: &\n"
 "X-Environment: kde\n"
-"X-Generator: Lokalize 24.12.3\n"
+"X-Generator: Lokalize 25.12.0\n"
 "X-Text-Markup: kde4\n"
 
 #: addcollectiontask.cpp:33
@@ -306,7 +306,7 @@ msgstr ""
 #: imapresource.kcfg:129
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr "Si la prise en charge d'activités de l’agent est activée ou non"
+msgstr "Si la prise en charge d'activités de l'agent est activée ou non"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: imapresource.kcfg:133
@@ -561,7 +561,7 @@ msgstr "Informations du serveur"
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
-msgstr "Erreur lors de la récupération des capacités du serveur : %1"
+msgstr "Erreur lors du chargement des capacités du serveur : %1"
 
 #: serverinfodialog.cpp:109
 #, kde-format
