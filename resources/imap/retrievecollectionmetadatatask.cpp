@@ -63,7 +63,7 @@ void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
             meta->setDepth(KIMAP::GetMetaDataJob::AllLevels);
         } else {
             meta->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);
-            meta->addEntry("*", "value.shared");
+            meta->addRequestedEntry("/shared*");
         }
         connect(meta, &KJob::result, this, &RetrieveCollectionMetadataTask::onGetMetaDataDone);
         m_pendingMetaDataJobs++;
