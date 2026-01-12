@@ -61,7 +61,7 @@ msgstr "El camí seleccionat no existix."
 #: libmaildir/maildir.cpp:214 libmaildir/maildir.cpp:219
 #, kde-format
 msgid "Error opening %1; this folder is missing."
-msgstr "S'ha produït un error en obrir %1; esta carpeta no existix."
+msgstr "S'ha produït un error mentre s'obria %1; esta carpeta no existix."
 
 #: libmaildir/maildir.cpp:225
 #, kde-format
@@ -69,8 +69,8 @@ msgid ""
 "Error opening %1; either this is not a valid maildir folder, or you do not "
 "have sufficient access permissions."
 msgstr ""
-"S'ha produït un error en obrir %1. No és una carpeta vàlida de directori de "
-"correu, o no disposeu de permisos d'accés suficients."
+"S'ha produït un error mentre s'obria %1. No és una carpeta vàlida de "
+"directori de correu, o no disposeu de permisos d'accés suficients."
 
 #: libmaildir/maildir.cpp:452 libmaildir/maildir.cpp:474
 #: libmaildir/maildir.cpp:492 libmaildir/maildir.cpp:512
@@ -93,7 +93,8 @@ msgstr "No s'ha pogut escriure en el fitxer de correu %1."
 #: libmaildir/maildir.cpp:604
 #, kde-format
 msgid "Failed to create mail file %1. The error was: %2"
-msgstr "No s'ha pogut crear el fitxer de correu %1: L'error ha sigut: %2"
+msgstr ""
+"Ha fallat mentre es creava el fitxer de correu %1: L'error ha sigut: %2"
 
 #: libmaildir/maildir.cpp:698
 #, kde-format
@@ -124,7 +125,7 @@ msgstr "S'ha produït un error: tipus no acceptat."
 #: maildirresource.cpp:331
 #, kde-format
 msgid "Failed to change the flags for the mail. %1"
-msgstr "No s'han pogut canviar els indicadors del correu. %1"
+msgstr "Ha fallat mentre es canviaven els indicadors del correu. %1"
 
 #: maildirresource.cpp:366
 #, kde-format
@@ -150,7 +151,7 @@ msgstr ""
 #: maildirresource.cpp:438
 #, kde-format
 msgid "Failed to delete message: %1"
-msgstr "No s'ha pogut suprimir el missatge: %1"
+msgstr "Ha fallat mentre se suprimia el missatge: %1"
 
 #: maildirresource.cpp:527
 #, kde-format
@@ -184,7 +185,7 @@ msgstr ""
 #: maildirresource.cpp:669
 #, kde-format
 msgid "Failed to delete sub-folder '%1'."
-msgstr "No s'ha pogut suprimir la subcarpeta «%1»."
+msgstr "Ha fallat mentre se suprimia la subcarpeta «%1»."
 
 #: maildirresource.cpp:683
 #, kde-format

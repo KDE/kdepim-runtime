@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Guillaume Pujol <guill.p@gmail.com>, 2009, 2010.
 # Geoffray Levasseur <geoffray.levasseurbrandin@numericable.fr>, 2012, 2013, 2014.
-# SPDX-FileCopyrightText: 2013, 2021, 2024, 2025 Xavier Besnard <xavier.besnard@kde.org>
+# SPDX-FileCopyrightText: 2013, 2021, 2024, 2025, 2026 Xavier Besnard <xavier.besnard@kde.org>
 # Joëlle Cornavin <jcornavin@laposte.net>, 2011.
 # Sebastien Renard <renard@kde.org>, 2013.
 # Vincent Pinon <vpinon@kde.org>, 2017.
@@ -14,9 +14,9 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 14:41+0000\n"
-"PO-Revision-Date: 2025-05-26 07:48+0200\n"
+"PO-Revision-Date: 2026-01-10 20:14+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
-"Language-Team: French <French <kde-francophone@kde.org>>\n"
+"Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Accelerator-Marker: &\n"
 "X-Environment: kde\n"
-"X-Generator: Lokalize 25.04.1\n"
+"X-Generator: Lokalize 25.12.1\n"
 "X-Text-Markup: kde4\n"
 
 #: configwidget.cpp:33
@@ -127,7 +127,7 @@ msgstr ""
 #: configwidget.ui:140
 #, kde-format
 msgid "Limit retrieval time range"
-msgstr "Limiter l’intervalle de temps pour la récupération de données"
+msgstr "Limiter l'intervalle de temps pour le chargement de données"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configwidget.ui:152
@@ -445,19 +445,19 @@ msgstr "Nom d'utilisateur"
 #: davgroupwareresource.kcfg:30
 #, kde-format
 msgid "Limit the data retrieval to the specified time range"
-msgstr "Limiter la récupération des données à l’intervalle de temps spécifié"
+msgstr "Limiter le chargement des données dans l'intervalle de temps spécifié"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
 #, kde-format
 msgid "Period for which to retrieve data, quantity"
-msgstr "Période pour laquelle récupérer des données d'une quantité donnée"
+msgstr "Période pour laquelle charger des données d'une quantité donnée"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
 #, kde-format
 msgid "Period for which to retrieve data, type"
-msgstr "Période pour laquelle récupérer des données d'un type donné"
+msgstr "Période pour laquelle charger des données d'un type donné"
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
 #: davgroupwareresource.kcfg:42

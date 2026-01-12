@@ -148,8 +148,7 @@ msgstr "Definix si la subscripció de la banda del servidor està habilitada"
 #: imapresource.kcfg:42 setupserverview_desktop.ui:560
 #, kde-format
 msgid "Connect using the system proxy settings"
-msgstr ""
-"Connecta emprant la configuració de l'amfitrió intermediari del sistema"
+msgstr "Connecta emprant la configuració del servidor intermediari del sistema"
 
 #. i18n: ectx: whatsthis, entry (UseProxy), group (network)
 #: imapresource.kcfg:43

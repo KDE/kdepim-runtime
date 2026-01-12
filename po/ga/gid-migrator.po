@@ -1,135 +1,130 @@
-# Translation of gid-migrator.po to Catalan (Valencian)
-# Copyright (C) 2013-2024 This_file_is_part_of_KDE
-# This file is distributed under the license LGPL version 2.1 or
-# version 3 or later versions approved by the membership of KDE e.V.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-# SPDX-FileCopyrightText: 2013, 2014, 2015, 2016, 2020 Antoni Bella Pérez <antonibella5@yahoo.com>
-# SPDX-FileCopyrightText: 2016, 2020, 2022, 2024 Josep M. Ferrer <txemaq@gmail.com>
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 14:41+0000\n"
-"PO-Revision-Date: 2024-06-07 10:46+0200\n"
-"Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
-"Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
-"Language: ca@valencia\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <kde-i18n-doc@kde.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Accelerator-Marker: &\n"
-"X-Generator: Lokalize 22.12.3\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "Antoni Bella"
+msgstr ""
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "antonibella5@yahoo.com"
+msgstr ""
 
 #: ../infodialog.cpp:53
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr "%p%"
+msgstr ""
 
 #: ../kmigratorbase.cpp:116
 #, kde-format
 msgid "Creating instance of type %1"
-msgstr "S'està creant una instància de tipus %1"
+msgstr ""
 
 #: ../migratorbase.cpp:128
 #, kde-format
 msgid "Missing Identifier"
-msgstr "Falta l'identificador"
+msgstr ""
 
 #: ../migratorbase.cpp:141
 #, kde-format
 msgid "Failed to start migration because migrator is not ready"
 msgstr ""
-"Ha fallat mentre s'iniciava la migració perquè el migrador no està llest"
 
 #: ../migratorbase.cpp:147
 #, kde-format
 msgid "Starting migration…"
-msgstr "S'està iniciant la migració…"
+msgstr ""
 
 #: ../migratorbase.cpp:189
 #, kde-format
 msgid "Migration complete"
-msgstr "S'ha completat la migració"
+msgstr ""
 
 #: ../migratorbase.cpp:193
 #, kde-format
 msgid "Migration aborted"
-msgstr "S'ha interromput la migració"
+msgstr ""
 
 #: ../migratorbase.cpp:199
 #, kde-format
 msgid "Migration failed"
-msgstr "No s'ha pogut migrar"
+msgstr ""
 
 #: ../migratorbase.cpp:203
 #, kde-format
 msgid "Migration paused"
-msgstr "S'ha fet una pausa en la migració"
+msgstr ""
 
 #: ../migratorbase.cpp:233
 #, kde-format
 msgid "This migration has already been started once but was aborted"
-msgstr "Esta migració ja s'ha iniciat una vegada, però es va interrompre"
+msgstr ""
 
 #: ../migratorbase.cpp:270
 #, kde-format
 msgctxt "@info:status"
 msgid "Not started"
-msgstr "No iniciada"
+msgstr ""
 
 #: ../migratorbase.cpp:272
 #, kde-format
 msgctxt "@info:status"
 msgid "Running…"
-msgstr "En execució…"
+msgstr ""
 
 #: ../migratorbase.cpp:274
 #, kde-format
 msgctxt "@info:status"
 msgid "Complete"
-msgstr "Completada"
+msgstr ""
 
 #: ../migratorbase.cpp:276
 #, kde-format
 msgctxt "@info:status"
 msgid "Aborted"
-msgstr "Interrompuda"
+msgstr ""
 
 #: ../migratorbase.cpp:278
 #, kde-format
 msgctxt "@info:status"
 msgid "Paused"
-msgstr "En pausa"
+msgstr ""
 
 #: ../migratorbase.cpp:280
 #, kde-format
 msgctxt "@info:status"
 msgid "Needs Update"
-msgstr "Necessita actualització"
+msgstr ""
 
 #: ../migratorbase.cpp:282
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed"
-msgstr "No s'ha pogut"
+msgstr ""
 
 #: gidmigrator.cpp:22
 #, kde-format
 msgctxt "Name of the GID Migrator (intended for advanced users)."
 msgid "GID Migrator: %1"
-msgstr "Migrador GID: %1"
+msgstr ""
 
 #: gidmigrator.cpp:27
 #, kde-format
@@ -137,54 +132,52 @@ msgid ""
 "Ensures that all items with the mimetype %1 have a GID if a GID extractor is "
 "available."
 msgstr ""
-"Assegura que tots els elements amb el tipus MIME %1 tenen un GID si hi ha "
-"disponible un extractor de GID."
 
 #: gidmigrator.cpp:49
 #, kde-format
 msgid "Migration failed: %1"
-msgstr "No s'ha pogut migrar: %1"
+msgstr ""
 
 #: main.cpp:26
 #, kde-format
 msgid "GID Migration Tool"
-msgstr "Eina per a la migració del GID"
+msgstr ""
 
 #: main.cpp:28
 #, kde-format
 msgid "Migration of Akonadi Items to support GID"
-msgstr "Migració dels elements d'Akonadi per a permetre el GID"
+msgstr ""
 
 #: main.cpp:30
 #, kde-format
 msgid "(c) 2013-2022 the Akonadi developers"
-msgstr "(c) 2013-2022, els desenvolupadors d'Akonadi"
+msgstr ""
 
 #: main.cpp:33
 #, kde-format
 msgctxt "@info:credit"
 msgid "Christian Mollekopf"
-msgstr "Christian Mollekopf"
+msgstr ""
 
 #: main.cpp:33
 #, kde-format
 msgid "Author"
-msgstr "Autoria"
+msgstr ""
 
 #: main.cpp:36
 #, kde-format
 msgctxt "@info:shell"
 msgid "Show reporting dialog"
-msgstr "Mostra el diàleg de l'informe"
+msgstr ""
 
 #: main.cpp:38
 #, kde-format
 msgctxt "@info:shell"
 msgid "Show report only if changes were made"
-msgstr "Mostra l'informe només si hi ha canvis"
+msgstr ""
 
 #: main.cpp:39
 #, kde-format
 msgctxt "@info:shell"
 msgid "MIME type to migrate"
-msgstr "Tipus MIME que s'ha de migrar"
+msgstr ""
