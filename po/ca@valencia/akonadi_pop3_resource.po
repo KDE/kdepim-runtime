@@ -876,8 +876,7 @@ msgstr ""
 #: popsettings.ui:505
 #, kde-format
 msgid "Connect using the system proxy settings"
-msgstr ""
-"Connecta emprant la configuració de l'amfitrió intermediari del sistema"
+msgstr "Connecta emprant la configuració del servidor intermediari del sistema"
 
 #. i18n: ectx: label, entry (authenticationMethod), group (General)
 #: settings.kcfg:30

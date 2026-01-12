@@ -1,34 +1,31 @@
-# Translation of akonadi_ews_resource.po to Catalan (Valencian)
-# Copyright (C) 2017-2025 This_file_is_part_of_KDE
-# This file is distributed under the license LGPL version 2.1 or
-# version 3 or later versions approved by the membership of KDE e.V.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-# SPDX-FileCopyrightText: 2017, 2020, 2021, 2023, 2024, 2025 Josep M. Ferrer <txemaq@gmail.com>
-# SPDX-FileCopyrightText: 2017, 2018, 2019, 2020, 2021 Antoni Bella Pérez <antonibella5@yahoo.com>
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-12-16 13:25+0000\n"
-"PO-Revision-Date: 2025-05-01 10:30+0200\n"
-"Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
-"Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
-"Language: ca@valencia\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <kde-i18n-doc@kde.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 22.12.3\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
 msgid "Incorrect email address"
-msgstr "Adreça de correu electrònic incorrecta"
+msgstr ""
 
 #: ewsautodiscoveryjob.cpp:116
 #, kde-format
 msgid "Exchange protocol information not found"
-msgstr "No s'ha trobat la informació del protocol Exchange"
+msgstr ""
 
 #: ewsclient/auth/ewsintuneauth.cpp:303
 #, kde-kuit-format
@@ -37,8 +34,6 @@ msgid ""
 "InTune credentials for the Microsoft Exchange account <b>%1</b> are no "
 "longer valid. You need to authenticate in order to continue using it."
 msgstr ""
-"Les credencials de l'InTune per al compte <b>%1</b> de Microsoft Exchange ja "
-"no són vàlides. Caldrà que us autentiqueu per a continuar-lo emprant."
 
 #: ewsclient/auth/ewsintuneauth.cpp:312
 #, kde-kuit-format
@@ -47,9 +42,6 @@ msgid ""
 "Failed to obtain InTune credentials for Microsoft Exchange account <b>%1</"
 "b>. Please update it in the account settings page."
 msgstr ""
-"Ha fallat mentre s'obtenien les credencials d'InTune per al compte <b>%1</b> "
-"de Microsoft Exchange. Actualitzeu-les en la pàgina de configuració del "
-"compte."
 
 #: ewsclient/auth/ewsoauth.cpp:524
 #, kde-kuit-format
@@ -58,8 +50,6 @@ msgid ""
 "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
 "valid. You need to authenticate in order to continue using it."
 msgstr ""
-"Les credencials de Microsoft Exchange per al compte <b>%1</b> ja no són "
-"vàlides. Caldrà que us autentiqueu per a continuar-lo emprant."
 
 #: ewsclient/auth/ewsoauth.cpp:533
 #, kde-kuit-format
@@ -68,8 +58,6 @@ msgid ""
 "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
 "Please update it in the account settings page."
 msgstr ""
-"Ha fallat mentre s'obtenien les credencials per al compte <b>%1</b> de "
-"Microsoft Exchange. Actualitzeu-les en la pàgina de configuració del compte."
 
 #: ewsclient/auth/ewspasswordauth.cpp:57
 #, kde-format
@@ -78,50 +66,47 @@ msgid ""
 "The username/password for the Microsoft Exchange EWS account <b>%1</b> is "
 "not valid. Please update it in the account settings page."
 msgstr ""
-"El nom d'usuari/contrasenya per al compte EWS <b>%1</b> de Microsoft "
-"Exchange no són vàlids. Actualitzeu-los en la pàgina de configuració del "
-"compte."
 
 #: ewsconfigdialog.cpp:77
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
-msgstr "Configureu Microsoft Exchange"
+msgstr ""
 
 #: ewsconfigdialog.cpp:103
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
-msgstr "D'acord"
+msgstr ""
 
 #: ewsconfigdialog.cpp:129 ewsconfigdialog.cpp:131
 #, kde-format
 msgid "PEM file"
-msgstr "Fitxer PEM"
+msgstr ""
 
 #: ewsconfigdialog.cpp:149
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
-msgstr "A mida"
+msgstr ""
 
 #: ewsconfigdialog.cpp:160
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
-msgstr "Recurs Akonadi per als serveis web de Microsoft Exchange (EWS)"
+msgstr ""
 
 #: ewsconfigdialog.cpp:161
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
-msgstr "Copyright (c) Krzysztof Nowicki 2015-2020"
+msgstr ""
 
 #: ewsconfigdialog.cpp:162
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
-msgstr "Versió %1"
+msgstr ""
 
 #: ewsconfigdialog.cpp:163
 #, kde-format
@@ -130,38 +115,36 @@ msgid ""
 "Distributed under the GNU Library General Public License version 2.0 or "
 "later."
 msgstr ""
-"Distribuït segons la Llicència pública general de biblioteques de GNU versió "
-"2.0 o posterior."
 
 #: ewsconfigdialog.cpp:267
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
-msgstr "Ha fallat el descobriment automàtic"
+msgstr ""
 
 #: ewsconfigdialog.cpp:280
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
-msgstr "No s'ha pogut connectar"
+msgstr ""
 
 #: ewsconfigdialog.cpp:281 ewsconfigdialog.cpp:440
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
-msgstr "No s'ha pogut"
+msgstr ""
 
 #: ewsconfigdialog.cpp:282 ewsconfigdialog.cpp:441
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
-msgstr "Desconeguda"
+msgstr ""
 
 #: ewsconfigdialog.cpp:284 ewsconfigdialog.cpp:445
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
-msgstr "D'acord"
+msgstr ""
 
 #: ewsconfigdialog.cpp:356
 #, kde-format
@@ -169,14 +152,12 @@ msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
 "still want to save your settings?"
 msgstr ""
-"Ha fallat el descobriment automàtic. Açò pot ser causat per paràmetres "
-"incorrectes. Voleu guardar la configuració?"
 
 #: ewsconfigdialog.cpp:357 ewsprogressdialog.cpp:48
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
-msgstr "Descobriment automàtic del servidor Exchange"
+msgstr ""
 
 #: ewsconfigdialog.cpp:387
 #, kde-format
@@ -184,72 +165,69 @@ msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
 "Do you still want to save your settings?"
 msgstr ""
-"Ha fallat mentre es connectava amb Exchange. Açò pot ser causat per "
-"paràmetres incorrectes. Voleu guardar la configuració?"
 
 #: ewsconfigdialog.cpp:388
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server connection"
-msgstr "Connexió amb el servidor Exchange"
+msgstr ""
 
 #: ewsconfigdialog.cpp:442
 #, kde-format
 msgid "Connection failed"
-msgstr "No s'ha pogut connectar"
+msgstr ""
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, SetupServerView)
 #: ewsconfigdialog.ui:14
 #, kde-format
 msgid "EWS Configuration"
-msgstr "Configureu EWS"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, generalTab)
 #: ewsconfigdialog.ui:24
 #, kde-format
 msgctxt "General settings tab"
 msgid "General"
-msgstr "General"
+msgstr ""
 
 #. i18n: ectx: property (title), widget (QGroupBox, accountInfoGroupBox)
 #: ewsconfigdialog.ui:45
 #, kde-format
 msgid "Account Information"
-msgstr "Informació del compte"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, accountNameLabel)
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: ewsconfigdialog.ui:57 ewsmtaconfigdialog.ui:32
 #, kde-format
 msgid "Account Name:"
-msgstr "Nom del compte:"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, accountName)
 #: ewsconfigdialog.ui:64
 #, kde-format
 msgid "This is the account name that will appear in all Akonadi applications"
 msgstr ""
-"Este és el nom del compte que apareixerà a totes les aplicacions d'Akonadi"
 
 #. i18n: ectx: property (text), widget (QLabel, emailLabel)
 #: ewsconfigdialog.ui:71
 #, kde-format
 msgctxt "Exchange account e-mail address"
 msgid "Email:"
-msgstr "Correu electrònic:"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Email)
 #: ewsconfigdialog.ui:78
 #, kde-format
 msgid "The e-mail address of this account"
-msgstr "L'adreça de correu electrònic d'este compte"
+msgstr ""
 
 #. i18n: ectx: property (title), widget (QGroupBox, authenticationGroupBox)
 #. i18n: ectx: property (title), widget (QGroupBox, advAuthenticationGroupBox)
 #: ewsconfigdialog.ui:88 ewsconfigdialog.ui:496
 #, kde-format
 msgid "Authentication"
-msgstr "Autenticació"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, authUsernameRadioButton)
 #: ewsconfigdialog.ui:94
@@ -262,19 +240,13 @@ msgid ""
 "hosted Office 365 instances, where the administrator has chosen to enable it."
 "</p></body></html>"
 msgstr ""
-"<html><head/><body><p>Habilita l'autenticació tradicional de nom d'usuari/"
-"contrasenya contra el servidor d'Exchange. Açò inclou els mètodes com Basic, "
-"NTLM o Kerberos.</p><p>Este mètode d'autenticació es considera una mica "
-"antic i s'utilitza principalment en instal·lacions xicotetes locals "
-"d'Exchange i en instàncies allotjades d'Office 365, on l'administrador ha "
-"decidit habilitar-lo.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authUsernameRadioButton)
 #: ewsconfigdialog.ui:97
 #, kde-format
 msgctxt "authentication type"
 msgid "&Username/Password"
-msgstr "Nom d'&usuari/Contrasenya"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_HasDomain)
 #: ewsconfigdialog.ui:143
@@ -290,40 +262,31 @@ msgid ""
 "will cause the server to set the domain to the default one its configured "
 "with.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>Permet especificar un domini de directori actiu per a "
-"l'usuari.</p><p><span style=\" font-weight:600;\">Nota:</span> Hi ha una "
-"diferència subtil entre «domini buit» i «sense domini».</p><p>Amb un domini "
-"buit (casella de selecció Domini marcada, el domini buit en el quadro "
-"d'edició) el recurs EWS passarà a l'usuari amb un domini explícitament buit "
-"(«\\nom_usuari»).</p><p>Sense establir el domini (la casella de selecció "
-"Domini estarà neta), el nom d'usuari serà passat sense el domini "
-"(«nom_usuari»), el qual farà que el servidor establisca el domini amb què "
-"està configurat de manera predeterminada.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_HasDomain)
 #: ewsconfigdialog.ui:146
 #, kde-format
 msgid "Domain:"
-msgstr "Domini:"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Domain)
 #: ewsconfigdialog.ui:156
 #, kde-format
 msgid "The Active Directory domain the user belongs to."
-msgstr "El domini «Active Directory» al qual pertany l'usuari."
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, usernameLabel)
 #: ewsconfigdialog.ui:169
 #, kde-format
 msgctxt "Exchange account username/login"
 msgid "Username:"
-msgstr "Nom d'usuari:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, passwordLabel)
 #: ewsconfigdialog.ui:179
 #, kde-format
 msgid "Password:"
-msgstr "Contrasenya:"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (KPasswordLineEdit, passwordEdit)
 #: ewsconfigdialog.ui:186
@@ -333,10 +296,6 @@ msgid ""
 "p><p><span style=\" font-weight:600;\">Note:</span> This can be left empty "
 "when using Kerberos authentication.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>La contrasenya emprada per a iniciar la sessió amb el "
-"servidor Exchange.</p><p><span style=\" font-weight:600;\">Nota:</span> Açò "
-"es pot deixar buit quan s'utilitza l'autenticació de Kerberos.</p></body></"
-"html>"
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Username)
 #: ewsconfigdialog.ui:193
@@ -346,10 +305,6 @@ msgid ""
 "p><p><span style=\" font-weight:600;\">Note:</span> This can be left empty "
 "when using Kerberos authentication.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>El nom d'usuari emprat per a iniciar la sessió amb el "
-"servidor Exchange.</p><p><span style=\" font-weight:600;\">Nota:</span> Açò "
-"es pot deixar buit quan s'utilitza l'autenticació de Kerberos.</p></body></"
-"html>"
 
 #. i18n: ectx: property (text), widget (QLabel, kerberosNoteLabel)
 #: ewsconfigdialog.ui:203
@@ -359,9 +314,6 @@ msgid ""
 "Username and password are not needed (can be empty) when Kerberos is "
 "properly configured on your system.</p></body></html>"
 msgstr ""
-"<html><head/><body><p><span style=\" font-weight:600;\">Nota:</span> El nom "
-"d'usuari i la contrasenya no són necessaris (poden estar buits) quan "
-"Kerberos estiga ben configurat en el vostre sistema.</p></body></html>"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, authOAuth2RadioButton)
 #: ewsconfigdialog.ui:222
@@ -374,19 +326,12 @@ msgid ""
 "one-time-passwords generated by tokens.</p><p>This method is mostly used for "
 "hosted Office 365 instances.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>Permet una autenticació més moderna i més forta basada "
-"en OAuth2.</p><p>Este tipus d'autenticació obrirà una pàgina web "
-"subministrada per l'organització, on l'usuari podrà introduir la informació "
-"d'autenticació, la qual també pot incloure l'autenticació multifactor en "
-"forma de contrasenyes úniques generades pels testimonis.</p><p>Este mètode "
-"s'utilitza principalment per a allotjar instàncies d'Office 365.</p></body></"
-"html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authOAuth2RadioButton)
 #: ewsconfigdialog.ui:225
 #, kde-format
 msgid "OAuth&2 (Office 365)"
-msgstr "OAuth&2 (Office 365)"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, authInTuneRadioButton)
 #: ewsconfigdialog.ui:232
@@ -398,37 +343,30 @@ msgid ""
 "system to be joined to the organization and managed using InTune.</p></"
 "body></html>"
 msgstr ""
-"<html><head/><body><p>Permet l'autenticació utilitzant el programari InTune "
-"MDM de Microsoft. Açò és necessari en molts entorns corporatius, que "
-"requerixen una autenticació forta utilitzant credencials de dispositiu i, "
-"per tant, requerixen que el sistema s'unisca a l'organització i es gestione "
-"utilitzant InTune.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authInTuneRadioButton)
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "&Microsoft InTune"
-msgstr "InTune de &Microsoft"
+msgstr ""
 
 #. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
 #: ewsconfigdialog.ui:245
 #, kde-format
 msgid "EWS Settings"
-msgstr "Configureu EWS"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, serverUrlLabel)
 #: ewsconfigdialog.ui:260
 #, kde-format
 msgid "EWS URL:"
-msgstr "URL d'EWS:"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_BaseUrl)
 #: ewsconfigdialog.ui:273
 #, kde-format
 msgid "The Microsoft Exchange server URL used to send EWS requests."
 msgstr ""
-"L'URL del servidor Microsoft Exchange emprada per a enviar sol·licituds a "
-"EWS."
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_AutoDiscovery)
 #: ewsconfigdialog.ui:295
@@ -437,28 +375,25 @@ msgid ""
 "<html><head/><body><p>Attempts to find out the Microsoft Exchange server "
 "address relevant to the supplied e-mail address.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>Intenta trobar l'adreça del servidor Microsoft "
-"Exchange rellevant per a l'adreça de correu electrònic subministrada.</p></"
-"body></html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_AutoDiscovery)
 #. i18n: ectx: label, entry (AutoDiscovery), group (General)
 #: ewsconfigdialog.ui:298 ewsresource.kcfg:35
 #, kde-format
 msgid "Server Autodiscovery"
-msgstr "Descobriment automàtic del servidor"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, autodiscoverButton)
 #: ewsconfigdialog.ui:308
 #, kde-format
 msgid "Perform"
-msgstr "Executa"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, tryConnectButton)
 #: ewsconfigdialog.ui:318
 #, kde-format
 msgid "Try connect"
-msgstr "Intenta connectar"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QGroupBox, pkeyAuthGroupBox)
 #: ewsconfigdialog.ui:334
@@ -474,59 +409,50 @@ msgid ""
 "requirements for strong authentication, in which case entering the MFA code "
 "is not required.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>L'autenticació amb clau privada (PKey) s'utilitza com "
-"un pas d'autenticació addicional a l'autenticació basada en OAuth2. Utilitza "
-"un certificat X.509 i una clau privada que identifica a un dispositiu de "
-"confiança, el qual es va unir al directori Azure mitjançant una unió en el "
-"lloc de treball.</p><p>Alguns administradors poden utilitzar l'autenticació "
-"PKey quan es connecta amb Office 365 des de fora de la xarxa corporativa. En "
-"altres casos, quan es configura una autenticació amb múltiples factors, "
-"l'autenticació PKey pot satisfer els requisits per a una autenticació forta, "
-"en este cas, no es requerix introduir el codi MFA.</p></body></html>"
 
 #. i18n: ectx: property (title), widget (QGroupBox, pkeyAuthGroupBox)
 #: ewsconfigdialog.ui:337
 #, kde-format
 msgid "Private Key (PKey) Authentication (Office 365)"
-msgstr "Autenticació amb clau privada (PKey) (Office 365)"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, pkeyAuthCertLabel)
 #: ewsconfigdialog.ui:349
 #, kde-format
 msgid "Certificate:"
-msgstr "Certificat:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, pkeyAuthKeyLabel)
 #: ewsconfigdialog.ui:363
 #, kde-format
 msgid "Private key:"
-msgstr "Clau privada:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, pkeyAuthPasswordLabel)
 #: ewsconfigdialog.ui:374
 #, kde-format
 msgid "Key password:"
-msgstr "Contrasenya de la clau:"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, subscriptionTab)
 #: ewsconfigdialog.ui:405
 #, kde-format
 msgid "Subscriptions"
-msgstr "Subscripcions"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, advancedTab)
 #: ewsconfigdialog.ui:411
 #, kde-format
 msgctxt "Advanced settings tab"
 msgid "Advanced"
-msgstr "Avançat"
+msgstr ""
 
 #. i18n: ectx: property (title), widget (QGroupBox, retrievalMethodGroupBox)
 #. i18n: ectx: label, entry (RetrievalMethod), group (General)
 #: ewsconfigdialog.ui:417 ewsresource.kcfg:45
 #, kde-format
 msgid "Retrieval"
-msgstr "Recuperació"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, pollRadioButton)
 #: ewsconfigdialog.ui:423
@@ -535,26 +461,24 @@ msgid ""
 "<html><head/><body><p>Periodically asks for new item change events.</p></"
 "body></html>"
 msgstr ""
-"<html><head/><body><p>Sol·licita periòdicament els esdeveniments de canvis "
-"per a elements nous.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, pollRadioButton)
 #: ewsconfigdialog.ui:426
 #, kde-format
 msgid "Po&ll for new messages"
-msgstr "Enq&uesta de missatges nous"
+msgstr ""
 
 #. i18n: ectx: property (suffix), widget (QDoubleSpinBox, kcfg_PollInterval)
 #: ewsconfigdialog.ui:451
 #, kde-format
 msgid " minutes"
-msgstr " minuts"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, pollIntervalLabel)
 #: ewsconfigdialog.ui:470
 #, kde-format
 msgid "Interval"
-msgstr "Interval"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, streamingRadioButton)
 #: ewsconfigdialog.ui:480
@@ -565,17 +489,12 @@ msgid ""
 "delivered instantly.</p><p><br/></p><p>This option requires Exchange server "
 "version 2010 SP1 or later.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>Les notificacions de transmissió es comporten de "
-"manera similar al mode empenta: es manté viva la connexió i les "
-"notificacions sobre els canvis d'element es lliuren a l'instant.</p><p><br/"
-"></p><p>Esta opció requerix el servidor Exchange versió 2010 SP1 o posterior."
-"</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, streamingRadioButton)
 #: ewsconfigdialog.ui:483
 #, kde-format
 msgid "&Use streaming notifications"
-msgstr "Utilit&za les notificacions de transmissió"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_EnableNTLMv2)
 #: ewsconfigdialog.ui:502
@@ -587,17 +506,12 @@ msgid ""
 "allow NTLMv2 authentication. In such case this option must be enabled in "
 "order to connect successfully.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>De manera predeterminada. KDE utilitza l'autenticació "
-"NTLMv1 menys segura. Si activeu açò, s'utilitzarà el protocol NTLMv2 més "
-"segur.</p><p>Alguns servidors Microsoft Exchange nous es configuren per a "
-"només permetre l'autenticació NTLMv2. En este cas, esta opció s'haurà "
-"d'activar per a poder-se connectar correctament.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_EnableNTLMv2)
 #: ewsconfigdialog.ui:505
 #, kde-format
 msgid "Enable NTLMv2"
-msgstr "Activa NTLMv2"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QGroupBox, userAgentGroupBox)
 #: ewsconfigdialog.ui:515
@@ -611,25 +525,18 @@ msgid ""
 "advised that bypassing company policies may result in personal consequences."
 "</p></body></html>"
 msgstr ""
-"<html><head/><body><p>Algunes organitzacions restringixen l'accés al correu "
-"només als clients autoritzats, com ara Microsoft Outlook. En el costat del "
-"servidor, açò s'implementa mitjançant l'anàlisi de la cadena «User-Agent» i "
-"només permet una llista de clients aprovats.</p><p>Esta opció permet emular "
-"alguns clients coneguts, així com proporcionar una cadena d'usuari "
-"personalitzada.</p><p>Cal tindre en compte que evitar les polítiques de "
-"l'empresa pot tindre conseqüències personals.</p></body></html>"
 
 #. i18n: ectx: property (title), widget (QGroupBox, userAgentGroupBox)
 #: ewsconfigdialog.ui:518
 #, kde-format
 msgid "Use custo&m User Agent"
-msgstr "Utilitza un agent d'usuari &personalitzat"
+msgstr ""
 
 #. i18n: ectx: property (title), widget (QGroupBox, clearSyncStateGroupBox)
 #: ewsconfigdialog.ui:543
 #, kde-format
 msgid "Clear Synchronization State"
-msgstr "Neteja l'estat de la sincronització"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, clearSyncStateLabel)
 #: ewsconfigdialog.ui:549
@@ -638,156 +545,146 @@ msgid ""
 "Resets synchronization state between Exchange and Akonadi. Use in case some "
 "items or folders are not showing up despite existing in Exchange."
 msgstr ""
-"Restaura l'estat de sincronització entre Exchange i Akonadi. Utilitzeu-ho en "
-"el cas que alguns elements o carpetes no es mostren malgrat que existisquen "
-"en Exchange."
 
 #. i18n: ectx: property (text), widget (QPushButton, clearFolderTreeSyncStateButton)
 #: ewsconfigdialog.ui:574
 #, kde-format
 msgid "Clear Folder Tree State"
-msgstr "Neteja l'estat de l'arbre de carpetes"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, clearFolderItemSyncStateButton)
 #: ewsconfigdialog.ui:581
 #, kde-format
 msgid "Clear Folder Item State"
-msgstr "Neteja l'estat de l'element de carpeta"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, statusTab)
 #: ewsconfigdialog.ui:608
 #, kde-format
 msgid "Status"
-msgstr "Estat"
+msgstr ""
 
 #. i18n: ectx: property (title), widget (QGroupBox, serverStatusGroupBox)
 #: ewsconfigdialog.ui:614
 #, kde-format
 msgid "Server Status"
-msgstr "Estat del servidor"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, serverStatusLabel)
 #: ewsconfigdialog.ui:620
 #, kde-format
 msgid "Status:"
-msgstr "Estat:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, serverStatusText)
 #: ewsconfigdialog.ui:627
 #, kde-format
 msgctxt "Unknown server status"
 msgid "Unknown"
-msgstr "Desconegut"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, serverVersionLabel)
 #: ewsconfigdialog.ui:637
 #, kde-format
 msgid "Version:"
-msgstr "Versió:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, serverVersionText)
 #: ewsconfigdialog.ui:644
 #, kde-format
 msgctxt "Unknown server version"
 msgid "Unknown"
-msgstr "Desconeguda"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, aboutTab)
 #: ewsconfigdialog.ui:668
 #, kde-format
 msgid "About"
-msgstr "Quant a"
+msgstr ""
 
 #: ewsfetchitempayloadjob.cpp:63
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
 msgstr ""
-"Ha fallat mentre es processava la sol·licitud per a la recuperació dels "
-"elements"
 
 #: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
 #: ewsresource.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
-msgstr "Ha fallat mentre es recuperaven els elements"
+msgstr ""
 
 #: ewsfetchitempayloadjob.cpp:78
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - incorrect number of responses"
 msgstr ""
-"Ha fallat mentre es recuperaven els elements -nombre incorrecte de respostes-"
 
 #: ewsfetchitempayloadjob.cpp:91
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Akonadi item not found for item %1"
 msgstr ""
-"Ha fallat mentre es recuperaven els elements -no s'ha trobat l'element "
-"Akonadi per a l'element %1-"
 
 #: ewsfetchitempayloadjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Unknown item type for item %1"
 msgstr ""
-"Ha fallat mentre es recuperaven els elements -tipus d'element desconegut per "
-"a l'element %1-"
 
 #: ewsfetchitempayloadjob.cpp:104
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to fetch item payload"
-msgstr "Ha fallat mentre es recuperava el contingut de l'element"
+msgstr ""
 
 #: ewsfetchitemsjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list"
-msgstr "S'estan recuperant %1 llista d'elements"
+msgstr ""
 
 #: ewsfetchitemsjob.cpp:214
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
-msgstr "S'estan recuperant %1 llista d'elements (%2 elements)"
+msgstr ""
 
 #: ewsfetchitemsjob.cpp:399
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"
-msgstr "S'estan recuperant %1 elements"
+msgstr ""
 
 #: ewsmtaconfigdialog.cpp:46
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Mail Transport Configuration"
-msgstr "Configureu el transport de correu de Microsoft Exchange"
+msgstr ""
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, SetupServerView)
 #: ewsmtaconfigdialog.ui:14
 #, kde-format
 msgid "EWS Mail Transport Configuration"
-msgstr "Configureu el transport de correu d'EWS"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, recourceLabel)
 #: ewsmtaconfigdialog.ui:42
 #, kde-format
 msgid "Parent Exchange account:"
-msgstr "Compte Exchange pare:"
+msgstr ""
 
 #: ewsmtaresource.cpp:57
 #, kde-format
 msgid "Unable to connect to master EWS resource"
-msgstr "No s'ha pogut connectar amb el recurs EWS mestre"
+msgstr ""
 
 #. i18n: ectx: label, entry (EwsResource), group (General)
 #: ewsmtaresource.kcfg:10
 #, kde-format
 msgid "Ews Resource"
-msgstr "Recurs EWS"
+msgstr ""
 
 #. i18n: ectx: tooltip, entry (EwsResource), group (General)
 #. i18n: ectx: whatsthis, entry (EwsResource), group (General)
@@ -795,161 +692,148 @@ msgstr "Recurs EWS"
 #, kde-format
 msgid "The name of the parent EWS Resource to use when sending mail"
 msgstr ""
-"El nom del recurs EWS primari que s'utilitzarà per a enviar els missatges"
 
 #: ewsprogressdialog.cpp:34
 #, kde-format
 msgid "Cancel"
-msgstr "Cancel·la"
+msgstr ""
 
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
 msgstr ""
-"S'està realitzant el descobriment automàtic del servidor Microsoft Exchange…"
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
 msgctxt "@title:window"
 msgid "Connecting to Exchange"
-msgstr "Connexió amb Exchange"
+msgstr ""
 
 #: ewsprogressdialog.cpp:53
 #, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "S'està connectant amb el servidor Microsoft Exchange…"
+msgstr ""
 
 #: ewsresource.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
-msgstr "S'està connectant amb el servidor Exchange"
+msgstr ""
 
 #: ewsresource.cpp:161 ewsresource.cpp:168 ewsresource.cpp:175
 #: ewsresource.cpp:313
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
-msgstr "No s'ha pogut connectar amb el servidor Exchange"
+msgstr ""
 
 #: ewsresource.cpp:253
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
-msgstr "No es coneix l'ID de la carpeta arrel."
+msgstr ""
 
 #: ewsresource.cpp:257
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
-msgstr "S'està recuperant l'arbre de la col·lecció"
+msgstr ""
 
 #: ewsresource.cpp:406
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
-msgstr "S'estan recuperant elements"
+msgstr ""
 
 #: ewsresource.cpp:428 ewsresource.cpp:514
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
-msgstr "Ha fallat mentre es recuperaven els elements -error intern-"
+msgstr ""
 
 #: ewsresource.cpp:462
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
-msgstr "Ha fallat mentre es recuperaven les carpetes -error intern-"
+msgstr ""
 
 #: ewsresource.cpp:468
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
 msgstr ""
-"Ha fallat mentre es processava la sol·licitud per a la recuperació de les "
-"carpetes"
 
 #: ewsresource.cpp:485
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
 msgstr ""
-"L'objecte de la tasca de sol·licitud de recuperació incremental de les "
-"carpetes no és vàlid"
 
 #: ewsresource.cpp:548
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
-msgstr "El tipus d'element no admet l'intercanvi"
+msgstr ""
 
 #: ewsresource.cpp:561
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
-msgstr "S'estan actualitzant les etiquetes dels elements"
+msgstr ""
 
 #: ewsresource.cpp:573
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
 msgstr ""
-"Ha fallat mentre es processava la sol·licitud per a l'actualització de les "
-"etiquetes de l'element"
 
 #: ewsresource.cpp:580
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
 msgstr ""
-"Ha fallat mentre s'actualitzaven les etiquetes de l'element -error intern-"
 
 #: ewsresource.cpp:594
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
 msgstr ""
-"Ha fallat mentre es processava la sol·licitud per a l'actualització de "
-"l'element"
 
 #: ewsresource.cpp:601
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
-msgstr "Ha fallat mentre s'actualitzava l'element -error intern-"
+msgstr ""
 
 #: ewsresource.cpp:636
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
-msgstr "Ha fallat mentre es processava la sol·licitud per a moure l'element"
+msgstr ""
 
 #: ewsresource.cpp:643
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
-msgstr "Ha fallat mentre es movia l'element -error intern-"
+msgstr ""
 
 #: ewsresource.cpp:650
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
 msgstr ""
-"Ha fallat mentre es movia l'element -nombre de respostes no vàlides rebudes "
-"pel servidor-"
 
 #: ewsresource.cpp:743
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
-msgstr "Ha fallat mentre es processava la sol·licitud per a suprimir l'element"
+msgstr ""
 
 #: ewsresource.cpp:750
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
-msgstr "Ha fallat mentre se suprimia l'element -error intern-"
+msgstr ""
 
 #: ewsresource.cpp:757
 #, kde-format
@@ -957,64 +841,60 @@ msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
 msgstr ""
-"Ha fallat mentre se suprimia l'element -nombre de respostes no vàlides "
-"rebudes pel servidor-"
 
 #: ewsresource.cpp:802 ewsresource.cpp:1015
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
-msgstr "El tipus d'element no admet la creació"
+msgstr ""
 
 #: ewsresource.cpp:813
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
-msgstr "Ha fallat mentre es processava la sol·licitud per a crear l'element"
+msgstr ""
 
 #: ewsresource.cpp:819
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
-msgstr "Ha fallat mentre es creava l'element -error intern-"
+msgstr ""
 
 #: ewsresource.cpp:840
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr ""
-"Ha fallat mentre s'afegia la col·lecció -no s'ha pogut determinar el tipus "
-"de carpeta EWS-"
 
 #: ewsresource.cpp:859
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
-msgstr "Ha fallat mentre es processava la sol·licitud per a crear la carpeta"
+msgstr ""
 
 #: ewsresource.cpp:865
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
-msgstr "Ha fallat mentre es creava la carpeta -error intern-"
+msgstr ""
 
 #: ewsresource.cpp:877
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
-msgstr "Ha fallat mentre es creava la carpeta"
+msgstr ""
 
 #: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
-msgstr "Ha fallat mentre es processava la sol·licitud per a moure la carpeta"
+msgstr ""
 
 #: ewsresource.cpp:906
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
-msgstr "Ha fallat mentre es movia la carpeta -error intern-"
+msgstr ""
 
 #: ewsresource.cpp:912
 #, kde-format
@@ -1022,27 +902,24 @@ msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
 msgstr ""
-"Ha fallat mentre es movia la carpeta -nombre de respostes no vàlides rebudes "
-"pel servidor-"
 
 #: ewsresource.cpp:923
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
-msgstr "Ha fallat mentre es movia la carpeta"
+msgstr ""
 
 #: ewsresource.cpp:951
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
 msgstr ""
-"Ha fallat mentre es processava la sol·licitud per a actualitzar la carpeta"
 
 #: ewsresource.cpp:957
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
-msgstr "Ha fallat mentre s'actualitzava la carpeta -error intern-"
+msgstr ""
 
 #: ewsresource.cpp:963
 #, kde-format
@@ -1050,112 +927,102 @@ msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
 msgstr ""
-"Ha fallat mentre s'actualitzava la carpeta -nombre de respostes no vàlides "
-"rebudes pel servidor-"
 
 #: ewsresource.cpp:974
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
-msgstr "Ha fallat mentre s'actualitzava la carpeta"
+msgstr ""
 
 #: ewsresource.cpp:991
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
 msgstr ""
-"Ha fallat mentre es processava la sol·licitud per a suprimir la carpeta"
 
 #: ewsresource.cpp:997
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
-msgstr "Ha fallat mentre se suprimia la carpeta -error intern-"
+msgstr ""
 
 #: ewsresource.cpp:1005
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
-msgstr "Ha fallat mentre se suprimia la subcarpeta"
+msgstr ""
 
 #: ewsresource.cpp:1029 ewsresource.cpp:1063
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
-msgstr "Ha fallat mentre es processava la sol·licitud per a enviar l'element"
+msgstr ""
 
 #: ewsresource.cpp:1035 ewsresource.cpp:1069
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
-msgstr "Ha fallat mentre s'enviava l'element -error intern-"
+msgstr ""
 
 #: ewsresource.cpp:1074
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
-msgstr "Nombre de respostes no vàlides rebudes pel servidor"
+msgstr ""
 
 #: ewsresource.cpp:1266
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
-msgstr "S'estan actualitzant les etiquetes dels elements"
+msgstr ""
 
 #: ewsresource.cpp:1279
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr ""
-"Ha fallat mentre es processava la sol·licitud per a l'actualització de les "
-"etiquetes dels elements"
 
 #: ewsresource.cpp:1285
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr ""
-"Ha fallat mentre s'actualitzaven les etiquetes dels elements -error intern-"
 
 #: ewsresource.cpp:1322
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr ""
-"Ha fallat mentre es processava la sol·licitud per a l'actualització global "
-"de les etiquetes"
 
 #: ewsresource.cpp:1338
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr ""
-"Ha fallat mentre es processava la sol·licitud per a la recuperació global de "
-"les etiquetes"
 
 #: ewsresource.cpp:1416
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
-msgstr "Autentica"
+msgstr ""
 
 #: ewsresource.cpp:1428 ewsresource.cpp:1443
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
-msgstr "No s'ha pogut fer l'autenticació"
+msgstr ""
 
 #: ewsresource.cpp:1451
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"
-msgstr "Llest"
+msgstr ""
 
 #. i18n: ectx: label, entry (BaseUrl), group (General)
 #: ewsresource.kcfg:10
 #, kde-format
 msgid "Server URL"
-msgstr "URL del servidor"
+msgstr ""
 
 #. i18n: ectx: tooltip, entry (BaseUrl), group (General)
 #. i18n: ectx: whatsthis, entry (BaseUrl), group (General)
@@ -1165,15 +1032,13 @@ msgid ""
 "The URL of the Microsoft Exchange server, should be something like https://"
 "myserver.org/EWS/Exchange.asmx"
 msgstr ""
-"L'URL del servidor Microsoft Exchange, ha de ser alguna cosa com ara https://"
-"elmeuservidor.org/EWS/Exchange.asmx"
 
 #. i18n: ectx: label, entry (Username), group (General)
 #: ewsresource.kcfg:16
 #, kde-format
 msgctxt "The username to login into the server"
 msgid "Username"
-msgstr "Nom d'usuari"
+msgstr ""
 
 #. i18n: ectx: tooltip, entry (Username), group (General)
 #. i18n: ectx: whatsthis, entry (Username), group (General)
@@ -1181,47 +1046,45 @@ msgstr "Nom d'usuari"
 #, kde-format
 msgid "The username that is used to log into the Microsoft Exchange server"
 msgstr ""
-"El nom d'usuari que s'utilitza per a iniciar la sessió amb el servidor "
-"Microsoft Exchange"
 
 #. i18n: ectx: label, entry (Domain), group (General)
 #: ewsresource.kcfg:21
 #, kde-format
 msgid "Domain"
-msgstr "Domini"
+msgstr ""
 
 #. i18n: ectx: tooltip, entry (Domain), group (General)
 #. i18n: ectx: whatsthis, entry (Domain), group (General)
 #: ewsresource.kcfg:22 ewsresource.kcfg:23
 #, kde-format
 msgid "The Active Directory domain the user belongs to"
-msgstr "El domini «Active Directory» al qual pertany l'usuari"
+msgstr ""
 
 #. i18n: ectx: label, entry (HasDomain), group (General)
 #: ewsresource.kcfg:26
 #, kde-format
 msgid "Use a domain name during authentication"
-msgstr "Utilitza un nom de domini durant l'autenticació"
+msgstr ""
 
 #. i18n: ectx: label, entry (Email), group (General)
 #: ewsresource.kcfg:30
 #, kde-format
 msgctxt "Account e-mail address"
 msgid "E-mail"
-msgstr "Correu electrònic"
+msgstr ""
 
 #. i18n: ectx: tooltip, entry (Email), group (General)
 #. i18n: ectx: whatsthis, entry (Email), group (General)
 #: ewsresource.kcfg:31 ewsresource.kcfg:32
 #, kde-format
 msgid "The primary e-mail address of this account"
-msgstr "L'adreça de correu electrònic primària d'este compte"
+msgstr ""
 
 #. i18n: ectx: tooltip, entry (AutoDiscovery), group (General)
 #: ewsresource.kcfg:36
 #, kde-format
 msgid "Attempt to automatically discover Exchange server address"
-msgstr "Intenta descobrir automàticament l'adreça del servidor Exchange"
+msgstr ""
 
 #. i18n: ectx: whatsthis, entry (AutoDiscovery), group (General)
 #: ewsresource.kcfg:37
@@ -1230,133 +1093,129 @@ msgid ""
 "Attempts to find out the Microsoft Exchange server address relevant to the "
 "supplied e-mail address."
 msgstr ""
-"Intenta trobar l'adreça del servidor Microsoft Exchange rellevant per a "
-"l'adreça de correu electrònic subministrada."
 
 #. i18n: ectx: label, entry (PollInterval), group (General)
 #: ewsresource.kcfg:40
 #, kde-format
 msgid "Poll Interval"
-msgstr "Interval d'enquesta"
+msgstr ""
 
 #. i18n: ectx: tooltip, entry (PollInterval), group (General)
 #: ewsresource.kcfg:41
 #, kde-format
 msgid "Sets the interval for checking for new mail"
-msgstr "Establix l'interval per a la comprovació de correu nou"
+msgstr ""
 
 #. i18n: ectx: whatsthis, entry (PollInterval), group (General)
 #: ewsresource.kcfg:42
 #, kde-format
 msgid "Sets the interval for checking for new mail."
-msgstr "Establix l'interval per a la comprovació de correu nou."
+msgstr ""
 
 #. i18n: ectx: label, entry (ServerSubscription), group (General)
 #: ewsresource.kcfg:48
 #, kde-format
 msgid "Enable Server-Side Subscriptions"
-msgstr "Habilita les subscripcions de la banda del servidor"
+msgstr ""
 
 #. i18n: ectx: label, entry (ServerSubscriptionList), group (General)
 #: ewsresource.kcfg:51
 #, kde-format
 msgid "List of folders to subscribe to"
-msgstr "Llista de carpetes per a subscriure's"
+msgstr ""
 
 #. i18n: ectx: label, entry (EnableNTLMv2), group (General)
 #: ewsresource.kcfg:55
 #, kde-format
 msgid "Enable NTLMv2 authentication"
-msgstr "Activa l'autenticació NTLMv2"
+msgstr ""
 
 #. i18n: ectx: label, entry (UserAgent), group (General)
 #: ewsresource.kcfg:59
 #, kde-format
 msgid "Forces a non-default User-Agent string"
-msgstr "Força una cadena agent d'usuari no predeterminada"
+msgstr ""
 
 #. i18n: ectx: label, entry (OAuth2AppId), group (General)
 #: ewsresource.kcfg:65
 #, kde-format
 msgid "OAuth2 application identifier"
-msgstr "Identificador de l'aplicació OAuth2"
+msgstr ""
 
 #. i18n: ectx: label, entry (OAuth2ReturnUri), group (General)
 #: ewsresource.kcfg:69
 #, kde-format
 msgid "OAuth2 return URI"
-msgstr "URI de retorn OAuth2"
+msgstr ""
 
 #. i18n: ectx: label, entry (PKeyCert), group (General)
 #: ewsresource.kcfg:73
 #, kde-format
 msgid "Path to PKey authentication PEM certificate"
-msgstr "Camí cap a l'autenticació PKey del certificat PEM"
+msgstr ""
 
 #. i18n: ectx: label, entry (PKeyKey), group (General)
 #: ewsresource.kcfg:76
 #, kde-format
 msgid "Path to PKey authentication PEM private key"
-msgstr "Camí cap a l'autenticació PKey de la clau privada PEM"
+msgstr ""
 
 #: ewssubscriptionwidget.cpp:178
 #, kde-format
 msgctxt "@info"
 msgid "Exchange server not configured."
-msgstr "El servidor Exchange no està configurat."
+msgstr ""
 
 #: ewssubscriptionwidget.cpp:187 ewssubscriptionwidget.cpp:208
 #, kde-format
 msgctxt "@info"
 msgid "Failed to retrieve folder list."
-msgstr "Ha fallat mentre es recuperava la llista de carpetes."
+msgstr ""
 
 #: ewssubscriptionwidget.cpp:293
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
-msgstr "Habilita les subscripcions de la banda del servidor"
+msgstr ""
 
 #: ewssubscriptionwidget.cpp:301
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Filter folders"
-msgstr "Filtra les carpetes"
+msgstr ""
 
 #: ewssubscriptionwidget.cpp:321
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
-msgstr "Torna a carregar la &llista"
+msgstr ""
 
 #: ewssubscriptionwidget.cpp:324
 #, kde-format
 msgctxt "@action:button"
 msgid "&Reset"
-msgstr "&Restablix"
+msgstr ""
 
 #: ewssubscriptionwidget.cpp:333
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"
-msgstr "Només els subscrits"
+msgstr ""
 
 #: mail/ewscreatemailjob.cpp:148 mail/ewscreatemailjob.cpp:185
 #: mail/ewscreatemailjob.cpp:218
 #, kde-format
 msgid "Failed to create mail item"
-msgstr "Ha fallat mentre es creava l'element de correu"
+msgstr ""
 
 #: mail/ewsmodifymailjob.cpp:92
 #, kde-format
 msgctxt "@info:status"
 msgid "Item update failed: "
-msgstr "No s'ha pogut fer l'actualització dels elements: "
+msgstr ""
 
 #: mail/ewsmodifymailjob.cpp:103
 #, kde-format
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr ""
-"Element fora de servei durant el processament de la resposta en actualitzar "
-"l'element."
