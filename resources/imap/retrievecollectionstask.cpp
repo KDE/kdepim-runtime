@@ -80,7 +80,7 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
     }
 
     auto listJob = new KIMAP::ListJob(session);
-    listJob->setIncludeUnsubscribed(!isSubscriptionEnabled());
+    listJob->setOption(isSubscriptionEnabled() ? KIMAP::ListJob::NoOption : KIMAP::ListJob::IncludeUnsubscribed);
     listJob->setQueriedNamespaces(serverNamespaces());
     connect(listJob, &KIMAP::ListJob::mailBoxesReceived, this, &RetrieveCollectionsTask::onMailBoxesReceived);
     connect(listJob, &KIMAP::ListJob::result, this, &RetrieveCollectionsTask::onMailBoxesReceiveDone);
