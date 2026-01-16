@@ -16,6 +16,7 @@
 #include <Akonadi/CachePolicy>
 #include <Akonadi/EntityDisplayAttribute>
 
+#include <QSignalSpy>
 #include <QTest>
 
 class TestRetrieveCollectionsTask : public ImapTestBase
@@ -268,7 +269,8 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
+        QSignalSpy doneSpy(&pool, &SessionPool::connectDone);
+        QVERIFY(doneSpy.wait());
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setResourceName(QStringLiteral("resource"));

@@ -16,6 +16,7 @@
 #include <Akonadi/CollectionAnnotationsAttribute>
 #include <Akonadi/CollectionQuotaAttribute>
 #include <PimCommonAkonadi/ImapAclAttribute>
+#include <QSignalSpy>
 #include <QTest>
 using QBYTEARRAYMAP = QMap<QByteArray, QByteArray>;
 using QBYTEARRAYINT64MAP = QMap<QByteArray, qint64>;
@@ -335,7 +336,8 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
+        QSignalSpy doneSpy(&pool, &SessionPool::connectDone);
+        QVERIFY(doneSpy.wait());
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setCollection(collection);

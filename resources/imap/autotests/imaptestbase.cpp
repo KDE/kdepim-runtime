@@ -77,24 +77,6 @@ QList<QByteArray> ImapTestBase::defaultPoolConnectionScenario(const QList<QByteA
     return scenario;
 }
 
-bool ImapTestBase::waitForSignal(QObject *obj, const char *member, int timeout) const
-{
-    QEventLoop loop;
-    QTimer timer;
-
-    connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
-
-    QSignalSpy spy(obj, member);
-    connect(obj, member, &loop, SLOT(quit()));
-
-    timer.setSingleShot(true);
-    timer.start(timeout);
-    loop.exec();
-    timer.stop();
-
-    return spy.count() == 1;
-}
-
 Akonadi::Collection ImapTestBase::createCollectionChain(const QString &remoteId) const
 {
     QChar separator = remoteId.length() > 0 ? remoteId.at(0) : u'/';

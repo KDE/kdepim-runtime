@@ -11,6 +11,7 @@
 
 #include <Akonadi/CollectionAnnotationsAttribute>
 #include <PimCommonAkonadi/ImapAclAttribute>
+#include <QSignalSpy>
 #include <QTest>
 Q_DECLARE_METATYPE(QSet<QByteArray>)
 
@@ -189,7 +190,8 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
+        QSignalSpy doneSpy(&pool, &SessionPool::connectDone);
+        QVERIFY(doneSpy.wait());
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setUserName(defaultUserName());

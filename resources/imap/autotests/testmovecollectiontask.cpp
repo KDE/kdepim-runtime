@@ -8,6 +8,7 @@
 #include "imaptestbase.h"
 
 #include "movecollectiontask.h"
+#include <QSignalSpy>
 #include <QTest>
 class TestMoveCollectionTask : public ImapTestBase
 {
@@ -142,7 +143,8 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
+        QSignalSpy doneSpy(&pool, &SessionPool::connectDone);
+        QVERIFY(doneSpy.wait());
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setCollection(collection);
