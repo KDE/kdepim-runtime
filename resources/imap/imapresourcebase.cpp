@@ -372,7 +372,7 @@ void ImapResourceBase::retrieveItems(const Collection &col)
     setItemStreamingEnabled(true);
 
     auto task = new RetrieveItemsTask(createResourceState(TaskArguments(col)), this);
-    connect(task, SIGNAL(status(int, QString)), SIGNAL(status(int, QString)));
+    connect(task, &RetrieveItemsTask::status, this, qOverload<int, const QString &>(&ImapResourceBase::status));
     connect(this, &ResourceBase::retrieveNextItemSyncBatch, task, &RetrieveItemsTask::onReadyForNextBatch);
     startTask(task);
 }
