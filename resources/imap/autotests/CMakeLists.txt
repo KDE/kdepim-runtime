@@ -20,8 +20,8 @@ MACRO(IMAP_RESOURCE_UNIT_TESTS)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR}/..)
     add_executable(${_testname} ${_testname}.cpp dummypasswordrequester.cpp dummyresourcestate.cpp imaptestbase.cpp
         dummypasswordrequester.h dummyresourcestate.h imaptestbase.h)
-    add_test(NAME ${_testname} COMMAND ${_testname})
-    ecm_mark_as_test(imap-${_testname})
+    add_test(NAME imap-${_testname} COMMAND ${_testname})
+    ecm_mark_as_test(${_testname})
 
     target_link_libraries(${_testname}
       KPim6::IMAP KPim6::kimaptest6 Qt::Gui Qt::Core Qt::Test KF6::ConfigGui imapresource akonadi-singlefileresource)
