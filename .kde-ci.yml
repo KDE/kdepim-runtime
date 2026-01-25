@@ -38,5 +38,6 @@ Dependencies:
     'plasma/plasma-activities': '@latest-kf6'
 
 Options:
+ enable-lsan: True
  cppcheck-ignore-files:
   - 'src/resources/kolab/'
