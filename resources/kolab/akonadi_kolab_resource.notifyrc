@@ -1,11 +1,55 @@
 [Global]
 IconName=network-server
 Name=Kolab Resource
+Name[ar]=مورد Kolab
+Name[ca]=Recurs Kolab
+Name[ca@valencia]=Recurs Kolab
+Name[es]=Recurso Kolab
+Name[ia]=Ressource de Kolab
+Name[ka]=Kolab-ის რესურსი
+Name[nl]=Kolab-hulpbron
+Name[pt_BR]=Recurso Kolab
+Name[sl]=Kolabov vir
+Name[uk]=Ресурс Kolab
+Name[zh_TW]=Kolab 資源
 Comment=Access your Kolab resources from KDE
+Comment[ar]=الوصول إلى موارد Kolab من كدي
+Comment[ca]=Accediu als recursos de Kolab des del KDE
+Comment[ca@valencia]=Accediu als recursos de Kolab des de KDE
+Comment[es]=Acceda a sus recursos Kolab desde KDE
+Comment[ia]=Accede a tu ressource de Kolab ab KDE
+Comment[ka]=წვდომა თქვენს Kolab-ის რესურსზე KDE-დან
+Comment[nl]=Heb toegang tot Kolab-hulpbronnen vanuit KDE
+Comment[pt_BR]=Acesse seus recursos Kolab a partir do KDE
+Comment[sl]=Dostop do virov Kolab iz KDE
+Comment[uk]=Доступ до ваших ресурсів Kolab з KDE
+Comment[zh_TW]=用 KDE 存取您的 Kolab 資源
 
 [Event/deprecated]
 Name=Deprecation of the resource
+Name[ar]=إلغاء المورد
+Name[ca]=Obsolescència del recurs
+Name[ca@valencia]=Obsolescència del recurs
+Name[es]=Discontinuidad del recurso
+Name[ia]=Deprecation del ressource
+Name[ka]=რესურსის გაუქმება
+Name[nl]=Uitfasering van de hulpbron
+Name[pt_BR]=Descontinuação do recurso
+Name[sl]=Zastaranje vira
+Name[uk]=Застарівання ресурсу
+Name[zh_TW]=資源棄用
 Comment=Deprecation notice.
+Comment[ar]=إشعار إلغاء.
+Comment[ca]=Avís d'obsolescència.
+Comment[ca@valencia]=Avís d'obsolescència.
+Comment[es]=Aviso de discontinuidad.
+Comment[ia]=Aviso de Deprecation
+Comment[ka]=გაუქმების შეტყობინება.
+Comment[nl]=Melding over uitfasering.
+Comment[pt_BR]=Nota de descontinuação.
+Comment[sl]=Obvestilo o zastaranju.
+Comment[uk]=Повідомлення щодо застарівання.
+Comment[zh_TW]=棄用告知。
 Urgency=Normal
 Action=Popup
 
