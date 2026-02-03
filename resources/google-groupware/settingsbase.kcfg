@@ -8,14 +8,6 @@
   <group name="General">
     <entry name="Account" type="String">
     </entry>
-    <!-- AccountName and accountId are used only when using
-         KAccounts instead of native authentication //-->
-    <entry name="AccountName" type="String">
-    </entry>
-    <entry name="AccountId" type="Int">
-        <default>0</default>
-    </entry>
-
     <entry name="Calendars" type="StringList">
       <default></default>
       <label>IDs of calendars in collection</label>
