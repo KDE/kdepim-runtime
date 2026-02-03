@@ -86,9 +86,6 @@ GoogleResource::GoogleResource(const QString &id)
     Q_EMIT status(NotConfigured, i18n("Fetching password…"));
 
     connect(&m_settings, &GoogleSettings::accountReady, this, [this](bool ready, const QString &error) {
-        if (accountId() > 0) {
-            return;
-        }
         if (!ready) {
             Q_ASSERT(!error.isEmpty());
 
@@ -220,7 +217,7 @@ void GoogleResource::requestAuthenticationFromUser(const KGAPI2::AccountPtr &acc
 
 bool GoogleResource::canPerformTask()
 {
-    if (!m_settings.accountPtr() && accountId() == 0) {
+    if (!m_settings.accountPtr()) {
         cancelTask(i18nc("@info:status", "Resource is not configured"));
         Q_EMIT status(NotConfigured, i18nc("@info:status", "Resource is not configured"));
         return false;
@@ -259,11 +256,6 @@ void GoogleResource::slotAuthJobFinished(KGAPI2::Job *job)
         }
     });
     writeJob->start();
-}
-
-int GoogleResource::accountId() const
-{
-    return 0;
 }
 
 GenericHandler *GoogleResource::fetchHandlerByMimetype(const QString &mimeType)

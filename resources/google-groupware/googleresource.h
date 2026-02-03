@@ -51,12 +51,6 @@ protected:
     void retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end) override;
 
     bool canPerformTask();
-    /**
-     * KAccounts support abstraction.
-     *
-     * Returns 0 when compiled without KAccounts or not configured for KAccounts
-     */
-    int accountId() const;
 
     void emitReadyStatus();
     void collectionsRetrievedFromHandler(const Akonadi::Collection::List &collections);
