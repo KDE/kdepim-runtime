@@ -191,3 +191,18 @@ kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
 ki18n_install(po)
 
 ecm_feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
+set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KPim6Runtime")
+
+configure_package_config_file(
+    ${kdepim-runtime_SOURCE_DIR}/KPimRuntimeConfig.cmake.in"
+    ${kdepim-runtime_BINARY_DIR}/KPim6RuntimeConfig.cmake"
+    INSTALL_DESTINATION ${CMAKECONFIG_INSTALL_DIR}
+)
+
+install(FILES
+    ${kdepim-runtime_BINARY_DIR}/KPim6RuntimeConfig.cmake"
+    ${kdepim-runtime_BINARY_DIR}/KPim6RuntimeConfigVersion.cmake"
+    DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
+    COMPONENT Devel
+)

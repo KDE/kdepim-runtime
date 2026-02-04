@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2026 Carl Schwan <carlschwan@kde.org>
+# SPDX-License-Identifier: BSD-2-Clause
+
+# Any changes in this ".cmake" file will be overwritten by CMake, the source is the ".cmake.in" file.
+
+@PACKAGE_INIT@
+include(CMakeFindDependencyMacro)
+find_dependency(Qt6Core @REQUIRED_QT_VERSION@)
+@PACKAGE_INCLUDE_QCHTARGETS@
