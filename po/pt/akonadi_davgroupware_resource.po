@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-02-05 00:44+0000\n"
 "PO-Revision-Date: 2021-08-24 01:18+0100\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -314,59 +314,59 @@ msgstr "Foi obtida uma resposta inválida do servidor"
 msgid "Unable to parse free-busy data received"
 msgstr "Não foi possível processar os dados de livre-ocupado recebidos"
 
-#: davgroupwareresource.cpp:170
+#: davgroupwareresource.cpp:177
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr ""
 "Não é possível obter a informação de livre-ocupado enquanto estiver desligado"
 
-#: davgroupwareresource.cpp:190
+#: davgroupwareresource.cpp:266
 #, kde-format
 msgid "Fetching collections"
 msgstr "A obter as colecções"
 
-#: davgroupwareresource.cpp:258
+#: davgroupwareresource.cpp:334
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Não foi possível obter os itens da colecção desconhecida: %1"
 
-#: davgroupwareresource.cpp:315
+#: davgroupwareresource.cpp:391
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "A colecção do item %1 é inválida."
 
-#: davgroupwareresource.cpp:647
+#: davgroupwareresource.cpp:723
 #, fuzzy, kde-format
 #| msgid "Unable to add item: %1"
 msgid "Unable to modify items: %1"
 msgstr "Não foi possível adicionar o item: %1"
 
-#: davgroupwareresource.cpp:686
+#: davgroupwareresource.cpp:762
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Não foi possível modificar a colecção: %1"
 
-#: davgroupwareresource.cpp:809
+#: davgroupwareresource.cpp:885
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Não foi possível remover a colecção: %1"
 
-#: davgroupwareresource.cpp:829
+#: davgroupwareresource.cpp:905
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Não foi possível obter as colecções: %1"
 
-#: davgroupwareresource.cpp:962 davgroupwareresource.cpp:1061
+#: davgroupwareresource.cpp:1038 davgroupwareresource.cpp:1137
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Não foi possível obter os itens: %1"
 
-#: davgroupwareresource.cpp:1141
+#: davgroupwareresource.cpp:1217
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Não foi possível obter o item: %1"
 
-#: davgroupwareresource.cpp:1161
+#: davgroupwareresource.cpp:1237
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -375,23 +375,23 @@ msgstr ""
 "Não foi possível obter o item: impossível processar os dados do item. Talvez "
 "já tenha sido apagado."
 
-#: davgroupwareresource.cpp:1198
+#: davgroupwareresource.cpp:1274
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Não foi possível adicionar o item: %1"
 
-#: davgroupwareresource.cpp:1242 davgroupwareresource.cpp:1355
-#: davgroupwareresource.cpp:1367
+#: davgroupwareresource.cpp:1318 davgroupwareresource.cpp:1431
+#: davgroupwareresource.cpp:1443
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Não foi possível modificar o item: %1"
 
-#: davgroupwareresource.cpp:1329 davgroupwareresource.cpp:1386
+#: davgroupwareresource.cpp:1405 davgroupwareresource.cpp:1462
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Não foi possível remover o item: %1"
 
-#: davgroupwareresource.cpp:1473 davgroupwareresource.cpp:1474
+#: davgroupwareresource.cpp:1549 davgroupwareresource.cpp:1550
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "O recurso ainda não está configurado"
@@ -462,18 +462,6 @@ msgstr ""
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Não alterar os dados actuais da infra-estrutura."
-
-#. i18n: ectx: label, entry (AccountId), group (General)
-#: davgroupwareresource.kcfg:50
-#, kde-format
-msgid "The account id in WebAccounts framework."
-msgstr "O ID da conta na plataforma WebAccounts."
-
-#. i18n: ectx: label, entry (AccountServices), group (General)
-#: davgroupwareresource.kcfg:53
-#, kde-format
-msgid "Account enabled services"
-msgstr "Serviços activados por conta"
 
 #: searchdialog.cpp:26
 #, kde-format
@@ -775,6 +763,12 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
+
+#~ msgid "The account id in WebAccounts framework."
+#~ msgstr "O ID da conta na plataforma WebAccounts."
+
+#~ msgid "Account enabled services"
+#~ msgstr "Serviços activados por conta"
 
 #~ msgid ""
 #~ "Select this if your calendars contain a lot of events and the server "

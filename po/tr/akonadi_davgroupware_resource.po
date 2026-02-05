@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-02-05 00:44+0000\n"
 "PO-Revision-Date: 2025-05-24 19:28+0300\n"
 "Last-Translator: Emir SARI <emir_sari@îcloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -314,80 +314,80 @@ msgstr "Sunucudan geçersiz yanıt"
 msgid "Unable to parse free-busy data received"
 msgstr "Alınan uygun-meşgul verisi ayrıştırılamıyor"
 
-#: davgroupwareresource.cpp:170
+#: davgroupwareresource.cpp:177
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "Çevrimdışıyken uygun-meşgul bilgisi alınamıyor"
 
-#: davgroupwareresource.cpp:190
+#: davgroupwareresource.cpp:266
 #, kde-format
 msgid "Fetching collections"
 msgstr "Koleksiyonlar alınıyor"
 
-#: davgroupwareresource.cpp:258
+#: davgroupwareresource.cpp:334
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Bilinmeyen bir koleksiyon için ögelerin alınması istendi: %1"
 
-#: davgroupwareresource.cpp:315
+#: davgroupwareresource.cpp:391
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "%1 ögesi için geçersiz koleksiyon."
 
-#: davgroupwareresource.cpp:647
+#: davgroupwareresource.cpp:723
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Ögeler değiştirilemiyor: %1"
 
-#: davgroupwareresource.cpp:686
+#: davgroupwareresource.cpp:762
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Koleksiyon değiştirilemiyor: %1"
 
-#: davgroupwareresource.cpp:809
+#: davgroupwareresource.cpp:885
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Koleksiyon kaldırılamıyor: %1"
 
-#: davgroupwareresource.cpp:829
+#: davgroupwareresource.cpp:905
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Koleksiyonlar alınamıyor: %1"
 
-#: davgroupwareresource.cpp:962 davgroupwareresource.cpp:1061
+#: davgroupwareresource.cpp:1038 davgroupwareresource.cpp:1137
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Ögeler alınamıyor: %1"
 
-#: davgroupwareresource.cpp:1141
+#: davgroupwareresource.cpp:1217
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Öge alınamıyor: %1"
 
-#: davgroupwareresource.cpp:1161
+#: davgroupwareresource.cpp:1237
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr "Öge alınamıyor: Öge verisi ayrıştırılamadı. Silinmiş olabilir."
 
-#: davgroupwareresource.cpp:1198
+#: davgroupwareresource.cpp:1274
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Öge eklenemiyor: %1"
 
-#: davgroupwareresource.cpp:1242 davgroupwareresource.cpp:1355
-#: davgroupwareresource.cpp:1367
+#: davgroupwareresource.cpp:1318 davgroupwareresource.cpp:1431
+#: davgroupwareresource.cpp:1443
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Öge değiştirilemiyor: %1"
 
-#: davgroupwareresource.cpp:1329 davgroupwareresource.cpp:1386
+#: davgroupwareresource.cpp:1405 davgroupwareresource.cpp:1462
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Öge kaldırılamıyor: %1"
 
-#: davgroupwareresource.cpp:1473 davgroupwareresource.cpp:1474
+#: davgroupwareresource.cpp:1549 davgroupwareresource.cpp:1550
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Kaynak henüz yapılandırılmamış"
@@ -455,18 +455,6 @@ msgstr ""
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Güncel arka uç verilerini değiştirme."
-
-#. i18n: ectx: label, entry (AccountId), group (General)
-#: davgroupwareresource.kcfg:50
-#, kde-format
-msgid "The account id in WebAccounts framework."
-msgstr "WebAccounts çatısındaki hesap kimliği."
-
-#. i18n: ectx: label, entry (AccountServices), group (General)
-#: davgroupwareresource.kcfg:53
-#, kde-format
-msgid "Account enabled services"
-msgstr "Hesap etkin hizmetler"
 
 #: searchdialog.cpp:26
 #, kde-format
@@ -758,6 +746,12 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
+
+#~ msgid "The account id in WebAccounts framework."
+#~ msgstr "WebAccounts çatısındaki hesap kimliği."
+
+#~ msgid "Account enabled services"
+#~ msgstr "Hesap etkin hizmetler"
 
 #~ msgid ""
 #~ "Select this if your calendars contain a lot of events and the server "

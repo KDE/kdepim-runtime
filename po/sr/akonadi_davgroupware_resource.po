@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-02-05 00:44+0000\n"
 "PO-Revision-Date: 2017-01-22 23:51+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -316,82 +316,82 @@ msgstr "Лош одговор са сервера."
 msgid "Unable to parse free-busy data received"
 msgstr "Не могу да рашчланим примљене податке слободног-заузетог."
 
-#: davgroupwareresource.cpp:170
+#: davgroupwareresource.cpp:177
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "Не могу да добавим податке слободног-заузетог ван везе."
 
-#: davgroupwareresource.cpp:190
+#: davgroupwareresource.cpp:266
 #, kde-format
 msgid "Fetching collections"
 msgstr "Добављам збирке"
 
-#: davgroupwareresource.cpp:258
+#: davgroupwareresource.cpp:334
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Затражено је добављање ставки из непознате збирке: %1"
 
-#: davgroupwareresource.cpp:315
+#: davgroupwareresource.cpp:391
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Лоша збирка за ставку %1."
 
-#: davgroupwareresource.cpp:647
+#: davgroupwareresource.cpp:723
 #, fuzzy, kde-format
 #| msgid "Unable to add item: %1"
 msgid "Unable to modify items: %1"
 msgstr "Не могу да додам ставку: %1"
 
-#: davgroupwareresource.cpp:686
+#: davgroupwareresource.cpp:762
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to modify collection: %1"
 msgstr "Не могу да уклоним збирку: %1"
 
-#: davgroupwareresource.cpp:809
+#: davgroupwareresource.cpp:885
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Не могу да уклоним збирку: %1"
 
-#: davgroupwareresource.cpp:829
+#: davgroupwareresource.cpp:905
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Не могу да добавим збирке: %1"
 
-#: davgroupwareresource.cpp:962 davgroupwareresource.cpp:1061
+#: davgroupwareresource.cpp:1038 davgroupwareresource.cpp:1137
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Не могу да добавим ставке: %1"
 
-#: davgroupwareresource.cpp:1141
+#: davgroupwareresource.cpp:1217
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Не могу да добавим ставку: %1"
 
-#: davgroupwareresource.cpp:1161
+#: davgroupwareresource.cpp:1237
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
 
-#: davgroupwareresource.cpp:1198
+#: davgroupwareresource.cpp:1274
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Не могу да додам ставку: %1"
 
-#: davgroupwareresource.cpp:1242 davgroupwareresource.cpp:1355
-#: davgroupwareresource.cpp:1367
+#: davgroupwareresource.cpp:1318 davgroupwareresource.cpp:1431
+#: davgroupwareresource.cpp:1443
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Не могу да изменим ставку: %1"
 
-#: davgroupwareresource.cpp:1329 davgroupwareresource.cpp:1386
+#: davgroupwareresource.cpp:1405 davgroupwareresource.cpp:1462
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Не могу да уклоним ставку: %1"
 
-#: davgroupwareresource.cpp:1473 davgroupwareresource.cpp:1474
+#: davgroupwareresource.cpp:1549 davgroupwareresource.cpp:1550
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Ресурс још увек није подешен."
@@ -463,18 +463,6 @@ msgstr ""
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Не мењај заиста позадинске податке."
-
-#. i18n: ectx: label, entry (AccountId), group (General)
-#: davgroupwareresource.kcfg:50
-#, kde-format
-msgid "The account id in WebAccounts framework."
-msgstr "ИД налога у радном оквиру Веб‑налози."
-
-#. i18n: ectx: label, entry (AccountServices), group (General)
-#: davgroupwareresource.kcfg:53
-#, kde-format
-msgid "Account enabled services"
-msgstr "Сервиси активни за налог"
 
 #: searchdialog.cpp:26
 #, fuzzy, kde-format
@@ -791,6 +779,12 @@ msgstr "кардДАВ"
 #, kde-format
 msgid "GroupDav"
 msgstr "групДАВ"
+
+#~ msgid "The account id in WebAccounts framework."
+#~ msgstr "ИД налога у радном оквиру Веб‑налози."
+
+#~ msgid "Account enabled services"
+#~ msgstr "Сервиси активни за налог"
 
 #~ msgid ""
 #~ "Select this if your calendars contain a lot of events and the server "
