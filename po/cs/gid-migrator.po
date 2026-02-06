@@ -1,6 +1,6 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# Vít Pelčák <vit@pelcak.org>, 2013, 2014, 2015, 2016, 2020.
+# SPDX-FileCopyrightText: 2013, 2014, 2015, 2016, 2020, 2026 Vít Pelčák <vit@pelcak.org>
 # SPDX-FileCopyrightText: 2022, 2024 Vit Pelcak <vit@pelcak.org>
 #
 msgid ""
@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 14:41+0000\n"
-"PO-Revision-Date: 2024-06-07 11:34+0200\n"
-"Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
+"PO-Revision-Date: 2026-02-05 16:12+0100\n"
+"Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 24.05.0\n"
+"X-Generator: Lokalize 25.12.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -133,6 +133,8 @@ msgid ""
 "Ensures that all items with the mimetype %1 have a GID if a GID extractor is "
 "available."
 msgstr ""
+"Zajišťuje, že všechny položky s mimetypem %1 mají GID, pokud je k dispozici "
+"extraktor GID."
 
 #: gidmigrator.cpp:49
 #, kde-format

@@ -1,21 +1,21 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2017, 2019, 2020, 2021, 2023, 2024 Vit Pelcak <vit@pelcak.org>
+# SPDX-FileCopyrightText: 2017, 2019, 2020, 2021, 2023, 2024, 2026 Vit Pelcak <vit@pelcak.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 14:41+0000\n"
-"PO-Revision-Date: 2024-08-08 10:05+0200\n"
-"Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
+"PO-Revision-Date: 2026-02-05 16:07+0100\n"
+"Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.12.1\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -34,6 +34,8 @@ msgid ""
 "InTune credentials for the Microsoft Exchange account <b>%1</b> are no "
 "longer valid. You need to authenticate in order to continue using it."
 msgstr ""
+"Přihlašovací údaje InTune pro účet Microsoft Exchange <b>%1</b> již nejsou "
+"platné. Abyste jej mohli nadále používat, je nutné se ověřit."
 
 #: ewsclient/auth/ewsintuneauth.cpp:312
 #, kde-kuit-format
@@ -42,6 +44,8 @@ msgid ""
 "Failed to obtain InTune credentials for Microsoft Exchange account <b>%1</"
 "b>. Please update it in the account settings page."
 msgstr ""
+"Nepodařilo se získat přihlašovací údaje InTune pro účet Microsoft Exchange  "
+"<b>%1</b>. Aktualizujte je na stránce nastavení účtu."
 
 #: ewsclient/auth/ewsoauth.cpp:525
 #, kde-kuit-format
@@ -50,6 +54,8 @@ msgid ""
 "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
 "valid. You need to authenticate in order to continue using it."
 msgstr ""
+"Přihlašovací údaje pro účet <b>%1</b> v aplikaci Microsoft Exchange již "
+"nejsou platné. Abyste mohli pokračovat v používání, je nutné se znovu ověřit."
 
 #: ewsclient/auth/ewsoauth.cpp:534
 #, kde-kuit-format
@@ -58,6 +64,8 @@ msgid ""
 "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
 "Please update it in the account settings page."
 msgstr ""
+"Nepodařilo se získat přihlašovací údaje pro účet Microsoft Exchange <b>%1</"
+"b>. Aktualizujte je na stránce nastavení účtu."
 
 #: ewsclient/auth/ewspasswordauth.cpp:57
 #, kde-format
@@ -66,6 +74,8 @@ msgid ""
 "The username/password for the Microsoft Exchange EWS account <b>%1</b> is "
 "not valid. Please update it in the account settings page."
 msgstr ""
+"Uživatelské jméno/heslo pro účet Microsoft Exchange EWS <b>%1</b> není "
+"platné. Aktualizujte jej na stránce nastavení účtu."
 
 #: ewsconfigdialog.cpp:77
 #, kde-format
@@ -94,7 +104,7 @@ msgstr "Vlastní"
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
-msgstr ""
+msgstr "Zdroj Akonadi pro Microsoft Exchange Web Services (EWS)"
 
 #: ewsconfigdialog.cpp:161
 #, kde-format
@@ -115,12 +125,14 @@ msgid ""
 "Distributed under the GNU Library General Public License version 2.0 or "
 "later."
 msgstr ""
+"Distribuováno pod licencí GNU Library General Public License verze 2.0 nebo "
+"novější."
 
 #: ewsconfigdialog.cpp:267
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
-msgstr ""
+msgstr "Automatické vyhledání selhalo"
 
 #: ewsconfigdialog.cpp:280
 #, kde-format
@@ -152,6 +164,8 @@ msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
 "still want to save your settings?"
 msgstr ""
+"Automatické vyhledávání selhalo. Příčinou mohou být nesprávné parametry. "
+"Chcete i přesto uložit nastavení?"
 
 #: ewsconfigdialog.cpp:357 ewsprogressdialog.cpp:48
 #, kde-format
@@ -165,6 +179,8 @@ msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
 "Do you still want to save your settings?"
 msgstr ""
+"Připojení k Exchange selhalo. Příčinou mohou být nesprávné parametry. Chcete "
+"i přesto uložit nastavení?"
 
 #: ewsconfigdialog.cpp:388
 #, kde-format
@@ -181,7 +197,7 @@ msgstr "Připojení selhalo"
 #: ewsconfigdialog.ui:14
 #, kde-format
 msgid "EWS Configuration"
-msgstr ""
+msgstr "Nastavení EWS"
 
 #. i18n: ectx: attribute (title), widget (QWidget, generalTab)
 #: ewsconfigdialog.ui:24
@@ -208,6 +224,7 @@ msgstr "Název účtu:"
 #, kde-format
 msgid "This is the account name that will appear in all Akonadi applications"
 msgstr ""
+"Toto je název účtu, který se bude zobrazovat ve všech aplikacích Akonadi."
 
 #. i18n: ectx: property (text), widget (QLabel, emailLabel)
 #: ewsconfigdialog.ui:71
@@ -220,7 +237,7 @@ msgstr "E-mail:"
 #: ewsconfigdialog.ui:78
 #, kde-format
 msgid "The e-mail address of this account"
-msgstr ""
+msgstr "E-mailová adresa tohoto účtu"
 
 #. i18n: ectx: property (title), widget (QGroupBox, authenticationGroupBox)
 #. i18n: ectx: property (title), widget (QGroupBox, advAuthenticationGroupBox)
@@ -240,6 +257,11 @@ msgid ""
 "hosted Office 365 instances, where the administrator has chosen to enable it."
 "</p></body></html>"
 msgstr ""
+"<html><head/><body> <p>Umožňuje tradiční ověřování pomocí uživatelského "
+"jména a hesla proti serveru Exchange. Zahrnuje metody jako Basic, NTLM nebo "
+"Kerberos.</p><p>Tato metoda ověřování je považována za poněkud zastaralou a "
+"používá se hlavně pro menší lokální instalace Exchange a hostované instance "
+"Office 365, kde se správce rozhodl ji povolit.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authUsernameRadioButton)
 #: ewsconfigdialog.ui:97
@@ -262,6 +284,15 @@ msgid ""
 "will cause the server to set the domain to the default one its configured "
 "with.</p></body></html>"
 msgstr ""
+"<html><head/><body> <p>Umožňuje určit doménu Active Directory pro uživatele."
+"</p> <p><span style=\" font-weight:600;\">Poznámka:</span> Existuje nepatrný "
+"rozdíl mezi „prázdnou doménou“ a „bez domény“.</p> <p>V případě prázdné "
+"domény (zaškrtnuté políčko Doména, prázdná doména v editačním políčku) zdroj "
+"EWS předá uživatele s explicitně prázdnou doménou („\\username“). </p><p>Bez "
+"nastavené domény (zaškrtávací políčko Doména nezaškrtnuté) bude uživatelské "
+"jméno předáno bez domény („uživatelské jméno“), což způsobí, že server "
+"nastaví doménu na výchozí doménu, se kterou je nakonfigurován. </p></body></"
+"html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_HasDomain)
 #: ewsconfigdialog.ui:146
@@ -273,7 +304,7 @@ msgstr "Doména:"
 #: ewsconfigdialog.ui:156
 #, kde-format
 msgid "The Active Directory domain the user belongs to."
-msgstr ""
+msgstr "Doména Active Directory, ke které uživatel patří."
 
 #. i18n: ectx: property (text), widget (QLabel, usernameLabel)
 #: ewsconfigdialog.ui:169
@@ -296,6 +327,9 @@ msgid ""
 "p><p><span style=\" font-weight:600;\">Note:</span> This can be left empty "
 "when using Kerberos authentication.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Heslo používané pro přihlášení k serveru Exchange. </"
+"p><p><span style=\" font-weight:600;\">Poznámka:</span> Při použití "
+"ověřování Kerberos lze toto pole nechat prázdné. </p></body></html>"
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_Username)
 #: ewsconfigdialog.ui:193
@@ -305,6 +339,9 @@ msgid ""
 "p><p><span style=\" font-weight:600;\">Note:</span> This can be left empty "
 "when using Kerberos authentication.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Uživatelské jméno používané k přihlášení k serveru "
+"Exchange.</p><p><span style=\" font-weight:600;\">Poznámka:</span> Při "
+"použití ověřování Kerberos lze toto pole nechat prázdné. </p></body></html>"
 
 #. i18n: ectx: property (text), widget (QLabel, kerberosNoteLabel)
 #: ewsconfigdialog.ui:203
@@ -314,6 +351,9 @@ msgid ""
 "Username and password are not needed (can be empty) when Kerberos is "
 "properly configured on your system.</p></body></html>"
 msgstr ""
+"<html><head/><body><p><span style=\" font-weight:600;\">Poznámka: </span> "
+"Pokud je Kerberos ve vašem systému správně nakonfigurován, uživatelské jméno "
+"a heslo nejsou nutné (mohou být prázdná). </p></body></html>"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, authOAuth2RadioButton)
 #: ewsconfigdialog.ui:222
@@ -326,12 +366,18 @@ msgid ""
 "one-time-passwords generated by tokens.</p><p>This method is mostly used for "
 "hosted Office 365 instances.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Umožňuje modernější a silnější ověřování založené na "
+"OAuth2.</p><p>Tento typ ověřování otevře webovou stránku poskytnutou "
+"organizací, kde uživatel bude moci zadat ověřovací informace, které mohou "
+"zahrnovat také vícefaktorové ověřování ve formě jednorázových hesel "
+"generovaných tokeny. </p><p>Tato metoda se používá hlavně pro hostované "
+"instance Office 365.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authOAuth2RadioButton)
 #: ewsconfigdialog.ui:225
 #, kde-format
 msgid "OAuth&2 (Office 365)"
-msgstr ""
+msgstr "OAuth&2 (Office 365)"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, authInTuneRadioButton)
 #: ewsconfigdialog.ui:232
@@ -343,12 +389,16 @@ msgid ""
 "system to be joined to the organization and managed using InTune.</p></"
 "body></html>"
 msgstr ""
+"<html><head/><body><p>Umožňuje ověřování pomocí softwaru Microsoft InTune "
+"MDM . To je vyžadováno v mnoha podnikových prostředích, která vyžadují silné "
+"ověřování pomocí pověření zařízení, a proto vyžadují, aby byl systém "
+"připojen k organizaci a spravován pomocí InTune. </p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authInTuneRadioButton)
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "&Microsoft InTune"
-msgstr ""
+msgstr "&Microsoft InTune"
 
 #. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
 #: ewsconfigdialog.ui:245
@@ -360,13 +410,13 @@ msgstr "Nastavení EWS"
 #: ewsconfigdialog.ui:260
 #, kde-format
 msgid "EWS URL:"
-msgstr ""
+msgstr "EWS URL:"
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_BaseUrl)
 #: ewsconfigdialog.ui:273
 #, kde-format
 msgid "The Microsoft Exchange server URL used to send EWS requests."
-msgstr ""
+msgstr "URL serveru Microsoft Exchange používaná k odesílání požadavků EWS."
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_AutoDiscovery)
 #: ewsconfigdialog.ui:295
@@ -375,13 +425,15 @@ msgid ""
 "<html><head/><body><p>Attempts to find out the Microsoft Exchange server "
 "address relevant to the supplied e-mail address.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Pokusy o zjištění adresy serveru Microsoft Exchange "
+"relevantní pro zadanou e-mailovou adresu.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_AutoDiscovery)
 #. i18n: ectx: label, entry (AutoDiscovery), group (General)
 #: ewsconfigdialog.ui:298 ewsresource.kcfg:35
 #, kde-format
 msgid "Server Autodiscovery"
-msgstr ""
+msgstr "Automatické vyhledávání serveru"
 
 #. i18n: ectx: property (text), widget (QPushButton, autodiscoverButton)
 #: ewsconfigdialog.ui:308
@@ -393,7 +445,7 @@ msgstr "Provést"
 #: ewsconfigdialog.ui:318
 #, kde-format
 msgid "Try connect"
-msgstr ""
+msgstr "Zkusit se připojit"
 
 #. i18n: ectx: property (whatsThis), widget (QGroupBox, pkeyAuthGroupBox)
 #: ewsconfigdialog.ui:334
@@ -409,6 +461,14 @@ msgid ""
 "requirements for strong authentication, in which case entering the MFA code "
 "is not required.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Ověřování soukromým klíčem (PKey) se používá jako "
+"další krok ověřování k ověřování založenému na OAuth2. Používá certifikát "
+"X.509 a soukromý klíč, který identifikuje důvěryhodné zařízení, které bylo "
+"připojeno k Azure Directory pomocí Workplace Join. </p><p> Někteří správci "
+"mohou vyžadovat použití ověřování PKey při připojení k Office 365 z vnějšku "
+"podnikové sítě. V jiných případech, kdy je nastaveno vícefaktorové "
+"ověřování, může použití ověřování PKey splnit požadavky na silné ověřování, "
+"přičemž v takovém případě není nutné zadávat kód MFA. </p></body></html>"
 
 #. i18n: ectx: property (title), widget (QGroupBox, pkeyAuthGroupBox)
 #: ewsconfigdialog.ui:337
@@ -461,12 +521,14 @@ msgid ""
 "<html><head/><body><p>Periodically asks for new item change events.</p></"
 "body></html>"
 msgstr ""
+"<html><head/><body><p>Pravidelně se dotazovat na nové události změny položky."
+"</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, pollRadioButton)
 #: ewsconfigdialog.ui:426
 #, kde-format
 msgid "Po&ll for new messages"
-msgstr ""
+msgstr "&Zjišťování nových zpráv"
 
 #. i18n: ectx: property (suffix), widget (QDoubleSpinBox, kcfg_PollInterval)
 #: ewsconfigdialog.ui:451
@@ -489,12 +551,16 @@ msgid ""
 "delivered instantly.</p><p><br/></p><p>This option requires Exchange server "
 "version 2010 SP1 or later.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Streamovací oznámení fungují podobně jako režim push – "
+"připojení zůstává aktivní a oznámení o změnách položek jsou doručována "
+"okamžitě.</p><p><br/></p><p>Tato možnost vyžaduje server Exchange verze 2010 "
+"SP1 nebo novější.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, streamingRadioButton)
 #: ewsconfigdialog.ui:483
 #, kde-format
 msgid "&Use streaming notifications"
-msgstr ""
+msgstr "&Použít streamovací oznámení"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_EnableNTLMv2)
 #: ewsconfigdialog.ui:502
@@ -506,12 +572,18 @@ msgid ""
 "allow NTLMv2 authentication. In such case this option must be enabled in "
 "order to connect successfully.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Ve výchozím nastavení používá KDE méně bezpečné "
+"ověřování NTLMv1. Povolení této možnosti způsobí, že bude použit bezpečnější "
+"protokol NTLMv2 .</p><p>Některé novější servery Microsoft Exchange jsou "
+"nakonfigurovány tak, aby povolovaly pouze ověřování NTLMv2. V takovém "
+"případě musí být tato možnost povolena, aby bylo možné se úspěšně připojit.</"
+"p></body></html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_EnableNTLMv2)
 #: ewsconfigdialog.ui:505
 #, kde-format
 msgid "Enable NTLMv2"
-msgstr ""
+msgstr "Povolit NTLMv2"
 
 #. i18n: ectx: property (whatsThis), widget (QGroupBox, userAgentGroupBox)
 #: ewsconfigdialog.ui:515
@@ -525,18 +597,24 @@ msgid ""
 "advised that bypassing company policies may result in personal consequences."
 "</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Některé organizace omezují přístup k e-mailům pouze na "
+"schválené klienty, jako je Microsoft Outlook. Na straně serveru je to "
+"realizováno analýzou řetězce User-Agent a povolením pouze seznamu "
+"schválených klientů. </p><p>Toto nastavení umožňuje emulovat některé známé "
+"klienty a poskytuje také vlastní řetězec User-Agent.</p> <p>Upozorňujeme, že "
+"obcházení firemních zásad může mít osobní důsledky.</p></body></html>"
 
 #. i18n: ectx: property (title), widget (QGroupBox, userAgentGroupBox)
 #: ewsconfigdialog.ui:518
 #, kde-format
 msgid "Use custo&m User Agent"
-msgstr ""
+msgstr "Použít &vlastní uživatelský agent"
 
 #. i18n: ectx: property (title), widget (QGroupBox, clearSyncStateGroupBox)
 #: ewsconfigdialog.ui:543
 #, kde-format
 msgid "Clear Synchronization State"
-msgstr ""
+msgstr "Vymazat stav synchronizace"
 
 #. i18n: ectx: property (text), widget (QLabel, clearSyncStateLabel)
 #: ewsconfigdialog.ui:549
@@ -545,18 +623,20 @@ msgid ""
 "Resets synchronization state between Exchange and Akonadi. Use in case some "
 "items or folders are not showing up despite existing in Exchange."
 msgstr ""
+"Obnoví stav synchronizace mezi Exchange a Akonadi. Použijte v případě, že se "
+"některé položky nebo složky nezobrazují, přestože existují v Exchange."
 
 #. i18n: ectx: property (text), widget (QPushButton, clearFolderTreeSyncStateButton)
 #: ewsconfigdialog.ui:574
 #, kde-format
 msgid "Clear Folder Tree State"
-msgstr ""
+msgstr "Vymazat stav stromu složek"
 
 #. i18n: ectx: property (text), widget (QPushButton, clearFolderItemSyncStateButton)
 #: ewsconfigdialog.ui:581
 #, kde-format
 msgid "Clear Folder Item State"
-msgstr ""
+msgstr "Vymazat stav složky"
 
 #. i18n: ectx: attribute (title), widget (QWidget, statusTab)
 #: ewsconfigdialog.ui:608
@@ -606,56 +686,57 @@ msgstr "O aplikaci"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
-msgstr ""
+msgstr "Nepodařilo se zpracovat požadavek na načtení položek"
 
 #: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
 #: ewsresource.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
-msgstr ""
+msgstr "Nepodařilo se načíst položky"
 
 #: ewsfetchitempayloadjob.cpp:78
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - incorrect number of responses"
-msgstr ""
+msgstr "Nepodařilo se načíst položky – nesprávný počet odpovědí"
 
 #: ewsfetchitempayloadjob.cpp:91
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Akonadi item not found for item %1"
 msgstr ""
+"Nepodařilo se načíst položky – položka Akonadi nebyla nalezena pro položku %1"
 
 #: ewsfetchitempayloadjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Unknown item type for item %1"
-msgstr ""
+msgstr "Nepodařilo se načíst položky – Neznámý typ položky pro položku %1"
 
 #: ewsfetchitempayloadjob.cpp:104
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to fetch item payload"
-msgstr ""
+msgstr "Nepodařilo se načíst datovou část položky"
 
 #: ewsfetchitemsjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list"
-msgstr "Získávám %1 seznam položek"
+msgstr "Načítání %1 seznamu položek"
 
 #: ewsfetchitemsjob.cpp:214
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
-msgstr "Získávám %1 seznam položek (%2 položek)"
+msgstr "Načítání %1 seznamu položek (%2 položek)"
 
 #: ewsfetchitemsjob.cpp:399
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"
-msgstr ""
+msgstr "Načítání %1 položek"
 
 #: ewsmtaconfigdialog.cpp:46
 #, kde-format
@@ -667,31 +748,31 @@ msgstr "Nastavení přenosu pošty Microsoft Exchange"
 #: ewsmtaconfigdialog.ui:14
 #, kde-format
 msgid "EWS Mail Transport Configuration"
-msgstr ""
+msgstr "Nastavení přenosu pošty EWS"
 
 #. i18n: ectx: property (text), widget (QLabel, recourceLabel)
 #: ewsmtaconfigdialog.ui:42
 #, kde-format
 msgid "Parent Exchange account:"
-msgstr ""
+msgstr "Nadřazený Exchange účet:"
 
 #: ewsmtaresource.cpp:57
 #, kde-format
 msgid "Unable to connect to master EWS resource"
-msgstr ""
+msgstr "Nelze se připojit k hlavnímu zdroji EWS"
 
 #. i18n: ectx: label, entry (EwsResource), group (General)
 #: ewsmtaresource.kcfg:10
 #, kde-format
 msgid "Ews Resource"
-msgstr ""
+msgstr "Zdroj EWS"
 
 #. i18n: ectx: tooltip, entry (EwsResource), group (General)
 #. i18n: ectx: whatsthis, entry (EwsResource), group (General)
 #: ewsmtaresource.kcfg:11 ewsmtaresource.kcfg:12
 #, kde-format
 msgid "The name of the parent EWS Resource to use when sending mail"
-msgstr ""
+msgstr "Název nadřazeného zdroje EWS, který se použije při odesílání pošty"
 
 #: ewsprogressdialog.cpp:34
 #, kde-format
@@ -701,7 +782,7 @@ msgstr "Zrušit"
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr ""
+msgstr "Provádění automatického vyhledávání serveru Microsoft Exchange…"
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -712,128 +793,130 @@ msgstr "Připojování k Exchange"
 #: ewsprogressdialog.cpp:53
 #, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "Připojuji se k serveru Microsoft Exchange…"
+msgstr "Připojování k serveru Microsoft Exchange…"
 
 #: ewsresource.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
-msgstr ""
+msgstr "Připojení k serveru Exchange"
 
 #: ewsresource.cpp:161 ewsresource.cpp:168 ewsresource.cpp:175
 #: ewsresource.cpp:313
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
-msgstr ""
+msgstr "Nelze se připojit k serveru Exchange"
 
 #: ewsresource.cpp:253
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
-msgstr ""
+msgstr "ID kořenové složky není známo."
 
 #: ewsresource.cpp:257
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
-msgstr ""
+msgstr "Načítání stromu sbírky"
 
 #: ewsresource.cpp:406
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
-msgstr "Získávání položek"
+msgstr "Načítání položek"
 
 #: ewsresource.cpp:428 ewsresource.cpp:514
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
-msgstr ""
+msgstr "Nepodařilo se načíst položky – interní chyba"
 
 #: ewsresource.cpp:462
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
-msgstr ""
+msgstr "Nepodařilo se načíst složky – interní chyba"
 
 #: ewsresource.cpp:468
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
-msgstr ""
+msgstr "Nepodařilo se zpracovat požadavek na načtení složek"
 
 #: ewsresource.cpp:485
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
-msgstr ""
+msgstr "Neplatný objekt úlohy pro načtení přírůstkových složek"
 
 #: ewsresource.cpp:548
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
-msgstr ""
+msgstr "Typ položky není podporován pro změnu"
 
 #: ewsresource.cpp:561
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
-msgstr "Aktualizuji příznaky položek"
+msgstr "Aktualizace příznaku položek"
 
 #: ewsresource.cpp:573
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
-msgstr ""
+msgstr "Selhání zpracování požadavku na aktualizaci příznaků položky"
 
 #: ewsresource.cpp:580
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
-msgstr ""
+msgstr "Nepodařilo se aktualizovat značky položek – interní chyba"
 
 #: ewsresource.cpp:594
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
-msgstr ""
+msgstr "Nepodařilo se zpracovat požadavek na aktualizaci položky"
 
 #: ewsresource.cpp:601
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
-msgstr ""
+msgstr "Nepodařilo se aktualizovat položku – interní chyba"
 
 #: ewsresource.cpp:636
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
-msgstr ""
+msgstr "Nepodařilo se zpracovat požadavek na přesun položky"
 
 #: ewsresource.cpp:643
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
-msgstr ""
+msgstr "Nepodařilo se přesunout položku – interní chyba"
 
 #: ewsresource.cpp:650
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
 msgstr ""
+"Nepodařilo se přesunout položku – neplatný počet odpovědí přijatých od "
+"serveru"
 
 #: ewsresource.cpp:743
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
-msgstr ""
+msgstr "Nepodařilo se zpracovat požadavek na odstranění položky"
 
 #: ewsresource.cpp:750
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
-msgstr ""
+msgstr "Nepodařilo se odstranit položku – interní chyba"
 
 #: ewsresource.cpp:757
 #, kde-format
@@ -841,60 +924,62 @@ msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
 msgstr ""
+"Nepodařilo se odstranit položku – neplatný počet odpovědí přijatých od "
+"serveru"
 
 #: ewsresource.cpp:802 ewsresource.cpp:1015
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
-msgstr ""
+msgstr "Typ položky není podporován pro vytvoření"
 
 #: ewsresource.cpp:813
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
-msgstr ""
+msgstr "Nepodařilo se zpracovat požadavek na vytvoření položky"
 
 #: ewsresource.cpp:819
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
-msgstr ""
+msgstr "Nepodařilo se vytvořit položku – interní chyba"
 
 #: ewsresource.cpp:840
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
-msgstr ""
+msgstr "Nepodařilo se přidat sbírku – nelze určit typ složky EWS"
 
 #: ewsresource.cpp:859
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
-msgstr ""
+msgstr "Nepodařilo se zpracovat požadavek na vytvoření složky"
 
 #: ewsresource.cpp:865
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
-msgstr ""
+msgstr "Nepodařilo se vytvořit složku – interní chyba"
 
 #: ewsresource.cpp:877
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
-msgstr "Nelze vytvořit složku"
+msgstr "Nepodařilo se vytvořit složku"
 
 #: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
-msgstr ""
+msgstr "Nepodařilo se zpracovat požadavek na přesunutí složky"
 
 #: ewsresource.cpp:906
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
-msgstr ""
+msgstr "Nepodařilo se přesunout složku – interní chyba"
 
 #: ewsresource.cpp:912
 #, kde-format
@@ -902,24 +987,25 @@ msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
 msgstr ""
+"Nepodařilo se přesunout složku – neplatný počet odpovědí přijatých od serveru"
 
 #: ewsresource.cpp:923
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
-msgstr ""
+msgstr "Nepodařilo se přesunout složku"
 
 #: ewsresource.cpp:951
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
-msgstr ""
+msgstr "Nepodařilo se zpracovat požadavek na aktualizaci složky"
 
 #: ewsresource.cpp:957
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
-msgstr ""
+msgstr "Nepodařilo se aktualizovat složku – interní chyba"
 
 #: ewsresource.cpp:963
 #, kde-format
@@ -927,78 +1013,80 @@ msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
 msgstr ""
+"Nepodařilo se aktualizovat složku – neplatný počet odpovědí přijatých od "
+"serveru"
 
 #: ewsresource.cpp:974
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
-msgstr ""
+msgstr "Nepodařilo se aktualizovat složku"
 
 #: ewsresource.cpp:991
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
-msgstr ""
+msgstr "Nepodařilo se zpracovat požadavek na odstranění složky"
 
 #: ewsresource.cpp:997
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
-msgstr ""
+msgstr "Nepodařilo se odstranit složku – interní chyba"
 
 #: ewsresource.cpp:1005
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
-msgstr "Chyba při mazání složky"
+msgstr "Nepodařilo se odstranit složku"
 
 #: ewsresource.cpp:1029 ewsresource.cpp:1063
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
-msgstr ""
+msgstr "Nepodařilo se zpracovat požadavek na odeslání položky"
 
 #: ewsresource.cpp:1035 ewsresource.cpp:1069
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
-msgstr ""
+msgstr "Nepodařilo se odeslat položku – interní chyba"
 
 #: ewsresource.cpp:1074
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
-msgstr ""
+msgstr "Neplatný počet odpovědí přijatých ze serveru"
 
 #: ewsresource.cpp:1266
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
-msgstr "Aktualizuji značky položek"
+msgstr "Aktualizace značek položek"
 
 #: ewsresource.cpp:1279
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
-msgstr ""
+msgstr "Nepodařilo se zpracovat požadavek na aktualizaci štítků položek."
 
 #: ewsresource.cpp:1285
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
-msgstr ""
+msgstr "Nepodařilo se aktualizovat značky položek – interní chyba"
 
 #: ewsresource.cpp:1322
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
-msgstr ""
+msgstr "Nepodařilo se zpracovat požadavek na aktualizaci globální značky"
 
 #: ewsresource.cpp:1338
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
-msgstr ""
+msgstr "Nepodařilo se zpracovat požadavek na načtení globálních značek"
 
 #: ewsresource.cpp:1416
 #, kde-format
@@ -1016,7 +1104,7 @@ msgstr "Ověření selhalo"
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"
-msgstr "Připraven"
+msgstr "Připraveno"
 
 #. i18n: ectx: label, entry (BaseUrl), group (General)
 #: ewsresource.kcfg:10
@@ -1032,6 +1120,8 @@ msgid ""
 "The URL of the Microsoft Exchange server, should be something like https://"
 "myserver.org/EWS/Exchange.asmx"
 msgstr ""
+"URL adresa serveru Microsoft Exchange by měla vypadat například takto: "
+"https://myserver.org/EWS/Exchange.asmx"
 
 #. i18n: ectx: label, entry (Username), group (General)
 #: ewsresource.kcfg:16
@@ -1046,6 +1136,7 @@ msgstr "Uživatelské jméno"
 #, kde-format
 msgid "The username that is used to log into the Microsoft Exchange server"
 msgstr ""
+"Uživatelské jméno, které se používá k přihlášení na server Microsoft Exchange"
 
 #. i18n: ectx: label, entry (Domain), group (General)
 #: ewsresource.kcfg:21
@@ -1058,13 +1149,13 @@ msgstr "Doména"
 #: ewsresource.kcfg:22 ewsresource.kcfg:23
 #, kde-format
 msgid "The Active Directory domain the user belongs to"
-msgstr ""
+msgstr "Doména Active Directory, ke které uživatel patří"
 
 #. i18n: ectx: label, entry (HasDomain), group (General)
 #: ewsresource.kcfg:26
 #, kde-format
 msgid "Use a domain name during authentication"
-msgstr ""
+msgstr "Použijte při ověřování doménové jméno"
 
 #. i18n: ectx: label, entry (Email), group (General)
 #: ewsresource.kcfg:30
@@ -1078,13 +1169,13 @@ msgstr "E-mail"
 #: ewsresource.kcfg:31 ewsresource.kcfg:32
 #, kde-format
 msgid "The primary e-mail address of this account"
-msgstr ""
+msgstr "Primární e-mailová adresa tohoto účtu"
 
 #. i18n: ectx: tooltip, entry (AutoDiscovery), group (General)
 #: ewsresource.kcfg:36
 #, kde-format
 msgid "Attempt to automatically discover Exchange server address"
-msgstr ""
+msgstr "Pokus o automatické zjištění adresy serveru Exchange"
 
 #. i18n: ectx: whatsthis, entry (AutoDiscovery), group (General)
 #: ewsresource.kcfg:37
@@ -1093,24 +1184,26 @@ msgid ""
 "Attempts to find out the Microsoft Exchange server address relevant to the "
 "supplied e-mail address."
 msgstr ""
+"Pokusy o zjištění adresy serveru Microsoft Exchange relevantní pro zadanou e-"
+"mailovou adresu"
 
 #. i18n: ectx: label, entry (PollInterval), group (General)
 #: ewsresource.kcfg:40
 #, kde-format
 msgid "Poll Interval"
-msgstr ""
+msgstr "Interval aktualizace"
 
 #. i18n: ectx: tooltip, entry (PollInterval), group (General)
 #: ewsresource.kcfg:41
 #, kde-format
 msgid "Sets the interval for checking for new mail"
-msgstr ""
+msgstr "Nastavit interval pro kontrolu nové pošty"
 
 #. i18n: ectx: whatsthis, entry (PollInterval), group (General)
 #: ewsresource.kcfg:42
 #, kde-format
 msgid "Sets the interval for checking for new mail."
-msgstr ""
+msgstr "Nastavit interval pro kontrolu nové pošty."
 
 #. i18n: ectx: label, entry (ServerSubscription), group (General)
 #: ewsresource.kcfg:48
@@ -1122,19 +1215,19 @@ msgstr "Povolit předplatné na straně serveru"
 #: ewsresource.kcfg:51
 #, kde-format
 msgid "List of folders to subscribe to"
-msgstr ""
+msgstr "Seznam složek, které chcete odebírat"
 
 #. i18n: ectx: label, entry (EnableNTLMv2), group (General)
 #: ewsresource.kcfg:55
 #, kde-format
 msgid "Enable NTLMv2 authentication"
-msgstr ""
+msgstr "Povolit ověřování NTLMv2"
 
 #. i18n: ectx: label, entry (UserAgent), group (General)
 #: ewsresource.kcfg:59
 #, kde-format
 msgid "Forces a non-default User-Agent string"
-msgstr ""
+msgstr "Vynutit nestandardní řetězec User-Agent"
 
 #. i18n: ectx: label, entry (OAuth2AppId), group (General)
 #: ewsresource.kcfg:65
@@ -1164,13 +1257,13 @@ msgstr "Cesta k ověření PKey soukromého klíče PEM"
 #, kde-format
 msgctxt "@info"
 msgid "Exchange server not configured."
-msgstr ""
+msgstr "Exchange server není nastaven."
 
 #: ewssubscriptionwidget.cpp:187 ewssubscriptionwidget.cpp:208
 #, kde-format
 msgctxt "@info"
 msgid "Failed to retrieve folder list."
-msgstr ""
+msgstr "Nepodařilo se načíst seznam složek."
 
 #: ewssubscriptionwidget.cpp:293
 #, kde-format
@@ -1182,7 +1275,7 @@ msgstr "Povolit odběry na straně serveru"
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Filter folders"
-msgstr ""
+msgstr "Filtr složek"
 
 #: ewssubscriptionwidget.cpp:321
 #, kde-format
@@ -1206,7 +1299,7 @@ msgstr "Pouze přihlášené"
 #: mail/ewscreatemailjob.cpp:218
 #, kde-format
 msgid "Failed to create mail item"
-msgstr ""
+msgstr "Nepodařilo se vytvořit e-mailovou zprávu"
 
 #: mail/ewsmodifymailjob.cpp:92
 #, kde-format
@@ -1218,4 +1311,4 @@ msgstr "Aktualizace položky selhala: "
 #, kde-format
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
-msgstr ""
+msgstr "Položka mimo provoz během zpracování aktualizace odpovědi na položku."
