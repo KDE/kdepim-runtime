@@ -736,9 +736,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#~ msgid "The account id in WebAccounts framework."
-#~ msgstr "Konto-id i WebAccounts-rammeverket."
-
-#~ msgid "Account enabled services"
-#~ msgstr "Tjenester slått på i kontoen"

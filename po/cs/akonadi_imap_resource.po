@@ -1,6 +1,6 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2024 Vít Pelčák <vit@pelcak.org>
+# SPDX-FileCopyrightText: 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2024, 2026 Vít Pelčák <vit@pelcak.org>
 # Lukáš Tinkl <ltinkl@redhat.com>, 2011.
 # Tomáš Chvátal <tomas.chvatal@gmail.com>, 2012, 2013, 2014.
 # SPDX-FileCopyrightText: 2021, 2024 Vit Pelcak <vit@pelcak.org>
@@ -10,15 +10,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-12-18 00:44+0000\n"
-"PO-Revision-Date: 2024-08-20 08:36+0200\n"
-"Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
+"PO-Revision-Date: 2026-02-05 16:11+0100\n"
+"Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.12.1\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -171,6 +171,8 @@ msgid ""
 "Defines if the annotations, ACLs and quota information of mailboxes should\n"
 "             also be retrieved when the mailboxes get listed."
 msgstr ""
+"Určuje, zda mají být při vypisování poštovních schránek načteny také\n"
+" anotace, ACL a informace o kvótách poštovních schránek."
 
 #. i18n: ectx: label, entry (AutomaticExpungeEnabled), group (cache)
 #: imapresource.kcfg:67
@@ -180,6 +182,8 @@ msgid ""
 "be\n"
 "             triggered manually through the D-Bus interface."
 msgstr ""
+"Určuje, zda se příkaz expunge spustí automaticky, jinak by měl být\n"
+" spuštěn ručně přes rozhraní D-Bus."
 
 #. i18n: ectx: label, entry (TrashCollection), group (cache)
 #: imapresource.kcfg:71
@@ -191,7 +195,7 @@ msgstr "Určit složku používanou jako koš"
 #: imapresource.kcfg:75
 #, kde-format
 msgid "Define if the trash collection received the special attribute"
-msgstr ""
+msgstr "Definujte, zda sběr odpadu obdržel speciální atribut"
 
 #. i18n: ectx: label, entry (UseDefaultIdentity), group (cache)
 #: imapresource.kcfg:79
@@ -215,7 +219,7 @@ msgstr "Seznam názvu mailbox naposledy oznámených serverem"
 #: imapresource.kcfg:91
 #, kde-format
 msgid "RID path to the mailbox to watch for changes"
-msgstr ""
+msgstr "Cesta RID k poštovní schránce, kterou je třeba sledovat kvůli změnám"
 
 #. i18n: ectx: label, entry (SieveSupport), group (siever)
 #: imapresource.kcfg:96
@@ -258,6 +262,7 @@ msgstr "Určit výchozí název souboru dovolené pro sieve"
 #, kde-format
 msgid "Define username used from custom server sieve url"
 msgstr ""
+"Definujte uživatelské jméno používané z vlastní adresy URL serveru sieve"
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
 #: imapresource.kcfg:123
@@ -269,13 +274,13 @@ msgstr "Určuje typ identifikace použité vlastním serverem sieve"
 #: imapresource.kcfg:129
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Zda je povolena podpora aktivit agenta"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: imapresource.kcfg:133
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Činnosti agenta"
 
 #: imapresourcebase.cpp:216
 #, kde-format
@@ -414,7 +419,7 @@ msgstr ""
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
-msgstr ""
+msgstr "Nepodařilo se načíst heslo z klíčenky."
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -475,7 +480,7 @@ msgstr "Sdílené složky"
 #, kde-format
 msgctxt "@info:status"
 msgid "Fetching missing mail bodies in %3: %1/%2"
-msgstr ""
+msgstr "Načítání chybějících těles e-mailů v %3: %1/%2"
 
 #: retrieveitemtask.cpp:35
 #, kde-format
@@ -508,7 +513,7 @@ msgstr "Informace o serveru"
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
-msgstr ""
+msgstr "Chyba při získávání informací o možnostech serveru: %1"
 
 #: serverinfodialog.cpp:109
 #, kde-format
@@ -607,7 +612,7 @@ msgstr "Odpojeno během přihlašování."
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
-msgstr ""
+msgstr "Heslo pro účet IMAP %1 nebylo nalezeno."
 
 #: settings.cpp:129
 #, kde-format
@@ -615,13 +620,13 @@ msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the IMAP password from the system "
 "keychain: \"%1\""
-msgstr ""
+msgstr "Při načítání hesla IMAP ze systémové klíčenky došlo k chybě: \"%1\""
 
 #: settings.cpp:157
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
-msgstr ""
+msgstr "Heslo pro účet sieve %1 nebylo nalezeno."
 
 #: settings.cpp:162
 #, kde-format
@@ -629,7 +634,7 @@ msgctxt "@info:status"
 msgid ""
 "An error occurred when retrieving the sieve password from the system "
 "keychain: \"%1\""
-msgstr ""
+msgstr "Při načítání hesla sieve ze systémové klíčenky došlo k chybě: \"%1\""
 
 #: settings.cpp:192
 #, kde-format
@@ -637,7 +642,7 @@ msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the sieve password in the system keychain: "
 "\"%1\""
-msgstr ""
+msgstr "Při ukládání hesla k sieve do systémové klíčenky došlo k chybě: \"%1\""
 
 #: settings.cpp:218
 #, kde-format
@@ -645,13 +650,13 @@ msgctxt "@info:status"
 msgid ""
 "An error occurred when saving the IMAP password in the system keychain: "
 "\"%1\""
-msgstr ""
+msgstr "Při ukládání hesla IMAP do systémové klíčenky došlo k chybě: \"%1\""
 
 #: settings.cpp:305
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
-msgstr ""
+msgstr "Problém s účtem IMAP %1"
 
 #: settingspasswordrequester.cpp:75
 #, kde-format
@@ -757,6 +762,9 @@ msgid ""
 "as before we will have to re-download all your emails from this account "
 "again. Are you sure you want to proceed?"
 msgstr ""
+"Změnili jste adresu serveru. I když se jedná o stejný server jako předtím, "
+"budete muset znovu stáhnout všechny vaše e-maily z tohoto účtu . Opravdu "
+"chcete pokračovat?"
 
 #: setupserver.cpp:254
 #, kde-format
@@ -771,6 +779,9 @@ msgid ""
 "account as before we will have to re-download all your emails from this "
 "account again. Are you sure you want to proceed?"
 msgstr ""
+"Změnili jste uživatelské jméno. I když se jedná o uživatelské jméno pro "
+"stejný účet jako předtím, budete muset znovu stáhnout všechny vaše e-maily z "
+"tohoto účtu. Opravdu chcete pokračovat?"
 
 #: setupserver.cpp:264
 #, kde-format
@@ -839,6 +850,9 @@ msgid ""
 "a specific encryption scheme, you can add \":port\" to indicate that. For "
 "example: \"imap.foo.com:144\"."
 msgstr ""
+"Zadejte server IMAP. Pokud se chcete připojit k nestandardnímu portu pro "
+"konkrétní šifrovací schéma, můžete přidat \":port\", aby to bylo zřejmé. "
+"Například \"imap.foo.com:144\"."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: setupserverview_desktop.ui:60

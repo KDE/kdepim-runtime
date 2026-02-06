@@ -1,6 +1,6 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2010, 2011, 2013, 2016, 2017, 2018, 2020, 2024 Vít Pelčák <vit@pelcak.org>
+# SPDX-FileCopyrightText: 2010, 2011, 2013, 2016, 2017, 2018, 2020, 2024, 2026 Vít Pelčák <vit@pelcak.org>
 # Tomáš Chvátal <tomas.chvatal@gmail.com>, 2012.
 # SPDX-FileCopyrightText: 2021, 2024 Vit Pelcak <vit@pelcak.org>
 #
@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-02-05 00:44+0000\n"
-"PO-Revision-Date: 2024-08-08 10:04+0200\n"
-"Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
+"PO-Revision-Date: 2026-02-05 16:05+0100\n"
+"Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.12.1\n"
 
 #: configwidget.cpp:33
 #, kde-format
@@ -56,6 +56,8 @@ msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
 "Please use a different URL"
 msgstr ""
+"Jiná konfigurační položka již používá stejnou kombinaci URL/protokol.\n"
+"Použijte prosím jinou URL."
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: configwidget.ui:29
@@ -100,6 +102,8 @@ msgstr "Heslo:"
 #, kde-format
 msgid "Select this to reduce the load on the server and speed-up your syncs"
 msgstr ""
+"Vyberte tuto možnost, chcete-li snížit zatížení serveru a zrychlit "
+"synchronizaci"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:137
@@ -108,18 +112,20 @@ msgid ""
 "Limiting the time span range will lessen the load on the remote server and "
 "speed-up your initial sync."
 msgstr ""
+"Omezení časového rozsahu sníží zatížení vzdáleného serveru a urychlí "
+"počáteční synchronizaci."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:140
 #, kde-format
 msgid "Limit retrieval time range"
-msgstr ""
+msgstr "Omezit časový rozsah vyhledávání"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configwidget.ui:152
 #, kde-format
 msgid "Only sync data more recent than"
-msgstr ""
+msgstr "Synchronizovat pouze data novější než"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
 #: configwidget.ui:191
@@ -183,7 +189,7 @@ msgstr ""
 #: daverror-kdepim-runtime.cpp:41
 #, kde-format
 msgid "Protocol for the collection does not support MULTIGET"
-msgstr ""
+msgstr "Protokol pro sběr nepodporuje MULTIGET."
 
 #: daverror-kdepim-runtime.cpp:44
 #, kde-format
@@ -191,6 +197,8 @@ msgid ""
 "The server encountered an error that prevented it from completing your "
 "request: %1 (%2)"
 msgstr ""
+"Na serveru došlo k chybě, která znemožnila dokončení vašeho požadavku: %1 "
+"(%2)"
 
 #: daverror-kdepim-runtime.cpp:48
 #, kde-format
@@ -199,21 +207,23 @@ msgid ""
 "from the server.\n"
 "%1 (%2)."
 msgstr ""
+"Došlo k problému s požadavkem. Sbírka nebyla odstraněna ze serveru.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:54
 #, kde-format
 msgid "Invalid responses from backend"
-msgstr ""
+msgstr "Neplatné odpovědi z podpůrné vrstvy"
 
 #: daverror-kdepim-runtime.cpp:57
 #, kde-format
 msgid "Error setting focus for XQuery"
-msgstr ""
+msgstr "Chyba při nastavení fokusu pro XQuery"
 
 #: daverror-kdepim-runtime.cpp:60
 #, kde-format
 msgid "Invalid XQuery submitted by DAV implementation"
-msgstr ""
+msgstr "Neplatný dotaz XQuery odeslaný implementací DAV"
 
 #: daverror-kdepim-runtime.cpp:64
 #, kde-format
@@ -222,16 +232,18 @@ msgid ""
 "on the server.\n"
 "%1 (%2)."
 msgstr ""
+"Došlo k problému s požadavkem. Sbírka nebyla na serveru změněna .\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:70
 #, kde-format
 msgid "No properties to change or remove"
-msgstr ""
+msgstr "Žádné vlastnosti ke změně nebo odstranění"
 
 #: daverror-kdepim-runtime.cpp:73
 #, kde-format
 msgid "There was an error when modifying the properties"
-msgstr ""
+msgstr "Při úpravě vlastností došlo k chybě"
 
 #: daverror-kdepim-runtime.cpp:75
 #, kde-format
@@ -251,6 +263,8 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
+"Došlo k problému s požadavkem. Položka nebyla na serveru vytvořena.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:87
 #, kde-format
@@ -259,6 +273,8 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
+"Došlo k problému s požadavkem. Položka nebyla odstraněna ze serveru.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:94
 #, kde-format
@@ -267,6 +283,8 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
+"Došlo k problému s požadavkem. Položka nebyla na serveru změněna.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:100
 #, kde-format
@@ -279,26 +297,27 @@ msgid ""
 "There was a problem with the request. The requested MIME types are not "
 "supported."
 msgstr ""
+"Došlo k problému s požadavkem. Požadované MIME typy nejsou podporovány."
 
 #: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
-msgstr ""
+msgstr "Nenalezena složka pro odeslané zprávy pro %1"
 
 #: davfreebusyhandler.cpp:194 davfreebusyhandler.cpp:205
 #, kde-format
 msgid "Invalid response from the server"
-msgstr ""
+msgstr "Neplatná odpověď ze serveru"
 
 #: davfreebusyhandler.cpp:216
 #, kde-format
 msgid "Unable to parse free-busy data received"
-msgstr ""
+msgstr "Nelze analyzovat přijatá data o dostupnosti"
 
 #: davgroupwareresource.cpp:177
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
-msgstr ""
+msgstr "Nelze načíst data o dostupnosti v režimu offline"
 
 #: davgroupwareresource.cpp:266
 #, kde-format
@@ -308,12 +327,12 @@ msgstr "Stahuji sbírky"
 #: davgroupwareresource.cpp:334
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
-msgstr ""
+msgstr "Požadavek na vyhledání položek pro neznámou sbírku: %1"
 
 #: davgroupwareresource.cpp:391
 #, kde-format
 msgid "Invalid collection for item %1."
-msgstr ""
+msgstr "Neplatná sbírka pro položku %1."
 
 #: davgroupwareresource.cpp:723
 #, kde-format
@@ -328,22 +347,22 @@ msgstr "Nelze ověřit sbírku: %1"
 #: davgroupwareresource.cpp:885
 #, kde-format
 msgid "Unable to remove collection: %1"
-msgstr ""
+msgstr "Nelze odstranit sbírku: %1"
 
 #: davgroupwareresource.cpp:905
 #, kde-format
 msgid "Unable to retrieve collections: %1"
-msgstr ""
+msgstr "Nelze načíst sbírky: %1"
 
 #: davgroupwareresource.cpp:1038 davgroupwareresource.cpp:1137
 #, kde-format
 msgid "Unable to retrieve items: %1"
-msgstr ""
+msgstr "Nelze načíst položky: %1"
 
 #: davgroupwareresource.cpp:1217
 #, kde-format
 msgid "Unable to retrieve item: %1"
-msgstr ""
+msgstr "Nelze načíst položku: %1"
 
 #: davgroupwareresource.cpp:1237
 #, kde-format
@@ -351,27 +370,28 @@ msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
+"Nelze načíst položku: selhalo zpracování dat položky. Možná již byla smazána."
 
 #: davgroupwareresource.cpp:1274
 #, kde-format
 msgid "Unable to add item: %1"
-msgstr ""
+msgstr "Nelze přidat položku: %1"
 
 #: davgroupwareresource.cpp:1318 davgroupwareresource.cpp:1431
 #: davgroupwareresource.cpp:1443
 #, kde-format
 msgid "Unable to change item: %1"
-msgstr ""
+msgstr "Nelze změnit položku: %1"
 
 #: davgroupwareresource.cpp:1405 davgroupwareresource.cpp:1462
 #, kde-format
 msgid "Unable to remove item: %1"
-msgstr ""
+msgstr "Nelze odstranit položku: %1"
 
 #: davgroupwareresource.cpp:1549 davgroupwareresource.cpp:1550
 #, kde-format
 msgid "The resource is not configured yet"
-msgstr ""
+msgstr "Zdroj ještě není nakonfigurován"
 
 #. i18n: ectx: label, entry (settingsVersion), group (General)
 #: davgroupwareresource.kcfg:10
@@ -407,19 +427,19 @@ msgstr "Uživatelské jméno"
 #: davgroupwareresource.kcfg:30
 #, kde-format
 msgid "Limit the data retrieval to the specified time range"
-msgstr ""
+msgstr "Omezit načítání dat na zadané časové období"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
 #, kde-format
 msgid "Period for which to retrieve data, quantity"
-msgstr ""
+msgstr "Období, za které se mají načíst údaje, množství"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
 #, kde-format
 msgid "Period for which to retrieve data, type"
-msgstr ""
+msgstr "Období, za které se mají načíst data, typ"
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
 #: davgroupwareresource.kcfg:42
@@ -428,6 +448,8 @@ msgid ""
 "String representation of the mappings between discovered collections and "
 "configured URLs"
 msgstr ""
+"Řetězcové znázornění mapování mezi nalezenými sbírkami a nakonfigurovanými "
+"adresami URL"
 
 #. i18n: ectx: label, entry (readOnly), group (General)
 #: davgroupwareresource.kcfg:46
@@ -452,6 +474,8 @@ msgid ""
 "An error occurred when executing search:\n"
 "%1"
 msgstr ""
+"Při provádění vyhledávání došlo k chybě:\n"
+"%1"
 
 #. i18n: ectx: property (text), widget (QRadioButton, useDefaultCreds)
 #: searchdialog.ui:32 urlconfigurationdialog.ui:94
@@ -499,13 +523,13 @@ msgstr "Vyhledat"
 #: searchdialog.ui:116
 #, kde-format
 msgid "a person named"
-msgstr ""
+msgstr "osobní jméno"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, searchType)
 #: searchdialog.ui:121
 #, kde-format
 msgid "a contact with email"
-msgstr ""
+msgstr "kontakt s e-mailem"
 
 #: setupwizard.cpp:142
 #, kde-format
@@ -521,7 +545,7 @@ msgstr "Přihlašovací údaje"
 #: setupwizard.cpp:232
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
-msgstr ""
+msgstr "Zadejte své přihlašovací údaje pro přihlášení k serveru groupware."
 
 #: setupwizard.cpp:236
 #, kde-format
@@ -537,12 +561,12 @@ msgstr "Ne, vybrat jiný server"
 #: setupwizard.cpp:278
 #, kde-format
 msgid "Predefined provider found"
-msgstr ""
+msgstr "Nalezen předdefinovaný poskytovatel"
 
 #: setupwizard.cpp:279
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
-msgstr ""
+msgstr "Vyberte, pokud chcete použít automaticky detekovaného poskytovatele"
 
 #: setupwizard.cpp:298
 #, kde-format
@@ -551,11 +575,15 @@ msgid ""
 "can configure automatically an account for %1 services.\n"
 "Do you wish to do so?"
 msgstr ""
+"Na základě e-mailové adresy, kterou jste použili jako\n"
+"přihlašovací jméno, může tento průvodce\n"
+"automaticky nakonfigurovat účet pro služby %1.\n"
+"Chcete tak učinit?"
 
 #: setupwizard.cpp:303
 #, kde-format
 msgid "Yes, use %1 as provider"
-msgstr ""
+msgstr "Ano, použít %1 jako poskytovatele"
 
 #: setupwizard.cpp:329
 #, kde-format
@@ -565,7 +593,7 @@ msgstr "Server Groupware"
 #: setupwizard.cpp:330
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
-msgstr ""
+msgstr "Vyberte server groupware, pro který má být zdroj nakonfigurován"
 
 #: setupwizard.cpp:359
 #, kde-format
@@ -587,7 +615,7 @@ msgstr "Spojení"
 #: setupwizard.cpp:404
 #, kde-format
 msgid "Enter the connection information for the groupware server"
-msgstr ""
+msgstr "Zadejte informace o připojení k serveru groupware"
 
 #: setupwizard.cpp:411
 #, kde-format
@@ -634,6 +662,8 @@ msgid ""
 "You can test now whether the groupware server can be accessed with the "
 "current configuration"
 msgstr ""
+"Nyní můžete otestovat, zda je možné se k serveru groupware připojit s "
+"aktuální konfigurací"
 
 #: setupwizard.cpp:525
 #, kde-format

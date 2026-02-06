@@ -1,6 +1,6 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2012, 2013, 2014, 2020, 2021, 2023, 2024 Vit Pelcak <vit@pelcak.org>
+# SPDX-FileCopyrightText: 2012, 2013, 2014, 2020, 2021, 2023, 2024, 2026 Vit Pelcak <vit@pelcak.org>
 # Tomáš Chvátal <tomas.chvatal@gmail.com>, 2012.
 #
 msgid ""
@@ -8,63 +8,63 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:52+0000\n"
-"PO-Revision-Date: 2024-08-20 08:36+0200\n"
-"Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
+"PO-Revision-Date: 2026-02-05 16:10+0100\n"
+"Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.12.1\n"
 
 #: calendarhandler.cpp:93
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving calendars"
-msgstr "Přijímám kalendáře"
+msgstr "Načítání kalendářů"
 
 #: calendarhandler.cpp:144
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
-msgstr ""
+msgstr "Načítání událostí pro kalendář '%1'"
 
 #: calendarhandler.cpp:222 taskhandler.cpp:168
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
-msgstr ""
+msgstr "Přidávání události do kalendáře '%1'"
 
 #: calendarhandler.cpp:248
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing event in calendar '%1'"
-msgstr ""
+msgstr "Změna události v kalendáři '%1'"
 
 #: calendarhandler.cpp:260
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 event"
 msgid_plural "Removing %1 events"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Odstraňování %1 události"
+msgstr[1] "Odstraňování %1 událostí"
+msgstr[2] "Odstraňování %1 událostí"
 
 #: calendarhandler.cpp:276
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
 msgid_plural "Moving %1 events from calendar '%2' to calendar '%3'"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Přesun %1 události z kalendáře '%2' do kalendáře '%3'"
+msgstr[1] "Přesun %1 událostí z kalendáře '%2' do kalendáře '%3'"
+msgstr[2] "Přesun %1 událostí z kalendáře '%2' do kalendáře '%3'"
 
 #: calendarhandler.cpp:343
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr "Měním značek událostí"
+msgstr "Změna značek událostí"
 
 #: calendarhandler.cpp:347
 #, kde-format
@@ -75,40 +75,40 @@ msgstr "Nepodařilo se změnit značky událostí"
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating calendar '%1'"
-msgstr ""
+msgstr "Vytváření kalendáře '%1'"
 
 #: calendarhandler.cpp:387
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing calendar '%1'"
-msgstr ""
+msgstr "Změna kalendáře '%1'"
 
 #: calendarhandler.cpp:400
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing calendar '%1'"
-msgstr ""
+msgstr "Odstraňování kalendáře '%1'"
 
 #: generichandler.cpp:24
 #, kde-format
 msgid "Cannot handle item linking"
-msgstr ""
+msgstr "Nelze zpracovat propojení položek"
 
 #: generichandler.cpp:29
 #, kde-format
 msgid "Cannot handle item unlinking"
-msgstr ""
+msgstr "Nelze zpracovat odpojení položky"
 
 #: generichandler.cpp:34
 #, kde-format
 msgid "Cannot handle item tag changes"
-msgstr ""
+msgstr "Nelze zpracovat změny značek položek"
 
 #: generichandler.cpp:61
 #, kde-format
 msgctxt "@status"
 msgid "Ready"
-msgstr "Připraven"
+msgstr "Připraveno"
 
 #: generichandler.h:66 generichandler.h:78
 #, kde-format
@@ -124,7 +124,7 @@ msgstr "Získávám heslo…"
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
-msgstr "Připraven"
+msgstr "Připraveno"
 
 #: googleresource.cpp:148
 #, kde-format
@@ -148,6 +148,8 @@ msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
+"Google Groupware byl odhlášen z vašeho účtu. Přihlaste se prosím, abyste "
+"znovu povolili synchronizaci kontaktů a kalendáře Google."
 
 #: googleresource.cpp:203
 #, kde-format
@@ -155,6 +157,8 @@ msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
+"Google Groupware byl odhlášen z účtu %1. Přihlaste se prosím, abyste znovu "
+"povolili synchronizaci kontaktů a kalendáře Google."
 
 #: googleresource.cpp:207
 #, kde-format
@@ -177,7 +181,7 @@ msgstr "Zdroj není nastaven"
 #: googleresource.cpp:240
 #, kde-format
 msgid "Failed to refresh tokens"
-msgstr ""
+msgstr "Obnovení tokenů se nezdařilo"
 
 #: googleresource.cpp:429 googleresource.cpp:443 googleresource.cpp:457
 #: googleresource.cpp:472 googleresource.cpp:486 googleresource.cpp:500
@@ -189,19 +193,19 @@ msgstr "Neplatný typ přílohy"
 #: googleresource.cpp:528 googleresource.cpp:542 googleresource.cpp:556
 #, kde-format
 msgid "Unknown collection mimetype"
-msgstr ""
+msgstr "Neznámá sbírka mimetypu"
 
 #: googlesettings.cpp:42
 #, kde-format
 msgctxt "@info:status"
 msgid "No username set"
-msgstr ""
+msgstr "Není nastaveno žádné uživatelské jméno"
 
 #: googlesettings.cpp:54
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr ""
+msgstr "Nelze přečíst heslo: %1"
 
 #: googlesettingswidget.cpp:38
 #, kde-format
@@ -233,7 +237,7 @@ msgstr "Nastavit…"
 #: googlesettingswidget.ui:49
 #, kde-format
 msgid "Enable interval refresh"
-msgstr ""
+msgstr "Povolit intervalové obnovování"
 
 #. i18n: ectx: property (text), widget (QLabel, refreshLabel)
 #: googlesettingswidget.ui:56
@@ -245,13 +249,13 @@ msgstr "Interval pro obnovení:"
 #: googlesettingswidget.ui:79
 #, kde-format
 msgid "Fetch only events since:"
-msgstr ""
+msgstr "Načíst pouze události od:"
 
 #. i18n: ectx: property (text), widget (QLabel, calendarsLabel)
 #: googlesettingswidget.ui:92
 #, kde-format
 msgid "Enabled Calendars:"
-msgstr ""
+msgstr "Povolené kalendáře:"
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
@@ -264,7 +268,7 @@ msgstr "Obnovit"
 #: googlesettingswidget.ui:135
 #, kde-format
 msgid "Enabled Tasklists:"
-msgstr ""
+msgstr "Povolené seznamy úkolů:"
 
 #: personhandler.cpp:87
 #, kde-format
@@ -294,7 +298,7 @@ msgstr "Moje kontakty"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts groups"
-msgstr ""
+msgstr "Načítání skupin kontaktů"
 
 #: personhandler.cpp:124 personhandler.cpp:130
 #, kde-format
@@ -305,28 +309,28 @@ msgstr "Jiné kontakty"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts for group '%1'"
-msgstr ""
+msgstr "Načítání kontaktů pro skupinu '%1'"
 
 #: personhandler.cpp:370
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding contact to group '%1'"
-msgstr ""
+msgstr "Přidávání kontaktů do skupiny '%1'"
 
 #: personhandler.cpp:404
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact"
-msgstr ""
+msgstr "Změna kontaktu"
 
 #: personhandler.cpp:418
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 contact"
 msgid_plural "Removing %1 contacts"
-msgstr[0] "Odstraňuji %1 kontakt"
-msgstr[1] "Odstraňuji %1 kontakty"
-msgstr[2] "Odstraňuji %1 kontaktů"
+msgstr[0] "Odstraňování %1 kontaktu"
+msgstr[1] "Odstraňování %1 kontaktů"
+msgstr[2] "Odstraňování %1 kontaktů"
 
 #: personhandler.cpp:438
 #, kde-format
@@ -338,45 +342,45 @@ msgstr "Neplatná zdrojová, nebo cílová sbírka"
 msgctxt "@info:status"
 msgid "Moving %1 contact from group '%2' to '%3'"
 msgid_plural "Moving %1 contacts from group '%2' to '%3'"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Přesun %1 kontaktu ze skupiny '%2' do skupiny '%3'"
+msgstr[1] "Přesun %1 kontaktů ze skupiny '%2' do skupiny '%3'"
+msgstr[2] "Přesun %1 kontaktů ze skupiny '%2' do skupiny '%3'"
 
 #: personhandler.cpp:461
 #, kde-format
 msgctxt "@info:status"
 msgid "Linking %1 contact"
 msgid_plural "Linking %1 contacts"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Propojení %1 kontaktu"
+msgstr[1] "Propojení %1 kontaktů"
+msgstr[2] "Propojení %1 kontaktů"
 
 #: personhandler.cpp:475
 #, kde-format
 msgctxt "@info:status"
 msgid "Unlinking %1 contact"
 msgid_plural "Unlinking %1 contacts"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Odpojení %1 kontaktu"
+msgstr[1] "Odpojení %1 kontaktů"
+msgstr[2] "Odpojení %1 kontaktů"
 
 #: personhandler.cpp:508
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new contact group '%1'"
-msgstr ""
+msgstr "Vytváření nové skupiny kontaktů '%1'"
 
 #: personhandler.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact group '%1'"
-msgstr ""
+msgstr "Změna skupiny kontaktů '%1'"
 
 #: personhandler.cpp:554
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing contact group '%1'"
-msgstr ""
+msgstr "Odstraňování skupiny kontaktů '%1'"
 
 #. i18n: ectx: label, entry (Calendars), group (General)
 #: settingsbase.kcfg:21
@@ -394,28 +398,28 @@ msgstr "ID seznamů úkolů ve sbírce"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving task lists"
-msgstr ""
+msgstr "Načítání seznamů úkolů"
 
 #: taskhandler.cpp:101
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
-msgstr ""
+msgstr "Načítání úkolů pro seznam '%1'"
 
 #: taskhandler.cpp:193
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
-msgstr ""
+msgstr "Změna úkolů pro seznam '%1'"
 
 #: taskhandler.cpp:213
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 task"
 msgid_plural "Removing %1 tasks"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Odstraňování %1 úkolu"
+msgstr[1] "Odstraňování %1 úkolů"
+msgstr[2] "Odstraňování %1 úkolů"
 
 #: taskhandler.cpp:223
 #, kde-format
@@ -425,27 +429,27 @@ msgstr "Selhalo smazání úkolu: %1"
 #: taskhandler.cpp:259
 #, kde-format
 msgid "Failed to reparent subtasks: %1"
-msgstr ""
+msgstr "Nepodařilo se přeřadit podúkoly: %1"
 
 #: taskhandler.cpp:290
 #, kde-format
 msgid "Moving tasks between task lists is not supported"
-msgstr ""
+msgstr "Přesun úkolů mezi seznamy úkolů není podporován"
 
 #: taskhandler.cpp:295
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new task list '%1'"
-msgstr ""
+msgstr "Vytváření nového seznamu úkolů '%1'"
 
 #: taskhandler.cpp:320
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task list '%1'"
-msgstr ""
+msgstr "Změna seznamu úkolů '%1'"
 
 #: taskhandler.cpp:333
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
-msgstr ""
+msgstr "Odstraňování seznamu úkolů '%1'"
