@@ -58,6 +58,7 @@ Comment[bg]=Зареждане на данни от локален файл mbox
 Comment[bs]=Učitava podatke iz lokalne mbox datoteke
 Comment[ca]=Carrega les dades des d'un fitxer «mbox» local
 Comment[ca@valencia]=Carrega les dades des d'un fitxer «mbox» local
+Comment[cs]=Načte data z lokálního souboru mbox
 Comment[da]=Indlæser data fra en lokal mbox-fil
 Comment[de]=Daten werden aus einer lokalen MBox-Datei geladen
 Comment[el]=Φορτώνει δεδομένα από ένα τοπικό αρχείο mbox
