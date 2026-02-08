@@ -734,9 +734,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#~ msgid "The account id in WebAccounts framework."
-#~ msgstr "WebAccounts 框架中的账户 id"
-
-#~ msgid "Account enabled services"
-#~ msgstr "账户启用的服务"
