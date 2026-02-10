@@ -36,9 +36,9 @@
 #include <Akonadi/SpecialMailCollections>
 #include <Akonadi/SpecialMailCollectionsRequestJob>
 #include <KAuthorized>
-#include <KLocalization>
 #include <KIdentityManagementCore/IdentityManager>
 #include <KIdentityManagementWidgets/IdentityCombo>
+#include <KLocalization>
 #include <KMessageBox>
 #include <KUser>
 
@@ -419,6 +419,8 @@ void SetupServer::loadSettings()
         m_ui->password->setPassword(password);
         passwordFetched();
     }
+    m_ui->password->setRevealPasswordMode(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")) ? KPassword::RevealMode::Always
+                                                                                                             : KPassword::RevealMode::Never);
 }
 
 void SetupServer::passwordFetched()
