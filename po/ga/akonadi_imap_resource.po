@@ -23,14 +23,9 @@ msgid "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'."
 msgstr ""
 
 #: addcollectiontask.cpp:67
-#, fuzzy, kde-format
-#| msgid ""
-#| "Cound not connect to the IMAP server.\n"
-#| "%1"
+#, kde-format
 msgid "Failed to create the folder '%1' on the IMAP server. "
 msgstr ""
-"Níorbh fhéidir ceangal leis an bhfreastalaí IMAP.\n"
-"%1"
 
 #: addcollectiontask.cpp:87 movecollectiontask.cpp:119
 #, kde-format
@@ -116,10 +111,9 @@ msgstr ""
 
 #. i18n: ectx: label, entry (Authentication), group (network)
 #: imapresource.kcfg:31
-#, fuzzy, kde-format
-#| msgid "Defines the encryption type to use"
+#, kde-format
 msgid "Defines the authentication type to use"
-msgstr "Sainmhíníonn sé seo an cineál criptiúcháin"
+msgstr ""
 
 #. i18n: ectx: label, entry (SubscriptionEnabled), group (network)
 #: imapresource.kcfg:35
@@ -156,10 +150,9 @@ msgstr ""
 
 #. i18n: ectx: label, entry (IntervalCheckTime), group (cache)
 #: imapresource.kcfg:57
-#, fuzzy, kde-format
-#| msgid "Check interval:"
+#, kde-format
 msgid "Check interval in minutes"
-msgstr "Eatramh idir sheiceáil:"
+msgstr ""
 
 #. i18n: ectx: label, entry (RetrieveMetadataOnFolderListing), group (cache)
 #: imapresource.kcfg:62
@@ -198,10 +191,9 @@ msgstr ""
 
 #. i18n: ectx: label, entry (AccountIdentity), group (cache)
 #: imapresource.kcfg:83
-#, fuzzy, kde-format
-#| msgid "Identity:"
+#, kde-format
 msgid "Identity account"
-msgstr "Aitheantas:"
+msgstr ""
 
 #. i18n: ectx: label, entry (KnownMailBoxes), group (cache)
 #: imapresource.kcfg:86
@@ -217,10 +209,9 @@ msgstr ""
 
 #. i18n: ectx: label, entry (SieveSupport), group (siever)
 #: imapresource.kcfg:96
-#, fuzzy, kde-format
-#| msgid "Server supports Sieve"
+#, kde-format
 msgid "Define if server supports sieve"
-msgstr "Tacaíonn an freastalaí le Sieve"
+msgstr ""
 
 #. i18n: ectx: label, entry (SieveReuseConfig), group (siever)
 #: imapresource.kcfg:100
@@ -242,10 +233,9 @@ msgstr "Roghnaigh URL malartach"
 
 #. i18n: ectx: label, entry (AlternateAuthentication), group (siever)
 #: imapresource.kcfg:111
-#, fuzzy, kde-format
-#| msgid "Defines the encryption type to use"
+#, kde-format
 msgid "Defines the authentication type to use for alternate server"
-msgstr "Sainmhíníonn sé seo an cineál criptiúcháin"
+msgstr ""
 
 #. i18n: ectx: label, entry (SieveVacationFilename), group (siever)
 #: imapresource.kcfg:115
@@ -255,17 +245,15 @@ msgstr ""
 
 #. i18n: ectx: label, entry (SieveCustomUsername), group (siever)
 #: imapresource.kcfg:119
-#, fuzzy, kde-format
-#| msgid "Defines the encryption type to use"
+#, kde-format
 msgid "Define username used from custom server sieve url"
-msgstr "Sainmhíníonn sé seo an cineál criptiúcháin"
+msgstr ""
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
 #: imapresource.kcfg:123
-#, fuzzy, kde-format
-#| msgid "Defines the encryption type to use"
+#, kde-format
 msgid "Defines the type of identification used by custom sieve server"
-msgstr "Sainmhíníonn sé seo an cineál criptiúcháin"
+msgstr ""
 
 #. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
 #: imapresource.kcfg:129
@@ -361,12 +349,10 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr ""
 
 #: imapresourcebase.cpp:438
-#, fuzzy, kde-format
-#| msgctxt "@label search for a subscription"
-#| msgid "Search:"
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr "Cuardaigh:"
+msgstr ""
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -439,14 +425,9 @@ msgid "Restarting item retrieval."
 msgstr ""
 
 #: resourcetask.cpp:69
-#, fuzzy, kde-format
-#| msgid ""
-#| "Cound not connect to the IMAP server.\n"
-#| "%1"
+#, kde-format
 msgid "Unable to connect to the IMAP server."
 msgstr ""
-"Níorbh fhéidir ceangal leis an bhfreastalaí IMAP.\n"
-"%1"
 
 #: resourcetask.cpp:113 resourcetask.cpp:125
 #, kde-format
@@ -532,16 +513,11 @@ msgid ""
 msgstr ""
 
 #: sessionpool.cpp:254
-#, fuzzy, kde-format
-#| msgid ""
-#| "Cound not connect to the IMAP server.\n"
-#| "%1"
+#, kde-format
 msgid ""
 "Could not connect to the IMAP server.\n"
 "%1"
 msgstr ""
-"Níorbh fhéidir ceangal leis an bhfreastalaí IMAP.\n"
-"%1"
 
 #: sessionpool.cpp:279 sessionpool.cpp:320 sessionpool.cpp:389
 #: sessionpool.cpp:425 sessionpool.cpp:496
@@ -600,10 +576,9 @@ msgid ""
 msgstr ""
 
 #: sessionpool.cpp:533
-#, fuzzy, kde-format
-#| msgid "Disconnected from server during login."
+#, kde-format
 msgid "Disconnected during login."
-msgstr "Dícheangailte ón bhfreastalaí le linn logála isteach."
+msgstr ""
 
 #: settings.cpp:168
 #, kde-format
@@ -680,19 +655,16 @@ msgid ""
 msgstr ""
 
 #: settingspasswordrequester.cpp:91
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
-msgstr "Bain Triail Eile As"
+msgstr ""
 
 #: settingspasswordrequester.cpp:97
-#, fuzzy, kde-format
-#| msgid "Identity Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr "Socruithe Aitheantais"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -719,10 +691,9 @@ msgid "XOAuth"
 msgstr ""
 
 #: setupserver.cpp:141
-#, fuzzy, kde-format
-#| msgid "Shared Folders"
+#, kde-format
 msgid "Archive Folder"
-msgstr "Comhfhillteáin"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
@@ -731,16 +702,11 @@ msgid "%p%"
 msgstr ""
 
 #: setupserver.cpp:154
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " nóiméad"
-msgstr[1] " nóiméad"
-msgstr[2] " nóiméad"
-msgstr[3] " nóiméad"
-msgstr[4] " nóiméad"
+msgstr[0] ""
+msgstr[1] ""
 
 #: setupserver.cpp:169
 #, kde-format
@@ -761,11 +727,10 @@ msgid ""
 msgstr ""
 
 #: setupserver.cpp:254
-#, fuzzy, kde-format
-#| msgid "Username"
+#, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
-msgstr "Ainm úsáideora"
+msgstr ""
 
 #: setupserver.cpp:261
 #, kde-format
@@ -776,11 +741,10 @@ msgid ""
 msgstr ""
 
 #: setupserver.cpp:264
-#, fuzzy, kde-format
-#| msgid "Username"
+#, kde-format
 msgctxt "@title:window"
 msgid "User name change"
-msgstr "Ainm úsáideora"
+msgstr ""
 
 #: setupserver.cpp:550
 #, kde-format
@@ -788,16 +752,14 @@ msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 
 #: setupserver.cpp:562
-#, fuzzy, kde-format
-#| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
+#, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
-msgstr "<qt><b>Tacaítear le TLS agus moltar é.</b></qt>"
+msgstr ""
 
 #: setupserver.cpp:565
-#, fuzzy, kde-format
-#| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
+#, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
-msgstr "<qt><b>Tacaítear le TLS agus moltar é.</b></qt>"
+msgstr ""
 
 #: setupserver.cpp:569
 #, kde-format
@@ -851,10 +813,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: setupserverview_desktop.ui:60
-#, fuzzy, kde-format
-#| msgid "IMAP Server:"
+#, kde-format
 msgid "I&MAP Server:"
-msgstr "Freastalaí IMAP:"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label_2)
 #: setupserverview_desktop.ui:74
@@ -864,10 +825,9 @@ msgstr "Ainm úsáideora."
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: setupserverview_desktop.ui:77
-#, fuzzy, kde-format
-#| msgid "Username:"
+#, kde-format
 msgid "Use&rname:"
-msgstr "Ainm úsáideora:"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label_3)
 #: setupserverview_desktop.ui:91
@@ -941,24 +901,21 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: setupserverview_desktop.ui:210
-#, fuzzy, kde-format
-#| msgid "Alternate URL:"
+#, kde-format
 msgid "Alternate Server:"
-msgstr "URL mar mhalairt:"
+msgstr ""
 
 #. i18n: ectx: property (title), widget (QGroupBox, authentication)
 #: setupserverview_desktop.ui:223
-#, fuzzy, kde-format
-#| msgid "Authentication:"
+#, kde-format
 msgid "Authentication"
-msgstr "Fíordheimhniú:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, noAuthentification)
 #: setupserverview_desktop.ui:233
-#, fuzzy, kde-format
-#| msgid "Authentication:"
+#, kde-format
 msgid "No authentication"
-msgstr "Fíordheimhniú:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, customUserPassword)
 #: setupserverview_desktop.ui:243
@@ -988,11 +945,10 @@ msgstr "Fíordheimhniú:"
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:299 setupserverview_desktop.ui:522
-#, fuzzy, kde-format
-#| msgid "LOGIN"
+#, kde-format
 msgctxt "Authentication method"
 msgid "LOGIN"
-msgstr "LOGÁIL ISTEACH"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -1005,38 +961,34 @@ msgstr ""
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:309 setupserverview_desktop.ui:532
-#, fuzzy, kde-format
-#| msgid "CRAM-MD5"
+#, kde-format
 msgctxt "Authentication method"
 msgid "CRAM-MD5"
-msgstr "CRAM-MD5"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:314 setupserverview_desktop.ui:537
-#, fuzzy, kde-format
-#| msgid "DIGEST-MD5"
+#, kde-format
 msgctxt "Authentication method"
 msgid "DIGEST-MD5"
-msgstr "DIGEST-MD5"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:319 setupserverview_desktop.ui:542
-#, fuzzy, kde-format
-#| msgid "NTLM"
+#, kde-format
 msgctxt "Authentication method"
 msgid "NTLM"
-msgstr "NTLM"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:324 setupserverview_desktop.ui:547
-#, fuzzy, kde-format
-#| msgid "GSSAPI"
+#, kde-format
 msgctxt "Authentication method"
 msgid "GSSAPI"
-msgstr "GSSAPI"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, advancedTab)
 #: setupserverview_desktop.ui:356
@@ -1180,179 +1132,3 @@ msgstr "Cuardaigh:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Liostáilte amháin"
-
-#, fuzzy
-#~| msgid "Account Settings"
-#~ msgctxt "@title:window"
-#~ msgid "IMAP Account Settings"
-#~ msgstr "Socruithe an Chuntais"
-
-#, fuzzy
-#~| msgid "Authentication:"
-#~ msgctxt "@title:window"
-#~ msgid "Could Not Authenticate"
-#~ msgstr "Fíordheimhniú:"
-
-#~ msgid "Account Settings"
-#~ msgstr "Socruithe an Chuntais"
-
-#~ msgid "Do not use KWallet"
-#~ msgstr "Ná húsáid KWallet"
-
-#, fuzzy
-#~| msgid "Do not use KWallet"
-#~ msgctxt "@status"
-#~ msgid "Failed to open KWallet"
-#~ msgstr "Ná húsáid KWallet"
-
-#~ msgid "Use the default identity for this account"
-#~ msgstr "Úsáid an t-aitheantas réamhshocraithe ar an gcuntas seo"
-
-#~ msgid "Use &default identity"
-#~ msgstr "Úsái&d an t-aitheantas réamhshocraithe"
-
-#, fuzzy
-#~| msgid "Use the default identity for this account"
-#~ msgid "Select the KMail identity used for this account"
-#~ msgstr "Úsáid an t-aitheantas réamhshocraithe ar an gcuntas seo"
-
-#, fuzzy
-#~| msgid ""
-#~| "Cound not connect to the IMAP server.\n"
-#~| "%1"
-#~ msgid ""
-#~ "Could not retrieve namespaces from the IMAP server %1.\n"
-#~ "%2"
-#~ msgstr ""
-#~ "Níorbh fhéidir ceangal leis an bhfreastalaí IMAP.\n"
-#~ "%1"
-
-#, fuzzy
-#~| msgid ""
-#~| "Cound not connect to the IMAP server.\n"
-#~| "%1"
-#~ msgid ""
-#~ "Could not retrieve namespaces from the IMAP server.\n"
-#~ "%1"
-#~ msgstr ""
-#~ "Níorbh fhéidir ceangal leis an bhfreastalaí IMAP.\n"
-#~ "%1"
-
-#, fuzzy
-#~| msgid ""
-#~| "Cound not connect to the IMAP server.\n"
-#~| "%1"
-#~ msgid ""
-#~ "Could not send client ID to the IMAP server %1.\n"
-#~ "%2"
-#~ msgstr ""
-#~ "Níorbh fhéidir ceangal leis an bhfreastalaí IMAP.\n"
-#~ "%1"
-
-#, fuzzy
-#~| msgid ""
-#~| "Cound not connect to the IMAP server.\n"
-#~| "%1"
-#~ msgid ""
-#~ "Could not send client ID to the IMAP server.\n"
-#~ "%1"
-#~ msgstr ""
-#~ "Níorbh fhéidir ceangal leis an bhfreastalaí IMAP.\n"
-#~ "%1"
-
-#~ msgid "<qt><b>SSL is supported and recommended.</b></qt>"
-#~ msgstr "<qt><b>Tacaítear le SSL agus moltar é.</b></qt>"
-
-#, fuzzy
-#~| msgid "Username:"
-#~ msgid "&Username:"
-#~ msgstr "Ainm úsáideora:"
-
-#~ msgid "IMAP server:"
-#~ msgstr "Freastalaí IMAP:"
-
-#~ msgid "Encryption"
-#~ msgstr "Criptiú"
-
-#~ msgid "SSL"
-#~ msgstr "SSL"
-
-#~ msgid "TLS"
-#~ msgstr "TLS"
-
-#~ msgid "Authentication Method"
-#~ msgstr "Modh Fíordheimhnithe"
-
-#~ msgid "Check interval:"
-#~ msgstr "Eatramh idir sheiceáil:"
-
-#, fuzzy
-#~| msgid "Automaticall&y compact folders (expunges deleted messages)"
-#~ msgid "Automaticall&y expunge deleted messages"
-#~ msgstr ""
-#~ "&Dlúthaigh fillteáin go huathoibríoch (léirscriosfar teachtaireachtaí "
-#~ "scriosta)"
-
-#~ msgid "Alternate URL:"
-#~ msgstr "URL mar mhalairt:"
-
-# authentication here
-#~ msgid "Clear text"
-#~ msgstr "Glantéacs"
-
-#~ msgid "Anonymous"
-#~ msgstr "Gan ainm"
-
-#~ msgid " minutes"
-#~ msgstr " nóiméad"
-
-#~ msgid "Enable disconnected mode"
-#~ msgstr "Cumasaigh an mód dícheangailte"
-
-#~ msgid "Enable Disconnected Mode"
-#~ msgstr "Cumasaigh an Mód Dícheangailte"
-
-#~ msgid "IMAP Account %1"
-#~ msgstr "Cuntas IMAP %1"
-
-#, fuzzy
-#~| msgid "Authentication:"
-#~ msgid "Authentification"
-#~ msgstr "Fíordheimhniú:"
-
-#, fuzzy
-#~| msgid ""
-#~| "Cannot move IMAP folder '%1' to '%2', '%2' does not exist on the server."
-#~ msgid ""
-#~ "Cannot move IMAP folder '%1' to '%2', en error occurred when closing "
-#~ "folder"
-#~ msgstr ""
-#~ "Ní féidir fillteán IMAP '%1' a bhogadh go '%2', níl '%2' ar an "
-#~ "bhfreastalaí."
-
-#~ msgid " "
-#~ msgstr " "
-
-#~ msgid "Settings"
-#~ msgstr "Socruithe"
-
-#~ msgctxt "no interval mail check"
-#~ msgid "Never"
-#~ msgstr "Ná Seiceáil Riamh"
-
-#~ msgid "Enable"
-#~ msgstr "Cumasaigh"
-
-#~ msgid "Do Not Enable"
-#~ msgstr "Ná Cumasaigh"
-
-#~ msgctxt "NAME OF TRANSLATORS"
-#~ msgid "Your names"
-#~ msgstr "Kevin Scannell"
-
-#~ msgctxt "EMAIL OF TRANSLATORS"
-#~ msgid "Your emails"
-#~ msgstr "kscanne@gmail.com"
-
-#~ msgid "Authentication failed."
-#~ msgstr "Theip ar fhíordheimhniú."

@@ -73,6 +73,3 @@ msgstr ""
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr ""
-
-#~ msgid "Select Address Book"
-#~ msgstr "Roghnaigh Leabhar Seoltaí"

@@ -31,10 +31,9 @@ msgstr "Ainm Comhadlainne"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: contactsagentsettingswidget.ui:41
-#, fuzzy, kde-format
-#| msgid "&Directory:"
+#, kde-format
 msgid "Di&rectory:"
-msgstr "&Comhadlann:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: contactsagentsettingswidget.ui:56
@@ -169,6 +168,3 @@ msgstr "Ná hathraigh na sonraí féin."
 #, kde-format
 msgid "Activities"
 msgstr ""
-
-#~ msgid "Filename:"
-#~ msgstr "Ainm comhaid:"

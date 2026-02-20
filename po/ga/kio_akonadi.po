@@ -28,18 +28,16 @@ msgid "Your emails"
 msgstr ""
 
 #: akonadiworker.cpp:49
-#, fuzzy, kde-format
-#| msgid "Protocol name"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Protocol name"
-msgstr "Ainm an phrótacail"
+msgstr ""
 
 #: akonadiworker.cpp:50 akonadiworker.cpp:51
-#, fuzzy, kde-format
-#| msgid "Socket name"
+#, kde-format
 msgctxt "@info:shell"
 msgid "Socket name"
-msgstr "Ainm an tsoicéid"
+msgstr ""
 
 #: akonadiworker.cpp:87 akonadiworker.cpp:113 akonadiworker.cpp:131
 #, kde-format

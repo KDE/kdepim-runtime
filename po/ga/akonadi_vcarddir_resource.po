@@ -31,10 +31,9 @@ msgstr "Ainm Comhadlainne"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: vcarddiragentsettingswidget.ui:47
-#, fuzzy, kde-format
-#| msgid "&Directory:"
+#, kde-format
 msgid "Di&rectory:"
-msgstr "&Comhadlann:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: vcarddiragentsettingswidget.ui:62
@@ -120,16 +119,11 @@ msgid "Do not change the actual backend data."
 msgstr "Ná hathraigh na sonraí féin."
 
 #: vcarddirsettingswidget.cpp:42
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " nóiméad"
-msgstr[1] " nóiméad"
-msgstr[2] " nóiméad"
-msgstr[3] " nóiméad"
-msgstr[4] " nóiméad"
+msgstr[0] ""
+msgstr[1] ""
 
 #: vcarddirsettingswidget.cpp:45
 #, kde-format

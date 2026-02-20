@@ -78,13 +78,3 @@ msgstr ""
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr ""
-
-#~ msgid "Filename:"
-#~ msgstr "Ainm comhaid:"
-
-#~ msgid "Select Calendar"
-#~ msgstr "Roghnaigh Féilire"
-
-#~ msgctxt "Filedialog filter for *.ics *.ical"
-#~ msgid "iCal Calendar File"
-#~ msgstr "Comhad Féilire iCal"
