@@ -38,11 +38,10 @@ msgid "Unable to connect: %1"
 msgstr "Ní féidir ceangal: %1"
 
 #: configwidget.cpp:72
-#, fuzzy, kde-format
-#| msgid "Connection"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection error"
-msgstr "Ceangal"
+msgstr ""
 
 #: configwidget.cpp:74
 #, kde-format
@@ -50,11 +49,10 @@ msgid "Tested connection successfully."
 msgstr ""
 
 #: configwidget.cpp:74
-#, fuzzy, kde-format
-#| msgid "Connection"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection success"
-msgstr "Ceangal"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_BaseUrl)
 #: configwidget.ui:29
@@ -108,10 +106,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
-#, fuzzy, kde-format
-#| msgid "Connection"
+#, kde-format
 msgid "Test Connection…"
-msgstr "Ceangal"
+msgstr ""
 
 #: openxchangeresource.cpp:248
 #, kde-format
@@ -220,32 +217,3 @@ msgid ""
 "Use incremental updates instead of reloading all data from the server each "
 "time"
 msgstr ""
-
-#~ msgid "Open-Xchange Configuration"
-#~ msgstr "Cumraíocht Open-Xchange"
-
-#~ msgctxt "NAME OF TRANSLATORS"
-#~ msgid "Your names"
-#~ msgstr "Kevin Scannell"
-
-#~ msgctxt "EMAIL OF TRANSLATORS"
-#~ msgid "Your emails"
-#~ msgstr "kscanne@gmail.com"
-
-#~ msgid "About..."
-#~ msgstr "Maidir Leis..."
-
-#~ msgid "Akonadi Open-Xchange Resource"
-#~ msgstr "Acmhainn Open-Xchange Akonadi"
-
-#~ msgid "(c) 2009 by Tobias Koenig (credativ GmbH)"
-#~ msgstr "© 2009 Tobias Koenig (credativ GmbH)"
-
-#~ msgid "Tobias Koenig"
-#~ msgstr "Tobias Koenig"
-
-#~ msgid "Current maintainer"
-#~ msgstr "Cothaitheoir reatha"
-
-#~ msgid "credativ GmbH"
-#~ msgstr "credativ GmbH"

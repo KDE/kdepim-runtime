@@ -18,16 +18,11 @@ msgstr ""
 "3 : 4\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
-#, fuzzy, kde-format
-#| msgid "Sending messages (1 item in queue)..."
-#| msgid_plural "Sending messages (%1 items in queue)..."
+#, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "Teachtaireachtaí á seoladh (mír amháin sa chiú)..."
-msgstr[1] "Teachtaireachtaí á seoladh (%1 mhír sa chiú)..."
-msgstr[2] "Teachtaireachtaí á seoladh (%1 mhír sa chiú)..."
-msgstr[3] "Teachtaireachtaí á seoladh (%1 mír sa chiú)..."
-msgstr[4] "Teachtaireachtaí á seoladh (%1 mír sa chiú)..."
+msgstr[0] ""
+msgstr[1] ""
 
 #: maildispatcheragent.cpp:90
 #, kde-format
@@ -170,6 +165,3 @@ msgstr ""
 #, kde-format
 msgid "Failed to fetch item."
 msgstr "Níorbh fhéidir an mhír a fháil."
-
-#~ msgid "Mail Dispatcher Agent Settings"
-#~ msgstr "Socruithe an tSeoltóra Ríomhphoist"

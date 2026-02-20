@@ -221,6 +221,3 @@ msgstr ""
 #, kde-format
 msgid "Open in read-only mode"
 msgstr "Oscail sa mhód inléite amháin"
-
-#~ msgid "Invalid maildir: %1"
-#~ msgstr "Maildir neamhbhailí: %1"

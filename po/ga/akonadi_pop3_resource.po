@@ -24,16 +24,11 @@ msgid "%p%"
 msgstr ""
 
 #: accountwidget.cpp:91
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " nóiméad"
-msgstr[1] " nóiméad"
-msgstr[2] " nóiméad"
-msgstr[3] " nóiméad"
-msgstr[4] " nóiméad"
+msgstr[0] ""
+msgstr[1] ""
 
 #: accountwidget.cpp:128 pop3resource.cpp:46
 #, kde-format
@@ -414,9 +409,6 @@ msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
 
 #: pop3resource.cpp:820
 #, kde-format
@@ -491,10 +483,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: popsettings.ui:97
-#, fuzzy, kde-format
-#| msgid "Incoming mail &server:"
+#, kde-format
 msgid "Incoming &mail server:"
-msgstr "Frea&stalaí isteach:"
+msgstr ""
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, hostEdit)
 #: popsettings.ui:107
@@ -512,10 +503,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: popsettings.ui:117
-#, fuzzy, kde-format
-#| msgid "Username:"
+#, kde-format
 msgid "Use&rname:"
-msgstr "Ainm úsáideora:"
+msgstr ""
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, loginEdit)
 #: popsettings.ui:127
@@ -574,10 +564,9 @@ msgstr "Casta"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget)
 #: popsettings.ui:217
-#, fuzzy, kde-format
-#| msgid "Settings"
+#, kde-format
 msgid "POP Settings"
-msgstr "Socruithe"
+msgstr ""
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, leaveOnServerCheck)
 #: popsettings.ui:239
@@ -607,17 +596,15 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, leaveOnServerDaysCheck)
 #: popsettings.ui:261
-#, fuzzy, kde-format
-#| msgid "Lea&ve fetched messages on the server"
+#, kde-format
 msgid "Days to leave messages on the server:"
-msgstr "Fág teachtaireachtaí faighte ar an bhfreastalaí"
+msgstr ""
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, leaveOnServerCountCheck)
 #: popsettings.ui:284
-#, fuzzy, kde-format
-#| msgid "Lea&ve fetched messages on the server"
+#, kde-format
 msgid "Only the x most recent messages are kept on the server"
-msgstr "Fág teachtaireachtaí faighte ar an bhfreastalaí"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, leaveOnServerCountCheck)
 #: popsettings.ui:287
@@ -715,10 +702,9 @@ msgstr "SSL/TLS"
 
 #. i18n: ectx: property (text), widget (QRadioButton, encryptionTLS)
 #: popsettings.ui:450
-#, fuzzy, kde-format
-#| msgid "STARTTLS"
+#, kde-format
 msgid "STA&RTTLS"
-msgstr "STARTTLS"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, imapInfo)
 #: popsettings.ui:465
@@ -778,83 +764,3 @@ msgstr ""
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr ""
-
-#~ msgid " byte"
-#~ msgid_plural " bytes"
-#~ msgstr[0] " bheart"
-#~ msgstr[1] " bheart"
-#~ msgstr[2] " bheart"
-#~ msgstr[3] " mbeart"
-#~ msgstr[4] " beart"
-
-#~ msgid "&Filter messages larger than:"
-#~ msgstr "Scag &teachtaireachtaí atá níos mó ná:"
-
-#~ msgid "POP3 Account Settings"
-#~ msgstr "Socruithe Cuntais POP3"
-
-#~ msgctxt "Number of days that the message will be left on the server."
-#~ msgid " days"
-#~ msgstr " lá"
-
-#~ msgid " messages"
-#~ msgstr " teachtaireacht"
-
-#~ msgid " bytes"
-#~ msgstr " beart"
-
-#~ msgid " "
-#~ msgstr " "
-
-#~| msgid "Please specify a server and port on the General tab first."
-#~ msgid "Please verify server address, we can not connect to it."
-#~ msgstr ""
-#~ "Roghnaigh freastalaí agus port ar an gcluaisín `Ginearálta' ar dtús."
-
-#~ msgid "&Login:"
-#~ msgstr "&Logáil isteach:"
-
-#~ msgid "Sto&re POP password"
-#~ msgstr "Sábháil focal fai&re POP"
-
-#~ msgid "Keep onl&y the last"
-#~ msgstr "&Coimeád an ceann deiridh amháin"
-
-#~ msgid "Keep only the last"
-#~ msgstr "Coimeád an ceann deiridh amháin"
-
-#~ msgid "Security"
-#~ msgstr "Slándáil"
-
-#~ msgid "Use &SSL for secure mail download"
-#~ msgstr "Íosluchtú daingean ríomhphoist le &SSL"
-
-#~ msgid "Use &TLS for secure mail download"
-#~ msgstr "Íosluchtú daingean ríomhphoist le &TLS"
-
-#~ msgid "Clear te&xt"
-#~ msgstr "Glan téacs"
-
-#~ msgid "&LOGIN"
-#~ msgstr "&LOGÁIL ISTEACH"
-
-#~ msgid "&PLAIN"
-#~ msgstr "&SIMPLÍ"
-
-#~ msgid "NTL&M"
-#~ msgstr "NTL&M"
-
-#~ msgid "&DIGEST-MD5"
-#~ msgstr "&DIGEST-MD5"
-
-#~ msgid "CRAM-MD&5"
-#~ msgstr "CRAM-MD&5"
-
-#~ msgid "&GSSAPI"
-#~ msgstr "&GSSAPI"
-
-#~ msgid "&APOP"
-#~ msgstr "&APOP"
-
-#~ msgid "Check &What the Server Supports"
-#~ msgstr "Seiceáil &céard a thacaíonn an freastalaí leis"

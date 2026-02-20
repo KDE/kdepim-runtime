@@ -18,16 +18,11 @@ msgstr ""
 "3 : 4\n"
 
 #: birthdaysconfigagentwidget.cpp:35
-#, fuzzy, kde-format
-#| msgid " day"
-#| msgid_plural " days"
+#, kde-format
 msgid "%v day"
 msgid_plural "%v days"
-msgstr[0] " lá"
-msgstr[1] " lá"
-msgstr[2] " lá"
-msgstr[3] " lá"
-msgstr[4] " lá"
+msgstr[0] ""
+msgstr[1] ""
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: birthdaysconfigwidget.ui:29
@@ -43,10 +38,9 @@ msgstr "Soc&raigh meabhrúchán"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: birthdaysconfigwidget.ui:48
-#, fuzzy, kde-format
-#| msgid "R&emind prior to event:"
+#, kde-format
 msgid "&Remind prior to event:"
-msgstr "M&eabhraigh roimh an imeacht:"
+msgstr ""
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: birthdaysconfigwidget.ui:74
@@ -91,6 +85,3 @@ msgstr "Cothrom lae %1"
 #, kde-format
 msgid "Anniversary"
 msgstr "Cothrom Lae"
-
-#~ msgid "Categories"
-#~ msgstr "Catagóirí"

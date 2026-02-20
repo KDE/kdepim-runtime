@@ -57,10 +57,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: configwidget.ui:29
-#, fuzzy, kde-format
-#| msgid "Display name"
+#, kde-format
 msgid "Display name:"
-msgstr "Ainm taispeána"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: configwidget.ui:39
@@ -83,18 +82,16 @@ msgstr "nóiméad"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: configwidget.ui:80 urlconfigurationdialog.ui:120
-#, fuzzy, kde-format
-#| msgid "Username"
+#, kde-format
 msgid "Username:"
-msgstr "Ainm úsáideora"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configwidget.ui:107 setupwizard.cpp:241 urlconfigurationdialog.ui:136
-#, fuzzy, kde-format
-#| msgid "Password: "
+#, kde-format
 msgid "Password:"
-msgstr "Focal Faire: "
+msgstr ""
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:134
@@ -432,11 +429,10 @@ msgid "Do not change the actual backend data."
 msgstr "Ná hathraigh na sonraí féin."
 
 #: searchdialog.cpp:26
-#, fuzzy, kde-format
-#| msgid "Search"
+#, kde-format
 msgctxt "@title:window"
 msgid "Search"
-msgstr "Cuardaigh"
+msgstr ""
 
 #: searchdialog.cpp:41
 #, kde-format
@@ -452,10 +448,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, useDefaultCreds)
 #: searchdialog.ui:32 urlconfigurationdialog.ui:94
-#, fuzzy, kde-format
-#| msgid "Credentials"
+#, kde-format
 msgid "Use global creden&tials"
-msgstr "Dintiúir"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, useSpecificCreds)
 #: searchdialog.ui:42 urlconfigurationdialog.ui:104
@@ -483,10 +478,9 @@ msgstr "Focal Faire"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: searchdialog.ui:96
-#, fuzzy, kde-format
-#| msgid "Search"
+#, kde-format
 msgid "Search URL"
-msgstr "Cuardaigh"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: searchdialog.ui:106
@@ -523,10 +517,9 @@ msgid "Enter your credentials to login to the groupware server"
 msgstr ""
 
 #: setupwizard.cpp:236
-#, fuzzy, kde-format
-#| msgid "User"
+#, kde-format
 msgid "User:"
-msgstr "Úsáideoir"
+msgstr ""
 
 #: setupwizard.cpp:276
 #, kde-format
@@ -600,11 +593,10 @@ msgid "Installation path"
 msgstr ""
 
 #: setupwizard.cpp:417
-#, fuzzy, kde-format
-#| msgid "Test Connection"
+#, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
-msgstr "Ceangal Tástála"
+msgstr ""
 
 #: setupwizard.cpp:445
 #, kde-format
@@ -637,11 +629,10 @@ msgid ""
 msgstr ""
 
 #: setupwizard.cpp:525
-#, fuzzy, kde-format
-#| msgid "Test Connection"
+#, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
-msgstr "Ceangal Tástála"
+msgstr ""
 
 #: setupwizard.cpp:565
 #, kde-format
@@ -654,10 +645,9 @@ msgid "Connected successfully"
 msgstr ""
 
 #: urlconfigurationdialog.cpp:267
-#, fuzzy, kde-format
-#| msgid "Display name"
+#, kde-format
 msgid "Display Name"
-msgstr "Ainm taispeána"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, remoteProtocol)
 #: urlconfigurationdialog.ui:35
@@ -667,10 +657,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, caldav)
 #: urlconfigurationdialog.ui:42
-#, fuzzy, kde-format
-#| msgid "CalDAV"
+#, kde-format
 msgid "CalDA&V"
-msgstr "CalDAV"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, carddav)
 #: urlconfigurationdialog.ui:55
@@ -686,10 +675,9 @@ msgstr "GroupDAV"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: urlconfigurationdialog.ui:75
-#, fuzzy, kde-format
-#| msgid "Remove"
+#, kde-format
 msgid "Remote URL:"
-msgstr "Bain"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label1)
 #: urlconfigurationdialog.ui:85
@@ -723,15 +711,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#, fuzzy
-#~| msgid "Password: "
-#~ msgctxt "@label:textbox"
-#~ msgid "Password: "
-#~ msgstr "Focal Faire: "
-
-#~ msgid "eGroupware"
-#~ msgstr "eGroupware"
-
-#~ msgid "Authentication"
-#~ msgstr "Fíordheimhniú"

@@ -39,17 +39,15 @@ msgstr ""
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: settingsdialog.ui:45
-#, fuzzy, kde-format
-#| msgid "Display Name"
+#, kde-format
 msgid "Directory Name"
-msgstr "Ainm le taispeáint"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: settingsdialog.ui:53
-#, fuzzy, kde-format
-#| msgid "Display Name"
+#, kde-format
 msgid "Director&y:"
-msgstr "Ainm le taispeáint"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: settingsdialog.ui:68
@@ -228,10 +226,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
-#, fuzzy, kde-format
-#| msgid "Display Name"
+#, kde-format
 msgid "Display Name:"
-msgstr "Ainm le taispeáint"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
@@ -244,10 +241,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
-#, fuzzy, kde-format
-#| msgid "Monitoring"
+#, kde-format
 msgid "Monitor for &changes"
-msgstr "Monatóireacht"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
@@ -301,28 +297,3 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Checking file information…"
 msgstr ""
-
-#, fuzzy
-#~| msgid "&Filename:"
-#~ msgid "File Name:"
-#~ msgstr "&Ainm comhaid:"
-
-#~ msgid "Filename"
-#~ msgstr "Ainm comhaid"
-
-#~ msgid "Status:"
-#~ msgstr "Stádas:"
-
-#~ msgid "&Name:"
-#~ msgstr "&Ainm:"
-
-#, fuzzy
-#~| msgid "Could not create file '%1'."
-#~ msgid "Could not find credentials"
-#~ msgstr "Níorbh fhéidir comhad '%1' a chruthú."
-
-#~ msgid "&Display name:"
-#~ msgstr "&Ainm le taispeáint:"
-
-#~ msgid "min"
-#~ msgstr "nóiméad"
