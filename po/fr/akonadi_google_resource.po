@@ -174,7 +174,7 @@ msgstr ""
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
-msgstr "%1 requière votre attention."
+msgstr "%1 requiert votre attention."
 
 #: googleresource.cpp:212
 #, kde-format
