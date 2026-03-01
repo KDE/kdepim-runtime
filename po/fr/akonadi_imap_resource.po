@@ -723,7 +723,7 @@ msgstr "Problème avec le compte « IMAP » %1"
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr "Un compte de messagerie « IMAP » requière votre attention."
+msgstr "Un compte de messagerie « IMAP » requiert votre attention."
 
 #: settingspasswordrequester.cpp:79
 #, kde-format
