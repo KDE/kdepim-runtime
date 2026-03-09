@@ -22,7 +22,7 @@ msgstr ""
 #: addcollectiontask.cpp:33
 #, kde-format
 msgid "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'."
-msgstr "تعذّرت إضافة مجلّد IMAP ‏’%1‘ لمجلّد أبّ ’%2‘ غير موجود."
+msgstr "تعذّرت إضافة مجلّد IMAP ‏’%1‘ لمجلّد أب ’%2‘ غير موجود."
 
 #: addcollectiontask.cpp:67
 #, kde-format

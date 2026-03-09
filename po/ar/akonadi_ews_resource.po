@@ -747,7 +747,7 @@ msgstr "ضبط نقل البريد لِ‍ EWS"
 #: ewsmtaconfigdialog.ui:42
 #, kde-format
 msgid "Parent Exchange account:"
-msgstr "حساب «إكسچينج» الأبّ:"
+msgstr "حساب «إكسچينج» الأب:"
 
 #: ewsmtaresource.cpp:57
 #, kde-format
@@ -765,7 +765,7 @@ msgstr "مورد EWS"
 #: ewsmtaresource.kcfg:11 ewsmtaresource.kcfg:12
 #, kde-format
 msgid "The name of the parent EWS Resource to use when sending mail"
-msgstr "اسم مورد EWS الأبّ ليُستخدم عند إرسال البريد"
+msgstr "اسم مورد EWS الأب ليُستخدم عند إرسال البريد"
 
 #: ewsprogressdialog.cpp:34
 #, kde-format
