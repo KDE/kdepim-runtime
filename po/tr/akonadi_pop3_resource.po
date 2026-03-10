@@ -7,13 +7,13 @@
 # obsoleteman <tulliana@gmail.com>, 2009,2012.
 # Volkan Gezer <volkangezer@gmail.com>, 2013-2014, 2015.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025, 2026 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:52+0000\n"
-"PO-Revision-Date: 2025-03-13 15:54+0300\n"
+"PO-Revision-Date: 2026-03-09 22:03+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.07.70\n"
+"X-Generator: Lokalize 25.12.2\n"
 "X-POOTLE-MTIME: 1413104452.000000\n"
 
 #: accountwidget.cpp:83
@@ -489,12 +489,12 @@ msgstr "Hazır"
 #: pop3resource.cpp:978
 #, kde-format
 msgid "Mail check aborted after going offline."
-msgstr "Çevrimdışı olunduğundan e-posta denetimi iptal edildi."
+msgstr "Çevrim dışı olunduğundan e-posta denetimi iptal edildi."
 
 #: pop3resource.cpp:980
 #, kde-format
 msgid "Offline"
-msgstr "Çevrimdışı"
+msgstr "Çevrim dışı"
 
 #. i18n: ectx: property (text), widget (QLabel, titleLabel)
 #: popsettings.ui:35

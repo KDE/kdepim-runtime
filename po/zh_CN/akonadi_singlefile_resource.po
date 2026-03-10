@@ -14,9 +14,9 @@ msgstr ""
 "X-Crowdin-Project: kdeorg\n"
 "X-Crowdin-Project-ID: 269464\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf6-trunk/messages/kdepim-runtime/"
+"X-Crowdin-File: /kf6-stable/messages/kdepim-runtime/"
 "akonadi_singlefile_resource.pot\n"
-"X-Crowdin-File-ID: 45219\n"
+"X-Crowdin-File-ID: 51074\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
