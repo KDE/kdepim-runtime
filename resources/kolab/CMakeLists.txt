@@ -30,8 +30,6 @@ kcoreaddons_add_plugin(kolabconfig
     INSTALL_NAMESPACE "pim6/akonadi/config"
 )
 
-ki18n_wrap_ui(kolabconfig ../imap/setupserverview_desktop.ui)
-
 target_sources(kolabconfig PRIVATE
     kolabconfig.cpp
 )
