@@ -128,7 +128,6 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     string(APPEND CMAKE_CXX_FLAGS " -Wshadow")
 endif()
 ecm_set_disabled_deprecation_versions(QT 6.7.2 KF 6.24.0 
-	# KMIME 6.7.0 activate when kolab resource removed (I can't build it)
 )
 
 
