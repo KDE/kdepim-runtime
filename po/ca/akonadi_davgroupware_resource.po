@@ -765,9 +765,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#~ msgid "The account id in WebAccounts framework."
-#~ msgstr "L'ID del compte en el marc de treball WebAccounts."
-
-#~ msgid "Account enabled services"
-#~ msgstr "Serveis del compte habilitat"

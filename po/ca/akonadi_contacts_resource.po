@@ -178,6 +178,3 @@ msgstr "No es canvien les dades reals del dorsal."
 #, kde-format
 msgid "Activities"
 msgstr "Activitats"
-
-#~ msgid "Filename:"
-#~ msgstr "Nom de fitxer:"

@@ -636,7 +636,7 @@ msgstr "Introduïu la informació de connexió per al servidor de treball en gru
 #: setupwizard.cpp:411
 #, kde-format
 msgid "Host"
-msgstr "Amfitrió"
+msgstr "Màquina"
 
 #: setupwizard.cpp:414
 #, kde-format
@@ -764,9 +764,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#~ msgid "The account id in WebAccounts framework."
-#~ msgstr "L'ID del compte en el marc de treball WebAccounts."
-
-#~ msgid "Account enabled services"
-#~ msgstr "Serveis del compte habilitat"

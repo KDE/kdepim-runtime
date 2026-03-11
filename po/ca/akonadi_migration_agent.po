@@ -74,7 +74,3 @@ msgstr "Fitxer de registre"
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"
 msgstr "Informació de la migració"
-
-#~ msgctxt "PIM-Maintenance is paused."
-#~ msgid "Paused."
-#~ msgstr "En pausa."
