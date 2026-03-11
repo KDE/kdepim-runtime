@@ -232,11 +232,3 @@ msgstr "Marca com a llegit"
 #, kde-format
 msgid "Delete"
 msgstr "Suprimix"
-
-#~ msgctxt "NAME OF TRANSLATORS"
-#~ msgid "Your names"
-#~ msgstr "Antoni Bella"
-
-#~ msgctxt "EMAIL OF TRANSLATORS"
-#~ msgid "Your emails"
-#~ msgstr "antonibella5@yahoo.com"
