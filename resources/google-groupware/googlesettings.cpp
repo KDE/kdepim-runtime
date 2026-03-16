@@ -107,7 +107,7 @@ WritePasswordJob *GoogleSettings::storeAccount(AccountPtr account)
         {QStringLiteral("scopes"), scopes.join(u',')},
     };
 
-    // Legacy: store the map exactly like Kwallet is doing it
+    // Legacy: keep the serialized map format unchanged for compatibility
     QByteArray mapData;
     QDataStream ds(&mapData, QIODevice::WriteOnly);
     ds << map;
