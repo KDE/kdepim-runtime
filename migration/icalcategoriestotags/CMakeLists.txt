@@ -7,7 +7,6 @@ add_library(icalcategoriestotagsmigration STATIC)
 target_sources(icalcategoriestotagsmigration PRIVATE
     icalcategoriestotagsmigrator.cpp
     icalcategoriestotagsmigrator.h
-    ${MIGRATION_AKONADI_SHARED_SOURCES}
     )
 
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
