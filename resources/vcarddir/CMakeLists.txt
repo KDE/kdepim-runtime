@@ -63,7 +63,6 @@ ki18n_wrap_ui(vcarddirconfig vcarddiragentsettingswidget.ui)
 target_sources(vcarddirconfig PRIVATE
     vcarddirsettingswidget.cpp
     vcarddirsettingswidget.h
-    ${vcarddirconfig_ui_SRCS}
     ${vcarddirresource_common_SRCS}
 )
 

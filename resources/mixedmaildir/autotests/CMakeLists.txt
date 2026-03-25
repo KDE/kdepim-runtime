@@ -1,6 +1,6 @@
 include(ECMAddTests)
 
-if(${EXECUTABLE_OUTPUT_PATH})
+if(EXECUTABLE_OUTPUT_PATH)
     set(PREVIOUS_EXEC_OUTPUT_PATH ${EXECUTABLE_OUTPUT_PATH})
 else()
     set(PREVIOUS_EXEC_OUTPUT_PATH .)
@@ -17,7 +17,6 @@ include_directories(
 
 # test data
 set(testdata_SRCS
-  ${testdata_generated_SRCS}
   testdatautil.cpp testdatautil.h
   ../mixedmaildir_debug.cpp
   testdata.qrc

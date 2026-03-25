@@ -8,7 +8,7 @@ include_directories(
 # Stolen from kdepimlibs/akonadi/tests
 kde_enable_exceptions()
 
-set(_srcList ${_source} fakeserver/fakeserver.cpp)
+set(_srcList fakeserver/fakeserver.cpp)
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../settings.kcfg org.kde.Akonadi.POP3.Settings)
 set(pop3settingsinterface_xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.POP3.Settings.xml)

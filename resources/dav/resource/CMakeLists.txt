@@ -90,7 +90,6 @@ kcoreaddons_add_plugin(davgroupwareconfig
 )
 
 target_sources(davgroupwareconfig PRIVATE
-    ${davgroupwareconfig_SRCS}
     ${davgroupwareresource_common_SRCS}
     davgroupwareconfig.cpp
     urlconfigurationdialog.cpp

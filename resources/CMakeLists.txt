@@ -11,7 +11,7 @@ include_directories(
 
 # resource tests
 macro(akonadi_add_resourcetest _testname _script)
-  if( ${EXECUTABLE_OUTPUT_PATH})
+  if(EXECUTABLE_OUTPUT_PATH)
     set(_exepath ${EXECUTABLE_OUTPUT_PATH})
   else ()
     set(_exepath ${kdepim-runtime_BINARY_DIR}/resourcetester)

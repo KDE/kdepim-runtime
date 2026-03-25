@@ -7,7 +7,7 @@ set(kolabresource_SRCS
     kolabresource.h
 )
 
-add_executable(akonadi_kolab_resource ${kolabresource_SRCS} ${kolabresource_common_SRCS})
+add_executable(akonadi_kolab_resource ${kolabresource_SRCS})
 
 target_link_libraries(akonadi_kolab_resource
     KPim6::AkonadiCore
