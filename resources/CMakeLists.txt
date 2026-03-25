@@ -36,7 +36,6 @@ add_subdirectory(contacts)
 add_subdirectory(dav)
 add_subdirectory(ical)
 add_subdirectory(imap)
-add_subdirectory(kolab)
 
 if(Etebase_FOUND)
     add_subdirectory(etesync)

@@ -1,5 +1,5 @@
 [codespell]
-skip = ./build*,.git,*.notifyrc,*.desktop,*.desktop.cmake,*.json,*.xml,./po,./resources/kolab/pimkolab
+skip = ./build*,.git,*.notifyrc,*.desktop,*.desktop.cmake,*.json,*.xml,./po
 interactive = 0
 #ignore camelCase, regardless. also mixed case words with correct spelling
 ignore-regex = \b([a-z]+[A-Z0-9][a-z0-9]*)\b

@@ -20,7 +20,6 @@ Dependencies:
     'pim/kmime': '@same'
     'pim/libkgapi': '@same'
     'pim/kldap': '@same'
-    'third-party/libkolabxml': '@latest-kf6'
     'frameworks/kconfig': '@latest-kf6'
     'frameworks/kconfigwidgets': '@latest-kf6'
     'frameworks/kio': '@latest-kf6'
@@ -39,5 +38,3 @@ Dependencies:
 
 Options:
  enable-lsan: True
- cppcheck-ignore-files:
-  - 'src/resources/kolab/'
