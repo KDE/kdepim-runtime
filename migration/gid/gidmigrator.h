@@ -25,9 +25,8 @@ public:
 
 protected:
     void startWork() override;
-private Q_SLOTS:
-    void migrationFinished(KJob *);
 
 private:
+    void migrationFinished(KJob *);
     const QString mMimeType;
 };
