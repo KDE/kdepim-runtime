@@ -48,11 +48,9 @@ public Q_SLOTS:
     void setNewLinkedCollectionRemoteId(const QString &newLinkedCollectionRemoteId);
     void setLinkedCollectionToRemoveRemoteId(const QString &linkedCollectionToRemoveRemoteId);
 
-private Q_SLOTS:
+private:
     void jobFinished(KJob *job);
     void processItems();
-
-private:
     [[nodiscard]] KGAPI2::People::Membership resourceNameToMembership(const QString &resourceName);
 
     Akonadi::Item::List m_items;

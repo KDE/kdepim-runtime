@@ -60,7 +60,6 @@ private:
     void enablePopFeatures();
     void populateDefaultAuthenticationOptions();
 
-private:
     QButtonGroup *encryptionButtonGroup = nullptr;
     MailTransport::ServerTest *mServerTest = nullptr;
     QRegularExpressionValidator mValidator;

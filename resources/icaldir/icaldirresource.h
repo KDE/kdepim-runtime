@@ -42,10 +42,9 @@ protected:
 private:
     [[nodiscard]] bool loadIncidences();
     [[nodiscard]] QString iCalDirectoryName() const;
-    QString iCalDirectoryFileName(const QString &file) const;
+    [[nodiscard]] QString iCalDirectoryFileName(const QString &file) const;
     void initializeICalDirectory() const;
     void slotReloadConfig();
 
-private:
     QHash<QString, KCalendarCore::Incidence::Ptr> mIncidences;
 };

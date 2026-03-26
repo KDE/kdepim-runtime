@@ -83,7 +83,6 @@ public:
 private:
     void slotData(const QByteArray &data) override;
 
-private:
     QMap<int, int> mIdList;
 };
 
