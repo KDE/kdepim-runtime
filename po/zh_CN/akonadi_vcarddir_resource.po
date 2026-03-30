@@ -103,7 +103,7 @@ msgstr "尝试写入只读目录：“%1”"
 #: vcarddirresource.cpp:154
 #, kde-format
 msgid "Impossible to write in file: '%1'"
-msgstr ""
+msgstr "无法写入文件：“%1”"
 
 #: vcarddirresource.cpp:244
 #, kde-format
