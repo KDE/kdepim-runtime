@@ -464,7 +464,7 @@ QString Settings::loadPasswordFromOnlineAccount(KDAV::Protocol protocol)
 
     QDBusReply<QDBusVariant> reply = QDBusConnection::sessionBus().call(msg);
 
-    if (reply.isValid()) {
+    if (!reply.isValid()) {
         qCWarning(DAVRESOURCE_LOG) << "error reading password from account" << reply.error();
         return QString();
     }
