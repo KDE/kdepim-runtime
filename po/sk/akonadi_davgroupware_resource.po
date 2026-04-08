@@ -14,12 +14,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 19.04.3\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Lokalize 19.04.3\n"
 
 #: configwidget.cpp:33
-#, fuzzy, kde-format
-#| msgid "DAV groupware configuration wizard"
+#, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "Sprievodca nastavením DAV groupware"
@@ -101,6 +100,7 @@ msgstr "Heslo:"
 #, kde-format
 msgid "Select this to reduce the load on the server and speed-up your syncs"
 msgstr ""
+"Vyberte túto možnosť na zníženie záťaže servera a zrýchlenie synchronizácií"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:137
@@ -109,25 +109,24 @@ msgid ""
 "Limiting the time span range will lessen the load on the remote server and "
 "speed-up your initial sync."
 msgstr ""
+"Obmedzenie časového rozsahu zníži záťaž vzdialeného servera a zrýchli vašu "
+"počiatočnú synchronizáciu."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
 #: configwidget.ui:140
-#, fuzzy, kde-format
-#| msgid "Limit CalDav retrieval time range"
+#, kde-format
 msgid "Limit retrieval time range"
 msgstr "Obmedziť časový rozsah získavania CalDav"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configwidget.ui:152
-#, fuzzy, kde-format
-#| msgid "Only sync events more recent than"
+#, kde-format
 msgid "Only sync data more recent than"
 msgstr "Synchronizovať iba udalosti novšie ako"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
 #: configwidget.ui:191
-#, fuzzy, kde-format
-#| msgid "Server Configuration"
+#, kde-format
 msgid "Server Configuration:"
 msgstr "Konfigurácia servera"
 
@@ -331,14 +330,12 @@ msgid "Invalid collection for item %1."
 msgstr "Neplatná kolekcia pre položku %1."
 
 #: davgroupwareresource.cpp:723
-#, fuzzy, kde-format
-#| msgid "Unable to add item: %1"
+#, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Nemôžem pridať položku: %1"
 
 #: davgroupwareresource.cpp:762
-#, fuzzy, kde-format
-#| msgid "Unable to remove collection: %1"
+#, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Nemôžem odstrániť kolekciu: %1"
 
@@ -368,6 +365,8 @@ msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
+"Nepodarilo sa získať položku: zlyhalo spracovanie údajov položky. Možno už "
+"bola odstránená."
 
 #: davgroupwareresource.cpp:1274
 #, kde-format
@@ -422,22 +421,19 @@ msgstr "Meno používateľa"
 
 #. i18n: ectx: label, entry (limitSyncRange), group (General)
 #: davgroupwareresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Limit the events retrieval to the specified time range"
+#, kde-format
 msgid "Limit the data retrieval to the specified time range"
 msgstr "Obmedziť získavanie udalostí na určitý časový rozsah"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, quantity"
+#, kde-format
 msgid "Period for which to retrieve data, quantity"
 msgstr "Perióda, po ktorú získavať udalosti, množstvo"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
-#, fuzzy, kde-format
-#| msgid "Period for which to retrieve events, type"
+#, kde-format
 msgid "Period for which to retrieve data, type"
 msgstr "Perióda, po ktorú získavať udalosti, typ"
 
@@ -457,8 +453,7 @@ msgid "Do not change the actual backend data."
 msgstr "Nezmeniť aktuálne backend dáta."
 
 #: searchdialog.cpp:26
-#, fuzzy, kde-format
-#| msgid "Search"
+#, kde-format
 msgctxt "@title:window"
 msgid "Search"
 msgstr "Hľadať"
@@ -532,8 +527,7 @@ msgid "a contact with email"
 msgstr "kontakt s e-mailom"
 
 #: setupwizard.cpp:142
-#, fuzzy, kde-format
-#| msgid "DAV groupware configuration wizard"
+#, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
 msgstr "Sprievodca nastavením DAV groupware"
@@ -554,8 +548,7 @@ msgid "User:"
 msgstr "Používateľ:"
 
 #: setupwizard.cpp:276
-#, fuzzy, kde-format
-#| msgid "No, choose another server"
+#, kde-format
 msgctxt "@option:radio"
 msgid "No, choose another server"
 msgstr "Nie, vybrať iný server"
@@ -597,15 +590,13 @@ msgid "Select the groupware server the resource shall be configured for"
 msgstr "Vyberte groupware server, pre ktorý sa má nastaviť zdroj"
 
 #: setupwizard.cpp:359
-#, fuzzy, kde-format
-#| msgid "Use one of those servers:"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Použiť jeden z týchto serverov:"
 
 #: setupwizard.cpp:368
-#, fuzzy, kde-format
-#| msgid "Configure the resource manually"
+#, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Nastaviť zdroj ručne"
@@ -631,29 +622,25 @@ msgid "Installation path"
 msgstr "Inštalačná cesta"
 
 #: setupwizard.cpp:417
-#, fuzzy, kde-format
-#| msgid "Use secure connection"
+#, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Použiť bezpečné pripojenie"
 
 #: setupwizard.cpp:445
-#, fuzzy, kde-format
-#| msgid "Final URL (CalDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "Konečné URL (CalDav)"
 
 #: setupwizard.cpp:450
-#, fuzzy, kde-format
-#| msgid "Final URL (CardDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "Konečné URL (CardDav)"
 
 #: setupwizard.cpp:455
-#, fuzzy, kde-format
-#| msgid "Final URL (GroupDav)"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Konečné URL (GroupDav)"
@@ -673,8 +660,7 @@ msgstr ""
 "nastavením"
 
 #: setupwizard.cpp:525
-#, fuzzy, kde-format
-#| msgid "Test Connection"
+#, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Testovať pripojenie"
@@ -698,7 +684,7 @@ msgstr "Zobraziť meno"
 #: urlconfigurationdialog.ui:35
 #, kde-format
 msgid "Access protocol:"
-msgstr ""
+msgstr "Prístupový protokol:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, caldav)
 #: urlconfigurationdialog.ui:42
@@ -728,12 +714,11 @@ msgstr "Vzdialené URL:"
 #: urlconfigurationdialog.ui:85
 #, kde-format
 msgid "Access:"
-msgstr ""
+msgstr "Prístup:"
 
 #. i18n: ectx: property (text), widget (QLabel, collectionsLabel)
 #: urlconfigurationdialog.ui:154
-#, fuzzy, kde-format
-#| msgid "Discovered collections"
+#, kde-format
 msgid "Discovered collections:"
 msgstr "Objavené kolekcie"
 
@@ -772,13 +757,11 @@ msgstr "GroupDav"
 #~ "spracovať požiadavky"
 
 #, fuzzy
-#~| msgid "A password is required for user %1"
 #~ msgctxt "@label:textbox"
 #~ msgid "A password is required for user %1"
 #~ msgstr "Vyžaduje sa heslo pre používateľa %1"
 
 #, fuzzy
-#~| msgid "Password: "
 #~ msgctxt "@label:textbox"
 #~ msgid "Password: "
 #~ msgstr "Heslo:"

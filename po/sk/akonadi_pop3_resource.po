@@ -14,19 +14,17 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 19.04.3\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Lokalize 19.04.3\n"
 
 #: accountwidget.cpp:83
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p%"
 
 #: accountwidget.cpp:91
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] " minúta"
@@ -39,8 +37,7 @@ msgid "POP3 Account"
 msgstr "POP3 účet"
 
 #: accountwidget.cpp:195
-#, fuzzy, kde-format
-#| msgid "Unable to open wallet"
+#, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Nepodarilo sa otvoriť wallet"
@@ -59,17 +56,7 @@ msgstr ""
 "zapnutia ponechania stiahnutých správ na serveri."
 
 #: accountwidget.cpp:260
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that this feature can cause some POP3 servers that do not "
-#| "support pipelining to send corrupted mail;\n"
-#| "this is configurable, though, because some servers support pipelining but "
-#| "do not announce their capabilities. To check whether your POP3 server "
-#| "announces pipelining support use the \"Auto Detect\" button at the bottom "
-#| "of the dialog;\n"
-#| "if your server does not announce it, but you want more speed, then you "
-#| "should do some testing first by sending yourself a batch of mail and "
-#| "downloading it."
+#, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
 "support pipelining to send corrupted mail;\n"
@@ -151,20 +138,19 @@ msgstr[1] " správy"
 msgstr[2] " správ"
 
 #: jobs.cpp:148
-#, fuzzy, kde-format
-#| msgid "Unable to create POP3 slave, aborting mail check."
+#, kde-format
 msgid "Unable to initialize SASL, aborting mail check."
 msgstr "Nemôžem vytvoriť POP3 slave, ruším kontrolu pošty."
 
 #: pop3protocol.cpp:189
 #, kde-format
 msgid "The server said: \"%1\""
-msgstr ""
+msgstr "The server said: \"%1\""
 
 #: pop3protocol.cpp:211
 #, kde-format
 msgid "The server terminated the connection."
-msgstr ""
+msgstr "Server ukončil spojenie."
 
 #: pop3protocol.cpp:213
 #, kde-format
@@ -172,11 +158,13 @@ msgid ""
 "Invalid response from server:\n"
 "\"%1\""
 msgstr ""
+"Invalid response from server:\n"
+"\"%1\""
 
 #: pop3protocol.cpp:253 pop3protocol.cpp:257
 #, kde-format
 msgid "Could not send to server.\n"
-msgstr ""
+msgstr "Nepodarilo sa odoslať na server.\n"
 
 #: pop3protocol.cpp:356
 #, kde-format
@@ -186,11 +174,15 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
+"Prihlásenie cez APOP zlyhalo. Server %1 nemusí podporovať APOP, hoci tvrdí, "
+"že ho podporuje, alebo je heslo nesprávne.\n"
+"\n"
+"%2"
 
 #: pop3protocol.cpp:406
 #, kde-format
 msgid "An error occurred during authentication: %1"
-msgstr ""
+msgstr "Počas overovania sa vyskytla chyba: %1"
 
 #: pop3protocol.cpp:500
 #, kde-format
@@ -200,6 +192,10 @@ msgid ""
 "\n"
 "%3"
 msgstr ""
+"Prihlásenie cez SASL (%1) zlyhalo. Server nemusí podporovať %2 alebo je "
+"heslo nesprávne.\n"
+"\n"
+"%3"
 
 #: pop3protocol.cpp:511
 #, kde-format
@@ -207,6 +203,8 @@ msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
 "Choose a different authentication method."
 msgstr ""
+"Váš server POP3 (%1) nepodporuje SASL.\n"
+"Zvoľte iný spôsob overovania."
 
 #: pop3protocol.cpp:528 pop3protocol.cpp:617
 #, kde-format
@@ -214,6 +212,8 @@ msgid ""
 "Could not login to %1.\n"
 "\n"
 msgstr ""
+"Nepodarilo sa prihlásiť na %1.\n"
+"\n"
 
 #: pop3protocol.cpp:536
 #, kde-format
@@ -222,21 +222,24 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
+"Nepodarilo sa prihlásiť na %1. Heslo môže byť nesprávne.\n"
+"\n"
+"%2"
 
 #: pop3protocol.cpp:568
 #, kde-format
 msgid "SSL/TLS error: %1"
-msgstr ""
+msgstr "Chyba SSL/TLS: %1"
 
 #: pop3protocol.cpp:599
 #, kde-format
 msgid "%1: %2"
-msgstr ""
+msgstr "%1: %2"
 
 #: pop3protocol.cpp:618
 #, kde-format
 msgid "The server terminated the connection immediately."
-msgstr ""
+msgstr "Server okamžite ukončil spojenie."
 
 #: pop3protocol.cpp:619
 #, kde-format
@@ -244,6 +247,8 @@ msgid ""
 "Server does not respond properly:\n"
 "%1\n"
 msgstr ""
+"Server neodpovedá správne:\n"
+"%1\n"
 
 #: pop3protocol.cpp:643
 #, kde-format
@@ -251,6 +256,8 @@ msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
 "Choose a different authentication method."
 msgstr ""
+"Váš server POP3 (%1) nepodporuje APOP.\n"
+"Zvoľte iný spôsob overovania."
 
 #: pop3protocol.cpp:653
 #, kde-format
@@ -258,26 +265,28 @@ msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
 "You can disable TLS in the POP account settings dialog."
 msgstr ""
+"Váš server POP3 tvrdí, že podporuje TLS, ale vyjednávanie bolo neúspešné.\n"
+"TLS môžete vypnúť v dialógovom okne nastavení účtu POP."
 
 #: pop3protocol.cpp:733
 #, kde-format
 msgid "Internal error: missing argument for command %1"
-msgstr ""
+msgstr "Vnútorná chyba: chýbajúci argument pre príkaz %1"
 
 #: pop3protocol.cpp:789
 #, kde-format
 msgid "Internal error: missing item"
-msgstr ""
+msgstr "Vnútorná chyba: chýbajúca položka"
 
 #: pop3protocol.cpp:814
 #, kde-format
 msgid "Timeout from POP3 server %1"
-msgstr ""
+msgstr "Časový limit zo servera POP3 %1"
 
 #: pop3protocol.cpp:816
 #, kde-format
 msgid "Connection broken from POP3 server %1"
-msgstr ""
+msgstr "Prerušené spojenie so serverom POP3 %1"
 
 #: pop3protocol.cpp:877
 #, kde-format
@@ -285,6 +294,7 @@ msgid ""
 "Error during communication with the POP3 server while trying to download "
 "mail: %1"
 msgstr ""
+"Chyba pri komunikácii so serverom POP3 počas pokusu o stiahnutie pošty: %1"
 
 #: pop3resource.cpp:95
 #, kde-format
@@ -390,8 +400,7 @@ msgid "Error while executing precommand."
 msgstr "Chyba počas vykonávania predpríkazu."
 
 #: pop3resource.cpp:457
-#, fuzzy, kde-format
-#| msgid "Unable to login to the server %1."
+#, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr "Nemôžem sa prihlásiť na server %1."
 
@@ -618,8 +627,7 @@ msgstr "Pokročilé"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget)
 #: popsettings.ui:217
-#, fuzzy, kde-format
-#| msgid "POP Settings"
+#, kde-format
 msgid "POP Settings"
 msgstr "Nastavenia POP"
 
@@ -769,30 +777,7 @@ msgstr "STA&RTTLS"
 
 #. i18n: ectx: property (text), widget (QLabel, imapInfo)
 #: popsettings.ui:465
-#, fuzzy, kde-format
-#| msgid ""
-#| "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#| "REC-html40/strict.dtd\">\n"
-#| "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#| "css\">\n"
-#| "p, li { white-space: pre-wrap; }\n"
-#| "</style></head><body style=\" font-family:'HandelGotDLig'; font-"
-#| "size:10pt; font-weight:400; font-style:normal;\">\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "family:'Sans Serif'; font-weight:600;\">SSL/TLS</span><span style=\" font-"
-#| "family:'Sans Serif';\"> is safe IMAP over port 993;</span></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "family:'Sans Serif'; font-weight:600;\">STARTTLS</span><span style=\" "
-#| "font-family:'Sans Serif';\"> will operate on port 143 and switch to a "
-#| "secure connection directly after connecting;</span></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "family:'Sans Serif'; font-weight:600;\">None</span><span style=\" font-"
-#| "family:'Sans Serif';\"> will connect to port 143 but not switch to a "
-#| "secure connection. This setting is not recommended.</span></p></body></"
-#| "html>"
+#, kde-format
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -874,7 +859,6 @@ msgid "Defines the authentication type to use"
 msgstr "Definuje typ overenia na použitie"
 
 #, fuzzy
-#~| msgid "Deleting messages from the server."
 #~ msgid "Unexpected response from POP3 server."
 #~ msgstr "Mazanie správ zo servera."
 

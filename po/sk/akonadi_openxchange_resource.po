@@ -13,8 +13,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: configwidget.cpp:25
 #, kde-format
@@ -37,8 +37,7 @@ msgid "Unable to connect: %1"
 msgstr "Nemôžem pripojiť: %1"
 
 #: configwidget.cpp:72
-#, fuzzy, kde-format
-#| msgid "Connection error"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection error"
 msgstr "Chyba pripojenia"
@@ -49,8 +48,7 @@ msgid "Tested connection successfully."
 msgstr "Pripojenie úspešne otestované."
 
 #: configwidget.cpp:74
-#, fuzzy, kde-format
-#| msgid "Connection success"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection success"
 msgstr "Pripojenie úspešné"
@@ -109,8 +107,7 @@ msgstr "Heslo, ktoré sa používa na prihlásenie na server Open-Xchange"
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
-#, fuzzy, kde-format
-#| msgid "Test Connection..."
+#, kde-format
 msgid "Test Connection…"
 msgstr "Testovať pripojenie..."
 
