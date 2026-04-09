@@ -14,8 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 20.08.1\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Lokalize 20.08.1\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -271,13 +271,13 @@ msgstr "Definuje typ identifikácie použitej vlastným sieve serverom"
 #: imapresource.kcfg:129
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Whether the activities support of the agent is enabled"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: imapresource.kcfg:133
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "The activities of the agent"
 
 #: imapresourcebase.cpp:216
 #, kde-format
@@ -361,9 +361,7 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Presúvam priečinok '%1' z '%2' do '%3'"
 
 #: imapresourcebase.cpp:438
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "Hľadá sa..."
@@ -421,7 +419,7 @@ msgstr ""
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
-msgstr ""
+msgstr "Nepodarilo sa read password from keychain."
 
 #: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
 #: removecollectionrecursivetask.cpp:141
@@ -515,7 +513,7 @@ msgstr "Informácie o serveri"
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
-msgstr ""
+msgstr "Error while getting server capabilities: %1"
 
 #: serverinfodialog.cpp:109
 #, kde-format
@@ -615,7 +613,7 @@ msgstr "Odpojený počas prihlasovania."
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
-msgstr ""
+msgstr "Password not found for %1 IMAP account"
 
 #: settings.cpp:129
 #, kde-format
@@ -624,12 +622,14 @@ msgid ""
 "An error occurred when retrieving the IMAP password from the system "
 "keychain: \"%1\""
 msgstr ""
+"An error occurred when retrieving the IMAP password from the system "
+"keychain: \"%1\""
 
 #: settings.cpp:157
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
-msgstr ""
+msgstr "Password not found for %1 sieve account"
 
 #: settings.cpp:162
 #, kde-format
@@ -638,6 +638,8 @@ msgid ""
 "An error occurred when retrieving the sieve password from the system "
 "keychain: \"%1\""
 msgstr ""
+"An error occurred when retrieving the sieve password from the system "
+"keychain: \"%1\""
 
 #: settings.cpp:192
 #, kde-format
@@ -646,6 +648,8 @@ msgid ""
 "An error occurred when saving the sieve password in the system keychain: "
 "\"%1\""
 msgstr ""
+"An error occurred when saving the sieve password in the system keychain: "
+"\"%1\""
 
 #: settings.cpp:218
 #, kde-format
@@ -654,46 +658,36 @@ msgid ""
 "An error occurred when saving the IMAP password in the system keychain: "
 "\"%1\""
 msgstr ""
+"An error occurred when saving the IMAP password in the system keychain: "
+"\"%1\""
 
 #: settings.cpp:305
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
-msgstr ""
+msgstr "Problem with %1 IMAP account"
 
 #: settingspasswordrequester.cpp:75
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
-msgstr ""
+msgstr "An IMAP e-mail account needs your attention."
 
 #: settingspasswordrequester.cpp:79
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and password. "
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
 "\n"
 "%1"
 msgstr ""
-"Server pre účet \"%2\" odmietol zadané prihlasovacie meno a heslo. Chcete "
-"prejsť na nastavenia, skúsiť druhý pokus prihlásenia alebo neurobiť nič?\n"
+"The IMAP server refused the supplied username and password.\n"
+"Do chcete to try again, or open the settings?\n"
 "\n"
 "%1"
 
 #: settingspasswordrequester.cpp:84
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and password. "
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
 "Do you want to try again, or open the settings?\n"
@@ -706,16 +700,13 @@ msgstr ""
 "%1"
 
 #: settingspasswordrequester.cpp:91
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Skúsiť znovu"
 
 #: settingspasswordrequester.cpp:97
-#, fuzzy, kde-format
-#| msgid "Identity Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
 msgstr "Nastavenie identity"
@@ -742,7 +733,7 @@ msgstr "Anonym"
 #, kde-format
 msgctxt "Authentication method"
 msgid "XOAuth"
-msgstr ""
+msgstr "XOAuth"
 
 #: setupserver.cpp:141
 #, kde-format
@@ -753,12 +744,10 @@ msgstr "Archivovať priečinok"
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p%"
 
 #: setupserver.cpp:154
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] " minúta"
@@ -773,7 +762,7 @@ msgstr "Identita:"
 #: setupserver.cpp:189
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktivity"
 
 #: setupserver.cpp:251
 #, kde-format
@@ -786,8 +775,7 @@ msgstr ""
 "znova stiahnuť všetky e-maily z tohto účtu znova. Chcete pokračovať?"
 
 #: setupserver.cpp:254
-#, fuzzy, kde-format
-#| msgid "Server address change"
+#, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
 msgstr "Zmena adresy servera"
@@ -804,8 +792,7 @@ msgstr ""
 "pokračovať?"
 
 #: setupserver.cpp:264
-#, fuzzy, kde-format
-#| msgid "User name change"
+#, kde-format
 msgctxt "@title:window"
 msgid "User name change"
 msgstr "Zmena používateľského mena"
@@ -1077,8 +1064,7 @@ msgstr "Povoliť prihlásenia na strane servera"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgid "Serverside Subscription"
+#, kde-format
 msgid "Serverside Subscription…"
 msgstr "Podpísanie na strane servera"
 
@@ -1222,13 +1208,11 @@ msgid "Subscribed only"
 msgstr "Iba podpísané"
 
 #, fuzzy
-#~| msgid "IMAP Account Settings"
 #~ msgctxt "@title:window"
 #~ msgid "IMAP Account Settings"
 #~ msgstr "Nastavenia účtu IMAP"
 
 #, fuzzy
-#~| msgid "Could Not Authenticate"
 #~ msgctxt "@title:window"
 #~ msgid "Could Not Authenticate"
 #~ msgstr "Nemôžem overiť"
@@ -1253,7 +1237,6 @@ msgstr "Iba podpísané"
 #~ msgstr "Nepoužívať KWallet"
 
 #, fuzzy
-#~| msgid "Failed to collect metadata."
 #~ msgctxt "@status"
 #~ msgid "Failed to open KWallet"
 #~ msgstr "Zlyhalo zozbieranie metadát."
@@ -1275,9 +1258,6 @@ msgstr "Iba podpísané"
 #~ msgstr "Vyberte identitu KMail použitú pre tento účet"
 
 #, fuzzy
-#~| msgid ""
-#~| "Could not connect to the IMAP-server %1.\n"
-#~| "%2"
 #~ msgid ""
 #~ "Could not retrieve namespaces from the IMAP server %1.\n"
 #~ "%2"
@@ -1286,9 +1266,6 @@ msgstr "Iba podpísané"
 #~ "%2"
 
 #, fuzzy
-#~| msgid ""
-#~| "Could not connect to the IMAP server.\n"
-#~| "%1"
 #~ msgid ""
 #~ "Could not retrieve namespaces from the IMAP server.\n"
 #~ "%1"
@@ -1297,9 +1274,6 @@ msgstr "Iba podpísané"
 #~ "%1"
 
 #, fuzzy
-#~| msgid ""
-#~| "Could not connect to the IMAP-server %1.\n"
-#~| "%2"
 #~ msgid ""
 #~ "Could not send client ID to the IMAP server %1.\n"
 #~ "%2"
@@ -1308,9 +1282,6 @@ msgstr "Iba podpísané"
 #~ "%2"
 
 #, fuzzy
-#~| msgid ""
-#~| "Could not connect to the IMAP server.\n"
-#~| "%1"
 #~ msgid ""
 #~ "Could not send client ID to the IMAP server.\n"
 #~ "%1"

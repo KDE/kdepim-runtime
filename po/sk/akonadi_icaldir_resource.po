@@ -12,8 +12,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 2.0\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Lokalize 2.0\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -26,18 +26,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Snaha o zápis do adresára len na čítanie: '%1'"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "Priečinok kalendára"
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "Priečinok kalendára"
+msgstr "%1 Calendar Folder"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -87,11 +85,7 @@ msgstr "Len na čítanie"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: icaldirsagentsettingswidget.ui:84
-#, fuzzy, kde-format
-#| msgid ""
-#| "If read-only mode is enabled, no changes will be written to the directory "
-#| "selected above. Read-only mode will be automatically enabled if you do "
-#| "not have write access to the directory."
+#, kde-format
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
@@ -129,13 +123,10 @@ msgstr "Oneskorenie automatického uloženia:"
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "A directory path or URL containing calendar files"
-msgstr ""
+msgstr "Cesta k priečinku alebo URL obsahujúce súbory kalendára"
 
 #: icaldirsettingswidget.cpp:46
-#, fuzzy, kde-kuit-format
-#| msgid ""
-#| "Select the directory whose contents should be represented by this "
-#| "resource. If the directory does not exist, it will be created."
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory whose contents should be represented by "
@@ -145,9 +136,7 @@ msgstr ""
 "adresár neexistuje, vytvorí sa."
 
 #: icaldirsettingswidget.cpp:48
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] " minúta"
@@ -157,7 +146,7 @@ msgstr[2] " minút"
 #: icaldirsettingswidget.cpp:54
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktivity"
 
 #~ msgid "Directory Name"
 #~ msgstr "Názov adresára"
@@ -166,6 +155,5 @@ msgstr ""
 #~ msgstr "Prístupové práva"
 
 #, fuzzy
-#~| msgid "Calendar Folder"
 #~ msgid "Calendar Name:"
 #~ msgstr "Priečinok kalendára"

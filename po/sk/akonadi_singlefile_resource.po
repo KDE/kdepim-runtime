@@ -14,8 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 19.04.3\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Lokalize 19.04.3\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -214,7 +214,7 @@ msgstr "Nepodarilo sa uložiť súbor '%1'."
 #: singlefileresourceconfigbase.h:30
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktivity"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: singlefileresourceconfigwidget_desktop.ui:39
@@ -226,7 +226,7 @@ msgstr "Súbor"
 #: singlefileresourceconfigwidget_desktop.ui:47
 #, kde-format
 msgid "File or URL:"
-msgstr ""
+msgstr "Súbor alebo URL:"
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
@@ -235,22 +235,18 @@ msgid ""
 "Select a local file or a remote URL to download a file from. A new local "
 "file will be created if it doesn't exist."
 msgstr ""
+"Vyberte lokálny súbor alebo vzdialenú URL adresu, z ktorej sa stiahne súbor. "
+"Ak lokálny súbor neexistuje, vytvorí sa nový."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
-#, fuzzy, kde-format
-#| msgid "Display Name"
+#, kde-format
 msgid "Display Name:"
 msgstr "Zobrazené meno"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
-#, fuzzy, kde-format
-#| msgid ""
-#| "If read-only mode is enabled, no changes will be written to the file "
-#| "selected above. Read-only mode will be automatically enabled if you do "
-#| "not have write access to the file or the file is on a remote server that "
-#| "does not support write access."
+#, kde-format
 msgid ""
 "When read-only mode is enabled, no changes will be written. Read-only mode "
 "is automatically enabled when the selected file does not support write "
@@ -263,8 +259,7 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
-#, fuzzy, kde-format
-#| msgid "Monitoring"
+#, kde-format
 msgid "Monitor for &changes"
 msgstr "Monitorovanie"
 
@@ -276,20 +271,21 @@ msgid ""
 "enabled. Backups will be created to avoid conflicts when possible. "
 "Monitoring is not available for remote URLs."
 msgstr ""
+"Zmeny vykonané inými aplikáciami spôsobia opätovné načítanie súboru, keď je "
+"sledovanie zapnuté. Na zabránenie konfliktom sa podľa možnosti vytvoria "
+"zálohy. Sledovanie nie je dostupné pre vzdialené URL adresy."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_PeriodicUpdate)
 #: singlefileresourceconfigwidget_desktop.ui:149
 #, kde-format
 msgid "Automatically &update every"
-msgstr ""
+msgstr "Automaticky akt&ualizovať každých"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
 #: singlefileresourceconfigwidget_desktop.ui:159
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid " minutes"
-msgstr " minúta"
+msgstr " minúty"
 
 #. i18n: ectx: property (text), widget (QLabel, periodicUpdateLabel)
 #: singlefileresourceconfigwidget_desktop.ui:193
@@ -298,6 +294,8 @@ msgid ""
 "Periodically updates the file. Can be used when monitoring is not available "
 "(e.g. for remote calendars)."
 msgstr ""
+"Periodicky aktualizuje súbor. Možno použiť, keď sledovanie nie je dostupné "
+"(napr. pre vzdialené kalendáre)."
 
 #: singlefileresourceconfigwidgetbase.cpp:37
 #, kde-format
@@ -306,6 +304,8 @@ msgid ""
 "A file path or URL containing the calendar file. Once created, this location "
 "cannot be modified."
 msgstr ""
+"Cesta k súboru alebo URL obsahujúca súbor kalendára. Po vytvorení nie je "
+"možné toto umiestnenie zmeniť."
 
 #: singlefileresourceconfigwidgetbase.cpp:39
 #, kde-kuit-format
@@ -316,17 +316,18 @@ msgid ""
 "created. To change the location, delete this resource and then create a new "
 "one with the updated path.</note></para>"
 msgstr ""
+"Zadajte cestu alebo URL k súboru obsahujúcemu platný súbor kalendára. "
+"<para><note> Bohužiaľ, túto cestu nie je možné zmeniť po vytvorení zdroja. "
+"Na zmenu umiestnenia odstráňte tento zdroj a potom vytvorte nový s "
+"aktualizovanou cestou.</note></para>"
 
 #: singlefileresourceconfigwidgetbase.cpp:145
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Checking file information..."
+#, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"
 msgstr "Kontrolujem informácie súboru..."
 
 #, fuzzy
-#~| msgid "&Filename:"
 #~ msgid "File Name:"
 #~ msgstr "&Meno súboru:"
 
