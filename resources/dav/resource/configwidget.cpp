@@ -26,7 +26,6 @@
 ConfigWidget::ConfigWidget(Settings &settings, const QString &identifier, QWidget *parent)
     : QWidget(parent)
     , mSettings(settings)
-    , mIdentifier(identifier)
     , mModel(new QStandardItemModel(this))
 {
     setWindowIcon(QIcon::fromTheme(QStringLiteral("folder-remote")));

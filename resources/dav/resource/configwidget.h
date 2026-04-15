@@ -51,7 +51,6 @@ private:
     void insertModelRow(int index, const QString &protocol, const QString &url);
 
     Settings &mSettings;
-    const QString mIdentifier;
     Ui::ConfigWidget mUi;
     KConfigDialogManager *mManager = nullptr;
     QList<QPair<QString, KDAV::Protocol>> mAddedUrls;
