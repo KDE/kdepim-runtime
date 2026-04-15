@@ -13,7 +13,7 @@ public:
     DavGroupwareConfig(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
         : Akonadi::AgentConfigurationBase(config, parent, args)
         , mSettings(config, Settings::Option::NoOption)
-        , mWidget(mSettings, identifier(), parent)
+        , mWidget(mSettings, parent)
     {
         connect(&mWidget, &ConfigWidget::okEnabled, this, &Akonadi::AgentConfigurationBase::enableOkButton);
     }

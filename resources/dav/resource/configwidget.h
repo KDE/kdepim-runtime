@@ -24,10 +24,9 @@ public:
     /**
      * Constructor
      * @param settings The settings
-     * @param identifier The identifier of the resource
      * @param parent The parent widget
      */
-    explicit ConfigWidget(Settings &settings, const QString &identifier, QWidget *parent = nullptr);
+    explicit ConfigWidget(Settings &settings, QWidget *parent = nullptr);
     ~ConfigWidget() override;
 
     void setPassword(const QString &password);

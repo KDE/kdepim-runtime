@@ -23,7 +23,7 @@
 #include <QStringList>
 #include <QVBoxLayout>
 
-ConfigWidget::ConfigWidget(Settings &settings, const QString &identifier, QWidget *parent)
+ConfigWidget::ConfigWidget(Settings &settings, QWidget *parent)
     : QWidget(parent)
     , mSettings(settings)
     , mModel(new QStandardItemModel(this))
