@@ -104,7 +104,6 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     changeRecorder()->itemFetchScope().setFetchTags(true);
 
     settings()->setAccountId(accountId());
-    settings()->setResourceIdentifier(identifier());
 
     connect(mFreeBusyHandler, &DavFreeBusyHandler::handlesFreeBusy, this, &DavGroupwareResource::onHandlesFreeBusy);
     connect(mFreeBusyHandler, &DavFreeBusyHandler::freeBusyRetrieved, this, &DavGroupwareResource::onFreeBusyRetrieved);

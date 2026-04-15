@@ -31,6 +31,19 @@
 using namespace QKeychain;
 using namespace Qt::Literals;
 
+namespace
+{
+QString createDefaultPasswordKey(const KSharedConfigPtr &config)
+{
+    const auto configName = config->name();
+    // We remove the "rc" suffix (contrary to IMAP) because of existing resources
+    // those were storing their password with the resource identifier which is the
+    // same than the config name (when AKONADI_INSTANCE isn't used) but without "rc"
+    Q_ASSERT(configName.endsWith(QStringLiteral("rc")));
+    return configName.chopped(2);
+}
+}
+
 class SettingsHelper
 {
 public:
@@ -67,6 +80,7 @@ QString Settings::UrlConfiguration::serialize()
 
 Settings::Settings(const KSharedConfigPtr &config, Options options)
     : SettingsBase(config)
+    , mDefaultPasswordKey(createDefaultPasswordKey(config))
 {
     if (options & Option::ExportToDBus) {
         new SettingsAdaptor(this);
@@ -93,7 +107,7 @@ Settings::~Settings()
 
 void Settings::cleanup()
 {
-    const QString entry = mResourceIdentifier + u',' + QStringLiteral("$default$");
+    const QString entry = mDefaultPasswordKey + u',' + QStringLiteral("$default$");
     auto deleteJob = new DeletePasswordJob(QStringLiteral("Passwords"));
     deleteJob->setKey(entry);
     deleteJob->start();
@@ -101,19 +115,14 @@ void Settings::cleanup()
     cacheFile.remove();
 }
 
-void Settings::setResourceIdentifier(const QString &identifier)
-{
-    mResourceIdentifier = identifier;
-}
-
 void Settings::setDefaultPassword(const QString &password)
 {
-    savePassword(mResourceIdentifier, QStringLiteral("$default$"), password);
+    savePassword(mDefaultPasswordKey, QStringLiteral("$default$"), password);
 }
 
 QString Settings::defaultPassword()
 {
-    return loadPasswordFromWallet(mResourceIdentifier, QStringLiteral("$default$"));
+    return loadPasswordFromWallet(mDefaultPasswordKey, QStringLiteral("$default$"));
 }
 
 void Settings::setIconName(const QString &icon)
@@ -417,7 +426,7 @@ QString Settings::loadPasswordFromWallet(const QString &key, const QString &user
     QString pass;
 
     if (user == QLatin1StringView("$default$")) {
-        entry = mResourceIdentifier + u',' + user;
+        entry = mDefaultPasswordKey + u',' + user;
     } else {
         entry = key + u',' + user;
     }

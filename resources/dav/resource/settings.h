@@ -51,7 +51,6 @@ public:
     ~Settings() override;
     void cleanup();
 
-    void setResourceIdentifier(const QString &identifier);
     void setDefaultPassword(const QString &password);
     [[nodiscard]] QString defaultPassword();
     void setIconName(const QString &icon);
@@ -119,7 +118,7 @@ private:
     void updateToV2();
     void updateToV3();
 
-    QString mResourceIdentifier;
+    QString mDefaultPasswordKey;
     QMap<QString, UrlConfiguration *> mUrls;
     QMap<QString, QString> mPasswordsCache;
     QString mCollectionsUrlsMappingCache;

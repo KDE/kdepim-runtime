@@ -34,7 +34,6 @@ ConfigWidget::ConfigWidget(Settings &settings, const QString &identifier, QWidge
     auto mainWidget = new QWidget(this);
     mainLayout->addWidget(mainWidget);
     mUi.setupUi(mainWidget);
-    mSettings.setResourceIdentifier(identifier);
 
     const QStringList headers = {i18n("Protocol"), i18n("URL")};
     mModel->setHorizontalHeaderLabels(headers);
