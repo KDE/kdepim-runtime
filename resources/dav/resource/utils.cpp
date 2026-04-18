@@ -57,21 +57,6 @@ QString Utils::translatedProtocolName(KDAV::Protocol protocol)
     return protocolName;
 }
 
-KDAV::Protocol Utils::protocolByTranslatedName(const QString &name)
-{
-    KDAV::Protocol protocol = KDAV::CalDav;
-
-    if (name == i18n("CalDav")) {
-        protocol = KDAV::CalDav;
-    } else if (name == i18n("CardDav")) {
-        protocol = KDAV::CardDav;
-    } else if (name == i18n("GroupDav")) {
-        protocol = KDAV::GroupDav;
-    }
-
-    return protocol;
-}
-
 QStringList Utils::tagsToCategories(const Akonadi::Tag::List &tags)
 {
     QStringList categories;

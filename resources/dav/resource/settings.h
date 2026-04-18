@@ -115,9 +115,6 @@ private:
     QString loadPasswordFromWallet(const QString &key, const QString &user);
     QString loadPasswordFromOnlineAccount(KDAV::Protocol protocol);
 
-    void updateToV2();
-    void updateToV3();
-
     QString mDefaultPasswordKey;
     QMap<QString, UrlConfiguration *> mUrls;
     QMap<QString, QString> mPasswordsCache;

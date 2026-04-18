@@ -32,12 +32,6 @@ namespace Utils
 QString translatedProtocolName(KDAV::Protocol protocol);
 
 /**
- * Returns the protocol matching the given i18n'ed @p name. This is the opposite
- * of Utils::translatedProtocolName().
- */
-KDAV::Protocol protocolByTranslatedName(const QString &name);
-
-/**
  * Creates a new KDAV::DavItem from the Akonadi::Item @p item.
  *
  * The returned item will have no payload (DavItem::data() will return an empty

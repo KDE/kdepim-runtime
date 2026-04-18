@@ -88,12 +88,6 @@ Settings::Settings(const KSharedConfigPtr &config, Options options)
                                                      this,
                                                      QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
     }
-
-    if (settingsVersion() == 1) {
-        updateToV2();
-    } else if (settingsVersion() == 2) {
-        updateToV3();
-    }
 }
 
 Settings::~Settings()
@@ -479,57 +473,6 @@ QString Settings::loadPasswordFromOnlineAccount(KDAV::Protocol protocol)
     }
 
     return reply.value().variant().toString();
-}
-
-void Settings::updateToV2()
-{
-    // Take the first URL that was configured to get the username that
-    // has the most chances being the default
-
-    QStringList urls = remoteUrls();
-    if (urls.isEmpty()) {
-        return;
-    }
-
-    const QString urlConfigStr = urls.at(0);
-    UrlConfiguration urlConfig(urlConfigStr);
-    const QRegularExpression regexp(QStringLiteral("^") + urlConfig.mUser);
-
-    QMutableStringListIterator it(urls);
-    while (it.hasNext()) {
-        it.next();
-        it.value().replace(regexp, QStringLiteral("$default$"));
-    }
-
-    setDefaultUsername(urlConfig.mUser);
-    QString key = urlConfig.mUrl + u',' + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig.mProtocol));
-    QString pass = loadPasswordFromWallet(key, urlConfig.mUser);
-    if (!pass.isNull()) {
-        setDefaultPassword(pass);
-    }
-    setRemoteUrls(urls);
-    setSettingsVersion(2);
-    save();
-}
-
-void Settings::updateToV3()
-{
-    QStringList updatedUrls;
-
-    const auto remoteUrlsLst = remoteUrls();
-    for (const QString &url : remoteUrlsLst) {
-        QStringList splitUrl = url.split(u'|');
-
-        if (splitUrl.size() == 3) {
-            const KDAV::Protocol protocol = Utils::protocolByTranslatedName(splitUrl.at(1));
-            splitUrl[1] = KDAV::ProtocolInfo::protocolName(protocol);
-            updatedUrls << splitUrl.join(u'|');
-        }
-    }
-
-    setRemoteUrls(updatedUrls);
-    setSettingsVersion(3);
-    save();
 }
 
 #include "moc_settings.cpp"

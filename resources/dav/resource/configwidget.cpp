@@ -23,6 +23,8 @@
 #include <QStringList>
 #include <QVBoxLayout>
 
+constexpr auto ProtocolRole = Qt::UserRole + 1;
+
 ConfigWidget::ConfigWidget(Settings &settings, QWidget *parent)
     : QWidget(parent)
     , mSettings(settings)
@@ -45,7 +47,7 @@ ConfigWidget::ConfigWidget(Settings &settings, QWidget *parent)
     for (const KDAV::DavUrl &url : lstUrls) {
         QUrl displayUrl = url.url();
         displayUrl.setUserInfo(QString());
-        addModelRow(Utils::translatedProtocolName(url.protocol()), displayUrl.toDisplayString());
+        addModelRow(url.protocol(), displayUrl.toDisplayString());
     }
 
     mUi.syncRangeStartType->addItem(i18n("Days"), QVariant(QLatin1StringView("D")));
@@ -98,7 +100,7 @@ void ConfigWidget::loadSettings()
 
                 QUrl displayUrl(url.url);
                 displayUrl.setUserInfo(QString());
-                addModelRow(Utils::translatedProtocolName(url.protocol), displayUrl.toDisplayString());
+                addModelRow(url.protocol, displayUrl.toDisplayString());
             }
 
             const QString defaultUser = wizard.field(QStringLiteral("credentialsUserName")).toString();
@@ -177,9 +179,7 @@ void ConfigWidget::onAddButtonClicked()
 
             mSettings.newUrlConfiguration(urlConfig, Settings::StorePassword);
 
-            const QString protocolName = Utils::translatedProtocolName(dlg->protocol());
-
-            addModelRow(protocolName, dlg->remoteUrl());
+            addModelRow(dlg->protocol(), dlg->remoteUrl());
             mAddedUrls << QPair<QString, KDAV::Protocol>(dlg->remoteUrl(), KDAV::Protocol(dlg->protocol()));
             checkUserInput();
         }
@@ -214,7 +214,7 @@ void ConfigWidget::onSearchButtonClicked()
 
                 mSettings.newUrlConfiguration(urlConfig, Settings::StorePassword);
 
-                addModelRow(Utils::translatedProtocolName(protocol), split.at(1));
+                addModelRow(protocol, split.at(1));
                 mAddedUrls << QPair<QString, KDAV::Protocol>(split.at(1), protocol);
                 checkUserInput();
             }
@@ -231,10 +231,10 @@ void ConfigWidget::onRemoveButtonClicked()
         return;
     }
 
-    const QString proto = mModel->index(indexes.at(0).row(), 0).data().toString();
+    const auto proto = static_cast<KDAV::Protocol>(mModel->index(indexes.at(0).row(), 0).data(ProtocolRole).toInt());
     const QString url = mModel->index(indexes.at(0).row(), 1).data().toString();
 
-    mRemovedUrls << QPair<QString, KDAV::Protocol>(url, Utils::protocolByTranslatedName(proto));
+    mRemovedUrls << QPair<QString, KDAV::Protocol>(url, proto);
     mModel->removeRow(indexes.at(0).row());
 
     checkUserInput();
@@ -248,10 +248,10 @@ void ConfigWidget::onEditButtonClicked()
     }
 
     const int row = indexes.at(0).row();
-    const QString proto = mModel->index(row, 0).data().toString();
+    const auto proto = static_cast<KDAV::Protocol>(mModel->index(row, 0).data(ProtocolRole).toInt());
     const QString url = mModel->index(row, 1).data().toString();
 
-    Settings::UrlConfiguration *urlConfig = mSettings.urlConfiguration(Utils::protocolByTranslatedName(proto), url);
+    Settings::UrlConfiguration *urlConfig = mSettings.urlConfiguration(proto, url);
     if (!urlConfig) {
         return;
     }
@@ -273,7 +273,7 @@ void ConfigWidget::onEditButtonClicked()
     const int result = dlg->exec();
 
     if (result == QDialog::Accepted && !dlg.isNull()) {
-        mSettings.removeUrlConfiguration(Utils::protocolByTranslatedName(proto), url);
+        mSettings.removeUrlConfiguration(proto, url);
         auto urlConfigAccepted = new Settings::UrlConfiguration();
         urlConfigAccepted->mUrl = dlg->remoteUrl();
         if (dlg->useDefaultCredentials()) {
@@ -286,7 +286,7 @@ void ConfigWidget::onEditButtonClicked()
         mSettings.newUrlConfiguration(urlConfigAccepted, Settings::StorePassword);
 
         mModel->removeRow(row);
-        insertModelRow(row, Utils::translatedProtocolName(dlg->protocol()), dlg->remoteUrl());
+        insertModelRow(row, dlg->protocol(), dlg->remoteUrl());
     }
     delete dlg;
 }
@@ -312,17 +312,18 @@ void ConfigWidget::checkConfiguredUrlsButtonsState()
     mUi.editButton->setEnabled(enabled);
 }
 
-void ConfigWidget::addModelRow(const QString &protocol, const QString &url)
+void ConfigWidget::addModelRow(KDAV::Protocol protocol, const QString &url)
 {
     insertModelRow(-1, protocol, url);
 }
 
-void ConfigWidget::insertModelRow(int index, const QString &protocol, const QString &url)
+void ConfigWidget::insertModelRow(int index, KDAV::Protocol protocol, const QString &url)
 {
     QStandardItem *rootItem = mModel->invisibleRootItem();
     QList<QStandardItem *> items;
 
-    auto protocolStandardItem = new QStandardItem(protocol);
+    auto protocolStandardItem = new QStandardItem(Utils::translatedProtocolName(protocol));
+    protocolStandardItem->setData(protocol);
     protocolStandardItem->setEditable(false);
     items << protocolStandardItem;
 

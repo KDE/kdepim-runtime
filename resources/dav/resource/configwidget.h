@@ -9,6 +9,7 @@
 #include "ui_configwidget.h"
 
 #include "settings.h"
+#include <KDAV/Enums>
 #include <QList>
 #include <QPair>
 #include <QString>
@@ -46,8 +47,8 @@ private:
     void onEditButtonClicked();
     void checkConfiguredUrlsButtonsState();
 
-    void addModelRow(const QString &protocol, const QString &url);
-    void insertModelRow(int index, const QString &protocol, const QString &url);
+    void addModelRow(KDAV::Protocol protocol, const QString &url);
+    void insertModelRow(int index, KDAV::Protocol protocol, const QString &url);
 
     Settings &mSettings;
     Ui::ConfigWidget mUi;
