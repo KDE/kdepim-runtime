@@ -59,7 +59,7 @@ target_link_libraries(akonadi_mbox_resource
     KPim6::AkonadiCore
     KPim6::AkonadiMime
     KF6::KIOCore
-    KPim6::Mime
+    KF6::Mime
     KPim6::AkonadiAgentBase
     akonadi-singlefileresource
 )

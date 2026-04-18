@@ -41,7 +41,7 @@ set(common_link_libraries
   KPim6::AkonadiMime
   KPim6::AkonadiCore
   KPim6::Mbox
-  KPim6::Mime
+  KF6::Mime
   Qt::Test
   KF6::I18n
 )

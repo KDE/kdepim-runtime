@@ -19,6 +19,6 @@ add_executable(gidmigrator main.cpp)
 target_link_libraries(gidmigrator
     gidmigration
     KPim6::AkonadiWidgets
-    KPim6::Mime
+    KF6::Mime
 )
 install(TARGETS gidmigrator ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

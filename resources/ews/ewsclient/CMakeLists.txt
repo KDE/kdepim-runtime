@@ -152,7 +152,7 @@ target_link_libraries(ewsclient
     KF6::KIOWidgets
     KF6::Codecs
     KF6::I18n
-    KPim6::Mime
+    KF6::Mime
     KF6::CalendarCore
     qt6keychain)
 

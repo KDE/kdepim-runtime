@@ -125,7 +125,7 @@ target_link_libraries(imapresource PUBLIC
     KPim6::IdentityManagementCore
     KPim6::IMAP
     KPim6::MailTransport
-    KPim6::Mime
+    KF6::Mime
     KPim6::PimCommonAkonadi
     KF6::KIOWidgets # SslUi
     qt6keychain
@@ -177,7 +177,7 @@ target_link_libraries(akonadi_imap_resource PUBLIC
     KPim6::AkonadiCore
     KPim6::IMAP
     KPim6::MailTransport
-    KPim6::Mime
+    KF6::Mime
     KPim6::AkonadiMime
     KPim6::AkonadiAgentWidgetBase # Widgets due to PimCommonAkonadi/ImapAclAttribute TODO FIXME
     KPim6::IdentityManagementCore

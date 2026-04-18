@@ -97,7 +97,11 @@ find_package(KF6TextCustomEditor ${KTEXTADDONS_MIN_VERSION} CONFIG REQUIRED)
 
 # KdepimLibs package
 find_package(KPim6Akonadi ${AKONADI_VERSION} CONFIG REQUIRED)
-find_package(KPim6Mime ${KMIME_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF6Mime ${KF_MIN_VERSION} CONFIG)
+if(NOT TARGET KF6::Mime)
+    find_package(KPim6Mime ${KMIME_LIB_VERSION} CONFIG REQUIRED)
+    add_library(KF6::Mime ALIAS KPim6::Mime)
+endif()
 find_package(KPim6AkonadiMime ${AKONADIMIME_LIB_VERSION} CONFIG REQUIRED)
 find_package(KPim6MailTransport ${KMAILTRANSPORT_LIB_VERSION} CONFIG REQUIRED)
 find_package(KPim6IdentityManagementWidgets ${IDENTITYMANAGEMENT_LIB_VERSION} CONFIG REQUIRED)

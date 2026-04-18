@@ -76,7 +76,7 @@ endif()
 target_link_libraries(akonadi_newmailnotifier_agent
     PRIVATE
   KPim6::AkonadiCore
-  KPim6::Mime
+  KF6::Mime
   KPim6::AkonadiMime
   KPim6::AkonadiContactWidgets
   KF6::Codecs
@@ -136,6 +136,6 @@ target_link_libraries(newmailnotifierconfig
     KF6::ConfigGui
     KF6::I18n
     KF6::XmlGui
-    KPim6::Mime
+    KF6::Mime
     KF6::Completion
 )

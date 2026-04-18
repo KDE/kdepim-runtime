@@ -24,7 +24,7 @@ endif()
 
 target_link_libraries(folderarchivesettings
 PRIVATE
-                      KPim6::Mime
+                      KF6::Mime
                       KPim6::AkonadiCore
                       KPim6::AkonadiWidgets
                       KF6::ConfigCore

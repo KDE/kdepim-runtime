@@ -150,7 +150,7 @@ target_link_libraries(akonadi_ews_resource
     KPim6::AkonadiCore
     KPim6::AkonadiMime
     KF6::KIOCore
-    KPim6::Mime
+    KF6::Mime
     KF6::CalendarCore
     KF6::Contacts
     KF6::WidgetsAddons
@@ -191,7 +191,7 @@ if(HAVE_SEPARATE_MTA_RESOURCE)
         KPim6::AkonadiWidgets
         KF6::I18n
         KF6::WindowSystem
-        KPim6::Mime)
+        KF6::Mime)
 
     set(EWS_MTA_CAPABILITIES "X-EwsMailTransport")
 else ()

@@ -17,7 +17,7 @@ ecm_qt_declare_logging_category(mailtransport_akonadiplugin HEADER mailtransport
 
 target_link_libraries(mailtransport_akonadiplugin
     KPim6::AkonadiMime
-    KPim6::Mime
+    KF6::Mime
     KPim6::MailTransport
     KF6::CoreAddons
     KPim6::AkonadiCore

@@ -45,7 +45,7 @@ endif()
 target_link_libraries(akonadi_maildispatcher_agent 
     KPim6::AkonadiCore
     KPim6::AkonadiMime
-    KPim6::Mime
+    KF6::Mime
     KPim6::MailTransport
     KPim6::AkonadiAgentWidgetBase
     KF6::I18n

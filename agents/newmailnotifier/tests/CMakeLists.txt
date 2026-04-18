@@ -9,7 +9,7 @@ target_link_libraries(newmailnotifierselectcollectionwidgettest
     Qt::Widgets
     KF6::I18n
     KPim6::AkonadiCore
-    KPim6::Mime
+    KF6::Mime
     KF6::Completion
     KPim6::AkonadiMime
     KF6::WidgetsAddons
