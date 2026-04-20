@@ -32,7 +32,7 @@ namespace
 static const auto IdleTimeout = std::chrono::minutes(29);
 }
 
-ImapIdleManager::ImapIdleManager(ResourceStateInterface::Ptr state, SessionPool *pool, ImapResourceBase *parent)
+ImapIdleManager::ImapIdleManager(ResourceStateInterface::Ptr state, SessionPool *pool, ImapResource *parent)
     : QObject(parent)
     , m_sessionRequestId(0)
     , m_pool(pool)

@@ -5,8 +5,8 @@
 */
 
 #include "outlookpasswordrequester.h"
+#include "imapresource.h"
 #include "imapresource_debug.h"
-#include "imapresourcebase.h"
 #include "settings.h"
 
 #include <MailTransport/OutlookOAuthTokenRequester>
@@ -27,7 +27,7 @@ static const QStringList scopes{
 
 static constexpr QLatin1StringView walletFolder = QLatin1StringView("imap");
 
-OutlookPasswordRequester::OutlookPasswordRequester(ImapResourceBase *resource, QObject *parent)
+OutlookPasswordRequester::OutlookPasswordRequester(ImapResource *resource, QObject *parent)
     : XOAuthPasswordRequester(parent)
     , mResource(resource)
 {

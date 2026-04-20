@@ -5,7 +5,7 @@
 */
 
 #include "gmailpasswordrequester.h"
-#include "imapresourcebase.h"
+#include "imapresource.h"
 #include "settings.h"
 
 #include <KGAPI/Account>
@@ -15,7 +15,7 @@
 #define GOOGLE_API_KEY QStringLiteral("554041944266.apps.googleusercontent.com")
 #define GOOGLE_API_SECRET QStringLiteral("mdT1DjzohxN3npUUzkENT0gO")
 
-GmailPasswordRequester::GmailPasswordRequester(ImapResourceBase *resource, QObject *parent)
+GmailPasswordRequester::GmailPasswordRequester(ImapResource *resource, QObject *parent)
     : XOAuthPasswordRequester(parent)
     , mResource(resource)
 {
