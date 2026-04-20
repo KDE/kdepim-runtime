@@ -15,14 +15,14 @@
 #include <mailtransport/transportbase.h>
 #include <qt6keychain/keychain.h>
 
+#include "imapresource.h"
 #include "imapresource_debug.h"
-#include "imapresourcebase.h"
 #include "settings.h"
 
 using namespace QKeychain;
 using namespace Qt::StringLiterals;
 
-SettingsPasswordRequester::SettingsPasswordRequester(ImapResourceBase *resource, QObject *parent)
+SettingsPasswordRequester::SettingsPasswordRequester(ImapResource *resource, QObject *parent)
     : PasswordRequesterInterface(parent)
     , m_resource(resource)
 {

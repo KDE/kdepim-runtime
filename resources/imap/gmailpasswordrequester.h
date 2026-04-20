@@ -10,7 +10,7 @@
 
 #include <QPointer>
 
-class ImapResourceBase;
+class ImapResource;
 
 namespace KGAPI2
 {
@@ -21,7 +21,7 @@ class GmailPasswordRequester : public XOAuthPasswordRequester
 {
     Q_OBJECT
 public:
-    explicit GmailPasswordRequester(ImapResourceBase *resource, QObject *parent = nullptr);
+    explicit GmailPasswordRequester(ImapResource *resource, QObject *parent = nullptr);
     ~GmailPasswordRequester() override;
 
     void requestPassword(RequestType request, const QString &serverError) override;
@@ -29,6 +29,6 @@ public:
 
 private:
     void onTokenRequestFinished(KGAPI2::AccountPromise *promise);
-    ImapResourceBase *const mResource;
+    ImapResource *const mResource;
     QPointer<KGAPI2::AccountPromise> mPendingPromise;
 };

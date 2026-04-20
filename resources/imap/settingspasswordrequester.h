@@ -9,7 +9,7 @@
 
 #include "passwordrequesterinterface.h"
 
-class ImapResourceBase;
+class ImapResource;
 
 namespace QKeychain
 {
@@ -21,7 +21,7 @@ class SettingsPasswordRequester : public PasswordRequesterInterface
     Q_OBJECT
 
 public:
-    explicit SettingsPasswordRequester(ImapResourceBase *resource, QObject *parent = nullptr);
+    explicit SettingsPasswordRequester(ImapResource *resource, QObject *parent = nullptr);
     ~SettingsPasswordRequester() override;
 
     void requestPassword(RequestType request = StandardRequest, const QString &serverError = QString()) override;
@@ -34,7 +34,7 @@ private:
     void slotTryAgainClicked();
     void slotOpenSettingsClicked();
 
-    ImapResourceBase *const m_resource;
+    ImapResource *const m_resource;
 
     QList<QKeychain::ReadPasswordJob *> m_readPasswordJobs;
 };
