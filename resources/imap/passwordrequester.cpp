@@ -5,7 +5,7 @@
 */
 
 #include "passwordrequester.h"
-#include "imapresourcebase.h"
+#include "imapresource.h"
 #include "settings.h"
 #include <config-imap.h>
 
@@ -16,7 +16,7 @@
 namespace
 {
 
-XOAuthPasswordRequester *createXOAuthPasswordRequester(ImapResourceBase *resource, QObject *parent)
+XOAuthPasswordRequester *createXOAuthPasswordRequester(ImapResource *resource, QObject *parent)
 {
     static const auto isGmail = [](QStringView server) {
         return server.endsWith(u".gmail.com") || server.endsWith(u".googlemail.com");
@@ -38,7 +38,7 @@ XOAuthPasswordRequester *createXOAuthPasswordRequester(ImapResourceBase *resourc
 
 }
 
-PasswordRequester::PasswordRequester(ImapResourceBase *resource, QObject *parent)
+PasswordRequester::PasswordRequester(ImapResource *resource, QObject *parent)
     : PasswordRequesterInterface(parent)
     , mResource(resource)
 {

@@ -45,8 +45,8 @@ set(imapresource_LIB_SRCS
     changeitemtask.cpp
     expungecollectiontask.cpp
     highestmodseqattribute.cpp
+    imapresource.cpp
     imapflags.cpp
-    imapresourcebase.cpp
     messagehelper.cpp
     movecollectiontask.cpp
     moveitemstask.cpp
@@ -77,7 +77,7 @@ set(imapresource_LIB_SRCS
     expungecollectiontask.h
     highestmodseqattribute.h
     imapflags.h
-    imapresourcebase.h
+    imapresource.h
     messagehelper.h
     movecollectiontask.h
     moveitemstask.h
@@ -102,10 +102,10 @@ set(imapresource_LIB_SRCS
     ${imap_common_SRCS}
 )
 
-qt_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresourcebase.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a)
+qt_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a)
 qt_add_dbus_adaptor(imapresource_LIB_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
-    imapresourcebase.h ImapResourceBase
+    imapresource.h ImapResource
 )
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_library(imapresource STATIC ${imapresource_LIB_SRCS})
@@ -139,13 +139,11 @@ target_sources(
     akonadi_imap_resource
     PRIVATE
         main.cpp
-        imapresource.cpp
         resourcestate.cpp
         settingspasswordrequester.cpp
         passwordrequester.cpp
         gmailpasswordrequester.cpp
         outlookpasswordrequester.cpp
-        imapresource.h
         resourcestate.h
         settingspasswordrequester.h
         passwordrequester.h

@@ -39,7 +39,7 @@ ServerInfoDialog::ServerInfoDialog(const QString &identifier, QWidget *parent)
     setAttribute(Qt::WA_DeleteOnClose);
 
     const QString service = Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Resource, identifier);
-    QDBusInterface iface(service, QStringLiteral("/"), QStringLiteral("org.kde.Akonadi.ImapResourceBase"), QDBusConnection::sessionBus(), this);
+    QDBusInterface iface(service, QStringLiteral("/"), QStringLiteral("org.kde.Akonadi.ImapResource"), QDBusConnection::sessionBus(), this);
     if (!iface.isValid()) {
         qCDebug(IMAPRESOURCE_LOG) << "Cannot create imap dbus interface for service " << service;
         deleteLater();

@@ -8,14 +8,14 @@
 
 #include "passwordrequesterinterface.h"
 
-class ImapResourceBase;
+class ImapResource;
 
 class PasswordRequester : public PasswordRequesterInterface
 {
     Q_OBJECT
 
 public:
-    explicit PasswordRequester(ImapResourceBase *resource, QObject *parent = nullptr);
+    explicit PasswordRequester(ImapResource *resource, QObject *parent = nullptr);
     ~PasswordRequester() override;
 
     void requestPassword(RequestType request, const QString &serverError) override;
@@ -24,5 +24,5 @@ public:
 private:
     PasswordRequesterInterface *requesterImpl();
     PasswordRequesterInterface *mImpl = nullptr;
-    ImapResourceBase *const mResource;
+    ImapResource *const mResource;
 };
