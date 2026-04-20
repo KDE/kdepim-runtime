@@ -14,13 +14,13 @@ class OutlookOAuthTokenRequester;
 class TokenResult;
 }
 
-class ImapResourceBase;
+class ImapResource;
 
 class OutlookPasswordRequester : public XOAuthPasswordRequester
 {
     Q_OBJECT
 public:
-    explicit OutlookPasswordRequester(ImapResourceBase *resource, QObject *parent = nullptr);
+    explicit OutlookPasswordRequester(ImapResource *resource, QObject *parent = nullptr);
     ~OutlookPasswordRequester() override;
 
     void requestPassword(RequestType request, const QString &serverError) override;
@@ -30,7 +30,7 @@ private:
     void onTokenRequestFinished(const MailTransport::TokenResult &result);
     void storeResultToWallet(const MailTransport::TokenResult &result);
 
-    ImapResourceBase *const mResource;
+    ImapResource *const mResource;
     std::unique_ptr<MailTransport::OutlookOAuthTokenRequester> mTokenRequester;
     bool mRequestInProgress = false;
 };

@@ -10,7 +10,7 @@
 #include "messagehelper.h"
 #include "resourcestateinterface.h"
 
-class ImapResourceBase;
+class ImapResource;
 
 struct TaskArguments {
     TaskArguments() = default;
@@ -103,7 +103,7 @@ struct TaskArguments {
 class ResourceState : public ResourceStateInterface
 {
 public:
-    explicit ResourceState(ImapResourceBase *resource, const TaskArguments &arguments);
+    explicit ResourceState(ImapResource *resource, const TaskArguments &arguments);
 
 public:
     ~ResourceState() override;
@@ -195,6 +195,6 @@ public:
     void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode) override;
 
 private:
-    ImapResourceBase *const m_resource;
+    ImapResource *const m_resource;
     const TaskArguments m_arguments;
 };
