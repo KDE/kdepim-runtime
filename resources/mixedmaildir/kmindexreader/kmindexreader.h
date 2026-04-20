@@ -16,7 +16,7 @@ using Akonadi::MessageStatus;
 #include <QFile>
 #include <QList>
 #include <QSharedPointer>
-#include <QString>
+
 #include <QStringList>
 
 class KMINDEXREADER_EXPORT KMIndexData
