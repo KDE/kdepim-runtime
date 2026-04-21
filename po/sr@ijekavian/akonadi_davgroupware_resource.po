@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-05 00:44+0000\n"
+"POT-Creation-Date: 2026-04-21 00:46+0000\n"
 "PO-Revision-Date: 2017-01-22 23:51+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: configwidget.cpp:33
+#: configwidget.cpp:32
 #, fuzzy, kde-format
 #| msgid "Server Configuration"
 msgctxt "@title:window"
@@ -26,36 +26,36 @@ msgid "DAV Resource Configuration"
 msgstr "Подешавање сервера"
 
 # >> @title:column
-#: configwidget.cpp:40
+#: configwidget.cpp:38
 #, kde-format
 msgid "Protocol"
 msgstr "протокол"
 
 # >> @title:column
-#: configwidget.cpp:40 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:38 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "УРЛ"
 
 # >> @item
-#: configwidget.cpp:53
+#: configwidget.cpp:51
 #, kde-format
 msgid "Days"
 msgstr "дани"
 
 # >> @item
-#: configwidget.cpp:54
+#: configwidget.cpp:52
 #, kde-format
 msgid "Months"
 msgstr "месеци"
 
 # >> @item
-#: configwidget.cpp:55
+#: configwidget.cpp:53
 #, kde-format
 msgid "Years"
 msgstr "године"
 
-#: configwidget.cpp:166
+#: configwidget.cpp:164
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -316,82 +316,82 @@ msgstr "Лош одговор са сервера."
 msgid "Unable to parse free-busy data received"
 msgstr "Не могу да рашчланим примљене податке слободног-заузетог."
 
-#: davgroupwareresource.cpp:177
+#: davgroupwareresource.cpp:176
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "Не могу да добавим податке слободног-заузетог ван везе."
 
-#: davgroupwareresource.cpp:266
+#: davgroupwareresource.cpp:265
 #, kde-format
 msgid "Fetching collections"
 msgstr "Добављам збирке"
 
-#: davgroupwareresource.cpp:334
+#: davgroupwareresource.cpp:333
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Затражено је добављање ставки из непознате збирке: %1"
 
-#: davgroupwareresource.cpp:391
+#: davgroupwareresource.cpp:390
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Лоша збирка за ставку %1."
 
-#: davgroupwareresource.cpp:723
+#: davgroupwareresource.cpp:722
 #, fuzzy, kde-format
 #| msgid "Unable to add item: %1"
 msgid "Unable to modify items: %1"
 msgstr "Не могу да додам ставку: %1"
 
-#: davgroupwareresource.cpp:762
+#: davgroupwareresource.cpp:761
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to modify collection: %1"
 msgstr "Не могу да уклоним збирку: %1"
 
-#: davgroupwareresource.cpp:885
+#: davgroupwareresource.cpp:884
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Не могу да уклоним збирку: %1"
 
-#: davgroupwareresource.cpp:905
+#: davgroupwareresource.cpp:904
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Не могу да добавим збирке: %1"
 
-#: davgroupwareresource.cpp:1038 davgroupwareresource.cpp:1137
+#: davgroupwareresource.cpp:1037 davgroupwareresource.cpp:1136
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Не могу да добавим ставке: %1"
 
-#: davgroupwareresource.cpp:1217
+#: davgroupwareresource.cpp:1216
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Не могу да добавим ставку: %1"
 
-#: davgroupwareresource.cpp:1237
+#: davgroupwareresource.cpp:1236
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
 
-#: davgroupwareresource.cpp:1274
+#: davgroupwareresource.cpp:1273
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Не могу да додам ставку: %1"
 
-#: davgroupwareresource.cpp:1318 davgroupwareresource.cpp:1431
-#: davgroupwareresource.cpp:1443
+#: davgroupwareresource.cpp:1317 davgroupwareresource.cpp:1430
+#: davgroupwareresource.cpp:1442
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Не могу да изменим ставку: %1"
 
-#: davgroupwareresource.cpp:1405 davgroupwareresource.cpp:1462
+#: davgroupwareresource.cpp:1404 davgroupwareresource.cpp:1461
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Не могу да уклоним ставку: %1"
 
-#: davgroupwareresource.cpp:1549 davgroupwareresource.cpp:1550
+#: davgroupwareresource.cpp:1548 davgroupwareresource.cpp:1549
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Ресурс још увијек није подешен."

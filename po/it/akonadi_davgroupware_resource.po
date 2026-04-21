@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-05 00:44+0000\n"
+"POT-Creation-Date: 2026-04-21 00:46+0000\n"
 "PO-Revision-Date: 2025-05-24 11:35+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -18,38 +18,38 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 25.04.0\n"
 
-#: configwidget.cpp:33
+#: configwidget.cpp:32
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "Configurazione risorsa DAV"
 
-#: configwidget.cpp:40
+#: configwidget.cpp:38
 #, kde-format
 msgid "Protocol"
 msgstr "Protocollo"
 
-#: configwidget.cpp:40 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:38 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "URL"
 
-#: configwidget.cpp:53
+#: configwidget.cpp:51
 #, kde-format
 msgid "Days"
 msgstr "Giorni"
 
-#: configwidget.cpp:54
+#: configwidget.cpp:52
 #, kde-format
 msgid "Months"
 msgstr "Mesi"
 
-#: configwidget.cpp:55
+#: configwidget.cpp:53
 #, kde-format
 msgid "Years"
 msgstr "Anni"
 
-#: configwidget.cpp:166
+#: configwidget.cpp:164
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -312,61 +312,61 @@ msgstr "Risposta non valida dal server"
 msgid "Unable to parse free-busy data received"
 msgstr "Impossibile elaborare i dati libero/occupato ricevuti"
 
-#: davgroupwareresource.cpp:177
+#: davgroupwareresource.cpp:176
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr ""
 "Impossibile recuperare le informazioni libero/occupato in modalità fuori "
 "linea"
 
-#: davgroupwareresource.cpp:266
+#: davgroupwareresource.cpp:265
 #, kde-format
 msgid "Fetching collections"
 msgstr "Recupero delle collezioni"
 
-#: davgroupwareresource.cpp:334
+#: davgroupwareresource.cpp:333
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr ""
 "È stato richiesto di recuperare gli elementi di una collezione sconosciuta: "
 "%1"
 
-#: davgroupwareresource.cpp:391
+#: davgroupwareresource.cpp:390
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Collezione non valida per l'elemento %1."
 
-#: davgroupwareresource.cpp:723
+#: davgroupwareresource.cpp:722
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Impossibile modificar gli elementi: %1"
 
-#: davgroupwareresource.cpp:762
+#: davgroupwareresource.cpp:761
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Impossibile modificare la collezione: %1"
 
-#: davgroupwareresource.cpp:885
+#: davgroupwareresource.cpp:884
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Impossibile rimuovere la collezione: %1"
 
-#: davgroupwareresource.cpp:905
+#: davgroupwareresource.cpp:904
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Impossibile recuperare le collezioni: %1"
 
-#: davgroupwareresource.cpp:1038 davgroupwareresource.cpp:1137
+#: davgroupwareresource.cpp:1037 davgroupwareresource.cpp:1136
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Impossibile recuperare gli elementi: %1"
 
-#: davgroupwareresource.cpp:1217
+#: davgroupwareresource.cpp:1216
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Impossibile recuperare l'elemento: %1"
 
-#: davgroupwareresource.cpp:1237
+#: davgroupwareresource.cpp:1236
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -375,23 +375,23 @@ msgstr ""
 "Impossibile recuperare l'elemento: analisi dei dati dell'elemento non "
 "riuscita. Forse è stato già eliminato."
 
-#: davgroupwareresource.cpp:1274
+#: davgroupwareresource.cpp:1273
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Impossibile aggiungere l'elemento: %1"
 
-#: davgroupwareresource.cpp:1318 davgroupwareresource.cpp:1431
-#: davgroupwareresource.cpp:1443
+#: davgroupwareresource.cpp:1317 davgroupwareresource.cpp:1430
+#: davgroupwareresource.cpp:1442
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Impossibile modificare l'elemento: %1"
 
-#: davgroupwareresource.cpp:1405 davgroupwareresource.cpp:1462
+#: davgroupwareresource.cpp:1404 davgroupwareresource.cpp:1461
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Impossibile rimuovere l'elemento: %1"
 
-#: davgroupwareresource.cpp:1549 davgroupwareresource.cpp:1550
+#: davgroupwareresource.cpp:1548 davgroupwareresource.cpp:1549
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "La risorsa non è ancora configurata"
