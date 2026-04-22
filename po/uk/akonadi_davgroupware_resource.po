@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-21 00:46+0000\n"
+"POT-Creation-Date: 2026-04-22 00:46+0000\n"
 "PO-Revision-Date: 2025-05-24 10:26+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -20,38 +20,38 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: configwidget.cpp:32
+#: configwidget.cpp:34
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "Налаштовування ресурсів DAV"
 
-#: configwidget.cpp:38
+#: configwidget.cpp:40
 #, kde-format
 msgid "Protocol"
 msgstr "Протокол"
 
-#: configwidget.cpp:38 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:40 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "Адреса"
 
-#: configwidget.cpp:51
+#: configwidget.cpp:53
 #, kde-format
 msgid "Days"
 msgstr "Дні"
 
-#: configwidget.cpp:52
+#: configwidget.cpp:54
 #, kde-format
 msgid "Months"
 msgstr "Місяці"
 
-#: configwidget.cpp:53
+#: configwidget.cpp:55
 #, kde-format
 msgid "Years"
 msgstr "Роки"
 
-#: configwidget.cpp:164
+#: configwidget.cpp:166
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -742,17 +742,17 @@ msgstr "Виявлені збірки:"
 msgid "Fetch"
 msgstr "Отримати"
 
-#: utils.cpp:47 utils.cpp:64
+#: utils.cpp:47
 #, kde-format
 msgid "CalDav"
 msgstr "CalDAV"
 
-#: utils.cpp:50 utils.cpp:66
+#: utils.cpp:50
 #, kde-format
 msgid "CardDav"
 msgstr "CardDAV"
 
-#: utils.cpp:53 utils.cpp:68
+#: utils.cpp:53
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDAV"

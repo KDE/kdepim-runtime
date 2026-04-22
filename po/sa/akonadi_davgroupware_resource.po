@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-21 00:46+0000\n"
+"POT-Creation-Date: 2026-04-22 00:46+0000\n"
 "PO-Revision-Date: 2024-12-20 21:52+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -19,38 +19,38 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>2);\n"
 "X-Generator: Lokalize 24.08.2\n"
 
-#: configwidget.cpp:32
+#: configwidget.cpp:34
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "DAV संसाधन विन्यासः"
 
-#: configwidget.cpp:38
+#: configwidget.cpp:40
 #, kde-format
 msgid "Protocol"
 msgstr "प्रोटोकॉल"
 
-#: configwidget.cpp:38 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:40 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "URL"
 
-#: configwidget.cpp:51
+#: configwidget.cpp:53
 #, kde-format
 msgid "Days"
 msgstr "दिवसाः"
 
-#: configwidget.cpp:52
+#: configwidget.cpp:54
 #, kde-format
 msgid "Months"
 msgstr "मासाः"
 
-#: configwidget.cpp:53
+#: configwidget.cpp:55
 #, kde-format
 msgid "Years"
 msgstr "वर्षाः"
 
-#: configwidget.cpp:164
+#: configwidget.cpp:166
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -729,17 +729,17 @@ msgstr "आविष्कृताः संग्रहाः :"
 msgid "Fetch"
 msgstr "उपानी"
 
-#: utils.cpp:47 utils.cpp:64
+#: utils.cpp:47
 #, kde-format
 msgid "CalDav"
 msgstr "काल्दव"
 
-#: utils.cpp:50 utils.cpp:66
+#: utils.cpp:50
 #, kde-format
 msgid "CardDav"
 msgstr "कार्डदव"
 
-#: utils.cpp:53 utils.cpp:68
+#: utils.cpp:53
 #, kde-format
 msgid "GroupDav"
 msgstr "समूहदव"

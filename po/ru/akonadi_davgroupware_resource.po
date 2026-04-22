@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-21 00:46+0000\n"
+"POT-Creation-Date: 2026-04-22 00:46+0000\n"
 "PO-Revision-Date: 2026-01-28 20:07+0200\n"
 "Last-Translator: Alexander Yavorskiy <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -25,38 +25,38 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: configwidget.cpp:32
+#: configwidget.cpp:34
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "Настройка источника данных DAV"
 
-#: configwidget.cpp:38
+#: configwidget.cpp:40
 #, kde-format
 msgid "Protocol"
 msgstr "Протокол"
 
-#: configwidget.cpp:38 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:40 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr "Адрес URL"
 
-#: configwidget.cpp:51
+#: configwidget.cpp:53
 #, kde-format
 msgid "Days"
 msgstr "дней"
 
-#: configwidget.cpp:52
+#: configwidget.cpp:54
 #, kde-format
 msgid "Months"
 msgstr "месяцев"
 
-#: configwidget.cpp:53
+#: configwidget.cpp:55
 #, kde-format
 msgid "Years"
 msgstr "лет"
 
-#: configwidget.cpp:164
+#: configwidget.cpp:166
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -744,17 +744,17 @@ msgstr "Обнаруженные коллекции:"
 msgid "Fetch"
 msgstr "Загрузить"
 
-#: utils.cpp:47 utils.cpp:64
+#: utils.cpp:47
 #, kde-format
 msgid "CalDav"
 msgstr "CalDAV"
 
-#: utils.cpp:50 utils.cpp:66
+#: utils.cpp:50
 #, kde-format
 msgid "CardDav"
 msgstr "CardDAV"
 
-#: utils.cpp:53 utils.cpp:68
+#: utils.cpp:53
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDAV"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-21 00:46+0000\n"
+"POT-Creation-Date: 2026-04-22 00:46+0000\n"
 "PO-Revision-Date: 2024-12-15 15:57+0530\n"
 "Last-Translator: Kali <EMAIL@ADDRESS>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
@@ -17,38 +17,38 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: configwidget.cpp:32
+#: configwidget.cpp:34
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr ""
 
-#: configwidget.cpp:38
+#: configwidget.cpp:40
 #, kde-format
 msgid "Protocol"
 msgstr ""
 
-#: configwidget.cpp:38 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:40 urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "URL"
 msgstr ""
 
-#: configwidget.cpp:51
+#: configwidget.cpp:53
 #, kde-format
 msgid "Days"
 msgstr ""
 
-#: configwidget.cpp:52
+#: configwidget.cpp:54
 #, kde-format
 msgid "Months"
 msgstr ""
 
-#: configwidget.cpp:53
+#: configwidget.cpp:55
 #, kde-format
 msgid "Years"
 msgstr ""
 
-#: configwidget.cpp:164
+#: configwidget.cpp:166
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -697,17 +697,17 @@ msgstr ""
 msgid "Fetch"
 msgstr ""
 
-#: utils.cpp:47 utils.cpp:64
+#: utils.cpp:47
 #, kde-format
 msgid "CalDav"
 msgstr ""
 
-#: utils.cpp:50 utils.cpp:66
+#: utils.cpp:50
 #, kde-format
 msgid "CardDav"
 msgstr ""
 
-#: utils.cpp:53 utils.cpp:68
+#: utils.cpp:53
 #, kde-format
 msgid "GroupDav"
 msgstr ""
