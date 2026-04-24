@@ -472,7 +472,17 @@ QString Settings::loadPasswordFromOnlineAccount(KDAV::Protocol protocol)
         return QString();
     }
 
-    return reply.value().variant().toString();
+    QDBusUnixFileDescriptor fd = reply.value().variant().value<QDBusUnixFileDescriptor>();
+
+    QFile file;
+    const bool result = file.open(fd.fileDescriptor(), QFile::ReadOnly, QFile::AutoCloseHandle);
+
+    if (!result) {
+        qCWarning(DAVRESOURCE_LOG) << "Could not open password fd" << file.errorString();
+        return QString();
+    }
+
+    return QString::fromUtf8(file.readAll());
 }
 
 #include "moc_settings.cpp"
