@@ -166,7 +166,6 @@ void MaildirTest::testMaildirWrite()
     QStringList entries = d.entryList();
     QCOMPARE(entries.count(), 20);
 
-    QByteArray data = d.readEntry(entries[0]);
     QByteArray data2 = "changed\n";
     QVERIFY(d.writeEntry(entries[0], data2));
     QCOMPARE(data2, d.readEntry(entries[0]));

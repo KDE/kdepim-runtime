@@ -113,7 +113,7 @@ qint64 POP3Protocol::myRead(void *data, qint64 len)
 
 qint64 POP3Protocol::myReadLine(char *data, qint64 len)
 {
-    qint64 copyLen = 0, readLen = 0;
+    qint64 copyLen = 0, readLen;
     while (true) {
         while (copyLen < readBufferLen && readBuffer[copyLen] != '\n') {
             copyLen++;

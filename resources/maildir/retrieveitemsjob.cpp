@@ -118,7 +118,6 @@ void RetrieveItemsJob::processEntry()
             m_localItems.erase(localItemIter);
         }
         if (trx != lastTrx) {
-            lastTrx = trx;
             QMetaObject::invokeMethod(this, &RetrieveItemsJob::processEntry, Qt::QueuedConnection);
             return;
         }

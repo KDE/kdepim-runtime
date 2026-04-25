@@ -346,7 +346,6 @@ void ItemDeleteTest::testMBox()
 
     fileInfo1.refresh();
     QVERIFY(fileInfo1.size() < size1);
-    size1 = fileInfo1.size();
     QVERIFY(mbox1.load(fileInfo1.absoluteFilePath()));
     entryList = mbox1.entries();
     QCOMPARE(QString::number(entryList.value(1).messageOffset()), newRemoteId);
