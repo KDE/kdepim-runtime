@@ -108,7 +108,7 @@ qint64 POP3Protocol::myRead(void *data, qint64 len)
     if (!mSocket->bytesAvailable()) {
         mSocket->waitForReadyRead(600 * 1000);
     }
-    return mSocket->read((char *)data, len);
+    return mSocket->read(static_cast<char *>(data), len);
 }
 
 qint64 POP3Protocol::myReadLine(char *data, qint64 len)
@@ -363,7 +363,7 @@ Result POP3Protocol::loginAPOP(const char *challenge)
 bool POP3Protocol::saslInteract(void *in)
 {
     qCDebug(POP3_LOG);
-    auto interact = (sasl_interact_t *)in;
+    auto interact = static_cast<sasl_interact_t *>(in);
     while (interact->id != SASL_CB_LIST_END) {
         qCDebug(POP3_LOG) << "SASL_INTERACT id: " << interact->id;
         switch (interact->id) {
@@ -371,12 +371,12 @@ bool POP3Protocol::saslInteract(void *in)
         case SASL_CB_AUTHNAME:
             qCDebug(POP3_LOG) << "SASL_CB_[USER|AUTHNAME]: " << m_sUser;
             interact->result = strdup(m_sUser.toUtf8().constData());
-            interact->len = strlen((const char *)interact->result);
+            interact->len = strlen(static_cast<const char *>(interact->result));
             break;
         case SASL_CB_PASS:
             qCDebug(POP3_LOG) << "SASL_CB_PASS: [hidden] ";
             interact->result = strdup(m_sPass.toUtf8().constData());
-            interact->len = strlen((const char *)interact->result);
+            interact->len = strlen(static_cast<const char *>(interact->result));
             break;
         default:
             interact->result = nullptr;

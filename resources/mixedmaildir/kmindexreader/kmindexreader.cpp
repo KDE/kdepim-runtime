@@ -475,7 +475,7 @@ bool KMIndexReader::fillPartsCache(KMIndexData *msg, off_t indexOff, short int i
     }
     // qCDebug(MIXEDMAILDIR_LOG);
     if (g_chunk_length < indexLen) {
-        g_chunk = (uchar *)realloc(g_chunk, g_chunk_length = indexLen);
+        g_chunk = static_cast<uchar *>(realloc(g_chunk, g_chunk_length = indexLen));
     }
 
     off_t first_off = QT_FTELL(mFp);
