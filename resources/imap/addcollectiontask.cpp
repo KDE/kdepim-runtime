@@ -98,26 +98,26 @@ void AddCollectionTask::onSubscribeDone(KJob *job)
     }
 
     for (const auto &[key, value] : attribute->annotations().asKeyValueRange()) {
-        auto job = new KIMAP::SetMetaDataJob(m_session);
+        auto djob = new KIMAP::SetMetaDataJob(m_session);
         if (serverCapabilities().contains(QLatin1StringView("METADATA"))) {
-            job->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
+            djob->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
         } else {
-            job->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);
+            djob->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);
         }
-        job->setMailBox(mailBoxForCollection(m_collection));
+        djob->setMailBox(mailBoxForCollection(m_collection));
 
         if (!key.startsWith("/shared") && !key.startsWith("/private")) {
             // Support for legacy annotations that don't include the prefix
-            job->addMetaData(QByteArray("/shared") + key, value);
+            djob->addMetaData(QByteArray("/shared") + key, value);
         } else {
-            job->addMetaData(key, value);
+            djob->addMetaData(key, value);
         }
 
-        connect(job, &KIMAP::SetMetaDataJob::result, this, &AddCollectionTask::onSetMetaDataDone);
+        connect(djob, &KIMAP::SetMetaDataJob::result, this, &AddCollectionTask::onSetMetaDataDone);
 
         m_pendingJobs++;
 
-        job->start();
+        djob->start();
     }
 }
 

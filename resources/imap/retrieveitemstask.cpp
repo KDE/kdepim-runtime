@@ -78,13 +78,13 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
     if (m_fetchMissingBodies
         && col.cachePolicy().localParts().contains(
             QLatin1StringView(Akonadi::MessagePart::Body))) { // disconnected mode, make sure we really have the body cached
-        auto session = new Akonadi::Session(resourceName().toLatin1() + "_body_checker", this);
-        auto fetchJob = new Akonadi::ItemFetchJob(col, session);
+        auto newsession = new Akonadi::Session(resourceName().toLatin1() + "_body_checker", this);
+        auto fetchJob = new Akonadi::ItemFetchJob(col, newsession);
         fetchJob->fetchScope().setCheckForCachedPayloadPartsOnly();
         fetchJob->fetchScope().fetchPayloadPart(Akonadi::MessagePart::Body);
         fetchJob->fetchScope().setFetchModificationTime(false);
         connect(fetchJob, &Akonadi::ItemFetchJob::result, this, &RetrieveItemsTask::fetchItemsWithoutBodiesDone);
-        connect(fetchJob, &Akonadi::ItemFetchJob::result, session, &Akonadi::Session::deleteLater);
+        connect(fetchJob, &Akonadi::ItemFetchJob::result, newsession, &Akonadi::Session::deleteLater);
     } else {
         startRetrievalTasks();
     }

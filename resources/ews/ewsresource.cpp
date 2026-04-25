@@ -191,12 +191,12 @@ void EwsResource::rootFolderFetchFinished(KJob *job)
          * At some day in the future this part of code can be removed too. */
         Collection c;
         c.setRemoteId(QStringLiteral("INBOX"));
-        auto job = new CollectionFetchJob(c, CollectionFetchJob::Base, this);
-        job->setFetchScope(changeRecorder()->collectionFetchScope());
-        job->fetchScope().setResource(identifier());
-        job->fetchScope().setListFilter(CollectionFetchScope::Sync);
-        job->setProperty("inboxId", id.id());
-        connect(job, &CollectionFetchJob::result, this, &EwsResource::adjustInboxRemoteIdFetchFinished);
+        auto fjob = new CollectionFetchJob(c, CollectionFetchJob::Base, this);
+        fjob->setFetchScope(changeRecorder()->collectionFetchScope());
+        fjob->fetchScope().setResource(identifier());
+        fjob->fetchScope().setListFilter(CollectionFetchScope::Sync);
+        fjob->setProperty("inboxId", id.id());
+        connect(fjob, &CollectionFetchJob::result, this, &EwsResource::adjustInboxRemoteIdFetchFinished);
 
         int inboxIdx = mSettings->serverSubscriptionList().indexOf(QLatin1StringView("INBOX"));
         if (inboxIdx >= 0) {
