@@ -184,7 +184,7 @@ void BirthdaysResource::contactsRetrieved(KJob *job)
             cancelTask();
             return;
         }
-        auto &contact = *it;
+        const auto &contact = *it;
 
         KCalendarCore::Incidence::Ptr ev;
         if (remoteId.startsWith(u'b')) {
