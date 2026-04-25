@@ -75,7 +75,7 @@ void EwsSyncFolderHierarchyRequest::start()
 
     writer.writeStartElement(ewsMsgNsUri, "SyncFolderHierarchy"_L1);
 
-    mShape.write(writer);
+    mShape.writeFolderShape(writer);
 
     writer.writeStartElement(ewsMsgNsUri, "SyncFolderId"_L1);
     mFolderId.writeFolderIds(writer);

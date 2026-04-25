@@ -14,7 +14,7 @@ static constexpr auto shapeNames = std::to_array({
     "AllProperties"_L1,
 });
 
-void EwsFolderShape::write(QXmlStreamWriter &writer) const
+void EwsFolderShape::writeFolderShape(QXmlStreamWriter &writer) const
 {
     writer.writeStartElement(ewsMsgNsUri, "FolderShape"_L1);
 

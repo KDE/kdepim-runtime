@@ -61,7 +61,7 @@ void EwsFindFolderRequest::start()
     writer.writeStartElement(ewsMsgNsUri, "FindFolder"_L1);
     writer.writeAttribute("Traversal"_L1, traversalTypeNames[mTraversal]);
 
-    mShape.write(writer);
+    mShape.writeFolderShape(writer);
 
     writer.writeStartElement(ewsMsgNsUri, "ParentFolderIds"_L1);
     mParentId.writeFolderIds(writer);

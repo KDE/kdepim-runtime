@@ -38,7 +38,7 @@ void EwsGetFolderRequest::start()
 
     writer.writeStartElement(ewsMsgNsUri, "GetFolder"_L1);
 
-    mShape.write(writer);
+    mShape.writeFolderShape(writer);
 
     writer.writeStartElement(ewsMsgNsUri, "FolderIds"_L1);
     for (const EwsId &id : std::as_const(mIds)) {

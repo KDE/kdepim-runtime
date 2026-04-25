@@ -50,7 +50,7 @@ public:
         return *this;
     }
 
-    void write(QXmlStreamWriter &writer) const;
+    void writeFolderShape(QXmlStreamWriter &writer) const;
 
     friend EwsFolderShape &operator<<(EwsFolderShape &shape, const EwsPropertyField &prop);
 

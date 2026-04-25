@@ -8,7 +8,7 @@
 
 using namespace Qt::StringLiterals;
 
-void EwsItemShape::write(QXmlStreamWriter &writer) const
+void EwsItemShape::writeItemShape(QXmlStreamWriter &writer) const
 {
     writer.writeStartElement(ewsMsgNsUri, "ItemShape"_L1);
 

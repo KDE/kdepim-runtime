@@ -78,7 +78,7 @@ void EwsFindItemRequest::start()
     writer.writeStartElement(ewsMsgNsUri, "FindItem"_L1);
     writer.writeAttribute("Traversal"_L1, traversalTypeNames[mTraversal]);
 
-    mShape.write(writer);
+    mShape.writeItemShape(writer);
 
     if (mPagination) {
         writer.writeStartElement(ewsMsgNsUri, "IndexedPageItemView"_L1);

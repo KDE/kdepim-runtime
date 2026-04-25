@@ -81,7 +81,7 @@ void EwsSyncFolderItemsRequest::start()
 
     writer.writeStartElement(ewsMsgNsUri, "SyncFolderItems"_L1);
 
-    mShape.write(writer);
+    mShape.writeItemShape(writer);
 
     writer.writeStartElement(ewsMsgNsUri, "SyncFolderId"_L1);
     mFolderId.writeFolderIds(writer);

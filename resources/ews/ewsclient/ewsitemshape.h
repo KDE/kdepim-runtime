@@ -71,7 +71,7 @@ public:
         mBodyType = type;
     }
 
-    void write(QXmlStreamWriter &writer) const;
+    void writeItemShape(QXmlStreamWriter &writer) const;
 
 protected:
     Flags mFlags;
