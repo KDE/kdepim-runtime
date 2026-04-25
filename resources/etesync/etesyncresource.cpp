@@ -325,16 +325,18 @@ void EteSyncResource::onReloadConfiguration()
     }
     if (mClientState) {
         mClientState->init();
-    }
 
-    // Validate credentials on reload
-    mCredentialsRequired = mClientState->account() == nullptr;
-    setOnline(!mCredentialsRequired);
-    if (mClientState->account()) {
-        qCDebug(ETESYNC_LOG) << "Account is valid. Going online.";
-        synchronize();
+        // Validate credentials on reload
+        mCredentialsRequired = mClientState->account() == nullptr;
+        setOnline(!mCredentialsRequired);
+        if (mClientState->account()) {
+            qCDebug(ETESYNC_LOG) << "Account is valid. Going online.";
+            synchronize();
+        } else {
+            qCWarning(ETESYNC_LOG) << "Invalid or missing account after config reload!";
+        }
     } else {
-        qCWarning(ETESYNC_LOG) << "Invalid or missing account after config reload!";
+        qCWarning(ETESYNC_LOG) << "The client state is invalid after config reload";
     }
 }
 
