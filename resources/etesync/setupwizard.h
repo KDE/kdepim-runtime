@@ -67,7 +67,7 @@ public:
         mErrorCode = errorCode;
     }
 
-    void setErrorMessage(QString errorMessage)
+    void setErrorMessage(const QString &errorMessage)
     {
         mErrorMessage = errorMessage;
     }
