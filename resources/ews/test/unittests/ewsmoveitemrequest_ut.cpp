@@ -324,8 +324,8 @@ void UtEwsMoveItemRequest::twoItemsSecondFailed()
         } else {
             QCOMPARE(resp.itemId(), EwsId());
         }
-        newIdsIt++;
-        respClassesIt++;
+        ++newIdsIt;
+        ++respClassesIt;
     }
 }
 

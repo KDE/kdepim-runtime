@@ -200,7 +200,7 @@ void UtEwsDeleteItemRequest::twoItemsOneFailed()
     for (const EwsDeleteItemRequest::Response &resp : responses) {
         qDebug() << "Verifying response" << i++;
         QCOMPARE(resp.responseClass(), *respClassesIt);
-        respClassesIt++;
+        ++respClassesIt;
     }
 }
 
@@ -267,7 +267,7 @@ void UtEwsDeleteItemRequest::twoItemsSecondFailed()
     for (const EwsDeleteItemRequest::Response &resp : responses) {
         qDebug() << "Verifying response" << i++;
         QCOMPARE(resp.responseClass(), *respClassesIt);
-        respClassesIt++;
+        ++respClassesIt;
     }
 }
 

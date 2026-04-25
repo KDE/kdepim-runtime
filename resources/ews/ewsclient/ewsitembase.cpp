@@ -107,7 +107,7 @@ bool EwsItemBasePrivate::extendedPropertyWriter(QXmlStreamWriter &writer, const 
         }
         it.key().write(writer);
         it.key().writeExtendedValue(writer, it.value());
-        it++;
+        ++it;
         if (it != propHash.cend()) {
             writer.writeEndElement();
         }
