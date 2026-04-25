@@ -229,6 +229,7 @@ void MaildirTest::testMaildirCreateSubfolder()
     entries = d.subFolderList();
     QVERIFY(!entries.isEmpty());
     QCOMPARE(entries.count(), 1);
+    /* cppcheck-suppress containerOutOfBounds */
     Maildir child = d.subFolder(entries.first());
     QVERIFY(child.isValid(false));
 }
