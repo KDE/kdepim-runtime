@@ -1,9 +1,3 @@
-include_directories(
-    ${kdepim-runtime_SOURCE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/shared
-)
-
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_ical_resource\")
 
 if(BUILD_TESTING)
@@ -34,10 +28,6 @@ target_sources(
     akonadi_ical_resource
     PRIVATE
         icalresource.cpp
-        shared/icalresourcebase.cpp
-        shared/icalresource.cpp
-        shared/icalresourcebase.h
-        shared/icalresource.h
         ${icalresource_common_SRCS}
         ${icalresource_SRCS}
 )
