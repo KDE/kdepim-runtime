@@ -38,8 +38,8 @@ using namespace Qt::StringLiterals;
 
 EteSyncResource::EteSyncResource(const QString &id)
     : ResourceBase(id)
+    , mSettings(std::make_unique<Settings>(config()))
 {
-    mSettings = std::make_unique<Settings>(config());
     new SettingsAdaptor(mSettings.get());
 
     if (mSettings->name().isEmpty()) {
