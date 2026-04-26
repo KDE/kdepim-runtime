@@ -1,4 +1,4 @@
-## Akonadi resource for Microsoft Exchange Web Services
+# Akonadi resource for Microsoft Exchange Web Services
 
 This Akonadi resource provides the ability to use Microsoft Exchange accounts
 with KDE PIM applications like KMail and KOrganizer.
@@ -15,13 +15,13 @@ that the KDE PIM suite can become a drop-in replacement for Microsoft Outlook.
 Currently the EWS resource is an independent project, but in the long term the
 plan is for this to become part of KDE PIM.
 
-### Current status
+## Current status
 
 The EWS resource is currently in preview state. It can be used as a daily driver
 when it comes to e-mail. For other tasks like calendar interaction (scheduling
 and accepting meetings) it is necessary to use either OWA or Microsoft Outlook.
 
-### Supported features
+## Supported features
 
 * E-mail reception and full mailbox access
 * Message & folder operations (copying, moving, deleting)
@@ -30,7 +30,7 @@ and accepting meetings) it is necessary to use either OWA or Microsoft Outlook.
 * Server-side tags
 * Calendar view (read-only)
 
-### Planned features
+## Planned features
 
 * Full calendar support (currently only read-only support is provided)
 * Task support
@@ -40,7 +40,7 @@ and accepting meetings) it is necessary to use either OWA or Microsoft Outlook.
 * Server-side message filtering
 * Access to additional mailboxes & shared calendars
 
-### Software requirements
+## Software requirements
 
 * Microsoft Exchange 2007 SP1 or later
 * Qt 5.5 or later
@@ -57,9 +57,9 @@ following commits from [kio.git](https://quickgit.kde.org/?p=kio.git):
 
 The last commit is only necessary if your system is also configured to use Kerberos.
 
-### Debugging
+## Debugging
 
-#### Some Akonadi basics
+### Some Akonadi basics
 
 Akonadi runs every resource in a separate process, which communicates to
 the Akonadi server over DBus. When multiple instances of the same resource (for
@@ -75,7 +75,7 @@ use the identifier `akonadi_ews_resource_0`. The actual resource identifier is
 visible in the command line of the resource process after executing the `ps`
 command above.
 
-#### Running the resource process in the terminal
+### Running the resource process in the terminal
 
 By default the resource processes are started by the Akonadi server in the
 background. All the output is sent to the log (either the journal in case of
@@ -90,7 +90,7 @@ To run the resource process interactively:
  1. Learn the resource identifier (use the `ps` command above).
  2. Kill the resource process. This needs to be done a few times as Akonadi will
     initially try to restart the resource. The easiest way is to execute
-	`while [ $(killall akonadi_ews_resource) ]; do sleep 1; done`. Warning, if
+    `while [ $(killall akonadi_ews_resource) ]; do sleep 1; done`. Warning, if
     you have several instances of the Exchange resource (several accounts) this
     command will terminate all of them.
  3. Execute the resource process interactively (substitute the identifier with
@@ -103,20 +103,20 @@ and start it again.
 In order to run the resource process in the background again you have to restart
 Akonadi by executing `akonadictl restart`.
 
-#### Enabling additional debug messages.
+### Enabling additional debug messages
 
 Currently there are two kinds of debug messages that can be enabled in addition
 to the default ones:
 
- - Request information (log_ews_resource_request) - prints information about each
-   EWS request sent and the response received.
- - Protocol information (log_ews_resource_proto) - dumps all request and
-   response data (XML).
+* Request information (log_ews_resource_request) - prints information about each
+  EWS request sent and the response received.
+* Protocol information (log_ews_resource_proto) - dumps all request and
+  response data (XML).
 
 To enable these messages edit (or create) the file
 `~/.config/QtProject/qtlogging.ini` and put the following lines inside:
 
-```
+```text
 [Rules]
 log_ews_resource_request.debug=true
 log_ews_resource_proto.debug=true
@@ -128,7 +128,7 @@ will disable each of the logging categories.
 When starting the resource interactively make sure to edit the file and adjust
 the debug messages before actually starting the resource.
 
-#### Request dumps
+### Request dumps
 
 When the protocol information messages are enabled or when some request fails
 the contents of the request and the associated response will be dumped into
@@ -137,7 +137,7 @@ in the log next to the information about the failed request. Attaching such
 dumps can be useful for debugging, however before doing so please make sure they
 don't contain any confidential information.
 
-### Reporting bugs
+## Reporting bugs
 
 Please report bugs on the GitHub project page. In most cases it will be a great
 help when logs are provided.
