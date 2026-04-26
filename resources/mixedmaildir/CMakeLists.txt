@@ -40,7 +40,6 @@ ecm_qt_declare_logging_category(mixedmaildirresource_SRCS HEADER mixedmaildir_de
 
 install(FILES mixedmaildirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 
-
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/mixedmaildirresource.kcfg org.kde.Akonadi.MixedMaildir.Settings)
 
 qt_add_dbus_adaptor(mixedmaildirresource_SRCS
@@ -49,15 +48,36 @@ qt_add_dbus_adaptor(mixedmaildirresource_SRCS
 
 add_executable(akonadi_mixedmaildir_resource ${mixedmaildirresource_SRCS})
 if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
-    set_target_properties(akonadi_mixedmaildir_resource PROPERTIES UNITY_BUILD ON)
+    set_target_properties(
+        akonadi_mixedmaildir_resource
+        PROPERTIES
+            UNITY_BUILD
+                ON
+    )
 endif()
 if(APPLE)
-    set_target_properties(akonadi_mixedmaildir_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
-    set_target_properties(akonadi_mixedmaildir_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.MixedMaildir")
-    set_target_properties(akonadi_mixedmaildir_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi MixedMaildir Resource")
+    set_target_properties(
+        akonadi_mixedmaildir_resource
+        PROPERTIES
+            MACOSX_BUNDLE_INFO_PLIST
+                ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template
+    )
+    set_target_properties(
+        akonadi_mixedmaildir_resource
+        PROPERTIES
+            MACOSX_BUNDLE_GUI_IDENTIFIER
+                "org.kde.Akonadi.MixedMaildir"
+    )
+    set_target_properties(
+        akonadi_mixedmaildir_resource
+        PROPERTIES
+            MACOSX_BUNDLE_BUNDLE_NAME
+                "KDE Akonadi MixedMaildir Resource"
+    )
 endif()
 
-target_link_libraries(akonadi_mixedmaildir_resource
+target_link_libraries(
+    akonadi_mixedmaildir_resource
     kmindexreader
     maildir
     akonadi-filestore
@@ -71,12 +91,24 @@ target_link_libraries(akonadi_mixedmaildir_resource
     akonadi-singlefileresource
 )
 if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
-    set_target_properties(akonadi_mixedmaildir_resource PROPERTIES UNITY_BUILD ON)
+    set_target_properties(
+        akonadi_mixedmaildir_resource
+        PROPERTIES
+            UNITY_BUILD
+                ON
+    )
 endif()
 
-install(TARGETS akonadi_mixedmaildir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MixedMaildir.Settings.xml
-    DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})
+install(
+    TARGETS
+        akonadi_mixedmaildir_resource
+        ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
+)
+install(
+    FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MixedMaildir.Settings.xml
+    DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}
+)
 
 # unit tests
 if(BUILD_TESTING)
@@ -88,16 +120,18 @@ endif()
 kcoreaddons_add_plugin(mixedmaildirconfig
     INSTALL_NAMESPACE "pim6/akonadi/config"
 )
-target_sources(mixedmaildirconfig PRIVATE
-    mixedmaildirconfig.cpp
-    configwidget.cpp
-    configwidget.h
-    ${mixedmaildir_common_SRCS}
+target_sources(
+    mixedmaildirconfig
+    PRIVATE
+        mixedmaildirconfig.cpp
+        configwidget.cpp
+        configwidget.h
+        ${mixedmaildir_common_SRCS}
 )
 ki18n_wrap_ui(mixedmaildirconfig settings.ui)
 
-
-target_link_libraries(mixedmaildirconfig
+target_link_libraries(
+    mixedmaildirconfig
     KPim6::AkonadiCore
     KF6::I18n
     KF6::KIOWidgets

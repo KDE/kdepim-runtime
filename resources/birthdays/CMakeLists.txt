@@ -12,7 +12,6 @@ set(birthdayresource_srcs
     ${birthdayresource_common_SRCS}
 )
 
-
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/birthdaysresource.kcfg org.kde.Akonadi.Birthdays.Settings)
 
 qt_add_dbus_adaptor(birthdayresource_srcs
@@ -25,20 +24,39 @@ ecm_qt_declare_logging_category(birthdayresource_srcs HEADER birthdays_debug.h I
     EXPORT KDEPIMRUNTIME
 )
 
-
-
 add_executable(akonadi_birthdays_resource ${birthdayresource_srcs})
 if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
-    set_target_properties(akonadi_birthdays_resource PROPERTIES UNITY_BUILD ON)
+    set_target_properties(
+        akonadi_birthdays_resource
+        PROPERTIES
+            UNITY_BUILD
+                ON
+    )
 endif()
 
 if(APPLE)
-    set_target_properties(akonadi_birthdays_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
-    set_target_properties(akonadi_birthdays_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.Birthdays")
-    set_target_properties(akonadi_birthdays_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Birthdays Resource")
+    set_target_properties(
+        akonadi_birthdays_resource
+        PROPERTIES
+            MACOSX_BUNDLE_INFO_PLIST
+                ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template
+    )
+    set_target_properties(
+        akonadi_birthdays_resource
+        PROPERTIES
+            MACOSX_BUNDLE_GUI_IDENTIFIER
+                "org.kde.Akonadi.Birthdays"
+    )
+    set_target_properties(
+        akonadi_birthdays_resource
+        PROPERTIES
+            MACOSX_BUNDLE_BUNDLE_NAME
+                "KDE Akonadi Birthdays Resource"
+    )
 endif()
 
-target_link_libraries(akonadi_birthdays_resource
+target_link_libraries(
+    akonadi_birthdays_resource
     KPim6::AkonadiCore
     KF6::CalendarCore
     KPim6::AkonadiAgentBase
@@ -47,22 +65,28 @@ target_link_libraries(akonadi_birthdays_resource
     KF6::Codecs
 )
 
-install(TARGETS akonadi_birthdays_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(
+    TARGETS
+        akonadi_birthdays_resource
+        ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
+)
 install(FILES birthdaysresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
-
 
 ############################# Config plugin ################################
 kcoreaddons_add_plugin(birthdaysconfig
     INSTALL_NAMESPACE "pim6/akonadi/config"
 )
 ki18n_wrap_ui(birthdaysconfig birthdaysconfigwidget.ui)
-target_sources(birthdaysconfig PRIVATE
-    birthdaysconfigagentwidget.cpp
-    birthdaysconfigagentwidget.h
-    ${birthdayresource_common_SRCS}
+target_sources(
+    birthdaysconfig
+    PRIVATE
+        birthdaysconfigagentwidget.cpp
+        birthdaysconfigagentwidget.h
+        ${birthdayresource_common_SRCS}
 )
 
-target_link_libraries(birthdaysconfig
+target_link_libraries(
+    birthdaysconfig
     KPim6::AkonadiCore
     KF6::CalendarCore
     KF6::Contacts

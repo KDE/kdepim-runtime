@@ -1,9 +1,11 @@
 kcoreaddons_add_plugin(mailtransport_akonadiplugin INSTALL_NAMESPACE "pim6/mailtransport")
-target_sources(mailtransport_akonadiplugin PRIVATE
-    akonadimailtransportplugin.cpp
-    resourcesendjob.cpp
-    resourcesendjob_p.h
-    akonadimailtransportplugin.h
+target_sources(
+    mailtransport_akonadiplugin
+    PRIVATE
+        akonadimailtransportplugin.cpp
+        resourcesendjob.cpp
+        resourcesendjob_p.h
+        akonadimailtransportplugin.h
 )
 
 ecm_qt_declare_logging_category(mailtransport_akonadiplugin HEADER mailtransportplugin_akonadi_debug.h IDENTIFIER
@@ -12,10 +14,8 @@ ecm_qt_declare_logging_category(mailtransport_akonadiplugin HEADER mailtransport
         EXPORT KDEPIMRUNTIME
 )
 
-
-
-
-target_link_libraries(mailtransport_akonadiplugin
+target_link_libraries(
+    mailtransport_akonadiplugin
     KPim6::AkonadiMime
     KF6::Mime
     KPim6::MailTransport

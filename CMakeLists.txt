@@ -18,7 +18,10 @@ configure_file(kdepim-runtime-version.h.in ${CMAKE_CURRENT_BINARY_DIR}/kdepim-ru
 set(KF_MIN_VERSION "6.23.0")
 
 find_package(ECM ${KF_MIN_VERSION} CONFIG REQUIRED)
-set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/ ${ECM_MODULE_PATH})
+set(CMAKE_MODULE_PATH
+    ${kdepim-runtime_SOURCE_DIR}/cmake/
+    ${ECM_MODULE_PATH}
+)
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
@@ -27,7 +30,12 @@ include(KDECompilerSettings NO_POLICY_SCOPE)
 include(ECMSetupVersion)
 include(KDEGitCommitHooks)
 include(KDEClangFormat)
-file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.cpp *.h *.c)
+file(
+    GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES
+    *.cpp
+    *.h
+    *.c
+)
 kde_clang_format(${ALL_CLANG_FORMAT_SOURCE_FILES})
 include(ECMInstallIcons)
 include(ECMQtDeclareLoggingCategory)
@@ -62,23 +70,52 @@ set(SharedMimeInfo_MINIMUM_VERSION "1.10")
 find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
 
 find_package(Sasl2)
-set_package_properties(Sasl2 PROPERTIES TYPE REQUIRED)
+set_package_properties(
+    Sasl2
+    PROPERTIES
+        TYPE
+            REQUIRED
+)
 
 find_package(Qca-qt6 2.3.7 CONFIG REQUIRED)
-set_package_properties(Qca-qt6 PROPERTIES DESCRIPTION "Qt Cryptographic Architecture"
-                   URL "https://invent.kde.org/libraries/qca" TYPE REQUIRED
-                   PURPOSE "Needed for ews resource.")
+set_package_properties(
+    Qca-qt6
+    PROPERTIES
+        DESCRIPTION
+            "Qt Cryptographic Architecture"
+        URL
+            "https://invent.kde.org/libraries/qca"
+        TYPE
+            REQUIRED
+        PURPOSE
+            "Needed for ews resource."
+)
 option(KDEPIM_RUN_AKONADI_TEST "Enable autotest based on Akonadi." TRUE)
 # QT package
 find_package(Qt6TextToSpeech ${QT_REQUIRED_VERSION} CONFIG)
-set_package_properties(Qt6TextToSpeech PROPERTIES DESCRIPTION
-    "Add support for texttospeech"
-    TYPE OPTIONAL
+set_package_properties(
+    Qt6TextToSpeech
+    PROPERTIES
+        DESCRIPTION
+            "Add support for texttospeech"
+        TYPE
+            OPTIONAL
 )
 if(Qt6TextToSpeech_FOUND)
-set(HAVE_TEXT_TO_SPEECH_SUPPORT TRUE)
+    set(HAVE_TEXT_TO_SPEECH_SUPPORT TRUE)
 endif()
-find_package(Qt6 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test DBus NetworkAuth Concurrent)
+find_package(
+    Qt6
+    ${QT_REQUIRED_VERSION}
+    CONFIG
+    REQUIRED
+        Network
+        Widgets
+        Test
+        DBus
+        NetworkAuth
+        Concurrent
+)
 find_package(Qt6WebEngineWidgets ${QT_REQUIRED_VERSION} CONFIG)
 
 # KF6 package
@@ -120,10 +157,16 @@ find_package(KPim6PimCommonActivities ${PIMCOMMON_LIB_VERSION} CONFIG)
 find_package(KPim6PimCommonAkonadi ${PIMCOMMON_LIB_VERSION} CONFIG)
 
 find_package(Qt6Keychain ${QT6KEYCHAIN_LIB_VERSION} CONFIG)
-set_package_properties(Qt6Keychain PROPERTIES
-                                   DESCRIPTION "Provides support for secure credentials storage"
-                                   URL "https://github.com/frankosterfeld/qtkeychain"
-                                   TYPE REQUIRED)
+set_package_properties(
+    Qt6Keychain
+    PROPERTIES
+        DESCRIPTION
+            "Provides support for secure credentials storage"
+        URL
+            "https://github.com/frankosterfeld/qtkeychain"
+        TYPE
+            REQUIRED
+)
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -134,7 +177,6 @@ endif()
 ecm_set_disabled_deprecation_versions(QT 6.12.0 KF 6.25.0
 )
 
-
 option(USE_UNITY_CMAKE_SUPPORT "Use UNITY cmake support (speedup compile time)" OFF)
 add_definitions(-DQT_NO_CONTEXTLESS_CONNECT)
 set(COMPILE_WITH_UNITY_CMAKE_SUPPORT OFF)
@@ -144,7 +186,7 @@ if(USE_UNITY_CMAKE_SUPPORT)
 endif()
 
 if(TARGET KPim6::PimCommonActivities)
-	option(OPTION_USE_PLASMA_ACTIVITIES "Activate plasma activities" ON)
+    option(OPTION_USE_PLASMA_ACTIVITIES "Activate plasma activities" ON)
     if(OPTION_USE_PLASMA_ACTIVITIES)
         if(NOT WIN32 AND NOT APPLE)
             set(OPTION_USE_PLASMA_ACTIVITIES true)
@@ -155,9 +197,13 @@ if(TARGET KPim6::PimCommonActivities)
     if(OPTION_USE_PLASMA_ACTIVITIES)
         if(NOT WIN32 AND NOT APPLE)
             find_package(PlasmaActivities "6.4.0")
-            set_package_properties(PlasmaActivities PROPERTIES DESCRIPTION
-                "Allow to compile with plasma activities"
-                TYPE OPTIONAL
+            set_package_properties(
+                PlasmaActivities
+                PROPERTIES
+                    DESCRIPTION
+                        "Allow to compile with plasma activities"
+                    TYPE
+                        OPTIONAL
             )
         endif()
 
@@ -168,9 +214,12 @@ if(TARGET KPim6::PimCommonActivities)
 endif()
 
 if(BUILD_TESTING)
-   add_definitions(-DBUILD_TESTING)
+    add_definitions(-DBUILD_TESTING)
 endif()
-include_directories(${kdepim-runtime_SOURCE_DIR} ${kdepim-runtime_BINARY_DIR})
+include_directories(
+    ${kdepim-runtime_SOURCE_DIR}
+    ${kdepim-runtime_BINARY_DIR}
+)
 configure_file(config-kdepim-runtime.h.in ${CMAKE_CURRENT_BINARY_DIR}/config-kdepim-runtime.h)
 
 add_subdirectory(resources)

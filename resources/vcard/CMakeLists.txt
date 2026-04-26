@@ -1,5 +1,3 @@
-
-
 if(BUILD_TESTING)
     add_subdirectory(autotests)
 endif()
@@ -14,9 +12,9 @@ kconfig_add_kcfg_files(vcardresource_common_SRCS settings.kcfgc)
 add_definitions(-DSETTINGS_NAMESPACE=Akonadi_VCard_Resource)
 
 set(vcardresource_SRCS
-  vcardresource.cpp
-  vcardresource.h
-  ${vcardresource_common_SRCS}
+    vcardresource.cpp
+    vcardresource.h
+    ${vcardresource_common_SRCS}
 )
 
 install(FILES vcardresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
@@ -29,12 +27,28 @@ qt_add_dbus_adaptor(vcardresource_SRCS
 add_executable(akonadi_vcard_resource ${vcardresource_SRCS})
 
 if(APPLE)
-  set_target_properties(akonadi_vcard_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
-  set_target_properties(akonadi_vcard_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.VCard")
-  set_target_properties(akonadi_vcard_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi VCard Resource")
+    set_target_properties(
+        akonadi_vcard_resource
+        PROPERTIES
+            MACOSX_BUNDLE_INFO_PLIST
+                ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template
+    )
+    set_target_properties(
+        akonadi_vcard_resource
+        PROPERTIES
+            MACOSX_BUNDLE_GUI_IDENTIFIER
+                "org.kde.Akonadi.VCard"
+    )
+    set_target_properties(
+        akonadi_vcard_resource
+        PROPERTIES
+            MACOSX_BUNDLE_BUNDLE_NAME
+                "KDE Akonadi VCard Resource"
+    )
 endif()
 
-target_link_libraries(akonadi_vcard_resource
+target_link_libraries(
+    akonadi_vcard_resource
     KPim6::AkonadiCore
     KF6::KIOCore
     KPim6::AkonadiAgentBase
@@ -42,12 +56,13 @@ target_link_libraries(akonadi_vcard_resource
     akonadi-singlefileresource
 )
 
-install(TARGETS akonadi_vcard_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-
 install(
-    FILES org.kde.akonadi_vcard_resource.desktop
-    DESTINATION ${KDE_INSTALL_APPDIR}
+    TARGETS
+        akonadi_vcard_resource
+        ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
 )
+
+install(FILES org.kde.akonadi_vcard_resource.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
 ############################# Config plugin #################################
 
@@ -56,12 +71,11 @@ kcoreaddons_add_plugin(vcardconfig
     INSTALL_NAMESPACE "pim6/akonadi/config"
 )
 
-target_link_libraries(vcardconfig
+target_link_libraries(
+    vcardconfig
     KPim6::AkonadiCore
     akonadi-singlefileresource-widget
 )
 if(HAVE_ACTIVITY_SUPPORT)
-     target_link_libraries(vcardconfig
-         KPim6::PimCommonActivities
-     )
+    target_link_libraries(vcardconfig KPim6::PimCommonActivities)
 endif()

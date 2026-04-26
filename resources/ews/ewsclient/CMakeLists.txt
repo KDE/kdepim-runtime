@@ -37,7 +37,8 @@ set(EWSCLIENT_SRCS
     ewspoxautodiscoverrequest.cpp
     ewspropertyfield.cpp
     ewsrecurrence.cpp
-    ewsrequest.cpp ewsrequest.h
+    ewsrequest.cpp
+    ewsrequest.h
     ewsserverversion.cpp
     ewssubscriberequest.cpp
     ewssyncfolderhierarchyrequest.cpp
@@ -47,7 +48,8 @@ set(EWSCLIENT_SRCS
     ewsupdatefolderrequest.cpp
     ewsupdateitemrequest.cpp
     ewsxml.cpp
-    ewsclient_debug.cpp ewsclient_debug.h
+    ewsclient_debug.cpp
+    ewsclient_debug.h
     auth/ewsabstractauth.h
     auth/ewspasswordauth.h
     ewsattachment.h
@@ -93,22 +95,28 @@ set(EWSCLIENT_SRCS
 )
 
 if(UNIX)
-    list(APPEND EWSCLIENT_SRCS
+    list(
+        APPEND EWSCLIENT_SRCS
         auth/ewsintuneauth.cpp
-        auth/ewsintuneauth.h)
+        auth/ewsintuneauth.h
+    )
     qt_add_dbus_interface(EWSCLIENT_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/auth/com.microsoft.identity.Broker1.xml broker1)
 endif()
 
 if(TARGET Qt::NetworkAuth)
-    list(APPEND EWSCLIENT_SRCS
+    list(
+        APPEND EWSCLIENT_SRCS
         auth/ewsoauth.cpp
-        auth/ewsoauth.h)
+        auth/ewsoauth.h
+    )
 endif()
 
 if(Qca-qt6_FOUND)
-    list(APPEND EWSCLIENT_SRCS
+    list(
+        APPEND EWSCLIENT_SRCS
         auth/ewspkeyauthjob.cpp
-        auth/ewspkeyauthjob.h)
+        auth/ewspkeyauthjob.h
+    )
 endif()
 
 ecm_qt_declare_logging_category(EWSCLIENT_SRCS
@@ -143,9 +151,9 @@ ecm_qt_declare_logging_category(EWSCLIENT_SRCS
     EXPORT KDEPIMRUNTIME
 )
 
-
 add_library(ewsclient STATIC ${EWSCLIENT_SRCS})
-target_link_libraries(ewsclient
+target_link_libraries(
+    ewsclient
     Qt::Network
     KF6::KIOCore
     KF6::KIOFileWidgets
@@ -154,15 +162,17 @@ target_link_libraries(ewsclient
     KF6::I18n
     KF6::Mime
     KF6::CalendarCore
-    qt6keychain)
+    qt6keychain
+)
 
 if(TARGET Qt::NetworkAuth)
-    target_link_libraries(ewsclient
+    target_link_libraries(
+        ewsclient
         Qt::NetworkAuth
-        Qt::WebEngineWidgets)
+        Qt::WebEngineWidgets
+    )
 endif()
 
 if(Qca-qt6_FOUND)
-    target_link_libraries(ewsclient
-        qca-qt6)
+    target_link_libraries(ewsclient qca-qt6)
 endif()

@@ -1,26 +1,41 @@
 if(BUILD_TESTING)
-   add_subdirectory(autotests)
+    add_subdirectory(autotests)
 endif()
 
 ########### next target ###############
 
 include(CheckIncludeFileCXX)
-check_include_file_CXX(byteswap.h HAVE_BYTESWAP_H)
+check_include_file_cxx(
+    byteswap.h
+    HAVE_BYTESWAP_H
+)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/kmindexreader-config.h.in ${CMAKE_CURRENT_BINARY_DIR}/kmindexreader-config.h)
 
 set(kmindexreader_LIB_SRCS
- kmindexreader.cpp kmindexreader.h
- ../mixedmaildir_debug.cpp
- ../mixedmaildirresource_debug.cpp
+    kmindexreader.cpp
+    kmindexreader.h
+    ../mixedmaildir_debug.cpp
+    ../mixedmaildirresource_debug.cpp
 )
 
-add_library(kmindexreader  ${kmindexreader_LIB_SRCS})
+add_library(kmindexreader ${kmindexreader_LIB_SRCS})
 generate_export_header(kmindexreader BASE_NAME kmindexreader)
 
-target_link_libraries(kmindexreader
-    KPim6::AkonadiMime
+target_link_libraries(kmindexreader KPim6::AkonadiMime)
+
+set_target_properties(
+    kmindexreader
+    PROPERTIES
+        VERSION
+            ${KDEPIMRUNTIME_LIB_VERSION}
+        SOVERSION
+            ${KDEPIMRUNTIME_LIB_SOVERSION}
 )
 
-set_target_properties(kmindexreader PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION})
-
-install(TARGETS kmindexreader ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NAMELINK_SKIP)
+install(
+    TARGETS
+        kmindexreader
+        ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
+    LIBRARY
+        NAMELINK_SKIP
+)

@@ -1,7 +1,4 @@
-
-
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_contacts_resource\")
-
 
 set(contactsresource_common_SRCS)
 
@@ -27,26 +24,32 @@ ecm_qt_declare_logging_category(contactsresource_SRCS HEADER contacts_resources_
     EXPORT KDEPIMRUNTIME
 )
 
-
 install(FILES contactsresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 
 add_executable(akonadi_contacts_resource ${contactsresource_SRCS})
 if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
-    set_target_properties(akonadi_contacts_resource PROPERTIES UNITY_BUILD ON)
+    set_target_properties(
+        akonadi_contacts_resource
+        PROPERTIES
+            UNITY_BUILD
+                ON
+    )
 endif()
-target_link_libraries(akonadi_contacts_resource
+target_link_libraries(
+    akonadi_contacts_resource
     KPim6::AkonadiCore
     KPim6::AkonadiAgentBase
     KF6::Contacts
     KF6::I18n
 )
 
-install(TARGETS akonadi_contacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-
 install(
-    FILES org.kde.akonadi_contacts_resource.desktop
-    DESTINATION ${KDE_INSTALL_APPDIR}
+    TARGETS
+        akonadi_contacts_resource
+        ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
 )
+
+install(FILES org.kde.akonadi_contacts_resource.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
 ############################## Config plugin ################################
 kcoreaddons_add_plugin(contactsconfig
@@ -54,14 +57,16 @@ kcoreaddons_add_plugin(contactsconfig
 )
 ki18n_wrap_ui(contactsconfig contactsagentsettingswidget.ui)
 
-target_sources(contactsconfig PRIVATE
-    contactssettingswidget.cpp
-    contactssettingswidget.h
-    ${contactsresource_common_SRCS}
+target_sources(
+    contactsconfig
+    PRIVATE
+        contactssettingswidget.cpp
+        contactssettingswidget.h
+        ${contactsresource_common_SRCS}
 )
 
-
-target_link_libraries(contactsconfig
+target_link_libraries(
+    contactsconfig
     KPim6::AkonadiCore
     KF6::CalendarCore
     KF6::Codecs
@@ -72,7 +77,5 @@ target_link_libraries(contactsconfig
     KF6::KIOWidgets
 )
 if(HAVE_ACTIVITY_SUPPORT)
-    target_link_libraries(contactsconfig
-        KPim6::PimCommonActivities
-    )
+    target_link_libraries(contactsconfig KPim6::PimCommonActivities)
 endif()

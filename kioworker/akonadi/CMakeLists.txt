@@ -1,6 +1,9 @@
-
-
-add_library(kio_akonadi MODULE akonadiworker.cpp akonadiworker.h)
+add_library(
+    kio_akonadi
+    MODULE
+    akonadiworker.cpp
+    akonadiworker.h
+)
 
 ecm_qt_declare_logging_category(kio_akonadi HEADER akonadiworker_debug.h IDENTIFIER AKONADIWORKER_LOG CATEGORY_NAME org.kde.pim.akonadiworker
     DESCRIPTION "kioworker (akonadi)"
@@ -8,15 +11,20 @@ ecm_qt_declare_logging_category(kio_akonadi HEADER akonadiworker_debug.h IDENTIF
     EXPORT KDEPIMRUNTIME
 )
 
-
-target_link_libraries(kio_akonadi
-                      KF6::KIOCore
-                      KPim6::AkonadiCore
-                      KF6::I18n
-                      Qt::DBus
-                      Qt::Widgets
-                      Qt::Network
-                     )
-set_target_properties(kio_akonadi PROPERTIES OUTPUT_NAME "akonadi")
+target_link_libraries(
+    kio_akonadi
+    KF6::KIOCore
+    KPim6::AkonadiCore
+    KF6::I18n
+    Qt::DBus
+    Qt::Widgets
+    Qt::Network
+)
+set_target_properties(
+    kio_akonadi
+    PROPERTIES
+        OUTPUT_NAME
+            "akonadi"
+)
 
 install(TARGETS kio_akonadi DESTINATION ${KDE_INSTALL_PLUGINDIR}/kf6/kio)

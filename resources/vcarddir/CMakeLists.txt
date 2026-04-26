@@ -10,15 +10,13 @@ kconfig_add_kcfg_files(vcarddirresource_common_SRCS
 
 set(vcarddirresource_SRCS
     ${vcarddirresource_common_SRCS}
-  vcarddirresource.cpp
-  vcarddirresource.h
+    vcarddirresource.cpp
+    vcarddirresource.h
 )
 ecm_qt_declare_logging_category(vcarddirresource_SRCS HEADER vcarddirresource_debug.h IDENTIFIER VCARDDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.vcarddirresource
         DESCRIPTION "vcarddir resource (kdepim-runtime)"
         EXPORT KDEPIMRUNTIME
 )
-
-
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/vcarddirresource.kcfg org.kde.Akonadi.VCardDirectory.Settings)
 qt_add_dbus_adaptor(vcarddirresource_SRCS
@@ -30,29 +28,45 @@ install(FILES vcarddirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/a
 add_executable(akonadi_vcarddir_resource ${vcarddirresource_SRCS})
 
 if(APPLE)
-  set_target_properties(akonadi_vcarddir_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
-  set_target_properties(akonadi_vcarddir_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.VCardDirectory")
-  set_target_properties(akonadi_vcarddir_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi VCardDirectory Resource")
+    set_target_properties(
+        akonadi_vcarddir_resource
+        PROPERTIES
+            MACOSX_BUNDLE_INFO_PLIST
+                ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template
+    )
+    set_target_properties(
+        akonadi_vcarddir_resource
+        PROPERTIES
+            MACOSX_BUNDLE_GUI_IDENTIFIER
+                "org.kde.Akonadi.VCardDirectory"
+    )
+    set_target_properties(
+        akonadi_vcarddir_resource
+        PROPERTIES
+            MACOSX_BUNDLE_BUNDLE_NAME
+                "KDE Akonadi VCardDirectory Resource"
+    )
 endif()
 
-
-target_link_libraries(akonadi_vcarddir_resource
-  KPim6::AkonadiCore
-  KPim6::AkonadiAgentBase
-  KF6::Contacts
-  KF6::I18n
-  KF6::WindowSystem
-  Qt::DBus
+target_link_libraries(
+    akonadi_vcarddir_resource
+    KPim6::AkonadiCore
+    KPim6::AkonadiAgentBase
+    KF6::Contacts
+    KF6::I18n
+    KF6::WindowSystem
+    Qt::DBus
 )
 
 add_dependencies(akonadi_vcarddir_resource akonadi-singlefileresource)
 
-install(TARGETS akonadi_vcarddir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-
 install(
-    FILES org.kde.akonadi_vcarddir_resource.desktop
-    DESTINATION ${KDE_INSTALL_APPDIR}
+    TARGETS
+        akonadi_vcarddir_resource
+        ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
 )
+
+install(FILES org.kde.akonadi_vcarddir_resource.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
 ############################## Config plugin ################################
 kcoreaddons_add_plugin(vcarddirconfig
@@ -60,13 +74,16 @@ kcoreaddons_add_plugin(vcarddirconfig
 )
 ki18n_wrap_ui(vcarddirconfig vcarddiragentsettingswidget.ui)
 
-target_sources(vcarddirconfig PRIVATE
-    vcarddirsettingswidget.cpp
-    vcarddirsettingswidget.h
-    ${vcarddirresource_common_SRCS}
+target_sources(
+    vcarddirconfig
+    PRIVATE
+        vcarddirsettingswidget.cpp
+        vcarddirsettingswidget.h
+        ${vcarddirresource_common_SRCS}
 )
 
-target_link_libraries(vcarddirconfig
+target_link_libraries(
+    vcarddirconfig
     KPim6::AkonadiCore
     KF6::CalendarCore
     KPim6::AkonadiAgentBase
@@ -75,7 +92,5 @@ target_link_libraries(vcarddirconfig
     KF6::KIOWidgets
 )
 if(HAVE_ACTIVITY_SUPPORT)
-     target_link_libraries(vcarddirconfig
-         KPim6::PimCommonActivities
-     )
+    target_link_libraries(vcarddirconfig KPim6::PimCommonActivities)
 endif()

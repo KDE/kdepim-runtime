@@ -4,8 +4,13 @@ set(testidxreader_SRCS
     testidxreader.cpp
     testidxreader.h
 )
-add_executable(testidxreader  ${testidxreader_SRCS})
+add_executable(testidxreader ${testidxreader_SRCS})
 add_test(NAME testidxreader COMMAND testidxreader)
 ecm_mark_as_test(testidxreader)
 
-target_link_libraries(testidxreader  Qt::Test kmindexreader KPim6::AkonadiMime)
+target_link_libraries(
+    testidxreader
+    Qt::Test
+    kmindexreader
+    KPim6::AkonadiMime
+)

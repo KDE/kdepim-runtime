@@ -1,7 +1,5 @@
-
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildispatcher_agent\")
 add_executable(akonadi_maildispatcher_agent)
-
 
 ecm_qt_declare_logging_category(akonadi_maildispatcher_agent HEADER maildispatcher_debug.h IDENTIFIER MAILDISPATCHER_LOG CATEGORY_NAME org.kde.pim.maildispatcher
         DESCRIPTION "maildispacher agent (kdepim-runtime)"
@@ -17,32 +15,54 @@ qt_add_dbus_adaptor(maildispatcheragent_SRCS
 qt_add_dbus_adaptor(maildispatcheragent_SRCS
   org.freedesktop.Akonadi.MailDispatcherAgent.xml maildispatcheragent.h MailDispatcherAgent
 )
-target_sources(akonadi_maildispatcher_agent PRIVATE
-  maildispatcheragent.cpp
-  outboxqueue.cpp
-  sendjob.cpp
-  sentactionhandler.cpp
-  storeresultjob.cpp
-
-  maildispatcheragent.h
-  outboxqueue.h
-  sendjob.h
-  sentactionhandler.h
-  storeresultjob.h
-  ${maildispatcheragent_SRCS}
+target_sources(
+    akonadi_maildispatcher_agent
+    PRIVATE
+        maildispatcheragent.cpp
+        outboxqueue.cpp
+        sendjob.cpp
+        sentactionhandler.cpp
+        storeresultjob.cpp
+        maildispatcheragent.h
+        outboxqueue.h
+        sendjob.h
+        sentactionhandler.h
+        storeresultjob.h
+        ${maildispatcheragent_SRCS}
 )
 
 if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
-    set_target_properties(akonadi_maildispatcher_agent PROPERTIES UNITY_BUILD ON)
+    set_target_properties(
+        akonadi_maildispatcher_agent
+        PROPERTIES
+            UNITY_BUILD
+                ON
+    )
 endif()
 
 if(APPLE)
-  set_target_properties(akonadi_maildispatcher_agent PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
-  set_target_properties(akonadi_maildispatcher_agent PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.maildispatcher")
-  set_target_properties(akonadi_maildispatcher_agent PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Maildispatcher")
+    set_target_properties(
+        akonadi_maildispatcher_agent
+        PROPERTIES
+            MACOSX_BUNDLE_INFO_PLIST
+                ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template
+    )
+    set_target_properties(
+        akonadi_maildispatcher_agent
+        PROPERTIES
+            MACOSX_BUNDLE_GUI_IDENTIFIER
+                "org.kde.Akonadi.maildispatcher"
+    )
+    set_target_properties(
+        akonadi_maildispatcher_agent
+        PROPERTIES
+            MACOSX_BUNDLE_BUNDLE_NAME
+                "KDE Akonadi Maildispatcher"
+    )
 endif()
 
-target_link_libraries(akonadi_maildispatcher_agent
+target_link_libraries(
+    akonadi_maildispatcher_agent
     KPim6::AkonadiCore
     KPim6::AkonadiMime
     KF6::Mime
@@ -52,7 +72,11 @@ target_link_libraries(akonadi_maildispatcher_agent
     KF6::Notifications
 )
 
-install(TARGETS akonadi_maildispatcher_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(
+    TARGETS
+        akonadi_maildispatcher_agent
+        ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
+)
 install(FILES maildispatcheragent.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 install(FILES akonadi_maildispatcher_agent.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR})
 
@@ -60,8 +84,10 @@ install(FILES akonadi_maildispatcher_agent.notifyrc DESTINATION ${KDE_INSTALL_KN
 
 kcoreaddons_add_plugin(maildispatcherconfig
     SOURCES maildispatcherconfig.cpp maildispatcherconfig.h
-    INSTALL_NAMESPACE "pim6/akonadi/config")
-target_link_libraries(maildispatcherconfig
+    INSTALL_NAMESPACE "pim6/akonadi/config"
+)
+target_link_libraries(
+    maildispatcherconfig
     KPim6::AkonadiCore
     KF6::NotifyConfig
     KF6::ConfigCore

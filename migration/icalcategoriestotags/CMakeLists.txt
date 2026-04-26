@@ -4,22 +4,30 @@ kcfg_generate_dbus_interface(
 )
 
 add_library(icalcategoriestotagsmigration STATIC)
-target_sources(icalcategoriestotagsmigration PRIVATE
-    icalcategoriestotagsmigrator.cpp
-    icalcategoriestotagsmigrator.h
-    )
+target_sources(
+    icalcategoriestotagsmigration
+    PRIVATE
+        icalcategoriestotagsmigrator.cpp
+        icalcategoriestotagsmigrator.h
+)
 
-if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
-    set_target_properties(icalcategoriestotagsmigration PROPERTIES UNITY_BUILD ON)
+if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(
+        icalcategoriestotagsmigration
+        PROPERTIES
+            UNITY_BUILD
+                ON
+    )
 endif()
 
-target_link_libraries(icalcategoriestotagsmigration
+target_link_libraries(
+    icalcategoriestotagsmigration
     KPim6::AkonadiCore
     KF6::CalendarCore
     KF6::I18n
     migrationshared
 )
 
-if (BUILD_TESTING)
+if(BUILD_TESTING)
     add_subdirectory(autotests)
 endif()
