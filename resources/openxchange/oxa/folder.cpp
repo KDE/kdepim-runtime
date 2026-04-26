@@ -70,8 +70,13 @@ bool Folder::Permissions::adminFlag() const
 }
 
 Folder::Folder()
-    : mObjectId(-1)
+    : mObjectStatus(ObjectStatus::Created)
+    , mType(Type::Public)
+    , mModule(Module::Unbound)
+    , mObjectId(-1)
     , mFolderId(-1)
+    , mIsDefaultFolder(false)
+    , mOwner(-1)
 {
 }
 
