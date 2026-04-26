@@ -30,7 +30,6 @@ protected:
 
     void discoverCalendarCollections();
     void migrateNextCollection();
-    void migrateCollection(const Akonadi::Collection &collection);
 
 private:
     Akonadi::Collection::List mCompletedCollections;

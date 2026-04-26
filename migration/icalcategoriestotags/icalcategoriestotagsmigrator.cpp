@@ -268,12 +268,5 @@ void ICalCategoriesToTagsMigrator::migrateNextCollection()
     job->start();
 }
 
-void ICalCategoriesToTagsMigrator::migrateCollection(const Akonadi::Collection &collection)
-{
-    auto job = new Akonadi::ItemFetchJob(collection, this);
-    job->fetchScope().fetchFullPayload(true);
-    job->fetchScope().setFetchTags(true);
-}
-
 #include "icalcategoriestotagsmigrator.moc"
 #include "moc_icalcategoriestotagsmigrator.cpp"
