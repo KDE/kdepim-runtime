@@ -42,7 +42,7 @@ private Q_SLOTS:
 
         Akonadi::Item item;
         item.setParentCollection(parent);
-        item.setMimeType(QStringLiteral("text/calendar"));
+        item.setMimeType(KCalendarCore::Event::eventMimeType());
         item.setPayload<KCalendarCore::Event::Ptr>(event);
 
         auto createJob = new Akonadi::ItemCreateJob(item, item.parentCollection());
