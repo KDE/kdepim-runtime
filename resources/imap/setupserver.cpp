@@ -36,9 +36,9 @@
 #include <Akonadi/SpecialMailCollections>
 #include <Akonadi/SpecialMailCollectionsRequestJob>
 #include <KAuthorized>
-#include <KLocalization>
 #include <KIdentityManagementCore/IdentityManager>
 #include <KIdentityManagementWidgets/IdentityCombo>
+#include <KLocalization>
 #include <KMessageBox>
 #include <KUser>
 

@@ -38,14 +38,14 @@ static const int MAX_LINE = 4096;
 #ifdef bswap_16
 #define kmail_swap_16(x) bswap_16(x)
 #else
-#define kmail_swap_16(x) ((((x) >> 8) & 0xff) | (((x)&0xff) << 8))
+#define kmail_swap_16(x) ((((x) >> 8) & 0xff) | (((x) & 0xff) << 8))
 #endif
 
 /* Swap bytes in 32 bit value.  */
 #ifdef bswap_32
 #define kmail_swap_32(x) bswap_32(x)
 #else
-#define kmail_swap_32(x) ((((x)&0xff000000) >> 24) | (((x)&0x00ff0000) >> 8) | (((x)&0x0000ff00) << 8) | (((x)&0x000000ff) << 24))
+#define kmail_swap_32(x) ((((x) & 0xff000000) >> 24) | (((x) & 0x00ff0000) >> 8) | (((x) & 0x0000ff00) << 8) | (((x) & 0x000000ff) << 24))
 #endif
 
 /* Swap bytes in 64 bit value.  */
@@ -53,8 +53,9 @@ static const int MAX_LINE = 4096;
 #define kmail_swap_64(x) bswap_64(x)
 #else
 #define kmail_swap_64(x)                                                                                                                                       \
-    ((((x)&0xff00000000000000ull) >> 56) | (((x)&0x00ff000000000000ull) >> 40) | (((x)&0x0000ff0000000000ull) >> 24) | (((x)&0x000000ff00000000ull) >> 8)      \
-     | (((x)&0x00000000ff000000ull) << 8) | (((x)&0x0000000000ff0000ull) << 24) | (((x)&0x000000000000ff00ull) << 40) | (((x)&0x00000000000000ffull) << 56))
+    ((((x) & 0xff00000000000000ull) >> 56) | (((x) & 0x00ff000000000000ull) >> 40) | (((x) & 0x0000ff0000000000ull) >> 24)                                     \
+     | (((x) & 0x000000ff00000000ull) >> 8) | (((x) & 0x00000000ff000000ull) << 8) | (((x) & 0x0000000000ff0000ull) << 24)                                     \
+     | (((x) & 0x000000000000ff00ull) << 40) | (((x) & 0x00000000000000ffull) << 56))
 #endif
 
 /** The old status format, only one at a time possible. Needed
