@@ -53,7 +53,7 @@ void OutlookPasswordRequester::requestPassword(RequestType request, const QStrin
     readJob->setKey(mResource->settings()->config()->name());
     connect(readJob, &ReadPasswordJob::finished, this, [this, readJob, request]() {
         if (!mTokenRequester) {
-            qCDebug(IMAPRESOURCE_LOG) << "The pasword request was cancelled.";
+            qCDebug(IMAPRESOURCE_LOG) << "The password request was cancelled.";
             return;
         }
 
