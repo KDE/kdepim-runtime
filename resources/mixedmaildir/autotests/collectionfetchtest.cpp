@@ -23,7 +23,7 @@
 
 using namespace Akonadi;
 
-static Collection::List collectionsFromSpy(QSignalSpy *spy)
+static Collection::List collectionsFromSpy(const std::unique_ptr<QSignalSpy> &spy)
 {
     Collection::List collections;
 
@@ -91,13 +91,13 @@ void CollectionFetchTest::testEmptyDir()
     mStore->setPath(mDir->path());
 
     FileStore::CollectionFetchJob *job = nullptr;
-    QSignalSpy *spy = nullptr;
+    std::unique_ptr<QSignalSpy> spy;
     Collection::List collections;
 
     // test base fetch of top level collection
     job = mStore->fetchCollections(mStore->topLevelCollection(), FileStore::CollectionFetchJob::Base);
 
-    spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
+    spy = std::make_unique<QSignalSpy>(job, &FileStore::CollectionFetchJob::collectionsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -111,7 +111,7 @@ void CollectionFetchTest::testEmptyDir()
     // test first level fetch of top level collection
     job = mStore->fetchCollections(mStore->topLevelCollection(), FileStore::CollectionFetchJob::FirstLevel);
 
-    spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
+    spy = std::make_unique<QSignalSpy>(job, &FileStore::CollectionFetchJob::collectionsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -124,7 +124,7 @@ void CollectionFetchTest::testEmptyDir()
     // test recursive fetch of top level collection
     job = mStore->fetchCollections(mStore->topLevelCollection(), FileStore::CollectionFetchJob::Recursive);
 
-    spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
+    spy = std::make_unique<QSignalSpy>(job, &FileStore::CollectionFetchJob::collectionsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -142,7 +142,7 @@ void CollectionFetchTest::testEmptyDir()
 
     job = mStore->fetchCollections(collection, FileStore::CollectionFetchJob::Base);
 
-    spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
+    spy = std::make_unique<QSignalSpy>(job, &FileStore::CollectionFetchJob::collectionsReceived);
 
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
@@ -155,7 +155,7 @@ void CollectionFetchTest::testEmptyDir()
     // test fail of first level fetching non existent collection
     job = mStore->fetchCollections(collection, FileStore::CollectionFetchJob::FirstLevel);
 
-    spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
+    spy = std::make_unique<QSignalSpy>(job, &FileStore::CollectionFetchJob::collectionsReceived);
 
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
@@ -168,7 +168,7 @@ void CollectionFetchTest::testEmptyDir()
     // test fail of recursive fetching non existent collection
     job = mStore->fetchCollections(collection, FileStore::CollectionFetchJob::FirstLevel);
 
-    spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
+    spy = std::make_unique<QSignalSpy>(job, &FileStore::CollectionFetchJob::collectionsReceived);
 
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
@@ -251,13 +251,13 @@ void CollectionFetchTest::testMixedTree()
     // mDir = 0;
 
     FileStore::CollectionFetchJob *job = nullptr;
-    QSignalSpy *spy = nullptr;
+    std::unique_ptr<QSignalSpy> spy;
     Collection::List collections;
 
     // test base fetch of top level collection
     job = mStore->fetchCollections(mStore->topLevelCollection(), FileStore::CollectionFetchJob::Base);
 
-    spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
+    spy = std::make_unique<QSignalSpy>(job, &FileStore::CollectionFetchJob::collectionsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -271,7 +271,7 @@ void CollectionFetchTest::testMixedTree()
     // test first level fetch of top level collection
     job = mStore->fetchCollections(mStore->topLevelCollection(), FileStore::CollectionFetchJob::FirstLevel);
 
-    spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
+    spy = std::make_unique<QSignalSpy>(job, &FileStore::CollectionFetchJob::collectionsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -297,7 +297,7 @@ void CollectionFetchTest::testMixedTree()
     // test recursive fetch of top level collection
     job = mStore->fetchCollections(mStore->topLevelCollection(), FileStore::CollectionFetchJob::Recursive);
 
-    spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
+    spy = std::make_unique<QSignalSpy>(job, &FileStore::CollectionFetchJob::collectionsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -331,7 +331,7 @@ void CollectionFetchTest::testMixedTree()
     for (const Collection &collection : std::as_const(collections)) {
         job = mStore->fetchCollections(collection, FileStore::CollectionFetchJob::Base);
 
-        spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
+        spy = std::make_unique<QSignalSpy>(job, &FileStore::CollectionFetchJob::collectionsReceived);
 
         QVERIFY(job->exec());
         QCOMPARE(job->error(), 0);
@@ -356,7 +356,7 @@ void CollectionFetchTest::testMixedTree()
     for (const Collection &collection : std::as_const(collections)) {
         job = mStore->fetchCollections(collection, FileStore::CollectionFetchJob::FirstLevel);
 
-        spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
+        spy = std::make_unique<QSignalSpy>(job, &FileStore::CollectionFetchJob::collectionsReceived);
 
         QVERIFY(job->exec());
         QCOMPARE(job->error(), 0);
@@ -399,7 +399,7 @@ void CollectionFetchTest::testMixedTree()
     for (const Collection &collection : std::as_const(collections)) {
         job = mStore->fetchCollections(collection, FileStore::CollectionFetchJob::Recursive);
 
-        spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
+        spy = std::make_unique<QSignalSpy>(job, &FileStore::CollectionFetchJob::collectionsReceived);
 
         QVERIFY(job->exec());
         QCOMPARE(job->error(), 0);

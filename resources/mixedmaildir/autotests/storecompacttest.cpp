@@ -25,7 +25,7 @@
 using namespace Akonadi;
 using namespace KMBox;
 
-static Collection::List collectionsFromSpy(QSignalSpy *spy)
+static Collection::List collectionsFromSpy(const std::unique_ptr<QSignalSpy> &spy)
 {
     Collection::List collections;
 
@@ -40,7 +40,7 @@ static Collection::List collectionsFromSpy(QSignalSpy *spy)
     return collections;
 }
 
-static Item::List itemsFromSpy(QSignalSpy *spy)
+static Item::List itemsFromSpy(const std::unique_ptr<QSignalSpy> &spy)
 {
     Item::List items;
 
@@ -165,8 +165,8 @@ void StoreCompactTest::testCompact()
     Collection::List collections;
     Item::List items;
 
-    QSignalSpy *collectionSpy = nullptr;
-    QSignalSpy *itemSpy = nullptr;
+    std::unique_ptr<QSignalSpy> collectionSpy;
+    std::unique_ptr<QSignalSpy> itemSpy;
 
     MBoxEntry::List entryList;
     Collection collection;
@@ -191,8 +191,8 @@ void StoreCompactTest::testCompact()
 
     job = mStore->compactStore();
 
-    collectionSpy = new QSignalSpy(job, &FileStore::StoreCompactJob::collectionsChanged);
-    itemSpy = new QSignalSpy(job, &FileStore::StoreCompactJob::itemsChanged);
+    collectionSpy = std::make_unique<QSignalSpy>(job, &FileStore::StoreCompactJob::collectionsChanged);
+    itemSpy = std::make_unique<QSignalSpy>(job, &FileStore::StoreCompactJob::itemsChanged);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -235,8 +235,8 @@ void StoreCompactTest::testCompact()
 
     job = mStore->compactStore();
 
-    collectionSpy = new QSignalSpy(job, &FileStore::StoreCompactJob::collectionsChanged);
-    itemSpy = new QSignalSpy(job, &FileStore::StoreCompactJob::itemsChanged);
+    collectionSpy = std::make_unique<QSignalSpy>(job, &FileStore::StoreCompactJob::collectionsChanged);
+    itemSpy = std::make_unique<QSignalSpy>(job, &FileStore::StoreCompactJob::itemsChanged);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -317,8 +317,8 @@ void StoreCompactTest::testCompact()
 
     job = mStore->compactStore();
 
-    collectionSpy = new QSignalSpy(job, &FileStore::StoreCompactJob::collectionsChanged);
-    itemSpy = new QSignalSpy(job, &FileStore::StoreCompactJob::itemsChanged);
+    collectionSpy = std::make_unique<QSignalSpy>(job, &FileStore::StoreCompactJob::collectionsChanged);
+    itemSpy = std::make_unique<QSignalSpy>(job, &FileStore::StoreCompactJob::itemsChanged);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);

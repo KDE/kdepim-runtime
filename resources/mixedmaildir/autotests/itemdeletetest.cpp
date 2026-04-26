@@ -31,7 +31,7 @@
 
 using namespace Akonadi;
 
-static Collection::List collectionsFromSpy(QSignalSpy *spy)
+static Collection::List collectionsFromSpy(const std::unique_ptr<QSignalSpy> &spy)
 {
     Collection::List collections;
 
@@ -46,7 +46,7 @@ static Collection::List collectionsFromSpy(QSignalSpy *spy)
     return collections;
 }
 
-static Item::List itemsFromSpy(QSignalSpy *spy)
+static Item::List itemsFromSpy(const std::unique_ptr<QSignalSpy> &spy)
 {
     Item::List items;
 
@@ -201,8 +201,8 @@ void ItemDeleteTest::testMBox()
     Collection::List collections;
     KMBox::MBoxEntry::List entryList;
 
-    QSignalSpy *collectionsSpy = nullptr;
-    QSignalSpy *itemsSpy = nullptr;
+    std::unique_ptr<QSignalSpy> collectionsSpy;
+    std::unique_ptr<QSignalSpy> itemsSpy;
 
     QVariant var;
 
@@ -254,8 +254,8 @@ void ItemDeleteTest::testMBox()
     // last item purging does not change any others
     storeCompact = mStore->compactStore();
 
-    collectionsSpy = new QSignalSpy(storeCompact, &FileStore::StoreCompactJob::collectionsChanged);
-    itemsSpy = new QSignalSpy(storeCompact, &FileStore::StoreCompactJob::itemsChanged);
+    collectionsSpy = std::make_unique<QSignalSpy>(storeCompact, &FileStore::StoreCompactJob::collectionsChanged);
+    itemsSpy = std::make_unique<QSignalSpy>(storeCompact, &FileStore::StoreCompactJob::itemsChanged);
 
     QVERIFY(storeCompact->exec());
     QCOMPARE(storeCompact->error(), 0);
@@ -318,8 +318,8 @@ void ItemDeleteTest::testMBox()
     // non-last item purging changes all items after it
     storeCompact = mStore->compactStore();
 
-    collectionsSpy = new QSignalSpy(storeCompact, &FileStore::StoreCompactJob::collectionsChanged);
-    itemsSpy = new QSignalSpy(storeCompact, &FileStore::StoreCompactJob::itemsChanged);
+    collectionsSpy = std::make_unique<QSignalSpy>(storeCompact, &FileStore::StoreCompactJob::collectionsChanged);
+    itemsSpy = std::make_unique<QSignalSpy>(storeCompact, &FileStore::StoreCompactJob::itemsChanged);
 
     QVERIFY(storeCompact->exec());
     QCOMPARE(storeCompact->error(), 0);
