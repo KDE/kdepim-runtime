@@ -180,7 +180,7 @@ void EteSyncClientState::deleteKeychainEntry()
 
     auto job = new QKeychain::DeletePasswordJob(etebaseKeychainFolder);
     job->setKey(mUsername);
-    connect(job, &QKeychain::Job::finished, this, [this, job] {
+    connect(job, &QKeychain::Job::finished, this, [job] {
         if (job->error() != QKeychain::Error::NoError) {
             qCDebug(ETESYNC_LOG) << "Unable to delete keychain entry";
             return;
