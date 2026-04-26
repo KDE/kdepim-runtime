@@ -2,7 +2,7 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_openxchange_resource\")
 
 set(openxchange_common_SRCS)
-kconfig_add_kcfg_files(openxchange_common_SRCS settings.kcfgc)    
+kconfig_add_kcfg_files(openxchange_common_SRCS settings.kcfgc)
 
 ################################ Resource ##################################
 

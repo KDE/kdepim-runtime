@@ -42,7 +42,7 @@ if(APPLE)
   set_target_properties(akonadi_maildispatcher_agent PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Maildispatcher")
 endif()
 
-target_link_libraries(akonadi_maildispatcher_agent 
+target_link_libraries(akonadi_maildispatcher_agent
     KPim6::AkonadiCore
     KPim6::AkonadiMime
     KF6::Mime

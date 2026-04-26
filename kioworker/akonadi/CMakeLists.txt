@@ -9,9 +9,9 @@ ecm_qt_declare_logging_category(kio_akonadi HEADER akonadiworker_debug.h IDENTIF
 )
 
 
-target_link_libraries(kio_akonadi  
-                      KF6::KIOCore 
-                      KPim6::AkonadiCore 
+target_link_libraries(kio_akonadi
+                      KF6::KIOCore
+                      KPim6::AkonadiCore
                       KF6::I18n
                       Qt::DBus
                       Qt::Widgets

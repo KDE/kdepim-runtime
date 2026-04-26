@@ -37,4 +37,3 @@ target_link_libraries(migrationshared
 
 add_subdirectory(gid)
 add_subdirectory(icalcategoriestotags)
-

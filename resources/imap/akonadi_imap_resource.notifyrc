@@ -177,4 +177,3 @@ Comment[zh_CN]=IMAP 电子邮件无法通过服务器的身份验证
 Comment[zh_TW]=IMAP 電子郵件無法與伺服器認證
 Urgency=Normal
 Action=Popup
-

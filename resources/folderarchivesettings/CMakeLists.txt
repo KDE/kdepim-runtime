@@ -38,4 +38,3 @@ install(TARGETS folderarchivesettings ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRAR
 if(BUILD_TESTING)
    add_subdirectory(autotests)
 endif()
-

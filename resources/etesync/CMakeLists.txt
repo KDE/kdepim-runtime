@@ -82,16 +82,16 @@ kcoreaddons_add_plugin(etesyncconfig
     INSTALL_NAMESPACE "pim6/akonadi/config"
 )
 
-set(etesyncconfig_CONFIG_SRC 
+set(etesyncconfig_CONFIG_SRC
     etesyncconfig.cpp
     setupwizard.cpp setupwizard.h
     loginjob.cpp loginjob.h
     etesyncclientstate.cpp etesyncclientstate.h
 )
 ecm_qt_declare_logging_category(etesyncconfig_CONFIG_SRC
-    HEADER etesync_debug.h      
-    IDENTIFIER ETESYNC_LOG      
-    CATEGORY_NAME org.kde.pim.etesync 
+    HEADER etesync_debug.h
+    IDENTIFIER ETESYNC_LOG
+    CATEGORY_NAME org.kde.pim.etesync
     DESCRIPTION "EteSync Config Plugin Logging"
 )
 

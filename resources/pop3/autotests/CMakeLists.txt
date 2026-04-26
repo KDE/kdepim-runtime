@@ -22,4 +22,4 @@ qt_add_dbus_interface(_srcList ${maildirsettingsinterface_xml} maildirsettings)
 
 if(KDEPIM_RUN_AKONADI_TEST)
 	add_akonadi_isolated_test_advanced(pop3test.cpp "${_srcList}" "KF6::Mime")
-endif()	
+endif()

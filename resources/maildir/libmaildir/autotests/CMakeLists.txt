@@ -14,4 +14,3 @@ add_test(NAME testmaildir COMMAND testmaildir)
 ecm_mark_as_test(maildir-testmaildir)
 
 target_link_libraries(testmaildir  Qt::Test  KPim6::AkonadiMime maildir)
-

@@ -61,4 +61,3 @@ install(TARGETS akonadi-filestore ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NA
 if(BUILD_TESTING)
     add_subdirectory(autotests)
 endif()
-

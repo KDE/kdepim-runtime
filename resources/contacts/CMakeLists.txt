@@ -76,4 +76,3 @@ if(HAVE_ACTIVITY_SUPPORT)
         KPim6::PimCommonActivities
     )
 endif()
-
