@@ -27,9 +27,8 @@ void EwsFetchAbchContactDetailsJob::processItems(const EwsGetItemRequest::Respon
     Item::List::iterator it = mChangedItems.begin();
 
     for (const EwsGetItemRequest::Response &resp : responses) {
-        Item &item = *it;
-
         if (!resp.isSuccess()) {
+            Item &item = *it;
             qCWarningNC(EWSRES_LOG) << QStringLiteral("Failed to fetch item %1").arg(item.remoteId());
             continue;
         }

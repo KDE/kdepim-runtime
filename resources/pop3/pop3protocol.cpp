@@ -113,7 +113,7 @@ qint64 POP3Protocol::myRead(void *data, qint64 len)
 
 qint64 POP3Protocol::myReadLine(char *data, qint64 len)
 {
-    qint64 copyLen = 0, readLen;
+    qint64 copyLen = 0;
     while (true) {
         while (copyLen < readBufferLen && readBuffer[copyLen] != '\n') {
             copyLen++;
@@ -131,7 +131,7 @@ qint64 POP3Protocol::myReadLine(char *data, qint64 len)
         if (!mSocket->bytesAvailable()) {
             mSocket->waitForReadyRead(600 * 1000);
         }
-        readLen = mSocket->read(&readBuffer[readBufferLen], len - readBufferLen);
+        qint64 readLen = mSocket->read(&readBuffer[readBufferLen], len - readBufferLen);
         readBufferLen += readLen;
         if (readLen <= 0) {
             data[0] = '\0';
@@ -242,11 +242,11 @@ bool POP3Protocol::sendCommand(const QByteArray &cmd)
 
     // Show the command line the client sends, but make sure the password
     // doesn't show up in the debug output
-    QByteArray debugCommand = cmd;
     if (!m_sPass.isEmpty()) {
+        QByteArray debugCommand = cmd;
         debugCommand.replace(m_sPass.toLatin1(), "<password>");
+        // qCDebug(POP3_LOG) << "C:" << debugCommand;
     }
-    // qCDebug(POP3_LOG) << "C:" << debugCommand;
 
     // Now actually write the command to the socket
     if (mSocket->write(cmdrn.data(), cmdrn.size()) != static_cast<qint64>(cmdrn.size())) {
@@ -390,14 +390,11 @@ bool POP3Protocol::saslInteract(void *in)
 
 Result POP3Protocol::loginSASL()
 {
-    char buf[512];
-
     sasl_conn_t *conn = nullptr;
     sasl_interact_t *client_interact = nullptr;
     const char *out = nullptr;
     uint outlen;
     const char *mechusing = nullptr;
-    Resp resp;
 
     int result = sasl_client_new("pop", m_sServer.toLatin1().constData(), nullptr, nullptr, callbacks, 0, &conn);
 
@@ -419,6 +416,7 @@ Result POP3Protocol::loginSASL()
         if (userRequestedSASL) {
             sasl_list.append(saslAuthTypeString(mSettings));
         } else {
+            char buf[512];
             while (true /* !AtEOF() */) {
                 memset(buf, 0, sizeof(buf));
                 myReadLine(buf, sizeof(buf) - 1);
@@ -463,7 +461,7 @@ Result POP3Protocol::loginSASL()
         }
 
         tmp.resize(2049);
-        resp = command(firstCommand.toLatin1(), tmp.data(), 2049);
+        Resp resp = command(firstCommand.toLatin1(), tmp.data(), 2049);
         while (resp == Cont) {
             tmp.resize(tmp.indexOf((char)0));
             msg = QByteArray::fromBase64(tmp);
@@ -589,7 +587,6 @@ Result POP3Protocol::openConnection()
         mSocket->setProxy(proxy);
     } // ## and what if useProxy() is true?
 
-    char *greeting_buf;
     do {
         closeConnection();
 
@@ -609,7 +606,7 @@ Result POP3Protocol::openConnection()
 
         mConnected = true;
 
-        greeting_buf = new char[GREETING_BUF_LEN];
+        char *greeting_buf = new char[GREETING_BUF_LEN];
         memset(greeting_buf, 0, GREETING_BUF_LEN);
 
         // If the server doesn't respond with a greeting

@@ -34,12 +34,10 @@ void EntityTreeCreateJob::doStart()
 
 void EntityTreeCreateJob::createNextLevelOfCollections()
 {
-    CollectionCreateJob *job = nullptr;
-
     const Collection::List colList = m_collections.takeFirst();
     for (const Collection &collection : colList) {
         ++m_pendingJobs;
-        job = new CollectionCreateJob(collection, this);
+        CollectionCreateJob *job = new CollectionCreateJob(collection, this);
         job->setProperty(collectionIdMappingProperty, collection.id());
         connect(job, &CollectionCreateJob::result, this, &EntityTreeCreateJob::collectionCreateJobDone);
     }

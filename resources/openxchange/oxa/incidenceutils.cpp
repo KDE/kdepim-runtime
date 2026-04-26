@@ -199,6 +199,7 @@ static void parseRecurrence(const QDomElement &element, const KCalendarCore::Inc
     int monthly2ValueMonth = -1;
 
     int yearly2Recurrency = 0;
+    /* cppcheck-suppress variableScope */
     int yearly2Day = 0;
     int yearly2Month = -1;
 
