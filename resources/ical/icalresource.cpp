@@ -16,6 +16,7 @@
 #include "icalresource.h"
 #include "icalsettingsadaptor.h"
 
+#include <Akonadi/CollectionColorAttribute>
 #include <Akonadi/ItemModifyJob>
 
 #include <KCalendarCore/FreeBusy>
@@ -24,6 +25,7 @@
 
 #include <KLocalizedString>
 
+#include <QColor>
 #include <QDBusConnection>
 #include <QDebug>
 #include <QTimeZone>
@@ -84,6 +86,21 @@ bool ICalResource::retrieveItems(const Akonadi::Item::List &items, [[maybe_unuse
 bool ICalResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     return retrieveItems({item}, parts);
+}
+
+Collection ICalResource::rootCollection() const
+{
+    auto col = SingleFileResource::rootCollection();
+    if (!calendar()) {
+        return col;
+    }
+#if KCALENDARCORE_VERSION >= QT_VERSION_CHECK(6, 26, 0)
+    if (!calendar()->color().isEmpty()) {
+        auto attr = col.attribute<CollectionColorAttribute>(Collection::AddIfMissing);
+        attr->setColor(QColor::fromString(calendar()->color()));
+    }
+#endif
+    return col;
 }
 
 void ICalResource::aboutToQuit()
@@ -307,6 +324,17 @@ void ICalResource::itemsTagsChanged(const Akonadi::Item::List &items, const QSet
 
     scheduleWrite();
     changesCommitted(items);
+}
+
+void ICalResource::collectionChanged(const Akonadi::Collection &col)
+{
+#if KCALENDARCORE_VERSION >= QT_VERSION_CHECK(6, 26, 0)
+    if (const auto attr = col.attribute<CollectionColorAttribute>(); !readOnly() && attr && attr->color().isValid()) {
+        calendar()->setColor(attr->color().name());
+        scheduleWrite();
+    }
+#endif
+    SingleFileResource::collectionChanged(col);
 }
 
 KCalendarCore::MemoryCalendar::Ptr ICalResource::calendar() const

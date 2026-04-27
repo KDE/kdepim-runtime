@@ -23,6 +23,7 @@ public:
     ~ICalResource() override;
 
 protected:
+    [[nodiscard]] Akonadi::Collection rootCollection() const override;
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
     bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
     void retrieveItems(const Akonadi::Collection &col) override;
@@ -51,6 +52,7 @@ protected:
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
     void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &tagsAdded, const QSet<Akonadi::Tag> &tagsRemoved) override;
     void itemRemoved(const Akonadi::Item &item) override;
+    void collectionChanged(const Akonadi::Collection &col) override;
 
     /** Return the local calendar. */
     KCalendarCore::MemoryCalendar::Ptr calendar() const;
