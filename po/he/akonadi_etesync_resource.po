@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-04-27 00:44+0000\n"
 "PO-Revision-Date: 2025-06-27 11:18+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -101,23 +101,23 @@ msgstr "פרטי הגישה שלך ל־EteSync השתנו או שהם חסרים
 msgid "Cannot retrieve items - account is null"
 msgstr "לא ניתן למשוך פריטים - החשבון ריק"
 
-#: etesyncresource.cpp:266 etesyncresource.cpp:394 etesyncresource.cpp:467
-#: etesyncresource.cpp:525 etesyncresource.cpp:655 etesyncresource.cpp:713
+#: etesyncresource.cpp:266 etesyncresource.cpp:396 etesyncresource.cpp:469
+#: etesyncresource.cpp:527 etesyncresource.cpp:657 etesyncresource.cpp:715
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "לא ניתן למשוך etesyncCollection (אוסף) מזיכרון המטמון ‚%1’"
 
-#: etesyncresource.cpp:422
+#: etesyncresource.cpp:424
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
 msgstr "לא ניתן ליצור etesyncItem (פריט) חדש %1"
 
-#: etesyncresource.cpp:474 etesyncresource.cpp:532
+#: etesyncresource.cpp:476 etesyncresource.cpp:534
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
 msgstr "לא ניתן למשוך etesyncItem (פריט) מזיכרון המטמון ‚%1’"
 
-#: etesyncresource.cpp:594
+#: etesyncresource.cpp:596
 #, kde-format
 msgid "Could not create new etesyncCollection"
 msgstr "לא ניתן ליצור etesyncCollection (אוסף) חדש"

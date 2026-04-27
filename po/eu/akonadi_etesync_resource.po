@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-04-27 00:44+0000\n"
 "PO-Revision-Date: 2025-06-30 00:20+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -103,23 +103,23 @@ msgstr "Zure EteSync egiaztagiriak aldatu dira edo falta dira."
 msgid "Cannot retrieve items - account is null"
 msgstr "Ezin dira elementuak eskuratu - kontua nulua da"
 
-#: etesyncresource.cpp:266 etesyncresource.cpp:394 etesyncresource.cpp:467
-#: etesyncresource.cpp:525 etesyncresource.cpp:655 etesyncresource.cpp:713
+#: etesyncresource.cpp:266 etesyncresource.cpp:396 etesyncresource.cpp:469
+#: etesyncresource.cpp:527 etesyncresource.cpp:657 etesyncresource.cpp:715
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "Ezin izan du '%1' cachetik «etesyncCollection» lortu"
 
-#: etesyncresource.cpp:422
+#: etesyncresource.cpp:424
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
 msgstr "Ezin izan du '%1' «etesyncItem» berria sortu"
 
-#: etesyncresource.cpp:474 etesyncresource.cpp:532
+#: etesyncresource.cpp:476 etesyncresource.cpp:534
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
 msgstr "Ezin izan du '%1' cachetik «etesyncItem» lortu"
 
-#: etesyncresource.cpp:594
+#: etesyncresource.cpp:596
 #, kde-format
 msgid "Could not create new etesyncCollection"
 msgstr "Ezin izan du «etesyncCollection» berria sortu"

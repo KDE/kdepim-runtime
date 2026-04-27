@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-04-27 00:44+0000\n"
 "PO-Revision-Date: 2025-09-26 16:24+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -101,23 +101,23 @@ msgstr "Ir mainīti vai trūkst jūsu „EteSync“ ierakstīšanās dati."
 msgid "Cannot retrieve items - account is null"
 msgstr "Nevar izgūt vienumus — nav konta"
 
-#: etesyncresource.cpp:266 etesyncresource.cpp:394 etesyncresource.cpp:467
-#: etesyncresource.cpp:525 etesyncresource.cpp:655 etesyncresource.cpp:713
+#: etesyncresource.cpp:266 etesyncresource.cpp:396 etesyncresource.cpp:469
+#: etesyncresource.cpp:527 etesyncresource.cpp:657 etesyncresource.cpp:715
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "no kešatmiņas „%1“ nevarēja iegūt „etesyncCollection“"
 
-#: etesyncresource.cpp:422
+#: etesyncresource.cpp:424
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
 msgstr "Nevarēja izveidot jaunu „etesyncItem“ „%1“"
 
-#: etesyncresource.cpp:474 etesyncresource.cpp:532
+#: etesyncresource.cpp:476 etesyncresource.cpp:534
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
 msgstr "No kešatmiņas „%1“ nevarēja iegūt „etesyncItem“"
 
-#: etesyncresource.cpp:594
+#: etesyncresource.cpp:596
 #, kde-format
 msgid "Could not create new etesyncCollection"
 msgstr "Nevarēja izveidot jaunu „etesyncCollection“"
