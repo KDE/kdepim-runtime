@@ -19,13 +19,14 @@
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
 #include <KContacts/Addressee>
+#include <KDAV/DavCollectionModifyJob>
 #include <KLocalizedString>
 
 #include "oxa/davmanager.h"
+#include "oxa/davutils.h"
 #include "oxa/foldercreatejob.h"
 #include "oxa/folderdeletejob.h"
 #include "oxa/foldermodifyjob.h"
-#include "oxa/foldermovejob.h"
 #include "oxa/foldersrequestdeltajob.h"
 #include "oxa/foldersrequestjob.h"
 #include "oxa/objectcreatejob.h"
@@ -36,11 +37,13 @@
 #include "oxa/objectsrequestdeltajob.h"
 #include "oxa/objectsrequestjob.h"
 #include "oxa/oxerrors.h"
+#include "oxa/oxutils.h"
 #include "oxa/updateusersjob.h"
 #include "oxa/users.h"
 #include <QStandardPaths>
 
 using namespace Akonadi;
+using namespace Qt::StringLiterals;
 
 class RemoteInformation
 {
@@ -599,10 +602,17 @@ void OpenXchangeResource::collectionMoved(const Akonadi::Collection &collection,
     OXA::Folder destinationFolder;
     destinationFolder.setObjectId(newParentRemoteInformation.objectId());
 
-    auto job = new OXA::FolderMoveJob(folder, destinationFolder, this);
-    job->setProperty("collection", QVariant::fromValue(collection));
-    connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onFolderMoveJobFinished);
-
+    QUrl url = OXA::DavManager::self()->baseUrl();
+    url.setPath(u"/servlet/webdav.folders"_s);
+    KDAV::DavUrl davUrl(url, KDAV::CalDav);
+    auto job = new KDAV::DavCollectionModifyJob(davUrl);
+    job->setProperty(u"object_id"_s, OXA::OXUtils::writeNumber(folder.objectId()), u"http://www.open-xchange.org"_s);
+    job->setProperty(u"folder_id"_s, OXA::OXUtils::writeNumber(folder.folderId()), u"http://www.open-xchange.org"_s);
+    job->setProperty(u"last_modified"_s, OXA::OXUtils::writeString(folder.lastModified()), u"http://www.open-xchange.org"_s);
+    job->setProperty(u"folder"_s, OXA::OXUtils::writeNumber(destinationFolder.objectId()), u"http://www.open-xchange.org"_s);
+    connect(job, &KJob::result, this, [this, job, folder, collection](KJob *) {
+        onFolderMoveJobFinished(job, folder, collection);
+    });
     job->start();
 }
 
@@ -1094,24 +1104,17 @@ void OpenXchangeResource::onFolderModifyJobFinished(KJob *job)
     changeCommitted(collection);
 }
 
-void OpenXchangeResource::onFolderMoveJobFinished(KJob *job)
+void OpenXchangeResource::onFolderMoveJobFinished(KDAV::DavCollectionModifyJob *job, const OXA::Folder &folder, const Akonadi::Collection &collection)
 {
     if (job->error()) {
         cancelTask(job->errorText());
         return;
     }
 
-    auto moveJob = qobject_cast<OXA::FolderMoveJob *>(job);
-    Q_ASSERT(moveJob);
-
-    const OXA::Folder folder = moveJob->folder();
-
-    auto collection = job->property("collection").value<Collection>();
-
     // update last_modified property
     RemoteInformation remoteInformation = RemoteInformation::load(collection);
     remoteInformation.setLastModified(folder.lastModified());
-    remoteInformation.store(collection);
+    remoteInformation.store(const_cast<Akonadi::Collection &>(collection));
 
     changeCommitted(collection);
 }

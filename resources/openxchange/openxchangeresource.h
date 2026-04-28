@@ -8,6 +8,16 @@
 
 #include <Akonadi/ResourceBase>
 
+namespace KDAV
+{
+class DavCollectionModifyJob;
+}
+
+namespace OXA
+{
+class Folder;
+}
+
 class OpenXchangeResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
@@ -52,7 +62,7 @@ private:
     void onFoldersRequestDeltaJobFinished(KJob *);
     void onFolderCreateJobFinished(KJob *);
     void onFolderModifyJobFinished(KJob *);
-    void onFolderMoveJobFinished(KJob *);
+    void onFolderMoveJobFinished(KDAV::DavCollectionModifyJob *job, const OXA::Folder &folder, const Akonadi::Collection &collection);
     void onFolderDeleteJobFinished(KJob *);
     void onObjectsRequestJobFinished(KJob *);
     void onObjectsRequestDeltaJobFinished(KJob *);

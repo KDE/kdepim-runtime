@@ -14,7 +14,6 @@ set(openxchangeresource_SRCS
   oxa/foldercreatejob.cpp
   oxa/folderdeletejob.cpp
   oxa/foldermodifyjob.cpp
-  oxa/foldermovejob.cpp
   oxa/folderrequestjob.cpp
   oxa/foldersrequestdeltajob.cpp
   oxa/foldersrequestjob.cpp
@@ -46,7 +45,6 @@ set(openxchangeresource_SRCS
   oxa/foldercreatejob.h
   oxa/folderdeletejob.h
   oxa/foldermodifyjob.h
-  oxa/foldermovejob.h
   oxa/folderrequestjob.h
   oxa/foldersrequestdeltajob.h
   oxa/foldersrequestjob.h
@@ -99,6 +97,7 @@ target_link_libraries(akonadi_openxchange_resource
     KF6::Contacts
     KF6::KIOCore
     KF6::CalendarCore
+    KF6::DAV
     KPim6::AkonadiContactCore
     KF6::I18n
     Qt::Xml
