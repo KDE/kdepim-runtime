@@ -94,6 +94,9 @@ Collection ICalResource::rootCollection() const
     if (!calendar()) {
         return col;
     }
+    if (mSettings->displayName().isEmpty() && !calendar()->name().isEmpty()) {
+        col.attribute<EntityDisplayAttribute>(Collection::AddIfMissing)->setDisplayName(calendar()->name());
+    }
 #if KCALENDARCORE_VERSION >= QT_VERSION_CHECK(6, 26, 0)
     if (!calendar()->color().isEmpty()) {
         auto attr = col.attribute<CollectionColorAttribute>(Collection::AddIfMissing);
@@ -328,12 +331,18 @@ void ICalResource::itemsTagsChanged(const Akonadi::Item::List &items, const QSet
 
 void ICalResource::collectionChanged(const Akonadi::Collection &col)
 {
+    if (!readOnly() && calendar()) {
+        if (calendar()->name() != col.displayName()) {
+            calendar()->setName(col.displayName());
+            scheduleWrite();
+        }
 #if KCALENDARCORE_VERSION >= QT_VERSION_CHECK(6, 26, 0)
-    if (const auto attr = col.attribute<CollectionColorAttribute>(); !readOnly() && attr && attr->color().isValid()) {
-        calendar()->setColor(attr->color().name());
-        scheduleWrite();
-    }
+        if (const auto attr = col.attribute<CollectionColorAttribute>(); attr && attr->color().isValid()) {
+            calendar()->setColor(attr->color().name());
+            scheduleWrite();
+        }
 #endif
+    }
     SingleFileResource::collectionChanged(col);
 }
 
