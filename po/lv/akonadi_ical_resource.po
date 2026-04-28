@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-04-28 00:46+0000\n"
 "PO-Revision-Date: 2024-12-27 16:47+0200\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -23,6 +23,31 @@ msgstr ""
 "X-Generator: Lokalize 24.12.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
+
+#: icalresource.cpp:56 icalresource.cpp:113 icalresource.cpp:194
+#, kde-format
+msgid "Calendar not loaded."
+msgstr "Kalendārs nav ielādēts."
+
+#: icalresource.cpp:68
+#, kde-format
+msgid "Incidence with uid '%1' not found."
+msgstr "Notikums ar UID „%1“ nav atrasts."
+
+#: icalresource.cpp:180
+#, kde-format
+msgid "Failed to save calendar file to %1"
+msgstr "Neizdevās saglabāt kalendāru datnē „%1“"
+
+#: icalresource.cpp:199
+#, kde-format
+msgid "Unable to retrieve added item %1."
+msgstr "Nevar atlasīt pievienoto vienumu „%1“."
+
+#: icalresource.cpp:199
+#, kde-format
+msgid "Unable to retrieve modified item %1."
+msgstr "Nevar atlasīt laboto vienumu „%1“."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icalresource.kcfg:10
@@ -59,32 +84,6 @@ msgstr "Periodiski atjaunināt datni."
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "Automātiskas saglabāšanas intervāls minūtēs."
-
-#: shared/icalresource.cpp:48
-#, kde-format
-msgid "Incidence with uid '%1' not found."
-msgstr "Notikums ar UID „%1“ nav atrasts."
-
-#: shared/icalresourcebase.cpp:46 shared/icalresourcebase.cpp:59
-#: shared/icalresourcebase.cpp:90 shared/icalresourcebase.h:88
-#, kde-format
-msgid "Calendar not loaded."
-msgstr "Kalendārs nav ielādēts."
-
-#: shared/icalresourcebase.cpp:143
-#, kde-format
-msgid "Failed to save calendar file to %1"
-msgstr "Neizdevās saglabāt kalendāru datnē „%1“"
-
-#: shared/icalresourcebase.h:93
-#, kde-format
-msgid "Unable to retrieve added item %1."
-msgstr "Nevar atlasīt pievienoto vienumu „%1“."
-
-#: shared/icalresourcebase.h:93
-#, kde-format
-msgid "Unable to retrieve modified item %1."
-msgstr "Nevar atlasīt laboto vienumu „%1“."
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Pšsaglabāšanās intervāls (minūtēs)."

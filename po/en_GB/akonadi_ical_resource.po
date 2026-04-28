@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-04-28 00:46+0000\n"
 "PO-Revision-Date: 2024-05-23 20:05+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
@@ -17,6 +17,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 24.02.2\n"
+
+#: icalresource.cpp:56 icalresource.cpp:113 icalresource.cpp:194
+#, kde-format
+msgid "Calendar not loaded."
+msgstr "Calendar not loaded."
+
+#: icalresource.cpp:68
+#, kde-format
+msgid "Incidence with uid '%1' not found."
+msgstr "Incidence with uid '%1' not found."
+
+#: icalresource.cpp:180
+#, kde-format
+msgid "Failed to save calendar file to %1"
+msgstr "Failed to save calendar file to %1"
+
+#: icalresource.cpp:199
+#, kde-format
+msgid "Unable to retrieve added item %1."
+msgstr "Unable to retrieve added item %1."
+
+#: icalresource.cpp:199
+#, kde-format
+msgid "Unable to retrieve modified item %1."
+msgstr "Unable to retrieve modified item %1."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icalresource.kcfg:10
@@ -53,32 +78,6 @@ msgstr "Periodically update the file."
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "Automatic update period in minutes."
-
-#: shared/icalresource.cpp:48
-#, kde-format
-msgid "Incidence with uid '%1' not found."
-msgstr "Incidence with uid '%1' not found."
-
-#: shared/icalresourcebase.cpp:46 shared/icalresourcebase.cpp:59
-#: shared/icalresourcebase.cpp:90 shared/icalresourcebase.h:88
-#, kde-format
-msgid "Calendar not loaded."
-msgstr "Calendar not loaded."
-
-#: shared/icalresourcebase.cpp:143
-#, kde-format
-msgid "Failed to save calendar file to %1"
-msgstr "Failed to save calendar file to %1"
-
-#: shared/icalresourcebase.h:93
-#, kde-format
-msgid "Unable to retrieve added item %1."
-msgstr "Unable to retrieve added item %1."
-
-#: shared/icalresourcebase.h:93
-#, kde-format
-msgid "Unable to retrieve modified item %1."
-msgstr "Unable to retrieve modified item %1."
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Autosave interval time (in minutes)."

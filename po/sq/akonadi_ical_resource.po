@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-04-28 00:46+0000\n"
 "PO-Revision-Date: 2009-08-13 12:31+0000\n"
 "Last-Translator: Vilson Gjeci <vilsongjeci@gmail.com>\n"
 "Language-Team: Albanian <sq@li.org>\n"
@@ -18,6 +18,31 @@ msgstr ""
 "X-Launchpad-Export-Date: 2011-04-22 06:14+0000\n"
 "X-Generator: Launchpad (build 12883)\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: icalresource.cpp:56 icalresource.cpp:113 icalresource.cpp:194
+#, kde-format
+msgid "Calendar not loaded."
+msgstr "Kalendari nuk u ngarkua."
+
+#: icalresource.cpp:68
+#, kde-format
+msgid "Incidence with uid '%1' not found."
+msgstr "Përputhja me uid '%1' nuk u gjet."
+
+#: icalresource.cpp:180
+#, kde-format
+msgid "Failed to save calendar file to %1"
+msgstr "Dështuam në ruajtjen e skedarit të kalendarit tek %1"
+
+#: icalresource.cpp:199
+#, kde-format
+msgid "Unable to retrieve added item %1."
+msgstr "Nuk jemi në gjendje të marrim temën %1."
+
+#: icalresource.cpp:199
+#, kde-format
+msgid "Unable to retrieve modified item %1."
+msgstr "Nuk jemi në gjendje të marrim temën e modifikuar %1."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icalresource.kcfg:10
@@ -55,32 +80,6 @@ msgstr ""
 #| msgid "Autosave interval time (in minutes)."
 msgid "Automatic update period in minutes."
 msgstr "Intervali kohor për vetëruajtje (në minuta)."
-
-#: shared/icalresource.cpp:48
-#, kde-format
-msgid "Incidence with uid '%1' not found."
-msgstr "Përputhja me uid '%1' nuk u gjet."
-
-#: shared/icalresourcebase.cpp:46 shared/icalresourcebase.cpp:59
-#: shared/icalresourcebase.cpp:90 shared/icalresourcebase.h:88
-#, kde-format
-msgid "Calendar not loaded."
-msgstr "Kalendari nuk u ngarkua."
-
-#: shared/icalresourcebase.cpp:143
-#, kde-format
-msgid "Failed to save calendar file to %1"
-msgstr "Dështuam në ruajtjen e skedarit të kalendarit tek %1"
-
-#: shared/icalresourcebase.h:93
-#, kde-format
-msgid "Unable to retrieve added item %1."
-msgstr "Nuk jemi në gjendje të marrim temën %1."
-
-#: shared/icalresourcebase.h:93
-#, kde-format
-msgid "Unable to retrieve modified item %1."
-msgstr "Nuk jemi në gjendje të marrim temën e modifikuar %1."
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Intervali kohor për vetëruajtje (në minuta)."

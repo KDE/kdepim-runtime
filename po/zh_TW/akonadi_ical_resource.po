@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-04-28 00:46+0000\n"
 "PO-Revision-Date: 2023-12-13 05:19+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -18,6 +18,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 23.08.4\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: icalresource.cpp:56 icalresource.cpp:113 icalresource.cpp:194
+#, kde-format
+msgid "Calendar not loaded."
+msgstr "行事曆未載入。"
+
+#: icalresource.cpp:68
+#, kde-format
+msgid "Incidence with uid '%1' not found."
+msgstr "找不到使用者代碼 %1 的事件。"
+
+#: icalresource.cpp:180
+#, kde-format
+msgid "Failed to save calendar file to %1"
+msgstr "無法儲存行事曆檔案到 %1。"
+
+#: icalresource.cpp:199
+#, kde-format
+msgid "Unable to retrieve added item %1."
+msgstr "無法取得新增項目 %1。"
+
+#: icalresource.cpp:199
+#, kde-format
+msgid "Unable to retrieve modified item %1."
+msgstr "無法取得變更項目 %1。"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icalresource.kcfg:10
@@ -54,32 +79,6 @@ msgstr "每隔一段時間就更新檔案。"
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "自動更新間隔（分鐘）。"
-
-#: shared/icalresource.cpp:48
-#, kde-format
-msgid "Incidence with uid '%1' not found."
-msgstr "找不到使用者代碼 %1 的事件。"
-
-#: shared/icalresourcebase.cpp:46 shared/icalresourcebase.cpp:59
-#: shared/icalresourcebase.cpp:90 shared/icalresourcebase.h:88
-#, kde-format
-msgid "Calendar not loaded."
-msgstr "行事曆未載入。"
-
-#: shared/icalresourcebase.cpp:143
-#, kde-format
-msgid "Failed to save calendar file to %1"
-msgstr "無法儲存行事曆檔案到 %1。"
-
-#: shared/icalresourcebase.h:93
-#, kde-format
-msgid "Unable to retrieve added item %1."
-msgstr "無法取得新增項目 %1。"
-
-#: shared/icalresourcebase.h:93
-#, kde-format
-msgid "Unable to retrieve modified item %1."
-msgstr "無法取得變更項目 %1。"
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "自動儲存間隔時間（分）。"

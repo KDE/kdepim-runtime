@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-04-28 00:46+0000\n"
 "PO-Revision-Date: 2024-12-20 22:10+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -178,12 +178,12 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:406
+#: pop3protocol.cpp:403
 #, kde-format
 msgid "An error occurred during authentication: %1"
 msgstr "प्रमाणीकरणकाले त्रुटिः अभवत्: %1"
 
-#: pop3protocol.cpp:500
+#: pop3protocol.cpp:498
 #, kde-format
 msgid ""
 "Login via SASL (%1) failed. The server may not support %2, or the password "
@@ -196,7 +196,7 @@ msgstr ""
 "\n"
 "%3"
 
-#: pop3protocol.cpp:511
+#: pop3protocol.cpp:509
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
@@ -205,7 +205,7 @@ msgstr ""
 "भवतः POP3 सर्वरः (%1) SASL समर्थयति न ।\n"
 "भिन्नं प्रमाणीकरणविधिं चिनोतु ।"
 
-#: pop3protocol.cpp:528 pop3protocol.cpp:617
+#: pop3protocol.cpp:526 pop3protocol.cpp:614
 #, kde-format
 msgid ""
 "Could not login to %1.\n"
@@ -214,7 +214,7 @@ msgstr ""
 "%1 मध्ये प्रवेशं कर्तुं न शक्तम् ।\n"
 "\n"
 
-#: pop3protocol.cpp:536
+#: pop3protocol.cpp:534
 #, kde-format
 msgid ""
 "Could not login to %1. The password may be wrong.\n"
@@ -225,22 +225,22 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:568
+#: pop3protocol.cpp:566
 #, kde-format
 msgid "SSL/TLS error: %1"
 msgstr "SSL/TLS त्रुटिः: %1"
 
-#: pop3protocol.cpp:599
+#: pop3protocol.cpp:596
 #, kde-format
 msgid "%1: %2"
 msgstr "%1: %2"
 
-#: pop3protocol.cpp:618
+#: pop3protocol.cpp:615
 #, kde-format
 msgid "The server terminated the connection immediately."
 msgstr "सर्वरः तत्क्षणमेव संयोजनं समाप्तवान् ।"
 
-#: pop3protocol.cpp:619
+#: pop3protocol.cpp:616
 #, kde-format
 msgid ""
 "Server does not respond properly:\n"
@@ -249,7 +249,7 @@ msgstr ""
 "सर्वरः सम्यक् प्रतिक्रियां न ददाति:\n"
 "%1\n"
 
-#: pop3protocol.cpp:643
+#: pop3protocol.cpp:640
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
@@ -258,7 +258,7 @@ msgstr ""
 "भवतः POP3 सर्वरः (%1) APOP समर्थयति न ।\n"
 "भिन्नं प्रमाणीकरणविधिं चिनोतु ।"
 
-#: pop3protocol.cpp:653
+#: pop3protocol.cpp:650
 #, kde-format
 msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
@@ -267,27 +267,27 @@ msgstr ""
 "भवतः POP3 सर्वरः TLS समर्थयति इति दावान् करोति परन्तु वार्ता असफलः अभवत् ।\n"
 "POP खातासेटिंग्स् संवादे भवान् TLS निष्क्रियं कर्तुं शक्नोति ।"
 
-#: pop3protocol.cpp:733
+#: pop3protocol.cpp:730
 #, kde-format
 msgid "Internal error: missing argument for command %1"
 msgstr "आन्तरिकदोषः: %1 आदेशस्य कृते तर्कः अनुपलब्धः"
 
-#: pop3protocol.cpp:789
+#: pop3protocol.cpp:786
 #, kde-format
 msgid "Internal error: missing item"
 msgstr "आन्तरिकदोषः : द्रव्यं गम्यते"
 
-#: pop3protocol.cpp:814
+#: pop3protocol.cpp:811
 #, kde-format
 msgid "Timeout from POP3 server %1"
 msgstr "POP3 सर्वर %1 तः समयसमाप्तिः"
 
-#: pop3protocol.cpp:816
+#: pop3protocol.cpp:813
 #, kde-format
 msgid "Connection broken from POP3 server %1"
 msgstr "POP3 सर्वर %1 तः संयोजनं भग्नम्"
 
-#: pop3protocol.cpp:877
+#: pop3protocol.cpp:874
 #, kde-format
 msgid ""
 "Error during communication with the POP3 server while trying to download "

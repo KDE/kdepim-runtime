@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-04-28 00:46+0000\n"
 "PO-Revision-Date: 2023-10-06 06:56+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -19,6 +19,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 23.08.1\n"
+
+#: icalresource.cpp:56 icalresource.cpp:113 icalresource.cpp:194
+#, kde-format
+msgid "Calendar not loaded."
+msgstr "Egutegia ez da zamatu."
+
+#: icalresource.cpp:68
+#, kde-format
+msgid "Incidence with uid '%1' not found."
+msgstr "'%1' UID duen intzidentzia ez da aurkitu."
+
+#: icalresource.cpp:180
+#, kde-format
+msgid "Failed to save calendar file to %1"
+msgstr "Egutegi fitxategia %1(e)n gordetzea huts egin du"
+
+#: icalresource.cpp:199
+#, kde-format
+msgid "Unable to retrieve added item %1."
+msgstr "Ez da gehitutako %1 elementua eskuratzeko gai."
+
+#: icalresource.cpp:199
+#, kde-format
+msgid "Unable to retrieve modified item %1."
+msgstr "Ez da aldatutako %1 elementua eskuratzeko gai."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icalresource.kcfg:10
@@ -55,32 +80,6 @@ msgstr "Fitxategia aldizka eguneratu."
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "Automatikoki eguneratzeko denbora-tartea minututan."
-
-#: shared/icalresource.cpp:48
-#, kde-format
-msgid "Incidence with uid '%1' not found."
-msgstr "'%1' UID duen intzidentzia ez da aurkitu."
-
-#: shared/icalresourcebase.cpp:46 shared/icalresourcebase.cpp:59
-#: shared/icalresourcebase.cpp:90 shared/icalresourcebase.h:88
-#, kde-format
-msgid "Calendar not loaded."
-msgstr "Egutegia ez da zamatu."
-
-#: shared/icalresourcebase.cpp:143
-#, kde-format
-msgid "Failed to save calendar file to %1"
-msgstr "Egutegi fitxategia %1(e)n gordetzea huts egin du"
-
-#: shared/icalresourcebase.h:93
-#, kde-format
-msgid "Unable to retrieve added item %1."
-msgstr "Ez da gehitutako %1 elementua eskuratzeko gai."
-
-#: shared/icalresourcebase.h:93
-#, kde-format
-msgid "Unable to retrieve modified item %1."
-msgstr "Ez da aldatutako %1 elementua eskuratzeko gai."
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Auto-gordetzeko denbora-tartea (minututan)."

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-04-28 00:46+0000\n"
 "PO-Revision-Date: 2010-12-20 16:16+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -14,6 +14,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: icalresource.cpp:56 icalresource.cpp:113 icalresource.cpp:194
+#, kde-format
+msgid "Calendar not loaded."
+msgstr "មិន​បាន​ផ្ទុក​ប្រតិទិន​ទេ ។"
+
+#: icalresource.cpp:68
+#, kde-format
+msgid "Incidence with uid '%1' not found."
+msgstr "រក​មិន​ឃើញ uid '%1' ទេ ។"
+
+#: icalresource.cpp:180
+#, kde-format
+msgid "Failed to save calendar file to %1"
+msgstr "បរាជ័យ​ក្នុងការ​រក្សាទុក​ឯកសារ​ទៅកាន់ %1"
+
+#: icalresource.cpp:199
+#, kde-format
+msgid "Unable to retrieve added item %1."
+msgstr "មិនអាច​ទៅ​យក​ធាតុ​ដែល​បាន​បន្ថែម %1 បានទេ ។"
+
+#: icalresource.cpp:199
+#, kde-format
+msgid "Unable to retrieve modified item %1."
+msgstr "មិនអាច​ទៅយក​ធាតុ​ដែល​បាន​កែសម្រួល %1 បានទេ ។"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icalresource.kcfg:10
@@ -51,32 +76,6 @@ msgstr ""
 #| msgid "Autosave interval time (in minutes)."
 msgid "Automatic update period in minutes."
 msgstr "ចន្លោះ​ពេល​រក្សាទុក​ស្វ័យប្រវត្តិ (គិត​ជា​នាទី) ។"
-
-#: shared/icalresource.cpp:48
-#, kde-format
-msgid "Incidence with uid '%1' not found."
-msgstr "រក​មិន​ឃើញ uid '%1' ទេ ។"
-
-#: shared/icalresourcebase.cpp:46 shared/icalresourcebase.cpp:59
-#: shared/icalresourcebase.cpp:90 shared/icalresourcebase.h:88
-#, kde-format
-msgid "Calendar not loaded."
-msgstr "មិន​បាន​ផ្ទុក​ប្រតិទិន​ទេ ។"
-
-#: shared/icalresourcebase.cpp:143
-#, kde-format
-msgid "Failed to save calendar file to %1"
-msgstr "បរាជ័យ​ក្នុងការ​រក្សាទុក​ឯកសារ​ទៅកាន់ %1"
-
-#: shared/icalresourcebase.h:93
-#, kde-format
-msgid "Unable to retrieve added item %1."
-msgstr "មិនអាច​ទៅ​យក​ធាតុ​ដែល​បាន​បន្ថែម %1 បានទេ ។"
-
-#: shared/icalresourcebase.h:93
-#, kde-format
-msgid "Unable to retrieve modified item %1."
-msgstr "មិនអាច​ទៅយក​ធាតុ​ដែល​បាន​កែសម្រួល %1 បានទេ ។"
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "ចន្លោះ​ពេល​រក្សាទុក​ស្វ័យប្រវត្តិ (គិត​ជា​នាទី) ។"

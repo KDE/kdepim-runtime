@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-04-28 00:46+0000\n"
 "PO-Revision-Date: 2024-08-17 11:19+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -191,12 +191,12 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:406
+#: pop3protocol.cpp:403
 #, kde-format
 msgid "An error occurred during authentication: %1"
 msgstr "S'ha produït un error durant l'autenticació: %1"
 
-#: pop3protocol.cpp:500
+#: pop3protocol.cpp:498
 #, kde-format
 msgid ""
 "Login via SASL (%1) failed. The server may not support %2, or the password "
@@ -209,7 +209,7 @@ msgstr ""
 "\n"
 "%3"
 
-#: pop3protocol.cpp:511
+#: pop3protocol.cpp:509
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
@@ -218,7 +218,7 @@ msgstr ""
 "El vostre servidor POP3 (%1) no accepta el SASL.\n"
 "Escolliu un mètode d'autenticació diferent."
 
-#: pop3protocol.cpp:528 pop3protocol.cpp:617
+#: pop3protocol.cpp:526 pop3protocol.cpp:614
 #, kde-format
 msgid ""
 "Could not login to %1.\n"
@@ -227,7 +227,7 @@ msgstr ""
 "No s'ha pogut iniciar la sessió a %1.\n"
 "\n"
 
-#: pop3protocol.cpp:536
+#: pop3protocol.cpp:534
 #, kde-format
 msgid ""
 "Could not login to %1. The password may be wrong.\n"
@@ -238,22 +238,22 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:568
+#: pop3protocol.cpp:566
 #, kde-format
 msgid "SSL/TLS error: %1"
 msgstr "Error de SSL/TLS: %1"
 
-#: pop3protocol.cpp:599
+#: pop3protocol.cpp:596
 #, kde-format
 msgid "%1: %2"
 msgstr "%1: %2"
 
-#: pop3protocol.cpp:618
+#: pop3protocol.cpp:615
 #, kde-format
 msgid "The server terminated the connection immediately."
 msgstr "El servidor ha finalitzat la connexió immediatament."
 
-#: pop3protocol.cpp:619
+#: pop3protocol.cpp:616
 #, kde-format
 msgid ""
 "Server does not respond properly:\n"
@@ -262,7 +262,7 @@ msgstr ""
 "El servidor no respon correctament:\n"
 "%1\n"
 
-#: pop3protocol.cpp:643
+#: pop3protocol.cpp:640
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
@@ -271,7 +271,7 @@ msgstr ""
 "El vostre servidor POP3 (%1) no accepta l'APOP.\n"
 "Escolliu un mètode d'autenticació diferent."
 
-#: pop3protocol.cpp:653
+#: pop3protocol.cpp:650
 #, kde-format
 msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
@@ -281,27 +281,27 @@ msgstr ""
 "èxit.\n"
 "Podeu desactivar el TLS al diàleg de configuració del compte POP."
 
-#: pop3protocol.cpp:733
+#: pop3protocol.cpp:730
 #, kde-format
 msgid "Internal error: missing argument for command %1"
 msgstr "Error intern: manca l'argument per a l'ordre %1"
 
-#: pop3protocol.cpp:789
+#: pop3protocol.cpp:786
 #, kde-format
 msgid "Internal error: missing item"
 msgstr "Error intern: manca l'element"
 
-#: pop3protocol.cpp:814
+#: pop3protocol.cpp:811
 #, kde-format
 msgid "Timeout from POP3 server %1"
 msgstr "Temps excedit des del servidor POP3 %1"
 
-#: pop3protocol.cpp:816
+#: pop3protocol.cpp:813
 #, kde-format
 msgid "Connection broken from POP3 server %1"
 msgstr "Connexió trencada des del servidor POP3 %1"
 
-#: pop3protocol.cpp:877
+#: pop3protocol.cpp:874
 #, kde-format
 msgid ""
 "Error during communication with the POP3 server while trying to download "

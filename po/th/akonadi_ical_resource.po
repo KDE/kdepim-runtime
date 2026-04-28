@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-04-28 00:46+0000\n"
 "PO-Revision-Date: 2010-02-28 10:42+0700\n"
 "Last-Translator: Thanomsub Noppaburana <donga.nb@gmail.com>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
@@ -17,6 +17,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: icalresource.cpp:56 icalresource.cpp:113 icalresource.cpp:194
+#, kde-format
+msgid "Calendar not loaded."
+msgstr "ปฏิทินยังไม่ถูกโหลด"
+
+#: icalresource.cpp:68
+#, kde-format
+msgid "Incidence with uid '%1' not found."
+msgstr "ไม่พบตัวแทนของ uid '%1'"
+
+#: icalresource.cpp:180
+#, kde-format
+msgid "Failed to save calendar file to %1"
+msgstr "ล้มเหลวในการบันทึกแฟ้มปฏิทินเป็น %1"
+
+#: icalresource.cpp:199
+#, kde-format
+msgid "Unable to retrieve added item %1."
+msgstr "ไม่สามารถรับข้อมูลรายการ %1 ที่ถูกเพิ่มเข้ามาได้"
+
+#: icalresource.cpp:199
+#, kde-format
+msgid "Unable to retrieve modified item %1."
+msgstr "ไม่สามารถรับข้อมูลรายการ %1 ที่ถูกแก้ไขได้"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icalresource.kcfg:10
@@ -54,32 +79,6 @@ msgstr ""
 #| msgid "Autosave interval time (in minutes)."
 msgid "Automatic update period in minutes."
 msgstr "ช่วงเวลาทำการบันทึกอัตโนมัติ (เป็นนาที)"
-
-#: shared/icalresource.cpp:48
-#, kde-format
-msgid "Incidence with uid '%1' not found."
-msgstr "ไม่พบตัวแทนของ uid '%1'"
-
-#: shared/icalresourcebase.cpp:46 shared/icalresourcebase.cpp:59
-#: shared/icalresourcebase.cpp:90 shared/icalresourcebase.h:88
-#, kde-format
-msgid "Calendar not loaded."
-msgstr "ปฏิทินยังไม่ถูกโหลด"
-
-#: shared/icalresourcebase.cpp:143
-#, kde-format
-msgid "Failed to save calendar file to %1"
-msgstr "ล้มเหลวในการบันทึกแฟ้มปฏิทินเป็น %1"
-
-#: shared/icalresourcebase.h:93
-#, kde-format
-msgid "Unable to retrieve added item %1."
-msgstr "ไม่สามารถรับข้อมูลรายการ %1 ที่ถูกเพิ่มเข้ามาได้"
-
-#: shared/icalresourcebase.h:93
-#, kde-format
-msgid "Unable to retrieve modified item %1."
-msgstr "ไม่สามารถรับข้อมูลรายการ %1 ที่ถูกแก้ไขได้"
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "ช่วงเวลาทำการบันทึกอัตโนมัติ (เป็นนาที)"
