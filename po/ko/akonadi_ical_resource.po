@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-28 00:46+0000\n"
+"POT-Creation-Date: 2026-04-29 00:46+0000\n"
 "PO-Revision-Date: 2023-10-08 23:04+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -17,27 +17,27 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 22.12.3\n"
 
-#: icalresource.cpp:56 icalresource.cpp:113 icalresource.cpp:194
+#: icalresource.cpp:58 icalresource.cpp:130 icalresource.cpp:211
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "달력을 불러오지 않았습니다."
 
-#: icalresource.cpp:68
+#: icalresource.cpp:70
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "UID '%1'인 일정이 없습니다."
 
-#: icalresource.cpp:180
+#: icalresource.cpp:197
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "달력을 파일 %1(으)로 저장할 수 없음"
 
-#: icalresource.cpp:199
+#: icalresource.cpp:216
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "추가한 항목 %1을(를) 불러올 수 없습니다."
 
-#: icalresource.cpp:199
+#: icalresource.cpp:216
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "수정한 항목 %1을(를) 불러올 수 없습니다."

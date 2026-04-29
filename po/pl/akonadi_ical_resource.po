@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-28 00:46+0000\n"
+"POT-Creation-Date: 2026-04-29 00:46+0000\n"
 "PO-Revision-Date: 2023-10-07 07:49+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -18,27 +18,27 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
 
-#: icalresource.cpp:56 icalresource.cpp:113 icalresource.cpp:194
+#: icalresource.cpp:58 icalresource.cpp:130 icalresource.cpp:211
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "Nie wczytano kalendarza."
 
-#: icalresource.cpp:68
+#: icalresource.cpp:70
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "Nie znaleziono zdarzenia o uid \"%1\"."
 
-#: icalresource.cpp:180
+#: icalresource.cpp:197
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Zapisanie kalendarza do %1 nie powiodło się"
 
-#: icalresource.cpp:199
+#: icalresource.cpp:216
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "Nie można pobrać dodanego elementu %1."
 
-#: icalresource.cpp:199
+#: icalresource.cpp:216
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Nie można pobrać zmodyfikowanego elementu %1."

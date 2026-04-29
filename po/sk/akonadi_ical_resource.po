@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-28 00:46+0000\n"
+"POT-Creation-Date: 2026-04-29 00:46+0000\n"
 "PO-Revision-Date: 2012-07-11 13:46+0100\n"
 "Last-Translator: Roman Paholík <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
@@ -15,27 +15,27 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Lokalize 0.3\n"
 
-#: icalresource.cpp:56 icalresource.cpp:113 icalresource.cpp:194
+#: icalresource.cpp:58 icalresource.cpp:130 icalresource.cpp:211
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "Kalendár nenačítaný."
 
-#: icalresource.cpp:68
+#: icalresource.cpp:70
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "Výskyt s uid '%1' nenájdený."
 
-#: icalresource.cpp:180
+#: icalresource.cpp:197
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Nepodarilo sa uložiť súbor kalendára do %1"
 
-#: icalresource.cpp:199
+#: icalresource.cpp:216
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "Nepodario sa získať pridanú položku %1."
 
-#: icalresource.cpp:199
+#: icalresource.cpp:216
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Nepodario sa získať zmenenú položku %1."

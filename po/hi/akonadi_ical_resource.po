@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-28 00:46+0000\n"
+"POT-Creation-Date: 2026-04-29 00:46+0000\n"
 "PO-Revision-Date: 2024-12-15 15:57+0530\n"
 "Last-Translator: Kali <EMAIL@ADDRESS>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
@@ -17,27 +17,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: icalresource.cpp:56 icalresource.cpp:113 icalresource.cpp:194
+#: icalresource.cpp:58 icalresource.cpp:130 icalresource.cpp:211
 #, kde-format
 msgid "Calendar not loaded."
 msgstr ""
 
-#: icalresource.cpp:68
+#: icalresource.cpp:70
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr ""
 
-#: icalresource.cpp:180
+#: icalresource.cpp:197
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr ""
 
-#: icalresource.cpp:199
+#: icalresource.cpp:216
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr ""
 
-#: icalresource.cpp:199
+#: icalresource.cpp:216
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr ""

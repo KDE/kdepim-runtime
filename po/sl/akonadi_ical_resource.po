@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-28 00:46+0000\n"
+"POT-Creation-Date: 2026-04-29 00:46+0000\n"
 "PO-Revision-Date: 2023-10-06 09:20+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -20,27 +20,27 @@ msgstr ""
 "%100==4 ? 3 : 0);\n"
 "X-Generator: Poedit 3.3.2\n"
 
-#: icalresource.cpp:56 icalresource.cpp:113 icalresource.cpp:194
+#: icalresource.cpp:58 icalresource.cpp:130 icalresource.cpp:211
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "Koledar ni naložen."
 
-#: icalresource.cpp:68
+#: icalresource.cpp:70
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "Pojavitev z uporabniškim določilnikom »%1« ni bila najdena."
 
-#: icalresource.cpp:180
+#: icalresource.cpp:197
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Shranjevanje koledarske datoteke v %1 ni uspelo"
 
-#: icalresource.cpp:199
+#: icalresource.cpp:216
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "Dodanega predmeta %1 ni mogoče pridobiti."
 
-#: icalresource.cpp:199
+#: icalresource.cpp:216
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Spremenjenega predmeta %1 ni mogoče pridobiti."
