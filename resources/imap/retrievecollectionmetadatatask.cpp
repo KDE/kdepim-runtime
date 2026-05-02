@@ -11,7 +11,6 @@
 #include <KIMAP/GetMetaDataJob>
 #include <KIMAP/GetQuotaRootJob>
 #include <KIMAP/MyRightsJob>
-#include <KIMAP/RFCCodecs>
 #include <KIMAP/Session>
 #include <KLocalizedString>
 
@@ -214,7 +213,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
 
     auto quotaJob = qobject_cast<KIMAP::GetQuotaRootJob *>(job);
 
-    QList<QByteArray> allRoots = quotaJob->roots();
+    const QStringList allRoots = quotaJob->roots();
     QList<QByteArray> newRoots;
     QList<QMap<QByteArray, qint64>> newLimits;
     QList<QMap<QByteArray, qint64>> newUsages;
@@ -224,19 +223,17 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
     newLimits.reserve(allRoots.count());
     newUsages.reserve(allRoots.count());
 
-    for (const QByteArray &root : std::as_const(allRoots)) {
+    for (const QString &root : allRoots) {
         const QMap<QByteArray, qint64> limit = quotaJob->allLimits(root);
         const QMap<QByteArray, qint64> usage = quotaJob->allUsages(root);
 
         // Process IMAP Quota roots with associated quotas only
         if (!limit.isEmpty() && !usage.isEmpty()) {
-            newRoots << root;
+            newRoots << root.toUtf8();
             newLimits << limit;
             newUsages << usage;
 
-            const QString &decodedRoot = QString::fromUtf8(KIMAP::decodeImapFolderName(root));
-
-            if (decodedRoot == mailBox) {
+            if (root == mailBox) {
                 newCurrent = newUsages.last()["STORAGE"] * 1024;
                 newMax = newLimits.last()["STORAGE"] * 1024;
             }

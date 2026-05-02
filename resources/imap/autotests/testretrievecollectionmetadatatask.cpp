@@ -314,6 +314,38 @@ private Q_SLOTS:
 
         QTest::newRow("multiple quota roots, some with no resources, one matches the mailbox name")
             << collection << capabilities << scenario << callNames << rights << expectedAnnotations << expectedRoots << expectedLimits << expectedUsages;
+
+        //
+        // Non-ASCII quota root: server sends mUTF-7 on the wire (RFC 3501), kimap
+        // decodes it to Unicode at the API boundary, and this task stores it as
+        // raw UTF-8 in the ImapQuotaAttribute. The matching root populates
+        // CollectionQuotaAttribute via the decoded-name comparison in the loop.
+        //
+        collection = createCollectionChain(QString::fromUtf8("/INBOX/gr\xc3\xa5"));
+        collection.setRights(Akonadi::Collection::ReadOnly);
+
+        capabilities.clear();
+        capabilities << QStringLiteral("QUOTA");
+
+        rights = Akonadi::Collection::ReadOnly;
+
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario() << "C: A000003 GETQUOTAROOT \"INBOX/gr&AOU-\""
+                 << "S: * QUOTAROOT INBOX/gr&AOU- INBOX/gr&AOU-"
+                 << "S: * QUOTA INBOX/gr&AOU- ( STORAGE 21 512 )"
+                 << "S: A000003 OK quota retrieved";
+
+        callNames.clear();
+        callNames << QStringLiteral("collectionAttributesRetrieved");
+
+        expectedAnnotations.clear();
+
+        expectedRoots = {"INBOX/gr\xc3\xa5"};
+        expectedUsages = {{{"STORAGE", 21}}};
+        expectedLimits = {{{"STORAGE", 512}}};
+
+        QTest::newRow("non-ASCII quota root, mUTF-7 on the wire")
+            << collection << capabilities << scenario << callNames << rights << expectedAnnotations << expectedRoots << expectedLimits << expectedUsages;
     }
 
     void shouldCollectionRetrieveMetadata()
