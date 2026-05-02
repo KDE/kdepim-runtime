@@ -103,6 +103,10 @@ Collection ICalResource::rootCollection() const
         attr->setColor(QColor::fromString(calendar()->color()));
     }
 #endif
+    if (const auto iconName = calendar()->nonKDECustomProperty("X-KDE-ICONNAME"); !iconName.isEmpty()) {
+        auto attr = col.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+        attr->setIconName(iconName);
+    }
     return col;
 }
 
@@ -342,6 +346,10 @@ void ICalResource::collectionChanged(const Akonadi::Collection &col)
             scheduleWrite();
         }
 #endif
+        if (const auto attr = col.attribute<EntityDisplayAttribute>(); attr && !attr->iconName().isEmpty()) {
+            calendar()->setNonKDECustomProperty("X-KDE-ICONNAME", attr->iconName());
+            scheduleWrite();
+        }
     }
     SingleFileResource::collectionChanged(col);
 }
