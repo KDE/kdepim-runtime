@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-18 00:44+0000\n"
+"POT-Creation-Date: 2026-05-03 00:44+0000\n"
 "PO-Revision-Date: 2014-09-04 16:12+0200\n"
 "Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -484,7 +484,7 @@ msgstr "A kapcsolat megszakadt"
 msgid "killed"
 msgstr "kilőtt"
 
-#: retrievecollectionmetadatatask.cpp:179
+#: retrievecollectionmetadatatask.cpp:178
 #, kde-format
 msgid ""
 "<p>Your access rights to folder <b>%1</b> have been restricted, it will no "
@@ -493,7 +493,7 @@ msgstr ""
 "<p>A hozzáférési jogosultságai a(z) <b>%1</b> mappához korlátozva lettek, "
 "nem lehetséges többé üzeneteket hozzáadni a mappához.</p>"
 
-#: retrievecollectionmetadatatask.cpp:182
+#: retrievecollectionmetadatatask.cpp:181
 #, kde-format
 msgid "Access rights revoked"
 msgstr "Hozzáférési jogosultságok visszavonva"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-18 00:44+0000\n"
+"POT-Creation-Date: 2026-05-03 00:44+0000\n"
 "PO-Revision-Date: 2025-03-29 13:50+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -474,7 +474,7 @@ msgstr "Връзката е загубена"
 msgid "killed"
 msgstr "прекратен"
 
-#: retrievecollectionmetadatatask.cpp:179
+#: retrievecollectionmetadatatask.cpp:178
 #, kde-format
 msgid ""
 "<p>Your access rights to folder <b>%1</b> have been restricted, it will no "
@@ -483,7 +483,7 @@ msgstr ""
 "<p> Вашите права за достъп до папка <b> %1 </b> са ограничени, вече няма да "
 "е възможно да добавяте съобщения към тази папка.</p>"
 
-#: retrievecollectionmetadatatask.cpp:182
+#: retrievecollectionmetadatatask.cpp:181
 #, kde-format
 msgid "Access rights revoked"
 msgstr "Отменени права за достъп"

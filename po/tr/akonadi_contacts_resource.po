@@ -7,13 +7,13 @@
 # obsoleteman <tulliana@gmail.com>, 2009,2012.
 # Volkan Gezer <volkangezer@gmail.com>, 2013, 2017.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022, 2023, 2024, 2026 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:52+0000\n"
-"PO-Revision-Date: 2024-08-18 20:26+0300\n"
+"PO-Revision-Date: 2026-05-02 18:52+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.11.70\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab_3)
 #: contactsagentsettingswidget.ui:27
@@ -156,12 +156,12 @@ msgstr "“%1” klasörü silinemiyor."
 #: contactsresource.cpp:437
 #, kde-format
 msgid "Unable to move file '%1' to '%2', '%2' already exists."
-msgstr "“%1” dosyası “%2” konumuna taşınamıyor, “%2” halihazırda var."
+msgstr "“%1” dosyası “%2” konumuna taşınamıyor, “%2” hâlihazırda var."
 
 #: contactsresource.cpp:451
 #, kde-format
 msgid "Unable to move directory '%1' to '%2', '%2' already exists."
-msgstr "“%1” dizini “%2” konumuna taşınamıyor, “%2” halihazırda var."
+msgstr "“%1” dizini “%2” konumuna taşınamıyor, “%2” hâlihazırda var."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: contactsresource.kcfg:10

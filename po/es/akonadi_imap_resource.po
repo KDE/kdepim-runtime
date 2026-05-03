@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-18 00:44+0000\n"
+"POT-Creation-Date: 2026-05-03 00:44+0000\n"
 "PO-Revision-Date: 2025-03-30 01:21+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -474,7 +474,7 @@ msgstr "Conexión perdida"
 msgid "killed"
 msgstr "matado"
 
-#: retrievecollectionmetadatatask.cpp:179
+#: retrievecollectionmetadatatask.cpp:178
 #, kde-format
 msgid ""
 "<p>Your access rights to folder <b>%1</b> have been restricted, it will no "
@@ -483,7 +483,7 @@ msgstr ""
 "<p>Sus derechos de acceso a la carpeta <b>%1</b> se han restringido, no será "
 "posible en adelante añadir mensajes a esta carpeta.</p>"
 
-#: retrievecollectionmetadatatask.cpp:182
+#: retrievecollectionmetadatatask.cpp:181
 #, kde-format
 msgid "Access rights revoked"
 msgstr "Derechos de acceso revocados"

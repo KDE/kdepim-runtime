@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-18 00:44+0000\n"
+"POT-Creation-Date: 2026-05-03 00:44+0000\n"
 "PO-Revision-Date: 2017-09-28 18:00+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -461,7 +461,7 @@ msgstr "Веза прекинута"
 msgid "killed"
 msgstr "укинут"
 
-#: retrievecollectionmetadatatask.cpp:179
+#: retrievecollectionmetadatatask.cpp:178
 #, kde-format
 msgid ""
 "<p>Your access rights to folder <b>%1</b> have been restricted, it will no "
@@ -470,7 +470,7 @@ msgstr ""
 "<p>Имате ограничена права приступа фасцикли <b>%1</b>, због чега више неће "
 "бити могуће додавати поруке у њу.</p>"
 
-#: retrievecollectionmetadatatask.cpp:182
+#: retrievecollectionmetadatatask.cpp:181
 #, kde-format
 msgid "Access rights revoked"
 msgstr "Права приступа повучена"

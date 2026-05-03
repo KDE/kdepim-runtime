@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-29 00:46+0000\n"
+"POT-Creation-Date: 2026-05-03 00:44+0000\n"
 "PO-Revision-Date: 2024-02-05 22:34+0100\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Generator: Lokalize 23.08.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: icalresource.cpp:58 icalresource.cpp:130 icalresource.cpp:211
+#: icalresource.cpp:58 icalresource.cpp:133 icalresource.cpp:214
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "A naptár nincs betöltve."
@@ -28,17 +28,17 @@ msgstr "A naptár nincs betöltve."
 msgid "Incidence with uid '%1' not found."
 msgstr "A(z) „%1” azonosítójú esemény nem található."
 
-#: icalresource.cpp:197
+#: icalresource.cpp:200
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Nem sikerült menteni a naptárfájlt ide: %1"
 
-#: icalresource.cpp:216
+#: icalresource.cpp:219
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "Nem sikerült letölteni a(z) %1 hozzáadott elemet."
 
-#: icalresource.cpp:216
+#: icalresource.cpp:219
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Nem sikerült letölteni a(z) %1 módosított elemet."

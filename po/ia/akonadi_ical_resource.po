@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-29 00:46+0000\n"
+"POT-Creation-Date: 2026-05-03 00:44+0000\n"
 "PO-Revision-Date: 2023-10-06 17:45+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Lokalize 23.08.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: icalresource.cpp:58 icalresource.cpp:130 icalresource.cpp:211
+#: icalresource.cpp:58 icalresource.cpp:133 icalresource.cpp:214
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "Calendario non cargate."
@@ -27,17 +27,17 @@ msgstr "Calendario non cargate."
 msgid "Incidence with uid '%1' not found."
 msgstr "Non trovava  incidentia con uid '%1'."
 
-#: icalresource.cpp:197
+#: icalresource.cpp:200
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Falleva a salveguardar file de calendario in %1"
 
-#: icalresource.cpp:216
+#: icalresource.cpp:219
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "Incapace de recuperar elemento addite %1."
 
-#: icalresource.cpp:216
+#: icalresource.cpp:219
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Incapace de recuperar elemento modificate %1."

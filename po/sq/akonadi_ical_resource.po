@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-29 00:46+0000\n"
+"POT-Creation-Date: 2026-05-03 00:44+0000\n"
 "PO-Revision-Date: 2009-08-13 12:31+0000\n"
 "Last-Translator: Vilson Gjeci <vilsongjeci@gmail.com>\n"
 "Language-Team: Albanian <sq@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Generator: Launchpad (build 12883)\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: icalresource.cpp:58 icalresource.cpp:130 icalresource.cpp:211
+#: icalresource.cpp:58 icalresource.cpp:133 icalresource.cpp:214
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "Kalendari nuk u ngarkua."
@@ -29,17 +29,17 @@ msgstr "Kalendari nuk u ngarkua."
 msgid "Incidence with uid '%1' not found."
 msgstr "Përputhja me uid '%1' nuk u gjet."
 
-#: icalresource.cpp:197
+#: icalresource.cpp:200
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Dështuam në ruajtjen e skedarit të kalendarit tek %1"
 
-#: icalresource.cpp:216
+#: icalresource.cpp:219
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "Nuk jemi në gjendje të marrim temën %1."
 
-#: icalresource.cpp:216
+#: icalresource.cpp:219
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Nuk jemi në gjendje të marrim temën e modifikuar %1."

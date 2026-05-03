@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-29 00:46+0000\n"
+"POT-Creation-Date: 2026-05-03 00:44+0000\n"
 "PO-Revision-Date: 2012-10-05 23:30+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: icalresource.cpp:58 icalresource.cpp:130 icalresource.cpp:211
+#: icalresource.cpp:58 icalresource.cpp:133 icalresource.cpp:214
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "Kalendar nije učitan."
@@ -30,17 +30,17 @@ msgstr "Kalendar nije učitan."
 msgid "Incidence with uid '%1' not found."
 msgstr "Nepoželjan ishod sa uid-om '%1' nije pronađen."
 
-#: icalresource.cpp:197
+#: icalresource.cpp:200
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Nisam uspio da sačuvam datoteku kalendara u %1"
 
-#: icalresource.cpp:216
+#: icalresource.cpp:219
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "Nisam u mogućnosti da pruzmem dodatu stavku %1."
 
-#: icalresource.cpp:216
+#: icalresource.cpp:219
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Nisam u mogućnosti da pruzmem izmijenjenu stavku %1."

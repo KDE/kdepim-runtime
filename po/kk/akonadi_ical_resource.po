@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-29 00:46+0000\n"
+"POT-Creation-Date: 2026-05-03 00:44+0000\n"
 "PO-Revision-Date: 2012-05-02 04:19+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: icalresource.cpp:58 icalresource.cpp:130 icalresource.cpp:211
+#: icalresource.cpp:58 icalresource.cpp:133 icalresource.cpp:214
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "Күнтізбе жүктелген жоқ."
@@ -27,17 +27,17 @@ msgstr "Күнтізбе жүктелген жоқ."
 msgid "Incidence with uid '%1' not found."
 msgstr "uid '%1' дегенмен ештеңе жоқ.."
 
-#: icalresource.cpp:197
+#: icalresource.cpp:200
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Күнтізбе файлы %1 дегенге сақталмады"
 
-#: icalresource.cpp:216
+#: icalresource.cpp:219
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "%1 деп қосылғаны алынбады."
 
-#: icalresource.cpp:216
+#: icalresource.cpp:219
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "%1 деген згертілгені алынбады."
