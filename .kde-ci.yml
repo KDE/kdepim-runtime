@@ -17,7 +17,7 @@ Dependencies:
     'pim/kimap': '@same'
     'pim/kmailtransport': '@same'
     'pim/kmbox': '@same'
-    'pim/kmime': '@same'
+    'frameworks/kmime': '@latest-kf6'
     'pim/libkgapi': '@same'
     'pim/kldap': '@same'
     'frameworks/kconfig': '@latest-kf6'
