@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-03 00:44+0000\n"
+"POT-Creation-Date: 2026-05-04 00:44+0000\n"
 "PO-Revision-Date: 2024-12-27 16:47+0200\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
-#: icalresource.cpp:58 icalresource.cpp:133 icalresource.cpp:214
+#: icalresource.cpp:58 icalresource.cpp:137 icalresource.cpp:218
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "Kalendārs nav ielādēts."
@@ -34,17 +34,17 @@ msgstr "Kalendārs nav ielādēts."
 msgid "Incidence with uid '%1' not found."
 msgstr "Notikums ar UID „%1“ nav atrasts."
 
-#: icalresource.cpp:200
+#: icalresource.cpp:204
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Neizdevās saglabāt kalendāru datnē „%1“"
 
-#: icalresource.cpp:219
+#: icalresource.cpp:223
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "Nevar atlasīt pievienoto vienumu „%1“."
 
-#: icalresource.cpp:219
+#: icalresource.cpp:223
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Nevar atlasīt laboto vienumu „%1“."

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-03 00:44+0000\n"
+"POT-Creation-Date: 2026-05-04 00:44+0000\n"
 "PO-Revision-Date: 2010-12-27 12:43+0100\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: icalresource.cpp:58 icalresource.cpp:133 icalresource.cpp:214
+#: icalresource.cpp:58 icalresource.cpp:137 icalresource.cpp:218
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "Kalender ikke lastet inn."
@@ -29,17 +29,17 @@ msgstr "Kalender ikke lastet inn."
 msgid "Incidence with uid '%1' not found."
 msgstr "Fant ikke innslag med uid «%1»."
 
-#: icalresource.cpp:200
+#: icalresource.cpp:204
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Klarte ikke å lagre kalenderfila til %1"
 
-#: icalresource.cpp:219
+#: icalresource.cpp:223
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "Klarer ikke hente tilagt element %1."
 
-#: icalresource.cpp:219
+#: icalresource.cpp:223
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Klarer ikke hente endret element %1."

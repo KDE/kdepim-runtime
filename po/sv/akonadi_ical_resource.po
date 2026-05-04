@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-03 00:44+0000\n"
+"POT-Creation-Date: 2026-05-04 00:44+0000\n"
 "PO-Revision-Date: 2024-06-18 17:08+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Generator: Lokalize 23.08.5\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: icalresource.cpp:58 icalresource.cpp:133 icalresource.cpp:214
+#: icalresource.cpp:58 icalresource.cpp:137 icalresource.cpp:218
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "Kalender inte laddad."
@@ -29,17 +29,17 @@ msgstr "Kalender inte laddad."
 msgid "Incidence with uid '%1' not found."
 msgstr "Förekomst med unik identifierare '%1' hittades inte."
 
-#: icalresource.cpp:200
+#: icalresource.cpp:204
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Misslyckades spara kalenderfil i %1"
 
-#: icalresource.cpp:219
+#: icalresource.cpp:223
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "Kunde inte hämta tillagt objekt %1."
 
-#: icalresource.cpp:219
+#: icalresource.cpp:223
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Kunde inte hämta ändrat objekt %1."

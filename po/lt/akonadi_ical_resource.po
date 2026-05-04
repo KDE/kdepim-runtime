@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-03 00:44+0000\n"
+"POT-Creation-Date: 2026-05-04 00:44+0000\n"
 "PO-Revision-Date: 2011-07-21 15:09+0300\n"
 "Last-Translator: Jonas Česnauskas <upynas@gmail.com>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
 "X-Generator: Lokalize 1.1\n"
 
-#: icalresource.cpp:58 icalresource.cpp:133 icalresource.cpp:214
+#: icalresource.cpp:58 icalresource.cpp:137 icalresource.cpp:218
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "Kalendorius neįkeltas."
@@ -28,17 +28,17 @@ msgstr "Kalendorius neįkeltas."
 msgid "Incidence with uid '%1' not found."
 msgstr "Sutrikimų su uid „%1“ nerasta."
 
-#: icalresource.cpp:200
+#: icalresource.cpp:204
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Nepavyko išsaugoti kalendorių %1 faile"
 
-#: icalresource.cpp:219
+#: icalresource.cpp:223
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "Nepavyko pasiekti įkelto elemento %1."
 
-#: icalresource.cpp:219
+#: icalresource.cpp:223
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Nepavyko pasiekti pakeisto elemento %1."

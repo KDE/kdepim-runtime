@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-03 00:44+0000\n"
+"POT-Creation-Date: 2026-05-04 00:44+0000\n"
 "PO-Revision-Date: 2010-12-20 16:16+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: icalresource.cpp:58 icalresource.cpp:133 icalresource.cpp:214
+#: icalresource.cpp:58 icalresource.cpp:137 icalresource.cpp:218
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "មិន​បាន​ផ្ទុក​ប្រតិទិន​ទេ ។"
@@ -25,17 +25,17 @@ msgstr "មិន​បាន​ផ្ទុក​ប្រតិទិន​ទ
 msgid "Incidence with uid '%1' not found."
 msgstr "រក​មិន​ឃើញ uid '%1' ទេ ។"
 
-#: icalresource.cpp:200
+#: icalresource.cpp:204
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "បរាជ័យ​ក្នុងការ​រក្សាទុក​ឯកសារ​ទៅកាន់ %1"
 
-#: icalresource.cpp:219
+#: icalresource.cpp:223
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "មិនអាច​ទៅ​យក​ធាតុ​ដែល​បាន​បន្ថែម %1 បានទេ ។"
 
-#: icalresource.cpp:219
+#: icalresource.cpp:223
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "មិនអាច​ទៅយក​ធាតុ​ដែល​បាន​កែសម្រួល %1 បានទេ ។"
