@@ -1247,6 +1247,8 @@ void EwsResource::doSetOnline(bool online)
     } else {
         mSubManager.reset(nullptr);
     }
+
+    ResourceBase::doSetOnline(online);
 }
 
 int EwsResource::reconnectTimeout()
