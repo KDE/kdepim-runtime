@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-16 13:25+0000\n"
+"POT-Creation-Date: 2026-05-05 00:45+0000\n"
 "PO-Revision-Date: 2026-01-06 15:59+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: \n"
@@ -1090,51 +1090,51 @@ msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "Nombre incorrect de réponses reçues du serveur"
 
-#: ewsresource.cpp:1266
+#: ewsresource.cpp:1268
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "Mise à jour des étiquettes des éléments"
 
-#: ewsresource.cpp:1279
+#: ewsresource.cpp:1281
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr ""
 "Impossible de traiter la requête de mise à jour des étiquettes de l'élément"
 
-#: ewsresource.cpp:1285
+#: ewsresource.cpp:1287
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr ""
 "Impossible de mettre à jour les étiquettes de l'élément - erreur interne"
 
-#: ewsresource.cpp:1322
+#: ewsresource.cpp:1324
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr "Impossible de traiter la requête de mise à jour de l'étiquette globale"
 
-#: ewsresource.cpp:1338
+#: ewsresource.cpp:1340
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Impossible de traiter la requête de réception des étiquettes globales"
 
-#: ewsresource.cpp:1416
+#: ewsresource.cpp:1418
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Authentification"
 
-#: ewsresource.cpp:1428 ewsresource.cpp:1443
+#: ewsresource.cpp:1430 ewsresource.cpp:1445
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "L'authentification a échoué"
 
-#: ewsresource.cpp:1451
+#: ewsresource.cpp:1453
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"

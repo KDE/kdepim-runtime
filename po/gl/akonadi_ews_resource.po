@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-16 13:25+0000\n"
+"POT-Creation-Date: 2026-05-05 00:45+0000\n"
 "PO-Revision-Date: 2025-05-26 09:08+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.gal>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
@@ -1078,13 +1078,13 @@ msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "Recibiuse un número incorrecto de respostas do servidor."
 
-#: ewsresource.cpp:1266
+#: ewsresource.cpp:1268
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "Actualizando as etiquetas de elemento."
 
-#: ewsresource.cpp:1279
+#: ewsresource.cpp:1281
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
@@ -1092,39 +1092,39 @@ msgstr ""
 "Non foi posíbel procesar a solicitude de actualización de etiquetas de "
 "elemento."
 
-#: ewsresource.cpp:1285
+#: ewsresource.cpp:1287
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "Non foi posíbel actualizar as etiquetas de elemento — erro interno."
 
-#: ewsresource.cpp:1322
+#: ewsresource.cpp:1324
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr ""
 "Non foi posíbel procesar a solicitude de actualización de etiqueta global."
 
-#: ewsresource.cpp:1338
+#: ewsresource.cpp:1340
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr ""
 "Non foi posíbel procesar a solicitude de obtención de etiquetas globais."
 
-#: ewsresource.cpp:1416
+#: ewsresource.cpp:1418
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Autenticar"
 
-#: ewsresource.cpp:1428 ewsresource.cpp:1443
+#: ewsresource.cpp:1430 ewsresource.cpp:1445
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Fallou a autenticación."
 
-#: ewsresource.cpp:1451
+#: ewsresource.cpp:1453
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"

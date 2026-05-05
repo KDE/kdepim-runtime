@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-16 13:25+0000\n"
+"POT-Creation-Date: 2026-05-05 00:45+0000\n"
 "PO-Revision-Date: 2025-05-31 10:47+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -1056,49 +1056,49 @@ msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "Ogiltigt antal svar mottagna från servern"
 
-#: ewsresource.cpp:1266
+#: ewsresource.cpp:1268
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "Uppdaterar objektetiketter"
 
-#: ewsresource.cpp:1279
+#: ewsresource.cpp:1281
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr "Misslyckades behandla begäran om objektetiketter"
 
-#: ewsresource.cpp:1285
+#: ewsresource.cpp:1287
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "Misslyckades uppdatera objektetiketter: internt fel"
 
-#: ewsresource.cpp:1322
+#: ewsresource.cpp:1324
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr "Misslyckades behandla begäran om globala etiketter"
 
-#: ewsresource.cpp:1338
+#: ewsresource.cpp:1340
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Misslyckades behandla begäran om hämtning av globala etiketter"
 
-#: ewsresource.cpp:1416
+#: ewsresource.cpp:1418
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Kontrollera behörighet"
 
-#: ewsresource.cpp:1428 ewsresource.cpp:1443
+#: ewsresource.cpp:1430 ewsresource.cpp:1445
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Behörighetskontroll misslyckades"
 
-#: ewsresource.cpp:1451
+#: ewsresource.cpp:1453
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"

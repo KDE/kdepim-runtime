@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-16 13:25+0000\n"
+"POT-Creation-Date: 2026-05-05 00:45+0000\n"
 "PO-Revision-Date: 2026-02-05 18:47+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -1071,50 +1071,50 @@ msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "Numero invalide de responsas recipite ab servitor"
 
-#: ewsresource.cpp:1266
+#: ewsresource.cpp:1268
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "Actualisante etiquettas de elemento"
 
-#: ewsresource.cpp:1279
+#: ewsresource.cpp:1281
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr ""
 "Falleva a processar requesta de actualisation de etiquettas de elemento"
 
-#: ewsresource.cpp:1285
+#: ewsresource.cpp:1287
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "Falleva a actualisar etiquettas de elemento - error interne"
 
-#: ewsresource.cpp:1322
+#: ewsresource.cpp:1324
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr "Falleva a processar requesta de actualisar etiquetta global"
 
-#: ewsresource.cpp:1338
+#: ewsresource.cpp:1340
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Falleva a processar requesta de recuperar etiquettas global"
 
-#: ewsresource.cpp:1416
+#: ewsresource.cpp:1418
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Authentica"
 
-#: ewsresource.cpp:1428 ewsresource.cpp:1443
+#: ewsresource.cpp:1430 ewsresource.cpp:1445
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Authentication falleva"
 
-#: ewsresource.cpp:1451
+#: ewsresource.cpp:1453
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"
