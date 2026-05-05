@@ -8,5 +8,5 @@ if(KDEPIM_RUN_AKONADI_TEST)
 	kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
 	qt_add_dbus_interface(extra_SRC ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml maildirsettings)
 
-	add_akonadi_isolated_test_advanced(synctest.cpp "${extra_SRC}" "")
+	add_akonadi_isolated_test(SOURCE synctest.cpp ADDITIONAL_SOURCES ${extra_SRC})
 endif()
