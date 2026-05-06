@@ -68,10 +68,8 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     , AccountBase(this)
     , mFreeBusyHandler(new DavFreeBusyHandler(settings(), this))
 {
-    AttributeFactory::registerAttribute<EntityDisplayAttribute>();
     AttributeFactory::registerAttribute<DavProtocolAttribute>();
     AttributeFactory::registerAttribute<CTagAttribute>();
-    AttributeFactory::registerAttribute<CollectionColorAttribute>();
 
     setNeedsNetwork(true);
 

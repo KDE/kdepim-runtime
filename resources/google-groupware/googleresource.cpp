@@ -68,7 +68,6 @@ GoogleResource::GoogleResource(const QString &id)
     m_settings.setResourceId(identifier());
 
     AttributeFactory::registerAttribute<DefaultReminderAttribute>();
-    AttributeFactory::registerAttribute<CollectionColorAttribute>();
 
     connect(this, &GoogleResource::reloadConfiguration, this, &GoogleResource::reloadConfig);
 
