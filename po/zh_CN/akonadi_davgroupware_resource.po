@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-22 00:46+0000\n"
+"POT-Creation-Date: 2026-05-06 00:47+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -331,55 +331,55 @@ msgstr "项目 %1 的收藏无效。"
 msgid "Unable to modify items: %1"
 msgstr "无法更改项目：%1"
 
-#: davgroupwareresource.cpp:761
+#: davgroupwareresource.cpp:762
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "无法修改此日历：%1"
 
-#: davgroupwareresource.cpp:884
+#: davgroupwareresource.cpp:885
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "无法删除收藏：%1"
 
-#: davgroupwareresource.cpp:904
+#: davgroupwareresource.cpp:905
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "无法获取收藏：%1"
 
-#: davgroupwareresource.cpp:1037 davgroupwareresource.cpp:1136
+#: davgroupwareresource.cpp:1038 davgroupwareresource.cpp:1137
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "无法获取项目：%1"
 
-#: davgroupwareresource.cpp:1216
+#: davgroupwareresource.cpp:1217
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "无法获取项目：%1"
 
-#: davgroupwareresource.cpp:1236
+#: davgroupwareresource.cpp:1237
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr "无法获取当前项目：数据解析失败，项目可能已被删除。"
 
-#: davgroupwareresource.cpp:1273
+#: davgroupwareresource.cpp:1274
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "无法添加项目：%1"
 
-#: davgroupwareresource.cpp:1317 davgroupwareresource.cpp:1430
-#: davgroupwareresource.cpp:1442
+#: davgroupwareresource.cpp:1318 davgroupwareresource.cpp:1431
+#: davgroupwareresource.cpp:1443
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "无法更改项目：%1"
 
-#: davgroupwareresource.cpp:1404 davgroupwareresource.cpp:1461
+#: davgroupwareresource.cpp:1405 davgroupwareresource.cpp:1462
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "无法删除项目：%1"
 
-#: davgroupwareresource.cpp:1548 davgroupwareresource.cpp:1549
+#: davgroupwareresource.cpp:1549 davgroupwareresource.cpp:1550
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "资源尚未配置"
