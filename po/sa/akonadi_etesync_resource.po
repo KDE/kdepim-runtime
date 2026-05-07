@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-27 00:44+0000\n"
+"POT-Creation-Date: 2026-05-07 00:45+0000\n"
 "PO-Revision-Date: 2024-12-20 21:52+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -51,38 +51,38 @@ msgstr "'%1' सञ्चिकातः etesyncItem प्राप्तुं
 msgid "EteSync Resource"
 msgstr "EteSync संसाधन"
 
-#: etesyncresource.cpp:131
+#: etesyncresource.cpp:129
 #, fuzzy, kde-format
 #| msgid "EteSync Resource"
 msgid "EteSync Account"
 msgstr "EteSync संसाधन"
 
-#: etesyncresource.cpp:173
+#: etesyncresource.cpp:171
 #, kde-format
 msgid "Temporary server error"
 msgstr "अस्थायी सर्वर त्रुटि"
 
-#: etesyncresource.cpp:177
+#: etesyncresource.cpp:175
 #, kde-format
 msgid "You do not have permission to perform this action."
 msgstr "एतत् कर्म कर्तुं भवतः अनुमतिः नास्ति ।"
 
-#: etesyncresource.cpp:180
+#: etesyncresource.cpp:178
 #, kde-format
 msgid "Permission denied"
 msgstr "अनुमतिः अङ्गीकृता"
 
-#: etesyncresource.cpp:184
+#: etesyncresource.cpp:182
 #, kde-format
 msgid "A server error occurred."
 msgstr "सर्वरदोषः अभवत् ।"
 
-#: etesyncresource.cpp:187
+#: etesyncresource.cpp:185
 #, kde-format
 msgid "Server error"
 msgstr "सर्वर त्रुटिः"
 
-#: etesyncresource.cpp:206
+#: etesyncresource.cpp:204
 #, kde-format
 msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
@@ -91,12 +91,12 @@ msgstr ""
 "भवतः EteSync प्रमाणपत्राणि परिवर्तितानि आसन् । कृपया स्वस्य प्रमाणपत्राणि पुनः प्रविष्टुं "
 "OK नुदन्तु ।"
 
-#: etesyncresource.cpp:208
+#: etesyncresource.cpp:206
 #, kde-format
 msgid "Credentials Changed"
 msgstr "प्रमाणपत्राणि परिवर्तितानि"
 
-#: etesyncresource.cpp:209
+#: etesyncresource.cpp:207
 #, fuzzy, kde-format
 #| msgid ""
 #| "Your EteSync credentials were changed. Please click OK to re-enter your "
@@ -106,28 +106,28 @@ msgstr ""
 "भवतः EteSync प्रमाणपत्राणि परिवर्तितानि आसन् । कृपया स्वस्य प्रमाणपत्राणि पुनः प्रविष्टुं "
 "OK नुदन्तु ।"
 
-#: etesyncresource.cpp:259
+#: etesyncresource.cpp:257
 #, kde-format
 msgid "Cannot retrieve items - account is null"
 msgstr "वस्तूनि पुनः प्राप्तुं न शक्यते - खातं शून्यम् अस्ति"
 
-#: etesyncresource.cpp:266 etesyncresource.cpp:396 etesyncresource.cpp:469
-#: etesyncresource.cpp:527 etesyncresource.cpp:657 etesyncresource.cpp:715
+#: etesyncresource.cpp:264 etesyncresource.cpp:394 etesyncresource.cpp:467
+#: etesyncresource.cpp:525 etesyncresource.cpp:655 etesyncresource.cpp:713
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "'%1' सञ्चिकातः etesyncCollection प्राप्तुं न शक्तवान् ।"
 
-#: etesyncresource.cpp:424
+#: etesyncresource.cpp:422
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
 msgstr "नूतनं etesyncItem '%1' निर्मातुं न शक्तवान्."
 
-#: etesyncresource.cpp:476 etesyncresource.cpp:534
+#: etesyncresource.cpp:474 etesyncresource.cpp:532
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
 msgstr "'%1' सञ्चिकातः etesyncItem प्राप्तुं न शक्तवान् ।"
 
-#: etesyncresource.cpp:596
+#: etesyncresource.cpp:594
 #, kde-format
 msgid "Could not create new etesyncCollection"
 msgstr "नूतनं etesyncCollection निर्मातुं न शक्तवान्"
