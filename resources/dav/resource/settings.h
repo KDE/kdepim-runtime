@@ -106,6 +106,7 @@ public:
     QString username(KDAV::Protocol protocol, const QString &url) const;
     QString password(KDAV::Protocol protocol, const QString &url);
     QDateTime getSyncRangeStart() const;
+    QString loadPasswordFromOnlineAccount(KDAV::Protocol protocol);
 
 private:
     void buildUrlsList();
@@ -113,7 +114,6 @@ private:
     void updateRemoteUrls();
     void savePassword(const QString &key, const QString &user, const QString &password);
     QString loadPasswordFromWallet(const QString &key, const QString &user);
-    QString loadPasswordFromOnlineAccount(KDAV::Protocol protocol);
 
     QString mDefaultPasswordKey;
     QMap<QString, UrlConfiguration *> mUrls;

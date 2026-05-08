@@ -212,14 +212,13 @@ void DavGroupwareResource::initAccount()
 
         const QString calUrl = calDavProps[u"url"_s].toString();
         const QString calUsername = calDavProps[u"username"_s].toString();
-        const QString calPassword = calDavProps[u"password"_s].toString();
 
         auto calUrlConfig = new Settings::UrlConfiguration();
 
         calUrlConfig->mUrl = calUrl;
         calUrlConfig->mProtocol = KDAV::Protocol::CalDav;
         calUrlConfig->mUser = calUsername;
-        calUrlConfig->mPassword = calPassword;
+        calUrlConfig->mPassword = settings()->loadPasswordFromOnlineAccount(KDAV::CalDav);
 
         settings()->newUrlConfiguration(calUrlConfig, Settings::DontStorePassword);
     }
@@ -229,14 +228,13 @@ void DavGroupwareResource::initAccount()
 
         const QString cardUrl = cardDavProps[u"url"_s].toString();
         const QString cardUsername = cardDavProps[u"username"_s].toString();
-        const QString cardPassword = cardDavProps[u"password"_s].toString();
 
         auto cardUrlConfig = new Settings::UrlConfiguration();
 
         cardUrlConfig->mUrl = cardUrl;
         cardUrlConfig->mProtocol = KDAV::Protocol::CardDav;
         cardUrlConfig->mUser = cardUsername;
-        cardUrlConfig->mPassword = cardPassword;
+        cardUrlConfig->mPassword = settings()->loadPasswordFromOnlineAccount(KDAV::CardDav);
 
         settings()->newUrlConfiguration(cardUrlConfig, Settings::DontStorePassword);
     }

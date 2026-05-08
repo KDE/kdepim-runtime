@@ -462,20 +462,17 @@ QString Settings::loadPasswordFromOnlineAccount(KDAV::Protocol protocol)
 
     Q_ASSERT(!mAccountId.isEmpty());
 
-    QDBusMessage msg = QDBusMessage::createMethodCall(u"org.kde.KOnlineAccounts"_s, mAccountId, u"org.freedesktop.DBus.Properties"_s, u"Get"_s);
-    msg.setArguments({interface, u"password"_s});
+    QDBusMessage msg = QDBusMessage::createMethodCall(u"org.kde.KOnlineAccounts"_s, mAccountId, interface, u"password"_s);
 
-    QDBusReply<QDBusVariant> reply = QDBusConnection::sessionBus().call(msg);
+    QDBusReply<QDBusUnixFileDescriptor> reply = QDBusConnection::sessionBus().call(msg);
 
     if (!reply.isValid()) {
-        qCWarning(DAVRESOURCE_LOG) << "error reading password from account" << reply.error();
+        qCWarning(DAVRESOURCE_LOG) << "error reading password from account" << reply.error().message();
         return QString();
     }
 
-    QDBusUnixFileDescriptor fd = reply.value().variant().value<QDBusUnixFileDescriptor>();
-
     QFile file;
-    const bool result = file.open(fd.fileDescriptor(), QFile::ReadOnly, QFile::AutoCloseHandle);
+    const bool result = file.open(reply.value().fileDescriptor(), QFile::ReadOnly, QFile::AutoCloseHandle);
 
     if (!result) {
         qCWarning(DAVRESOURCE_LOG) << "Could not open password fd" << file.errorString();
