@@ -13,7 +13,7 @@
 #include "ewsclient_debug.h"
 #include "transferjob.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 EwsRequest::EwsRequest(EwsClient &client, QObject *parent)
     : EwsJob(parent)

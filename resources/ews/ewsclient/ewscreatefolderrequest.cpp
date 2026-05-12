@@ -8,7 +8,7 @@
 
 #include "ewsclient_debug.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 EwsCreateFolderRequest::EwsCreateFolderRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)

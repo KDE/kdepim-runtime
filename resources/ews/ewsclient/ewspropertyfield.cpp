@@ -10,7 +10,7 @@
 
 #include "ewsclient_debug.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 static constexpr auto distinguishedPropSetIdNames = std::to_array({
     "Meeting"_L1,

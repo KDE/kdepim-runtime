@@ -11,7 +11,7 @@
 #include "ewsclient_debug.h"
 
 using namespace std::chrono_literals;
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 static constexpr auto respChunkTimeout = 250ms;
 

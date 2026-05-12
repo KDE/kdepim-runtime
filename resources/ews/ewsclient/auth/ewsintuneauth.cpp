@@ -39,7 +39,7 @@ using std::make_optional;
 using std::nullopt;
 using std::optional;
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 namespace
 {

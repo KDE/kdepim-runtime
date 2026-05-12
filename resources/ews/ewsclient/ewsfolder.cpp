@@ -17,7 +17,7 @@
 #define D_PTR EwsFolderPrivate *d = reinterpret_cast<EwsFolderPrivate *>(this->d.data());
 #define D_CPTR const EwsFolderPrivate *d = reinterpret_cast<const EwsFolderPrivate *>(this->d.data());
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 static constexpr const auto folderTypeNames = std::to_array({
     "Folder"_L1,

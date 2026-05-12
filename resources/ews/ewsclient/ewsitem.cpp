@@ -21,7 +21,7 @@
 #define D_PTR EwsItemPrivate *d = reinterpret_cast<EwsItemPrivate *>(this->d.data());
 #define D_CPTR const EwsItemPrivate *d = reinterpret_cast<const EwsItemPrivate *>(this->d.data());
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 class EwsItemPrivate : public EwsItemBasePrivate
 {

@@ -20,7 +20,7 @@
 #include "settings.h"
 
 using namespace QKeychain;
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 SettingsPasswordRequester::SettingsPasswordRequester(ImapResourceBase *resource, QObject *parent)
     : PasswordRequesterInterface(parent)

@@ -9,7 +9,7 @@
 
 #include "ewsclient_debug.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 EwsItemBasePrivate::EwsItemBasePrivate()
     : mValid(false)

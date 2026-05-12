@@ -10,7 +10,7 @@
 
 #include "ewsclient_debug.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 EwsUnsubscribeRequest::EwsUnsubscribeRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)

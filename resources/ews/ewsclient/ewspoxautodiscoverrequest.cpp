@@ -14,7 +14,7 @@
 
 #include "ewsclient_debug.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 static constexpr QLatin1StringView poxAdOuReqNsUri = "http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006"_L1;
 static constexpr QLatin1StringView poxAdRespNsUri = "http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006"_L1;

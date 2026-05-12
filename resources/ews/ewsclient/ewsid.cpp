@@ -13,7 +13,7 @@
 #include "ewsclient.h"
 #include "ewsclient_debug.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 static constexpr auto distinguishedIdNames = std::to_array({
     "calendar"_L1,

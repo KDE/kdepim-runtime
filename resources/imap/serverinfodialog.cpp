@@ -28,7 +28,7 @@ namespace
 static const char myServerInfoDialogConfigGroupName[] = "ServerInfoDialog";
 }
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 ServerInfoDialog::ServerInfoDialog(const QString &identifier, QWidget *parent)
     : QDialog(parent)

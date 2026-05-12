@@ -6,7 +6,7 @@
 
 #include "ewsfoldershape.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 static constexpr auto shapeNames = std::to_array({
     "IdOnly"_L1,

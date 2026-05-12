@@ -10,7 +10,7 @@
 
 #include "ewsclient_debug.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 static const constexpr auto subscribeTypeNames = std::to_array<QLatin1StringView>({
     "PullSubscriptionRequest"_L1,

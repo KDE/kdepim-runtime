@@ -7,7 +7,7 @@
 #include "ewsupdatefolderrequest.h"
 #include "ewsclient_debug.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 static constexpr auto updateTypeElementNames = std::to_array<QLatin1StringView>({
     "AppendToFolderField"_L1,

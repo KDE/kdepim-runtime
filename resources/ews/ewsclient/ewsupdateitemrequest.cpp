@@ -7,7 +7,7 @@
 #include "ewsupdateitemrequest.h"
 #include "ewsclient_debug.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 static constexpr auto conflictResolutionNames = std::to_array<QLatin1StringView>({
     "NeverOverwrite"_L1,

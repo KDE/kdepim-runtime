@@ -12,7 +12,7 @@
 
 #include "ewsclient_debug.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 static constexpr auto traversalTypeNames = std::to_array({
     "Shallow"_L1,

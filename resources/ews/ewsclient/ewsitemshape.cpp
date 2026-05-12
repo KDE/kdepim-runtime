@@ -6,7 +6,7 @@
 
 #include "ewsitemshape.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 void EwsItemShape::writeItemShape(QXmlStreamWriter &writer) const
 {

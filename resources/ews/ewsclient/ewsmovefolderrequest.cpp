@@ -7,7 +7,7 @@
 #include "ewsmovefolderrequest.h"
 #include "ewsclient_debug.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 EwsMoveFolderRequest::EwsMoveFolderRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)

@@ -12,7 +12,7 @@
 #include "ewsid.h"
 #include "ewsitem.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 static constexpr auto messageSensitivityNames = std::to_array<QLatin1StringView>({
     "Normal"_L1,

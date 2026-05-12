@@ -12,7 +12,7 @@
 #include "ewsclient_debug.h"
 #include "ewsmailbox.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 class EwsAttendeePrivate : public QSharedData
 {

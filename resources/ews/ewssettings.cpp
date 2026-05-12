@@ -17,7 +17,7 @@
 #include <qt6keychain/keychain.h>
 
 using namespace QKeychain;
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 static const QString ewsWalletFolder = QStringLiteral("akonadi-ews");
 

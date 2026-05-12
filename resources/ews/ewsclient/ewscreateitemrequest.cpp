@@ -7,7 +7,7 @@
 #include "ewscreateitemrequest.h"
 #include "ewsclient_debug.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 static constexpr auto messageDispositionNames = std::to_array<QLatin1StringView>({
     "SaveOnly"_L1,

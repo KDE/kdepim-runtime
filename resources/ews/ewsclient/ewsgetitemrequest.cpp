@@ -7,7 +7,7 @@
 #include "ewsgetitemrequest.h"
 #include "ewsclient_debug.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 EwsGetItemRequest::EwsGetItemRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)

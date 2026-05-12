@@ -28,7 +28,7 @@
 
 using namespace EteSyncAPI;
 using namespace Akonadi;
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 #define ROOT_COLLECTION_REMOTEID QStringLiteral("EteSyncRootCollection")
 // Resource offline time for temporary errors (30 min)

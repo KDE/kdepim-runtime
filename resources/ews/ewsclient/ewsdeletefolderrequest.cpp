@@ -7,7 +7,7 @@
 #include "ewsdeletefolderrequest.h"
 #include "ewsclient_debug.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 static constexpr auto deleteTypes = std::to_array<QLatin1StringView>({
     "HardDelete"_L1,

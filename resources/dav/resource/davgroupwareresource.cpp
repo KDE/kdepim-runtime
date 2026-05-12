@@ -60,7 +60,7 @@ using namespace Qt::Literals;
 
 using IncidencePtr = QSharedPointer<KCalendarCore::Incidence>;
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 DavGroupwareResource::DavGroupwareResource(const QString &id)
     : ResourceBase(id)

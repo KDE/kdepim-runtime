@@ -12,7 +12,7 @@
 #include "ewsclient_debug.h"
 #include "ewstypes.h"
 
-using namespace Qt::StringLiterals;
+using namespace Qt::Literals::StringLiterals;
 
 const EwsServerVersion EwsServerVersion::ewsVersion2007(8, 0, u"Exchange2007"_s, u"Exchange 2007"_s);
 const EwsServerVersion EwsServerVersion::ewsVersion2007Sp1(8, 1, u"Exchange2007_SP1"_s, u"Exchange 2007 SP1"_s);
