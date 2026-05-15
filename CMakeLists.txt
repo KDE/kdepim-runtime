@@ -28,8 +28,6 @@ include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)
 
 include(ECMSetupVersion)
-include(KDEGitCommitHooks)
-include(KDEClangFormat)
 file(
     GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES
     *.cpp
