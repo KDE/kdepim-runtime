@@ -240,7 +240,12 @@ void SendJob::doPostJob(bool transportSuccess, const QString &transportMessage)
 
         const QString error = mAborting ? i18n("Message transport aborted.") : i18n("Failed to transport message.");
 
-        setErrorText(error + QLatin1Char(' ') + transportMessage);
+        QString hint;
+        if (!mAborting) {
+            hint = QLatin1Char(' ') + i18n("Possible solution: review your send mail settings (authentication, port, encryption type, etc.)");
+        }
+
+        setErrorText(error + QLatin1Char(' ') + transportMessage + hint);
         storeResult(false, errorString());
     } else {
         qCDebug(MAILDISPATCHER_LOG) << "Success transporting.";
