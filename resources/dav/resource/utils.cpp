@@ -1,5 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2010 Tobias Koenig <tokoe@kde.org>
+    SPDX-FileCopyrightText: 2026 Dominique Michel <dominique.michel@enioka.com>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
@@ -7,11 +8,14 @@
 #include "utils.h"
 #include "davprotocolattribute.h"
 
+#include <KDAV/DavCollection>
 #include <KDAV/DavItem>
 #include <KDAV/DavUrl>
 #include <KDAV/ProtocolInfo>
 
 #include <Akonadi/Collection>
+#include <Akonadi/CollectionColorAttribute>
+#include <Akonadi/EntityDisplayAttribute>
 #include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/Incidence>
 #include <KCalendarCore/MemoryCalendar>
@@ -65,6 +69,64 @@ QStringList Utils::tagsToCategories(const Akonadi::Tag::List &tags)
         categories.emplace_back(tag.name());
     }
     return categories;
+}
+
+KDAV::DavCollection Utils::createDavCollection(const Akonadi::Collection &collection, const KDAV::DavUrl &davUrl)
+{
+    auto davCollection = KDAV::DavCollection();
+
+    davCollection.setUrl(davUrl);
+    if (collection.hasAttribute<Akonadi::CollectionColorAttribute>()) {
+        davCollection.setColor(collection.attribute<Akonadi::CollectionColorAttribute>()->color());
+    }
+
+    if (collection.hasAttribute<Akonadi::EntityDisplayAttribute>()) {
+        const auto displayName = collection.attribute<Akonadi::EntityDisplayAttribute>()->displayName();
+        if (!displayName.isEmpty()) {
+            davCollection.setDisplayName(displayName);
+        }
+    }
+
+    auto contentTypes = KDAV::DavCollection::ContentTypes();
+    for (const auto &mimeType : collection.contentMimeTypes()) {
+        if (mimeType == QString::fromStdString("text/calendar")) {
+            contentTypes |= KDAV::DavCollection::Calendar;
+        } else if (mimeType == KCalendarCore::Event::eventMimeType()) {
+            contentTypes |= KDAV::DavCollection::Events;
+        } else if (mimeType == KCalendarCore::Todo::todoMimeType()) {
+            contentTypes |= KDAV::DavCollection::Todos;
+        } else if (mimeType == KContacts::Addressee::mimeType()) {
+            contentTypes |= KDAV::DavCollection::Contacts;
+        } else if (mimeType == KCalendarCore::FreeBusy::freeBusyMimeType()) {
+            contentTypes |= KDAV::DavCollection::FreeBusy;
+        } else if (mimeType == KCalendarCore::Journal::journalMimeType()) {
+            contentTypes |= KDAV::DavCollection::Journal;
+        } else {
+            qCWarning(DAVRESOURCE_LOG) << "Unknown mime type" << mimeType;
+        }
+    }
+    davCollection.setContentTypes(contentTypes);
+
+    const auto rights = collection.rights();
+    auto privileges = davCollection.privileges();
+    if (rights & Akonadi::Collection::AllRights) {
+        privileges |= KDAV::All;
+    }
+    if (rights & Akonadi::Collection::CanChangeItem) {
+        privileges |= KDAV::WriteContent;
+    }
+    if (rights & Akonadi::Collection::CanCreateItem) {
+        privileges |= KDAV::Bind;
+    }
+    if (rights & Akonadi::Collection::CanDeleteItem) {
+        privileges |= KDAV::Unbind;
+    }
+    if (rights & Akonadi::Collection::ReadOnly) {
+        privileges |= KDAV::Read;
+    }
+    davCollection.setPrivileges(privileges);
+
+    return davCollection;
 }
 
 KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Collection &collection, const Akonadi::Item::List &dependentItems)
@@ -216,4 +278,19 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
     }
 
     return true;
+}
+
+std::optional<KDAV::Protocol> Utils::protocolFromCollection(const Akonadi::Collection &collection)
+{
+    for (const auto &mimeType : collection.contentMimeTypes()) {
+        if (mimeType == QString::fromStdString("text/calendar") || mimeType == KCalendarCore::Event::eventMimeType()
+            || mimeType == KCalendarCore::Todo::todoMimeType() || mimeType == KCalendarCore::FreeBusy::freeBusyMimeType()
+            || mimeType == KCalendarCore::Journal::journalMimeType()) {
+            return KDAV::Protocol::CalDav;
+        }
+        if (mimeType == KContacts::Addressee::mimeType()) {
+            return KDAV::Protocol::CardDav;
+        }
+    }
+    return std::nullopt;
 }

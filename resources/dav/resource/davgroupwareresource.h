@@ -37,6 +37,7 @@ public:
     explicit DavGroupwareResource(const QString &id);
     ~DavGroupwareResource() override;
 
+    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
     void collectionRemoved(const Akonadi::Collection &collection) override;
     void cleanup() override;
 
@@ -79,6 +80,7 @@ private:
 
     KJob *createRetrieveCollectionsJob();
     void onReloadConfig();
+    void onCollectionAddedFinished(KJob *job);
     void onCollectionRemovedFinished(KJob *);
     void onCollectionChangedFinished(KJob *job, const Akonadi::Collection &collection);
 
