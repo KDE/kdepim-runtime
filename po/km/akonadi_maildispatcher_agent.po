@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-18 00:44+0000\n"
+"POT-Creation-Date: 2026-05-21 00:45+0000\n"
 "PO-Revision-Date: 2011-12-21 14:33+0700\n"
 "Last-Translator: Seng Sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <supprot@khmeros.info>\n"
@@ -142,28 +142,35 @@ msgstr "បានបោះបង់​ការ​បញ្ជូន​សារ
 msgid "Failed to transport message."
 msgstr "បាន​​បរាជ័យ​ក្នុង​ការ​បញ្ជូនសារ ។"
 
-#: sendjob.cpp:283
+#: sendjob.cpp:245
+#, kde-format
+msgid ""
+"Possible solution: review your send mail settings (authentication, port, "
+"encryption type, etc.)"
+msgstr ""
+
+#: sendjob.cpp:288
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr "បាន​បរាជ័យ​ក្នុង​ការ​ទៅ​យក​ចំណុច​ប្រទាក់ D-Bus របស់ mailfilteragent ។"
 
-#: sendjob.cpp:290
+#: sendjob.cpp:295
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr "ការ​ឆ្លើយតប D-Bus មិន​ត្រឹមត្រូវ​​ពី mailfilteragent"
 
-#: sendjob.cpp:332
+#: sendjob.cpp:337
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr "ផ្ញើ​សារ​បាន​ជោគជ័យ ប៉ុន្តែ​បរាជ័យ​ក្នុង​ការ​យក​សារ​ចេញ​ពី​ប្រអប់​ចេញ ។"
 
-#: sendjob.cpp:335
+#: sendjob.cpp:340
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
 msgstr "ផ្ញើ​សារ​បាន​​ជោគជ័យ ប៉ុន្តែ​បាន​បរាជ័យ​ក្នុង​ការ​ផ្លាស់ទី​សារ​ទៅកាន់​ថត​សំបុត្រ​ផ្ញើ ។"
 
-#: sendjob.cpp:371
+#: sendjob.cpp:376
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "បាន​បរាជ័យ​ក្នុង​ការ​ផ្ទុក​លទ្ធផល​នៅ​ក្នុង​ធាតុ ។"

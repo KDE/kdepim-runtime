@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-18 00:44+0000\n"
+"POT-Creation-Date: 2026-05-21 00:45+0000\n"
 "PO-Revision-Date: 2024-05-12 21:37+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -145,24 +145,31 @@ msgstr "S'ha interromput el transport del missatge."
 msgid "Failed to transport message."
 msgstr "Ha fallat en transportar el missatge."
 
-#: sendjob.cpp:283
+#: sendjob.cpp:245
+#, kde-format
+msgid ""
+"Possible solution: review your send mail settings (authentication, port, "
+"encryption type, etc.)"
+msgstr ""
+
+#: sendjob.cpp:288
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr "Ha fallat en obtenir la interfície de D-Bus del «mailfilteragent»."
 
-#: sendjob.cpp:290
+#: sendjob.cpp:295
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr "Resposta no vàlida de D-Bus des del «mailfilteragent»"
 
-#: sendjob.cpp:332
+#: sendjob.cpp:337
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr ""
 "S'ha enviat correctament, però ha fallat en eliminar el missatge de la "
 "safata de sortida."
 
-#: sendjob.cpp:335
+#: sendjob.cpp:340
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
@@ -170,7 +177,7 @@ msgstr ""
 "S'ha enviat correctament, però ha fallat en moure el missatge a la safata de "
 "correu enviat."
 
-#: sendjob.cpp:371
+#: sendjob.cpp:376
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "Ha fallat en emmagatzemar el resultat en l'element."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-18 00:44+0000\n"
+"POT-Creation-Date: 2026-05-21 00:45+0000\n"
 "PO-Revision-Date: 2024-05-12 09:11+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian\n"
@@ -144,27 +144,34 @@ msgstr "Передавання повідомлення перервано."
 msgid "Failed to transport message."
 msgstr "Не вдалося передати повідомлення."
 
-#: sendjob.cpp:283
+#: sendjob.cpp:245
+#, kde-format
+msgid ""
+"Possible solution: review your send mail settings (authentication, port, "
+"encryption type, etc.)"
+msgstr ""
+
+#: sendjob.cpp:288
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr ""
 "Не вдалося отримати інтерфейс D-Bus агента фільтрування пошти "
 "(mailfilteragent)."
 
-#: sendjob.cpp:290
+#: sendjob.cpp:295
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr ""
 "Некоректна відповідь D-Bus від агента фільтрування пошти (mailfilteragent)."
 
-#: sendjob.cpp:332
+#: sendjob.cpp:337
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr ""
 "Надсилання виконано успішно, але вилучити повідомлення з теки «Вихідні» не "
 "вдалося."
 
-#: sendjob.cpp:335
+#: sendjob.cpp:340
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
@@ -172,7 +179,7 @@ msgstr ""
 "Надсилання виконано успішно, але пересунути повідомлення до теки «Надіслані» "
 "не вдалося."
 
-#: sendjob.cpp:371
+#: sendjob.cpp:376
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "Не вдалося зберегти результат у записі."

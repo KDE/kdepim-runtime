@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-18 00:44+0000\n"
+"POT-Creation-Date: 2026-05-21 00:45+0000\n"
 "PO-Revision-Date: 2014-03-12 01:06+0100\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -142,25 +142,32 @@ msgstr "Överdregen vun Narichten afbraken."
 msgid "Failed to transport message."
 msgstr "Naricht lett sik nich överedregen."
 
-#: sendjob.cpp:283
+#: sendjob.cpp:245
+#, kde-format
+msgid ""
+"Possible solution: review your send mail settings (authentication, port, "
+"encryption type, etc.)"
+msgstr ""
+
+#: sendjob.cpp:288
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr ""
 "De D-Bus-Koppelsteed vun den Nettpostfilter-Hölper lett sik nich halen."
 
-#: sendjob.cpp:290
+#: sendjob.cpp:295
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr "Leeg D-Bus-Antwoort vun Nettpostfilter-Hölper"
 
-#: sendjob.cpp:332
+#: sendjob.cpp:337
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr ""
 "Dat Loosstüern harr Spood, man de Naricht lett sik nich ut den Postutgang "
 "wegmaken."
 
-#: sendjob.cpp:335
+#: sendjob.cpp:340
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
@@ -168,7 +175,7 @@ msgstr ""
 "Dat Loosstüern harr Spood, man de Naricht lett sik nich na den Orner för "
 "loosstüert Narichten verschuven."
 
-#: sendjob.cpp:371
+#: sendjob.cpp:376
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "Resultaat lett sik nich binnen Indrag wohren."

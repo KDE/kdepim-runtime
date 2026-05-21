@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-18 00:44+0000\n"
+"POT-Creation-Date: 2026-05-21 00:45+0000\n"
 "PO-Revision-Date: 2012-10-18 21:31+0300\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -137,24 +137,31 @@ msgstr "Εγκατάλειψη διαβίβασης μηνύματος."
 msgid "Failed to transport message."
 msgstr "Αποτυχία διαβίβασης μηνύματος."
 
-#: sendjob.cpp:283
+#: sendjob.cpp:245
+#, kde-format
+msgid ""
+"Possible solution: review your send mail settings (authentication, port, "
+"encryption type, etc.)"
+msgstr ""
+
+#: sendjob.cpp:288
 #, kde-format
 msgid "Failed to get D-Bus interface of mailfilteragent."
 msgstr "Αποτυχία ανάκτησης διεπαφής D-Bus του mailfilteragent."
 
-#: sendjob.cpp:290
+#: sendjob.cpp:295
 #, kde-format
 msgid "Invalid D-Bus reply from mailfilteragent"
 msgstr "Μη έγκυρη απόκριση D-Bus από mailfilteragent"
 
-#: sendjob.cpp:332
+#: sendjob.cpp:337
 #, kde-format
 msgid "Sending succeeded, but failed to remove the message from the outbox."
 msgstr ""
 "Επιτυχής αποστολή, αλλά αποτυχία στην αφαίρεση του μηνύματος από τα "
 "εξερχόμενα."
 
-#: sendjob.cpp:335
+#: sendjob.cpp:340
 #, kde-format
 msgid ""
 "Sending succeeded, but failed to move the message to the sent-mail folder."
@@ -162,7 +169,7 @@ msgstr ""
 "Επιτυχής αποστολή, αλλά αποτυχία μετακίνησης του μηνύματος στον φάκελο με τα "
 "απεσταλμένα."
 
-#: sendjob.cpp:371
+#: sendjob.cpp:376
 #, kde-format
 msgid "Failed to store result in item."
 msgstr "Αποτυχία αποθήκευσης αποτελέσματος στο αντικείμενο."
