@@ -1,6 +1,7 @@
 /*
     SPDX-FileCopyrightText: 2009 Grégory Oestreicher <greg@kamago.net>
     SPDX-FileCopyrightText: 2026 Benjamin Port <benjamin.port@enioka.com>
+    SPDX-FileCopyrightText: 2026 Dominique Michel <dominique.michel@enioka.com>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
@@ -14,6 +15,7 @@
 #include "utils.h"
 
 #include <KDAV/DavCollection>
+#include <KDAV/DavCollectionCreateJob>
 #include <KDAV/DavCollectionDeleteJob>
 #include <KDAV/DavCollectionModifyJob>
 #include <KDAV/DavCollectionsFetchJob>
@@ -25,6 +27,7 @@
 #include <KDAV/DavItemModifyJob>
 #include <KDAV/DavItemsFetchJob>
 #include <KDAV/DavItemsListJob>
+#include <KDAV/DavPrincipalHomesetsFetchJob>
 #include <KDAV/ProtocolInfo>
 
 #include <KCalendarCore/FreeBusy>
@@ -126,6 +129,70 @@ Settings *DavGroupwareResource::settings() const
     }
 
     return mSettings;
+}
+
+void DavGroupwareResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
+{
+    qCDebug(DAVRESOURCE_LOG) << "Adding collection " << collection.remoteId();
+
+    if (!configurationIsValid()) {
+        return;
+    }
+
+    const bool isTopLevel = parent.parentCollection().id() == Akonadi::Collection::root().id();
+    Q_ASSERT(isTopLevel);
+    if (!isTopLevel) {
+        constexpr auto errorMessage = QLatin1StringView("CalDav/CarDav/GroupDav only support top-level collections");
+        qCWarning(DAVRESOURCE_LOG()) << errorMessage << ' ' << collection.name() << parent.name();
+        cancelTask(errorMessage);
+        return;
+    }
+
+    const auto protocol = Utils::protocolFromCollection(collection);
+    if (!protocol.has_value()) {
+        constexpr auto errorMessage = QLatin1StringView("Cannot create collection with unknown protocol");
+        qCWarning(DAVRESOURCE_LOG()) << errorMessage << ' ' << collection.name() << parent.name();
+        cancelTask(errorMessage);
+        return;
+    }
+
+    const auto urls = settings()->configuredDavUrls();
+    const auto davUrlIt = std::find_if(urls.begin(), urls.end(), [&](auto &url) {
+        return url.protocol() == protocol;
+    });
+    if (davUrlIt == urls.end()) {
+        constexpr auto errorMessage = QLatin1StringView("No URL configured for collection's protocol");
+        qCWarning(DAVRESOURCE_LOG) << errorMessage << ' ' << collection.name() << parent.name();
+        cancelTask(errorMessage);
+        return;
+    }
+
+    auto *fetchJob = new KDAV::DavPrincipalHomeSetsFetchJob(*davUrlIt);
+    connect(fetchJob, &KDAV::DavPrincipalHomeSetsFetchJob::result, this, [this, collection, parentName = parent.name(), davUrl = *davUrlIt](KJob *job) {
+        const auto *homeSetsJob = static_cast<KDAV::DavPrincipalHomeSetsFetchJob *>(job);
+        const auto homeSets = homeSetsJob->homeSets();
+        if (job->error() || homeSets.isEmpty()) {
+            constexpr auto errorMessage = QLatin1StringView("Cannot create collection with no known home sets");
+            qCWarning(DAVRESOURCE_LOG()) << errorMessage << ' ' << collection.name() << parentName;
+            cancelTask(errorMessage);
+            return;
+        }
+
+        const auto &homeSet = homeSets.first();
+        const auto uuid = QUuid::createUuid();
+        auto collectionUrl = davUrl;
+        auto url = collectionUrl.url();
+        url.setPath(homeSet + uuid.toString(QUuid::WithoutBraces) + u'/');
+        collectionUrl.setUrl(url);
+
+        auto davCollection = Utils::createDavCollection(collection, collectionUrl);
+        auto createJob = new KDAV::DavCollectionCreateJob(davCollection);
+        createJob->setProperty("collection", QVariant::fromValue(collection));
+        createJob->setProperty("configUrl", QVariant::fromValue(davUrl));
+        connect(createJob, &KDAV::DavCollectionCreateJob::result, this, &DavGroupwareResource::onCollectionAddedFinished);
+        createJob->start();
+    });
+    fetchJob->start();
 }
 
 void DavGroupwareResource::collectionRemoved(const Akonadi::Collection &collection)
@@ -1005,6 +1072,37 @@ void DavGroupwareResource::onReloadConfig()
     attribute->setIconName(icon);
 
     synchronize();
+}
+
+void DavGroupwareResource::onCollectionAddedFinished(KJob *job)
+{
+    const auto *createJob = qobject_cast<KDAV::DavCollectionCreateJob *>(job);
+
+    if (job->error()) {
+        qCCritical(DAVRESOURCE_LOG) << "Error when creating calendar:" << job->error() << job->errorString();
+        if (createJob->canRetryLater()) {
+            retryAfterFailure(job->errorString());
+        } else {
+            cancelTask(i18n("Unable to create collection: %1", job->errorText()));
+        }
+        return;
+    }
+
+    auto configUrl = job->property("configUrl").value<KDAV::DavUrl>();
+    auto collection = job->property("collection").value<Collection>();
+    const auto davCollection = createJob->collection();
+
+    collection.setRemoteId(davCollection.url().toDisplayString());
+    collection.setName(collection.remoteId());
+
+    settings()->addCollectionUrlMapping(davCollection.url().protocol(), davCollection.url().toDisplayString(), configUrl.toDisplayString());
+
+    if (!mDavItemCache.contains(collection.remoteId())) {
+        auto cache = std::make_shared<DavItemCache>(collection);
+        mDavItemCache.insert(collection.remoteId(), cache);
+    }
+
+    changeCommitted(collection);
 }
 
 void DavGroupwareResource::onCollectionRemovedFinished(KJob *job)
