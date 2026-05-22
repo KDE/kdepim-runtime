@@ -109,6 +109,7 @@ private:
     void onConflictModifyJobFinished(KJob *job);
     void onDeletedItemRecreated(KJob *job);
 
+    void doItemAdd(const Akonadi::Item &item, const Akonadi::Collection &collection);
     void doItemChange(const Akonadi::Item &item, const Akonadi::Item::List &dependentItems = Akonadi::Item::List());
     void doItemRemoval(const Akonadi::Item &item);
     void handleConflict(const Akonadi::Item &localItem,

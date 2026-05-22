@@ -387,6 +387,11 @@ void DavGroupwareResource::itemAdded(const Akonadi::Item &item, const Akonadi::C
         return;
     }
 
+    doItemAdd(item, collection);
+}
+
+void DavGroupwareResource::doItemAdd(const Akonadi::Item &item, const Akonadi::Collection &collection)
+{
     KDAV::DavItem davItem = Utils::createDavItem(item, collection);
     if (davItem.data().isEmpty()) {
         qCCritical(DAVRESOURCE_LOG) << "Item " << item.id() << " doesn't has a valid payload";
