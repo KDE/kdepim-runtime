@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-05-21 00:45+0000\n"
-"PO-Revision-Date: 2024-05-12 07:11+0200\n"
+"PO-Revision-Date: 2026-05-21 06:57+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -18,14 +18,14 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.9\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
 #, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "Pošiljanje sporočil (v vrsti je %1 predmet)…ov"
-msgstr[1] "Pošiljanje sporočil (v vrsti je %1 predmet)...…"
+msgstr[0] "Pošiljanje sporočil (v vrsti je %1 predmet)…"
+msgstr[1] "Pošiljanje sporočil (v vrsti je %1 predmet)…"
 msgstr[2] "Pošiljanje sporočil (v vrsti sta %1 predmeta)…"
 msgstr[3] "Pošiljanje sporočil (v vrsti so %1 predmeti)…"
 
@@ -147,6 +147,8 @@ msgid ""
 "Possible solution: review your send mail settings (authentication, port, "
 "encryption type, etc.)"
 msgstr ""
+"Možna rešitev: preverite vaše nastavitve pošiljanja pošte (avtentikacijo, "
+"vrata, vrsto šifriranja, itd.)"
 
 #: sendjob.cpp:288
 #, kde-format

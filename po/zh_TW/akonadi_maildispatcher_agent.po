@@ -3,13 +3,13 @@
 # Franklin Weng <franklin@goodhorse.idv.tw>, 2010, 2011, 2012.
 #
 # Frank Weng (a.k.a. Franklin) <franklin at goodhorse dot idv dot tw>, 2009, 2010.
-# SPDX-FileCopyrightText: 2024 Kisaragi Hiu <mail@kisaragi-hiu.com>
+# SPDX-FileCopyrightText: 2024, 2026 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-05-21 00:45+0000\n"
-"PO-Revision-Date: 2024-05-18 16:43+0900\n"
+"PO-Revision-Date: 2026-05-21 21:55+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -17,13 +17,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 24.04.70\n"
+"X-Generator: Lokalize 26.07.70\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
 #, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "傳送信件中（佇列中有 %1 個項目）…"
+msgstr[0] "傳送信件中（佇列中有 %1 個項目）"
 
 #: maildispatcheragent.cpp:90
 #, kde-format
@@ -141,7 +141,7 @@ msgstr "傳送信件失敗。"
 msgid ""
 "Possible solution: review your send mail settings (authentication, port, "
 "encryption type, etc.)"
-msgstr ""
+msgstr "可能的解決方法：請檢查您的信件傳送設定（認證、連接埠、加密類型等等）"
 
 #: sendjob.cpp:288
 #, kde-format

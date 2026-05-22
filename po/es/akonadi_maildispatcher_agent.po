@@ -1,16 +1,17 @@
-# translation of akonadi_maildispatcher_agent.po to Spanish
-# Copyright (C) 2009 Free Software Foundation, Inc.
+# Spanish translations for akonadi_maildispatcher_agent.po package.
+# Copyright (C) 2009-2026 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# Cristina Yenyxe Gonzalez Garcia <the.blue.valkyrie@gmail.com>, 2009.
-# Javier Vinal <fjvinal@gmail.com>, 2009, 2010.
-# Javier Viñal <fjvinal@gmail.com>, 2010, 2011, 2012, 2015, 2016.
-# SPDX-FileCopyrightText: 2011, 2024 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2009 Cristina Yenyxe Gonzalez Garcia <the.blue.valkyrie@gmail.com>
+# SPDX-FileCopyrightText: 2009-2010 Javier Vinal <fjvinal@gmail.com>
+# SPDX-FileCopyrightText: 2010-2012, 2015-2016 Javier Viñal <fjvinal@gmail.com>
+# SPDX-FileCopyrightText: 2011, 2024, 2026 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-05-21 00:45+0000\n"
-"PO-Revision-Date: 2024-05-12 16:06+0200\n"
+"PO-Revision-Date: 2026-05-22 01:09+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -18,14 +19,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 26.04.1\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
 #, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "Enviando mensajes (1 elemento en cola)..."
-msgstr[1] "Enviando mensajes (%1 elementos en cola)..."
+msgstr[0] "Enviando mensajes (1 elemento en cola)…"
+msgstr[1] "Enviando mensajes (%1 elementos en cola)…"
 
 #: maildispatcheragent.cpp:90
 #, kde-format
@@ -148,6 +149,8 @@ msgid ""
 "Possible solution: review your send mail settings (authentication, port, "
 "encryption type, etc.)"
 msgstr ""
+"Posible solución: revise las preferencias de envío de correo (autenticación, "
+"puerto, tipo de cifrado, etc.)"
 
 #: sendjob.cpp:288
 #, kde-format
