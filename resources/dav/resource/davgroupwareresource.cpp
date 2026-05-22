@@ -387,7 +387,102 @@ void DavGroupwareResource::itemAdded(const Akonadi::Item &item, const Akonadi::C
         return;
     }
 
-    doItemAdd(item, collection);
+    if (!item.hasPayload<IncidencePtr>()) {
+        qCDebug(DAVRESOURCE_LOG) << "Not an incidence, we can add straight away";
+        doItemAdd(item, collection);
+        return;
+    }
+
+    auto incidence = item.payload<IncidencePtr>();
+    if (!incidence->hasRecurrenceId()) {
+        qCDebug(DAVRESOURCE_LOG) << "No recurrence id in the incidence, we can add straight away";
+        doItemAdd(item, collection);
+        return;
+    }
+
+    // This is an occurrence modification in a series of recurrence
+    // we don't add a new dav item, we need to find the main akonadi
+    // item instead and modify the corresponding dav item on the server
+    qCDebug(DAVRESOURCE_LOG) << "This looks like a recurrence exception, deal with it properly";
+
+    auto job = new Akonadi::ItemFetchJob(collection);
+    job->fetchScope().fetchFullPayload();
+    job->setProperty("uid", incidence->uid());
+    job->setProperty("addedItem", QVariant::fromValue(item));
+    job->setProperty("collection", QVariant::fromValue(collection));
+    connect(job, &Akonadi::ItemFetchJob::result, this, &DavGroupwareResource::onItemAddedPrepared);
+}
+
+void DavGroupwareResource::onItemAddedPrepared(KJob *job)
+{
+    auto fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
+    auto uid = job->property("uid").toString();
+    auto addedItem = job->property("addedItem").value<Akonadi::Item>();
+    auto collection = job->property("collection").value<Akonadi::Collection>();
+
+    qCDebug(DAVRESOURCE_LOG) << "Number of items reported by the fetch job:" << fetchJob->items().size();
+
+    Akonadi::Item mainItem;
+    Akonadi::Item::List dependentItems;
+
+    for (const auto &item : fetchJob->items()) {
+        if (item.id() == addedItem.id()) {
+            continue;
+        }
+        if (!item.hasPayload<IncidencePtr>()) {
+            continue;
+        }
+
+        auto incidence = item.payload<IncidencePtr>();
+        if (incidence->uid() != uid) {
+            continue;
+        }
+
+        // This is one of the items related to the exception we're dealing with
+        if (incidence->hasRecurrenceId()) {
+            dependentItems << item;
+        } else {
+            Q_ASSERT(!mainItem.isValid());
+            mainItem = item;
+        }
+    }
+
+    qCDebug(DAVRESOURCE_LOG) << "Id of mainItem:" << mainItem.id();
+    qCDebug(DAVRESOURCE_LOG) << "Number of dependent items found:" << dependentItems.size();
+
+    // Encountered recurrenceId but there's not main incidence...
+    if (!mainItem.isValid()) {
+        auto incidence = addedItem.payload<IncidencePtr>();
+        // Nuke recurrenceId and treat as a single independent item
+        // to avoid potential data loss
+        incidence->setRecurrenceId({});
+        doItemAdd(addedItem, collection);
+        return;
+    }
+
+    // Now we can determine remoteId of the exception
+    auto exception = addedItem.payload<IncidencePtr>();
+    addedItem.setRemoteId(mainItem.remoteId() + QLatin1StringView("#") + exception->instanceIdentifier());
+
+    KDAV::DavItem davItem = Utils::createDavItem(mainItem, mainItem.parentCollection(), dependentItems + Akonadi::Item::List{addedItem});
+    if (davItem.data().isEmpty()) {
+        qCCritical(DAVRESOURCE_LOG) << "Item " << addedItem.id() << " doesn't has a valid payload";
+        cancelTask();
+        return;
+    }
+
+    const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(collection.remoteId(), mainItem.remoteId());
+    davItem.setUrl(davUrl);
+    davItem.setEtag(mainItem.remoteRevision());
+
+    auto modJob = new KDAV::DavItemModifyJob(davItem);
+    modJob->setProperty("collection", QVariant::fromValue(collection));
+    modJob->setProperty("addedItem", QVariant::fromValue(addedItem));
+    modJob->setProperty("item", QVariant::fromValue(mainItem));
+    modJob->setProperty("dependentItems", QVariant::fromValue(dependentItems));
+    modJob->setProperty("isAdded", true);
+    connect(modJob, &KDAV::DavItemModifyJob::result, this, &DavGroupwareResource::onItemChangedFinished);
+    modJob->start();
 }
 
 void DavGroupwareResource::doItemAdd(const Akonadi::Item &item, const Akonadi::Collection &collection)
@@ -1204,6 +1299,8 @@ void DavGroupwareResource::onItemRefreshed(KJob *job)
     ItemFetchUpdateType update = ItemUpdateChange;
     if (job->property("isRemoval").isValid() && job->property("isRemoval").toBool()) {
         update = ItemUpdateNone;
+    } else if (job->property("isAdded").isValid() && job->property("isAdded").toBool()) {
+        update = ItemUpdateCreated;
     }
 
     onItemFetched(job, update);
@@ -1253,7 +1350,12 @@ void DavGroupwareResource::onItemFetched(KJob *job, ItemFetchUpdateType updateTy
         j->setIgnorePayload(true);
     }
 
-    if (updateType == ItemUpdateChange) {
+    if (updateType == ItemUpdateCreated) {
+        auto addedItem = fetchJob->property("addedItem").value<Akonadi::Item>();
+        addedItem.setRemoteRevision(davItem.etag());
+        etag->setEtag(addedItem.remoteId(), davItem.etag());
+        changeCommitted(addedItem);
+    } else if (updateType == ItemUpdateChange) {
         changeCommitted(item);
     } else if (updateType == ItemUpdateAdd) {
         itemRetrieved(item);
@@ -1302,6 +1404,7 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
     auto item = modifyJob->property("item").value<Akonadi::Item>();
     auto dependentItems = modifyJob->property("dependentItems").value<Akonadi::Item::List>();
     bool isRemoval = modifyJob->property("isRemoval").isValid() && modifyJob->property("isRemoval").toBool();
+    bool isAdded = modifyJob->property("isAdded").isValid() && modifyJob->property("isAdded").toBool();
     auto cache = mEtagCaches.value(collection.remoteId());
     if (!cache) {
         qCDebug(DAVRESOURCE_LOG) << "Collection has disappeared during item fetch!";
@@ -1336,7 +1439,11 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
         fetchJob->setProperty("item", QVariant::fromValue(item));
         fetchJob->setProperty("collection", QVariant::fromValue(collection));
         fetchJob->setProperty("dependentItems", QVariant::fromValue(dependentItems));
+        fetchJob->setProperty("isAdded", QVariant::fromValue(isAdded));
         fetchJob->setProperty("isRemoval", QVariant::fromValue(isRemoval));
+        if (isAdded) {
+            fetchJob->setProperty("addedItem", modifyJob->property("addedItem"));
+        }
         connect(fetchJob, &KDAV::DavItemsFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
         fetchJob->start();
     } else {
@@ -1354,6 +1461,13 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
 
             auto j = new Akonadi::ItemModifyJob(dependentItems);
             j->setIgnorePayload(true);
+        }
+
+        if (isAdded) {
+            auto addedItem = job->property("addedItem").value<Akonadi::Item>();
+            addedItem.setRemoteRevision(davItem.etag());
+            cache->setEtag(addedItem.remoteId(), davItem.etag());
+            changeCommitted(addedItem);
         }
     }
 }

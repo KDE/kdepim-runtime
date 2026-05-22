@@ -75,6 +75,7 @@ private:
         ItemUpdateNone,
         ItemUpdateAdd,
         ItemUpdateChange,
+        ItemUpdateCreated,
     };
 
     KJob *createRetrieveCollectionsJob();
@@ -99,6 +100,7 @@ private:
     void onItemFetched(KJob *job, ItemFetchUpdateType updateType);
     void onItemRefreshed(KJob *job);
 
+    void onItemAddedPrepared(KJob *);
     void onItemAddedFinished(KJob *);
     void onItemChangePrepared(KJob *);
     void onItemChangedFinished(KJob *);
