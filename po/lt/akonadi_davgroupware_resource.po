@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-14 00:44+0000\n"
+"POT-Creation-Date: 2026-05-23 00:45+0000\n"
 "PO-Revision-Date: 2015-12-29 21:05+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -358,62 +358,62 @@ msgstr "Nepavyko nuskaityti kolekcijų: %1"
 msgid "Invalid collection for item %1."
 msgstr "Negaliojanti kolekcija elementui %1."
 
-#: davgroupwareresource.cpp:718
+#: davgroupwareresource.cpp:818
 #, fuzzy, kde-format
 #| msgid "Unable to add item: %1"
 msgid "Unable to modify items: %1"
 msgstr "Nepavyko pridėti elementą: %1"
 
-#: davgroupwareresource.cpp:758
+#: davgroupwareresource.cpp:858
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to modify collection: %1"
 msgstr "Nepavyko pašalinti kolekcijos: %1"
 
-#: davgroupwareresource.cpp:881
+#: davgroupwareresource.cpp:981
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Nepavyko pašalinti kolekcijos: %1"
 
-#: davgroupwareresource.cpp:901
+#: davgroupwareresource.cpp:1001
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Nepavyko nuskaityti kolekcijų: %1"
 
-#: davgroupwareresource.cpp:1034 davgroupwareresource.cpp:1133
+#: davgroupwareresource.cpp:1134 davgroupwareresource.cpp:1233
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Nepavyko nuskaityti elementų: %1"
 
-#: davgroupwareresource.cpp:1213
+#: davgroupwareresource.cpp:1315
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Nepavyko nuskaityti elemento: %1"
 
-#: davgroupwareresource.cpp:1233
+#: davgroupwareresource.cpp:1335
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
 
-#: davgroupwareresource.cpp:1270
+#: davgroupwareresource.cpp:1377
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Nepavyko pridėti elementą: %1"
 
-#: davgroupwareresource.cpp:1314 davgroupwareresource.cpp:1427
-#: davgroupwareresource.cpp:1439
+#: davgroupwareresource.cpp:1422 davgroupwareresource.cpp:1546
+#: davgroupwareresource.cpp:1558
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Nepavyko pakeisti elementą: %1"
 
-#: davgroupwareresource.cpp:1401 davgroupwareresource.cpp:1458
+#: davgroupwareresource.cpp:1520 davgroupwareresource.cpp:1577
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Nepavyko pašalinti elementą: %1"
 
-#: davgroupwareresource.cpp:1545 davgroupwareresource.cpp:1546
+#: davgroupwareresource.cpp:1664 davgroupwareresource.cpp:1665
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Išteklius dar neparinktas"

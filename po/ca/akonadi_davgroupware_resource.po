@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-14 00:44+0000\n"
+"POT-Creation-Date: 2026-05-23 00:45+0000\n"
 "PO-Revision-Date: 2025-05-24 11:17+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -346,37 +346,37 @@ msgstr "S'ha demanat recuperar elements per a una col·lecció desconeguda: %1"
 msgid "Invalid collection for item %1."
 msgstr "Col·lecció no vàlida per a l'element %1."
 
-#: davgroupwareresource.cpp:718
+#: davgroupwareresource.cpp:818
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "No s'han pogut modificar els elements: %1"
 
-#: davgroupwareresource.cpp:758
+#: davgroupwareresource.cpp:858
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "No s'ha pogut modificar la col·lecció: %1"
 
-#: davgroupwareresource.cpp:881
+#: davgroupwareresource.cpp:981
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "No s'han pogut eliminar les col·leccions: %1"
 
-#: davgroupwareresource.cpp:901
+#: davgroupwareresource.cpp:1001
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "No s'han pogut recuperar les col·leccions: %1"
 
-#: davgroupwareresource.cpp:1034 davgroupwareresource.cpp:1133
+#: davgroupwareresource.cpp:1134 davgroupwareresource.cpp:1233
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "No s'han pogut recuperar els elements: %1"
 
-#: davgroupwareresource.cpp:1213
+#: davgroupwareresource.cpp:1315
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "No s'ha pogut recuperar l'element: %1"
 
-#: davgroupwareresource.cpp:1233
+#: davgroupwareresource.cpp:1335
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -385,23 +385,23 @@ msgstr ""
 "No s'ha pogut recuperar l'element: ha fallat en analitzar les dades de "
 "l'element. Potser ja s'ha suprimit."
 
-#: davgroupwareresource.cpp:1270
+#: davgroupwareresource.cpp:1377
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "No s'ha pogut afegir l'element: %1"
 
-#: davgroupwareresource.cpp:1314 davgroupwareresource.cpp:1427
-#: davgroupwareresource.cpp:1439
+#: davgroupwareresource.cpp:1422 davgroupwareresource.cpp:1546
+#: davgroupwareresource.cpp:1558
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "No s'ha pogut canviar l'element: %1"
 
-#: davgroupwareresource.cpp:1401 davgroupwareresource.cpp:1458
+#: davgroupwareresource.cpp:1520 davgroupwareresource.cpp:1577
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "No s'ha pogut eliminar l'element: %1"
 
-#: davgroupwareresource.cpp:1545 davgroupwareresource.cpp:1546
+#: davgroupwareresource.cpp:1664 davgroupwareresource.cpp:1665
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "El recurs encara no està configurat"

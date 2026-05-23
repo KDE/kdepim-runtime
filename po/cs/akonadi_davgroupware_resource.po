@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-14 00:44+0000\n"
+"POT-Creation-Date: 2026-05-23 00:45+0000\n"
 "PO-Revision-Date: 2026-02-05 16:05+0100\n"
 "Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
 "Language-Team: \n"
@@ -335,37 +335,37 @@ msgstr "Požadavek na vyhledání položek pro neznámou sbírku: %1"
 msgid "Invalid collection for item %1."
 msgstr "Neplatná sbírka pro položku %1."
 
-#: davgroupwareresource.cpp:718
+#: davgroupwareresource.cpp:818
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Nelze upravit položky: %1"
 
-#: davgroupwareresource.cpp:758
+#: davgroupwareresource.cpp:858
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Nelze ověřit sbírku: %1"
 
-#: davgroupwareresource.cpp:881
+#: davgroupwareresource.cpp:981
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Nelze odstranit sbírku: %1"
 
-#: davgroupwareresource.cpp:901
+#: davgroupwareresource.cpp:1001
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Nelze načíst sbírky: %1"
 
-#: davgroupwareresource.cpp:1034 davgroupwareresource.cpp:1133
+#: davgroupwareresource.cpp:1134 davgroupwareresource.cpp:1233
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Nelze načíst položky: %1"
 
-#: davgroupwareresource.cpp:1213
+#: davgroupwareresource.cpp:1315
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Nelze načíst položku: %1"
 
-#: davgroupwareresource.cpp:1233
+#: davgroupwareresource.cpp:1335
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -373,23 +373,23 @@ msgid ""
 msgstr ""
 "Nelze načíst položku: selhalo zpracování dat položky. Možná již byla smazána."
 
-#: davgroupwareresource.cpp:1270
+#: davgroupwareresource.cpp:1377
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Nelze přidat položku: %1"
 
-#: davgroupwareresource.cpp:1314 davgroupwareresource.cpp:1427
-#: davgroupwareresource.cpp:1439
+#: davgroupwareresource.cpp:1422 davgroupwareresource.cpp:1546
+#: davgroupwareresource.cpp:1558
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Nelze změnit položku: %1"
 
-#: davgroupwareresource.cpp:1401 davgroupwareresource.cpp:1458
+#: davgroupwareresource.cpp:1520 davgroupwareresource.cpp:1577
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Nelze odstranit položku: %1"
 
-#: davgroupwareresource.cpp:1545 davgroupwareresource.cpp:1546
+#: davgroupwareresource.cpp:1664 davgroupwareresource.cpp:1665
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Zdroj ještě není nakonfigurován"

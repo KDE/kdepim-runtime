@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-14 00:44+0000\n"
+"POT-Creation-Date: 2026-05-23 00:45+0000\n"
 "PO-Revision-Date: 2025-05-29 23:32+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -337,37 +337,37 @@ msgstr "Bilduma ezezagun baterako datuak eskuratzeko galdetu du: %1"
 msgid "Invalid collection for item %1."
 msgstr "%1 elementurako bilduma baliogabea."
 
-#: davgroupwareresource.cpp:718
+#: davgroupwareresource.cpp:818
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Elementua ezin ditu aldatu: %1"
 
-#: davgroupwareresource.cpp:758
+#: davgroupwareresource.cpp:858
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Ez da bilduma aldatzeko gai: %1"
 
-#: davgroupwareresource.cpp:881
+#: davgroupwareresource.cpp:981
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Ez da bilduma kentzeko gai: %1"
 
-#: davgroupwareresource.cpp:901
+#: davgroupwareresource.cpp:1001
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Ez da bildumak eskuratzeko gai: %1"
 
-#: davgroupwareresource.cpp:1034 davgroupwareresource.cpp:1133
+#: davgroupwareresource.cpp:1134 davgroupwareresource.cpp:1233
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Ez da elementuak eskuratzeko gai: %1"
 
-#: davgroupwareresource.cpp:1213
+#: davgroupwareresource.cpp:1315
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Ez da elementua eskuratzeko gai: %1"
 
-#: davgroupwareresource.cpp:1233
+#: davgroupwareresource.cpp:1335
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -376,23 +376,23 @@ msgstr ""
 "Ez da elementua eskuratzeko gai: elementuaren datuen azterketa-sintaktikoa "
 "huts egin du. Agian dagoeneko ezabatu da."
 
-#: davgroupwareresource.cpp:1270
+#: davgroupwareresource.cpp:1377
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Ez da elementua gehitzeko gai: %1"
 
-#: davgroupwareresource.cpp:1314 davgroupwareresource.cpp:1427
-#: davgroupwareresource.cpp:1439
+#: davgroupwareresource.cpp:1422 davgroupwareresource.cpp:1546
+#: davgroupwareresource.cpp:1558
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Ez da elementua aldatzeko gai: %1"
 
-#: davgroupwareresource.cpp:1401 davgroupwareresource.cpp:1458
+#: davgroupwareresource.cpp:1520 davgroupwareresource.cpp:1577
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Ez da elementua kentzeko gai: %1"
 
-#: davgroupwareresource.cpp:1545 davgroupwareresource.cpp:1546
+#: davgroupwareresource.cpp:1664 davgroupwareresource.cpp:1665
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Baliabidea ez dago konfiguratuta oraindik"
