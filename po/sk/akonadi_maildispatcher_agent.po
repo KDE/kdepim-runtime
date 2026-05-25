@@ -143,6 +143,8 @@ msgid ""
 "Possible solution: review your send mail settings (authentication, port, "
 "encryption type, etc.)"
 msgstr ""
+"Možné riešenie: skontrolujte nastavenia odosielania pošty (overovanie, port, "
+"typ šifrovania atď.)"
 
 #: sendjob.cpp:288
 #, kde-format
