@@ -331,7 +331,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
         return;
     }
 
-    auto job = new KDAV::DavItemsListJob(davUrl, mEtagCaches.value(collection.remoteId()));
+    auto job = new KDAV::DavItemsListJob(davUrl, mEtagCaches.value(collection.remoteId())->eTagCache());
     if (settings()->limitSyncRange()) {
         QDateTime start = settings()->getSyncRangeStart();
         qCDebug(DAVRESOURCE_LOG) << "Start time for list job:" << start;
@@ -695,7 +695,7 @@ class DavItemsModifyJob : public KCompositeJob
 {
     Q_OBJECT
 public:
-    DavItemsModifyJob(const QList<std::tuple<KDAV::DavItem, Akonadi::Item>> &items, std::shared_ptr<KDAV::EtagCache> cache, DavGroupwareResource *parent)
+    DavItemsModifyJob(const QList<std::tuple<KDAV::DavItem, Akonadi::Item>> &items, std::shared_ptr<AkonadiEtagCache> cache, DavGroupwareResource *parent)
         : KCompositeJob(parent)
         , mItems(items)
         , mCache(cache)
@@ -766,7 +766,7 @@ private:
 
     QList<std::tuple<KDAV::DavItem, Akonadi::Item>> mItems;
     Akonadi::Item::List mUpdatedAkonadiItems;
-    std::shared_ptr<KDAV::EtagCache> mCache;
+    std::shared_ptr<AkonadiEtagCache> mCache;
 };
 
 void DavGroupwareResource::itemsTagsChanged(const Item::List &items, const QSet<Tag> &addedTags, const QSet<Tag> &removedTags)
@@ -906,7 +906,7 @@ void DavGroupwareResource::onCreateInitialCacheReady(KJob *job)
         }
 
         if (!mEtagCaches.contains(collection.remoteId())) {
-            auto cache = std::shared_ptr<KDAV::EtagCache>(new AkonadiEtagCache(collection));
+            auto cache = std::make_shared<AkonadiEtagCache>(collection);
             mEtagCaches.insert(collection.remoteId(), cache);
         }
 
@@ -1104,7 +1104,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         collections << collection;
 
         if (!mEtagCaches.contains(collection.remoteId())) {
-            auto cache = std::shared_ptr<KDAV::EtagCache>(new AkonadiEtagCache(collection));
+            auto cache = std::make_shared<AkonadiEtagCache>(collection);
             mEtagCaches.insert(collection.remoteId(), cache);
         }
     }

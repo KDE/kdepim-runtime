@@ -15,6 +15,7 @@
 #include <Akonadi/FreeBusyProviderBase>
 #include <Akonadi/ResourceBase>
 
+class AkonadiEtagCache;
 class DavFreeBusyHandler;
 
 #include <QSet>
@@ -136,7 +137,7 @@ private:
     QString iconForDavUrl(const KDAV::DavUrl &davUrl);
 
     Akonadi::Collection mDavCollectionRoot;
-    QMap<QString, std::shared_ptr<KDAV::EtagCache>> mEtagCaches;
+    QMap<QString, std::shared_ptr<AkonadiEtagCache>> mEtagCaches;
     QMap<QString, QString> mCTagCache;
     DavFreeBusyHandler *const mFreeBusyHandler;
     bool mSyncErrorNotified = false;
