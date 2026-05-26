@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2010, 2011, 2013, 2020, 2024 Shinjo Park <kde@peremen.name>
+# SPDX-FileCopyrightText: 2010, 2011, 2013, 2020, 2024, 2026 Shinjo Park <kde@peremen.name>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-05-21 00:45+0000\n"
-"PO-Revision-Date: 2024-08-19 22:47+0200\n"
+"PO-Revision-Date: 2026-05-25 19:21+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
 #, kde-format
@@ -140,6 +140,7 @@ msgid ""
 "Possible solution: review your send mail settings (authentication, port, "
 "encryption type, etc.)"
 msgstr ""
+"가능한 해결 방법: 메일 전송 설정을 확인하십시오(인증, 포트, 암호화 형식 등)"
 
 #: sendjob.cpp:288
 #, kde-format
