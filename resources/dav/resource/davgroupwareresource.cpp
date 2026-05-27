@@ -1,5 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2009 Grégory Oestreicher <greg@kamago.net>
+    SPDX-FileCopyrightText: 2026 Benjamin Port <benjamin.port@enioka.com>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
@@ -529,12 +530,11 @@ void DavGroupwareResource::itemChanged(const Akonadi::Item &item, const QSet<QBy
     auto cache = mDavItemCache.value(collection.remoteId());
     Akonadi::Item::List extraItems;
     const QStringList lstUrls = cache->urls();
-    for (const QString &rid : lstUrls) {
-        if (rid.startsWith(ridBase) && rid != item.remoteId()) {
-            Akonadi::Item extraItem;
-            extraItem.setRemoteId(rid);
-            extraItems << extraItem;
-        }
+    qCDebug(DAVRESOURCE_LOG) << "For:" << ridBase << "there are " << cache->exceptionUrls(ridBase).count() << " exception URLs in cache";
+    for (const QString &rid : cache->exceptionUrls(ridBase)) {
+        Akonadi::Item extraItem;
+        extraItem.setRemoteId(rid);
+        extraItems << extraItem;
     }
 
     if (extraItems.isEmpty()) {
@@ -597,18 +597,35 @@ void DavGroupwareResource::itemRemoved(const Akonadi::Item &item)
         cancelTask();
         return;
     }
+    auto cache = mDavItemCache.value(collection.remoteId());
 
     QString ridBase = item.remoteId();
-    if (ridBase.contains(u'#')) {
+
+    if (!ridBase.contains(u'#')) {
+        Akonadi::Item::List exceptionItemsToDelete;
+        for (const QString &exceptionRid : cache->exceptionUrls(ridBase)) {
+            Akonadi::Item exceptionItem;
+            exceptionItem.setParentCollection(collection);
+            exceptionItem.setRemoteId(exceptionRid);
+            cache->removeException(exceptionRid);
+            exceptionItemsToDelete << exceptionItem;
+        }
+        if (exceptionItemsToDelete.isEmpty()) {
+            doItemRemoval(item);
+        } else {
+            auto deleteJob = new Akonadi::ItemDeleteJob(exceptionItemsToDelete);
+            deleteJob->setProperty("mainItem", QVariant::fromValue(item));
+            connect(deleteJob, &Akonadi::ItemDeleteJob::result, this, &DavGroupwareResource::onItemExceptionsDeleteFinished);
+            deleteJob->start();
+        }
+    } else {
         // A bit tricky: we must remove an incidence contained in a resource
         // containing multiple ones.
         ridBase.truncate(ridBase.indexOf(u'#'));
 
-        auto cache = mDavItemCache.value(collection.remoteId());
         Akonadi::Item::List extraItems;
-        const QStringList lstUrl = cache->urls();
-        for (const QString &rid : lstUrl) {
-            if (rid.startsWith(ridBase) && rid != item.remoteId()) {
+        for (const QString &rid : cache->exceptionUrls(ridBase)) {
+            if (rid != item.remoteId()) {
                 Akonadi::Item extraItem;
                 extraItem.setRemoteId(rid);
                 extraItems << extraItem;
@@ -626,9 +643,24 @@ void DavGroupwareResource::itemRemoved(const Akonadi::Item &item)
             job->setProperty("item", QVariant::fromValue(item));
             connect(job, &Akonadi::ItemFetchJob::result, this, &DavGroupwareResource::onItemRemovalPrepared);
         }
-    } else {
-        // easy as pie: just remove everything at the URL.
+    }
+}
+
+void DavGroupwareResource::onItemExceptionsDeleteFinished(KJob *job)
+{
+    if (job->error()) {
+        qCWarning(DAVRESOURCE_LOG) << "Unable to delete item exceptions:" << job->errorText();
+        cancelTask(i18n("Unable to delete item exceptions: %1", job->errorText()));
+        return;
+    }
+    // Will do item removal only if a mainItem is set
+    QVariant prop = job->property("mainItem");
+    if (prop.isValid()) {
+        auto item = job->property("mainItem").value<Akonadi::Item>();
+        qCDebug(DAVRESOURCE_LOG) << "Item exceptions deleted, proceeding with main item removal" << item.remoteId();
         doItemRemoval(item);
+    } else {
+        qCDebug(DAVRESOURCE_LOG) << "Item exceptions deleted, main item is not expected to be deleted";
     }
 }
 
@@ -1185,19 +1217,28 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
                 continue;
             }
         }
-
+        Akonadi::Item::List itemsToDelete;
         qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveItemsFinished: Item disappeared. " << rmd;
         Akonadi::Item item;
         item.setParentCollection(collection);
         item.setRemoteId(rmd);
         cache->removeEtag(rmd);
+        itemsToDelete << item;
+
+        // Delete exception related to this item
+        for (const QString &exceptionRid : cache->exceptionUrls(rmd)) {
+            Akonadi::Item exceptionItem;
+            exceptionItem.setParentCollection(collection);
+            exceptionItem.setRemoteId(exceptionRid);
+            cache->removeException(exceptionRid);
+            itemsToDelete << exceptionItem;
+        }
 
         // Use a job to delete items as itemsRetrievedIncremental seem to choke
         // when many items are given with just their RID.
-        auto deleteJob = new Akonadi::ItemDeleteJob(item);
+        auto deleteJob = new Akonadi::ItemDeleteJob(itemsToDelete);
         deleteJob->start();
     }
-
     // If the protocol supports multiget then deviate from the expected behavior
     // and fetch all items with payload now instead of waiting for Akonadi to
     // request it item by item in retrieveItem().
@@ -1269,9 +1310,28 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
         item.setRemoteRevision(davItem.etag());
         cache->setEtag(item.remoteId(), davItem.etag());
         items << item;
+        QStringList extraItemsIds;
         for (const Akonadi::Item &extraItem : std::as_const(extraItems)) {
             cache->setEtag(extraItem.remoteId(), davItem.etag());
             items << extraItem;
+            extraItemsIds << extraItem.remoteId();
+        }
+
+        // Clean up exceptions, if exception is not part of the payload we need to delete it
+        Akonadi::Item::List exceptionItemsToDelete;
+        for (const QString &exceptionRid : cache->exceptionUrls(item.remoteId())) {
+            if (!extraItemsIds.contains(exceptionRid)) {
+                Akonadi::Item exceptionItem;
+                exceptionItem.setParentCollection(collection);
+                exceptionItem.setRemoteId(exceptionRid);
+                cache->removeException(exceptionRid);
+                exceptionItemsToDelete << exceptionItem;
+            }
+        }
+        if (!exceptionItemsToDelete.isEmpty()) {
+            auto deleteJob = new Akonadi::ItemDeleteJob(exceptionItemsToDelete);
+            connect(deleteJob, &KJob::result, this, &DavGroupwareResource::onItemExceptionsDeleteFinished);
+            deleteJob->start();
         }
     }
 
@@ -1369,22 +1429,40 @@ void DavGroupwareResource::onItemFetched(KJob *job, ItemFetchUpdateType updateTy
 
     // update etag
     item.setRemoteRevision(davItem.etag());
-    auto etag = mDavItemCache[collection.remoteId()];
-    etag->setEtag(item.remoteId(), davItem.etag());
+    auto cache = mDavItemCache[collection.remoteId()];
+    cache->setEtag(item.remoteId(), davItem.etag());
 
+    QStringList extraItemsIds;
     if (!extraItems.isEmpty()) {
         for (int i = 0, total = extraItems.size(); i < total; ++i) {
-            etag->setEtag(extraItems.at(i).remoteId(), davItem.etag());
+            cache->setEtag(extraItems.at(i).remoteId(), davItem.etag());
+            extraItemsIds << extraItems.at(i).remoteId();
         }
 
         auto j = new Akonadi::ItemModifyJob(extraItems);
         j->setIgnorePayload(true);
     }
+    // Clean up exceptions, if exception is not part of the payload we need to delete it
+    Akonadi::Item::List exceptionItemsToDelete;
+    for (const QString &exceptionRid : cache->exceptionUrls(item.remoteId())) {
+        if (!extraItemsIds.contains(exceptionRid)) {
+            Akonadi::Item exceptionItem;
+            exceptionItem.setParentCollection(collection);
+            exceptionItem.setRemoteId(exceptionRid);
+            cache->removeException(exceptionRid);
+            exceptionItemsToDelete << exceptionItem;
+        }
+    }
+    if (!exceptionItemsToDelete.isEmpty()) {
+        auto deleteJob = new Akonadi::ItemDeleteJob(exceptionItemsToDelete);
+        connect(deleteJob, &KJob::result, this, &DavGroupwareResource::onItemExceptionsDeleteFinished);
+        deleteJob->start();
+    }
 
     if (updateType == ItemUpdateCreated) {
         auto addedItem = fetchJob->property("addedItem").value<Akonadi::Item>();
         addedItem.setRemoteRevision(davItem.etag());
-        etag->setEtag(addedItem.remoteId(), davItem.etag());
+        cache->setEtag(addedItem.remoteId(), davItem.etag());
         changeCommitted(addedItem);
     } else if (updateType == ItemUpdateChange) {
         changeCommitted(item);

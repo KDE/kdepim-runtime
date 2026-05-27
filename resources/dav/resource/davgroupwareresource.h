@@ -95,6 +95,7 @@ private:
                              int offset,
                              const Akonadi::Item::List &accumulated);
     void onRetrieveItemFinished(KJob *);
+
     /**
      * Called when a new item has been fetched from the backend.
      *
@@ -111,6 +112,7 @@ private:
     void onItemChangedFinished(KJob *);
     void onItemRemovalPrepared(KJob *);
     void onItemRemovedFinished(KJob *);
+    void onItemExceptionsDeleteFinished(KJob *job);
 
     void onCollectionDiscovered(KDAV::Protocol protocol, const QString &collectionUrl, const QString &configuredUrl);
     void onConflictModifyJobFinished(KJob *job);

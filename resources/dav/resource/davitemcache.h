@@ -9,6 +9,8 @@
 
 #include <QObject>
 
+#include <qhash.h>
+
 namespace Akonadi
 {
 class Collection;
@@ -77,8 +79,21 @@ public:
      */
     [[nodiscard]] bool isOutOfDate(const QString &remoteId) const;
 
+    /**
+     * Returns the list of exception URLs for the given remote ID.
+     */
+    [[nodiscard]] QStringList exceptionUrls(const QString &remoteId) const;
+    void removeException(const QString &remoteId);
+
 private:
     void onItemFetchJobFinished(KJob *job);
+    [[nodiscard]] bool isExceptionRemoteId(const QString &remoteId) const;
+    [[nodiscard]] QString baseRemoteId(const QString &exceptionRemoteId) const;
+    /**
+     * cache the exception remoteId
+     */
+    void cacheException(const QString &remoteId);
 
     std::shared_ptr<DavEtagCache> mEtagCache;
+    QMultiHash<QString, QString> mExceptionCache;
 };
