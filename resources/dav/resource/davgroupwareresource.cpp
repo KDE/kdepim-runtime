@@ -1444,7 +1444,7 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
         if (isAdded) {
             fetchJob->setProperty("addedItem", modifyJob->property("addedItem"));
         }
-        connect(fetchJob, &KDAV::DavItemsFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
+        connect(fetchJob, &KDAV::DavItemFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
         fetchJob->start();
     } else {
         if (!isRemoval) {
