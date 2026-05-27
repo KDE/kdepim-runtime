@@ -29,7 +29,7 @@ namespace Utils
 /**
  * Returns the i18n'ed name of the given DAV @p protocol dialect.
  */
-QString translatedProtocolName(KDAV::Protocol protocol);
+[[nodiscard]] QString translatedProtocolName(KDAV::Protocol protocol);
 
 /**
  * Creates a new KDAV::DavItem from the Akonadi::Item @p item.
@@ -37,7 +37,7 @@ QString translatedProtocolName(KDAV::Protocol protocol);
  * The returned item will have no payload (DavItem::data() will return an empty
  * QByteArray) if the @p item payload is not recognized.
  */
-KDAV::DavItem
+[[nodiscard]] KDAV::DavItem
 createDavItem(const Akonadi::Item &item, const Akonadi::Collection &collection, const Akonadi::Item::List &dependentItems = Akonadi::Item::List());
 
 /**
@@ -48,5 +48,5 @@ bool parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Akonadi::I
 /**
  * Converts given list of tags into iCal categories
  */
-QStringList tagsToCategories(const Akonadi::Tag::List &tags);
+[[nodiscard]] QStringList tagsToCategories(const Akonadi::Tag::List &tags);
 }
