@@ -1204,12 +1204,8 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
     // This allows the resource to use the multiget query and let it be nice
     // to the remote server : only one request for n items instead of n requests.
     if (protocolSupportsMultiget && !changedRids.isEmpty()) {
-        auto fetchJob = new KDAV::DavItemsFetchJob(davUrl, changedRids);
-        connect(fetchJob, &KDAV::DavItemsFetchJob::result, this, &DavGroupwareResource::onMultigetFinished);
-        fetchJob->setProperty("collection", QVariant::fromValue(collection));
-        fetchJob->setProperty("items", QVariant::fromValue(changedItems));
-        fetchJob->start();
-        // delay the call of itemsRetrieved() to onMultigetFinished()
+        startMultigetChunks(davUrl, collection, changedRids, changedItems, 0, Akonadi::Item::List());
+        // delay the call of itemsRetrievedIncremental() to startMultigetChunks() once all chunks finished
     } else {
         // Update the collection CTag attribute now as sync is done.
         if (mCTagCache.contains(collection.remoteId())) {
@@ -1247,7 +1243,9 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
     const auto origItems = job->property("items").value<Akonadi::Item::List>();
     const KDAV::DavItemsFetchJob *davJob = qobject_cast<KDAV::DavItemsFetchJob *>(job);
 
-    Akonadi::Item::List items;
+    // Resume the accumulator from prior chunks so the final
+    // itemsRetrievedIncremental() carries every item of this collection.
+    Akonadi::Item::List items = job->property("accumulated").value<Akonadi::Item::List>();
     for (Akonadi::Item item : std::as_const(origItems)) {
         const KDAV::DavItem davItem = davJob->item(item.remoteId());
 
@@ -1277,16 +1275,49 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
         }
     }
 
-    // Update the collection CTag attribute now as sync is done.
-    if (mCTagCache.contains(collection.remoteId())) {
-        auto CTagAttr = collection.attribute<CTagAttribute>(Collection::AddIfMissing);
-        qCDebug(DAVRESOURCE_LOG) << "Updating collection CTag from" << CTagAttr->CTag() << "to" << mCTagCache.value(collection.remoteId());
-        CTagAttr->setCTag(mCTagCache.value(collection.remoteId()));
-        auto modifyJob = new Akonadi::CollectionModifyJob(collection);
-        modifyJob->start();
+    // Start next chunk with the remaining items
+    const auto davUrl = job->property("davUrl").value<KDAV::DavUrl>();
+    const auto allRids = job->property("allRids").toStringList();
+    const auto allItems = job->property("allItems").value<Akonadi::Item::List>();
+    const int nextOffset = job->property("nextOffset").toInt();
+    startMultigetChunks(davUrl, collection, allRids, allItems, nextOffset, items);
+}
+
+void DavGroupwareResource::startMultigetChunks(const KDAV::DavUrl &davUrl,
+                                               const Akonadi::Collection &collection,
+                                               const QStringList &allRids,
+                                               const Akonadi::Item::List &allItems,
+                                               int offset,
+                                               const Akonadi::Item::List &accumulated)
+{
+    constexpr int multigetChunkSize = 100;
+
+    if (offset >= allRids.size()) {
+        // Update the collection CTag attribute now as sync is done.
+        if (mCTagCache.contains(collection.remoteId())) {
+            auto modifiableCollection = collection;
+            auto CTagAttr = modifiableCollection.attribute<CTagAttribute>(Collection::AddIfMissing);
+            qCDebug(DAVRESOURCE_LOG) << "Updating collection CTag from" << CTagAttr->CTag() << "to" << mCTagCache.value(collection.remoteId());
+            CTagAttr->setCTag(mCTagCache.value(collection.remoteId()));
+            auto modifyJob = new Akonadi::CollectionModifyJob(modifiableCollection);
+            modifyJob->start();
+        }
+        itemsRetrievedIncremental(accumulated, Akonadi::Item::List());
+        return;
     }
 
-    itemsRetrievedIncremental(items, Akonadi::Item::List());
+    const auto chunkRids = allRids.mid(offset, multigetChunkSize);
+    const auto chunkItems = allItems.mid(offset, multigetChunkSize);
+    auto fetchJob = new KDAV::DavItemsFetchJob(davUrl, chunkRids);
+    connect(fetchJob, &KDAV::DavItemsFetchJob::result, this, &DavGroupwareResource::onMultigetFinished);
+    fetchJob->setProperty("collection", QVariant::fromValue(collection));
+    fetchJob->setProperty("items", QVariant::fromValue(chunkItems));
+    fetchJob->setProperty("davUrl", QVariant::fromValue(davUrl));
+    fetchJob->setProperty("allRids", allRids);
+    fetchJob->setProperty("allItems", QVariant::fromValue(allItems));
+    fetchJob->setProperty("nextOffset", offset + multigetChunkSize);
+    fetchJob->setProperty("accumulated", QVariant::fromValue(accumulated));
+    fetchJob->start();
 }
 
 void DavGroupwareResource::onRetrieveItemFinished(KJob *job)

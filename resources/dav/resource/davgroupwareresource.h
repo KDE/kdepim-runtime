@@ -89,6 +89,12 @@ private:
     void onRetrieveCollectionsFinished(KJob *);
     void onRetrieveItemsFinished(KJob *);
     void onMultigetFinished(KJob *);
+    void startMultigetChunks(const KDAV::DavUrl &davUrl,
+                             const Akonadi::Collection &collection,
+                             const QStringList &allRids,
+                             const Akonadi::Item::List &allItems,
+                             int offset,
+                             const Akonadi::Item::List &accumulated);
     void onRetrieveItemFinished(KJob *);
     /**
      * Called when a new item has been fetched from the backend.
