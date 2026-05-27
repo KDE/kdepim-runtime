@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-07 00:45+0000\n"
+"POT-Creation-Date: 2026-05-27 00:46+0000\n"
 "PO-Revision-Date: 2025-06-27 08:13+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -117,7 +117,7 @@ msgstr "Preparat"
 msgid "Invalid item."
 msgstr "Element no vàlid."
 
-#: googleresource.cpp:85
+#: googleresource.cpp:88
 #, kde-format
 msgid "Fetching password…"
 msgstr "S'està recuperant la contrasenya…"
@@ -187,14 +187,14 @@ msgstr "El recurs no està configurat"
 msgid "Failed to refresh tokens"
 msgstr "Ha fallat en actualitzar els testimonis"
 
-#: googleresource.cpp:428 googleresource.cpp:442 googleresource.cpp:456
-#: googleresource.cpp:471 googleresource.cpp:485 googleresource.cpp:499
-#: googleresource.cpp:513
+#: googleresource.cpp:423 googleresource.cpp:437 googleresource.cpp:451
+#: googleresource.cpp:466 googleresource.cpp:480 googleresource.cpp:494
+#: googleresource.cpp:508
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Tipus de contingut no vàlid"
 
-#: googleresource.cpp:527 googleresource.cpp:541 googleresource.cpp:555
+#: googleresource.cpp:522 googleresource.cpp:536 googleresource.cpp:550
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Tipus MIME de la col·lecció desconegut"
@@ -382,13 +382,13 @@ msgid "Removing contact group '%1'"
 msgstr "S'està eliminant el grup de contactes «%1»"
 
 #. i18n: ectx: label, entry (Calendars), group (General)
-#: settingsbase.kcfg:21
+#: settingsbase.kcfg:13
 #, kde-format
 msgid "IDs of calendars in collection"
 msgstr "ID dels calendaris a la col·lecció"
 
 #. i18n: ectx: label, entry (TaskLists), group (General)
-#: settingsbase.kcfg:25
+#: settingsbase.kcfg:17
 #, kde-format
 msgid "IDs of task lists in collection"
 msgstr "ID de les llistes de tasques a la col·lecció"

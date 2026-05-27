@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-07 00:45+0000\n"
+"POT-Creation-Date: 2026-05-27 00:46+0000\n"
 "PO-Revision-Date: 2025-06-28 09:11+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
@@ -123,7 +123,7 @@ msgstr "Prêt"
 msgid "Invalid item."
 msgstr "Élément non valable."
 
-#: googleresource.cpp:85
+#: googleresource.cpp:88
 #, kde-format
 msgid "Fetching password…"
 msgstr "Recherche du mot de passe en cours..."
@@ -193,14 +193,14 @@ msgstr "La ressource n'est pas configurée"
 msgid "Failed to refresh tokens"
 msgstr "Il est impossible de rafraîchir les jetons"
 
-#: googleresource.cpp:428 googleresource.cpp:442 googleresource.cpp:456
-#: googleresource.cpp:471 googleresource.cpp:485 googleresource.cpp:499
-#: googleresource.cpp:513
+#: googleresource.cpp:423 googleresource.cpp:437 googleresource.cpp:451
+#: googleresource.cpp:466 googleresource.cpp:480 googleresource.cpp:494
+#: googleresource.cpp:508
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Type non valable de données utiles"
 
-#: googleresource.cpp:527 googleresource.cpp:541 googleresource.cpp:555
+#: googleresource.cpp:522 googleresource.cpp:536 googleresource.cpp:550
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Type MIME de collection inconnu"
@@ -388,13 +388,13 @@ msgid "Removing contact group '%1'"
 msgstr "Suppression du groupe de contacts « %1 »"
 
 #. i18n: ectx: label, entry (Calendars), group (General)
-#: settingsbase.kcfg:21
+#: settingsbase.kcfg:13
 #, kde-format
 msgid "IDs of calendars in collection"
 msgstr "Identifiant des agendas dans une collection"
 
 #. i18n: ectx: label, entry (TaskLists), group (General)
-#: settingsbase.kcfg:25
+#: settingsbase.kcfg:17
 #, kde-format
 msgid "IDs of task lists in collection"
 msgstr "Identifiants des listes de tâches dans une collection"

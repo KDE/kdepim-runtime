@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_googlecalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-07 00:45+0000\n"
+"POT-Creation-Date: 2026-05-27 00:46+0000\n"
 "PO-Revision-Date: 2016-12-26 13:16+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -121,7 +121,7 @@ msgstr "Спреман"
 msgid "Invalid item."
 msgstr "Лош тип товара"
 
-#: googleresource.cpp:85
+#: googleresource.cpp:88
 #, kde-format
 msgid "Fetching password…"
 msgstr ""
@@ -186,14 +186,14 @@ msgstr "Ресурс није подешен"
 msgid "Failed to refresh tokens"
 msgstr "Неуспело освежавање токена"
 
-#: googleresource.cpp:428 googleresource.cpp:442 googleresource.cpp:456
-#: googleresource.cpp:471 googleresource.cpp:485 googleresource.cpp:499
-#: googleresource.cpp:513
+#: googleresource.cpp:423 googleresource.cpp:437 googleresource.cpp:451
+#: googleresource.cpp:466 googleresource.cpp:480 googleresource.cpp:494
+#: googleresource.cpp:508
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Лош тип товара"
 
-#: googleresource.cpp:527 googleresource.cpp:541 googleresource.cpp:555
+#: googleresource.cpp:522 googleresource.cpp:536 googleresource.cpp:550
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Непозната збирка МИМЕ типова"
@@ -402,13 +402,13 @@ msgid "Removing contact group '%1'"
 msgstr ""
 
 #. i18n: ectx: label, entry (Calendars), group (General)
-#: settingsbase.kcfg:21
+#: settingsbase.kcfg:13
 #, kde-format
 msgid "IDs of calendars in collection"
 msgstr "ИД‑ови календара у збирци"
 
 #. i18n: ectx: label, entry (TaskLists), group (General)
-#: settingsbase.kcfg:25
+#: settingsbase.kcfg:17
 #, kde-format
 msgid "IDs of task lists in collection"
 msgstr "ИД‑ови спискова календара у збирци"

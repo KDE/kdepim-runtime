@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtimeReport-Msgid-Bugs-To: https://bugs.kde."
 "org\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-07 00:45+0000\n"
+"POT-Creation-Date: 2026-05-27 00:46+0000\n"
 "PO-Revision-Date: 2024-08-22 22:54+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -116,7 +116,7 @@ msgstr "Preta"
 msgid "Invalid item."
 msgstr "Nevalida ero."
 
-#: googleresource.cpp:85
+#: googleresource.cpp:88
 #, kde-format
 msgid "Fetching password…"
 msgstr "Prenante pasvorton…"
@@ -184,14 +184,14 @@ msgstr "Rimedo ne estas agordita"
 msgid "Failed to refresh tokens"
 msgstr "Malsukcesis refreŝigi ĵetonojn"
 
-#: googleresource.cpp:428 googleresource.cpp:442 googleresource.cpp:456
-#: googleresource.cpp:471 googleresource.cpp:485 googleresource.cpp:499
-#: googleresource.cpp:513
+#: googleresource.cpp:423 googleresource.cpp:437 googleresource.cpp:451
+#: googleresource.cpp:466 googleresource.cpp:480 googleresource.cpp:494
+#: googleresource.cpp:508
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Nevalida ŝargaĵa tipo"
 
-#: googleresource.cpp:527 googleresource.cpp:541 googleresource.cpp:555
+#: googleresource.cpp:522 googleresource.cpp:536 googleresource.cpp:550
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Nekonata kolekto mimetipo"
@@ -380,13 +380,13 @@ msgid "Removing contact group '%1'"
 msgstr "Forigante kontaktogrupon '%1'"
 
 #. i18n: ectx: label, entry (Calendars), group (General)
-#: settingsbase.kcfg:21
+#: settingsbase.kcfg:13
 #, kde-format
 msgid "IDs of calendars in collection"
 msgstr "ID-oj de kalendaroj en kolekto"
 
 #. i18n: ectx: label, entry (TaskLists), group (General)
-#: settingsbase.kcfg:25
+#: settingsbase.kcfg:17
 #, kde-format
 msgid "IDs of task lists in collection"
 msgstr "ID-oj de taskaj listoj en kolekto"

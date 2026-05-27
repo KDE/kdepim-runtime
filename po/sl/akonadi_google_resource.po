@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-07 00:45+0000\n"
+"POT-Creation-Date: 2026-05-27 00:46+0000\n"
 "PO-Revision-Date: 2025-06-27 06:12+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -121,7 +121,7 @@ msgstr "Pripravljen"
 msgid "Invalid item."
 msgstr "Neveljavni predmet."
 
-#: googleresource.cpp:85
+#: googleresource.cpp:88
 #, kde-format
 msgid "Fetching password…"
 msgstr "Pridobivanje gesla…"
@@ -189,14 +189,14 @@ msgstr "Vir ni nastavljen"
 msgid "Failed to refresh tokens"
 msgstr "Žetonov ni bilo mogoče osvežiti"
 
-#: googleresource.cpp:428 googleresource.cpp:442 googleresource.cpp:456
-#: googleresource.cpp:471 googleresource.cpp:485 googleresource.cpp:499
-#: googleresource.cpp:513
+#: googleresource.cpp:423 googleresource.cpp:437 googleresource.cpp:451
+#: googleresource.cpp:466 googleresource.cpp:480 googleresource.cpp:494
+#: googleresource.cpp:508
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Neveljavna vrsta vsebine"
 
-#: googleresource.cpp:527 googleresource.cpp:541 googleresource.cpp:555
+#: googleresource.cpp:522 googleresource.cpp:536 googleresource.cpp:550
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Neznana vrsta MIME zbirke"
@@ -394,13 +394,13 @@ msgid "Removing contact group '%1'"
 msgstr "Odstranjevanje skupine stikov »%1«"
 
 #. i18n: ectx: label, entry (Calendars), group (General)
-#: settingsbase.kcfg:21
+#: settingsbase.kcfg:13
 #, kde-format
 msgid "IDs of calendars in collection"
 msgstr "Določilniki koledarjev v zbirki"
 
 #. i18n: ectx: label, entry (TaskLists), group (General)
-#: settingsbase.kcfg:25
+#: settingsbase.kcfg:17
 #, kde-format
 msgid "IDs of task lists in collection"
 msgstr "Določilniki seznamov opravil v zbirki"

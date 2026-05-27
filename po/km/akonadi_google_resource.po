@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-07 00:45+0000\n"
+"POT-Creation-Date: 2026-05-27 00:46+0000\n"
 "PO-Revision-Date: 2012-06-12 09:59+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -118,7 +118,7 @@ msgstr ""
 msgid "Invalid item."
 msgstr "payload មិន​ត្រឹមត្រូវ"
 
-#: googleresource.cpp:85
+#: googleresource.cpp:88
 #, kde-format
 msgid "Fetching password…"
 msgstr ""
@@ -183,15 +183,15 @@ msgstr ""
 msgid "Failed to refresh tokens"
 msgstr "បាន​បរាជ័យ​ក្នុង​ការ​ទំនាក់ទំនង"
 
-#: googleresource.cpp:428 googleresource.cpp:442 googleresource.cpp:456
-#: googleresource.cpp:471 googleresource.cpp:485 googleresource.cpp:499
-#: googleresource.cpp:513
+#: googleresource.cpp:423 googleresource.cpp:437 googleresource.cpp:451
+#: googleresource.cpp:466 googleresource.cpp:480 googleresource.cpp:494
+#: googleresource.cpp:508
 #, fuzzy, kde-format
 #| msgid "Invalid payload"
 msgid "Invalid payload type"
 msgstr "payload មិន​ត្រឹមត្រូវ"
 
-#: googleresource.cpp:527 googleresource.cpp:541 googleresource.cpp:555
+#: googleresource.cpp:522 googleresource.cpp:536 googleresource.cpp:550
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr ""
@@ -389,13 +389,13 @@ msgid "Removing contact group '%1'"
 msgstr "បាន​បរាជ័យ​ក្នុង​ការ​យក​ទំនាក់ទំនង​ចេញ"
 
 #. i18n: ectx: label, entry (Calendars), group (General)
-#: settingsbase.kcfg:21
+#: settingsbase.kcfg:13
 #, kde-format
 msgid "IDs of calendars in collection"
 msgstr "លេខ​សម្គាល់​ប្រតិទិន​នៅ​ក្នុង​សម្រាំង"
 
 #. i18n: ectx: label, entry (TaskLists), group (General)
-#: settingsbase.kcfg:25
+#: settingsbase.kcfg:17
 #, kde-format
 msgid "IDs of task lists in collection"
 msgstr "លេខ​សម្គាល់​បញ្ជី​ភារកិច្ច​នៅ​ក្នុង​សម្រាំង"
