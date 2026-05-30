@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-23 00:45+0000\n"
+"POT-Creation-Date: 2026-05-30 00:46+0000\n"
 "PO-Revision-Date: 2024-12-20 21:52+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -349,17 +349,17 @@ msgstr "संग्रहं हर्तुं असमर्थः: %1"
 msgid "Unable to retrieve collections: %1"
 msgstr "संग्रहान् पुनः प्राप्तुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1134 davgroupwareresource.cpp:1233
+#: davgroupwareresource.cpp:1134 davgroupwareresource.cpp:1229
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "द्रव्यं पुनः प्राप्तुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1315
+#: davgroupwareresource.cpp:1346
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "मदं पुनः प्राप्तुं असमर्थम्: %1"
 
-#: davgroupwareresource.cpp:1335
+#: davgroupwareresource.cpp:1366
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -367,23 +367,23 @@ msgid ""
 msgstr ""
 "मदं पुनः प्राप्तुं असमर्थः: मददत्तांशं विश्लेषणं कर्तुं असफलः। भवतु नाम पूर्वमेव विलोपितम् आसीत्।"
 
-#: davgroupwareresource.cpp:1377
+#: davgroupwareresource.cpp:1408
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "मदं योजयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1422 davgroupwareresource.cpp:1546
-#: davgroupwareresource.cpp:1558
+#: davgroupwareresource.cpp:1453 davgroupwareresource.cpp:1577
+#: davgroupwareresource.cpp:1589
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "मदं परिवर्तयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1520 davgroupwareresource.cpp:1577
+#: davgroupwareresource.cpp:1551 davgroupwareresource.cpp:1608
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "मदं निष्कासयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1664 davgroupwareresource.cpp:1665
+#: davgroupwareresource.cpp:1695 davgroupwareresource.cpp:1696
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "संसाधनम् अद्यापि विन्यस्तं नास्ति"

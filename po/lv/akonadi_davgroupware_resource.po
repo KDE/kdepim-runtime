@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-23 00:45+0000\n"
+"POT-Creation-Date: 2026-05-30 00:46+0000\n"
 "PO-Revision-Date: 2025-09-26 16:21+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -352,17 +352,17 @@ msgstr "Neizdevās noņemt kolekciju: %1"
 msgid "Unable to retrieve collections: %1"
 msgstr "Neizdevās saņemt kolekcijas: %1"
 
-#: davgroupwareresource.cpp:1134 davgroupwareresource.cpp:1233
+#: davgroupwareresource.cpp:1134 davgroupwareresource.cpp:1229
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Neizdevās izgūt vienumus: %1"
 
-#: davgroupwareresource.cpp:1315
+#: davgroupwareresource.cpp:1346
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Neizdevās izgūt vienumu: %1"
 
-#: davgroupwareresource.cpp:1335
+#: davgroupwareresource.cpp:1366
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -371,23 +371,23 @@ msgstr ""
 "Neizdevās izgūt vienumu: neizdevās parsēt vienumu datus. Iespējams, tie ir "
 "jau dzēsti."
 
-#: davgroupwareresource.cpp:1377
+#: davgroupwareresource.cpp:1408
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Neizdevās pievienot vienumu: %1"
 
-#: davgroupwareresource.cpp:1422 davgroupwareresource.cpp:1546
-#: davgroupwareresource.cpp:1558
+#: davgroupwareresource.cpp:1453 davgroupwareresource.cpp:1577
+#: davgroupwareresource.cpp:1589
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Neizdevās mainīt vienumu: %1"
 
-#: davgroupwareresource.cpp:1520 davgroupwareresource.cpp:1577
+#: davgroupwareresource.cpp:1551 davgroupwareresource.cpp:1608
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Neizdevās noņemt vienumu: %1"
 
-#: davgroupwareresource.cpp:1664 davgroupwareresource.cpp:1665
+#: davgroupwareresource.cpp:1695 davgroupwareresource.cpp:1696
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Resurss vēl nav konfigurēts"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-23 00:45+0000\n"
+"POT-Creation-Date: 2026-05-30 00:46+0000\n"
 "PO-Revision-Date: 2025-05-29 23:32+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -357,17 +357,17 @@ msgstr "Ez da bilduma kentzeko gai: %1"
 msgid "Unable to retrieve collections: %1"
 msgstr "Ez da bildumak eskuratzeko gai: %1"
 
-#: davgroupwareresource.cpp:1134 davgroupwareresource.cpp:1233
+#: davgroupwareresource.cpp:1134 davgroupwareresource.cpp:1229
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Ez da elementuak eskuratzeko gai: %1"
 
-#: davgroupwareresource.cpp:1315
+#: davgroupwareresource.cpp:1346
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Ez da elementua eskuratzeko gai: %1"
 
-#: davgroupwareresource.cpp:1335
+#: davgroupwareresource.cpp:1366
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -376,23 +376,23 @@ msgstr ""
 "Ez da elementua eskuratzeko gai: elementuaren datuen azterketa-sintaktikoa "
 "huts egin du. Agian dagoeneko ezabatu da."
 
-#: davgroupwareresource.cpp:1377
+#: davgroupwareresource.cpp:1408
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Ez da elementua gehitzeko gai: %1"
 
-#: davgroupwareresource.cpp:1422 davgroupwareresource.cpp:1546
-#: davgroupwareresource.cpp:1558
+#: davgroupwareresource.cpp:1453 davgroupwareresource.cpp:1577
+#: davgroupwareresource.cpp:1589
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Ez da elementua aldatzeko gai: %1"
 
-#: davgroupwareresource.cpp:1520 davgroupwareresource.cpp:1577
+#: davgroupwareresource.cpp:1551 davgroupwareresource.cpp:1608
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Ez da elementua kentzeko gai: %1"
 
-#: davgroupwareresource.cpp:1664 davgroupwareresource.cpp:1665
+#: davgroupwareresource.cpp:1695 davgroupwareresource.cpp:1696
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Baliabidea ez dago konfiguratuta oraindik"

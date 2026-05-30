@@ -141,6 +141,7 @@ msgid ""
 "Possible solution: review your send mail settings (authentication, port, "
 "encryption type, etc.)"
 msgstr ""
+"可能的解决方案：检查您的邮件发送设置 (身份认证信息、端口、加密类型等)。"
 
 #: sendjob.cpp:288
 #, kde-format
