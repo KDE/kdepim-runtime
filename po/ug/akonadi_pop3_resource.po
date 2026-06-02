@@ -8,28 +8,27 @@ msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-28 00:46+0000\n"
-"PO-Revision-Date: 2013-09-08 07:05+0900\n"
-"Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
+"PO-Revision-Date: 2026-05-30 17:29-0400\n"
+"Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.9\n"
 
 #: accountwidget.cpp:83
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p%"
 
 #: accountwidget.cpp:91
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " مىنۇت"
+msgstr[0] ""
 
 #: accountwidget.cpp:128 pop3resource.cpp:46
 #, kde-format
@@ -118,7 +117,7 @@ msgstr ""
 #: pop3protocol.cpp:189
 #, kde-format
 msgid "The server said: \"%1\""
-msgstr ""
+msgstr "مۇلازىمېتىر ئۇچۇرى: «%1»"
 
 #: pop3protocol.cpp:211
 #, kde-format
@@ -173,6 +172,8 @@ msgid ""
 "Could not login to %1.\n"
 "\n"
 msgstr ""
+"%1 غا كىرەلمىدى.\n"
+"\n"
 
 #: pop3protocol.cpp:534
 #, kde-format
@@ -190,7 +191,7 @@ msgstr ""
 #: pop3protocol.cpp:596
 #, kde-format
 msgid "%1: %2"
-msgstr ""
+msgstr "%1: %2"
 
 #: pop3protocol.cpp:615
 #, kde-format
@@ -269,7 +270,7 @@ msgstr ""
 #: pop3resource.cpp:164
 #, kde-format
 msgid "Account:"
-msgstr "ھېسابات:"
+msgstr "ھېساب:"
 
 #: pop3resource.cpp:181
 #, kde-format
@@ -425,7 +426,7 @@ msgstr ""
 #: pop3resource.cpp:980
 #, kde-format
 msgid "Offline"
-msgstr "توردا يوق"
+msgstr "تورسىز"
 
 #. i18n: ectx: property (text), widget (QLabel, titleLabel)
 #: popsettings.ui:35
@@ -495,10 +496,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: popsettings.ui:117
-#, fuzzy, kde-format
-#| msgid "Username:"
+#, kde-format
 msgid "Use&rname:"
-msgstr "ئىشلەتكۈچى ئاتى:"
+msgstr ""
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, loginEdit)
 #: popsettings.ui:127
@@ -557,10 +557,9 @@ msgstr "ئالىي"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget)
 #: popsettings.ui:217
-#, fuzzy, kde-format
-#| msgid "Connection Settings"
+#, kde-format
 msgid "POP Settings"
-msgstr "باغلىنىش تەڭشىكى"
+msgstr ""
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, leaveOnServerCheck)
 #: popsettings.ui:239
@@ -638,7 +637,7 @@ msgstr ""
 #: popsettings.ui:329
 #, kde-format
 msgid " MB"
-msgstr " مېگابايت"
+msgstr " MB"
 
 #. i18n: ectx: property (text), widget (QCheckBox, usePipeliningCheck)
 #: popsettings.ui:345
@@ -692,14 +691,13 @@ msgstr "يوق"
 #: popsettings.ui:443
 #, kde-format
 msgid "SSL/TLS"
-msgstr "SSL/TLS"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, encryptionTLS)
 #: popsettings.ui:450
-#, fuzzy, kde-format
-#| msgid "STARTTLS"
+#, kde-format
 msgid "STA&RTTLS"
-msgstr "STARTTLS"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, imapInfo)
 #: popsettings.ui:465

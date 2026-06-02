@@ -8,14 +8,15 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-05-03 00:44+0000\n"
-"PO-Revision-Date: 2013-09-08 07:05+0900\n"
-"Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
+"PO-Revision-Date: 2026-05-30 17:27-0400\n"
+"Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.9\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -235,10 +236,9 @@ msgstr "زاپاس URL نى بەلگىلەش"
 
 #. i18n: ectx: label, entry (AlternateAuthentication), group (siever)
 #: imapresource.kcfg:111
-#, fuzzy, kde-format
-#| msgid "Defines the authentication type to use"
+#, kde-format
 msgid "Defines the authentication type to use for alternate server"
-msgstr "ئىشلىتىدىغان كىملىك دەلىللەش تىپىنى بەلگىلەش"
+msgstr ""
 
 #. i18n: ectx: label, entry (SieveVacationFilename), group (siever)
 #: imapresource.kcfg:115
@@ -254,10 +254,9 @@ msgstr ""
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
 #: imapresource.kcfg:123
-#, fuzzy, kde-format
-#| msgid "Defines the authentication type to use"
+#, kde-format
 msgid "Defines the type of identification used by custom sieve server"
-msgstr "ئىشلىتىدىغان كىملىك دەلىللەش تىپىنى بەلگىلەش"
+msgstr ""
 
 #. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
 #: imapresource.kcfg:129
@@ -353,12 +352,10 @@ msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr ""
 
 #: imapresourcebase.cpp:438
-#, fuzzy, kde-format
-#| msgctxt "@label search for a subscription"
-#| msgid "Search:"
+#, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr "ئىزدە:"
+msgstr "ئىزدەۋاتىدۇ…"
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -427,10 +424,9 @@ msgid "Restarting item retrieval."
 msgstr ""
 
 #: resourcetask.cpp:69
-#, fuzzy, kde-format
-#| msgid "Unable to connect to the server, please verify the server address."
+#, kde-format
 msgid "Unable to connect to the IMAP server."
-msgstr "مۇلازىمېتىرغا باغلىنالمىدى. مۇلازىمېتىر  ئادرېسىنى تەكشۈرۈڭ."
+msgstr ""
 
 #: resourcetask.cpp:113 resourcetask.cpp:125
 #, kde-format
@@ -549,8 +545,6 @@ msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
 "set up for that."
 msgstr ""
-"You requested TLS/SSL to connect to %1, but your system does not seem to be "
-"set up for that."
 
 #: sessionpool.cpp:410
 #, kde-format
@@ -660,19 +654,16 @@ msgid ""
 msgstr ""
 
 #: settingspasswordrequester.cpp:91
-#, fuzzy, kde-format
-#| msgctxt "Input username/password manually and not store them"
-#| msgid "Try Again"
+#, kde-format
 msgctxt "@action:button"
 msgid "Try again"
-msgstr "قايتا سىناش"
+msgstr ""
 
 #: settingspasswordrequester.cpp:97
-#, fuzzy, kde-format
-#| msgid "Identity Settings"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open settings"
-msgstr "كىملىك تەڭشىكى"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -699,24 +690,21 @@ msgid "XOAuth"
 msgstr ""
 
 #: setupserver.cpp:141
-#, fuzzy, kde-format
-#| msgid "Shared Folders"
+#, kde-format
 msgid "Archive Folder"
-msgstr "ھەمبەھىرلەنگەن قىسقۇچلار"
+msgstr ""
 
 #: setupserver.cpp:152
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
-msgstr ""
+msgstr "%p%"
 
 #: setupserver.cpp:154
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " مىنۇت"
+msgstr[0] ""
 
 #: setupserver.cpp:169
 #, kde-format
@@ -726,7 +714,7 @@ msgstr "كىملىك:"
 #: setupserver.cpp:189
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "پائالىيەت"
 
 #: setupserver.cpp:251
 #, kde-format
@@ -737,11 +725,10 @@ msgid ""
 msgstr ""
 
 #: setupserver.cpp:254
-#, fuzzy, kde-format
-#| msgid "Username"
+#, kde-format
 msgctxt "@title:window"
 msgid "Server address change"
-msgstr "ئىشلەتكۈچى ئاتى"
+msgstr ""
 
 #: setupserver.cpp:261
 #, kde-format
@@ -752,11 +739,10 @@ msgid ""
 msgstr ""
 
 #: setupserver.cpp:264
-#, fuzzy, kde-format
-#| msgid "Username"
+#, kde-format
 msgctxt "@title:window"
 msgid "User name change"
-msgstr "ئىشلەتكۈچى ئاتى"
+msgstr ""
 
 #: setupserver.cpp:550
 #, kde-format
@@ -820,10 +806,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: setupserverview_desktop.ui:60
-#, fuzzy, kde-format
-#| msgid "IMAP server"
+#, kde-format
 msgid "I&MAP Server:"
-msgstr "IMAP مۇلازىمېتىرى"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label_2)
 #: setupserverview_desktop.ui:74
@@ -833,10 +818,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: setupserverview_desktop.ui:77
-#, fuzzy, kde-format
-#| msgid "Username:"
+#, kde-format
 msgid "Use&rname:"
-msgstr "ئىشلەتكۈچى ئاتى:"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label_3)
 #: setupserverview_desktop.ui:91
@@ -916,17 +900,15 @@ msgstr ""
 
 #. i18n: ectx: property (title), widget (QGroupBox, authentication)
 #: setupserverview_desktop.ui:223
-#, fuzzy, kde-format
-#| msgid "Authentication:"
+#, kde-format
 msgid "Authentication"
-msgstr "كىملىك دەلىللەش:"
+msgstr "كىملىك دەلىللەش"
 
 #. i18n: ectx: property (text), widget (QRadioButton, noAuthentification)
 #: setupserverview_desktop.ui:233
-#, fuzzy, kde-format
-#| msgid "Authentication:"
+#, kde-format
 msgid "No authentication"
-msgstr "كىملىك دەلىللەش:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, customUserPassword)
 #: setupserverview_desktop.ui:243
@@ -964,29 +946,26 @@ msgstr ""
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:304 setupserverview_desktop.ui:527
-#, fuzzy, kde-format
-#| msgid "PLAIN"
+#, kde-format
 msgctxt "Authentication method"
 msgid "PLAIN"
-msgstr "PLAIN"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:309 setupserverview_desktop.ui:532
-#, fuzzy, kde-format
-#| msgid "CRAM-MD5"
+#, kde-format
 msgctxt "Authentication method"
 msgid "CRAM-MD5"
-msgstr "CRAM-MD5"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:314 setupserverview_desktop.ui:537
-#, fuzzy, kde-format
-#| msgid "DIGEST-MD5"
+#, kde-format
 msgctxt "Authentication method"
 msgid "DIGEST-MD5"
-msgstr "DIGEST-MD5"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -999,11 +978,10 @@ msgstr ""
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
 #: setupserverview_desktop.ui:324 setupserverview_desktop.ui:547
-#, fuzzy, kde-format
-#| msgid "GSSAPI"
+#, kde-format
 msgctxt "Authentication method"
 msgid "GSSAPI"
-msgstr "GSSAPI"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, advancedTab)
 #: setupserverview_desktop.ui:356
@@ -1069,13 +1047,13 @@ msgstr "شىفىرلاش:"
 #: setupserverview_desktop.ui:441
 #, kde-format
 msgid "STARTTLS"
-msgstr "STARTTLS"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, sslRadio)
 #: setupserverview_desktop.ui:451
 #, kde-format
 msgid "SSL/TLS"
-msgstr "SSL/TLS"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, noRadio)
 #: setupserverview_desktop.ui:461
@@ -1146,13 +1124,11 @@ msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr ""
 
-#, fuzzy
 #~| msgid "Account Settings"
 #~ msgctxt "@title:window"
 #~ msgid "IMAP Account Settings"
 #~ msgstr "ھېسابات تەڭشىكى"
 
-#, fuzzy
 #~| msgid "Authentication:"
 #~ msgctxt "@title:window"
 #~ msgid "Could Not Authenticate"
@@ -1164,35 +1140,30 @@ msgstr ""
 #~ msgid "Use &default identity"
 #~ msgstr "كۆڭۈلدىكى كىملىكنى ئىشلەت(&D)"
 
-#, fuzzy
 #~| msgid "Unable to connect to the server, please verify the server address."
 #~ msgid ""
 #~ "Could not retrieve namespaces from the IMAP server %1.\n"
 #~ "%2"
 #~ msgstr "مۇلازىمېتىرغا باغلىنالمىدى. مۇلازىمېتىر  ئادرېسىنى تەكشۈرۈڭ."
 
-#, fuzzy
 #~| msgid "Unable to connect to the server, please verify the server address."
 #~ msgid ""
 #~ "Could not retrieve namespaces from the IMAP server.\n"
 #~ "%1"
 #~ msgstr "مۇلازىمېتىرغا باغلىنالمىدى. مۇلازىمېتىر  ئادرېسىنى تەكشۈرۈڭ."
 
-#, fuzzy
 #~| msgid "Unable to connect to the server, please verify the server address."
 #~ msgid ""
 #~ "Could not send client ID to the IMAP server %1.\n"
 #~ "%2"
 #~ msgstr "مۇلازىمېتىرغا باغلىنالمىدى. مۇلازىمېتىر  ئادرېسىنى تەكشۈرۈڭ."
 
-#, fuzzy
 #~| msgid "Unable to connect to the server, please verify the server address."
 #~ msgid ""
 #~ "Could not send client ID to the IMAP server.\n"
 #~ "%1"
 #~ msgstr "مۇلازىمېتىرغا باغلىنالمىدى. مۇلازىمېتىر  ئادرېسىنى تەكشۈرۈڭ."
 
-#, fuzzy
 #~| msgid "Username:"
 #~ msgid "&Username:"
 #~ msgstr "ئىشلەتكۈچى ئاتى:"

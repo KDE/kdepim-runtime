@@ -8,14 +8,15 @@ msgstr ""
 "Project-Id-Version: akonadi_mixedmaildir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:52+0000\n"
-"PO-Revision-Date: 2013-09-08 07:05+0900\n"
-"Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
+"PO-Revision-Date: 2026-05-30 17:28-0400\n"
+"Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.9\n"
 
 #: configwidget.cpp:28
 #, kde-format
@@ -76,18 +77,18 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move root maildir folder '%1'."
-msgstr "غول ئېلخەت مۇندەرىجىسى‹%1› نى يۆتكىگىلى بولمىدى."
+msgstr "غول ئېلخەت مۇندەرىجىسى«%1» نى يۆتكىگىلى بولمىدى."
 
 #: mixedmaildirresource.cpp:346
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
-msgstr "يۇقىرى قەۋەتتىكى maildir قىسقۇچى ‹%1› نى ئۆچۈرگىلى بولمىدى."
+msgstr "يۇقىرى قەۋەتتىكى maildir قىسقۇچى «%1» نى ئۆچۈرگىلى بولمىدى."
 
 #: mixedmaildirresource.cpp:360
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to create maildir '%1'."
-msgstr "‹%1› دېگەن maildir نى قۇرغىلى بولمىدى."
+msgstr "«%1» دېگەن maildir نى قۇرغىلى بولمىدى."
 
 #: mixedmaildirresource.cpp:372
 #, kde-format
@@ -112,7 +113,7 @@ msgstr ""
 #: mixedmaildirresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "ئەمەلىي ئارقا ئۇچ سانلىق-مەلۇماتىنى ئۆزگەرتمەيدۇ."
+msgstr "ئەمەلىي ئارقا ئۇچ سانلىق مەلۇماتىنى ئۆزگەرتمەيدۇ."
 
 #: mixedmaildirstore.cpp:550
 #, kde-format
@@ -203,12 +204,10 @@ msgid "Cannot modify emails in folder %1"
 msgstr ""
 
 #: mixedmaildirstore.cpp:1874
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Cannot move root maildir folder '%1'."
+#, kde-format
 msgctxt "@info:status"
 msgid "Cannot modify emails in folder %1. %2"
-msgstr "غول ئېلخەت مۇندەرىجىسى‹%1› نى يۆتكىگىلى بولمىدى."
+msgstr ""
 
 #: mixedmaildirstore.cpp:1899 mixedmaildirstore.cpp:1930
 #: mixedmaildirstore.cpp:1954

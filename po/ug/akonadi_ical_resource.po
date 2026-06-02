@@ -8,14 +8,15 @@ msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-05-04 00:44+0000\n"
-"PO-Revision-Date: 2013-09-08 07:05+0900\n"
-"Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
+"PO-Revision-Date: 2026-05-30 17:27-0400\n"
+"Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.9\n"
 
 #: icalresource.cpp:58 icalresource.cpp:137 icalresource.cpp:218
 #, kde-format
@@ -25,7 +26,7 @@ msgstr "يىلنامە ئوقۇلمىغان."
 #: icalresource.cpp:70
 #, kde-format
 msgid "Incidence with uid '%1' not found."
-msgstr "كىملىكى ‹%1› بولغان ھادىسە تېپىلمىدى."
+msgstr "كىملىكى «%1» بولغان ھادىسە تېپىلمىدى."
 
 #: icalresource.cpp:204
 #, kde-format
@@ -58,7 +59,7 @@ msgstr "كۆرسىتىش ئاتى."
 #: icalresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "ئەمەلىي ئارقا ئۇچ سانلىق-مەلۇماتىنى ئۆزگەرتمەيدۇ."
+msgstr "ئەمەلىي ئارقا ئۇچ سانلىق مەلۇماتىنى ئۆزگەرتمەيدۇ."
 
 #. i18n: ectx: label, entry (MonitorFile), group (General)
 #: icalresource.kcfg:22
@@ -74,10 +75,9 @@ msgstr ""
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: icalresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Autosave interval time (in minutes)."
+#, kde-format
 msgid "Automatic update period in minutes."
-msgstr "ئاپتوماتىك ساقلاش ئىنتېرۋالى(مىنۇت)"
+msgstr ""
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "ئاپتوماتىك ساقلاش ئىنتېرۋالى(مىنۇت)"

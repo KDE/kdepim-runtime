@@ -8,14 +8,15 @@ msgstr ""
 "Project-Id-Version: akonadi_googlecalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-05-27 00:46+0000\n"
-"PO-Revision-Date: 2013-09-08 07:05+0900\n"
-"Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
+"PO-Revision-Date: 2026-05-30 17:27-0400\n"
+"Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur <kde-i18n-doc@kde.org>\n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.9\n"
 
 #: calendarhandler.cpp:92
 #, kde-format
@@ -100,9 +101,7 @@ msgid "Cannot handle item tag changes"
 msgstr ""
 
 #: generichandler.cpp:61
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Ready"
+#, kde-format
 msgctxt "@status"
 msgid "Ready"
 msgstr "تەييار"
@@ -110,7 +109,7 @@ msgstr "تەييار"
 #: generichandler.h:66 generichandler.h:78
 #, kde-format
 msgid "Invalid item."
-msgstr ""
+msgstr "ئىناۋەتسىز تۈر."
 
 #: googleresource.cpp:88
 #, kde-format
@@ -163,7 +162,7 @@ msgstr ""
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
-msgstr ""
+msgstr "تىزىمغا كىر"
 
 #: googleresource.cpp:223 googleresource.cpp:224
 #, kde-format
@@ -214,16 +213,15 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)
 #: googlesettingswidget.ui:23
-#, fuzzy, kde-format
-#| msgid "Accounts"
+#, kde-format
 msgid "Account:"
-msgstr "ھېساباتلار"
+msgstr "ھېساب:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
 #, kde-format
 msgid "Configure…"
-msgstr ""
+msgstr "سەپلە…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49
@@ -245,10 +243,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, calendarsLabel)
 #: googlesettingswidget.ui:92
-#, fuzzy, kde-format
-#| msgid "Calendars"
+#, kde-format
 msgid "Enabled Calendars:"
-msgstr "يىلنامىلەر"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
@@ -273,13 +270,13 @@ msgstr ""
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Friends"
-msgstr ""
+msgstr "دوستلار"
 
 #: personhandler.cpp:91
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Family"
-msgstr ""
+msgstr "ئائىلە"
 
 #: personhandler.cpp:93
 #, kde-format
@@ -446,7 +443,6 @@ msgstr ""
 #~ msgid "&Remove"
 #~ msgstr "چىقىرىۋەت(&R)"
 
-#, fuzzy
 #~| msgid "Accounts"
 #~ msgid "Unknown Account"
 #~ msgstr "ھېساباتلار"
