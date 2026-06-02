@@ -9,7 +9,7 @@
 #include <KDAV/EtagCache>
 
 /**
- * @short Purpose of this class is to expose setInternalEtag protected method to AkonadiEtagCache
+ * @short Purpose of this class is to expose setInternalEtag protected method to DavItemCache
  */
 class DavEtagCache : public KDAV::EtagCache
 {
@@ -17,5 +17,5 @@ public:
     using KDAV::EtagCache::EtagCache;
 
 private:
-    friend class AkonadiEtagCache;
+    friend class DavItemCache;
 };

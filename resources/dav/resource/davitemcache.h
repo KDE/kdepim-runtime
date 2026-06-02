@@ -32,7 +32,7 @@ class DavEtagCache;
  * out which items have been changed in the backend and have to
  * be refetched on the next call of ResourceBase::retrieveItems()
  */
-class AkonadiEtagCache : public QObject
+class DavItemCache : public QObject
 {
     Q_OBJECT
 
@@ -41,12 +41,12 @@ public:
      * Creates a new etag cache and populates it with the ETags
      * of items found in @p collection.
      */
-    explicit AkonadiEtagCache(const Akonadi::Collection &collection, QObject *parent = nullptr);
-    ~AkonadiEtagCache() override;
+    explicit DavItemCache(const Akonadi::Collection &collection, QObject *parent = nullptr);
+    ~DavItemCache() override;
 
     /**
      * Don't use this accessor, expected to be used only to share the map with KDAV
-     * methods like setEtag need to be called on AkonadiEtagCache directly.
+     * methods like setEtag need to be called on DavItemCache directly.
      * @return KDAV::EtagCache to share with KDAV jobs
      */
     [[nodiscard]] std::shared_ptr<KDAV::EtagCache> eTagCache();

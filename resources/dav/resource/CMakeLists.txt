@@ -45,12 +45,12 @@ endif()
 set(davgroupwareresource_SRCS
     ${davgroupwareresource_common_SRCS}
     daverror-kdepim-runtime.cpp
-    akonadietagcache.cpp
+    davitemcache.cpp
     ctagattribute.cpp
     davfreebusyhandler.cpp
     davgroupwareresource.cpp
     daverror-kdepim-runtime.h
-    akonadietagcache.h
+    davitemcache.h
     ctagattribute.h
     davfreebusyhandler.h
     davgroupwareresource.h

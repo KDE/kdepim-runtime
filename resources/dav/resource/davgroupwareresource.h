@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <KDAV/EtagCache>
-
 #include <memory>
 
 #include "settings.h"
@@ -15,7 +13,7 @@
 #include <Akonadi/FreeBusyProviderBase>
 #include <Akonadi/ResourceBase>
 
-class AkonadiEtagCache;
+class DavItemCache;
 class DavFreeBusyHandler;
 
 #include <QSet>
@@ -137,7 +135,7 @@ private:
     QString iconForDavUrl(const KDAV::DavUrl &davUrl);
 
     Akonadi::Collection mDavCollectionRoot;
-    QMap<QString, std::shared_ptr<AkonadiEtagCache>> mEtagCaches;
+    QMap<QString, std::shared_ptr<DavItemCache>> mDavItemCache;
     QMap<QString, QString> mCTagCache;
     DavFreeBusyHandler *const mFreeBusyHandler;
     bool mSyncErrorNotified = false;

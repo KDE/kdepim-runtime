@@ -5,32 +5,33 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#include "akonadietagcache.h"
+#include "davitemcache.h"
 
 #include "davetagcache.h"
+
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 
 using namespace KDAV;
 
-AkonadiEtagCache::AkonadiEtagCache(const Akonadi::Collection &collection, QObject *parent)
+DavItemCache::DavItemCache(const Akonadi::Collection &collection, QObject *parent)
     : QObject(parent)
     , mEtagCache(std::make_shared<DavEtagCache>())
 {
     auto job = new Akonadi::ItemFetchJob(collection);
     job->fetchScope().fetchFullPayload(false); // We only need the remote id and the revision
-    connect(job, &Akonadi::ItemFetchJob::result, this, &AkonadiEtagCache::onItemFetchJobFinished);
+    connect(job, &Akonadi::ItemFetchJob::result, this, &DavItemCache::onItemFetchJobFinished);
     job->start();
 }
 
-AkonadiEtagCache::~AkonadiEtagCache() = default;
+DavItemCache::~DavItemCache() = default;
 
-std::shared_ptr<KDAV::EtagCache> AkonadiEtagCache::eTagCache()
+std::shared_ptr<KDAV::EtagCache> DavItemCache::eTagCache()
 {
     return mEtagCache;
 }
 
-void AkonadiEtagCache::onItemFetchJobFinished(KJob *job)
+void DavItemCache::onItemFetchJobFinished(KJob *job)
 {
     if (job->error()) {
         return;
@@ -46,26 +47,26 @@ void AkonadiEtagCache::onItemFetchJobFinished(KJob *job)
     }
 }
 
-void AkonadiEtagCache::setEtag(const QString &remoteId, const QString &etag)
+void DavItemCache::setEtag(const QString &remoteId, const QString &etag)
 {
     mEtagCache->setEtag(remoteId, etag);
 }
 
-QStringList AkonadiEtagCache::urls() const
+QStringList DavItemCache::urls() const
 {
     return mEtagCache->urls();
 }
-void AkonadiEtagCache::removeEtag(const QString &remoteId)
+void DavItemCache::removeEtag(const QString &remoteId)
 {
     mEtagCache->removeEtag(remoteId);
 }
-void AkonadiEtagCache::markAsChanged(const QString &remoteId)
+void DavItemCache::markAsChanged(const QString &remoteId)
 {
     mEtagCache->markAsChanged(remoteId);
 }
-bool AkonadiEtagCache::isOutOfDate(const QString &remoteId) const
+bool DavItemCache::isOutOfDate(const QString &remoteId) const
 {
     return mEtagCache->isOutOfDate(remoteId);
 }
 
-#include "moc_akonadietagcache.cpp"
+#include "moc_davitemcache.cpp"
