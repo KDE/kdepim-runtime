@@ -68,8 +68,6 @@ GoogleResource::GoogleResource(const QString &id)
     , m_settings(KSharedConfig::openConfig())
     , m_iface(new GoogleResourceState(this))
 {
-    m_settings.setResourceId(identifier());
-
     AttributeFactory::registerAttribute<DefaultReminderAttribute>();
 
     connect(this, &GoogleResource::reloadConfiguration, this, &GoogleResource::reloadConfig);
@@ -108,6 +106,7 @@ GoogleResource::GoogleResource(const QString &id)
             synchronize();
         }
     });
+    m_settings.setAccountId(accountId());
     m_settings.init();
 
     updateResourceName();
@@ -553,65 +552,9 @@ void GoogleResource::collectionRemoved(const Collection &collection)
 
 void GoogleResource::initAccount()
 {
-    QDBusMessage propertiesRequest =
-        QDBusMessage::createMethodCall(u"org.kde.KOnlineAccounts"_s, accountId(), u"org.freedesktop.DBus.Properties"_s, u"GetAll"_s);
-    propertiesRequest.setArguments({u"org.kde.KOnlineAccounts.Google"_s});
-
-    QDBusReply<QVariantMap> propertiesReply = QDBusConnection::sessionBus().call(propertiesRequest);
-
-    if (!propertiesReply.isValid()) {
-        qCWarning(GOOGLE_LOG) << "Failed to read Google account properties" << propertiesReply.error().message();
-    }
-
-    const QVariantMap result = propertiesReply.value();
-
-    const QList<QUrl> scopes = QUrl::fromStringList(result[u"scopes"_s].toStringList());
-
-    QDBusMessage accessTokenRequest =
-        QDBusMessage::createMethodCall(u"org.kde.KOnlineAccounts"_s, accountId(), u"org.kde.KOnlineAccounts.Google"_s, u"accessToken"_s);
-
-    QDBusReply<QDBusUnixFileDescriptor> accessTokenReply = QDBusConnection::sessionBus().call(accessTokenRequest);
-
-    if (!accessTokenReply.isValid()) {
-        qCWarning(GOOGLE_LOG) << "Failed to read access token for Google account" << accessTokenReply.error().message();
-    }
-
-    QFile accessTokenFile;
-    const bool accessTokenOpenResult = accessTokenFile.open(accessTokenReply.value().fileDescriptor(), QFile::ReadOnly, QFile::AutoCloseHandle);
-
-    if (!accessTokenOpenResult) {
-        qCWarning(GOOGLE_LOG) << "Could not open access token fd" << accessTokenFile.errorString();
-        return;
-    }
-
-    const QString accessToken = QString::fromUtf8(accessTokenFile.readAll());
-
-    Q_ASSERT(!accessToken.isEmpty());
-
-    QDBusMessage refreshTokenRequest =
-        QDBusMessage::createMethodCall(u"org.kde.KOnlineAccounts"_s, accountId(), u"org.kde.KOnlineAccounts.Google"_s, u"refreshToken"_s);
-
-    QDBusReply<QDBusUnixFileDescriptor> refreshTokenReply = QDBusConnection::sessionBus().call(refreshTokenRequest);
-
-    if (!refreshTokenReply.isValid()) {
-        qCWarning(GOOGLE_LOG) << "Failed to read refresh token for Google account" << refreshTokenReply.error().message();
-    }
-
-    QFile file;
-    const bool refreshTokenOpenResult = file.open(refreshTokenReply.value().fileDescriptor(), QFile::ReadOnly, QFile::AutoCloseHandle);
-
-    if (!refreshTokenOpenResult) {
-        qCWarning(GOOGLE_LOG) << "Could not open refresh token fd" << file.errorString();
-        return;
-    }
-
-    const QString refreshToken = QString::fromUtf8(file.readAll());
-
-    Q_ASSERT(!refreshToken.isEmpty());
-
-    KGAPI2::AccountPtr account(new KGAPI2::Account(u"My Google Account"_s, accessToken, refreshToken, scopes));
-
-    m_settings.storeAccount(account);
+    m_settings.setAccountId(accountId());
+    m_settings.initOnlineAccount();
+    m_settings.save();
 
     emitReadyStatus();
 

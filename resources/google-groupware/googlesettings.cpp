@@ -22,6 +22,8 @@ using namespace QKeychain;
 
 using namespace KGAPI2;
 
+using namespace Qt::Literals;
+
 static const QString googleWalletFolder = QStringLiteral("Akonadi Google");
 
 GoogleSettings::GoogleSettings(const KSharedConfigPtr &config, Options options)
@@ -43,24 +45,37 @@ void GoogleSettings::init()
         return;
     }
 
-    qCWarning(GOOGLE_LOG) << "Trying to read password for" << account();
+    if (!m_accountId.isEmpty()) {
+        qCDebug(GOOGLE_LOG) << "Online account detected, reading credentials from DBus";
 
-    // First read from QtKeyChain
-    auto job = new QKeychain::ReadPasswordJob(googleWalletFolder);
-    job->setKey(account());
-    connect(job, &QKeychain::Job::finished, this, [this, job]() {
-        if (job->error() != QKeychain::Error::NoError) {
-            qCWarning(GOOGLE_LOG) << "Unable to read password:" << job->errorString();
-            Q_EMIT accountReady(false, i18nc("@info:status", "Unable to read password: %1", job->errorString()));
-            return;
-        }
+        initOnlineAccount();
 
-        // Found something with QtKeyChain
-        m_account = fetchAccountFromKeychain(account(), job);
-        m_isReady = true;
         Q_EMIT accountReady(true);
-    });
-    job->start();
+    } else {
+        qCWarning(GOOGLE_LOG) << "Trying to read password for" << account();
+
+        // First read from QtKeyChain
+        auto job = new QKeychain::ReadPasswordJob(googleWalletFolder);
+        job->setKey(account());
+        connect(job, &QKeychain::Job::finished, this, [this, job]() {
+            if (job->error() != QKeychain::Error::NoError) {
+                qCWarning(GOOGLE_LOG) << "Unable to read password:" << job->errorString();
+                Q_EMIT accountReady(false, i18nc("@info:status", "Unable to read password: %1", job->errorString()));
+                return;
+            }
+
+            // Found something with QtKeyChain
+            m_account = fetchAccountFromKeychain(account(), job);
+            m_isReady = true;
+            Q_EMIT accountReady(true);
+        });
+        job->start();
+    }
+}
+
+void GoogleSettings::setAccountId(const QString &accountId)
+{
+    m_accountId = accountId;
 }
 
 KGAPI2::AccountPtr GoogleSettings::fetchAccountFromKeychain(const QString &accountName, QKeychain::ReadPasswordJob *job)
@@ -128,6 +143,74 @@ WritePasswordJob *GoogleSettings::storeAccount(AccountPtr account)
     return writeJob;
 }
 
+void GoogleSettings::initOnlineAccount()
+{
+    Q_ASSERT(!m_accountId.isEmpty());
+
+    QDBusMessage propertiesRequest =
+        QDBusMessage::createMethodCall(u"org.kde.KOnlineAccounts"_s, m_accountId, u"org.freedesktop.DBus.Properties"_s, u"GetAll"_s);
+    propertiesRequest.setArguments({u"org.kde.KOnlineAccounts.Google"_s});
+
+    QDBusReply<QVariantMap> propertiesReply = QDBusConnection::sessionBus().call(propertiesRequest);
+
+    if (!propertiesReply.isValid()) {
+        qCWarning(GOOGLE_LOG) << "Failed to read Google account properties" << propertiesReply.error().message();
+    }
+
+    const QVariantMap result = propertiesReply.value();
+
+    const QString accountName = result[u"accountName"_s].toString();
+    const QList<QUrl> scopes = QUrl::fromStringList(result[u"scopes"_s].toStringList());
+
+    QDBusMessage accessTokenRequest =
+        QDBusMessage::createMethodCall(u"org.kde.KOnlineAccounts"_s, m_accountId, u"org.kde.KOnlineAccounts.Google"_s, u"accessToken"_s);
+
+    QDBusReply<QDBusUnixFileDescriptor> accessTokenReply = QDBusConnection::sessionBus().call(accessTokenRequest);
+
+    if (!accessTokenReply.isValid()) {
+        qCWarning(GOOGLE_LOG) << "Failed to read access token for Google account" << accessTokenReply.error().message();
+    }
+
+    QFile accessTokenFile;
+    const bool accessTokenOpenResult = accessTokenFile.open(accessTokenReply.value().fileDescriptor(), QFile::ReadOnly, QFile::AutoCloseHandle);
+
+    if (!accessTokenOpenResult) {
+        qCWarning(GOOGLE_LOG) << "Could not open access token fd" << accessTokenFile.errorString();
+        return;
+    }
+
+    const QString accessToken = QString::fromUtf8(accessTokenFile.readAll());
+
+    Q_ASSERT(!accessToken.isEmpty());
+
+    QDBusMessage refreshTokenRequest =
+        QDBusMessage::createMethodCall(u"org.kde.KOnlineAccounts"_s, m_accountId, u"org.kde.KOnlineAccounts.Google"_s, u"refreshToken"_s);
+
+    QDBusReply<QDBusUnixFileDescriptor> refreshTokenReply = QDBusConnection::sessionBus().call(refreshTokenRequest);
+
+    if (!refreshTokenReply.isValid()) {
+        qCWarning(GOOGLE_LOG) << "Failed to read refresh token for Google account" << refreshTokenReply.error().message();
+    }
+
+    QFile file;
+    const bool refreshTokenOpenResult = file.open(refreshTokenReply.value().fileDescriptor(), QFile::ReadOnly, QFile::AutoCloseHandle);
+
+    if (!refreshTokenOpenResult) {
+        qCWarning(GOOGLE_LOG) << "Could not open refresh token fd" << file.errorString();
+        return;
+    }
+
+    const QString refreshToken = QString::fromUtf8(file.readAll());
+
+    Q_ASSERT(!refreshToken.isEmpty());
+
+    KGAPI2::AccountPtr account(new KGAPI2::Account(accountName, accessToken, refreshToken, scopes));
+    m_account = account;
+
+    SettingsBase::setAccount(m_account->accountName());
+    m_isReady = true;
+}
+
 void GoogleSettings::cleanup()
 {
     if (m_account) {
@@ -173,16 +256,6 @@ bool GoogleSettings::isReady() const
 AccountPtr GoogleSettings::accountPtr()
 {
     return m_account;
-}
-
-void GoogleSettings::setWindowId(WId id)
-{
-    m_winId = id;
-}
-
-void GoogleSettings::setResourceId(const QString &resourceIdentificator)
-{
-    m_resourceId = resourceIdentificator;
 }
 
 #include "moc_googlesettings.cpp"
