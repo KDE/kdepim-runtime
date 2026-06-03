@@ -42,8 +42,7 @@ public:
     explicit GoogleSettings(const KSharedConfigPtr &config, Options options = Option::ExportToDBus);
 
     void init();
-    void setWindowId(WId id);
-    void setResourceId(const QString &resourceIdentifier);
+    void setAccountId(const QString &accountId);
 
     QString appId() const;
     QString clientId() const;
@@ -56,6 +55,7 @@ public:
     // Wallet
     bool isReady() const;
     QKeychain::WritePasswordJob *storeAccount(KGAPI2::AccountPtr account);
+    void initOnlineAccount();
     void cleanup();
 
 Q_SIGNALS:
@@ -64,9 +64,10 @@ Q_SIGNALS:
     void okEnabled(bool enabled);
 
 private:
-    WId m_winId = 0;
-    QString m_resourceId;
     bool m_isReady = false;
+
+    QString m_accountId;
+
     KGAPI2::AccountPtr m_account;
     KGAPI2::AccountPtr fetchAccountFromKeychain(const QString &accountName, QKeychain::ReadPasswordJob *job);
 };
