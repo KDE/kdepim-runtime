@@ -31,7 +31,7 @@ msgstr "在此输入您的 Open-Xchange 账户的用户名。"
 #: configwidget.cpp:27
 #, kde-format
 msgid "Enter the password of your Open-Xchange account here."
-msgstr "在此输入您的 Open-Xchange 账户的密码。"
+msgstr "请在此输入您的 Open-Xchange 账户密码。"
 
 #: configwidget.cpp:72
 #, kde-format

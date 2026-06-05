@@ -459,7 +459,7 @@ msgstr "访问权限已吊销"
 #: retrievecollectionstask.cpp:155
 #, kde-format
 msgid "Inbox"
-msgstr "收件夹"
+msgstr "收件箱"
 
 #: retrievecollectionstask.cpp:164
 #, kde-format
@@ -601,7 +601,7 @@ msgstr "登录时断开连接。"
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
-msgstr "找不到 %1 的 IMAP 账户的密码"
+msgstr "找不到 %1 的 IMAP 账户密码"
 
 #: settings.cpp:129
 #, kde-format
@@ -615,7 +615,7 @@ msgstr "从系统密钥链中获取 IMAP 密码时发生错误：“%1”"
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
-msgstr "找不到 %1 的 Sieve 账户的密码"
+msgstr "找不到 %1 的 Sieve 账户密码"
 
 #: settings.cpp:162
 #, kde-format
