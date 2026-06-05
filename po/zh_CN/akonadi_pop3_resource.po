@@ -352,7 +352,7 @@ msgstr "将密码保存到密码库。"
 #: pop3resource.cpp:391
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
-msgstr "尝试获取本地收件夹时出错，中止邮件检查。"
+msgstr "尝试获取本地收件箱时出错，将中止邮件检查。"
 
 #: pop3resource.cpp:398
 #, kde-format
