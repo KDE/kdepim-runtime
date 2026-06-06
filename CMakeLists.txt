@@ -132,19 +132,7 @@ set_package_properties(
             REQUIRED
 )
 
-find_package(Qca-qt6 2.3.7 CONFIG REQUIRED)
-set_package_properties(
-    Qca-qt6
-    PROPERTIES
-        DESCRIPTION
-            "Qt Cryptographic Architecture"
-        URL
-            "https://invent.kde.org/libraries/qca"
-        TYPE
-            REQUIRED
-        PURPOSE
-            "Needed for ews resource."
-)
+option(KDEPIM_EWS "Enable EWS resource" ON)
 option(KDEPIM_RUN_AKONADI_TEST "Enable autotest based on Akonadi." TRUE)
 # QT package
 find_package(Qt6TextToSpeech ${QT_REQUIRED_VERSION} CONFIG)
@@ -171,7 +159,22 @@ find_package(
         NetworkAuth
         Concurrent
 )
-find_package(Qt6WebEngineWidgets ${QT_REQUIRED_VERSION} CONFIG)
+if(KDEPIM_EWS)
+    find_package(Qt6WebEngineWidgets ${QT_REQUIRED_VERSION} CONFIG REQUIRED)
+    find_package(Qca-qt6 2.3.7 CONFIG REQUIRED)
+    set_package_properties(
+        Qca-qt6
+        PROPERTIES
+            DESCRIPTION
+                "Qt Cryptographic Architecture"
+            URL
+                "https://invent.kde.org/libraries/qca"
+            TYPE
+                REQUIRED
+            PURPOSE
+                "Needed for ews resource."
+    )
+endif()
 
 # KF6 package
 find_package(KF6Config ${KF_MIN_VERSION} CONFIG REQUIRED)
