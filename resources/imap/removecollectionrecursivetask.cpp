@@ -30,6 +30,7 @@ void RemoveCollectionRecursiveTask::doStart(KIMAP::Session *session)
 
     mFolderFound = false;
     auto listJob = new KIMAP::ListJob(session);
+    listJob->setListExtendedEnabled(serverCapabilities().contains(QLatin1String("LIST-EXTENDED")));
     listJob->setOption(isSubscriptionEnabled() ? KIMAP::ListJob::NoOption : KIMAP::ListJob::IncludeUnsubscribed);
     listJob->setQueriedNamespaces(serverNamespaces());
     connect(listJob, &KIMAP::ListJob::mailBoxesReceived, this, &RemoveCollectionRecursiveTask::onMailBoxesReceived);
