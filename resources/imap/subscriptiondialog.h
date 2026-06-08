@@ -85,6 +85,7 @@ private:
 
     KIMAP::Session *m_session = nullptr;
     bool m_subscriptionChanged = false;
+    QStringList m_capabilities = {};
 
     QTreeView *m_treeView = nullptr;
 

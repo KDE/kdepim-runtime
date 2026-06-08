@@ -28,6 +28,7 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 
+#include <KIMAP/CapabilitiesJob>
 #include <KWindowConfig>
 #include <QHeaderView>
 #include <QLabel>
@@ -160,9 +161,19 @@ bool SubscriptionDialog::isSubscriptionChanged() const
 
 void SubscriptionDialog::onLoginDone(KJob *job)
 {
-    if (!job->error()) {
-        onReloadRequested();
+    if (job->error()) {
+        return;
     }
+
+    auto *capJob = new KIMAP::CapabilitiesJob(m_session);
+    connect(capJob, &KIMAP::CapabilitiesJob::result, this, [this](KJob *job) {
+        auto *capJob = static_cast<KIMAP::CapabilitiesJob *>(job);
+        if (!capJob->error()) {
+            m_capabilities = capJob->capabilities();
+        }
+        onReloadRequested();
+    });
+    capJob->start();
 }
 
 void SubscriptionDialog::onReloadRequested()
@@ -179,6 +190,7 @@ void SubscriptionDialog::onReloadRequested()
     }
 
     auto list = new KIMAP::ListJob(m_session);
+    list->setListExtendedEnabled(m_capabilities.contains(QLatin1String("LIST-EXTENDED")));
     list->setOption(KIMAP::ListJob::IncludeUnsubscribed);
     connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onMailBoxesReceived);
     connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onFullListingDone);
@@ -243,6 +255,7 @@ void SubscriptionDialog::onFullListingDone(KJob *job)
     }
 
     auto list = new KIMAP::ListJob(m_session);
+    list->setListExtendedEnabled(m_capabilities.contains(QLatin1String("LIST-EXTENDED")));
     list->setOption(KIMAP::ListJob::NoOption);
     connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onSubscribedMailBoxesReceived);
     connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onReloadDone);
