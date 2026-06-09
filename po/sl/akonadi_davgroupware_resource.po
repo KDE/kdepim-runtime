@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-06-08 00:45+0000\n"
-"PO-Revision-Date: 2025-06-04 09:22+0200\n"
+"PO-Revision-Date: 2026-06-08 06:26+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.9\n"
 
 #: configwidget.cpp:34
 #, kde-format
@@ -342,10 +342,9 @@ msgid "Invalid collection for item %1."
 msgstr "Neveljavna zbirka za predmet %1."
 
 #: davgroupwareresource.cpp:653
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to delete item exceptions: %1"
-msgstr "Zbirk ni mogoče pridobiti: %1"
+msgstr "Ni mogoče izbrisati izjem elementov: %1"
 
 #: davgroupwareresource.cpp:850
 #, kde-format

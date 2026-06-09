@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2009, 2010, 2011, 2013, 2014, 2015, 2018, 2019.
-# SPDX-FileCopyrightText: 2010, 2025 Marcus Vinícius de Andrade Gama <marcus.gama@gmail.com>
+# SPDX-FileCopyrightText: 2010, 2025-2026 Marcus Vinícius de Andrade Gama <marcus.gama@gmail.com>
 # Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2010, 2016, 2019, 2020, 2021.
 # Marcus Gama <marcus.gama@gmail.com>, 2011.
 # Frederico Goncalves Guimaraes <frederico@teia.bio.br>, 2017.
@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-06-08 00:45+0000\n"
-"PO-Revision-Date: 2025-07-23 19:00-0300\n"
+"PO-Revision-Date: 2026-06-08 04:52-0300\n"
 "Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.04.3\n"
+"X-Generator: Lokalize 26.04.2\n"
 
 #: configwidget.cpp:34
 #, kde-format
@@ -343,10 +343,9 @@ msgid "Invalid collection for item %1."
 msgstr "A coleção do item %1 é inválida."
 
 #: davgroupwareresource.cpp:653
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to delete item exceptions: %1"
-msgstr "Não foi possível obter as coleções: %1"
+msgstr "Não foi possível excluir exceções de item: %1"
 
 #: davgroupwareresource.cpp:850
 #, kde-format
