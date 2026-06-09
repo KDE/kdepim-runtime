@@ -26,6 +26,8 @@ private Q_SLOTS:
     void onFullMailBoxesReceiveDone(KJob *job);
 
 protected:
+    bool supportsListExtended() const;
+
     void doStart(KIMAP::Session *session) override;
 
 protected:

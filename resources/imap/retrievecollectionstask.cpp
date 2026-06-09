@@ -28,6 +28,11 @@ RetrieveCollectionsTask::RetrieveCollectionsTask(const ResourceStateInterface::P
 
 RetrieveCollectionsTask::~RetrieveCollectionsTask() = default;
 
+bool RetrieveCollectionsTask::supportsListExtended() const
+{
+    return serverCapabilities().contains(QLatin1String("LIST-EXTENDED"));
+}
+
 void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
 {
     Akonadi::Collection root;
@@ -70,9 +75,11 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
     // this is ugly, but the result of LSUB is unfortunately not a sub-set of LIST
     // it also contains subscribed but currently not available (eg. deleted) mailboxes
     // so we need to use both and exclude mailboxes in LSUB but not in LIST
-    if (isSubscriptionEnabled()) {
+    // NOTE: with LIST-EXTENDED we have \NonExistent flag for these phantom mailboxes
+    const bool doubleFetch = isSubscriptionEnabled() && !supportsListExtended();
+    if (doubleFetch) {
         auto fullListJob = new KIMAP::ListJob(session);
-        fullListJob->setListExtendedEnabled(serverCapabilities().contains(QLatin1String("LIST-EXTENDED")));
+        fullListJob->setListExtendedEnabled(supportsListExtended());
         fullListJob->setOption(KIMAP::ListJob::IncludeUnsubscribed);
         fullListJob->setQueriedNamespaces(serverNamespaces());
         connect(fullListJob, &KIMAP::ListJob::mailBoxesReceived, this, &RetrieveCollectionsTask::onFullMailBoxesReceived);
@@ -81,7 +88,7 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
     }
 
     auto listJob = new KIMAP::ListJob(session);
-    listJob->setListExtendedEnabled(serverCapabilities().contains(QLatin1String("LIST-EXTENDED")));
+    listJob->setListExtendedEnabled(supportsListExtended());
     listJob->setOption(isSubscriptionEnabled() ? KIMAP::ListJob::NoOption : KIMAP::ListJob::IncludeUnsubscribed);
     listJob->setQueriedNamespaces(serverNamespaces());
     connect(listJob, &KIMAP::ListJob::mailBoxesReceived, this, &RetrieveCollectionsTask::onMailBoxesReceived);
@@ -102,10 +109,12 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBoxDesc
     for (int i = 0; i < descriptors.size(); ++i) {
         KIMAP::MailBoxDescriptor descriptor = descriptors[i];
 
-        // skip phantom mailboxes contained in LSUB but not LIST
-        if (isSubscriptionEnabled() && !m_fullReportedCollections.contains(descriptor.name)) {
-            qCDebug(IMAPRESOURCE_LOG) << "Got phantom mailbox: " << descriptor.name;
-            continue;
+        // skip phantom mailboxes (SUBSCRIBED but not available: LSUB - LIST or \NonExistent)
+        if (isSubscriptionEnabled()) {
+            if (flags[i].contains("\\nonexistent") || (!supportsListExtended() && !m_fullReportedCollections.contains(descriptor.name))) {
+                qCDebug(IMAPRESOURCE_LOG) << "Got phantom mailbox: " << descriptor.name;
+                continue;
+            }
         }
 
         const QString separator = descriptor.separator;

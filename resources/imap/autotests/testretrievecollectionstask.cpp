@@ -36,6 +36,7 @@ private Q_SLOTS:
         QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
         QTest::addColumn<bool>("isSubscriptionEnabled");
+        QTest::addColumn<bool>("isListExtendedSupported");
         QTest::addColumn<bool>("isDisconnectedModeEnabled");
         QTest::addColumn<int>("intervalCheckTime");
         QTest::addColumn<char>("separator");
@@ -46,6 +47,7 @@ private Q_SLOTS:
         QList<QByteArray> scenario;
         QStringList callNames;
         bool isSubscriptionEnabled;
+        bool isListExtendedSupported;
         bool isDisconnectedModeEnabled;
         int intervalCheckTime;
 
@@ -67,11 +69,12 @@ private Q_SLOTS:
         callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = false;
+        isListExtendedSupported = false;
         isDisconnectedModeEnabled = false;
         intervalCheckTime = -1;
 
-        QTest::newRow("first listing, connected IMAP")
-            << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime << '/';
+        QTest::newRow("first listing, connected IMAP") << expectedCollections << scenario << callNames << isSubscriptionEnabled << isListExtendedSupported
+                                                       << isDisconnectedModeEnabled << intervalCheckTime << '/';
 
         expectedCollections.clear();
         expectedCollections << createRootCollection(true, 5) << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
@@ -91,11 +94,12 @@ private Q_SLOTS:
         callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = false;
+        isListExtendedSupported = false;
         isDisconnectedModeEnabled = true;
         intervalCheckTime = 5;
 
-        QTest::newRow("first listing, disconnected IMAP")
-            << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime << '/';
+        QTest::newRow("first listing, disconnected IMAP") << expectedCollections << scenario << callNames << isSubscriptionEnabled << isListExtendedSupported
+                                                          << isDisconnectedModeEnabled << intervalCheckTime << '/';
 
         expectedCollections.clear();
         expectedCollections << createRootCollection(true, 5) << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
@@ -112,11 +116,12 @@ private Q_SLOTS:
         callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = false;
+        isListExtendedSupported = false;
         isDisconnectedModeEnabled = true;
         intervalCheckTime = 5;
 
-        QTest::newRow("first listing, spurious INBOX/ (BR: 25342)")
-            << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime << '/';
+        QTest::newRow("first listing, spurious INBOX/ (BR: 25342)") << expectedCollections << scenario << callNames << isSubscriptionEnabled
+                                                                    << isListExtendedSupported << isDisconnectedModeEnabled << intervalCheckTime << '/';
 
         expectedCollections.clear();
         expectedCollections << createRootCollection() << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
@@ -135,11 +140,12 @@ private Q_SLOTS:
         callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = false;
+        isListExtendedSupported = false;
         isDisconnectedModeEnabled = false;
         intervalCheckTime = -1;
 
-        QTest::newRow("auto-insert missing nodes in the tree")
-            << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime << '/';
+        QTest::newRow("auto-insert missing nodes in the tree") << expectedCollections << scenario << callNames << isSubscriptionEnabled
+                                                               << isListExtendedSupported << isDisconnectedModeEnabled << intervalCheckTime << '/';
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario() << "C: A000003 LIST \"\" *"
@@ -152,11 +158,13 @@ private Q_SLOTS:
         callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = false;
+        isListExtendedSupported = false;
         isDisconnectedModeEnabled = false;
         intervalCheckTime = -1;
 
         QTest::newRow("auto-insert missing nodes in the tree (reverse order)")
-            << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime << '/';
+            << expectedCollections << scenario << callNames << isSubscriptionEnabled << isListExtendedSupported << isDisconnectedModeEnabled
+            << intervalCheckTime << '/';
 
         expectedCollections.clear();
         expectedCollections << createRootCollection() << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
@@ -181,11 +189,12 @@ private Q_SLOTS:
         callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = true;
+        isListExtendedSupported = false;
         isDisconnectedModeEnabled = false;
         intervalCheckTime = -1;
 
-        QTest::newRow("subscription enabled") << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled
-                                              << intervalCheckTime << '/';
+        QTest::newRow("subscription enabled") << expectedCollections << scenario << callNames << isSubscriptionEnabled << isListExtendedSupported
+                                              << isDisconnectedModeEnabled << intervalCheckTime << '/';
         scenario.clear();
         scenario << defaultPoolConnectionScenario() << "C: A000003 LIST \"\" *"
                  << "S: * LIST ( ) / INBOX/Unsubscribed"
@@ -204,11 +213,31 @@ private Q_SLOTS:
         callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = true;
+        isListExtendedSupported = false;
         isDisconnectedModeEnabled = false;
         intervalCheckTime = -1;
 
-        QTest::newRow("subscription enabled, case insensitive inbox")
-            << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime << '/';
+        QTest::newRow("subscription enabled, case insensitive inbox") << expectedCollections << scenario << callNames << isSubscriptionEnabled
+                                                                      << isListExtendedSupported << isDisconnectedModeEnabled << intervalCheckTime << '/';
+
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario() << "C: A000003 LIST (SUBSCRIBED) \"\" *"
+                 << "S: * LIST ( \\Subscribed \\NonExistent ) / Inbox/SubscribedButNotExisting"
+                 << "S: * LIST ( \\Subscribed ) / INBOX/Calendar"
+                 << "S: * LIST ( \\Subscribed ) / INBOX/Calendar/Private"
+                 << "S: * LIST ( \\Subscribed \\HasChildren ) / INBOX"
+                 << "S: A000003 OK list done";
+
+        callNames.clear();
+        callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
+
+        isSubscriptionEnabled = true;
+        isListExtendedSupported = true;
+        isDisconnectedModeEnabled = false;
+        intervalCheckTime = -1;
+
+        QTest::newRow("subscription enabled, LIST-EXTENDED supported") << expectedCollections << scenario << callNames << isSubscriptionEnabled
+                                                                       << isListExtendedSupported << isDisconnectedModeEnabled << intervalCheckTime << '/';
 
         expectedCollections.clear();
         expectedCollections << createRootCollection() << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"), false, true)
@@ -224,11 +253,12 @@ private Q_SLOTS:
         callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = false;
+        isListExtendedSupported = false;
         isDisconnectedModeEnabled = false;
         intervalCheckTime = -1;
 
-        QTest::newRow("Noinferiors") << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                     << '/';
+        QTest::newRow("Noinferiors") << expectedCollections << scenario << callNames << isSubscriptionEnabled << isListExtendedSupported
+                                     << isDisconnectedModeEnabled << intervalCheckTime << '/';
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario() << "C: A000003 LIST \"\" *"
@@ -244,11 +274,12 @@ private Q_SLOTS:
                             << createCollection(QStringLiteral("."), QStringLiteral("INBOX.Foo"))
                             << createCollection(QStringLiteral("."), QStringLiteral("INBOX.Bar"));
         isSubscriptionEnabled = false;
+        isListExtendedSupported = false;
         isDisconnectedModeEnabled = false;
         intervalCheckTime = -1;
 
-        QTest::newRow("non-standard separators") << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled
-                                                 << intervalCheckTime << '.';
+        QTest::newRow("non-standard separators") << expectedCollections << scenario << callNames << isSubscriptionEnabled << isListExtendedSupported
+                                                 << isDisconnectedModeEnabled << intervalCheckTime << '.';
     }
 
     void shouldListCollections()
@@ -257,6 +288,7 @@ private Q_SLOTS:
         QFETCH(QList<QByteArray>, scenario);
         QFETCH(QStringList, callNames);
         QFETCH(bool, isSubscriptionEnabled);
+        QFETCH(bool, isListExtendedSupported);
         QFETCH(bool, isDisconnectedModeEnabled);
         QFETCH(int, intervalCheckTime);
         QFETCH(char, separator);
@@ -277,6 +309,9 @@ private Q_SLOTS:
         state->setSubscriptionEnabled(isSubscriptionEnabled);
         state->setDisconnectedModeEnabled(isDisconnectedModeEnabled);
         state->setIntervalCheckTime(intervalCheckTime);
+        if (isListExtendedSupported) {
+            state->setServerCapabilities(QStringList() << QStringLiteral("LIST-EXTENDED"));
+        }
 
         auto task = new RetrieveCollectionsTask(state);
         task->start(&pool);
