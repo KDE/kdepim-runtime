@@ -190,7 +190,10 @@ void SubscriptionDialog::onReloadRequested()
     }
 
     auto list = new KIMAP::ListJob(m_session);
-    list->setListExtendedEnabled(m_capabilities.contains(QLatin1String("LIST-EXTENDED")));
+    if (m_capabilities.contains(QLatin1String("LIST-EXTENDED"))) {
+        list->setListExtendedEnabled(true);
+        list->setReturnOptions(QByteArrayList{"SUBSCRIBED"});
+    }
     list->setOption(KIMAP::ListJob::IncludeUnsubscribed);
     connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onMailBoxesReceived);
     connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onFullListingDone);
@@ -207,19 +210,23 @@ void SubscriptionDialog::onMailBoxesReceived(const QList<KIMAP::MailBoxDescripto
         const QString separator = mailBox.separator;
         Q_ASSERT(separator.size() == 1); // that's what the spec says
 
+        const bool isNoSelect = flags[i].contains("\\noselect");
+        const bool isSubscribed = flags[i].contains("\\subscribed");
+
         QString parentPath;
         QString currentPath;
-        const int numberOfPath(pathParts.size());
+        const int numberOfPath = pathParts.size();
         for (int j = 0; j < pathParts.size(); ++j) {
             const bool isDummy = (j != (numberOfPath - 1));
-            const bool isCheckable = !isDummy && !flags[i].contains("\\noselect");
+            const bool isCheckable = !isDummy && !isNoSelect;
 
             const QString pathPart = pathParts.at(j);
             currentPath += separator + pathPart;
 
+            QStandardItem *item = nullptr;
             if (m_itemsMap.contains(currentPath)) {
+                item = m_itemsMap[currentPath];
                 if (!isDummy) {
-                    QStandardItem *item = m_itemsMap[currentPath];
                     item->setCheckable(isCheckable);
                 }
             } else if (!parentPath.isEmpty()) {
@@ -227,19 +234,24 @@ void SubscriptionDialog::onMailBoxesReceived(const QList<KIMAP::MailBoxDescripto
 
                 QStandardItem *parentItem = m_itemsMap[parentPath];
 
-                auto item = new QStandardItem(pathPart);
+                item = new QStandardItem(pathPart);
                 item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
                 item->setCheckable(isCheckable);
                 item->setData(currentPath.mid(1), PathRole);
                 parentItem->appendRow(item);
                 m_itemsMap[currentPath] = item;
             } else {
-                auto item = new QStandardItem(pathPart);
+                item = new QStandardItem(pathPart);
                 item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
                 item->setCheckable(isCheckable);
                 item->setData(currentPath.mid(1), PathRole);
                 m_model->appendRow(item);
                 m_itemsMap[currentPath] = item;
+            }
+
+            if (isSubscribed) {
+                item->setCheckState(Qt::Checked);
+                item->setData(Qt::Checked, InitialStateRole);
             }
 
             parentPath = currentPath;
@@ -254,12 +266,16 @@ void SubscriptionDialog::onFullListingDone(KJob *job)
         return;
     }
 
-    auto list = new KIMAP::ListJob(m_session);
-    list->setListExtendedEnabled(m_capabilities.contains(QLatin1String("LIST-EXTENDED")));
-    list->setOption(KIMAP::ListJob::NoOption);
-    connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onSubscribedMailBoxesReceived);
-    connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onReloadDone);
-    list->start();
+    // Without LIST-EXTENDED we need to do a second fetch to gather subscription information
+    if (!m_capabilities.contains(QLatin1String("LIST-EXTENDED"))) {
+        auto list = new KIMAP::ListJob(m_session);
+        list->setOption(KIMAP::ListJob::NoOption);
+        connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onSubscribedMailBoxesReceived);
+        connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onReloadDone);
+        list->start();
+    } else {
+        onReloadDone(job);
+    }
 }
 
 void SubscriptionDialog::onSubscribedMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes, const QList<QList<QByteArray>> &flags)
