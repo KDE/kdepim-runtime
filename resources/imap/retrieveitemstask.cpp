@@ -51,7 +51,7 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
 {
     emitPercent(0);
     // Prevent fetching items from noselect folders.
-    if (collection().hasAttribute("noselect")) {
+    if (collection().hasAttribute<NoSelectAttribute>()) {
         NoSelectAttribute *noselect = static_cast<NoSelectAttribute *>(collection().attribute("noselect"));
         if (noselect->noSelect()) {
             qCDebug(IMAPRESOURCE_LOG) << "No Select folder";
@@ -74,6 +74,10 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
     } else {
         setItemMergingMode(Akonadi::ItemSync::RIDMerge);
     }
+
+    // check if we will use QRESYNC features or not for the SELECT commands
+    // it is useless to do a QRESYNC SELECT if we don't have current UIDValidity or HIGHESTMODSEQ cached already
+    m_qresyncSelect = serverSupportsQresync() && col.hasAttribute<UidValidityAttribute>() && col.hasAttribute<HighestModSeqAttribute>();
 
     if (m_fetchMissingBodies
         && col.cachePolicy().localParts().contains(
@@ -140,15 +144,46 @@ void RetrieveItemsTask::startRetrievalTasks()
     const bool hasACL = serverCapabilities().contains(QLatin1StringView("ACL"));
     const KIMAP::Acl::Rights rights = myRights(collection());
     if (isAutomaticExpungeEnabled() && (!hasACL || (rights & KIMAP::Acl::Expunge) || (rights & KIMAP::Acl::Delete))) {
-        if (m_session->selectedMailBox() != mailBox) {
+        if (m_session->selectedMailBox() != mailBox && m_qresyncSelect) {
+            triggerPreExpungeUIDFetch();
+        } else if (m_session->selectedMailBox() != mailBox) {
             triggerPreExpungeSelect(mailBox);
         } else {
             triggerExpunge(mailBox);
         }
+    } else if (m_qresyncSelect) {
+        triggerFinalUIDFetch();
     } else {
         // Always select to get the stats updated
         triggerFinalSelect(mailBox);
     }
+}
+
+void RetrieveItemsTask::triggerPreExpungeUIDFetch()
+{
+    const Akonadi::Collection col = collection();
+
+    auto newsession = new Akonadi::Session(resourceName().toLatin1() + "_qresync_pre_expunge_uid_fetcher", this);
+    auto fetchJob = new Akonadi::ItemFetchJob(col, newsession);
+    fetchJob->fetchScope().setFetchModificationTime(false);
+    connect(fetchJob, &Akonadi::ItemFetchJob::result, this, &RetrieveItemsTask::onPreExpungeUIDFetchDone);
+    connect(fetchJob, &Akonadi::ItemFetchJob::result, newsession, &Akonadi::Session::deleteLater);
+}
+
+void RetrieveItemsTask::onPreExpungeUIDFetchDone(KJob *job)
+{
+    if (job->error()) {
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
+        cancelTask(job->errorString());
+        return;
+    } else {
+        auto fetch = static_cast<Akonadi::ItemFetchJob *>(job);
+        for (const Akonadi::Item &item : fetch->items()) {
+            m_itemIds.append(item.remoteId().toInt());
+        }
+    }
+
+    triggerPreExpungeSelect(mailBoxForCollection(collection()));
 }
 
 void RetrieveItemsTask::triggerPreExpungeSelect(const QString &mailBox)
@@ -156,6 +191,16 @@ void RetrieveItemsTask::triggerPreExpungeSelect(const QString &mailBox)
     auto select = new KIMAP::SelectJob(m_session);
     select->setMailBox(mailBox);
     select->setCondstoreEnabled(serverSupportsCondstore());
+    if (m_qresyncSelect) {
+        Akonadi::Collection col = collection();
+        UidValidityAttribute *currentUidValidity = col.attribute<UidValidityAttribute>();
+        HighestModSeqAttribute *currentHighestModSeq = col.attribute<HighestModSeqAttribute>();
+        KIMAP::ImapSet idSet = KIMAP::ImapSet();
+        idSet.add(m_itemIds);
+        select->setQResync(currentUidValidity->uidValidity(), currentHighestModSeq->highestModSequence(), idSet);
+        connect(select, &KIMAP::SelectJob::modified, this, &RetrieveItemsTask::onSelectModified);
+        connect(select, &KIMAP::SelectJob::vanished, this, &RetrieveItemsTask::onSelectVanished);
+    }
     connect(select, &KJob::result, this, &RetrieveItemsTask::onPreExpungeSelectDone);
     select->start();
 }
@@ -200,7 +245,42 @@ void RetrieveItemsTask::onExpungeDone(KJob *job)
 
     // We have to re-select the mailbox to update all the stats after the expunge
     // (the EXPUNGE command doesn't return enough for our needs)
-    triggerFinalSelect(m_session->selectedMailBox());
+
+    // In the case of enabled QRESYNC, either we could have gotten here without doing the pre-expunge UID fetch
+    // Or the pre-expunge SELECT could have updated the list of known UIDs
+    // Anyways, we have to redo a (potential second) fetch of the UIDs known by the client
+    if (m_qresyncSelect) {
+        triggerFinalUIDFetch();
+    } else {
+        triggerFinalSelect(m_session->selectedMailBox());
+    }
+}
+
+void RetrieveItemsTask::triggerFinalUIDFetch()
+{
+    const Akonadi::Collection col = collection();
+
+    auto newsession = new Akonadi::Session(resourceName().toLatin1() + "_qresync_final_uid_fetcher", this);
+    auto fetchJob = new Akonadi::ItemFetchJob(col, newsession);
+    fetchJob->fetchScope().setFetchModificationTime(false);
+    connect(fetchJob, &Akonadi::ItemFetchJob::result, this, &RetrieveItemsTask::onFinalUIDFetchDone);
+    connect(fetchJob, &Akonadi::ItemFetchJob::result, newsession, &Akonadi::Session::deleteLater);
+}
+
+void RetrieveItemsTask::onFinalUIDFetchDone(KJob *job)
+{
+    if (job->error()) {
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
+        cancelTask(job->errorString());
+        return;
+    } else {
+        auto fetch = static_cast<Akonadi::ItemFetchJob *>(job);
+        for (const Akonadi::Item &item : fetch->items()) {
+            m_itemIds.append(item.remoteId().toInt());
+        }
+    }
+
+    triggerFinalSelect(mailBoxForCollection(collection()));
 }
 
 void RetrieveItemsTask::triggerFinalSelect(const QString &mailBox)
@@ -208,8 +288,41 @@ void RetrieveItemsTask::triggerFinalSelect(const QString &mailBox)
     auto select = new KIMAP::SelectJob(m_session);
     select->setMailBox(mailBox);
     select->setCondstoreEnabled(serverSupportsCondstore());
+    if (m_qresyncSelect) {
+        Akonadi::Collection col = collection();
+        UidValidityAttribute *currentUidValidity = col.attribute<UidValidityAttribute>();
+        HighestModSeqAttribute *currentHighestModSeq = col.attribute<HighestModSeqAttribute>();
+        KIMAP::ImapSet idSet = KIMAP::ImapSet();
+        idSet.add(m_itemIds);
+        select->setQResync(currentUidValidity->uidValidity(), currentHighestModSeq->highestModSequence(), idSet);
+        connect(select, &KIMAP::SelectJob::modified, this, &RetrieveItemsTask::onSelectModified);
+        connect(select, &KIMAP::SelectJob::vanished, this, &RetrieveItemsTask::onSelectVanished);
+    }
     connect(select, &KJob::result, this, &RetrieveItemsTask::onFinalSelectDone);
     select->start();
+}
+
+void RetrieveItemsTask::onSelectVanished(const KIMAP::ImapSet &messages)
+{
+    auto removedItems = imapSetToItems(messages);
+    itemsRetrievedIncremental(Akonadi::Item::List(), removedItems);
+}
+
+void RetrieveItemsTask::onSelectModified(const QMap<qint64, KIMAP::Message> &messages)
+{
+    Akonadi::Item::List modifiedItems;
+    KIMAP::FetchJob::FetchScope scope;
+    // QRESYNC SELECT only warns us about flag changes
+    scope.mode = KIMAP::FetchJob::FetchScope::Flags;
+    for (auto msg = messages.cbegin(), end = messages.cend(); msg != end; ++msg) {
+        // qDebug( 5327 ) << "Flags: " << i.flags();
+        bool ok;
+        const auto item = resourceState()->messageHelper()->createItemFromMessage(msg->message, msg->uid, msg->size, msg->attributes, msg->flags, scope, ok);
+        if (ok) {
+            modifiedItems << item;
+        }
+    }
+    itemsRetrievedIncremental(modifiedItems, Akonadi::Item::List());
 }
 
 void RetrieveItemsTask::onFinalSelectDone(KJob *job)
@@ -279,12 +392,12 @@ void RetrieveItemsTask::prepareRetrieval()
 
     // Get the current uid validity value and store it
     int oldUidValidity = 0;
-    if (!col.hasAttribute("uidvalidity")) {
+    if (!col.hasAttribute<UidValidityAttribute>()) {
         auto currentUidValidity = new UidValidityAttribute(m_uidValidity);
         col.addAttribute(currentUidValidity);
         modifyNeeded = true;
     } else {
-        UidValidityAttribute *currentUidValidity = static_cast<UidValidityAttribute *>(col.attribute("uidvalidity"));
+        UidValidityAttribute *currentUidValidity = col.attribute<UidValidityAttribute>();
         oldUidValidity = currentUidValidity->uidValidity();
         if (oldUidValidity != m_uidValidity) {
             currentUidValidity->setUidValidity(m_uidValidity);
@@ -308,12 +421,12 @@ void RetrieveItemsTask::prepareRetrieval()
     }
 
     // Store the mailbox flags
-    if (!col.hasAttribute("collectionflags")) {
+    if (!col.hasAttribute<Akonadi::CollectionFlagsAttribute>()) {
         auto flagsAttribute = new Akonadi::CollectionFlagsAttribute(m_flags);
         col.addAttribute(flagsAttribute);
         modifyNeeded = true;
     } else {
-        Akonadi::CollectionFlagsAttribute *flagsAttribute = static_cast<Akonadi::CollectionFlagsAttribute *>(col.attribute("collectionflags"));
+        Akonadi::CollectionFlagsAttribute *flagsAttribute = col.attribute<Akonadi::CollectionFlagsAttribute>();
         const QList<QByteArray> oldFlags = flagsAttribute->flags();
         if (oldFlags != m_flags) {
             flagsAttribute->setFlags(m_flags);
@@ -323,7 +436,7 @@ void RetrieveItemsTask::prepareRetrieval()
 
     qint64 oldHighestModSeq = 0;
     if (serverSupportsCondstore() && m_highestModSeq > 0) {
-        if (!col.hasAttribute("highestmodseq")) {
+        if (!col.hasAttribute<HighestModSeqAttribute>()) {
             auto attr = new HighestModSeqAttribute(m_highestModSeq);
             col.addAttribute(attr);
             modifyNeeded = true;
@@ -382,7 +495,7 @@ void RetrieveItemsTask::prepareRetrieval()
 
     if (m_messageCount == 0) {
         // Shortcut:
-        // If no messages are present on the server, clear local cash and finish
+        // If no messages are present on the server, clear local cache and finish
         m_incremental = false;
         if (realMessageCount > 0) {
             qCDebug(IMAPRESOURCE_LOG) << "No messages present so we are done, deleting local messages.";
@@ -427,6 +540,20 @@ void RetrieveItemsTask::prepareRetrieval()
         KIMAP::ImapSet imapSet;
         imapSet.add(m_messageUidsMissingBody);
         retrieveItems(imapSet, scope, true, true);
+    } else if (m_qresyncSelect && m_nextUid > oldNextUid) {
+        // QRESYNC optimisation :
+        // New messages have been added, and modified / removed messages are handled during the QRESYNC SELECT
+        // Only fetch the new messages
+        // We can make an incremental update and use modseq.
+        qCDebug(IMAPRESOURCE_LOG) << "Incrementally fetching new messages: UidNext: " << m_nextUid << " Old UidNext: " << oldNextUid << " message count "
+                                  << m_messageCount << realMessageCount;
+        retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), m_nextUid), scope, true, true);
+    } else if (m_qresyncSelect) {
+        // QRESYNC optimisation :
+        // No new messages have been added, modified/removed messages have already been handled by the QRESYNC SELECT
+        // We can end the task here
+        qCDebug(IMAPRESOURCE_LOG) << "No additional messages have been found by QRESYNC SELECT, retrieval complete";
+        taskComplete();
     } else if (m_nextUid > oldNextUid && ((realMessageCount + m_nextUid - oldNextUid) == m_messageCount) && realMessageCount > 0) {
         // Optimization:
         // New messages are available, but we know no messages have been removed.
@@ -516,7 +643,7 @@ void RetrieveItemsTask::onReadyForNextBatch(int size)
 
 void RetrieveItemsTask::onItemsRetrieved(const Akonadi::Item::List &addedItems)
 {
-    if (m_incremental) {
+    if (m_incremental || m_qresyncSelect) {
         itemsRetrievedIncremental(addedItems, Akonadi::Item::List());
     } else {
         itemsRetrieved(addedItems);
@@ -553,6 +680,11 @@ void RetrieveItemsTask::onRetrievalDone(KJob *job)
         return;
     }
 
+    // if QRESYNC is active, we already fecthed all flag changes during SELECT
+    if (m_qresyncSelect) {
+        taskComplete();
+        return;
+    }
     // Fetch flags of all items that were not fetched by the fetchJob. After
     // that /all/ items in the folder are synced.
     listFlagsForImapSet(KIMAP::ImapSet(1, alreadyFetchedBegin - 1));
@@ -604,7 +736,7 @@ void RetrieveItemsTask::taskComplete()
         qCDebug(IMAPRESOURCE_LOG) << "Applying collection changes";
         applyCollectionChanges(m_modifiedCollection);
     }
-    if (m_incremental) {
+    if (m_incremental || m_qresyncSelect) {
         // Calling itemsRetrievalDone() before previous call to itemsRetrievedIncremental()
         // behaves like if we called itemsRetrieved(Items::List()), so make sure
         // Akonadi knows we did incremental fetch that came up with no changes
@@ -612,6 +744,24 @@ void RetrieveItemsTask::taskComplete()
     }
     qCDebug(IMAPRESOURCE_LOG) << "Retrieval complete. Elapsed(ms): " << m_time.elapsed();
     itemsRetrievalDone();
+}
+
+Akonadi::Item::List RetrieveItemsTask::imapSetToItems(const KIMAP::ImapSet &set)
+{
+    Akonadi::Item::List list;
+    const KIMAP::ImapInterval::List lstInterval = set.intervals();
+    list.reserve(lstInterval.count());
+    for (const KIMAP::ImapInterval &interval : lstInterval) {
+        if (!interval.hasDefinedEnd()) {
+            qCWarning(IMAPRESOURCE_LOG) << "Trying to convert an infinite imap interval to a finite list";
+            continue;
+        }
+        for (qint64 i = interval.begin(), end = interval.end(); i <= end; ++i) {
+            list << Akonadi::Item(i);
+        }
+    }
+
+    return list;
 }
 
 #include "moc_retrieveitemstask.cpp"

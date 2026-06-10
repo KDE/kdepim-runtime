@@ -514,7 +514,14 @@ bool ResourceTask::serverSupportsCondstore() const
 {
     // Don't enable CONDSTORE for GMail (X-GM-EXT-1 is a GMail-specific capability)
     // because it breaks changes synchronization when using labels.
-    return serverCapabilities().contains(QLatin1StringView("CONDSTORE")) && !serverCapabilities().contains(QLatin1StringView("X-GM-EXT-1"));
+    return (serverCapabilities().contains(QLatin1StringView("CONDSTORE")) || serverCapabilities().contains(QLatin1StringView("QRESYNC")))
+        && !serverCapabilities().contains(QLatin1StringView("X-GM-EXT-1"));
+}
+
+bool ResourceTask::serverSupportsQresync() const
+{
+    // The QRESYNC extension is built on top of CONDSTORE, so we have the same GMail restrictions as for CONDSTORE
+    return serverCapabilities().contains(QLatin1StringView("QRESYNC")) && !serverCapabilities().contains(QLatin1StringView("X-GM-EXT-1"));
 }
 
 int ResourceTask::batchSize() const
