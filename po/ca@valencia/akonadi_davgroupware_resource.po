@@ -636,7 +636,7 @@ msgstr "Introduïu la informació de connexió per al servidor de treball en gru
 #: setupwizard.cpp:411
 #, kde-format
 msgid "Host"
-msgstr "Màquina"
+msgstr "Amfitrió"
 
 #: setupwizard.cpp:414
 #, kde-format
