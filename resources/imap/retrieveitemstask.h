@@ -40,6 +40,8 @@ private Q_SLOTS:
     void onItemsRetrieved(const Akonadi::Item::List &addedItems);
     void onRetrievalDone(KJob *job);
     void onFlagsFetchDone(KJob *job);
+    void onSelectVanished(const KIMAP::ImapSet &messages);
+    void onSelectModified(const QMap<qint64, KIMAP::Message> &messages);
 
 protected:
     void doStart(KIMAP::Session *session) override;
@@ -59,6 +61,7 @@ private:
     void retrieveItems(const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope &scope, bool incremental = false, bool uidBased = false);
     void listFlagsForImapSet(const KIMAP::ImapSet &set);
     void taskComplete();
+    Akonadi::Item::List imapSetToItems(const KIMAP::ImapSet &set);
 
     KIMAP::Session *m_session = nullptr;
     QList<qint64> m_messageUidsMissingBody;
@@ -79,4 +82,6 @@ private:
     qint64 m_nextUid = -1;
     qint64 m_highestModSeq = -1;
     QList<QByteArray> m_flags;
+
+    bool m_qresyncSelect;
 };
