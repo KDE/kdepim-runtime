@@ -80,10 +80,18 @@ private Q_SLOTS:
                  << "S: * OK [ UIDVALIDITY 1149151135  ]"
                  << "S: * OK [ UIDNEXT 9  ]"
                  << "S: A000003 OK [READ-ONLY] select done"
-                 << "C: A000004 UID SEARCH UID 1:9"
+                 << "C: A000004 SELECT \"INBOX/Foo\""
+                 << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
+                 << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
+                 << "S: * 1 EXISTS"
+                 << "S: * 0 RECENT"
+                 << "S: * OK [ UIDVALIDITY 1149151135  ]"
+                 << "S: * OK [ UIDNEXT 9  ]"
+                 << "S: A000004 OK [READ-ONLY] select done"
+                 << "C: A000005 UID SEARCH UID 1:9"
                  << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
-                 << "S: A000004 OK search done"
-                 << "C: A000005 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE "
+                 << "S: A000005 OK search done"
+                 << "C: A000006 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE "
                     "BODY.PEEK[HEADER] "
                     "FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 7 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
@@ -93,7 +101,7 @@ private Q_SLOTS:
                     "Subject: Test Mail\r\n"
                     "\r\n"
                     " )"
-                 << "S: A000005 OK fetch done";
+                 << "S: A000006 OK fetch done";
         callNames.clear();
         callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
 
@@ -308,7 +316,7 @@ private Q_SLOTS:
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE") << "C: A000003 SELECT \"INBOX/Foo\" (CONDSTORE)"
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE") << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge DONE"
@@ -335,7 +343,7 @@ private Q_SLOTS:
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE") << "C: A000003 SELECT \"INBOX/Foo\" (CONDSTORE)"
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE") << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge DONE"
@@ -502,7 +510,7 @@ private Q_SLOTS:
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE") << "C: A000003 SELECT \"INBOX/Foo\" (CONDSTORE)"
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE") << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge DONE"
@@ -570,6 +578,153 @@ private Q_SLOTS:
         callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
 
         QTest::newRow("missing uidnext") << collection << scenario << callNames;
+
+        // QRESYNC TESTS
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
+        collection.setCachePolicy(policy);
+        collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(6);
+        collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456789);
+        stats.setCount(5);
+        collection.setStatistics(stats);
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE" << "QRESYNC") << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 EXPUNGE"
+                 << "S: A000004 OK expunge DONE"
+                 << "C: A000005 SELECT \"INBOX/Foo\" (QRESYNC (1149151135 123456789 1:5))"
+                 << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
+                 << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
+                 << "S: * 6 EXISTS"
+                 << "S: * 1 RECENT"
+                 << "S: * OK [ UIDVALIDITY 1149151135 ]"
+                 << "S: * OK [ UIDNEXT 7 ]"
+                 << "S: * OK [ HIGHESTMODSEQ 123456950 ]"
+                 << "S: A000005 OK select done"
+                 << "C: A000006 UID SEARCH UID 6:7"
+                 << "S: * SEARCH 6"
+                 << "S: A000006 OK search done"
+                 << "C: A000007 UID FETCH 6 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+                 << "S: * 6 FETCH ( FLAGS (\\Seen) UID 6 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+                    "RFC822.SIZE 75 BODY[] {75}\r\n"
+                    "From: Foo <foo@kde.org>\r\n"
+                    "To: Bar <bar@kde.org>\r\n"
+                    "Subject: Test Mail\r\n"
+                    "\r\n"
+                    "Test\r\n"
+                    " )"
+                 << "S: A000007 OK fetch done";
+        callNames.clear();
+        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental")
+                  << QStringLiteral("itemsRetrievalDone");
+
+        QTest::newRow("qresync added message") << collection << scenario << callNames;
+
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
+        collection.setCachePolicy(policy);
+        collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(6);
+        collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456789);
+        stats.setCount(5);
+        collection.setStatistics(stats);
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE" << "QRESYNC") << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 EXPUNGE"
+                 << "S: A000004 OK expunge DONE"
+                 << "C: A000005 SELECT \"INBOX/Foo\" (QRESYNC (1149151135 123456789 1:5))"
+                 << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
+                 << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
+                 << "S: * 5 EXISTS"
+                 << "S: * OK [ UIDVALIDITY 1149151135 ]"
+                 << "S: * OK [ UIDNEXT 6 ]"
+                 << "S: * OK [ HIGHESTMODSEQ 123456950 ]"
+                 << "S: * 1 FETCH (UID 1 FLAGS (\\Seen) MODSEQ (123456900))"
+                 << "S: * 3 FETCH (UID 3 FLAGS (\\Seen \\Answered) MODSEQ (123456950))"
+                 << "S: A000005 OK select done";
+        callNames.clear();
+        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental")
+                  << QStringLiteral("itemsRetrievalDone");
+
+        QTest::newRow("qresync modified messages") << collection << scenario << callNames;
+
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
+        collection.setCachePolicy(policy);
+        collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(6);
+        collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456789);
+        stats.setCount(5);
+        collection.setStatistics(stats);
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE" << "QRESYNC") << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 EXPUNGE"
+                 << "S: A000004 OK expunge DONE"
+                 << "C: A000005 SELECT \"INBOX/Foo\" (QRESYNC (1149151135 123456789 1:5))"
+                 << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
+                 << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
+                 << "S: * 3 EXISTS"
+                 << "S: * OK [ UIDVALIDITY 1149151135 ]"
+                 << "S: * OK [ UIDNEXT 6 ]"
+                 << "S: * OK [ HIGHESTMODSEQ 123456950 ]"
+                 << "S: * VANISHED (EARLIER) 2,4"
+                 << "S: A000005 OK select done";
+        callNames.clear();
+        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental")
+                  << QStringLiteral("itemsRetrievalDone");
+
+        QTest::newRow("qresync vanished messages") << collection << scenario << callNames;
+
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
+        collection.setCachePolicy(policy);
+        collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(6);
+        collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456789);
+        stats.setCount(5);
+        collection.setStatistics(stats);
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE" << "QRESYNC") << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 EXPUNGE"
+                 << "S: A000004 OK expunge DONE"
+                 << "C: A000005 SELECT \"INBOX/Foo\" (QRESYNC (1149151135 123456789 1:5))"
+                 << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
+                 << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
+                 << "S: * 5 EXISTS"
+                 << "S: * 2 RECENT"
+                 << "S: * OK [ UIDVALIDITY 1149151135 ]"
+                 << "S: * OK [ UIDNEXT 8 ]"
+                 << "S: * OK [ HIGHESTMODSEQ 123456950 ]"
+                 << "S: * VANISHED (EARLIER) 2,4"
+                 << "S: * 1 FETCH (UID 1 FLAGS (\\Seen) MODSEQ (123456900))"
+                 << "S: * 3 FETCH (UID 5 FLAGS (\\Seen \\Answered) MODSEQ (123456950))"
+                 << "S: A000005 OK select done"
+                 << "C: A000006 UID SEARCH UID 6:8"
+                 << "S: * SEARCH 6 7"
+                 << "S: A000006 OK search done"
+                 << "C: A000007 UID FETCH 6:7 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+                 << "S: * 4 FETCH ( FLAGS (\\Seen) UID 6 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+                    "RFC822.SIZE 75 BODY[] {75}\r\n"
+                    "From: Foo <foo@kde.org>\r\n"
+                    "To: Bar <bar@kde.org>\r\n"
+                    "Subject: Test Mail\r\n"
+                    "\r\n"
+                    "Test\r\n"
+                    " )"
+                 << "S: * 5 FETCH ( FLAGS (\\Seen) UID 7 INTERNALDATE \"30-Jun-2010 15:26:42 +0200\" "
+                    "RFC822.SIZE 75 BODY[] {75}\r\n"
+                    "From: Foo <foo@kde.org>\r\n"
+                    "To: Bar <bar@kde.org>\r\n"
+                    "Subject: Test Mail\r\n"
+                    "\r\n"
+                    "Test\r\n"
+                    " )"
+                 << "S: A000007 OK fetch done";
+        callNames.clear();
+        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental")
+                  << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
+
+        QTest::newRow("qresync added, modified and vanished") << collection << scenario << callNames;
     }
 
     void shouldIntrospectCollection()
