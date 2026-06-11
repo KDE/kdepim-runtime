@@ -330,10 +330,9 @@ msgid "Invalid collection for item %1."
 msgstr "Neplatná kolekcia pre položku %1."
 
 #: davgroupwareresource.cpp:653
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to delete item exceptions: %1"
-msgstr "Nemôžem získať kolekcie: %1"
+msgstr "Nemôžem odstrániť výnimky položky: %1"
 
 #: davgroupwareresource.cpp:850
 #, kde-format
