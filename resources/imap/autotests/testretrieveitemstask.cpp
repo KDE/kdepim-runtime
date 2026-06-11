@@ -570,6 +570,44 @@ private Q_SLOTS:
         callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
 
         QTest::newRow("missing uidnext") << collection << scenario << callNames;
+
+        // QRESYNC TESTS
+        // This tests currently fails because ItemFetchJob fails in the test environment (probably because of the lack of Akonadi server)
+        // We should find a solution to bypass this and test with the QRESYNC capabilities, maybe mocking the ItemFetchJob somehow ?
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
+        collection.setCachePolicy(policy);
+        collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(6);
+        collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456789);
+        stats.setCount(5);
+        collection.setStatistics(stats);
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE" << "QRESYNC")
+                 << "C: A000003 SELECT \"INBOX/Foo\" (QRESYNC (1149151135 123456789 1:5))"
+                 << "S: A000003 OK select done"
+                 << "C: A000004 EXPUNGE"
+                 << "S: A000004 OK expunge DONE"
+                 << "C: A000005 SELECT \"INBOX/Foo\" (QRESYNC (1149151135 123456789 1:5))"
+                 << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
+                 << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
+                 << "S: * 5 EXISTS"
+                 << "S: * 2 RECENT"
+                 << "S: * OK [ UIDVALIDITY 1149151135 ]"
+                 << "S: * OK [ UIDNEXT 8 ]"
+                 << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
+                 << "S: * VANISHED (EARLIER) 2,4"
+                 << "S: * 1 FETCH (UID 1 FLAGS (\\Seen) MODSEQ (123456900))"
+                 << "S: * 3 FETCH (UID 5 FLAGS (\\Seen \\Answered) MODSEQ (123456950))"
+                 << "S: A000005 OK select done"
+                 << "C: A000007 UID FETCH 6:7 (FLAGS UID)"
+                 << "S: * 4 FETCH (UID 6 FLAGS ())"
+                 << "S: * 5 FETCH (UID 7 FLAGS (\\Recent))"
+                 << "S: A000007 OK fetch done";
+        callNames.clear();
+        // this list is not accurate; this should be fixed once we mmade sure the ItemFetchJob does not fail during tests
+        callNames << QStringLiteral("itemsRetrievalDone");
+
+        QTest::newRow("qresync message added") << collection << scenario << callNames;
     }
 
     void shouldIntrospectCollection()
