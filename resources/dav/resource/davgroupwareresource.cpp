@@ -1094,6 +1094,10 @@ void DavGroupwareResource::onCollectionAddedFinished(KJob *job)
 
     collection.setRemoteId(davCollection.url().toDisplayString());
     collection.setName(collection.remoteId());
+    // Ensures a Dav collection cannot create a sub-collection
+    Collection::Rights rights = collection.rights();
+    rights.setFlag(Collection::CanCreateCollection, false);
+    collection.setRights(rights);
 
     settings()->addCollectionUrlMapping(davCollection.url().protocol(), davCollection.url().toDisplayString(), configUrl.toDisplayString());
 
@@ -1230,6 +1234,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
             rights |= Akonadi::Collection::ReadOnly;
         }
 
+        rights.setFlag(Akonadi::Collection::CanCreateCollection, false);
         collection.setRights(rights);
         collections << collection;
 
