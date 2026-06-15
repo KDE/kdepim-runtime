@@ -1,6 +1,6 @@
 # translation of akonadi_davgroupware_resource.po to Italian
 #
-# SPDX-FileCopyrightText: 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2024, 2025 Luigi Toscano <luigi.toscano@tiscali.it>
+# SPDX-FileCopyrightText: 2012-2021, 2024-2026 Luigi Toscano <luigi.toscano@tiscali.it>
 # Vincenzo Reale <smart2128vr@gmail.com>, 2009, 2010.
 # Nicola Ruggero <nicola@nxnt.org>, 2010, 2011.
 msgid ""
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-06-08 00:45+0000\n"
-"PO-Revision-Date: 2025-05-24 11:35+0200\n"
+"PO-Revision-Date: 2026-06-14 23:29+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 25.04.0\n"
+"X-Generator: Lokalize 26.04.0\n"
 
 #: configwidget.cpp:34
 #, kde-format
@@ -337,10 +337,9 @@ msgid "Invalid collection for item %1."
 msgstr "Collezione non valida per l'elemento %1."
 
 #: davgroupwareresource.cpp:653
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to delete item exceptions: %1"
-msgstr "Impossibile recuperare le collezioni: %1"
+msgstr "Impossibile eliminare le eccezioni dell'elemento: %1"
 
 #: davgroupwareresource.cpp:850
 #, kde-format
