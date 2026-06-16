@@ -939,8 +939,7 @@ void DavGroupwareResource::collectionChanged(const Collection &collection)
     }
 
     auto job = new KDAV::DavCollectionModifyJob(davUrl);
-    // TODO fix renaming calendars with parent folders, right now it makes a bit of a mess
-    // job->setProperty(QStringLiteral("displayname"), collection.displayName());
+    job->setProperty(QStringLiteral("displayname"), collection.displayName());
     if (color.isValid()) {
         const auto format = color.alpha() == 255 ? QColor::HexRgb : QColor::HexArgb;
         job->setProperty(QStringLiteral("calendar-color"), color.name(format), QStringLiteral("http://apple.com/ns/ical/"));
