@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the kdepim-runtime package.
 #
 # Automatically generated, 2022.
-# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Mincho Kondarev <mkondarev@yahoo.de>
+# SPDX-FileCopyrightText: 2022-2026 Mincho Kondarev <mkondarev@yahoo.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-06-08 00:45+0000\n"
-"PO-Revision-Date: 2025-05-26 19:26+0200\n"
+"PO-Revision-Date: 2026-06-15 19:58+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.07.70\n"
+"X-Generator: Lokalize 26.04.2\n"
 
 #: configwidget.cpp:34
 #, kde-format
@@ -333,10 +333,9 @@ msgid "Invalid collection for item %1."
 msgstr "Невалидна колекция за елемент %1."
 
 #: davgroupwareresource.cpp:653
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to delete item exceptions: %1"
-msgstr "Невъзможно е да се изтеглят колекции: %1"
+msgstr "Неуспешно изтриване на изключенията за елемента: %1"
 
 #: davgroupwareresource.cpp:850
 #, kde-format
