@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-08 00:45+0000\n"
+"POT-Creation-Date: 2026-06-17 00:46+0000\n"
 "PO-Revision-Date: 2024-07-30 21:06+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -310,63 +310,69 @@ msgstr "Nevalida respondo de la servilo"
 msgid "Unable to parse free-busy data received"
 msgstr "Ne eblas analizi liberokupajn datumojn ricevitajn"
 
-#: davgroupwareresource.cpp:175
+#: davgroupwareresource.cpp:242
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "Ne eblas reakiri informojn pri libera okupata dum eksterrete"
 
-#: davgroupwareresource.cpp:262
+#: davgroupwareresource.cpp:329
 #, kde-format
 msgid "Fetching collections"
 msgstr "Alportante kolektojn"
 
-#: davgroupwareresource.cpp:330
+#: davgroupwareresource.cpp:397
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Petita por preni erojn por nekonata kolekto: %1"
 
-#: davgroupwareresource.cpp:387
+#: davgroupwareresource.cpp:454
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Nevalida kolekto por ero %1."
 
-#: davgroupwareresource.cpp:653
+#: davgroupwareresource.cpp:720
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to delete item exceptions: %1"
 msgstr "Ne eblas preni kolektojn: %1"
 
-#: davgroupwareresource.cpp:850
+#: davgroupwareresource.cpp:917
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Ne eblas modifi erojn: %1"
 
-#: davgroupwareresource.cpp:890
+#: davgroupwareresource.cpp:957
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Ne eblas modifi kolekton: %1"
 
-#: davgroupwareresource.cpp:1013
+#: davgroupwareresource.cpp:1086
+#, fuzzy, kde-format
+#| msgid "Unable to remove collection: %1"
+msgid "Unable to create collection: %1"
+msgstr "Ne eblas forigi kolekton: %1"
+
+#: davgroupwareresource.cpp:1115
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Ne eblas forigi kolekton: %1"
 
-#: davgroupwareresource.cpp:1033
+#: davgroupwareresource.cpp:1135
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Ne eblas preni kolektojn: %1"
 
-#: davgroupwareresource.cpp:1166 davgroupwareresource.cpp:1270
+#: davgroupwareresource.cpp:1269 davgroupwareresource.cpp:1373
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Ne eblas retrovi erojn: %1"
 
-#: davgroupwareresource.cpp:1406
+#: davgroupwareresource.cpp:1509
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Ne eblas retrovi eron: %1"
 
-#: davgroupwareresource.cpp:1426
+#: davgroupwareresource.cpp:1529
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -375,23 +381,23 @@ msgstr ""
 "Ne eblas retrovi eron: malsukcesis analizi eron-datenojn. Eble ĝi jam estis "
 "forigita."
 
-#: davgroupwareresource.cpp:1486
+#: davgroupwareresource.cpp:1589
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Ne eblas aldoni eron: %1"
 
-#: davgroupwareresource.cpp:1531 davgroupwareresource.cpp:1655
-#: davgroupwareresource.cpp:1667
+#: davgroupwareresource.cpp:1634 davgroupwareresource.cpp:1758
+#: davgroupwareresource.cpp:1770
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Ne eblas ŝanĝi eron: %1"
 
-#: davgroupwareresource.cpp:1629 davgroupwareresource.cpp:1686
+#: davgroupwareresource.cpp:1732 davgroupwareresource.cpp:1789
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Ne eblas forigi eron: %1"
 
-#: davgroupwareresource.cpp:1773 davgroupwareresource.cpp:1774
+#: davgroupwareresource.cpp:1876 davgroupwareresource.cpp:1877
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "La rimedo ankoraŭ ne estas agordita"
@@ -737,17 +743,17 @@ msgstr "Malkovritaj kolektoj:"
 msgid "Fetch"
 msgstr "Elprenu"
 
-#: utils.cpp:47
+#: utils.cpp:51
 #, kde-format
 msgid "CalDav"
 msgstr "CalDav"
 
-#: utils.cpp:50
+#: utils.cpp:54
 #, kde-format
 msgid "CardDav"
 msgstr "CardDav"
 
-#: utils.cpp:53
+#: utils.cpp:57
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"

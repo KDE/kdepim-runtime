@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-08 00:45+0000\n"
+"POT-Creation-Date: 2026-06-17 00:46+0000\n"
 "PO-Revision-Date: 2026-06-09 00:08+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -322,63 +322,69 @@ msgstr "Respuesta no válida del servidor"
 msgid "Unable to parse free-busy data received"
 msgstr "No es posible analizar los datos recibidos de disponibilidad"
 
-#: davgroupwareresource.cpp:175
+#: davgroupwareresource.cpp:242
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr ""
 "No se puede recuperar la información de disponibilidad estando desconectado"
 
-#: davgroupwareresource.cpp:262
+#: davgroupwareresource.cpp:329
 #, kde-format
 msgid "Fetching collections"
 msgstr "Obteniendo colecciones"
 
-#: davgroupwareresource.cpp:330
+#: davgroupwareresource.cpp:397
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Se le pidió recuperar elementos para una colección desconocida: %1"
 
-#: davgroupwareresource.cpp:387
+#: davgroupwareresource.cpp:454
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Colección no válida para el elemento %1."
 
-#: davgroupwareresource.cpp:653
+#: davgroupwareresource.cpp:720
 #, kde-format
 msgid "Unable to delete item exceptions: %1"
 msgstr "No se han podido borrar las excepciones del elemento: %1"
 
-#: davgroupwareresource.cpp:850
+#: davgroupwareresource.cpp:917
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "No se han podido modificar los elementos: %1"
 
-#: davgroupwareresource.cpp:890
+#: davgroupwareresource.cpp:957
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "No se puede modificar la colección: %1"
 
-#: davgroupwareresource.cpp:1013
+#: davgroupwareresource.cpp:1086
+#, fuzzy, kde-format
+#| msgid "Unable to remove collection: %1"
+msgid "Unable to create collection: %1"
+msgstr "No se puede eliminar la colección: %1"
+
+#: davgroupwareresource.cpp:1115
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "No se puede eliminar la colección: %1"
 
-#: davgroupwareresource.cpp:1033
+#: davgroupwareresource.cpp:1135
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "No se pueden recuperar las colecciones %1"
 
-#: davgroupwareresource.cpp:1166 davgroupwareresource.cpp:1270
+#: davgroupwareresource.cpp:1269 davgroupwareresource.cpp:1373
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "No se pueden recuperar los elementos %1"
 
-#: davgroupwareresource.cpp:1406
+#: davgroupwareresource.cpp:1509
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "No se puede recuperar el elemento %1"
 
-#: davgroupwareresource.cpp:1426
+#: davgroupwareresource.cpp:1529
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -387,23 +393,23 @@ msgstr ""
 "No se ha podido recuperar el elemento: ha fallado el análisis de los datos "
 "del elemento. Es posible que ya se hubiera borrado."
 
-#: davgroupwareresource.cpp:1486
+#: davgroupwareresource.cpp:1589
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "No se puede añadir el elemento %1"
 
-#: davgroupwareresource.cpp:1531 davgroupwareresource.cpp:1655
-#: davgroupwareresource.cpp:1667
+#: davgroupwareresource.cpp:1634 davgroupwareresource.cpp:1758
+#: davgroupwareresource.cpp:1770
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "No se puede cambiar el elemento %1"
 
-#: davgroupwareresource.cpp:1629 davgroupwareresource.cpp:1686
+#: davgroupwareresource.cpp:1732 davgroupwareresource.cpp:1789
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "No se puede eliminar el elemento %1"
 
-#: davgroupwareresource.cpp:1773 davgroupwareresource.cpp:1774
+#: davgroupwareresource.cpp:1876 davgroupwareresource.cpp:1877
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Todavía no se ha configurado el recurso"
@@ -753,17 +759,17 @@ msgstr "Colecciones descubiertas:"
 msgid "Fetch"
 msgstr "Obtener"
 
-#: utils.cpp:47
+#: utils.cpp:51
 #, kde-format
 msgid "CalDav"
 msgstr "CalDav"
 
-#: utils.cpp:50
+#: utils.cpp:54
 #, kde-format
 msgid "CardDav"
 msgstr "CardDav"
 
-#: utils.cpp:53
+#: utils.cpp:57
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"

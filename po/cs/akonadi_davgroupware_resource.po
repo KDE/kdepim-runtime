@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-08 00:45+0000\n"
+"POT-Creation-Date: 2026-06-17 00:46+0000\n"
 "PO-Revision-Date: 2026-02-05 16:05+0100\n"
 "Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
 "Language-Team: \n"
@@ -315,63 +315,69 @@ msgstr "Neplatná odpověď ze serveru"
 msgid "Unable to parse free-busy data received"
 msgstr "Nelze analyzovat přijatá data o dostupnosti"
 
-#: davgroupwareresource.cpp:175
+#: davgroupwareresource.cpp:242
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "Nelze načíst data o dostupnosti v režimu offline"
 
-#: davgroupwareresource.cpp:262
+#: davgroupwareresource.cpp:329
 #, kde-format
 msgid "Fetching collections"
 msgstr "Stahuji sbírky"
 
-#: davgroupwareresource.cpp:330
+#: davgroupwareresource.cpp:397
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Požadavek na vyhledání položek pro neznámou sbírku: %1"
 
-#: davgroupwareresource.cpp:387
+#: davgroupwareresource.cpp:454
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Neplatná sbírka pro položku %1."
 
-#: davgroupwareresource.cpp:653
+#: davgroupwareresource.cpp:720
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to delete item exceptions: %1"
 msgstr "Nelze načíst sbírky: %1"
 
-#: davgroupwareresource.cpp:850
+#: davgroupwareresource.cpp:917
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Nelze upravit položky: %1"
 
-#: davgroupwareresource.cpp:890
+#: davgroupwareresource.cpp:957
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Nelze ověřit sbírku: %1"
 
-#: davgroupwareresource.cpp:1013
+#: davgroupwareresource.cpp:1086
+#, fuzzy, kde-format
+#| msgid "Unable to remove collection: %1"
+msgid "Unable to create collection: %1"
+msgstr "Nelze odstranit sbírku: %1"
+
+#: davgroupwareresource.cpp:1115
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Nelze odstranit sbírku: %1"
 
-#: davgroupwareresource.cpp:1033
+#: davgroupwareresource.cpp:1135
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Nelze načíst sbírky: %1"
 
-#: davgroupwareresource.cpp:1166 davgroupwareresource.cpp:1270
+#: davgroupwareresource.cpp:1269 davgroupwareresource.cpp:1373
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Nelze načíst položky: %1"
 
-#: davgroupwareresource.cpp:1406
+#: davgroupwareresource.cpp:1509
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Nelze načíst položku: %1"
 
-#: davgroupwareresource.cpp:1426
+#: davgroupwareresource.cpp:1529
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -379,23 +385,23 @@ msgid ""
 msgstr ""
 "Nelze načíst položku: selhalo zpracování dat položky. Možná již byla smazána."
 
-#: davgroupwareresource.cpp:1486
+#: davgroupwareresource.cpp:1589
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Nelze přidat položku: %1"
 
-#: davgroupwareresource.cpp:1531 davgroupwareresource.cpp:1655
-#: davgroupwareresource.cpp:1667
+#: davgroupwareresource.cpp:1634 davgroupwareresource.cpp:1758
+#: davgroupwareresource.cpp:1770
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Nelze změnit položku: %1"
 
-#: davgroupwareresource.cpp:1629 davgroupwareresource.cpp:1686
+#: davgroupwareresource.cpp:1732 davgroupwareresource.cpp:1789
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Nelze odstranit položku: %1"
 
-#: davgroupwareresource.cpp:1773 davgroupwareresource.cpp:1774
+#: davgroupwareresource.cpp:1876 davgroupwareresource.cpp:1877
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Zdroj ještě není nakonfigurován"
@@ -741,17 +747,17 @@ msgstr "Objevené sbírky:"
 msgid "Fetch"
 msgstr "Stáhnout"
 
-#: utils.cpp:47
+#: utils.cpp:51
 #, kde-format
 msgid "CalDav"
 msgstr "CalDav"
 
-#: utils.cpp:50
+#: utils.cpp:54
 #, kde-format
 msgid "CardDav"
 msgstr "CardDav"
 
-#: utils.cpp:53
+#: utils.cpp:57
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDAV"
