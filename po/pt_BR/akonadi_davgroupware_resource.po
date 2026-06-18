@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-06-17 00:46+0000\n"
-"PO-Revision-Date: 2026-06-08 04:52-0300\n"
+"PO-Revision-Date: 2026-06-17 05:51-0300\n"
 "Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
@@ -358,10 +358,9 @@ msgid "Unable to modify collection: %1"
 msgstr "Não foi possível modificar a coleção: %1"
 
 #: davgroupwareresource.cpp:1086
-#, fuzzy, kde-format
-#| msgid "Unable to remove collection: %1"
+#, kde-format
 msgid "Unable to create collection: %1"
-msgstr "Não foi possível remover a coleção: %1"
+msgstr "Não foi possível criar a coleção: %1"
 
 #: davgroupwareresource.cpp:1115
 #, kde-format
