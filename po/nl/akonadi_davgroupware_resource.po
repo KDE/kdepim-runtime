@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-06-17 00:46+0000\n"
-"PO-Revision-Date: 2026-06-08 12:52+0200\n"
+"PO-Revision-Date: 2026-06-18 14:19+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 26.04.1\n"
+"X-Generator: Lokalize 26.04.2\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: configwidget.cpp:34
@@ -357,10 +357,9 @@ msgid "Unable to modify collection: %1"
 msgstr "Verzameling kon niet worden gewijzigd: %1"
 
 #: davgroupwareresource.cpp:1086
-#, fuzzy, kde-format
-#| msgid "Unable to remove collection: %1"
+#, kde-format
 msgid "Unable to create collection: %1"
-msgstr "Verzameling kon niet worden verwijderd: %1"
+msgstr "Verzameling kon niet worden aangemaakt: %1"
 
 #: davgroupwareresource.cpp:1115
 #, kde-format

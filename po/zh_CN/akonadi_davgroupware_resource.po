@@ -329,7 +329,7 @@ msgstr "项目 %1 的收藏无效。"
 #: davgroupwareresource.cpp:720
 #, kde-format
 msgid "Unable to delete item exceptions: %1"
-msgstr ""
+msgstr "无法删除项目例外：%1"
 
 #: davgroupwareresource.cpp:917
 #, kde-format
@@ -344,7 +344,7 @@ msgstr "无法修改此日历：%1"
 #: davgroupwareresource.cpp:1086
 #, kde-format
 msgid "Unable to create collection: %1"
-msgstr ""
+msgstr "无法创建集合：%1"
 
 #: davgroupwareresource.cpp:1115
 #, kde-format
