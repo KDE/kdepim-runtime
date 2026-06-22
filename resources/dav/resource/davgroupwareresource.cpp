@@ -114,6 +114,9 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
 
     scheduleCustomTask(this, "initialRetrieveCollections", QVariant(), ResourceBase::Prepend);
     scheduleCustomTask(this, "createInitialCache", QVariant(), ResourceBase::Prepend);
+
+    // ResourceBase skips local changes of the EntityDisplayAttribute by default, but we want to track them for this resource
+    setKeepLocalCollectionChanges({});
 }
 
 DavGroupwareResource::~DavGroupwareResource()
