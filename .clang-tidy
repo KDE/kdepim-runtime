@@ -14,12 +14,16 @@ Checks: -*,
         -bugprone-narrowing-conversions,
         -bugprone-suspicious-include,
         clang-analyzer-*,
-        -clang-analyzer-osx,
+        -clang-analyzer-apiModeling.*,
+        -clang-analyzer-optin.osx.*,
+        -clang-analyzer-optin.cplusplus.VirtualCall,
         -clang-analyzer-cplusplus.NewDeleteLeaks,
+        -clang-analyzer-webkit.*,
         -google-*,
         misc-*,
         -misc-definitions-in-headers,
         -misc-include-cleaner,
+        -misc-multiple-inheritance,
         -misc-no-recursion,
         -misc-use-anonymous-namespace,
         -*-non-private-member-variables-in-classes,
@@ -40,10 +44,19 @@ Checks: -*,
         -readability-math-missing-parentheses,
         -readability-named-parameter,
         -readability-qualified-auto,
+        -readability-redundant-access-specifiers,
         -readability-redundant-casting,
         -readability-simplify-boolean-expr,
         -readability-static-accessed-through-instance,
         -readability-use-std-min-max,
+        -readability-use-anyofallof,
+#WarningsAsErrors: bugprone-*,
+#                  clang-*,
+#                  google-*,
+#                  misc-*,
+#                  performance-*,
+#                  readability-*,
+HeaderFilterRegex: '/kdepim-runtime/src/'
 CheckOptions:
     - key:  bugprone-assert-side-effects.AssertMacros
       value: 'Q_ASSERT;QVERIFY;QCOMPARE;AKVERIFY'
@@ -59,3 +72,5 @@ CheckOptions:
       value: true
     - key: VectorLikeClasses
       value: 'std::vector;QList'
+    - key: misc-override-with-different-visibility.DisallowedVisibilityChange
+      value: widening
