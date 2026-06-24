@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-22 00:44+0000\n"
+"POT-Creation-Date: 2026-06-24 01:24+0000\n"
 "PO-Revision-Date: 2025-06-10 23:48+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -307,69 +307,69 @@ msgstr "서버에서 잘못된 응답이 돌아옴"
 msgid "Unable to parse free-busy data received"
 msgstr "받은 free-busy 데이터를 해석할 수 없음"
 
-#: davgroupwareresource.cpp:242
+#: davgroupwareresource.cpp:245
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "오프라인일 때 free-busy 정보를 가져올 수 없음"
 
-#: davgroupwareresource.cpp:329
+#: davgroupwareresource.cpp:332
 #, kde-format
 msgid "Fetching collections"
 msgstr "모음집 가져오는 중"
 
-#: davgroupwareresource.cpp:397
+#: davgroupwareresource.cpp:400
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "알 수 없는 모음집에서 항목을 가져와야 함: %1"
 
-#: davgroupwareresource.cpp:454
+#: davgroupwareresource.cpp:457
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "항목 %1의 모음집이 올바르지 않습니다."
 
-#: davgroupwareresource.cpp:720
+#: davgroupwareresource.cpp:723
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to delete item exceptions: %1"
 msgstr "모음집을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:917
+#: davgroupwareresource.cpp:920
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "항목을 수정할 수 없음: %1"
 
-#: davgroupwareresource.cpp:956
+#: davgroupwareresource.cpp:959
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "모음집을 수정할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1085
+#: davgroupwareresource.cpp:1088
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to create collection: %1"
 msgstr "모음집을 삭제하는 중: %1"
 
-#: davgroupwareresource.cpp:1114
+#: davgroupwareresource.cpp:1117
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "모음집을 삭제하는 중: %1"
 
-#: davgroupwareresource.cpp:1134
+#: davgroupwareresource.cpp:1137
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "모음집을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:1268 davgroupwareresource.cpp:1372
+#: davgroupwareresource.cpp:1271 davgroupwareresource.cpp:1375
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "항목을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:1508
+#: davgroupwareresource.cpp:1511
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "항목을 가져올 수 없음: %1"
 
-#: davgroupwareresource.cpp:1528
+#: davgroupwareresource.cpp:1531
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -378,23 +378,23 @@ msgstr ""
 "항목을 가져올 수 없음: 항목 데이터를 해석할 수 없습니다. 이미 삭제되었을 수"
 "도 있습니다."
 
-#: davgroupwareresource.cpp:1588
+#: davgroupwareresource.cpp:1591
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "항목을 추가할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1633 davgroupwareresource.cpp:1757
-#: davgroupwareresource.cpp:1769
+#: davgroupwareresource.cpp:1636 davgroupwareresource.cpp:1760
+#: davgroupwareresource.cpp:1772
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "항목을 변경할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1731 davgroupwareresource.cpp:1788
+#: davgroupwareresource.cpp:1734 davgroupwareresource.cpp:1791
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "항목을 삭제할 수 없음: %1"
 
-#: davgroupwareresource.cpp:1875 davgroupwareresource.cpp:1876
+#: davgroupwareresource.cpp:1878 davgroupwareresource.cpp:1879
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "리소스가 설정되지 않음"
