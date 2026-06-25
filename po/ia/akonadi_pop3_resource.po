@@ -75,8 +75,8 @@ msgstr ""
 "supporto de pipelining, tu usa le button \"Auto releva\" a basso del "
 "dialogo;\n"
 "Si tu servitor non avisa lo, ma tu vole plus velocitate, alora tu deberea "
-"facer alcun essayos prime per inviar a te mesme un pauc de posta e discargar "
-"lo. "
+"facer alcun essayos prime per inviar a te mesme un pauco de posta e "
+"discargar lo. "
 
 #: accountwidget.cpp:293
 #, kde-format
