@@ -7,6 +7,7 @@
 
 #include "changeitemtask.h"
 
+#include "highestmodseqattribute.h"
 #include "imapresource_debug.h"
 
 #include <KLocalizedString>
@@ -36,6 +37,11 @@ void ChangeItemTask::doStart(KIMAP::Session *session)
     const QString mailBox = mailBoxForCollection(item().parentCollection());
     m_oldUid = item().remoteId().toLongLong();
     qCDebug(IMAPRESOURCE_LOG) << mailBox << m_oldUid << parts();
+
+    if (serverSupportsCondstore() && collection().hasAttribute<HighestModSeqAttribute>()) {
+        m_condstoreStore = true;
+        m_highestModSeq = collection().attribute<HighestModSeqAttribute>()->highestModSequence();
+    }
 
     if (parts().contains("PLD:RFC822")) {
         if (!item().hasPayload<std::shared_ptr<KMime::Message>>()) {
@@ -98,6 +104,9 @@ void ChangeItemTask::triggerStoreJob()
     store->setSequenceSet(KIMAP::ImapSet(m_oldUid));
     store->setFlags(flags);
     store->setMode(KIMAP::StoreJob::SetFlags);
+    if (m_condstoreStore) {
+        store->setLastModSeq(m_highestModSeq);
+    }
 
     connect(store, &KIMAP::StoreJob::result, this, &ChangeItemTask::onStoreFlagsDone);
 
@@ -111,6 +120,50 @@ void ChangeItemTask::onStoreFlagsDone(KJob *job)
         cancelTask(job->errorString());
     } else {
         changeProcessed();
+        KIMAP::StoreJob *storeJob = qobject_cast<KIMAP::StoreJob *>(job);
+        if (!storeJob->unchangedMessages().isEmpty()) {
+            triggerFetchJob();
+        }
+    }
+}
+
+void ChangeItemTask::triggerFetchJob()
+{
+    auto fetch = new KIMAP::FetchJob(m_session);
+    KIMAP::FetchJob::FetchScope scope;
+    fetch->setUidBased(true);
+    fetch->setSequenceSet(KIMAP::ImapSet(m_oldUid));
+    scope.parts.clear();
+    scope.mode = KIMAP::FetchJob::FetchScope::Flags;
+    fetch->setScope(scope);
+    connect(fetch, &KIMAP::FetchJob::messagesAvailable, this, &ChangeItemTask::onMessagesReceived);
+    connect(fetch, &KJob::result, this, &ChangeItemTask::onFetchDone);
+    fetch->start();
+}
+
+void ChangeItemTask::onMessagesReceived(const QMap<qint64, KIMAP::Message> &messages)
+{
+    Q_ASSERT(messages.size() == 1);
+    auto msg = messages.cbegin();
+    KIMAP::FetchJob::FetchScope scope;
+    scope.mode = KIMAP::FetchJob::FetchScope::Flags;
+    bool ok;
+    const auto item = resourceState()->messageHelper()->createItemFromMessage(msg->message, msg->uid, msg->size, msg->attributes, msg->flags, scope, ok);
+    if (!ok) {
+        qCWarning(IMAPRESOURCE_LOG) << "Failed to retrieve message " << msg->uid;
+        cancelTask(i18n("No message retrieved, failed to read the message."));
+        return;
+    }
+    m_messageFetched = true;
+    itemRetrieved(item);
+}
+
+void ChangeItemTask::onFetchDone(KJob *job)
+{
+    if (job->error()) {
+        cancelTask(job->errorString());
+    } else if (!m_messageFetched) {
+        cancelTask(i18n("No message retrieved, server reply was empty."));
     }
 }
 
