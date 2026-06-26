@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-03 00:44+0000\n"
+"POT-Creation-Date: 2026-06-26 00:46+0000\n"
 "PO-Revision-Date: 2023-11-07 21:26+0100\n"
 "Last-Translator: Enol P. <enolp@softastur.org>\n"
 "Language-Team: \n"
@@ -404,13 +404,13 @@ msgctxt "@status"
 msgid "Failed to read password from keychain."
 msgstr ""
 
-#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
-#: removecollectionrecursivetask.cpp:141
+#: removecollectionrecursivetask.cpp:113 removecollectionrecursivetask.cpp:129
+#: removecollectionrecursivetask.cpp:142
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr ""
 
-#: removecollectionrecursivetask.cpp:146
+#: removecollectionrecursivetask.cpp:147
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""
@@ -447,17 +447,17 @@ msgstr ""
 msgid "Access rights revoked"
 msgstr ""
 
-#: retrievecollectionstask.cpp:155
+#: retrievecollectionstask.cpp:166
 #, kde-format
 msgid "Inbox"
 msgstr ""
 
-#: retrievecollectionstask.cpp:164
+#: retrievecollectionstask.cpp:175
 #, kde-format
 msgid "Shared Folders"
 msgstr ""
 
-#: retrieveitemstask.cpp:530
+#: retrieveitemstask.cpp:579
 #, kde-format
 msgctxt "@info:status"
 msgid "Fetching missing mail bodies in %3: %1/%2"
@@ -1098,25 +1098,25 @@ msgstr ""
 msgid "Empty"
 msgstr ""
 
-#: subscriptiondialog.cpp:50
+#: subscriptiondialog.cpp:51
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
 msgstr ""
 
-#: subscriptiondialog.cpp:65
+#: subscriptiondialog.cpp:66
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
 msgstr ""
 
-#: subscriptiondialog.cpp:71
+#: subscriptiondialog.cpp:72
 #, kde-format
 msgctxt "@label search for a subscription"
 msgid "Search:"
 msgstr ""
 
-#: subscriptiondialog.cpp:80
+#: subscriptiondialog.cpp:81
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"

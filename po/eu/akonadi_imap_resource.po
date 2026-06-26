@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-03 00:44+0000\n"
+"POT-Creation-Date: 2026-06-26 00:46+0000\n"
 "PO-Revision-Date: 2025-05-23 22:53+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -439,13 +439,13 @@ msgctxt "@status"
 msgid "Failed to read password from keychain."
 msgstr "Gako-katetik pasahitza irakurtzea huts egin du."
 
-#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
-#: removecollectionrecursivetask.cpp:141
+#: removecollectionrecursivetask.cpp:113 removecollectionrecursivetask.cpp:129
+#: removecollectionrecursivetask.cpp:142
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "Karpeta ezabatzea huts egin du, karpeta-zerrenda lehengoratzen."
 
-#: removecollectionrecursivetask.cpp:146
+#: removecollectionrecursivetask.cpp:147
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""
@@ -486,17 +486,17 @@ msgstr ""
 msgid "Access rights revoked"
 msgstr "Sartzeko eskubideak indargabetuta"
 
-#: retrievecollectionstask.cpp:155
+#: retrievecollectionstask.cpp:166
 #, kde-format
 msgid "Inbox"
 msgstr "Sarrerako ontzia"
 
-#: retrievecollectionstask.cpp:164
+#: retrievecollectionstask.cpp:175
 #, kde-format
 msgid "Shared Folders"
 msgstr "Karpeta partekatuak"
 
-#: retrieveitemstask.cpp:530
+#: retrieveitemstask.cpp:579
 #, kde-format
 msgctxt "@info:status"
 msgid "Fetching missing mail bodies in %3: %1/%2"
@@ -1210,25 +1210,25 @@ msgstr "Ataka:"
 msgid "Empty"
 msgstr "Hutsik"
 
-#: subscriptiondialog.cpp:50
+#: subscriptiondialog.cpp:51
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
 msgstr "&Zerrenda birzamatu"
 
-#: subscriptiondialog.cpp:65
+#: subscriptiondialog.cpp:66
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
 msgstr "Gaitu zerbitzari-aldeko harpidetza"
 
-#: subscriptiondialog.cpp:71
+#: subscriptiondialog.cpp:72
 #, kde-format
 msgctxt "@label search for a subscription"
 msgid "Search:"
 msgstr "Bilatu:"
 
-#: subscriptiondialog.cpp:80
+#: subscriptiondialog.cpp:81
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"

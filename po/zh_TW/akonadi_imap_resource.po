@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-03 00:44+0000\n"
+"POT-Creation-Date: 2026-06-26 00:46+0000\n"
 "PO-Revision-Date: 2025-04-07 14:23+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -415,13 +415,13 @@ msgctxt "@status"
 msgid "Failed to read password from keychain."
 msgstr "從鑰匙圈讀取密碼失敗。"
 
-#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
-#: removecollectionrecursivetask.cpp:141
+#: removecollectionrecursivetask.cpp:113 removecollectionrecursivetask.cpp:129
+#: removecollectionrecursivetask.cpp:142
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "刪除資料夾失敗，將回復資料夾清單。"
 
-#: removecollectionrecursivetask.cpp:146
+#: removecollectionrecursivetask.cpp:147
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "找不到要刪除的資料夾，將回復資料夾清單。"
@@ -459,17 +459,17 @@ msgstr ""
 msgid "Access rights revoked"
 msgstr "存取權限被撤銷"
 
-#: retrievecollectionstask.cpp:155
+#: retrievecollectionstask.cpp:166
 #, kde-format
 msgid "Inbox"
 msgstr "收件匣"
 
-#: retrievecollectionstask.cpp:164
+#: retrievecollectionstask.cpp:175
 #, kde-format
 msgid "Shared Folders"
 msgstr "共享資料夾"
 
-#: retrieveitemstask.cpp:530
+#: retrieveitemstask.cpp:579
 #, kde-format
 msgctxt "@info:status"
 msgid "Fetching missing mail bodies in %3: %1/%2"
@@ -1159,25 +1159,25 @@ msgstr "連接埠："
 msgid "Empty"
 msgstr "空白"
 
-#: subscriptiondialog.cpp:50
+#: subscriptiondialog.cpp:51
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
 msgstr "重新載入清單(&L)"
 
-#: subscriptiondialog.cpp:65
+#: subscriptiondialog.cpp:66
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
 msgstr "開啟伺服器端訂閱"
 
-#: subscriptiondialog.cpp:71
+#: subscriptiondialog.cpp:72
 #, kde-format
 msgctxt "@label search for a subscription"
 msgid "Search:"
 msgstr "搜尋："
 
-#: subscriptiondialog.cpp:80
+#: subscriptiondialog.cpp:81
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"

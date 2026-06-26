@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-03 00:44+0000\n"
+"POT-Creation-Date: 2026-06-26 00:46+0000\n"
 "PO-Revision-Date: 2025-08-09 21:08+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -416,13 +416,13 @@ msgctxt "@status"
 msgid "Failed to read password from keychain."
 msgstr "فشل في قراءة كلمة السر من حَمَّالَة المَفَاتِيح."
 
-#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
-#: removecollectionrecursivetask.cpp:141
+#: removecollectionrecursivetask.cpp:113 removecollectionrecursivetask.cpp:129
+#: removecollectionrecursivetask.cpp:142
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "فشل حذف المجلّد، يستعيد قائمة المجلّدات."
 
-#: removecollectionrecursivetask.cpp:146
+#: removecollectionrecursivetask.cpp:147
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "فشل العثور على المجلّد الذي سيُحذف، يستعيد قائمة المجلّدات."
@@ -461,17 +461,17 @@ msgstr ""
 msgid "Access rights revoked"
 msgstr "سُحبت أذونات النّفاذ"
 
-#: retrievecollectionstask.cpp:155
+#: retrievecollectionstask.cpp:166
 #, kde-format
 msgid "Inbox"
 msgstr "صندوق الوارد"
 
-#: retrievecollectionstask.cpp:164
+#: retrievecollectionstask.cpp:175
 #, kde-format
 msgid "Shared Folders"
 msgstr "المجلّدات المشتركة"
 
-#: retrieveitemstask.cpp:530
+#: retrieveitemstask.cpp:579
 #, kde-format
 msgctxt "@info:status"
 msgid "Fetching missing mail bodies in %3: %1/%2"
@@ -1150,25 +1150,25 @@ msgstr "المنفذ:"
 msgid "Empty"
 msgstr "فارغ"
 
-#: subscriptiondialog.cpp:50
+#: subscriptiondialog.cpp:51
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
 msgstr "أ&عِد تحميل القائمة"
 
-#: subscriptiondialog.cpp:65
+#: subscriptiondialog.cpp:66
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
 msgstr "مكّن الاشتراكات من جانب الخادم"
 
-#: subscriptiondialog.cpp:71
+#: subscriptiondialog.cpp:72
 #, kde-format
 msgctxt "@label search for a subscription"
 msgid "Search:"
 msgstr "ابحث عن:"
 
-#: subscriptiondialog.cpp:80
+#: subscriptiondialog.cpp:81
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"
