@@ -1661,10 +1661,11 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
         connect(fetchJob, &KDAV::DavItemFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
         fetchJob->start();
     } else {
+        auto itemsToCommit = Item::List();
         if (!isRemoval) {
             item.setRemoteRevision(davItem.etag());
             cache->setEtag(davItem.url().toDisplayString(), davItem.etag());
-            changeCommitted(item);
+            itemsToCommit << item;
         }
 
         if (!dependentItems.isEmpty()) {
@@ -1681,7 +1682,14 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
             auto addedItem = job->property("addedItem").value<Akonadi::Item>();
             addedItem.setRemoteRevision(davItem.etag());
             cache->setEtag(addedItem.remoteId(), davItem.etag());
-            changeCommitted(addedItem);
+            itemsToCommit << addedItem;
+        }
+
+        if (!isRemoval) {
+            Q_ASSERT(!itemsToCommit.isEmpty());
+            changesCommitted(itemsToCommit);
+        } else {
+            Q_ASSERT(itemsToCommit.isEmpty());
         }
     }
 }
