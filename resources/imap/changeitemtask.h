@@ -26,6 +26,8 @@ private Q_SLOTS:
     void onPreDeleteSelectDone(KJob *job);
     void onSearchDone(KJob *job);
     void onDeleteDone(KJob *job);
+    void onMessagesReceived(const QMap<qint64, KIMAP::Message> &messages);
+    void onFetchDone(KJob *job);
 
 protected:
     void doStart(KIMAP::Session *session) override;
@@ -34,6 +36,7 @@ private:
     void triggerStoreJob();
     void triggerSearchJob();
     void triggerDeleteJob();
+    void triggerFetchJob();
 
     void recordNewUid();
 
@@ -41,4 +44,11 @@ private:
     QByteArray m_messageId;
     qint64 m_oldUid = 0;
     qint64 m_newUid = 0;
+
+    // CONDTSORE-related fields
+
+    bool m_condstoreStore = false;
+    qint64 m_highestModSeq = 0;
+    Akonadi::Item m_messageFetched;
+    bool m_isMessageFetched = false;
 };
