@@ -6,6 +6,7 @@
 
 #include "changeitemsflagstask.h"
 
+#include "highestmodseqattribute.h"
 #include "imapresource_debug.h"
 #include <KIMAP/SelectJob>
 #include <KIMAP/Session>
@@ -20,8 +21,23 @@ ChangeItemsFlagsTask::~ChangeItemsFlagsTask() = default;
 
 void ChangeItemsFlagsTask::doStart(KIMAP::Session *session)
 {
-    const QString mailBox = mailBoxForCollection(items().at(0).parentCollection());
+    auto collection = items().at(0).parentCollection();
+    const QString mailBox = mailBoxForCollection(collection);
     qCDebug(IMAPRESOURCE_LOG) << mailBox;
+    if (serverSupportsCondstore() && collection.hasAttribute<HighestModSeqAttribute>()) {
+        m_condstoreStore = true;
+        m_highestModSeq = collection.attribute<HighestModSeqAttribute>()->highestModSequence();
+
+        // We might need to fetch items and update the backend accordingly, set item merging mode in that case
+        auto cts = collection.contentMimeTypes();
+        cts.removeOne(Akonadi::Collection::mimeType());
+        cts.removeOne(KMime::Message::mimeType());
+        if (!cts.isEmpty()) {
+            setItemMergingMode(Akonadi::ItemSync::GIDMerge);
+        } else {
+            setItemMergingMode(Akonadi::ItemSync::RIDMerge);
+        }
+    }
 
     if (session->selectedMailBox() != mailBox) {
         auto select = new KIMAP::SelectJob(session);
@@ -77,6 +93,9 @@ KIMAP::StoreJob *ChangeItemsFlagsTask::prepareJob(KIMAP::Session *session)
     auto store = new KIMAP::StoreJob(session);
     store->setUidBased(true);
     store->setSequenceSet(set);
+    if (m_condstoreStore) {
+        store->setLastModSeq(m_highestModSeq);
+    }
 
     return store;
 }
@@ -88,6 +107,8 @@ void ChangeItemsFlagsTask::triggerAppendFlagsJob(KIMAP::Session *session)
         if (!removedFlags().isEmpty()) {
             m_processedItems = 0;
             triggerRemoveFlagsJob(session);
+        } else if (!m_unchangedMessages.isEmpty()) {
+            triggerUnchangedItemsFetch(session);
         } else {
             changeProcessed();
         }
@@ -104,7 +125,11 @@ void ChangeItemsFlagsTask::triggerRemoveFlagsJob(KIMAP::Session *session)
 {
     const auto supportedFlags = fromAkonadiToSupportedImapFlags(removedFlags().values(), items().at(0).parentCollection());
     if (supportedFlags.isEmpty()) {
-        changeProcessed();
+        if (!m_unchangedMessages.isEmpty()) {
+            triggerUnchangedItemsFetch(session);
+        } else {
+            changeProcessed();
+        }
     } else {
         KIMAP::StoreJob *store = prepareJob(session);
         store->setFlags(supportedFlags);
@@ -120,11 +145,21 @@ void ChangeItemsFlagsTask::onAppendFlagsDone(KJob *job)
         qCWarning(IMAPRESOURCE_LOG) << "Flag append failed: " << job->errorString();
         cancelTask(job->errorString());
     } else {
-        KIMAP::Session *session = qobject_cast<KIMAP::Job *>(job)->session();
+        KIMAP::StoreJob *storeJob = qobject_cast<KIMAP::StoreJob *>(job);
+        KIMAP::Session *session = storeJob->session();
+        if (!storeJob->unchangedMessages().isEmpty()) {
+            for (const auto &interval : storeJob->unchangedMessages().intervals()) {
+                m_unchangedMessages.add(interval);
+            }
+        }
         if (m_processedItems < items().count()) {
             triggerAppendFlagsJob(session);
         } else if (removedFlags().isEmpty()) {
-            changeProcessed();
+            if (!m_unchangedMessages.isEmpty()) {
+                triggerUnchangedItemsFetch(session);
+            } else {
+                changeProcessed();
+            }
         } else {
             qCDebug(IMAPRESOURCE_LOG) << removedFlags();
             m_processedItems = 0;
@@ -139,12 +174,69 @@ void ChangeItemsFlagsTask::onRemoveFlagsDone(KJob *job)
         qCWarning(IMAPRESOURCE_LOG) << "Flag remove failed: " << job->errorString();
         cancelTask(job->errorString());
     } else {
+        KIMAP::StoreJob *storeJob = qobject_cast<KIMAP::StoreJob *>(job);
+        if (!storeJob->unchangedMessages().isEmpty()) {
+            for (const auto &interval : storeJob->unchangedMessages().intervals()) {
+                m_unchangedMessages.add(interval);
+            }
+        }
         if (m_processedItems < items().count()) {
             triggerRemoveFlagsJob(qobject_cast<KIMAP::Job *>(job)->session());
         } else {
-            changeProcessed();
+            if (!m_unchangedMessages.isEmpty()) {
+                triggerUnchangedItemsFetch(storeJob->session());
+            } else {
+                changeProcessed();
+            }
         }
     }
+}
+
+BatchFetcher *ChangeItemsFlagsTask::createBatchFetcher(MessageHelper::Ptr messageHelper,
+                                                       const KIMAP::ImapSet &set,
+                                                       const KIMAP::FetchJob::FetchScope &scope,
+                                                       int batchSize,
+                                                       KIMAP::Session *session)
+{
+    return new BatchFetcher(messageHelper, set, scope, batchSize, session);
+}
+
+void ChangeItemsFlagsTask::triggerUnchangedItemsFetch(KIMAP::Session *session)
+{
+    KIMAP::FetchJob::FetchScope scope;
+    scope.parts.clear();
+    scope.mode = KIMAP::FetchJob::FetchScope::Flags;
+    m_batchFetcher = createBatchFetcher(resourceState()->messageHelper(), m_unchangedMessages, scope, 10 * batchSize(), session);
+    m_batchFetcher->setUidBased(true);
+    connect(m_batchFetcher, &BatchFetcher::itemsRetrieved, this, &ChangeItemsFlagsTask::onItemsRetrieved);
+    connect(m_batchFetcher, &KJob::result, this, &ChangeItemsFlagsTask::onUnchangedItemsFetchDone);
+    m_batchFetcher->start();
+}
+
+void ChangeItemsFlagsTask::onReadyForNextBatch(int size)
+{
+    Q_UNUSED(size)
+    if (m_batchFetcher) {
+        m_batchFetcher->fetchNextBatch();
+    }
+}
+
+void ChangeItemsFlagsTask::onItemsRetrieved(const Akonadi::Item::List &addedItems)
+{
+    for (const auto &item : addedItems) {
+        m_updatedMessages << item;
+    }
+}
+
+void ChangeItemsFlagsTask::onUnchangedItemsFetchDone(KJob *job)
+{
+    m_batchFetcher = nullptr;
+    if (job->error()) {
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
+        cancelTask(job->errorString());
+        return;
+    }
+    changesCommitted(m_updatedMessages);
 }
 
 #include "moc_changeitemsflagstask.cpp"
