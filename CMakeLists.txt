@@ -268,6 +268,8 @@ if(TARGET KPim6::PimCommonActivities)
     endif()
 endif()
 
+option(QRESYNC_FEATURE_ENABLED "Enable the QRESYNC support in the IMAP resource" FALSE)
+
 if(BUILD_TESTING)
     add_definitions(-DBUILD_TESTING)
 endif()
