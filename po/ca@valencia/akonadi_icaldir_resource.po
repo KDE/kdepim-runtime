@@ -65,7 +65,7 @@ msgstr "No es canvien les dades reals del dorsal."
 #: icaldirsagentsettingswidget.ui:33
 #, kde-format
 msgid "Directory"
-msgstr "Directori"
+msgstr "Carpeta"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: icaldirsagentsettingswidget.ui:39
