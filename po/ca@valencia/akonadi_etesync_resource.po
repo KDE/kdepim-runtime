@@ -102,7 +102,7 @@ msgstr "Falten o s'han canviat les vostres credencials d'EteSync."
 #: etesyncresource.cpp:259
 #, kde-format
 msgid "Cannot retrieve items - account is null"
-msgstr "No s'han pogut els elements - el compte és nul"
+msgstr "No s'han pogut els elements – el compte és nul"
 
 #: etesyncresource.cpp:266 etesyncresource.cpp:394 etesyncresource.cpp:467
 #: etesyncresource.cpp:525 etesyncresource.cpp:655 etesyncresource.cpp:713

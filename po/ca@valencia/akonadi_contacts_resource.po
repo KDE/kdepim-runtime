@@ -32,7 +32,7 @@ msgstr "Configuració"
 #: contactsagentsettingswidget.ui:33
 #, kde-format
 msgid "Directory Name"
-msgstr "Nom del directori"
+msgstr "Nom de la carpeta"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: contactsagentsettingswidget.ui:41
@@ -83,7 +83,7 @@ msgstr "Contactes personals"
 #: contactsresource.cpp:124
 #, kde-format
 msgid "Directory '%1' does not exists"
-msgstr "El directori «%1» no existix"
+msgstr "La carpeta «%1» no existix"
 
 #: contactsresource.cpp:148 contactsresource.cpp:223
 #, kde-format

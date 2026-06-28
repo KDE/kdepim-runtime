@@ -43,13 +43,13 @@ msgstr ""
 #: settingsdialog.ui:39
 #, kde-format
 msgid "Directory"
-msgstr "Directori"
+msgstr "Carpeta"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: settingsdialog.ui:45
 #, kde-format
 msgid "Directory Name"
-msgstr "Nom del directori"
+msgstr "Nom de la carpeta"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: settingsdialog.ui:53

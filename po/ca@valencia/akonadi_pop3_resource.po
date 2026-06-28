@@ -745,7 +745,7 @@ msgstr " MB"
 #: popsettings.ui:345
 #, kde-format
 msgid "&Use pipelining for faster mail download"
-msgstr "Utilit&za el paral·lelisme per a una baixada de correu més ràpida"
+msgstr "&Utilitza el paral·lelisme per a una baixada de correu més ràpida"
 
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: popsettings.ui:365
