@@ -53,6 +53,27 @@ private Q_SLOTS:
         scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
                  << "S: A000001 OK User Logged in"
                  << "C: A000002 CAPABILITY"
+                 << "S: * CAPABILITY IMAP4 IMAP4rev1 NAMESPACE UIDPLUS IDLE QRESYNC"
+                 << "S: A000002 OK Completed"
+                 << "C: A000003 NAMESPACE"
+                 << R"(S: * NAMESPACE ( ("INBOX/" "/") ) ( ("user/" "/") ) ( ("" "/") ))"
+                 << "S: A000003 OK Completed"
+                 << "C: A000004 ENABLE QRESYNC"
+                 << "S: * ENABLED QRESYNC"
+                 << "S: A000004 OK Completed";
+        password = QStringLiteral("foobar");
+        errorCode = SessionPool::NoError;
+        capabilities.clear();
+        capabilities << QStringLiteral("IMAP4") << QStringLiteral("IMAP4REV1") << QStringLiteral("NAMESPACE") << QStringLiteral("UIDPLUS")
+                     << QStringLiteral("IDLE") << QStringLiteral("QRESYNC") << QStringLiteral("CONDSTORE");
+        QTest::newRow("QRESYNC support") << account << requester << scenario << password << errorCode << capabilities;
+
+        account = createDefaultAccount();
+        requester = createDefaultRequester();
+        scenario.clear();
+        scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+                 << "S: A000001 OK User Logged in"
+                 << "C: A000002 CAPABILITY"
                  << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
                  << "S: A000002 OK Completed";
         password = QStringLiteral("foobar");
@@ -60,6 +81,24 @@ private Q_SLOTS:
         capabilities.clear();
         capabilities << QStringLiteral("IMAP4") << QStringLiteral("IMAP4REV1") << QStringLiteral("UIDPLUS") << QStringLiteral("IDLE");
         QTest::newRow("no NAMESPACE support") << account << requester << scenario << password << errorCode << capabilities;
+
+        account = createDefaultAccount();
+        requester = createDefaultRequester();
+        scenario.clear();
+        scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+                 << "S: A000001 OK User Logged in"
+                 << "C: A000002 CAPABILITY"
+                 << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE QRESYNC"
+                 << "S: A000002 OK Completed"
+                 << "C: A000003 ENABLE QRESYNC"
+                 << "S: * ENABLED QRESYNC"
+                 << "S: A000003 OK Completed";
+        password = QStringLiteral("foobar");
+        errorCode = SessionPool::NoError;
+        capabilities.clear();
+        capabilities << QStringLiteral("IMAP4") << QStringLiteral("IMAP4REV1") << QStringLiteral("UIDPLUS") << QStringLiteral("IDLE")
+                     << QStringLiteral("QRESYNC") << QStringLiteral("CONDSTORE");
+        QTest::newRow("QRESYNC with no NAMESPACE support") << account << requester << scenario << password << errorCode << capabilities;
 
         account = createDefaultAccount();
         requester = createDefaultRequester();
@@ -201,14 +240,20 @@ private Q_SLOTS:
         server.addScenario(QList<QByteArray>() << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
                                                << "S: A000001 OK User Logged in"
                                                << "C: A000002 CAPABILITY"
-                                               << "S: * CAPABILITY IMAP4 IMAP4rev1 NAMESPACE UIDPLUS IDLE"
+                                               << "S: * CAPABILITY IMAP4 IMAP4rev1 NAMESPACE UIDPLUS IDLE QRESYNC"
                                                << "S: A000002 OK Completed"
                                                << "C: A000003 NAMESPACE"
                                                << R"(S: * NAMESPACE ( ("INBOX/" "/") ) ( ("user/" "/") ) ( ("" "/") ))"
-                                               << "S: A000003 OK Completed");
+                                               << "S: A000003 OK Completed"
+                                               << "C: A000004 ENABLE QRESYNC"
+                                               << "S: * ENABLED QRESYNC"
+                                               << "S: A000004 OK Completed");
 
         server.addScenario(QList<QByteArray>() << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
-                                               << "S: A000001 OK User Logged in");
+                                               << "S: A000001 OK User Logged in"
+                                               << "C: A000002 ENABLE QRESYNC"
+                                               << "S: * ENABLED QRESYNC"
+                                               << "S: A000002 OK Completed");
 
         server.startAndWait();
 

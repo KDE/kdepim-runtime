@@ -14,6 +14,7 @@
 #include <KLocalizedString>
 
 #include <KIMAP/CapabilitiesJob>
+#include <KIMAP/EnableJob>
 #include <KIMAP/IdJob>
 #include <KIMAP/LogoutJob>
 #include <KIMAP/NamespaceJob>
@@ -392,7 +393,14 @@ void SessionPool::onLoginDone(KJob *job)
 
     if (job->error() == 0) {
         if (m_initialConnectDone) {
-            declareSessionReady(login->session());
+            if (m_capabilities.contains(QLatin1StringView("QRESYNC"))) {
+                auto enableJob = new KIMAP::EnableJob(login->session());
+                enableJob->setCapabilities(QStringList() << QStringLiteral("QRESYNC"));
+                QObject::connect(enableJob, &KIMAP::EnableJob::result, this, &SessionPool::onEnableQresyncDone);
+                enableJob->start();
+            } else {
+                declareSessionReady(login->session());
+            }
         } else {
             // On initial connection we ask for capabilities
             auto capJob = new KIMAP::CapabilitiesJob(login->session());
@@ -478,6 +486,12 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
         QObject::connect(idJob, &KIMAP::IdJob::result, this, &SessionPool::onIdDone);
         idJob->start();
         return;
+    } else if (m_capabilities.contains(QLatin1StringView("QRESYNC"))) {
+        auto enableJob = new KIMAP::EnableJob(capJob->session());
+        enableJob->setCapabilities(QStringList() << QStringLiteral("QRESYNC"));
+        QObject::connect(enableJob, &KIMAP::EnableJob::result, this, &SessionPool::onEnableQresyncDone);
+        enableJob->start();
+        return;
     } else {
         declareSessionReady(capJob->session());
     }
@@ -520,6 +534,12 @@ void SessionPool::onNamespacesTestDone(KJob *job)
         QObject::connect(idJob, &KIMAP::IdJob::result, this, &SessionPool::onIdDone);
         idJob->start();
         return;
+    } else if (m_capabilities.contains(QLatin1StringView("QRESYNC"))) {
+        auto enableJob = new KIMAP::EnableJob(nsJob->session());
+        enableJob->setCapabilities(QStringList() << QStringLiteral("QRESYNC"));
+        QObject::connect(enableJob, &KIMAP::EnableJob::result, this, &SessionPool::onEnableQresyncDone);
+        enableJob->start();
+        return;
     } else {
         declareSessionReady(nsJob->session());
     }
@@ -533,7 +553,26 @@ void SessionPool::onIdDone(KJob *job)
         Q_EMIT connectDone(CancelledError, i18n("Disconnected during login."));
         return;
     }
-    declareSessionReady(idJob->session());
+    if (m_capabilities.contains(QLatin1StringView("QRESYNC"))) {
+        auto enableJob = new KIMAP::EnableJob(idJob->session());
+        enableJob->setCapabilities(QStringList() << QStringLiteral("QRESYNC"));
+        QObject::connect(enableJob, &KIMAP::EnableJob::result, this, &SessionPool::onEnableQresyncDone);
+        enableJob->start();
+        return;
+    } else {
+        declareSessionReady(idJob->session());
+    }
+}
+
+void SessionPool::onEnableQresyncDone(KJob *job)
+{
+    auto enableJob = qobject_cast<KIMAP::EnableJob *>(job);
+    // Can happen if we disconnected meanwhile
+    if (!m_connectingPool.contains(enableJob->session())) {
+        Q_EMIT connectDone(CancelledError, i18n("Disconnected during login."));
+        return;
+    }
+    declareSessionReady(enableJob->session());
 }
 
 void SessionPool::onConnectionLost()

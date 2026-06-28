@@ -588,11 +588,11 @@ private Q_SLOTS:
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE" << "QRESYNC") << "C: A000003 SELECT \"INBOX/Foo\""
-                 << "S: A000003 OK select done"
-                 << "C: A000004 EXPUNGE"
-                 << "S: A000004 OK expunge DONE"
-                 << "C: A000005 SELECT \"INBOX/Foo\" (QRESYNC (1149151135 123456789 1:5))"
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE" << "QRESYNC") << "C: A000004 SELECT \"INBOX/Foo\""
+                 << "S: A000004 OK select done"
+                 << "C: A000005 EXPUNGE"
+                 << "S: A000005 OK expunge DONE"
+                 << "C: A000006 SELECT \"INBOX/Foo\" (QRESYNC (1149151135 123456789 1:5))"
                  << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
                  << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
                  << "S: * 6 EXISTS"
@@ -600,11 +600,11 @@ private Q_SLOTS:
                  << "S: * OK [ UIDVALIDITY 1149151135 ]"
                  << "S: * OK [ UIDNEXT 7 ]"
                  << "S: * OK [ HIGHESTMODSEQ 123456950 ]"
-                 << "S: A000005 OK select done"
-                 << "C: A000006 UID SEARCH UID 6:7"
+                 << "S: A000006 OK select done"
+                 << "C: A000007 UID SEARCH UID 6:7"
                  << "S: * SEARCH 6"
-                 << "S: A000006 OK search done"
-                 << "C: A000007 UID FETCH 6 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+                 << "S: A000007 OK search done"
+                 << "C: A000008 UID FETCH 6 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
                  << "S: * 6 FETCH ( FLAGS (\\Seen) UID 6 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                     "RFC822.SIZE 75 BODY[] {75}\r\n"
                     "From: Foo <foo@kde.org>\r\n"
@@ -613,7 +613,7 @@ private Q_SLOTS:
                     "\r\n"
                     "Test\r\n"
                     " )"
-                 << "S: A000007 OK fetch done";
+                 << "S: A000008 OK fetch done";
         callNames.clear();
         callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental")
                   << QStringLiteral("itemsRetrievalDone");
@@ -628,11 +628,11 @@ private Q_SLOTS:
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE" << "QRESYNC") << "C: A000003 SELECT \"INBOX/Foo\""
-                 << "S: A000003 OK select done"
-                 << "C: A000004 EXPUNGE"
-                 << "S: A000004 OK expunge DONE"
-                 << "C: A000005 SELECT \"INBOX/Foo\" (QRESYNC (1149151135 123456789 1:5))"
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE" << "QRESYNC") << "C: A000004 SELECT \"INBOX/Foo\""
+                 << "S: A000004 OK select done"
+                 << "C: A000005 EXPUNGE"
+                 << "S: A000005 OK expunge DONE"
+                 << "C: A000006 SELECT \"INBOX/Foo\" (QRESYNC (1149151135 123456789 1:5))"
                  << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
                  << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
                  << "S: * 5 EXISTS"
@@ -641,7 +641,7 @@ private Q_SLOTS:
                  << "S: * OK [ HIGHESTMODSEQ 123456950 ]"
                  << "S: * 1 FETCH (UID 1 FLAGS (\\Seen) MODSEQ (123456900))"
                  << "S: * 3 FETCH (UID 3 FLAGS (\\Seen \\Answered) MODSEQ (123456950))"
-                 << "S: A000005 OK select done";
+                 << "S: A000006 OK select done";
         callNames.clear();
         callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental")
                   << QStringLiteral("itemsRetrievalDone");
@@ -656,11 +656,11 @@ private Q_SLOTS:
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE" << "QRESYNC") << "C: A000003 SELECT \"INBOX/Foo\""
-                 << "S: A000003 OK select done"
-                 << "C: A000004 EXPUNGE"
-                 << "S: A000004 OK expunge DONE"
-                 << "C: A000005 SELECT \"INBOX/Foo\" (QRESYNC (1149151135 123456789 1:5))"
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE" << "QRESYNC") << "C: A000004 SELECT \"INBOX/Foo\""
+                 << "S: A000004 OK select done"
+                 << "C: A000005 EXPUNGE"
+                 << "S: A000005 OK expunge DONE"
+                 << "C: A000006 SELECT \"INBOX/Foo\" (QRESYNC (1149151135 123456789 1:5))"
                  << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
                  << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
                  << "S: * 3 EXISTS"
@@ -668,7 +668,7 @@ private Q_SLOTS:
                  << "S: * OK [ UIDNEXT 6 ]"
                  << "S: * OK [ HIGHESTMODSEQ 123456950 ]"
                  << "S: * VANISHED (EARLIER) 2,4"
-                 << "S: A000005 OK select done";
+                 << "S: A000006 OK select done";
         callNames.clear();
         callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental")
                   << QStringLiteral("itemsRetrievalDone");
@@ -683,11 +683,11 @@ private Q_SLOTS:
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE" << "QRESYNC") << "C: A000003 SELECT \"INBOX/Foo\""
-                 << "S: A000003 OK select done"
-                 << "C: A000004 EXPUNGE"
-                 << "S: A000004 OK expunge DONE"
-                 << "C: A000005 SELECT \"INBOX/Foo\" (QRESYNC (1149151135 123456789 1:5))"
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE" << "QRESYNC") << "C: A000004 SELECT \"INBOX/Foo\""
+                 << "S: A000004 OK select done"
+                 << "C: A000005 EXPUNGE"
+                 << "S: A000005 OK expunge DONE"
+                 << "C: A000006 SELECT \"INBOX/Foo\" (QRESYNC (1149151135 123456789 1:5))"
                  << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
                  << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
                  << "S: * 5 EXISTS"
@@ -698,11 +698,11 @@ private Q_SLOTS:
                  << "S: * VANISHED (EARLIER) 2,4"
                  << "S: * 1 FETCH (UID 1 FLAGS (\\Seen) MODSEQ (123456900))"
                  << "S: * 3 FETCH (UID 5 FLAGS (\\Seen \\Answered) MODSEQ (123456950))"
-                 << "S: A000005 OK select done"
-                 << "C: A000006 UID SEARCH UID 6:8"
+                 << "S: A000006 OK select done"
+                 << "C: A000007 UID SEARCH UID 6:8"
                  << "S: * SEARCH 6 7"
-                 << "S: A000006 OK search done"
-                 << "C: A000007 UID FETCH 6:7 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+                 << "S: A000007 OK search done"
+                 << "C: A000008 UID FETCH 6:7 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
                  << "S: * 4 FETCH ( FLAGS (\\Seen) UID 6 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                     "RFC822.SIZE 75 BODY[] {75}\r\n"
                     "From: Foo <foo@kde.org>\r\n"
@@ -719,7 +719,7 @@ private Q_SLOTS:
                     "\r\n"
                     "Test\r\n"
                     " )"
-                 << "S: A000007 OK fetch done";
+                 << "S: A000008 OK fetch done";
         callNames.clear();
         callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental")
                   << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");

@@ -91,6 +91,7 @@ private Q_SLOTS:
     void onCapabilitiesTestDone(KJob *job);
     void onNamespacesTestDone(KJob *job);
     void onIdDone(KJob *job);
+    void onEnableQresyncDone(KJob *job);
 
     void onSessionDestroyed(QObject *);
 

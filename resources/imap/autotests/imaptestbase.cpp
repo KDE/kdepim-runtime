@@ -74,6 +74,12 @@ QList<QByteArray> ImapTestBase::defaultPoolConnectionScenario(const QList<QByteA
 
     scenario << defaultAuthScenario() << "C: A000002 CAPABILITY" << caps << "S: A000002 OK Completed";
 
+    if (caps.contains("QRESYNC")) {
+        scenario << "C: A000003 ENABLE QRESYNC"
+                 << "S: * ENABLED QRESYNC"
+                 << "S: A000003 OK Completed";
+    }
+
     return scenario;
 }
 
