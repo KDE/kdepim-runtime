@@ -598,31 +598,44 @@ void DavGroupwareResource::itemChanged(const Akonadi::Item &item, const QSet<QBy
     }
 
     auto cache = mDavItemCache.value(collection.remoteId());
-    Akonadi::Item::List extraItems;
-    const QStringList lstUrls = cache->urls();
+    auto items = Akonadi::Item::List();
     qCDebug(DAVRESOURCE_LOG) << "For:" << ridBase << "there are " << cache->exceptionUrls(ridBase).count() << " exception URLs in cache";
     for (const QString &rid : cache->exceptionUrls(ridBase)) {
-        Akonadi::Item extraItem;
-        extraItem.setRemoteId(rid);
-        extraItems << extraItem;
+        auto exceptionItem = Akonadi::Item();
+        exceptionItem.setRemoteId(rid);
+        items << exceptionItem;
     }
 
-    if (extraItems.isEmpty()) {
+    if (items.isEmpty()) {
         doItemChange(item);
     } else {
-        auto job = new Akonadi::ItemFetchJob(extraItems);
+        auto mainItem = Akonadi::Item();
+        mainItem.setRemoteId(ridBase);
+        items << mainItem;
+
+        auto job = new Akonadi::ItemFetchJob(items);
         job->setCollection(item.parentCollection());
         job->fetchScope().fetchFullPayload();
-        job->setProperty("item", QVariant::fromValue(item));
+        job->fetchScope().setAncestorRetrieval(ItemFetchScope::Parent);
+        job->setProperty("ridBase", QVariant::fromValue(ridBase));
         connect(job, &Akonadi::ItemFetchJob::result, this, &DavGroupwareResource::onItemChangePrepared);
     }
 }
 
 void DavGroupwareResource::onItemChangePrepared(KJob *job)
 {
-    auto fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
-    auto item = job->property("item").value<Akonadi::Item>();
-    doItemChange(item, fetchJob->items());
+    const auto fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
+    const auto ridBase = job->property("ridBase").toString();
+
+    auto items = fetchJob->items();
+    const auto mainItemIt = std::ranges::find_if(items, [&ridBase](const auto &item) {
+        return item.remoteId() == ridBase;
+    });
+    Q_ASSERT(mainItemIt != items.end());
+
+    const auto mainItem = *mainItemIt;
+    items.erase(mainItemIt);
+    doItemChange(mainItem, items);
 }
 
 void DavGroupwareResource::doItemChange(const Akonadi::Item &item, const Akonadi::Item::List &dependentItems)
