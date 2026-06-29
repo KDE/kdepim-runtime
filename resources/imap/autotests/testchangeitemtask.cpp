@@ -8,6 +8,7 @@
 #include "imaptestbase.h"
 
 #include "changeitemtask.h"
+#include "highestmodseqattribute.h"
 #include "uidnextattribute.h"
 
 #include <KMime/Message>
@@ -25,6 +26,7 @@ private Q_SLOTS:
     void shouldAppendMessage_data()
     {
         QTest::addColumn<Akonadi::Item>("item");
+        QTest::addColumn<Akonadi::Collection>("collection");
         QTest::addColumn<QSet<QByteArray>>("parts");
         QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
@@ -64,7 +66,7 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemChangeCommitted");
 
-        QTest::newRow("modifying mail content") << item << parts << scenario << callNames;
+        QTest::newRow("modifying mail content") << item << collection << parts << scenario << callNames;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.addAttribute(new UidNextAttribute(65));
@@ -97,7 +99,7 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemChangeCommitted");
 
-        QTest::newRow("modifying mail content, no APPENDUID, message has Message-ID") << item << parts << scenario << callNames;
+        QTest::newRow("modifying mail content, no APPENDUID, message has Message-ID") << item << collection << parts << scenario << callNames;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.addAttribute(new UidNextAttribute(65));
@@ -130,7 +132,7 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemChangeCommitted");
 
-        QTest::newRow("modifying mail content, no APPENDUID, message has no Message-ID") << item << parts << scenario << callNames;
+        QTest::newRow("modifying mail content, no APPENDUID, message has no Message-ID") << item << collection << parts << scenario << callNames;
 
         // collection unchanged for this test
         // item only gets a set of flags
@@ -148,12 +150,57 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("changeProcessed");
 
-        QTest::newRow("modifying mail flags") << item << parts << scenario << callNames;
+        QTest::newRow("modifying mail flags") << item << collection << parts << scenario << callNames;
+
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456789);
+        item = Akonadi::Item(2);
+        item.setParentCollection(collection);
+        item.setRemoteId(QStringLiteral("5"));
+        item.setFlags(QSet<QByteArray>() << "\\Foo");
+
+        parts.clear();
+        parts << "FLAGS";
+
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE") << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 UID STORE 5 (UNCHANGEDSINCE 123456789) FLAGS (\\Foo)"
+                 << "S: * 1 FETCH (UID 5 MODSEQ (123456799))"
+                 << "S: A000004 OK Conditional Store completed";
+
+        callNames.clear();
+        callNames << QStringLiteral("changeProcessed");
+        QTest::newRow("CONDSTORE - modifying mail flags - changed message") << item << collection << parts << scenario << callNames;
+
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456789);
+        item = Akonadi::Item(2);
+        item.setParentCollection(collection);
+        item.setRemoteId(QStringLiteral("5"));
+        item.setFlags(QSet<QByteArray>() << "\\Foo");
+
+        parts.clear();
+        parts << "FLAGS";
+
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE") << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 UID STORE 5 (UNCHANGEDSINCE 123456789) FLAGS (\\Foo)"
+                 << "S: A000004 OK [MODIFIED 5] Conditional STORE failed"
+                 << "C: A000005 UID FETCH 5 (FLAGS UID)"
+                 << "S: * 5 FETCH ( FLAGS (\\Seen) )";
+
+        callNames.clear();
+        callNames << QStringLiteral("changeProcessed");
+
+        QTest::newRow("CONDSTORE - modifying mail flags - unchanged message") << item << collection << parts << scenario << callNames;
     }
 
     void shouldAppendMessage()
     {
         QFETCH(Akonadi::Item, item);
+        QFETCH(Akonadi::Collection, collection);
         QFETCH(QSet<QByteArray>, parts);
         QFETCH(QList<QByteArray>, scenario);
         QFETCH(QStringList, callNames);
@@ -170,8 +217,10 @@ private Q_SLOTS:
         QVERIFY(doneSpy.wait());
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
+        state->setServerCapabilities(pool.serverCapabilities());
         state->setParts(parts);
         state->setItem(item);
+        state->setCollection(collection);
         auto task = new ChangeItemTask(state);
         task->start(&pool);
 
