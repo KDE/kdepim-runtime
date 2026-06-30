@@ -702,30 +702,28 @@ void DavGroupwareResource::itemRemoved(const Akonadi::Item &item)
             deleteJob->start();
         }
     } else {
-        // A bit tricky: we must remove an incidence contained in a resource
-        // containing multiple ones.
         ridBase.truncate(ridBase.indexOf(u'#'));
 
-        Akonadi::Item::List extraItems;
+        auto items = Akonadi::Item::List();
         for (const QString &rid : cache->exceptionUrls(ridBase)) {
             if (rid != item.remoteId()) {
-                Akonadi::Item extraItem;
-                extraItem.setRemoteId(rid);
-                extraItems << extraItem;
+                Akonadi::Item exceptionItem;
+                exceptionItem.setRemoteId(rid);
+                items << exceptionItem;
             }
         }
 
-        if (extraItems.isEmpty()) {
-            // Urrrr?
-            // Well, just delete the item.
-            doItemRemoval(item);
-        } else {
-            auto job = new Akonadi::ItemFetchJob(extraItems);
-            job->setCollection(item.parentCollection());
-            job->fetchScope().fetchFullPayload();
-            job->setProperty("item", QVariant::fromValue(item));
-            connect(job, &Akonadi::ItemFetchJob::result, this, &DavGroupwareResource::onItemRemovalPrepared);
-        }
+        auto mainItem = Akonadi::Item{};
+        mainItem.setRemoteId(ridBase);
+        items << mainItem;
+
+        auto job = new Akonadi::ItemFetchJob(items);
+        job->setCollection(item.parentCollection());
+        job->fetchScope().fetchFullPayload();
+        job->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::Parent);
+        job->setProperty("item", QVariant::fromValue(item));
+        job->setProperty("ridBase", QVariant::fromValue(ridBase));
+        connect(job, &Akonadi::ItemFetchJob::result, this, &DavGroupwareResource::onItemRemovalPrepared);
     }
 }
 
@@ -749,46 +747,32 @@ void DavGroupwareResource::onItemExceptionsDeleteFinished(KJob *job)
 
 void DavGroupwareResource::onItemRemovalPrepared(KJob *job)
 {
-    auto fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
-    auto item = job->property("item").value<Akonadi::Item>();
-    const Akonadi::Item::List keptItems = fetchJob->items();
+    const auto fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
+    const auto ridBase = job->property("ridBase").toString();
+    const auto item = job->property("item").value<Akonadi::Item>();
 
-    if (keptItems.isEmpty()) {
-        // Urrrr? Not again!
-        doItemRemoval(item);
-    } else {
-        Akonadi::Item mainItem;
-        Akonadi::Item::List extraItems;
-        QString ridBase = item.remoteId();
-        ridBase.truncate(ridBase.indexOf(u'#'));
+    auto exceptionItems = fetchJob->items();
+    const auto mainItemIt = std::ranges::find_if(exceptionItems, [&ridBase](const auto &item) {
+        return item.remoteId() == ridBase;
+    });
 
-        for (const Akonadi::Item &kept : keptItems) {
-            if (kept.remoteId() == ridBase && extraItems.isEmpty()) {
-                mainItem = kept;
-            } else {
-                extraItems << kept;
-            }
-        }
+    Q_ASSERT(mainItemIt != exceptionItems.end());
+    const auto mainItem = *mainItemIt;
+    exceptionItems.erase(mainItemIt);
 
-        if (!mainItem.hasPayload()) {
-            mainItem = extraItems.takeFirst();
-        }
+    const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(mainItem.parentCollection().remoteId(), ridBase);
+    KDAV::DavItem davItem = Utils::createDavItem(mainItem, mainItem.parentCollection(), exceptionItems);
+    davItem.setUrl(davUrl);
+    davItem.setEtag(mainItem.remoteRevision());
 
-        const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), ridBase);
-
-        KDAV::DavItem davItem = Utils::createDavItem(mainItem, mainItem.parentCollection(), extraItems);
-        davItem.setUrl(davUrl);
-        davItem.setEtag(item.remoteRevision());
-
-        auto modJob = new KDAV::DavItemModifyJob(davItem);
-        modJob->setProperty("collection", QVariant::fromValue(mainItem.parentCollection()));
-        modJob->setProperty("item", QVariant::fromValue(mainItem));
-        modJob->setProperty("dependentItems", QVariant::fromValue(extraItems));
-        modJob->setProperty("isRemoval", QVariant::fromValue(true));
-        modJob->setProperty("removedItem", QVariant::fromValue(item));
-        connect(modJob, &KDAV::DavItemModifyJob::result, this, &DavGroupwareResource::onItemChangedFinished);
-        modJob->start();
-    }
+    auto modJob = new KDAV::DavItemModifyJob(davItem);
+    modJob->setProperty("collection", QVariant::fromValue(mainItem.parentCollection()));
+    modJob->setProperty("item", QVariant::fromValue(mainItem));
+    modJob->setProperty("dependentItems", QVariant::fromValue(exceptionItems));
+    modJob->setProperty("isRemoval", QVariant::fromValue(true));
+    modJob->setProperty("removedItem", QVariant::fromValue(item));
+    connect(modJob, &KDAV::DavItemModifyJob::result, this, &DavGroupwareResource::onItemChangedFinished);
+    modJob->start();
 }
 
 void DavGroupwareResource::doItemRemoval(const Akonadi::Item &item)
