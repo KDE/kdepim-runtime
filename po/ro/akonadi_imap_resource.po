@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-26 00:46+0000\n"
+"POT-Creation-Date: 2026-06-30 00:44+0000\n"
 "PO-Revision-Date: 2020-09-08 19:21+0100\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian\n"
@@ -477,7 +477,7 @@ msgstr "Intrare"
 msgid "Shared Folders"
 msgstr "Dosare partajate"
 
-#: retrieveitemstask.cpp:579
+#: retrieveitemstask.cpp:584
 #, kde-format
 msgctxt "@info:status"
 msgid "Fetching missing mail bodies in %3: %1/%2"
@@ -522,7 +522,7 @@ msgstr ""
 msgid "Resource not synchronized yet."
 msgstr ""
 
-#: sessionpool.cpp:250 sessionpool.cpp:407
+#: sessionpool.cpp:251 sessionpool.cpp:415
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -531,7 +531,7 @@ msgstr ""
 "Imposibil de conectat la serverul IMAP %1.\n"
 "%2"
 
-#: sessionpool.cpp:254
+#: sessionpool.cpp:255
 #, fuzzy, kde-format
 #| msgid ""
 #| "Cound not connect to the IMAP server.\n"
@@ -543,30 +543,30 @@ msgstr ""
 "Imposibil de conectat la serverul IMAP.\n"
 "%1"
 
-#: sessionpool.cpp:279 sessionpool.cpp:320 sessionpool.cpp:389
-#: sessionpool.cpp:425 sessionpool.cpp:496
+#: sessionpool.cpp:280 sessionpool.cpp:321 sessionpool.cpp:390
+#: sessionpool.cpp:433 sessionpool.cpp:510
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "Deconectat de la server în timpul autentificării."
 
-#: sessionpool.cpp:303
+#: sessionpool.cpp:304
 #, fuzzy, kde-format
 #| msgid "Could not connect to the IMAP-server %1."
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr "Imposibil de conectat la serverul IMAP %1."
 
-#: sessionpool.cpp:333
+#: sessionpool.cpp:334
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr ""
 "Parola nu a putut fi citită: utilizatorul a respins accesul la portofel"
 
-#: sessionpool.cpp:341
+#: sessionpool.cpp:342
 #, kde-format
 msgid "Empty password"
 msgstr "Parolă vidă"
 
-#: sessionpool.cpp:353
+#: sessionpool.cpp:354
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
@@ -575,7 +575,7 @@ msgstr ""
 "Ați cerut TLS/SSL pentru conectarea la %1, dar sistemul dumneavoastră nu "
 "pare să fie configurat pentru așa ceva."
 
-#: sessionpool.cpp:410
+#: sessionpool.cpp:418
 #, fuzzy, kde-format
 #| msgid ""
 #| "Cound not connect to the IMAP server.\n"
@@ -587,7 +587,7 @@ msgstr ""
 "Imposibil de conectat la serverul IMAP.\n"
 "%1"
 
-#: sessionpool.cpp:433
+#: sessionpool.cpp:441
 #, fuzzy, kde-format
 #| msgid "Could not test the capabilities supported by the IMAP server %1."
 msgid ""
@@ -595,7 +595,7 @@ msgid ""
 "%2"
 msgstr "Funcțiile susținute de serverul IMAP %1 nu au putut fi testate."
 
-#: sessionpool.cpp:441
+#: sessionpool.cpp:449
 #, fuzzy, kde-format
 #| msgid "Could not test the capabilities supported by the IMAP server %1."
 msgid ""
@@ -603,7 +603,7 @@ msgid ""
 "%1"
 msgstr "Funcțiile susținute de serverul IMAP %1 nu au putut fi testate."
 
-#: sessionpool.cpp:461
+#: sessionpool.cpp:469
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -612,7 +612,7 @@ msgstr ""
 "Serverul IMAP %1 nu poate fi utilizat, deoarece lipsesc niște funcții "
 "esențiale: %2. Rugați administratorul sistemului să actualizeze serverul."
 
-#: sessionpool.cpp:533
+#: sessionpool.cpp:553 sessionpool.cpp:572
 #, kde-format
 msgid "Disconnected during login."
 msgstr "Deconectat în timpul autentificării."

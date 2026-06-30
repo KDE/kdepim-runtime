@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-26 00:46+0000\n"
+"POT-Creation-Date: 2026-06-30 00:44+0000\n"
 "PO-Revision-Date: 2019-12-18 18:36+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -484,7 +484,7 @@ msgstr "Sisenevad"
 msgid "Shared Folders"
 msgstr "Jagatud kaustad"
 
-#: retrieveitemstask.cpp:579
+#: retrieveitemstask.cpp:584
 #, kde-format
 msgctxt "@info:status"
 msgid "Fetching missing mail bodies in %3: %1/%2"
@@ -528,7 +528,7 @@ msgstr ""
 msgid "Resource not synchronized yet."
 msgstr "Ressurss ei ole veel sünkroonitud"
 
-#: sessionpool.cpp:250 sessionpool.cpp:407
+#: sessionpool.cpp:251 sessionpool.cpp:415
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -537,7 +537,7 @@ msgstr ""
 "Ühenduse loomine IMAP serveriga %1 nurjus.\n"
 "%2"
 
-#: sessionpool.cpp:254
+#: sessionpool.cpp:255
 #, kde-format
 msgid ""
 "Could not connect to the IMAP server.\n"
@@ -546,28 +546,28 @@ msgstr ""
 "Ühenduse loomine IMAP serveriga nurjus.\n"
 "%1"
 
-#: sessionpool.cpp:279 sessionpool.cpp:320 sessionpool.cpp:389
-#: sessionpool.cpp:425 sessionpool.cpp:496
+#: sessionpool.cpp:280 sessionpool.cpp:321 sessionpool.cpp:390
+#: sessionpool.cpp:433 sessionpool.cpp:510
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "Server katkestas ühenduse sisselogimise ajal."
 
-#: sessionpool.cpp:303
+#: sessionpool.cpp:304
 #, kde-format
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr "Veel ühe lisaühenduse loomine IMAP serveriga %1 nurjus."
 
-#: sessionpool.cpp:333
+#: sessionpool.cpp:334
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr "Parooli lugemine nurjus: kasutaja loobus kasutamast turvalaegast"
 
-#: sessionpool.cpp:341
+#: sessionpool.cpp:342
 #, kde-format
 msgid "Empty password"
 msgstr "Tühi parool."
 
-#: sessionpool.cpp:353
+#: sessionpool.cpp:354
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
@@ -576,7 +576,7 @@ msgstr ""
 "Soovisid %1 ühendumiseks kasutada TLS/SSL-i, aga sinu süsteem ei paista seda "
 "toetavat."
 
-#: sessionpool.cpp:410
+#: sessionpool.cpp:418
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
@@ -585,7 +585,7 @@ msgstr ""
 "Ühenduse loomine IMAP serveriga nurjus.\n"
 "%1"
 
-#: sessionpool.cpp:433
+#: sessionpool.cpp:441
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
@@ -594,7 +594,7 @@ msgstr ""
 "IMAP serveri %1 toetatud võimaluste test nurjus.\n"
 "%2"
 
-#: sessionpool.cpp:441
+#: sessionpool.cpp:449
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
@@ -603,7 +603,7 @@ msgstr ""
 "IMAP serveri toetatud võimaluste test nurjus.\n"
 "%1"
 
-#: sessionpool.cpp:461
+#: sessionpool.cpp:469
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -612,7 +612,7 @@ msgstr ""
 "IMAP serverit %1 ei saa kasutada, puuduvad mõned kohustuslikud võimalused: "
 "%2. Palun tee süsteemiadministraatorile ettepanek serverit uuendada."
 
-#: sessionpool.cpp:533
+#: sessionpool.cpp:553 sessionpool.cpp:572
 #, kde-format
 msgid "Disconnected during login."
 msgstr "Ühendus katkestati sisselogimise ajal."

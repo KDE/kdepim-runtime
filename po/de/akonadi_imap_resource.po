@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-26 00:46+0000\n"
+"POT-Creation-Date: 2026-06-30 00:44+0000\n"
 "PO-Revision-Date: 2024-08-25 21:34+0200\n"
 "Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -517,7 +517,7 @@ msgstr "Posteingang"
 msgid "Shared Folders"
 msgstr "Freigegebene Ordner"
 
-#: retrieveitemstask.cpp:579
+#: retrieveitemstask.cpp:584
 #, kde-format
 msgctxt "@info:status"
 msgid "Fetching missing mail bodies in %3: %1/%2"
@@ -561,7 +561,7 @@ msgstr ""
 msgid "Resource not synchronized yet."
 msgstr "Die Ressource ist noch nicht abgeglichen."
 
-#: sessionpool.cpp:250 sessionpool.cpp:407
+#: sessionpool.cpp:251 sessionpool.cpp:415
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -570,7 +570,7 @@ msgstr ""
 "Die Verbindung zum IMAP-Server %1 kann nicht hergestellt werden.\n"
 "%2"
 
-#: sessionpool.cpp:254
+#: sessionpool.cpp:255
 #, kde-format
 msgid ""
 "Could not connect to the IMAP server.\n"
@@ -579,31 +579,31 @@ msgstr ""
 "Die Verbindung zum IMAP-Server kann nicht hergestellt werden.\n"
 "%1"
 
-#: sessionpool.cpp:279 sessionpool.cpp:320 sessionpool.cpp:389
-#: sessionpool.cpp:425 sessionpool.cpp:496
+#: sessionpool.cpp:280 sessionpool.cpp:321 sessionpool.cpp:390
+#: sessionpool.cpp:433 sessionpool.cpp:510
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "Die Verbindung wurde während der Anmeldung unterbrochen."
 
-#: sessionpool.cpp:303
+#: sessionpool.cpp:304
 #, kde-format
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr ""
 "Es kann keine zusätzliche Verbindung zum IMAP-Server %1 hergestellt werden."
 
-#: sessionpool.cpp:333
+#: sessionpool.cpp:334
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr ""
 "Das Passwort kann nicht gelesen werden: Der Benutzer hat den Zugriff auf den "
 "Passwortspeicher verweigert."
 
-#: sessionpool.cpp:341
+#: sessionpool.cpp:342
 #, kde-format
 msgid "Empty password"
 msgstr "Leeres Passwort"
 
-#: sessionpool.cpp:353
+#: sessionpool.cpp:354
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
@@ -612,7 +612,7 @@ msgstr ""
 "Sie haben TLS/SSL für die Verbindung zu %1 eingestellt, Ihr System scheint "
 "jedoch nicht für diese Verbindungsmethode eingerichtet zu sein."
 
-#: sessionpool.cpp:410
+#: sessionpool.cpp:418
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
@@ -621,7 +621,7 @@ msgstr ""
 "Die Verbindung zum IMAP-Server kann nicht hergestellt werden.\n"
 "%1"
 
-#: sessionpool.cpp:433
+#: sessionpool.cpp:441
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
@@ -631,7 +631,7 @@ msgstr ""
 "werden.\n"
 "%2"
 
-#: sessionpool.cpp:441
+#: sessionpool.cpp:449
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
@@ -641,7 +641,7 @@ msgstr ""
 "werden.\n"
 "%1"
 
-#: sessionpool.cpp:461
+#: sessionpool.cpp:469
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -651,7 +651,7 @@ msgstr ""
 "Fähigkeiten nicht unterstützt werden: %2. Bitten Sie Ihren Systemverwalter, "
 "den Server entsprechend zu aktualisieren."
 
-#: sessionpool.cpp:533
+#: sessionpool.cpp:553 sessionpool.cpp:572
 #, kde-format
 msgid "Disconnected during login."
 msgstr "Die Verbindung wurde während der Anmeldung unterbrochen."

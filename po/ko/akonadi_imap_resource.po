@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-26 00:46+0000\n"
+"POT-Creation-Date: 2026-06-30 00:44+0000\n"
 "PO-Revision-Date: 2025-04-06 23:03+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -472,7 +472,7 @@ msgstr "받은 편지함"
 msgid "Shared Folders"
 msgstr "공유 폴더"
 
-#: retrieveitemstask.cpp:579
+#: retrieveitemstask.cpp:584
 #, kde-format
 msgctxt "@info:status"
 msgid "Fetching missing mail bodies in %3: %1/%2"
@@ -516,7 +516,7 @@ msgstr "서버 기능을 가져오는 중 오류 발생: %1"
 msgid "Resource not synchronized yet."
 msgstr "리소스를 아직 동기화하지 않았습니다."
 
-#: sessionpool.cpp:250 sessionpool.cpp:407
+#: sessionpool.cpp:251 sessionpool.cpp:415
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -525,7 +525,7 @@ msgstr ""
 "IMAP 서버 %1에 연결할 수 없습니다.\n"
 "%2"
 
-#: sessionpool.cpp:254
+#: sessionpool.cpp:255
 #, kde-format
 msgid ""
 "Could not connect to the IMAP server.\n"
@@ -534,28 +534,28 @@ msgstr ""
 "IMAP 서버에 연결할 수 없습니다.\n"
 "%1"
 
-#: sessionpool.cpp:279 sessionpool.cpp:320 sessionpool.cpp:389
-#: sessionpool.cpp:425 sessionpool.cpp:496
+#: sessionpool.cpp:280 sessionpool.cpp:321 sessionpool.cpp:390
+#: sessionpool.cpp:433 sessionpool.cpp:510
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "로그인 중 서버와 연결이 종료되었습니다."
 
-#: sessionpool.cpp:303
+#: sessionpool.cpp:304
 #, kde-format
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr "IMAP 서버 %1에 추가 연결을 만들 수 없습니다."
 
-#: sessionpool.cpp:333
+#: sessionpool.cpp:334
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr "암호를 읽을 수 없습니다: 사용자가 지갑 접근을 거부함"
 
-#: sessionpool.cpp:341
+#: sessionpool.cpp:342
 #, kde-format
 msgid "Empty password"
 msgstr "빈 암호"
 
-#: sessionpool.cpp:353
+#: sessionpool.cpp:354
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
@@ -563,7 +563,7 @@ msgid ""
 msgstr ""
 "%1에 연결할 때 TLS/SSL을 요청했으나 시스템에 설정되어 있지 않은 것 같습니다."
 
-#: sessionpool.cpp:410
+#: sessionpool.cpp:418
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
@@ -572,7 +572,7 @@ msgstr ""
 "IMAP 서버에 연결할 수 없습니다.\n"
 "%1"
 
-#: sessionpool.cpp:433
+#: sessionpool.cpp:441
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
@@ -581,7 +581,7 @@ msgstr ""
 "IMAP 서버 %1에서 지원하는 기능을 확인할 수 없습니다.\n"
 "%2"
 
-#: sessionpool.cpp:441
+#: sessionpool.cpp:449
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
@@ -590,7 +590,7 @@ msgstr ""
 "IMAP 서버에서 지원하는 기능을 확인할 수 없습니다.\n"
 "%1"
 
-#: sessionpool.cpp:461
+#: sessionpool.cpp:469
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -599,7 +599,7 @@ msgstr ""
 "IMAP 서버 %1을(를) 사용할 수 없습니다. 다음 필수적인 기능이 없습니다: %2. 시"
 "스템 관리자에게 서버 업그레이드를 요청하십시오."
 
-#: sessionpool.cpp:533
+#: sessionpool.cpp:553 sessionpool.cpp:572
 #, kde-format
 msgid "Disconnected during login."
 msgstr "로그인 중 연결이 종료되었습니다."
