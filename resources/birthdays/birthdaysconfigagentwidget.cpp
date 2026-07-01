@@ -14,10 +14,8 @@
 #include <KSharedConfig>
 #include <QIcon>
 #include <QPushButton>
-namespace
-{
-static const char myConfigGroupName[] = "BirthdaysSettingsDialog";
-}
+
+using namespace Qt::Literals;
 
 BirthdaysConfigAgentWidget::BirthdaysConfigAgentWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)
@@ -33,6 +31,9 @@ BirthdaysConfigAgentWidget::BirthdaysConfigAgentWidget(const KSharedConfigPtr &c
     mManager = new KConfigDialogManager(mainWidget, Settings::self());
     mManager->updateWidgets();
     KLocalization::setupSpinBoxFormatString(ui.kcfg_AlarmDays, ki18np("%v day", "%v days"));
+
+    // clean up old config data
+    config->group(u"BirthdaysSettingsDialog"_s).deleteEntry("Size");
 }
 
 BirthdaysConfigAgentWidget::~BirthdaysConfigAgentWidget() = default;
