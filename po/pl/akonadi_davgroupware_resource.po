@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-24 01:24+0000\n"
+"POT-Creation-Date: 2026-07-02 00:45+0000\n"
 "PO-Revision-Date: 2025-09-06 05:56+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: pl\n"
@@ -388,18 +388,18 @@ msgstr ""
 msgid "Unable to add item: %1"
 msgstr "Nie można dodać rzeczy: %1"
 
-#: davgroupwareresource.cpp:1636 davgroupwareresource.cpp:1760
-#: davgroupwareresource.cpp:1772
+#: davgroupwareresource.cpp:1636 davgroupwareresource.cpp:1768
+#: davgroupwareresource.cpp:1780
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Nie można zmienić rzeczy: %1"
 
-#: davgroupwareresource.cpp:1734 davgroupwareresource.cpp:1791
+#: davgroupwareresource.cpp:1742 davgroupwareresource.cpp:1799
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Nie można usunąć rzeczy: %1"
 
-#: davgroupwareresource.cpp:1878 davgroupwareresource.cpp:1879
+#: davgroupwareresource.cpp:1886 davgroupwareresource.cpp:1887
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Zasób nie jest jeszcze ustawiony"

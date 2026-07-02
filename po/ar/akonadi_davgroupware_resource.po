@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-24 01:24+0000\n"
+"POT-Creation-Date: 2026-07-02 00:45+0000\n"
 "PO-Revision-Date: 2026-06-21 20:21+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -387,18 +387,18 @@ msgstr "تعذر جلب العنصر: فشل في تحليل بيانات الع
 msgid "Unable to add item: %1"
 msgstr "تعذّرت إضافة العنصر: %1"
 
-#: davgroupwareresource.cpp:1636 davgroupwareresource.cpp:1760
-#: davgroupwareresource.cpp:1772
+#: davgroupwareresource.cpp:1636 davgroupwareresource.cpp:1768
+#: davgroupwareresource.cpp:1780
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "تعذّر تغيير العنصر: %1"
 
-#: davgroupwareresource.cpp:1734 davgroupwareresource.cpp:1791
+#: davgroupwareresource.cpp:1742 davgroupwareresource.cpp:1799
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "تعذّرت إزالة العنصر: %1"
 
-#: davgroupwareresource.cpp:1878 davgroupwareresource.cpp:1879
+#: davgroupwareresource.cpp:1886 davgroupwareresource.cpp:1887
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "لم يُضبط المورد بعد"

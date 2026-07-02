@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-24 01:24+0000\n"
+"POT-Creation-Date: 2026-07-02 00:45+0000\n"
 "PO-Revision-Date: 2011-12-21 11:31+0700\n"
 "Last-Translator: Seng Sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <supprot@khmeros.info>\n"
@@ -410,18 +410,18 @@ msgstr ""
 msgid "Unable to add item: %1"
 msgstr "មិនអាច​បន្ថែម​ធាតុ ៖ %1"
 
-#: davgroupwareresource.cpp:1636 davgroupwareresource.cpp:1760
-#: davgroupwareresource.cpp:1772
+#: davgroupwareresource.cpp:1636 davgroupwareresource.cpp:1768
+#: davgroupwareresource.cpp:1780
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "មិនអាច​ផ្លាស់ប្ដូរ​ធាតុ ៖ %1"
 
-#: davgroupwareresource.cpp:1734 davgroupwareresource.cpp:1791
+#: davgroupwareresource.cpp:1742 davgroupwareresource.cpp:1799
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "មិនអាច​យក​ធាតុចេញ​បាន​ទេ ៖ %1"
 
-#: davgroupwareresource.cpp:1878 davgroupwareresource.cpp:1879
+#: davgroupwareresource.cpp:1886 davgroupwareresource.cpp:1887
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "ធនធាន​មិន​ត្រូវ​បាន​កំណត់​រចនាសម្ព័ន្ធ​នៅ​ឡើយ​ទេ"
