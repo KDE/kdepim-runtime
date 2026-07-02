@@ -20,7 +20,6 @@
 #include <Akonadi/CollectionStatistics>
 #include <Akonadi/MessageParts>
 
-#include "config-kdepim-runtime.h"
 #include "imapresource_debug.h"
 
 #include <KLocalizedString>
@@ -68,12 +67,8 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
 
     // check if we will use QRESYNC features or not for the SELECT commands
     // it is useless to do a QRESYNC SELECT if we don't have current UIDValidity, UIDNEXT and HIGHESTMODSEQ cached already
-#if QRESYNC_FEATURE_ENABLED
     m_qresyncSelect =
         serverSupportsQresync() && col.hasAttribute<UidValidityAttribute>() && col.attribute<UidNextAttribute>() && col.hasAttribute<HighestModSeqAttribute>();
-#else
-    m_qresyncSelect = false;
-#endif
 
     startRetrievalTasks();
 }

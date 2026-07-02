@@ -20,8 +20,6 @@
 #include <QSignalSpy>
 #include <QTest>
 
-#include "config-kdepim-runtime.h"
-
 class TestRetrieveItemsTask : public ImapTestBase
 {
     Q_OBJECT
@@ -581,7 +579,6 @@ private Q_SLOTS:
 
         QTest::newRow("missing uidnext") << collection << scenario << callNames;
 
-#if QRESYNC_FEATURE_ENABLED
         // QRESYNC TESTS
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
@@ -726,7 +723,6 @@ private Q_SLOTS:
                   << QStringLiteral("itemsRetrievalDone");
 
         QTest::newRow("qresync added, modified and vanished") << collection << scenario << callNames;
-#endif
     }
 
     void shouldIntrospectCollection()
