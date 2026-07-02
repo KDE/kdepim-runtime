@@ -169,7 +169,8 @@ void RetrieveItemsTask::triggerFinalSelect(const QString &mailBox)
         auto currentUidValidity = col.attribute<UidValidityAttribute>();
         auto currentHighestModSeq = col.attribute<HighestModSeqAttribute>();
         auto currentUidNext = col.attribute<UidNextAttribute>();
-        select->setQResync(currentUidValidity->uidValidity(), currentHighestModSeq->highestModSequence(), KIMAP::ImapSet(1, currentUidNext->uidNext() - 1));
+        auto knownUids = currentUidNext->uidNext() > 1 ? KIMAP::ImapSet(1, currentUidNext->uidNext() - 1) : KIMAP::ImapSet();
+        select->setQResync(currentUidValidity->uidValidity(), currentHighestModSeq->highestModSequence(), knownUids);
         connect(select, &KIMAP::SelectJob::modified, this, &RetrieveItemsTask::onSelectModified);
         connect(select, &KIMAP::SelectJob::vanished, this, &RetrieveItemsTask::onSelectVanished);
     }
@@ -380,6 +381,9 @@ void RetrieveItemsTask::prepareRetrieval()
         taskComplete();
     } else if (oldUidValidity != m_uidValidity || m_nextUid <= 0) {
         // If uidvalidity has changed our local cache is worthless and has to be refetched completely
+
+        // the result of previous qresync SELECT is irrelevant, we pass the flag to false to avoid triggering itemsRetrievedIncremental in onItemsRetrieved
+        m_qresyncSelect = false;
         if (oldUidValidity != 0 && oldUidValidity != m_uidValidity) {
             qCDebug(IMAPRESOURCE_LOG) << "UIDVALIDITY check failed (" << oldUidValidity << "|" << m_uidValidity << ")";
         }
@@ -393,6 +397,9 @@ void RetrieveItemsTask::prepareRetrieval()
         // This is a compatibility codepath for Courier IMAP. It probably introduces problems, but at least it syncs.
         // Since we don't have uidnext available, we simply use the messagecount. This will miss simultaneously added/removed messages.
         // qCDebug(IMAPRESOURCE_LOG) << "Running courier imap compatibility codepath";
+
+        // the result of previous qresync SELECT is irrelevant, we pass the flag to false to avoid triggering itemsRetrievedIncremental in onItemsRetrieved
+        m_qresyncSelect = false;
         if (m_messageCount > realMessageCount) {
             // Get new messages
             retrieveItems(KIMAP::ImapSet(realMessageCount + 1, m_messageCount), scope, false, false);
@@ -621,7 +628,9 @@ Akonadi::Item::List RetrieveItemsTask::imapSetToItems(const KIMAP::ImapSet &set)
             continue;
         }
         for (qint64 i = interval.begin(), end = interval.end(); i <= end; ++i) {
-            list << Akonadi::Item(i);
+            auto item = Akonadi::Item();
+            item.setRemoteId(QString::number(i));
+            list << item;
         }
     }
 
