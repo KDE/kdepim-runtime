@@ -53,6 +53,7 @@ public:
     void setCollection(const Akonadi::Collection &collection);
     Akonadi::Collection collection() const override;
     void setItem(const Akonadi::Item &item);
+    void setItems(const Akonadi::Item::List &items);
     Akonadi::Item item() const override;
     Akonadi::Item::List items() const override;
 
@@ -89,6 +90,8 @@ public:
 
     void setTotalItems(int) override;
 
+    void setAddedFlags(const QSet<QByteArray> &addedFlags);
+    void setRemovedFlags(const QSet<QByteArray> &removedFlags);
     QSet<QByteArray> addedFlags() const override;
     QSet<QByteArray> removedFlags() const override;
 
@@ -162,4 +165,7 @@ private:
     QSet<Akonadi::Tag> m_removedTags;
 
     QList<QPair<QByteArray, QVariant>> m_calls;
+
+    QSet<QByteArray> m_addedFlags;
+    QSet<QByteArray> m_removedFlags;
 };

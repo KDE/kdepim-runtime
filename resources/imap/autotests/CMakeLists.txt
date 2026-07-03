@@ -60,6 +60,7 @@ imap_resource_unit_tests(
   testadditemtask
   testchangecollectiontask
   testchangeitemtask
+  testchangeitemsflagstask
   testexpungecollectiontask
   testmovecollectiontask
   testmoveitemstask

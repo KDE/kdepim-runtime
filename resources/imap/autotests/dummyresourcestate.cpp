@@ -145,6 +145,12 @@ void DummyResourceState::setItem(const Akonadi::Item &item)
     m_items << item;
 }
 
+void DummyResourceState::setItems(const Akonadi::Item::List &items)
+{
+    m_items.clear();
+    m_items = items;
+}
+
 Akonadi::Item DummyResourceState::item() const
 {
     return m_items.first();
@@ -271,14 +277,24 @@ void DummyResourceState::setTotalItems(int)
 {
 }
 
+void DummyResourceState::setAddedFlags(const QSet<QByteArray> &addedFlags)
+{
+    m_addedFlags = addedFlags;
+}
+
+void DummyResourceState::setRemovedFlags(const QSet<QByteArray> &removedFlags)
+{
+    m_removedFlags = removedFlags;
+}
+
 QSet<QByteArray> DummyResourceState::addedFlags() const
 {
-    return {};
+    return m_addedFlags;
 }
 
 QSet<QByteArray> DummyResourceState::removedFlags() const
 {
-    return {};
+    return m_removedFlags;
 }
 
 void DummyResourceState::itemChangeCommitted(const Akonadi::Item &item)
