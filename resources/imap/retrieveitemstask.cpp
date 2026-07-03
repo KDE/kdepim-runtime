@@ -16,13 +16,9 @@
 #include "uidnextattribute.h"
 #include "uidvalidityattribute.h"
 
-#include <Akonadi/AgentBase>
 #include <Akonadi/CachePolicy>
 #include <Akonadi/CollectionStatistics>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
 #include <Akonadi/MessageParts>
-#include <Akonadi/Session>
 
 #include "config-kdepim-runtime.h"
 #include "imapresource_debug.h"
@@ -37,16 +33,10 @@
 
 RetrieveItemsTask::RetrieveItemsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent)
-    , m_fetchedMissingBodies(-1)
 {
 }
 
 RetrieveItemsTask::~RetrieveItemsTask() = default;
-
-void RetrieveItemsTask::setFetchMissingItemBodies(bool enabled)
-{
-    m_fetchMissingBodies = enabled;
-}
 
 void RetrieveItemsTask::doStart(KIMAP::Session *session)
 {
@@ -85,19 +75,7 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
     m_qresyncSelect = false;
 #endif
 
-    if (m_fetchMissingBodies
-        && col.cachePolicy().localParts().contains(
-            QLatin1StringView(Akonadi::MessagePart::Body))) { // disconnected mode, make sure we really have the body cached
-        auto newsession = new Akonadi::Session(resourceName().toLatin1() + "_body_checker", this);
-        auto fetchJob = new Akonadi::ItemFetchJob(col, newsession);
-        fetchJob->fetchScope().setCheckForCachedPayloadPartsOnly();
-        fetchJob->fetchScope().fetchPayloadPart(Akonadi::MessagePart::Body);
-        fetchJob->fetchScope().setFetchModificationTime(false);
-        connect(fetchJob, &Akonadi::ItemFetchJob::result, this, &RetrieveItemsTask::fetchItemsWithoutBodiesDone);
-        connect(fetchJob, &Akonadi::ItemFetchJob::result, newsession, &Akonadi::Session::deleteLater);
-    } else {
-        startRetrievalTasks();
-    }
+    startRetrievalTasks();
 }
 
 BatchFetcher *RetrieveItemsTask::createBatchFetcher(MessageHelper::Ptr messageHelper,
@@ -107,37 +85,6 @@ BatchFetcher *RetrieveItemsTask::createBatchFetcher(MessageHelper::Ptr messageHe
                                                     KIMAP::Session *session)
 {
     return new BatchFetcher(messageHelper, set, scope, batchSize, session);
-}
-
-void RetrieveItemsTask::fetchItemsWithoutBodiesDone(KJob *job)
-{
-    QList<qint64> uids;
-    if (job->error()) {
-        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
-        cancelTask(job->errorString());
-        return;
-    } else {
-        int i = 0;
-        auto fetch = static_cast<Akonadi::ItemFetchJob *>(job);
-        const Akonadi::Item::List lstItems = fetch->items();
-        for (const Akonadi::Item &item : lstItems) {
-            if (!item.cachedPayloadParts().contains(Akonadi::MessagePart::Body)) {
-                qCWarning(IMAPRESOURCE_LOG) << "Item " << item.id() << " is missing the payload! Cached payloads: " << item.cachedPayloadParts();
-                uids.append(item.remoteId().toInt());
-                i++;
-            }
-        }
-        if (i > 0) {
-            qCWarning(IMAPRESOURCE_LOG) << "Number of items missing the body: " << i;
-        }
-    }
-    onFetchItemsWithoutBodiesDone(uids);
-}
-
-void RetrieveItemsTask::onFetchItemsWithoutBodiesDone(const QList<qint64> &items)
-{
-    m_messageUidsMissingBody = items;
-    startRetrievalTasks();
 }
 
 void RetrieveItemsTask::startRetrievalTasks()
@@ -460,13 +407,6 @@ void RetrieveItemsTask::prepareRetrieval()
             setTotalItems(m_messageCount);
             listFlagsForImapSet(KIMAP::ImapSet(1, m_messageCount));
         }
-    } else if (!m_messageUidsMissingBody.isEmpty()) {
-        // fetch missing uids
-        m_fetchedMissingBodies = 0;
-        setTotalItems(m_messageUidsMissingBody.size());
-        KIMAP::ImapSet imapSet;
-        imapSet.add(m_messageUidsMissingBody);
-        retrieveItems(imapSet, scope, true, true);
     } else if (m_qresyncSelect && m_nextUid > oldNextUid) {
         // QRESYNC optimisation :
         // New messages have been added, and modified / removed messages are handled during the QRESYNC SELECT
@@ -575,14 +515,6 @@ void RetrieveItemsTask::onItemsRetrieved(const Akonadi::Item::List &addedItems)
     } else {
         itemsRetrieved(addedItems);
     }
-
-    // m_fetchedMissingBodies is -1 if we fetch for other reason, but missing bodies
-    if (m_fetchedMissingBodies != -1) {
-        const QString mailBox = mailBoxForCollection(collection());
-        m_fetchedMissingBodies += addedItems.count();
-        Q_EMIT status(Akonadi::AgentBase::Running,
-                      i18nc("@info:status", "Fetching missing mail bodies in %3: %1/%2", m_fetchedMissingBodies, m_messageUidsMissingBody.count(), mailBox));
-    }
 }
 
 void RetrieveItemsTask::onRetrievalDone(KJob *job)
@@ -591,7 +523,6 @@ void RetrieveItemsTask::onRetrievalDone(KJob *job)
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
-        m_fetchedMissingBodies = -1;
         return;
     }
 
@@ -602,7 +533,7 @@ void RetrieveItemsTask::onRetrievalDone(KJob *job)
     // already have them all from the previous full fetch. This is not
     // just an optimization, as incremental retrieval assumes nothing
     // will be listed twice.
-    if (m_fetchedMissingBodies != -1 || alreadyFetchedBegin <= 1) {
+    if (alreadyFetchedBegin <= 1) {
         taskComplete();
         return;
     }

@@ -25,14 +25,11 @@ class RetrieveItemsTask : public ResourceTask
 public:
     explicit RetrieveItemsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
     ~RetrieveItemsTask() override;
-    void setFetchMissingItemBodies(bool enabled);
 
 public Q_SLOTS:
-    void onFetchItemsWithoutBodiesDone(const QList<qint64> &items);
     void onReadyForNextBatch(int size);
 
 private Q_SLOTS:
-    void fetchItemsWithoutBodiesDone(KJob *job);
     void onPreExpungeSelectDone(KJob *job);
     void onExpungeDone(KJob *job);
     void onFinalSelectDone(KJob *job);
@@ -64,9 +61,6 @@ private:
     Akonadi::Item::List imapSetToItems(const KIMAP::ImapSet &set);
 
     KIMAP::Session *m_session = nullptr;
-    QList<qint64> m_messageUidsMissingBody;
-    int m_fetchedMissingBodies = -1;
-    bool m_fetchMissingBodies = false;
     bool m_incremental = true;
     qint64 m_localHighestModSeq = -1;
     BatchFetcher *m_batchFetcher = nullptr;

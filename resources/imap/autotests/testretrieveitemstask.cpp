@@ -753,7 +753,6 @@ private Q_SLOTS:
         state->setCollection(collection);
 
         auto task = new RetrieveItemsTask(state);
-        task->setFetchMissingItemBodies(false);
         task->start(&pool);
 
         QTRY_COMPARE(state->calls().count(), callNames.size());
