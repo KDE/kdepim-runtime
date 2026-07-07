@@ -109,7 +109,9 @@ void Settings::cleanup()
 
 bool Settings::mustFetchPassword() const
 {
-    return m_password.isEmpty() && (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType)authentication()) != KIMAP::LoginJob::GSSAPI);
+    const auto authMode = mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType)authentication());
+
+    return m_password.isEmpty() && authMode != KIMAP::LoginJob::GSSAPI && authMode != KIMAP::LoginJob::XOAuth2;
 }
 
 ReadPasswordJob *Settings::requestPassword()
