@@ -953,30 +953,64 @@ void DavGroupwareResource::itemsTagsChanged(const Item::List &items, const QSet<
     job->start();
 }
 
-void DavGroupwareResource::collectionChanged(const Collection &collection)
+void DavGroupwareResource::collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts)
 {
-    qCDebug(DAVRESOURCE_LOG) << "Collection changed" << collection.remoteId();
+    qCDebug(DAVRESOURCE_LOG) << "Collection changed" << collection.remoteId() << "parts" << parts;
 
     const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(collection.remoteId());
 
-    QColor color;
-    if (collection.hasAttribute<Akonadi::CollectionColorAttribute>()) {
-        const auto colorAttr = collection.attribute<Akonadi::CollectionColorAttribute>();
-        if (colorAttr) {
-            color = colorAttr->color();
+    const auto newColor = [&]() -> std::optional<QColor> {
+        if (!parts.contains("collectioncolor") || !collection.hasAttribute<Akonadi::CollectionColorAttribute>()) {
+            return std::nullopt;
         }
+        const auto colorAttr = collection.attribute<Akonadi::CollectionColorAttribute>();
+        if (!colorAttr || !colorAttr->color().isValid()) {
+            return std::nullopt;
+        }
+        return colorAttr->color();
+    }();
+    const auto newName = [&]() -> std::optional<QString> {
+        if (!parts.contains("ENTITYDISPLAY")) {
+            return std::nullopt;
+        }
+        return collection.displayName();
+    }();
+
+    // If no supported changes, skip
+    if (!newColor && !newName) {
+        qCDebug(DAVRESOURCE_LOG) << "No collection changes to apply";
+        changeProcessed();
+        return;
     }
 
     auto job = new KDAV::DavCollectionModifyJob(davUrl);
-    job->setProperty(QStringLiteral("displayname"), collection.displayName());
-    if (color.isValid()) {
-        const auto format = color.alpha() == 255 ? QColor::HexRgb : QColor::HexArgb;
-        job->setProperty(QStringLiteral("calendar-color"), color.name(format), QStringLiteral("http://apple.com/ns/ical/"));
+    if (newColor) {
+        const auto format = newColor->alpha() == 255 ? QColor::HexRgb : QColor::HexArgb;
+        job->setProperty(QStringLiteral("calendar-color"), newColor->name(format), QStringLiteral("http://apple.com/ns/ical/"));
     }
+    if (newName) {
+        job->setProperty(QStringLiteral("displayname"), *newName);
+    }
+
     connect(job, &KDAV::DavCollectionModifyJob::result, this, [this, collection](KJob *job) {
         onCollectionChangedFinished(job, collection);
     });
     job->start();
+}
+
+void DavGroupwareResource::collectionMoved(const Akonadi::Collection &collection,
+                                           const Akonadi::Collection &collectionSource,
+                                           const Akonadi::Collection &collectionDestination)
+{
+    qCDebug(DAVRESOURCE_LOG) << "Collection" << collection.remoteId() << " moved from" << collectionSource.remoteId() << "to"
+                             << collectionDestination.remoteId();
+
+    // Collection should not be able to be moved since DavCollection are stripped of the `CanCreateCollection` permission
+    constexpr auto errMessage = "CalDav and CarDav Collection should not be able to be moved";
+    qCCritical(DAVRESOURCE_LOG()) << errMessage;
+    Q_ASSERT_X(false, "DavGroupwareResource::collectionMoved", errMessage);
+
+    cancelTask();
 }
 
 void DavGroupwareResource::onCollectionChangedFinished(KJob *job, const Collection &collection)
