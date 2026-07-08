@@ -27,7 +27,7 @@ class DavItem;
 }
 
 class DavGroupwareResource : public Akonadi::ResourceWidgetBase,
-                             public Akonadi::AgentBase::Observer,
+                             public Akonadi::AgentBase::ObserverV2,
                              public Akonadi::FreeBusyProviderBase,
                              public Akonadi::AgentBase::TagObserver,
                              public Akonadi::AccountBase
@@ -38,8 +38,6 @@ public:
     explicit DavGroupwareResource(const QString &id);
     ~DavGroupwareResource() override;
 
-    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
-    void collectionRemoved(const Akonadi::Collection &collection) override;
     void cleanup() override;
 
     QDateTime lastCacheUpdate() const override;
@@ -64,12 +62,21 @@ protected Q_SLOTS:
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
 
 protected:
+    void doSetOnline(bool online) override;
+
+public:
+    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
+    void collectionRemoved(const Akonadi::Collection &collection) override;
+    void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts) override;
+    void collectionMoved(const Akonadi::Collection &collection,
+                         const Akonadi::Collection &collectionSource,
+                         const Akonadi::Collection &collectionDestination) override;
+
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
     void itemRemoved(const Akonadi::Item &item) override;
     void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags) override;
-    void collectionChanged(const Akonadi::Collection &collection) override;
-    void doSetOnline(bool online) override;
+    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSrc, const Akonadi::Collection &collectionDst) override;
 
 private:
     enum ItemFetchUpdateType {
