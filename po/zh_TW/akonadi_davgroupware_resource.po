@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-07 00:44+0000\n"
+"POT-Creation-Date: 2026-07-08 00:45+0000\n"
 "PO-Revision-Date: 2026-07-06 08:23+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -328,70 +328,70 @@ msgstr "要求取得未知收藏的項目：%1"
 msgid "Invalid collection for item %1."
 msgstr "項目 %1 無效的收藏。"
 
-#: davgroupwareresource.cpp:736
+#: davgroupwareresource.cpp:734
 #, kde-format
 msgid "Unable to delete item exceptions: %1"
 msgstr "無法刪除項目例外：%1"
 
-#: davgroupwareresource.cpp:933
+#: davgroupwareresource.cpp:917
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "無法修改項目：%1"
 
-#: davgroupwareresource.cpp:972
+#: davgroupwareresource.cpp:956
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "無法修改收藏：%1"
 
-#: davgroupwareresource.cpp:1101
+#: davgroupwareresource.cpp:1085
 #, kde-format
 msgid "Unable to create collection: %1"
 msgstr "無法建立收藏：%1"
 
-#: davgroupwareresource.cpp:1130
+#: davgroupwareresource.cpp:1114
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "無法移除收藏：%1"
 
-#: davgroupwareresource.cpp:1150
+#: davgroupwareresource.cpp:1134
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "無法取得收藏：%1"
 
-#: davgroupwareresource.cpp:1284 davgroupwareresource.cpp:1388
+#: davgroupwareresource.cpp:1268 davgroupwareresource.cpp:1372
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "無法取得項目：%1"
 
-#: davgroupwareresource.cpp:1524
+#: davgroupwareresource.cpp:1508
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "無法取得項目：%1"
 
-#: davgroupwareresource.cpp:1544
+#: davgroupwareresource.cpp:1528
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr "無法取得項目：剖析項目資料失敗。或許它已經被刪除了。"
 
-#: davgroupwareresource.cpp:1604
+#: davgroupwareresource.cpp:1588
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "無法新增項目：%1"
 
-#: davgroupwareresource.cpp:1649 davgroupwareresource.cpp:1781
-#: davgroupwareresource.cpp:1793
+#: davgroupwareresource.cpp:1633 davgroupwareresource.cpp:1765
+#: davgroupwareresource.cpp:1777
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "無法變更項目：%1"
 
-#: davgroupwareresource.cpp:1755 davgroupwareresource.cpp:1812
+#: davgroupwareresource.cpp:1739 davgroupwareresource.cpp:1796
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "無法移除項目：%1"
 
-#: davgroupwareresource.cpp:1899 davgroupwareresource.cpp:1900
+#: davgroupwareresource.cpp:1883 davgroupwareresource.cpp:1884
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "此資源尚未設定"

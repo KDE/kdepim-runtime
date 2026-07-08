@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-30 00:44+0000\n"
+"POT-Creation-Date: 2026-07-08 00:45+0000\n"
 "PO-Revision-Date: 2025-03-28 12:51+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -500,12 +500,6 @@ msgstr "Вхідні"
 msgid "Shared Folders"
 msgstr "Спільні теки"
 
-#: retrieveitemstask.cpp:584
-#, kde-format
-msgctxt "@info:status"
-msgid "Fetching missing mail bodies in %3: %1/%2"
-msgstr "Отримуємо вміст пропущених повідомлень у %3: %1/%2"
-
 #: retrieveitemtask.cpp:35
 #, kde-format
 msgid "Remote id is empty or invalid"
@@ -635,13 +629,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Від’єднано під час спроби входу."
 
-#: settings.cpp:124
+#: settings.cpp:126
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "Не знайдено пароля для облікового запису IMAP %1"
 
-#: settings.cpp:129
+#: settings.cpp:131
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -651,13 +645,13 @@ msgstr ""
 "Під час спроби отримати пароль до IMAP зі сховища ключів системи сталася "
 "помилка: «%1»"
 
-#: settings.cpp:157
+#: settings.cpp:159
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "Не знайдено пароля для облікового запису фільтрування %1"
 
-#: settings.cpp:162
+#: settings.cpp:164
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -667,7 +661,7 @@ msgstr ""
 "Під час спроби отримати пароль до фільтрування зі сховища ключів системи "
 "сталася помилка: «%1»"
 
-#: settings.cpp:192
+#: settings.cpp:194
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -677,7 +671,7 @@ msgstr ""
 "Під час спроби зберегти пароль до фільтрування у сховищі ключів системи "
 "сталася помилка: «%1»"
 
-#: settings.cpp:218
+#: settings.cpp:220
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -687,7 +681,7 @@ msgstr ""
 "Під час спроби зберегти пароль до IMAP у сховищі ключів системи сталася "
 "помилка: «%1»"
 
-#: settings.cpp:305
+#: settings.cpp:307
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
@@ -1241,6 +1235,10 @@ msgstr "Шукати:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Тільки підписані"
+
+#~ msgctxt "@info:status"
+#~ msgid "Fetching missing mail bodies in %3: %1/%2"
+#~ msgstr "Отримуємо вміст пропущених повідомлень у %3: %1/%2"
 
 #~ msgctxt "@title:window"
 #~ msgid "IMAP Account Settings"

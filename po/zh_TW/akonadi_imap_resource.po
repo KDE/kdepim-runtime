@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-30 00:44+0000\n"
+"POT-Creation-Date: 2026-07-08 00:45+0000\n"
 "PO-Revision-Date: 2025-04-07 14:23+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -469,12 +469,6 @@ msgstr "收件匣"
 msgid "Shared Folders"
 msgstr "共享資料夾"
 
-#: retrieveitemstask.cpp:584
-#, kde-format
-msgctxt "@info:status"
-msgid "Fetching missing mail bodies in %3: %1/%2"
-msgstr "正在 %3 抓取遺失的郵件本體：%1/%2"
-
 #: retrieveitemtask.cpp:35
 #, kde-format
 msgid "Remote id is empty or invalid"
@@ -601,13 +595,13 @@ msgid "Disconnected during login."
 msgstr "在登入時斷線。"
 
 # %1 is config()->name() -- Kisaragi
-#: settings.cpp:124
+#: settings.cpp:126
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "找不到 IMAP 帳號 %1 的密碼"
 
-#: settings.cpp:129
+#: settings.cpp:131
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -615,13 +609,13 @@ msgid ""
 "keychain: \"%1\""
 msgstr "從系統鑰匙圈取得 IMAP 密碼時發生錯誤：「%1」"
 
-#: settings.cpp:157
+#: settings.cpp:159
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "找不到 sieve 帳號 %1 的密碼"
 
-#: settings.cpp:162
+#: settings.cpp:164
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -629,7 +623,7 @@ msgid ""
 "keychain: \"%1\""
 msgstr "從系統鑰匙圈取得 sieve 密碼時發生錯誤：「%1」"
 
-#: settings.cpp:192
+#: settings.cpp:194
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -637,7 +631,7 @@ msgid ""
 "\"%1\""
 msgstr "將 sieve 密碼儲存至系統鑰匙圈時發生錯誤：「%1」"
 
-#: settings.cpp:218
+#: settings.cpp:220
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -645,7 +639,7 @@ msgid ""
 "\"%1\""
 msgstr "將 IMAP 密碼儲存至系統鑰匙圈時發生錯誤：「%1」"
 
-#: settings.cpp:305
+#: settings.cpp:307
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
@@ -1182,6 +1176,10 @@ msgstr "搜尋："
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "只有訂閱的群組"
+
+#~ msgctxt "@info:status"
+#~ msgid "Fetching missing mail bodies in %3: %1/%2"
+#~ msgstr "正在 %3 抓取遺失的郵件本體：%1/%2"
 
 #~ msgctxt "@title:window"
 #~ msgid "IMAP Account Settings"

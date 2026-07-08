@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-30 00:44+0000\n"
+"POT-Creation-Date: 2026-07-08 00:45+0000\n"
 "PO-Revision-Date: 2024-07-17 21:41+0200\n"
 "Last-Translator: rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -486,12 +486,6 @@ msgstr "Indbakke"
 msgid "Shared Folders"
 msgstr "Delte mapper"
 
-#: retrieveitemstask.cpp:584
-#, kde-format
-msgctxt "@info:status"
-msgid "Fetching missing mail bodies in %3: %1/%2"
-msgstr "Henter manglende brevkroppe i %3: %1/%2"
-
 #: retrieveitemtask.cpp:35
 #, kde-format
 msgid "Remote id is empty or invalid"
@@ -619,13 +613,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Forbindelse afbrudt under login."
 
-#: settings.cpp:124
+#: settings.cpp:126
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr ""
 
-#: settings.cpp:129
+#: settings.cpp:131
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -633,13 +627,13 @@ msgid ""
 "keychain: \"%1\""
 msgstr ""
 
-#: settings.cpp:157
+#: settings.cpp:159
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr ""
 
-#: settings.cpp:162
+#: settings.cpp:164
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -647,7 +641,7 @@ msgid ""
 "keychain: \"%1\""
 msgstr ""
 
-#: settings.cpp:192
+#: settings.cpp:194
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -655,7 +649,7 @@ msgid ""
 "\"%1\""
 msgstr ""
 
-#: settings.cpp:218
+#: settings.cpp:220
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -663,7 +657,7 @@ msgid ""
 "\"%1\""
 msgstr ""
 
-#: settings.cpp:305
+#: settings.cpp:307
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
@@ -1212,6 +1206,10 @@ msgstr "Søg:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Kun abonnerede"
+
+#~ msgctxt "@info:status"
+#~ msgid "Fetching missing mail bodies in %3: %1/%2"
+#~ msgstr "Henter manglende brevkroppe i %3: %1/%2"
 
 #~ msgctxt "@title:window"
 #~ msgid "IMAP Account Settings"

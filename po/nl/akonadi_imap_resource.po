@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-30 00:44+0000\n"
+"POT-Creation-Date: 2026-07-08 00:45+0000\n"
 "PO-Revision-Date: 2025-03-28 17:40+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -499,12 +499,6 @@ msgstr "Postvak in"
 msgid "Shared Folders"
 msgstr "Gedeelde mappen"
 
-#: retrieveitemstask.cpp:584
-#, kde-format
-msgctxt "@info:status"
-msgid "Fetching missing mail bodies in %3: %1/%2"
-msgstr "Ophalen van ontbrekende e-mailinhoud in %3: %1/%2"
-
 #: retrieveitemtask.cpp:35
 #, kde-format
 msgid "Remote id is empty or invalid"
@@ -634,13 +628,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Verbinding verbroken bij aanmelden."
 
-#: settings.cpp:124
+#: settings.cpp:126
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "Wachtwoord voor %1 IMAP-account niet gevonden"
 
-#: settings.cpp:129
+#: settings.cpp:131
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -650,13 +644,13 @@ msgstr ""
 "Er was een fout bij het ophalen van het IMAP-wachtwoord uit de sleutelring "
 "van het systeem: \"%1\""
 
-#: settings.cpp:157
+#: settings.cpp:159
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "Wachtwoord voor %1 sieve-account niet gevonden"
 
-#: settings.cpp:162
+#: settings.cpp:164
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -666,7 +660,7 @@ msgstr ""
 "Er was een fout bij het ophalen van het sieve-wachtwoord uit de sleutelring "
 "van het systeem: \"%1\""
 
-#: settings.cpp:192
+#: settings.cpp:194
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -676,7 +670,7 @@ msgstr ""
 "Er was een fout bij het opslaan van het sieve-wachtwoord in de sleutelring "
 "van het systeem: \"%1\""
 
-#: settings.cpp:218
+#: settings.cpp:220
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -686,7 +680,7 @@ msgstr ""
 "Er was een fout bij het opslaan van het IMAP-wachtwoord in de sleutelring "
 "van het systeem: \"%1\""
 
-#: settings.cpp:305
+#: settings.cpp:307
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
@@ -1235,6 +1229,10 @@ msgstr "Zoeken:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Alleen ingeschreven"
+
+#~ msgctxt "@info:status"
+#~ msgid "Fetching missing mail bodies in %3: %1/%2"
+#~ msgstr "Ophalen van ontbrekende e-mailinhoud in %3: %1/%2"
 
 #~ msgctxt "@title:window"
 #~ msgid "IMAP Account Settings"
