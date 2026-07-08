@@ -222,6 +222,11 @@ set_package_properties(
             REQUIRED
 )
 
+option(DAV_ENABLE_PUSH_NOTIFICATIONS "Enable dav push-notification" OFF)
+if(DAV_ENABLE_PUSH_NOTIFICATIONS)
+    find_package(KUnifiedPush 26.04.0 REQUIRED)
+endif()
+
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     # Not setting for GNU due to too many warnings related to private members of base classes or around lambdas
