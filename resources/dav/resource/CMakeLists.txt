@@ -108,6 +108,9 @@ target_link_libraries(
     KPim6::AkonadiCalendarCore
     qt6keychain
 )
+if(DAV_ENABLE_PUSH_NOTIFICATIONS)
+    target_link_libraries(akonadi_davgroupware_resource KUnifiedPush)
+endif()
 
 install(
     TARGETS
