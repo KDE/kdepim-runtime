@@ -924,30 +924,55 @@ void DavGroupwareResource::itemsTagsChanged(const Item::List &items, const QSet<
     job->start();
 }
 
-void DavGroupwareResource::collectionChanged(const Collection &collection)
+void DavGroupwareResource::collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts)
 {
-    qCDebug(DAVRESOURCE_LOG) << "Collection changed" << collection.remoteId();
+    qCDebug(DAVRESOURCE_LOG) << "Collection changed" << collection.remoteId() << "parts" << parts;
 
     const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(collection.remoteId());
+    auto job = new KDAV::DavCollectionModifyJob(davUrl);
 
-    QColor color;
-    if (collection.hasAttribute<Akonadi::CollectionColorAttribute>()) {
-        const auto colorAttr = collection.attribute<Akonadi::CollectionColorAttribute>();
-        if (colorAttr) {
-            color = colorAttr->color();
+    bool hasChanges = false;
+    if (parts.contains("collectioncolor")) {
+        if (collection.hasAttribute<Akonadi::CollectionColorAttribute>()) {
+            QColor color;
+            const auto colorAttr = collection.attribute<Akonadi::CollectionColorAttribute>();
+            if (colorAttr) {
+                color = colorAttr->color();
+            }
+            if (color.isValid()) {
+                const auto format = color.alpha() == 255 ? QColor::HexRgb : QColor::HexArgb;
+                job->setProperty(QStringLiteral("calendar-color"), color.name(format), QStringLiteral("http://apple.com/ns/ical/"));
+                hasChanges = true;
+            }
         }
     }
-
-    auto job = new KDAV::DavCollectionModifyJob(davUrl);
-    job->setProperty(QStringLiteral("displayname"), collection.displayName());
-    if (color.isValid()) {
-        const auto format = color.alpha() == 255 ? QColor::HexRgb : QColor::HexArgb;
-        job->setProperty(QStringLiteral("calendar-color"), color.name(format), QStringLiteral("http://apple.com/ns/ical/"));
+    if (parts.contains("ENTITYDISPLAY")) {
+        job->setProperty(QStringLiteral("displayname"), collection.displayName());
+        hasChanges = true;
     }
+
+    if (!hasChanges) {
+        qCDebug(DAVRESOURCE_LOG) << "No collection changes to apply";
+        changeProcessed();
+        return;
+    }
+
     connect(job, &KDAV::DavCollectionModifyJob::result, this, [this, collection](KJob *job) {
         onCollectionChangedFinished(job, collection);
     });
     job->start();
+}
+
+void DavGroupwareResource::collectionMoved(const Akonadi::Collection &collection,
+                                           const Akonadi::Collection &collectionSource,
+                                           const Akonadi::Collection &collectionDestination)
+{
+    qCDebug(DAVRESOURCE_LOG) << "Collection" << collection.remoteId() << " moved from" << collectionSource.remoteId() << "to"
+                             << collectionDestination.remoteId();
+
+    Q_ASSERT("Collection should not be able to be moved since DavCollection are stripped of the `CanCreateCollection` permission.");
+
+    cancelTask();
 }
 
 void DavGroupwareResource::onCollectionChangedFinished(KJob *job, const Collection &collection)
