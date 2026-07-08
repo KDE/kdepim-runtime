@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-30 00:44+0000\n"
+"POT-Creation-Date: 2026-07-08 02:45+0000\n"
 "PO-Revision-Date: 2026-02-05 16:11+0100\n"
 "Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
 "Language-Team: \n"
@@ -609,13 +609,13 @@ msgstr ""
 msgid "Disconnected during login."
 msgstr "Odpojeno během přihlašování."
 
-#: settings.cpp:124
+#: settings.cpp:126
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "Heslo pro účet IMAP %1 nebylo nalezeno."
 
-#: settings.cpp:129
+#: settings.cpp:131
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -623,13 +623,13 @@ msgid ""
 "keychain: \"%1\""
 msgstr "Při načítání hesla IMAP ze systémové klíčenky došlo k chybě: \"%1\""
 
-#: settings.cpp:157
+#: settings.cpp:159
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "Heslo pro účet sieve %1 nebylo nalezeno."
 
-#: settings.cpp:162
+#: settings.cpp:164
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -637,7 +637,7 @@ msgid ""
 "keychain: \"%1\""
 msgstr "Při načítání hesla sieve ze systémové klíčenky došlo k chybě: \"%1\""
 
-#: settings.cpp:192
+#: settings.cpp:194
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -645,7 +645,7 @@ msgid ""
 "\"%1\""
 msgstr "Při ukládání hesla k sieve do systémové klíčenky došlo k chybě: \"%1\""
 
-#: settings.cpp:218
+#: settings.cpp:220
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -653,7 +653,7 @@ msgid ""
 "\"%1\""
 msgstr "Při ukládání hesla IMAP do systémové klíčenky došlo k chybě: \"%1\""
 
-#: settings.cpp:305
+#: settings.cpp:307
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
