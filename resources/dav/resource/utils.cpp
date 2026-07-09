@@ -6,10 +6,15 @@
 */
 
 #include "utils.h"
+#include "config-kdepim-runtime.h"
 #include "davprotocolattribute.h"
+#include "davpushattribute.h"
 
 #include <KDAV/DavCollection>
 #include <KDAV/DavItem>
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
+#include <KDAV/DavPushSupport>
+#endif
 #include <KDAV/DavUrl>
 #include <KDAV/ProtocolInfo>
 
@@ -87,6 +92,16 @@ Akonadi::Collection Utils::createAkonadiCollection(const KDAV::DavCollection &da
         auto attr = collection.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setDisplayName(davCollection.displayName());
     }
+
+#if DAV_ENABLE_PUSH_NOTIFICATIONS
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
+    auto davPush = davCollection.davPushSupport();
+    if (davPush.isValid()) {
+        auto attr = collection.attribute<DavPushAttribute>(Akonadi::Collection::AddIfMissing);
+        attr->setTopic(davPush.topic());
+    }
+#endif
+#endif
 
     QStringList mimeTypes;
     mimeTypes << Akonadi::Collection::mimeType();
