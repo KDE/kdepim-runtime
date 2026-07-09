@@ -14,6 +14,7 @@
 #include <Akonadi/ResourceBase>
 #include <KDAV/DavCollection>
 
+class DavState;
 class DavItemCache;
 class DavFreeBusyHandler;
 
@@ -49,6 +50,7 @@ public:
     void initAccount() override;
 
     Settings *settings() const;
+    DavState *state() const;
 
 private Q_SLOTS:
     void createInitialCache();
@@ -134,6 +136,7 @@ private:
     bool configurationIsValid();
     void retryAfterFailure(const QString &errorMessage);
     void listItemsForCollection(const KDAV::DavUrl &davUrl, const Akonadi::Collection &collection);
+    void onDetectedDavPushSupport(bool hasDavPushSupport);
 
     /**
      * Collections which only support one mime type have an icon indicating what they support.
@@ -149,4 +152,5 @@ private:
     DavFreeBusyHandler *const mFreeBusyHandler;
     bool mSyncErrorNotified = false;
     mutable Settings *mSettings = nullptr;
+    mutable DavState *mState = nullptr;
 };
