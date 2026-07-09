@@ -8,10 +8,14 @@
 
 #include "davgroupwareresource.h"
 
+#include "config-kdepim-runtime.h"
 #include "ctagattribute.h"
 #include "davfreebusyhandler.h"
 #include "davitemcache.h"
 #include "davprotocolattribute.h"
+#include "davpushattribute.h"
+#include "davresource_debug.h"
+#include "davstate.h"
 #include "utils.h"
 
 #include <KDAV/DavCollection>
@@ -29,6 +33,7 @@
 #include <KDAV/DavItemsFetchJob>
 #include <KDAV/DavItemsListJob>
 #include <KDAV/DavPrincipalHomesetsFetchJob>
+#include <KDAV/DavPushSupport>
 #if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
 #include <KDAV/DavSslUiProxy>
 #endif
@@ -41,7 +46,6 @@
 #include <KCalendarCore/Todo>
 #include <KJob>
 
-#include "davresource_debug.h"
 #include <Akonadi/AccountBase>
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CachePolicy>
@@ -102,6 +106,7 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
 
     AttributeFactory::registerAttribute<DavProtocolAttribute>();
     AttributeFactory::registerAttribute<CTagAttribute>();
+    AttributeFactory::registerAttribute<DavPushAttribute>();
 
     setNeedsNetwork(true);
 
@@ -151,6 +156,7 @@ DavGroupwareResource::~DavGroupwareResource()
 {
     delete mFreeBusyHandler;
     delete mSettings;
+    delete mState;
 }
 
 Settings *DavGroupwareResource::settings() const
@@ -160,6 +166,15 @@ Settings *DavGroupwareResource::settings() const
     }
 
     return mSettings;
+}
+
+DavState *DavGroupwareResource::state() const
+{
+    if (mState == nullptr) {
+        mState = new DavState(KSharedConfig::openStateConfig());
+    }
+
+    return mState;
 }
 
 void DavGroupwareResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
@@ -1362,6 +1377,13 @@ void DavGroupwareResource::onRetrieveCollectionFinished(KJob *job)
     auto modifyJob = new Akonadi::CollectionModifyJob(collection);
     modifyJob->start();
 
+#ifdef DAV_ENABLE_PUSH_NOTIFICATIONS
+    const auto newVapidKey = davCollection->davPushSupport().vapidPublicKey();
+    if (state()->getVapidPublicKey() != newVapidKey) {
+        state()->setVapidPublicKey(newVapidKey);
+    }
+#endif
+
     if (shouldRetrieveItems) {
         listItemsForCollection(davCollection->url(), collection);
     } else {
@@ -1428,6 +1450,21 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
             ++it;
         }
     }
+
+#ifdef DAV_ENABLE_PUSH_NOTIFICATIONS
+    const auto davPushCollection = std::ranges::find_if(davCollections, [](const auto &c) {
+        return c.davPushSupport().isValid() && !c.davPushSupport().vapidPublicKey().isEmpty();
+    });
+    if (davPushCollection != davCollections.end()) {
+        const auto newVapidKey = davPushCollection->davPushSupport().vapidPublicKey();
+        if (state()->getVapidPublicKey() != newVapidKey) {
+            state()->setVapidPublicKey(newVapidKey);
+        }
+    } else {
+        state()->clearVapidPublicKey();
+        state()->clearToken();
+    }
+#endif
 
     if (!initialCacheSync) {
         collectionsRetrieved(collections);

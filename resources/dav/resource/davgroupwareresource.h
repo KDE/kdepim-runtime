@@ -14,6 +14,7 @@
 #include <Akonadi/ResourceWidgetBase>
 #include <KDAV/DavCollection>
 
+class DavState;
 class DavItemCache;
 class DavFreeBusyHandler;
 
@@ -47,6 +48,7 @@ public:
     void initAccount() override;
 
     Settings *settings() const;
+    DavState *state() const;
 
 private Q_SLOTS:
     void createInitialCache();
@@ -161,4 +163,5 @@ private:
     DavFreeBusyHandler *const mFreeBusyHandler;
     bool mSyncErrorNotified = false;
     mutable Settings *mSettings = nullptr;
+    mutable DavState *mState = nullptr;
 };
