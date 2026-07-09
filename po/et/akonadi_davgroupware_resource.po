@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-02 00:45+0000\n"
+"POT-Creation-Date: 2026-07-09 02:40+0000\n"
 "PO-Revision-Date: 2020-04-20 11:34+0300\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -330,50 +330,50 @@ msgstr "Sooviti hankida tundmatu kogu elemendid: %1"
 msgid "Invalid collection for item %1."
 msgstr "Vigane kogu elemendi %1 puhul."
 
-#: davgroupwareresource.cpp:723
+#: davgroupwareresource.cpp:734
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to delete item exceptions: %1"
 msgstr "Kogude hankimine nurjus: %1"
 
-#: davgroupwareresource.cpp:920
+#: davgroupwareresource.cpp:917
 #, fuzzy, kde-format
 #| msgid "Unable to add item: %1"
 msgid "Unable to modify items: %1"
 msgstr "Elemendi lisamine nurjus: %1"
 
-#: davgroupwareresource.cpp:959
+#: davgroupwareresource.cpp:956
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Kogu muutmine nurjus: %1"
 
-#: davgroupwareresource.cpp:1088
+#: davgroupwareresource.cpp:1085
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to create collection: %1"
 msgstr "Kogu eemaldamine nurjus: %1"
 
-#: davgroupwareresource.cpp:1117
+#: davgroupwareresource.cpp:1114
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Kogu eemaldamine nurjus: %1"
 
-#: davgroupwareresource.cpp:1137
+#: davgroupwareresource.cpp:1134
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Kogude hankimine nurjus: %1"
 
-#: davgroupwareresource.cpp:1271 davgroupwareresource.cpp:1375
+#: davgroupwareresource.cpp:1268 davgroupwareresource.cpp:1372
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Elementide hankimine nurjus: %1"
 
-#: davgroupwareresource.cpp:1511
+#: davgroupwareresource.cpp:1508
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Elemendi hankimine nurjus: %1"
 
-#: davgroupwareresource.cpp:1531
+#: davgroupwareresource.cpp:1528
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -382,23 +382,23 @@ msgstr ""
 "Elemendi hankimine nurjus: elemendi andmete parsimine nurjus. Võib-olla on "
 "see juba kustutatud."
 
-#: davgroupwareresource.cpp:1591
+#: davgroupwareresource.cpp:1588
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Elemendi lisamine nurjus: %1"
 
-#: davgroupwareresource.cpp:1636 davgroupwareresource.cpp:1768
-#: davgroupwareresource.cpp:1780
+#: davgroupwareresource.cpp:1633 davgroupwareresource.cpp:1765
+#: davgroupwareresource.cpp:1777
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Elemendi muutmine nurjus: %1"
 
-#: davgroupwareresource.cpp:1742 davgroupwareresource.cpp:1799
+#: davgroupwareresource.cpp:1739 davgroupwareresource.cpp:1796
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Elemendi eemaldamine nurjus: %1"
 
-#: davgroupwareresource.cpp:1886 davgroupwareresource.cpp:1887
+#: davgroupwareresource.cpp:1883 davgroupwareresource.cpp:1884
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Ressurss pole veel seadistatud"
