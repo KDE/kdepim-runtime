@@ -5,8 +5,12 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
 set(davgroupwareresource_common_SRCS
     davprotocolattribute.cpp
     davprotocolattribute.h
+    davpushattribute.cpp
+    davpushattribute.h
     settings.cpp
     settings.h
+    davstate.cpp
+    davstate.h
     utils.cpp
     utils.h
 )
