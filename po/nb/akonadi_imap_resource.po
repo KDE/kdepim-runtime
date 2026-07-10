@@ -1178,7 +1178,3 @@ msgstr "Søk:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "Bare abonnerte"
-
-#~ msgctxt "@info:status"
-#~ msgid "Fetching missing mail bodies in %3: %1/%2"
-#~ msgstr "Henter manglende meldingskropper i %3: %1/%2"
