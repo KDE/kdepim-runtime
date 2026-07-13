@@ -151,7 +151,7 @@ msgstr "迁移 Akonadi 项目以支持 GID"
 #: main.cpp:30
 #, kde-format
 msgid "(c) 2013-2022 the Akonadi developers"
-msgstr ""
+msgstr "(c) 2013-2022 the Akonadi developers"
 
 #: main.cpp:33
 #, kde-format
