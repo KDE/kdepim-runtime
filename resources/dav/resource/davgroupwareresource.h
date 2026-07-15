@@ -12,6 +12,7 @@
 #include <Akonadi/AccountBase>
 #include <Akonadi/FreeBusyProviderBase>
 #include <Akonadi/ResourceBase>
+#include <KDAV/DavCollection>
 
 class DavItemCache;
 class DavFreeBusyHandler;
@@ -87,6 +88,7 @@ private:
     void onHandlesFreeBusy(const QString &email, bool handles);
     void onFreeBusyRetrieved(const QString &email, const QString &freeBusy, bool success, const QString &errorText);
 
+    void onRetrieveCollectionFinished(KJob *job);
     void onRetrieveCollectionsFinished(KJob *);
     void onRetrieveItemsFinished(KJob *);
     void onMultigetFinished(KJob *);
@@ -142,6 +144,8 @@ private:
     Akonadi::Collection mDavCollectionRoot;
     QMap<QString, std::shared_ptr<DavItemCache>> mDavItemCache;
     QMap<QString, QString> mCTagCache;
+    // collections retrieved by retrieveCollections that have yet to get their items retrieved in retrieveItems
+    QSet<QString> mRetrievedCollections;
     DavFreeBusyHandler *const mFreeBusyHandler;
     bool mSyncErrorNotified = false;
     mutable Settings *mSettings = nullptr;

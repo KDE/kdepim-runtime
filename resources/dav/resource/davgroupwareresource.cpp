@@ -384,6 +384,28 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
         return;
     }
 
+    const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(collection.remoteId());
+
+    if (!davUrl.url().isValid()) {
+        mRetrievedCollections.remove(collection.remoteId());
+        qCCritical(DAVRESOURCE_LOG) << "Can't find a configured URL, collection.remoteId() is " << collection.remoteId();
+        cancelTask(i18n("Asked to retrieve items for an unknown collection: %1", collection.remoteId()));
+        // Q_ASSERT_X( false, "DavGroupwareResource::retrieveItems", "Url is invalid" );
+        return;
+    }
+
+    // If the collection is not in the retrieved cache, we are in the case of a single collection sync
+    // In that case, we fetch the collection to update its attributes before fetching its items
+    if (!mRetrievedCollections.contains(collection.remoteId())) {
+        auto fetchJob = new KDAV::DavCollectionsFetchJob(davUrl);
+        connect(fetchJob, &KDAV::DavCollectionsFetchJob::result, this, &DavGroupwareResource::onRetrieveCollectionFinished);
+        fetchJob->start();
+        return;
+    }
+
+    // Case of a collection retrieved from onRetrieveCollectionFinished
+    mRetrievedCollections.remove(collection.remoteId());
+
     // Only continue if the collection has changed or if
     // it's the first time we see it
     const auto CTagAttr = collection.attribute<CTagAttribute>();
@@ -393,27 +415,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
         return;
     }
 
-    const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(collection.remoteId());
-
-    if (!davUrl.url().isValid()) {
-        qCCritical(DAVRESOURCE_LOG) << "Can't find a configured URL, collection.remoteId() is " << collection.remoteId();
-        cancelTask(i18n("Asked to retrieve items for an unknown collection: %1", collection.remoteId()));
-        // Q_ASSERT_X( false, "DavGroupwareResource::retrieveItems", "Url is invalid" );
-        return;
-    }
-
-    auto job = new KDAV::DavItemsListJob(davUrl, mDavItemCache.value(collection.remoteId())->eTagCache());
-    if (settings()->limitSyncRange()) {
-        QDateTime start = settings()->getSyncRangeStart();
-        qCDebug(DAVRESOURCE_LOG) << "Start time for list job:" << start;
-        if (start.isValid()) {
-            job->setTimeRange(start.toString(QStringLiteral("yyyyMMddTHHMMssZ")), QString());
-        }
-    }
-    job->setProperty("collection", QVariant::fromValue(collection));
-    job->setContentMimeTypes(collection.contentMimeTypes());
-    connect(job, &KDAV::DavItemsListJob::result, this, &DavGroupwareResource::onRetrieveItemsFinished);
-    job->start();
+    listItemsForCollection(davUrl, collection);
 }
 
 bool DavGroupwareResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &)
@@ -1125,6 +1127,53 @@ void DavGroupwareResource::onCollectionRemovedFinished(KJob *job)
     changeProcessed();
 }
 
+void DavGroupwareResource::onRetrieveCollectionFinished(KJob *job)
+{
+    const KDAV::DavCollectionsFetchJob *fetchJob = qobject_cast<KDAV::DavCollectionsFetchJob *>(job);
+
+    if (job->error()) {
+        qCWarning(DAVRESOURCE_LOG) << "Unable to fetch collections" << job->error() << job->errorText();
+        cancelTask(i18n("Unable to retrieve collections: %1", job->errorText()));
+        mSyncErrorNotified = true;
+        return;
+    }
+
+    const KDAV::DavCollection::List davCollections = fetchJob->collections();
+    auto davUrl = fetchJob->davUrl().url();
+    // Even when providing the url of the collection we want to fetch to the DavCollectionsFetchJob, other collections (at least the parent and siblings
+    // collections) appear in the results.
+    // While waiting for this problem to be investigated, we filter to only change the attributes of the collection we want to synchronize.
+    auto davCollection = std::find_if(davCollections.begin(), davCollections.end(), [davUrl](const KDAV::DavCollection &davCollection) {
+        return davCollection.url().url() == davUrl;
+    });
+    if (davCollection == davCollections.end()) {
+        qCWarning(DAVRESOURCE_LOG) << "None of the retrieved collections correspond to the collection we wanted to retrieve";
+        cancelTask(i18n("Failed to retrieve collection: %1", davUrl.toDisplayString()));
+        mSyncErrorNotified = true;
+        return;
+    }
+    auto collection = Utils::createAkonadiCollection(*davCollection, mDavCollectionRoot);
+    DavGroupwareResource::setCollectionIcon(collection /*by-ref*/);
+
+    auto shouldRetrieveItems = true;
+    // the value of the CTag will be updated in the collection in onRetrieveItemsFinished
+    // for now, we only update the cache
+    if (!davCollection->CTag().isEmpty()) {
+        shouldRetrieveItems =
+            !mCTagCache.contains(davCollection->url().toDisplayString()) || mCTagCache.value(davCollection->url().toDisplayString()) != davCollection->CTag();
+        mCTagCache.insert(davCollection->url().toDisplayString(), davCollection->CTag());
+    }
+
+    auto modifyJob = new Akonadi::CollectionModifyJob(collection);
+    modifyJob->start();
+
+    if (shouldRetrieveItems) {
+        listItemsForCollection(davCollection->url(), collection);
+    } else {
+        taskDone();
+    }
+}
+
 void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
 {
     const KDAV::DavCollectionsMultiFetchJob *fetchJob = qobject_cast<KDAV::DavCollectionsMultiFetchJob *>(job);
@@ -1139,6 +1188,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
     bool initialCacheSync = job->property("initialCacheSync").toBool();
     Akonadi::Collection::List collections{mDavCollectionRoot};
     QSet<QString> seenCollectionsUrls;
+    mRetrievedCollections.clear();
 
     const KDAV::DavCollection::List davCollections = fetchJob->collections();
 
@@ -1151,54 +1201,10 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
             seenCollectionsUrls.insert(davCollection.url().toDisplayString());
         }
 
-        Akonadi::Collection collection;
-        collection.setParentCollection(mDavCollectionRoot);
-        collection.setRemoteId(davCollection.url().toDisplayString());
-        collection.setName(collection.remoteId());
+        mRetrievedCollections.insert(davCollection.url().toDisplayString());
 
-        if (davCollection.color().isValid()) {
-            auto colorAttr = collection.attribute<CollectionColorAttribute>(Akonadi::Collection::AddIfMissing);
-            colorAttr->setColor(davCollection.color());
-        }
-
-        if (!davCollection.displayName().isEmpty()) {
-            auto attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-            attr->setDisplayName(davCollection.displayName());
-        }
-
-        QStringList mimeTypes;
-        mimeTypes << Collection::mimeType();
-
-        const KDAV::DavCollection::ContentTypes contentTypes = davCollection.contentTypes();
-        if (contentTypes & KDAV::DavCollection::Calendar) {
-            mimeTypes << QStringLiteral("text/calendar");
-        }
-
-        if (contentTypes & KDAV::DavCollection::Events) {
-            mimeTypes << KCalendarCore::Event::eventMimeType();
-        }
-
-        if (contentTypes & KDAV::DavCollection::Todos) {
-            mimeTypes << KCalendarCore::Todo::todoMimeType();
-        }
-
-        if (contentTypes & KDAV::DavCollection::Contacts) {
-            mimeTypes << KContacts::Addressee::mimeType();
-        }
-
-        if (contentTypes & KDAV::DavCollection::FreeBusy) {
-            mimeTypes << KCalendarCore::FreeBusy::freeBusyMimeType();
-        }
-
-        if (contentTypes & KDAV::DavCollection::Journal) {
-            mimeTypes << KCalendarCore::Journal::journalMimeType();
-        }
-
-        collection.setContentMimeTypes(mimeTypes);
-        setCollectionIcon(collection /*by-ref*/);
-
-        auto protoAttr = collection.attribute<DavProtocolAttribute>(Collection::AddIfMissing);
-        protoAttr->setDavProtocol(davCollection.url().protocol());
+        auto collection = Utils::createAkonadiCollection(davCollection, mDavCollectionRoot);
+        DavGroupwareResource::setCollectionIcon(collection /*by-ref*/);
 
         /*
          * We unfortunately have to update the CTag now in the cache
@@ -1210,31 +1216,6 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
             mCTagCache.insert(davCollection.url().toDisplayString(), davCollection.CTag());
         }
 
-        KDAV::Privileges privileges = davCollection.privileges();
-        Akonadi::Collection::Rights rights;
-
-        if (privileges & KDAV::All || privileges & KDAV::Write) {
-            rights |= Akonadi::Collection::AllRights;
-        }
-
-        if (privileges & KDAV::WriteContent) {
-            rights |= Akonadi::Collection::CanChangeItem;
-        }
-
-        if (privileges & KDAV::Bind) {
-            rights |= Akonadi::Collection::CanCreateItem;
-        }
-
-        if (privileges & KDAV::Unbind) {
-            rights |= Akonadi::Collection::CanDeleteItem;
-        }
-
-        if (privileges == KDAV::Read) {
-            rights |= Akonadi::Collection::ReadOnly;
-        }
-
-        rights.setFlag(Akonadi::Collection::CanCreateCollection, false);
-        collection.setRights(rights);
         collections << collection;
 
         if (!mDavItemCache.contains(collection.remoteId())) {
