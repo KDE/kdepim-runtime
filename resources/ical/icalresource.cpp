@@ -97,12 +97,10 @@ Collection ICalResource::rootCollection() const
     if (mSettings->displayName().isEmpty() && !calendar()->name().isEmpty()) {
         col.attribute<EntityDisplayAttribute>(Collection::AddIfMissing)->setDisplayName(calendar()->name());
     }
-#if KCALENDARCORE_VERSION >= QT_VERSION_CHECK(6, 26, 0)
     if (!calendar()->color().isEmpty()) {
         auto attr = col.attribute<CollectionColorAttribute>(Collection::AddIfMissing);
         attr->setColor(QColor::fromString(calendar()->color()));
     }
-#endif
     if (const auto iconName = calendar()->nonKDECustomProperty("X-KDE-ICONNAME"); !iconName.isEmpty()) {
         auto attr = col.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         attr->setIconName(iconName);
@@ -340,12 +338,10 @@ void ICalResource::collectionChanged(const Akonadi::Collection &col)
             calendar()->setName(col.displayName());
             scheduleWrite();
         }
-#if KCALENDARCORE_VERSION >= QT_VERSION_CHECK(6, 26, 0)
         if (const auto attr = col.attribute<CollectionColorAttribute>(); attr && attr->color().isValid()) {
             calendar()->setColor(attr->color().name());
             scheduleWrite();
         }
-#endif
         if (const auto attr = col.attribute<EntityDisplayAttribute>(); attr && !attr->iconName().isEmpty()) {
             calendar()->setNonKDECustomProperty("X-KDE-ICONNAME", attr->iconName());
             scheduleWrite();
