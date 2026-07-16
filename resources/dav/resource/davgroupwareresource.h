@@ -13,6 +13,7 @@
 #include <Akonadi/FreeBusyProviderBase>
 #include <Akonadi/ResourceWidgetBase>
 #include <KDAV/DavCollection>
+#include <KDAV/DavPushDontNotify>
 
 class DavState;
 class DavItemCache;
@@ -154,6 +155,9 @@ private:
      */
     static void setCollectionIcon(Akonadi::Collection &collection);
     QString iconForDavUrl(const KDAV::DavUrl &davUrl);
+
+    // Returns a DAVPushDontNotify for the resource, invalid if support is unknown.
+    [[nodiscard]] KDAV::DavPushDontNotify pushDontNotifyFromDavState();
 
     Akonadi::Collection mDavCollectionRoot;
     QMap<QString, std::shared_ptr<DavItemCache>> mDavItemCache;

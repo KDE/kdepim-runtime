@@ -12,6 +12,7 @@
 
 #include <KDAV/DavCollection>
 #include <KDAV/DavItem>
+#include <KDAV/DavPushDontNotify>
 #include <KDAV/DavPushSupport>
 #include <KDAV/DavUrl>
 #include <KDAV/ProtocolInfo>
