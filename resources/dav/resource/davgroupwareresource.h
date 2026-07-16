@@ -14,6 +14,9 @@
 #include <Akonadi/ResourceWidgetBase>
 #include <KDAV/DavCollection>
 #include <KDAV/DavItem>
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+#include <KDAV/DavPushDontNotify>
+#endif
 
 class DavState;
 class DavItemCache;
@@ -134,7 +137,7 @@ private:
     void onDeletedItemRecreated(KJob *job);
 
     void doItemAdd(const Akonadi::Item &item, const Akonadi::Collection &collection);
-    void doItemChange(const Akonadi::Item &item, const Akonadi::Item::List &dependentItems = Akonadi::Item::List());
+    void doItemChange(const Akonadi::Collection &collection, const Akonadi::Item &item, const Akonadi::Item::List &dependentItems = Akonadi::Item::List());
     void doItemRemoval(const Akonadi::Item &item);
     void doItemMove(const Akonadi::Item &item,
                     const Akonadi::Item::List &dependentItems,
@@ -175,6 +178,12 @@ private:
      */
     static void setCollectionIcon(Akonadi::Collection &collection);
     QString iconForDavUrl(const KDAV::DavUrl &davUrl);
+
+    // Returns a DAVPushDontNotify for the resource, invalid if support is unknown.
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    [[nodiscard]] KDAV::DavPushDontNotify pushDontNotifyFromCollection(const Akonadi::Collection &collection);
+    [[nodiscard]] KDAV::DavPushDontNotify pushDontNotifyFromCollections(const Akonadi::Collection::List &collection);
+#endif
 
     Akonadi::Collection mDavCollectionRoot;
     QMap<QString, std::shared_ptr<DavItemCache>> mDavItemCache;

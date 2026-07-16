@@ -22,6 +22,16 @@ void DavPushAttribute::setTopic(const QString &topic)
     mTopic = topic;
 }
 
+QUrl DavPushAttribute::registrationUrl() const
+{
+    return mRegistrationUrl;
+}
+
+void DavPushAttribute::setRegistrationUrl(const QUrl &registrationUrl)
+{
+    mRegistrationUrl = registrationUrl;
+}
+
 QDateTime DavPushAttribute::expirationDate() const
 {
     return mExpirationDate;
