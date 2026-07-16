@@ -41,6 +41,9 @@
 #include <KDAV/DavItemsSyncJob>
 #endif
 #include <KDAV/DavPrincipalHomesetsFetchJob>
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+#include <KDAV/DavPushDontNotify>
+#endif
 #if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
 #include <KDAV/DavPushSupport>
 #include <KDAV/DavSslUiProxy>
@@ -247,6 +250,9 @@ void DavGroupwareResource::collectionAdded(const Akonadi::Collection &collection
         auto createJob = new KDAV::DavCollectionCreateJob(davCollection);
         createJob->setProperty("collection", QVariant::fromValue(collection));
         createJob->setProperty("configUrl", QVariant::fromValue(davUrl));
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+        createJob->setPushDontNotify(pushDontNotifyFromDavState());
+#endif
         connect(createJob, &KDAV::DavCollectionCreateJob::result, this, &DavGroupwareResource::onCollectionAddedFinished);
         createJob->start();
     });
@@ -265,6 +271,9 @@ void DavGroupwareResource::collectionRemoved(const Akonadi::Collection &collecti
 
     auto job = new KDAV::DavCollectionDeleteJob(davUrl);
     job->setProperty("collection", QVariant::fromValue(collection));
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    job->setPushDontNotify(pushDontNotifyFromDavState());
+#endif
     connect(job, &KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onCollectionRemovedFinished);
     job->start();
 }
@@ -616,6 +625,9 @@ void DavGroupwareResource::onItemAddedPrepared(KJob *job)
     modJob->setProperty("item", QVariant::fromValue(mainItem));
     modJob->setProperty("dependentItems", QVariant::fromValue(dependentItems));
     modJob->setProperty("isAdded", true);
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    modJob->setPushDontNotify(pushDontNotifyFromDavState());
+#endif
     connect(modJob, &KDAV::DavItemModifyJob::result, this, &DavGroupwareResource::onItemChangedFinished);
     modJob->start();
 }
@@ -636,6 +648,9 @@ void DavGroupwareResource::doItemAdd(const Akonadi::Item &item, const Akonadi::C
     auto job = new KDAV::DavItemCreateJob(davItem);
     job->setProperty("collection", QVariant::fromValue(collection));
     job->setProperty("item", QVariant::fromValue(item));
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    job->setPushDontNotify(pushDontNotifyFromDavState());
+#endif
     connect(job, &KDAV::DavItemCreateJob::result, this, &DavGroupwareResource::onItemAddedFinished);
     job->start();
 }
@@ -721,10 +736,14 @@ void DavGroupwareResource::doItemChange(const Akonadi::Item &item, const Akonadi
     davItem.setUrl(davUrl);
     davItem.setEtag(item.remoteRevision());
 
+    auto collection = item.parentCollection();
     auto modJob = new KDAV::DavItemModifyJob(davItem);
-    modJob->setProperty("collection", QVariant::fromValue(item.parentCollection()));
+    modJob->setProperty("collection", QVariant::fromValue(collection));
     modJob->setProperty("item", QVariant::fromValue(item));
     modJob->setProperty("dependentItems", QVariant::fromValue(dependentItems));
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    modJob->setPushDontNotify(pushDontNotifyFromDavState());
+#endif
     connect(modJob, &KDAV::DavItemModifyJob::result, this, &DavGroupwareResource::onItemChangedFinished);
     modJob->start();
 }
@@ -838,12 +857,16 @@ void DavGroupwareResource::onItemRemovalPrepared(KJob *job)
     davItem.setUrl(davUrl);
     davItem.setEtag(mainItem.remoteRevision());
 
+    auto collection = mainItem.parentCollection();
     auto modJob = new KDAV::DavItemModifyJob(davItem);
-    modJob->setProperty("collection", QVariant::fromValue(mainItem.parentCollection()));
+    modJob->setProperty("collection", QVariant::fromValue(collection));
     modJob->setProperty("item", QVariant::fromValue(mainItem));
     modJob->setProperty("dependentItems", QVariant::fromValue(exceptionItems));
     modJob->setProperty("isRemoval", QVariant::fromValue(true));
     modJob->setProperty("removedItem", QVariant::fromValue(item));
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    modJob->setPushDontNotify(pushDontNotifyFromDavState());
+#endif
     connect(modJob, &KDAV::DavItemModifyJob::result, this, &DavGroupwareResource::onItemChangedFinished);
     modJob->start();
 }
@@ -856,9 +879,13 @@ void DavGroupwareResource::doItemRemoval(const Akonadi::Item &item)
     davItem.setUrl(davUrl);
     davItem.setEtag(item.remoteRevision());
 
+    auto collection = item.parentCollection();
     auto job = new KDAV::DavItemDeleteJob(davItem);
     job->setProperty("item", QVariant::fromValue(item));
-    job->setProperty("collection", QVariant::fromValue(item.parentCollection()));
+    job->setProperty("collection", QVariant::fromValue(collection));
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    job->setPushDontNotify(pushDontNotifyFromDavState());
+#endif
     connect(job, &KDAV::DavItemDeleteJob::result, this, &DavGroupwareResource::onItemRemovedFinished);
     job->start();
 }
@@ -1064,11 +1091,21 @@ public:
     {
     }
 
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    void setPushDontNotify(const KDAV::DavPushDontNotify &dontNotify)
+    {
+        mPushDontNotify = dontNotify;
+    }
+#endif
+
     void start() override
     {
         for (const auto &[davItem, akonadiItem] : std::as_const(mItems)) {
             auto *job = new KDAV::DavItemModifyJob(davItem, this);
             job->setProperty("item", QVariant::fromValue(akonadiItem));
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+            job->setPushDontNotify(mPushDontNotify);
+#endif
             addSubjob(job);
             job->start();
         }
@@ -1129,6 +1166,9 @@ private:
     QList<std::tuple<KDAV::DavItem, Akonadi::Item>> mItems;
     Akonadi::Item::List mUpdatedAkonadiItems;
     std::shared_ptr<DavItemCache> mCache;
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    KDAV::DavPushDontNotify mPushDontNotify;
+#endif
 };
 
 void DavGroupwareResource::itemsTagsChanged(const Item::List &items, const QSet<Tag> &addedTags, const QSet<Tag> &removedTags)
@@ -1174,6 +1214,9 @@ void DavGroupwareResource::itemsTagsChanged(const Item::List &items, const QSet<
     }
 
     auto job = new DavItemsModifyJob(modifiedItems, *cache, this);
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    job->setPushDontNotify(pushDontNotifyFromDavState());
+#endif
     connect(job, &KJob::result, this, [this, job]() {
         if (job->error()) {
             qCWarning(DAVRESOURCE_LOG) << "Unable to modify items tags:" << job->errorText();
@@ -1226,6 +1269,9 @@ void DavGroupwareResource::collectionChanged(const Akonadi::Collection &collecti
         job->setProperty(QStringLiteral("displayname"), *newName);
     }
 
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    job->setPushDontNotify(pushDontNotifyFromDavState());
+#endif
     connect(job, &KDAV::DavCollectionModifyJob::result, this, [this, collection](KJob *job) {
         onCollectionChangedFinished(job, collection);
     });
@@ -1349,6 +1395,17 @@ QString DavGroupwareResource::iconForDavUrl(const KDAV::DavUrl &davUrl)
     }
     return icon;
 }
+
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+KDAV::DavPushDontNotify DavGroupwareResource::pushDontNotifyFromDavState()
+{
+    const auto subUrl = state()->getSubscriptionUrl();
+    if (!subUrl.isValid()) {
+        return {};
+    }
+    return KDAV::DavPushDontNotify::ignoreUrls({subUrl.toString(QUrl::FullyDecoded)});
+}
+#endif
 
 void DavGroupwareResource::onReloadConfig()
 {
@@ -2094,6 +2151,9 @@ void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &loca
         auto job = new KDAV::DavItemCreateJob(davItem);
         job->setProperty("item", QVariant::fromValue(localItem));
         job->setProperty("dependentItems", QVariant::fromValue(localDependentItems));
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+        job->setPushDontNotify(pushDontNotifyFromDavState());
+#endif
         connect(job, &KJob::result, this, &DavGroupwareResource::onDeletedItemRecreated);
         job->start();
     } else {

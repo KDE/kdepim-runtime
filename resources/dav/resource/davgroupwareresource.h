@@ -14,6 +14,9 @@
 #include <Akonadi/ResourceWidgetBase>
 #include <KDAV/DavCollection>
 #include <KDAV/DavItem>
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+#include <KDAV/DavPushDontNotify>
+#endif
 
 class DavState;
 class DavItemCache;
@@ -175,6 +178,11 @@ private:
      */
     static void setCollectionIcon(Akonadi::Collection &collection);
     QString iconForDavUrl(const KDAV::DavUrl &davUrl);
+
+    // Returns a DAVPushDontNotify for the resource, invalid if support is unknown.
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    [[nodiscard]] KDAV::DavPushDontNotify pushDontNotifyFromDavState();
+#endif
 
     Akonadi::Collection mDavCollectionRoot;
     QMap<QString, std::shared_ptr<DavItemCache>> mDavItemCache;

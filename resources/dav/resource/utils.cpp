@@ -12,6 +12,9 @@
 
 #include <KDAV/DavCollection>
 #include <KDAV/DavItem>
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+#include <KDAV/DavPushDontNotify>
+#endif
 #if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
 #include <KDAV/DavPushSupport>
 #endif
