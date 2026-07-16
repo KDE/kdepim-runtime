@@ -16,6 +16,7 @@ namespace KDAV
 class DavUrl;
 class DavItem;
 class DavCollection;
+class DavPushDontNotify;
 }
 
 namespace Akonadi
@@ -62,4 +63,10 @@ bool parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Akonadi::I
  * Determines the DAV protocol from the given collections mimetypes.
  */
 [[nodiscard]] std::optional<KDAV::Protocol> protocolFromCollection(const Akonadi::Collection &collection);
+
+/**
+ * Returns a DAVPushDontNotify for the given collection.
+ * Returns empty if the collection doesn't support push notifications.
+ */
+[[nodiscard]] KDAV::DavPushDontNotify pushDontNotifyFromCollection(const Akonadi::Collection &collection);
 }

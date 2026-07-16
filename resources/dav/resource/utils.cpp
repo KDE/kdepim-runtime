@@ -7,9 +7,11 @@
 
 #include "utils.h"
 #include "davprotocolattribute.h"
+#include "davpushattribute.h"
 
 #include <KDAV/DavCollection>
 #include <KDAV/DavItem>
+#include <KDAV/DavPushDontNotify>
 #include <KDAV/DavUrl>
 #include <KDAV/ProtocolInfo>
 
@@ -293,4 +295,15 @@ std::optional<KDAV::Protocol> Utils::protocolFromCollection(const Akonadi::Colle
         }
     }
     return std::nullopt;
+}
+
+KDAV::DavPushDontNotify Utils::pushDontNotifyFromCollection(const Akonadi::Collection &collection)
+{
+    if (collection.hasAttribute<DavPushAttribute>()) {
+        auto pushRegistrationUrl = collection.attribute<DavPushAttribute>()->registrationUrl();
+        if (pushRegistrationUrl.isValid()) {
+            return KDAV::DavPushDontNotify::ignoreUrls({pushRegistrationUrl.toDisplayString()});
+        }
+    }
+    return KDAV::DavPushDontNotify();
 }
