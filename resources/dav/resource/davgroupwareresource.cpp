@@ -1918,6 +1918,22 @@ void DavGroupwareResource::retryAfterFailure(const QString &errorMessage)
     setTemporaryOffline(settings()->refreshInterval() <= 0 ? 300 : settings()->refreshInterval() * 60);
 }
 
+void DavGroupwareResource::listItemsForCollection(const KDAV::DavUrl &davUrl, const Akonadi::Collection &collection)
+{
+    auto listJob = new KDAV::DavItemsListJob(davUrl, mDavItemCache.value(collection.remoteId())->eTagCache());
+    if (settings()->limitSyncRange()) {
+        QDateTime start = settings()->getSyncRangeStart();
+        qCDebug(DAVRESOURCE_LOG) << "Start time for list job:" << start;
+        if (start.isValid()) {
+            listJob->setTimeRange(start.toString(QStringLiteral("yyyyMMddTHHMMssZ")), QString());
+        }
+    }
+    listJob->setProperty("collection", QVariant::fromValue(collection));
+    listJob->setContentMimeTypes(collection.contentMimeTypes());
+    connect(listJob, &KDAV::DavItemsListJob::result, this, &DavGroupwareResource::onRetrieveItemsFinished);
+    listJob->start();
+}
+
 /*static*/
 void DavGroupwareResource::setCollectionIcon(Akonadi::Collection &collection)
 {
