@@ -180,13 +180,11 @@ void RetrieveItemsTask::triggerFinalSelect(const QString &mailBox)
 
 void RetrieveItemsTask::onSelectVanished(const KIMAP::ImapSet &messages)
 {
-    auto removedItems = imapSetToItems(messages);
-    itemsRetrievedIncremental(Akonadi::Item::List(), removedItems);
+    m_qresyncVanishedItems = imapSetToItems(messages);
 }
 
 void RetrieveItemsTask::onSelectModified(const QMap<qint64, KIMAP::Message> &messages)
 {
-    Akonadi::Item::List modifiedItems;
     KIMAP::FetchJob::FetchScope scope;
     // QRESYNC SELECT only warns us about flag changes
     scope.mode = KIMAP::FetchJob::FetchScope::Flags;
@@ -194,10 +192,9 @@ void RetrieveItemsTask::onSelectModified(const QMap<qint64, KIMAP::Message> &mes
         bool ok;
         const auto item = resourceState()->messageHelper()->createItemFromMessage(msg->message, msg->uid, msg->size, msg->attributes, msg->flags, scope, ok);
         if (ok) {
-            modifiedItems << item;
+            m_qresyncModifiedItems << item;
         }
     }
-    itemsRetrievedIncremental(modifiedItems, Akonadi::Item::List());
 }
 
 void RetrieveItemsTask::onFinalSelectDone(KJob *job)
@@ -372,6 +369,9 @@ void RetrieveItemsTask::prepareRetrieval()
         // Shortcut:
         // If no messages are present on the server, clear local cache and finish
         m_incremental = false;
+
+        // the result of previous qresync SELECT is irrelevant, we pass the flag to false to avoid triggering itemsRetrievedIncremental in onItemsRetrieved
+        m_qresyncSelect = false;
         if (realMessageCount > 0) {
             qCDebug(IMAPRESOURCE_LOG) << "No messages present so we are done, deleting local messages.";
             itemsRetrieved(Akonadi::Item::List());
@@ -601,7 +601,9 @@ void RetrieveItemsTask::taskComplete()
         qCDebug(IMAPRESOURCE_LOG) << "Applying collection changes";
         applyCollectionChanges(m_modifiedCollection);
     }
-    if (m_incremental || m_qresyncSelect) {
+    if (m_qresyncSelect) {
+        itemsRetrievedIncremental(m_qresyncModifiedItems, m_qresyncVanishedItems);
+    } else if (m_incremental) {
         // Calling itemsRetrievalDone() before previous call to itemsRetrievedIncremental()
         // behaves like if we called itemsRetrieved(Items::List()), so make sure
         // Akonadi knows we did incremental fetch that came up with no changes

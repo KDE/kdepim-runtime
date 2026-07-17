@@ -77,5 +77,8 @@ private:
     qint64 m_highestModSeq = -1;
     QList<QByteArray> m_flags;
 
+    // QRESYNC related values
     bool m_qresyncSelect;
+    Akonadi::Item::List m_qresyncModifiedItems;
+    Akonadi::Item::List m_qresyncVanishedItems;
 };
