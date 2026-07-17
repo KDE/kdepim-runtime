@@ -71,6 +71,85 @@ QStringList Utils::tagsToCategories(const Akonadi::Tag::List &tags)
     return categories;
 }
 
+Akonadi::Collection Utils::createAkonadiCollection(const KDAV::DavCollection &davCollection, const Akonadi::Collection &davCollectionRoot)
+{
+    Akonadi::Collection collection;
+    collection.setParentCollection(davCollectionRoot);
+    collection.setRemoteId(davCollection.url().toDisplayString());
+    collection.setName(collection.remoteId());
+
+    if (davCollection.color().isValid()) {
+        auto colorAttr = collection.attribute<Akonadi::CollectionColorAttribute>(Akonadi::Collection::AddIfMissing);
+        colorAttr->setColor(davCollection.color());
+    }
+
+    if (!davCollection.displayName().isEmpty()) {
+        auto attr = collection.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+        attr->setDisplayName(davCollection.displayName());
+    }
+
+    QStringList mimeTypes;
+    mimeTypes << Akonadi::Collection::mimeType();
+
+    const KDAV::DavCollection::ContentTypes contentTypes = davCollection.contentTypes();
+    if (contentTypes & KDAV::DavCollection::Calendar) {
+        mimeTypes << QStringLiteral("text/calendar");
+    }
+
+    if (contentTypes & KDAV::DavCollection::Events) {
+        mimeTypes << KCalendarCore::Event::eventMimeType();
+    }
+
+    if (contentTypes & KDAV::DavCollection::Todos) {
+        mimeTypes << KCalendarCore::Todo::todoMimeType();
+    }
+
+    if (contentTypes & KDAV::DavCollection::Contacts) {
+        mimeTypes << KContacts::Addressee::mimeType();
+    }
+
+    if (contentTypes & KDAV::DavCollection::FreeBusy) {
+        mimeTypes << KCalendarCore::FreeBusy::freeBusyMimeType();
+    }
+
+    if (contentTypes & KDAV::DavCollection::Journal) {
+        mimeTypes << KCalendarCore::Journal::journalMimeType();
+    }
+
+    collection.setContentMimeTypes(mimeTypes);
+
+    auto protoAttr = collection.attribute<DavProtocolAttribute>(Akonadi::Collection::AddIfMissing);
+    protoAttr->setDavProtocol(davCollection.url().protocol());
+
+    KDAV::Privileges privileges = davCollection.privileges();
+    Akonadi::Collection::Rights rights;
+
+    if (privileges & KDAV::All || privileges & KDAV::Write) {
+        rights |= Akonadi::Collection::AllRights;
+    }
+
+    if (privileges & KDAV::WriteContent) {
+        rights |= Akonadi::Collection::CanChangeItem;
+    }
+
+    if (privileges & KDAV::Bind) {
+        rights |= Akonadi::Collection::CanCreateItem;
+    }
+
+    if (privileges & KDAV::Unbind) {
+        rights |= Akonadi::Collection::CanDeleteItem;
+    }
+
+    if (privileges == KDAV::Read) {
+        rights |= Akonadi::Collection::ReadOnly;
+    }
+
+    rights.setFlag(Akonadi::Collection::CanCreateCollection, false);
+    collection.setRights(rights);
+
+    return collection;
+}
+
 KDAV::DavCollection Utils::createDavCollection(const Akonadi::Collection &collection, const KDAV::DavUrl &davUrl)
 {
     auto davCollection = KDAV::DavCollection();
