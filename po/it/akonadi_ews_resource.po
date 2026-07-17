@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-05 00:45+0000\n"
+"POT-Creation-Date: 2026-07-17 00:44+0000\n"
 "PO-Revision-Date: 2025-05-02 10:57+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 "Recupero delle credenziali InTune non riuscito per l'account Microsoft "
 "Exchange <b>%1</b>. Aggiornalo nella pagina delle impostazioni dell'account."
 
-#: ewsclient/auth/ewsoauth.cpp:524
+#: ewsclient/auth/ewsoauth.cpp:512
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -57,7 +57,7 @@ msgstr ""
 "Le credenziali di Microsoft Exchange per l'account <b>%1</b> non sono più "
 "valide. Devi autenticarti per poter continuare ad usarlo."
 
-#: ewsclient/auth/ewsoauth.cpp:533
+#: ewsclient/auth/ewsoauth.cpp:521
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

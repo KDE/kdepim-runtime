@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-05 00:45+0000\n"
+"POT-Creation-Date: 2026-07-17 00:44+0000\n"
 "PO-Revision-Date: 2026-02-05 16:07+0100\n"
 "Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
 "Language-Team: \n"
@@ -48,7 +48,7 @@ msgstr ""
 "Nepodařilo se získat přihlašovací údaje InTune pro účet Microsoft Exchange  "
 "<b>%1</b>. Aktualizujte je na stránce nastavení účtu."
 
-#: ewsclient/auth/ewsoauth.cpp:524
+#: ewsclient/auth/ewsoauth.cpp:512
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -58,7 +58,7 @@ msgstr ""
 "Přihlašovací údaje pro účet <b>%1</b> v aplikaci Microsoft Exchange již "
 "nejsou platné. Abyste mohli pokračovat v používání, je nutné se znovu ověřit."
 
-#: ewsclient/auth/ewsoauth.cpp:533
+#: ewsclient/auth/ewsoauth.cpp:521
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

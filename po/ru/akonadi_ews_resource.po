@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-05 00:45+0000\n"
+"POT-Creation-Date: 2026-07-17 00:44+0000\n"
 "PO-Revision-Date: 2026-01-28 20:00+0200\n"
 "Last-Translator: Alexander Yavorskiy <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -51,7 +51,7 @@ msgstr ""
 "Не удалось получить данные Intune для входа в учётную запись Microsoft "
 "Exchange <b>%1</b>. Обновите эти данные в параметрах учётной записи."
 
-#: ewsclient/auth/ewsoauth.cpp:524
+#: ewsclient/auth/ewsoauth.cpp:512
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -62,7 +62,7 @@ msgstr ""
 "Exchange <b>%1</b>, более недействительны. Необходимо снова выполнить вход в "
 "систему."
 
-#: ewsclient/auth/ewsoauth.cpp:533
+#: ewsclient/auth/ewsoauth.cpp:521
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
