@@ -646,8 +646,7 @@ private Q_SLOTS:
                  << "S: * 3 FETCH (UID 3 FLAGS (\\Seen \\Answered) MODSEQ (123456950))"
                  << "S: A000006 OK select done";
         callNames.clear();
-        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental")
-                  << QStringLiteral("itemsRetrievalDone");
+        callNames << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
 
         QTest::newRow("qresync modified messages") << collection << scenario << callNames;
 
@@ -673,8 +672,7 @@ private Q_SLOTS:
                  << "S: * VANISHED (EARLIER) 2,4"
                  << "S: A000006 OK select done";
         callNames.clear();
-        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental")
-                  << QStringLiteral("itemsRetrievalDone");
+        callNames << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
 
         QTest::newRow("qresync vanished messages") << collection << scenario << callNames;
 
@@ -724,8 +722,8 @@ private Q_SLOTS:
                     " )"
                  << "S: A000008 OK fetch done";
         callNames.clear();
-        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental")
-                  << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
+        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental")
+                  << QStringLiteral("itemsRetrievalDone");
 
         QTest::newRow("qresync added, modified and vanished") << collection << scenario << callNames;
 #endif
