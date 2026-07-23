@@ -205,7 +205,7 @@ void GoogleResource::requestAuthenticationFromUser(const KGAPI2::AccountPtr &acc
     auto ntf = KNotification::event(QStringLiteral("authNeeded"),
                                     i18nc("@title", "%1 needs your attention.", agentName()),
                                     msg,
-                                    QStringLiteral("im-google"),
+                                    QStringLiteral("account-google"),
                                     KNotification::Persistent | KNotification::SkipGrouping);
     ntf->setComponentName(QStringLiteral("akonadi_google_resource"));
     auto loginAction = ntf->addAction(i18nc("@action", "Log in"));
@@ -343,7 +343,7 @@ void GoogleResource::retrieveCollections()
 
     auto attr = m_rootCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(m_settings.accountPtr()->accountName());
-    attr->setIconName(QStringLiteral("im-google"));
+    attr->setIconName(QStringLiteral("account-google"));
 
     collectionsRetrieved({m_rootCollection});
 

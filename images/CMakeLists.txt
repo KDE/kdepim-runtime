@@ -4,6 +4,7 @@ foreach(
     "citadel"
     "davical"
     "egroupware"
+    "google"
     "fastmail"
     "kopano"
     "mailboxorg"
