@@ -28,6 +28,7 @@
 #include <KDAV/DavItemsFetchJob>
 #include <KDAV/DavItemsListJob>
 #include <KDAV/DavPrincipalHomesetsFetchJob>
+#include <KDAV/DavSslUiProxy>
 #include <KDAV/ProtocolInfo>
 
 #include <KCalendarCore/FreeBusy>
@@ -56,6 +57,9 @@
 
 #include <KLocalizedString>
 
+#include <KIO/SslUi>
+#include <KSslErrorUiData>
+
 #include <QDBusMessage>
 #include <QDBusReply>
 
@@ -66,12 +70,29 @@ using IncidencePtr = QSharedPointer<KCalendarCore::Incidence>;
 
 using namespace Qt::Literals::StringLiterals;
 
+class SslUiProxy : public KDAV::DavSslUiProxy
+{
+public:
+    bool ignoreSslErrors(QNetworkReply *reply, const QList<QSslError> &sslErrors) override
+    {
+        KSslErrorUiData errorData(reply, sslErrors);
+        if (KIO::SslUi::askIgnoreSslErrors(errorData)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+};
+
 DavGroupwareResource::DavGroupwareResource(const QString &id)
     : ResourceWidgetBase(id)
     , FreeBusyProviderBase()
     , AccountBase(this)
     , mFreeBusyHandler(new DavFreeBusyHandler(settings(), this))
 {
+    auto proxy = std::make_unique<SslUiProxy>();
+    KDAV::DavSslUiProxy::setDefaultProxy(std::move(proxy));
+
     AttributeFactory::registerAttribute<DavProtocolAttribute>();
     AttributeFactory::registerAttribute<CTagAttribute>();
 
