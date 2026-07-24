@@ -67,7 +67,7 @@ using IncidencePtr = QSharedPointer<KCalendarCore::Incidence>;
 using namespace Qt::Literals::StringLiterals;
 
 DavGroupwareResource::DavGroupwareResource(const QString &id)
-    : ResourceBase(id)
+    : ResourceWidgetBase(id)
     , FreeBusyProviderBase()
     , AccountBase(this)
     , mFreeBusyHandler(new DavFreeBusyHandler(settings(), this))
@@ -1934,7 +1934,7 @@ void DavGroupwareResource::setCollectionIcon(Akonadi::Collection &collection)
     }
 }
 
-AKONADI_RESOURCE_CORE_MAIN(DavGroupwareResource)
+AKONADI_RESOURCE_MAIN(DavGroupwareResource)
 
 #include "davgroupwareresource.moc"
 

@@ -99,11 +99,11 @@ target_link_libraries(
     Qt::Xml
     KF6::I18n
     KF6::Contacts
-    KF6::KIOCore
+    KF6::KIOWidgets
     KF6::CalendarCore
     KF6::ConfigCore
     KF6::DAV
-    KPim6::AkonadiAgentBase
+    KPim6::AkonadiAgentWidgetBase
     KPim6::AkonadiCore
     KPim6::AkonadiCalendarCore
     qt6keychain

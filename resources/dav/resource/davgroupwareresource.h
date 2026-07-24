@@ -11,7 +11,7 @@
 #include "settings.h"
 #include <Akonadi/AccountBase>
 #include <Akonadi/FreeBusyProviderBase>
-#include <Akonadi/ResourceBase>
+#include <Akonadi/ResourceWidgetBase>
 #include <KDAV/DavCollection>
 
 class DavItemCache;
@@ -26,7 +26,7 @@ namespace KDAV
 class DavItem;
 }
 
-class DavGroupwareResource : public Akonadi::ResourceBase,
+class DavGroupwareResource : public Akonadi::ResourceWidgetBase,
                              public Akonadi::AgentBase::Observer,
                              public Akonadi::FreeBusyProviderBase,
                              public Akonadi::AgentBase::TagObserver,
