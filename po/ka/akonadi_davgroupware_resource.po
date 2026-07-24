@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-07-23 00:44+0000\n"
-"PO-Revision-Date: 2026-06-17 05:24+0200\n"
+"PO-Revision-Date: 2026-07-23 05:54+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -361,8 +361,7 @@ msgid "Unable to retrieve collections: %1"
 msgstr "კოლექციების მიღების შეცდომა: %1"
 
 #: davgroupwareresource.cpp:1151
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Failed to retrieve collection: %1"
 msgstr "კოლექციების მიღების შეცდომა: %1"
 
