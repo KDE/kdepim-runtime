@@ -359,7 +359,7 @@ msgstr "无法获取收藏：%1"
 #: davgroupwareresource.cpp:1151
 #, kde-format
 msgid "Failed to retrieve collection: %1"
-msgstr ""
+msgstr "获取收藏失败：%1"
 
 #: davgroupwareresource.cpp:1249 davgroupwareresource.cpp:1353
 #, kde-format
