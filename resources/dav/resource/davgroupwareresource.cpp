@@ -28,7 +28,9 @@
 #include <KDAV/DavItemsFetchJob>
 #include <KDAV/DavItemsListJob>
 #include <KDAV/DavPrincipalHomesetsFetchJob>
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
 #include <KDAV/DavSslUiProxy>
+#endif
 #include <KDAV/ProtocolInfo>
 
 #include <KCalendarCore/FreeBusy>
@@ -70,6 +72,7 @@ using IncidencePtr = QSharedPointer<KCalendarCore::Incidence>;
 
 using namespace Qt::Literals::StringLiterals;
 
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
 class SslUiProxy : public KDAV::DavSslUiProxy
 {
 public:
@@ -83,6 +86,7 @@ public:
         }
     }
 };
+#endif
 
 DavGroupwareResource::DavGroupwareResource(const QString &id)
     : ResourceWidgetBase(id)
@@ -90,8 +94,10 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     , AccountBase(this)
     , mFreeBusyHandler(new DavFreeBusyHandler(settings(), this))
 {
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
     auto proxy = std::make_unique<SslUiProxy>();
     KDAV::DavSslUiProxy::setDefaultProxy(std::move(proxy));
+#endif
 
     AttributeFactory::registerAttribute<DavProtocolAttribute>();
     AttributeFactory::registerAttribute<CTagAttribute>();
