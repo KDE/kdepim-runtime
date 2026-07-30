@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-23 00:44+0000\n"
+"POT-Creation-Date: 2026-07-30 00:45+0000\n"
 "PO-Revision-Date: 2025-09-06 05:56+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: pl\n"
@@ -312,75 +312,75 @@ msgstr "Nieprawidłowa odpowiedź od serwera"
 msgid "Unable to parse free-busy data received"
 msgstr "Nie można przetworzyć otrzymanych danych wolny-zajęty"
 
-#: davgroupwareresource.cpp:245
+#: davgroupwareresource.cpp:272
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "Nie można pobrać informacji wolny-zajęty będąc offline"
 
-#: davgroupwareresource.cpp:332
+#: davgroupwareresource.cpp:359
 #, kde-format
 msgid "Fetching collections"
 msgstr "Pobieranie zbiorów"
 
-#: davgroupwareresource.cpp:392
+#: davgroupwareresource.cpp:419
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Zapytano o pobranie rzeczy dla nieznanego zbioru: %1"
 
-#: davgroupwareresource.cpp:459
+#: davgroupwareresource.cpp:486
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Nieprawidłowy zbiór dla rzeczy %1."
 
-#: davgroupwareresource.cpp:736
+#: davgroupwareresource.cpp:763
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to delete item exceptions: %1"
 msgstr "Nie można pobrać zbiorów: %1"
 
-#: davgroupwareresource.cpp:919
+#: davgroupwareresource.cpp:946
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Nie można zmienić rzeczy: %1"
 
-#: davgroupwareresource.cpp:958
+#: davgroupwareresource.cpp:985
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Nie można zmienić zbioru: %1"
 
-#: davgroupwareresource.cpp:1087
+#: davgroupwareresource.cpp:1114
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to create collection: %1"
 msgstr "Nie można usunąć zbioru: %1"
 
-#: davgroupwareresource.cpp:1116
+#: davgroupwareresource.cpp:1143
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Nie można usunąć zbioru: %1"
 
-#: davgroupwareresource.cpp:1136 davgroupwareresource.cpp:1183
+#: davgroupwareresource.cpp:1163 davgroupwareresource.cpp:1210
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Nie można pobrać zbiorów: %1"
 
-#: davgroupwareresource.cpp:1151
+#: davgroupwareresource.cpp:1178
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Failed to retrieve collection: %1"
 msgstr "Nie można pobrać zbiorów: %1"
 
-#: davgroupwareresource.cpp:1249 davgroupwareresource.cpp:1353
+#: davgroupwareresource.cpp:1276 davgroupwareresource.cpp:1380
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Nie można pobrać rzeczy: %1"
 
-#: davgroupwareresource.cpp:1489
+#: davgroupwareresource.cpp:1516
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Nie można pobrać rzeczy: %1"
 
-#: davgroupwareresource.cpp:1509
+#: davgroupwareresource.cpp:1536
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -389,23 +389,23 @@ msgstr ""
 "Nie można pobrać rzeczy: nie udało się przetworzenie danych rzeczy. Może "
 "została ona już usunięta."
 
-#: davgroupwareresource.cpp:1569
+#: davgroupwareresource.cpp:1596
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Nie można dodać rzeczy: %1"
 
-#: davgroupwareresource.cpp:1614 davgroupwareresource.cpp:1746
-#: davgroupwareresource.cpp:1758
+#: davgroupwareresource.cpp:1641 davgroupwareresource.cpp:1773
+#: davgroupwareresource.cpp:1785
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Nie można zmienić rzeczy: %1"
 
-#: davgroupwareresource.cpp:1720 davgroupwareresource.cpp:1777
+#: davgroupwareresource.cpp:1747 davgroupwareresource.cpp:1804
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Nie można usunąć rzeczy: %1"
 
-#: davgroupwareresource.cpp:1864 davgroupwareresource.cpp:1865
+#: davgroupwareresource.cpp:1891 davgroupwareresource.cpp:1892
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Zasób nie jest jeszcze ustawiony"
