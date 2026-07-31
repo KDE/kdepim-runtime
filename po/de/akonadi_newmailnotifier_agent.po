@@ -99,7 +99,7 @@ msgid ""
 "li><li>%f set from</li></ul></qt>"
 msgstr ""
 "<qt><p>Hier können Sie die Nachrichten definieren. Folgende Platzhalter "
-"können benutzt werden:</p><ul><li>%s für den Betreff</li><li>%f für den "
+"können verwendet werden:</p><ul><li>%s für den Betreff</li><li>%f für den "
 "Absender</li></ul></qt>"
 
 #: newmailnotifiersettingswidget.cpp:54
