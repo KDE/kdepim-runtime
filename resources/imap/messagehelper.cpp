@@ -47,8 +47,12 @@ Akonadi::Item MessageHelper::createItemFromMessage(const std::shared_ptr<KMime::
 
         Akonadi::MessageFlags::copyMessageFlags(*message, i);
         const auto flagsLst = ResourceTask::toAkonadiFlags(flags);
-        for (const QByteArray &flag : flagsLst) {
-            i.setFlag(flag);
+        if (flagsLst.isEmpty()) {
+            i.clearFlags();
+        } else {
+            for (const QByteArray &flag : flagsLst) {
+                i.setFlag(flag);
+            }
         }
     }
     ok = true;
