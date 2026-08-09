@@ -23,6 +23,7 @@ NewMailNotificationHistoryDialog::NewMailNotificationHistoryDialog(QWidget *pare
     : QDialog(parent)
     , mNewHistoryNotificationWidget(new NewMailNotificationHistoryWidget(this))
 {
+    setWindowIcon(QIcon::fromTheme(QStringLiteral("kmail")));
     setWindowTitle(i18nc("@title:window", "Notification History"));
     auto mainLayout = new QVBoxLayout(this);
     mainLayout->setObjectName("mainLayout"_L1);
