@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-16 06:51+0000\n"
+"POT-Creation-Date: 2026-08-10 02:42+0000\n"
 "PO-Revision-Date: 2024-07-31 22:23+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -23,7 +23,7 @@ msgctxt "%f is a variable for agent. Do not change it"
 msgid "A message was received from %f"
 msgstr "È stato ricevuto un messaggio da %f"
 
-#: newmailnotificationhistorydialog.cpp:26
+#: newmailnotificationhistorydialog.cpp:27
 #, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
