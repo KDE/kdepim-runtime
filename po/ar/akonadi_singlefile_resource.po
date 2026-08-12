@@ -234,7 +234,7 @@ msgid ""
 "Select a local file or a remote URL to download a file from. A new local "
 "file will be created if it doesn't exist."
 msgstr ""
-"حدد ملفًا محليًا أو عنوان URL بعيدًا لتنزيل ملف منه. سينشئ ملفاً محلياً جديد إذا "
+"حدد ملفًا محليًا أو عنوان URL بعيدًا لتنزيل ملف منه. سينشئ ملفًا محليًا جديد إذا "
 "لم يكن موجودًا."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
