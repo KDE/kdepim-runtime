@@ -132,6 +132,11 @@ private:
     void doItemAdd(const Akonadi::Item &item, const Akonadi::Collection &collection);
     void doItemChange(const Akonadi::Item &item, const Akonadi::Item::List &dependentItems = Akonadi::Item::List());
     void doItemRemoval(const Akonadi::Item &item);
+    void doItemMove(const Akonadi::Item &item,
+                    const Akonadi::Item::List &dependentItems,
+                    const Akonadi::Collection &collectionSrc,
+                    const Akonadi::Collection &collectionDst);
+
     void handleConflict(const Akonadi::Item &localItem,
                         const Akonadi::Item::List &localDependentItems,
                         const KDAV::DavItem &remoteItem,

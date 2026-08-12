@@ -8,4 +8,7 @@
 
 #include <KDAV/DavError>
 
+/**
+ * @deprecated Use KDAV::DavError::errorText() instead
+ */
 QString translateErrorString(const KDAV::Error &error);
