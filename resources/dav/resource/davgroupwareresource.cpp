@@ -25,6 +25,7 @@
 #include <KDAV/DavItemDeleteJob>
 #include <KDAV/DavItemFetchJob>
 #include <KDAV/DavItemModifyJob>
+#include <KDAV/DavItemMoveJob>
 #include <KDAV/DavItemsFetchJob>
 #include <KDAV/DavItemsListJob>
 #include <KDAV/DavPrincipalHomesetsFetchJob>
@@ -816,6 +817,133 @@ void DavGroupwareResource::doItemRemoval(const Akonadi::Item &item)
     job->setProperty("item", QVariant::fromValue(item));
     job->setProperty("collection", QVariant::fromValue(item.parentCollection()));
     connect(job, &KDAV::DavItemDeleteJob::result, this, &DavGroupwareResource::onItemRemovedFinished);
+    job->start();
+}
+
+void DavGroupwareResource::itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSrc, const Akonadi::Collection &collectionDst)
+{
+    qCDebug(DAVRESOURCE_LOG) << "Item" << item.remoteId() << " moved from" << collectionSrc.remoteId() << "to" << collectionDst.remoteId();
+
+    auto ridBase = item.remoteId();
+    if (ridBase.isEmpty()) {
+        qCCritical(DAVRESOURCE_LOG) << "Item of id " << item.id() << " has no remoteId, ignoring...";
+        cancelTask();
+        return;
+    }
+    if (ridBase.contains(u'#')) {
+        // Function is triggered for the event and it's occurrences, however we only process the event; we ignore occurrences.
+        qCInfo(DAVRESOURCE_LOG) << "Item" << item.remoteId() << " is a recurring event occurrence; occurrences can't be moved.";
+        changeProcessed();
+        return;
+    }
+
+    auto cache = mDavItemCache.value(collectionSrc.remoteId());
+    auto hasNoExceptions = cache->exceptionUrls(ridBase).isEmpty();
+
+    // We can move immediately if item is main incidence without occurrences
+    const bool shouldMoveItemNow = !item.hasPayload<IncidencePtr>() || hasNoExceptions;
+    if (shouldMoveItemNow) {
+        doItemMove(item, {}, collectionSrc, collectionDst);
+        return;
+    }
+
+    // TODO: when items are moved, their remoteId is deleted in the akonadi-server, but not in the provided item :
+    // - we can't fetch dependentItems using the remoteId in davItemCache
+    // - for now we will fetch all items and filter using event's UID
+    // It's really not ideal, but moving recurring event with exceptions shouldn't happen often
+    Q_ASSERT(item.parentCollection().isValid());
+    auto *fetchJob = new ItemFetchJob(item.parentCollection());
+    fetchJob->fetchScope().fetchFullPayload();
+    connect(fetchJob, &KJob::result, this, [this, item, ridBase, collectionSrc, collectionDst](KJob *job) {
+        const auto *fetchJob = static_cast<ItemFetchJob *>(job);
+        if (job->error()) {
+            cancelTask(i18n("Unable to fetch items: %1", job->errorString()));
+            return;
+        }
+
+        const auto incidence = item.payload<IncidencePtr>();
+        auto mainItem = Akonadi::Item();
+        auto dependentItems = Akonadi::Item::List();
+        for (const auto &fetchItem : fetchJob->items()) {
+            if (!fetchItem.hasPayload<IncidencePtr>()) {
+                continue;
+            }
+
+            // We re-define the old remoteId, they are needed in doItemMove
+            auto itemIncidence = fetchItem.payload<IncidencePtr>();
+            if (itemIncidence->uid() == incidence->uid()) {
+                if (itemIncidence->recurs()) {
+                    Q_ASSERT(!itemIncidence->hasRecurrenceId());
+                    mainItem = fetchItem;
+                    mainItem.setRemoteId(ridBase);
+                } else {
+                    Q_ASSERT(!itemIncidence->recurs());
+                    dependentItems.append(fetchItem);
+                    dependentItems.back().setRemoteId(ridBase + "#"_L1 + itemIncidence->instanceIdentifier());
+                }
+            }
+        }
+
+        Q_ASSERT(mainItem.isValid() && !dependentItems.isEmpty());
+        doItemMove(mainItem, dependentItems, collectionSrc, collectionDst);
+    });
+    fetchJob->start();
+}
+
+void DavGroupwareResource::doItemMove(const Akonadi::Item &item,
+                                      const Akonadi::Item::List &dependentItems,
+                                      const Akonadi::Collection &collectionSrc,
+                                      const Akonadi::Collection &collectionDst)
+{
+    Q_ASSERT(item.remoteId().startsWith(collectionSrc.remoteId()));
+    auto newItem = item;
+    newItem.setRemoteId(item.remoteId().replace(collectionSrc.remoteId(), collectionDst.remoteId()));
+
+    auto newDependentItems = Akonadi::Item::List();
+    newDependentItems.reserve(dependentItems.size());
+    for (const auto &dependentItem : dependentItems) {
+        Q_ASSERT(dependentItem.remoteId().startsWith(collectionSrc.remoteId()));
+        newDependentItems.append(dependentItem);
+        newDependentItems.back().setRemoteId(dependentItem.remoteId().replace(collectionSrc.remoteId(), collectionDst.remoteId()));
+        newDependentItems.back().setParentCollection(collectionDst);
+    }
+
+    // The davItem sent in the DavItemMoveJob needs to have the old Url
+    auto davItem = Utils::createDavItem(newItem, collectionDst, newDependentItems);
+    auto davItemUrl = davItem.url();
+    davItemUrl.setUrl(QUrl::fromUserInput(item.remoteId()));
+    davItem.setUrl(davItemUrl);
+
+    auto *job = new KDAV::DavItemMoveJob(davItem, QUrl::fromUserInput(newItem.remoteId()));
+    connect(job,
+            &KDAV::DavItemMoveJob::result,
+            this,
+            [this, item, dependentItems, newItem, newDependentItems, collectionSrc, collectionDst](KJob *job) mutable {
+                const auto *moveJob = qobject_cast<KDAV::DavItemMoveJob *>(job);
+                if (job->error()) {
+                    if (moveJob->canRetryLater()) {
+                        retryAfterFailure(job->errorString());
+                    } else {
+                        cancelTask(i18n("Unable to move item: %1", job->errorString()));
+                    }
+                    return;
+                }
+
+                // Update cache
+                mDavItemCache[collectionSrc.remoteId()]->removeEtag(item.remoteId());
+                for (const auto &dependentItem : dependentItems) {
+                    mDavItemCache[collectionSrc.remoteId()]->removeEtag(dependentItem.remoteId());
+                }
+                mDavItemCache[collectionDst.remoteId()]->setEtag(newItem.remoteId(), newItem.remoteRevision());
+                for (const auto &newDependentItem : newDependentItems) {
+                    mDavItemCache[collectionDst.remoteId()]->setEtag(newDependentItem.remoteId(), newDependentItem.remoteRevision());
+                }
+
+                // Update remote id's in akonadiserver
+                auto changedItems = newDependentItems;
+                changedItems << newItem;
+                changesCommitted(changedItems);
+            });
     job->start();
 }
 
