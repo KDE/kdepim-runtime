@@ -383,12 +383,12 @@ void NewMailNotifierAgent::slotShowNotifications()
             info.listEmails = mListEmails;
             info.defaultIconName = mDefaultIconName;
             info.resourceName = resourceName;
-            auto job = new SpecialNotifierJob(std::move(info), this);
+            auto job = new SpecialNotifierJob(info, this);
             connect(job, &SpecialNotifierJob::displayNotification, this, [this, itemId](const QPixmap &pixmap, const QString &message) {
                 NewMailNotificationHistoryManager::HistoryMailInfo info;
                 info.message = message;
                 info.identifier = itemId;
-                addEmailInfoNotificationHistory(pixmap, message, std::move(info));
+                addEmailInfoNotificationHistory(pixmap, message, info);
             });
 #if HAVE_TEXT_TO_SPEECH_SUPPORT
             connect(job, &SpecialNotifierJob::say, this, &NewMailNotifierAgent::slotSay);
@@ -404,7 +404,7 @@ void NewMailNotifierAgent::slotShowNotifications()
 
     qCDebug(NEWMAILNOTIFIER_LOG) << message;
 
-    addFoldersInfoNotificationHistory(message, std::move(infos));
+    addFoldersInfoNotificationHistory(message, infos);
 
     mNewMails.clear();
 }
