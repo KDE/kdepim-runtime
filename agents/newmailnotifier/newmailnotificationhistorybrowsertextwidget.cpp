@@ -9,7 +9,7 @@
 NewMailNotificationHistoryBrowserTextWidget::NewMailNotificationHistoryBrowserTextWidget(NewMailNotificationHistoryBrowserText *editor, QWidget *parent)
     : TextCustomEditor::RichTextBrowserWidget(editor, parent)
 {
-    connect(editor, &NewMailNotificationHistoryBrowserText::clearHistory, this, &NewMailNotificationHistoryBrowserTextWidget::clear);
+    connect(editor, &NewMailNotificationHistoryBrowserText::clearHistory, this, &NewMailNotificationHistoryBrowserTextWidget::clearHistory);
 }
 
 NewMailNotificationHistoryBrowserTextWidget::~NewMailNotificationHistoryBrowserTextWidget() = default;
