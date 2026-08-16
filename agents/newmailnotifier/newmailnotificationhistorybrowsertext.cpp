@@ -25,14 +25,17 @@ NewMailNotificationHistoryBrowserText::~NewMailNotificationHistoryBrowserText() 
 void NewMailNotificationHistoryBrowserText::doSetSource(const QUrl &url, QTextDocument::ResourceType type)
 {
     Q_UNUSED(type);
+    constexpr auto openMailScheme = "openmail:"_L1;
+    constexpr auto openFolderScheme = "openfolder:"_L1;
+
     QString uri = url.toString();
     qCDebug(NEWMAILNOTIFIER_LOG) << " uri " << uri;
-    if (uri.startsWith("openmail:"_L1)) {
-        uri.remove(QStringLiteral("openmail:"));
+    if (uri.startsWith(openMailScheme)) {
+        uri.remove(0, openMailScheme.size());
         qCDebug(NEWMAILNOTIFIER_LOG) << "openMail uri " << uri;
         Q_EMIT openMail(uri);
-    } else if (uri.startsWith("openfolder:"_L1)) {
-        uri.remove(QStringLiteral("openfolder:"));
+    } else if (uri.startsWith(openFolderScheme)) {
+        uri.remove(0, openFolderScheme.size());
         qCDebug(NEWMAILNOTIFIER_LOG) << "openFolder uri " << uri;
         Q_EMIT openFolder(uri);
     } else {
