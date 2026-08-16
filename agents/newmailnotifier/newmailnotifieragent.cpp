@@ -235,6 +235,9 @@ void NewMailNotifierAgent::itemsMoved(const Akonadi::Item::List &items,
             }
         }
     }
+    if (!mTimer.isActive()) {
+        mTimer.start();
+    }
 }
 
 bool NewMailNotifierAgent::ignoreStatusMail(const Akonadi::Item &item)
