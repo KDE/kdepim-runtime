@@ -75,12 +75,12 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
 void SpecialNotifierJob::slotSearchJobFinished(KJob *job)
 {
     const Akonadi::ContactSearchJob *searchJob = qobject_cast<Akonadi::ContactSearchJob *>(job);
-    if (searchJob->error()) {
+    if (searchJob && searchJob->error()) {
         qCWarning(NEWMAILNOTIFIER_LOG) << "Unable to fetch contact:" << searchJob->errorText();
         emitNotification();
         return;
     }
-    if (!searchJob->contacts().isEmpty()) {
+    if (searchJob && !searchJob->contacts().isEmpty()) {
         const KContacts::Addressee addressee = searchJob->contacts().at(0);
         const KContacts::Picture photo = addressee.photo();
         const QImage image = photo.data();
