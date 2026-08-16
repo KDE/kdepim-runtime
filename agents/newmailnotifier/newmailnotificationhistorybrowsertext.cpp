@@ -43,9 +43,8 @@ void NewMailNotificationHistoryBrowserText::doSetSource(const QUrl &url, QTextDo
     }
 }
 
-void NewMailNotificationHistoryBrowserText::addExtraMenuEntry(QMenu *menu, QPoint pos)
+void NewMailNotificationHistoryBrowserText::addExtraMenuEntry(QMenu *menu, [[maybe_unused]] QPoint pos)
 {
-    Q_UNUSED(pos)
     if (!toPlainText().isEmpty()) {
         QAction *clearAllAction = KStandardAction::clear(this, &NewMailNotificationHistoryBrowserText::clearHistory, menu);
         menu->addSeparator();
