@@ -98,7 +98,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 {
     if (NewMailNotifierAgentSettings::excludeEmailsFromMe()) {
         for (const QString &email : std::as_const(mSpecialNotificationInfo.listEmails)) {
-            if (mFrom.contains(email)) {
+            if (mFrom.contains(email, Qt::CaseInsensitive)) {
                 // Exclude this notification
                 deleteLater();
                 return;
