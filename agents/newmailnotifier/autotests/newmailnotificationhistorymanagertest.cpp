@@ -16,7 +16,6 @@ NewMailNotificationHistoryManagerTest::NewMailNotificationHistoryManagerTest(QOb
 void NewMailNotificationHistoryManagerTest::shouldHaveDefaultValues()
 {
     NewMailNotificationHistoryManager w;
-    QVERIFY(w.history().isEmpty());
     QVERIFY(w.joinHistory().isEmpty());
 }
 

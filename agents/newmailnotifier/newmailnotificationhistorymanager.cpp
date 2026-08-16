@@ -23,11 +23,6 @@ NewMailNotificationHistoryManager *NewMailNotificationHistoryManager::self()
     return &s_self;
 }
 
-QStringList NewMailNotificationHistoryManager::history() const
-{
-    return mHistory;
-}
-
 QString NewMailNotificationHistoryManager::generateOpenFolderStr(Akonadi::Collection::Id id)
 {
     return QStringLiteral(" <a href=\"%1\">%2</a>").arg(QStringLiteral("openfolder:%1").arg(id), i18n("[Open Folder]"));
@@ -85,11 +80,6 @@ void NewMailNotificationHistoryManager::addHeader()
     } else {
         mHistory += QStringLiteral("<b> %1 </b>").arg(QLocale().toString(QDateTime::currentDateTime()));
     }
-}
-
-void NewMailNotificationHistoryManager::setHistory(const QStringList &newHistory)
-{
-    mHistory = newHistory;
 }
 
 void NewMailNotificationHistoryManager::clear()

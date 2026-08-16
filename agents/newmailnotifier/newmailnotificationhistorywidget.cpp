@@ -39,7 +39,7 @@ NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *pare
             this,
             &NewMailNotificationHistoryWidget::slotHistoryAdded);
 
-    mTextBrowser->setHtml(NewMailNotificationHistoryManager::self()->history().join(QStringLiteral("<br>")));
+    mTextBrowser->setHtml(NewMailNotificationHistoryManager::self()->joinHistory());
     connect(mTextBrowser, &NewMailNotificationHistoryBrowserTextWidget::clearHistory, this, [this]() {
         NewMailNotificationHistoryManager::self()->clear();
         mTextBrowser->clear();

@@ -28,9 +28,6 @@ public:
 
     static NewMailNotificationHistoryManager *self();
 
-    [[nodiscard]] QStringList history() const;
-    void setHistory(const QStringList &newHistory);
-
     void clear();
 
     void addEmailInfoNotificationHistory(const NewMailNotificationHistoryManager::HistoryMailInfo &info);
