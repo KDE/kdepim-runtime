@@ -26,6 +26,9 @@ public:
     explicit NewMailNotificationHistoryManager(QObject *parent = nullptr);
     ~NewMailNotificationHistoryManager() override;
 
+    // Number of notifications kept in memory before the oldest ones are dropped.
+    static constexpr int defaultMaximumHistorySize = 200;
+
     static NewMailNotificationHistoryManager *self();
 
     void clear();
@@ -36,14 +39,20 @@ public:
     void setTestModeEnabled(bool test);
     [[nodiscard]] QString joinHistory() const;
 
+    [[nodiscard]] int maximumHistorySize() const;
+    void setMaximumHistorySize(int size);
+
 Q_SIGNALS:
     void historyAdded(const QString &str);
 
 private:
     [[nodiscard]] static NEWMAILNOTIFIER_NO_EXPORT QString generateOpenMailStr(Akonadi::Item::Id id);
     [[nodiscard]] static NEWMAILNOTIFIER_NO_EXPORT QString generateOpenFolderStr(Akonadi::Collection::Id id);
-    NEWMAILNOTIFIER_NO_EXPORT void addHeader();
+    [[nodiscard]] NEWMAILNOTIFIER_NO_EXPORT QString header() const;
+    NEWMAILNOTIFIER_NO_EXPORT void appendEntry(const QString &entry);
+    NEWMAILNOTIFIER_NO_EXPORT void truncateHistory();
     QStringList mHistory;
+    int mMaximumHistorySize = defaultMaximumHistorySize;
     // Only for autotest
     bool mTestEnabled = false;
 };

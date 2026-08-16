@@ -40,29 +40,23 @@ QString NewMailNotificationHistoryManager::generateOpenMailStr(Akonadi::Item::Id
 
 void NewMailNotificationHistoryManager::addEmailInfoNotificationHistory(const NewMailNotificationHistoryManager::HistoryMailInfo &info)
 {
-    // qDebug() << "NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory  " << info;
-    addHeader();
-    const QString messageInfo = info.message;
-    const QString message = messageInfo + generateOpenMailStr(info.identifier);
-    mHistory += message + QStringLiteral("<br>");
-    Q_EMIT historyAdded(joinHistory());
+    // qDebug() << "NewMailNotificationHistoryManager::addEmailInfoNotificationHistory  " << info;
+    const QString message = info.message + generateOpenMailStr(info.identifier);
+    appendEntry(header() + QStringLiteral("<br>") + message + QStringLiteral("<br>"));
 }
 
 void NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory(const QList<NewMailNotificationHistoryManager::HistoryFolderInfo> &infos)
 {
     // qDebug() << "NewMailNotificationHistoryManager::addFoldersInfoNotificationHistory  " << infos;
-    addHeader();
     QString messages;
     for (const NewMailNotificationHistoryManager::HistoryFolderInfo &info : infos) {
         if (!messages.isEmpty()) {
             messages += QStringLiteral("<br>");
         }
-        const QString messageInfo = info.message;
-        messages += messageInfo + generateOpenFolderStr(info.identifier);
+        messages += info.message + generateOpenFolderStr(info.identifier);
     }
     messages += QStringLiteral("<br>");
-    mHistory += messages;
-    Q_EMIT historyAdded(joinHistory());
+    appendEntry(header() + QStringLiteral("<br>") + messages);
 }
 
 void NewMailNotificationHistoryManager::setTestModeEnabled(bool test)
@@ -70,15 +64,38 @@ void NewMailNotificationHistoryManager::setTestModeEnabled(bool test)
     mTestEnabled = test;
 }
 
-void NewMailNotificationHistoryManager::addHeader()
+int NewMailNotificationHistoryManager::maximumHistorySize() const
 {
-    // if (!mHistory.isEmpty()) {
-    //     mHistory += QStringLiteral("<br>");
-    // }
+    return mMaximumHistorySize;
+}
+
+void NewMailNotificationHistoryManager::setMaximumHistorySize(int size)
+{
+    mMaximumHistorySize = qMax(1, size);
+    truncateHistory();
+}
+
+QString NewMailNotificationHistoryManager::header() const
+{
     if (mTestEnabled) { // Only for test
-        mHistory += QStringLiteral("<b> %1 </b>").arg(QDate::currentDate().toString());
-    } else {
-        mHistory += QStringLiteral("<b> %1 </b>").arg(QLocale().toString(QDateTime::currentDateTime()));
+        return QStringLiteral("<b> %1 </b>").arg(QDate::currentDate().toString());
+    }
+    return QStringLiteral("<b> %1 </b>").arg(QLocale().toString(QDateTime::currentDateTime()));
+}
+
+// One entry == one notification, so that dropping the oldest ones never splits a
+// timestamp from the message it belongs to.
+void NewMailNotificationHistoryManager::appendEntry(const QString &entry)
+{
+    mHistory.append(entry);
+    truncateHistory();
+    Q_EMIT historyAdded(joinHistory());
+}
+
+void NewMailNotificationHistoryManager::truncateHistory()
+{
+    while (mHistory.count() > mMaximumHistorySize) {
+        mHistory.removeFirst();
     }
 }
 
