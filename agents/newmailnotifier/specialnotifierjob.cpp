@@ -171,8 +171,10 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
                 break;
             }
 
-            auto replyAction = notification->addAction(replyLabel);
-            connect(replyAction, &KNotificationAction::activated, this, &SpecialNotifierJob::slotReplyMessage);
+            if (!replyLabel.isEmpty()) {
+                auto replyAction = notification->addAction(replyLabel);
+                connect(replyAction, &KNotificationAction::activated, this, &SpecialNotifierJob::slotReplyMessage);
+            }
         }
 
         connect(notification, &KNotification::closed, this, &SpecialNotifierJob::deleteLater);
