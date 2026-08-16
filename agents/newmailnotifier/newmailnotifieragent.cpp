@@ -80,9 +80,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     mTimer.setInterval(5s); // 5secondes
     connect(&mTimer, &QTimer::timeout, this, &NewMailNotifierAgent::slotShowNotifications);
 
-    if (isActive()) {
-        mTimer.setSingleShot(true);
-    }
+    mTimer.setSingleShot(true);
 }
 
 NewMailNotifierAgent::~NewMailNotifierAgent()
