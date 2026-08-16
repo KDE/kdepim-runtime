@@ -39,6 +39,7 @@ void AkonadiMailTransportPlugin::cleanUp(MailTransport::Transport *t)
     const AgentInstance instance = AgentManager::self()->instance(t->host());
     if (!instance.isValid()) {
         qCWarning(MAILTRANSPORT_AKONADI_LOG) << "Could not find resource instance for name:" << t->host();
+        return;
     }
     AgentManager::self()->removeInstance(instance);
 }
