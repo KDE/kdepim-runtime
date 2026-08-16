@@ -61,7 +61,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
             auto searchJob = new Akonadi::ContactSearchJob(this);
             searchJob->setLimit(1);
             searchJob->setQuery(Akonadi::ContactSearchJob::Email, KEmailAddress::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch);
-            connect(searchJob, &Akonadi::ItemFetchJob::result, this, &SpecialNotifierJob::slotSearchJobFinished);
+            connect(searchJob, &Akonadi::ContactSearchJob::result, this, &SpecialNotifierJob::slotSearchJobFinished);
         } else {
             emitNotification();
         }
