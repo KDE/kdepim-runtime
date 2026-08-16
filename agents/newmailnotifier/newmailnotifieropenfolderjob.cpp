@@ -42,6 +42,8 @@ void NewMailNotifierOpenFolderJob::start()
     if (kmail.isValid()) {
         kmail.call(QStringLiteral("selectFolder"), mIdentifer);
     } else {
+        setError(UserDefinedError);
+        setErrorText(i18n("Impossible to access the DBus interface."));
         qCWarning(NEWMAILNOTIFIER_LOG) << "Impossible to access the DBus interface";
     }
 
