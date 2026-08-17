@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-10 00:46+0000\n"
+"POT-Creation-Date: 2026-08-17 00:47+0000\n"
 "PO-Revision-Date: 2019-07-17 16:24+0200\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -28,12 +28,12 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Zobraziť trvalé oznámenie"
 
-#: newmailnotificationhistorymanager.cpp:33
+#: newmailnotificationhistorymanager.cpp:28
 #, kde-format
 msgid "[Open Folder]"
 msgstr "Priečinky"
 
-#: newmailnotificationhistorymanager.cpp:43
+#: newmailnotificationhistorymanager.cpp:38
 #, kde-format
 msgid "[Show Mail]"
 msgstr "Zobraziť mail..."
@@ -45,7 +45,7 @@ msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Povolené"
 
-#: newmailnotifieragent.cpp:365
+#: newmailnotifieragent.cpp:366
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -56,7 +56,7 @@ msgstr[0] "Jeden nový email v %2 z \"%3\""
 msgstr[1] "%1 nové emaily v %2 z \"%3\""
 msgstr[2] "%1 nových emailov v %2 z \"%3\""
 
-#: newmailnotifieragent.cpp:402
+#: newmailnotifieragent.cpp:403
 #, kde-format
 msgid "New mail arrived"
 msgstr "Prišla nová pošta"
@@ -66,6 +66,11 @@ msgstr "Prišla nová pošta"
 #, kde-format
 msgid "Unable to start KMail application."
 msgstr "Nepodarilo sa spustiť aplikáciu KMail."
+
+#: newmailnotifieropenfolderjob.cpp:46
+#, kde-format
+msgid "Impossible to access the DBus interface."
+msgstr ""
 
 #: newmailnotifierselectcollectionwidget.cpp:96
 #, kde-format

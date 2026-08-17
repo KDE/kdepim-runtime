@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-10 00:46+0000\n"
+"POT-Creation-Date: 2026-08-17 00:47+0000\n"
 "PO-Revision-Date: 2024-07-30 06:36+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -29,12 +29,12 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr "გაფრთხილებების ისტორია"
 
-#: newmailnotificationhistorymanager.cpp:33
+#: newmailnotificationhistorymanager.cpp:28
 #, kde-format
 msgid "[Open Folder]"
 msgstr "[საქაღალდის გახსნა]"
 
-#: newmailnotificationhistorymanager.cpp:43
+#: newmailnotificationhistorymanager.cpp:38
 #, kde-format
 msgid "[Show Mail]"
 msgstr "[ელფოსტის ჩვენება]"
@@ -46,7 +46,7 @@ msgctxt "@option:check"
 msgid "Enabled"
 msgstr "ჩართულია"
 
-#: newmailnotifieragent.cpp:365
+#: newmailnotifieragent.cpp:366
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -56,7 +56,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "%1 ახალი ელფოსტა %2-ში \"%3\"-სგან"
 msgstr[1] "%1 ახალი ელფოსტა %2-ში \"%3\"-სგან"
 
-#: newmailnotifieragent.cpp:402
+#: newmailnotifieragent.cpp:403
 #, kde-format
 msgid "New mail arrived"
 msgstr "შემოსულია ახალი ელფოსტა"
@@ -66,6 +66,11 @@ msgstr "შემოსულია ახალი ელფოსტა"
 #, kde-format
 msgid "Unable to start KMail application."
 msgstr "KMail აპლიკაციის გაშვების შეცდომა."
+
+#: newmailnotifieropenfolderjob.cpp:46
+#, kde-format
+msgid "Impossible to access the DBus interface."
+msgstr ""
 
 #: newmailnotifierselectcollectionwidget.cpp:96
 #, kde-format

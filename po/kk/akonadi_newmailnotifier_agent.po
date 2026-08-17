@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-10 00:46+0000\n"
+"POT-Creation-Date: 2026-08-17 00:47+0000\n"
 "PO-Revision-Date: 2013-09-30 03:01+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -28,13 +28,13 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr ""
 
-#: newmailnotificationhistorymanager.cpp:33
+#: newmailnotificationhistorymanager.cpp:28
 #, fuzzy, kde-format
 #| msgid "Folders"
 msgid "[Open Folder]"
 msgstr "Қапшықтар"
 
-#: newmailnotificationhistorymanager.cpp:43
+#: newmailnotificationhistorymanager.cpp:38
 #, kde-format
 msgid "[Show Mail]"
 msgstr ""
@@ -47,7 +47,7 @@ msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Рұқсат етілген"
 
-#: newmailnotifieragent.cpp:365
+#: newmailnotifieragent.cpp:366
 #, fuzzy, kde-format
 #| msgid "One new email in %2 from \"%3\""
 #| msgid_plural "%1 new emails in %2 from \"%3\""
@@ -58,7 +58,7 @@ msgid "One new email in %2 from \"%3\""
 msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "%2 дегенде %3 дегеннен %1 жаңа хат"
 
-#: newmailnotifieragent.cpp:402
+#: newmailnotifieragent.cpp:403
 #, kde-format
 msgid "New mail arrived"
 msgstr "Жаңа пошта келді"
@@ -67,6 +67,11 @@ msgstr "Жаңа пошта келді"
 #: newmailnotifiershowmessagejob.cpp:35
 #, kde-format
 msgid "Unable to start KMail application."
+msgstr ""
+
+#: newmailnotifieropenfolderjob.cpp:46
+#, kde-format
+msgid "Impossible to access the DBus interface."
 msgstr ""
 
 #: newmailnotifierselectcollectionwidget.cpp:96

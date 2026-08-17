@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-10 00:46+0000\n"
+"POT-Creation-Date: 2026-08-17 00:47+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -29,12 +29,12 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr "通知历史记录"
 
-#: newmailnotificationhistorymanager.cpp:33
+#: newmailnotificationhistorymanager.cpp:28
 #, kde-format
 msgid "[Open Folder]"
 msgstr "[打开文件夹]"
 
-#: newmailnotificationhistorymanager.cpp:43
+#: newmailnotificationhistorymanager.cpp:38
 #, kde-format
 msgid "[Show Mail]"
 msgstr "[显示邮件]"
@@ -46,7 +46,7 @@ msgctxt "@option:check"
 msgid "Enabled"
 msgstr "启用"
 
-#: newmailnotifieragent.cpp:365
+#: newmailnotifieragent.cpp:366
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -55,7 +55,7 @@ msgid "One new email in %2 from \"%3\""
 msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "%2 中有 %1 封来自“%3”的新邮件"
 
-#: newmailnotifieragent.cpp:402
+#: newmailnotifieragent.cpp:403
 #, kde-format
 msgid "New mail arrived"
 msgstr "新邮件到达"
@@ -65,6 +65,11 @@ msgstr "新邮件到达"
 #, kde-format
 msgid "Unable to start KMail application."
 msgstr "无法启动 KMail 应用程序。"
+
+#: newmailnotifieropenfolderjob.cpp:46
+#, kde-format
+msgid "Impossible to access the DBus interface."
+msgstr ""
 
 #: newmailnotifierselectcollectionwidget.cpp:96
 #, kde-format

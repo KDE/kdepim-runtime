@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-10 00:46+0000\n"
+"POT-Creation-Date: 2026-08-17 00:47+0000\n"
 "PO-Revision-Date: 2024-12-24 20:39+0530\n"
 "Last-Translator: kali <shreekantkalwar@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -30,12 +30,12 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr "अधिसूचना इतिहास"
 
-#: newmailnotificationhistorymanager.cpp:33
+#: newmailnotificationhistorymanager.cpp:28
 #, kde-format
 msgid "[Open Folder]"
 msgstr "[पुटं उद्घाटयतु] ।"
 
-#: newmailnotificationhistorymanager.cpp:43
+#: newmailnotificationhistorymanager.cpp:38
 #, kde-format
 msgid "[Show Mail]"
 msgstr "[मेलं दर्शयतु] ।"
@@ -47,7 +47,7 @@ msgctxt "@option:check"
 msgid "Enabled"
 msgstr "सक्षमम्"
 
-#: newmailnotifieragent.cpp:365
+#: newmailnotifieragent.cpp:366
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -57,7 +57,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "\"%3\" तः %2 मध्ये एकः नूतनः ईमेलः ।"
 msgstr[1] "\"%3\" तः %2 मध्ये %1 नूतनानि ईमेलपत्राणि।"
 
-#: newmailnotifieragent.cpp:402
+#: newmailnotifieragent.cpp:403
 #, kde-format
 msgid "New mail arrived"
 msgstr "नूतनं मेलम् आगतं"
@@ -67,6 +67,11 @@ msgstr "नूतनं मेलम् आगतं"
 #, kde-format
 msgid "Unable to start KMail application."
 msgstr "KMail अनुप्रयोगं आरभ्यतुं असमर्थः।"
+
+#: newmailnotifieropenfolderjob.cpp:46
+#, kde-format
+msgid "Impossible to access the DBus interface."
+msgstr ""
 
 #: newmailnotifierselectcollectionwidget.cpp:96
 #, kde-format

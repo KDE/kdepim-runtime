@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-10 00:46+0000\n"
+"POT-Creation-Date: 2026-08-17 00:47+0000\n"
 "PO-Revision-Date: 2024-07-31 22:23+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -29,12 +29,12 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Cronologia delle notifiche"
 
-#: newmailnotificationhistorymanager.cpp:33
+#: newmailnotificationhistorymanager.cpp:28
 #, kde-format
 msgid "[Open Folder]"
 msgstr "[Apri cartella]"
 
-#: newmailnotificationhistorymanager.cpp:43
+#: newmailnotificationhistorymanager.cpp:38
 #, kde-format
 msgid "[Show Mail]"
 msgstr "[Mostra messaggio di posta]"
@@ -46,7 +46,7 @@ msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Abilitato"
 
-#: newmailnotifieragent.cpp:365
+#: newmailnotifieragent.cpp:366
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -56,7 +56,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Un nuovo messaggio di posta in %2 da «%3»"
 msgstr[1] "%1 nuovi messaggi di posta in %2 da «%3»"
 
-#: newmailnotifieragent.cpp:402
+#: newmailnotifieragent.cpp:403
 #, kde-format
 msgid "New mail arrived"
 msgstr "Nuova posta ricevuta"
@@ -66,6 +66,11 @@ msgstr "Nuova posta ricevuta"
 #, kde-format
 msgid "Unable to start KMail application."
 msgstr "Impossibile avviare l'applicazione KMail."
+
+#: newmailnotifieropenfolderjob.cpp:46
+#, kde-format
+msgid "Impossible to access the DBus interface."
+msgstr ""
 
 #: newmailnotifierselectcollectionwidget.cpp:96
 #, kde-format

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-10 00:46+0000\n"
+"POT-Creation-Date: 2026-08-17 00:47+0000\n"
 "PO-Revision-Date: 2015-12-29 20:26+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -33,13 +33,13 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr ""
 
-#: newmailnotificationhistorymanager.cpp:33
+#: newmailnotificationhistorymanager.cpp:28
 #, fuzzy, kde-format
 #| msgid "Folders"
 msgid "[Open Folder]"
 msgstr "Aplankai"
 
-#: newmailnotificationhistorymanager.cpp:43
+#: newmailnotificationhistorymanager.cpp:38
 #, kde-format
 msgid "[Show Mail]"
 msgstr ""
@@ -52,7 +52,7 @@ msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Įgalinta"
 
-#: newmailnotifieragent.cpp:365
+#: newmailnotifieragent.cpp:366
 #, fuzzy, kde-format
 #| msgid "One new email in %2 from \"%3\""
 #| msgid_plural "%1 new emails in %2 from \"%3\""
@@ -66,7 +66,7 @@ msgstr[1] "%1 nauji laiškai į %2 nuo „%3“"
 msgstr[2] "%1 naujų el. laiškų į %2 nuo „%3“"
 msgstr[3] "%1 naujas el. laiškas į %2 nuo „%3“"
 
-#: newmailnotifieragent.cpp:402
+#: newmailnotifieragent.cpp:403
 #, kde-format
 msgid "New mail arrived"
 msgstr "Atėjo naujas paštas"
@@ -75,6 +75,11 @@ msgstr "Atėjo naujas paštas"
 #: newmailnotifiershowmessagejob.cpp:35
 #, kde-format
 msgid "Unable to start KMail application."
+msgstr ""
+
+#: newmailnotifieropenfolderjob.cpp:46
+#, kde-format
+msgid "Impossible to access the DBus interface."
 msgstr ""
 
 #: newmailnotifierselectcollectionwidget.cpp:96
