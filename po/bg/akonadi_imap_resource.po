@@ -1219,7 +1219,3 @@ msgstr "Търсене:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "&Само абонирани"
-
-#~ msgctxt "@info:status"
-#~ msgid "Fetching missing mail bodies in %3: %1/%2"
-#~ msgstr "Извличане на липсващи пощенски тела в %3: %1/%2"

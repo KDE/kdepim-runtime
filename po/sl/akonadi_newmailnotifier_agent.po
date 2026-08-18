@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-17 00:47+0000\n"
-"PO-Revision-Date: 2024-07-30 09:00+0200\n"
+"PO-Revision-Date: 2026-08-17 06:58+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.9\n"
 
 #, kde-format
 msgctxt "%f is a variable for agent. Do not change it"
@@ -76,7 +76,7 @@ msgstr "Ni mogoče zagnati programa KMail."
 #: newmailnotifieropenfolderjob.cpp:46
 #, kde-format
 msgid "Impossible to access the DBus interface."
-msgstr ""
+msgstr "Dostop do vmesnika DBus ni mogoč."
 
 #: newmailnotifierselectcollectionwidget.cpp:96
 #, kde-format
