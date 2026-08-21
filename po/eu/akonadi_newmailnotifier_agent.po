@@ -1,10 +1,10 @@
 # Translation for akonadi_newmailnotifier_agent.po to Euskara/Basque (eu).
-# Copyright (C) 2022-2024 This file is copyright:
+# Copyright (C) 2022-2026 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
-# SPDX-FileCopyrightText: 2023-2024, 2026 KDE euskaratzeko proiektuko arduraduna <xalba@ni.eus>
+# SPDX-FileCopyrightText: 2023-2024, 2026 KDE euskaratzeko proiektuaren arduraduna <xalba@ni.eus>
 #
 # Translators:
-# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022, 2023, 2024.
+# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022, 2023, 2024, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
