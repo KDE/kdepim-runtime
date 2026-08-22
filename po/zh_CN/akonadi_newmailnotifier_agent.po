@@ -69,7 +69,7 @@ msgstr "无法启动 KMail 应用程序。"
 #: newmailnotifieropenfolderjob.cpp:46
 #, kde-format
 msgid "Impossible to access the DBus interface."
-msgstr ""
+msgstr "无法访问 DBus 界面。"
 
 #: newmailnotifierselectcollectionwidget.cpp:96
 #, kde-format
