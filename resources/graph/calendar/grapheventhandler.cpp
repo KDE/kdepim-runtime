@@ -10,7 +10,6 @@
 #include <KCalendarCore/Attendee>
 #include <KCalendarCore/Person>
 #include <KCalendarCore/Recurrence>
-#include <KCalendarCore/RecurrenceRule>
 
 #include <QBitArray>
 #include <QDate>
