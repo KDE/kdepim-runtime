@@ -1,0 +1,9 @@
+File=graphresource.kcfg
+ClassName=GraphSettings
+Singleton=false
+Mutators=true
+ItemAccessors=true
+SetUserTexts=true
+GlobalEnums=true
+ParentInConstructor=true
+TranslationSystem=kde

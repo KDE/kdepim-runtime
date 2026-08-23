@@ -1,0 +1,5 @@
+{
+    "X-Akonadi-PluginType": "AgentConfig",
+    "X-Akonadi-Library": "graphconfig",
+    "X-Akonadi-AgentConfig-Type": "akonadi_graph_resource"
+}

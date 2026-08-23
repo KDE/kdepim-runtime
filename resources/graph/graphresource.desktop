@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2026 Malte Zilinski <malte@zilinski.eu>
+# SPDX-License-Identifier: LGPL-2.0-or-later
+[Desktop Entry]
+Name=Microsoft 365 (Graph)
+Name[de]=Microsoft 365 (Graph)
+Comment=Provides access to mail, calendar, tasks and contacts of a Microsoft 365 / Exchange Online account using the Microsoft Graph API
+Comment[de]=Ermöglicht den Zugriff über die Microsoft-Graph-API auf E-Mails, Termine, Aufgaben und Kontakte eines Microsoft-365-/Exchange-Online-Kontos
+Type=AkonadiResource
+Exec=akonadi_graph_resource
+Icon=akonadi-graph
+
+X-Akonadi-MimeTypes=message/rfc822,application/x-vnd.akonadi.calendar.event,text/directory
+X-Akonadi-Capabilities=Resource,NeedsNetwork
+X-Akonadi-Identifier=akonadi_graph_resource

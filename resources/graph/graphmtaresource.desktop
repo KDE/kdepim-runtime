@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2026 Malte Zilinski <malte@zilinski.eu>
+# SPDX-License-Identifier: LGPL-2.0-or-later
+[Desktop Entry]
+Name=Microsoft 365 (Graph) Mail Transport
+Name[de]=E-Mail-Versand über Microsoft 365 (Graph)
+Comment=Sends mail through a Microsoft 365 / Exchange Online account using the Microsoft Graph API
+Comment[de]=Versendet E-Mails über die Microsoft-Graph-API eines Microsoft-365-/Exchange-Online-Kontos
+Type=AkonadiResource
+Exec=akonadi_graphmta_resource
+Icon=akonadi-graph
+
+X-Akonadi-MimeTypes=message/rfc822
+X-Akonadi-Capabilities=NeedsNetwork,MailTransport
+X-Akonadi-Identifier=akonadi_graphmta_resource

@@ -14,3 +14,13 @@ path = ["images/*-apps-account-*.png"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "None"
 SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = [
+    "resources/graph/graphconfig.json",
+    "resources/graph/graphresource.kcfg",
+    "resources/graph/graphsettingsbase.kcfgc",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Malte Zilinski <malte@zilinski.eu>"
+SPDX-License-Identifier = "LGPL-2.0-or-later"

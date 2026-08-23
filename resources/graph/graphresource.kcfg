@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE kcfg SYSTEM "http://www.kde.org/standards/kcfg/1.0/kcfg.dtd">
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
+  <kcfgfile/>
+  <group name="General">
+    <entry name="Email" type="String">
+      <label>Primary email / UPN of the Microsoft 365 account.</label>
+    </entry>
+    <entry name="TenantId" type="String">
+      <label>Azure AD tenant: "common", "organizations", "consumers" or a tenant GUID.</label>
+      <default>common</default>
+    </entry>
+    <entry name="ClientId" type="String">
+      <label>Azure app registration Application (client) ID. Configure your own in the account dialog — see README.md / docs.</label>
+    </entry>
+    <entry name="FolderDeltaLink" type="String">
+      <label>Persisted top-level mailFolders @odata.deltaLink (sync state).</label>
+    </entry>
+    <entry name="PollInterval" type="Int">
+      <label>Delta poll interval in minutes (no push on Graph for desktop).</label>
+      <default>5</default>
+    </entry>
+    <entry name="ImmutableIdsMigrated" type="Bool">
+      <label>Whether stored remoteIds have been migrated to Graph immutable ids.</label>
+      <default>false</default>
+    </entry>
+  </group>
+</kcfg>
