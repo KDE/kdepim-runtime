@@ -663,9 +663,9 @@ void SetupServer::slotManageSubscriptions()
     subscriptions->setWindowTitle(i18nc("@title:window", "Serverside Subscription"));
     subscriptions->setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
     subscriptions->connectAccount(account, m_ui->password->password());
-    m_subscriptionsChanged = subscriptions->isSubscriptionChanged();
 
     subscriptions->exec();
+    m_subscriptionsChanged = subscriptions->isSubscriptionChanged();
     delete subscriptions;
 
     m_ui->subscriptionEnabled->setChecked(account.isSubscriptionEnabled());
