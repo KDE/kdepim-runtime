@@ -115,7 +115,7 @@ void EwsUpdateItemsTagsJob::doUpdateItemsTags()
                 tagList.append(QString::fromLatin1(mTagStore->tagRemoteId(tag.id())));
                 QString name = mTagStore->tagName(tag.id());
                 if (!name.isEmpty()) {
-                    categoryList.append(name);
+                    categoryList.append(std::move(name));
                 }
             }
             EwsUpdateItemRequest::Update *upd = new EwsUpdateItemRequest::SetUpdate(EwsResource::tagsProperty, tagList);

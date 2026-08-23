@@ -139,7 +139,7 @@ private:
         }
 
         QStringList parts;
-        parts.append(module);
+        parts.append(std::move(module));
         parts.append(mLastModified);
 
         entity.setRemoteId(QString::number(mObjectId));

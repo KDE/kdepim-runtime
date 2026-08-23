@@ -133,7 +133,7 @@ private:
         modified.setTags(tags);
 
         auto *modifyJob = new Akonadi::ItemModifyJob(modified, this);
-        connect(modifyJob, &Akonadi::ItemModifyJob::result, this, [this, modified, modifyJob]() {
+        connect(modifyJob, &Akonadi::ItemModifyJob::result, this, [this, modified = std::move(modified), modifyJob]() {
             if (modifyJob->error()) {
                 qCWarning(MIGRATION_LOG) << "Failed to add tags to item:" << modifyJob->errorString();
                 setError(modifyJob->error());

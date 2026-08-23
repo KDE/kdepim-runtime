@@ -171,7 +171,7 @@ void NewMailNotifierAgent::itemsRemoved(const Item::List &items)
             if (mNewMails[it.key()].isEmpty()) {
                 mNewMails.remove(it.key());
             } else {
-                mNewMails[it.key()] = idList;
+                mNewMails[it.key()] = std::move(idList);
             }
         }
     }
@@ -225,12 +225,12 @@ void NewMailNotifierAgent::itemsMoved(const Akonadi::Item::List &items,
                 if (idListFrom.isEmpty()) {
                     mNewMails.remove(collectionSource);
                 } else {
-                    mNewMails[collectionSource] = idListFrom;
+                    mNewMails[collectionSource] = std::move(idListFrom);
                 }
                 if (!excludeSpecialCollection(collectionDestination)) {
                     QList<Akonadi::Item::Id> idListTo = mNewMails[collectionDestination];
                     idListTo.append(item.id());
-                    mNewMails[collectionDestination] = idListTo;
+                    mNewMails[collectionDestination] = std::move(idListTo);
                 }
             }
         }
@@ -373,17 +373,17 @@ void NewMailNotifierAgent::slotShowNotifications()
                     NewMailNotificationHistoryManager::HistoryFolderInfo info;
                     info.message = text;
                     info.identifier = it.key().id();
-                    infos.append(info);
+                    infos.append(std::move(info));
                 }
             }
         }
         if (hasUniqMessage) {
             SpecialNotifierJob::SpecialNotificationInfo info;
             info.itemId = itemId;
-            info.path = currentPath;
+            info.path = std::move(currentPath);
             info.listEmails = mListEmails;
             info.defaultIconName = mDefaultIconName;
-            info.resourceName = resourceName;
+            info.resourceName = std::move(resourceName);
             auto job = new SpecialNotifierJob(info, this);
             connect(job, &SpecialNotifierJob::displayNotification, this, [this, itemId](const QPixmap &pixmap, const QString &message) {
                 NewMailNotificationHistoryManager::HistoryMailInfo info;

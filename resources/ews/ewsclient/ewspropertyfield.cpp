@@ -368,7 +368,7 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
             return false;
         }
         d->mPropType = IndexedField;
-        d->mUri = uri;
+        d->mUri = std::move(uri);
         d->mIndex = index;
     } else if (reader.name() == "ExtendedFieldURI"_L1) {
         if (!attrs.hasAttribute("PropertyType"_L1)) {
@@ -446,10 +446,10 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
             }
             d->mPsIdType = psIdType;
             d->mPsDid = psDid;
-            d->mPsId = psId;
+            d->mPsId = std::move(psId);
             d->mIdType = idType;
             d->mId = id;
-            d->mName = name;
+            d->mName = std::move(name);
         }
 
         d->mType = propType;

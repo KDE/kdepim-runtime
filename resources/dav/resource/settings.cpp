@@ -356,7 +356,7 @@ void Settings::buildUrlsList()
         }
 
         if (!pass.isNull()) {
-            urlConfig->mPassword = pass;
+            urlConfig->mPassword = std::move(pass);
             mUrls[key] = urlConfig;
         } else {
             delete urlConfig;
