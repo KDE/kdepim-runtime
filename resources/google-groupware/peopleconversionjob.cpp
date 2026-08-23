@@ -90,7 +90,7 @@ void PeopleConversionJob::start()
             const auto collectionId = collection.id();
             qCDebug(GOOGLE_PEOPLE_LOG) << "Going to fetch data for virtual collection:" << collectionId;
             collectionsToFetch.insert(collectionId);
-        };
+        }
     }
 
     if (collectionsToFetch.isEmpty()) {

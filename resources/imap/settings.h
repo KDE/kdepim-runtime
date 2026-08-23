@@ -19,7 +19,7 @@ class KJob;
 namespace QKeychain
 {
 class ReadPasswordJob;
-};
+}
 
 class Settings : public SettingsBase
 {
