@@ -1,0 +1,219 @@
+# Translation of akonadi_graph_resource.po to Catalan (Valencian)
+# Copyright (C) 2026 This_file_is_part_of_KDE
+# This file is distributed under the license LGPL version 2.1 or
+# version 3 or later versions approved by the membership of KDE e.V.
+#
+# SPDX-FileCopyrightText: 2026 Josep M. Ferrer <txemaq@gmail.com>
+msgid ""
+msgstr ""
+"Project-Id-Version: kdepim-runtime\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-08-24 00:46+0000\n"
+"PO-Revision-Date: 2026-08-24 20:49+0200\n"
+"Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
+"Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
+"Language: ca@valencia\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 26.08.0\n"
+
+#: graphclient/auth/graphoauth.cpp:137
+#, kde-format
+msgid "OAuth2: cannot listen on localhost (no free port?)"
+msgstr "OAuth2: no es pot escoltar a localhost (no hi ha cap port lliure?)"
+
+#: graphclient/auth/graphoauth.cpp:166
+#, kde-format
+msgid "OAuth2 request failed"
+msgstr "Ha fallat la sol·licitud d'OAuth2"
+
+#: graphclient/graphrequest.cpp:70
+#, kde-format
+msgid "Not authenticated with Microsoft 365 yet"
+msgstr "Encara no s'ha autenticat amb Microsoft 365"
+
+#: graphclient/graphrequest.cpp:152
+#, kde-format
+msgctxt ""
+"%1 is the server error message, %2 the HTTP status code, %3 the server error "
+"code"
+msgid "%1 (HTTP %2, %3)"
+msgstr "%1 (HTTP %2, %3)"
+
+#: graphconfig.cpp:45
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Account name:"
+msgstr "Nom del compte:"
+
+#: graphconfig.cpp:48
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Email / UPN:"
+msgstr "Correu electrònic / UPN:"
+
+#: graphconfig.cpp:51
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Azure tenant:"
+msgstr "Inquilí Azure:"
+
+#: graphconfig.cpp:53
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Application (client) ID:"
+msgstr "Identificador de l'aplicació (client):"
+
+#: graphconfig.cpp:56
+#, kde-format
+msgctxt "@item:valuesuffix minutes"
+msgid " min"
+msgstr " min"
+
+#: graphconfig.cpp:57
+#, kde-format
+msgctxt "@label:spinbox"
+msgid "Check for new mail every:"
+msgstr "Comprova si hi ha correu nou cada:"
+
+#: graphconfig.cpp:59
+#, kde-format
+msgctxt "@info"
+msgid "Changing the tenant or client id requires signing in again."
+msgstr ""
+"Canviar l'inquilí o l'ID de client requerix tornar a iniciar la sessió."
+
+# skip-rule: kct-graph
+#: graphmtaresource.cpp:79
+#, kde-format
+msgid "Unable to connect to master Microsoft 365 (Graph) resource"
+msgstr "No s'ha pogut connectar amb el recurs mestre de Microsoft 365 (Graph)"
+
+#: graphmtaresource.cpp:88
+#, kde-format
+msgid "Message to be sent has no MIME payload"
+msgstr "El missatge que s'ha d'enviar no té contingut MIME"
+
+#: graphresource.cpp:166
+#, kde-format
+msgctxt "@info:status"
+msgid "Authenticating with Microsoft 365"
+msgstr "Autenticació amb Microsoft 365"
+
+#: graphresource.cpp:180
+#, kde-format
+msgctxt "@info:status"
+msgid "Migrating item identifiers"
+msgstr "S'estan migrant els identificadors d'elements"
+
+#: graphresource.cpp:185
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to migrate item identifiers: %1"
+msgstr "Ha fallat mentre es migraven els identificadors d'elements: %1"
+
+#: graphresource.cpp:203
+#, kde-format
+msgctxt "@info:status"
+msgid "Ready"
+msgstr "Llest"
+
+#: graphresource.cpp:221
+#, kde-format
+msgctxt "@info:status"
+msgid "Authentication failed: %1"
+msgstr "No s'ha pogut fer l'autenticació: %1"
+
+#: graphresource.cpp:293 graphresource.cpp:550
+#, kde-format
+msgid "Waiting for the item identifier migration to finish"
+msgstr "S'està esperant que finalitze la migració d'identificadors d'elements"
+
+#: graphresource.cpp:379
+#, kde-format
+msgctxt "@item mail folder"
+msgid "Contacts"
+msgstr "Contactes"
+
+#: graphresource.cpp:731 graphresource.cpp:758
+#, kde-format
+msgid "The requested items no longer exist"
+msgstr "Els elements sol·licitats ja no existixen"
+
+#: graphresource.cpp:1024
+#, kde-format
+msgid "Cannot move task %1: no payload"
+msgstr "No s'ha pogut moure la tasca %1: sense contingut"
+
+#: graphresource.cpp:1032
+#, kde-format
+msgid "Cannot move event %1: no payload"
+msgstr "No s'ha pogut moure l'esdeveniment %1: sense contingut"
+
+#: graphresource.cpp:1146
+#, kde-format
+msgid "Moving contacts between folders is not supported"
+msgstr "No es permet moure contactes entre carpetes"
+
+#. i18n: ectx: label, entry (Email), group (General)
+#: graphresource.kcfg:10
+#, kde-format
+msgid "Primary email / UPN of the Microsoft 365 account."
+msgstr "Correu electrònic principal / UPN del compte de Microsoft 365."
+
+#. i18n: ectx: label, entry (TenantId), group (General)
+#: graphresource.kcfg:13
+#, kde-format
+msgid ""
+"Azure AD tenant: \"common\", \"organizations\", \"consumers\" or a tenant "
+"GUID."
+msgstr ""
+"Inquilí d'Azure AD: «common», «organizations», «consumers» o un GID "
+"d'inquilí."
+
+#. i18n: ectx: label, entry (ClientId), group (General)
+#: graphresource.kcfg:17
+#, kde-format
+msgid ""
+"Azure app registration Application (client) ID. Configure your own in the "
+"account dialog — see README.md / docs."
+msgstr ""
+"ID d'aplicació de registre d'aplicacions d'Azure (client). Configureu el "
+"vostre propi al diàleg del compte; vegeu README.md / docs."
+
+#. i18n: ectx: label, entry (FolderDeltaLink), group (General)
+#: graphresource.kcfg:20
+#, kde-format
+msgid "Persisted top-level mailFolders @odata.deltaLink (sync state)."
+msgstr ""
+"mailFolders @odata.deltaLink de nivell superior amb persistència (estat de "
+"sincronització)."
+
+# skip-rule: kct-graph
+#. i18n: ectx: label, entry (PollInterval), group (General)
+#: graphresource.kcfg:23
+#, kde-format
+msgid "Delta poll interval in minutes (no push on Graph for desktop)."
+msgstr ""
+"Delta de l'interval de sondeig en minuts (sense missatges automàtics de "
+"Graph per a escriptori)."
+
+# skip-rule: kct-graph
+#. i18n: ectx: label, entry (ImmutableIdsMigrated), group (General)
+#: graphresource.kcfg:27
+#, kde-format
+msgid "Whether stored remoteIds have been migrated to Graph immutable ids."
+msgstr ""
+"Si s'han migrat els «remoteIds» emmagatzemats a ID immutables de Graph."
+
+#: jobs/graphfetchfoldersjob.cpp:49
+#, kde-format
+msgid "Could not resolve the mailbox root folder"
+msgstr "No s'ha pogut resoldre la carpeta arrel de la bústia"
+
+#: jobs/graphfetchitempayloadjob.cpp:75
+#, kde-format
+msgid "Failed to fetch the content of message %1 (HTTP %2)"
+msgstr "Ha fallat mentre es recuperava el contingut del missatge %1 (HTTP %2)"

@@ -1,0 +1,216 @@
+# Copyright (C) 2026 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+#
+# SPDX-FileCopyrightText: 2026 Emir SARI <emir_sari@icloud.com>
+msgid ""
+msgstr ""
+"Project-Id-Version: kdepim-runtime\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-08-24 00:46+0000\n"
+"PO-Revision-Date: 2026-08-24 20:14+0300\n"
+"Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
+"Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 26.04.2\n"
+
+#: graphclient/auth/graphoauth.cpp:137
+#, kde-format
+msgid "OAuth2: cannot listen on localhost (no free port?)"
+msgstr "OAuth2: localhost üzerinde dinleme yapılamıyor (boş kapı yok?)."
+
+#: graphclient/auth/graphoauth.cpp:166
+#, kde-format
+msgid "OAuth2 request failed"
+msgstr "OAuth2 isteği başarısız"
+
+#: graphclient/graphrequest.cpp:70
+#, kde-format
+msgid "Not authenticated with Microsoft 365 yet"
+msgstr "Henüz Microsoft 365 ile yetkilendirme yapılmamış"
+
+#: graphclient/graphrequest.cpp:152
+#, kde-format
+msgctxt ""
+"%1 is the server error message, %2 the HTTP status code, %3 the server error "
+"code"
+msgid "%1 (HTTP %2, %3)"
+msgstr "%1 (HTTP %2, %3)"
+
+#: graphconfig.cpp:45
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Account name:"
+msgstr "Hesap adı:"
+
+#: graphconfig.cpp:48
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Email / UPN:"
+msgstr "E-posta/UPN:"
+
+#: graphconfig.cpp:51
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Azure tenant:"
+msgstr "Azure kirâcısı:"
+
+#: graphconfig.cpp:53
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Application (client) ID:"
+msgstr "Uygulama (istemci) kimliği:"
+
+#: graphconfig.cpp:56
+#, kde-format
+msgctxt "@item:valuesuffix minutes"
+msgid " min"
+msgstr " dak"
+
+#: graphconfig.cpp:57
+#, kde-format
+msgctxt "@label:spinbox"
+msgid "Check for new mail every:"
+msgstr "Yeni posta denetleme sıklığı:"
+
+#: graphconfig.cpp:59
+#, kde-format
+msgctxt "@info"
+msgid "Changing the tenant or client id requires signing in again."
+msgstr ""
+"Kirâcıyı veya istemci kimliğini değiştirmek için yeniden oturum açma gerekir."
+
+#: graphmtaresource.cpp:79
+#, kde-format
+msgid "Unable to connect to master Microsoft 365 (Graph) resource"
+msgstr "Ana Microsoft 365 (Graph) özkaynağına bağlanılamıyor."
+
+#: graphmtaresource.cpp:88
+#, kde-format
+msgid "Message to be sent has no MIME payload"
+msgstr "Gönderilecek iletide bir MIME yükü yok."
+
+#: graphresource.cpp:166
+#, kde-format
+msgctxt "@info:status"
+msgid "Authenticating with Microsoft 365"
+msgstr "Microsoft 365 ile kimlik doğrulanıyor…"
+
+#: graphresource.cpp:180
+#, kde-format
+msgctxt "@info:status"
+msgid "Migrating item identifiers"
+msgstr "Öge tanımlayıcıları aktarılıyor…"
+
+#: graphresource.cpp:185
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to migrate item identifiers: %1"
+msgstr "Öge tanımlayıcıları aktarılamadı: %1"
+
+#: graphresource.cpp:203
+#, kde-format
+msgctxt "@info:status"
+msgid "Ready"
+msgstr "Hazır"
+
+#: graphresource.cpp:221
+#, kde-format
+msgctxt "@info:status"
+msgid "Authentication failed: %1"
+msgstr "Kimlik doğrulama başarısız: %1"
+
+#: graphresource.cpp:293 graphresource.cpp:550
+#, kde-format
+msgid "Waiting for the item identifier migration to finish"
+msgstr "Öge tanımlayıcısı aktarımının bitmesi bekleniyor…"
+
+#: graphresource.cpp:379
+#, kde-format
+msgctxt "@item mail folder"
+msgid "Contacts"
+msgstr "Kişiler"
+
+#: graphresource.cpp:731 graphresource.cpp:758
+#, kde-format
+msgid "The requested items no longer exist"
+msgstr "İstenen ögeler artık yok"
+
+#: graphresource.cpp:1024
+#, kde-format
+msgid "Cannot move task %1: no payload"
+msgstr "Görev %1 taşınamıyor: Yük yok"
+
+#: graphresource.cpp:1032
+#, kde-format
+msgid "Cannot move event %1: no payload"
+msgstr "Etkinlik %1 taşınamıyor: Yük yok"
+
+#: graphresource.cpp:1146
+#, kde-format
+msgid "Moving contacts between folders is not supported"
+msgstr "Klasörler arasında kişileri taşıma desteklenmiyor."
+
+#. i18n: ectx: label, entry (Email), group (General)
+#: graphresource.kcfg:10
+#, kde-format
+msgid "Primary email / UPN of the Microsoft 365 account."
+msgstr "Microsoft 365 hesabının ana e-postası/UPN’si"
+
+#. i18n: ectx: label, entry (TenantId), group (General)
+#: graphresource.kcfg:13
+#, kde-format
+msgid ""
+"Azure AD tenant: \"common\", \"organizations\", \"consumers\" or a tenant "
+"GUID."
+msgstr ""
+"Azure AD kirâcısı: “common”, “organizations”, “consumers” veya bir kirâcı "
+"GUID’si"
+
+#. i18n: ectx: label, entry (ClientId), group (General)
+#: graphresource.kcfg:17
+#, kde-format
+msgid ""
+"Azure app registration Application (client) ID. Configure your own in the "
+"account dialog — see README.md / docs."
+msgstr ""
+"Azure uygulama kaydı için uygulama (istemci) kimliği. Hesap iletişim "
+"kutusunda kendi kimliğinizi yapılandırın; bilgi için README.md’ye veya "
+"belgelere bakın."
+
+#. i18n: ectx: label, entry (FolderDeltaLink), group (General)
+#: graphresource.kcfg:20
+#, kde-format
+msgid "Persisted top-level mailFolders @odata.deltaLink (sync state)."
+msgstr ""
+"Üst düzey mailFolders @odata.deltaLink kalıcı biçimde bırakıldı (durum "
+"eşzamanlama)."
+
+#. i18n: ectx: label, entry (PollInterval), group (General)
+#: graphresource.kcfg:23
+#, kde-format
+msgid "Delta poll interval in minutes (no push on Graph for desktop)."
+msgstr ""
+"Dakika türünden fark alımı aralığı (masaüstü için Graph üzerinde anlık "
+"bildirimler yoktur)"
+
+#. i18n: ectx: label, entry (ImmutableIdsMigrated), group (General)
+#: graphresource.kcfg:27
+#, kde-format
+msgid "Whether stored remoteIds have been migrated to Graph immutable ids."
+msgstr ""
+"Depolanan remoteIds’lerin Graph değişiklik yapılamaz kimliklerine aktarılıp "
+"aktarılmadığı"
+
+#: jobs/graphfetchfoldersjob.cpp:49
+#, kde-format
+msgid "Could not resolve the mailbox root folder"
+msgstr "Posta kutusu kök klasörü çözülemedi."
+
+#: jobs/graphfetchitempayloadjob.cpp:75
+#, kde-format
+msgid "Failed to fetch the content of message %1 (HTTP %2)"
+msgstr "%1 iletisinin içeriği getirilemedi (HTTP %2)."
