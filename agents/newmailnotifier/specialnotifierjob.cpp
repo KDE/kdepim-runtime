@@ -181,9 +181,9 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 
         notification->sendEvent();
     } else {
+        Q_EMIT displayNotification(pixmap, result.join(QStringLiteral("<br/>")));
         deleteLater();
     }
-    Q_EMIT displayNotification(pixmap, result.join(QStringLiteral("<br/>")));
 }
 
 void SpecialNotifierJob::slotReplyMessage()
