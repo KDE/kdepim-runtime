@@ -2,7 +2,27 @@
 # SPDX-License-Identifier: LGPL-2.0-or-later
 [Desktop Entry]
 Name=Microsoft 365 (Graph)
+Name[ca]=Microsoft 365 (Graph)
+Name[ca@valencia]=Microsoft 365 (Graph)
+Name[es]=Microsoft 365 (Graph)
+Name[ka]=Microsoft 365 (Graph)
+Name[nl]=Microsoft 365 (Graph)
+Name[pt_BR]=Microsoft 365 (Graph)
+Name[sl]=Microsoft 365 (Graph)
+Name[sv]=Microsoft 365 (Graph)
+Name[tr]=Microsoft 365 (Graph)
+Name[uk]=Microsoft 365 (Graph)
 Comment=Provides access to mail, calendar, tasks and contacts of a Microsoft 365 / Exchange Online account using the Microsoft Graph API
+Comment[ca]=Proporciona accés al correu, calendari, tasques i contactes d'un compte de Microsoft 365 / Exchange Online utilitzant l'API de Microsoft Graph
+Comment[ca@valencia]=Proporciona accés al correu, calendari, tasques i contactes d'un compte de Microsoft 365 / Exchange Online utilitzant l'API de Microsoft Graph
+Comment[es]=Proporciona acceso al correo, calendario, tareas y contactos de una cuenta Microsoft 365 o Exchange Online usando la API de Microsoft Graph.
+Comment[ka]=უზრუნველყოფს წვდომას ფოსტასთან, კალენდართან, ამოცანებთან და კონტაქტებთან Microsoft 265 / Exchange-ის ანგარიშზე Microsoft Graph API-ის გამოყენებით
+Comment[nl]=Geeft toegang tot e-mail, agenda, taken en contactpersonen op een Microsoft 365 / Exchange Online account met gebruik van de Microsoft Graph API
+Comment[pt_BR]=Fornece acesso a e-mail, calendário, tarefas e contatos de uma conta do Microsoft 365 / Exchange Online usando a API do Microsoft Graph
+Comment[sl]=Omogoča dostop do pošte, koledarja, opravil in stikov računa Microsoft 365 / Exchange Online z uporabo Microsoft Graph API-ja
+Comment[sv]=Ger tillgång till e-post, kalendrar, uppgifter och kontakter lagrade på ett Microsoft 365 / Exchange-konto på nätet med användning av programmeringsgränssnittet Microsoft Graph.
+Comment[tr]=Microsoft Graph API’sini kullanarak bir Microsoft 365/Exchange Online hesabının posta, takvim, görevler ve kişiler bileşenlerine erişim sağlar
+Comment[uk]=Надає доступ до пошти, календаря, завдань та контактів, які зберігаються на сервері Microsoft 365/Exchange за допомогою програмного інтерфейсу Microsoft Graph
 Type=AkonadiResource
 Exec=akonadi_graph_resource
 Icon=akonadi-graph
