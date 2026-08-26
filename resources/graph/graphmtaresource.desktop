@@ -4,6 +4,7 @@
 Name=Microsoft 365 (Graph) Mail Transport
 Name[ca]=Transport de correu de Microsoft 365 (Graph)
 Name[ca@valencia]=Transport de correu de Microsoft 365 (Graph)
+Name[cs]=Přenos pošty v Microsoft 365 (Graph)
 Name[es]=Transporte de correo Microsoft 365 (Graph)
 Name[ka]=Microsoft 365 (Graph)-ის ფოტის ტრანსპორტი
 Name[nl]=Microsoft 365 (Graph) e-mailtransport
@@ -15,6 +16,7 @@ Name[uk]=Транспортування пошти за допомогою Micro
 Comment=Sends mail through a Microsoft 365 / Exchange Online account using the Microsoft Graph API
 Comment[ca]=Envia correu mitjançant un compte de Microsoft 365 / Exchange Online fent servir l'API de Microsoft Graph
 Comment[ca@valencia]=Envia correu mitjançant un compte de Microsoft 365 / Exchange Online fent servir l'API de Microsoft Graph
+Comment[cs]=Odesílá e-maily prostřednictvím účtu Microsoft 365 / Exchange Online s využitím rozhraní API Microsoft Graph
 Comment[es]=Envía correo a través de una cuenta Microsoft 365 o Exchange Online usando la API de Microsoft Graph.
 Comment[ka]=აგზავნის ფოსტას Microsoft 365 / Exchange-ის ანგარიშით Microsoft Graph API-ის გამოყენებით
 Comment[nl]=Verstuurt e-mail via een Microsoft 365- of Exchange Online-account met behulp van de Microsoft Graph API.

@@ -4,6 +4,7 @@
 Name=Microsoft 365 (Graph)
 Name[ca]=Microsoft 365 (Graph)
 Name[ca@valencia]=Microsoft 365 (Graph)
+Name[cs]=Microsoft 365 (Graph)
 Name[es]=Microsoft 365 (Graph)
 Name[ka]=Microsoft 365 (Graph)
 Name[nl]=Microsoft 365 (Graph)
@@ -15,6 +16,7 @@ Name[uk]=Microsoft 365 (Graph)
 Comment=Provides access to mail, calendar, tasks and contacts of a Microsoft 365 / Exchange Online account using the Microsoft Graph API
 Comment[ca]=Proporciona accés al correu, calendari, tasques i contactes d'un compte de Microsoft 365 / Exchange Online utilitzant l'API de Microsoft Graph
 Comment[ca@valencia]=Proporciona accés al correu, calendari, tasques i contactes d'un compte de Microsoft 365 / Exchange Online utilitzant l'API de Microsoft Graph
+Comment[cs]=Umožňuje přístup k e-mailům, kalendáři, úkolům a kontaktům účtu Microsoft 365 / Exchange Online pomocí rozhraní API Microsoft Graph
 Comment[es]=Proporciona acceso al correo, calendario, tareas y contactos de una cuenta Microsoft 365 o Exchange Online usando la API de Microsoft Graph.
 Comment[ka]=უზრუნველყოფს წვდომას ფოსტასთან, კალენდართან, ამოცანებთან და კონტაქტებთან Microsoft 265 / Exchange-ის ანგარიშზე Microsoft Graph API-ის გამოყენებით
 Comment[nl]=Geeft toegang tot e-mail, agenda, taken en contactpersonen op een Microsoft 365 / Exchange Online account met gebruik van de Microsoft Graph API
