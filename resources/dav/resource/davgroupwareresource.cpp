@@ -42,6 +42,8 @@
 #include <KJob>
 
 #include "davresource_debug.h"
+#include "task/removeitemstask.h"
+
 #include <Akonadi/AccountBase>
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CachePolicy>
@@ -62,6 +64,9 @@
 
 #include <KIO/SslUi>
 #include <KSslErrorUiData>
+
+#include <algorithm>
+#include <iterator>
 
 #include <QDBusMessage>
 #include <QDBusReply>
@@ -695,66 +700,22 @@ void DavGroupwareResource::doItemChange(const Akonadi::Item &item, const Akonadi
     modJob->start();
 }
 
-void DavGroupwareResource::itemRemoved(const Akonadi::Item &item)
+void DavGroupwareResource::itemsRemoved(const Akonadi::Item::List &items)
 {
-    qCDebug(DAVRESOURCE_LOG) << "Received notification for removed item. Remote id = " << item.remoteId();
+    auto remoteIds = QStringList();
+    remoteIds.reserve(items.size());
+    std::ranges::transform(items, std::back_inserter(remoteIds), [](const auto &item) {
+        return item.remoteId();
+    });
+
+    qCDebug(DAVRESOURCE_LOG) << "Received notification for removed items. Remote ids = " << remoteIds.join(u", "_s);
 
     if (!configurationIsValid()) {
         return;
     }
 
-    const Akonadi::Collection collection = item.parentCollection();
-    if (!mDavItemCache.contains(collection.remoteId())) {
-        qCDebug(DAVRESOURCE_LOG) << "Removed item is in a collection we don't have in the cache";
-        // TODO: display an error
-        cancelTask();
-        return;
-    }
-    auto cache = mDavItemCache.value(collection.remoteId());
-
-    QString ridBase = item.remoteId();
-
-    if (!ridBase.contains(u'#')) {
-        Akonadi::Item::List exceptionItemsToDelete;
-        for (const QString &exceptionRid : cache->exceptionUrls(ridBase)) {
-            Akonadi::Item exceptionItem;
-            exceptionItem.setParentCollection(collection);
-            exceptionItem.setRemoteId(exceptionRid);
-            cache->removeException(exceptionRid);
-            exceptionItemsToDelete << exceptionItem;
-        }
-        if (exceptionItemsToDelete.isEmpty()) {
-            doItemRemoval(item);
-        } else {
-            auto deleteJob = new Akonadi::ItemDeleteJob(exceptionItemsToDelete);
-            deleteJob->setProperty("mainItem", QVariant::fromValue(item));
-            connect(deleteJob, &Akonadi::ItemDeleteJob::result, this, &DavGroupwareResource::onItemExceptionsDeleteFinished);
-            deleteJob->start();
-        }
-    } else {
-        ridBase.truncate(ridBase.indexOf(u'#'));
-
-        auto items = Akonadi::Item::List();
-        for (const QString &rid : cache->exceptionUrls(ridBase)) {
-            if (rid != item.remoteId()) {
-                Akonadi::Item exceptionItem;
-                exceptionItem.setRemoteId(rid);
-                items << exceptionItem;
-            }
-        }
-
-        auto mainItem = Akonadi::Item{};
-        mainItem.setRemoteId(ridBase);
-        items << mainItem;
-
-        auto job = new Akonadi::ItemFetchJob(items);
-        job->setCollection(item.parentCollection());
-        job->fetchScope().fetchFullPayload();
-        job->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::Parent);
-        job->setProperty("item", QVariant::fromValue(item));
-        job->setProperty("ridBase", QVariant::fromValue(ridBase));
-        connect(job, &Akonadi::ItemFetchJob::result, this, &DavGroupwareResource::onItemRemovalPrepared);
-    }
+    auto *task = new RemoveItemsTask(this, items);
+    task->start();
 }
 
 void DavGroupwareResource::onItemExceptionsDeleteFinished(KJob *job)
@@ -764,60 +725,6 @@ void DavGroupwareResource::onItemExceptionsDeleteFinished(KJob *job)
         cancelTask(i18n("Unable to delete item exceptions: %1", job->errorText()));
         return;
     }
-    // Will do item removal only if a mainItem is set
-    QVariant prop = job->property("mainItem");
-    if (prop.isValid()) {
-        auto item = job->property("mainItem").value<Akonadi::Item>();
-        qCDebug(DAVRESOURCE_LOG) << "Item exceptions deleted, proceeding with main item removal" << item.remoteId();
-        doItemRemoval(item);
-    } else {
-        qCDebug(DAVRESOURCE_LOG) << "Item exceptions deleted, main item is not expected to be deleted";
-    }
-}
-
-void DavGroupwareResource::onItemRemovalPrepared(KJob *job)
-{
-    const auto fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
-    const auto ridBase = job->property("ridBase").toString();
-    const auto item = job->property("item").value<Akonadi::Item>();
-
-    auto exceptionItems = fetchJob->items();
-    const auto mainItemIt = std::ranges::find_if(exceptionItems, [&ridBase](const auto &item) {
-        return item.remoteId() == ridBase;
-    });
-
-    Q_ASSERT(mainItemIt != exceptionItems.end());
-    const auto mainItem = *mainItemIt;
-    exceptionItems.erase(mainItemIt);
-
-    const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(mainItem.parentCollection().remoteId(), ridBase);
-    KDAV::DavItem davItem = Utils::createDavItem(mainItem, mainItem.parentCollection(), exceptionItems);
-    davItem.setUrl(davUrl);
-    davItem.setEtag(mainItem.remoteRevision());
-
-    auto modJob = new KDAV::DavItemModifyJob(davItem);
-    modJob->setProperty("collection", QVariant::fromValue(mainItem.parentCollection()));
-    modJob->setProperty("item", QVariant::fromValue(mainItem));
-    modJob->setProperty("dependentItems", QVariant::fromValue(exceptionItems));
-    modJob->setProperty("isRemoval", QVariant::fromValue(true));
-    modJob->setProperty("removedItem", QVariant::fromValue(item));
-    connect(modJob, &KDAV::DavItemModifyJob::result, this, &DavGroupwareResource::onItemChangedFinished);
-    modJob->start();
-}
-
-void DavGroupwareResource::doItemRemoval(const Akonadi::Item &item)
-{
-    const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
-
-    KDAV::DavItem davItem;
-    davItem.setUrl(davUrl);
-    davItem.setEtag(item.remoteRevision());
-
-    auto job = new KDAV::DavItemDeleteJob(davItem);
-    job->setProperty("item", QVariant::fromValue(item));
-    job->setProperty("collection", QVariant::fromValue(item.parentCollection()));
-    connect(job, &KDAV::DavItemDeleteJob::result, this, &DavGroupwareResource::onItemRemovedFinished);
-    job->start();
 }
 
 void DavGroupwareResource::itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSrc, const Akonadi::Collection &collectionDst)

@@ -44,6 +44,7 @@ endif()
 
 set(davgroupwareresource_SRCS
     ${davgroupwareresource_common_SRCS}
+    # Resource
     daverror-kdepim-runtime.cpp
     davitemcache.cpp
     ctagattribute.cpp
@@ -55,6 +56,11 @@ set(davgroupwareresource_SRCS
     davfreebusyhandler.h
     davgroupwareresource.h
     davetagcache.h
+    # Tasks
+    task/resourcetask.cpp
+    task/resourcetask.h
+    task/removeitemstask.cpp
+    task/removeitemstask.h
 )
 
 install(FILES davgroupwareresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
