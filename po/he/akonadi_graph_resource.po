@@ -1,37 +1,36 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2026 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# SPDX-FileCopyrightText: 2026 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-24 00:46+0000\n"
-"PO-Revision-Date: 2026-08-25 06:39+0200\n"
-"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
-"Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
-"Language: ka\n"
+"PO-Revision-Date: 2026-08-26 12:55+0300\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"Language-Team: צוות התרגום של KDE ישראל\n"
+"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.9\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 26.04.3\n"
 
 #: graphclient/auth/graphoauth.cpp:137
 #, kde-format
 msgid "OAuth2: cannot listen on localhost (no free port?)"
-msgstr "OAuth2: localhost-ზე ვერ მოვუსმენ (თავისუფალი პორტის გარეშე?)"
+msgstr "OAuth2: לא ניתן להאזין דרך localhost (אין פתחות פנויות?)"
 
 #: graphclient/auth/graphoauth.cpp:166
 #, kde-format
 msgid "OAuth2 request failed"
-msgstr "OAuth2-ის მოთხოვნა ჩავარდა"
+msgstr "בקשת OAuth2 נכשלה"
 
 #: graphclient/graphrequest.cpp:70
 #, kde-format
 msgid "Not authenticated with Microsoft 365 yet"
-msgstr "Microsoft 365-ზე ჯერ ავთენტიკაცია გავლილი არ გაქვთ"
+msgstr "לא בוצע אימות מול Microsoft 365 עדיין"
 
 #: graphclient/graphrequest.cpp:152
 #, kde-format
@@ -45,120 +44,120 @@ msgstr "%1 (HTTP %2, %3)"
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Account name:"
-msgstr "ანგარიშის სახელი:"
+msgstr "שם חשבון:"
 
 #: graphconfig.cpp:48
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Email / UPN:"
-msgstr "ელფოსტა / UPN:"
+msgstr "דוא״ל / UPN:"
 
 #: graphconfig.cpp:51
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Azure tenant:"
-msgstr "Azure tenant:"
+msgstr "סביבה (tenant) ב־Azure:"
 
 #: graphconfig.cpp:53
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Application (client) ID:"
-msgstr "აპლიკაციის (კლიენტის) ID:"
+msgstr "מזהה יישום (לקוח):"
 
 #: graphconfig.cpp:56
 #, kde-format
 msgctxt "@item:valuesuffix minutes"
 msgid " min"
-msgstr " წთ"
+msgstr " דק׳"
 
 #: graphconfig.cpp:57
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Check for new mail every:"
-msgstr "ახალი ელფოსტის შემოწმება ყოველ:"
+msgstr "לבדוק אם יש הודעות חדשות כל:"
 
 #: graphconfig.cpp:59
 #, kde-format
 msgctxt "@info"
 msgid "Changing the tenant or client id requires signing in again."
-msgstr "tenant-ის, ან კლიენტის id-ის შეცვლას თავიდან შესვლა სჭირდება."
+msgstr "החלפת הסביבה (tenant) או מזהה הלקוח דורשת כניסה מחדש למערכת."
 
 #: graphmtaresource.cpp:79
 #, kde-format
 msgid "Unable to connect to master Microsoft 365 (Graph) resource"
-msgstr "Microsoft 365-ის (Graph) მთავარ რესურსთან დაკავშირება შეუძლებელია"
+msgstr "לא ניתן להתחבר למשאב Microsoft 365 (Graph) עליון"
 
 #: graphmtaresource.cpp:88
 #, kde-format
 msgid "Message to be sent has no MIME payload"
-msgstr "გასაგზავნ შეტყობინებას MIME სასარგებლო დატვირთვა არ აქვს"
+msgstr "להודעה שתישלח אין מטען MIME (סוג תוכן)"
 
 #: graphresource.cpp:166
 #, kde-format
 msgctxt "@info:status"
 msgid "Authenticating with Microsoft 365"
-msgstr "ავთენტიკაცია Microsoft 365-ზე"
+msgstr "אימות מול Microsoft 365"
 
 #: graphresource.cpp:180
 #, kde-format
 msgctxt "@info:status"
 msgid "Migrating item identifiers"
-msgstr "ელემენტის იდენტიფიკატორების მიგრაცია"
+msgstr "מזהי הפריט שמוסב"
 
 #: graphresource.cpp:185
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to migrate item identifiers: %1"
-msgstr "ელემენტის იდენტიფიკატორების მიგრაცია ჩავარდა: %1"
+msgstr "הסבת מזהי פריטים: %1"
 
 #: graphresource.cpp:203
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
-msgstr "მზადაა"
+msgstr "בהמתנה"
 
 #: graphresource.cpp:221
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed: %1"
-msgstr "ავთენტიკაცია ჩავარდა: %1"
+msgstr "האימות נכשל: %1"
 
 #: graphresource.cpp:293 graphresource.cpp:550
 #, kde-format
 msgid "Waiting for the item identifier migration to finish"
-msgstr "ელემენტის იდენტიფიკაციის მიგრაციის დასასრულის მოლოდინი"
+msgstr "בהמתנה לסיום הסבת מזהה הפריט"
 
 #: graphresource.cpp:379
 #, kde-format
 msgctxt "@item mail folder"
 msgid "Contacts"
-msgstr "კონტაქტები"
+msgstr "אנשי קשר"
 
 #: graphresource.cpp:731 graphresource.cpp:758
 #, kde-format
 msgid "The requested items no longer exist"
-msgstr "მოთხოვნილი ელემენტი აღარ არსებობს"
+msgstr "הפריטים המבוקשים לא קיימים יותר"
 
 #: graphresource.cpp:1024
 #, kde-format
 msgid "Cannot move task %1: no payload"
-msgstr "ამოცანის %1 გადატანა შეუძლებელია: სასარგებლო დატვირთვის გარეშე"
+msgstr "לא ניתן להעביר את המשימה %1: אין מטען"
 
 #: graphresource.cpp:1032
 #, kde-format
 msgid "Cannot move event %1: no payload"
-msgstr "მოვლენის %1 გადატანა შეუძლებელია: სასარგებლო დატვირთვის გარეშე"
+msgstr "לא ניתן להעביר את האירוע %1: אין מטען"
 
 #: graphresource.cpp:1146
 #, kde-format
 msgid "Moving contacts between folders is not supported"
-msgstr "საქაღალდეებს შორის კონტაქტების გადატანა მხარდაჭერილი არაა"
+msgstr "העברת אנשי קשר בין תיקיות אינה נתמכת"
 
 #. i18n: ectx: label, entry (Email), group (General)
 #: graphresource.kcfg:10
 #, kde-format
 msgid "Primary email / UPN of the Microsoft 365 account."
-msgstr "Microsoft 365-ის ანგარიშის ძირითადი ელფოსტა / UPN."
+msgstr "כתובת דוא״ל עיקרית / UPN של חשבון ה־Microsoft 365."
 
 #. i18n: ectx: label, entry (TenantId), group (General)
 #: graphresource.kcfg:13
@@ -167,8 +166,8 @@ msgid ""
 "Azure AD tenant: \"common\", \"organizations\", \"consumers\" or a tenant "
 "GUID."
 msgstr ""
-"Azure AD tenant: \"common\", \"organizations\", \"consumers\", ან tenant-ის "
-"GUID."
+"סביבה (tenant) ב־Azure AD‏: „common”,‏ „organizations”,‏ „consumers” או GUID "
+"(מזהה ייחודי) של הסביבה."
 
 #. i18n: ectx: label, entry (ClientId), group (General)
 #: graphresource.kcfg:17
@@ -177,36 +176,33 @@ msgid ""
 "Azure app registration Application (client) ID. Configure your own in the "
 "account dialog — see README.md / docs."
 msgstr ""
-"Azure-ის აპლიკაციის რეგისტრაციის აპლიკაციის (კლიენტის) ID. მოირგეთ საკუთარი "
-"ანგარიშის დიალოგში. დეტალებისთვის იხილეთ — README.md / docs."
+"מזהה יישום (לקוח) של רישום יישום Azure. אפשר להגדיר כזה משלך בחלונית "
+"החשבונות — יש מידע נוסף ב־README.md / docs."
 
 #. i18n: ectx: label, entry (FolderDeltaLink), group (General)
 #: graphresource.kcfg:20
 #, kde-format
 msgid "Persisted top-level mailFolders @odata.deltaLink (sync state)."
-msgstr "მუდმივი უმაღლესი დონის mailFolders @odata.deltaLink (sync state)."
+msgstr "mailFolders קבועים ברמה העליונה בשם @odata.deltaLink (סנכרון מצב)."
 
 #. i18n: ectx: label, entry (PollInterval), group (General)
 #: graphresource.kcfg:23
 #, kde-format
 msgid "Delta poll interval in minutes (no push on Graph for desktop)."
-msgstr ""
-"სხვაობის გამოთხოვის ინტერვალი წუთებში (სამუშაო მაგიდისთვის Graph-ზე push-ის "
-"მხარდაჭერა არ არსებობს)."
+msgstr "הפרשי זמן לתשאול הבדלים בדקות (אין דחיפה ב־Graph לשולחן עבודה)."
 
 #. i18n: ectx: label, entry (ImmutableIdsMigrated), group (General)
 #: graphresource.kcfg:27
 #, kde-format
 msgid "Whether stored remoteIds have been migrated to Graph immutable ids."
-msgstr ""
-"მოხდა, თუ არა დამახსოვრებული remoteId-ების მიგრაცია Graph-ის უცვლელ id-ებზე."
+msgstr "האם remoteIds (מזהים מרוחקים) מאוחסנים הוסרו למזהים קבועים של Graph."
 
 #: jobs/graphfetchfoldersjob.cpp:49
 #, kde-format
 msgid "Could not resolve the mailbox root folder"
-msgstr "ელფოსტის ძირითადი საქაღალდის ამოხსნა შეუძლებელია"
+msgstr "לא ניתן לפתור את תיקיית העל של תיבת הדוא״ל"
 
 #: jobs/graphfetchitempayloadjob.cpp:75
 #, kde-format
 msgid "Failed to fetch the content of message %1 (HTTP %2)"
-msgstr "შეტყობინების %1 შემცველობის გამოთხოვა ჩავარდა (HTTP %2)"
+msgstr "לא ניתן למשוך את תוכן ההודעה %1 (HTTP %2)"
