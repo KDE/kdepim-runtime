@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-30 00:45+0000\n"
+"POT-Creation-Date: 2026-08-29 00:46+0000\n"
 "PO-Revision-Date: 2024-12-20 21:52+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -155,145 +155,6 @@ msgstr "अपाकरोति"
 msgid "Edit"
 msgstr "सम्पादन"
 
-#: daverror-kdepim-runtime.cpp:26
-#, kde-format
-msgid "Invalid username/password"
-msgstr "अमान्य उपयोक्तृनाम/गुप्तशब्द"
-
-#: daverror-kdepim-runtime.cpp:28
-#, kde-format
-msgid "Access forbidden"
-msgstr "प्रवेशः निषिद्धः"
-
-#: daverror-kdepim-runtime.cpp:30
-#, kde-format
-msgid "Resource not found"
-msgstr "संसाधनं न लब्धम्"
-
-#: daverror-kdepim-runtime.cpp:32
-#, kde-format
-msgid "HTTP error"
-msgstr "HTTP त्रुटिः"
-
-#: daverror-kdepim-runtime.cpp:35
-#, kde-format
-msgid ""
-"There was a problem with the request.\n"
-"%1 (%2)."
-msgstr ""
-"अनुरोधस्य समस्या आसीत् ।\n"
-"%1 (%2) इति ।"
-
-#: daverror-kdepim-runtime.cpp:41
-#, kde-format
-msgid "Protocol for the collection does not support MULTIGET"
-msgstr "संग्रहस्य कृते प्रोटोकॉलः MULTIGET इत्यस्य समर्थनं न करोति"
-
-#: daverror-kdepim-runtime.cpp:44
-#, kde-format
-msgid ""
-"The server encountered an error that prevented it from completing your "
-"request: %1 (%2)"
-msgstr "सर्वरः एकं त्रुटिं प्राप्नोत् यत् भवतः अनुरोधं पूर्णं कर्तुं न शक्नोति स्म: %1 (%2)"
-
-#: daverror-kdepim-runtime.cpp:48
-#, kde-format
-msgid ""
-"There was a problem with the request. The collection has not been deleted "
-"from the server.\n"
-"%1 (%2)."
-msgstr ""
-"अनुरोधस्य समस्या आसीत् । संग्रहः सर्वरात् न लोपितः।\n"
-"%1 (%2) इति ।"
-
-#: daverror-kdepim-runtime.cpp:54
-#, kde-format
-msgid "Invalid responses from backend"
-msgstr "पृष्ठभागात् अमान्यप्रतिक्रियाः"
-
-#: daverror-kdepim-runtime.cpp:57
-#, kde-format
-msgid "Error setting focus for XQuery"
-msgstr "XQuery कृते फोकस सेटिङ्ग् त्रुटिः"
-
-#: daverror-kdepim-runtime.cpp:60
-#, kde-format
-msgid "Invalid XQuery submitted by DAV implementation"
-msgstr "DAV कार्यान्वयनेन अमान्यं XQuery प्रदत्तम्"
-
-#: daverror-kdepim-runtime.cpp:64
-#, kde-format
-msgid ""
-"There was a problem with the request. The collection has not been modified "
-"on the server.\n"
-"%1 (%2)."
-msgstr ""
-"अनुरोधस्य समस्या आसीत् । सर्वरे संग्रहः परिवर्तितः नास्ति ।\n"
-"%1 (%2) इति ।"
-
-#: daverror-kdepim-runtime.cpp:70
-#, kde-format
-msgid "No properties to change or remove"
-msgstr "परिवर्तनं कर्तुं वा निष्कासयितुं वा गुणाः न सन्ति"
-
-#: daverror-kdepim-runtime.cpp:73
-#, kde-format
-msgid "There was an error when modifying the properties"
-msgstr "गुणानाम् परिवर्तनं कुर्वन् दोषः आसीत्"
-
-#: daverror-kdepim-runtime.cpp:75
-#, kde-format
-msgid ""
-"\n"
-"The server returned more information:\n"
-"%1"
-msgstr ""
-"\n"
-"सर्वरः अधिकानि सूचनानि प्रत्यागच्छत्:\n"
-"%1"
-
-#: daverror-kdepim-runtime.cpp:80
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been created on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"अनुरोधस्य समस्या आसीत् । सर्वरे द्रव्यं न निर्मितम् ।\n"
-"%1 (%2) इति ।"
-
-#: daverror-kdepim-runtime.cpp:87
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been deleted from the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"अनुरोधस्य समस्या आसीत् । सर्वरात् द्रव्यं न लोपितम्।\n"
-"%1 (%2) इति ।"
-
-#: daverror-kdepim-runtime.cpp:94
-#, kde-format
-msgid ""
-"There was a problem with the request. The item was not modified on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"अनुरोधस्य समस्या आसीत् । सर्वरे द्रव्यं परिवर्तितं नासीत् ।\n"
-"%1 (%2) इति ।"
-
-#: daverror-kdepim-runtime.cpp:100
-#, kde-format
-msgid "There was a problem with the request."
-msgstr "अनुरोधस्य समस्या आसीत् ।"
-
-#: daverror-kdepim-runtime.cpp:104
-#, kde-format
-msgid ""
-"There was a problem with the request. The requested MIME types are not "
-"supported."
-msgstr "अनुरोधस्य समस्या आसीत् । अनुरोधिताः MIME प्रकाराः समर्थिताः न सन्ति ।"
-
 #: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
@@ -309,75 +170,87 @@ msgstr "सर्वरतः अमान्यप्रतिसादः"
 msgid "Unable to parse free-busy data received"
 msgstr "प्राप्तं मुक्त-व्यस्तदत्तांशं विश्लेषणं कर्तुं असमर्थः"
 
-#: davgroupwareresource.cpp:272
+#: davgroupwareresource.cpp:273
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "अफलाइन-स्थितौ मुक्त-व्यस्त-सूचनाः पुनः प्राप्तुं असमर्थः"
 
-#: davgroupwareresource.cpp:359
+#: davgroupwareresource.cpp:360
 #, kde-format
 msgid "Fetching collections"
 msgstr "संग्रहान् आनयन्"
 
-#: davgroupwareresource.cpp:419
+#: davgroupwareresource.cpp:420
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "अज्ञातसङ्ग्रहस्य कृते वस्तूनि पुनः प्राप्तुं पृष्टम्: %1"
 
-#: davgroupwareresource.cpp:486
+#: davgroupwareresource.cpp:487
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "%1 मदस्य कृते अमान्यसङ्ग्रहः ।"
 
-#: davgroupwareresource.cpp:763
+#: davgroupwareresource.cpp:764
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to delete item exceptions: %1"
 msgstr "संग्रहान् पुनः प्राप्तुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:946
+#: davgroupwareresource.cpp:865
+#, fuzzy, kde-format
+#| msgid "Unable to change item: %1"
+msgid "Unable to fetch items: %1"
+msgstr "मदं परिवर्तयितुं असमर्थः: %1"
+
+#: davgroupwareresource.cpp:932
+#, fuzzy, kde-format
+#| msgid "Unable to remove item: %1"
+msgid "Unable to move item: %1"
+msgstr "मदं निष्कासयितुं असमर्थः: %1"
+
+#: davgroupwareresource.cpp:1079
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "द्रव्यं परिवर्तयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:985
+#: davgroupwareresource.cpp:1152
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "संग्रहं परिवर्तयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1114
+#: davgroupwareresource.cpp:1281
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to create collection: %1"
 msgstr "संग्रहं हर्तुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1143
+#: davgroupwareresource.cpp:1310
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "संग्रहं हर्तुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1163 davgroupwareresource.cpp:1210
+#: davgroupwareresource.cpp:1330 davgroupwareresource.cpp:1377
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "संग्रहान् पुनः प्राप्तुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1178
+#: davgroupwareresource.cpp:1345
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Failed to retrieve collection: %1"
 msgstr "संग्रहान् पुनः प्राप्तुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1276 davgroupwareresource.cpp:1380
+#: davgroupwareresource.cpp:1443 davgroupwareresource.cpp:1547
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "द्रव्यं पुनः प्राप्तुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1516
+#: davgroupwareresource.cpp:1683
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "मदं पुनः प्राप्तुं असमर्थम्: %1"
 
-#: davgroupwareresource.cpp:1536
+#: davgroupwareresource.cpp:1703
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -385,23 +258,23 @@ msgid ""
 msgstr ""
 "मदं पुनः प्राप्तुं असमर्थः: मददत्तांशं विश्लेषणं कर्तुं असफलः। भवतु नाम पूर्वमेव विलोपितम् आसीत्।"
 
-#: davgroupwareresource.cpp:1596
+#: davgroupwareresource.cpp:1763
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "मदं योजयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1641 davgroupwareresource.cpp:1773
-#: davgroupwareresource.cpp:1785
+#: davgroupwareresource.cpp:1808 davgroupwareresource.cpp:1940
+#: davgroupwareresource.cpp:1952
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "मदं परिवर्तयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1747 davgroupwareresource.cpp:1804
+#: davgroupwareresource.cpp:1914 davgroupwareresource.cpp:1971
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "मदं निष्कासयितुं असमर्थः: %1"
 
-#: davgroupwareresource.cpp:1891 davgroupwareresource.cpp:1892
+#: davgroupwareresource.cpp:2058 davgroupwareresource.cpp:2059
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "संसाधनम् अद्यापि विन्यस्तं नास्ति"
@@ -761,6 +634,105 @@ msgstr "कार्डदव"
 #, kde-format
 msgid "GroupDav"
 msgstr "समूहदव"
+
+#~ msgid "Invalid username/password"
+#~ msgstr "अमान्य उपयोक्तृनाम/गुप्तशब्द"
+
+#~ msgid "Access forbidden"
+#~ msgstr "प्रवेशः निषिद्धः"
+
+#~ msgid "Resource not found"
+#~ msgstr "संसाधनं न लब्धम्"
+
+#~ msgid "HTTP error"
+#~ msgstr "HTTP त्रुटिः"
+
+#~ msgid ""
+#~ "There was a problem with the request.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "अनुरोधस्य समस्या आसीत् ।\n"
+#~ "%1 (%2) इति ।"
+
+#~ msgid "Protocol for the collection does not support MULTIGET"
+#~ msgstr "संग्रहस्य कृते प्रोटोकॉलः MULTIGET इत्यस्य समर्थनं न करोति"
+
+#~ msgid ""
+#~ "The server encountered an error that prevented it from completing your "
+#~ "request: %1 (%2)"
+#~ msgstr "सर्वरः एकं त्रुटिं प्राप्नोत् यत् भवतः अनुरोधं पूर्णं कर्तुं न शक्नोति स्म: %1 (%2)"
+
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been deleted "
+#~ "from the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "अनुरोधस्य समस्या आसीत् । संग्रहः सर्वरात् न लोपितः।\n"
+#~ "%1 (%2) इति ।"
+
+#~ msgid "Invalid responses from backend"
+#~ msgstr "पृष्ठभागात् अमान्यप्रतिक्रियाः"
+
+#~ msgid "Error setting focus for XQuery"
+#~ msgstr "XQuery कृते फोकस सेटिङ्ग् त्रुटिः"
+
+#~ msgid "Invalid XQuery submitted by DAV implementation"
+#~ msgstr "DAV कार्यान्वयनेन अमान्यं XQuery प्रदत्तम्"
+
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been "
+#~ "modified on the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "अनुरोधस्य समस्या आसीत् । सर्वरे संग्रहः परिवर्तितः नास्ति ।\n"
+#~ "%1 (%2) इति ।"
+
+#~ msgid "No properties to change or remove"
+#~ msgstr "परिवर्तनं कर्तुं वा निष्कासयितुं वा गुणाः न सन्ति"
+
+#~ msgid "There was an error when modifying the properties"
+#~ msgstr "गुणानाम् परिवर्तनं कुर्वन् दोषः आसीत्"
+
+#~ msgid ""
+#~ "\n"
+#~ "The server returned more information:\n"
+#~ "%1"
+#~ msgstr ""
+#~ "\n"
+#~ "सर्वरः अधिकानि सूचनानि प्रत्यागच्छत्:\n"
+#~ "%1"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been created on "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "अनुरोधस्य समस्या आसीत् । सर्वरे द्रव्यं न निर्मितम् ।\n"
+#~ "%1 (%2) इति ।"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been deleted from "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "अनुरोधस्य समस्या आसीत् । सर्वरात् द्रव्यं न लोपितम्।\n"
+#~ "%1 (%2) इति ।"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item was not modified on the "
+#~ "server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "अनुरोधस्य समस्या आसीत् । सर्वरे द्रव्यं परिवर्तितं नासीत् ।\n"
+#~ "%1 (%2) इति ।"
+
+#~ msgid "There was a problem with the request."
+#~ msgstr "अनुरोधस्य समस्या आसीत् ।"
+
+#~ msgid ""
+#~ "There was a problem with the request. The requested MIME types are not "
+#~ "supported."
+#~ msgstr "अनुरोधस्य समस्या आसीत् । अनुरोधिताः MIME प्रकाराः समर्थिताः न सन्ति ।"
 
 #~ msgid "The account id in WebAccounts framework."
 #~ msgstr "WebAccounts framework इत्यस्मिन् account id ।"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-30 00:45+0000\n"
+"POT-Creation-Date: 2026-08-29 00:46+0000\n"
 "PO-Revision-Date: 2026-07-23 06:22+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -160,150 +160,6 @@ msgstr "Odstrani"
 msgid "Edit"
 msgstr "Uredi"
 
-#: daverror-kdepim-runtime.cpp:26
-#, kde-format
-msgid "Invalid username/password"
-msgstr "Neveljavno uporabniško ime ali geslo"
-
-#: daverror-kdepim-runtime.cpp:28
-#, kde-format
-msgid "Access forbidden"
-msgstr "Dostop je prepovedan"
-
-#: daverror-kdepim-runtime.cpp:30
-#, kde-format
-msgid "Resource not found"
-msgstr "Vir ni najden"
-
-#: daverror-kdepim-runtime.cpp:32
-#, kde-format
-msgid "HTTP error"
-msgstr "Napaka HTTP"
-
-#: daverror-kdepim-runtime.cpp:35
-#, kde-format
-msgid ""
-"There was a problem with the request.\n"
-"%1 (%2)."
-msgstr ""
-"Pri tej zahtevi je prišlo do težave.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:41
-#, kde-format
-msgid "Protocol for the collection does not support MULTIGET"
-msgstr "Protokol za zbirko ne podpira MULTIGET"
-
-#: daverror-kdepim-runtime.cpp:44
-#, kde-format
-msgid ""
-"The server encountered an error that prevented it from completing your "
-"request: %1 (%2)"
-msgstr ""
-"Strežnik je naletel na težavo, ki mu je preprečila izpolnitev zahteve: %1 "
-"(%2)"
-
-#: daverror-kdepim-runtime.cpp:48
-#, kde-format
-msgid ""
-"There was a problem with the request. The collection has not been deleted "
-"from the server.\n"
-"%1 (%2)."
-msgstr ""
-"Pri tej zahtevi je prišlo do težave. Zbirka ni bila izbrisana s strežnika.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:54
-#, kde-format
-msgid "Invalid responses from backend"
-msgstr "Neveljavni odgovori zaledja"
-
-#: daverror-kdepim-runtime.cpp:57
-#, kde-format
-msgid "Error setting focus for XQuery"
-msgstr "Napaka nastavljanja žarišča za XQuery"
-
-#: daverror-kdepim-runtime.cpp:60
-#, kde-format
-msgid "Invalid XQuery submitted by DAV implementation"
-msgstr "Izvedba DAV je poslala neveljavno poizvedbo XQuery"
-
-#: daverror-kdepim-runtime.cpp:64
-#, kde-format
-msgid ""
-"There was a problem with the request. The collection has not been modified "
-"on the server.\n"
-"%1 (%2)."
-msgstr ""
-"Pri tej zahtevi je prišlo do težave. Zbirka na strežniku ni bila "
-"spremenjena.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:70
-#, kde-format
-msgid "No properties to change or remove"
-msgstr "Ni lastnosti za spremeniti ali odstraniti"
-
-#: daverror-kdepim-runtime.cpp:73
-#, kde-format
-msgid "There was an error when modifying the properties"
-msgstr "Prišlo je do napake med spreminjanjem lastnosti"
-
-#: daverror-kdepim-runtime.cpp:75
-#, kde-format
-msgid ""
-"\n"
-"The server returned more information:\n"
-"%1"
-msgstr ""
-"\n"
-"Strežnik je vrnil več podrobnosti:\n"
-"%1"
-
-#: daverror-kdepim-runtime.cpp:80
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been created on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"Pri tej zahtevi je prišlo do težave. Predmet na strežniku ni bil ustvarjen.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:87
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been deleted from the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"Pri tej zahtevi je prišlo do težave. Predmet ni bil izbrisan s strežnika.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:94
-#, kde-format
-msgid ""
-"There was a problem with the request. The item was not modified on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"Pri tej zahtevi je prišlo do težave. Predmet na strežniku ni bil "
-"spremenjen.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:100
-#, kde-format
-msgid "There was a problem with the request."
-msgstr "Pri tej zahtevi je prišlo do težave."
-
-#: daverror-kdepim-runtime.cpp:104
-#, kde-format
-msgid ""
-"There was a problem with the request. The requested MIME types are not "
-"supported."
-msgstr ""
-"Pri tej zahtevi je prišlo do težave. Zahtevane vrste MIME niso podprte."
-
 #: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
@@ -320,73 +176,85 @@ msgstr "Neveljaven odgovor strežnika"
 msgid "Unable to parse free-busy data received"
 msgstr "Prejetih podatkov o prostosti/zaposlenosti ni mogoče razčleniti"
 
-#: davgroupwareresource.cpp:272
+#: davgroupwareresource.cpp:273
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr ""
 "V nepovezanem načinu ni mogoče pridobiti podatkov o prostosti/zaposlenosti"
 
-#: davgroupwareresource.cpp:359
+#: davgroupwareresource.cpp:360
 #, kde-format
 msgid "Fetching collections"
 msgstr "Pridobivanje zbirk"
 
-#: davgroupwareresource.cpp:419
+#: davgroupwareresource.cpp:420
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Zahteva se pridobivanje predmetov za neznano zbirko: %1"
 
-#: davgroupwareresource.cpp:486
+#: davgroupwareresource.cpp:487
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Neveljavna zbirka za predmet %1."
 
-#: davgroupwareresource.cpp:763
+#: davgroupwareresource.cpp:764
 #, kde-format
 msgid "Unable to delete item exceptions: %1"
 msgstr "Ni mogoče izbrisati izjem elementov: %1"
 
-#: davgroupwareresource.cpp:946
+#: davgroupwareresource.cpp:865
+#, fuzzy, kde-format
+#| msgid "Unable to change item: %1"
+msgid "Unable to fetch items: %1"
+msgstr "Postavke ni moč spremeniti: %1"
+
+#: davgroupwareresource.cpp:932
+#, fuzzy, kde-format
+#| msgid "Unable to remove item: %1"
+msgid "Unable to move item: %1"
+msgstr "Postavke ni moč odstraniti: %1"
+
+#: davgroupwareresource.cpp:1079
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Ni mogoče spreminjati postavk: %1"
 
-#: davgroupwareresource.cpp:985
+#: davgroupwareresource.cpp:1152
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Zbirke ni mogoče spremeniti: %1"
 
-#: davgroupwareresource.cpp:1114
+#: davgroupwareresource.cpp:1281
 #, kde-format
 msgid "Unable to create collection: %1"
 msgstr "Ni mogoče ustvariti zbirke: %1"
 
-#: davgroupwareresource.cpp:1143
+#: davgroupwareresource.cpp:1310
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Zbirke ni mogoče odstraniti: %1"
 
-#: davgroupwareresource.cpp:1163 davgroupwareresource.cpp:1210
+#: davgroupwareresource.cpp:1330 davgroupwareresource.cpp:1377
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Zbirk ni mogoče pridobiti: %1"
 
-#: davgroupwareresource.cpp:1178
+#: davgroupwareresource.cpp:1345
 #, kde-format
 msgid "Failed to retrieve collection: %1"
 msgstr "Zbirke ni bilo mogoče pridobiti: %1"
 
-#: davgroupwareresource.cpp:1276 davgroupwareresource.cpp:1380
+#: davgroupwareresource.cpp:1443 davgroupwareresource.cpp:1547
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Predmetov ni mogoče pridobiti: %1"
 
-#: davgroupwareresource.cpp:1516
+#: davgroupwareresource.cpp:1683
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Predmeta ni mogoče pridobiti: %1"
 
-#: davgroupwareresource.cpp:1536
+#: davgroupwareresource.cpp:1703
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -395,23 +263,23 @@ msgstr ""
 "Predmeta ni bilo mogoče pridobiti; i bilo mogoče razčleniti podatkov "
 "predmeta. Mogoče je bil že zbrisan."
 
-#: davgroupwareresource.cpp:1596
+#: davgroupwareresource.cpp:1763
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Postavke ni moč dodati: %1"
 
-#: davgroupwareresource.cpp:1641 davgroupwareresource.cpp:1773
-#: davgroupwareresource.cpp:1785
+#: davgroupwareresource.cpp:1808 davgroupwareresource.cpp:1940
+#: davgroupwareresource.cpp:1952
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Postavke ni moč spremeniti: %1"
 
-#: davgroupwareresource.cpp:1747 davgroupwareresource.cpp:1804
+#: davgroupwareresource.cpp:1914 davgroupwareresource.cpp:1971
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Postavke ni moč odstraniti: %1"
 
-#: davgroupwareresource.cpp:1891 davgroupwareresource.cpp:1892
+#: davgroupwareresource.cpp:2058 davgroupwareresource.cpp:2059
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Vir še ni nastavljen"
@@ -770,6 +638,113 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
+
+#~ msgid "Invalid username/password"
+#~ msgstr "Neveljavno uporabniško ime ali geslo"
+
+#~ msgid "Access forbidden"
+#~ msgstr "Dostop je prepovedan"
+
+#~ msgid "Resource not found"
+#~ msgstr "Vir ni najden"
+
+#~ msgid "HTTP error"
+#~ msgstr "Napaka HTTP"
+
+#~ msgid ""
+#~ "There was a problem with the request.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Pri tej zahtevi je prišlo do težave.\n"
+#~ "%1 (%2)."
+
+#~ msgid "Protocol for the collection does not support MULTIGET"
+#~ msgstr "Protokol za zbirko ne podpira MULTIGET"
+
+#~ msgid ""
+#~ "The server encountered an error that prevented it from completing your "
+#~ "request: %1 (%2)"
+#~ msgstr ""
+#~ "Strežnik je naletel na težavo, ki mu je preprečila izpolnitev zahteve: %1 "
+#~ "(%2)"
+
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been deleted "
+#~ "from the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Pri tej zahtevi je prišlo do težave. Zbirka ni bila izbrisana s "
+#~ "strežnika.\n"
+#~ "%1 (%2)."
+
+#~ msgid "Invalid responses from backend"
+#~ msgstr "Neveljavni odgovori zaledja"
+
+#~ msgid "Error setting focus for XQuery"
+#~ msgstr "Napaka nastavljanja žarišča za XQuery"
+
+#~ msgid "Invalid XQuery submitted by DAV implementation"
+#~ msgstr "Izvedba DAV je poslala neveljavno poizvedbo XQuery"
+
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been "
+#~ "modified on the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Pri tej zahtevi je prišlo do težave. Zbirka na strežniku ni bila "
+#~ "spremenjena.\n"
+#~ "%1 (%2)."
+
+#~ msgid "No properties to change or remove"
+#~ msgstr "Ni lastnosti za spremeniti ali odstraniti"
+
+#~ msgid "There was an error when modifying the properties"
+#~ msgstr "Prišlo je do napake med spreminjanjem lastnosti"
+
+#~ msgid ""
+#~ "\n"
+#~ "The server returned more information:\n"
+#~ "%1"
+#~ msgstr ""
+#~ "\n"
+#~ "Strežnik je vrnil več podrobnosti:\n"
+#~ "%1"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been created on "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Pri tej zahtevi je prišlo do težave. Predmet na strežniku ni bil "
+#~ "ustvarjen.\n"
+#~ "%1 (%2)."
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been deleted from "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Pri tej zahtevi je prišlo do težave. Predmet ni bil izbrisan s "
+#~ "strežnika.\n"
+#~ "%1 (%2)."
+
+#~ msgid ""
+#~ "There was a problem with the request. The item was not modified on the "
+#~ "server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Pri tej zahtevi je prišlo do težave. Predmet na strežniku ni bil "
+#~ "spremenjen.\n"
+#~ "%1 (%2)."
+
+#~ msgid "There was a problem with the request."
+#~ msgstr "Pri tej zahtevi je prišlo do težave."
+
+#~ msgid ""
+#~ "There was a problem with the request. The requested MIME types are not "
+#~ "supported."
+#~ msgstr ""
+#~ "Pri tej zahtevi je prišlo do težave. Zahtevane vrste MIME niso podprte."
 
 #~ msgid "The account id in WebAccounts framework."
 #~ msgstr "Id računa v ogrodju WebAccounts."

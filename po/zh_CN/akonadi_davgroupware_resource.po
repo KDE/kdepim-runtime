@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-30 00:45+0000\n"
+"POT-Creation-Date: 2026-08-29 00:46+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -152,145 +152,6 @@ msgstr "删除"
 msgid "Edit"
 msgstr "编辑"
 
-#: daverror-kdepim-runtime.cpp:26
-#, kde-format
-msgid "Invalid username/password"
-msgstr "无效的用户名或密码"
-
-#: daverror-kdepim-runtime.cpp:28
-#, kde-format
-msgid "Access forbidden"
-msgstr "禁止访问"
-
-#: daverror-kdepim-runtime.cpp:30
-#, kde-format
-msgid "Resource not found"
-msgstr "找不到资源"
-
-#: daverror-kdepim-runtime.cpp:32
-#, kde-format
-msgid "HTTP error"
-msgstr "HTTP 错误"
-
-#: daverror-kdepim-runtime.cpp:35
-#, kde-format
-msgid ""
-"There was a problem with the request.\n"
-"%1 (%2)."
-msgstr ""
-"请求出错。\n"
-"%1 (%2)。"
-
-#: daverror-kdepim-runtime.cpp:41
-#, kde-format
-msgid "Protocol for the collection does not support MULTIGET"
-msgstr "集合的协议不支持 MULTIGET"
-
-#: daverror-kdepim-runtime.cpp:44
-#, kde-format
-msgid ""
-"The server encountered an error that prevented it from completing your "
-"request: %1 (%2)"
-msgstr "服务器出现错误，无法完成您的请求：%1 (%2)"
-
-#: daverror-kdepim-runtime.cpp:48
-#, kde-format
-msgid ""
-"There was a problem with the request. The collection has not been deleted "
-"from the server.\n"
-"%1 (%2)."
-msgstr ""
-"请求出错。服务器上的项目未删除。\n"
-"%1 (%2)。"
-
-#: daverror-kdepim-runtime.cpp:54
-#, kde-format
-msgid "Invalid responses from backend"
-msgstr "无效的后端应答"
-
-#: daverror-kdepim-runtime.cpp:57
-#, kde-format
-msgid "Error setting focus for XQuery"
-msgstr "设置 XQuery 焦点时发生错误"
-
-#: daverror-kdepim-runtime.cpp:60
-#, kde-format
-msgid "Invalid XQuery submitted by DAV implementation"
-msgstr "DAV 实现提交了无效的 XQuery"
-
-#: daverror-kdepim-runtime.cpp:64
-#, kde-format
-msgid ""
-"There was a problem with the request. The collection has not been modified "
-"on the server.\n"
-"%1 (%2)."
-msgstr ""
-"请求出错。服务器上的项目未修改。\n"
-"%1 (%2)。"
-
-#: daverror-kdepim-runtime.cpp:70
-#, kde-format
-msgid "No properties to change or remove"
-msgstr "没有要更改或删除的属性"
-
-#: daverror-kdepim-runtime.cpp:73
-#, kde-format
-msgid "There was an error when modifying the properties"
-msgstr "修改属性时出错"
-
-#: daverror-kdepim-runtime.cpp:75
-#, kde-format
-msgid ""
-"\n"
-"The server returned more information:\n"
-"%1"
-msgstr ""
-"\n"
-"服务器返回更多信息：\n"
-"%1"
-
-#: daverror-kdepim-runtime.cpp:80
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been created on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"请求出错。服务器上的项目未创建。\n"
-"%1 (%2)。"
-
-#: daverror-kdepim-runtime.cpp:87
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been deleted from the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"请求出错。服务器上的项目未删除。\n"
-"%1 (%2)。"
-
-#: daverror-kdepim-runtime.cpp:94
-#, kde-format
-msgid ""
-"There was a problem with the request. The item was not modified on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"请求出错。服务器上的项目未修改。\n"
-"%1 (%2)。"
-
-#: daverror-kdepim-runtime.cpp:100
-#, kde-format
-msgid "There was a problem with the request."
-msgstr "请求出错。"
-
-#: daverror-kdepim-runtime.cpp:104
-#, kde-format
-msgid ""
-"There was a problem with the request. The requested MIME types are not "
-"supported."
-msgstr "请求出错。服务器上的项目未创建。"
-
 #: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
@@ -306,95 +167,107 @@ msgstr "无效的服务器应答"
 msgid "Unable to parse free-busy data received"
 msgstr "无法解析收到的忙/闲数据"
 
-#: davgroupwareresource.cpp:272
+#: davgroupwareresource.cpp:273
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "无法离线时获得忙/闲信息"
 
-#: davgroupwareresource.cpp:359
+#: davgroupwareresource.cpp:360
 #, kde-format
 msgid "Fetching collections"
 msgstr "正在获取收藏"
 
-#: davgroupwareresource.cpp:419
+#: davgroupwareresource.cpp:420
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "收到未知集合的收取请求：%1"
 
-#: davgroupwareresource.cpp:486
+#: davgroupwareresource.cpp:487
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "项目 %1 的收藏无效。"
 
-#: davgroupwareresource.cpp:763
+#: davgroupwareresource.cpp:764
 #, kde-format
 msgid "Unable to delete item exceptions: %1"
 msgstr "无法删除项目例外：%1"
 
-#: davgroupwareresource.cpp:946
+#: davgroupwareresource.cpp:865
+#, fuzzy, kde-format
+#| msgid "Unable to change item: %1"
+msgid "Unable to fetch items: %1"
+msgstr "无法更改项目：%1"
+
+#: davgroupwareresource.cpp:932
+#, fuzzy, kde-format
+#| msgid "Unable to remove item: %1"
+msgid "Unable to move item: %1"
+msgstr "无法删除项目：%1"
+
+#: davgroupwareresource.cpp:1079
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "无法更改项目：%1"
 
-#: davgroupwareresource.cpp:985
+#: davgroupwareresource.cpp:1152
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "无法修改此日历：%1"
 
-#: davgroupwareresource.cpp:1114
+#: davgroupwareresource.cpp:1281
 #, kde-format
 msgid "Unable to create collection: %1"
 msgstr "无法创建集合：%1"
 
-#: davgroupwareresource.cpp:1143
+#: davgroupwareresource.cpp:1310
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "无法删除收藏：%1"
 
-#: davgroupwareresource.cpp:1163 davgroupwareresource.cpp:1210
+#: davgroupwareresource.cpp:1330 davgroupwareresource.cpp:1377
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "无法获取收藏：%1"
 
-#: davgroupwareresource.cpp:1178
+#: davgroupwareresource.cpp:1345
 #, kde-format
 msgid "Failed to retrieve collection: %1"
 msgstr "获取收藏失败：%1"
 
-#: davgroupwareresource.cpp:1276 davgroupwareresource.cpp:1380
+#: davgroupwareresource.cpp:1443 davgroupwareresource.cpp:1547
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "无法获取项目：%1"
 
-#: davgroupwareresource.cpp:1516
+#: davgroupwareresource.cpp:1683
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "无法获取项目：%1"
 
-#: davgroupwareresource.cpp:1536
+#: davgroupwareresource.cpp:1703
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr "无法获取当前项目：数据解析失败，项目可能已被删除。"
 
-#: davgroupwareresource.cpp:1596
+#: davgroupwareresource.cpp:1763
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "无法添加项目：%1"
 
-#: davgroupwareresource.cpp:1641 davgroupwareresource.cpp:1773
-#: davgroupwareresource.cpp:1785
+#: davgroupwareresource.cpp:1808 davgroupwareresource.cpp:1940
+#: davgroupwareresource.cpp:1952
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "无法更改项目：%1"
 
-#: davgroupwareresource.cpp:1747 davgroupwareresource.cpp:1804
+#: davgroupwareresource.cpp:1914 davgroupwareresource.cpp:1971
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "无法删除项目：%1"
 
-#: davgroupwareresource.cpp:1891 davgroupwareresource.cpp:1892
+#: davgroupwareresource.cpp:2058 davgroupwareresource.cpp:2059
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "资源尚未配置"
@@ -749,3 +622,102 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
+
+#~ msgid "Invalid username/password"
+#~ msgstr "无效的用户名或密码"
+
+#~ msgid "Access forbidden"
+#~ msgstr "禁止访问"
+
+#~ msgid "Resource not found"
+#~ msgstr "找不到资源"
+
+#~ msgid "HTTP error"
+#~ msgstr "HTTP 错误"
+
+#~ msgid ""
+#~ "There was a problem with the request.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "请求出错。\n"
+#~ "%1 (%2)。"
+
+#~ msgid "Protocol for the collection does not support MULTIGET"
+#~ msgstr "集合的协议不支持 MULTIGET"
+
+#~ msgid ""
+#~ "The server encountered an error that prevented it from completing your "
+#~ "request: %1 (%2)"
+#~ msgstr "服务器出现错误，无法完成您的请求：%1 (%2)"
+
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been deleted "
+#~ "from the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "请求出错。服务器上的项目未删除。\n"
+#~ "%1 (%2)。"
+
+#~ msgid "Invalid responses from backend"
+#~ msgstr "无效的后端应答"
+
+#~ msgid "Error setting focus for XQuery"
+#~ msgstr "设置 XQuery 焦点时发生错误"
+
+#~ msgid "Invalid XQuery submitted by DAV implementation"
+#~ msgstr "DAV 实现提交了无效的 XQuery"
+
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been "
+#~ "modified on the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "请求出错。服务器上的项目未修改。\n"
+#~ "%1 (%2)。"
+
+#~ msgid "No properties to change or remove"
+#~ msgstr "没有要更改或删除的属性"
+
+#~ msgid "There was an error when modifying the properties"
+#~ msgstr "修改属性时出错"
+
+#~ msgid ""
+#~ "\n"
+#~ "The server returned more information:\n"
+#~ "%1"
+#~ msgstr ""
+#~ "\n"
+#~ "服务器返回更多信息：\n"
+#~ "%1"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been created on "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "请求出错。服务器上的项目未创建。\n"
+#~ "%1 (%2)。"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been deleted from "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "请求出错。服务器上的项目未删除。\n"
+#~ "%1 (%2)。"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item was not modified on the "
+#~ "server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "请求出错。服务器上的项目未修改。\n"
+#~ "%1 (%2)。"
+
+#~ msgid "There was a problem with the request."
+#~ msgstr "请求出错。"
+
+#~ msgid ""
+#~ "There was a problem with the request. The requested MIME types are not "
+#~ "supported."
+#~ msgstr "请求出错。服务器上的项目未创建。"

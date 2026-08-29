@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-30 00:45+0000\n"
+"POT-Creation-Date: 2026-08-29 00:46+0000\n"
 "PO-Revision-Date: 2026-07-23 08:55+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -156,149 +156,6 @@ msgstr "Ta bort"
 msgid "Edit"
 msgstr "Redigera"
 
-#: daverror-kdepim-runtime.cpp:26
-#, kde-format
-msgid "Invalid username/password"
-msgstr "Ogiltigt användarnamn eller lösenord"
-
-#: daverror-kdepim-runtime.cpp:28
-#, kde-format
-msgid "Access forbidden"
-msgstr "Åtkomst nekas"
-
-#: daverror-kdepim-runtime.cpp:30
-#, kde-format
-msgid "Resource not found"
-msgstr "Resurs hittades inte"
-
-#: daverror-kdepim-runtime.cpp:32
-#, kde-format
-msgid "HTTP error"
-msgstr "HTTP-fel"
-
-#: daverror-kdepim-runtime.cpp:35
-#, kde-format
-msgid ""
-"There was a problem with the request.\n"
-"%1 (%2)."
-msgstr ""
-"Ett problem uppstod med begäran.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:41
-#, kde-format
-msgid "Protocol for the collection does not support MULTIGET"
-msgstr "Protokoll för samlingen stöder inte MULTIGET"
-
-#: daverror-kdepim-runtime.cpp:44
-#, kde-format
-msgid ""
-"The server encountered an error that prevented it from completing your "
-"request: %1 (%2)"
-msgstr ""
-"Servern råkade ut för ett fel som förhindrade den att färdigställa din "
-"begäran: %1 (%2)"
-
-#: daverror-kdepim-runtime.cpp:48
-#, kde-format
-msgid ""
-"There was a problem with the request. The collection has not been deleted "
-"from the server.\n"
-"%1 (%2)."
-msgstr ""
-"Ett problem uppstod med begäran. Samlingen har inte tagits bort från "
-"servern.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:54
-#, kde-format
-msgid "Invalid responses from backend"
-msgstr "Felaktigt svar från gränssnitt"
-
-#: daverror-kdepim-runtime.cpp:57
-#, kde-format
-msgid "Error setting focus for XQuery"
-msgstr "Fel när fokus skulle ställas in för XQuery"
-
-#: daverror-kdepim-runtime.cpp:60
-#, kde-format
-msgid "Invalid XQuery submitted by DAV implementation"
-msgstr "Felaktig XQuery skickades av DAV-implementering"
-
-#: daverror-kdepim-runtime.cpp:64
-#, kde-format
-msgid ""
-"There was a problem with the request. The collection has not been modified "
-"on the server.\n"
-"%1 (%2)."
-msgstr ""
-"Ett problem uppstod med begäran. Samlingen har inte ändrats på servern.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:70
-#, kde-format
-msgid "No properties to change or remove"
-msgstr "Inga egenskaper att ändra eller ta bort"
-
-#: daverror-kdepim-runtime.cpp:73
-#, kde-format
-msgid "There was an error when modifying the properties"
-msgstr "Ett fel uppstod när egenskaperna skulle ändras"
-
-#: daverror-kdepim-runtime.cpp:75
-#, kde-format
-msgid ""
-"\n"
-"The server returned more information:\n"
-"%1"
-msgstr ""
-"\n"
-"Servern returnerade mer information:\n"
-"%1"
-
-#: daverror-kdepim-runtime.cpp:80
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been created on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"Ett problem uppstod med begäran. Objektet har inte skapats på servern.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:87
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been deleted from the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"Ett problem uppstod med begäran. Objektet har inte tagits bort från "
-"servern.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:94
-#, kde-format
-msgid ""
-"There was a problem with the request. The item was not modified on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"Ett problem uppstod med begäran. Objektet ändrades inte på servern.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:100
-#, kde-format
-msgid "There was a problem with the request."
-msgstr "Ett problem uppstod med begäran."
-
-#: daverror-kdepim-runtime.cpp:104
-#, kde-format
-msgid ""
-"There was a problem with the request. The requested MIME types are not "
-"supported."
-msgstr "Ett problem uppstod med begäran. De begärda Mime-typerna stöds inte."
-
 #: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
@@ -314,72 +171,84 @@ msgstr "Ogiltigt svar från servern"
 msgid "Unable to parse free-busy data received"
 msgstr "Kan inte tolka mottagen information om ledig-upptagen"
 
-#: davgroupwareresource.cpp:272
+#: davgroupwareresource.cpp:273
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "Kan inte hämta information om ledig-upptagen i nerkopplat läge"
 
-#: davgroupwareresource.cpp:359
+#: davgroupwareresource.cpp:360
 #, kde-format
 msgid "Fetching collections"
 msgstr "Hämtar samlingar"
 
-#: davgroupwareresource.cpp:419
+#: davgroupwareresource.cpp:420
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Tillfrågad om att hämta objekt från en okänd samling: %1"
 
-#: davgroupwareresource.cpp:486
+#: davgroupwareresource.cpp:487
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Ogiltig samling för objekt %1."
 
-#: davgroupwareresource.cpp:763
+#: davgroupwareresource.cpp:764
 #, kde-format
 msgid "Unable to delete item exceptions: %1"
 msgstr "Kan inte ta bort objektundantag: %1"
 
-#: davgroupwareresource.cpp:946
+#: davgroupwareresource.cpp:865
+#, fuzzy, kde-format
+#| msgid "Unable to change item: %1"
+msgid "Unable to fetch items: %1"
+msgstr "Kan inte ändra objekt: %1"
+
+#: davgroupwareresource.cpp:932
+#, fuzzy, kde-format
+#| msgid "Unable to remove item: %1"
+msgid "Unable to move item: %1"
+msgstr "Kan inte ta bort objekt: %1"
+
+#: davgroupwareresource.cpp:1079
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Kan inte ändra objekt: %1"
 
-#: davgroupwareresource.cpp:985
+#: davgroupwareresource.cpp:1152
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Kan inte ändra samling: %1"
 
-#: davgroupwareresource.cpp:1114
+#: davgroupwareresource.cpp:1281
 #, kde-format
 msgid "Unable to create collection: %1"
 msgstr "Kan inte skapa samling: %1"
 
-#: davgroupwareresource.cpp:1143
+#: davgroupwareresource.cpp:1310
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Kan inte ta bort samling: %1"
 
-#: davgroupwareresource.cpp:1163 davgroupwareresource.cpp:1210
+#: davgroupwareresource.cpp:1330 davgroupwareresource.cpp:1377
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Kan inte hämta samlingar: %1"
 
-#: davgroupwareresource.cpp:1178
+#: davgroupwareresource.cpp:1345
 #, kde-format
 msgid "Failed to retrieve collection: %1"
 msgstr "Misslyckades hämta samlingar: %1"
 
-#: davgroupwareresource.cpp:1276 davgroupwareresource.cpp:1380
+#: davgroupwareresource.cpp:1443 davgroupwareresource.cpp:1547
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Kan inte hämta objekt: %1"
 
-#: davgroupwareresource.cpp:1516
+#: davgroupwareresource.cpp:1683
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Kan inte hämta objekt: %1"
 
-#: davgroupwareresource.cpp:1536
+#: davgroupwareresource.cpp:1703
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -388,23 +257,23 @@ msgstr ""
 "Kan inte hämta objekt: misslyckades tolka objektdata. Kanske det redan har "
 "tagits bort."
 
-#: davgroupwareresource.cpp:1596
+#: davgroupwareresource.cpp:1763
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Kan inte lägga till objekt: %1"
 
-#: davgroupwareresource.cpp:1641 davgroupwareresource.cpp:1773
-#: davgroupwareresource.cpp:1785
+#: davgroupwareresource.cpp:1808 davgroupwareresource.cpp:1940
+#: davgroupwareresource.cpp:1952
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Kan inte ändra objekt: %1"
 
-#: davgroupwareresource.cpp:1747 davgroupwareresource.cpp:1804
+#: davgroupwareresource.cpp:1914 davgroupwareresource.cpp:1971
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Kan inte ta bort objekt: %1"
 
-#: davgroupwareresource.cpp:1891 davgroupwareresource.cpp:1892
+#: davgroupwareresource.cpp:2058 davgroupwareresource.cpp:2059
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Resursen är inte inställd ännu"
@@ -763,6 +632,110 @@ msgstr "CardDAV"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDAV"
+
+#~ msgid "Invalid username/password"
+#~ msgstr "Ogiltigt användarnamn eller lösenord"
+
+#~ msgid "Access forbidden"
+#~ msgstr "Åtkomst nekas"
+
+#~ msgid "Resource not found"
+#~ msgstr "Resurs hittades inte"
+
+#~ msgid "HTTP error"
+#~ msgstr "HTTP-fel"
+
+#~ msgid ""
+#~ "There was a problem with the request.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Ett problem uppstod med begäran.\n"
+#~ "%1 (%2)."
+
+#~ msgid "Protocol for the collection does not support MULTIGET"
+#~ msgstr "Protokoll för samlingen stöder inte MULTIGET"
+
+#~ msgid ""
+#~ "The server encountered an error that prevented it from completing your "
+#~ "request: %1 (%2)"
+#~ msgstr ""
+#~ "Servern råkade ut för ett fel som förhindrade den att färdigställa din "
+#~ "begäran: %1 (%2)"
+
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been deleted "
+#~ "from the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Ett problem uppstod med begäran. Samlingen har inte tagits bort från "
+#~ "servern.\n"
+#~ "%1 (%2)."
+
+#~ msgid "Invalid responses from backend"
+#~ msgstr "Felaktigt svar från gränssnitt"
+
+#~ msgid "Error setting focus for XQuery"
+#~ msgstr "Fel när fokus skulle ställas in för XQuery"
+
+#~ msgid "Invalid XQuery submitted by DAV implementation"
+#~ msgstr "Felaktig XQuery skickades av DAV-implementering"
+
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been "
+#~ "modified on the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Ett problem uppstod med begäran. Samlingen har inte ändrats på servern.\n"
+#~ "%1 (%2)."
+
+#~ msgid "No properties to change or remove"
+#~ msgstr "Inga egenskaper att ändra eller ta bort"
+
+#~ msgid "There was an error when modifying the properties"
+#~ msgstr "Ett fel uppstod när egenskaperna skulle ändras"
+
+#~ msgid ""
+#~ "\n"
+#~ "The server returned more information:\n"
+#~ "%1"
+#~ msgstr ""
+#~ "\n"
+#~ "Servern returnerade mer information:\n"
+#~ "%1"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been created on "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Ett problem uppstod med begäran. Objektet har inte skapats på servern.\n"
+#~ "%1 (%2)."
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been deleted from "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Ett problem uppstod med begäran. Objektet har inte tagits bort från "
+#~ "servern.\n"
+#~ "%1 (%2)."
+
+#~ msgid ""
+#~ "There was a problem with the request. The item was not modified on the "
+#~ "server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Ett problem uppstod med begäran. Objektet ändrades inte på servern.\n"
+#~ "%1 (%2)."
+
+#~ msgid "There was a problem with the request."
+#~ msgstr "Ett problem uppstod med begäran."
+
+#~ msgid ""
+#~ "There was a problem with the request. The requested MIME types are not "
+#~ "supported."
+#~ msgstr ""
+#~ "Ett problem uppstod med begäran. De begärda Mime-typerna stöds inte."
 
 #~ msgid "The account id in WebAccounts framework."
 #~ msgstr "Kontoidentiteten i WebAccouts-ramverket."

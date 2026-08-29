@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-30 00:45+0000\n"
+"POT-Creation-Date: 2026-08-29 00:46+0000\n"
 "PO-Revision-Date: 2026-07-23 08:51+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -153,145 +153,6 @@ msgstr "הסרה"
 msgid "Edit"
 msgstr "עריכה"
 
-#: daverror-kdepim-runtime.cpp:26
-#, kde-format
-msgid "Invalid username/password"
-msgstr "שם משתמש/סיסמה שגויים"
-
-#: daverror-kdepim-runtime.cpp:28
-#, kde-format
-msgid "Access forbidden"
-msgstr "הגישה נדחתה"
-
-#: daverror-kdepim-runtime.cpp:30
-#, kde-format
-msgid "Resource not found"
-msgstr "המשאב לא נמצא"
-
-#: daverror-kdepim-runtime.cpp:32
-#, kde-format
-msgid "HTTP error"
-msgstr "שגיאת HTTP"
-
-#: daverror-kdepim-runtime.cpp:35
-#, kde-format
-msgid ""
-"There was a problem with the request.\n"
-"%1 (%2)."
-msgstr ""
-"הייתה בעיה עם הבקשה.\n"
-"%1 (%2)"
-
-#: daverror-kdepim-runtime.cpp:41
-#, kde-format
-msgid "Protocol for the collection does not support MULTIGET"
-msgstr "הפרוטוקול לאוסף לא תומך ב־MULTIGET"
-
-#: daverror-kdepim-runtime.cpp:44
-#, kde-format
-msgid ""
-"The server encountered an error that prevented it from completing your "
-"request: %1 (%2)"
-msgstr "השרת נתקל בשגיאה שמנעה ממנו להשלים את הבקשה שלך: %1 (%2)"
-
-#: daverror-kdepim-runtime.cpp:48
-#, kde-format
-msgid ""
-"There was a problem with the request. The collection has not been deleted "
-"from the server.\n"
-"%1 (%2)."
-msgstr ""
-"הייתה בעיה עם הבקשה שלך. האוסף לא נמחק מהשרת.\n"
-"%1 (%2)"
-
-#: daverror-kdepim-runtime.cpp:54
-#, kde-format
-msgid "Invalid responses from backend"
-msgstr "תגובות שגויות מהמנגנון"
-
-#: daverror-kdepim-runtime.cpp:57
-#, kde-format
-msgid "Error setting focus for XQuery"
-msgstr "שגיאה בהעברת המיקוד ל־XQuery"
-
-#: daverror-kdepim-runtime.cpp:60
-#, kde-format
-msgid "Invalid XQuery submitted by DAV implementation"
-msgstr "הוגש XQuery שגוי על ידי מימוש ה־DAV"
-
-#: daverror-kdepim-runtime.cpp:64
-#, kde-format
-msgid ""
-"There was a problem with the request. The collection has not been modified "
-"on the server.\n"
-"%1 (%2)."
-msgstr ""
-"הייתה בעיה עם הבקשה. האוסף לא השתנה בשרת.\n"
-"%1 (%2)"
-
-#: daverror-kdepim-runtime.cpp:70
-#, kde-format
-msgid "No properties to change or remove"
-msgstr "אין מאפיינים לשינוי או הסרה"
-
-#: daverror-kdepim-runtime.cpp:73
-#, kde-format
-msgid "There was an error when modifying the properties"
-msgstr "אירעה שגיאה בשינוי המאפיינים"
-
-#: daverror-kdepim-runtime.cpp:75
-#, kde-format
-msgid ""
-"\n"
-"The server returned more information:\n"
-"%1"
-msgstr ""
-"\n"
-"השרת החזיר פירוט נוסף:\n"
-"%1"
-
-#: daverror-kdepim-runtime.cpp:80
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been created on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"הייתה בעיה עם הבקשה. הפריט לא נוצר בשרת.\n"
-"%1 (%2)"
-
-#: daverror-kdepim-runtime.cpp:87
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been deleted from the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"הייתה בעיה עם הבקשה שלך. הפריט לא נמחק מהשרת.\n"
-"%1 (%2)"
-
-#: daverror-kdepim-runtime.cpp:94
-#, kde-format
-msgid ""
-"There was a problem with the request. The item was not modified on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"הייתה בעיה עם הבקשה. הפריט לא השתנה בשרת.\n"
-"%1 (%2)"
-
-#: daverror-kdepim-runtime.cpp:100
-#, kde-format
-msgid "There was a problem with the request."
-msgstr "הייתה בעיה עם הבקשה."
-
-#: daverror-kdepim-runtime.cpp:104
-#, kde-format
-msgid ""
-"There was a problem with the request. The requested MIME types are not "
-"supported."
-msgstr "הייתה בעיה עם הבקשה. סוגי התוכן/MIME לא נתמכים."
-
 #: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
@@ -307,95 +168,107 @@ msgstr "תגובה שגויה מהשרת"
 msgid "Unable to parse free-busy data received"
 msgstr "לא ניתן לפענח את נתוני הפנוי-עסוק שהתקבלו"
 
-#: davgroupwareresource.cpp:272
+#: davgroupwareresource.cpp:273
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "לא ניתן למשוך נתוני פנוי-עסוק כשאין חיבור"
 
-#: davgroupwareresource.cpp:359
+#: davgroupwareresource.cpp:360
 #, kde-format
 msgid "Fetching collections"
 msgstr "האוספים נמשכים"
 
-#: davgroupwareresource.cpp:419
+#: davgroupwareresource.cpp:420
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "בקשה למשיכת פריטים מאוסף לא ידוע: %1"
 
-#: davgroupwareresource.cpp:486
+#: davgroupwareresource.cpp:487
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "אוסף שגוי לפריט %1."
 
-#: davgroupwareresource.cpp:763
+#: davgroupwareresource.cpp:764
 #, kde-format
 msgid "Unable to delete item exceptions: %1"
 msgstr "לא ניתן למחוק את חריגות הפריטים: %1"
 
-#: davgroupwareresource.cpp:946
+#: davgroupwareresource.cpp:865
+#, fuzzy, kde-format
+#| msgid "Unable to change item: %1"
+msgid "Unable to fetch items: %1"
+msgstr "לא ניתן לשנות פריט: %1"
+
+#: davgroupwareresource.cpp:932
+#, fuzzy, kde-format
+#| msgid "Unable to remove item: %1"
+msgid "Unable to move item: %1"
+msgstr "לא ניתן להסיר פריט: %1"
+
+#: davgroupwareresource.cpp:1079
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "לא ניתן לשנות פריטים: %1"
 
-#: davgroupwareresource.cpp:985
+#: davgroupwareresource.cpp:1152
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "לא ניתן לשנות אוסף: %1"
 
-#: davgroupwareresource.cpp:1114
+#: davgroupwareresource.cpp:1281
 #, kde-format
 msgid "Unable to create collection: %1"
 msgstr "לא ניתן ליצור אוסף: %1"
 
-#: davgroupwareresource.cpp:1143
+#: davgroupwareresource.cpp:1310
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "לא ניתן להסיר אוסף: %1"
 
-#: davgroupwareresource.cpp:1163 davgroupwareresource.cpp:1210
+#: davgroupwareresource.cpp:1330 davgroupwareresource.cpp:1377
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "לא ניתן למשוך אוספים: %1"
 
-#: davgroupwareresource.cpp:1178
+#: davgroupwareresource.cpp:1345
 #, kde-format
 msgid "Failed to retrieve collection: %1"
 msgstr "משיכת האוסף נכשלה: %1"
 
-#: davgroupwareresource.cpp:1276 davgroupwareresource.cpp:1380
+#: davgroupwareresource.cpp:1443 davgroupwareresource.cpp:1547
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "לא ניתן למשוך פריטים: %1"
 
-#: davgroupwareresource.cpp:1516
+#: davgroupwareresource.cpp:1683
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "לא ניתן למשוך פריט: %1"
 
-#: davgroupwareresource.cpp:1536
+#: davgroupwareresource.cpp:1703
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr "לא ניתן למשוך פריט: פיענוח נתוני הפריט נכשל. אולי הוא כבר נמחק."
 
-#: davgroupwareresource.cpp:1596
+#: davgroupwareresource.cpp:1763
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "לא ניתן להוסיף פריט: %1"
 
-#: davgroupwareresource.cpp:1641 davgroupwareresource.cpp:1773
-#: davgroupwareresource.cpp:1785
+#: davgroupwareresource.cpp:1808 davgroupwareresource.cpp:1940
+#: davgroupwareresource.cpp:1952
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "לא ניתן לשנות פריט: %1"
 
-#: davgroupwareresource.cpp:1747 davgroupwareresource.cpp:1804
+#: davgroupwareresource.cpp:1914 davgroupwareresource.cpp:1971
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "לא ניתן להסיר פריט: %1"
 
-#: davgroupwareresource.cpp:1891 davgroupwareresource.cpp:1892
+#: davgroupwareresource.cpp:2058 davgroupwareresource.cpp:2059
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "המשאב לא מוגדר עדיין"
@@ -750,6 +623,105 @@ msgstr "CardDAV"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDAV"
+
+#~ msgid "Invalid username/password"
+#~ msgstr "שם משתמש/סיסמה שגויים"
+
+#~ msgid "Access forbidden"
+#~ msgstr "הגישה נדחתה"
+
+#~ msgid "Resource not found"
+#~ msgstr "המשאב לא נמצא"
+
+#~ msgid "HTTP error"
+#~ msgstr "שגיאת HTTP"
+
+#~ msgid ""
+#~ "There was a problem with the request.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "הייתה בעיה עם הבקשה.\n"
+#~ "%1 (%2)"
+
+#~ msgid "Protocol for the collection does not support MULTIGET"
+#~ msgstr "הפרוטוקול לאוסף לא תומך ב־MULTIGET"
+
+#~ msgid ""
+#~ "The server encountered an error that prevented it from completing your "
+#~ "request: %1 (%2)"
+#~ msgstr "השרת נתקל בשגיאה שמנעה ממנו להשלים את הבקשה שלך: %1 (%2)"
+
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been deleted "
+#~ "from the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "הייתה בעיה עם הבקשה שלך. האוסף לא נמחק מהשרת.\n"
+#~ "%1 (%2)"
+
+#~ msgid "Invalid responses from backend"
+#~ msgstr "תגובות שגויות מהמנגנון"
+
+#~ msgid "Error setting focus for XQuery"
+#~ msgstr "שגיאה בהעברת המיקוד ל־XQuery"
+
+#~ msgid "Invalid XQuery submitted by DAV implementation"
+#~ msgstr "הוגש XQuery שגוי על ידי מימוש ה־DAV"
+
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been "
+#~ "modified on the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "הייתה בעיה עם הבקשה. האוסף לא השתנה בשרת.\n"
+#~ "%1 (%2)"
+
+#~ msgid "No properties to change or remove"
+#~ msgstr "אין מאפיינים לשינוי או הסרה"
+
+#~ msgid "There was an error when modifying the properties"
+#~ msgstr "אירעה שגיאה בשינוי המאפיינים"
+
+#~ msgid ""
+#~ "\n"
+#~ "The server returned more information:\n"
+#~ "%1"
+#~ msgstr ""
+#~ "\n"
+#~ "השרת החזיר פירוט נוסף:\n"
+#~ "%1"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been created on "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "הייתה בעיה עם הבקשה. הפריט לא נוצר בשרת.\n"
+#~ "%1 (%2)"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been deleted from "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "הייתה בעיה עם הבקשה שלך. הפריט לא נמחק מהשרת.\n"
+#~ "%1 (%2)"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item was not modified on the "
+#~ "server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "הייתה בעיה עם הבקשה. הפריט לא השתנה בשרת.\n"
+#~ "%1 (%2)"
+
+#~ msgid "There was a problem with the request."
+#~ msgstr "הייתה בעיה עם הבקשה."
+
+#~ msgid ""
+#~ "There was a problem with the request. The requested MIME types are not "
+#~ "supported."
+#~ msgstr "הייתה בעיה עם הבקשה. סוגי התוכן/MIME לא נתמכים."
 
 #~ msgid "The account id in WebAccounts framework."
 #~ msgstr "מזהה החשבון בתשתית WebAccounts."

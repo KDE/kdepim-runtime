@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-30 00:45+0000\n"
+"POT-Creation-Date: 2026-08-29 00:46+0000\n"
 "PO-Revision-Date: 2014-08-15 15:50+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -156,172 +156,6 @@ msgstr "Wegmaken"
 msgid "Edit"
 msgstr "Bewerken"
 
-#: daverror-kdepim-runtime.cpp:26
-#, kde-format
-msgid "Invalid username/password"
-msgstr "Leeg Brukernaam oder Passwoort"
-
-#: daverror-kdepim-runtime.cpp:28
-#, kde-format
-msgid "Access forbidden"
-msgstr "Keen Togriep"
-
-#: daverror-kdepim-runtime.cpp:30
-#, kde-format
-msgid "Resource not found"
-msgstr "Ressource nich funnen"
-
-#: daverror-kdepim-runtime.cpp:32
-#, kde-format
-msgid "HTTP error"
-msgstr "HTTP-Fehler"
-
-#: daverror-kdepim-runtime.cpp:35
-#, kde-format
-msgid ""
-"There was a problem with the request.\n"
-"%1 (%2)."
-msgstr ""
-"Dat geev en Problem mit de Anfraag.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:41
-#, kde-format
-msgid "Protocol for the collection does not support MULTIGET"
-msgstr "Protokoll för de Sammeln ünnerstütt MULTIGET nich"
-
-#: daverror-kdepim-runtime.cpp:44
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server encountered an error that prevented it from completing your "
-#| "request"
-msgid ""
-"The server encountered an error that prevented it from completing your "
-"request: %1 (%2)"
-msgstr ""
-"De Server hett en Fehler opdeckt. Dien Anfraag lett sik nich afarbeiden."
-
-#: daverror-kdepim-runtime.cpp:48
-#, kde-format
-msgid ""
-"There was a problem with the request. The collection has not been deleted "
-"from the server.\n"
-"%1 (%2)."
-msgstr ""
-"Dat geev en Problem mit de Anfraag. - De Sammeln wöör nich vun den Server "
-"wegmaakt.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:54
-#, kde-format
-msgid "Invalid responses from backend"
-msgstr "Leeg Antwoorden vun Hülpprogramm"
-
-#: daverror-kdepim-runtime.cpp:57
-#, kde-format
-msgid "Error setting focus for XQuery"
-msgstr "Fehler bi't Fastleggen vun Fokus för XQuery."
-
-#: daverror-kdepim-runtime.cpp:60
-#, kde-format
-msgid "Invalid XQuery submitted by DAV implementation"
-msgstr "DAV-Ümsetten hett leeg XQuery loosstüert."
-
-#: daverror-kdepim-runtime.cpp:64
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The item has not been modified on "
-#| "the server.\n"
-#| "%1 (%2)."
-msgid ""
-"There was a problem with the request. The collection has not been modified "
-"on the server.\n"
-"%1 (%2)."
-msgstr ""
-"Dat geev en Problem mit de Anfraag. - De Indrag wöör nich op den Server "
-"ännert.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:70
-#, kde-format
-msgid "No properties to change or remove"
-msgstr "Dat gifft keen Egenschappen, de sik ännern oder wegmaken laat."
-
-#: daverror-kdepim-runtime.cpp:73
-#, kde-format
-msgid "There was an error when modifying the properties"
-msgstr "Bi't Ännern vun de Egenschappen hett dat en Fehler geven."
-
-#: daverror-kdepim-runtime.cpp:75
-#, fuzzy, kde-format
-#| msgid ""
-#| "\n"
-#| "The server returned more information:\n"
-msgid ""
-"\n"
-"The server returned more information:\n"
-"%1"
-msgstr ""
-"\n"
-"De Server hett mehr Informatschonen utgeven:\n"
-
-#: daverror-kdepim-runtime.cpp:80
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been created on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"Dat geev en Problem mit de Anfraag. - De Indrag wöör nich op den Server "
-"opstellt.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:87
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been deleted from the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"Dat geev en Problem mit de Anfraag. - De Indrag wöör nich vun den Server "
-"wegmaakt.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:94
-#, kde-format
-msgid ""
-"There was a problem with the request. The item was not modified on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"Dat geev en Problem mit de Anfraag. - De Indrag wöör nich op den Server "
-"ännert.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:100
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request.\n"
-#| "%1 (%2)."
-msgid "There was a problem with the request."
-msgstr ""
-"Dat geev en Problem mit de Anfraag.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:104
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The item has not been created on "
-#| "the server.\n"
-#| "%1 (%2)."
-msgid ""
-"There was a problem with the request. The requested MIME types are not "
-"supported."
-msgstr ""
-"Dat geev en Problem mit de Anfraag. - De Indrag wöör nich op den Server "
-"opstellt.\n"
-"%1 (%2)."
-
 #: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
@@ -337,100 +171,112 @@ msgstr "Leeg Antwoort vun Server"
 msgid "Unable to parse free-busy data received"
 msgstr "Kregen Free-/Bunnen-Daten laat sik nich inlesen"
 
-#: davgroupwareresource.cpp:272
+#: davgroupwareresource.cpp:273
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "In'n Afkoppelbedrief laat sik keen Free-/Bunnen-Informatschonen halen."
 
-#: davgroupwareresource.cpp:359
+#: davgroupwareresource.cpp:360
 #, kde-format
 msgid "Fetching collections"
 msgstr "Sammeln warrt haalt"
 
-#: davgroupwareresource.cpp:419
+#: davgroupwareresource.cpp:420
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Anfraag, Indrääg för en nich begäng Sammeln to halen: %1"
 
-#: davgroupwareresource.cpp:486
+#: davgroupwareresource.cpp:487
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Leeg Sammeln för Indrag %1."
 
-#: davgroupwareresource.cpp:763
+#: davgroupwareresource.cpp:764
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to delete item exceptions: %1"
 msgstr "Sammeln laat sik nich halen: %1"
 
-#: davgroupwareresource.cpp:946
+#: davgroupwareresource.cpp:865
+#, fuzzy, kde-format
+#| msgid "Unable to change item: %1"
+msgid "Unable to fetch items: %1"
+msgstr "Element lett sik nich ännern: %1"
+
+#: davgroupwareresource.cpp:932
+#, fuzzy, kde-format
+#| msgid "Unable to remove item: %1"
+msgid "Unable to move item: %1"
+msgstr "Element lett sik nich wegmaken: %1"
+
+#: davgroupwareresource.cpp:1079
 #, fuzzy, kde-format
 #| msgid "Unable to add item: %1"
 msgid "Unable to modify items: %1"
 msgstr "Element lett sik nich tofögen: %1"
 
-#: davgroupwareresource.cpp:985
+#: davgroupwareresource.cpp:1152
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to modify collection: %1"
 msgstr "Sammeln lett sik nich wegmaken: %1"
 
-#: davgroupwareresource.cpp:1114
+#: davgroupwareresource.cpp:1281
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to create collection: %1"
 msgstr "Sammeln lett sik nich wegmaken: %1"
 
-#: davgroupwareresource.cpp:1143
+#: davgroupwareresource.cpp:1310
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Sammeln lett sik nich wegmaken: %1"
 
-#: davgroupwareresource.cpp:1163 davgroupwareresource.cpp:1210
+#: davgroupwareresource.cpp:1330 davgroupwareresource.cpp:1377
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Sammeln laat sik nich halen: %1"
 
-#: davgroupwareresource.cpp:1178
+#: davgroupwareresource.cpp:1345
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Failed to retrieve collection: %1"
 msgstr "Sammeln laat sik nich halen: %1"
 
-#: davgroupwareresource.cpp:1276 davgroupwareresource.cpp:1380
+#: davgroupwareresource.cpp:1443 davgroupwareresource.cpp:1547
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Element laat sik nich halen: %1"
 
-#: davgroupwareresource.cpp:1516
+#: davgroupwareresource.cpp:1683
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Element lett sik nich halen: %1"
 
-#: davgroupwareresource.cpp:1536
+#: davgroupwareresource.cpp:1703
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
 
-#: davgroupwareresource.cpp:1596
+#: davgroupwareresource.cpp:1763
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Element lett sik nich tofögen: %1"
 
-#: davgroupwareresource.cpp:1641 davgroupwareresource.cpp:1773
-#: davgroupwareresource.cpp:1785
+#: davgroupwareresource.cpp:1808 davgroupwareresource.cpp:1940
+#: davgroupwareresource.cpp:1952
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Element lett sik nich ännern: %1"
 
-#: davgroupwareresource.cpp:1747 davgroupwareresource.cpp:1804
+#: davgroupwareresource.cpp:1914 davgroupwareresource.cpp:1971
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Element lett sik nich wegmaken: %1"
 
-#: davgroupwareresource.cpp:1891 davgroupwareresource.cpp:1892
+#: davgroupwareresource.cpp:2058 davgroupwareresource.cpp:2059
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "De Ressource is noch nich inricht."
@@ -805,6 +651,137 @@ msgstr "CardDAV"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDAV"
+
+#~ msgid "Invalid username/password"
+#~ msgstr "Leeg Brukernaam oder Passwoort"
+
+#~ msgid "Access forbidden"
+#~ msgstr "Keen Togriep"
+
+#~ msgid "Resource not found"
+#~ msgstr "Ressource nich funnen"
+
+#~ msgid "HTTP error"
+#~ msgstr "HTTP-Fehler"
+
+#~ msgid ""
+#~ "There was a problem with the request.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Dat geev en Problem mit de Anfraag.\n"
+#~ "%1 (%2)."
+
+#~ msgid "Protocol for the collection does not support MULTIGET"
+#~ msgstr "Protokoll för de Sammeln ünnerstütt MULTIGET nich"
+
+#, fuzzy
+#~| msgid ""
+#~| "The server encountered an error that prevented it from completing your "
+#~| "request"
+#~ msgid ""
+#~ "The server encountered an error that prevented it from completing your "
+#~ "request: %1 (%2)"
+#~ msgstr ""
+#~ "De Server hett en Fehler opdeckt. Dien Anfraag lett sik nich afarbeiden."
+
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been deleted "
+#~ "from the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Dat geev en Problem mit de Anfraag. - De Sammeln wöör nich vun den Server "
+#~ "wegmaakt.\n"
+#~ "%1 (%2)."
+
+#~ msgid "Invalid responses from backend"
+#~ msgstr "Leeg Antwoorden vun Hülpprogramm"
+
+#~ msgid "Error setting focus for XQuery"
+#~ msgstr "Fehler bi't Fastleggen vun Fokus för XQuery."
+
+#~ msgid "Invalid XQuery submitted by DAV implementation"
+#~ msgstr "DAV-Ümsetten hett leeg XQuery loosstüert."
+
+#, fuzzy
+#~| msgid ""
+#~| "There was a problem with the request. The item has not been modified on "
+#~| "the server.\n"
+#~| "%1 (%2)."
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been "
+#~ "modified on the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Dat geev en Problem mit de Anfraag. - De Indrag wöör nich op den Server "
+#~ "ännert.\n"
+#~ "%1 (%2)."
+
+#~ msgid "No properties to change or remove"
+#~ msgstr "Dat gifft keen Egenschappen, de sik ännern oder wegmaken laat."
+
+#~ msgid "There was an error when modifying the properties"
+#~ msgstr "Bi't Ännern vun de Egenschappen hett dat en Fehler geven."
+
+#, fuzzy
+#~| msgid ""
+#~| "\n"
+#~| "The server returned more information:\n"
+#~ msgid ""
+#~ "\n"
+#~ "The server returned more information:\n"
+#~ "%1"
+#~ msgstr ""
+#~ "\n"
+#~ "De Server hett mehr Informatschonen utgeven:\n"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been created on "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Dat geev en Problem mit de Anfraag. - De Indrag wöör nich op den Server "
+#~ "opstellt.\n"
+#~ "%1 (%2)."
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been deleted from "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Dat geev en Problem mit de Anfraag. - De Indrag wöör nich vun den Server "
+#~ "wegmaakt.\n"
+#~ "%1 (%2)."
+
+#~ msgid ""
+#~ "There was a problem with the request. The item was not modified on the "
+#~ "server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "Dat geev en Problem mit de Anfraag. - De Indrag wöör nich op den Server "
+#~ "ännert.\n"
+#~ "%1 (%2)."
+
+#, fuzzy
+#~| msgid ""
+#~| "There was a problem with the request.\n"
+#~| "%1 (%2)."
+#~ msgid "There was a problem with the request."
+#~ msgstr ""
+#~ "Dat geev en Problem mit de Anfraag.\n"
+#~ "%1 (%2)."
+
+#, fuzzy
+#~| msgid ""
+#~| "There was a problem with the request. The item has not been created on "
+#~| "the server.\n"
+#~| "%1 (%2)."
+#~ msgid ""
+#~ "There was a problem with the request. The requested MIME types are not "
+#~ "supported."
+#~ msgstr ""
+#~ "Dat geev en Problem mit de Anfraag. - De Indrag wöör nich op den Server "
+#~ "opstellt.\n"
+#~ "%1 (%2)."
 
 #~ msgid "The account id in WebAccounts framework."
 #~ msgstr "De Konto-ID binnen dat WebAccounts-Rahmenwark."

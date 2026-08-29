@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-30 00:45+0000\n"
+"POT-Creation-Date: 2026-08-29 00:46+0000\n"
 "PO-Revision-Date: 2022-02-06 14:21+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian\n"
@@ -154,190 +154,6 @@ msgstr "Elimină"
 msgid "Edit"
 msgstr "Editează"
 
-#: daverror-kdepim-runtime.cpp:26
-#, fuzzy, kde-format
-#| msgid "Invalid username/password"
-msgid "Invalid username/password"
-msgstr "Utilizator/parolă nevalide"
-
-#: daverror-kdepim-runtime.cpp:28
-#, fuzzy, kde-format
-#| msgid "Access forbidden"
-msgid "Access forbidden"
-msgstr "Acces interzis"
-
-#: daverror-kdepim-runtime.cpp:30
-#, fuzzy, kde-format
-#| msgid "Resource not found"
-msgid "Resource not found"
-msgstr "Resursa nu a fost găsită"
-
-#: daverror-kdepim-runtime.cpp:32
-#, kde-format
-msgid "HTTP error"
-msgstr "Eroare HTTP"
-
-#: daverror-kdepim-runtime.cpp:35
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request.\n"
-#| "%1 (%2)."
-msgid ""
-"There was a problem with the request.\n"
-"%1 (%2)."
-msgstr ""
-"A apărut o problemă cu cererea.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:41
-#, fuzzy, kde-format
-#| msgid "Protocol for the collection does not support MULTIGET"
-msgid "Protocol for the collection does not support MULTIGET"
-msgstr "Protocolul pentru colecție nu susține MULTIGET"
-
-#: daverror-kdepim-runtime.cpp:44
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server encountered an error that prevented it from completing your "
-#| "request: %1 (%2)"
-msgid ""
-"The server encountered an error that prevented it from completing your "
-"request: %1 (%2)"
-msgstr ""
-"Serverul a întâmpinat o eroare ce l-a împiedicat să vă completeze cererea: "
-"%1 (%2)"
-
-#: daverror-kdepim-runtime.cpp:48
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The collection has not been deleted "
-#| "from the server.\n"
-#| "%1 (%2)."
-msgid ""
-"There was a problem with the request. The collection has not been deleted "
-"from the server.\n"
-"%1 (%2)."
-msgstr ""
-"A apărut o problemă cu cererea. Colecția nu a fost ștearsă de pe server.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:54
-#, fuzzy, kde-format
-#| msgid "Invalid responses from backend"
-msgid "Invalid responses from backend"
-msgstr "Răspunsuri nevalide de la platformă"
-
-#: daverror-kdepim-runtime.cpp:57
-#, fuzzy, kde-format
-#| msgid "Error setting focus for XQuery"
-msgid "Error setting focus for XQuery"
-msgstr "Eroare la stabilirea focalizării pentru XQuery"
-
-#: daverror-kdepim-runtime.cpp:60
-#, fuzzy, kde-format
-#| msgid "Invalid XQuery submitted by DAV implementation"
-msgid "Invalid XQuery submitted by DAV implementation"
-msgstr "XQuery nevalid transmis de implementarea DAV"
-
-#: daverror-kdepim-runtime.cpp:64
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The collection has not been "
-#| "modified on the server.\n"
-#| "%1 (%2)."
-msgid ""
-"There was a problem with the request. The collection has not been modified "
-"on the server.\n"
-"%1 (%2)."
-msgstr ""
-"A apărut o problemă cu cererea. Colecția nu a fost modificată pe server.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:70
-#, kde-format
-msgid "No properties to change or remove"
-msgstr "Nu sunt proprietăți de modificat sau eliminat"
-
-#: daverror-kdepim-runtime.cpp:73
-#, fuzzy, kde-format
-#| msgid "There was an error when modifying the properties"
-msgid "There was an error when modifying the properties"
-msgstr "A apărut o eroare la modificarea proprietăților"
-
-#: daverror-kdepim-runtime.cpp:75
-#, fuzzy, kde-format
-#| msgid ""
-#| "\n"
-#| "The server returned more information:\n"
-#| "%1"
-msgid ""
-"\n"
-"The server returned more information:\n"
-"%1"
-msgstr ""
-"\n"
-"Serverul a întors mai multă informație:\n"
-"%1"
-
-#: daverror-kdepim-runtime.cpp:80
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The item has not been created on "
-#| "the server.\n"
-#| "%1 (%2)."
-msgid ""
-"There was a problem with the request. The item has not been created on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"A apărut o problemă cu cererea. Elementul nu a fost creat pe server.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:87
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The item has not been deleted from "
-#| "the server.\n"
-#| "%1 (%2)."
-msgid ""
-"There was a problem with the request. The item has not been deleted from the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"A apărut o problemă cu cererea. Elementul nu a fost șters de pe server.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:94
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The item was not modified on the "
-#| "server.\n"
-#| "%1 (%2)."
-msgid ""
-"There was a problem with the request. The item was not modified on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"A apărut o problemă cu cererea. Elementul nu a fost modificat pe server.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:100
-#, fuzzy, kde-format
-#| msgid "There was a problem with the request."
-msgid "There was a problem with the request."
-msgstr "A apărut o problemă cu cererea."
-
-#: daverror-kdepim-runtime.cpp:104
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The requested MIME types are not "
-#| "supported."
-msgid ""
-"There was a problem with the request. The requested MIME types are not "
-"supported."
-msgstr ""
-"A apărut o problemă cu cererea. Tipurile MIME cerute nu sunt susținute."
-
 #: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
@@ -353,103 +169,115 @@ msgstr "Răspuns nevalid de la server"
 msgid "Unable to parse free-busy data received"
 msgstr ""
 
-#: davgroupwareresource.cpp:272
+#: davgroupwareresource.cpp:273
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve added item %1."
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "Elementul adăugat „%1” nu a putut fi preluat."
 
-#: davgroupwareresource.cpp:359
+#: davgroupwareresource.cpp:360
 #, kde-format
 msgid "Fetching collections"
 msgstr "Se preiau colecțiile"
 
-#: davgroupwareresource.cpp:419
+#: davgroupwareresource.cpp:420
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr ""
 
-#: davgroupwareresource.cpp:486
+#: davgroupwareresource.cpp:487
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Colecție nevalidă pentru elementul %1."
 
-#: davgroupwareresource.cpp:763
+#: davgroupwareresource.cpp:764
 #, fuzzy, kde-format
 #| msgid "Unable to add item: %1"
 msgid "Unable to delete item exceptions: %1"
 msgstr "Elementul nu poate fi adăugat: %1"
 
-#: davgroupwareresource.cpp:946
+#: davgroupwareresource.cpp:865
+#, fuzzy, kde-format
+#| msgid "Unable to add item: %1"
+msgid "Unable to fetch items: %1"
+msgstr "Elementul nu poate fi adăugat: %1"
+
+#: davgroupwareresource.cpp:932
+#, fuzzy, kde-format
+#| msgid "Unable to add item: %1"
+msgid "Unable to move item: %1"
+msgstr "Elementul nu poate fi adăugat: %1"
+
+#: davgroupwareresource.cpp:1079
 #, fuzzy, kde-format
 #| msgid "Unable to add item: %1"
 msgid "Unable to modify items: %1"
 msgstr "Elementul nu poate fi adăugat: %1"
 
-#: davgroupwareresource.cpp:985
+#: davgroupwareresource.cpp:1152
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to modify collection: %1"
 msgstr "Colecția nu poate fi eliminată: %1"
 
-#: davgroupwareresource.cpp:1114
+#: davgroupwareresource.cpp:1281
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to create collection: %1"
 msgstr "Colecția nu poate fi eliminată: %1"
 
-#: davgroupwareresource.cpp:1143
+#: davgroupwareresource.cpp:1310
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Colecția nu poate fi eliminată: %1"
 
-#: davgroupwareresource.cpp:1163 davgroupwareresource.cpp:1210
+#: davgroupwareresource.cpp:1330 davgroupwareresource.cpp:1377
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr ""
 
-#: davgroupwareresource.cpp:1178
+#: davgroupwareresource.cpp:1345
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Failed to retrieve collection: %1"
 msgstr "Colecția nu poate fi eliminată: %1"
 
-#: davgroupwareresource.cpp:1276 davgroupwareresource.cpp:1380
+#: davgroupwareresource.cpp:1443 davgroupwareresource.cpp:1547
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr ""
 
-#: davgroupwareresource.cpp:1516
+#: davgroupwareresource.cpp:1683
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr ""
 
-#: davgroupwareresource.cpp:1536
+#: davgroupwareresource.cpp:1703
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
 
-#: davgroupwareresource.cpp:1596
+#: davgroupwareresource.cpp:1763
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Elementul nu poate fi adăugat: %1"
 
-#: davgroupwareresource.cpp:1641 davgroupwareresource.cpp:1773
-#: davgroupwareresource.cpp:1785
+#: davgroupwareresource.cpp:1808 davgroupwareresource.cpp:1940
+#: davgroupwareresource.cpp:1952
 #, fuzzy, kde-format
 #| msgid "Unable to add item: %1"
 msgid "Unable to change item: %1"
 msgstr "Elementul nu poate fi adăugat: %1"
 
-#: davgroupwareresource.cpp:1747 davgroupwareresource.cpp:1804
+#: davgroupwareresource.cpp:1914 davgroupwareresource.cpp:1971
 #, fuzzy, kde-format
 #| msgid "Unable to add item: %1"
 msgid "Unable to remove item: %1"
 msgstr "Elementul nu poate fi adăugat: %1"
 
-#: davgroupwareresource.cpp:1891 davgroupwareresource.cpp:1892
+#: davgroupwareresource.cpp:2058 davgroupwareresource.cpp:2059
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Resursa nu este configurată încă"
@@ -814,6 +642,168 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
+
+#, fuzzy
+#~| msgid "Invalid username/password"
+#~ msgid "Invalid username/password"
+#~ msgstr "Utilizator/parolă nevalide"
+
+#, fuzzy
+#~| msgid "Access forbidden"
+#~ msgid "Access forbidden"
+#~ msgstr "Acces interzis"
+
+#, fuzzy
+#~| msgid "Resource not found"
+#~ msgid "Resource not found"
+#~ msgstr "Resursa nu a fost găsită"
+
+#~ msgid "HTTP error"
+#~ msgstr "Eroare HTTP"
+
+#, fuzzy
+#~| msgid ""
+#~| "There was a problem with the request.\n"
+#~| "%1 (%2)."
+#~ msgid ""
+#~ "There was a problem with the request.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "A apărut o problemă cu cererea.\n"
+#~ "%1 (%2)."
+
+#, fuzzy
+#~| msgid "Protocol for the collection does not support MULTIGET"
+#~ msgid "Protocol for the collection does not support MULTIGET"
+#~ msgstr "Protocolul pentru colecție nu susține MULTIGET"
+
+#, fuzzy
+#~| msgid ""
+#~| "The server encountered an error that prevented it from completing your "
+#~| "request: %1 (%2)"
+#~ msgid ""
+#~ "The server encountered an error that prevented it from completing your "
+#~ "request: %1 (%2)"
+#~ msgstr ""
+#~ "Serverul a întâmpinat o eroare ce l-a împiedicat să vă completeze "
+#~ "cererea: %1 (%2)"
+
+#, fuzzy
+#~| msgid ""
+#~| "There was a problem with the request. The collection has not been "
+#~| "deleted from the server.\n"
+#~| "%1 (%2)."
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been deleted "
+#~ "from the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "A apărut o problemă cu cererea. Colecția nu a fost ștearsă de pe server.\n"
+#~ "%1 (%2)."
+
+#, fuzzy
+#~| msgid "Invalid responses from backend"
+#~ msgid "Invalid responses from backend"
+#~ msgstr "Răspunsuri nevalide de la platformă"
+
+#, fuzzy
+#~| msgid "Error setting focus for XQuery"
+#~ msgid "Error setting focus for XQuery"
+#~ msgstr "Eroare la stabilirea focalizării pentru XQuery"
+
+#, fuzzy
+#~| msgid "Invalid XQuery submitted by DAV implementation"
+#~ msgid "Invalid XQuery submitted by DAV implementation"
+#~ msgstr "XQuery nevalid transmis de implementarea DAV"
+
+#, fuzzy
+#~| msgid ""
+#~| "There was a problem with the request. The collection has not been "
+#~| "modified on the server.\n"
+#~| "%1 (%2)."
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been "
+#~ "modified on the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "A apărut o problemă cu cererea. Colecția nu a fost modificată pe server.\n"
+#~ "%1 (%2)."
+
+#~ msgid "No properties to change or remove"
+#~ msgstr "Nu sunt proprietăți de modificat sau eliminat"
+
+#, fuzzy
+#~| msgid "There was an error when modifying the properties"
+#~ msgid "There was an error when modifying the properties"
+#~ msgstr "A apărut o eroare la modificarea proprietăților"
+
+#, fuzzy
+#~| msgid ""
+#~| "\n"
+#~| "The server returned more information:\n"
+#~| "%1"
+#~ msgid ""
+#~ "\n"
+#~ "The server returned more information:\n"
+#~ "%1"
+#~ msgstr ""
+#~ "\n"
+#~ "Serverul a întors mai multă informație:\n"
+#~ "%1"
+
+#, fuzzy
+#~| msgid ""
+#~| "There was a problem with the request. The item has not been created on "
+#~| "the server.\n"
+#~| "%1 (%2)."
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been created on "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "A apărut o problemă cu cererea. Elementul nu a fost creat pe server.\n"
+#~ "%1 (%2)."
+
+#, fuzzy
+#~| msgid ""
+#~| "There was a problem with the request. The item has not been deleted from "
+#~| "the server.\n"
+#~| "%1 (%2)."
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been deleted from "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "A apărut o problemă cu cererea. Elementul nu a fost șters de pe server.\n"
+#~ "%1 (%2)."
+
+#, fuzzy
+#~| msgid ""
+#~| "There was a problem with the request. The item was not modified on the "
+#~| "server.\n"
+#~| "%1 (%2)."
+#~ msgid ""
+#~ "There was a problem with the request. The item was not modified on the "
+#~ "server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "A apărut o problemă cu cererea. Elementul nu a fost modificat pe server.\n"
+#~ "%1 (%2)."
+
+#, fuzzy
+#~| msgid "There was a problem with the request."
+#~ msgid "There was a problem with the request."
+#~ msgstr "A apărut o problemă cu cererea."
+
+#, fuzzy
+#~| msgid ""
+#~| "There was a problem with the request. The requested MIME types are not "
+#~| "supported."
+#~ msgid ""
+#~ "There was a problem with the request. The requested MIME types are not "
+#~ "supported."
+#~ msgstr ""
+#~ "A apărut o problemă cu cererea. Tipurile MIME cerute nu sunt susținute."
 
 #, fuzzy
 #~| msgid "A password is required for user %1"

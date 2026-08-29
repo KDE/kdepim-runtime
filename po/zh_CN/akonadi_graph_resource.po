@@ -21,17 +21,17 @@ msgstr ""
 #: graphclient/auth/graphoauth.cpp:137
 #, kde-format
 msgid "OAuth2: cannot listen on localhost (no free port?)"
-msgstr ""
+msgstr "OAuth2：无法监听 localhost (没有空闲端口？)"
 
 #: graphclient/auth/graphoauth.cpp:166
 #, kde-format
 msgid "OAuth2 request failed"
-msgstr ""
+msgstr "OAuth2 请求失败"
 
 #: graphclient/graphrequest.cpp:70
 #, kde-format
 msgid "Not authenticated with Microsoft 365 yet"
-msgstr ""
+msgstr "尚未使用 Microsoft 365 进行身份验证"
 
 #: graphclient/graphrequest.cpp:152
 #, kde-format
@@ -39,126 +39,126 @@ msgctxt ""
 "%1 is the server error message, %2 the HTTP status code, %3 the server error "
 "code"
 msgid "%1 (HTTP %2, %3)"
-msgstr ""
+msgstr "%1 (HTTP %2，%3)"
 
 #: graphconfig.cpp:45
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Account name:"
-msgstr ""
+msgstr "账户名称："
 
 #: graphconfig.cpp:48
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Email / UPN:"
-msgstr ""
+msgstr "Email / UPN："
 
 #: graphconfig.cpp:51
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Azure tenant:"
-msgstr ""
+msgstr "Azure 租户："
 
 #: graphconfig.cpp:53
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Application (client) ID:"
-msgstr ""
+msgstr "应用程序 (客户端) ID："
 
 #: graphconfig.cpp:56
 #, kde-format
 msgctxt "@item:valuesuffix minutes"
 msgid " min"
-msgstr ""
+msgstr " 分钟"
 
 #: graphconfig.cpp:57
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Check for new mail every:"
-msgstr ""
+msgstr "检查新邮件间隔时间："
 
 #: graphconfig.cpp:59
 #, kde-format
 msgctxt "@info"
 msgid "Changing the tenant or client id requires signing in again."
-msgstr ""
+msgstr "更改租户或客户端 ID 需要重新登录。"
 
 #: graphmtaresource.cpp:79
 #, kde-format
 msgid "Unable to connect to master Microsoft 365 (Graph) resource"
-msgstr ""
+msgstr "无法连接到主 Microsoft 365 (Graph) 资源"
 
 #: graphmtaresource.cpp:88
 #, kde-format
 msgid "Message to be sent has no MIME payload"
-msgstr ""
+msgstr "要发送的消息没有 MIME 有效负载"
 
 #: graphresource.cpp:166
 #, kde-format
 msgctxt "@info:status"
 msgid "Authenticating with Microsoft 365"
-msgstr ""
+msgstr "正在使用 Microsoft 365 进行身份验证"
 
 #: graphresource.cpp:180
 #, kde-format
 msgctxt "@info:status"
 msgid "Migrating item identifiers"
-msgstr ""
+msgstr "正在迁移项目标识符"
 
 #: graphresource.cpp:185
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to migrate item identifiers: %1"
-msgstr ""
+msgstr "迁移项目标识符失败：%1"
 
 #: graphresource.cpp:203
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
-msgstr ""
+msgstr "就绪"
 
 #: graphresource.cpp:221
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed: %1"
-msgstr ""
+msgstr "身份验证失败：%1"
 
 #: graphresource.cpp:293 graphresource.cpp:550
 #, kde-format
 msgid "Waiting for the item identifier migration to finish"
-msgstr ""
+msgstr "正在等待项目标识符迁移完成"
 
 #: graphresource.cpp:379
 #, kde-format
 msgctxt "@item mail folder"
 msgid "Contacts"
-msgstr ""
+msgstr "联系人"
 
 #: graphresource.cpp:731 graphresource.cpp:758
 #, kde-format
 msgid "The requested items no longer exist"
-msgstr ""
+msgstr "请求的项目不存在"
 
 #: graphresource.cpp:1024
 #, kde-format
 msgid "Cannot move task %1: no payload"
-msgstr ""
+msgstr "无法移动任务 %1：没有有效负载"
 
 #: graphresource.cpp:1032
 #, kde-format
 msgid "Cannot move event %1: no payload"
-msgstr ""
+msgstr "无法移动事件 %1：没有有效负载"
 
 #: graphresource.cpp:1146
 #, kde-format
 msgid "Moving contacts between folders is not supported"
-msgstr ""
+msgstr "不支持在文件夹之间移动联系人"
 
 #. i18n: ectx: label, entry (Email), group (General)
 #: graphresource.kcfg:10
 #, kde-format
 msgid "Primary email / UPN of the Microsoft 365 account."
-msgstr ""
+msgstr "Microsoft 365 账户的主电子邮件 / UPN。"
 
 #. i18n: ectx: label, entry (TenantId), group (General)
 #: graphresource.kcfg:13
@@ -166,7 +166,7 @@ msgstr ""
 msgid ""
 "Azure AD tenant: \"common\", \"organizations\", \"consumers\" or a tenant "
 "GUID."
-msgstr ""
+msgstr "Azure AD 租户：“common”、“organizations”、“consumers”或租户 GUID。"
 
 #. i18n: ectx: label, entry (ClientId), group (General)
 #: graphresource.kcfg:17
@@ -175,31 +175,33 @@ msgid ""
 "Azure app registration Application (client) ID. Configure your own in the "
 "account dialog — see README.md / docs."
 msgstr ""
+"Azure 应用注册应用程序 (客户端) ID。请在账户对话框中配置您的 ID — 参见 "
+"README.md / 文档。"
 
 #. i18n: ectx: label, entry (FolderDeltaLink), group (General)
 #: graphresource.kcfg:20
 #, kde-format
 msgid "Persisted top-level mailFolders @odata.deltaLink (sync state)."
-msgstr ""
+msgstr "保持顶级邮件文件夹 @odata.deltaLink (同步状态)。"
 
 #. i18n: ectx: label, entry (PollInterval), group (General)
 #: graphresource.kcfg:23
 #, kde-format
 msgid "Delta poll interval in minutes (no push on Graph for desktop)."
-msgstr ""
+msgstr "增量轮询间隔时间 (分钟) (桌面版 Graph 不推送)。"
 
 #. i18n: ectx: label, entry (ImmutableIdsMigrated), group (General)
 #: graphresource.kcfg:27
 #, kde-format
 msgid "Whether stored remoteIds have been migrated to Graph immutable ids."
-msgstr ""
+msgstr "存储的远程 ID 是否已迁移到 Graph 不可变 ID。"
 
 #: jobs/graphfetchfoldersjob.cpp:49
 #, kde-format
 msgid "Could not resolve the mailbox root folder"
-msgstr ""
+msgstr "无法解析邮箱根文件夹"
 
 #: jobs/graphfetchitempayloadjob.cpp:75
 #, kde-format
 msgid "Failed to fetch the content of message %1 (HTTP %2)"
-msgstr ""
+msgstr "无法获取消息 %1 的内容 (HTTP %2)"

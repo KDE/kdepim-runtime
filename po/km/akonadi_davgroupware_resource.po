@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-30 00:45+0000\n"
+"POT-Creation-Date: 2026-08-29 00:46+0000\n"
 "PO-Revision-Date: 2011-12-21 11:31+0700\n"
 "Last-Translator: Seng Sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <supprot@khmeros.info>\n"
@@ -159,165 +159,6 @@ msgstr "យកចេញ"
 msgid "Edit"
 msgstr "កែសម្រួល"
 
-#: daverror-kdepim-runtime.cpp:26
-#, kde-format
-msgid "Invalid username/password"
-msgstr "ពាក្យសម្ងាត់​/ឈ្មោះ​អ្នក​ប្រើ មិន​ត្រឹមត្រូវ​ឡើយ"
-
-#: daverror-kdepim-runtime.cpp:28
-#, kde-format
-msgid "Access forbidden"
-msgstr "ការ​ចូល​ដំណើរការ​ត្រូវ​បាន​ហាមឃាត់"
-
-#: daverror-kdepim-runtime.cpp:30
-#, kde-format
-msgid "Resource not found"
-msgstr "រក​មិន​ឃើញ​ធនធាន​ឡើយ"
-
-#: daverror-kdepim-runtime.cpp:32
-#, kde-format
-msgid "HTTP error"
-msgstr "កំហុស HTTP"
-
-#: daverror-kdepim-runtime.cpp:35
-#, kde-format
-msgid ""
-"There was a problem with the request.\n"
-"%1 (%2)."
-msgstr ""
-"មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ៖ \n"
-"%1 (%2) ។"
-
-#: daverror-kdepim-runtime.cpp:41
-#, kde-format
-msgid "Protocol for the collection does not support MULTIGET"
-msgstr ""
-
-#: daverror-kdepim-runtime.cpp:44
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server encountered an error that prevented it from completing your "
-#| "request"
-msgid ""
-"The server encountered an error that prevented it from completing your "
-"request: %1 (%2)"
-msgstr "ម៉ាស៊ីនបម្រើ​បាន​ជួប​ប្រទះ​កំហុស ដែល​ការពារ​មិន​ឲ្យ​បញ្ចប់​សំណើរ​របស់​អ្នក"
-
-#: daverror-kdepim-runtime.cpp:48
-#, kde-format
-msgid ""
-"There was a problem with the request. The collection has not been deleted "
-"from the server.\n"
-"%1 (%2)."
-msgstr ""
-"មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ - សម្រាំង​មិន​ត្រូវ​បាន​លុប​ពី​ម៉ាស៊ីន​បម្រើ​ទេ ។ \n"
-"%1 (%2) ។"
-
-#: daverror-kdepim-runtime.cpp:54
-#, kde-format
-msgid "Invalid responses from backend"
-msgstr "ការ​ឆ្លើយតប​មិន​ត្រឹមត្រូវ​ពី​កម្មវិធី​ផ្នែកខាង​ក្រោយ"
-
-#: daverror-kdepim-runtime.cpp:57
-#, kde-format
-msgid "Error setting focus for XQuery"
-msgstr "កំហុស​ក្នុងការ​កំណត់​ការ​ផ្ដោត​សម្រាប់ XQuery"
-
-#: daverror-kdepim-runtime.cpp:60
-#, kde-format
-msgid "Invalid XQuery submitted by DAV implementation"
-msgstr "បាន​ដាក់ស្នើ XQuery មិន​ត្រឹមត្រូវ​ដោយ​ការ​អនុវត្ត DAV"
-
-#: daverror-kdepim-runtime.cpp:64
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The item has not been modified on "
-#| "the server.\n"
-#| "%1 (%2)."
-msgid ""
-"There was a problem with the request. The collection has not been modified "
-"on the server.\n"
-"%1 (%2)."
-msgstr ""
-"មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ។ ធាតុ​មិន​ត្រូវ​បាន​កែប្រែ​នៅ​លើ​ម៉ាស៊ីន​បម្រើ​ទេ ៖ \n"
-"%1 (%2) ។"
-
-#: daverror-kdepim-runtime.cpp:70
-#, kde-format
-msgid "No properties to change or remove"
-msgstr "គ្មាន​លក្ខណសម្បត្តិ​ដើម្បី​ផ្លាស់ប្ដូរ ឬ​យកចេញទេ"
-
-#: daverror-kdepim-runtime.cpp:73
-#, kde-format
-msgid "There was an error when modifying the properties"
-msgstr "មាន​កំហុស​ នៅពេល​កែប្រែ​លក្ខណសម្បត្តិ"
-
-#: daverror-kdepim-runtime.cpp:75
-#, fuzzy, kde-format
-#| msgid ""
-#| "\n"
-#| "The server returned more information:\n"
-msgid ""
-"\n"
-"The server returned more information:\n"
-"%1"
-msgstr ""
-"\n"
-"ម៉ាស៊ីន​បម្រើ​បាន​ត្រឡប់​ព័ត៌មាន​បន្ថែម ៖\n"
-
-#: daverror-kdepim-runtime.cpp:80
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been created on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ធាតុ​មិន​ត្រូវ​បាន​បង្កើត​នៅ​លើ​ម៉ាស៊ីន​បម្រើ​ទេ ។ \n"
-"%1 (%2) ។"
-
-#: daverror-kdepim-runtime.cpp:87
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been deleted from the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ធាតុ​មិន​ត្រូវ​បាន​លុប​ពី​ម៉ាស៊ីន​បម្រើ​ទេ ។ \n"
-"%1 (%2) ។"
-
-#: daverror-kdepim-runtime.cpp:94
-#, kde-format
-msgid ""
-"There was a problem with the request. The item was not modified on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ធាតុ​មិន​ត្រូវ​បាន​កែប្រែ​នៅ​លើ​ម៉ាស៊ីន​បម្រើ​ទេ ។ \n"
-"%1 (%2) ។"
-
-#: daverror-kdepim-runtime.cpp:100
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request.\n"
-#| "%1 (%2)."
-msgid "There was a problem with the request."
-msgstr ""
-"មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ៖ \n"
-"%1 (%2) ។"
-
-#: daverror-kdepim-runtime.cpp:104
-#, fuzzy, kde-format
-#| msgid ""
-#| "There was a problem with the request. The item has not been created on "
-#| "the server.\n"
-#| "%1 (%2)."
-msgid ""
-"There was a problem with the request. The requested MIME types are not "
-"supported."
-msgstr ""
-"មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ធាតុ​មិន​ត្រូវ​បាន​បង្កើត​នៅ​លើ​ម៉ាស៊ីន​បម្រើ​ទេ ។ \n"
-"%1 (%2) ។"
-
 #: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
@@ -333,101 +174,113 @@ msgstr "ការ​ឆ្លើយតប​មិន​ត្រឹមត្រ
 msgid "Unable to parse free-busy data received"
 msgstr "មិន​អាច​ញែក​ទិន្នន័យ​​ទំនេរ/​រវល់ ដែល​បាន​ទទួល​ឡើយ"
 
-#: davgroupwareresource.cpp:272
+#: davgroupwareresource.cpp:273
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "មិន​អាច​ទៅ​យក​ព័ត៌មាន​ទំនេរ/​រវល់ ខណៈ​ពេល​នៅ​ក្រៅ​បណ្ដាញ​ឡើយ"
 
-#: davgroupwareresource.cpp:359
+#: davgroupwareresource.cpp:360
 #, kde-format
 msgid "Fetching collections"
 msgstr "ទៅ​យក​សម្រាំង"
 
-#: davgroupwareresource.cpp:419
+#: davgroupwareresource.cpp:420
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "មិនអាច​ទៅ​យក​សម្រាំង​បាន​ទេ ៖ %1"
 
-#: davgroupwareresource.cpp:486
+#: davgroupwareresource.cpp:487
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "សម្រាំង​មិន​ត្រឹមត្រូវ​សម្រាប់​ធាតុ %1 ។"
 
-#: davgroupwareresource.cpp:763
+#: davgroupwareresource.cpp:764
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to delete item exceptions: %1"
 msgstr "មិនអាច​ទៅ​យក​សម្រាំង​បាន​ទេ ៖ %1"
 
-#: davgroupwareresource.cpp:946
+#: davgroupwareresource.cpp:865
+#, fuzzy, kde-format
+#| msgid "Unable to change item: %1"
+msgid "Unable to fetch items: %1"
+msgstr "មិនអាច​ផ្លាស់ប្ដូរ​ធាតុ ៖ %1"
+
+#: davgroupwareresource.cpp:932
+#, fuzzy, kde-format
+#| msgid "Unable to remove item: %1"
+msgid "Unable to move item: %1"
+msgstr "មិនអាច​យក​ធាតុចេញ​បាន​ទេ ៖ %1"
+
+#: davgroupwareresource.cpp:1079
 #, fuzzy, kde-format
 #| msgid "Unable to add item: %1"
 msgid "Unable to modify items: %1"
 msgstr "មិនអាច​បន្ថែម​ធាតុ ៖ %1"
 
-#: davgroupwareresource.cpp:985
+#: davgroupwareresource.cpp:1152
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to modify collection: %1"
 msgstr "មិនអាច​​យក​សម្រាំង​ចេញ​បាន​ទេ ៖ %1"
 
-#: davgroupwareresource.cpp:1114
+#: davgroupwareresource.cpp:1281
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to create collection: %1"
 msgstr "មិនអាច​​យក​សម្រាំង​ចេញ​បាន​ទេ ៖ %1"
 
-#: davgroupwareresource.cpp:1143
+#: davgroupwareresource.cpp:1310
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "មិនអាច​​យក​សម្រាំង​ចេញ​បាន​ទេ ៖ %1"
 
-#: davgroupwareresource.cpp:1163 davgroupwareresource.cpp:1210
+#: davgroupwareresource.cpp:1330 davgroupwareresource.cpp:1377
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "មិនអាច​ទៅ​យក​សម្រាំង​បាន​ទេ ៖ %1"
 
-#: davgroupwareresource.cpp:1178
+#: davgroupwareresource.cpp:1345
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Failed to retrieve collection: %1"
 msgstr "មិនអាច​ទៅ​យក​សម្រាំង​បាន​ទេ ៖ %1"
 
-#: davgroupwareresource.cpp:1276 davgroupwareresource.cpp:1380
+#: davgroupwareresource.cpp:1443 davgroupwareresource.cpp:1547
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "មិនអាច​ទៅ​យក​ធាតុ ៖ %1"
 
-#: davgroupwareresource.cpp:1516
+#: davgroupwareresource.cpp:1683
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "មិនអាច​ទៅ​យក​ធាតុ ៖ %1"
 
-#: davgroupwareresource.cpp:1536
+#: davgroupwareresource.cpp:1703
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
 
-#: davgroupwareresource.cpp:1596
+#: davgroupwareresource.cpp:1763
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "មិនអាច​បន្ថែម​ធាតុ ៖ %1"
 
-#: davgroupwareresource.cpp:1641 davgroupwareresource.cpp:1773
-#: davgroupwareresource.cpp:1785
+#: davgroupwareresource.cpp:1808 davgroupwareresource.cpp:1940
+#: davgroupwareresource.cpp:1952
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "មិនអាច​ផ្លាស់ប្ដូរ​ធាតុ ៖ %1"
 
-#: davgroupwareresource.cpp:1747 davgroupwareresource.cpp:1804
+#: davgroupwareresource.cpp:1914 davgroupwareresource.cpp:1971
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "មិនអាច​យក​ធាតុចេញ​បាន​ទេ ៖ %1"
 
-#: davgroupwareresource.cpp:1891 davgroupwareresource.cpp:1892
+#: davgroupwareresource.cpp:2058 davgroupwareresource.cpp:2059
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "ធនធាន​មិន​ត្រូវ​បាន​កំណត់​រចនាសម្ព័ន្ធ​នៅ​ឡើយ​ទេ"
@@ -803,6 +656,127 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
+
+#~ msgid "Invalid username/password"
+#~ msgstr "ពាក្យសម្ងាត់​/ឈ្មោះ​អ្នក​ប្រើ មិន​ត្រឹមត្រូវ​ឡើយ"
+
+#~ msgid "Access forbidden"
+#~ msgstr "ការ​ចូល​ដំណើរការ​ត្រូវ​បាន​ហាមឃាត់"
+
+#~ msgid "Resource not found"
+#~ msgstr "រក​មិន​ឃើញ​ធនធាន​ឡើយ"
+
+#~ msgid "HTTP error"
+#~ msgstr "កំហុស HTTP"
+
+#~ msgid ""
+#~ "There was a problem with the request.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ៖ \n"
+#~ "%1 (%2) ។"
+
+#, fuzzy
+#~| msgid ""
+#~| "The server encountered an error that prevented it from completing your "
+#~| "request"
+#~ msgid ""
+#~ "The server encountered an error that prevented it from completing your "
+#~ "request: %1 (%2)"
+#~ msgstr "ម៉ាស៊ីនបម្រើ​បាន​ជួប​ប្រទះ​កំហុស ដែល​ការពារ​មិន​ឲ្យ​បញ្ចប់​សំណើរ​របស់​អ្នក"
+
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been deleted "
+#~ "from the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ - សម្រាំង​មិន​ត្រូវ​បាន​លុប​ពី​ម៉ាស៊ីន​បម្រើ​ទេ ។ \n"
+#~ "%1 (%2) ។"
+
+#~ msgid "Invalid responses from backend"
+#~ msgstr "ការ​ឆ្លើយតប​មិន​ត្រឹមត្រូវ​ពី​កម្មវិធី​ផ្នែកខាង​ក្រោយ"
+
+#~ msgid "Error setting focus for XQuery"
+#~ msgstr "កំហុស​ក្នុងការ​កំណត់​ការ​ផ្ដោត​សម្រាប់ XQuery"
+
+#~ msgid "Invalid XQuery submitted by DAV implementation"
+#~ msgstr "បាន​ដាក់ស្នើ XQuery មិន​ត្រឹមត្រូវ​ដោយ​ការ​អនុវត្ត DAV"
+
+#, fuzzy
+#~| msgid ""
+#~| "There was a problem with the request. The item has not been modified on "
+#~| "the server.\n"
+#~| "%1 (%2)."
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been "
+#~ "modified on the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ។ ធាតុ​មិន​ត្រូវ​បាន​កែប្រែ​នៅ​លើ​ម៉ាស៊ីន​បម្រើ​ទេ ៖ \n"
+#~ "%1 (%2) ។"
+
+#~ msgid "No properties to change or remove"
+#~ msgstr "គ្មាន​លក្ខណសម្បត្តិ​ដើម្បី​ផ្លាស់ប្ដូរ ឬ​យកចេញទេ"
+
+#~ msgid "There was an error when modifying the properties"
+#~ msgstr "មាន​កំហុស​ នៅពេល​កែប្រែ​លក្ខណសម្បត្តិ"
+
+#, fuzzy
+#~| msgid ""
+#~| "\n"
+#~| "The server returned more information:\n"
+#~ msgid ""
+#~ "\n"
+#~ "The server returned more information:\n"
+#~ "%1"
+#~ msgstr ""
+#~ "\n"
+#~ "ម៉ាស៊ីន​បម្រើ​បាន​ត្រឡប់​ព័ត៌មាន​បន្ថែម ៖\n"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been created on "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ធាតុ​មិន​ត្រូវ​បាន​បង្កើត​នៅ​លើ​ម៉ាស៊ីន​បម្រើ​ទេ ។ \n"
+#~ "%1 (%2) ។"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been deleted from "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ធាតុ​មិន​ត្រូវ​បាន​លុប​ពី​ម៉ាស៊ីន​បម្រើ​ទេ ។ \n"
+#~ "%1 (%2) ។"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item was not modified on the "
+#~ "server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ធាតុ​មិន​ត្រូវ​បាន​កែប្រែ​នៅ​លើ​ម៉ាស៊ីន​បម្រើ​ទេ ។ \n"
+#~ "%1 (%2) ។"
+
+#, fuzzy
+#~| msgid ""
+#~| "There was a problem with the request.\n"
+#~| "%1 (%2)."
+#~ msgid "There was a problem with the request."
+#~ msgstr ""
+#~ "មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ៖ \n"
+#~ "%1 (%2) ។"
+
+#, fuzzy
+#~| msgid ""
+#~| "There was a problem with the request. The item has not been created on "
+#~| "the server.\n"
+#~| "%1 (%2)."
+#~ msgid ""
+#~ "There was a problem with the request. The requested MIME types are not "
+#~ "supported."
+#~ msgstr ""
+#~ "មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ធាតុ​មិន​ត្រូវ​បាន​បង្កើត​នៅ​លើ​ម៉ាស៊ីន​បម្រើ​ទេ ។ \n"
+#~ "%1 (%2) ។"
 
 #, fuzzy
 #~| msgid "A password is required for user %1"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-30 00:45+0000\n"
+"POT-Creation-Date: 2026-08-29 00:46+0000\n"
 "PO-Revision-Date: 2026-05-30 17:27-0400\n"
 "Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -157,145 +157,6 @@ msgstr "چىقىرىۋەت"
 msgid "Edit"
 msgstr "تەھرىر"
 
-#: daverror-kdepim-runtime.cpp:26
-#, kde-format
-msgid "Invalid username/password"
-msgstr "ئات ياكى ئىم ئىناۋەتسىز"
-
-#: daverror-kdepim-runtime.cpp:28
-#, kde-format
-msgid "Access forbidden"
-msgstr "زىيارەت چەكلەنگەن"
-
-#: daverror-kdepim-runtime.cpp:30
-#, kde-format
-msgid "Resource not found"
-msgstr "مەنبە تېپىلمىدى"
-
-#: daverror-kdepim-runtime.cpp:32
-#, kde-format
-msgid "HTTP error"
-msgstr "HTTP خاتالىقى"
-
-#: daverror-kdepim-runtime.cpp:35
-#, kde-format
-msgid ""
-"There was a problem with the request.\n"
-"%1 (%2)."
-msgstr ""
-"ئىلتىماس خاتالىقى كۆرۈلگەن.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:41
-#, kde-format
-msgid "Protocol for the collection does not support MULTIGET"
-msgstr "توپلامنىڭ كېلىشىمى MULTIGET نى قوللىمايدۇ"
-
-#: daverror-kdepim-runtime.cpp:44
-#, kde-format
-msgid ""
-"The server encountered an error that prevented it from completing your "
-"request: %1 (%2)"
-msgstr "مۇلازىمېتىر خاتالىققا يولۇقتى، ئىلتىماسىڭىزنى تاماملىيالمايدۇ: %1 (%2)"
-
-#: daverror-kdepim-runtime.cpp:48
-#, kde-format
-msgid ""
-"There was a problem with the request. The collection has not been deleted "
-"from the server.\n"
-"%1 (%2)."
-msgstr ""
-"ئىلتىماس خاتالىقى كۆرۈلدى. توپلام مۇلازىمېتىردىن ئۆچۈرۈلمىدى.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:54
-#, kde-format
-msgid "Invalid responses from backend"
-msgstr "ئارقا ئۇچتىن كەلگەن ئىناۋەتسىز ئىنكاس"
-
-#: daverror-kdepim-runtime.cpp:57
-#, kde-format
-msgid "Error setting focus for XQuery"
-msgstr "XQuery فوكۇسىنى تەڭشەۋاتقاندا خاتالىق كۆرۈلدى"
-
-#: daverror-kdepim-runtime.cpp:60
-#, kde-format
-msgid "Invalid XQuery submitted by DAV implementation"
-msgstr "DAV ئەمەلىيلەشتۈرۈش ئىناۋەتسىز XQuery  تاپشۇردى"
-
-#: daverror-kdepim-runtime.cpp:64
-#, kde-format
-msgid ""
-"There was a problem with the request. The collection has not been modified "
-"on the server.\n"
-"%1 (%2)."
-msgstr ""
-"ئىلتىماس خاتالىقى كۆرۈلدى. مۇلازىمېتىردىكى توپلام ئۆزگەرتىلمىدى.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:70
-#, kde-format
-msgid "No properties to change or remove"
-msgstr "ئۆزگەرتىدىغان ياكى چىقىرىۋېتىدىغان خاسلىقلار يوق"
-
-#: daverror-kdepim-runtime.cpp:73
-#, kde-format
-msgid "There was an error when modifying the properties"
-msgstr "خاسلىق ئۆزگەرتىۋاتقاندا خاتالىق كۆرۈلدى"
-
-#: daverror-kdepim-runtime.cpp:75
-#, kde-format
-msgid ""
-"\n"
-"The server returned more information:\n"
-"%1"
-msgstr ""
-"\n"
-"مۇلازىمېتىر كۆپ ئۇچۇر قايتۇردى:\n"
-"%1"
-
-#: daverror-kdepim-runtime.cpp:80
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been created on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"ئىلتىماس خاتالىقى كۆرۈلدى. مۇلازىمېتىردا تۈر قۇرۇلمىدى.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:87
-#, kde-format
-msgid ""
-"There was a problem with the request. The item has not been deleted from the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"ئىلتىماس خاتالىقى كۆرۈلدى. تۈر مۇلازىمېتىردىن ئۆچۈرۈلمىدى.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:94
-#, kde-format
-msgid ""
-"There was a problem with the request. The item was not modified on the "
-"server.\n"
-"%1 (%2)."
-msgstr ""
-"ئىلتىماس خاتالىقى كۆرۈلدى. مۇلازىمېتىردىكى تۈر ئۆزگەرتىلمىدى.\n"
-"%1 (%2)."
-
-#: daverror-kdepim-runtime.cpp:100
-#, kde-format
-msgid "There was a problem with the request."
-msgstr "ئىلتىماس خاتالىقى كۆرۈلگەن."
-
-#: daverror-kdepim-runtime.cpp:104
-#, kde-format
-msgid ""
-"There was a problem with the request. The requested MIME types are not "
-"supported."
-msgstr "ئىلتىماس خاتالىقى كۆرۈلگەن. ئىلتىماس قىلغان MIME تۈرىنى قوللىمايدۇ."
-
 #: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
@@ -311,75 +172,87 @@ msgstr "مۇلازىمېتىردىن كەلگەن ئىناۋەتسىز جاۋا�
 msgid "Unable to parse free-busy data received"
 msgstr "تاپشۇرۇۋالغان بىكار/ئالدىراش سانلىق مەلۇماتىنى تەھلىل قىلالمىدى"
 
-#: davgroupwareresource.cpp:272
+#: davgroupwareresource.cpp:273
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "تورسىز ھالەتتە بىكار/ئالدىراش ئۇچۇرىغا ئېرىشەلمەيدۇ"
 
-#: davgroupwareresource.cpp:359
+#: davgroupwareresource.cpp:360
 #, kde-format
 msgid "Fetching collections"
 msgstr "توپلامغا ئېرىشىۋاتىدۇ"
 
-#: davgroupwareresource.cpp:419
+#: davgroupwareresource.cpp:420
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "يوچۇن توپلامنىڭ تەلەپ قىلىنغان قايتۇرۇۋېلىش تۈرىگە ئېرىشەلمىدى:  %1"
 
-#: davgroupwareresource.cpp:486
+#: davgroupwareresource.cpp:487
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "%1 تۈرنىڭ ئىناۋەتسىز توپلىمى."
 
-#: davgroupwareresource.cpp:763
+#: davgroupwareresource.cpp:764
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to delete item exceptions: %1"
 msgstr "توپلامغا ئېرىشەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:946
+#: davgroupwareresource.cpp:865
+#, fuzzy, kde-format
+#| msgid "Unable to change item: %1"
+msgid "Unable to fetch items: %1"
+msgstr "تۈرنى ئۆزگەرتەلمەيدۇ: %1"
+
+#: davgroupwareresource.cpp:932
+#, fuzzy, kde-format
+#| msgid "Unable to remove item: %1"
+msgid "Unable to move item: %1"
+msgstr "تۈرنى چىقىرىۋېتەلمەيدۇ: %1"
+
+#: davgroupwareresource.cpp:1079
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "تۈرنى ئۆزگەرتەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:985
+#: davgroupwareresource.cpp:1152
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "توپلامنى ئۆزگەرتەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1114
+#: davgroupwareresource.cpp:1281
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to create collection: %1"
 msgstr "توپلامنى چىقىرىۋېتەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1143
+#: davgroupwareresource.cpp:1310
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "توپلامنى چىقىرىۋېتەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1163 davgroupwareresource.cpp:1210
+#: davgroupwareresource.cpp:1330 davgroupwareresource.cpp:1377
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "توپلامغا ئېرىشەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1178
+#: davgroupwareresource.cpp:1345
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Failed to retrieve collection: %1"
 msgstr "توپلامغا ئېرىشەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1276 davgroupwareresource.cpp:1380
+#: davgroupwareresource.cpp:1443 davgroupwareresource.cpp:1547
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "تۈرگە ئېرىشەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1516
+#: davgroupwareresource.cpp:1683
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "تۈرگە ئېرىشەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1536
+#: davgroupwareresource.cpp:1703
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -388,23 +261,23 @@ msgstr ""
 "تۈرگە ئېرىشەلمەيدۇ: تۈر سانلىق مەلۇماتىنى تەھلىل قىلالمىدى. بەلكىم ئۇ "
 "ئۆچۈرۈلگەن بولۇشى مۇمكىن."
 
-#: davgroupwareresource.cpp:1596
+#: davgroupwareresource.cpp:1763
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "تۈر قوشالمايدۇ: %1"
 
-#: davgroupwareresource.cpp:1641 davgroupwareresource.cpp:1773
-#: davgroupwareresource.cpp:1785
+#: davgroupwareresource.cpp:1808 davgroupwareresource.cpp:1940
+#: davgroupwareresource.cpp:1952
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "تۈرنى ئۆزگەرتەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1747 davgroupwareresource.cpp:1804
+#: davgroupwareresource.cpp:1914 davgroupwareresource.cpp:1971
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "تۈرنى چىقىرىۋېتەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1891 davgroupwareresource.cpp:1892
+#: davgroupwareresource.cpp:2058 davgroupwareresource.cpp:2059
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "مەنبە تېخى سەپلەنمىگەن"
@@ -763,6 +636,106 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
+
+#~ msgid "Invalid username/password"
+#~ msgstr "ئات ياكى ئىم ئىناۋەتسىز"
+
+#~ msgid "Access forbidden"
+#~ msgstr "زىيارەت چەكلەنگەن"
+
+#~ msgid "Resource not found"
+#~ msgstr "مەنبە تېپىلمىدى"
+
+#~ msgid "HTTP error"
+#~ msgstr "HTTP خاتالىقى"
+
+#~ msgid ""
+#~ "There was a problem with the request.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "ئىلتىماس خاتالىقى كۆرۈلگەن.\n"
+#~ "%1 (%2)."
+
+#~ msgid "Protocol for the collection does not support MULTIGET"
+#~ msgstr "توپلامنىڭ كېلىشىمى MULTIGET نى قوللىمايدۇ"
+
+#~ msgid ""
+#~ "The server encountered an error that prevented it from completing your "
+#~ "request: %1 (%2)"
+#~ msgstr ""
+#~ "مۇلازىمېتىر خاتالىققا يولۇقتى، ئىلتىماسىڭىزنى تاماملىيالمايدۇ: %1 (%2)"
+
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been deleted "
+#~ "from the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "ئىلتىماس خاتالىقى كۆرۈلدى. توپلام مۇلازىمېتىردىن ئۆچۈرۈلمىدى.\n"
+#~ "%1 (%2)."
+
+#~ msgid "Invalid responses from backend"
+#~ msgstr "ئارقا ئۇچتىن كەلگەن ئىناۋەتسىز ئىنكاس"
+
+#~ msgid "Error setting focus for XQuery"
+#~ msgstr "XQuery فوكۇسىنى تەڭشەۋاتقاندا خاتالىق كۆرۈلدى"
+
+#~ msgid "Invalid XQuery submitted by DAV implementation"
+#~ msgstr "DAV ئەمەلىيلەشتۈرۈش ئىناۋەتسىز XQuery  تاپشۇردى"
+
+#~ msgid ""
+#~ "There was a problem with the request. The collection has not been "
+#~ "modified on the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "ئىلتىماس خاتالىقى كۆرۈلدى. مۇلازىمېتىردىكى توپلام ئۆزگەرتىلمىدى.\n"
+#~ "%1 (%2)."
+
+#~ msgid "No properties to change or remove"
+#~ msgstr "ئۆزگەرتىدىغان ياكى چىقىرىۋېتىدىغان خاسلىقلار يوق"
+
+#~ msgid "There was an error when modifying the properties"
+#~ msgstr "خاسلىق ئۆزگەرتىۋاتقاندا خاتالىق كۆرۈلدى"
+
+#~ msgid ""
+#~ "\n"
+#~ "The server returned more information:\n"
+#~ "%1"
+#~ msgstr ""
+#~ "\n"
+#~ "مۇلازىمېتىر كۆپ ئۇچۇر قايتۇردى:\n"
+#~ "%1"
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been created on "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "ئىلتىماس خاتالىقى كۆرۈلدى. مۇلازىمېتىردا تۈر قۇرۇلمىدى.\n"
+#~ "%1 (%2)."
+
+#~ msgid ""
+#~ "There was a problem with the request. The item has not been deleted from "
+#~ "the server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "ئىلتىماس خاتالىقى كۆرۈلدى. تۈر مۇلازىمېتىردىن ئۆچۈرۈلمىدى.\n"
+#~ "%1 (%2)."
+
+#~ msgid ""
+#~ "There was a problem with the request. The item was not modified on the "
+#~ "server.\n"
+#~ "%1 (%2)."
+#~ msgstr ""
+#~ "ئىلتىماس خاتالىقى كۆرۈلدى. مۇلازىمېتىردىكى تۈر ئۆزگەرتىلمىدى.\n"
+#~ "%1 (%2)."
+
+#~ msgid "There was a problem with the request."
+#~ msgstr "ئىلتىماس خاتالىقى كۆرۈلگەن."
+
+#~ msgid ""
+#~ "There was a problem with the request. The requested MIME types are not "
+#~ "supported."
+#~ msgstr "ئىلتىماس خاتالىقى كۆرۈلگەن. ئىلتىماس قىلغان MIME تۈرىنى قوللىمايدۇ."
 
 #~| msgid "Password: "
 #~ msgctxt "@label:textbox"
