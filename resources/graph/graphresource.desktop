@@ -2,9 +2,11 @@
 # SPDX-License-Identifier: LGPL-2.0-or-later
 [Desktop Entry]
 Name=Microsoft 365 (Graph)
+Name[ar]=Microsoft 365 (Graph)
 Name[ca]=Microsoft 365 (Graph)
 Name[ca@valencia]=Microsoft 365 (Graph)
 Name[cs]=Microsoft 365 (Graph)
+Name[de]=Microsoft 365 (Graph)
 Name[es]=Microsoft 365 (Graph)
 Name[fr]=Microsoft 365 (Graph)
 Name[he]=Microsoft 365 (Graph)
@@ -17,9 +19,11 @@ Name[tr]=Microsoft 365 (Graph)
 Name[uk]=Microsoft 365 (Graph)
 Name[zh_CN]=Microsoft 365 (Graph)
 Comment=Provides access to mail, calendar, tasks and contacts of a Microsoft 365 / Exchange Online account using the Microsoft Graph API
+Comment[ar]=يتيح الوصول إلى البريد والتقويم والمهام وجهات الاتصال لحساب Microsoft 365 / Exchange Online باستخدام واجهة برمجة تطبيقات Microsoft Graph
 Comment[ca]=Proporciona accés al correu, calendari, tasques i contactes d'un compte de Microsoft 365 / Exchange Online utilitzant l'API de Microsoft Graph
 Comment[ca@valencia]=Proporciona accés al correu, calendari, tasques i contactes d'un compte de Microsoft 365 / Exchange Online utilitzant l'API de Microsoft Graph
 Comment[cs]=Umožňuje přístup k e-mailům, kalendáři, úkolům a kontaktům účtu Microsoft 365 / Exchange Online pomocí rozhraní API Microsoft Graph
+Comment[de]=Ermöglicht den Zugriff auf E-Mails, Termine, Aufgaben und Kontakte eines Microsoft 360/„Exchange Online“-Kontos per „Microsoft Graph“-API.
 Comment[es]=Proporciona acceso al correo, calendario, tareas y contactos de una cuenta Microsoft 365 o Exchange Online usando la API de Microsoft Graph.
 Comment[fr]=Fournit un accès aux courriels, à l'agenda,aux tâches et aux contacts d'un compte « Microsoft 365 / Exchange Online » à l'aide de l'API de « Microsoft Graph »
 Comment[he]=אספקת גישה לדוא״ל, פגישות, משימות ואנשי קשר של חשבון Microsoft 365 / Exchange Online דרך ה־API של Microsoft Graph

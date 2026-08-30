@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.0-or-later
 [Desktop Entry]
 Name=Microsoft 365 (Graph) Mail Transport
+Name[ar]=نقل البريد لخادم  Microsoft 365 (Graph)
 Name[ca]=Transport de correu de Microsoft 365 (Graph)
 Name[ca@valencia]=Transport de correu de Microsoft 365 (Graph)
 Name[cs]=Přenos pošty v Microsoft 365 (Graph)
@@ -17,6 +18,7 @@ Name[tr]=Microsoft 365 (Graph) Mail Taşıması
 Name[uk]=Транспортування пошти за допомогою Microsoft 365 (Graph)
 Name[zh_CN]=Microsoft 365 (Graph) 邮件传输
 Comment=Sends mail through a Microsoft 365 / Exchange Online account using the Microsoft Graph API
+Comment[ar]=يرسل البريد عبر حساب Microsoft 365 / Exchange Online باستخدام واجهة برمجة تطبيقات Microsoft Graph
 Comment[ca]=Envia correu mitjançant un compte de Microsoft 365 / Exchange Online fent servir l'API de Microsoft Graph
 Comment[ca@valencia]=Envia correu mitjançant un compte de Microsoft 365 / Exchange Online fent servir l'API de Microsoft Graph
 Comment[cs]=Odesílá e-maily prostřednictvím účtu Microsoft 365 / Exchange Online s využitím rozhraní API Microsoft Graph
