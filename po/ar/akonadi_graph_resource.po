@@ -1,35 +1,37 @@
+# Copyright (C) 2026 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+# SPDX-FileCopyrightText: 2026 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 #
-# SPDX-FileCopyrightText: 2026 Xavier Besnard <xavier.besnard@kde.org>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-24 00:46+0000\n"
-"PO-Revision-Date: 2026-08-28 20:45+0200\n"
-"Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
-"Language-Team: fr\n"
-"Language: fr\n"
+"PO-Revision-Date: 2026-08-29 18:25+0400\n"
+"Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
+"Language-Team: ar\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 26.08.0\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: graphclient/auth/graphoauth.cpp:137
 #, kde-format
 msgid "OAuth2: cannot listen on localhost (no free port?)"
-msgstr ""
-"OAuth2 : impossible d'écouter sur port « localhost » (Aucun port libre ?)"
+msgstr "OAuth2: تعذّر الاستماع على localhost (لا منفذ متاح؟)"
 
 #: graphclient/auth/graphoauth.cpp:166
 #, kde-format
 msgid "OAuth2 request failed"
-msgstr "La requête « OAuth2 » a échoué."
+msgstr "فشل طلب OAuth2"
 
 #: graphclient/graphrequest.cpp:70
 #, kde-format
 msgid "Not authenticated with Microsoft 365 yet"
-msgstr "Pas encore authentifié avec Microsoft 365"
+msgstr "لم تتم المصادقة مع Microsoft 365 بعد"
 
 #: graphclient/graphrequest.cpp:152
 #, kde-format
@@ -43,124 +45,120 @@ msgstr "%1 (HTTP %2, %3)"
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Account name:"
-msgstr "Nom du compte :"
+msgstr "اسم الحساب:"
 
 #: graphconfig.cpp:48
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Email / UPN:"
-msgstr "Courriel / UPN :"
+msgstr "البريد الإلكتروني / UPN:"
 
 #: graphconfig.cpp:51
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Azure tenant:"
-msgstr "Locataire Azure :"
+msgstr "مستأجر Azure:"
 
 #: graphconfig.cpp:53
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Application (client) ID:"
-msgstr "Identifiant d'application (Client) :"
+msgstr "معرّف التطبيق (العميل):"
 
 #: graphconfig.cpp:56
 #, kde-format
 msgctxt "@item:valuesuffix minutes"
 msgid " min"
-msgstr "min"
+msgstr "دقائق"
 
 #: graphconfig.cpp:57
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Check for new mail every:"
-msgstr "Vérifiez l'arrivée de nouveaux messages tous les :"
+msgstr "تحقق من البريد الجديد كل:"
 
 #: graphconfig.cpp:59
 #, kde-format
 msgctxt "@info"
 msgid "Changing the tenant or client id requires signing in again."
-msgstr ""
-"La modification de l'identifiant du locataire ou du client nécessite une "
-"nouvelle signature."
+msgstr "تغيير المستأجر أو معرّف العميل يتطلب تسجيل الدخول مرة أخرى."
 
 #: graphmtaresource.cpp:79
 #, kde-format
 msgid "Unable to connect to master Microsoft 365 (Graph) resource"
-msgstr ""
-"Impossible de se connecter à la ressource principale « Microsoft 365 "
-"(Graph) »"
+msgstr "تعذّر الاتصال بمورد Microsoft 365 (Graph) الرئيس"
 
 #: graphmtaresource.cpp:88
 #, kde-format
 msgid "Message to be sent has no MIME payload"
-msgstr "Le message à envoyer ne possède aucun contenu « MIME » utile"
+msgstr "الرسالة المراد إرسالها لا تحتوي على حمولة MIME"
 
 #: graphresource.cpp:166
 #, kde-format
 msgctxt "@info:status"
 msgid "Authenticating with Microsoft 365"
-msgstr "Authentification en cours avec Microsoft 365"
+msgstr "جارٍ المصادقة مع Microsoft 365"
 
 #: graphresource.cpp:180
 #, kde-format
 msgctxt "@info:status"
 msgid "Migrating item identifiers"
-msgstr "Migration en cours des identifiants d'éléments"
+msgstr "جارٍ ترحيل معرّفات العناصر"
 
 #: graphresource.cpp:185
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to migrate item identifiers: %1"
-msgstr "Échec de la migration des identifiants d'éléments : %1"
+msgstr "فشل ترحيل معرّفات العناصر: %1"
 
 #: graphresource.cpp:203
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
-msgstr "Prêt"
+msgstr "جاهز"
 
 #: graphresource.cpp:221
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed: %1"
-msgstr "Échec de l'authentification : %1"
+msgstr "فشل الاستيثاق: %1"
 
 #: graphresource.cpp:293 graphresource.cpp:550
 #, kde-format
 msgid "Waiting for the item identifier migration to finish"
-msgstr "En attente de la fin de la migration des identifiants d'éléments"
+msgstr "بانتظار انتهاء ترحيل معرّفات العناصر"
 
 #: graphresource.cpp:379
 #, kde-format
 msgctxt "@item mail folder"
 msgid "Contacts"
-msgstr "Contacts"
+msgstr "المتراسلون"
 
 #: graphresource.cpp:731 graphresource.cpp:758
 #, kde-format
 msgid "The requested items no longer exist"
-msgstr "Les éléments demandés n'existent plus."
+msgstr "العناصر المطلوبة لم تعد موجودة"
 
 #: graphresource.cpp:1024
 #, kde-format
 msgid "Cannot move task %1: no payload"
-msgstr "Impossible de déplacer la tâche %1 : aucun contenu utile"
+msgstr "تعذّر نقل المهمة %1: لا حمولة"
 
 #: graphresource.cpp:1032
 #, kde-format
 msgid "Cannot move event %1: no payload"
-msgstr "Impossible de déplacer l'évènement %1 : aucun contenu utile"
+msgstr "تعذّر نقل الحدث %1: لا حمولة"
 
 #: graphresource.cpp:1146
 #, kde-format
 msgid "Moving contacts between folders is not supported"
-msgstr "Le déplacement de contacts entre dossiers est non pris en charge."
+msgstr "نقل المتراسلين بين المجلدات غير مدعوم"
 
 #. i18n: ectx: label, entry (Email), group (General)
 #: graphresource.kcfg:10
 #, kde-format
 msgid "Primary email / UPN of the Microsoft 365 account."
-msgstr "Courriel principal / UPN du compte « Microsoft 365 »."
+msgstr "البريد الإلكتروني الأساسي / UPN لحساب Microsoft 365."
 
 #. i18n: ectx: label, entry (TenantId), group (General)
 #: graphresource.kcfg:13
@@ -169,8 +167,8 @@ msgid ""
 "Azure AD tenant: \"common\", \"organizations\", \"consumers\" or a tenant "
 "GUID."
 msgstr ""
-"Locataire Azure AD : « common », « organizations », « consumers » ou un GUID "
-"de locataire."
+"مستأجر Azure AD:‏ \"common\" أو \"organizations\" أو \"consumers\" أو GUID "
+"للمستأجر."
 
 #. i18n: ectx: label, entry (ClientId), group (General)
 #: graphresource.kcfg:17
@@ -179,40 +177,34 @@ msgid ""
 "Azure app registration Application (client) ID. Configure your own in the "
 "account dialog — see README.md / docs."
 msgstr ""
-"Identifiant d'application pour l'abonnement à Azure ID d'application "
-"(Client). Veuillez configurer le vôtre dans la boîte de dialogue du compte – "
-"voir le fichier « README.md/docs »."
+"معرّف التطبيق (العميل) لتسجيل تطبيق Azure. اضبط معرّفك الخاص في حوار الحساب — "
+"انظر README.md / الوثائق."
 
 #. i18n: ectx: label, entry (FolderDeltaLink), group (General)
 #: graphresource.kcfg:20
 #, kde-format
 msgid "Persisted top-level mailFolders @odata.deltaLink (sync state)."
 msgstr ""
-"MailFolders de niveau supérieur persistants @odata.deltaLink (État de "
-"synchronisation)."
+"روابط @odata.deltaLink لمجلدات البريد العلوية المحفوظة (حالة المزامنة)."
 
 #. i18n: ectx: label, entry (PollInterval), group (General)
 #: graphresource.kcfg:23
 #, kde-format
 msgid "Delta poll interval in minutes (no push on Graph for desktop)."
-msgstr ""
-"Intervalle d'interrogation en delta de minutes (Aucune pression sur Graph "
-"sur ordinateur de bureau)."
+msgstr "فاصل الاستقصاء دلتا بالدقائق (لا دفع على Graph لسطح المكتب)."
 
 #. i18n: ectx: label, entry (ImmutableIdsMigrated), group (General)
 #: graphresource.kcfg:27
 #, kde-format
 msgid "Whether stored remoteIds have been migrated to Graph immutable ids."
-msgstr ""
-"Définit si les identifiants distants enregistrés ont été migrés vers les "
-"identifiants immuables de Graph."
+msgstr "ما إذا كانت المعرّفات البعيدة المخزنة قد رُحّلت إلى معرّفات Graph الثابتة."
 
 #: jobs/graphfetchfoldersjob.cpp:49
 #, kde-format
 msgid "Could not resolve the mailbox root folder"
-msgstr "Impossible d'identifier le dossier racine de la boîte aux lettres"
+msgstr "تعذّر حل مجلد جذر صندوق البريد"
 
 #: jobs/graphfetchitempayloadjob.cpp:75
 #, kde-format
 msgid "Failed to fetch the content of message %1 (HTTP %2)"
-msgstr "Échec du chargement du contenu du message %1 (HTTP %2)"
+msgstr "فشل جلب محتوى الرسالة %1 (HTTP %2)"

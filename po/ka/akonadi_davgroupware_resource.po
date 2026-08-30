@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-29 00:46+0000\n"
-"PO-Revision-Date: 2026-07-23 05:54+0200\n"
+"PO-Revision-Date: 2026-08-29 04:22+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -197,16 +197,14 @@ msgid "Unable to delete item exceptions: %1"
 msgstr "ელემენტის გამონაკლისების წაშლა შეუძლებელია: %1"
 
 #: davgroupwareresource.cpp:865
-#, fuzzy, kde-format
-#| msgid "Unable to change item: %1"
+#, kde-format
 msgid "Unable to fetch items: %1"
-msgstr "ჩანაწერის შეცვლის შეცდომა: %1"
+msgstr "ელემენტების გამოთხოვა შეუძლებელია: %1"
 
 #: davgroupwareresource.cpp:932
-#, fuzzy, kde-format
-#| msgid "Unable to remove item: %1"
+#, kde-format
 msgid "Unable to move item: %1"
-msgstr "ჩანაწერის წაშლის შეცდომა: %1"
+msgstr "ელემენტის გადატანა შეუძლებელია: %1"
 
 #: davgroupwareresource.cpp:1079
 #, kde-format

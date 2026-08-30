@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-29 00:46+0000\n"
-"PO-Revision-Date: 2026-07-23 08:52+0300\n"
+"PO-Revision-Date: 2026-08-29 21:56+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -201,16 +201,14 @@ msgid "Unable to delete item exceptions: %1"
 msgstr "Не вдалося вилучити виключення запису: %1"
 
 #: davgroupwareresource.cpp:865
-#, fuzzy, kde-format
-#| msgid "Unable to change item: %1"
+#, kde-format
 msgid "Unable to fetch items: %1"
-msgstr "Не вдалося змінити запис: %1."
+msgstr "Не вдалося отримати записи: %1"
 
 #: davgroupwareresource.cpp:932
-#, fuzzy, kde-format
-#| msgid "Unable to remove item: %1"
+#, kde-format
 msgid "Unable to move item: %1"
-msgstr "Не вдалося вилучити запис: %1."
+msgstr "Не вдалося перемістити запис: %1"
 
 #: davgroupwareresource.cpp:1079
 #, kde-format

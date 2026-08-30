@@ -6,21 +6,22 @@
 # SPDX-FileCopyrightText: 2010-2013, 2016 Frederik Schwarzer <schwarzer@kde.org>
 # SPDX-FileCopyrightText: 2024 Frank Steinmetzger <dev-kde@felsenfleischer.de>
 # SPDX-FileCopyrightText: 2024 Johannes Obermayr <johannesobermayr@gmx.de>
-# Intevation GmbH, 2010, 2011.
+# SPDX-FileCopyrightText: 2026 Philipp Kiemle <l10n.daphipz@fastmail.de>
+# SPDX-FileCopyrightText: 2010-2011 Intevation GmbH
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-07-08 00:45+0000\n"
-"PO-Revision-Date: 2024-08-25 21:34+0200\n"
-"Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
+"PO-Revision-Date: 2026-08-25 22:47+0200\n"
+"Last-Translator: Philipp Kiemle <l10n.daphipz@fastmail.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 26.08.0\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -188,8 +189,8 @@ msgid ""
 "Defines if the annotations, ACLs and quota information of mailboxes should\n"
 "             also be retrieved when the mailboxes get listed."
 msgstr ""
-"Legt fest ob Anmerkungen, ACLs und Speicherplatzkontingent-Informationen der "
-"Postfächer auch\n"
+"Legt fest, ob Anmerkungen, ACLs und Speicherplatzkontingent-Informationen "
+"der Postfächer auch\n"
 "            abgerufen werden sollen, wenn das Postfach aufgelistet wird."
 
 #. i18n: ectx: label, entry (AutomaticExpungeEnabled), group (cache)
@@ -391,7 +392,7 @@ msgstr "Ordner „%1“ wird von „%2“ nach „%3“ verschoben"
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
-msgstr "Suche läuft ..."
+msgstr "Suche läuft …"
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -823,9 +824,9 @@ msgid ""
 "account as before we will have to re-download all your emails from this "
 "account again. Are you sure you want to proceed?"
 msgstr ""
-"Sie haben den Benutzernamen geändert Auch denn es der Benutzername für den "
-"selben Zugang ist, müssen Sie alle E-Mails von diesem Zugang erneut "
-"herunterladen. Möchten Sie wirklich fortfahren?"
+"Sie haben den Benutzernamen geändert. Auch wenn es der Benutzername für das "
+"gleiche Konto wie davor ist, müssen alle E-Mails von diesem Konto erneut "
+"heruntergeladen werden. Möchten Sie wirklich fortfahren?"
 
 #: setupserver.cpp:264
 #, kde-format
@@ -1106,7 +1107,7 @@ msgstr "Serverseitiges Abonnement aktivieren"
 #: setupserverview_desktop.ui:381
 #, kde-format
 msgid "Serverside Subscription…"
-msgstr "Serverseitiges Abonnement ..."
+msgstr "Serverseitiges Abonnement …"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390

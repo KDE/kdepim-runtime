@@ -282,7 +282,7 @@ msgid ""
 msgstr ""
 "Der POP3-Server signalisiert Unterstützung für TLS, aber eine entsprechende "
 "Verbindungsaufnahme ist fehlgeschlagen. Sie können TLS in den POP-"
-"Zugangseinstellungen abschalten."
+"Zugangseinstellungen deaktivieren."
 
 #: pop3protocol.cpp:730
 #, kde-format
