@@ -5,20 +5,21 @@
 # SPDX-FileCopyrightText: 2022-2023 Alois Spitzbart <spitz234@hotmail.com>
 # SPDX-FileCopyrightText: 2023 Jannick Kuhr <opensource@kuhr.org>
 # SPDX-FileCopyrightText: 2024 Johannes Obermayr <johannesobermayr@gmx.de>
+# SPDX-FileCopyrightText: 2026 Philipp Kiemle <l10n.daphipz@fastmail.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-05-05 00:45+0000\n"
-"PO-Revision-Date: 2024-08-21 21:49+0200\n"
-"Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
+"PO-Revision-Date: 2026-08-25 01:38+0200\n"
+"Last-Translator: Philipp Kiemle <l10n.daphipz@fastmail.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 26.08.0\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -31,33 +32,25 @@ msgid "Exchange protocol information not found"
 msgstr "Protokollinformation für Exchange wurde nicht gefunden"
 
 #: ewsclient/auth/ewsintuneauth.cpp:303
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Microsoft Exchange credentials for the account <b>%1</b> are no longer "
-#| "valid. You need to authenticate in order to continue using it."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "InTune credentials for the Microsoft Exchange account <b>%1</b> are no "
 "longer valid. You need to authenticate in order to continue using it."
 msgstr ""
-"Die Anmeldedaten von Microsoft Exchange für das Konto <b>%1</b> sind nicht "
-"mehr gültig. Sie müssen sich authentifizieren, um das Konto weiter verwenden "
-"zu können."
+"Die InTune-Anmeldedaten für das Microsoft-Exchange-Konto <b>%1</b> sind "
+"nicht mehr gültig. Sie müssen sich authentifizieren, um das Konto weiter "
+"verwenden zu können."
 
 #: ewsclient/auth/ewsintuneauth.cpp:312
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. "
-#| "Please update it in the account settings page."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Failed to obtain InTune credentials for Microsoft Exchange account <b>%1</"
 "b>. Please update it in the account settings page."
 msgstr ""
-"Die Anmeldedaten für das Microsoft-Exchange-Konto <b>%1</b> können nicht "
-"abgerufen werden. Bitte aktualisieren Sie sie auf der Seite "
+"Die InTune-Anmeldedaten für das Microsoft-Exchange-Konto <b>%1</b> können "
+"nicht abgerufen werden. Bitte aktualisieren Sie Ihre Angaben in den "
 "Kontoeinstellungen."
 
 #: ewsclient/auth/ewsoauth.cpp:524
@@ -125,7 +118,7 @@ msgstr "Akonadi-Ressource für Microsoft Exchange Web Services (EWS)"
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
-msgstr "Copyright (c) Krzysztof Nowicki 2015-2020"
+msgstr "© Krzysztof Nowicki 2015–2020"
 
 #: ewsconfigdialog.cpp:162
 #, kde-format
@@ -410,12 +403,17 @@ msgid ""
 "system to be joined to the organization and managed using InTune.</p></"
 "body></html>"
 msgstr ""
+"<html><head/><body><p>Ermöglicht die Authentifizierung mithilfe der "
+"Microsoft InTune-MDM-Software. Dies ist in vielen Unternehmensumgebungen "
+"erforderlich, in denen eine starke Authentifizierung anhand von "
+"Geräteanmeldedaten vorgeschrieben ist und das System daher der Organisation "
+"zugeordnet und über InTune verwaltet werden muss.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QRadioButton, authInTuneRadioButton)
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "&Microsoft InTune"
-msgstr ""
+msgstr "&Microsoft InTune"
 
 #. i18n: ectx: property (title), widget (QGroupBox, ewsSettingsGroupBox)
 #: ewsconfigdialog.ui:245
@@ -576,7 +574,7 @@ msgid ""
 "version 2010 SP1 or later.</p></body></html>"
 msgstr ""
 "<html><head/><body><p>Streaming-Benachrichtigungen verhalten sich ähnlich "
-"wie der Push-Modus - eine Verbindung wird aufrechterhalten und "
+"wie der Push-Modus – eine Verbindung wird aufrechterhalten und "
 "Benachrichtigungen über Elementänderungen werden sofort übermittelt.</"
 "p><p><br/></p><p>Für diese Option ist Exchange Server Version 2010 SP1 oder "
 "höher erforderlich.</p></body></html>"
@@ -722,21 +720,21 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
-msgstr "Das Abholen der Einträge ist fehlgeschlagen"
+msgstr "Das Abrufen der Einträge ist fehlgeschlagen"
 
 #: ewsfetchitempayloadjob.cpp:78
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - incorrect number of responses"
 msgstr ""
-"Das Abholen der Einträge ist fehlgeschlagen - Falsche Anzahl der Antworten"
+"Das Abrufen der Einträge ist fehlgeschlagen – Falsche Anzahl der Antworten"
 
 #: ewsfetchitempayloadjob.cpp:91
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Akonadi item not found for item %1"
 msgstr ""
-"Das Abholen der Einträge ist fehlgeschlagen - Akonadi-Element für Eintrag %1 "
+"Das Abrufen der Einträge ist fehlgeschlagen – Akonadi-Element für Eintrag %1 "
 "nicht gefunden"
 
 #: ewsfetchitempayloadjob.cpp:98
@@ -744,7 +742,7 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Unknown item type for item %1"
 msgstr ""
-"Das Abholen der Einträge ist fehlgeschlagen - Unbekannte Art des Eintrags %1"
+"Das Abrufen der Einträge ist fehlgeschlagen – Unbekannte Art des Eintrags %1"
 
 #: ewsfetchitempayloadjob.cpp:104
 #, kde-format
@@ -816,7 +814,7 @@ msgstr "Abbrechen"
 #: ewsprogressdialog.cpp:49
 #, kde-format
 msgid "Performing Microsoft Exchange server autodiscovery…"
-msgstr "Automatische Erkennung des Exchange-Servers wird ausgeführt …"
+msgstr "Automatische Erkennung des Exchange-Servers wird ausgeführt …"
 
 #: ewsprogressdialog.cpp:52
 #, kde-format
@@ -827,7 +825,7 @@ msgstr "Verbindung zu Exchange wird aufgebaut"
 #: ewsprogressdialog.cpp:53
 #, kde-format
 msgid "Connecting to Microsoft Exchange server…"
-msgstr "Verbindung zum Microsoft-Exchange-Server wird aufgebaut …"
+msgstr "Verbindung zum Microsoft-Exchange-Server wird aufgebaut …"
 
 #: ewsresource.cpp:143
 #, kde-format
@@ -852,25 +850,25 @@ msgstr "Die Kennung des Basisordners ist unbekannt."
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
-msgstr "Sammlungsbaum wird empfangen"
+msgstr "Sammlungsbaum wird abgerufen"
 
 #: ewsresource.cpp:406
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
-msgstr "Einträge werden empfangen"
+msgstr "Einträge werden abgerufen"
 
 #: ewsresource.cpp:428 ewsresource.cpp:514
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
-msgstr "Das Empfangen der Einträge ist fehlgeschlagen - Interner Fehler"
+msgstr "Das Abrufen der Einträge ist fehlgeschlagen – Interner Fehler"
 
 #: ewsresource.cpp:462
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
-msgstr "Das Empfangen der Ordner ist fehlgeschlagen - Interner Fehler"
+msgstr "Das Abrufen der Ordner ist fehlgeschlagen – Interner Fehler"
 
 #: ewsresource.cpp:468
 #, kde-format
@@ -910,7 +908,7 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
 msgstr ""
-"Das Aktualisieren der Merker des Eintrags ist fehlgeschlagen - Interner "
+"Das Aktualisieren der Merker des Eintrags ist fehlgeschlagen – Interner "
 "Fehler"
 
 #: ewsresource.cpp:594
@@ -924,7 +922,7 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
-msgstr "Das Aktualisieren des Eintrags ist fehlgeschlagen - Interner Fehler"
+msgstr "Das Aktualisieren des Eintrags ist fehlgeschlagen – Interner Fehler"
 
 #: ewsresource.cpp:636
 #, kde-format
@@ -937,15 +935,15 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
-msgstr "Das Verschieben des Eintrags ist fehlgeschlagen - Interner Fehler"
+msgstr "Das Verschieben des Eintrags ist fehlgeschlagen – Interner Fehler"
 
 #: ewsresource.cpp:650
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
 msgstr ""
-"Das Verschieben des Eintrags ist fehlgeschlagen - Ungültige Anzahl von "
-"Antworten vom Server empfangen"
+"Das Verschieben des Eintrags ist fehlgeschlagen – Ungültige Anzahl Antworten "
+"vom Server empfangen"
 
 #: ewsresource.cpp:743
 #, kde-format
@@ -957,7 +955,7 @@ msgstr "Die Anforderung zum Löschen des Eintrags kann nicht verarbeitet werden"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
-msgstr "Das Löschen des Eintrags ist fehlgeschlagen - Interner Fehler"
+msgstr "Das Löschen des Eintrags ist fehlgeschlagen – Interner Fehler"
 
 #: ewsresource.cpp:757
 #, kde-format
@@ -965,8 +963,8 @@ msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
 msgstr ""
-"Das Löschen des Eintrags ist fehlgeschlagen - Ungültige Anzahl von Antworten "
-"vom Server empfangen"
+"Das Löschen des Eintrags ist fehlgeschlagen – Ungültige Anzahl Antworten vom "
+"Server empfangen"
 
 #: ewsresource.cpp:802 ewsresource.cpp:1015
 #, kde-format
@@ -985,14 +983,14 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
-msgstr "Das Erstellen des Eintrags ist fehlgeschlagen - Interner Fehler"
+msgstr "Das Erstellen des Eintrags ist fehlgeschlagen – Interner Fehler"
 
 #: ewsresource.cpp:840
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr ""
-"Das Hinzufügen der Sammlung ist fehlgeschlagen - der EWS-Ordnertyp kann "
+"Das Hinzufügen der Sammlung ist fehlgeschlagen – der EWS-Ordnertyp kann "
 "nicht bestimmt werden"
 
 #: ewsresource.cpp:859
@@ -1006,13 +1004,13 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
-msgstr "Der Ordner lässt sich nicht erstellen - Interner Fehler"
+msgstr "Erstellen des Ordners fehlgeschlagen – Interner Fehler"
 
 #: ewsresource.cpp:877
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
-msgstr "Der Ordner lässt sich nicht erstellen"
+msgstr "Erstellen des Ordners fehlgeschlagen"
 
 #: ewsresource.cpp:900
 #, kde-format
@@ -1025,7 +1023,7 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
-msgstr "Der Ordner lässt sich nicht verschieben - Interner Fehler"
+msgstr "Verschieben des Ordners fehlgeschlagen – Interner Fehler"
 
 #: ewsresource.cpp:912
 #, kde-format
@@ -1033,8 +1031,8 @@ msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
 msgstr ""
-"Das Verschieben des Ordners ist fehlgeschlagen - Ungültige Anzahl von "
-"Antworten vom Server empfangen"
+"Verschieben des Ordners fehlgeschlagen – Ungültige Anzahl Antworten vom "
+"Server empfangen"
 
 #: ewsresource.cpp:923
 #, kde-format
@@ -1053,7 +1051,7 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
-msgstr "Der Ordner lässt sich nicht aktualisieren - Interner Fehler"
+msgstr "Aktualisieren des Ordners fehlgeschlagen – Interner Fehler"
 
 #: ewsresource.cpp:963
 #, kde-format
@@ -1061,14 +1059,14 @@ msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
 msgstr ""
-"Das Aktualisieren des Ordners ist fehlgeschlagen - Ungültige Anzahl von "
-"Antworten vom Server empfangen"
+"Aktualisieren des Ordners fehlgeschlagen – Ungültige Anzahl Antworten vom "
+"Server empfangen"
 
 #: ewsresource.cpp:974
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
-msgstr "Der Ordner lässt sich nicht aktualisieren"
+msgstr "Aktualisieren des Ordners fehlgeschlagen"
 
 #: ewsresource.cpp:991
 #, kde-format
@@ -1080,13 +1078,13 @@ msgstr "Die Anforderung zum Löschen des Ordners kann nicht verarbeitet werden"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
-msgstr "Der Ordner lässt sich nicht löschen - Interner Fehler"
+msgstr "Löschen des Ordners fehlgeschlagen – Interner Fehler"
 
 #: ewsresource.cpp:1005
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
-msgstr "Der Ordner lässt sich nicht löschen"
+msgstr "Löschen des Ordners fehlgeschlagen"
 
 #: ewsresource.cpp:1029 ewsresource.cpp:1063
 #, kde-format
@@ -1098,13 +1096,13 @@ msgstr "Die Anforderung zum Senden des Eintrags kann nicht verarbeitet werden"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
-msgstr "Das Versenden des Eintrags ist fehlgeschlagen - Interner Fehler"
+msgstr "Versenden des Eintrags fehlgeschlagen – Interner Fehler"
 
 #: ewsresource.cpp:1074
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
-msgstr "Ungültige Anzahl von Antworten vom Server empfangen"
+msgstr "Ungültige Anzahl Antworten vom Server empfangen"
 
 #: ewsresource.cpp:1268
 #, kde-format
@@ -1125,8 +1123,7 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr ""
-"Das Aktualisieren der Stichwörter des Eintrags ist fehlgeschlagen - Interner "
-"Fehler"
+"Aktualisieren der Stichwörter des Eintrags fehlgeschlagen – Interner Fehler"
 
 #: ewsresource.cpp:1324
 #, kde-format

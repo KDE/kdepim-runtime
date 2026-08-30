@@ -4,29 +4,30 @@
 # SPDX-FileCopyrightText: 2011 Torbjörn Klatt <opensource@torbjoern-klatt.de>
 # SPDX-FileCopyrightText: 2012 Burkhard Lück <lueck@hube-lueck.de>
 # SPDX-FileCopyrightText: 2024 Johannes Obermayr <johannesobermayr@gmx.de>
-# Intevation GmbH, 2010.
+# SPDX-FileCopyrightText: 2026 Philipp Kiemle <l10n.daphipz@fastmail.de>
+# SPDX-FileCopyrightText:: 2010 Intevation GmbH
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-05-21 00:45+0000\n"
-"PO-Revision-Date: 2024-08-21 21:54+0200\n"
-"Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
+"PO-Revision-Date: 2026-08-25 01:39+0200\n"
+"Last-Translator: Philipp Kiemle <l10n.daphipz@fastmail.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 26.08.0\n"
 
 #: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
 #, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "Nachrichten werden versendet (1 Nachricht in der Warteschlange) …"
+msgstr[0] "Nachrichten werden versendet (1 Nachricht in der Warteschlange) …"
 msgstr[1] ""
-"Nachrichten werden versendet (%1 Nachrichten in der Warteschlange) …"
+"Nachrichten werden versendet (%1 Nachrichten in der Warteschlange) …"
 
 #: maildispatcheragent.cpp:90
 #, kde-format
@@ -150,6 +151,8 @@ msgid ""
 "Possible solution: review your send mail settings (authentication, port, "
 "encryption type, etc.)"
 msgstr ""
+"Mögliche Lösung: Überprüfen Sie Ihre Einstellungen für den E-Mail-Versand "
+"(Authentifizierung, Port, Verschlüsselungsart usw.)."
 
 #: sendjob.cpp:288
 #, kde-format

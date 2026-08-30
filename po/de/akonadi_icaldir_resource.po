@@ -2,20 +2,21 @@
 # SPDX-FileCopyrightText: 2016 Frederik Schwarzer <schwarzer@kde.org>
 # SPDX-FileCopyrightText: 2022 Alois Spitzbart <spitz234@hotmail.com>
 # SPDX-FileCopyrightText: 2024 Johannes Obermayr <johannesobermayr@gmx.de>
+# SPDX-FileCopyrightText: 2026 Philipp Kiemle <l10n.daphipz@fastmail.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:52+0000\n"
-"PO-Revision-Date: 2024-08-25 21:34+0200\n"
-"Last-Translator: Johannes Obermayr <johannesobermayr@gmx.de>\n"
+"PO-Revision-Date: 2026-08-25 01:39+0200\n"
+"Last-Translator: Philipp Kiemle <l10n.daphipz@fastmail.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 26.08.0\n"
 
 #: icaldirresource.cpp:121
 #, kde-format
@@ -28,18 +29,16 @@ msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Es wurde versucht, in einen Nur-Lesen-Ordner zu schreiben: „%1“"
 
 #: icaldirresource.cpp:252
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "Kalenderordner"
 
 #: icaldirresource.cpp:254
-#, fuzzy, kde-format
-#| msgid "Calendar Folder"
+#, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
-msgstr "Kalenderordner"
+msgstr "Kalenderordner %1"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icaldirresource.kcfg:10
@@ -128,20 +127,18 @@ msgstr "Automatische Datensicherung alle:"
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "A directory path or URL containing calendar files"
-msgstr ""
+msgstr "Ein Ordnerpfad oder eine Adresse mit Kalenderdateien"
 
 #: icaldirsettingswidget.cpp:46
-#, fuzzy, kde-kuit-format
-#| msgid ""
-#| "Select the directory whose contents should be represented by this "
-#| "resource. If the directory does not exist, it will be created."
+#, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
 "Enter the path or URL to a directory whose contents should be represented by "
 "this resource. The directory will be created if it does not exist."
 msgstr ""
-"Wählen Sie den Ordner, der als Datenquelle für diese Ressource verwendet "
-"werden soll. Wenn der Ordner nicht existiert, wird er automatisch erstellt."
+"Geben Sie den Pfad oder die Adresse zu einem Ordner ein, dessen Inhalte als "
+"Datenquelle für diese Ressource verwendet werden sollen. Wenn der Ordner "
+"nicht existiert, wird er automatisch erstellt."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-format
