@@ -147,6 +147,23 @@ private:
     void retryAfterFailure(const QString &errorMessage);
     void listItemsForCollection(const KDAV::DavUrl &davUrl, const Akonadi::Collection &collection);
 
+public:
+    enum class SyncMethod {
+        None = 0,
+        Default = 1,
+        SyncToken = 2,
+    };
+
+private:
+    SyncMethod computeSyncMethod(const QString &remoteId, const QString &syncToken, const QString &CTag) const;
+    SyncMethod identifySyncMethod(const Akonadi::Collection &collection) const;
+    SyncMethod identifySyncMethod(const KDAV::DavCollection &collection) const;
+    /*!
+     * Modifies the collection in akonadi if collection's sync attributes needed to be updated
+     * @return true if the CollectionModifyJob was created
+     */
+    bool modifyCollectionSyncAttributesFromCache(Akonadi::Collection &collection);
+
     /**
      * Collections which only support one mime type have an icon indicating what they support.
      */
@@ -156,6 +173,7 @@ private:
     Akonadi::Collection mDavCollectionRoot;
     QMap<QString, std::shared_ptr<DavItemCache>> mDavItemCache;
     QMap<QString, QString> mCTagCache;
+    QMap<QString, QString> mSyncTokenCache;
     // collections retrieved by retrieveCollections that have yet to get their items retrieved in retrieveItems
     QSet<QString> mRetrievedCollections;
     DavFreeBusyHandler *const mFreeBusyHandler;
