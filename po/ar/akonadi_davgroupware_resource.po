@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-29 00:46+0000\n"
-"PO-Revision-Date: 2026-08-10 12:49+0400\n"
+"PO-Revision-Date: 2026-08-30 17:53+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -196,16 +196,14 @@ msgid "Unable to delete item exceptions: %1"
 msgstr "تعذر حذف استثناءات العنصر: %1"
 
 #: davgroupwareresource.cpp:865
-#, fuzzy, kde-format
-#| msgid "Unable to change item: %1"
+#, kde-format
 msgid "Unable to fetch items: %1"
-msgstr "تعذّر تغيير العنصر: %1"
+msgstr "تعذّر جلب العناصر: %1"
 
 #: davgroupwareresource.cpp:932
-#, fuzzy, kde-format
-#| msgid "Unable to remove item: %1"
+#, kde-format
 msgid "Unable to move item: %1"
-msgstr "تعذّرت إزالة العنصر: %1"
+msgstr "تعذّرت نقل العنصر: %1"
 
 #: davgroupwareresource.cpp:1079
 #, kde-format

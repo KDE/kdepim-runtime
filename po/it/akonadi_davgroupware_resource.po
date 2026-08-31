@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-29 00:46+0000\n"
-"PO-Revision-Date: 2026-07-23 15:48+0200\n"
+"PO-Revision-Date: 2026-08-30 16:43+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 26.04.3\n"
+"X-Generator: Lokalize 26.04.0\n"
 
 #: configwidget.cpp:34
 #, kde-format
@@ -203,16 +203,14 @@ msgid "Unable to delete item exceptions: %1"
 msgstr "Impossibile eliminare le eccezioni dell'elemento: %1"
 
 #: davgroupwareresource.cpp:865
-#, fuzzy, kde-format
-#| msgid "Unable to change item: %1"
+#, kde-format
 msgid "Unable to fetch items: %1"
-msgstr "Impossibile modificare l'elemento: %1"
+msgstr "Impossibile recuperare gli elementi: %1"
 
 #: davgroupwareresource.cpp:932
-#, fuzzy, kde-format
-#| msgid "Unable to remove item: %1"
+#, kde-format
 msgid "Unable to move item: %1"
-msgstr "Impossibile rimuovere l'elemento: %1"
+msgstr "Impossibile spostare l'elemento: %1"
 
 #: davgroupwareresource.cpp:1079
 #, kde-format

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-29 00:46+0000\n"
-"PO-Revision-Date: 2026-07-23 08:51+0300\n"
+"PO-Revision-Date: 2026-08-30 21:35+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Lokalize 26.04.1\n"
+"X-Generator: Lokalize 26.04.3\n"
 
 #: configwidget.cpp:34
 #, kde-format
@@ -194,16 +194,14 @@ msgid "Unable to delete item exceptions: %1"
 msgstr "לא ניתן למחוק את חריגות הפריטים: %1"
 
 #: davgroupwareresource.cpp:865
-#, fuzzy, kde-format
-#| msgid "Unable to change item: %1"
+#, kde-format
 msgid "Unable to fetch items: %1"
-msgstr "לא ניתן לשנות פריט: %1"
+msgstr "לא ניתן למשוך פריטים: %1"
 
 #: davgroupwareresource.cpp:932
-#, fuzzy, kde-format
-#| msgid "Unable to remove item: %1"
+#, kde-format
 msgid "Unable to move item: %1"
-msgstr "לא ניתן להסיר פריט: %1"
+msgstr "לא ניתן להעביר פריטים: %1"
 
 #: davgroupwareresource.cpp:1079
 #, kde-format
