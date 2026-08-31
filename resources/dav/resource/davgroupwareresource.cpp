@@ -16,6 +16,7 @@
 #include "davpushattribute.h"
 #include "davresource_debug.h"
 #include "davstate.h"
+#include "synctokenattribute.h"
 #include "utils.h"
 
 #include <KDAV/DavCollection>
@@ -34,6 +35,9 @@
 #endif
 #include <KDAV/DavItemsFetchJob>
 #include <KDAV/DavItemsListJob>
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+#include <KDAV/DavItemsSyncJob>
+#endif
 #include <KDAV/DavPrincipalHomesetsFetchJob>
 #if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
 #include <KDAV/DavPushSupport>
@@ -69,6 +73,7 @@
 #include <KIO/SslUi>
 #include <KSslErrorUiData>
 
+#include <KDAV/EtagCache>
 #include <QDBusMessage>
 #include <QDBusReply>
 
@@ -109,6 +114,7 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     AttributeFactory::registerAttribute<DavProtocolAttribute>();
     AttributeFactory::registerAttribute<CTagAttribute>();
     AttributeFactory::registerAttribute<DavPushAttribute>();
+    AttributeFactory::registerAttribute<SyncTokenAttribute>();
 
     setNeedsNetwork(true);
 
@@ -443,7 +449,9 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
     // In that case, we fetch the collection to update its attributes before fetching its items
     if (!mRetrievedCollections.contains(collection.remoteId())) {
         auto fetchJob = new KDAV::DavCollectionsFetchJob(davUrl);
-        connect(fetchJob, &KDAV::DavCollectionsFetchJob::result, this, &DavGroupwareResource::onRetrieveCollectionFinished);
+        connect(fetchJob, &KDAV::DavCollectionsFetchJob::result, this, [this, collection](KJob *job) {
+            onRetrieveCollectionFinished(job, collection);
+        });
         fetchJob->start();
         return;
     }
@@ -451,16 +459,22 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
     // Case of a collection retrieved from onRetrieveCollectionFinished
     mRetrievedCollections.remove(collection.remoteId());
 
-    // Only continue if the collection has changed or if
-    // it's the first time we see it
-    const auto CTagAttr = collection.attribute<CTagAttribute>();
-    if (CTagAttr && mCTagCache.contains(collection.remoteId()) && mCTagCache.value(collection.remoteId()) == CTagAttr->CTag()) {
-        qCDebug(DAVRESOURCE_LOG) << "CTag for collection" << collection.remoteId() << "didn't change: " << CTagAttr->CTag();
+    switch (identifySyncMethod(collection)) {
+    case SyncMethod::None:
+        // No need to update token attrs, otherwise we'd have a not-none SyncMethod
+        itemsRetrievalDone();
+        return;
+    case SyncMethod::SyncToken:
+        syncItemsForCollection(davUrl, collection);
+        return;
+    case SyncMethod::Default:
+        listItemsForCollection(davUrl, collection);
+        return;
+    default:
+        Q_UNREACHABLE();
         itemsRetrievalDone();
         return;
     }
-
-    listItemsForCollection(davUrl, collection);
 }
 
 bool DavGroupwareResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &)
@@ -1406,13 +1420,15 @@ void DavGroupwareResource::onCollectionRemovedFinished(KJob *job)
     changeProcessed();
 }
 
-void DavGroupwareResource::onRetrieveCollectionFinished(KJob *job)
+void DavGroupwareResource::onRetrieveCollectionFinished(KJob *job, const Akonadi::Collection &oldCollection)
 {
+    Q_ASSERT(oldCollection.isValid());
+
     const KDAV::DavCollectionsFetchJob *fetchJob = qobject_cast<KDAV::DavCollectionsFetchJob *>(job);
 
     if (job->error()) {
-        qCWarning(DAVRESOURCE_LOG) << "Unable to fetch collections" << job->error() << job->errorText();
-        cancelTask(i18n("Unable to retrieve collections: %1", job->errorText()));
+        qCWarning(DAVRESOURCE_LOG) << "Unable to fetch collection" << job->error() << job->errorText();
+        cancelTask(i18n("Unable to retrieve collection: %1", job->errorText()));
         mSyncErrorNotified = true;
         return;
     }
@@ -1431,18 +1447,17 @@ void DavGroupwareResource::onRetrieveCollectionFinished(KJob *job)
         mSyncErrorNotified = true;
         return;
     }
+
     auto collection = Utils::createAkonadiCollection(*davCollection, mDavCollectionRoot);
     DavGroupwareResource::setCollectionIcon(collection /*by-ref*/);
-
-    auto shouldRetrieveItems = true;
-    // the value of the CTag will be updated in the collection in onRetrieveItemsFinished
-    // for now, we only update the cache
-    if (!davCollection->CTag().isEmpty()) {
-        shouldRetrieveItems =
-            !mCTagCache.contains(davCollection->url().toDisplayString()) || mCTagCache.value(davCollection->url().toDisplayString()) != davCollection->CTag();
-        mCTagCache.insert(davCollection->url().toDisplayString(), davCollection->CTag());
+    // createAkonadiCollection doesn't read SyncToken and CTag since we need custom logic to handle sync attributes correctly.
+    // To avoid saving the collection without the properties, we rewrite it's old values so that it's not saved in an inconsistent state.
+    if (oldCollection.hasAttribute<SyncTokenAttribute>()) {
+        collection.addAttribute(oldCollection.attribute<SyncTokenAttribute>()->clone());
     }
-
+    if (oldCollection.hasAttribute<CTagAttribute>()) {
+        collection.addAttribute(oldCollection.attribute<CTagAttribute>()->clone());
+    }
     auto modifyJob = new Akonadi::CollectionModifyJob(collection);
     modifyJob->start();
 
@@ -1457,10 +1472,35 @@ void DavGroupwareResource::onRetrieveCollectionFinished(KJob *job)
 #endif
 #endif
 
-    if (shouldRetrieveItems) {
-        listItemsForCollection(davCollection->url(), collection);
-    } else {
+    // Compute sync state before updating cache
+    const auto syncMethod = identifySyncMethod(*davCollection);
+
+    // The value of the CTag will be updated in the collection in onRetrieveItemsFinished, for now we only update the cache
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    if (!davCollection->syncToken().isEmpty()) {
+        mSyncTokenCache.insert(davCollection->url().toDisplayString(), davCollection->syncToken());
+    }
+#endif
+    if (!davCollection->CTag().isEmpty()) {
+        mCTagCache.insert(davCollection->url().toDisplayString(), davCollection->CTag());
+    }
+
+    // Note: do not use collection here, it doesn't hold the updated sync attributes
+    switch (syncMethod) {
+    case SyncMethod::None:
+        // No need to update token attrs, otherwise we'd have a not-none SyncMethod
         taskDone();
+        return;
+    case SyncMethod::SyncToken:
+        syncItemsForCollection(davCollection->url(), collection);
+        return;
+    case SyncMethod::Default:
+        listItemsForCollection(davCollection->url(), collection);
+        return;
+    default:
+        Q_UNREACHABLE();
+        taskDone();
+        return;
     }
 }
 
@@ -1502,6 +1542,11 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
          * is called. We leave it untouched in the collection attribute
          * and will only update it there after successful sync.
          */
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+        if (!davCollection.syncToken().isEmpty()) {
+            mSyncTokenCache.insert(davCollection.url().toDisplayString(), davCollection.syncToken());
+        }
+#endif
         if (!davCollection.CTag().isEmpty()) {
             mCTagCache.insert(davCollection.url().toDisplayString(), davCollection.CTag());
         }
@@ -1551,23 +1596,13 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
     }
 }
 
-void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
+void DavGroupwareResource::onRetrieveItemsFinished(const Akonadi::Collection &collection,
+                                                   const KDAV::DavItem::List &changedDavItems,
+                                                   const QStringList &deletedDavItems)
 {
-    if (job->error()) {
-        if (mSyncErrorNotified) {
-            cancelTask();
-        } else {
-            cancelTask(i18n("Unable to retrieve items: %1", job->errorText()));
-            mSyncErrorNotified = true;
-        }
-        return;
-    }
-
-    auto collection = job->property("collection").value<Collection>();
     const KDAV::DavUrl davUrl = settings()->davUrlFromCollectionUrl(collection.remoteId());
     const bool protocolSupportsMultiget = KDAV::ProtocolInfo::useMultiget(davUrl.protocol());
 
-    const KDAV::DavItemsListJob *listJob = qobject_cast<KDAV::DavItemsListJob *>(job);
     auto cache = mDavItemCache.value(collection.remoteId());
     if (!cache) {
         qCDebug(DAVRESOURCE_LOG) << "Collection has disappeared during item fetch!";
@@ -1575,12 +1610,11 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
         return;
     }
 
-    Akonadi::Item::List changedItems;
-    QSet<QString> seenRids;
-    QStringList changedRids;
-    changedItems.reserve(listJob->changedItems().count());
-    const auto listJobChangedItems{listJob->changedItems()};
-    for (const KDAV::DavItem &davItem : listJobChangedItems) {
+    auto seenRids = QSet<QString>();
+    auto changedRids = QStringList();
+    auto changedItems = Akonadi::Item::List();
+    changedItems.reserve(changedDavItems.count());
+    for (const KDAV::DavItem &davItem : changedDavItems) {
         seenRids.insert(davItem.url().toDisplayString());
 
         Akonadi::Item item;
@@ -1602,8 +1636,7 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
         }
     }
 
-    const auto listJobDeleteItems{listJob->deletedItems()};
-    for (const QString &rmd : listJobDeleteItems) {
+    for (const QString &rmd : deletedDavItems) {
         // We don't want to delete dependent items if the main item was seen
         if (rmd.contains(u'#')) {
             const QString base = rmd.left(rmd.indexOf(u'#'));
@@ -1642,15 +1675,8 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
         startMultigetChunks(davUrl, collection, changedRids, changedItems, 0, Akonadi::Item::List());
         // delay the call of itemsRetrievedIncremental() to startMultigetChunks() once all chunks finished
     } else {
-        // Update the collection CTag attribute now as sync is done.
-        if (mCTagCache.contains(collection.remoteId())) {
-            auto CTagAttr = collection.attribute<CTagAttribute>(Collection::AddIfMissing);
-            qCDebug(DAVRESOURCE_LOG) << "Updating collection CTag from" << CTagAttr->CTag() << "to" << mCTagCache.value(collection.remoteId());
-            CTagAttr->setCTag(mCTagCache.value(collection.remoteId()));
-            auto modifyJob = new Akonadi::CollectionModifyJob(collection);
-            modifyJob->start();
-        }
-
+        // Update the collection CTag and SyncToken attribute now as sync is done.
+        modifyCollectionSyncAttributesFromCache(collection);
         itemsRetrievedIncremental(changedItems, Akonadi::Item::List());
     }
 }
@@ -1747,15 +1773,8 @@ void DavGroupwareResource::startMultigetChunks(const KDAV::DavUrl &davUrl,
     constexpr int multigetChunkSize = 100;
 
     if (offset >= allRids.size()) {
-        // Update the collection CTag attribute now as sync is done.
-        if (mCTagCache.contains(collection.remoteId())) {
-            auto modifiableCollection = collection;
-            auto CTagAttr = modifiableCollection.attribute<CTagAttribute>(Collection::AddIfMissing);
-            qCDebug(DAVRESOURCE_LOG) << "Updating collection CTag from" << CTagAttr->CTag() << "to" << mCTagCache.value(collection.remoteId());
-            CTagAttr->setCTag(mCTagCache.value(collection.remoteId()));
-            auto modifyJob = new Akonadi::CollectionModifyJob(modifiableCollection);
-            modifyJob->start();
-        }
+        // Update the collection CTag and SyncToken attribute now as sync is done.
+        modifyCollectionSyncAttributesFromCache(collection);
         itemsRetrievedIncremental(accumulated, Akonadi::Item::List());
         return;
     }
@@ -2222,8 +2241,147 @@ void DavGroupwareResource::listItemsForCollection(const KDAV::DavUrl &davUrl, co
     }
     listJob->setProperty("collection", QVariant::fromValue(collection));
     listJob->setContentMimeTypes(collection.contentMimeTypes());
-    connect(listJob, &KDAV::DavItemsListJob::result, this, &DavGroupwareResource::onRetrieveItemsFinished);
+    connect(listJob, &KDAV::DavItemsListJob::result, this, [this, collection](KJob *job) {
+        if (job->error()) {
+            if (mSyncErrorNotified) {
+                cancelTask();
+            } else {
+                cancelTask(i18n("Unable to retrieve items: %1", job->errorText()));
+                mSyncErrorNotified = true;
+            }
+            return;
+        }
+
+        const auto *listJob = qobject_cast<KDAV::DavItemsListJob *>(job);
+        onRetrieveItemsFinished(collection, listJob->changedItems(), listJob->deletedItems());
+    });
     listJob->start();
+}
+
+void DavGroupwareResource::syncItemsForCollection(const KDAV::DavUrl &davUrl, const Akonadi::Collection &collection)
+{
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    if (!collection.hasAttribute<SyncTokenAttribute>()) {
+        Q_ASSERT("syncItemsForCollection requires a sync token !");
+        qCCritical(DAVRESOURCE_LOG()) << "syncItemsForCollection requires a sync token, falling back to full sync!";
+        listItemsForCollection(davUrl, collection);
+        return;
+    }
+
+    auto syncToken = collection.attribute<SyncTokenAttribute>()->syncToken();
+    auto syncJob = new KDAV::DavItemsSyncJob(davUrl, syncToken);
+    // TODO: settings()->limitSyncRange() is incompatible with sync collection: maybe do it client side ?
+    connect(syncJob, &KDAV::DavItemsListJob::result, this, [this, collection](KJob *job) {
+        if (job->error()) {
+            if (mSyncErrorNotified) {
+                cancelTask();
+            } else {
+                cancelTask(i18n("Unable to retrieve items: %1", job->errorText()));
+                mSyncErrorNotified = true;
+            }
+            return;
+        }
+
+        const auto *syncJob = qobject_cast<KDAV::DavItemsSyncJob *>(job);
+        // Update the cache with the latest sync-token
+        mSyncTokenCache.insert(collection.remoteId(), syncJob->newSyncToken());
+
+        // Remove from changed items those who have the same eTag, which are our own changes sent back to us
+        const auto etagCache = mDavItemCache.value(collection.remoteId())->eTagCache();
+        auto changedItems = syncJob->changedItems();
+        changedItems.removeIf([&](const KDAV::DavItem &item) {
+            return !etagCache->etagChanged(item.url().toDisplayString(), item.etag());
+        });
+
+        onRetrieveItemsFinished(collection, changedItems, syncJob->deletedItems());
+    });
+    syncJob->start();
+#else
+    qCDebug(DAVRESOURCE_LOG()) << "syncItemsForCollection not supported, falling back to full sync!";
+    listItemsForCollection(davUrl, collection);
+#endif
+}
+
+DavGroupwareResource::SyncMethod DavGroupwareResource::computeSyncMethod(const QString &remoteId, const QString &syncToken, const QString &CTag) const
+{
+    const auto hasSyncToken = !syncToken.isEmpty();
+    const auto isSyncTokenSame = hasSyncToken && mSyncTokenCache.value(remoteId) == syncToken;
+
+    const auto hasCTag = !CTag.isEmpty();
+    const auto isCTagSame = hasCTag && mCTagCache.value(remoteId) == CTag;
+
+    if (hasSyncToken && hasCTag) {
+        if (isSyncTokenSame && isCTagSame) {
+            qCDebug(DAVRESOURCE_LOG) << "SyncToken and CTag of collection" << remoteId << "did not change: SyncToken =" << syncToken << "CTag =" << CTag;
+            return SyncMethod::None;
+        }
+        if (isSyncTokenSame != isCTagSame) {
+            qCWarning(DAVRESOURCE_LOG) << "SyncToken and CTag of collection" << remoteId << "diverged: SyncToken =" << syncToken << "CTag = " << CTag;
+        }
+    } else if (hasSyncToken) {
+        if (isSyncTokenSame) {
+            qCDebug(DAVRESOURCE_LOG) << "SyncToken of collection" << remoteId << "did not change:" << syncToken;
+            return SyncMethod::None;
+        }
+    } else if (hasCTag) {
+        if (isCTagSame) {
+            qCDebug(DAVRESOURCE_LOG) << "CTag of collection " << remoteId << "did not change: " << CTag;
+            return SyncMethod::None;
+        }
+    }
+
+    // Update using the more efficient SyncToken method
+    if (hasSyncToken && !isSyncTokenSame) {
+        return SyncMethod::SyncToken;
+    }
+    return SyncMethod::Default;
+}
+
+DavGroupwareResource::SyncMethod DavGroupwareResource::identifySyncMethod(const Akonadi::Collection &collection) const
+{
+    const auto syncTokenAttr = collection.attribute<SyncTokenAttribute>();
+    const auto CTagAttr = collection.attribute<CTagAttribute>();
+    return computeSyncMethod(collection.remoteId(), syncTokenAttr ? syncTokenAttr->syncToken() : QString(), CTagAttr ? CTagAttr->CTag() : QString());
+}
+
+DavGroupwareResource::SyncMethod DavGroupwareResource::identifySyncMethod(const KDAV::DavCollection &collection) const
+{
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    return computeSyncMethod(collection.url().toDisplayString(), collection.syncToken(), collection.CTag());
+#else
+    return computeSyncMethod(collection.url().toDisplayString(), ""_L1, collection.CTag());
+#endif
+}
+
+bool DavGroupwareResource::modifyCollectionSyncAttributesFromCache(Akonadi::Collection &collection)
+{
+    bool wasChanged = false;
+    if (mSyncTokenCache.contains(collection.remoteId())) {
+        auto syncTokenAttr = collection.attribute<SyncTokenAttribute>(Collection::AddIfMissing);
+        qCDebug(DAVRESOURCE_LOG) << "Updating collection syncToken from" << syncTokenAttr->syncToken() << "to" << mSyncTokenCache.value(collection.remoteId());
+        syncTokenAttr->setSyncToken(mSyncTokenCache.value(collection.remoteId()));
+        wasChanged = true;
+    }
+
+    if (mCTagCache.contains(collection.remoteId())) {
+        auto CTagAttr = collection.attribute<CTagAttribute>(Collection::AddIfMissing);
+        qCDebug(DAVRESOURCE_LOG) << "Updating collection CTag from" << CTagAttr->CTag() << "to" << mCTagCache.value(collection.remoteId());
+        CTagAttr->setCTag(mCTagCache.value(collection.remoteId()));
+        wasChanged = true;
+    }
+
+    if (wasChanged) {
+        auto modifyJob = new Akonadi::CollectionModifyJob(collection);
+        modifyJob->start();
+        return true;
+    }
+    return false;
+}
+
+bool DavGroupwareResource::modifyCollectionSyncAttributesFromCache(const Akonadi::Collection &collection)
+{
+    auto modifiableCollection = collection;
+    return modifyCollectionSyncAttributesFromCache(modifiableCollection);
 }
 
 /*static*/
