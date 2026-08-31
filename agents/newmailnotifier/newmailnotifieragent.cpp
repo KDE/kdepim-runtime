@@ -157,22 +157,18 @@ void NewMailNotifierAgent::itemsRemoved(const Item::List &items)
         return;
     }
 
-    const QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::iterator end(mNewMails.end());
-    for (QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::iterator it = mNewMails.begin(); it != end; ++it) {
-        QList<Akonadi::Item::Id> idList = it.value();
+    for (auto it = mNewMails.begin(); it != mNewMails.end();) {
+        QList<Akonadi::Item::Id> &idList = it.value();
         bool itemFound = false;
         for (const Item &item : items) {
-            const int numberOfItemsRemoved = idList.removeAll(item.id());
-            if (numberOfItemsRemoved > 0) {
+            if (idList.removeAll(item.id()) > 0) {
                 itemFound = true;
             }
         }
-        if (itemFound) {
-            if (mNewMails[it.key()].isEmpty()) {
-                mNewMails.remove(it.key());
-            } else {
-                mNewMails[it.key()] = std::move(idList);
-            }
+        if (itemFound && idList.isEmpty()) {
+            it = mNewMails.erase(it);
+        } else {
+            ++it;
         }
     }
 }
@@ -184,11 +180,16 @@ void NewMailNotifierAgent::itemsFlagsChanged(const Akonadi::Item::List &items, c
     if (!isActive()) {
         return;
     }
+    const QByteArray seenFlag = "\\SEEN"_ba;
+    if (!addedFlags.contains(seenFlag)) {
+        return;
+    }
+
     for (const Akonadi::Item &item : items) {
         const QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::iterator end(mNewMails.end());
         for (QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::iterator it = mNewMails.begin(); it != end; ++it) {
             QList<Akonadi::Item::Id> idList = it.value();
-            if (idList.contains(item.id()) && addedFlags.contains("\\SEEN")) {
+            if (idList.contains(item.id())) {
                 idList.removeAll(item.id());
                 if (idList.isEmpty()) {
                     mNewMails.remove(it.key());
