@@ -20,7 +20,7 @@ void CollectionFlagsAttribute::setFlags(const QList<QByteArray> &flags)
     mFlags = flags;
 }
 
-QList<QByteArray> CollectionFlagsAttribute::flags() const
+const QList<QByteArray> &CollectionFlagsAttribute::flags() const
 {
     return mFlags;
 }

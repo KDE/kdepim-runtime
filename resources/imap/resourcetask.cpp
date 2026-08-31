@@ -410,13 +410,16 @@ QList<QByteArray> ResourceTask::fromAkonadiToSupportedImapFlags(const QList<QByt
 
     const auto flagAttr = collection.attribute<Akonadi::CollectionFlagsAttribute>();
     // the server does not support arbitrary flags, so filter out those it can't handle
-    if (flagAttr && !flagAttr->flags().isEmpty() && !flagAttr->flags().contains("\\*")) {
-        for (QList<QByteArray>::iterator it = imapFlags.begin(); it != imapFlags.end();) {
-            if (flagAttr->flags().contains(*it)) {
-                ++it;
-            } else {
-                qCDebug(IMAPRESOURCE_LOG) << "Server does not support flag" << *it;
-                it = imapFlags.erase(it);
+    if (flagAttr) {
+        const QList<QByteArray> &serverFlags = flagAttr->flags();
+        if (!serverFlags.isEmpty() && !serverFlags.contains("\\*")) {
+            for (QList<QByteArray>::iterator it = imapFlags.begin(); it != imapFlags.end();) {
+                if (serverFlags.contains(*it)) {
+                    ++it;
+                } else {
+                    qCDebug(IMAPRESOURCE_LOG) << "Server does not support flag" << *it;
+                    it = imapFlags.erase(it);
+                }
             }
         }
     }

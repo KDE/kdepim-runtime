@@ -16,7 +16,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT CollectionFlagsAttribute : public Akonad
 public:
     explicit CollectionFlagsAttribute(const QList<QByteArray> &flags = QList<QByteArray>());
     void setFlags(const QList<QByteArray> &flags);
-    QList<QByteArray> flags() const;
+    const QList<QByteArray> &flags() const;
     QByteArray type() const override;
     Attribute *clone() const override;
     QByteArray serialized() const override;
