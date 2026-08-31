@@ -3,6 +3,14 @@ set(PIM_VERSION "6.8.40")
 set(KDEPIM_RUNTIME_VERSION_NUMBER ${PIM_VERSION})
 project(kdepim-runtime VERSION ${KDEPIM_RUNTIME_VERSION_NUMBER})
 
+option(USE_MOLD_LINKER "Use the mold linker when available (much faster link times)" ON)
+if(USE_MOLD_LINKER AND NOT DEFINED CMAKE_LINKER_TYPE)
+    find_program(MOLD_EXECUTABLE mold)
+    if(MOLD_EXECUTABLE)
+        set(CMAKE_LINKER_TYPE MOLD)
+    endif()
+endif()
+
 set(KDEPIM_DEV_VERSION alpha)
 set(RELEASE_SERVICE_VERSION "26.11.40")
 
