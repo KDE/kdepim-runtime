@@ -586,7 +586,12 @@ void ImapResourceBase::onExpungeCollectionFetchDone(KJob *job)
 {
     if (job->error() == 0) {
         auto fetch = static_cast<Akonadi::CollectionFetchJob *>(job);
-        Akonadi::Collection collection = fetch->collections().at(0);
+        const auto collections = fetch->collections();
+        if (collections.isEmpty()) {
+            qCWarning(IMAPRESOURCE_LOG) << "Failed to retrieve collection for expunge: no such collection";
+            return;
+        }
+        const Akonadi::Collection &collection = collections.constFirst();
 
         scheduleCustomTask(this, "triggerCollectionExpunge", QVariant::fromValue(collection));
     } else {
