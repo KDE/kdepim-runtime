@@ -47,11 +47,13 @@ set(davgroupwareresource_SRCS
     daverror-kdepim-runtime.cpp
     davitemcache.cpp
     ctagattribute.cpp
+    synctokenattribute.cpp
     davfreebusyhandler.cpp
     davgroupwareresource.cpp
     daverror-kdepim-runtime.h
     davitemcache.h
     ctagattribute.h
+    synctokenattribute.h
     davfreebusyhandler.h
     davgroupwareresource.h
     davetagcache.h
