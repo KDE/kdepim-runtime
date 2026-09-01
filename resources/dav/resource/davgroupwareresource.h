@@ -13,6 +13,7 @@
 #include <Akonadi/FreeBusyProviderBase>
 #include <Akonadi/ResourceWidgetBase>
 #include <KDAV/DavCollection>
+#include <KDAV/DavItem>
 
 class DavItemCache;
 class DavFreeBusyHandler;
@@ -95,9 +96,10 @@ private:
     void onHandlesFreeBusy(const QString &email, bool handles);
     void onFreeBusyRetrieved(const QString &email, const QString &freeBusy, bool success, const QString &errorText);
 
-    void onRetrieveCollectionFinished(KJob *job);
+    void onRetrieveCollectionFinished(KJob *job, const Akonadi::Collection &oldCollection);
     void onRetrieveCollectionsFinished(KJob *);
-    void onRetrieveItemsFinished(KJob *);
+    void onRetrieveItemsFinished(const Akonadi::Collection &collection, const KDAV::DavItem::List &changedDavItems, const QStringList &deletedDavItems);
+
     void onMultigetFinished(KJob *);
     void startMultigetChunks(const KDAV::DavUrl &davUrl,
                              const Akonadi::Collection &collection,
@@ -146,6 +148,7 @@ private:
     bool configurationIsValid();
     void retryAfterFailure(const QString &errorMessage);
     void listItemsForCollection(const KDAV::DavUrl &davUrl, const Akonadi::Collection &collection);
+    void syncItemsForCollection(const KDAV::DavUrl &davUrl, const Akonadi::Collection &collection);
 
 public:
     enum class SyncMethod {
@@ -163,6 +166,7 @@ private:
      * @return true if the CollectionModifyJob was created
      */
     bool modifyCollectionSyncAttributesFromCache(Akonadi::Collection &collection);
+    bool modifyCollectionSyncAttributesFromCache(const Akonadi::Collection &collection);
 
     /**
      * Collections which only support one mime type have an icon indicating what they support.
