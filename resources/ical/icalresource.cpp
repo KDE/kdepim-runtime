@@ -42,9 +42,11 @@ ICalResource::~ICalResource() = default;
 
 bool ICalResource::retrieveItems(const Akonadi::Item::List &items, [[maybe_unused]] const QSet<QByteArray> &parts)
 {
+#if 0
     for (const Akonadi::Item &item : items) {
         qDebug() << "Item:" << item.url();
     }
+#endif
 
     if (!mCalendar) {
         qCritical() << "akonadi_ical_resource: Calendar not loaded";
