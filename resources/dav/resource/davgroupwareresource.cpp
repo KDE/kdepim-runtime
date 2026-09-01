@@ -1419,12 +1419,13 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         }
     }
 
-    const auto keys{mDavItemCache.keys()};
-    for (const QString &rid : keys) {
-        if (!seenCollectionsUrls.contains(rid)) {
-            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveCollectionsFinished: Collection disappeared. " << rid;
-            mDavItemCache[rid]->deleteLater();
-            mDavItemCache.remove(rid);
+    for (auto it = mDavItemCache.begin(); it != mDavItemCache.end();) {
+        if (!seenCollectionsUrls.contains(it.key())) {
+            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveCollectionsFinished: Collection disappeared. " << it.key();
+            it.value()->deleteLater();
+            it = mDavItemCache.erase(it);
+        } else {
+            ++it;
         }
     }
 
