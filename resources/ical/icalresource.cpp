@@ -146,9 +146,9 @@ void ICalResource::itemRemoved(const Akonadi::Item &item)
     changeProcessed();
 }
 
-void ICalResource::retrieveItems(const Akonadi::Collection &col)
+void ICalResource::retrieveItems([[maybe_unused]] const Akonadi::Collection &col)
 {
-    reloadFile().then(this, [this, col](bool success) {
+    reloadFile().then(this, [this](bool success) {
         qInfo() << "Reload file success:" << success;
         if (success) {
             if (mCalendar) {
