@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-17 00:47+0000\n"
+"POT-Creation-Date: 2026-09-01 00:46+0000\n"
 "PO-Revision-Date: 2018-01-06 09:21+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -50,7 +50,7 @@ msgid "Enabled"
 msgstr "Укључено"
 
 # rewrite-msgid: /email/message/
-#: newmailnotifieragent.cpp:366
+#: newmailnotifieragent.cpp:367
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -62,7 +62,7 @@ msgstr[1] "%1 нове поруке у %2 (%3)"
 msgstr[2] "%1 нових порука у %2 (%3)"
 msgstr[3] "Нова порука у %2 (%3)"
 
-#: newmailnotifieragent.cpp:403
+#: newmailnotifieragent.cpp:404
 #, kde-format
 msgid "New mail arrived"
 msgstr "Стигла је пошта"

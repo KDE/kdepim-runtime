@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-17 00:47+0000\n"
+"POT-Creation-Date: 2026-09-01 00:46+0000\n"
 "PO-Revision-Date: 2026-08-17 11:38+0200\n"
 "Last-Translator: Libor Filípek <libor.filipek@gmail.com>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -47,7 +47,7 @@ msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Povoleno"
 
-#: newmailnotifieragent.cpp:366
+#: newmailnotifieragent.cpp:367
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -58,7 +58,7 @@ msgstr[0] "Jeden nový e-mail v %2 od \"%3\""
 msgstr[1] "%1 nové e-maily v %2 od \"%3\""
 msgstr[2] "%1 nových e-mailů v %2 od \"%3\""
 
-#: newmailnotifieragent.cpp:403
+#: newmailnotifieragent.cpp:404
 #, kde-format
 msgid "New mail arrived"
 msgstr "Přišla nová pošta"

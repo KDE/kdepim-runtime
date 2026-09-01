@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-08 00:45+0000\n"
+"POT-Creation-Date: 2026-09-01 00:46+0000\n"
 "PO-Revision-Date: 2025-03-29 13:50+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -469,7 +469,7 @@ msgstr "Не може да се свърже с IMAP сървъра."
 msgid "Connection lost"
 msgstr "Връзката е загубена"
 
-#: resourcetask.cpp:475
+#: resourcetask.cpp:478
 #, kde-format
 msgid "killed"
 msgstr "прекратен"

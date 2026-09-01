@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-17 00:47+0000\n"
+"POT-Creation-Date: 2026-09-01 00:46+0000\n"
 "PO-Revision-Date: 2020-01-02 11:46+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -49,7 +49,7 @@ msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Lubatud"
 
-#: newmailnotifieragent.cpp:366
+#: newmailnotifieragent.cpp:367
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -59,7 +59,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Üks uus kiri kaustas %2 saatjalt %3"
 msgstr[1] "%1 uut kirja kaustas %2 saatjalt %3"
 
-#: newmailnotifieragent.cpp:403
+#: newmailnotifieragent.cpp:404
 #, kde-format
 msgid "New mail arrived"
 msgstr "Saabus uus kiri"

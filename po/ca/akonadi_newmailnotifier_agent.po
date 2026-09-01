@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-17 00:47+0000\n"
+"POT-Creation-Date: 2026-09-01 00:46+0000\n"
 "PO-Revision-Date: 2026-08-17 09:12+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -49,7 +49,7 @@ msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Activada"
 
-#: newmailnotifieragent.cpp:366
+#: newmailnotifieragent.cpp:367
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -59,7 +59,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Un correu electrònic nou en %2 des de «%3»"
 msgstr[1] "%1 correus electrònics nous en %2 des de «%3»"
 
-#: newmailnotifieragent.cpp:403
+#: newmailnotifieragent.cpp:404
 #, kde-format
 msgid "New mail arrived"
 msgstr "Ha arribat correu nou"

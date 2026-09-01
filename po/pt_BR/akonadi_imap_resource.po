@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-08 00:45+0000\n"
+"POT-Creation-Date: 2026-09-01 00:46+0000\n"
 "PO-Revision-Date: 2025-11-08 21:10-0300\n"
 "Last-Translator: Guilherme Marçal Silva <guimarcalsilva@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -467,7 +467,7 @@ msgstr "Não foi possível conectar ao servidor IMAP."
 msgid "Connection lost"
 msgstr "Conexão perdida"
 
-#: resourcetask.cpp:475
+#: resourcetask.cpp:478
 #, kde-format
 msgid "killed"
 msgstr "terminado"

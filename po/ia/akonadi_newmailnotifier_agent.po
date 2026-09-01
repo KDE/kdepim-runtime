@@ -1,14 +1,14 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2011, 2013, 2015, 2020, 2021, 2022, 2023, 2024 g.sora <g.sora@tiscali.it>
+# SPDX-FileCopyrightText: 2011, 2013, 2015, 2020, 2021, 2022, 2023, 2024, 2026 g.sora <g.sora@tiscali.it>
 # giovanni <g.sora@tiscali.it>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-17 00:47+0000\n"
-"PO-Revision-Date: 2024-07-31 10:16+0200\n"
+"POT-Creation-Date: 2026-09-01 00:46+0000\n"
+"PO-Revision-Date: 2026-08-31 17:07+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 25.04.0\n"
 
 #, kde-format
 msgctxt "%f is a variable for agent. Do not change it"
@@ -46,7 +46,7 @@ msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Habilitate"
 
-#: newmailnotifieragent.cpp:366
+#: newmailnotifieragent.cpp:367
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -56,7 +56,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Un nove message de e-posta in %2 ex \"%3\""
 msgstr[1] "%1 nove messages de e-postas in %2 ex \"%3\""
 
-#: newmailnotifieragent.cpp:403
+#: newmailnotifieragent.cpp:404
 #, kde-format
 msgid "New mail arrived"
 msgstr "Nove message de e-posta arrivate"
@@ -70,7 +70,7 @@ msgstr "Incapace a initiar application de KMail."
 #: newmailnotifieropenfolderjob.cpp:46
 #, kde-format
 msgid "Impossible to access the DBus interface."
-msgstr ""
+msgstr "Impossibile acceder a interfacie de DBus."
 
 #: newmailnotifierselectcollectionwidget.cpp:96
 #, kde-format

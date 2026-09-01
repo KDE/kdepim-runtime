@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-08 00:45+0000\n"
+"POT-Creation-Date: 2026-09-01 00:46+0000\n"
 "PO-Revision-Date: 2014-09-04 16:12+0200\n"
 "Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -479,7 +479,7 @@ msgstr ""
 msgid "Connection lost"
 msgstr "A kapcsolat megszakadt"
 
-#: resourcetask.cpp:475
+#: resourcetask.cpp:478
 #, kde-format
 msgid "killed"
 msgstr "kilőtt"

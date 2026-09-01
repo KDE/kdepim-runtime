@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-17 00:47+0000\n"
+"POT-Creation-Date: 2026-09-01 00:46+0000\n"
 "PO-Revision-Date: 2011-12-28 12:28-0500\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -45,7 +45,7 @@ msgctxt "@option:check"
 msgid "Enabled"
 msgstr ""
 
-#: newmailnotifieragent.cpp:366
+#: newmailnotifieragent.cpp:367
 #, fuzzy, kde-format
 #| msgid "One new email in %2"
 #| msgid_plural "%1 new emails in %2"
@@ -60,7 +60,7 @@ msgstr[2] "%1 theachtaireacht nua i %2"
 msgstr[3] "%1 dteachtaireacht nua i %2"
 msgstr[4] "%1 teachtaireacht nua i %2"
 
-#: newmailnotifieragent.cpp:403
+#: newmailnotifieragent.cpp:404
 #, kde-format
 msgid "New mail arrived"
 msgstr ""

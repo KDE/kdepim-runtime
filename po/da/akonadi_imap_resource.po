@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-08 00:45+0000\n"
+"POT-Creation-Date: 2026-09-01 00:46+0000\n"
 "PO-Revision-Date: 2024-07-17 21:41+0200\n"
 "Last-Translator: rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -457,7 +457,7 @@ msgstr "Kan ikke forbinde til IMAP-serveren."
 msgid "Connection lost"
 msgstr "Forbindelse mistet"
 
-#: resourcetask.cpp:475
+#: resourcetask.cpp:478
 #, kde-format
 msgid "killed"
 msgstr "dræbt"
