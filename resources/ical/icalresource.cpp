@@ -6,13 +6,6 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-/*
-    SPDX-FileCopyrightText: 2006 Till Adam <adam@kde.org>
-    SPDX-FileCopyrightText: 2009 David Jarvie <djarvie@kde.org>
-
-    SPDX-License-Identifier: LGPL-2.0-or-later
-*/
-
 #include "icalresource.h"
 #include "icalsettingsadaptor.h"
 
