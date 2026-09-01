@@ -1188,7 +1188,8 @@ void DavGroupwareResource::onCreateInitialCacheReady(KJob *job)
         }
 
         const Akonadi::Collection collection = item.parentCollection();
-        if (collection.remoteId().isEmpty()) {
+        const QString remoteId = collection.remoteId();
+        if (remoteId.isEmpty()) {
             qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onCreateInitialCacheReady: Found an item in a collection without remote ID. " << item.remoteId();
             continue;
         }
@@ -1199,12 +1200,12 @@ void DavGroupwareResource::onCreateInitialCacheReady(KJob *job)
             continue;
         }
 
-        if (!mDavItemCache.contains(collection.remoteId())) {
+        if (!mDavItemCache.contains(remoteId)) {
             auto cache = std::make_shared<DavItemCache>(collection);
-            mDavItemCache.insert(collection.remoteId(), cache);
+            mDavItemCache.insert(remoteId, cache);
         }
 
-        mDavItemCache[collection.remoteId()]->setEtag(rid, etag);
+        mDavItemCache[remoteId]->setEtag(rid, etag);
     }
     taskDone();
 }
