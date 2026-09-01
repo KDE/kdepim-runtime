@@ -169,6 +169,7 @@ void ICalResource::retrieveItems([[maybe_unused]] const Akonadi::Collection &col
                 itemsRetrieved(items);
             } else {
                 qCritical() << "akonadi_ical_resource: retrieveItems(): mCalendar is 0!";
+                cancelTask(i18n("Calendar not loaded."));
             }
         } else {
             qInfo() << "Reload file failed, not syncing items.";
