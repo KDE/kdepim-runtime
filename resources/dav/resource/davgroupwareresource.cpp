@@ -1387,15 +1387,15 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
     const KDAV::DavCollection::List davCollections = fetchJob->collections();
 
     for (const KDAV::DavCollection &davCollection : davCollections) {
-        if (seenCollectionsUrls.contains(davCollection.url().toDisplayString())) {
-            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveCollectionsFinished: Duplicate collection reported. "
-                                     << davCollection.url().toDisplayString();
+        const QString davCollectionStr = davCollection.url().toDisplayString();
+        if (seenCollectionsUrls.contains(davCollectionStr)) {
+            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveCollectionsFinished: Duplicate collection reported. " << davCollectionStr;
             continue;
         } else {
-            seenCollectionsUrls.insert(davCollection.url().toDisplayString());
+            seenCollectionsUrls.insert(davCollectionStr);
         }
 
-        mRetrievedCollections.insert(davCollection.url().toDisplayString());
+        mRetrievedCollections.insert(davCollectionStr);
 
         auto collection = Utils::createAkonadiCollection(davCollection, mDavCollectionRoot);
         DavGroupwareResource::setCollectionIcon(collection /*by-ref*/);
