@@ -294,7 +294,7 @@ void RetrieveItemsTask::prepareRetrieval()
         modifyNeeded = true;
     } else {
         Akonadi::CollectionFlagsAttribute *flagsAttribute = col.attribute<Akonadi::CollectionFlagsAttribute>();
-        const QList<QByteArray> oldFlags = flagsAttribute->flags();
+        const QList<QByteArray> &oldFlags = flagsAttribute->flags();
         if (oldFlags != m_flags) {
             flagsAttribute->setFlags(m_flags);
             modifyNeeded = true;
