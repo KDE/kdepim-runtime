@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-16 00:44+0000\n"
+"POT-Creation-Date: 2026-09-02 00:44+0000\n"
 "PO-Revision-Date: 2011-08-20 23:55+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,27 +18,28 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: icalresource.cpp:58 icalresource.cpp:135 icalresource.cpp:216
+#: icalresource.cpp:53 icalresource.cpp:130 icalresource.cpp:172
+#: icalresource.cpp:212
 #, kde-format
 msgid "Calendar not loaded."
 msgstr "Календар није учитан."
 
-#: icalresource.cpp:70
+#: icalresource.cpp:65
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "Случај са УИД‑ом „%1“ није нађен."
 
-#: icalresource.cpp:202
+#: icalresource.cpp:198
 #, kde-format
 msgid "Failed to save calendar file to %1"
 msgstr "Не могу да сачувам фајл календара у %1."
 
-#: icalresource.cpp:221
+#: icalresource.cpp:217
 #, kde-format
 msgid "Unable to retrieve added item %1."
 msgstr "Не могу да добавим додату ставку %1."
 
-#: icalresource.cpp:221
+#: icalresource.cpp:217
 #, kde-format
 msgid "Unable to retrieve modified item %1."
 msgstr "Не могу да повратим измењену ставку %1."

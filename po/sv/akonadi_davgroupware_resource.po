@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-29 00:46+0000\n"
+"POT-Creation-Date: 2026-09-02 00:44+0000\n"
 "PO-Revision-Date: 2026-08-31 18:45+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -216,37 +216,37 @@ msgstr "Kan inte ändra objekt: %1"
 msgid "Unable to modify collection: %1"
 msgstr "Kan inte ändra samling: %1"
 
-#: davgroupwareresource.cpp:1281
+#: davgroupwareresource.cpp:1282
 #, kde-format
 msgid "Unable to create collection: %1"
 msgstr "Kan inte skapa samling: %1"
 
-#: davgroupwareresource.cpp:1310
+#: davgroupwareresource.cpp:1311
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Kan inte ta bort samling: %1"
 
-#: davgroupwareresource.cpp:1330 davgroupwareresource.cpp:1377
+#: davgroupwareresource.cpp:1331 davgroupwareresource.cpp:1378
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Kan inte hämta samlingar: %1"
 
-#: davgroupwareresource.cpp:1345
+#: davgroupwareresource.cpp:1346
 #, kde-format
 msgid "Failed to retrieve collection: %1"
 msgstr "Misslyckades hämta samlingar: %1"
 
-#: davgroupwareresource.cpp:1443 davgroupwareresource.cpp:1547
+#: davgroupwareresource.cpp:1445 davgroupwareresource.cpp:1549
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Kan inte hämta objekt: %1"
 
-#: davgroupwareresource.cpp:1683
+#: davgroupwareresource.cpp:1685
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Kan inte hämta objekt: %1"
 
-#: davgroupwareresource.cpp:1703
+#: davgroupwareresource.cpp:1705
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -255,23 +255,23 @@ msgstr ""
 "Kan inte hämta objekt: misslyckades tolka objektdata. Kanske det redan har "
 "tagits bort."
 
-#: davgroupwareresource.cpp:1763
+#: davgroupwareresource.cpp:1765
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Kan inte lägga till objekt: %1"
 
-#: davgroupwareresource.cpp:1808 davgroupwareresource.cpp:1940
-#: davgroupwareresource.cpp:1952
+#: davgroupwareresource.cpp:1810 davgroupwareresource.cpp:1942
+#: davgroupwareresource.cpp:1954
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Kan inte ändra objekt: %1"
 
-#: davgroupwareresource.cpp:1914 davgroupwareresource.cpp:1971
+#: davgroupwareresource.cpp:1916 davgroupwareresource.cpp:1973
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Kan inte ta bort objekt: %1"
 
-#: davgroupwareresource.cpp:2058 davgroupwareresource.cpp:2059
+#: davgroupwareresource.cpp:2060 davgroupwareresource.cpp:2061
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Resursen är inte inställd ännu"

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-29 00:46+0000\n"
+"POT-Creation-Date: 2026-09-02 00:44+0000\n"
 "PO-Revision-Date: 2014-09-19 22:47+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@nuug.no>\n"
@@ -216,62 +216,62 @@ msgstr "Klarer ikke legge til element: %1"
 msgid "Unable to modify collection: %1"
 msgstr ""
 
-#: davgroupwareresource.cpp:1281
+#: davgroupwareresource.cpp:1282
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to create collection: %1"
 msgstr "Klarer ikke fjerne samling: %1"
 
-#: davgroupwareresource.cpp:1310
+#: davgroupwareresource.cpp:1311
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Klarer ikke fjerne samling: %1"
 
-#: davgroupwareresource.cpp:1330 davgroupwareresource.cpp:1377
+#: davgroupwareresource.cpp:1331 davgroupwareresource.cpp:1378
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Klarer ikke hente samlinger: %1"
 
-#: davgroupwareresource.cpp:1345
+#: davgroupwareresource.cpp:1346
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Failed to retrieve collection: %1"
 msgstr "Klarer ikke hente samlinger: %1"
 
-#: davgroupwareresource.cpp:1443 davgroupwareresource.cpp:1547
+#: davgroupwareresource.cpp:1445 davgroupwareresource.cpp:1549
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Klarer ikke hente elementer: %1"
 
-#: davgroupwareresource.cpp:1683
+#: davgroupwareresource.cpp:1685
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Klarer ikke hente element: %1"
 
-#: davgroupwareresource.cpp:1703
+#: davgroupwareresource.cpp:1705
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
 
-#: davgroupwareresource.cpp:1763
+#: davgroupwareresource.cpp:1765
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Klarer ikke legge til element: %1"
 
-#: davgroupwareresource.cpp:1808 davgroupwareresource.cpp:1940
-#: davgroupwareresource.cpp:1952
+#: davgroupwareresource.cpp:1810 davgroupwareresource.cpp:1942
+#: davgroupwareresource.cpp:1954
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Klarte ikke å endre element: %1"
 
-#: davgroupwareresource.cpp:1914 davgroupwareresource.cpp:1971
+#: davgroupwareresource.cpp:1916 davgroupwareresource.cpp:1973
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Klarer ikke å fjerne element: %1"
 
-#: davgroupwareresource.cpp:2058 davgroupwareresource.cpp:2059
+#: davgroupwareresource.cpp:2060 davgroupwareresource.cpp:2061
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Ressursen er ikke satt opp ennå"
@@ -628,91 +628,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#, fuzzy
-#~ msgid "Invalid username/password"
-#~ msgstr "Ugyldig brukernavn/passord"
-
-#, fuzzy
-#~ msgid "Access forbidden"
-#~ msgstr "Adgang forbudt"
-
-#, fuzzy
-#~ msgid "Resource not found"
-#~ msgstr "Fant ikke ressurs"
-
-#, fuzzy
-#~ msgid "HTTP error"
-#~ msgstr "HTTP-feil"
-
-#, fuzzy
-#~ msgid ""
-#~ "There was a problem with the request.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "Det var et problem med forespørselen.\n"
-#~ "%1 (%2)."
-
-#, fuzzy
-#~ msgid "Protocol for the collection does not support MULTIGET"
-#~ msgstr "Protokollen for samlingen støtter ikke MULTIGET"
-
-#, fuzzy
-#~ msgid ""
-#~ "There was a problem with the request. The collection has not been deleted "
-#~ "from the server.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "Det var et problem med forespørselen. Samlingen er ikke slettet fra "
-#~ "tjeneren.\n"
-#~ "%1 (%2)."
-
-#, fuzzy
-#~ msgid "Invalid responses from backend"
-#~ msgstr "Ugyldige svar fra bakgrunnsmotor"
-
-#, fuzzy
-#~ msgid "Error setting focus for XQuery"
-#~ msgstr "Feil ved fokussetting for XQuery"
-
-#, fuzzy
-#~ msgid "Invalid XQuery submitted by DAV implementation"
-#~ msgstr "Ugyldig XQuery sendt inn av DAV-implementasjon"
-
-#, fuzzy
-#~ msgid "No properties to change or remove"
-#~ msgstr "Ingen egenskaper som skal endres eller fjernes"
-
-#, fuzzy
-#~ msgid "There was an error when modifying the properties"
-#~ msgstr "Det oppsto en feil ved endring av egenskapene"
-
-#, fuzzy
-#~ msgid ""
-#~ "There was a problem with the request. The item has not been created on "
-#~ "the server.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "Det var et problem med forespørselen. Elementet er ikke opprettet på "
-#~ "tjeneren.\n"
-#~ "%1 (%2)."
-
-#, fuzzy
-#~ msgid ""
-#~ "There was a problem with the request. The item has not been deleted from "
-#~ "the server.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "Det var et problem med forespørselen. Elementet er ikke slettet fra "
-#~ "tjeneren.\n"
-#~ "%1 (%2)."
-
-#, fuzzy
-#~ msgid ""
-#~ "There was a problem with the request. The item was not modified on the "
-#~ "server.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "Det var et problem med forespørselen. Elementet ble ikke endret på "
-#~ "tjeneren.\n"
-#~ "%1 (%2)."
