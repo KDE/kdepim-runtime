@@ -25,7 +25,9 @@
 #include <KDAV/DavItemDeleteJob>
 #include <KDAV/DavItemFetchJob>
 #include <KDAV/DavItemModifyJob>
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 30, 0)
 #include <KDAV/DavItemMoveJob>
+#endif
 #include <KDAV/DavItemsFetchJob>
 #include <KDAV/DavItemsListJob>
 #include <KDAV/DavPrincipalHomesetsFetchJob>
@@ -914,8 +916,10 @@ void DavGroupwareResource::doItemMove(const Akonadi::Item &item,
     }
 
     // The davItem sent in the DavItemMoveJob needs to have the old Url
-    const auto oldDavUrl = settings()->davUrlFromCollectionUrl(collectionSrc.remoteId(), item.remoteId());
     auto davItem = Utils::createDavItem(newItem, collectionDst, newDependentItems);
+    const auto oldDavUrl = settings()->davUrlFromCollectionUrl(collectionSrc.remoteId(), item.remoteId());
+
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 30, 0)
     davItem.setUrl(oldDavUrl);
 
     // We must not pass an authenticated url as destination, only the destination path
@@ -950,6 +954,62 @@ void DavGroupwareResource::doItemMove(const Akonadi::Item &item,
                 changesCommitted(changedItems);
             });
     job->start();
+#else
+    // TODO: Legacy path, to remove once KDAV can be assumed to be >=6.30
+    const auto newDavUrl = settings()->davUrlFromCollectionUrl(collectionDst.remoteId(), davItem.url().toDisplayString());
+    davItem.setUrl(newDavUrl);
+
+    auto *createJob = new KDAV::DavItemCreateJob(davItem);
+    connect(createJob, &KJob::result, this, [=, this](KJob *job) mutable {
+        const auto *moveJob = qobject_cast<KDAV::DavItemCreateJob *>(job);
+        if (job->error()) {
+            if (moveJob->canRetryLater()) {
+                retryAfterFailure(job->errorString());
+            } else {
+                cancelTask(i18n("Unable to create item during move: %1", job->errorString()));
+            }
+            return;
+        }
+
+        // Update item and dependentItem remoteIds
+        auto newDavItem = moveJob->item();
+        newItem.setRemoteId(newDavItem.url().toDisplayString());
+        newItem.setRemoteRevision(newDavItem.etag());
+        for (auto &newDependentItem : newDependentItems) {
+            const auto fragmentIndex = newDependentItem.remoteId().indexOf(u'#');
+            Q_ASSERT(fragmentIndex >= 0);
+            newDependentItem.setRemoteId(newItem.remoteId() + newDependentItem.remoteId().mid(fragmentIndex));
+            newDependentItem.setRemoteRevision(newItem.remoteRevision());
+        }
+
+        // Update cache
+        mDavItemCache[collectionSrc.remoteId()]->removeEtag(item.remoteId());
+        for (const auto &dependentItem : dependentItems) {
+            mDavItemCache[collectionSrc.remoteId()]->removeEtag(dependentItem.remoteId());
+        }
+        mDavItemCache[collectionDst.remoteId()]->setEtag(newItem.remoteId(), newItem.remoteRevision());
+        for (const auto &newDependentItem : newDependentItems) {
+            mDavItemCache[collectionDst.remoteId()]->setEtag(newDependentItem.remoteId(), newDependentItem.remoteRevision());
+        }
+
+        // Update remote id's in akonadiserver
+        auto changedItems = newDependentItems;
+        changedItems << newItem;
+        changesCommitted(changedItems);
+
+        // This is Fire and Forget
+        auto deleteDavItem = davItem;
+        deleteDavItem.setUrl(oldDavUrl);
+        auto *deleteJob = new KDAV::DavItemDeleteJob(deleteDavItem);
+        connect(deleteJob, &KDAV::DavItemDeleteJob::result, this, [this](KJob *deleteJob) {
+            if (deleteJob->error()) {
+                qCWarning(DAVRESOURCE_LOG()) << "Unable to delete item during move:" << deleteJob->errorString();
+            }
+        });
+        deleteJob->start();
+    });
+    createJob->start();
+#endif
 }
 
 class DavItemsModifyJob : public KCompositeJob
