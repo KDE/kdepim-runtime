@@ -3,6 +3,14 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
 
 set(davgroupwareresource_common_SRCS
+    attributes/ctagattribute.cpp
+    attributes/ctagattribute.h
+    attributes/remotectagattribute.cpp
+    attributes/remotectagattribute.h
+    attributes/synctokenattribute.cpp
+    attributes/synctokenattribute.h
+    attributes/remotesynctokenattribute.cpp
+    attributes/remotesynctokenattribute.h
     davprotocolattribute.cpp
     davprotocolattribute.h
     settings.cpp
@@ -46,14 +54,10 @@ set(davgroupwareresource_SRCS
     ${davgroupwareresource_common_SRCS}
     daverror-kdepim-runtime.cpp
     davitemcache.cpp
-    ctagattribute.cpp
-    synctokenattribute.cpp
     davfreebusyhandler.cpp
     davgroupwareresource.cpp
     daverror-kdepim-runtime.h
     davitemcache.h
-    ctagattribute.h
-    synctokenattribute.h
     davfreebusyhandler.h
     davgroupwareresource.h
     davetagcache.h

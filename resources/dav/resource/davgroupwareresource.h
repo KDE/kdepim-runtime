@@ -158,15 +158,15 @@ public:
     };
 
 private:
-    SyncMethod computeSyncMethod(const QString &remoteId, const QString &syncToken, const QString &CTag) const;
+    SyncMethod
+    computeSyncMethod(const QString &remoteId, const QString &oldSyncToken, const QString &newSyncToken, const QString &oldCTag, const QString &newCTag) const;
     SyncMethod identifySyncMethod(const Akonadi::Collection &collection) const;
-    SyncMethod identifySyncMethod(const KDAV::DavCollection &collection) const;
     /*!
-     * Modifies the collection in akonadi if collection's sync attributes needed to be updated
+     * Modifies in Akonadi the collections' local sync attributes by applying it's remote sync attributes
      * @return true if the CollectionModifyJob was created
      */
-    bool modifyCollectionSyncAttributesFromCache(Akonadi::Collection &collection);
-    bool modifyCollectionSyncAttributesFromCache(const Akonadi::Collection &collection);
+    bool modifyCollectionSyncAttributesWithRemote(Akonadi::Collection &collection);
+    bool modifyCollectionSyncAttributesWithRemote(const Akonadi::Collection &collection);
 
     /**
      * Collections which only support one mime type have an icon indicating what they support.
@@ -176,8 +176,6 @@ private:
 
     Akonadi::Collection mDavCollectionRoot;
     QMap<QString, std::shared_ptr<DavItemCache>> mDavItemCache;
-    QMap<QString, QString> mCTagCache;
-    QMap<QString, QString> mSyncTokenCache;
     // collections retrieved by retrieveCollections that have yet to get their items retrieved in retrieveItems
     QSet<QString> mRetrievedCollections;
     DavFreeBusyHandler *const mFreeBusyHandler;

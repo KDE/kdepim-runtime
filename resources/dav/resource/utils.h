@@ -35,9 +35,16 @@ namespace Utils
 [[nodiscard]] QString translatedProtocolName(KDAV::Protocol protocol);
 
 /**
- * Creates a new Akonadi::Collection from the KDAV::Collection @p collection.
+ * Creates a new Akonadi::Collection from the KDAV::Collection @p collection and @p davCollectionRoot as parent.
  */
 [[nodiscard]] Akonadi::Collection createAkonadiCollection(const KDAV::DavCollection &davCollection, const Akonadi::Collection &davCollectionRoot);
+
+/**
+ * Overload that also reads local-only attributes from @p oldCollection.
+ * \sa createAkonadiCollection(const KDAV::DavCollection &, const Akonadi::Collection &)
+ */
+[[nodiscard]] Akonadi::Collection
+createAkonadiCollection(const KDAV::DavCollection &davCollection, const Akonadi::Collection &davCollectionRoot, const Akonadi::Collection &oldCollection);
 
 /**
  * Creates a new KDAV::Collection from the Akonadi::Collection @p collection.
