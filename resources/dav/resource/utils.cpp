@@ -29,6 +29,10 @@
 #include <QString>
 #include <QTimeZone>
 
+#include "attributes/ctagattribute.h"
+#include "attributes/remotectagattribute.h"
+#include "attributes/remotesynctokenattribute.h"
+#include "attributes/synctokenattribute.h"
 #include "davresource_debug.h"
 
 using IncidencePtr = QSharedPointer<KCalendarCore::Incidence>;
@@ -121,6 +125,20 @@ Akonadi::Collection Utils::createAkonadiCollection(const KDAV::DavCollection &da
     auto protoAttr = collection.attribute<DavProtocolAttribute>(Akonadi::Collection::AddIfMissing);
     protoAttr->setDavProtocol(davCollection.url().protocol());
 
+    const auto remoteCTag = davCollection.CTag();
+    if (!remoteCTag.isEmpty()) {
+        auto *remoteCTagAttr = collection.attribute<RemoteCTagAttribute>(Akonadi::Collection::AddIfMissing);
+        remoteCTagAttr->setCTag(remoteCTag);
+    }
+
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    const auto remoteSyncToken = davCollection.syncToken();
+    if (!remoteSyncToken.isEmpty()) {
+        auto *remoteSyncTokenAttr = collection.attribute<RemoteSyncTokenAttribute>(Akonadi::Collection::AddIfMissing);
+        remoteSyncTokenAttr->setSyncToken(remoteSyncToken);
+    }
+#endif
+
     KDAV::Privileges privileges = davCollection.privileges();
     Akonadi::Collection::Rights rights;
 
@@ -147,6 +165,22 @@ Akonadi::Collection Utils::createAkonadiCollection(const KDAV::DavCollection &da
     rights.setFlag(Akonadi::Collection::CanCreateCollection, false);
     collection.setRights(rights);
 
+    return collection;
+}
+
+Akonadi::Collection
+Utils::createAkonadiCollection(const KDAV::DavCollection &davCollection, const Akonadi::Collection &davCollectionRoot, const Akonadi::Collection &oldCollection)
+{
+    auto collection = createAkonadiCollection(davCollection, davCollectionRoot);
+    // Fetch previous collection attributes that represents local state and is not stored in server
+    if (oldCollection.isValid()) {
+        if (oldCollection.hasAttribute<CTagAttribute>()) {
+            collection.addAttribute(oldCollection.attribute<CTagAttribute>()->clone());
+        }
+        if (oldCollection.hasAttribute<SyncTokenAttribute>()) {
+            collection.addAttribute(oldCollection.attribute<SyncTokenAttribute>()->clone());
+        }
+    }
     return collection;
 }
 
