@@ -193,16 +193,14 @@ msgid "Unable to delete item exceptions: %1"
 msgstr "无法删除项目例外：%1"
 
 #: davgroupwareresource.cpp:865
-#, fuzzy, kde-format
-#| msgid "Unable to change item: %1"
+#, kde-format
 msgid "Unable to fetch items: %1"
-msgstr "无法更改项目：%1"
+msgstr "无法获取项目：%1"
 
 #: davgroupwareresource.cpp:932
-#, fuzzy, kde-format
-#| msgid "Unable to remove item: %1"
+#, kde-format
 msgid "Unable to move item: %1"
-msgstr "无法删除项目：%1"
+msgstr "无法移动项目：%1"
 
 #: davgroupwareresource.cpp:1079
 #, kde-format
@@ -622,102 +620,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#~ msgid "Invalid username/password"
-#~ msgstr "无效的用户名或密码"
-
-#~ msgid "Access forbidden"
-#~ msgstr "禁止访问"
-
-#~ msgid "Resource not found"
-#~ msgstr "找不到资源"
-
-#~ msgid "HTTP error"
-#~ msgstr "HTTP 错误"
-
-#~ msgid ""
-#~ "There was a problem with the request.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "请求出错。\n"
-#~ "%1 (%2)。"
-
-#~ msgid "Protocol for the collection does not support MULTIGET"
-#~ msgstr "集合的协议不支持 MULTIGET"
-
-#~ msgid ""
-#~ "The server encountered an error that prevented it from completing your "
-#~ "request: %1 (%2)"
-#~ msgstr "服务器出现错误，无法完成您的请求：%1 (%2)"
-
-#~ msgid ""
-#~ "There was a problem with the request. The collection has not been deleted "
-#~ "from the server.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "请求出错。服务器上的项目未删除。\n"
-#~ "%1 (%2)。"
-
-#~ msgid "Invalid responses from backend"
-#~ msgstr "无效的后端应答"
-
-#~ msgid "Error setting focus for XQuery"
-#~ msgstr "设置 XQuery 焦点时发生错误"
-
-#~ msgid "Invalid XQuery submitted by DAV implementation"
-#~ msgstr "DAV 实现提交了无效的 XQuery"
-
-#~ msgid ""
-#~ "There was a problem with the request. The collection has not been "
-#~ "modified on the server.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "请求出错。服务器上的项目未修改。\n"
-#~ "%1 (%2)。"
-
-#~ msgid "No properties to change or remove"
-#~ msgstr "没有要更改或删除的属性"
-
-#~ msgid "There was an error when modifying the properties"
-#~ msgstr "修改属性时出错"
-
-#~ msgid ""
-#~ "\n"
-#~ "The server returned more information:\n"
-#~ "%1"
-#~ msgstr ""
-#~ "\n"
-#~ "服务器返回更多信息：\n"
-#~ "%1"
-
-#~ msgid ""
-#~ "There was a problem with the request. The item has not been created on "
-#~ "the server.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "请求出错。服务器上的项目未创建。\n"
-#~ "%1 (%2)。"
-
-#~ msgid ""
-#~ "There was a problem with the request. The item has not been deleted from "
-#~ "the server.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "请求出错。服务器上的项目未删除。\n"
-#~ "%1 (%2)。"
-
-#~ msgid ""
-#~ "There was a problem with the request. The item was not modified on the "
-#~ "server.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "请求出错。服务器上的项目未修改。\n"
-#~ "%1 (%2)。"
-
-#~ msgid "There was a problem with the request."
-#~ msgstr "请求出错。"
-
-#~ msgid ""
-#~ "There was a problem with the request. The requested MIME types are not "
-#~ "supported."
-#~ msgstr "请求出错。服务器上的项目未创建。"
