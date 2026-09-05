@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-02 00:44+0000\n"
+"POT-Creation-Date: 2026-09-05 00:46+0000\n"
 "PO-Revision-Date: 2026-08-30 17:53+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -170,105 +170,111 @@ msgstr "ردّ غير صالح من الخادم"
 msgid "Unable to parse free-busy data received"
 msgstr "تعذّر تحليل بيانات ”مشغول/متفرّغ“ المستقبلة"
 
-#: davgroupwareresource.cpp:273
+#: davgroupwareresource.cpp:275
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "لا يمكن جلب معلومات ”مشغول/متفرّغ“ وأنت بلا اتّصال"
 
-#: davgroupwareresource.cpp:360
+#: davgroupwareresource.cpp:362
 #, kde-format
 msgid "Fetching collections"
 msgstr "يجلب التّجميعات"
 
-#: davgroupwareresource.cpp:420
+#: davgroupwareresource.cpp:422
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "سُئلتُ لجلب عناصر لتجميعة مجهولة: %1"
 
-#: davgroupwareresource.cpp:487
+#: davgroupwareresource.cpp:489
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "تجميعة غير صالحة للعنصر %1."
 
-#: davgroupwareresource.cpp:764
+#: davgroupwareresource.cpp:766
 #, kde-format
 msgid "Unable to delete item exceptions: %1"
 msgstr "تعذر حذف استثناءات العنصر: %1"
 
-#: davgroupwareresource.cpp:865
+#: davgroupwareresource.cpp:867
 #, kde-format
 msgid "Unable to fetch items: %1"
 msgstr "تعذّر جلب العناصر: %1"
 
-#: davgroupwareresource.cpp:932
+#: davgroupwareresource.cpp:936
 #, kde-format
 msgid "Unable to move item: %1"
 msgstr "تعذّرت نقل العنصر: %1"
 
-#: davgroupwareresource.cpp:1079
+#: davgroupwareresource.cpp:969
+#, fuzzy, kde-format
+#| msgid "Unable to retrieve item: %1"
+msgid "Unable to create item during move: %1"
+msgstr "تعذّر جلب العنصر: %1"
+
+#: davgroupwareresource.cpp:1139
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "تعذّر تعديل العنصر: %1"
 
-#: davgroupwareresource.cpp:1152
+#: davgroupwareresource.cpp:1212
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "تعذّر تعديل التّجميعة: %1"
 
-#: davgroupwareresource.cpp:1282
+#: davgroupwareresource.cpp:1342
 #, kde-format
 msgid "Unable to create collection: %1"
 msgstr "تعذّرت إنشاء التّجميعة: %1"
 
-#: davgroupwareresource.cpp:1311
+#: davgroupwareresource.cpp:1371
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "تعذّرت إزالة التّجميعة: %1"
 
-#: davgroupwareresource.cpp:1331 davgroupwareresource.cpp:1378
+#: davgroupwareresource.cpp:1391 davgroupwareresource.cpp:1438
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "تعذّر جلب التّجميعات: %1"
 
-#: davgroupwareresource.cpp:1346
+#: davgroupwareresource.cpp:1406
 #, kde-format
 msgid "Failed to retrieve collection: %1"
 msgstr "فشلَ في جلب التّجميعة: %1"
 
-#: davgroupwareresource.cpp:1445 davgroupwareresource.cpp:1549
+#: davgroupwareresource.cpp:1505 davgroupwareresource.cpp:1609
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "تعذّر جلب العناصر: %1"
 
-#: davgroupwareresource.cpp:1685
+#: davgroupwareresource.cpp:1745
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "تعذّر جلب العنصر: %1"
 
-#: davgroupwareresource.cpp:1705
+#: davgroupwareresource.cpp:1765
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr "تعذر جلب العنصر: فشل في تحليل بيانات العنصر. ربما يكون محذوفا."
 
-#: davgroupwareresource.cpp:1765
+#: davgroupwareresource.cpp:1825
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "تعذّرت إضافة العنصر: %1"
 
-#: davgroupwareresource.cpp:1810 davgroupwareresource.cpp:1942
-#: davgroupwareresource.cpp:1954
+#: davgroupwareresource.cpp:1870 davgroupwareresource.cpp:2002
+#: davgroupwareresource.cpp:2014
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "تعذّر تغيير العنصر: %1"
 
-#: davgroupwareresource.cpp:1916 davgroupwareresource.cpp:1973
+#: davgroupwareresource.cpp:1976 davgroupwareresource.cpp:2033
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "تعذّرت إزالة العنصر: %1"
 
-#: davgroupwareresource.cpp:2060 davgroupwareresource.cpp:2061
+#: davgroupwareresource.cpp:2120 davgroupwareresource.cpp:2121
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "لم يُضبط المورد بعد"
