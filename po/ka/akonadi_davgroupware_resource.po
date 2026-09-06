@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-05 00:46+0000\n"
-"PO-Revision-Date: 2026-08-29 04:22+0200\n"
+"PO-Revision-Date: 2026-09-05 08:22+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -207,10 +207,9 @@ msgid "Unable to move item: %1"
 msgstr "ელემენტის გადატანა შეუძლებელია: %1"
 
 #: davgroupwareresource.cpp:969
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve item: %1"
+#, kde-format
 msgid "Unable to create item during move: %1"
-msgstr "ჩანაწერის მიღების შეცდომა: %1"
+msgstr "გადატანისას ელემენტის შექმნა შეუძლებელია: %1"
 
 #: davgroupwareresource.cpp:1139
 #, kde-format
