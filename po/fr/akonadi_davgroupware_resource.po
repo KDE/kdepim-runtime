@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-05 00:46+0000\n"
-"PO-Revision-Date: 2026-08-30 09:14+0200\n"
+"PO-Revision-Date: 2026-09-05 12:58+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: fr\n"
 "Language: fr\n"
@@ -219,10 +219,9 @@ msgid "Unable to move item: %1"
 msgstr "Impossible de déplacer l'élément : %1"
 
 #: davgroupwareresource.cpp:969
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve item: %1"
+#, kde-format
 msgid "Unable to create item during move: %1"
-msgstr "Impossible de réceptionner l'élément : %1"
+msgstr "Impossible de créer l'élément durant le déplacement : %1"
 
 #: davgroupwareresource.cpp:1139
 #, kde-format
