@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=DavPushNotifyBridge
+Name[en_GB]=DavPushNotifyBridge
+GenericName=Dav Push Notify Bridge
+GenericName[en_GB]=Dav Push Notify Bridge
+Exec=davpushnotifybridge
+Terminal=false
+Icon=network-connect
+Categories=Network
+Type=Application
+StartupNotify=false
+X-systemd-skip=true
