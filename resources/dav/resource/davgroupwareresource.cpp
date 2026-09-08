@@ -788,7 +788,16 @@ void DavGroupwareResource::onItemRemovalPrepared(KJob *job)
         return item.remoteId() == ridBase;
     });
 
-    Q_ASSERT(mainItemIt != exceptionItems.end());
+    // Main item is not in Akonadi anymore: it has probably been deleted. It will fire it's own deletion event, so we stop here
+    if (mainItemIt == exceptionItems.end()) {
+        if (item.parentCollection().isValid()) {
+            auto cache = mDavItemCache.value(item.parentCollection().remoteId());
+            cache->removeEtag(item.remoteId());
+        }
+        changeProcessed();
+        return;
+    }
+
     const auto mainItem = *mainItemIt;
     exceptionItems.erase(mainItemIt);
 
