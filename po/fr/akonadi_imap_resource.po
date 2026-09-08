@@ -516,7 +516,7 @@ msgstr "Droits d'accès révoqués"
 #: retrievecollectionstask.cpp:166
 #, kde-format
 msgid "Inbox"
-msgstr "Boîte de réception"
+msgstr "Boite de réception"
 
 #: retrievecollectionstask.cpp:175
 #, kde-format

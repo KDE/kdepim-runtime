@@ -180,7 +180,7 @@ msgid ""
 "account dialog — see README.md / docs."
 msgstr ""
 "Identifiant d'application pour l'abonnement à Azure ID d'application "
-"(Client). Veuillez configurer le vôtre dans la boîte de dialogue du compte – "
+"(Client). Veuillez configurer le vôtre dans la boite de dialogue du compte – "
 "voir le fichier « README.md/docs »."
 
 #. i18n: ectx: label, entry (FolderDeltaLink), group (General)
@@ -210,7 +210,7 @@ msgstr ""
 #: jobs/graphfetchfoldersjob.cpp:49
 #, kde-format
 msgid "Could not resolve the mailbox root folder"
-msgstr "Impossible d'identifier le dossier racine de la boîte aux lettres"
+msgstr "Impossible d'identifier le dossier racine de la boite aux lettres"
 
 #: jobs/graphfetchitempayloadjob.cpp:75
 #, kde-format
