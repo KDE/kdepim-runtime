@@ -191,7 +191,7 @@ msgstr "La ressource n'est pas configurée"
 #: googleresource.cpp:238
 #, kde-format
 msgid "Failed to refresh tokens"
-msgstr "Il est impossible de rafraîchir les jetons"
+msgstr "Il est impossible de rafraichir les jetons"
 
 #: googleresource.cpp:422 googleresource.cpp:436 googleresource.cpp:450
 #: googleresource.cpp:465 googleresource.cpp:479 googleresource.cpp:493
@@ -246,13 +246,13 @@ msgstr "Configurer..."
 #: googlesettingswidget.ui:49
 #, kde-format
 msgid "Enable interval refresh"
-msgstr "Activer le rafraîchissement régulier"
+msgstr "Activer le rafraichissement régulier"
 
 #. i18n: ectx: property (text), widget (QLabel, refreshLabel)
 #: googlesettingswidget.ui:56
 #, kde-format
 msgid "Refresh interval:"
-msgstr "Intervalle de rafraîchissement :"
+msgstr "Intervalle de rafraichissement :"
 
 #. i18n: ectx: property (text), widget (QLabel, eventsLimitLabel)
 #: googlesettingswidget.ui:79

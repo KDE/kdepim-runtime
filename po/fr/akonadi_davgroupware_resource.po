@@ -77,7 +77,7 @@ msgstr "Nom d'affichage :"
 #: configwidget.ui:39
 #, kde-format
 msgid "Refresh every:"
-msgstr "Rafraîchir toutes les :"
+msgstr "Rafraichir toutes les :"
 
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, kcfg_refreshInterval)
 #: configwidget.ui:48
@@ -309,7 +309,7 @@ msgstr "Nom d'affichage"
 #: davgroupwareresource.kcfg:18
 #, kde-format
 msgid "Refresh every"
-msgstr "Rafraîchir toutes les "
+msgstr "Rafraichir toutes les "
 
 #. i18n: ectx: label, entry (remoteUrls), group (General)
 #: davgroupwareresource.kcfg:22
