@@ -236,7 +236,8 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
             } else if (tagName == QLatin1StringView("pager")) {
                 contact.insertPhoneNumber(KContacts::PhoneNumber(text, KContacts::PhoneNumber::Pager));
             } else if (tagName == QLatin1StringView("categories")) {
-                contact.setCategories(text.split(QRegularExpression(QStringLiteral(",\\s*"))));
+                static const QRegularExpression reg(QRegularExpression(QStringLiteral(",\\s*")));
+                contact.setCategories(text.split(reg));
             }
 
             element = element.nextSiblingElement();

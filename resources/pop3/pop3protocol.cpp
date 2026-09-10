@@ -628,7 +628,7 @@ Result POP3Protocol::openConnection()
 
         // Does the server support APOP?
         // QString apop_cmd;
-        const QRegularExpression re(QStringLiteral("<[A-Za-z0-9\\.\\-_]+@[A-Za-z0-9\\.\\-_]+>$"), QRegularExpression::CaseInsensitiveOption);
+        static const QRegularExpression re(QStringLiteral("<[A-Za-z0-9\\.\\-_]+@[A-Za-z0-9\\.\\-_]+>$"), QRegularExpression::CaseInsensitiveOption);
 
         qCDebug(POP3_LOG) << "greeting: " << greeting;
         const int apop_pos = greeting.indexOf(re);
