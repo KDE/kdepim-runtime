@@ -238,9 +238,9 @@ void EwsSubscriptionManager::processEvents(EwsEventRequestBase *req, bool finish
 
     const auto responses{req->responses()};
     for (const EwsGetEventsRequest::Response &resp : responses) {
-        const auto notifications{resp.notifications()};
+        const auto &notifications{resp.notifications()};
         for (const EwsGetEventsRequest::Notification &nfy : notifications) {
-            const auto nfyEvents{nfy.events()};
+            const auto &nfyEvents{nfy.events()};
             for (const EwsGetEventsRequest::Event &event : nfyEvents) {
                 mSettings->setEventSubscriptionWatermark(event.watermark());
                 switch (event.type()) {
