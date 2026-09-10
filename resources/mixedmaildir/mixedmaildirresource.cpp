@@ -482,7 +482,7 @@ void MixedMaildirResource::retrieveItemsResult(KJob *job)
                 const QVariant tagListVar = tagListHash[item.remoteId()];
                 if (tagListVar.isValid()) {
                     const QStringList tagList = tagListVar.toStringList();
-                    if (!tagListHash.isEmpty()) {
+                    if (!tagList.isEmpty()) {
                         TagContext tag;
                         tag.mItem = item;
                         tag.mTagList = tagList;
