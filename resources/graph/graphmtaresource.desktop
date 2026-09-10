@@ -3,6 +3,7 @@
 [Desktop Entry]
 Name=Microsoft 365 (Graph) Mail Transport
 Name[ar]=نقل البريد لخادم  Microsoft 365 (Graph)
+Name[bg]=Транспорт за електронна поща през Microsoft 365 (Graph)
 Name[ca]=Transport de correu de Microsoft 365 (Graph)
 Name[ca@valencia]=Transport de correu de Microsoft 365 (Graph)
 Name[cs]=Přenos pošty v Microsoft 365 (Graph)
@@ -22,6 +23,7 @@ Name[uk]=Транспортування пошти за допомогою Micro
 Name[zh_CN]=Microsoft 365 (Graph) 邮件传输
 Comment=Sends mail through a Microsoft 365 / Exchange Online account using the Microsoft Graph API
 Comment[ar]=يرسل البريد عبر حساب Microsoft 365 / Exchange Online باستخدام واجهة برمجة تطبيقات Microsoft Graph
+Comment[bg]=Изпращане на имейл през акаунт Microsoft 365 / Exchange Online с използване на Microsoft Graph API
 Comment[ca]=Envia correu mitjançant un compte de Microsoft 365 / Exchange Online fent servir l'API de Microsoft Graph
 Comment[ca@valencia]=Envia correu mitjançant un compte de Microsoft 365 / Exchange Online fent servir l'API de Microsoft Graph
 Comment[cs]=Odesílá e-maily prostřednictvím účtu Microsoft 365 / Exchange Online s využitím rozhraní API Microsoft Graph
