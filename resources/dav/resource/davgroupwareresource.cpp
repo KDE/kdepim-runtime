@@ -1323,7 +1323,7 @@ void DavGroupwareResource::onReloadConfig()
     }
     QString icon = settings()->iconName();
     if (icon.isEmpty() && !settings()->configuredDavUrls().isEmpty()) {
-        icon = iconForDavUrl(settings()->configuredDavUrls().first());
+        icon = iconForDavUrl(settings()->configuredDavUrls().constFirst());
     }
     attribute->setIconName(icon);
 
