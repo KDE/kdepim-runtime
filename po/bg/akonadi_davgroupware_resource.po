@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-05 00:46+0000\n"
-"PO-Revision-Date: 2026-07-23 19:39+0200\n"
+"PO-Revision-Date: 2026-09-09 21:59+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 26.04.3\n"
+"X-Generator: Lokalize 26.08.0\n"
 
 #: configwidget.cpp:34
 #, kde-format
@@ -198,22 +198,19 @@ msgid "Unable to delete item exceptions: %1"
 msgstr "Неуспешно изтриване на изключенията за елемента: %1"
 
 #: davgroupwareresource.cpp:867
-#, fuzzy, kde-format
-#| msgid "Unable to change item: %1"
+#, kde-format
 msgid "Unable to fetch items: %1"
-msgstr "Не може да се промени елемент: %1"
+msgstr "Неуспешно извличане на елементи: %1"
 
 #: davgroupwareresource.cpp:936
-#, fuzzy, kde-format
-#| msgid "Unable to remove item: %1"
+#, kde-format
 msgid "Unable to move item: %1"
-msgstr "Не може да се премахне елемент: %1"
+msgstr "Неуспешно преместване на елемент: %1"
 
 #: davgroupwareresource.cpp:969
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve item: %1"
+#, kde-format
 msgid "Unable to create item during move: %1"
-msgstr "Не може да се извлече елемент: %1"
+msgstr "Не може да се създаде елемент по време на преместване: %1"
 
 #: davgroupwareresource.cpp:1139
 #, kde-format
@@ -641,103 +638,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#~ msgid "Invalid username/password"
-#~ msgstr "Невалидно потребителско име/парола"
-
-#~ msgid "Access forbidden"
-#~ msgstr "Достъпът е забранен"
-
-#~ msgid "Resource not found"
-#~ msgstr "Ресурсът не е намерен"
-
-#~ msgid "HTTP error"
-#~ msgstr "HTTP грешка"
-
-#~ msgid ""
-#~ "There was a problem with the request.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "Имаше проблем със заявката.\n"
-#~ "%1 (%2)."
-
-#~ msgid "Protocol for the collection does not support MULTIGET"
-#~ msgstr "Протоколът за колекцията не поддържа MULTIGET"
-
-#~ msgid ""
-#~ "The server encountered an error that prevented it from completing your "
-#~ "request: %1 (%2)"
-#~ msgstr ""
-#~ "Сървърът срещна грешка, която му попречи да завърши вашата заявка: %1 (%2)"
-
-#~ msgid ""
-#~ "There was a problem with the request. The collection has not been deleted "
-#~ "from the server.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "Имаше проблем със заявката. Колекцията не е изтрита от сървъра.\n"
-#~ "%1 (%2)."
-
-#~ msgid "Invalid responses from backend"
-#~ msgstr "Невалидни отговори от бекенда"
-
-#~ msgid "Error setting focus for XQuery"
-#~ msgstr "Грешка при задаване на фокуса за XQuery"
-
-#~ msgid "Invalid XQuery submitted by DAV implementation"
-#~ msgstr "Невалиден XQuery, изпратен от внедряването на DAV"
-
-#~ msgid ""
-#~ "There was a problem with the request. The collection has not been "
-#~ "modified on the server.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "Имаше проблем със заявката. Колекцията не е модифицирана на сървъра.\n"
-#~ "%1 (%2)."
-
-#~ msgid "No properties to change or remove"
-#~ msgstr "Няма свойства за промяна или премахване"
-
-#~ msgid "There was an error when modifying the properties"
-#~ msgstr "При промяна на свойствата възникна грешка"
-
-#~ msgid ""
-#~ "\n"
-#~ "The server returned more information:\n"
-#~ "%1"
-#~ msgstr ""
-#~ "\n"
-#~ "Сървърът върна повече информация:\n"
-#~ "%1"
-
-#~ msgid ""
-#~ "There was a problem with the request. The item has not been created on "
-#~ "the server.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "Имаше проблем със заявката. Елементът не е създаден в сървър.\n"
-#~ "%1 (%2)."
-
-#~ msgid ""
-#~ "There was a problem with the request. The item has not been deleted from "
-#~ "the server.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "Имаше проблем със заявката. Елементът не е изтрит от сървър.\n"
-#~ "%1 (%2)."
-
-#~ msgid ""
-#~ "There was a problem with the request. The item was not modified on the "
-#~ "server.\n"
-#~ "%1 (%2)."
-#~ msgstr ""
-#~ "Имаше проблем със заявката. Елементът не е модифициран на сървъра.\n"
-#~ "%1 (%2)."
-
-#~ msgid "There was a problem with the request."
-#~ msgstr "Имаше проблем със заявката."
-
-#~ msgid ""
-#~ "There was a problem with the request. The requested MIME types are not "
-#~ "supported."
-#~ msgstr "Имаше проблем със заявката. Исканите MIME типове не се поддържат."
