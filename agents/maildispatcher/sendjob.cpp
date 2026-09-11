@@ -15,9 +15,7 @@
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/ItemDeleteJob>
-#include <Akonadi/ItemModifyJob>
 #include <Akonadi/ItemMoveJob>
-#include <Akonadi/MessageParts>
 #include <Akonadi/SentBehaviourAttribute>
 #include <Akonadi/ServerManager>
 #include <Akonadi/SpecialMailCollections>

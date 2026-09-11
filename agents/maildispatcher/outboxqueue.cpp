@@ -12,15 +12,12 @@
 #include <KLocalizedString>
 
 #include <Akonadi/AddressAttribute>
-#include <Akonadi/Attribute>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/MessageFlags>
 #include <Akonadi/Monitor>
 #include <Akonadi/SpecialMailCollections>
 #include <Akonadi/SpecialMailCollectionsRequestJob>
-
-#include <KMime/Message>
 
 #include <Akonadi/DispatchModeAttribute>
 #include <Akonadi/SentBehaviourAttribute>

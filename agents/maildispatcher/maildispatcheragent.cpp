@@ -14,7 +14,6 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <Akonadi/ItemFetchScope>
 #include <Akonadi/SentActionAttribute>
 #include <Akonadi/SentBehaviourAttribute>
 #include <Akonadi/ServerManager>
