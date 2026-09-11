@@ -39,10 +39,7 @@ FolderArchiveSettingPage::FolderArchiveSettingPage(const QString &instanceName, 
     lay->addRow(i18nc("@label:listbox", "Archive folder name:"), mArchiveNamed);
 }
 
-FolderArchiveSettingPage::~FolderArchiveSettingPage()
-{
-    delete mInfo;
-}
+FolderArchiveSettingPage::~FolderArchiveSettingPage() = default;
 
 void FolderArchiveSettingPage::slotEnableChanged(bool enabled)
 {
@@ -52,16 +49,16 @@ void FolderArchiveSettingPage::slotEnableChanged(bool enabled)
 
 void FolderArchiveSettingPage::loadSettings()
 {
-    KConfig config(FolderArchive::FolderArchiveUtil::configFileName());
+    const KConfig config(FolderArchive::FolderArchiveUtil::configFileName());
     const QString groupName = FolderArchive::FolderArchiveUtil::groupConfigPattern() + mInstanceName;
     if (config.hasGroup(groupName)) {
         KConfigGroup grp = config.group(groupName);
-        mInfo = new FolderArchiveAccountInfo(grp);
-        mEnabled->setChecked(mInfo->enabled());
-        mArchiveFolder->setCollection(Akonadi::Collection(mInfo->archiveTopLevel()));
-        mArchiveNamed->setType(mInfo->folderArchiveType());
+        mInfo = FolderArchiveAccountInfo(grp);
+        mEnabled->setChecked(mInfo.enabled());
+        mArchiveFolder->setCollection(Akonadi::Collection(mInfo.archiveTopLevel()));
+        mArchiveNamed->setType(mInfo.folderArchiveType());
     } else {
-        mInfo = new FolderArchiveAccountInfo();
+        mInfo = {};
         mEnabled->setChecked(false);
     }
     slotEnableChanged(mEnabled->isChecked());
@@ -71,17 +68,17 @@ void FolderArchiveSettingPage::writeSettings()
 {
     KConfig config(FolderArchive::FolderArchiveUtil::configFileName());
     KConfigGroup grp = config.group(FolderArchive::FolderArchiveUtil::groupConfigPattern() + mInstanceName);
-    mInfo->setInstanceName(mInstanceName);
+    mInfo.setInstanceName(mInstanceName);
     if (mArchiveFolder->collection().isValid()) {
-        mInfo->setEnabled(mEnabled->isChecked());
-        mInfo->setArchiveTopLevel(mArchiveFolder->collection().id());
+        mInfo.setEnabled(mEnabled->isChecked());
+        mInfo.setArchiveTopLevel(mArchiveFolder->collection().id());
     } else {
-        mInfo->setEnabled(false);
-        mInfo->setArchiveTopLevel(-1);
+        mInfo.setEnabled(false);
+        mInfo.setArchiveTopLevel(-1);
     }
 
-    mInfo->setFolderArchiveType(mArchiveNamed->type());
-    mInfo->writeConfig(grp);
+    mInfo.setFolderArchiveType(mArchiveNamed->type());
+    mInfo.writeConfig(grp);
 
     // Update cache from KMail
     const QString kmailInterface = QStringLiteral("org.kde.kmail");

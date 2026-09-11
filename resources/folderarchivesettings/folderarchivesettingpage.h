@@ -32,7 +32,7 @@ private:
     FOLDERARCHIVESETTINGS_NO_EXPORT void slotEnableChanged(bool enabled);
     const QString mInstanceName;
     QCheckBox *const mEnabled;
-    FolderArchiveComboBox *mArchiveNamed = nullptr;
+    FolderArchiveComboBox *const mArchiveNamed;
     Akonadi::CollectionRequester *const mArchiveFolder;
-    FolderArchiveAccountInfo *mInfo = nullptr;
+    FolderArchiveAccountInfo mInfo;
 };
