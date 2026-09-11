@@ -509,6 +509,7 @@ void NewMailNotifierAgent::slotInstanceRemoved(const Akonadi::AgentInstance &ins
 
     const QString identifier(instance.identifier());
     mInstanceNameInProgress.removeAll(identifier);
+    mCacheResourceName.remove(identifier);
 }
 
 void NewMailNotifierAgent::slotInstanceAdded(const Akonadi::AgentInstance &instance)
