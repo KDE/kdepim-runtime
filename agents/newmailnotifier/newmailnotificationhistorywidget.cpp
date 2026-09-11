@@ -44,7 +44,7 @@ NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *pare
         NewMailNotificationHistoryManager::self()->clear();
         mTextBrowser->clear();
     });
-    slotEnableChanged(NewMailNotifierAgentSettings::self()->enableNotificationHistory());
+    mTextBrowser->setEnabled(NewMailNotifierAgentSettings::self()->enableNotificationHistory());
     mEnabledHistory->setChecked(NewMailNotifierAgentSettings::self()->enableNotificationHistory());
 }
 
