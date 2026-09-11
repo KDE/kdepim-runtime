@@ -16,14 +16,12 @@ public:
 
 protected:
     void doSetSource(const QUrl &url, QTextDocument::ResourceType type = QTextDocument::UnknownResource) override;
+    void addExtraMenuEntry(QMenu *menu, QPoint pos) override;
 
 Q_SIGNALS:
     void clearHistory();
     void openMail(const QString &mailIdentifier);
     void openFolder(const QString &folderIdentifier);
-
-protected:
-    void addExtraMenuEntry(QMenu *menu, QPoint pos) override;
 
 private:
     void slotOpenMail(const QString &identifier);
