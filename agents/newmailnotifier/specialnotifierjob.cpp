@@ -189,7 +189,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 void SpecialNotifierJob::slotReplyMessage()
 {
     auto job = new NewMailNotifierReplyMessageJob(mItem.id());
-    job->setReplyToAll(NewMailNotifierAgentSettings::replyMailType() == 0 ? false : true);
+    job->setReplyToAll(NewMailNotifierAgentSettings::replyMailType() != 0);
     job->start();
     deleteLater();
 }
