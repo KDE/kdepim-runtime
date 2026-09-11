@@ -203,10 +203,9 @@ msgid "Unable to move item: %1"
 msgstr "无法移动项目：%1"
 
 #: davgroupwareresource.cpp:969
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve item: %1"
+#, kde-format
 msgid "Unable to create item during move: %1"
-msgstr "无法获取项目：%1"
+msgstr "无法在移动过程中创建项目：%1"
 
 #: davgroupwareresource.cpp:1139
 #, kde-format
