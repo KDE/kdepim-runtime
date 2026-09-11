@@ -108,6 +108,8 @@ void SendJob::doAkonadiTransport()
     const QDBusReply<void> reply = mInterface->call(QStringLiteral("send"), mItem.id());
     if (!reply.isValid()) {
         storeResult(false, i18n("Invalid D-Bus reply from resource %1.", mResourceId));
+        delete mInterface;
+        mInterface = nullptr;
         return;
     }
 }
