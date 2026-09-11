@@ -8,14 +8,12 @@
 
 #include "folderarchivesettings_private_export.h"
 #include <Akonadi/Collection>
-#include <KConfigGroup>
-
+class KConfigGroup;
 class FOLDERARCHIVESETTINGS_TESTS_EXPORT FolderArchiveAccountInfo
 {
 public:
     FolderArchiveAccountInfo();
     explicit FolderArchiveAccountInfo(const KConfigGroup &config);
-    ~FolderArchiveAccountInfo();
 
     enum FolderArchiveType {
         UniqueFolder,
