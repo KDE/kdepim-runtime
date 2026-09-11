@@ -14,7 +14,7 @@
 
 NewMailNotifierOpenFolderJob::NewMailNotifierOpenFolderJob(const QString &identifier, QObject *parent)
     : KJob{parent}
-    , mIdentifer(identifier)
+    , mIdentifier(identifier)
 {
 }
 
@@ -22,7 +22,7 @@ NewMailNotifierOpenFolderJob::~NewMailNotifierOpenFolderJob() = default;
 
 void NewMailNotifierOpenFolderJob::start()
 {
-    const qint64 identifier = mIdentifer.toLong();
+    const qint64 identifier = mIdentifier.toLong();
     if (identifier < 0) {
         emitResult();
         return;
@@ -40,7 +40,7 @@ void NewMailNotifierOpenFolderJob::start()
 
     QDBusInterface kmail(kmailInterface, QStringLiteral("/KMail"), QStringLiteral("org.kde.kmail.kmail"));
     if (kmail.isValid()) {
-        kmail.call(QStringLiteral("selectFolder"), mIdentifer);
+        kmail.call(QStringLiteral("selectFolder"), mIdentifier);
     } else {
         setError(UserDefinedError);
         setErrorText(i18n("Impossible to access the DBus interface."));
