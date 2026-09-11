@@ -191,6 +191,7 @@ void OutboxQueue::itemFetched(KJob *job)
     if (job->error()) {
         qCDebug(MAILDISPATCHER_LOG) << "Error fetching item:" << job->errorString() << ". Trying next item in queue.";
         fetchOne();
+        return;
     }
 
     const ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
