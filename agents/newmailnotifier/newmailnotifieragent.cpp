@@ -16,6 +16,7 @@
 #include <KIdentityManagementCore/IdentityManager>
 
 #include <QDBusConnection>
+#include <QPixmap>
 
 #include "newmailnotifier_debug.h"
 #include <Akonadi/AgentManager>
@@ -37,9 +38,9 @@
 #include <QTextToSpeech>
 #endif
 #include <KWindowSystem>
-using namespace std::chrono_literals;
 #include <chrono>
 
+using namespace std::chrono_literals;
 using namespace Akonadi;
 using namespace Qt::Literals::StringLiterals;
 NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)

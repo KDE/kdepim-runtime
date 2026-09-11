@@ -12,10 +12,10 @@
 #include <Akonadi/AgentWidgetBase>
 #include <Akonadi/Collection> // make sure this is included before QHash, otherwise it won't find the correct qHash implementation for some reason
 
-#include <QPixmap>
 #include <QStringList>
 #include <QTimer>
 class QTextToSpeech;
+class QPixmap;
 class NewMailNotificationHistoryDialog;
 namespace Akonadi
 {
