@@ -276,7 +276,7 @@ void SessionPool::processPendingRequests()
 {
     if (!m_account) {
         // The connection to the server is lost; no point processing pending requests
-        for (int request : std::as_const(m_pendingRequests)) {
+        for (auto request : std::as_const(m_pendingRequests)) {
             Q_EMIT sessionRequestDone(request, nullptr, LoginFailError, i18n("Disconnected from server during login."));
         }
         return;
@@ -317,7 +317,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
     if (!m_account) {
         // it looks like the connection was lost while we were waiting
         // for the password, we should fail all the pending requests and stop there
-        for (int request : std::as_const(m_pendingRequests)) {
+        for (auto request : std::as_const(m_pendingRequests)) {
             Q_EMIT sessionRequestDone(request, nullptr, LoginFailError, i18n("Disconnected from server during login."));
         }
         return;
