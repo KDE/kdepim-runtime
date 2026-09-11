@@ -30,7 +30,7 @@ public:
     [[nodiscard]] bool setData(const QModelIndex &index, const QVariant &_data, int role) override;
     [[nodiscard]] Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-    [[nodiscard]] QHash<Akonadi::Collection, bool> notificationCollection() const;
+    [[nodiscard]] const QHash<Akonadi::Collection, bool> &notificationCollection() const;
 
 private:
     QHash<Akonadi::Collection, bool> mNotificationCollection;

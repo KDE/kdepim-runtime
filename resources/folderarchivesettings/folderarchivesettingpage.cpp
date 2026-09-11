@@ -12,8 +12,9 @@
 
 #include <KMime/Message>
 
+#include <KConfig>
+#include <KConfigGroup>
 #include <KLocalizedString>
-#include <KSharedConfig>
 
 #include <QCheckBox>
 #include <QDBusConnectionInterface>

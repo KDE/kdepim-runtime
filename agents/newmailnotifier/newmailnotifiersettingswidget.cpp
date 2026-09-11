@@ -10,13 +10,10 @@ using namespace Qt::Literals::StringLiterals;
 #include "newmailnotifieragentsettings.h"
 #include "newmailnotifierselectcollectionwidget.h"
 
-#include "kdepim-runtime-version.h"
-
 #include <KLineEditEventHandler>
 #include <KLocalizedString>
 #include <KNotifyConfigWidget>
 #include <QLineEdit>
-#include <QPushButton>
 
 #include <QCheckBox>
 #include <QComboBox>

@@ -7,7 +7,6 @@
 #pragma once
 
 #include <KJob>
-#include <QObject>
 
 class NewMailNotifierOpenFolderJob : public KJob
 {
@@ -19,5 +18,5 @@ public:
     void start() override;
 
 private:
-    const QString mIdentifer;
+    const QString mIdentifier;
 };

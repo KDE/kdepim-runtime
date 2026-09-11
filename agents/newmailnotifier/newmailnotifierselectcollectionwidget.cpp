@@ -78,7 +78,7 @@ Qt::ItemFlags NewMailNotifierCollectionProxyModel::flags(const QModelIndex &inde
     }
 }
 
-QHash<Akonadi::Collection, bool> NewMailNotifierCollectionProxyModel::notificationCollection() const
+const QHash<Akonadi::Collection, bool> &NewMailNotifierCollectionProxyModel::notificationCollection() const
 {
     return mNotificationCollection;
 }
