@@ -25,7 +25,7 @@
 
 using namespace KPIM;
 
-static QRegularExpression statusSeparatorRx()
+static const QRegularExpression &statusSeparatorRx()
 {
     static const QRegularExpression expr(QStringLiteral(":|!"));
     return expr;

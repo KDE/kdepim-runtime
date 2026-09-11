@@ -208,7 +208,7 @@ bool MaildirResource::retrieveItems(const Akonadi::Item::List &items, const QSet
         Item i(item);
         i.setPayload(std::shared_ptr<KMime::Message>(mail));
         Akonadi::MessageFlags::copyMessageFlags(*mail, i);
-        rv.push_back(i);
+        rv.push_back(std::move(i));
     }
 
     itemsRetrieved(rv);
@@ -455,7 +455,7 @@ Collection::List MaildirResource::listRecursive(const Collection &root, const Ma
     }
 
     Collection::List list;
-    const QStringList mimeTypes = QStringList() << itemMimeType() << Collection::mimeType();
+    const QStringList mimeTypes = QStringList{itemMimeType(), Collection::mimeType()};
     const QStringList lstDir = dir.subFolderList();
     for (const QString &sub : lstDir) {
         Collection c;
