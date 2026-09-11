@@ -13,10 +13,8 @@ MailDispatcherConfig::MailDispatcherConfig(const KSharedConfigPtr &config, QWidg
     : Akonadi::AgentConfigurationBase(config, parent, cfg)
     , mWidget(new KNotifyConfigWidget(parent))
 {
-    auto w = new QWidget(parent);
-
     mWidget->setApplication(QStringLiteral("akonadi_maildispatcher_agent"));
-    parent->layout()->addWidget(w);
+    parent->layout()->addWidget(mWidget);
 }
 
 bool MailDispatcherConfig::save() const
