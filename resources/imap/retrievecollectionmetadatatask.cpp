@@ -21,7 +21,6 @@
 #include "noselectattribute.h"
 #include <Akonadi/CollectionAnnotationsAttribute>
 #include <Akonadi/CollectionQuotaAttribute>
-#include <Akonadi/EntityDisplayAttribute>
 #include <PimCommonAkonadi/ImapAclAttribute>
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask(const ResourceStateInterface::Ptr &resource, QObject *parent)

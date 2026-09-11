@@ -17,8 +17,6 @@
 #include <KIMAP/SetMetaDataJob>
 #include <KIMAP/SubscribeJob>
 
-#include <Akonadi/CollectionDeleteJob>
-
 AddCollectionTask::AddCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent)
 {

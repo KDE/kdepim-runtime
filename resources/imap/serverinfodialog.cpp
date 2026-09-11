@@ -19,13 +19,12 @@
 #include <QDBusPendingReply>
 #include <QDialogButtonBox>
 #include <QPainter>
-#include <QPushButton>
 #include <QVBoxLayout>
 #include <QWindow>
 
 namespace
 {
-static const char myServerInfoDialogConfigGroupName[] = "ServerInfoDialog";
+const char myServerInfoDialogConfigGroupName[] = "ServerInfoDialog";
 }
 
 using namespace Qt::Literals::StringLiterals;

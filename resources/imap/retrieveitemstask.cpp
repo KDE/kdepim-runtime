@@ -25,7 +25,6 @@
 #include <KLocalizedString>
 
 #include <KIMAP/ExpungeJob>
-#include <KIMAP/SearchJob>
 #include <KIMAP/SelectJob>
 #include <KIMAP/Session>
 #include <KIMAP/StatusJob>

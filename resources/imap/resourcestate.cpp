@@ -14,7 +14,6 @@
 
 #include "imapresource_debug.h"
 #include <Akonadi/AgentSearchInterface>
-#include <Akonadi/CollectionModifyJob>
 #include <KLocalizedString>
 #include <KMessageBox>
 
