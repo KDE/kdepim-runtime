@@ -387,10 +387,10 @@ void NewMailNotifierAgent::slotShowNotifications()
             info.resourceName = std::move(resourceName);
             auto job = new SpecialNotifierJob(info, this);
             connect(job, &SpecialNotifierJob::displayNotification, this, [this, itemId](const QPixmap &pixmap, const QString &message) {
-                NewMailNotificationHistoryManager::HistoryMailInfo info;
-                info.message = message;
-                info.identifier = itemId;
-                addEmailInfoNotificationHistory(pixmap, message, info);
+                NewMailNotificationHistoryManager::HistoryMailInfo notificationInfo;
+                notificationInfo.message = message;
+                notificationInfo.identifier = itemId;
+                addEmailInfoNotificationHistory(pixmap, message, notificationInfo);
             });
 #if HAVE_TEXT_TO_SPEECH_SUPPORT
             connect(job, &SpecialNotifierJob::say, this, &NewMailNotifierAgent::slotSay);
