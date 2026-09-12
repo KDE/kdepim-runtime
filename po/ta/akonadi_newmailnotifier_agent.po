@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-01 00:46+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2025-09-14 14:09+0530\n"
 "Last-Translator: Kishore G <kishore96@gmail.com>\n"
 "Language-Team: Tamil <kde-l10n-ta@kde.org>\n"
@@ -39,13 +39,13 @@ msgid "[Show Mail]"
 msgstr "[அஞ்சலை காட்டு]"
 
 #: newmailnotificationhistorywidget.cpp:24
-#: newmailnotifiersettingswidget.cpp:113
+#: newmailnotifiersettingswidget.cpp:110
 #, kde-format
 msgctxt "@option:check"
 msgid "Enabled"
 msgstr "இயக்கு"
 
-#: newmailnotifieragent.cpp:367
+#: newmailnotifieragent.cpp:368
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -55,7 +55,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] ""
 msgstr[1] ""
 
-#: newmailnotifieragent.cpp:404
+#: newmailnotifieragent.cpp:405
 #, kde-format
 msgid "New mail arrived"
 msgstr "புதிய அஞ்சல் உள்ளது"
@@ -95,104 +95,104 @@ msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "அ&னைத்து தேர்வுகளை நிராகரி"
 
-#: newmailnotifiersettingswidget.cpp:33
+#: newmailnotifiersettingswidget.cpp:30
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
 "li><li>%f set from</li></ul></qt>"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:54
+#: newmailnotifiersettingswidget.cpp:51
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "காட்டவேண்டிய புலங்களைத் தேர்ந்தெடுக்கவும்:"
 
-#: newmailnotifiersettingswidget.cpp:59
+#: newmailnotifiersettingswidget.cpp:56
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "படத்தைக் காட்டு"
 
-#: newmailnotifiersettingswidget.cpp:63
+#: newmailnotifiersettingswidget.cpp:60
 #, kde-format
 msgctxt "@option:check"
 msgid "Show From"
 msgstr "அனுப்புநரைக் காட்டு"
 
-#: newmailnotifiersettingswidget.cpp:67
+#: newmailnotifiersettingswidget.cpp:64
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "தலைப்பைக் காட்டு"
 
-#: newmailnotifiersettingswidget.cpp:71
+#: newmailnotifiersettingswidget.cpp:68
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "அடைவுகளைக் காட்டு"
 
-#: newmailnotifiersettingswidget.cpp:75
+#: newmailnotifiersettingswidget.cpp:72
 #, kde-format
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "நான் அனுப்பிய அஞ்சலுக்கு அறிவிப்பு வேண்டாம்"
 
-#: newmailnotifiersettingswidget.cpp:79
+#: newmailnotifiersettingswidget.cpp:76
 #, kde-format
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr "அறிவிப்பை தக்கவை"
 
-#: newmailnotifiersettingswidget.cpp:83
+#: newmailnotifiersettingswidget.cpp:80
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr "பட்டன்களைக் காட்டு"
 
-#: newmailnotifiersettingswidget.cpp:91
+#: newmailnotifiersettingswidget.cpp:88
 #, kde-format
 msgctxt "@option:check"
 msgid "Reply Mail"
 msgstr "பதிலளி"
 
-#: newmailnotifiersettingswidget.cpp:99 specialnotifierjob.cpp:163
+#: newmailnotifiersettingswidget.cpp:96 specialnotifierjob.cpp:163
 #, kde-format
 msgid "Reply to Author"
 msgstr "அனுப்புநருக்கு பதிலளி"
 
-#: newmailnotifiersettingswidget.cpp:99 specialnotifierjob.cpp:166
+#: newmailnotifiersettingswidget.cpp:96 specialnotifierjob.cpp:166
 #, kde-format
 msgid "Reply to All"
 msgstr "அனைவருக்கும் பதிலளி"
 
-#: newmailnotifiersettingswidget.cpp:108
+#: newmailnotifiersettingswidget.cpp:105
 #, kde-format
 msgid "Display"
 msgstr "காட்டு"
 
-#: newmailnotifiersettingswidget.cpp:117
+#: newmailnotifiersettingswidget.cpp:114
 #, kde-format
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">இது எப்படி வேலை செய்யும்?</a>"
 
-#: newmailnotifiersettingswidget.cpp:126
+#: newmailnotifiersettingswidget.cpp:123
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "செய்தி:"
 
-#: newmailnotifiersettingswidget.cpp:138
+#: newmailnotifiersettingswidget.cpp:135
 #, kde-format
 msgid "Text to Speak"
 msgstr "பேச்சாக்க வேண்டிய உரை"
 
-#: newmailnotifiersettingswidget.cpp:144
+#: newmailnotifiersettingswidget.cpp:141
 #, kde-format
 msgid "Notify"
 msgstr "அறிவிப்புகள்"
 
-#: newmailnotifiersettingswidget.cpp:147
+#: newmailnotifiersettingswidget.cpp:144
 #, kde-format
 msgid "Folders"
 msgstr "அடைவுகள்"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-01 00:46+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2017-09-28 18:00+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,18 +18,18 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: addcollectiontask.cpp:33
+#: addcollectiontask.cpp:31
 #, kde-format
 msgid "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'."
 msgstr ""
 "Не могу да додам ИМАП фасциклу „%1“ за непостојећу родитељску фасциклу „%2“."
 
-#: addcollectiontask.cpp:67
+#: addcollectiontask.cpp:65
 #, kde-format
 msgid "Failed to create the folder '%1' on the IMAP server. "
 msgstr "Не могу да направим фасциклу „%1“ на ИМАП сервер. "
 
-#: addcollectiontask.cpp:87 movecollectiontask.cpp:119
+#: addcollectiontask.cpp:85 movecollectiontask.cpp:119
 #, kde-format
 msgid ""
 "Failed to subscribe to the folder '%1' on the IMAP server. It will disappear "
@@ -38,7 +38,7 @@ msgstr ""
 "Не могу да се претплатим на фасциклу „%1“ на ИМАП серверу. Нестаће по "
 "наредној синхронизацији. Употребите дијалог претплате да спречите то."
 
-#: addcollectiontask.cpp:128 changecollectiontask.cpp:276
+#: addcollectiontask.cpp:126 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
 msgstr "Не могу да упишем нека тумачења за „%1“ на ИМАП сервер. %2"
@@ -281,88 +281,88 @@ msgstr ""
 msgid "The activities of the agent"
 msgstr ""
 
-#: imapresourcebase.cpp:216
+#: imapresourcebase.cpp:215
 #, kde-format
 msgid "No server configured yet."
 msgstr "Још није подешен ниједан сервер."
 
-#: imapresourcebase.cpp:236
+#: imapresourcebase.cpp:235
 #, kde-format
 msgid "Connection established."
 msgstr "Веза успостављена."
 
-#: imapresourcebase.cpp:253
+#: imapresourcebase.cpp:252
 #, kde-format
 msgid "Server is not available."
 msgstr "Сервер није доступан."
 
-#: imapresourcebase.cpp:304
+#: imapresourcebase.cpp:303
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Додајем ставку у „%1“..."
 
-#: imapresourcebase.cpp:311
+#: imapresourcebase.cpp:310
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Ажурирам ставку у „%1“..."
 
-#: imapresourcebase.cpp:318
+#: imapresourcebase.cpp:317
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Ажурирам ставке..."
 
-#: imapresourcebase.cpp:332
+#: imapresourcebase.cpp:331
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Уклањам ставке..."
 
-#: imapresourcebase.cpp:348
+#: imapresourcebase.cpp:347
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Премештам ставке из „%1“ у „%2“..."
 
-#: imapresourcebase.cpp:357
+#: imapresourcebase.cpp:356
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Добављам фасцикле..."
 
-#: imapresourcebase.cpp:364
+#: imapresourcebase.cpp:363
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Добављам допунске податке о фасцикли за „%1“..."
 
-#: imapresourcebase.cpp:382
+#: imapresourcebase.cpp:381
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Правим фасциклу „%1“..."
 
-#: imapresourcebase.cpp:388
+#: imapresourcebase.cpp:387
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Ажурирам фасциклу „%1“..."
 
-#: imapresourcebase.cpp:401
+#: imapresourcebase.cpp:400
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Уклањам фасциклу „%1“..."
 
-#: imapresourcebase.cpp:408
+#: imapresourcebase.cpp:407
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Премештам фасциклу „%1“ из „%2“ у „%3“..."
 
-#: imapresourcebase.cpp:438
+#: imapresourcebase.cpp:437
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Searching..."
@@ -435,7 +435,7 @@ msgstr "Не могу да обришем фасциклу, обнављам с�
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "Не могу да нађем фасциклу за брисање, обнављам списак фасцикли."
 
-#: resourcestate.cpp:264
+#: resourcestate.cpp:263
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr "Поново покрећем добављање ставке."
@@ -461,7 +461,7 @@ msgstr "Веза прекинута"
 msgid "killed"
 msgstr "укинут"
 
-#: retrievecollectionmetadatatask.cpp:178
+#: retrievecollectionmetadatatask.cpp:177
 #, kde-format
 msgid ""
 "<p>Your access rights to folder <b>%1</b> have been restricted, it will no "
@@ -470,7 +470,7 @@ msgstr ""
 "<p>Имате ограничена права приступа фасцикли <b>%1</b>, због чега више неће "
 "бити могуће додавати поруке у њу.</p>"
 
-#: retrievecollectionmetadatatask.cpp:181
+#: retrievecollectionmetadatatask.cpp:180
 #, kde-format
 msgid "Access rights revoked"
 msgstr "Права приступа повучена"
@@ -505,20 +505,20 @@ msgstr "Нема добављених порука, празан одговор 
 msgid "Invalid search"
 msgstr "Лоша претрага"
 
-#: serverinfodialog.cpp:37
+#: serverinfodialog.cpp:36
 #, kde-format
 msgctxt ""
 "@title:window Dialog title for dialog showing information about a server"
 msgid "Server Info"
 msgstr "Подаци о серверу"
 
-#: serverinfodialog.cpp:53
+#: serverinfodialog.cpp:52
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
 msgstr ""
 
-#: serverinfodialog.cpp:109
+#: serverinfodialog.cpp:108
 #, kde-format
 msgid "Resource not synchronized yet."
 msgstr "Ресурс још није синхронизован."

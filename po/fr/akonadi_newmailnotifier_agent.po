@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-01 00:46+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2026-08-29 18:45+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: fr\n"
@@ -48,13 +48,13 @@ msgid "[Show Mail]"
 msgstr "[Afficher un courriel]"
 
 #: newmailnotificationhistorywidget.cpp:24
-#: newmailnotifiersettingswidget.cpp:113
+#: newmailnotifiersettingswidget.cpp:110
 #, kde-format
 msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Activé"
 
-#: newmailnotifieragent.cpp:367
+#: newmailnotifieragent.cpp:368
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -64,7 +64,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Un nouveau courrier électronique dans %2 de « %3 »"
 msgstr[1] "%1 nouveaux courriers électroniques dans %2 de « %3 »"
 
-#: newmailnotifieragent.cpp:404
+#: newmailnotifieragent.cpp:405
 #, kde-format
 msgid "New mail arrived"
 msgstr "Nouveau courriel arrivé"
@@ -106,7 +106,7 @@ msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "To&ut dé-sélectionner"
 
-#: newmailnotifiersettingswidget.cpp:33
+#: newmailnotifiersettingswidget.cpp:30
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
@@ -115,97 +115,97 @@ msgstr ""
 "<qt><p>Vous pouvez définir le message ici. Vous pouvez utiliser :</p><ul><li>"
 "%s donne le sujet</li><li>%f donne l'expéditeur</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:54
+#: newmailnotifiersettingswidget.cpp:51
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "Choisissez quels champs afficher :"
 
-#: newmailnotifiersettingswidget.cpp:59
+#: newmailnotifiersettingswidget.cpp:56
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "Afficher une photo"
 
-#: newmailnotifiersettingswidget.cpp:63
+#: newmailnotifiersettingswidget.cpp:60
 #, kde-format
 msgctxt "@option:check"
 msgid "Show From"
 msgstr "Afficher le champ « De »"
 
-#: newmailnotifiersettingswidget.cpp:67
+#: newmailnotifiersettingswidget.cpp:64
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "Afficher le champ « Objet »"
 
-#: newmailnotifiersettingswidget.cpp:71
+#: newmailnotifiersettingswidget.cpp:68
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "Afficher les dossiers"
 
-#: newmailnotifiersettingswidget.cpp:75
+#: newmailnotifiersettingswidget.cpp:72
 #, kde-format
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "Ne pas émettre une notification pour les courriels que j'envoie"
 
-#: newmailnotifiersettingswidget.cpp:79
+#: newmailnotifiersettingswidget.cpp:76
 #, kde-format
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr "Conserver la notification persistante"
 
-#: newmailnotifiersettingswidget.cpp:83
+#: newmailnotifiersettingswidget.cpp:80
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr "Afficher les boutons d'actions"
 
-#: newmailnotifiersettingswidget.cpp:91
+#: newmailnotifiersettingswidget.cpp:88
 #, kde-format
 msgctxt "@option:check"
 msgid "Reply Mail"
 msgstr "Répondre à un courriel"
 
-#: newmailnotifiersettingswidget.cpp:99 specialnotifierjob.cpp:163
+#: newmailnotifiersettingswidget.cpp:96 specialnotifierjob.cpp:163
 #, kde-format
 msgid "Reply to Author"
 msgstr "Répondre à l'auteur"
 
-#: newmailnotifiersettingswidget.cpp:99 specialnotifierjob.cpp:166
+#: newmailnotifiersettingswidget.cpp:96 specialnotifierjob.cpp:166
 #, kde-format
 msgid "Reply to All"
 msgstr "Répondre à tous"
 
-#: newmailnotifiersettingswidget.cpp:108
+#: newmailnotifiersettingswidget.cpp:105
 #, kde-format
 msgid "Display"
 msgstr "Afficher"
 
-#: newmailnotifiersettingswidget.cpp:117
+#: newmailnotifiersettingswidget.cpp:114
 #, kde-format
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Comment ça marche ?</a>"
 
-#: newmailnotifiersettingswidget.cpp:126
+#: newmailnotifiersettingswidget.cpp:123
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "Message :"
 
-#: newmailnotifiersettingswidget.cpp:138
+#: newmailnotifiersettingswidget.cpp:135
 #, kde-format
 msgid "Text to Speak"
 msgstr "Synthèse vocale"
 
-#: newmailnotifiersettingswidget.cpp:144
+#: newmailnotifiersettingswidget.cpp:141
 #, kde-format
 msgid "Notify"
 msgstr "Notifier"
 
-#: newmailnotifiersettingswidget.cpp:147
+#: newmailnotifiersettingswidget.cpp:144
 #, kde-format
 msgid "Folders"
 msgstr "Dossiers"

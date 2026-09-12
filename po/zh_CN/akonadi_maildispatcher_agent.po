@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-21 00:45+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -18,62 +18,62 @@ msgstr ""
 "akonadi_maildispatcher_agent.pot\n"
 "X-Crowdin-File-ID: 45417\n"
 
-#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
+#: maildispatcheragent.cpp:79 maildispatcheragent.cpp:224
 #, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
 msgstr[0] "正在发送信件 (队列中有 %1 项) "
 
-#: maildispatcheragent.cpp:90
+#: maildispatcheragent.cpp:89
 #, kde-format
 msgid "Sending canceled."
 msgstr "发送已取消。"
 
-#: maildispatcheragent.cpp:97
+#: maildispatcheragent.cpp:96
 #, kde-format
 msgid "Finished sending messages."
 msgstr "已完成发送信件。"
 
-#: maildispatcheragent.cpp:103
+#: maildispatcheragent.cpp:102
 #, kde-format
 msgctxt "Notification title when email was sent"
 msgid "E-Mail Successfully Sent"
 msgstr "邮件已成功发送"
 
-#: maildispatcheragent.cpp:104
+#: maildispatcheragent.cpp:103
 #, kde-format
 msgctxt "Notification when the email was sent"
 msgid "Your E-Mail has been sent successfully."
 msgstr "您的邮件已成功发送。"
 
-#: maildispatcheragent.cpp:110
+#: maildispatcheragent.cpp:109
 #, kde-format
 msgid "No items in queue."
 msgstr "队列中没有项目。"
 
-#: maildispatcheragent.cpp:155
+#: maildispatcheragent.cpp:154
 #, kde-format
 msgid "Online, sending messages in queue."
 msgstr "在线，正在发送队列中的信件。"
 
-#: maildispatcheragent.cpp:159
+#: maildispatcheragent.cpp:158
 #, kde-format
 msgid "Offline, message sending suspended."
 msgstr "离线，信件发送已中止。"
 
-#: maildispatcheragent.cpp:185
+#: maildispatcheragent.cpp:184
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
 msgstr "正在发送：%1"
 
-#: maildispatcheragent.cpp:250
+#: maildispatcheragent.cpp:249
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
 msgstr "发送邮件失败"
 
-#: maildispatcheragent.cpp:283
+#: maildispatcheragent.cpp:282
 #, kde-format
 msgid "Ready to dispatch messages."
 msgstr "准备签发信件。"
@@ -90,32 +90,32 @@ msgstr "发件夹收藏编号"
 msgid "Sent Mail collection id"
 msgstr "发送邮件收藏编号"
 
-#: outboxqueue.cpp:265
+#: outboxqueue.cpp:263
 #, kde-format
 msgid "Could not access the outbox folder (%1)."
 msgstr "无法访问发件夹(%1)。"
 
-#: sendjob.cpp:49 sendjob.cpp:50
+#: sendjob.cpp:47 sendjob.cpp:48
 #, kde-format
 msgid "Message sending aborted."
 msgstr "信件发送已中止。"
 
-#: sendjob.cpp:59
+#: sendjob.cpp:57
 #, kde-format
 msgid "Could not initiate message transport. Possibly invalid transport."
 msgstr "无法初始化信件传输。可能是无效的传输。"
 
-#: sendjob.cpp:65
+#: sendjob.cpp:63
 #, kde-format
 msgid "Could not send message. Invalid transport."
 msgstr "无法发送信件。无效的传输。"
 
-#: sendjob.cpp:97
+#: sendjob.cpp:95
 #, kde-format
 msgid "Failed to get D-Bus interface of resource %1."
 msgstr "获取资源 %1 的 D-Bus 接口失败。"
 
-#: sendjob.cpp:110
+#: sendjob.cpp:108
 #, kde-format
 msgid "Invalid D-Bus reply from resource %1."
 msgstr "来自资源 %1 的无效 D-Bus 响应。"

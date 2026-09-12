@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-01 00:46+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2015-02-04 15:19+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -20,19 +20,19 @@ msgstr ""
 "X-Launchpad-Export-Date: 2015-02-05 06:26+0000\n"
 "X-Generator: Launchpad (build 17331)\n"
 
-#: addcollectiontask.cpp:33
+#: addcollectiontask.cpp:31
 #, kde-format
 msgid "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'."
 msgstr ""
 "Nije moguće dodati IMAP folder '%1' za nepostojeći roditeljski folder '%2'."
 
-#: addcollectiontask.cpp:67
+#: addcollectiontask.cpp:65
 #, fuzzy, kde-format
 msgid "Failed to create the folder '%1' on the IMAP server. "
 msgstr ""
 "Neuspjelo pisanje nekih listi kontrola pristupa za '%1' na IMAP serveru. %2"
 
-#: addcollectiontask.cpp:87 movecollectiontask.cpp:119
+#: addcollectiontask.cpp:85 movecollectiontask.cpp:119
 #, kde-format
 msgid ""
 "Failed to subscribe to the folder '%1' on the IMAP server. It will disappear "
@@ -42,7 +42,7 @@ msgstr ""
 "sljedećoj sinhronizaciji. Koristite dijaloški prozor pretplate da to "
 "prevaziđete."
 
-#: addcollectiontask.cpp:128 changecollectiontask.cpp:276
+#: addcollectiontask.cpp:126 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
 msgstr "Neuspjelo pisanje nekih napomena za '%1' na IMAP serveru %2"
@@ -286,88 +286,88 @@ msgstr ""
 msgid "The activities of the agent"
 msgstr ""
 
-#: imapresourcebase.cpp:216
+#: imapresourcebase.cpp:215
 #, kde-format
 msgid "No server configured yet."
 msgstr "Server još uvijek nije konfigurisan."
 
-#: imapresourcebase.cpp:236
+#: imapresourcebase.cpp:235
 #, kde-format
 msgid "Connection established."
 msgstr "Konekcija uspostavljena."
 
-#: imapresourcebase.cpp:253
+#: imapresourcebase.cpp:252
 #, kde-format
 msgid "Server is not available."
 msgstr ""
 
-#: imapresourcebase.cpp:304
+#: imapresourcebase.cpp:303
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Dodajem element u '%1'"
 
-#: imapresourcebase.cpp:311
+#: imapresourcebase.cpp:310
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Ažuriram element u '%1'"
 
-#: imapresourcebase.cpp:318
+#: imapresourcebase.cpp:317
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Ažuriram stavke"
 
-#: imapresourcebase.cpp:332
+#: imapresourcebase.cpp:331
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Uklanjam stavke"
 
-#: imapresourcebase.cpp:348
+#: imapresourcebase.cpp:347
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Premještam stavke iz '%1' u '%2'"
 
-#: imapresourcebase.cpp:357
+#: imapresourcebase.cpp:356
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Preuzimam direktorije"
 
-#: imapresourcebase.cpp:364
+#: imapresourcebase.cpp:363
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Preuzimam dodatne informacije direktorija za '%1'"
 
-#: imapresourcebase.cpp:382
+#: imapresourcebase.cpp:381
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Kreiram direktorij '%1'"
 
-#: imapresourcebase.cpp:388
+#: imapresourcebase.cpp:387
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Ažuriram direktorij '%1'"
 
-#: imapresourcebase.cpp:401
+#: imapresourcebase.cpp:400
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Uklanjam direktorij '%1'"
 
-#: imapresourcebase.cpp:408
+#: imapresourcebase.cpp:407
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Premlještam direktorij '%1' sa '%2' na '%3'"
 
-#: imapresourcebase.cpp:438
+#: imapresourcebase.cpp:437
 #, fuzzy, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
@@ -439,7 +439,7 @@ msgstr "Neuspjelo brisanje fascikle, vraća se lista fascikli."
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "Neuspjelo traženje fascikle za brisanje, vraćam listu fascikli."
 
-#: resourcestate.cpp:264
+#: resourcestate.cpp:263
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr ""
@@ -464,7 +464,7 @@ msgstr "Veza prekinuta"
 msgid "killed"
 msgstr "isključen"
 
-#: retrievecollectionmetadatatask.cpp:178
+#: retrievecollectionmetadatatask.cpp:177
 #, kde-format
 msgid ""
 "<p>Your access rights to folder <b>%1</b> have been restricted, it will no "
@@ -473,7 +473,7 @@ msgstr ""
 "<p>Vaša prava pristupa direkoriju <b>%1</b> su ograničena, zbog čega više "
 "neće biti moguće dodavati poruke u njega.</p>"
 
-#: retrievecollectionmetadatatask.cpp:181
+#: retrievecollectionmetadatatask.cpp:180
 #, kde-format
 msgid "Access rights revoked"
 msgstr "Prava pristupa opozvana"
@@ -508,20 +508,20 @@ msgstr "Poruka nijeprimljena, odgovor od servera je prazan.."
 msgid "Invalid search"
 msgstr ""
 
-#: serverinfodialog.cpp:37
+#: serverinfodialog.cpp:36
 #, kde-format
 msgctxt ""
 "@title:window Dialog title for dialog showing information about a server"
 msgid "Server Info"
 msgstr "Serverske informacije"
 
-#: serverinfodialog.cpp:53
+#: serverinfodialog.cpp:52
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
 msgstr ""
 
-#: serverinfodialog.cpp:109
+#: serverinfodialog.cpp:108
 #, kde-format
 msgid "Resource not synchronized yet."
 msgstr ""

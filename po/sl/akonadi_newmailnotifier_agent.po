@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-01 00:46+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2026-08-17 06:58+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -44,13 +44,13 @@ msgid "[Show Mail]"
 msgstr "[Pokaži pošto]"
 
 #: newmailnotificationhistorywidget.cpp:24
-#: newmailnotifiersettingswidget.cpp:113
+#: newmailnotifiersettingswidget.cpp:110
 #, kde-format
 msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Omogočeno"
 
-#: newmailnotifieragent.cpp:367
+#: newmailnotifieragent.cpp:368
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -62,7 +62,7 @@ msgstr[1] "%1 novo sporočilo v %2 od »%3«"
 msgstr[2] "%1 novi sporočili v %2 od »%3«"
 msgstr[3] "%1 nova sporočila v %2 od »%3«"
 
-#: newmailnotifieragent.cpp:404
+#: newmailnotifieragent.cpp:405
 #, kde-format
 msgid "New mail arrived"
 msgstr "Prispela je nova pošta"
@@ -103,7 +103,7 @@ msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "Od-izberi vse"
 
-#: newmailnotifiersettingswidget.cpp:33
+#: newmailnotifiersettingswidget.cpp:30
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
@@ -112,97 +112,97 @@ msgstr ""
 "<qt><p>Tu lahko določite sporočilo. Uporabite lahko:</p><ul><li>%s nastavi "
 "zadevo</li><li>%f nastavi pošiljatelja</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:54
+#: newmailnotifiersettingswidget.cpp:51
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "Izberite polja, ki bodo prikazana:"
 
-#: newmailnotifiersettingswidget.cpp:59
+#: newmailnotifiersettingswidget.cpp:56
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "Pokaži fotografijo"
 
-#: newmailnotifiersettingswidget.cpp:63
+#: newmailnotifiersettingswidget.cpp:60
 #, kde-format
 msgctxt "@option:check"
 msgid "Show From"
 msgstr "Pokaži pošiljatelja"
 
-#: newmailnotifiersettingswidget.cpp:67
+#: newmailnotifiersettingswidget.cpp:64
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "Pokaži zadevo"
 
-#: newmailnotifiersettingswidget.cpp:71
+#: newmailnotifiersettingswidget.cpp:68
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "Pokaži mape"
 
-#: newmailnotifiersettingswidget.cpp:75
+#: newmailnotifiersettingswidget.cpp:72
 #, kde-format
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "Ne obveščaj, če sem e-pošto poslal(a) jaz"
 
-#: newmailnotifiersettingswidget.cpp:79
+#: newmailnotifiersettingswidget.cpp:76
 #, kde-format
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr "Ohrani trajno obvestilo"
 
-#: newmailnotifiersettingswidget.cpp:83
+#: newmailnotifiersettingswidget.cpp:80
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr "Pokaži gumbe za dejanja"
 
-#: newmailnotifiersettingswidget.cpp:91
+#: newmailnotifiersettingswidget.cpp:88
 #, kde-format
 msgctxt "@option:check"
 msgid "Reply Mail"
 msgstr "Odgovori na sporočilo"
 
-#: newmailnotifiersettingswidget.cpp:99 specialnotifierjob.cpp:163
+#: newmailnotifiersettingswidget.cpp:96 specialnotifierjob.cpp:163
 #, kde-format
 msgid "Reply to Author"
 msgstr "Odgovori avtorju"
 
-#: newmailnotifiersettingswidget.cpp:99 specialnotifierjob.cpp:166
+#: newmailnotifiersettingswidget.cpp:96 specialnotifierjob.cpp:166
 #, kde-format
 msgid "Reply to All"
 msgstr "Odgovori vsem"
 
-#: newmailnotifiersettingswidget.cpp:108
+#: newmailnotifiersettingswidget.cpp:105
 #, kde-format
 msgid "Display"
 msgstr "Prikaži"
 
-#: newmailnotifiersettingswidget.cpp:117
+#: newmailnotifiersettingswidget.cpp:114
 #, kde-format
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Kako to deluje?</a>"
 
-#: newmailnotifiersettingswidget.cpp:126
+#: newmailnotifiersettingswidget.cpp:123
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "Sporočilo:"
 
-#: newmailnotifiersettingswidget.cpp:138
+#: newmailnotifiersettingswidget.cpp:135
 #, kde-format
 msgid "Text to Speak"
 msgstr "Besedilo za izgovor"
 
-#: newmailnotifiersettingswidget.cpp:144
+#: newmailnotifiersettingswidget.cpp:141
 #, kde-format
 msgid "Notify"
 msgstr "Obvesti"
 
-#: newmailnotifiersettingswidget.cpp:147
+#: newmailnotifiersettingswidget.cpp:144
 #, kde-format
 msgid "Folders"
 msgstr "Mape"

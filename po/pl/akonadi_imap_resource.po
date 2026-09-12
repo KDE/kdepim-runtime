@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-01 00:46+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2025-09-06 06:05+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: pl\n"
@@ -20,19 +20,19 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 25.08.0\n"
 
-#: addcollectiontask.cpp:33
+#: addcollectiontask.cpp:31
 #, kde-format
 msgid "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'."
 msgstr ""
 "Nie można dodać katalogu IMAP \"%1\" do nieistniejącego katalogu "
 "macierzystego \"%2\". "
 
-#: addcollectiontask.cpp:67
+#: addcollectiontask.cpp:65
 #, kde-format
 msgid "Failed to create the folder '%1' on the IMAP server. "
 msgstr "Nieudane tworzenie katalogu '%1' na serwerze IMAP. "
 
-#: addcollectiontask.cpp:87 movecollectiontask.cpp:119
+#: addcollectiontask.cpp:85 movecollectiontask.cpp:119
 #, kde-format
 msgid ""
 "Failed to subscribe to the folder '%1' on the IMAP server. It will disappear "
@@ -41,7 +41,7 @@ msgstr ""
 "Nieudana subskrypcja do katalogu '%1' na serwerze IMAP. Zniknie przy "
 "następnej synchronizacji. Użyj okna dialogowego subskrypcji, aby to ominąć"
 
-#: addcollectiontask.cpp:128 changecollectiontask.cpp:276
+#: addcollectiontask.cpp:126 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
 msgstr "Nieudany zapis pewnych adnotacji dla '%1' na serwerze IMAP. %2"
@@ -289,88 +289,88 @@ msgstr "Określa czy obsługa aktywności agenta jest włączona"
 msgid "The activities of the agent"
 msgstr "Aktywności agenta"
 
-#: imapresourcebase.cpp:216
+#: imapresourcebase.cpp:215
 #, kde-format
 msgid "No server configured yet."
 msgstr "Serwer jeszcze nieustawiony."
 
-#: imapresourcebase.cpp:236
+#: imapresourcebase.cpp:235
 #, kde-format
 msgid "Connection established."
 msgstr "Nawiązano połączenie."
 
-#: imapresourcebase.cpp:253
+#: imapresourcebase.cpp:252
 #, kde-format
 msgid "Server is not available."
 msgstr "Serwer jest niedostępny."
 
-#: imapresourcebase.cpp:304
+#: imapresourcebase.cpp:303
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Dodawanie elementu w '%1'"
 
-#: imapresourcebase.cpp:311
+#: imapresourcebase.cpp:310
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Uaktualnianie elementu w '%1'"
 
-#: imapresourcebase.cpp:318
+#: imapresourcebase.cpp:317
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Uaktualnianie elementów"
 
-#: imapresourcebase.cpp:332
+#: imapresourcebase.cpp:331
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Usuwanie elementów"
 
-#: imapresourcebase.cpp:348
+#: imapresourcebase.cpp:347
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Przenoszenie elementów z '%1' do '%2'"
 
-#: imapresourcebase.cpp:357
+#: imapresourcebase.cpp:356
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Pobieranie katalogów"
 
-#: imapresourcebase.cpp:364
+#: imapresourcebase.cpp:363
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Pobieranie dodatkowych informacji dla katalogu '%1'"
 
-#: imapresourcebase.cpp:382
+#: imapresourcebase.cpp:381
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Tworzenie katalogu '%1'"
 
-#: imapresourcebase.cpp:388
+#: imapresourcebase.cpp:387
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Uaktualnianie katalogu '%1'"
 
-#: imapresourcebase.cpp:401
+#: imapresourcebase.cpp:400
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Usuwanie katalogu '%1'"
 
-#: imapresourcebase.cpp:408
+#: imapresourcebase.cpp:407
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Przenoszenie katalogu z '%1' z '%2' do '%3'"
 
-#: imapresourcebase.cpp:438
+#: imapresourcebase.cpp:437
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
@@ -448,7 +448,7 @@ msgstr ""
 "Nie udało się znaleźć katalogu do usunięcia, wobec tego przywrócono listę "
 "katalogów."
 
-#: resourcestate.cpp:264
+#: resourcestate.cpp:263
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr "Ponowne pobieranie elementu."
@@ -468,7 +468,7 @@ msgstr "Zerwano połączenie"
 msgid "killed"
 msgstr "zakończony"
 
-#: retrievecollectionmetadatatask.cpp:178
+#: retrievecollectionmetadatatask.cpp:177
 #, kde-format
 msgid ""
 "<p>Your access rights to folder <b>%1</b> have been restricted, it will no "
@@ -477,7 +477,7 @@ msgstr ""
 "<p>Twoje prawa dostępu do katalogu <b>%1</b> zostały ograniczone, już nie "
 "będzie można więcej dodawać wiadomości do tego katalogu.</p>"
 
-#: retrievecollectionmetadatatask.cpp:181
+#: retrievecollectionmetadatatask.cpp:180
 #, kde-format
 msgid "Access rights revoked"
 msgstr "Uprawnienia odwołane"
@@ -512,20 +512,20 @@ msgstr "Nie pobrano wiadomości, odpowiedź serwera była pusta."
 msgid "Invalid search"
 msgstr "Nieprawidłowe wyszukiwanie"
 
-#: serverinfodialog.cpp:37
+#: serverinfodialog.cpp:36
 #, kde-format
 msgctxt ""
 "@title:window Dialog title for dialog showing information about a server"
 msgid "Server Info"
 msgstr "Dane serwera"
 
-#: serverinfodialog.cpp:53
+#: serverinfodialog.cpp:52
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
 msgstr "Błąd przy uzyskiwaniu możliwości serwera: %1"
 
-#: serverinfodialog.cpp:109
+#: serverinfodialog.cpp:108
 #, kde-format
 msgid "Resource not synchronized yet."
 msgstr "Jeszcze nie zsynchronizowano zasobu."

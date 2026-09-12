@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-21 00:45+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2026-05-21 12:03+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -24,63 +24,63 @@ msgstr ""
 "X-Generator: Lokalize 26.04.0\n"
 "X-POOTLE-MTIME: 1413131131.000000\n"
 
-#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
+#: maildispatcheragent.cpp:79 maildispatcheragent.cpp:224
 #, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
 msgstr[0] "İletiler gönderiliyor (kuyrukta 1 ileti var)…"
 msgstr[1] "İletiler gönderiliyor (kuyrukta %1 ileti var)…"
 
-#: maildispatcheragent.cpp:90
+#: maildispatcheragent.cpp:89
 #, kde-format
 msgid "Sending canceled."
 msgstr "Gönderme iptal edildi."
 
-#: maildispatcheragent.cpp:97
+#: maildispatcheragent.cpp:96
 #, kde-format
 msgid "Finished sending messages."
 msgstr "İletilerin gönderilmesi bitti."
 
-#: maildispatcheragent.cpp:103
+#: maildispatcheragent.cpp:102
 #, kde-format
 msgctxt "Notification title when email was sent"
 msgid "E-Mail Successfully Sent"
 msgstr "E-posta Başarıyla Gönderildi"
 
-#: maildispatcheragent.cpp:104
+#: maildispatcheragent.cpp:103
 #, kde-format
 msgctxt "Notification when the email was sent"
 msgid "Your E-Mail has been sent successfully."
 msgstr "E-postanız başarıyla gönderildi."
 
-#: maildispatcheragent.cpp:110
+#: maildispatcheragent.cpp:109
 #, kde-format
 msgid "No items in queue."
 msgstr "Kuyrukta bir şey yok."
 
-#: maildispatcheragent.cpp:155
+#: maildispatcheragent.cpp:154
 #, kde-format
 msgid "Online, sending messages in queue."
 msgstr "Çevrim içi; kuyruktaki iletiler gönderiliyor."
 
-#: maildispatcheragent.cpp:159
+#: maildispatcheragent.cpp:158
 #, kde-format
 msgid "Offline, message sending suspended."
 msgstr "Çevrim dışı; ileti gönderme işlemi askıya alındı."
 
-#: maildispatcheragent.cpp:185
+#: maildispatcheragent.cpp:184
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
 msgstr "Gönderiliyor: %1"
 
-#: maildispatcheragent.cpp:250
+#: maildispatcheragent.cpp:249
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
 msgstr "E-posta Gönderme Başarısız"
 
-#: maildispatcheragent.cpp:283
+#: maildispatcheragent.cpp:282
 #, kde-format
 msgid "Ready to dispatch messages."
 msgstr "İletiler yollanmaya hazır."
@@ -97,32 +97,32 @@ msgstr "Giden kutusu koleksiyon kimliği"
 msgid "Sent Mail collection id"
 msgstr "Gönderilen iletilerin koleksiyon kimliği"
 
-#: outboxqueue.cpp:265
+#: outboxqueue.cpp:263
 #, kde-format
 msgid "Could not access the outbox folder (%1)."
 msgstr "Giden kutusuna erişilemedi (%1)."
 
-#: sendjob.cpp:49 sendjob.cpp:50
+#: sendjob.cpp:47 sendjob.cpp:48
 #, kde-format
 msgid "Message sending aborted."
 msgstr "İleti gönderimi iptal edildi."
 
-#: sendjob.cpp:59
+#: sendjob.cpp:57
 #, kde-format
 msgid "Could not initiate message transport. Possibly invalid transport."
 msgstr "İleti taşıması başlatılamadı. Büyük olasılıkla geçersiz taşıma."
 
-#: sendjob.cpp:65
+#: sendjob.cpp:63
 #, kde-format
 msgid "Could not send message. Invalid transport."
 msgstr "İleti gönderilemedi. Geçersiz taşıma."
 
-#: sendjob.cpp:97
+#: sendjob.cpp:95
 #, kde-format
 msgid "Failed to get D-Bus interface of resource %1."
 msgstr "%1 özkaynağı için D-Bus arayüzü edinilemedi."
 
-#: sendjob.cpp:110
+#: sendjob.cpp:108
 #, kde-format
 msgid "Invalid D-Bus reply from resource %1."
 msgstr "%1 özkaynağından geçersiz D-Bus yanıtı."

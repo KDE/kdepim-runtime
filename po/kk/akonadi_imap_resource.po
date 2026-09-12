@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-01 00:46+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2013-11-18 04:31+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -18,17 +18,17 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 1.2\n"
 
-#: addcollectiontask.cpp:33
+#: addcollectiontask.cpp:31
 #, kde-format
 msgid "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'."
 msgstr "'%1' IMAP қапшығы қосылмады, себебі, '%2'  деген аталық қапшығы жоқ."
 
-#: addcollectiontask.cpp:67
+#: addcollectiontask.cpp:65
 #, kde-format
 msgid "Failed to create the folder '%1' on the IMAP server. "
 msgstr "IMAP серверінде '%1' қапшығын құру жаңылысы. "
 
-#: addcollectiontask.cpp:87 movecollectiontask.cpp:119
+#: addcollectiontask.cpp:85 movecollectiontask.cpp:119
 #, kde-format
 msgid ""
 "Failed to subscribe to the folder '%1' on the IMAP server. It will disappear "
@@ -37,7 +37,7 @@ msgstr ""
 "IMAP серверіндегі '%1' қапшығына жазылу жаңылысы. Ол келесі қадамдастыруда "
 "ғайып болады. Жағдайды жөндеу үшін жазылу далогын пайдаланыңыз."
 
-#: addcollectiontask.cpp:128 changecollectiontask.cpp:276
+#: addcollectiontask.cpp:126 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
 msgstr "IMAP серверіне '%1' үшін кейбір аңдатпаларды жазу жаңылысы. %2"
@@ -282,88 +282,88 @@ msgstr ""
 msgid "The activities of the agent"
 msgstr ""
 
-#: imapresourcebase.cpp:216
+#: imapresourcebase.cpp:215
 #, kde-format
 msgid "No server configured yet."
 msgstr "Сервер әлі көрсетілмеген."
 
-#: imapresourcebase.cpp:236
+#: imapresourcebase.cpp:235
 #, kde-format
 msgid "Connection established."
 msgstr "Байланыс орнатылды."
 
-#: imapresourcebase.cpp:253
+#: imapresourcebase.cpp:252
 #, kde-format
 msgid "Server is not available."
 msgstr ""
 
-#: imapresourcebase.cpp:304
+#: imapresourcebase.cpp:303
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "'%1' дегенде аталымын қосу"
 
-#: imapresourcebase.cpp:311
+#: imapresourcebase.cpp:310
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "'%1' дегенде аталымын жаңарту"
 
-#: imapresourcebase.cpp:318
+#: imapresourcebase.cpp:317
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Аталымдарын жаңарту"
 
-#: imapresourcebase.cpp:332
+#: imapresourcebase.cpp:331
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Аталымдарын өшіру"
 
-#: imapresourcebase.cpp:348
+#: imapresourcebase.cpp:347
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Аталымддары '%1' дегеннен '%2' дегенге жылжыту"
 
-#: imapresourcebase.cpp:357
+#: imapresourcebase.cpp:356
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Қапшықтарын өндіріп алу"
 
-#: imapresourcebase.cpp:364
+#: imapresourcebase.cpp:363
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "'%1' қапшығының қосымша ақпаратын өндіріп алу"
 
-#: imapresourcebase.cpp:382
+#: imapresourcebase.cpp:381
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "'%1' қапшығын құру"
 
-#: imapresourcebase.cpp:388
+#: imapresourcebase.cpp:387
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "'%1' қапшығын жаңарту"
 
-#: imapresourcebase.cpp:401
+#: imapresourcebase.cpp:400
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "'%1' қапшығын өшіру"
 
-#: imapresourcebase.cpp:408
+#: imapresourcebase.cpp:407
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "'%1' қыапшықты '%2' дегеннен '%3' дегенге жылжыту"
 
-#: imapresourcebase.cpp:438
+#: imapresourcebase.cpp:437
 #, fuzzy, kde-format
 #| msgctxt "@label search for a subscription"
 #| msgid "Search:"
@@ -439,7 +439,7 @@ msgstr "Қапшықты өшіру жаңылысы. Қапшық тізімі 
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "Өшірілетін қапшық табылмады. Қапшық тізімі қалпына келтірілмек."
 
-#: resourcestate.cpp:264
+#: resourcestate.cpp:263
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr ""
@@ -464,7 +464,7 @@ msgstr "Байланыс үзілісі"
 msgid "killed"
 msgstr "құртып кетірген"
 
-#: retrievecollectionmetadatatask.cpp:178
+#: retrievecollectionmetadatatask.cpp:177
 #, kde-format
 msgid ""
 "<p>Your access rights to folder <b>%1</b> have been restricted, it will no "
@@ -473,7 +473,7 @@ msgstr ""
 "<p><b>%1</b> қапшығына қатынау құқықтарыңыз шектелді, енді бұған хабарлама "
 "қоса алмайсыз.</p>"
 
-#: retrievecollectionmetadatatask.cpp:181
+#: retrievecollectionmetadatatask.cpp:180
 #, kde-format
 msgid "Access rights revoked"
 msgstr "Қатынау құқықтар кеміді"
@@ -509,20 +509,20 @@ msgstr "Серверден хабар жоқ, ол бос жауап қайта�
 msgid "Invalid search"
 msgstr ""
 
-#: serverinfodialog.cpp:37
+#: serverinfodialog.cpp:36
 #, kde-format
 msgctxt ""
 "@title:window Dialog title for dialog showing information about a server"
 msgid "Server Info"
 msgstr "Сервер ақпары"
 
-#: serverinfodialog.cpp:53
+#: serverinfodialog.cpp:52
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
 msgstr ""
 
-#: serverinfodialog.cpp:109
+#: serverinfodialog.cpp:108
 #, kde-format
 msgid "Resource not synchronized yet."
 msgstr ""

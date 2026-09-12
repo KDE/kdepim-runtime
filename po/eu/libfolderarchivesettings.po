@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2024-08-06 01:03+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -38,19 +38,19 @@ msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Year"
 msgstr "Urtea"
 
-#: folderarchivesettingpage.cpp:27
+#: folderarchivesettingpage.cpp:28
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable"
 msgstr "Gaitu"
 
-#: folderarchivesettingpage.cpp:36
+#: folderarchivesettingpage.cpp:37
 #, kde-format
 msgctxt "@label:chooser for the folder that messages will be archived under"
 msgid "Archive into:"
 msgstr "Artxibatu honen barruan:"
 
-#: folderarchivesettingpage.cpp:38
+#: folderarchivesettingpage.cpp:39
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Archive folder name:"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-21 00:45+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2026-06-05 14:07+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -19,7 +19,7 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Lokalize 23.08.5\n"
 
-#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
+#: maildispatcheragent.cpp:79 maildispatcheragent.cpp:224
 #, kde-format
 msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
@@ -30,56 +30,56 @@ msgstr[3] "يرسل الرّسائل (%1 عناصر في الطّابور)…"
 msgstr[4] "يرسل الرّسائل (%1 عنصرًا في الطّابور)…"
 msgstr[5] "يرسل الرّسائل (%1 عنصر في الطّابور)…"
 
-#: maildispatcheragent.cpp:90
+#: maildispatcheragent.cpp:89
 #, kde-format
 msgid "Sending canceled."
 msgstr "أُلغي الإرسال."
 
-#: maildispatcheragent.cpp:97
+#: maildispatcheragent.cpp:96
 #, kde-format
 msgid "Finished sending messages."
 msgstr "انتهى إرسال الرّسائل."
 
-#: maildispatcheragent.cpp:103
+#: maildispatcheragent.cpp:102
 #, kde-format
 msgctxt "Notification title when email was sent"
 msgid "E-Mail Successfully Sent"
 msgstr "أُرسل البريد بنجاح"
 
-#: maildispatcheragent.cpp:104
+#: maildispatcheragent.cpp:103
 #, kde-format
 msgctxt "Notification when the email was sent"
 msgid "Your E-Mail has been sent successfully."
 msgstr "أُرسل البريد الإلكترونيّ بنجاح."
 
-#: maildispatcheragent.cpp:110
+#: maildispatcheragent.cpp:109
 #, kde-format
 msgid "No items in queue."
 msgstr "لا عناصر في الطّابور."
 
-#: maildispatcheragent.cpp:155
+#: maildispatcheragent.cpp:154
 #, kde-format
 msgid "Online, sending messages in queue."
 msgstr "متّصل، يُرسل الرّسائل في الطّابور."
 
-#: maildispatcheragent.cpp:159
+#: maildispatcheragent.cpp:158
 #, kde-format
 msgid "Offline, message sending suspended."
 msgstr "غيّر متّصل، أُرجئ إرسال الرّسائل."
 
-#: maildispatcheragent.cpp:185
+#: maildispatcheragent.cpp:184
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
 msgstr "يُرسل: %1"
 
-#: maildispatcheragent.cpp:250
+#: maildispatcheragent.cpp:249
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
 msgstr "فشل إرسال البريد"
 
-#: maildispatcheragent.cpp:283
+#: maildispatcheragent.cpp:282
 #, kde-format
 msgid "Ready to dispatch messages."
 msgstr "جهاز لإرسال الرّسائل."
@@ -96,32 +96,32 @@ msgstr "معرّف تجميعة صندوق الصّادر"
 msgid "Sent Mail collection id"
 msgstr "معرّف تجميعة البريد المرسل"
 
-#: outboxqueue.cpp:265
+#: outboxqueue.cpp:263
 #, kde-format
 msgid "Could not access the outbox folder (%1)."
 msgstr "تعذّر النّفاذ إلى مجلّد صندوق الصّادر (%1)."
 
-#: sendjob.cpp:49 sendjob.cpp:50
+#: sendjob.cpp:47 sendjob.cpp:48
 #, kde-format
 msgid "Message sending aborted."
 msgstr "أُجهض إرسال الرّسالة."
 
-#: sendjob.cpp:59
+#: sendjob.cpp:57
 #, kde-format
 msgid "Could not initiate message transport. Possibly invalid transport."
 msgstr "تعذّر تمهيد نقل الرّسالة. قد يكون النّقل غير صالح."
 
-#: sendjob.cpp:65
+#: sendjob.cpp:63
 #, kde-format
 msgid "Could not send message. Invalid transport."
 msgstr "تعذّر إرسال الرّسالة. النّقل غير صالح."
 
-#: sendjob.cpp:97
+#: sendjob.cpp:95
 #, kde-format
 msgid "Failed to get D-Bus interface of resource %1."
 msgstr "فشل جلب واجهة D-Bus للمورد %1."
 
-#: sendjob.cpp:110
+#: sendjob.cpp:108
 #, kde-format
 msgid "Invalid D-Bus reply from resource %1."
 msgstr "ردّ D-Bus غير صالح من المورد %1."

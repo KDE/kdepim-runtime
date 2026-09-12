@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-21 00:45+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2010-11-21 13:47-0800\n"
 "Last-Translator: Fumiaki Okushi <okushi@kde.gr.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
+#: maildispatcheragent.cpp:79 maildispatcheragent.cpp:224
 #, fuzzy, kde-format
 #| msgid "Sending messages (1 item in queue)..."
 #| msgid_plural "Sending messages (%1 items in queue)..."
@@ -23,17 +23,17 @@ msgid "Sending messages (1 item in queue)…"
 msgid_plural "Sending messages (%1 items in queue)..."
 msgstr[0] "メッセージを送信中 (残り %1 通)"
 
-#: maildispatcheragent.cpp:90
+#: maildispatcheragent.cpp:89
 #, kde-format
 msgid "Sending canceled."
 msgstr "送信をキャンセルしました。"
 
-#: maildispatcheragent.cpp:97
+#: maildispatcheragent.cpp:96
 #, kde-format
 msgid "Finished sending messages."
 msgstr "メッセージの送信を終了しました。"
 
-#: maildispatcheragent.cpp:103
+#: maildispatcheragent.cpp:102
 #, fuzzy, kde-format
 #| msgctxt "Notification when the email was sent"
 #| msgid "E-mail successfully sent"
@@ -41,7 +41,7 @@ msgctxt "Notification title when email was sent"
 msgid "E-Mail Successfully Sent"
 msgstr "メールを送信しました"
 
-#: maildispatcheragent.cpp:104
+#: maildispatcheragent.cpp:103
 #, fuzzy, kde-format
 #| msgctxt "Notification when the email was sent"
 #| msgid "E-mail successfully sent"
@@ -49,35 +49,35 @@ msgctxt "Notification when the email was sent"
 msgid "Your E-Mail has been sent successfully."
 msgstr "メールを送信しました"
 
-#: maildispatcheragent.cpp:110
+#: maildispatcheragent.cpp:109
 #, kde-format
 msgid "No items in queue."
 msgstr ""
 
-#: maildispatcheragent.cpp:155
+#: maildispatcheragent.cpp:154
 #, kde-format
 msgid "Online, sending messages in queue."
 msgstr "オンライン、待ち行列のメッセージを送信中。"
 
-#: maildispatcheragent.cpp:159
+#: maildispatcheragent.cpp:158
 #, kde-format
 msgid "Offline, message sending suspended."
 msgstr "オフライン、メッセージの送信を一時中止。"
 
-#: maildispatcheragent.cpp:185
+#: maildispatcheragent.cpp:184
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
 msgstr "送信中: %1"
 
-#: maildispatcheragent.cpp:250
+#: maildispatcheragent.cpp:249
 #, fuzzy, kde-format
 #| msgid "Sending canceled."
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
 msgstr "送信をキャンセルしました。"
 
-#: maildispatcheragent.cpp:283
+#: maildispatcheragent.cpp:282
 #, kde-format
 msgid "Ready to dispatch messages."
 msgstr ""
@@ -94,32 +94,32 @@ msgstr ""
 msgid "Sent Mail collection id"
 msgstr ""
 
-#: outboxqueue.cpp:265
+#: outboxqueue.cpp:263
 #, kde-format
 msgid "Could not access the outbox folder (%1)."
 msgstr "送信待ちフォルダ (%1) をアクセスできませんでした。"
 
-#: sendjob.cpp:49 sendjob.cpp:50
+#: sendjob.cpp:47 sendjob.cpp:48
 #, kde-format
 msgid "Message sending aborted."
 msgstr "メッセージの送信を中止しました。"
 
-#: sendjob.cpp:59
+#: sendjob.cpp:57
 #, kde-format
 msgid "Could not initiate message transport. Possibly invalid transport."
 msgstr ""
 
-#: sendjob.cpp:65
+#: sendjob.cpp:63
 #, kde-format
 msgid "Could not send message. Invalid transport."
 msgstr ""
 
-#: sendjob.cpp:97
+#: sendjob.cpp:95
 #, kde-format
 msgid "Failed to get D-Bus interface of resource %1."
 msgstr ""
 
-#: sendjob.cpp:110
+#: sendjob.cpp:108
 #, kde-format
 msgid "Invalid D-Bus reply from resource %1."
 msgstr ""

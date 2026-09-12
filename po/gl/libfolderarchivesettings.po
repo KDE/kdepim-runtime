@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2024-07-30 17:23+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
@@ -36,19 +36,19 @@ msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Year"
 msgstr "Ano"
 
-#: folderarchivesettingpage.cpp:27
+#: folderarchivesettingpage.cpp:28
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable"
 msgstr "Activar"
 
-#: folderarchivesettingpage.cpp:36
+#: folderarchivesettingpage.cpp:37
 #, kde-format
 msgctxt "@label:chooser for the folder that messages will be archived under"
 msgid "Archive into:"
 msgstr "Arquivar en:"
 
-#: folderarchivesettingpage.cpp:38
+#: folderarchivesettingpage.cpp:39
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Archive folder name:"

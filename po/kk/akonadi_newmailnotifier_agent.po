@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-01 00:46+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2013-09-30 03:01+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -40,14 +40,14 @@ msgid "[Show Mail]"
 msgstr ""
 
 #: newmailnotificationhistorywidget.cpp:24
-#: newmailnotifiersettingswidget.cpp:113
+#: newmailnotifiersettingswidget.cpp:110
 #, fuzzy, kde-format
 #| msgid "Enabled"
 msgctxt "@option:check"
 msgid "Enabled"
 msgstr "Рұқсат етілген"
 
-#: newmailnotifieragent.cpp:367
+#: newmailnotifieragent.cpp:368
 #, fuzzy, kde-format
 #| msgid "One new email in %2 from \"%3\""
 #| msgid_plural "%1 new emails in %2 from \"%3\""
@@ -58,7 +58,7 @@ msgid "One new email in %2 from \"%3\""
 msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "%2 дегенде %3 дегеннен %1 жаңа хат"
 
-#: newmailnotifieragent.cpp:404
+#: newmailnotifieragent.cpp:405
 #, kde-format
 msgid "New mail arrived"
 msgstr "Жаңа пошта келді"
@@ -102,7 +102,7 @@ msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "Б&үкілінен айну"
 
-#: newmailnotifiersettingswidget.cpp:33
+#: newmailnotifiersettingswidget.cpp:30
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
@@ -111,106 +111,106 @@ msgstr ""
 "<qt><p>Бұнда хабарламаны анықтауға болады. Қолдануға болатыны:</p><ul><li>%s "
 "- тақырыбы</li><li>%f - кімден</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:54
+#: newmailnotifiersettingswidget.cpp:51
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "Қай өрістерді қөрсету керек:"
 
-#: newmailnotifiersettingswidget.cpp:59
+#: newmailnotifiersettingswidget.cpp:56
 #, fuzzy, kde-format
 #| msgid "Show Photo"
 msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "Фотосын көрсету"
 
-#: newmailnotifiersettingswidget.cpp:63
+#: newmailnotifiersettingswidget.cpp:60
 #, fuzzy, kde-format
 #| msgid "Show From"
 msgctxt "@option:check"
 msgid "Show From"
 msgstr "Кімденді көрсету"
 
-#: newmailnotifiersettingswidget.cpp:67
+#: newmailnotifiersettingswidget.cpp:64
 #, fuzzy, kde-format
 #| msgid "Show Subject"
 msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "Тақырыбын көрсету"
 
-#: newmailnotifiersettingswidget.cpp:71
+#: newmailnotifiersettingswidget.cpp:68
 #, fuzzy, kde-format
 #| msgid "Show Folders"
 msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "Қапшықтарын көрсету"
 
-#: newmailnotifiersettingswidget.cpp:75
+#: newmailnotifiersettingswidget.cpp:72
 #, fuzzy, kde-format
 #| msgid "Do not notify when email was sent by me"
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "Эл.пошта өзім жіберіген болса - құлақтандырмау"
 
-#: newmailnotifiersettingswidget.cpp:79
+#: newmailnotifiersettingswidget.cpp:76
 #, kde-format
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:83
+#: newmailnotifiersettingswidget.cpp:80
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:91
+#: newmailnotifiersettingswidget.cpp:88
 #, fuzzy, kde-format
 #| msgid "&Select All"
 msgctxt "@option:check"
 msgid "Reply Mail"
 msgstr "&Бүкілін таңдау"
 
-#: newmailnotifiersettingswidget.cpp:99 specialnotifierjob.cpp:163
+#: newmailnotifiersettingswidget.cpp:96 specialnotifierjob.cpp:163
 #, kde-format
 msgid "Reply to Author"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:99 specialnotifierjob.cpp:166
+#: newmailnotifiersettingswidget.cpp:96 specialnotifierjob.cpp:166
 #, fuzzy, kde-format
 #| msgid "&Select All"
 msgid "Reply to All"
 msgstr "&Бүкілін таңдау"
 
-#: newmailnotifiersettingswidget.cpp:108
+#: newmailnotifiersettingswidget.cpp:105
 #, kde-format
 msgid "Display"
 msgstr "Көрсету"
 
-#: newmailnotifiersettingswidget.cpp:117
+#: newmailnotifiersettingswidget.cpp:114
 #, fuzzy, kde-format
 #| msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Бұл қалай істейді?</a>"
 
-#: newmailnotifiersettingswidget.cpp:126
+#: newmailnotifiersettingswidget.cpp:123
 #, fuzzy, kde-format
 #| msgid "Message:"
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "Хаты:"
 
-#: newmailnotifiersettingswidget.cpp:138
+#: newmailnotifiersettingswidget.cpp:135
 #, kde-format
 msgid "Text to Speak"
 msgstr "Дауыстайтын мәтін"
 
-#: newmailnotifiersettingswidget.cpp:144
+#: newmailnotifiersettingswidget.cpp:141
 #, kde-format
 msgid "Notify"
 msgstr "Кұлақтандыру"
 
-#: newmailnotifiersettingswidget.cpp:147
+#: newmailnotifiersettingswidget.cpp:144
 #, kde-format
 msgid "Folders"
 msgstr "Қапшықтар"

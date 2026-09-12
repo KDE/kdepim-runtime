@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-01 00:46+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2012-06-11 16:03+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -18,18 +18,18 @@ msgstr ""
 "X-Generator: WordForge 0.8 RC1\n"
 "X-Language: km-KH\n"
 
-#: addcollectiontask.cpp:33
+#: addcollectiontask.cpp:31
 #, kde-format
 msgid "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'."
 msgstr "មិនអាច​បន្ថែម​ថត IMAP '%1' សម្រាប់​ថត​មេ​ដែល​មិនទាន់​មាន​បាន​ទេ '%2' ។"
 
-#: addcollectiontask.cpp:67
+#: addcollectiontask.cpp:65
 #, fuzzy, kde-format
 #| msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgid "Failed to create the folder '%1' on the IMAP server. "
 msgstr "បាន​បរាជ័យ​ក្នុងការ​សរសេរ​ ACLs មួយ​ចំនួន​សម្រាប់ '%1' នៅ​លើ​ម៉ាស៊ីន​បម្រើ IMAP ។ %2"
 
-#: addcollectiontask.cpp:87 movecollectiontask.cpp:119
+#: addcollectiontask.cpp:85 movecollectiontask.cpp:119
 #, kde-format
 msgid ""
 "Failed to subscribe to the folder '%1' on the IMAP server. It will disappear "
@@ -38,7 +38,7 @@ msgstr ""
 "បាន​បរាជ័យ​ក្នុង​ការ​ជាវ​​ថត '%1' នៅ​លើ​ម៉ាស៊ីន​បម្រើ IMAP ។ វា​នឹង​មិន​បង្ហាញ​នៅ​ពេល​ធ្វើ​សមកាលកម្ម​ពេល​"
 "ក្រោយ​ទេ ។ ប្រើ​ប្រអប់​ជាវ​ ដើម្បី​ជំនះ​បញ្ហា​នេះ"
 
-#: addcollectiontask.cpp:128 changecollectiontask.cpp:276
+#: addcollectiontask.cpp:126 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
 msgstr "បាន​បរាជ័យ​ក្នុង​ការ​សរសេរ​ចំណារ​ពន្យល់​មួយ​ចំនួន​សម្រាប់ '%1' នៅ​លើ​ម៉ាស៊ីន​បម្រើ IMAP ។ %2"
@@ -280,88 +280,88 @@ msgstr ""
 msgid "The activities of the agent"
 msgstr ""
 
-#: imapresourcebase.cpp:216
+#: imapresourcebase.cpp:215
 #, kde-format
 msgid "No server configured yet."
 msgstr "គ្មាន​ម៉ាស៊ីន​បម្រើ​ត្រូវ​បាន​កំណត់​រចនាសម្ព័ន្ធ​នៅ​ឡើយ​ទេ ។"
 
-#: imapresourcebase.cpp:236
+#: imapresourcebase.cpp:235
 #, kde-format
 msgid "Connection established."
 msgstr "បាន​បង្កើត​ការ​តភ្ជាប់ ។"
 
-#: imapresourcebase.cpp:253
+#: imapresourcebase.cpp:252
 #, kde-format
 msgid "Server is not available."
 msgstr ""
 
-#: imapresourcebase.cpp:304
+#: imapresourcebase.cpp:303
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:311
+#: imapresourcebase.cpp:310
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:318
+#: imapresourcebase.cpp:317
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr ""
 
-#: imapresourcebase.cpp:332
+#: imapresourcebase.cpp:331
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr ""
 
-#: imapresourcebase.cpp:348
+#: imapresourcebase.cpp:347
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr ""
 
-#: imapresourcebase.cpp:357
+#: imapresourcebase.cpp:356
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr ""
 
-#: imapresourcebase.cpp:364
+#: imapresourcebase.cpp:363
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:382
+#: imapresourcebase.cpp:381
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:388
+#: imapresourcebase.cpp:387
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:401
+#: imapresourcebase.cpp:400
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr ""
 
-#: imapresourcebase.cpp:408
+#: imapresourcebase.cpp:407
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr ""
 
-#: imapresourcebase.cpp:438
+#: imapresourcebase.cpp:437
 #, fuzzy, kde-format
 #| msgid "Search:"
 msgctxt "@info:status"
@@ -434,7 +434,7 @@ msgstr "បរាជ័យ​ក្នុង​ការ​លុប​ថត �
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "បរាជ័យ​ក្នុង​ការ​លុប​ថត ស្ដារ​បញ្ជី​ថត​ឡើងវិញ ។"
 
-#: resourcestate.cpp:264
+#: resourcestate.cpp:263
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr ""
@@ -459,7 +459,7 @@ msgstr "បាត់បង់​​ការ​តភ្ជាប់"
 msgid "killed"
 msgstr ""
 
-#: retrievecollectionmetadatatask.cpp:178
+#: retrievecollectionmetadatatask.cpp:177
 #, kde-format
 msgid ""
 "<p>Your access rights to folder <b>%1</b> have been restricted, it will no "
@@ -468,7 +468,7 @@ msgstr ""
 "<p>សិទ្ធិ​ចូលដំណើរការ​របស់​អ្នក​ទៅ​កាន់​ថត <b>%1</b> ត្រូវ​បានដាក់​កម្រិត វា​នឹង​លែង​​អាច​បន្ថែម​សារ​ទៅ​ថត​"
 "នេះ​បាន​ទៀត​ហើយ ។</p>"
 
-#: retrievecollectionmetadatatask.cpp:181
+#: retrievecollectionmetadatatask.cpp:180
 #, kde-format
 msgid "Access rights revoked"
 msgstr "បាន​ដកហូត​សិទ្ធិ​ចូល​ដំណើរការ"
@@ -504,7 +504,7 @@ msgstr "មិន​ទទួល​បាន​សារ​ទេ ចម្ល�
 msgid "Invalid search"
 msgstr ""
 
-#: serverinfodialog.cpp:37
+#: serverinfodialog.cpp:36
 #, fuzzy, kde-format
 #| msgid "Server Info"
 msgctxt ""
@@ -512,13 +512,13 @@ msgctxt ""
 msgid "Server Info"
 msgstr "ព័ត៌មាន​អំពី​​ម៉ាស៊ីន​បម្រើ"
 
-#: serverinfodialog.cpp:53
+#: serverinfodialog.cpp:52
 #, kde-format
 msgctxt "@info:status"
 msgid "Error while getting server capabilities: %1"
 msgstr ""
 
-#: serverinfodialog.cpp:109
+#: serverinfodialog.cpp:108
 #, kde-format
 msgid "Resource not synchronized yet."
 msgstr ""

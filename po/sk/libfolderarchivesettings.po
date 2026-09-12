@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libfolderarchivesettings\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2014-02-13 18:20+0100\n"
 "Last-Translator: Roman Paholík <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
@@ -33,19 +33,19 @@ msgctxt "@item:inlistbox for option \"Archive folder name\""
 msgid "Year"
 msgstr "Rok"
 
-#: folderarchivesettingpage.cpp:27
+#: folderarchivesettingpage.cpp:28
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable"
 msgstr "Povoliť"
 
-#: folderarchivesettingpage.cpp:36
+#: folderarchivesettingpage.cpp:37
 #, kde-format
 msgctxt "@label:chooser for the folder that messages will be archived under"
 msgid "Archive into:"
 msgstr "Archív do:"
 
-#: folderarchivesettingpage.cpp:38
+#: folderarchivesettingpage.cpp:39
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Archive folder name:"

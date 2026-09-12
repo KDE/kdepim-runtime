@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-21 00:45+0000\n"
+"POT-Creation-Date: 2026-09-12 00:45+0000\n"
 "PO-Revision-Date: 2021-11-05 16:38+0100\n"
 "Last-Translator: \n"
 "Language-Team: Upper Sorbian <kde-i18n-doc@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
 "%100==4 ? 2 : 3;\n"
 
-#: maildispatcheragent.cpp:80 maildispatcheragent.cpp:225
+#: maildispatcheragent.cpp:79 maildispatcheragent.cpp:224
 #, fuzzy, kde-format
 #| msgid "Sending messages (1 item in queue)..."
 #| msgid_plural "Sending messages (%1 items in queue)..."
@@ -29,56 +29,56 @@ msgstr[1] "Sćelu powěsće (%1 powěsći čakatej)"
 msgstr[2] "Sćelu powěsće (%1 powěsće čakaja)"
 msgstr[3] "Sćelu powěsće (%1 powěsćow čaka)"
 
-#: maildispatcheragent.cpp:90
+#: maildispatcheragent.cpp:89
 #, kde-format
 msgid "Sending canceled."
 msgstr "Pósłanje přetorhnjene."
 
-#: maildispatcheragent.cpp:97
+#: maildispatcheragent.cpp:96
 #, kde-format
 msgid "Finished sending messages."
 msgstr "Pósłanje powěsćow zakónčene."
 
-#: maildispatcheragent.cpp:103
+#: maildispatcheragent.cpp:102
 #, kde-format
 msgctxt "Notification title when email was sent"
 msgid "E-Mail Successfully Sent"
 msgstr "Mejlka wuspěšnje wotpósłana"
 
-#: maildispatcheragent.cpp:104
+#: maildispatcheragent.cpp:103
 #, kde-format
 msgctxt "Notification when the email was sent"
 msgid "Your E-Mail has been sent successfully."
 msgstr "Waša mejlka je so wuspěšnje wotpósłała."
 
-#: maildispatcheragent.cpp:110
+#: maildispatcheragent.cpp:109
 #, kde-format
 msgid "No items in queue."
 msgstr "Ničo na pósłanje nječaka."
 
-#: maildispatcheragent.cpp:155
+#: maildispatcheragent.cpp:154
 #, kde-format
 msgid "Online, sending messages in queue."
 msgstr "Online, sćelu čakace powěsće."
 
-#: maildispatcheragent.cpp:159
+#: maildispatcheragent.cpp:158
 #, kde-format
 msgid "Offline, message sending suspended."
 msgstr "Offline, pósłanje powěsćow wotstorčene."
 
-#: maildispatcheragent.cpp:185
+#: maildispatcheragent.cpp:184
 #, kde-format
 msgctxt "Message with given subject is being sent."
 msgid "Sending: %1"
 msgstr "Sćelu: %1"
 
-#: maildispatcheragent.cpp:250
+#: maildispatcheragent.cpp:249
 #, kde-format
 msgctxt "Notification title when email sending failed"
 msgid "E-Mail Sending Failed"
 msgstr "Mejlka njeje so hodźała pósłać"
 
-#: maildispatcheragent.cpp:283
+#: maildispatcheragent.cpp:282
 #, kde-format
 msgid "Ready to dispatch messages."
 msgstr "Hotowy, zo bych powěsće pósłał."
@@ -95,32 +95,32 @@ msgstr "Wotchadna póšta id"
 msgid "Sent Mail collection id"
 msgstr "Pósłana póšta id"
 
-#: outboxqueue.cpp:265
+#: outboxqueue.cpp:263
 #, kde-format
 msgid "Could not access the outbox folder (%1)."
 msgstr "Nimam přistup na wotchadnu póštu (%1)."
 
-#: sendjob.cpp:49 sendjob.cpp:50
+#: sendjob.cpp:47 sendjob.cpp:48
 #, kde-format
 msgid "Message sending aborted."
 msgstr "Pósłanje powěsće přetorhnjene."
 
-#: sendjob.cpp:59
+#: sendjob.cpp:57
 #, kde-format
 msgid "Could not initiate message transport. Possibly invalid transport."
 msgstr "Njemóžach transport powěsće zahajić. Snano wopačna metoda."
 
-#: sendjob.cpp:65
+#: sendjob.cpp:63
 #, kde-format
 msgid "Could not send message. Invalid transport."
 msgstr "Njemóžach powěsć pósłać. Wopačna metoda."
 
-#: sendjob.cpp:97
+#: sendjob.cpp:95
 #, kde-format
 msgid "Failed to get D-Bus interface of resource %1."
 msgstr ""
 
-#: sendjob.cpp:110
+#: sendjob.cpp:108
 #, kde-format
 msgid "Invalid D-Bus reply from resource %1."
 msgstr ""
