@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-24 00:46+0000\n"
-"PO-Revision-Date: 2026-08-30 21:14+0200\n"
+"PO-Revision-Date: 2026-09-13 19:14+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -192,14 +192,16 @@ msgstr ""
 #, kde-format
 msgid "Persisted top-level mailFolders @odata.deltaLink (sync state)."
 msgstr ""
+"Cartella di posta persistente di livello superiore @odata.deltaLink (stato "
+"di sincronizzazione)."
 
 #. i18n: ectx: label, entry (PollInterval), group (General)
 #: graphresource.kcfg:23
 #, kde-format
 msgid "Delta poll interval in minutes (no push on Graph for desktop)."
 msgstr ""
-"Intervallo di verifica in minuti (la funzionalità di recupero automatico, "
-"push, non è disponibile sul desktop)."
+"Intervallo di verifica del delta in minuti (la funzionalità di recupero "
+"automatico, push, non è disponibile sul desktop)."
 
 #. i18n: ectx: label, entry (ImmutableIdsMigrated), group (General)
 #: graphresource.kcfg:27
