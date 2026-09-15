@@ -5,8 +5,13 @@
 */
 
 #include "pop3resource.h"
-#include "jobs.h"
-#include "pop3protocol.h"
+#include <KPOP/DeleteJob>
+#include <KPOP/FetchJob>
+#include <KPOP/ListJob>
+#include <KPOP/LoginJob>
+#include <KPOP/Pop3Protocol>
+#include <KPOP/QuitJob>
+#include <KPOP/UidListJob>
 
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionFetchJob>
@@ -263,29 +268,29 @@ void POP3Resource::doStateStep()
     case Connect:
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Connect ========================";
         Q_ASSERT(!mPopSession);
-        mPopSession = new POPSession(mSettings, mPassword);
+        mPopSession = new KPOP::Session(mSettings.toPop3Settings(), mPassword);
         advanceState(Login);
         break;
     case Login: {
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Login ==========================";
 
-        auto loginJob = new LoginJob(mPopSession);
-        connect(loginJob, &LoginJob::result, this, &POP3Resource::loginJobResult);
+        auto loginJob = new KPOP::LoginJob(mPopSession);
+        connect(loginJob, &KPOP::LoginJob::result, this, &POP3Resource::loginJobResult);
         loginJob->start();
         break;
     }
     case List: {
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state List ===========================";
         Q_EMIT status(Running, i18n("Fetching mail listing."));
-        auto listJob = new ListJob(mPopSession);
-        connect(listJob, &ListJob::result, this, &POP3Resource::listJobResult);
+        auto listJob = new KPOP::ListJob(mPopSession);
+        connect(listJob, &KPOP::ListJob::result, this, &POP3Resource::listJobResult);
         listJob->start();
         break;
     }
     case UIDList: {
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state UIDList ========================";
-        auto uidListJob = new UIDListJob(mPopSession);
-        connect(uidListJob, &UIDListJob::result, this, &POP3Resource::uidListJobResult);
+        auto uidListJob = new KPOP::UIDListJob(mPopSession);
+        connect(uidListJob, &KPOP::UIDListJob::result, this, &POP3Resource::uidListJobResult);
         uidListJob->start();
         break;
     }
@@ -318,11 +323,11 @@ void POP3Resource::doStateStep()
         if (mIdsToDownload.empty()) {
             advanceState(CheckRemovingMessage);
         } else {
-            auto fetchJob = new FetchJob(mPopSession);
+            auto fetchJob = new KPOP::FetchJob(mPopSession);
             fetchJob->setFetchIds(idsToDownload, sizesOfMessagesToDownload);
-            connect(fetchJob, &FetchJob::result, this, &POP3Resource::fetchJobResult);
-            connect(fetchJob, &FetchJob::messageFinished, this, &POP3Resource::messageFinished);
-            connect(fetchJob, &FetchJob::processedAmountChanged, this, &POP3Resource::messageDownloadProgress);
+            connect(fetchJob, &KPOP::FetchJob::result, this, &POP3Resource::fetchJobResult);
+            connect(fetchJob, &KPOP::FetchJob::messageFinished, this, &POP3Resource::messageFinished);
+            connect(fetchJob, &KPOP::FetchJob::processedAmountChanged, this, &POP3Resource::messageDownloadProgress);
 
             fetchJob->start();
         }
@@ -341,8 +346,8 @@ void POP3Resource::doStateStep()
         break;
     case Quit: {
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Quit ===========================";
-        auto quitJob = new QuitJob(mPopSession);
-        connect(quitJob, &QuitJob::result, this, &POP3Resource::quitJobResult);
+        auto quitJob = new KPOP::QuitJob(mPopSession);
+        connect(quitJob, &KPOP::QuitJob::result, this, &POP3Resource::quitJobResult);
         quitJob->start();
         break;
     }
@@ -378,10 +383,10 @@ void POP3Resource::checkRemovingMessageFromServer()
     if (!idToDeleteMessage.isEmpty()) {
         mIdsWaitingToDelete << idToDeleteMessage;
         if (!mDeleteJob) {
-            mDeleteJob = new DeleteJob(mPopSession);
+            mDeleteJob = new KPOP::DeleteJob(mPopSession);
             mDeleteJob->setDeleteIds(mIdsWaitingToDelete);
             mIdsWaitingToDelete.clear();
-            connect(mDeleteJob, &DeleteJob::result, this, &POP3Resource::deleteJobResult);
+            connect(mDeleteJob, &KPOP::DeleteJob::result, this, &POP3Resource::deleteJobResult);
             mDeleteJob->start();
         }
     } else {
@@ -469,7 +474,7 @@ void POP3Resource::listJobResult(KJob *job)
     if (job->error()) {
         cancelSync(i18n("Error while getting the list of messages on the server.") + u'\n' + job->errorString());
     } else {
-        auto listJob = qobject_cast<ListJob *>(job);
+        auto listJob = qobject_cast<KPOP::ListJob *>(job);
         Q_ASSERT(listJob);
         mIdsToSizeMap = listJob->idList();
         mIdsToSaveValid = false;
@@ -483,7 +488,7 @@ void POP3Resource::uidListJobResult(KJob *job)
     if (job->error()) {
         cancelSync(i18n("Error while getting list of unique mail identifiers from the server.") + u'\n' + job->errorString());
     } else {
-        auto listJob = qobject_cast<UIDListJob *>(job);
+        auto listJob = qobject_cast<KPOP::UIDListJob *>(job);
         Q_ASSERT(listJob);
         mIdsToUidsMap = listJob->uidList();
         mUidsToIdsMap = listJob->idList();
@@ -616,10 +621,10 @@ void POP3Resource::itemCreateJobResult(KJob *job)
     if (!idToDeleteMessage.isEmpty()) {
         mIdsWaitingToDelete << idToDeleteMessage;
         if (!mDeleteJob) {
-            mDeleteJob = new DeleteJob(mPopSession);
+            mDeleteJob = new KPOP::DeleteJob(mPopSession);
             mDeleteJob->setDeleteIds(mIdsWaitingToDelete);
             mIdsWaitingToDelete.clear();
-            connect(mDeleteJob, &DeleteJob::result, this, &POP3Resource::deleteJobResult);
+            connect(mDeleteJob, &KPOP::DeleteJob::result, this, &POP3Resource::deleteJobResult);
             mDeleteJob->start();
         }
     }
@@ -753,7 +758,7 @@ void POP3Resource::deleteJobResult(KJob *job)
         return;
     }
 
-    auto finishedDeleteJob = qobject_cast<DeleteJob *>(job);
+    auto finishedDeleteJob = qobject_cast<KPOP::DeleteJob *>(job);
     Q_ASSERT(finishedDeleteJob);
     Q_ASSERT(finishedDeleteJob == mDeleteJob);
     mDeletedIDs = finishedDeleteJob->deletedIDs();
@@ -783,10 +788,10 @@ void POP3Resource::deleteJobResult(KJob *job)
 
     mDeleteJob = nullptr;
     if (!mIdsWaitingToDelete.isEmpty()) {
-        mDeleteJob = new DeleteJob(mPopSession);
+        mDeleteJob = new KPOP::DeleteJob(mPopSession);
         mDeleteJob->setDeleteIds(mIdsWaitingToDelete);
         mIdsWaitingToDelete.clear();
-        connect(mDeleteJob, &DeleteJob::result, this, &POP3Resource::deleteJobResult);
+        connect(mDeleteJob, &KPOP::DeleteJob::result, this, &POP3Resource::deleteJobResult);
         mDeleteJob->start();
     }
 
