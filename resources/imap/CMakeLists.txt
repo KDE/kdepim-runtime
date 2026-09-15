@@ -171,7 +171,7 @@ if(APPLE)
         akonadi_imap_resource
         PROPERTIES
             MACOSX_BUNDLE_INFO_PLIST
-                ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template
+                ${CMAKE_SOURCE_DIR}/resources/Info.plist.template
             MACOSX_BUNDLE_GUI_IDENTIFIER
                 "org.kde.Akonadi.Imap"
             MACOSX_BUNDLE_BUNDLE_NAME

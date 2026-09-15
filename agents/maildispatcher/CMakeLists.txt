@@ -45,7 +45,7 @@ if(APPLE)
         akonadi_maildispatcher_agent
         PROPERTIES
             MACOSX_BUNDLE_INFO_PLIST
-                ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template
+                ${CMAKE_SOURCE_DIR}/agents/Info.plist.template
     )
     set_target_properties(
         akonadi_maildispatcher_agent
