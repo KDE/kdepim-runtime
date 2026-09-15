@@ -31,6 +31,20 @@ void Settings::setResourceId(const QString &resourceIdentifier)
     mResourceId = resourceIdentifier;
 }
 
+Pop3Settings Settings::toPop3Settings() const
+{
+    Pop3Settings result;
+    result.setLogin(this->login());
+    result.setHost(this->host());
+    result.setPort(this->port());
+    result.setAuthenticationMethod(this->authenticationMethod());
+    result.setUseSSL(this->useSSL());
+    result.setUseTLS(this->useTLS());
+    result.setPipelining(this->pipelining());
+    result.setUseProxy(this->useProxy());
+    return result;
+}
+
 void Settings::setPassword(const QString &password)
 {
     auto writeJob = new WritePasswordJob(QStringLiteral("pop3"));

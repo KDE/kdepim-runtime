@@ -12,6 +12,8 @@ class KJob;
 #include <QSet>
 
 #include "settings.h"
+#include <KPOP/DeleteJob>
+#include <KPOP/Session>
 
 class DeleteJob;
 
@@ -19,7 +21,6 @@ namespace Akonadi
 {
 class ItemCreateJob;
 }
-class POPSession;
 class QTimer;
 namespace QKeychain
 {
@@ -125,7 +126,7 @@ private:
 
     State mState;
     Akonadi::Collection mTargetCollection;
-    POPSession *mPopSession = nullptr;
+    KPOP::Session *mPopSession = nullptr;
     bool mAskAgain = false;
     QTimer *mIntervalTimer = nullptr;
     bool mIntervalCheckInProgress = false;
@@ -177,7 +178,7 @@ private:
     mutable bool mIdsToSaveValid;
 
     // Current deletion job in process
-    DeleteJob *mDeleteJob = nullptr;
+    KPOP::DeleteJob *mDeleteJob = nullptr;
 
     Settings mSettings;
 };
