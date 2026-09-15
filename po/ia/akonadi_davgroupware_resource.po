@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-05 00:46+0000\n"
-"PO-Revision-Date: 2026-08-31 17:04+0200\n"
+"PO-Revision-Date: 2026-09-14 18:11+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -208,10 +208,9 @@ msgid "Unable to move item: %1"
 msgstr "Incaopace a mover elemento: %1"
 
 #: davgroupwareresource.cpp:969
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve item: %1"
+#, kde-format
 msgid "Unable to create item during move: %1"
-msgstr "Incapace de recuperar elemento:%1"
+msgstr "Incapace de recuperar elemento durante le movimento:%1"
 
 #: davgroupwareresource.cpp:1139
 #, kde-format
