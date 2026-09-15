@@ -21,11 +21,7 @@ qt_add_dbus_adaptor(pop3_common_SRCS
 
 set(pop3resource_SRCS
     pop3resource.cpp
-    pop3protocol.cpp
-    jobs.cpp
     pop3resource.h
-    pop3protocol.h
-    jobs.h
     ${pop3_common_SRCS}
 )
 
@@ -52,6 +48,7 @@ endif()
 target_link_libraries(
     akonadi_pop3_resource
     KPim6::AkonadiCore
+    KPim6::POP
     KPim6::AkonadiMime
     KF6::Mime
     KPim6::MailTransport
@@ -103,6 +100,7 @@ ki18n_wrap_ui(pop3config popsettings.ui)
 target_link_libraries(
     pop3config
     KPim6::AkonadiCore
+    KPim6::POP
     KF6::Completion
     KF6::WidgetsAddons
     KF6::I18n
