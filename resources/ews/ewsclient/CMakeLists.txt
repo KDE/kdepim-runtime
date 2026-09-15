@@ -164,6 +164,9 @@ target_link_libraries(
     KF6::CalendarCore
     qt6keychain
 )
+if(UNIX)
+    target_link_libraries(ewsclient Qt::DBus)
+endif()
 
 if(TARGET Qt::NetworkAuth)
     target_link_libraries(
