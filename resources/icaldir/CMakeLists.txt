@@ -31,7 +31,7 @@ endif()
 if(APPLE)
     embed_info_plist(
         akonadi_icaldir_resource
-        "org.kde.Akonadi.IcalDir",
+        "org.kde.Akonadi.IcalDir"
         "KDE Akonadi ICalDir Resource"
     )
 endif()

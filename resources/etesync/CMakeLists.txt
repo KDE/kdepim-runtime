@@ -57,7 +57,11 @@ if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     )
 endif()
 if(APPLE)
-    emabed_info_plist(akonadi_etesync_resource)
+    emabed_info_plist(
+        akonadi_etesync_resource
+        "org.kde.Akonadi.EteSync"
+        "KDE Akonadi EteSync Resource"
+    )
 endif()
 target_link_libraries(
     akonadi_etesync_resource
