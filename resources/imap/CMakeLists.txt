@@ -1,3 +1,5 @@
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
+
 set(WITH_GMAIL_XOAUTH2 TRUE)
 
 configure_file(config-imap.h.in ${CMAKE_CURRENT_BINARY_DIR}/config-imap.h)
