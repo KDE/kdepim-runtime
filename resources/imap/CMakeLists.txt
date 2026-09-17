@@ -1,5 +1,3 @@
-add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
-
 set(WITH_GMAIL_XOAUTH2 TRUE)
 
 configure_file(config-imap.h.in ${CMAKE_CURRENT_BINARY_DIR}/config-imap.h)
@@ -167,15 +165,10 @@ if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 
 if(APPLE)
-    set_target_properties(
-        akonadi_imap_resource
-        PROPERTIES
-            MACOSX_BUNDLE_INFO_PLIST
-                ${CMAKE_SOURCE_DIR}/resources/Info.plist.template
-            MACOSX_BUNDLE_GUI_IDENTIFIER
-                "org.kde.Akonadi.Imap"
-            MACOSX_BUNDLE_BUNDLE_NAME
-                "KDE Akonadi IMAP Resource"
+    embed_info_plist(
+	akonadi_imap_resource
+	"org.kde.Akonadi.Imap"
+	"KDE Akonadi IMAP Resource"
     )
 endif()
 

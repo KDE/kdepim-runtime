@@ -29,23 +29,10 @@ if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 
 if(APPLE)
-    set_target_properties(
+    embed_info_plist(
         akonadi_icaldir_resource
-        PROPERTIES
-            MACOSX_BUNDLE_INFO_PLIST
-                ${CMAKE_SOURCE_DIR}/resources/Info.plist.template
-    )
-    set_target_properties(
-        akonadi_icaldir_resource
-        PROPERTIES
-            MACOSX_BUNDLE_GUI_IDENTIFIER
-                "org.kde.Akonadi.ICalDirectory"
-    )
-    set_target_properties(
-        akonadi_icaldir_resource
-        PROPERTIES
-            MACOSX_BUNDLE_BUNDLE_NAME
-                "KDE Akonadi ICalDirectory Resource"
+        "org.kde.Akonadi.IcalDir",
+        "KDE Akonadi ICalDir Resource"
     )
 endif()
 

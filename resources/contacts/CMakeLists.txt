@@ -35,6 +35,15 @@ if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
                 ON
     )
 endif()
+
+if(APPLE)
+    embed_info_plist(
+	akonadi_contacts_resource
+	"org.kde.Akonadi.Contacts"
+	"KDE Akonadi Contacts Resource"
+    )
+endif()
+
 target_link_libraries(
     akonadi_contacts_resource
     KPim6::AkonadiCore

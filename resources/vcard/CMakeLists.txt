@@ -27,23 +27,10 @@ qt_add_dbus_adaptor(vcardresource_SRCS
 add_executable(akonadi_vcard_resource ${vcardresource_SRCS})
 
 if(APPLE)
-    set_target_properties(
-        akonadi_vcard_resource
-        PROPERTIES
-            MACOSX_BUNDLE_INFO_PLIST
-                ${CMAKE_SOURCE_DIR}/resources/Info.plist.template
-    )
-    set_target_properties(
-        akonadi_vcard_resource
-        PROPERTIES
-            MACOSX_BUNDLE_GUI_IDENTIFIER
-                "org.kde.Akonadi.VCard"
-    )
-    set_target_properties(
-        akonadi_vcard_resource
-        PROPERTIES
-            MACOSX_BUNDLE_BUNDLE_NAME
-                "KDE Akonadi VCard Resource"
+    embed_info_plist(
+	akonadi_vcard_resource
+	"org.kde.Akonadi.VCard"
+	"KDE Akonadi VCard Resource"
     )
 endif()
 

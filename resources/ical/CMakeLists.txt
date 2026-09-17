@@ -33,23 +33,10 @@ target_sources(
 )
 
 if(APPLE)
-    set_target_properties(
-        akonadi_ical_resource
-        PROPERTIES
-            MACOSX_BUNDLE_INFO_PLIST
-                ${CMAKE_SOURCE_DIR}/resources/Info.plist.template
-    )
-    set_target_properties(
-        akonadi_ical_resource
-        PROPERTIES
-            MACOSX_BUNDLE_GUI_IDENTIFIER
-                "org.kde.Akonadi.ICal"
-    )
-    set_target_properties(
-        akonadi_ical_resource
-        PROPERTIES
-            MACOSX_BUNDLE_BUNDLE_NAME
-                "KDE Akonadi iCal Resource"
+    embed_info_plist(
+	akonadi_ical_resource
+	"org.kde.Akonadi.ICal"
+	"KDE Akonadi ICal Resource"
     )
 endif()
 

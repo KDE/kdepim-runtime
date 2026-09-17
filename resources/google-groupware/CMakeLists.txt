@@ -81,23 +81,10 @@ if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 
 if(APPLE)
-    set_target_properties(
-        akonadi_google_resource
-        PROPERTIES
-            MACOSX_BUNDLE_INFO_PLIST
-                ${CMAKE_SOURCE_DIR}/resources/Info.plist.template
-    )
-    set_target_properties(
-        akonadi_google_resource
-        PROPERTIES
-            MACOSX_BUNDLE_GUI_IDENTIFIER
-                "org.kde.Akonadi.google"
-    )
-    set_target_properties(
-        akonadi_google_resource
-        PROPERTIES
-            MACOSX_BUNDLE_BUNDLE_NAME
-                "KDE Akonadi Google Resource"
+    embed_info_plist(
+	akonadi_google_resource
+	"org.kde.Akonadi.Google"
+	"KDE Akonadi Google Resource"
     )
 endif()
 

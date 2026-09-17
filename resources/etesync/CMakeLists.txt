@@ -56,6 +56,9 @@ if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
                 ON
     )
 endif()
+if(APPLE)
+    emabed_info_plist(akonadi_etesync_resource)
+endif()
 target_link_libraries(
     akonadi_etesync_resource
     ${ETEBASE_LIBRARIES}

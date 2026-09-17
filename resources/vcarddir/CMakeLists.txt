@@ -28,23 +28,10 @@ install(FILES vcarddirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/a
 add_executable(akonadi_vcarddir_resource ${vcarddirresource_SRCS})
 
 if(APPLE)
-    set_target_properties(
-        akonadi_vcarddir_resource
-        PROPERTIES
-            MACOSX_BUNDLE_INFO_PLIST
-                ${CMAKE_SOURCE_DIR}/resources/Info.plist.template
-    )
-    set_target_properties(
-        akonadi_vcarddir_resource
-        PROPERTIES
-            MACOSX_BUNDLE_GUI_IDENTIFIER
-                "org.kde.Akonadi.VCardDirectory"
-    )
-    set_target_properties(
-        akonadi_vcarddir_resource
-        PROPERTIES
-            MACOSX_BUNDLE_BUNDLE_NAME
-                "KDE Akonadi VCardDirectory Resource"
+    embed_info_plist(
+	akonadi_vcarddir_resource
+	"org.kde.Akonadi.VCardDir"
+	"KDE Akonadi VCardDir Resource"
     )
 endif()
 

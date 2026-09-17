@@ -107,6 +107,9 @@ include(ECMQtDeclareLoggingCategory)
 include(ECMDeprecationSettings)
 include(ECMFeatureSummary)
 include(GenerateExportHeader)
+if(APPLE)
+    include(${CMAKE_SOURCE_DIR}/cmake/MacOSSupport.cmake)
+endif()
 
 set(QT_REQUIRED_VERSION "6.9.0")
 

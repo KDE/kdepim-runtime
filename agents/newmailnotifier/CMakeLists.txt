@@ -117,23 +117,10 @@ if(Qt6TextToSpeech_FOUND)
 endif()
 
 if(APPLE)
-    set_target_properties(
-        akonadi_newmailnotifier_agent
-        PROPERTIES
-            MACOSX_BUNDLE_INFO_PLIST
-                ${CMAKE_SOURCE_DIR}/agents/Info.plist.template
-    )
-    set_target_properties(
-        akonadi_newmailnotifier_agent
-        PROPERTIES
-            MACOSX_BUNDLE_GUI_IDENTIFIER
-                "org.kde.Akonadi.newmailnotifier"
-    )
-    set_target_properties(
-        akonadi_newmailnotifier_agent
-        PROPERTIES
-            MACOSX_BUNDLE_BUNDLE_NAME
-                "KDE New Mail Notifier"
+    embed_info_plist(
+	akonadi_newmailnotifier_agent
+	"org.kde.Akonadi.NewMailNotifier"
+	"KDE Akonadi New Mail Notifier Agent"
     )
 endif()
 
