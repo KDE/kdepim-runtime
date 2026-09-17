@@ -82,5 +82,5 @@ QByteArray DeletedItemsAttribute::type() const
 
 bool DeletedItemsAttribute::operator==(const DeletedItemsAttribute &other) const
 {
-    return mDeletedItemOffsets == other.deletedItemOffsets();
+    return mDeletedItemOffsets == other.mDeletedItemOffsets;
 }
