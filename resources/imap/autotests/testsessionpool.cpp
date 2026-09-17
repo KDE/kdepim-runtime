@@ -218,7 +218,7 @@ private Q_SLOTS:
             QCOMPARE(requesterSpy.at(0).at(1).toString(), password);
         }
 
-        QCOMPARE(poolSpy.count(), 1);
+        QTRY_COMPARE(poolSpy.count(), 1);
         QCOMPARE(poolSpy.at(0).at(0).toInt(), errorCode);
         if (errorCode == SessionPool::NoError) {
             QVERIFY(pool.isConnected());
@@ -785,8 +785,7 @@ private Q_SLOTS:
 
         // Ask for a second session, where we'll lose the connection during the Login job.
         pool.requestSession();
-        QTest::qWait(100);
-        QCOMPARE(sessionSpy.count(), 2);
+        QTRY_COMPARE(sessionSpy.count(), 2);
         QCOMPARE(sessionSpy.at(1).at(1).value<KIMAP::Session *>(), nullptr);
         QCOMPARE(lostSpy.count(), 1);
 
