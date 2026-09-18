@@ -62,7 +62,7 @@ bool accountIsValid(const KGAPI2::AccountPtr &account)
 } // namespace
 
 GoogleResource::GoogleResource(const QString &id)
-    : ResourceWidgetBase(id)
+    : ResourceBase(id)
     , AgentBase::ObserverV3()
     , AccountBase(this)
     , m_settings(KSharedConfig::openConfig())
@@ -561,6 +561,6 @@ void GoogleResource::initAccount()
     synchronize();
 }
 
-AKONADI_RESOURCE_MAIN(GoogleResource)
+AKONADI_RESOURCE_CORE_MAIN(GoogleResource)
 
 #include "moc_googleresource.cpp"

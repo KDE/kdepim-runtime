@@ -90,13 +90,12 @@ endif()
 
 target_link_libraries(
     akonadi_google_resource
-    KPim6::AkonadiCalendar
+    KPim6::AkonadiCalendarCore
     KPim6::AkonadiCore
-    KPim6::AkonadiAgentWidgetBase
+    KPim6::AkonadiAgentBase
     KF6::CalendarCore
     KF6::Contacts
     KF6::I18n
-    KF6::WindowSystem
     KF6::Notifications
     KPim6::GAPICalendar
     KPim6::GAPIPeople
@@ -138,12 +137,10 @@ target_link_libraries(
     googleconfig
     KPim6::AkonadiCore
     KPim6::AkonadiCalendar
-    KPim6::AkonadiAgentWidgetBase
+    KPim6::AkonadiAgentBase
     KF6::CalendarCore
     KF6::Contacts
     KF6::I18n
-    KF6::WindowSystem
-    KF6::Notifications
     KPim6::GAPICalendar
     KPim6::GAPIPeople
     KPim6::GAPICore
