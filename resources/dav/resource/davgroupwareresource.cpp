@@ -30,7 +30,9 @@
 #endif
 #include <KDAV/DavItemsFetchJob>
 #include <KDAV/DavItemsListJob>
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
 #include <KDAV/DavItemsSyncJob>
+#endif
 #include <KDAV/DavPrincipalHomesetsFetchJob>
 #if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
 #include <KDAV/DavSslUiProxy>
@@ -1440,9 +1442,11 @@ void DavGroupwareResource::onRetrieveCollectionFinished(KJob *job, const Akonadi
     const auto syncMethod = identifySyncMethod(*davCollection);
 
     // The value of the CTag will be updated in the collection in onRetrieveItemsFinished, for now we only update the cache
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
     if (!davCollection->syncToken().isEmpty()) {
         mSyncTokenCache.insert(davCollection->url().toDisplayString(), davCollection->syncToken());
     }
+#endif
     if (!davCollection->CTag().isEmpty()) {
         mCTagCache.insert(davCollection->url().toDisplayString(), davCollection->CTag());
     }
@@ -1504,9 +1508,11 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
          * is called. We leave it untouched in the collection attribute
          * and will only update it there after successful sync.
          */
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
         if (!davCollection.syncToken().isEmpty()) {
             mSyncTokenCache.insert(davCollection.url().toDisplayString(), davCollection.syncToken());
         }
+#endif
         if (!davCollection.CTag().isEmpty()) {
             mCTagCache.insert(davCollection.url().toDisplayString(), davCollection.CTag());
         }
@@ -2200,6 +2206,7 @@ void DavGroupwareResource::listItemsForCollection(const KDAV::DavUrl &davUrl, co
 
 void DavGroupwareResource::syncItemsForCollection(const KDAV::DavUrl &davUrl, const Akonadi::Collection &collection)
 {
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
     if (!collection.hasAttribute<SyncTokenAttribute>()) {
         Q_ASSERT("syncItemsForCollection requires a sync token !");
         qCCritical(DAVRESOURCE_LOG()) << "syncItemsForCollection requires a sync token, falling back to full sync!";
@@ -2235,6 +2242,10 @@ void DavGroupwareResource::syncItemsForCollection(const KDAV::DavUrl &davUrl, co
         onRetrieveItemsFinished(collection, changedItems, syncJob->deletedItems());
     });
     syncJob->start();
+#else
+    qCDebug(DAVRESOURCE_LOG()) << "syncItemsForCollection not supported, falling back to full sync!";
+    listItemsForCollection(davUrl, collection);
+#endif
 }
 
 DavGroupwareResource::SyncMethod DavGroupwareResource::computeSyncMethod(const QString &remoteId, const QString &syncToken, const QString &CTag) const
@@ -2281,7 +2292,11 @@ DavGroupwareResource::SyncMethod DavGroupwareResource::identifySyncMethod(const 
 
 DavGroupwareResource::SyncMethod DavGroupwareResource::identifySyncMethod(const KDAV::DavCollection &collection) const
 {
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
     return computeSyncMethod(collection.url().toDisplayString(), collection.syncToken(), collection.CTag());
+#else
+    return computeSyncMethod(collection.url().toDisplayString(), ""_L1, collection.CTag());
+#endif
 }
 
 bool DavGroupwareResource::modifyCollectionSyncAttributesFromCache(Akonadi::Collection &collection)
