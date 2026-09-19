@@ -51,7 +51,7 @@
 using namespace Akonadi;
 
 MixedMaildirResource::MixedMaildirResource(const QString &id)
-    : ResourceWidgetBase(id)
+    : ResourceBase(id)
     , mStore(new MixedMaildirStore())
     , mCompactHelper(nullptr)
 {
@@ -779,6 +779,6 @@ void MixedMaildirResource::tagFetchJobResult(KJob *job)
     processNextTagContext();
 }
 
-AKONADI_RESOURCE_MAIN(MixedMaildirResource)
+AKONADI_RESOURCE_CORE_MAIN(MixedMaildirResource)
 
 #include "moc_mixedmaildirresource.cpp"

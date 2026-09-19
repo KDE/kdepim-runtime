@@ -8,14 +8,14 @@
 
 #pragma once
 
-#include <Akonadi/ResourceWidgetBase>
+#include <Akonadi/ResourceBase>
 
 #include <QStringList>
 
 class CompactChangeHelper;
 class MixedMaildirStore;
 
-class MixedMaildirResource : public Akonadi::ResourceWidgetBase, public Akonadi::AgentBase::ObserverV2
+class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
 

@@ -73,7 +73,7 @@ target_link_libraries(
     KF6::KIOCore
     KPim6::Mbox
     KF6::Mime
-    KPim6::AkonadiAgentWidgetBase
+    KPim6::AkonadiAgentBase
     KF6::I18n
     akonadi-singlefileresource
 )
