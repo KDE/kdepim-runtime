@@ -107,7 +107,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBoxDesc
     }
 
     for (int i = 0; i < descriptors.size(); ++i) {
-        KIMAP::MailBoxDescriptor descriptor = descriptors[i];
+        const KIMAP::MailBoxDescriptor &descriptor = descriptors[i];
 
         // skip phantom mailboxes (SUBSCRIBED but not available: LSUB - LIST or \NonExistent)
         if (isSubscriptionEnabled()) {
@@ -117,7 +117,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBoxDesc
             }
         }
 
-        const QString separator = descriptor.separator;
+        const QString &separator = descriptor.separator;
         Q_ASSERT(separator.size() == 1); // that's what the spec says
 
         const QString boxName = descriptor.name.endsWith(separator) ? descriptor.name.left(descriptor.name.size() - 1) : descriptor.name;
@@ -130,7 +130,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBoxDesc
         const int pathPartsSize(pathParts.size());
         for (int j = 0; j < pathPartsSize; ++j) {
             const bool isDummy = j != pathPartsSize - 1;
-            const QString pathPart = pathParts.at(j);
+            const QString &pathPart = pathParts.at(j);
             currentPath += separator + pathPart;
 
             if (m_reportedCollections.contains(currentPath)) {
