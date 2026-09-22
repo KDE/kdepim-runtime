@@ -158,10 +158,11 @@ private Q_SLOTS:
         QCOMPARE(job->responses().size(), 3);
         QVERIFY(job->error() != 0);
         QVERIFY(job->errorText().contains(QLatin1String("1 of 3")));
-        // Successful calls keep their response; the failed one is a placeholder.
-        QVERIFY(!job->responses().at(0).isEmpty());
+        // Successful calls keep their response (itemsMoved() reads the new ids from
+        // it); the failed one is a placeholder.
+        QCOMPARE(job->responses().at(0).value(QLatin1String("id")).toString(), QStringLiteral("moved"));
         QVERIFY(job->responses().at(1).isEmpty());
-        QVERIFY(!job->responses().at(2).isEmpty());
+        QCOMPARE(job->responses().at(2).value(QLatin1String("id")).toString(), QStringLiteral("moved"));
     }
 
     void shouldReportASingleFailureVerbatim()

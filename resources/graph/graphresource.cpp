@@ -1166,20 +1166,26 @@ void GraphResource::itemsMoved(const Item::List &items, const Collection &source
     // let the next delta reconcile it rather than failing the other moves too.
     job->setIgnoreNotFound(true);
     connect(job, &KJob::result, this, [this, items, job](KJob *kjob) {
-        if (kjob->error()) {
-            cancelTask(kjob->errorText());
-            return;
-        }
         // Graph assigns a new message id on move — push the new remote ids back.
+        // Do so for every move that went through even when others failed: with the
+        // old id left in place, the next delta of the destination folder would not
+        // recognise the message and insert it a second time. The failed ones keep
+        // their id (exactly what cancelTask() would have left behind), and the error
+        // is still raised; only the wholesale discard of the successes is gone.
         Item::List movedItems = items;
         const QList<QJsonObject> responses = job->responses();
+        int moved = 0;
         for (int i = 0; i < movedItems.size() && i < responses.size(); ++i) {
             const QString newId = responses.at(i).value(QLatin1String("id")).toString();
             if (!newId.isEmpty()) {
                 movedItems[i].setRemoteId(newId);
+                ++moved;
             }
         }
-        qCDebug(GRAPH_LOG) << "replay: moved" << movedItems.size() << "messages on the server";
+        if (kjob->error()) {
+            Q_EMIT error(kjob->errorText());
+        }
+        qCDebug(GRAPH_LOG) << "replay: moved" << moved << "of" << movedItems.size() << "messages on the server";
         changesCommitted(movedItems);
     });
     job->start();
