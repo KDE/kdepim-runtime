@@ -5,6 +5,8 @@
 
 #include "graphbatchjob.h"
 
+#include <KLocalizedString>
+
 GraphBatchJob::GraphBatchJob(GraphClient &client, const QList<Call> &calls, QObject *parent)
     : KJob(parent)
     , mClient(client)
@@ -37,17 +39,33 @@ void GraphBatchJob::next()
     }
     connect(req, &KJob::result, this, [this, req](KJob *job) {
         if (job->error() && !(mIgnoreNotFound && req->httpStatus() == 404)) {
-            setError(job->error());
-            setErrorText(job->errorText());
-            emitResult();
-            return;
+            // Carry on with the remaining calls instead of abandoning them. One
+            // Akonadi change notification fans out into one call per item, and a
+            // failed replay is not retried: ResourceBase::cancelTask() marks it as
+            // processed. Whatever is skipped here would therefore stay unapplied on
+            // the server until the next full resync, without the user being told.
+            if (++mFailed == 1) {
+                mFirstError = job->error();
+                mFirstErrorText = job->errorText();
+            }
+            mResponses.append(QJsonObject()); // keep responses aligned with the calls
+        } else {
+            mResponses.append(req->responseObject());
         }
-        mResponses.append(req->responseObject());
         if (++mIndex < mCalls.size()) {
             next();
-        } else {
-            emitResult();
+            return;
         }
+        if (mFailed > 0) {
+            setError(mFirstError);
+            setErrorText(mCalls.size() == 1 ? mFirstErrorText
+                                            : i18nc("%1 and %2 are counts, %3 the server error message",
+                                                    "%1 of %2 requests failed, first error: %3",
+                                                    mFailed,
+                                                    mCalls.size(),
+                                                    mFirstErrorText));
+        }
+        emitResult();
     });
     req->start();
 }

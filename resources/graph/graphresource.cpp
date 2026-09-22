@@ -778,6 +778,9 @@ void GraphResource::itemsFlagsChanged(const Item::List &items,
         calls.append({GraphRequest::Method::Patch, QStringLiteral("/me/messages/%1").arg(item.remoteId()), GraphMailHandler::flagPatchBody(item)});
     }
     auto job = new GraphBatchJob(mClient, calls, this);
+    // A flag on a message that is already gone server-side is moot, and failing the
+    // whole batch over it would drop the flags of every other message with it.
+    job->setIgnoreNotFound(true);
     connect(job, &KJob::result, this, [this, items](KJob *job) {
         if (job->error()) {
             cancelTask(job->errorText());
@@ -1159,6 +1162,9 @@ void GraphResource::itemsMoved(const Item::List &items, const Collection &source
         calls.append({GraphRequest::Method::Post, QStringLiteral("/me/messages/%1/move").arg(item.remoteId()), body});
     }
     auto job = new GraphBatchJob(mClient, calls, this);
+    // A message that no longer exists cannot be moved; keep its stale remote id and
+    // let the next delta reconcile it rather than failing the other moves too.
+    job->setIgnoreNotFound(true);
     connect(job, &KJob::result, this, [this, items, job](KJob *kjob) {
         if (kjob->error()) {
             cancelTask(kjob->errorText());

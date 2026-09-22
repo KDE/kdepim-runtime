@@ -6,6 +6,9 @@
     throttles aggressively) and collects the per-call JSON responses. Used by the
     change-replay handlers (flags, move, delete, create) where one Akonadi change
     notification fans out into one call per item.
+
+    Every call is issued even when an earlier one failed; the job then reports the
+    first error once all of them are done.
 */
 
 #pragma once
@@ -44,6 +47,9 @@ private:
     GraphClient &mClient;
     QList<Call> mCalls;
     QList<QJsonObject> mResponses;
+    QString mFirstErrorText;
     int mIndex = 0;
+    int mFailed = 0;
+    int mFirstError = 0;
     bool mIgnoreNotFound = false;
 };
