@@ -33,6 +33,7 @@
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
+#include <Akonadi/ItemMoveJob>
 #include <Akonadi/ItemSync>
 #include <Akonadi/SpecialCollectionAttribute>
 #include <Akonadi/SpecialMailCollections>
@@ -1162,31 +1163,53 @@ void GraphResource::itemsMoved(const Item::List &items, const Collection &source
         calls.append({GraphRequest::Method::Post, QStringLiteral("/me/messages/%1/move").arg(item.remoteId()), body});
     }
     auto job = new GraphBatchJob(mClient, calls, this);
-    // A message that no longer exists cannot be moved; keep its stale remote id and
-    // let the next delta reconcile it rather than failing the other moves too.
+    // A message that no longer exists cannot be moved; treat it like any other
+    // failed item below rather than failing the other moves too.
     job->setIgnoreNotFound(true);
-    connect(job, &KJob::result, this, [this, items, job](KJob *kjob) {
-        // Graph assigns a new message id on move — push the new remote ids back.
-        // Do so for every move that went through even when others failed: with the
-        // old id left in place, the next delta of the destination folder would not
-        // recognise the message and insert it a second time. The failed ones keep
-        // their id (exactly what cancelTask() would have left behind), and the error
-        // is still raised; only the wholesale discard of the successes is gone.
-        Item::List movedItems = items;
+    connect(job, &KJob::result, this, [this, items, source, job](KJob *kjob) {
+        // Graph assigns a new message id on move — push the new remote ids back for
+        // every move that went through, even when others failed: with the old id
+        // left in place, the next delta of the destination folder would not
+        // recognise the message and insert it a second time.
+        Item::List moved;
+        Item::List failed;
         const QList<QJsonObject> responses = job->responses();
-        int moved = 0;
-        for (int i = 0; i < movedItems.size() && i < responses.size(); ++i) {
-            const QString newId = responses.at(i).value(QLatin1String("id")).toString();
-            if (!newId.isEmpty()) {
-                movedItems[i].setRemoteId(newId);
-                ++moved;
+        for (int i = 0; i < items.size(); ++i) {
+            const QString newId = i < responses.size() ? responses.at(i).value(QLatin1String("id")).toString() : QString();
+            if (newId.isEmpty()) {
+                failed.append(items.at(i));
+            } else {
+                Item item = items.at(i);
+                item.setRemoteId(newId);
+                moved.append(item);
             }
         }
         if (kjob->error()) {
             Q_EMIT error(kjob->errorText());
         }
-        qCDebug(GRAPH_LOG) << "replay: moved" << moved << "of" << movedItems.size() << "messages on the server";
-        changesCommitted(movedItems);
+        qCDebug(GRAPH_LOG) << "replay: moved" << moved.size() << "of" << items.size() << "messages on the server";
+        if (failed.isEmpty()) {
+            changesCommitted(moved);
+            return;
+        }
+        // The rest is still in the source folder on the server (or, after a tolerated
+        // 404, nowhere at all), while the client already shows it in the destination.
+        // Put it back where the server has it, keeping the remote id: a message that
+        // is genuinely gone then meets its tombstone in the source folder on the next
+        // poll. The resource's own session is not recorded for replay, so this does
+        // not come back as another move.
+        auto undo = new ItemMoveJob(failed, source, this);
+        connect(undo, &KJob::result, this, [this, moved, failed](KJob *undoJob) {
+            if (undoJob->error()) {
+                qCWarning(GRAPH_LOG) << "could not move" << failed.size() << "unmoved items back locally:" << undoJob->errorText();
+            }
+            if (moved.isEmpty()) {
+                changeProcessed();
+            } else {
+                changesCommitted(moved);
+            }
+        });
+        undo->start();
     });
     job->start();
 }
