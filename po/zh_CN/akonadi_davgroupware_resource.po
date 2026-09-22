@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-05 00:46+0000\n"
+"POT-Creation-Date: 2026-09-22 00:45+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -167,110 +167,110 @@ msgstr "无效的服务器应答"
 msgid "Unable to parse free-busy data received"
 msgstr "无法解析收到的忙/闲数据"
 
-#: davgroupwareresource.cpp:275
+#: davgroupwareresource.cpp:290
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "无法离线时获得忙/闲信息"
 
-#: davgroupwareresource.cpp:362
+#: davgroupwareresource.cpp:377
 #, kde-format
 msgid "Fetching collections"
 msgstr "正在获取收藏"
 
-#: davgroupwareresource.cpp:422
+#: davgroupwareresource.cpp:437
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "收到未知集合的收取请求：%1"
 
-#: davgroupwareresource.cpp:489
+#: davgroupwareresource.cpp:504
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "项目 %1 的收藏无效。"
 
-#: davgroupwareresource.cpp:766
+#: davgroupwareresource.cpp:781
 #, kde-format
 msgid "Unable to delete item exceptions: %1"
 msgstr "无法删除项目例外：%1"
 
-#: davgroupwareresource.cpp:867
+#: davgroupwareresource.cpp:882
 #, kde-format
 msgid "Unable to fetch items: %1"
 msgstr "无法获取项目：%1"
 
-#: davgroupwareresource.cpp:936
+#: davgroupwareresource.cpp:951
 #, kde-format
 msgid "Unable to move item: %1"
 msgstr "无法移动项目：%1"
 
-#: davgroupwareresource.cpp:969
+#: davgroupwareresource.cpp:984
 #, kde-format
 msgid "Unable to create item during move: %1"
 msgstr "无法在移动过程中创建项目：%1"
 
-#: davgroupwareresource.cpp:1139
+#: davgroupwareresource.cpp:1154
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "无法更改项目：%1"
 
-#: davgroupwareresource.cpp:1212
+#: davgroupwareresource.cpp:1227
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "无法修改此日历：%1"
 
-#: davgroupwareresource.cpp:1342
+#: davgroupwareresource.cpp:1357
 #, kde-format
 msgid "Unable to create collection: %1"
 msgstr "无法创建集合：%1"
 
-#: davgroupwareresource.cpp:1371
+#: davgroupwareresource.cpp:1386
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "无法删除收藏：%1"
 
-#: davgroupwareresource.cpp:1391 davgroupwareresource.cpp:1438
+#: davgroupwareresource.cpp:1406 davgroupwareresource.cpp:1464
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "无法获取收藏：%1"
 
-#: davgroupwareresource.cpp:1406
+#: davgroupwareresource.cpp:1421
 #, kde-format
 msgid "Failed to retrieve collection: %1"
 msgstr "获取收藏失败：%1"
 
-#: davgroupwareresource.cpp:1505 davgroupwareresource.cpp:1609
+#: davgroupwareresource.cpp:1551 davgroupwareresource.cpp:1655
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "无法获取项目：%1"
 
-#: davgroupwareresource.cpp:1745
+#: davgroupwareresource.cpp:1791
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "无法获取项目：%1"
 
-#: davgroupwareresource.cpp:1765
+#: davgroupwareresource.cpp:1811
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr "无法获取当前项目：数据解析失败，项目可能已被删除。"
 
-#: davgroupwareresource.cpp:1825
+#: davgroupwareresource.cpp:1871
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "无法添加项目：%1"
 
-#: davgroupwareresource.cpp:1870 davgroupwareresource.cpp:2002
-#: davgroupwareresource.cpp:2014
+#: davgroupwareresource.cpp:1916 davgroupwareresource.cpp:2048
+#: davgroupwareresource.cpp:2060
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "无法更改项目：%1"
 
-#: davgroupwareresource.cpp:1976 davgroupwareresource.cpp:2033
+#: davgroupwareresource.cpp:2022 davgroupwareresource.cpp:2079
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "无法删除项目：%1"
 
-#: davgroupwareresource.cpp:2120 davgroupwareresource.cpp:2121
+#: davgroupwareresource.cpp:2166 davgroupwareresource.cpp:2167
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "资源尚未配置"
@@ -611,17 +611,17 @@ msgstr "已发现的日历："
 msgid "Fetch"
 msgstr "获取"
 
-#: utils.cpp:51
+#: utils.cpp:56
 #, kde-format
 msgid "CalDav"
 msgstr "CalDav"
 
-#: utils.cpp:54
+#: utils.cpp:59
 #, kde-format
 msgid "CardDav"
 msgstr "CardDav"
 
-#: utils.cpp:57
+#: utils.cpp:62
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"

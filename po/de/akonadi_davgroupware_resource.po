@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-05 00:46+0000\n"
+"POT-Creation-Date: 2026-09-22 00:45+0000\n"
 "PO-Revision-Date: 2026-08-25 01:37+0200\n"
 "Last-Translator: Philipp Kiemle <l10n.daphipz@fastmail.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -177,92 +177,92 @@ msgid "Unable to parse free-busy data received"
 msgstr ""
 "Die empfangenen Frei/Belegt-Informationen können nicht verarbeitet werden"
 
-#: davgroupwareresource.cpp:275
+#: davgroupwareresource.cpp:290
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr ""
 "Im Offline-Modus können die Frei/Belegt-Informationen nicht abgerufen werden"
 
-#: davgroupwareresource.cpp:362
+#: davgroupwareresource.cpp:377
 #, kde-format
 msgid "Fetching collections"
 msgstr "Sammlungen abrufen"
 
-#: davgroupwareresource.cpp:422
+#: davgroupwareresource.cpp:437
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Anfrage zum Abrufen von Einträgen für eine unbekannte der Sammlung: %1"
 
-#: davgroupwareresource.cpp:489
+#: davgroupwareresource.cpp:504
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Ungültige Sammlung für Eintrag %1."
 
-#: davgroupwareresource.cpp:766
+#: davgroupwareresource.cpp:781
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to delete item exceptions: %1"
 msgstr "Problem beim Abrufen der Sammlungen: %1"
 
-#: davgroupwareresource.cpp:867
+#: davgroupwareresource.cpp:882
 #, fuzzy, kde-format
 #| msgid "Unable to change item: %1"
 msgid "Unable to fetch items: %1"
 msgstr "Das Element kann nicht geändert werden: %1"
 
-#: davgroupwareresource.cpp:936
+#: davgroupwareresource.cpp:951
 #, fuzzy, kde-format
 #| msgid "Unable to remove item: %1"
 msgid "Unable to move item: %1"
 msgstr "Das Element kann nicht gelöscht werden: %1"
 
-#: davgroupwareresource.cpp:969
+#: davgroupwareresource.cpp:984
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve item: %1"
 msgid "Unable to create item during move: %1"
 msgstr "Das Element kann nicht empfangen werden: %1"
 
-#: davgroupwareresource.cpp:1139
+#: davgroupwareresource.cpp:1154
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Die Elemente können nicht geändert werden: %1"
 
-#: davgroupwareresource.cpp:1212
+#: davgroupwareresource.cpp:1227
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Sammlung kann nicht geändert werden: %1"
 
-#: davgroupwareresource.cpp:1342
+#: davgroupwareresource.cpp:1357
 #, kde-format
 msgid "Unable to create collection: %1"
 msgstr "Sammlung kann nicht erstellt werden: %1"
 
-#: davgroupwareresource.cpp:1371
+#: davgroupwareresource.cpp:1386
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Sammlung kann nicht gelöscht werden: %1"
 
-#: davgroupwareresource.cpp:1391 davgroupwareresource.cpp:1438
+#: davgroupwareresource.cpp:1406 davgroupwareresource.cpp:1464
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Problem beim Abrufen der Sammlungen: %1"
 
-#: davgroupwareresource.cpp:1406
+#: davgroupwareresource.cpp:1421
 #, kde-format
 msgid "Failed to retrieve collection: %1"
 msgstr "Problem beim Abrufen der Sammlung: %1"
 
-#: davgroupwareresource.cpp:1505 davgroupwareresource.cpp:1609
+#: davgroupwareresource.cpp:1551 davgroupwareresource.cpp:1655
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Die Elemente können nicht empfangen werden: %1"
 
-#: davgroupwareresource.cpp:1745
+#: davgroupwareresource.cpp:1791
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Das Element kann nicht empfangen werden: %1"
 
-#: davgroupwareresource.cpp:1765
+#: davgroupwareresource.cpp:1811
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -271,23 +271,23 @@ msgstr ""
 "Eintrag kann nicht abgerufen werden: Die Eintragsdaten konnten nicht "
 "analysiert werden. Vielleicht wurde der Eintrag bereits gelöscht."
 
-#: davgroupwareresource.cpp:1825
+#: davgroupwareresource.cpp:1871
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Das Element kann nicht hinzugefügt werden: %1"
 
-#: davgroupwareresource.cpp:1870 davgroupwareresource.cpp:2002
-#: davgroupwareresource.cpp:2014
+#: davgroupwareresource.cpp:1916 davgroupwareresource.cpp:2048
+#: davgroupwareresource.cpp:2060
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Das Element kann nicht geändert werden: %1"
 
-#: davgroupwareresource.cpp:1976 davgroupwareresource.cpp:2033
+#: davgroupwareresource.cpp:2022 davgroupwareresource.cpp:2079
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Das Element kann nicht gelöscht werden: %1"
 
-#: davgroupwareresource.cpp:2120 davgroupwareresource.cpp:2121
+#: davgroupwareresource.cpp:2166 davgroupwareresource.cpp:2167
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Die Ressource ist noch nicht eingerichtet"
@@ -636,17 +636,17 @@ msgstr "Entdeckte Sammlungen:"
 msgid "Fetch"
 msgstr "Abholen"
 
-#: utils.cpp:51
+#: utils.cpp:56
 #, kde-format
 msgid "CalDav"
 msgstr "CalDav"
 
-#: utils.cpp:54
+#: utils.cpp:59
 #, kde-format
 msgid "CardDav"
 msgstr "CardDav"
 
-#: utils.cpp:57
+#: utils.cpp:62
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"

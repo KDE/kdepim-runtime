@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-05 00:46+0000\n"
+"POT-Creation-Date: 2026-09-22 00:45+0000\n"
 "PO-Revision-Date: 2026-05-30 17:27-0400\n"
 "Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -172,93 +172,93 @@ msgstr "مۇلازىمېتىردىن كەلگەن ئىناۋەتسىز جاۋا�
 msgid "Unable to parse free-busy data received"
 msgstr "تاپشۇرۇۋالغان بىكار/ئالدىراش سانلىق مەلۇماتىنى تەھلىل قىلالمىدى"
 
-#: davgroupwareresource.cpp:275
+#: davgroupwareresource.cpp:290
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "تورسىز ھالەتتە بىكار/ئالدىراش ئۇچۇرىغا ئېرىشەلمەيدۇ"
 
-#: davgroupwareresource.cpp:362
+#: davgroupwareresource.cpp:377
 #, kde-format
 msgid "Fetching collections"
 msgstr "توپلامغا ئېرىشىۋاتىدۇ"
 
-#: davgroupwareresource.cpp:422
+#: davgroupwareresource.cpp:437
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "يوچۇن توپلامنىڭ تەلەپ قىلىنغان قايتۇرۇۋېلىش تۈرىگە ئېرىشەلمىدى:  %1"
 
-#: davgroupwareresource.cpp:489
+#: davgroupwareresource.cpp:504
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "%1 تۈرنىڭ ئىناۋەتسىز توپلىمى."
 
-#: davgroupwareresource.cpp:766
+#: davgroupwareresource.cpp:781
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to delete item exceptions: %1"
 msgstr "توپلامغا ئېرىشەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:867
+#: davgroupwareresource.cpp:882
 #, fuzzy, kde-format
 #| msgid "Unable to change item: %1"
 msgid "Unable to fetch items: %1"
 msgstr "تۈرنى ئۆزگەرتەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:936
+#: davgroupwareresource.cpp:951
 #, fuzzy, kde-format
 #| msgid "Unable to remove item: %1"
 msgid "Unable to move item: %1"
 msgstr "تۈرنى چىقىرىۋېتەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:969
+#: davgroupwareresource.cpp:984
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve item: %1"
 msgid "Unable to create item during move: %1"
 msgstr "تۈرگە ئېرىشەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1139
+#: davgroupwareresource.cpp:1154
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "تۈرنى ئۆزگەرتەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1212
+#: davgroupwareresource.cpp:1227
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "توپلامنى ئۆزگەرتەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1342
+#: davgroupwareresource.cpp:1357
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to create collection: %1"
 msgstr "توپلامنى چىقىرىۋېتەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1371
+#: davgroupwareresource.cpp:1386
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "توپلامنى چىقىرىۋېتەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1391 davgroupwareresource.cpp:1438
+#: davgroupwareresource.cpp:1406 davgroupwareresource.cpp:1464
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "توپلامغا ئېرىشەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1406
+#: davgroupwareresource.cpp:1421
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Failed to retrieve collection: %1"
 msgstr "توپلامغا ئېرىشەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1505 davgroupwareresource.cpp:1609
+#: davgroupwareresource.cpp:1551 davgroupwareresource.cpp:1655
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "تۈرگە ئېرىشەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1745
+#: davgroupwareresource.cpp:1791
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "تۈرگە ئېرىشەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1765
+#: davgroupwareresource.cpp:1811
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -267,23 +267,23 @@ msgstr ""
 "تۈرگە ئېرىشەلمەيدۇ: تۈر سانلىق مەلۇماتىنى تەھلىل قىلالمىدى. بەلكىم ئۇ "
 "ئۆچۈرۈلگەن بولۇشى مۇمكىن."
 
-#: davgroupwareresource.cpp:1825
+#: davgroupwareresource.cpp:1871
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "تۈر قوشالمايدۇ: %1"
 
-#: davgroupwareresource.cpp:1870 davgroupwareresource.cpp:2002
-#: davgroupwareresource.cpp:2014
+#: davgroupwareresource.cpp:1916 davgroupwareresource.cpp:2048
+#: davgroupwareresource.cpp:2060
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "تۈرنى ئۆزگەرتەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:1976 davgroupwareresource.cpp:2033
+#: davgroupwareresource.cpp:2022 davgroupwareresource.cpp:2079
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "تۈرنى چىقىرىۋېتەلمەيدۇ: %1"
 
-#: davgroupwareresource.cpp:2120 davgroupwareresource.cpp:2121
+#: davgroupwareresource.cpp:2166 davgroupwareresource.cpp:2167
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "مەنبە تېخى سەپلەنمىگەن"
@@ -628,17 +628,17 @@ msgstr "بايقىغان توپلام:"
 msgid "Fetch"
 msgstr "تۇت"
 
-#: utils.cpp:51
+#: utils.cpp:56
 #, kde-format
 msgid "CalDav"
 msgstr "CalDAV"
 
-#: utils.cpp:54
+#: utils.cpp:59
 #, kde-format
 msgid "CardDav"
 msgstr "CardDav"
 
-#: utils.cpp:57
+#: utils.cpp:62
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
