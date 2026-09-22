@@ -84,13 +84,13 @@ void GraphRequest::issue(const QUrl &url)
     if (!mContentType.isEmpty()) {
         req.setHeader(QNetworkRequest::ContentTypeHeader, mContentType);
     }
-    // Ask for immutable ids so stored remoteIds survive moves and never flip between
-    // Graph's two mutable encodings of the same message ("AAMk…" vs "AQMk…", which
-    // broke delta tombstone matching). Preference values must share one header line,
-    // so fold any caller-supplied Prefer entries (timezone, maxpagesize) into it.
-    // Microsoft To Do has a separate id space that IdType must not switch.
+    // Ask for immutable ids so a message is never reported under both of Graph's
+    // mutable encodings ("AAMk…" vs "AQMk…", which broke delta tombstone matching).
+    // A move still hands out a new id, which the move handlers commit. Preference
+    // values must share one header line, so fold any caller-supplied Prefer entries
+    // (timezone, maxpagesize) into it.
     QByteArray prefer;
-    if (mUseImmutableIds && !url.path().contains(QLatin1String("/me/todo"))) {
+    if (mUseImmutableIds && usesImmutableIds(url.path())) {
         prefer = "IdType=\"ImmutableId\"";
     }
     for (const auto &[name, value] : std::as_const(mHeaders)) {
@@ -148,11 +148,7 @@ void GraphRequest::onReplyFinished()
         mGraphErrorCode = err.value(QLatin1String("code")).toString();
         setError(KJob::UserDefinedError);
         if (!err.isEmpty()) {
-            setErrorText(i18nc("%1 is the server error message, %2 the HTTP status code, %3 the server error code",
-                               "%1 (HTTP %2, %3)",
-                               err.value(QLatin1String("message")).toString(),
-                               http,
-                               err.value(QLatin1String("code")).toString()));
+            setErrorText(formatError(err, http));
         } else {
             setErrorText(reply->errorString());
         }
@@ -188,6 +184,21 @@ void GraphRequest::scheduleRetry(int seconds, const QUrl &url)
     QTimer::singleShot(seconds * 1000, this, [this, url] {
         issue(url);
     });
+}
+
+bool GraphRequest::usesImmutableIds(const QString &path)
+{
+    // Microsoft To Do has a separate id space that IdType must not switch.
+    return !path.contains(QLatin1String("/me/todo"));
+}
+
+QString GraphRequest::formatError(const QJsonObject &graphError, int httpStatus)
+{
+    return i18nc("%1 is the server error message, %2 the HTTP status code, %3 the server error code",
+                 "%1 (HTTP %2, %3)",
+                 graphError.value(QLatin1String("message")).toString(),
+                 httpStatus,
+                 graphError.value(QLatin1String("code")).toString());
 }
 
 QJsonObject GraphRequest::responseObject() const

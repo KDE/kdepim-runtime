@@ -55,6 +55,12 @@ public:
     [[nodiscard]] int httpStatus() const; // HTTP status of the (last) reply
     [[nodiscard]] QString graphErrorCode() const; // "error.code" from a Graph error body
 
+    // Shared with GraphBatchJob, which builds the same requests as /$batch entries.
+    /// Whether a request to @p path asks for immutable ids (not in Microsoft To Do).
+    [[nodiscard]] static bool usesImmutableIds(const QString &path);
+    /// User-visible text for a Graph error body ({"code", "message"}) and HTTP status.
+    [[nodiscard]] static QString formatError(const QJsonObject &graphError, int httpStatus);
+
 private:
     void onReplyFinished();
     void issue(const QUrl &url);

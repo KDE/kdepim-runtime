@@ -1172,6 +1172,7 @@ void GraphResource::itemsMoved(const Item::List &items, const Collection &source
         // left in place, the next delta of the destination folder would not
         // recognise the message and insert it a second time.
         Item::List moved;
+        moved.reserve(items.size());
         Item::List failed;
         const QList<QJsonObject> responses = job->responses();
         for (int i = 0; i < items.size(); ++i) {
@@ -1227,6 +1228,7 @@ void GraphResource::itemsRemoved(const Item::List &items)
     }
     if (!pimBase.isEmpty() || mime == GraphTodoHandler::mimeType()) {
         QList<GraphBatchJob::Call> calls;
+        calls.reserve(items.size());
         for (const Item &item : items) {
             // Tasks are addressed through their list; the parent collection carries it.
             const QString path = pimBase.isEmpty() ? QStringLiteral("/me/todo/lists/%1/tasks/%2").arg(item.parentCollection().remoteId(), item.remoteId())
