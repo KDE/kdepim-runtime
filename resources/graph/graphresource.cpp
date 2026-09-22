@@ -770,6 +770,7 @@ void GraphResource::itemsFlagsChanged(const Item::List &items,
                                       [[maybe_unused]] const QSet<QByteArray> &addedFlags,
                                       [[maybe_unused]] const QSet<QByteArray> &removedFlags)
 {
+    qCDebug(GRAPH_LOG) << "replay: flags changed on" << items.size() << "items";
     // item.flags() already carries the final state, so the added/removed sets are not needed.
     QList<GraphBatchJob::Call> calls;
     calls.reserve(items.size());
@@ -789,6 +790,7 @@ void GraphResource::itemsFlagsChanged(const Item::List &items,
 
 void GraphResource::itemChanged(const Item &item, const QSet<QByteArray> &partIdentifiers)
 {
+    qCDebug(GRAPH_LOG) << "replay: item changed" << item.remoteId() << item.mimeType() << "parts" << partIdentifiers;
     const QString mime = item.mimeType();
     if (mime == GraphEventHandler::mimeType() && item.hasPayload<KCalendarCore::Incidence::Ptr>()) {
         auto incidence = item.payload<KCalendarCore::Incidence::Ptr>();
@@ -915,6 +917,7 @@ void GraphResource::patchPimItem(const Akonadi::Item &item, const QString &path,
 
 void GraphResource::itemAdded(const Item &item, const Collection &collection)
 {
+    qCDebug(GRAPH_LOG) << "replay: item added to" << collection.name() << item.mimeType();
     const QString mime = item.mimeType();
     // Calendar event -> POST /me/calendars/{cal}/events
     if (mime == GraphEventHandler::mimeType()) {
@@ -1133,6 +1136,7 @@ void GraphResource::reconcileSentItem(const Akonadi::Item &item, const QString &
 
 void GraphResource::itemsMoved(const Item::List &items, const Collection &source, const Collection &destination)
 {
+    qCDebug(GRAPH_LOG) << "replay: moving" << items.size() << "items from" << source.name() << "to" << destination.name();
     const QString mime = items.isEmpty() ? QString() : items.constFirst().mimeType();
     if (mime == GraphEventHandler::mimeType() || mime == GraphTodoHandler::mimeType()) {
         // Graph has no move API for events or tasks — recreate in the destination and
@@ -1169,6 +1173,7 @@ void GraphResource::itemsMoved(const Item::List &items, const Collection &source
                 movedItems[i].setRemoteId(newId);
             }
         }
+        qCDebug(GRAPH_LOG) << "replay: moved" << movedItems.size() << "messages on the server";
         changesCommitted(movedItems);
     });
     job->start();
@@ -1176,6 +1181,7 @@ void GraphResource::itemsMoved(const Item::List &items, const Collection &source
 
 void GraphResource::itemsRemoved(const Item::List &items)
 {
+    qCDebug(GRAPH_LOG) << "replay: removing" << items.size() << "items";
     // Calendar/contact/task deletes hit different endpoints (and never carry mail flags).
     const QString mime = items.isEmpty() ? QString() : items.constFirst().mimeType();
     QString pimBase;
@@ -1213,10 +1219,11 @@ void GraphResource::itemsRemoved(const Item::List &items)
     }
     auto job = new GraphBatchJob(mClient, calls, this);
     job->setIgnoreNotFound(true);
-    connect(job, &KJob::result, this, [this](KJob *job) {
+    connect(job, &KJob::result, this, [this, count = items.size()](KJob *job) {
         if (job->error()) {
             cancelTask(job->errorText());
         } else {
+            qCDebug(GRAPH_LOG) << "replay: deleted" << count << "messages on the server";
             changeProcessed();
         }
     });
@@ -1225,6 +1232,7 @@ void GraphResource::itemsRemoved(const Item::List &items)
 
 void GraphResource::collectionAdded(const Collection &collection, const Collection &parent)
 {
+    qCDebug(GRAPH_LOG) << "replay: collection added" << collection.name() << "under" << parent.name();
     QString path;
     QJsonObject body;
     switch (collectionKind(collection)) {
@@ -1267,6 +1275,7 @@ void GraphResource::collectionAdded(const Collection &collection, const Collecti
 
 void GraphResource::collectionChanged(const Collection &collection, const QSet<QByteArray> &changedAttributes)
 {
+    qCDebug(GRAPH_LOG) << "replay: collection changed" << collection.name() << changedAttributes;
     if (!changedAttributes.contains("NAME")) {
         changeProcessed(); // only renames are propagated to Graph
         return;
@@ -1306,6 +1315,7 @@ void GraphResource::collectionChanged(const Collection &collection, const QSet<Q
 
 void GraphResource::collectionMoved(const Collection &collection, [[maybe_unused]] const Collection &source, const Collection &destination)
 {
+    qCDebug(GRAPH_LOG) << "replay: collection moved" << collection.name() << "to" << destination.name();
     if (collectionKind(collection) != CollectionKind::Mail) {
         // Graph calendars/task lists are flat; the next tree sync re-parents the
         // collection under the account root again.
@@ -1336,6 +1346,7 @@ void GraphResource::collectionMoved(const Collection &collection, [[maybe_unused
 
 void GraphResource::collectionRemoved(const Collection &collection)
 {
+    qCDebug(GRAPH_LOG) << "replay: collection removed" << collection.name();
     QString path;
     switch (collectionKind(collection)) {
     case CollectionKind::Calendar:
