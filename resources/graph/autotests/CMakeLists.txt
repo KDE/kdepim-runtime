@@ -22,6 +22,8 @@ macro(add_graph_test _name)
     target_link_libraries(
         ${_name}
         Qt::Test
+        Qt::Network
+        graphclient
         KPim6::AkonadiCore
         KPim6::AkonadiMime
         KF6::Mime
@@ -35,3 +37,4 @@ add_graph_test(graphtodohandlertest graphtodohandlertest.cpp ../todo/graphtodoha
 add_graph_test(graphcontacthandlertest graphcontacthandlertest.cpp ../contact/graphcontacthandler.cpp)
 add_graph_test(graphmailhandlertest graphmailhandlertest.cpp ../mail/graphmailhandler.cpp)
 add_graph_test(graphsyncstateattributetest graphsyncstateattributetest.cpp ../graphsyncstateattribute.cpp)
+add_graph_test(graphbatchjobtest graphbatchjobtest.cpp ../jobs/graphbatchjob.cpp)

@@ -6,6 +6,7 @@
 #include "graphbatchjob.h"
 
 #include <KLocalizedString>
+#include <QTimer>
 
 GraphBatchJob::GraphBatchJob(GraphClient &client, const QList<Call> &calls, QObject *parent)
     : KJob(parent)
@@ -22,7 +23,11 @@ void GraphBatchJob::setIgnoreNotFound(bool ignore)
 void GraphBatchJob::start()
 {
     if (mCalls.isEmpty()) {
-        emitResult();
+        // Stay asynchronous like every other exit of this job, so a caller that
+        // connects after start() cannot miss the result (same as GraphRequest).
+        QTimer::singleShot(0, this, [this] {
+            emitResult();
+        });
         return;
     }
     next();
