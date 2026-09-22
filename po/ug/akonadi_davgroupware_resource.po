@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-22 00:45+0000\n"
-"PO-Revision-Date: 2026-05-30 17:27-0400\n"
+"PO-Revision-Date: 2026-09-22 18:03+0900\n"
 "Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
-"Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
+"Language-Team: Uyghur <kde-i18n-doc@kde.org>\n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,9 +55,6 @@ msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
 "Please use a different URL"
 msgstr ""
-"باشقا بىر سەپلىمە ئوخشاش تور ئادرېسى يەنى URL/كېلىشىم جۈپىنى "
-"ئىشلىتىۋېتىپتۇ.\n"
-"باشقا تور ئادرېسىنى ئىشلىتىڭ"
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: configwidget.ui:29
@@ -193,28 +190,24 @@ msgid "Invalid collection for item %1."
 msgstr "%1 تۈرنىڭ ئىناۋەتسىز توپلىمى."
 
 #: davgroupwareresource.cpp:781
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to delete item exceptions: %1"
-msgstr "توپلامغا ئېرىشەلمەيدۇ: %1"
+msgstr ""
 
 #: davgroupwareresource.cpp:882
-#, fuzzy, kde-format
-#| msgid "Unable to change item: %1"
+#, kde-format
 msgid "Unable to fetch items: %1"
-msgstr "تۈرنى ئۆزگەرتەلمەيدۇ: %1"
+msgstr ""
 
 #: davgroupwareresource.cpp:951
-#, fuzzy, kde-format
-#| msgid "Unable to remove item: %1"
+#, kde-format
 msgid "Unable to move item: %1"
-msgstr "تۈرنى چىقىرىۋېتەلمەيدۇ: %1"
+msgstr ""
 
 #: davgroupwareresource.cpp:984
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve item: %1"
+#, kde-format
 msgid "Unable to create item during move: %1"
-msgstr "تۈرگە ئېرىشەلمەيدۇ: %1"
+msgstr ""
 
 #: davgroupwareresource.cpp:1154
 #, kde-format
@@ -227,10 +220,9 @@ msgid "Unable to modify collection: %1"
 msgstr "توپلامنى ئۆزگەرتەلمەيدۇ: %1"
 
 #: davgroupwareresource.cpp:1357
-#, fuzzy, kde-format
-#| msgid "Unable to remove collection: %1"
+#, kde-format
 msgid "Unable to create collection: %1"
-msgstr "توپلامنى چىقىرىۋېتەلمەيدۇ: %1"
+msgstr ""
 
 #: davgroupwareresource.cpp:1386
 #, kde-format
@@ -243,10 +235,9 @@ msgid "Unable to retrieve collections: %1"
 msgstr "توپلامغا ئېرىشەلمەيدۇ: %1"
 
 #: davgroupwareresource.cpp:1421
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Failed to retrieve collection: %1"
-msgstr "توپلامغا ئېرىشەلمەيدۇ: %1"
+msgstr ""
 
 #: davgroupwareresource.cpp:1551 davgroupwareresource.cpp:1655
 #, kde-format
@@ -264,8 +255,6 @@ msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
-"تۈرگە ئېرىشەلمەيدۇ: تۈر سانلىق مەلۇماتىنى تەھلىل قىلالمىدى. بەلكىم ئۇ "
-"ئۆچۈرۈلگەن بولۇشى مۇمكىن."
 
 #: davgroupwareresource.cpp:1871
 #, kde-format
@@ -471,8 +460,6 @@ msgid ""
 "can configure automatically an account for %1 services.\n"
 "Do you wish to do so?"
 msgstr ""
-"تىزىمغا كىرگەندە ئىشلەتكەن ئېلخەت ئادرېسىغا ئاساسەن، مەزكۇر يېتەكچى %1 "
-"مۇلازىمەتكە ئۆزلۈكىدىن ھېساب سەپلىيەلەيدۇ. شۇنداق قىلسۇنمۇ؟"
 
 #: setupwizard.cpp:303
 #, kde-format
@@ -590,7 +577,7 @@ msgstr "زىيارەت كېلىشىمى:"
 #: urlconfigurationdialog.ui:42
 #, kde-format
 msgid "CalDA&V"
-msgstr "CalDA&V"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, carddav)
 #: urlconfigurationdialog.ui:55
@@ -636,12 +623,12 @@ msgstr "CalDAV"
 #: utils.cpp:59
 #, kde-format
 msgid "CardDav"
-msgstr "CardDav"
+msgstr ""
 
 #: utils.cpp:62
 #, kde-format
 msgid "GroupDav"
-msgstr "GroupDav"
+msgstr ""
 
 #~ msgid "Invalid username/password"
 #~ msgstr "ئات ياكى ئىم ئىناۋەتسىز"

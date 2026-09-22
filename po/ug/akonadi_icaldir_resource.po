@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:52+0000\n"
-"PO-Revision-Date: 2026-05-30 17:27-0400\n"
+"PO-Revision-Date: 2026-09-22 18:03+0900\n"
 "Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur <kde-i18n-doc@kde.org>\n"
 "Language: ug\n"
@@ -77,8 +77,6 @@ msgid ""
 "Select the directory whose contents should be represented by this resource. "
 "If the directory does not exist, it will be created."
 msgstr ""
-"بۇ مەنبە مەزمۇن كۆرسىتىدىغان مۇندەرىجىنى تاللاڭ. ئەگەر مۇندەرىجە مەۋجۇت "
-"بولمىسا ئۇنى قۇرىدۇ."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: icaldirsagentsettingswidget.ui:68
