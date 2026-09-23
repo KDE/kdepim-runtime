@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-22 00:45+0000\n"
-"PO-Revision-Date: 2026-06-26 20:44+0200\n"
+"PO-Revision-Date: 2026-09-22 21:55+0200\n"
 "Last-Translator: Alexander Yavorskiy <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
@@ -205,22 +205,19 @@ msgid "Unable to delete item exceptions: %1"
 msgstr "Не удалось удалить исключения объекта: %1"
 
 #: davgroupwareresource.cpp:882
-#, fuzzy, kde-format
-#| msgid "Unable to change item: %1"
+#, kde-format
 msgid "Unable to fetch items: %1"
-msgstr "Не удалось изменить объект: %1"
+msgstr "Не удалось получить объекты: %1"
 
 #: davgroupwareresource.cpp:951
-#, fuzzy, kde-format
-#| msgid "Unable to remove item: %1"
+#, kde-format
 msgid "Unable to move item: %1"
-msgstr "Не удалось удалить объект: %1"
+msgstr "Не удалось переместить объект: %1"
 
 #: davgroupwareresource.cpp:984
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve item: %1"
+#, kde-format
 msgid "Unable to create item during move: %1"
-msgstr "Не удалось получить объект: %1"
+msgstr "Не удалось создать объект при перемещении: %1"
 
 #: davgroupwareresource.cpp:1154
 #, kde-format
@@ -248,10 +245,9 @@ msgid "Unable to retrieve collections: %1"
 msgstr "Не удалось получить коллекции: %1"
 
 #: davgroupwareresource.cpp:1421
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Failed to retrieve collection: %1"
-msgstr "Не удалось получить коллекции: %1"
+msgstr "Не удалось получить коллекцию: %1"
 
 #: davgroupwareresource.cpp:1551 davgroupwareresource.cpp:1655
 #, kde-format
