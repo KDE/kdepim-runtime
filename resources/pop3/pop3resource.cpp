@@ -9,7 +9,7 @@
 #include <KPOP/FetchJob>
 #include <KPOP/ListJob>
 #include <KPOP/LoginJob>
-#include <KPOP/Pop3Protocol>
+#include <KPOP/Pop3Errors>
 #include <KPOP/QuitJob>
 #include <KPOP/UidListJob>
 
@@ -460,7 +460,7 @@ void POP3Resource::loginJobResult(KJob *job)
 {
     if (job->error()) {
         qCDebug(POP3RESOURCE_LOG) << job->error() << job->errorText();
-        if (job->error() == POP3Protocol::ERR_CANNOT_LOGIN) {
+        if (job->error() == KPOP::ERR_CANNOT_LOGIN) {
             mAskAgain = true;
         }
         cancelSync(i18n("Unable to login to the server \"%1\".", mSettings.host()) + u'\n' + job->errorString());
