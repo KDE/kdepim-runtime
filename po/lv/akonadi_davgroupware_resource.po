@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-22 00:45+0000\n"
+"POT-Creation-Date: 2026-09-24 00:46+0000\n"
 "PO-Revision-Date: 2025-09-26 16:21+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -171,93 +171,100 @@ msgstr "Nederīga servera atbilde"
 msgid "Unable to parse free-busy data received"
 msgstr "Nevar parsēt saņemtos „brīvs vai aizņemts“ datus"
 
-#: davgroupwareresource.cpp:290
+#: davgroupwareresource.cpp:300
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "Nevar izgūt „brīvs vai aizņemts“ datus, esot nesaistē"
 
-#: davgroupwareresource.cpp:377
+#: davgroupwareresource.cpp:387
 #, kde-format
 msgid "Fetching collections"
 msgstr "Izgūt kolekcijas"
 
-#: davgroupwareresource.cpp:437
+#: davgroupwareresource.cpp:447
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Lūdza izgūt vienumus nezināmai kolekcijai: %1"
 
-#: davgroupwareresource.cpp:504
+#: davgroupwareresource.cpp:521
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Nederīga kolekcija vienumam %1."
 
-#: davgroupwareresource.cpp:781
+#: davgroupwareresource.cpp:798
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to delete item exceptions: %1"
 msgstr "Neizdevās saņemt kolekcijas: %1"
 
-#: davgroupwareresource.cpp:882
+#: davgroupwareresource.cpp:908
 #, fuzzy, kde-format
 #| msgid "Unable to change item: %1"
 msgid "Unable to fetch items: %1"
 msgstr "Neizdevās mainīt vienumu: %1"
 
-#: davgroupwareresource.cpp:951
+#: davgroupwareresource.cpp:977
 #, fuzzy, kde-format
 #| msgid "Unable to remove item: %1"
 msgid "Unable to move item: %1"
 msgstr "Neizdevās noņemt vienumu: %1"
 
-#: davgroupwareresource.cpp:984
+#: davgroupwareresource.cpp:1010
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve item: %1"
 msgid "Unable to create item during move: %1"
 msgstr "Neizdevās izgūt vienumu: %1"
 
-#: davgroupwareresource.cpp:1154
+#: davgroupwareresource.cpp:1180
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Neizdevās mainīt vienumus: %1"
 
-#: davgroupwareresource.cpp:1227
+#: davgroupwareresource.cpp:1253
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Neizdevās mainīt kolekciju: %1"
 
-#: davgroupwareresource.cpp:1357
+#: davgroupwareresource.cpp:1383
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to create collection: %1"
 msgstr "Neizdevās noņemt kolekciju: %1"
 
-#: davgroupwareresource.cpp:1386
+#: davgroupwareresource.cpp:1412
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Neizdevās noņemt kolekciju: %1"
 
-#: davgroupwareresource.cpp:1406 davgroupwareresource.cpp:1464
-#, kde-format
-msgid "Unable to retrieve collections: %1"
+#: davgroupwareresource.cpp:1434
+#, fuzzy, kde-format
+#| msgid "Unable to retrieve collections: %1"
+msgid "Unable to retrieve collection: %1"
 msgstr "Neizdevās saņemt kolekcijas: %1"
 
-#: davgroupwareresource.cpp:1421
+#: davgroupwareresource.cpp:1449
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Failed to retrieve collection: %1"
 msgstr "Neizdevās saņemt kolekcijas: %1"
 
-#: davgroupwareresource.cpp:1551 davgroupwareresource.cpp:1655
+#: davgroupwareresource.cpp:1495
+#, kde-format
+msgid "Unable to retrieve collections: %1"
+msgstr "Neizdevās saņemt kolekcijas: %1"
+
+#: davgroupwareresource.cpp:1657 davgroupwareresource.cpp:2216
+#: davgroupwareresource.cpp:2246
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Neizdevās izgūt vienumus: %1"
 
-#: davgroupwareresource.cpp:1791
+#: davgroupwareresource.cpp:1786
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Neizdevās izgūt vienumu: %1"
 
-#: davgroupwareresource.cpp:1811
+#: davgroupwareresource.cpp:1806
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -266,23 +273,23 @@ msgstr ""
 "Neizdevās izgūt vienumu: neizdevās parsēt vienumu datus. Iespējams, tie ir "
 "jau dzēsti."
 
-#: davgroupwareresource.cpp:1871
+#: davgroupwareresource.cpp:1866
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Neizdevās pievienot vienumu: %1"
 
-#: davgroupwareresource.cpp:1916 davgroupwareresource.cpp:2048
-#: davgroupwareresource.cpp:2060
+#: davgroupwareresource.cpp:1911 davgroupwareresource.cpp:2043
+#: davgroupwareresource.cpp:2055
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Neizdevās mainīt vienumu: %1"
 
-#: davgroupwareresource.cpp:2022 davgroupwareresource.cpp:2079
+#: davgroupwareresource.cpp:2017 davgroupwareresource.cpp:2074
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Neizdevās noņemt vienumu: %1"
 
-#: davgroupwareresource.cpp:2166 davgroupwareresource.cpp:2167
+#: davgroupwareresource.cpp:2161 davgroupwareresource.cpp:2162
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Resurss vēl nav konfigurēts"
@@ -629,17 +636,17 @@ msgstr "Atklātās kolekcijas:"
 msgid "Fetch"
 msgstr "Izgūt"
 
-#: utils.cpp:56
+#: utils.cpp:60
 #, kde-format
 msgid "CalDav"
 msgstr "CalDav"
 
-#: utils.cpp:59
+#: utils.cpp:63
 #, kde-format
 msgid "CardDav"
 msgstr "CardDav"
 
-#: utils.cpp:62
+#: utils.cpp:66
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"

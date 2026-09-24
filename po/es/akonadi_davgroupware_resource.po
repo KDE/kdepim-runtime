@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-22 00:45+0000\n"
+"POT-Creation-Date: 2026-09-24 00:46+0000\n"
 "PO-Revision-Date: 2026-09-05 16:24+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -174,88 +174,95 @@ msgstr "Respuesta no válida del servidor"
 msgid "Unable to parse free-busy data received"
 msgstr "No es posible analizar los datos recibidos de disponibilidad"
 
-#: davgroupwareresource.cpp:290
+#: davgroupwareresource.cpp:300
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr ""
 "No se puede recuperar la información de disponibilidad estando desconectado"
 
-#: davgroupwareresource.cpp:377
+#: davgroupwareresource.cpp:387
 #, kde-format
 msgid "Fetching collections"
 msgstr "Obteniendo colecciones"
 
-#: davgroupwareresource.cpp:437
+#: davgroupwareresource.cpp:447
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Se le pidió recuperar elementos para una colección desconocida: %1"
 
-#: davgroupwareresource.cpp:504
+#: davgroupwareresource.cpp:521
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Colección no válida para el elemento %1."
 
-#: davgroupwareresource.cpp:781
+#: davgroupwareresource.cpp:798
 #, kde-format
 msgid "Unable to delete item exceptions: %1"
 msgstr "No se han podido borrar las excepciones del elemento: %1"
 
-#: davgroupwareresource.cpp:882
+#: davgroupwareresource.cpp:908
 #, kde-format
 msgid "Unable to fetch items: %1"
 msgstr "No se han podido obtener los elementos: %1"
 
-#: davgroupwareresource.cpp:951
+#: davgroupwareresource.cpp:977
 #, kde-format
 msgid "Unable to move item: %1"
 msgstr "No se ha podido mover el elemento: %1"
 
-#: davgroupwareresource.cpp:984
+#: davgroupwareresource.cpp:1010
 #, kde-format
 msgid "Unable to create item during move: %1"
 msgstr "No se puede crear el elemento durante el movimiento: %1"
 
-#: davgroupwareresource.cpp:1154
+#: davgroupwareresource.cpp:1180
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "No se han podido modificar los elementos: %1"
 
-#: davgroupwareresource.cpp:1227
+#: davgroupwareresource.cpp:1253
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "No se puede modificar la colección: %1"
 
-#: davgroupwareresource.cpp:1357
+#: davgroupwareresource.cpp:1383
 #, kde-format
 msgid "Unable to create collection: %1"
 msgstr "No se puede crear la colección: %1"
 
-#: davgroupwareresource.cpp:1386
+#: davgroupwareresource.cpp:1412
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "No se puede eliminar la colección: %1"
 
-#: davgroupwareresource.cpp:1406 davgroupwareresource.cpp:1464
-#, kde-format
-msgid "Unable to retrieve collections: %1"
+#: davgroupwareresource.cpp:1434
+#, fuzzy, kde-format
+#| msgid "Unable to retrieve collections: %1"
+msgid "Unable to retrieve collection: %1"
 msgstr "No se pueden recuperar las colecciones %1"
 
-#: davgroupwareresource.cpp:1421
+#: davgroupwareresource.cpp:1449
 #, kde-format
 msgid "Failed to retrieve collection: %1"
 msgstr "No se ha podido recuperar la colección: %1"
 
-#: davgroupwareresource.cpp:1551 davgroupwareresource.cpp:1655
+#: davgroupwareresource.cpp:1495
+#, kde-format
+msgid "Unable to retrieve collections: %1"
+msgstr "No se pueden recuperar las colecciones %1"
+
+#: davgroupwareresource.cpp:1657 davgroupwareresource.cpp:2216
+#: davgroupwareresource.cpp:2246
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "No se pueden recuperar los elementos %1"
 
-#: davgroupwareresource.cpp:1791
+#: davgroupwareresource.cpp:1786
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "No se puede recuperar el elemento %1"
 
-#: davgroupwareresource.cpp:1811
+#: davgroupwareresource.cpp:1806
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -264,23 +271,23 @@ msgstr ""
 "No se ha podido recuperar el elemento: ha fallado el análisis de los datos "
 "del elemento. Es posible que ya se hubiera borrado."
 
-#: davgroupwareresource.cpp:1871
+#: davgroupwareresource.cpp:1866
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "No se puede añadir el elemento %1"
 
-#: davgroupwareresource.cpp:1916 davgroupwareresource.cpp:2048
-#: davgroupwareresource.cpp:2060
+#: davgroupwareresource.cpp:1911 davgroupwareresource.cpp:2043
+#: davgroupwareresource.cpp:2055
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "No se puede cambiar el elemento %1"
 
-#: davgroupwareresource.cpp:2022 davgroupwareresource.cpp:2079
+#: davgroupwareresource.cpp:2017 davgroupwareresource.cpp:2074
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "No se puede eliminar el elemento %1"
 
-#: davgroupwareresource.cpp:2166 davgroupwareresource.cpp:2167
+#: davgroupwareresource.cpp:2161 davgroupwareresource.cpp:2162
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Todavía no se ha configurado el recurso"
@@ -630,17 +637,17 @@ msgstr "Colecciones descubiertas:"
 msgid "Fetch"
 msgstr "Obtener"
 
-#: utils.cpp:56
+#: utils.cpp:60
 #, kde-format
 msgid "CalDav"
 msgstr "CalDav"
 
-#: utils.cpp:59
+#: utils.cpp:63
 #, kde-format
 msgid "CardDav"
 msgstr "CardDav"
 
-#: utils.cpp:62
+#: utils.cpp:66
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
