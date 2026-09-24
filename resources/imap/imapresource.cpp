@@ -69,6 +69,8 @@
 
 #include "resourceadaptor.h"
 
+#include <config-imap.h>
+
 #ifdef WITH_GMAIL_XOAUTH2
 #include "passwordrequester.h"
 #else
