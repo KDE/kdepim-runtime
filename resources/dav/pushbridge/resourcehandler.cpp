@@ -22,15 +22,18 @@ ResourceHandler::ResourceHandler(const QString &resourceName, const QString &vap
     m_connector->setVapidPublicKey(m_vapid);
     m_connector->setVapidPublicKeyRequired(true);
     connect(m_connector.get(), &KUnifiedPush::Connector::messageReceived, this, [this](const QByteArray &data) {
+        // TODO parse data
+        Q_EMIT contentUpdate(m_resourceName, "topic"_L1, "syncToken"_L1);
         qCDebug(DAVPUSHNOTIFYBRIDGE_LOG) << this->vapid() << "DAVPUSH Message received" << data;
     });
     connect(m_connector.get(), &KUnifiedPush::Connector::endpointChanged, this, [this](const QString &endpoint) {
+        Q_EMIT endpointChanged(m_resourceName, endpoint, m_connector->contentEncryptionAuthSecret(), m_connector->contentEncryptionPublicKey());
         qCDebug(DAVPUSHNOTIFYBRIDGE_LOG) << this->vapid() << "Endpoint changed" << endpoint;
     });
     connect(m_connector.get(), &KUnifiedPush::Connector::stateChanged, this, [this](auto state) {
         qCDebug(DAVPUSHNOTIFYBRIDGE_LOG) << "stateChanged" << this->vapid() << "State" << state;
     });
-    m_connector->registerClient(vapid);
+    m_connector->registerClient("Push bridge for "_L1 + resourceName);
 }
 
 QString ResourceHandler::vapid() const
