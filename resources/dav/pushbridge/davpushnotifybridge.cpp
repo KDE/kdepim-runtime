@@ -31,6 +31,18 @@ void DavPushNotifyBridge::registerResource(const QString &resourceServiceName, c
         it = m_resources.insert({resourceServiceName, std::make_unique<ResourceHandler>(resourceServiceName, vapid)}).first;
         resourceHandler = it->second.get();
     }
+
     connect(resourceHandler, &ResourceHandler::endpointChanged, this, &DavPushNotifyBridge::endpointChanged);
     connect(resourceHandler, &ResourceHandler::contentUpdate, this, &DavPushNotifyBridge::contentUpdate);
+    connect(resourceHandler, &ResourceHandler::propertyUpdate, this, &DavPushNotifyBridge::propertyUpdate);
+    connect(resourceHandler, &ResourceHandler::vapidKeyUpdated, this, &DavPushNotifyBridge::vapidKeyUpdated);
+}
+
+void DavPushNotifyBridge::unregisterResource(const QString &resourceServiceName)
+{
+    // TODO delete on kunifiedpush
+    qCDebug(DAVPUSHNOTIFYBRIDGE_LOG) << "Unregistering" << resourceServiceName;
+    if (m_resources.contains(resourceServiceName)) {
+        m_resources.erase(resourceServiceName);
+    }
 }
