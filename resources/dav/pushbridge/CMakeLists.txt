@@ -1,4 +1,5 @@
 # SPDX-FileCopyrightText: 2026 Benjamin Port <benjamin.port@enioka.com>
+# SPDX-License-Identifier: BSD-2-Clause
 
 find_package(KUnifiedPush REQUIRED)
 
@@ -8,6 +9,8 @@ set(davpushnotifybridge_SRCS
     davpushnotifybridge.h
     resourcehandler.cpp
     resourcehandler.h
+    pushnotificationmessageparser.cpp
+    pushnotificationmessageparser.h
 )
 
 qt_add_dbus_adaptor(dbus_srcs interfaces/org.kde.akonadi_davpushnotifybridge.Management.xml davpushnotifybridge.h DavPushNotifyBridge)
@@ -46,3 +49,7 @@ install(
         akonadi_davpushnotifybridge
         ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
 )
+
+if(BUILD_TESTING)
+    add_subdirectory(autotests)
+endif()
