@@ -9,10 +9,20 @@
       <arg name="resourceName" type="s" direction="in"/>
       <arg name="vapid" type="s" direction="in"/>
     </method>
+    <method name="unregisterResource">
+      <arg name="resourceName" type="s" direction="in"/>
+    </method>
     <signal name="contentUpdate">
       <arg type="s" name="resourceName" direction="out"/>
       <arg type="s" name="topicName" direction="out"/>
       <arg type="s" name="syncToken" direction="out"/>
+    </signal>
+    <signal name="propertyUpdate">
+      <arg type="s" name="resourceName" direction="out"/>
+      <arg type="s" name="topicName" direction="out"/>
+    </signal>
+    <signal name="vapidKeyUpdated">
+      <arg type="s" name="resourceName" direction="out"/>
     </signal>
     <signal name="endpointChanged">
       <arg type="s" name="resourceName" direction="out"/>

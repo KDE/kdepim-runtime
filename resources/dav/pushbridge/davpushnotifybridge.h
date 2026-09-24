@@ -17,8 +17,11 @@ class DavPushNotifyBridge : public QObject, public QDBusContext
 public:
     explicit DavPushNotifyBridge(QObject *parent = nullptr);
     void registerResource(const QString &resourceServiceName, const QString &vapid);
+    void unregisterResource(const QString &resourceServiceName);
 Q_SIGNALS:
     void contentUpdate(const QString &resourceName, const QString &topic, const QString &syncToken);
+    void propertyUpdate(const QString &resourceName, const QString &topic);
+    void vapidKeyUpdated(const QString &resourceName);
     void endpointChanged(const QString &resourceName,
                          const QString &endpoint,
                          const QByteArray &contentEncryptionAuthSecret,
