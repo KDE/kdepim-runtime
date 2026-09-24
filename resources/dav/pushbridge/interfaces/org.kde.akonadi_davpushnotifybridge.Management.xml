@@ -9,5 +9,16 @@
       <arg name="resourceName" type="s" direction="in"/>
       <arg name="vapid" type="s" direction="in"/>
     </method>
+    <signal name="contentUpdate">
+      <arg type="s" name="resourceName" direction="out"/>
+      <arg type="s" name="topicName" direction="out"/>
+      <arg type="s" name="syncToken" direction="out"/>
+    </signal>
+    <signal name="endpointChanged">
+      <arg type="s" name="resourceName" direction="out"/>
+      <arg type="s" name="endpoint" direction="out"/>
+      <arg type="ay" name="contentEncryptionAuthSecret" direction="out"/>
+      <arg type="ay" name="contentEncryptionPublicKey" direction="out"/>
+    </signal>
   </interface>
 </node>
