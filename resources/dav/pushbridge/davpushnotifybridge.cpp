@@ -33,4 +33,6 @@ void DavPushNotifyBridge::registerResource(const QString &resourceServiceName, c
     m_resources.try_emplace(resourceServiceName, std::make_unique<ResourceHandler>(resourceServiceName, vapid));
     connect(m_resources[resourceServiceName].get(), &ResourceHandler::endpointChanged, this, &DavPushNotifyBridge::endpointChanged);
     connect(m_resources[resourceServiceName].get(), &ResourceHandler::contentUpdate, this, &DavPushNotifyBridge::contentUpdate);
+    connect(m_resources[resourceServiceName].get(), &ResourceHandler::propertyUpdate, this, &DavPushNotifyBridge::propertyUpdate);
+    connect(m_resources[resourceServiceName].get(), &ResourceHandler::vapidKeyUpdated, this, &DavPushNotifyBridge::vapidKeyUpdated);
 }

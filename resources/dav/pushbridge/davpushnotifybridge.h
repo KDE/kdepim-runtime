@@ -19,6 +19,8 @@ public:
     void registerResource(const QString &resourceServiceName, const QString &vapid);
 Q_SIGNALS:
     void contentUpdate(const QString &resourceName, const QString &topic, const QString &syncToken);
+    void propertyUpdate(const QString &resourceName, const QString &topic);
+    void vapidKeyUpdated(const QString &resourceName);
     void endpointChanged(const QString &resourceName,
                          const QString &endpoint,
                          const QByteArray &contentEncryptionAuthSecret,

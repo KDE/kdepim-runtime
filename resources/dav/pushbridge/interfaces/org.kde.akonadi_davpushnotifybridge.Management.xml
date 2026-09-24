@@ -14,6 +14,13 @@
       <arg type="s" name="topicName" direction="out"/>
       <arg type="s" name="syncToken" direction="out"/>
     </signal>
+    <signal name="propertyUpdate">
+      <arg type="s" name="resourceName" direction="out"/>
+      <arg type="s" name="topicName" direction="out"/>
+    </signal>
+    <signal name="vapidKeyUpdated">
+      <arg type="s" name="resourceName" direction="out"/>
+    </signal>
     <signal name="endpointChanged">
       <arg type="s" name="resourceName" direction="out"/>
       <arg type="s" name="endpoint" direction="out"/>

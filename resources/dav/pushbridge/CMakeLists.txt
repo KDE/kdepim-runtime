@@ -8,6 +8,8 @@ set(davpushnotifybridge_SRCS
     davpushnotifybridge.h
     resourcehandler.cpp
     resourcehandler.h
+    pushnotificationmessageparser.cpp
+    pushnotificationmessageparser.h
 )
 
 qt_add_dbus_adaptor(dbus_srcs interfaces/org.kde.akonadi_davpushnotifybridge.Management.xml davpushnotifybridge.h DavPushNotifyBridge)

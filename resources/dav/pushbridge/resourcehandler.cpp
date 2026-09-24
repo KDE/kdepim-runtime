@@ -1,5 +1,5 @@
 /*
-SPDX-FileCopyrightText: 2026 Benjamin Port <benjamin.port@enioka.com>
+    SPDX-FileCopyrightText: 2026 Benjamin Port <benjamin.port@enioka.com>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
@@ -7,6 +7,8 @@ SPDX-FileCopyrightText: 2026 Benjamin Port <benjamin.port@enioka.com>
 #include "resourcehandler.h"
 
 #include "davpushnotifybridge_debug.h"
+#include "pushnotificationmessageparser.h"
+
 #include <QString>
 #include <qlatin1stringview.h>
 #include <qloggingcategory.h>
@@ -22,9 +24,21 @@ ResourceHandler::ResourceHandler(const QString &resourceName, const QString &vap
     m_connector->setVapidPublicKey(m_vapid);
     m_connector->setVapidPublicKeyRequired(true);
     connect(m_connector.get(), &KUnifiedPush::Connector::messageReceived, this, [this](const QByteArray &data) {
-        // TODO parse data
-        Q_EMIT contentUpdate(m_resourceName, "topic"_L1, "syncToken"_L1);
-        qCDebug(DAVPUSHNOTIFYBRIDGE_LOG) << this->vapid() << "DAVPUSH Message received" << data;
+        PushNotificationMessageParser parser;
+        parser.read(data);
+        if (!parser.isValid) {
+            qCDebug(DAVPUSHNOTIFYBRIDGE_LOG) << "Resource:" << this->m_resourceName << "Invalid message received" << data;
+            return;
+        }
+        if (parser.isContentUpdate && !parser.topic.isEmpty()) {
+            Q_EMIT contentUpdate(m_resourceName, parser.topic, parser.syncToken);
+        } else if (parser.isPropertyUpdate) {
+            Q_EMIT propertyUpdate(m_resourceName, parser.topic);
+        } else if (parser.isVapidKeyUpdate) {
+            Q_EMIT vapidKeyUpdated(m_resourceName);
+        } else {
+            qCWarning(DAVPUSHNOTIFYBRIDGE_LOG) << "Resource:" << this->m_resourceName << "Message parsing failed to determine update type" << data;
+        }
     });
     connect(m_connector.get(), &KUnifiedPush::Connector::endpointChanged, this, [this](const QString &endpoint) {
         Q_EMIT endpointChanged(m_resourceName, endpoint, m_connector->contentEncryptionAuthSecret(), m_connector->contentEncryptionPublicKey());
