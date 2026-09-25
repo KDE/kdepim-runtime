@@ -24,15 +24,15 @@ MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWid
     auto vboxLayout = new QVBoxLayout(this);
     auto toolbar = new QToolBar(QStringLiteral("MigrationControlToolbar"), this);
 
-    QAction *start = toolbar->addAction(QStringLiteral("Start"));
+    QAction *start = toolbar->addAction(i18n("Start"));
     start->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-start")));
     connect(start, &QAction::triggered, this, &MigrationStatusWidget::startSelected);
 
-    QAction *pause = toolbar->addAction(QStringLiteral("Pause"));
+    QAction *pause = toolbar->addAction(i18n("Pause"));
     pause->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-pause")));
     connect(pause, &QAction::triggered, this, &MigrationStatusWidget::pauseSelected);
 
-    QAction *abort = toolbar->addAction(QStringLiteral("Abort"));
+    QAction *abort = toolbar->addAction(i18n("Abort"));
     abort->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-stop")));
     connect(abort, &QAction::triggered, this, &MigrationStatusWidget::abortSelected);
 
