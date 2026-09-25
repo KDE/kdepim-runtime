@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <memory>
-
+#include "davpushbridgehandler.h"
 #include "settings.h"
+
 #include <Akonadi/AccountBase>
 #include <Akonadi/FreeBusyProviderBase>
 #include <Akonadi/ResourceWidgetBase>
@@ -55,6 +55,17 @@ private Q_SLOTS:
     void createInitialCache();
     void initialRetrieveCollections();
     void onCreateInitialCacheReady(KJob *);
+
+private:
+    void setupDbusHandler();
+    void refreshPushRegistrations(const Akonadi::Collection::List &collections);
+    void refreshPushRegistrations();
+
+private Q_SLOTS:
+    void onDavPushEndpointChanged(const QVariant &args);
+    void onRefreshPushRegistrations(const QVariant &args);
+    void onDavPushMessage(const QVariant &args);
+    void onDavPushVapidKeyDetected(const QVariant &args);
 
 protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
@@ -177,6 +188,7 @@ private:
     QString iconForDavUrl(const KDAV::DavUrl &davUrl);
 
     Akonadi::Collection mDavCollectionRoot;
+    DavPushBridgeHandler mDavPushBridgeHandler;
     QMap<QString, std::shared_ptr<DavItemCache>> mDavItemCache;
     // collections retrieved by retrieveCollections that have yet to get their items retrieved in retrieveItems
     QSet<QString> mRetrievedCollections;

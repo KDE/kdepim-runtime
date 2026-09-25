@@ -7,6 +7,8 @@ set(davgroupwareresource_common_SRCS
     attributes/davprotocolattribute.h
     attributes/davpushattribute.cpp
     attributes/davpushattribute.h
+    attributes/remotedavpushattribute.cpp
+    attributes/remotedavpushattribute.h
     attributes/ctagattribute.cpp
     attributes/ctagattribute.h
     attributes/remotectagattribute.cpp
@@ -15,6 +17,8 @@ set(davgroupwareresource_common_SRCS
     attributes/synctokenattribute.h
     attributes/remotesynctokenattribute.cpp
     attributes/remotesynctokenattribute.h
+    jobs/davpushregistercollectionsjob.cpp
+    jobs/davpushregistercollectionsjob.h
     settings.cpp
     settings.h
     davstate.cpp
@@ -62,9 +66,11 @@ set(davgroupwareresource_SRCS
     davgroupwareresource.cpp
     daverror-kdepim-runtime.h
     davitemcache.h
+    davpushbridgehandler.cpp
     davfreebusyhandler.h
     davgroupwareresource.h
     davetagcache.h
+    davpushbridgehandler.h
 )
 
 install(FILES davgroupwareresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")

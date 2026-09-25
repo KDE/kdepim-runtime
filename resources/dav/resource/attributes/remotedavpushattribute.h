@@ -7,21 +7,16 @@
 #pragma once
 
 #include <Akonadi/Attribute>
-#include <QDateTime>
 
 #include <QString>
-#include <QUrl>
 
-class DavPushAttribute : public Akonadi::Attribute
+class RemoteDavPushAttribute : public Akonadi::Attribute
 {
 public:
-    explicit DavPushAttribute();
+    explicit RemoteDavPushAttribute();
 
-    [[nodiscard]] QUrl registrationUrl() const;
-    void setRegistrationUrl(const QUrl &registrationUrl);
-
-    [[nodiscard]] QDateTime expirationDate() const;
-    void setExpirationDate(const QDateTime &expirationDate);
+    [[nodiscard]] QString topic() const;
+    void setTopic(const QString &topic);
 
     [[nodiscard]] Akonadi::Attribute *clone() const override;
     [[nodiscard]] QByteArray type() const override;
@@ -30,6 +25,4 @@ public:
 
 private:
     QString mTopic;
-    QUrl mRegistrationUrl;
-    QDateTime mExpirationDate;
 };

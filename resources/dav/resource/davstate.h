@@ -19,17 +19,30 @@ class DavState : public QObject
 public:
     explicit DavState(const KSharedConfigPtr &config);
 
-    [[nodiscard]] QString getToken() const;
-    void setToken(const QString &token);
-    void clearToken();
+    KConfigGroup pushConfigGroup() const;
+    void clearPush();
 
-    [[nodiscard]] QUrl getSubscriptionUrl() const;
-    void setSubscriptionUrl(const QString &subscriptionUrl);
-    void clearSubscriptionUrl();
+    // Format is base64url
+    [[nodiscard]] QByteArray getPushVapidPublicKey() const;
+    // Format is base64url
+    void setPushVapidPublicKey(const QByteArray &vapidPublicKey);
+    void clearPushVapidPublicKey();
 
-    [[nodiscard]] QByteArray getVapidPublicKey() const;
-    void setVapidPublicKey(const QByteArray &vapidPublicKey);
-    void clearVapidPublicKey();
+    [[nodiscard]] QUrl getPushEndpoint() const;
+    void setPushEndpoint(const QUrl &pushEndpoint);
+    void clearPushEndpoint();
+
+    // Format is base64url
+    [[nodiscard]] QByteArray getPushAuthSecret() const;
+    // Format is base64url
+    void setPushAuthSecret(const QByteArray &pushAuthSecret);
+    void clearPushAuthSecret();
+
+    // Format is base64url
+    [[nodiscard]] QByteArray getPushEncryptionPublicKey() const;
+    // Format is base64url
+    void setPushEncryptionPublicKey(const QByteArray &pushEncryptionPublicKey);
+    void clearPushEncryptionPublicKey();
 
 private:
     KSharedConfigPtr mConfig;

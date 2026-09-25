@@ -36,6 +36,7 @@
 
 #include "attributes/ctagattribute.h"
 #include "attributes/remotectagattribute.h"
+#include "attributes/remotedavpushattribute.h"
 #include "attributes/remotesynctokenattribute.h"
 #include "attributes/synctokenattribute.h"
 #include "davresource_debug.h"
@@ -99,9 +100,9 @@ Akonadi::Collection Utils::createAkonadiCollection(const KDAV::DavCollection &da
 
 #if DAV_ENABLE_PUSH_NOTIFICATIONS
 #if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
-    auto davPush = davCollection.davPushSupport();
+    const auto davPush = davCollection.davPushSupport();
     if (davPush.isValid()) {
-        auto attr = collection.attribute<DavPushAttribute>(Akonadi::Collection::AddIfMissing);
+        const auto attr = collection.attribute<RemoteDavPushAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setTopic(davPush.topic());
     }
 #endif
@@ -187,6 +188,10 @@ Akonadi::Collection
 Utils::createAkonadiCollection(const KDAV::DavCollection &davCollection, const Akonadi::Collection &davCollectionRoot, const Akonadi::Collection &oldCollection)
 {
     auto collection = createAkonadiCollection(davCollection, davCollectionRoot);
+    // Reuse the old collection id
+    if (oldCollection.isValid()) {
+        collection.setId(oldCollection.id());
+    }
     // Fetch previous collection attributes that represents local state and is not stored in server
     if (oldCollection.isValid()) {
         if (oldCollection.hasAttribute<CTagAttribute>()) {
@@ -194,6 +199,9 @@ Utils::createAkonadiCollection(const KDAV::DavCollection &davCollection, const A
         }
         if (oldCollection.hasAttribute<SyncTokenAttribute>()) {
             collection.addAttribute(oldCollection.attribute<SyncTokenAttribute>()->clone());
+        }
+        if (oldCollection.hasAttribute<DavPushAttribute>()) {
+            collection.addAttribute(oldCollection.attribute<DavPushAttribute>()->clone());
         }
     }
     return collection;

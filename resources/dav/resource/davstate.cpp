@@ -12,79 +12,103 @@
 
 using namespace Qt::Literals;
 
-constexpr auto DAV_PUSH_GROUP = "DavPush"_L1;
+constexpr auto PUSH_GROUP = "DavPush"_L1;
+constexpr auto PUSH_PROP_VAPID_PUBLIC_KEY = "vapidPublicKey"_L1;
+constexpr auto PUSH_PROP_ENDPOINT = "endpoint"_L1;
+constexpr auto PUSH_PROP_AUTH_SECRET = "authSecret"_L1;
+constexpr auto PUSH_PROP_ENCRYPTION_PUBLIC_KEY = "encryptionPublicKey"_L1;
 
 DavState::DavState(const KSharedConfigPtr &config)
     : mConfig(config)
 {
 }
 
-QString DavState::getToken() const
+KConfigGroup DavState::pushConfigGroup() const
 {
-    auto state = KConfigGroup(mConfig, DAV_PUSH_GROUP);
-    if (state.hasKey(u"token"_s)) {
-        return state.readEntry(u"token"_s, QString());
-    }
-    return QString();
+    return KConfigGroup(mConfig, PUSH_GROUP);
 }
 
-void DavState::setToken(const QString &token)
+void DavState::clearPush()
 {
-    auto state = KConfigGroup(mConfig, DAV_PUSH_GROUP);
-    state.writeEntry(u"token"_s, token);
+    clearPushVapidPublicKey();
+    clearPushEndpoint();
+    clearPushAuthSecret();
+    clearPushEncryptionPublicKey();
+}
+
+QByteArray DavState::getPushVapidPublicKey() const
+{
+    return pushConfigGroup().readEntry(PUSH_PROP_VAPID_PUBLIC_KEY, QByteArray());
+}
+
+void DavState::setPushVapidPublicKey(const QByteArray &vapidPublicKey)
+{
+    auto state = pushConfigGroup();
+    state.writeEntry(PUSH_PROP_VAPID_PUBLIC_KEY, vapidPublicKey);
     state.sync();
 }
 
-void DavState::clearToken()
+void DavState::clearPushVapidPublicKey()
 {
-    auto state = KConfigGroup(mConfig, DAV_PUSH_GROUP);
-    state.deleteEntry(u"token"_s);
+    auto state = pushConfigGroup();
+    state.deleteEntry(PUSH_PROP_VAPID_PUBLIC_KEY);
     state.sync();
 }
 
-QUrl DavState::getSubscriptionUrl() const
+QUrl DavState::getPushEndpoint() const
 {
-    auto state = KConfigGroup(mConfig, DAV_PUSH_GROUP);
-    if (state.hasKey(u"subscriptionUrl"_s)) {
-        return state.readEntry(u"subscriptionUrl"_s, QUrl());
-    }
-    return QUrl();
+    return pushConfigGroup().readEntry(PUSH_PROP_ENDPOINT, QUrl());
 }
 
-void DavState::setSubscriptionUrl(const QString &subscriptionUrl)
+void DavState::setPushEndpoint(const QUrl &pushEndpoint)
 {
-    auto state = KConfigGroup(mConfig, DAV_PUSH_GROUP);
-    state.writeEntry(u"subscriptionUrl"_s, subscriptionUrl);
+    auto state = pushConfigGroup();
+    state.writeEntry(PUSH_PROP_ENDPOINT, pushEndpoint);
     state.sync();
 }
 
-void DavState::clearSubscriptionUrl()
+void DavState::clearPushEndpoint()
 {
-    auto state = KConfigGroup(mConfig, DAV_PUSH_GROUP);
-    state.deleteEntry(u"subscriptionUrl"_s);
+    auto state = pushConfigGroup();
+    state.deleteEntry(PUSH_PROP_ENDPOINT);
     state.sync();
 }
 
-QByteArray DavState::getVapidPublicKey() const
+QByteArray DavState::getPushAuthSecret() const
 {
-    auto state = KConfigGroup(mConfig, DAV_PUSH_GROUP);
-    if (state.hasKey(u"vapidPublicKey"_s)) {
-        return state.readEntry(u"vapidPublicKey"_s, QByteArray());
-    }
-    return QByteArray();
+    return pushConfigGroup().readEntry(PUSH_PROP_AUTH_SECRET, QByteArray());
 }
 
-void DavState::setVapidPublicKey(const QByteArray &vapidPublicKey)
+void DavState::setPushAuthSecret(const QByteArray &pushAuthSecret)
 {
-    auto state = KConfigGroup(mConfig, DAV_PUSH_GROUP);
-    state.writeEntry(u"vapidPublicKey"_s, vapidPublicKey);
+    auto state = pushConfigGroup();
+    state.writeEntry(PUSH_PROP_AUTH_SECRET, pushAuthSecret);
     state.sync();
 }
 
-void DavState::clearVapidPublicKey()
+void DavState::clearPushAuthSecret()
 {
-    auto state = KConfigGroup(mConfig, DAV_PUSH_GROUP);
-    state.deleteEntry(u"vapidPublicKey"_s);
+    auto state = pushConfigGroup();
+    state.deleteEntry(PUSH_PROP_AUTH_SECRET);
+    state.sync();
+}
+
+QByteArray DavState::getPushEncryptionPublicKey() const
+{
+    return pushConfigGroup().readEntry(PUSH_PROP_ENCRYPTION_PUBLIC_KEY, QByteArray());
+}
+
+void DavState::setPushEncryptionPublicKey(const QByteArray &pushEncryptionPublicKey)
+{
+    auto state = pushConfigGroup();
+    state.writeEntry(PUSH_PROP_ENCRYPTION_PUBLIC_KEY, pushEncryptionPublicKey);
+    state.sync();
+}
+
+void DavState::clearPushEncryptionPublicKey()
+{
+    auto state = pushConfigGroup();
+    state.deleteEntry(PUSH_PROP_ENCRYPTION_PUBLIC_KEY);
     state.sync();
 }
 

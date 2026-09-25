@@ -12,6 +12,7 @@
 #include "attributes/davprotocolattribute.h"
 #include "attributes/davpushattribute.h"
 #include "attributes/remotectagattribute.h"
+#include "attributes/remotedavpushattribute.h"
 #include "attributes/remotesynctokenattribute.h"
 #include "attributes/synctokenattribute.h"
 #include "config-kdepim-runtime.h"
@@ -19,6 +20,7 @@
 #include "davitemcache.h"
 #include "davresource_debug.h"
 #include "davstate.h"
+#include "jobs/davpushregistercollectionsjob.h"
 #include "utils.h"
 
 #include <KDAV/DavCollection>
@@ -39,6 +41,8 @@
 #include <KDAV/DavItemsListJob>
 #if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
 #include <KDAV/DavItemsSyncJob>
+#include <KDAV/DavPushRegistration>
+#include <KDAV/DavPushRegistrationJob>
 #endif
 #include <KDAV/DavPrincipalHomesetsFetchJob>
 #if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
@@ -59,6 +63,7 @@
 #include <Akonadi/CachePolicy>
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/CollectionColorAttribute>
+#include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/EntityDisplayAttribute>
@@ -106,6 +111,7 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     : ResourceWidgetBase(id)
     , FreeBusyProviderBase()
     , AccountBase(this)
+    , mDavPushBridgeHandler(identifier())
     , mFreeBusyHandler(new DavFreeBusyHandler(settings(), this))
 {
 #if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
@@ -115,10 +121,11 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
 
     AttributeFactory::registerAttribute<DavProtocolAttribute>();
     AttributeFactory::registerAttribute<CTagAttribute>();
-    AttributeFactory::registerAttribute<DavPushAttribute>();
-    AttributeFactory::registerAttribute<SyncTokenAttribute>();
     AttributeFactory::registerAttribute<RemoteCTagAttribute>();
+    AttributeFactory::registerAttribute<SyncTokenAttribute>();
     AttributeFactory::registerAttribute<RemoteSyncTokenAttribute>();
+    AttributeFactory::registerAttribute<DavPushAttribute>();
+    AttributeFactory::registerAttribute<RemoteDavPushAttribute>();
 
     setNeedsNetwork(true);
 
@@ -162,6 +169,8 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
 
     // ResourceBase skips local changes of the EntityDisplayAttribute by default, but we want to track them for this resource
     setKeepLocalCollectionChanges({});
+
+    setupDbusHandler();
 }
 
 DavGroupwareResource::~DavGroupwareResource()
@@ -187,6 +196,207 @@ DavState *DavGroupwareResource::state() const
     }
 
     return mState;
+}
+
+void DavGroupwareResource::setupDbusHandler()
+{
+    connect(&mDavPushBridgeHandler,
+            &DavPushBridgeHandler::endpointChanged,
+            this,
+            [this](const auto &endpoint, const auto &authSecret, const auto &encryptionPublicKey) {
+                const QVariant args = QVariantMap{{"endpoint"_L1, endpoint}, {"authSecret"_L1, authSecret}, {"encryptionPublicKey"_L1, encryptionPublicKey}};
+                scheduleCustomTask(this, "onDavPushEndpointChanged", args, ResourceBase::Append);
+            });
+    connect(&mDavPushBridgeHandler, &DavPushBridgeHandler::contentUpdated, this, [this](const auto &topic, const auto &syncToken) {
+        const QVariant args = QVariantMap{{"topic"_L1, topic}, {"syncToken"_L1, syncToken}};
+        scheduleCustomTask(this, "onDavPushMessage", args, ResourceBase::Append);
+    });
+    connect(&mDavPushBridgeHandler, &DavPushBridgeHandler::propertyUpdated, this, [this](const auto &topic) {
+        const QVariant args = QVariantMap{{"topic"_L1, topic}, {"syncToken"_L1, ""_L1}};
+        scheduleCustomTask(this, "onDavPushMessage", args, ResourceBase::Append);
+    });
+    connect(&mDavPushBridgeHandler, &DavPushBridgeHandler::vapidKeyChanged, this, [this]() {
+        // TODO: need to think how this plays out
+        synchronize();
+    });
+
+    mDavPushBridgeHandler.connectHandler();
+}
+
+static bool shouldPushRegisterCollection(const Akonadi::Collection &collection)
+{
+    if (!collection.hasAttribute<RemoteDavPushAttribute>() || collection.attribute<RemoteDavPushAttribute>()->topic().isEmpty()) {
+        return false;
+    }
+    const auto *davPush = collection.attribute<DavPushAttribute>();
+    if (!davPush || davPush->registrationUrl().isEmpty()) {
+        return true;
+    }
+    constexpr auto expirationDelta = -3600; // 1 hour
+    return davPush->expirationDate().addSecs(expirationDelta) < QDateTime::currentDateTime();
+}
+
+void DavGroupwareResource::refreshPushRegistrations(const Akonadi::Collection::List &collections)
+{
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    auto pushCollections = Akonadi::Collection::List();
+    std::ranges::copy_if(collections, std::back_inserter(pushCollections), [](const Akonadi::Collection &collection) {
+        return shouldPushRegisterCollection(collection);
+    });
+
+    auto pushRegistration = KDAV::DavPushRegistration();
+    pushRegistration.setPushEndpoint(state()->getPushEndpoint());
+    pushRegistration.setAuthToken(state()->getPushAuthSecret());
+    pushRegistration.setSubscriptionPublicKey(state()->getPushEncryptionPublicKey());
+    pushRegistration.setExpiration(QDateTime::currentDateTimeUtc().addDays(3));
+    if (pushRegistration.pushEndpoint().isEmpty()) {
+        qCWarning(DAVRESOURCE_LOG) << "DavPush::refreshPushRegistrations: Resource not ready to register dav push";
+        cancelTask();
+        return;
+    }
+
+    auto *registrationsJob = new DavPushRegisterCollectionJobs(pushCollections, pushRegistration, settings());
+    connect(registrationsJob, &DavPushRegisterCollectionJobs::result, this, [this](KJob *job) {
+        if (job->error()) {
+            qCWarning(DAVRESOURCE_LOG) << "DavPush::refreshPushRegistrations: Failed to register dav push" << job->errorString();
+            cancelTask();
+            return;
+        }
+        taskDone();
+    });
+    registrationsJob->start();
+#else
+    Q_UNUSED(collections);
+    qCDebug(DAVRESOURCE_LOG()) << "DavPush::refreshPushRegistrations: not supported in this version of KDAV";
+    taskDone();
+#endif
+}
+
+void DavGroupwareResource::refreshPushRegistrations()
+{
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    auto *job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive);
+    job->fetchScope().setResource(identifier());
+    job->fetchScope().fetchAttribute<RemoteDavPushAttribute>();
+    job->fetchScope().fetchAttribute<DavPushAttribute>();
+    connect(job, &Akonadi::CollectionFetchJob::result, this, [this](KJob *job) {
+        // Note: we have the resource collection in the results
+        if (job->error()) {
+            qCWarning(DAVRESOURCE_LOG) << "DavPush::refreshPushRegistrations: Failed to fetch collections" << job->errorString();
+            cancelTask();
+            return;
+        }
+
+        const auto *fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
+        const auto collections = fetchJob->collections();
+        refreshPushRegistrations(collections);
+    });
+#else
+    qCDebug(DAVRESOURCE_LOG()) << "DavPush::refreshPushRegistrations: not supported in this version of KDAV";
+    taskDone();
+#endif
+}
+
+void DavGroupwareResource::onDavPushEndpointChanged(const QVariant &args)
+{
+    const auto argMap = args.toMap();
+    const auto endpoint = argMap.value("endpoint"_L1).toUrl();
+    const auto authSecret = argMap.value("authSecret"_L1).toByteArray();
+    const auto encryptionPublicKey = argMap.value("encryptionPublicKey"_L1).toByteArray();
+    qCDebug(DAVRESOURCE_LOG) << "DavPush::onDavPushEndpointChanged" << endpoint;
+
+    // Save in state the push endpoint changes
+    state()->setPushEndpoint(endpoint);
+    state()->setPushAuthSecret(authSecret);
+    state()->setPushEncryptionPublicKey(encryptionPublicKey);
+
+    refreshPushRegistrations();
+}
+
+void DavGroupwareResource::onRefreshPushRegistrations(const QVariant &args)
+{
+    if (args.canConvert<Akonadi::Collection>()) {
+        refreshPushRegistrations({args.value<Akonadi::Collection>()});
+    } else if (args.canConvert<Akonadi::Collection::List>()) {
+        refreshPushRegistrations(args.value<Akonadi::Collection::List>());
+    } else {
+        refreshPushRegistrations();
+    }
+}
+
+void DavGroupwareResource::onDavPushMessage(const QVariant &args)
+{
+    const auto argMap = args.toMap();
+    const auto topic = argMap.value("topic"_L1).toString();
+    const auto syncToken = argMap.value("syncToken"_L1).toString();
+
+    auto *job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive);
+    job->fetchScope().setResource(identifier());
+    job->fetchScope().fetchAttribute<RemoteDavPushAttribute>();
+    connect(job, &Akonadi::CollectionFetchJob::result, this, [this, topic, syncToken](KJob *job) {
+        // Note: we have the resource collection in the results
+        if (job->error()) {
+            qCWarning(DAVRESOURCE_LOG) << "During onDavPushMessage: Failed to fetch collections" << job->errorString();
+            cancelTask();
+            return;
+        }
+
+        const auto *fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
+        const auto collections = fetchJob->collections();
+
+        const auto matchingColIt = std::ranges::find_if(collections, [&](const Akonadi::Collection &col) {
+            return col.hasAttribute<RemoteDavPushAttribute>() && col.attribute<RemoteDavPushAttribute>()->topic() == topic;
+        });
+        if (matchingColIt == collections.end()) {
+            qCWarning(DAVRESOURCE_LOG()) << "Received push message for unknown collection of topic " << topic;
+            cancelTask();
+            return;
+        }
+
+        // TODO: let's just sync the collection for now (with sync-token we could skip collection fetch)
+        synchronizeCollection(matchingColIt->id());
+        taskDone();
+    });
+}
+
+void DavGroupwareResource::onDavPushVapidKeyDetected(const QVariant &args)
+{
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    const auto oldVapidKey = state()->getPushVapidPublicKey();
+    const auto newVapidKey = args.value<QByteArray>();
+
+    if (oldVapidKey == newVapidKey) {
+        qCDebug(DAVRESOURCE_LOG()) << "DavPush::VapidKeyChanged: vapid key detected is unchanged";
+        taskDone();
+        return;
+    }
+    if (newVapidKey.isEmpty()) {
+        // TODO: unregister bridge, server + clean collections ?
+        qCWarning(DAVRESOURCE_LOG()) << "DavPush::VapidKeyChanged: vapid key detected is empty";
+        taskDone();
+        return;
+    }
+
+    const auto call = mDavPushBridgeHandler.registerResource(QString::fromUtf8(newVapidKey));
+    auto *watcher = new QDBusPendingCallWatcher(call);
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, [this, watcher, newVapidKey]() {
+        QDBusPendingReply<> reply = *watcher;
+        if (reply.isError()) {
+            qWarning() << "DavPush DBUS registerResource error" << newVapidKey << ":" << reply.error().name() << reply.error().message();
+            cancelTask();
+        } else {
+            qDebug() << "DavPush DBUS registerResource succeeded" << newVapidKey;
+            state()->clearPushEndpoint();
+            state()->setPushVapidPublicKey(newVapidKey);
+            taskDone();
+        }
+        watcher->deleteLater();
+    });
+#else
+    Q_UNUSED(args);
+    qCDebug(DAVRESOURCE_LOG()) << "DavPush::onVapidKeyDetected notifications are not supported in this version of KDAV";
+    taskDone();
+#endif
 }
 
 void DavGroupwareResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
@@ -459,6 +669,12 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
         fetchJob->start();
         return;
     }
+
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    if (shouldPushRegisterCollection(collection)) {
+        scheduleCustomTask(this, "onRefreshPushRegistrations", QVariant::fromValue(collection), ResourceBase::Append);
+    }
+#endif
 
     // Case of a collection retrieved from onRetrieveCollectionFinished
     mRetrievedCollections.remove(collection.remoteId());
@@ -1458,15 +1674,23 @@ void DavGroupwareResource::onRetrieveCollectionFinished(KJob *job, const Akonadi
     auto modifyJob = new Akonadi::CollectionModifyJob(collection);
     modifyJob->start();
 
-#if DAV_ENABLE_PUSH_NOTIFICATIONS
-#if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
-    const auto oldVapidKey = state()->getVapidPublicKey();
-    const auto newVapidKey = davCollection->davPushSupport().vapidPublicKey();
-    if (!newVapidKey.isEmpty() && oldVapidKey != newVapidKey) {
-        qCDebug(DAVRESOURCE_LOG()) << "Davpush: PartialSync detected a new vapidkey" << oldVapidKey << "to" << newVapidKey;
-        state()->setVapidPublicKey(newVapidKey);
+#if DAV_ENABLE_PUSH_NOTIFICATIONS && KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
+    if (davCollection->davPushSupport().isValid()) {
+        const auto oldVapidKey = state()->getPushVapidPublicKey();
+        const auto newVapidKey = davCollection->davPushSupport().vapidPublicKey();
+        if (!newVapidKey.isEmpty() && oldVapidKey != newVapidKey) {
+            qCDebug(DAVRESOURCE_LOG()) << "Davpush: PartialSync detected a new vapidkey" << oldVapidKey << "to" << newVapidKey;
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+            scheduleCustomTask(this, "onDavPushVapidKeyDetected", QVariant::fromValue(newVapidKey), ResourceBase::Append);
+#endif
+        }
     }
 #endif
+
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+    if (shouldPushRegisterCollection(collection)) {
+        scheduleCustomTask(this, "onRefreshPushRegistrations", QVariant::fromValue(collection), ResourceBase::Append);
+    }
 #endif
 
     switch (identifySyncMethod(collection)) {
@@ -1536,24 +1760,22 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         }
     }
 
-#if DAV_ENABLE_PUSH_NOTIFICATIONS
-#if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
+#if DAV_ENABLE_PUSH_NOTIFICATIONS && KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
     const auto davPushCollection = std::ranges::find_if(davCollections, [](const auto &c) {
         return c.davPushSupport().isValid() && !c.davPushSupport().vapidPublicKey().isEmpty();
     });
     if (davPushCollection != davCollections.end()) {
-        const auto oldVapidKey = state()->getVapidPublicKey();
+        const auto oldVapidKey = state()->getPushVapidPublicKey();
         const auto newVapidKey = davPushCollection->davPushSupport().vapidPublicKey();
         if (oldVapidKey != newVapidKey) {
             qCDebug(DAVRESOURCE_LOG()) << "Davpush: FullSync detected a new vapidkey" << oldVapidKey << "to" << newVapidKey;
-            state()->setVapidPublicKey(newVapidKey);
+#if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
+            scheduleCustomTask(this, "onDavPushVapidKeyDetected", QVariant::fromValue(newVapidKey), ResourceBase::Append);
+#endif
         }
     } else {
-        state()->clearVapidPublicKey();
-        state()->clearToken();
-        state()->clearSubscriptionUrl();
+        state()->clearPush();
     }
-#endif
 #endif
 
     if (!initialCacheSync) {
@@ -1562,7 +1784,6 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         taskDone();
     }
 }
-
 void DavGroupwareResource::onRetrieveItemsFinished(const Akonadi::Collection &collection,
                                                    const KDAV::DavItem::List &changedDavItems,
                                                    const QStringList &deletedDavItems)
@@ -2274,7 +2495,6 @@ void DavGroupwareResource::syncItemsForCollection(const KDAV::DavUrl &davUrl, co
 #endif
 }
 
-// DavGroupwareResource::SyncMethod DavGroupwareResource::computeSyncMethod(const QString &remoteId, const QString &syncToken, const QString &CTag) const
 DavGroupwareResource::SyncMethod DavGroupwareResource::computeSyncMethod(const QString &remoteId,
                                                                          const QString &oldSyncToken,
                                                                          const QString &newSyncToken,
