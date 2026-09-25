@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-12 00:45+0000\n"
+"POT-Creation-Date: 2026-09-25 00:46+0000\n"
 "PO-Revision-Date: 2026-07-29 11:58+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -84,7 +84,94 @@ msgstr ""
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr "Falleva a scriber alcun ACLs per '%1' sur le servitor IMAP, %2"
 
-#: imapresource.cpp:46
+#: imapresource.cpp:233
+#, kde-format
+msgid "No server configured yet."
+msgstr "Ancora nulle servitor configurate."
+
+#: imapresource.cpp:253
+#, kde-format
+msgid "Connection established."
+msgstr "Connexion stabilite."
+
+#: imapresource.cpp:270
+#, kde-format
+msgid "Server is not available."
+msgstr "Servitor non es disponibile"
+
+#: imapresource.cpp:321
+#, kde-format
+msgctxt "@info:status"
+msgid "Adding item in '%1'"
+msgstr "Addente elemento a '%1'"
+
+#: imapresource.cpp:328
+#, kde-format
+msgctxt "@info:status"
+msgid "Updating item in '%1'"
+msgstr "Actualisante  elemento in '%1'"
+
+#: imapresource.cpp:335
+#, kde-format
+msgctxt "@info:status"
+msgid "Updating items"
+msgstr "Actualisante  elementos "
+
+#: imapresource.cpp:349
+#, kde-format
+msgctxt "@info:status"
+msgid "Removing items"
+msgstr "Removente elementos "
+
+#: imapresource.cpp:365
+#, kde-format
+msgctxt "@info:status"
+msgid "Moving items from '%1' to '%2'"
+msgstr "Movente elementos ex '%1' a '%2'"
+
+#: imapresource.cpp:374
+#, kde-format
+msgctxt "@info:status"
+msgid "Retrieving folders"
+msgstr "Recuperante dossieres"
+
+#: imapresource.cpp:381
+#, kde-format
+msgctxt "@info:status"
+msgid "Retrieving extra folder information for '%1'"
+msgstr "Recuperante information extra de dossier per '%1'"
+
+#: imapresource.cpp:399
+#, kde-format
+msgctxt "@info:status"
+msgid "Creating folder '%1'"
+msgstr "Creante dossier '%1'"
+
+#: imapresource.cpp:405
+#, kde-format
+msgctxt "@info:status"
+msgid "Updating folder '%1'"
+msgstr "Actualisante  dossier '%1'"
+
+#: imapresource.cpp:418
+#, kde-format
+msgctxt "@info:status"
+msgid "Removing folder '%1'"
+msgstr "Removente dossier '%1'"
+
+#: imapresource.cpp:425
+#, kde-format
+msgctxt "@info:status"
+msgid "Moving folder '%1' from '%2' to '%3'"
+msgstr "Movente dossier '%1' ex '%2' a '%3'"
+
+#: imapresource.cpp:455
+#, kde-format
+msgctxt "@info:status"
+msgid "Searching…"
+msgstr "On initia cerca..."
+
+#: imapresource.cpp:727
 #, kde-format
 msgid "IMAP Account"
 msgstr "Conto IMAP"
@@ -293,93 +380,6 @@ msgstr "Si le supporto de activitates deelagente es habilitate"
 #, kde-format
 msgid "The activities of the agent"
 msgstr "Le activitates del agente"
-
-#: imapresourcebase.cpp:215
-#, kde-format
-msgid "No server configured yet."
-msgstr "Ancora nulle servitor configurate."
-
-#: imapresourcebase.cpp:235
-#, kde-format
-msgid "Connection established."
-msgstr "Connexion stabilite."
-
-#: imapresourcebase.cpp:252
-#, kde-format
-msgid "Server is not available."
-msgstr "Servitor non es disponibile"
-
-#: imapresourcebase.cpp:303
-#, kde-format
-msgctxt "@info:status"
-msgid "Adding item in '%1'"
-msgstr "Addente elemento a '%1'"
-
-#: imapresourcebase.cpp:310
-#, kde-format
-msgctxt "@info:status"
-msgid "Updating item in '%1'"
-msgstr "Actualisante  elemento in '%1'"
-
-#: imapresourcebase.cpp:317
-#, kde-format
-msgctxt "@info:status"
-msgid "Updating items"
-msgstr "Actualisante  elementos "
-
-#: imapresourcebase.cpp:331
-#, kde-format
-msgctxt "@info:status"
-msgid "Removing items"
-msgstr "Removente elementos "
-
-#: imapresourcebase.cpp:347
-#, kde-format
-msgctxt "@info:status"
-msgid "Moving items from '%1' to '%2'"
-msgstr "Movente elementos ex '%1' a '%2'"
-
-#: imapresourcebase.cpp:356
-#, kde-format
-msgctxt "@info:status"
-msgid "Retrieving folders"
-msgstr "Recuperante dossieres"
-
-#: imapresourcebase.cpp:363
-#, kde-format
-msgctxt "@info:status"
-msgid "Retrieving extra folder information for '%1'"
-msgstr "Recuperante information extra de dossier per '%1'"
-
-#: imapresourcebase.cpp:381
-#, kde-format
-msgctxt "@info:status"
-msgid "Creating folder '%1'"
-msgstr "Creante dossier '%1'"
-
-#: imapresourcebase.cpp:387
-#, kde-format
-msgctxt "@info:status"
-msgid "Updating folder '%1'"
-msgstr "Actualisante  dossier '%1'"
-
-#: imapresourcebase.cpp:400
-#, kde-format
-msgctxt "@info:status"
-msgid "Removing folder '%1'"
-msgstr "Removente dossier '%1'"
-
-#: imapresourcebase.cpp:407
-#, kde-format
-msgctxt "@info:status"
-msgid "Moving folder '%1' from '%2' to '%3'"
-msgstr "Movente dossier '%1' ex '%2' a '%3'"
-
-#: imapresourcebase.cpp:437
-#, kde-format
-msgctxt "@info:status"
-msgid "Searching…"
-msgstr "On initia cerca..."
 
 #: movecollectiontask.cpp:29
 #, kde-format

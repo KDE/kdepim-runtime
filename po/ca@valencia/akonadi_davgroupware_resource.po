@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-24 00:46+0000\n"
-"PO-Revision-Date: 2026-09-05 11:45+0200\n"
+"PO-Revision-Date: 2026-09-24 08:46+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
@@ -239,10 +239,9 @@ msgid "Unable to remove collection: %1"
 msgstr "No s'han pogut eliminar les col·leccions: %1"
 
 #: davgroupwareresource.cpp:1434
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to retrieve collection: %1"
-msgstr "No s'han pogut recuperar les col·leccions: %1"
+msgstr "No s'ha pogut recuperar la col·lecció: %1"
 
 #: davgroupwareresource.cpp:1449
 #, kde-format

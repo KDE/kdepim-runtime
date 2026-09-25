@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-24 00:46+0000\n"
-"PO-Revision-Date: 2026-09-05 08:10-0300\n"
+"PO-Revision-Date: 2026-09-24 10:23-0300\n"
 "Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 26.08.0\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: configwidget.cpp:34
 #, kde-format
@@ -237,10 +237,9 @@ msgid "Unable to remove collection: %1"
 msgstr "Não foi possível remover a coleção: %1"
 
 #: davgroupwareresource.cpp:1434
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to retrieve collection: %1"
-msgstr "Não foi possível obter as coleções: %1"
+msgstr "Não foi possível obter a coleção: %1"
 
 #: davgroupwareresource.cpp:1449
 #, kde-format

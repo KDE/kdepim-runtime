@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-12 00:45+0000\n"
+"POT-Creation-Date: 2026-09-25 00:46+0000\n"
 "PO-Revision-Date: 2014-07-13 18:25+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -91,7 +91,96 @@ msgstr ""
 "En poor Togriepkuntrulllen för „%1“ laat sik op den IMAP-Server nich "
 "schrieven. %2"
 
-#: imapresource.cpp:46
+#: imapresource.cpp:233
+#, kde-format
+msgid "No server configured yet."
+msgstr "Noch keen Server fastleggt."
+
+#: imapresource.cpp:253
+#, kde-format
+msgid "Connection established."
+msgstr "Tokoppelt."
+
+#: imapresource.cpp:270
+#, kde-format
+msgid "Server is not available."
+msgstr "Server is nich verföögbor."
+
+#: imapresource.cpp:321
+#, kde-format
+msgctxt "@info:status"
+msgid "Adding item in '%1'"
+msgstr "Indrag warrt na \"%1\" toföögt"
+
+#: imapresource.cpp:328
+#, kde-format
+msgctxt "@info:status"
+msgid "Updating item in '%1'"
+msgstr "Indrag binnen \"%1\" warrt opfrischt"
+
+#: imapresource.cpp:335
+#, kde-format
+msgctxt "@info:status"
+msgid "Updating items"
+msgstr "Indrääg warrt opfrischt"
+
+#: imapresource.cpp:349
+#, kde-format
+msgctxt "@info:status"
+msgid "Removing items"
+msgstr "Indrääg warrt wegdaan"
+
+#: imapresource.cpp:365
+#, kde-format
+msgctxt "@info:status"
+msgid "Moving items from '%1' to '%2'"
+msgstr "Indrääg warrt vun \"%1\" na \"%2\" verschaven."
+
+#: imapresource.cpp:374
+#, kde-format
+msgctxt "@info:status"
+msgid "Retrieving folders"
+msgstr "Ornern warrt haalt"
+
+#: imapresource.cpp:381
+#, kde-format
+msgctxt "@info:status"
+msgid "Retrieving extra folder information for '%1'"
+msgstr "Besünner Ornerinformatschonen för \"%1\" warrt haalt"
+
+#: imapresource.cpp:399
+#, kde-format
+msgctxt "@info:status"
+msgid "Creating folder '%1'"
+msgstr "Orner \"%1\" warrt opstellt"
+
+#: imapresource.cpp:405
+#, kde-format
+msgctxt "@info:status"
+msgid "Updating folder '%1'"
+msgstr "Orner \"%1\" warrt opfrischt"
+
+#: imapresource.cpp:418
+#, kde-format
+msgctxt "@info:status"
+msgid "Removing folder '%1'"
+msgstr "Orner \"%1\" warrt wegmaakt"
+
+#: imapresource.cpp:425
+#, kde-format
+msgctxt "@info:status"
+msgid "Moving folder '%1' from '%2' to '%3'"
+msgstr "Orner \"%1\" warrt vun \"%2\" na \"%3\" verschaven"
+
+#: imapresource.cpp:455
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Searching..."
+msgctxt "@info:status"
+msgid "Searching…"
+msgstr "Bi to söken..."
+
+#: imapresource.cpp:727
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP-Konto"
@@ -290,95 +379,6 @@ msgstr ""
 #, kde-format
 msgid "The activities of the agent"
 msgstr ""
-
-#: imapresourcebase.cpp:215
-#, kde-format
-msgid "No server configured yet."
-msgstr "Noch keen Server fastleggt."
-
-#: imapresourcebase.cpp:235
-#, kde-format
-msgid "Connection established."
-msgstr "Tokoppelt."
-
-#: imapresourcebase.cpp:252
-#, kde-format
-msgid "Server is not available."
-msgstr "Server is nich verföögbor."
-
-#: imapresourcebase.cpp:303
-#, kde-format
-msgctxt "@info:status"
-msgid "Adding item in '%1'"
-msgstr "Indrag warrt na \"%1\" toföögt"
-
-#: imapresourcebase.cpp:310
-#, kde-format
-msgctxt "@info:status"
-msgid "Updating item in '%1'"
-msgstr "Indrag binnen \"%1\" warrt opfrischt"
-
-#: imapresourcebase.cpp:317
-#, kde-format
-msgctxt "@info:status"
-msgid "Updating items"
-msgstr "Indrääg warrt opfrischt"
-
-#: imapresourcebase.cpp:331
-#, kde-format
-msgctxt "@info:status"
-msgid "Removing items"
-msgstr "Indrääg warrt wegdaan"
-
-#: imapresourcebase.cpp:347
-#, kde-format
-msgctxt "@info:status"
-msgid "Moving items from '%1' to '%2'"
-msgstr "Indrääg warrt vun \"%1\" na \"%2\" verschaven."
-
-#: imapresourcebase.cpp:356
-#, kde-format
-msgctxt "@info:status"
-msgid "Retrieving folders"
-msgstr "Ornern warrt haalt"
-
-#: imapresourcebase.cpp:363
-#, kde-format
-msgctxt "@info:status"
-msgid "Retrieving extra folder information for '%1'"
-msgstr "Besünner Ornerinformatschonen för \"%1\" warrt haalt"
-
-#: imapresourcebase.cpp:381
-#, kde-format
-msgctxt "@info:status"
-msgid "Creating folder '%1'"
-msgstr "Orner \"%1\" warrt opstellt"
-
-#: imapresourcebase.cpp:387
-#, kde-format
-msgctxt "@info:status"
-msgid "Updating folder '%1'"
-msgstr "Orner \"%1\" warrt opfrischt"
-
-#: imapresourcebase.cpp:400
-#, kde-format
-msgctxt "@info:status"
-msgid "Removing folder '%1'"
-msgstr "Orner \"%1\" warrt wegmaakt"
-
-#: imapresourcebase.cpp:407
-#, kde-format
-msgctxt "@info:status"
-msgid "Moving folder '%1' from '%2' to '%3'"
-msgstr "Orner \"%1\" warrt vun \"%2\" na \"%3\" verschaven"
-
-#: imapresourcebase.cpp:437
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Searching..."
-msgctxt "@info:status"
-msgid "Searching…"
-msgstr "Bi to söken..."
 
 #: movecollectiontask.cpp:29
 #, kde-format

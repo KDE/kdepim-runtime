@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-12 00:45+0000\n"
+"POT-Creation-Date: 2026-09-25 00:46+0000\n"
 "PO-Revision-Date: 2025-03-28 17:40+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -92,7 +92,94 @@ msgstr ""
 "Het schrijven van enkele van de nieuwe ACL's voor '%1' op de IMAP-server is "
 "mislukt. %2"
 
-#: imapresource.cpp:46
+#: imapresource.cpp:233
+#, kde-format
+msgid "No server configured yet."
+msgstr "Nog geen server ingesteld."
+
+#: imapresource.cpp:253
+#, kde-format
+msgid "Connection established."
+msgstr "Verbonden."
+
+#: imapresource.cpp:270
+#, kde-format
+msgid "Server is not available."
+msgstr "Server is niet beschikbaar."
+
+#: imapresource.cpp:321
+#, kde-format
+msgctxt "@info:status"
+msgid "Adding item in '%1'"
+msgstr "Item toevoegen in '%1'"
+
+#: imapresource.cpp:328
+#, kde-format
+msgctxt "@info:status"
+msgid "Updating item in '%1'"
+msgstr "Item bijwerken in '%1'"
+
+#: imapresource.cpp:335
+#, kde-format
+msgctxt "@info:status"
+msgid "Updating items"
+msgstr "Items bijwerken"
+
+#: imapresource.cpp:349
+#, kde-format
+msgctxt "@info:status"
+msgid "Removing items"
+msgstr "Items verwijderen"
+
+#: imapresource.cpp:365
+#, kde-format
+msgctxt "@info:status"
+msgid "Moving items from '%1' to '%2'"
+msgstr "Items verplaatsen uit '%1' naar '%2'"
+
+#: imapresource.cpp:374
+#, kde-format
+msgctxt "@info:status"
+msgid "Retrieving folders"
+msgstr "Mappen ophalen"
+
+#: imapresource.cpp:381
+#, kde-format
+msgctxt "@info:status"
+msgid "Retrieving extra folder information for '%1'"
+msgstr "Extra mapinformatie ophalen voor '%1'"
+
+#: imapresource.cpp:399
+#, kde-format
+msgctxt "@info:status"
+msgid "Creating folder '%1'"
+msgstr "Map '%1' aanmaken"
+
+#: imapresource.cpp:405
+#, kde-format
+msgctxt "@info:status"
+msgid "Updating folder '%1'"
+msgstr "Map '%1' bijwerken"
+
+#: imapresource.cpp:418
+#, kde-format
+msgctxt "@info:status"
+msgid "Removing folder '%1'"
+msgstr "Map '%1' verwijderen"
+
+#: imapresource.cpp:425
+#, kde-format
+msgctxt "@info:status"
+msgid "Moving folder '%1' from '%2' to '%3'"
+msgstr "Map '%1' uit '%2' naar '%3' verplaatsen"
+
+#: imapresource.cpp:455
+#, kde-format
+msgctxt "@info:status"
+msgid "Searching…"
+msgstr "Bezig met zoeken…"
+
+#: imapresource.cpp:727
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP-account"
@@ -297,93 +384,6 @@ msgstr "Of de ondersteuning voor activiteiten van de agent zijn ingeschakeld"
 #, kde-format
 msgid "The activities of the agent"
 msgstr "De activiteiten van de agent"
-
-#: imapresourcebase.cpp:215
-#, kde-format
-msgid "No server configured yet."
-msgstr "Nog geen server ingesteld."
-
-#: imapresourcebase.cpp:235
-#, kde-format
-msgid "Connection established."
-msgstr "Verbonden."
-
-#: imapresourcebase.cpp:252
-#, kde-format
-msgid "Server is not available."
-msgstr "Server is niet beschikbaar."
-
-#: imapresourcebase.cpp:303
-#, kde-format
-msgctxt "@info:status"
-msgid "Adding item in '%1'"
-msgstr "Item toevoegen in '%1'"
-
-#: imapresourcebase.cpp:310
-#, kde-format
-msgctxt "@info:status"
-msgid "Updating item in '%1'"
-msgstr "Item bijwerken in '%1'"
-
-#: imapresourcebase.cpp:317
-#, kde-format
-msgctxt "@info:status"
-msgid "Updating items"
-msgstr "Items bijwerken"
-
-#: imapresourcebase.cpp:331
-#, kde-format
-msgctxt "@info:status"
-msgid "Removing items"
-msgstr "Items verwijderen"
-
-#: imapresourcebase.cpp:347
-#, kde-format
-msgctxt "@info:status"
-msgid "Moving items from '%1' to '%2'"
-msgstr "Items verplaatsen uit '%1' naar '%2'"
-
-#: imapresourcebase.cpp:356
-#, kde-format
-msgctxt "@info:status"
-msgid "Retrieving folders"
-msgstr "Mappen ophalen"
-
-#: imapresourcebase.cpp:363
-#, kde-format
-msgctxt "@info:status"
-msgid "Retrieving extra folder information for '%1'"
-msgstr "Extra mapinformatie ophalen voor '%1'"
-
-#: imapresourcebase.cpp:381
-#, kde-format
-msgctxt "@info:status"
-msgid "Creating folder '%1'"
-msgstr "Map '%1' aanmaken"
-
-#: imapresourcebase.cpp:387
-#, kde-format
-msgctxt "@info:status"
-msgid "Updating folder '%1'"
-msgstr "Map '%1' bijwerken"
-
-#: imapresourcebase.cpp:400
-#, kde-format
-msgctxt "@info:status"
-msgid "Removing folder '%1'"
-msgstr "Map '%1' verwijderen"
-
-#: imapresourcebase.cpp:407
-#, kde-format
-msgctxt "@info:status"
-msgid "Moving folder '%1' from '%2' to '%3'"
-msgstr "Map '%1' uit '%2' naar '%3' verplaatsen"
-
-#: imapresourcebase.cpp:437
-#, kde-format
-msgctxt "@info:status"
-msgid "Searching…"
-msgstr "Bezig met zoeken…"
 
 #: movecollectiontask.cpp:29
 #, kde-format

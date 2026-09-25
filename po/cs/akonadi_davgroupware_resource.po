@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-24 00:46+0000\n"
-"PO-Revision-Date: 2026-09-05 12:06+0200\n"
+"PO-Revision-Date: 2026-09-24 12:32+0200\n"
 "Last-Translator: Libor Filipek <libor.filipek@gmail.com>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 26.08.0\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: configwidget.cpp:34
 #, kde-format
@@ -235,10 +235,9 @@ msgid "Unable to remove collection: %1"
 msgstr "Nelze odstranit sbírku: %1"
 
 #: davgroupwareresource.cpp:1434
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to retrieve collection: %1"
-msgstr "Nelze načíst sbírky: %1"
+msgstr "Nelze načíst sbírku: %1"
 
 #: davgroupwareresource.cpp:1449
 #, kde-format

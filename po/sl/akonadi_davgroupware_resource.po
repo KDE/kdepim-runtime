@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-24 00:46+0000\n"
-"PO-Revision-Date: 2026-09-05 15:34+0200\n"
+"PO-Revision-Date: 2026-09-24 11:14+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -238,10 +238,9 @@ msgid "Unable to remove collection: %1"
 msgstr "Zbirke ni mogoče odstraniti: %1"
 
 #: davgroupwareresource.cpp:1434
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to retrieve collection: %1"
-msgstr "Zbirk ni mogoče pridobiti: %1"
+msgstr "Ni mogoče pridobiti zbirke: %1"
 
 #: davgroupwareresource.cpp:1449
 #, kde-format

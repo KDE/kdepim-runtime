@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-24 00:46+0000\n"
-"PO-Revision-Date: 2026-09-05 19:52+0300\n"
+"PO-Revision-Date: 2026-09-24 19:24+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -234,10 +234,9 @@ msgid "Unable to remove collection: %1"
 msgstr "Koleksiyon kaldırılamıyor: %1"
 
 #: davgroupwareresource.cpp:1434
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to retrieve collection: %1"
-msgstr "Koleksiyonlar alınamıyor: %1"
+msgstr "Koleksiyon alınamıyor: %1"
 
 #: davgroupwareresource.cpp:1449
 #, kde-format
