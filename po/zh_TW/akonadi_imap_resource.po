@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-25 00:46+0000\n"
+"POT-Creation-Date: 2026-09-26 00:46+0000\n"
 "PO-Revision-Date: 2025-04-07 14:23+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -83,94 +83,94 @@ msgstr ""
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr "將某些 %1 的權限控制清單寫入 IMAP 伺服器時失敗。 %2"
 
-#: imapresource.cpp:233
+#: imapresource.cpp:235
 #, kde-format
 msgid "No server configured yet."
 msgstr "還沒設定伺服器。"
 
-#: imapresource.cpp:253
+#: imapresource.cpp:255
 #, kde-format
 msgid "Connection established."
 msgstr "連線已建立。"
 
-#: imapresource.cpp:270
+#: imapresource.cpp:272
 #, kde-format
 msgid "Server is not available."
 msgstr "伺服器無法使用。"
 
-#: imapresource.cpp:321
+#: imapresource.cpp:323
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "於 %1 內新增項目"
 
-#: imapresource.cpp:328
+#: imapresource.cpp:330
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "於 %1 內更新項目"
 
-#: imapresource.cpp:335
+#: imapresource.cpp:337
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "更新項目中"
 
-#: imapresource.cpp:349
+#: imapresource.cpp:351
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "移除項目中"
 
-#: imapresource.cpp:365
+#: imapresource.cpp:367
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "將項目從 %1 移到 %2"
 
-#: imapresource.cpp:374
+#: imapresource.cpp:376
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "取得資料夾中"
 
-#: imapresource.cpp:381
+#: imapresource.cpp:383
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "取得 %1 的額外資料夾資訊中"
 
-#: imapresource.cpp:399
+#: imapresource.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "建立資料夾 %1 中"
 
-#: imapresource.cpp:405
+#: imapresource.cpp:407
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "更新資料夾 %1 中"
 
-#: imapresource.cpp:418
+#: imapresource.cpp:420
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "移除資料夾 %1 中"
 
-#: imapresource.cpp:425
+#: imapresource.cpp:427
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "將資料夾 %1 從 %2 移動到 %3 中"
 
-#: imapresource.cpp:455
+#: imapresource.cpp:457
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "搜尋中…"
 
-#: imapresource.cpp:727
+#: imapresource.cpp:729
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP 帳號"

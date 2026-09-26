@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-25 00:46+0000\n"
+"POT-Creation-Date: 2026-09-26 00:46+0000\n"
 "PO-Revision-Date: 2025-04-06 23:03+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -78,94 +78,94 @@ msgstr ""
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr "IMAP 서버의 '%1'에 일부 ACL을 추가할 수 없습니다. %2"
 
-#: imapresource.cpp:233
+#: imapresource.cpp:235
 #, kde-format
 msgid "No server configured yet."
 msgstr "서버가 설정되지 않았습니다."
 
-#: imapresource.cpp:253
+#: imapresource.cpp:255
 #, kde-format
 msgid "Connection established."
 msgstr "연결이 수립되었습니다."
 
-#: imapresource.cpp:270
+#: imapresource.cpp:272
 #, kde-format
 msgid "Server is not available."
 msgstr "서버를 사용할 수 없습니다."
 
-#: imapresource.cpp:321
+#: imapresource.cpp:323
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "'%1'에 항목을 추가하는 중"
 
-#: imapresource.cpp:328
+#: imapresource.cpp:330
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "'%1'의 항목을 업데이트하는 중"
 
-#: imapresource.cpp:335
+#: imapresource.cpp:337
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "항목 업데이트 중"
 
-#: imapresource.cpp:349
+#: imapresource.cpp:351
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "항목 삭제 중"
 
-#: imapresource.cpp:365
+#: imapresource.cpp:367
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "항목을 '%1'에서 '%2'(으)로 이동 중"
 
-#: imapresource.cpp:374
+#: imapresource.cpp:376
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "폴더 가져오는 중"
 
-#: imapresource.cpp:381
+#: imapresource.cpp:383
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "'%1'의 추가 폴더 정보를 가져오는 중"
 
-#: imapresource.cpp:399
+#: imapresource.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "폴더 '%1' 생성 중"
 
-#: imapresource.cpp:405
+#: imapresource.cpp:407
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "폴더 '%1' 업데이트 중"
 
-#: imapresource.cpp:418
+#: imapresource.cpp:420
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "폴더 '%1' 삭제 중"
 
-#: imapresource.cpp:425
+#: imapresource.cpp:427
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "폴더 '%1'을(를) '%2'에서 '%3'(으)로 이동하는 중"
 
-#: imapresource.cpp:455
+#: imapresource.cpp:457
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "찾는 중…"
 
-#: imapresource.cpp:727
+#: imapresource.cpp:729
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP 계정"

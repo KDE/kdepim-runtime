@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-25 00:46+0000\n"
+"POT-Creation-Date: 2026-09-26 00:46+0000\n"
 "PO-Revision-Date: 2024-12-24 20:39+0530\n"
 "Last-Translator: kali <shreekantkalwar@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -81,94 +81,94 @@ msgstr ""
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr "IMAP सर्वरे '%1' कृते केचन ACL लिखितुं असफलम् । %2"
 
-#: imapresource.cpp:233
+#: imapresource.cpp:235
 #, kde-format
 msgid "No server configured yet."
 msgstr "अद्यापि कोऽपि सर्वरः विन्यस्तः नास्ति ।"
 
-#: imapresource.cpp:253
+#: imapresource.cpp:255
 #, kde-format
 msgid "Connection established."
 msgstr "संबन्धः स्थापितः।"
 
-#: imapresource.cpp:270
+#: imapresource.cpp:272
 #, kde-format
 msgid "Server is not available."
 msgstr "सर्वरः उपलब्धः नास्ति ।"
 
-#: imapresource.cpp:321
+#: imapresource.cpp:323
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "'%1' इत्यस्मिन् मदं योजयन् ।"
 
-#: imapresource.cpp:328
+#: imapresource.cpp:330
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "'%1' इत्यस्मिन् द्रव्यं अद्यतनीकरोति ।"
 
-#: imapresource.cpp:335
+#: imapresource.cpp:337
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "वस्तूनि अद्यतनं कुर्वन्"
 
-#: imapresource.cpp:349
+#: imapresource.cpp:351
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "वस्तूनि निष्कासयन्"
 
-#: imapresource.cpp:365
+#: imapresource.cpp:367
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "'%1' तः '%2' मध्ये वस्तूनि स्थानान्तरयति।"
 
-#: imapresource.cpp:374
+#: imapresource.cpp:376
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "पुटं पुनः प्राप्तम्"
 
-#: imapresource.cpp:381
+#: imapresource.cpp:383
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "'%1' कृते अतिरिक्तपुटसूचनाः पुनः प्राप्ताः ।"
 
-#: imapresource.cpp:399
+#: imapresource.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "'%1' इति पुटस्य निर्माणम् ।"
 
-#: imapresource.cpp:405
+#: imapresource.cpp:407
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "'%1' पुटस्य अद्यतनीकरणम् ।"
 
-#: imapresource.cpp:418
+#: imapresource.cpp:420
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "'%1' पुटं निष्कासयति।"
 
-#: imapresource.cpp:425
+#: imapresource.cpp:427
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "'%1' पुटं '%2' तः '%3' मध्ये स्थानान्तरयति।"
 
-#: imapresource.cpp:455
+#: imapresource.cpp:457
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "अन्वेषणं कुर्वन्…"
 
-#: imapresource.cpp:727
+#: imapresource.cpp:729
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP खाता"

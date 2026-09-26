@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-25 00:46+0000\n"
+"POT-Creation-Date: 2026-09-26 00:46+0000\n"
 "PO-Revision-Date: 2025-05-29 15:09+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -86,98 +86,98 @@ msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr ""
 "IMAP-palvelimen kohteen ”%1” joitakin ACL:iä ei saatu kirjoitetuksi. %2"
 
-#: imapresource.cpp:233
+#: imapresource.cpp:235
 #, kde-format
 msgid "No server configured yet."
 msgstr "Palvelinta ei ole vielä määritetty."
 
-#: imapresource.cpp:253
+#: imapresource.cpp:255
 #, kde-format
 msgid "Connection established."
 msgstr "Yhteys muodostettu."
 
-#: imapresource.cpp:270
+#: imapresource.cpp:272
 #, kde-format
 msgid "Server is not available."
 msgstr "Palvelin ei ole käytettävissä."
 
 # %1 on kansio
-#: imapresource.cpp:321
+#: imapresource.cpp:323
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Lisätään tietue kokoelmaan ”%1”."
 
 # %1 on kansio
-#: imapresource.cpp:328
+#: imapresource.cpp:330
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Päivitetään tietue kokoelmassa ”%1”."
 
-#: imapresource.cpp:335
+#: imapresource.cpp:337
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Päivitetään tietueita"
 
-#: imapresource.cpp:349
+#: imapresource.cpp:351
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Poistetaan tietueita"
 
 # %1 ja %2 ovat kansioita
-#: imapresource.cpp:365
+#: imapresource.cpp:367
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Siirretään tietueita kokoelmasta ”%1” kokoelmaan ”%2”"
 
-#: imapresource.cpp:374
+#: imapresource.cpp:376
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Noudetaan kansioita"
 
-#: imapresource.cpp:381
+#: imapresource.cpp:383
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Noudetaan kansion ”%1” lisätietoja"
 
-#: imapresource.cpp:399
+#: imapresource.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Luodaan kansio ”%1”"
 
-#: imapresource.cpp:405
+#: imapresource.cpp:407
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Päivitetään kansio ”%1”"
 
-#: imapresource.cpp:418
+#: imapresource.cpp:420
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Poistetaan kansio ”%1”"
 
 # %2 ja %3 ovat kansioita
-#: imapresource.cpp:425
+#: imapresource.cpp:427
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Siirretään kansio ”%1” kansiosta ”%2” kansioon ”%3”"
 
-#: imapresource.cpp:455
+#: imapresource.cpp:457
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "Etsitään…"
 
-#: imapresource.cpp:727
+#: imapresource.cpp:729
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP-tili"

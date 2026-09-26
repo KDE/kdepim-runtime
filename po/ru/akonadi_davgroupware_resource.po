@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-24 00:46+0000\n"
-"PO-Revision-Date: 2026-09-22 21:55+0200\n"
+"PO-Revision-Date: 2026-09-25 20:30+0200\n"
 "Last-Translator: Alexander Yavorskiy <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
@@ -240,10 +240,9 @@ msgid "Unable to remove collection: %1"
 msgstr "Не удалось удалить коллекцию: %1"
 
 #: davgroupwareresource.cpp:1434
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to retrieve collection: %1"
-msgstr "Не удалось получить коллекции: %1"
+msgstr "Не удалось получить коллекцию: %1"
 
 #: davgroupwareresource.cpp:1449
 #, kde-format

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-25 00:46+0000\n"
+"POT-Creation-Date: 2026-09-26 00:46+0000\n"
 "PO-Revision-Date: 2015-02-04 15:19+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -87,94 +87,94 @@ msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr ""
 "Neuspjelo pisanje nekih listi kontrola pristupa za '%1' na IMAP serveru. %2"
 
-#: imapresource.cpp:233
+#: imapresource.cpp:235
 #, kde-format
 msgid "No server configured yet."
 msgstr "Server još uvijek nije konfigurisan."
 
-#: imapresource.cpp:253
+#: imapresource.cpp:255
 #, kde-format
 msgid "Connection established."
 msgstr "Konekcija uspostavljena."
 
-#: imapresource.cpp:270
+#: imapresource.cpp:272
 #, kde-format
 msgid "Server is not available."
 msgstr ""
 
-#: imapresource.cpp:321
+#: imapresource.cpp:323
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Dodajem element u '%1'"
 
-#: imapresource.cpp:328
+#: imapresource.cpp:330
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Ažuriram element u '%1'"
 
-#: imapresource.cpp:335
+#: imapresource.cpp:337
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Ažuriram stavke"
 
-#: imapresource.cpp:349
+#: imapresource.cpp:351
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Uklanjam stavke"
 
-#: imapresource.cpp:365
+#: imapresource.cpp:367
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Premještam stavke iz '%1' u '%2'"
 
-#: imapresource.cpp:374
+#: imapresource.cpp:376
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Preuzimam direktorije"
 
-#: imapresource.cpp:381
+#: imapresource.cpp:383
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Preuzimam dodatne informacije direktorija za '%1'"
 
-#: imapresource.cpp:399
+#: imapresource.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Kreiram direktorij '%1'"
 
-#: imapresource.cpp:405
+#: imapresource.cpp:407
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Ažuriram direktorij '%1'"
 
-#: imapresource.cpp:418
+#: imapresource.cpp:420
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Uklanjam direktorij '%1'"
 
-#: imapresource.cpp:425
+#: imapresource.cpp:427
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Premlještam direktorij '%1' sa '%2' na '%3'"
 
-#: imapresource.cpp:455
+#: imapresource.cpp:457
 #, fuzzy, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "Traži:"
 
-#: imapresource.cpp:727
+#: imapresource.cpp:729
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP racun"

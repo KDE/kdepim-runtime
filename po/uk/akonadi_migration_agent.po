@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_migration_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-18 00:44+0000\n"
+"POT-Creation-Date: 2026-09-26 00:46+0000\n"
 "PO-Revision-Date: 2024-05-12 09:11+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian\n"
@@ -63,6 +63,23 @@ msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "Стан"
 
+#: migrationstatuswidget.cpp:27
+#, kde-format
+msgid "Start"
+msgstr ""
+
+#: migrationstatuswidget.cpp:31
+#, fuzzy, kde-format
+#| msgctxt "PIM-Maintenance is paused."
+#| msgid "Paused."
+msgid "Pause"
+msgstr "Призупинено."
+
+#: migrationstatuswidget.cpp:35
+#, kde-format
+msgid "Abort"
+msgstr ""
+
 #: migrationstatuswidget.cpp:97
 #, kde-format
 msgid "Logfile"
@@ -73,10 +90,6 @@ msgstr "Файл журналу"
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"
 msgstr "Дані щодо перенесення"
-
-#~ msgctxt "PIM-Maintenance is paused."
-#~ msgid "Paused."
-#~ msgstr "Призупинено."
 
 #~ msgid "PIM-Maintanence"
 #~ msgstr "Супровід особистих даних"

@@ -1,14 +1,14 @@
 # translation of akonadi_davgroupware_resource.po to Italian
 #
-# SPDX-FileCopyrightText: 2012-2021, 2024-2026 Luigi Toscano <luigi.toscano@tiscali.it>
 # Vincenzo Reale <smart2128vr@gmail.com>, 2009, 2010.
 # Nicola Ruggero <nicola@nxnt.org>, 2010, 2011.
+# SPDX-FileCopyrightText: 2012-2021, 2024-2026 Luigi Toscano <luigi.toscano@tiscali.it>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-24 00:46+0000\n"
-"PO-Revision-Date: 2026-09-06 23:49+0200\n"
+"PO-Revision-Date: 2026-09-26 00:20+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -238,10 +238,9 @@ msgid "Unable to remove collection: %1"
 msgstr "Impossibile rimuovere la collezione: %1"
 
 #: davgroupwareresource.cpp:1434
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to retrieve collection: %1"
-msgstr "Impossibile recuperare le collezioni: %1"
+msgstr "Impossibile recuperare la collezione: %1"
 
 #: davgroupwareresource.cpp:1449
 #, kde-format

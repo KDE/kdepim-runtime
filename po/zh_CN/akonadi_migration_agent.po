@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-18 00:44+0000\n"
+"POT-Creation-Date: 2026-09-26 00:46+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -60,6 +60,21 @@ msgstr "进度"
 msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "状态"
+
+#: migrationstatuswidget.cpp:27
+#, kde-format
+msgid "Start"
+msgstr ""
+
+#: migrationstatuswidget.cpp:31
+#, kde-format
+msgid "Pause"
+msgstr ""
+
+#: migrationstatuswidget.cpp:35
+#, kde-format
+msgid "Abort"
+msgstr ""
 
 #: migrationstatuswidget.cpp:97
 #, kde-format

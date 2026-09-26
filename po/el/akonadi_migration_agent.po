@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-18 00:44+0000\n"
+"POT-Creation-Date: 2026-09-26 00:46+0000\n"
 "PO-Revision-Date: 2014-03-05 21:36+0200\n"
 "Last-Translator: Dimitris Kardarakos <dimkard@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -60,6 +60,23 @@ msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "Κατάσταση"
 
+#: migrationstatuswidget.cpp:27
+#, kde-format
+msgid "Start"
+msgstr ""
+
+#: migrationstatuswidget.cpp:31
+#, fuzzy, kde-format
+#| msgctxt "PIM-Maintenance is paused."
+#| msgid "Paused."
+msgid "Pause"
+msgstr "Σε παύση."
+
+#: migrationstatuswidget.cpp:35
+#, kde-format
+msgid "Abort"
+msgstr ""
+
 #: migrationstatuswidget.cpp:97
 #, kde-format
 msgid "Logfile"
@@ -70,7 +87,3 @@ msgstr "Αρχείο καταγραφής"
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"
 msgstr "Πληροφορίες μεταφοράς"
-
-#~ msgctxt "PIM-Maintenance is paused."
-#~ msgid "Paused."
-#~ msgstr "Σε παύση."

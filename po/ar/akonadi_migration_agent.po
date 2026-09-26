@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-18 00:44+0000\n"
+"POT-Creation-Date: 2026-09-26 00:46+0000\n"
 "PO-Revision-Date: 2024-05-16 13:30+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -61,6 +61,23 @@ msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "الحالة"
 
+#: migrationstatuswidget.cpp:27
+#, kde-format
+msgid "Start"
+msgstr ""
+
+#: migrationstatuswidget.cpp:31
+#, fuzzy, kde-format
+#| msgctxt "PIM-Maintenance is paused."
+#| msgid "Paused."
+msgid "Pause"
+msgstr "مُلبثة."
+
+#: migrationstatuswidget.cpp:35
+#, kde-format
+msgid "Abort"
+msgstr ""
+
 #: migrationstatuswidget.cpp:97
 #, kde-format
 msgid "Logfile"
@@ -71,7 +88,3 @@ msgstr "ملفّ السجل"
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"
 msgstr "معلومات التّرحيل"
-
-#~ msgctxt "PIM-Maintenance is paused."
-#~ msgid "Paused."
-#~ msgstr "مُلبثة."
