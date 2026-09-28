@@ -5,6 +5,7 @@
 */
 
 #include "pop3resource.h"
+#include "sessionuiproxy.h"
 #include <KPOP/DeleteJob>
 #include <KPOP/FetchJob>
 #include <KPOP/ListJob>
@@ -265,6 +266,7 @@ void POP3Resource::doStateStep()
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Connect ========================";
         Q_ASSERT(!mPopSession);
         mPopSession = new KPOP::Session(mSettings.toPop3Settings(), mPassword);
+        mPopSession->setUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));
         advanceState(Login);
         break;
     case Login: {
