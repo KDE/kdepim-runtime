@@ -25,17 +25,31 @@
 
 #include "pop3resource_debug.h"
 #include <KAuthorized>
+#include <KIO/SslUi>
 #include <KLocalizedString>
 #include <KMessageBox>
 #include <KNotification>
 #include <KPasswordDialog>
-
 #include <QPointer>
 #include <QTimer>
 #include <qt6keychain/keychain.h>
 using namespace QKeychain;
 using namespace Akonadi;
 using namespace MailTransport;
+
+class SessionUiProxy : public KPOP::SessionUiProxy
+{
+public:
+    bool ignoreSslError(const QSslSocket *socket) override
+    {
+        const KSslErrorUiData errorData(socket);
+        if (KIO::SslUi::askIgnoreSslErrors(errorData)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+};
 
 POP3Resource::POP3Resource(const QString &id)
     : ResourceWidgetBase(id)
@@ -269,6 +283,7 @@ void POP3Resource::doStateStep()
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Connect ========================";
         Q_ASSERT(!mPopSession);
         mPopSession = new KPOP::Session(mSettings.toPop3Settings(), mPassword);
+        mPopSession->setUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));
         advanceState(Login);
         break;
     case Login: {
