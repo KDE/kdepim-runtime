@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-26 00:46+0000\n"
-"PO-Revision-Date: 2024-05-12 03:52+0200\n"
+"PO-Revision-Date: 2026-09-26 08:13+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.9\n"
 
 #: migrationagent.cpp:44
 #, kde-format
@@ -64,19 +64,17 @@ msgstr "სტატუსი"
 #: migrationstatuswidget.cpp:27
 #, kde-format
 msgid "Start"
-msgstr ""
+msgstr "დაწყება"
 
 #: migrationstatuswidget.cpp:31
-#, fuzzy, kde-format
-#| msgctxt "PIM-Maintenance is paused."
-#| msgid "Paused."
+#, kde-format
 msgid "Pause"
-msgstr "შეჩერებული."
+msgstr "შეჩერება"
 
 #: migrationstatuswidget.cpp:35
 #, kde-format
 msgid "Abort"
-msgstr ""
+msgstr "შეწყვეტა"
 
 #: migrationstatuswidget.cpp:97
 #, kde-format

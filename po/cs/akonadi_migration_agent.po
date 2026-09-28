@@ -64,17 +64,17 @@ msgstr "Stav"
 #: migrationstatuswidget.cpp:27
 #, kde-format
 msgid "Start"
-msgstr ""
+msgstr "Spustit"
 
 #: migrationstatuswidget.cpp:31
 #, kde-format
 msgid "Pause"
-msgstr ""
+msgstr "Pozastavit"
 
 #: migrationstatuswidget.cpp:35
 #, kde-format
 msgid "Abort"
-msgstr ""
+msgstr "Přerušit"
 
 #: migrationstatuswidget.cpp:97
 #, kde-format

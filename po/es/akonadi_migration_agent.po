@@ -1,15 +1,16 @@
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for akonadi_migration_agent.po package.
+# Copyright (C) 2013-2026 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
-# Javier Viñal <francisco-javie.vinal@seg-social.es>, 2013.
-# Javier Vinal <fjvinal@gmail.com>, 2013.
-# SPDX-FileCopyrightText: 2019, 2024 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2013 Javier Viñal <francisco-javie.vinal@seg-social.es>
+# SPDX-FileCopyrightText: 2013 Javier Vinal <fjvinal@gmail.com>
+# SPDX-FileCopyrightText: 2019, 2024, 2026 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: akonadi_migration_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-26 00:46+0000\n"
-"PO-Revision-Date: 2024-05-12 16:07+0200\n"
+"PO-Revision-Date: 2026-09-26 16:57+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: migrationagent.cpp:44
 #, kde-format
@@ -37,7 +38,7 @@ msgstr "Mantenimiento PIM"
 #, kde-format
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress…"
-msgstr "En curso..."
+msgstr "En curso…"
 
 #: migrationexecutor.cpp:46
 #, kde-format
@@ -65,19 +66,17 @@ msgstr "Estado"
 #: migrationstatuswidget.cpp:27
 #, kde-format
 msgid "Start"
-msgstr ""
+msgstr "Iniciar"
 
 #: migrationstatuswidget.cpp:31
-#, fuzzy, kde-format
-#| msgctxt "PIM-Maintenance is paused."
-#| msgid "Paused."
+#, kde-format
 msgid "Pause"
-msgstr "En pausa."
+msgstr "Pausar"
 
 #: migrationstatuswidget.cpp:35
 #, kde-format
 msgid "Abort"
-msgstr ""
+msgstr "Interrumpir"
 
 #: migrationstatuswidget.cpp:97
 #, kde-format

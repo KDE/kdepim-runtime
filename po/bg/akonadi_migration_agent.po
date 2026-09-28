@@ -63,19 +63,19 @@ msgid "Status"
 msgstr "Състояние"
 
 #: migrationstatuswidget.cpp:27
-#, kde-format
+#, fuzzy, kde-format
 msgid "Start"
-msgstr ""
+msgstr "Старт"
 
 #: migrationstatuswidget.cpp:31
-#, kde-format
+#, fuzzy, kde-format
 msgid "Pause"
-msgstr ""
+msgstr "Пауза"
 
 #: migrationstatuswidget.cpp:35
-#, kde-format
+#, fuzzy, kde-format
 msgid "Abort"
-msgstr ""
+msgstr "Прекъсване"
 
 #: migrationstatuswidget.cpp:97
 #, kde-format

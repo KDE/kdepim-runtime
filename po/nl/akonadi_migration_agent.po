@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2013, 2019, 2024 Freek de Kruijf <freekdekruijf@kde.nl>
+# SPDX-FileCopyrightText: 2013, 2019, 2024, 2026 Freek de Kruijf <freekdekruijf@kde.nl>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-26 00:46+0000\n"
-"PO-Revision-Date: 2024-05-12 14:21+0200\n"
+"PO-Revision-Date: 2026-09-26 18:43+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: migrationagent.cpp:44
 #, kde-format
@@ -63,19 +63,17 @@ msgstr "Status"
 #: migrationstatuswidget.cpp:27
 #, kde-format
 msgid "Start"
-msgstr ""
+msgstr "Begin"
 
 #: migrationstatuswidget.cpp:31
-#, fuzzy, kde-format
-#| msgctxt "PIM-Maintenance is paused."
-#| msgid "Paused."
+#, kde-format
 msgid "Pause"
-msgstr "Gepauzeerd."
+msgstr "Gepauzeerd"
 
 #: migrationstatuswidget.cpp:35
 #, kde-format
 msgid "Abort"
-msgstr ""
+msgstr "Afbreken"
 
 #: migrationstatuswidget.cpp:97
 #, kde-format

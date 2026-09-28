@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-26 00:46+0000\n"
-"PO-Revision-Date: 2024-05-12 07:10+0200\n"
+"PO-Revision-Date: 2026-09-26 07:36+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.9\n"
 
 #: migrationagent.cpp:44
 #, kde-format
@@ -67,19 +67,17 @@ msgstr "Stanje"
 #: migrationstatuswidget.cpp:27
 #, kde-format
 msgid "Start"
-msgstr ""
+msgstr "Zaženi"
 
 #: migrationstatuswidget.cpp:31
-#, fuzzy, kde-format
-#| msgctxt "PIM-Maintenance is paused."
-#| msgid "Paused."
+#, kde-format
 msgid "Pause"
-msgstr "V premoru."
+msgstr "Premor"
 
 #: migrationstatuswidget.cpp:35
 #, kde-format
 msgid "Abort"
-msgstr ""
+msgstr "Prekliči"
 
 #: migrationstatuswidget.cpp:97
 #, kde-format

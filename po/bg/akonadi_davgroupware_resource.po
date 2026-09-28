@@ -236,7 +236,7 @@ msgstr "Невъзможно да се премахне колекция: %1"
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to retrieve collection: %1"
-msgstr "Невъзможно е да се изтеглят колекции: %1"
+msgstr "Невъзможно е извличането на колекцията: %1"
 
 #: davgroupwareresource.cpp:1449
 #, kde-format
