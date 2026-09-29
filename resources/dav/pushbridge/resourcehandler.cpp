@@ -46,7 +46,11 @@ ResourceHandler::ResourceHandler(const QString &resourceName, const QString &vap
     connect(m_connector.get(), &KUnifiedPush::Connector::stateChanged, this, [this](auto state) {
         qCDebug(DAVPUSHNOTIFYBRIDGE_LOG) << "stateChanged" << m_resourceName << "State" << state;
     });
-    m_connector->registerClient("Push bridge for "_L1 + resourceName);
+
+    qCDebug(DAVPUSHNOTIFYBRIDGE_LOG) << "Status for " << resourceName << "is " << m_connector->state();
+    if (m_connector->state() == KUnifiedPush::Connector::State::Unregistered) {
+        m_connector->registerClient("Push bridge for "_L1 + resourceName);
+    }
 }
 
 QString ResourceHandler::vapid() const
@@ -61,4 +65,9 @@ void ResourceHandler::setVapid(const QString &vapid)
     }
     m_vapid = vapid;
     m_connector->setVapidPublicKey(m_vapid);
+}
+
+void ResourceHandler::unregister()
+{
+    m_connector->unregisterClient();
 }

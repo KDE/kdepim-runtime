@@ -38,6 +38,7 @@ install(
 
 target_link_libraries(
     akonadi_davpushnotifybridge
+    KF6::ConfigCore
     KF6::CoreAddons
     KF6::Crash
     KF6::DBusAddons

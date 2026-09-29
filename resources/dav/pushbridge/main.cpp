@@ -28,8 +28,9 @@ int main(int argc, char **argv)
 
     KCrash::initialize();
 
-    const DavPushNotifyBridge bridge;
     KDBusService service(KDBusService::Unique);
+
+    const DavPushNotifyBridge bridge;
 
     qCDebug(DAVPUSHNOTIFYBRIDGE_LOG) << "Starting DAV push notify bridge";
     return app.exec();
