@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the kdepim-runtime package.
 #
 # Automatically generated, 2022.
-# SPDX-FileCopyrightText: 2022, 2024 Mincho Kondarev <mkondarev@yahoo.de>
+# SPDX-FileCopyrightText: 2022, 2024, 2026 Mincho Kondarev <mkondarev@yahoo.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-26 00:46+0000\n"
-"PO-Revision-Date: 2024-05-13 22:47+0200\n"
+"PO-Revision-Date: 2026-09-28 17:26+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.02.2\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: migrationagent.cpp:44
 #, kde-format
@@ -63,17 +63,17 @@ msgid "Status"
 msgstr "Състояние"
 
 #: migrationstatuswidget.cpp:27
-#, fuzzy, kde-format
+#, kde-format
 msgid "Start"
 msgstr "Старт"
 
 #: migrationstatuswidget.cpp:31
-#, fuzzy, kde-format
+#, kde-format
 msgid "Pause"
 msgstr "Пауза"
 
 #: migrationstatuswidget.cpp:35
-#, fuzzy, kde-format
+#, kde-format
 msgid "Abort"
 msgstr "Прекъсване"
 
