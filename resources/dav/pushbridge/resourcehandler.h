@@ -16,6 +16,7 @@ public:
     explicit ResourceHandler(const QString &resourceName, const QString &vapid, QObject *parent = nullptr);
     [[nodiscard]] QString vapid() const;
     void setVapid(const QString &vapid);
+    void unregister();
 Q_SIGNALS:
     void contentUpdate(const QString &resourceName, const QString &topic, const QString &syncToken);
     void propertyUpdate(const QString &resourceName, const QString &topic);
