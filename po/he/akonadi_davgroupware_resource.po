@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-24 00:46+0000\n"
-"PO-Revision-Date: 2026-09-07 08:25+0300\n"
+"PO-Revision-Date: 2026-09-27 09:18+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -229,10 +229,9 @@ msgid "Unable to remove collection: %1"
 msgstr "לא ניתן להסיר אוסף: %1"
 
 #: davgroupwareresource.cpp:1434
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to retrieve collection: %1"
-msgstr "לא ניתן למשוך אוספים: %1"
+msgstr "לא ניתן למשוך אוסף: %1"
 
 #: davgroupwareresource.cpp:1449
 #, kde-format
