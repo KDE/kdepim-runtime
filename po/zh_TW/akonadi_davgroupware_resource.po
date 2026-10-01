@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-24 00:46+0000\n"
-"PO-Revision-Date: 2026-09-17 01:04+0900\n"
+"PO-Revision-Date: 2026-10-01 02:47+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -232,8 +232,7 @@ msgid "Unable to remove collection: %1"
 msgstr "無法移除收藏：%1"
 
 #: davgroupwareresource.cpp:1434
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to retrieve collection: %1"
 msgstr "無法取得收藏：%1"
 
