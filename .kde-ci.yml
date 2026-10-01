@@ -35,6 +35,7 @@ Dependencies:
  - 'on': ['Linux', 'FreeBSD']
    'require':
     'plasma/plasma-activities': '@latest-kf6'
+    'libraries/kunifiedpush': '@latest-kf6'
 
 Options:
  enable-lsan: true
