@@ -235,8 +235,14 @@ set_package_properties(
             REQUIRED
 )
 
+option(WITH_UNIFIEDPUSH "Build with KUnifiedPush support" ON)
+
+if(APPLE OR WIN32 OR HAIKU)
+    set(WITH_UNIFIEDPUSH OFF)
+endif()
+
 option(DAV_ENABLE_PUSH_NOTIFICATIONS "Enable dav push-notification" OFF)
-if(DAV_ENABLE_PUSH_NOTIFICATIONS)
+if(WITH_UNIFIEDPUSH AND DAV_ENABLE_PUSH_NOTIFICATIONS)
     find_package(KUnifiedPush 26.04.0 REQUIRED)
 endif()
 
