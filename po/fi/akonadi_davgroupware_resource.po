@@ -1,6 +1,6 @@
 # Copyright © 2011, 2012 This_file_is_part_of_KDE
 # This file is distributed under the same license as the kdepim-runtime package.
-# SPDX-FileCopyrightText: 2011, 2012, 2013, 2015, 2016, 2017, 2018, 2020, 2021, 2024, 2025 Tommi Nieminen <translator@legisign.org>
+# SPDX-FileCopyrightText: 2011, 2012, 2013, 2015, 2016, 2017, 2018, 2020, 2021, 2024, 2025, 2026 Tommi Nieminen <translator@legisign.org>
 # Lasse Liehu <lasse.liehu@gmail.com>, 2012, 2013, 2014, 2015.
 # Jiri Grönroos <jiri.gronroos+kde@iki.fi>, 2012.
 #
@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-24 00:46+0000\n"
-"PO-Revision-Date: 2025-05-25 16:25+0300\n"
+"PO-Revision-Date: 2026-08-25 20:02+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 25.04.0\n"
 
 #: configwidget.cpp:34
 #, kde-format
@@ -194,10 +194,9 @@ msgid "Invalid collection for item %1."
 msgstr "Virheellinen kokoelma kohteelle %1."
 
 #: davgroupwareresource.cpp:798
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to delete item exceptions: %1"
-msgstr "Kokoelmia ei voida noutaa: %1"
+msgstr "Tietuepoikkeuksia ei voitu poistaa: %1"
 
 #: davgroupwareresource.cpp:908
 #, fuzzy, kde-format
@@ -228,10 +227,9 @@ msgid "Unable to modify collection: %1"
 msgstr "Kokoelmaa ei voida muuttaa: %1"
 
 #: davgroupwareresource.cpp:1383
-#, fuzzy, kde-format
-#| msgid "Unable to remove collection: %1"
+#, kde-format
 msgid "Unable to create collection: %1"
-msgstr "Kokoelmaa ei voida poistaa: %1"
+msgstr "Kokoelmaa ei voitu luoda: %1"
 
 #: davgroupwareresource.cpp:1412
 #, kde-format
@@ -245,10 +243,9 @@ msgid "Unable to retrieve collection: %1"
 msgstr "Kokoelmia ei voida noutaa: %1"
 
 #: davgroupwareresource.cpp:1449
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Failed to retrieve collection: %1"
-msgstr "Kokoelmia ei voida noutaa: %1"
+msgstr "Kokoelmaa ei voitu noutaa: %1"
 
 #: davgroupwareresource.cpp:1495
 #, kde-format
