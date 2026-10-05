@@ -5,7 +5,6 @@
 */
 
 #include "specialnotifierjob.h"
-using namespace Qt::Literals::StringLiterals;
 
 #include "newmailnotifieragentsettings.h"
 #include "newmailnotifierreplymessagejob.h"
@@ -24,6 +23,8 @@ using namespace Qt::Literals::StringLiterals;
 
 #include "newmailnotifier_debug.h"
 #include <KLocalizedString>
+
+using namespace Qt::Literals::StringLiterals;
 
 SpecialNotifierJob::SpecialNotifierJob(const SpecialNotificationInfo &info, QObject *parent)
     : QObject(parent)

@@ -6,12 +6,12 @@
  */
 
 #include "dummymigrator.h"
-using namespace Qt::Literals::StringLiterals;
 
 #include <QDebug>
 #include <QTimer>
 #include <chrono>
 
+using namespace Qt::Literals::StringLiterals;
 using namespace std::chrono_literals;
 
 DummyMigrator::DummyMigrator(const QString &identifier)

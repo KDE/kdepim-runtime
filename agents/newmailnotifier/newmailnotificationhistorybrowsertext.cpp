@@ -4,7 +4,6 @@
 */
 
 #include "newmailnotificationhistorybrowsertext.h"
-using namespace Qt::Literals::StringLiterals;
 
 #include "newmailnotifier_debug.h"
 #include "newmailnotifieropenfolderjob.h"
@@ -12,6 +11,8 @@ using namespace Qt::Literals::StringLiterals;
 
 #include <KStandardAction>
 #include <QMenu>
+
+using namespace Qt::Literals::StringLiterals;
 
 NewMailNotificationHistoryBrowserText::NewMailNotificationHistoryBrowserText(QWidget *parent)
     : TextCustomEditor::RichTextBrowser(parent)

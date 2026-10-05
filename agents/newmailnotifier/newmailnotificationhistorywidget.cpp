@@ -4,7 +4,6 @@
 */
 
 #include "newmailnotificationhistorywidget.h"
-using namespace Qt::Literals::StringLiterals;
 
 #include "newmailnotificationhistorybrowsertext.h"
 #include "newmailnotificationhistorybrowsertextwidget.h"
@@ -17,6 +16,8 @@ using namespace Qt::Literals::StringLiterals;
 #include <QCheckBox>
 #include <QScrollBar>
 #include <QVBoxLayout>
+
+using namespace Qt::Literals::StringLiterals;
 
 NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *parent)
     : QWidget{parent}

@@ -5,7 +5,6 @@
 */
 
 #include "newmailnotifiersettingswidget.h"
-using namespace Qt::Literals::StringLiterals;
 
 #include "newmailnotifieragentsettings.h"
 #include "newmailnotifierselectcollectionwidget.h"
@@ -25,6 +24,8 @@ using namespace Qt::Literals::StringLiterals;
 
 #include <KLazyLocalizedString>
 #include <KSharedConfig>
+
+using namespace Qt::Literals::StringLiterals;
 
 static KLazyLocalizedString textToSpeakMessage = kli18n(
     "<qt>"

@@ -4,7 +4,6 @@
 */
 
 #include "newmailnotificationhistorydialog.h"
-using namespace Qt::Literals::StringLiterals;
 
 #include "newmailnotificationhistorywidget.h"
 #include <KConfigGroup>
@@ -14,6 +13,8 @@ using namespace Qt::Literals::StringLiterals;
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
 #include <QWindow>
+
+using namespace Qt::Literals::StringLiterals;
 
 namespace
 {
