@@ -210,8 +210,7 @@ msgstr "Папка, используемая как корзина"
 #: imapresource.kcfg:75
 #, kde-format
 msgid "Define if the trash collection received the special attribute"
-msgstr ""
-"Определяет, получают ли почтовые сообщения в корзине специальный атрибут"
+msgstr "Определяет, получает ли папка корзины специальный атрибут"
 
 #. i18n: ectx: label, entry (UseDefaultIdentity), group (cache)
 #: imapresource.kcfg:79
@@ -283,7 +282,7 @@ msgstr "Имя пользователя для дополнительного а
 #: imapresource.kcfg:123
 #, kde-format
 msgid "Defines the type of identification used by custom sieve server"
-msgstr "Тип идентификации для нестандартного фильтрующего сервера"
+msgstr "Тип аутентификации для нестандартного фильтрующего сервера"
 
 #. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
 #: imapresource.kcfg:129
@@ -305,7 +304,7 @@ msgstr "Сервер не настроен."
 #: imapresourcebase.cpp:236
 #, kde-format
 msgid "Connection established."
-msgstr "Соединение установлено"
+msgstr "Соединение установлено."
 
 #: imapresourcebase.cpp:253
 #, kde-format
@@ -346,37 +345,37 @@ msgstr "Перемещение элементов из «%1» в «%2»"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
-msgstr "Получение каталогов"
+msgstr "Получение папок"
 
 #: imapresourcebase.cpp:364
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
-msgstr "Получение дополнительной информации каталога для «%1»"
+msgstr "Получение дополнительной информации о папке для «%1»"
 
 #: imapresourcebase.cpp:382
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
-msgstr "Создание каталога «%1»"
+msgstr "Создание папки «%1»"
 
 #: imapresourcebase.cpp:388
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
-msgstr "Обновление каталога «%1»"
+msgstr "Обновление папки «%1»"
 
 #: imapresourcebase.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
-msgstr "Удаление каталога «%1»"
+msgstr "Удаление папки «%1»"
 
 #: imapresourcebase.cpp:408
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
-msgstr "Перемещение каталога «%1» из «%2» в «%3»"
+msgstr "Перемещение папки «%1» из «%2» в «%3»"
 
 #: imapresourcebase.cpp:438
 #, kde-format
@@ -442,7 +441,7 @@ msgstr ""
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
-msgstr "Не удалось прочитать пароль из цепочки ключей."
+msgstr "Не удалось прочитать пароль из связки ключей."
 
 #: removecollectionrecursivetask.cpp:113 removecollectionrecursivetask.cpp:129
 #: removecollectionrecursivetask.cpp:142
@@ -627,7 +626,7 @@ msgid ""
 msgstr ""
 "Невозможно использовать сервер IMAP %1, так как отсутствуют некоторые "
 "обязательные возможности: %2. Обратитесь к системному администратору, чтобы "
-"он настроил сервер."
+"он обновил сервер."
 
 #: sessionpool.cpp:553 sessionpool.cpp:572
 #, kde-format
@@ -841,8 +840,8 @@ msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
 msgstr ""
-"<qt><b>Безопасное подключение не поддерживается и не рекомендуется для "
-"подключения к этому серверу.</b></qt>"
+"<qt><b>Безопасное подключение не поддерживается. Подключаться к этому "
+"серверу не рекомендуется.</b></qt>"
 
 #: setupserver.cpp:572
 #, kde-format
@@ -859,7 +858,7 @@ msgstr "Подписка на сервере"
 #: setupserverview_desktop.ui:33
 #, kde-format
 msgid "General"
-msgstr "Основное"
+msgstr "Общие"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, accountInfoLabel)
 #: setupserverview_desktop.ui:39
@@ -871,7 +870,7 @@ msgstr "Сведения об учётной записи"
 #: setupserverview_desktop.ui:46
 #, kde-format
 msgid "Account Name:"
-msgstr "Учётная запись:"
+msgstr "Имя учётной записи:"
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label)
 #: setupserverview_desktop.ui:57
@@ -932,7 +931,7 @@ msgstr "&Загружать все письма для чтения в авто�
 #: setupserverview_desktop.ui:122
 #, kde-format
 msgid "Enable &interval mail checking"
-msgstr "Пери&одическая проверка почты"
+msgstr "Включить пери&одическую проверку почты"
 
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: setupserverview_desktop.ui:129

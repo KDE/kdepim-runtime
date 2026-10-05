@@ -30,7 +30,7 @@ msgstr ""
 #: settingsdialog.ui:29
 #, kde-format
 msgid "Directory settings of the resource."
-msgstr "Параметры каталога ресурса."
+msgstr "Параметры папки источника данных."
 
 #. i18n: ectx: property (whatsThis), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:32
@@ -39,26 +39,27 @@ msgid ""
 "Select settings of the directory whose contents should be represented by "
 "this resource."
 msgstr ""
-"Выберите параметры каталога, который будет представлять этот источник данных"
+"Выберите параметры папки, содержимое которой будет представлять этот "
+"источник данных."
 
 # BUGME: change to "folder"? --aspotashev
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: settingsdialog.ui:39
 #, kde-format
 msgid "Directory"
-msgstr "Каталог"
+msgstr "Папка"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: settingsdialog.ui:45
 #, kde-format
 msgid "Directory Name"
-msgstr "Имя каталога"
+msgstr "Имя папки"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: settingsdialog.ui:53
 #, kde-format
 msgid "Director&y:"
-msgstr "&Каталог:"
+msgstr "&Папка:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: settingsdialog.ui:68
@@ -67,8 +68,8 @@ msgid ""
 "Select the directory whose contents should be represented by this resource. "
 "If the directory does not exist, it will be created."
 msgstr ""
-"Выберите каталог который будет представлять этот источник данных. Если "
-"каталог не существует, то он будет создан."
+"Выберите папку, содержимое которой будет представлять этот источник данных. "
+"Если папка не существует, она будет создана."
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: settingsdialog.ui:81
@@ -84,7 +85,7 @@ msgid ""
 "selected above."
 msgstr ""
 "Если включён режим только для чтения, изменения не будут записываться в "
-"каталог, выбранный выше."
+"папку, выбранную выше."
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_ReadOnly)
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -96,8 +97,8 @@ msgid ""
 "have write access to the directory."
 msgstr ""
 "Если включён режим только для чтения, изменения не будут записываться в "
-"каталог, выбранный выше. Режим только для чтения будет включён "
-"автоматически, если нет прав на доступ для записи в этот каталог."
+"папку, выбранную выше. Режим только для чтения будет включён автоматически, "
+"если нет прав на доступ для записи в эту папку."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: settingsdialog.ui:93 singlefileresourceconfigwidget_desktop.ui:92
@@ -109,7 +110,7 @@ msgstr "Только для чтения"
 #: settingsdialog.ui:127
 #, kde-format
 msgid "Tuning"
-msgstr "Настройка"
+msgstr "Тонкая настройка"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: settingsdialog.ui:133
@@ -273,7 +274,7 @@ msgstr ""
 #: singlefileresourceconfigwidget_desktop.ui:121
 #, kde-format
 msgid "Monitor for &changes"
-msgstr "Отслеживать изменения"
+msgstr "Отслеживать &изменения"
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
@@ -292,7 +293,7 @@ msgstr ""
 #: singlefileresourceconfigwidget_desktop.ui:149
 #, kde-format
 msgid "Automatically &update every"
-msgstr "Интервал автообновления"
+msgstr "Автоматически &обновлять каждые"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_UpdatePeriod)
 #: singlefileresourceconfigwidget_desktop.ui:159

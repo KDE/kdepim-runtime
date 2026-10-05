@@ -27,12 +27,12 @@ msgstr ""
 #: icaldirresource.cpp:121
 #, kde-format
 msgid "Incidence with uid '%1' not found."
-msgstr "Мероприятие с uid «%1» не найдено."
+msgstr "Событие с uid «%1» не найдено."
 
 #: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
-msgstr "Попытка записи в каталог только для чтения: %1"
+msgstr "Попытка записи в папку, доступную только для чтения: %1"
 
 #: icaldirresource.cpp:252
 #, kde-format
@@ -68,13 +68,13 @@ msgstr "Не изменять существующие данные."
 #: icaldirsagentsettingswidget.ui:33
 #, kde-format
 msgid "Directory"
-msgstr "Каталог"
+msgstr "Папка"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: icaldirsagentsettingswidget.ui:39
 #, kde-format
 msgid "Di&rectory:"
-msgstr "&Каталог:"
+msgstr "&Папка:"
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: icaldirsagentsettingswidget.ui:58
@@ -83,8 +83,8 @@ msgid ""
 "Select the directory whose contents should be represented by this resource. "
 "If the directory does not exist, it will be created."
 msgstr ""
-"Выберите каталог, который будет представлять данный ресурс. Если каталог не "
-"существует, то он будет создан."
+"Выберите папку, содержимое которой будет представлять этот источник данных. "
+"Если папка не существует, она будет создана."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: icaldirsagentsettingswidget.ui:68
@@ -108,7 +108,7 @@ msgstr ""
 #: icaldirsagentsettingswidget.ui:108
 #, kde-format
 msgid "Tuning"
-msgstr "Подстройка"
+msgstr "Тонкая настройка"
 
 #. i18n: ectx: property (text), widget (QLabel, runingLabel)
 #: icaldirsagentsettingswidget.ui:114
@@ -133,7 +133,7 @@ msgstr "Задержка автосохранения:"
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "A directory path or URL containing calendar files"
-msgstr "Путь к каталогу или URL-адрес, содержащий файлы календаря"
+msgstr "Путь к папке или URL-адрес, содержащий файлы календаря"
 
 #: icaldirsettingswidget.cpp:46
 #, kde-kuit-format
@@ -142,8 +142,9 @@ msgid ""
 "Enter the path or URL to a directory whose contents should be represented by "
 "this resource. The directory will be created if it does not exist."
 msgstr ""
-"Введите путь или URL-адрес к каталогу, содержимое которого должно быть "
-"представлено данным ресурсом. Каталог будет создан, если он не существует."
+"Введите путь или URL-адрес папки, содержимое которой должно быть "
+"представлено этим источником данных. Папка будет создана, если она не "
+"существует."
 
 #: icaldirsettingswidget.cpp:48
 #, kde-format

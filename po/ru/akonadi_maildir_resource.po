@@ -110,7 +110,7 @@ msgstr "Не удалось переименовать файл «%1» в «%2»
 #: maildirresource.cpp:578 maildirresource.cpp:621 maildirresource.cpp:654
 #, kde-format
 msgid "Unusable configuration."
-msgstr "Непригодная конфигурация"
+msgstr "Непригодная конфигурация."
 
 #: maildirresource.cpp:187
 #, kde-format
@@ -120,7 +120,7 @@ msgstr "Не удалось получить элемент: недопусти�
 #: maildirresource.cpp:265
 #, kde-format
 msgid "Error: Unsupported type."
-msgstr "Ошибка: неверный тип."
+msgstr "Ошибка: неподдерживаемый тип."
 
 #: maildirresource.cpp:331
 #, kde-format

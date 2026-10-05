@@ -43,12 +43,12 @@ msgstr "Ошибка сохранения календаря в файл %1"
 #: icalresource.cpp:223
 #, kde-format
 msgid "Unable to retrieve added item %1."
-msgstr "Не удалось добавить событие %1."
+msgstr "Не удалось получить добавленный объект %1."
 
 #: icalresource.cpp:223
 #, kde-format
 msgid "Unable to retrieve modified item %1."
-msgstr "Не удалось изменить событие %1."
+msgstr "Не удалось получить изменённый объект %1."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icalresource.kcfg:10

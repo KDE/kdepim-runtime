@@ -1,21 +1,21 @@
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2014, 2020, 2024, 2026 Shinjo Park <kde@peremen.name>
+# Copyright (C) 2026 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
 #
+# SPDX-FileCopyrightText: 2026 Kishore G <kishore96@gmail.com>
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-12-18 00:44+0000\n"
-"PO-Revision-Date: 2024-08-19 22:47+0200\n"
-"Last-Translator: Shinjo Park <kde@peremen.name>\n"
-"Language-Team: Korean <kde-kr@kde.org>\n"
-"Language: ko\n"
+"PO-Revision-Date: 2026-10-04 12:31+0200\n"
+"Last-Translator: Kishore G <kishore96@gmail.com>\n"
+"Language-Team: Tamil <kde-l10n-ta@kde.org>\n"
+"Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 25.12.3\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: migrationagent.cpp:44
 #, kde-format
@@ -23,57 +23,50 @@ msgctxt ""
 "Title of the window that shows the status of the migration agent and offers "
 "controls to start/stop individual migration jobs."
 msgid "Migration Status"
-msgstr "이전 상태"
+msgstr ""
 
 #: migrationexecutor.cpp:19
 #, kde-format
 msgctxt "User visible name of ongoing Akonadi migration jobs"
 msgid "PIM Maintenance"
-msgstr "PIM 관리"
+msgstr ""
 
 #: migrationexecutor.cpp:40
 #, kde-format
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress…"
-msgstr "진행 중…"
+msgstr ""
 
 #: migrationexecutor.cpp:46
 #, kde-format
 msgid "PIM Maintenance"
-msgstr "PIM 관리"
+msgstr ""
 
 #: migrationscheduler.cpp:143
 #, kde-format
 msgctxt "Name of the migrator in this row"
 msgid "Name"
-msgstr "이름"
+msgstr ""
 
 #: migrationscheduler.cpp:145
 #, kde-format
 msgctxt "Progress of the migrator in %"
 msgid "Progress"
-msgstr "진행"
+msgstr ""
 
 #: migrationscheduler.cpp:147
 #, kde-format
 msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
-msgstr "상태"
+msgstr "நிலை"
 
 #: migrationstatuswidget.cpp:97
 #, kde-format
 msgid "Logfile"
-msgstr "로그 파일"
+msgstr ""
 
 #: migrationstatuswidget.cpp:106
 #, kde-format
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"
-msgstr "이전 정보"
-
-#~ msgctxt "PIM-Maintenance is paused."
-#~ msgid "Paused."
-#~ msgstr "일시 정지됨."
-
-#~ msgid "PIM-Maintanence"
-#~ msgstr "PIM 관리"
+msgstr ""

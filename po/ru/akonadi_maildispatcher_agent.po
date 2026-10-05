@@ -57,7 +57,7 @@ msgstr "Почта успешно отправлена"
 #, kde-format
 msgctxt "Notification when the email was sent"
 msgid "Your E-Mail has been sent successfully."
-msgstr "Ваше почтовое сообщение успешно отправлено"
+msgstr "Ваше почтовое сообщение успешно отправлено."
 
 #: maildispatcheragent.cpp:110
 #, kde-format
@@ -67,7 +67,7 @@ msgstr "В очереди нет элементов."
 #: maildispatcheragent.cpp:155
 #, kde-format
 msgid "Online, sending messages in queue."
-msgstr "Соединение установлено, письма отправляются в очередь."
+msgstr "Соединение установлено, письма из очереди отправляются."
 
 #: maildispatcheragent.cpp:159
 #, kde-format
@@ -89,24 +89,24 @@ msgstr "Отправить почту не удалось"
 #: maildispatcheragent.cpp:283
 #, kde-format
 msgid "Ready to dispatch messages."
-msgstr "Готов к отправке сообщений"
+msgstr "Готов к отправке сообщений."
 
 #. i18n: ectx: label, entry (Outbox), group (General)
 #: maildispatcheragent.kcfg:10
 #, kde-format
 msgid "Outbox collection id"
-msgstr "Идентификатор исходящей почты"
+msgstr "Идентификатор папки исходящей почты"
 
 #. i18n: ectx: label, entry (SentMail), group (General)
 #: maildispatcheragent.kcfg:14
 #, kde-format
 msgid "Sent Mail collection id"
-msgstr "Идентификатор отправленной почты"
+msgstr "Идентификатор папки отправленной почты"
 
 #: outboxqueue.cpp:265
 #, kde-format
 msgid "Could not access the outbox folder (%1)."
-msgstr "Нет доступа в папке исходящей почты (%1)."
+msgstr "Нет доступа к папке исходящей почты (%1)."
 
 #: sendjob.cpp:49 sendjob.cpp:50
 #, kde-format
@@ -117,13 +117,12 @@ msgstr "Отправка писем прервана."
 #, kde-format
 msgid "Could not initiate message transport. Possibly invalid transport."
 msgstr ""
-"Не удалось инициировать передачу письма. Возможно, неверный почтовый "
-"транспорт."
+"Не удалось инициировать передачу письма. Возможно, неверный метод отправки."
 
 #: sendjob.cpp:65
 #, kde-format
 msgid "Could not send message. Invalid transport."
-msgstr "Невозможно отправить письмо."
+msgstr "Невозможно отправить письмо: неверный метод отправки."
 
 #: sendjob.cpp:97
 #, kde-format

@@ -110,7 +110,7 @@ msgstr "Не удалось обработать отмену привязки �
 #: generichandler.cpp:34
 #, kde-format
 msgid "Cannot handle item tag changes"
-msgstr "Не удалось обработать изменения меток событий"
+msgstr "Не удалось обработать изменения меток записей"
 
 #: generichandler.cpp:61
 #, kde-format
@@ -189,14 +189,14 @@ msgstr "Ресурс не настроен"
 #: googleresource.cpp:239
 #, kde-format
 msgid "Failed to refresh tokens"
-msgstr "Не удалось обновить ключи"
+msgstr "Не удалось обновить токены"
 
 #: googleresource.cpp:423 googleresource.cpp:437 googleresource.cpp:451
 #: googleresource.cpp:466 googleresource.cpp:480 googleresource.cpp:494
 #: googleresource.cpp:508
 #, kde-format
 msgid "Invalid payload type"
-msgstr "Неверный тип информации"
+msgstr "Неверный тип данных"
 
 #: googleresource.cpp:522 googleresource.cpp:536 googleresource.cpp:550
 #, kde-format
@@ -324,7 +324,7 @@ msgstr "Получение контактов для группы «%1»"
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding contact to group '%1'"
-msgstr "Добавление контактов в группу «%1»"
+msgstr "Добавление контакта в группу «%1»"
 
 #: personhandler.cpp:404
 #, kde-format
