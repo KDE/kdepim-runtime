@@ -28,7 +28,7 @@ msgstr ""
 #, kde-format
 msgctxt "%f is a variable for agent. Do not change it"
 msgid "A message was received from %f"
-msgstr "Получено письмо из %f"
+msgstr "Получено письмо от %f"
 
 #: newmailnotificationhistorydialog.cpp:27
 #, kde-format
@@ -61,10 +61,10 @@ msgctxt ""
 "user named it)"
 msgid "One new email in %2 from \"%3\""
 msgid_plural "%1 new emails in %2 from \"%3\""
-msgstr[0] "%1 новое письмо в %2 в «%3»"
-msgstr[1] "%1 новых письма в %2 в «%3»"
-msgstr[2] "%1 новых писем в %2 в «%3»"
-msgstr[3] "Одно новое письмо в %2 в «%3»"
+msgstr[0] "%1 новое письмо в %2 из «%3»"
+msgstr[1] "%1 новых письма в %2 из «%3»"
+msgstr[2] "%1 новых писем в %2 из «%3»"
+msgstr[3] "Одно новое письмо в %2 из «%3»"
 
 #: newmailnotifieragent.cpp:405
 #, kde-format
@@ -182,7 +182,7 @@ msgstr "Ответить всем"
 #: newmailnotifiersettingswidget.cpp:105
 #, kde-format
 msgid "Display"
-msgstr "Представление"
+msgstr "Показ"
 
 #: newmailnotifiersettingswidget.cpp:114
 #, kde-format

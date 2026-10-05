@@ -31,7 +31,7 @@ msgid "(1 message marked for deletion)"
 msgid_plural "(%1 messages marked for deletion)"
 msgstr[0] "(%1 письмо помечено для удаления)"
 msgstr[1] "(%1 письма помечены для удаления)"
-msgstr[2] "(%1 писем помечены для удаления)"
+msgstr[2] "(%1 писем помечено для удаления)"
 msgstr[3] "(%1 письмо помечено для удаления)"
 
 #: compactpage.cpp:78
@@ -50,18 +50,18 @@ msgid "(Deleting 1 message)"
 msgid_plural "(Deleting %1 messages)"
 msgstr[0] "(удаляется %1 письмо)"
 msgstr[1] "(удаляется %1 письма)"
-msgstr[2] "(удаляются %1 писем)"
+msgstr[2] "(удаляется %1 писем)"
 msgstr[3] "(удаляется %1 письмо)"
 
 #: compactpage.cpp:107 compactpage.cpp:115
 #, kde-format
 msgid "Failed to compact the mbox file."
-msgstr "Ошибка при сжатии файла почтового ящика (mbox)"
+msgstr "Ошибка при сжатии файла почтового ящика (mbox)."
 
 #: compactpage.cpp:117
 #, kde-format
 msgid "MBox file compacted."
-msgstr "Файл почтового ящика (mbox) упакован."
+msgstr "Файл почтового ящика (mbox) сжат."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: compactpage.ui:23
@@ -99,35 +99,34 @@ msgstr ""
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\">Единственный способ "
 "полностью удалить почту из файла mbox — это удалить её из исходного файла. "
-"Будьте внимательны, так как файл mbox также хранит список удалённых "
-"сообщений, которые время от времени действительно удаляются из этого файла.</"
-"p>\n"
+"Поскольку это довольно затратная операция, источник данных mbox ведёт список "
+"удалённых писем и время от времени действительно удаляет их из файла.</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
 "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></"
 "p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"weight:600;\">Примечание.</span>Если файл был изменён сторонней программой, "
-"то удалённые сообщения уже не могут корректно храниться и могут появиться "
-"снова.</p></body></html>"
+"weight:600;\">Примечание.</span> Недостаток такого подхода в том, что если "
+"файл изменит другая программа, список удалённых писем станет недостоверным и "
+"удалённые письма могут появиться снова.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QPushButton, compactButton)
 #: compactpage.ui:49
 #, kde-format
 msgid "&Compact now"
-msgstr "Сжать сейчас"
+msgstr "С&жать сейчас"
 
 #. i18n: ectx: property (text), widget (QRadioButton, never)
 #: compactpage.ui:79
 #, kde-format
 msgid "&Never compact automatically"
-msgstr "Не упаковывать автоматически"
+msgstr "&Не сжимать автоматически"
 
 #. i18n: ectx: property (text), widget (QRadioButton, per_x_messages)
 #: compactpage.ui:86
 #, kde-format
 msgid "C&ompact every"
-msgstr "Сжать каждое"
+msgstr "Сжи&мать каждые"
 
 # Требуется уточнить
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_MessageCount)
@@ -286,8 +285,8 @@ msgid ""
 msgstr ""
 "Файл mbox был изменён другой программой. Была сделана новая копия файла и к "
 "ней были применены изменения. Для изменения такого поведения используйте "
-"блокировку, чтобы быть уверенными, что все программы, которые имею доступ к "
-"этому файлу используют один и тот же метод блокировки."
+"блокировку, чтобы быть уверенными, что все программы, которые имеют доступ к "
+"этому файлу, используют один и тот же метод блокировки."
 
 #: mboxresource.cpp:298
 #, kde-format
@@ -300,20 +299,20 @@ msgid ""
 "Failed to update the changed item because the old item could not be deleted "
 "Reason: %1"
 msgstr ""
-"Ошибка при обновлении элемента потому что старый элемент не был удалён. "
+"Ошибка при обновлении элемента, потому что старый элемент не был удалён. "
 "Причина: %1"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: mboxresource.kcfg:10
 #, kde-format
 msgid "Path to mbox file."
-msgstr "Расположение файла (mbox)."
+msgstr "Путь к файлу mbox."
 
 #. i18n: ectx: label, entry (DisplayName), group (General)
 #: mboxresource.kcfg:14
 #, kde-format
 msgid "Display name."
-msgstr "Показать имя."
+msgstr "Отображаемое имя."
 
 # Требуется уточнения
 #. i18n: ectx: label, entry (ReadOnly), group (General)

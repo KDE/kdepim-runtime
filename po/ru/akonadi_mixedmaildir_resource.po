@@ -57,7 +57,7 @@ msgstr "Выбранный путь не существует."
 #, kde-format
 msgctxt "@info:status"
 msgid "Unusable configuration."
-msgstr "Непригодная конфигурация"
+msgstr "Непригодная конфигурация."
 
 #: mixedmaildirresource.cpp:171
 #, kde-format
@@ -72,13 +72,13 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Synchronizing email folders"
-msgstr "Синхронизация почтовых каталогов"
+msgstr "Синхронизация почтовых папок"
 
 #: mixedmaildirresource.cpp:217
 #, kde-format
 msgctxt "@info:status"
 msgid "Synchronizing email folder %1"
-msgstr "Синхронизация почтового каталога %1"
+msgstr "Синхронизация почтовой папки %1"
 
 #: mixedmaildirresource.cpp:318
 #, kde-format
@@ -245,7 +245,7 @@ msgstr "Не удалось переместить письмо из папки 
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move email from folder %1 to folder %2"
-msgstr "Не удалось переместить письма из папки %1 в папку %2"
+msgstr "Не удалось переместить письмо из папки %1 в папку %2"
 
 #: mixedmaildirstore.cpp:2298
 #, kde-format
@@ -257,7 +257,7 @@ msgstr "Не удалось переместить папку %1 в одну и�
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot add email to folder %1 because there is no email content"
-msgstr "Не удалось добавить письмо в папку %1, так так нет содержимого письма"
+msgstr "Не удалось добавить письмо в папку %1, так как нет содержимого письма"
 
 #: mixedmaildirstore.cpp:2318
 #, kde-format

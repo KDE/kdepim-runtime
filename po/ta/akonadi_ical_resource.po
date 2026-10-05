@@ -1,0 +1,80 @@
+# Copyright (C) 2026 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+#
+# SPDX-FileCopyrightText: 2026 Kishore G <kishore96@gmail.com>
+msgid ""
+msgstr ""
+"Project-Id-Version: kdepim-runtime\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-09-02 00:44+0000\n"
+"PO-Revision-Date: 2026-10-04 12:30+0200\n"
+"Last-Translator: Kishore G <kishore96@gmail.com>\n"
+"Language-Team: Tamil <kde-l10n-ta@kde.org>\n"
+"Language: ta\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 26.08.1\n"
+
+#: icalresource.cpp:53 icalresource.cpp:130 icalresource.cpp:172
+#: icalresource.cpp:212
+#, kde-format
+msgid "Calendar not loaded."
+msgstr ""
+
+#: icalresource.cpp:65
+#, kde-format
+msgid "Incidence with uid '%1' not found."
+msgstr ""
+
+#: icalresource.cpp:198
+#, kde-format
+msgid "Failed to save calendar file to %1"
+msgstr ""
+
+#: icalresource.cpp:217
+#, kde-format
+msgid "Unable to retrieve added item %1."
+msgstr ""
+
+#: icalresource.cpp:217
+#, kde-format
+msgid "Unable to retrieve modified item %1."
+msgstr ""
+
+#. i18n: ectx: label, entry (Path), group (General)
+#: icalresource.kcfg:10
+#, kde-format
+msgid "Path to iCal file."
+msgstr ""
+
+#. i18n: ectx: label, entry (DisplayName), group (General)
+#: icalresource.kcfg:14
+#, kde-format
+msgid "Display name."
+msgstr "காட்டப்படும் பெயர்."
+
+#. i18n: ectx: label, entry (ReadOnly), group (General)
+#: icalresource.kcfg:18
+#, kde-format
+msgid "Do not change the actual backend data."
+msgstr ""
+
+#. i18n: ectx: label, entry (MonitorFile), group (General)
+#: icalresource.kcfg:22
+#, kde-format
+msgid "Monitor file for changes."
+msgstr ""
+
+#. i18n: ectx: label, entry (PeriodicUpdate), group (General)
+#: icalresource.kcfg:26
+#, kde-format
+msgid "Periodically update the file."
+msgstr ""
+
+#. i18n: ectx: label, entry (UpdatePeriod), group (General)
+#: icalresource.kcfg:30
+#, kde-format
+msgid "Automatic update period in minutes."
+msgstr ""

@@ -75,7 +75,7 @@ msgstr "Отображаемое имя:"
 #: configwidget.ui:39
 #, kde-format
 msgid "Refresh every:"
-msgstr "Обновлять через"
+msgstr "Обновлять каждые:"
 
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, kcfg_refreshInterval)
 #: configwidget.ui:48
@@ -167,7 +167,7 @@ msgstr "Изменить"
 #: davfreebusyhandler.cpp:62
 #, kde-format
 msgid "No schedule-outbox found for %1"
-msgstr "Не найдено исходящее уведомление для %1"
+msgstr "Не найден schedule-outbox для %1"
 
 #: davfreebusyhandler.cpp:194 davfreebusyhandler.cpp:205
 #, kde-format
@@ -187,7 +187,7 @@ msgstr "Невозможно получить данные о занятом в�
 #: davgroupwareresource.cpp:387
 #, kde-format
 msgid "Fetching collections"
-msgstr "Получение коллекции"
+msgstr "Получение коллекций"
 
 #: davgroupwareresource.cpp:447
 #, kde-format
@@ -299,13 +299,13 @@ msgstr "Источник данных не настроен"
 #: davgroupwareresource.kcfg:10
 #, kde-format
 msgid "Settings Version"
-msgstr "Версия настроек"
+msgstr "Версия параметров"
 
 #. i18n: ectx: label, entry (displayName), group (General)
 #: davgroupwareresource.kcfg:14
 #, kde-format
 msgid "Display name"
-msgstr "Отобразить имя"
+msgstr "Отображаемое имя"
 
 #. i18n: ectx: label, entry (refreshInterval), group (General)
 #: davgroupwareresource.kcfg:18
@@ -383,19 +383,19 @@ msgstr ""
 #: searchdialog.ui:32 urlconfigurationdialog.ui:94
 #, kde-format
 msgid "Use global creden&tials"
-msgstr "&Использовать глобальные реквизиты доступа"
+msgstr "&Использовать глобальные учётные данные"
 
 #. i18n: ectx: property (text), widget (QRadioButton, useSpecificCreds)
 #: searchdialog.ui:42 urlconfigurationdialog.ui:104
 #, kde-format
 msgid "Use specific credentials"
-msgstr "Использовать специальные реквизиты доступа"
+msgstr "Использовать особые учётные данные"
 
 #. i18n: ectx: property (title), widget (QGroupBox, credentialsGroup)
 #: searchdialog.ui:49
 #, kde-format
 msgid "Credentials"
-msgstr "Реквизиты доступа"
+msgstr "Учётные данные"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: searchdialog.ui:61
@@ -468,7 +468,7 @@ msgstr "Найден предопределённый поставщик"
 #: setupwizard.cpp:279
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
-msgstr "Выберите его, если хотите его использовать"
+msgstr "Выберите, если хотите использовать автоматически найденного поставщика"
 
 #: setupwizard.cpp:298
 #, kde-format
@@ -479,7 +479,7 @@ msgid ""
 msgstr ""
 "Для почтового адреса, который вы используете для входа, этот мастер\n"
 "может автоматически настроить подключение к сервисам %1.\n"
-"Вы принимаете это предложение?"
+"Выполнить настройку?"
 
 #: setupwizard.cpp:303
 #, kde-format
