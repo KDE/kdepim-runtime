@@ -16,6 +16,12 @@ public:
     explicit ResourceHandler(const QString &resourceName, const QString &vapid, QObject *parent = nullptr);
     [[nodiscard]] QString vapid() const;
     void setVapid(const QString &vapid);
+Q_SIGNALS:
+    void contentUpdate(const QString &resourceName, const QString &topic, const QString &syncToken);
+    void endpointChanged(const QString &resourceName,
+                         const QString &endpoint,
+                         const QByteArray &contentEncryptionAuthSecret,
+                         const QByteArray &contentEncryptionPublicKey);
 
 private:
     QString m_resourceName;

@@ -22,12 +22,15 @@ DavPushNotifyBridge::DavPushNotifyBridge(QObject *parent) // TODO add resource b
 void DavPushNotifyBridge::registerResource(const QString &resourceServiceName, const QString &vapid)
 {
     qCDebug(DAVPUSHNOTIFYBRIDGE_LOG) << "Registering" << resourceServiceName << vapid;
-
+    ResourceHandler *resourceHandler;
     auto it = m_resources.find(resourceServiceName);
     if (it == m_resources.end()) {
-        auto resourceHandler = it->second.get();
+        resourceHandler = it->second.get();
         resourceHandler->setVapid(vapid);
     } else {
-        m_resources.emplace(resourceServiceName, std::make_unique<ResourceHandler>(resourceServiceName, vapid));
+        it = m_resources.emplace(resourceServiceName, std::make_unique<ResourceHandler>(resourceServiceName, vapid)).first;
+        resourceHandler = it->second.get();
     }
+    connect(resourceHandler, &ResourceHandler::endpointChanged, this, &DavPushNotifyBridge::endpointChanged);
+    connect(resourceHandler, &ResourceHandler::contentUpdate, this, &DavPushNotifyBridge::contentUpdate);
 }
