@@ -947,24 +947,24 @@ void DavGroupwareResource::doItemMove(const Akonadi::Item &item,
     auto newItem = item;
     newItem.setRemoteId(item.remoteId().replace(collectionSrc.remoteId(), collectionDst.remoteId()));
 
-    auto newDependentItems = Akonadi::Item::List();
-    newDependentItems.reserve(dependentItems.size());
-    for (const auto &dependentItem : dependentItems) {
-        Q_ASSERT(dependentItem.remoteId().startsWith(collectionSrc.remoteId()));
-        newDependentItems.append(dependentItem);
-        newDependentItems.back().setRemoteId(dependentItem.remoteId().replace(collectionSrc.remoteId(), collectionDst.remoteId()));
-        newDependentItems.back().setParentCollection(collectionDst);
-    }
+    auto newDependentItemsView = dependentItems | std::views::transform([&](Akonadi::Item dependentItem) {
+                                     Q_ASSERT(dependentItem.remoteId().startsWith(collectionSrc.remoteId()));
+                                     const auto newRemoteId = dependentItem.remoteId().replace(collectionSrc.remoteId(), collectionDst.remoteId());
+                                     dependentItem.setRemoteId(newRemoteId);
+                                     dependentItem.setParentCollection(collectionDst);
+                                     return dependentItem;
+                                 });
+    auto newDependentItems = Akonadi::Item::List(newDependentItemsView.begin(), newDependentItemsView.end());
 
     // The davItem sent in the DavItemMoveJob needs to have the old Url
-    auto davItem = Utils::createDavItem(newItem, collectionDst, newDependentItems);
+    auto newDavItem = Utils::createDavItem(newItem, collectionDst, newDependentItems);
     const auto oldDavUrl = settings()->davUrlFromCollectionUrl(collectionSrc.remoteId(), item.remoteId());
 
 #if KDAV_VERSION >= QT_VERSION_CHECK(6, 30, 0)
-    davItem.setUrl(oldDavUrl);
-
+    // We must send the move job to our item located at it's old location
+    newDavItem.setUrl(oldDavUrl);
     // We must not pass an authenticated url as destination, only the destination path
-    auto *job = new KDAV::DavItemMoveJob(davItem, QUrl::fromUserInput(newItem.remoteId()));
+    auto *job = new KDAV::DavItemMoveJob(newDavItem, QUrl::fromUserInput(newItem.remoteId()));
     connect(job,
             &KDAV::DavItemMoveJob::result,
             this,
@@ -981,15 +981,15 @@ void DavGroupwareResource::doItemMove(const Akonadi::Item &item,
 
                 // Update cache
                 mDavItemCache[collectionSrc.remoteId()]->removeEtag(item.remoteId());
-                for (const auto &dependentItem : dependentItems) {
+                for (const auto &dependentItem : std::as_const(dependentItems)) {
                     mDavItemCache[collectionSrc.remoteId()]->removeEtag(dependentItem.remoteId());
                 }
                 mDavItemCache[collectionDst.remoteId()]->setEtag(newItem.remoteId(), newItem.remoteRevision());
-                for (const auto &newDependentItem : newDependentItems) {
+                for (const auto &newDependentItem : std::as_const(newDependentItems)) {
                     mDavItemCache[collectionDst.remoteId()]->setEtag(newDependentItem.remoteId(), newDependentItem.remoteRevision());
                 }
 
-                // Update remote id's in akonadiserver
+                // Update remote id's in Akonadi server
                 auto changedItems = newDependentItems;
                 changedItems << newItem;
                 changesCommitted(changedItems);
@@ -997,10 +997,10 @@ void DavGroupwareResource::doItemMove(const Akonadi::Item &item,
     job->start();
 #else
     // TODO: Legacy path, to remove once KDAV can be assumed to be >=6.30
-    const auto newDavUrl = settings()->davUrlFromCollectionUrl(collectionDst.remoteId(), davItem.url().toDisplayString());
-    davItem.setUrl(newDavUrl);
+    const auto newDavUrl = settings()->davUrlFromCollectionUrl(collectionDst.remoteId(), newDavItem.url().toDisplayString());
+    newDavItem.setUrl(newDavUrl);
 
-    auto *createJob = new KDAV::DavItemCreateJob(davItem);
+    auto *createJob = new KDAV::DavItemCreateJob(newDavItem);
     connect(createJob, &KJob::result, this, [=, this](KJob *job) mutable {
         const auto *moveJob = qobject_cast<KDAV::DavItemCreateJob *>(job);
         if (job->error()) {
@@ -1039,7 +1039,7 @@ void DavGroupwareResource::doItemMove(const Akonadi::Item &item,
         changesCommitted(changedItems);
 
         // This is Fire and Forget
-        auto deleteDavItem = davItem;
+        auto deleteDavItem = newDavItem;
         deleteDavItem.setUrl(oldDavUrl);
         auto *deleteJob = new KDAV::DavItemDeleteJob(deleteDavItem);
         connect(deleteJob, &KDAV::DavItemDeleteJob::result, this, [this](KJob *deleteJob) {
