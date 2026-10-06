@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-07-09 02:40+0000\n"
-"PO-Revision-Date: 2026-09-24 23:58+0100\n"
+"PO-Revision-Date: 2026-10-05 12:08+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -59,7 +59,7 @@ msgid ""
 "Please use a different URL"
 msgstr ""
 "Otra entrada de configuración ya usa la misma pareja URL/protocolo.\n"
-"Por favor, emplee un URL distinto"
+"Use una URL diferente."
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: configwidget.ui:29
@@ -435,7 +435,7 @@ msgstr "Refrescar cada"
 #: davgroupwareresource.kcfg:22
 #, kde-format
 msgid "Remote URLs"
-msgstr "URL remotos"
+msgstr "URL remotas"
 
 #. i18n: ectx: label, entry (defaultUsername), group (General)
 #: davgroupwareresource.kcfg:26
@@ -469,7 +469,7 @@ msgid ""
 "configured URLs"
 msgstr ""
 "Representación como cadenas de las asociaciones entre las colecciones "
-"descubiertas y los URL configurados"
+"descubiertas y las URL configuradas"
 
 #. i18n: ectx: label, entry (readOnly), group (General)
 #: davgroupwareresource.kcfg:46
@@ -596,9 +596,9 @@ msgid ""
 "can configure automatically an account for %1 services.\n"
 "Do you wish to do so?"
 msgstr ""
-"Basado en la dirección de correo que usted usó como inicio de sesión, este "
+"Basado en la dirección de correo que ha usado como inicio de sesión; este "
 "asistente\n"
-"puede configurar automáticamente una cuenta para %1 servicios.\n"
+"puede configurar automáticamente una cuenta para servicios de %1.\n"
 "¿Desea hacerlo?"
 
 #: setupwizard.cpp:303
@@ -708,7 +708,7 @@ msgstr "Conectado con éxito"
 #: urlconfigurationdialog.cpp:267
 #, kde-format
 msgid "Display Name"
-msgstr "Nombre de pantalla"
+msgstr "Nombre visible"
 
 #. i18n: ectx: property (text), widget (QLabel, remoteProtocol)
 #: urlconfigurationdialog.ui:35
@@ -738,7 +738,7 @@ msgstr "GroupDAV"
 #: urlconfigurationdialog.ui:75
 #, kde-format
 msgid "Remote URL:"
-msgstr "URL remoto:"
+msgstr "URL remota:"
 
 #. i18n: ectx: property (text), widget (QLabel, label1)
 #: urlconfigurationdialog.ui:85
