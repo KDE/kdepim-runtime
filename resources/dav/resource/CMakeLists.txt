@@ -71,6 +71,10 @@ set(davgroupwareresource_SRCS
     task/resourcestate.h
     task/resourcetask.cpp
     task/resourcetask.h
+    task/removeitemstask.cpp
+    task/removeitemstask.h
+    task/moveitemstask.cpp
+    task/moveitemstask.h
 )
 
 install(FILES davgroupwareresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
