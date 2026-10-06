@@ -65,6 +65,12 @@ set(davgroupwareresource_SRCS
     davfreebusyhandler.h
     davgroupwareresource.h
     davetagcache.h
+    task/resourcestateinterface.cpp
+    task/resourcestateinterface.h
+    task/resourcestate.cpp
+    task/resourcestate.h
+    task/resourcetask.cpp
+    task/resourcetask.h
 )
 
 install(FILES davgroupwareresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")

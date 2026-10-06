@@ -176,6 +176,9 @@ private:
     static void setCollectionIcon(Akonadi::Collection &collection);
     QString iconForDavUrl(const KDAV::DavUrl &davUrl);
 
+private:
+    friend class ResourceState;
+
     Akonadi::Collection mDavCollectionRoot;
     QMap<QString, std::shared_ptr<DavItemCache>> mDavItemCache;
     // collections retrieved by retrieveCollections that have yet to get their items retrieved in retrieveItems
