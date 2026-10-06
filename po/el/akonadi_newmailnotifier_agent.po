@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-12 00:45+0000\n"
+"POT-Creation-Date: 2026-10-06 00:47+0000\n"
 "PO-Revision-Date: 2017-04-20 16:35+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -26,7 +26,7 @@ msgctxt "%f is a variable for agent. Do not change it"
 msgid "A message was received from %f"
 msgstr "Ελήφθη μήνυμα από %f"
 
-#: newmailnotificationhistorydialog.cpp:27
+#: newmailnotificationhistorydialog.cpp:28
 #, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
@@ -43,8 +43,8 @@ msgstr "Φάκελοι"
 msgid "[Show Mail]"
 msgstr "[Εμφάνιση αλληλογραφίας]"
 
-#: newmailnotificationhistorywidget.cpp:24
-#: newmailnotifiersettingswidget.cpp:110
+#: newmailnotificationhistorywidget.cpp:25
+#: newmailnotifiersettingswidget.cpp:111
 #, kde-format
 msgctxt "@option:check"
 msgid "Enabled"
@@ -100,7 +100,7 @@ msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "&Αποεπιλογή όλων"
 
-#: newmailnotifiersettingswidget.cpp:30
+#: newmailnotifiersettingswidget.cpp:31
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
@@ -110,135 +110,135 @@ msgstr ""
 "p><ul><li>%s ορισμός πεδίου «Θέμα»</li><li>%f ορισμός πεδίου «Από»</li></"
 "ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:51
+#: newmailnotifiersettingswidget.cpp:52
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "Επιλογή των πεδίων που θα εμφανίζονται:"
 
-#: newmailnotifiersettingswidget.cpp:56
+#: newmailnotifiersettingswidget.cpp:57
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "Εμφάνιση πεδίου «Φωτογραφία»"
 
-#: newmailnotifiersettingswidget.cpp:60
+#: newmailnotifiersettingswidget.cpp:61
 #, kde-format
 msgctxt "@option:check"
 msgid "Show From"
 msgstr "Εμφάνιση πεδίου «Από»"
 
-#: newmailnotifiersettingswidget.cpp:64
+#: newmailnotifiersettingswidget.cpp:65
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "Εμφάνιση πεδίου «Θέμα»"
 
-#: newmailnotifiersettingswidget.cpp:68
+#: newmailnotifiersettingswidget.cpp:69
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "Εμφάνιση πεδίου «Φάκελοι»"
 
-#: newmailnotifiersettingswidget.cpp:72
+#: newmailnotifiersettingswidget.cpp:73
 #, kde-format
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "Να μην ειδοποιούμαι όταν η αποστολή της αλληλογραφίας έγινε από εμένα"
 
-#: newmailnotifiersettingswidget.cpp:76
+#: newmailnotifiersettingswidget.cpp:77
 #, kde-format
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:80
+#: newmailnotifiersettingswidget.cpp:81
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:88
+#: newmailnotifiersettingswidget.cpp:89
 #, fuzzy, kde-format
 #| msgid "&Select All"
 msgctxt "@option:check"
 msgid "Reply Mail"
 msgstr "&Επιλογή όλων"
 
-#: newmailnotifiersettingswidget.cpp:96 specialnotifierjob.cpp:163
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:164
 #, kde-format
 msgid "Reply to Author"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:96 specialnotifierjob.cpp:166
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:167
 #, fuzzy, kde-format
 #| msgid "&Select All"
 msgid "Reply to All"
 msgstr "&Επιλογή όλων"
 
-#: newmailnotifiersettingswidget.cpp:105
+#: newmailnotifiersettingswidget.cpp:106
 #, kde-format
 msgid "Display"
 msgstr "Εμφάνιση"
 
-#: newmailnotifiersettingswidget.cpp:114
+#: newmailnotifiersettingswidget.cpp:115
 #, kde-format
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Πώς λειτουργεί αυτό;</a>"
 
-#: newmailnotifiersettingswidget.cpp:123
+#: newmailnotifiersettingswidget.cpp:124
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "Μήνυμα:"
 
-#: newmailnotifiersettingswidget.cpp:135
+#: newmailnotifiersettingswidget.cpp:136
 #, kde-format
 msgid "Text to Speak"
 msgstr "Κείμενο προς εκφώνηση"
 
-#: newmailnotifiersettingswidget.cpp:141
+#: newmailnotifiersettingswidget.cpp:142
 #, kde-format
 msgid "Notify"
 msgstr "Ειδοποίηση"
 
-#: newmailnotifiersettingswidget.cpp:144
+#: newmailnotifiersettingswidget.cpp:145
 #, kde-format
 msgid "Folders"
 msgstr "Φάκελοι"
 
-#: specialnotifierjob.cpp:111
+#: specialnotifierjob.cpp:112
 #, kde-format
 msgid "From: %1"
 msgstr "Από: %1"
 
-#: specialnotifierjob.cpp:119
+#: specialnotifierjob.cpp:120
 #, kde-format
 msgid "Subject: %1"
 msgstr "Θέμα: %1"
 
-#: specialnotifierjob.cpp:123
+#: specialnotifierjob.cpp:124
 #, kde-format
 msgid "In: %1"
 msgstr "Στο: %1"
 
-#: specialnotifierjob.cpp:125
+#: specialnotifierjob.cpp:126
 #, fuzzy, kde-format
 #| msgid "In: %1"
 msgid "In: %1 (%2)"
 msgstr "Στο: %1"
 
-#: specialnotifierjob.cpp:150
+#: specialnotifierjob.cpp:151
 #, kde-format
 msgid "Show mail…"
 msgstr "Εμφάνιση αλληλογραφίας…"
 
-#: specialnotifierjob.cpp:153
+#: specialnotifierjob.cpp:154
 #, kde-format
 msgid "Mark As Read"
 msgstr ""
 
-#: specialnotifierjob.cpp:156
+#: specialnotifierjob.cpp:157
 #, kde-format
 msgid "Delete"
 msgstr ""

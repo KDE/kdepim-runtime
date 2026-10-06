@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-12 00:45+0000\n"
+"POT-Creation-Date: 2026-10-06 00:47+0000\n"
 "PO-Revision-Date: 2026-08-17 09:25+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -23,7 +23,7 @@ msgctxt "%f is a variable for agent. Do not change it"
 msgid "A message was received from %f"
 msgstr "התקבלה הודעה מ־%f"
 
-#: newmailnotificationhistorydialog.cpp:27
+#: newmailnotificationhistorydialog.cpp:28
 #, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
@@ -39,8 +39,8 @@ msgstr "[פתיחת תיקייה]"
 msgid "[Show Mail]"
 msgstr "[הצגת דוא״ל]"
 
-#: newmailnotificationhistorywidget.cpp:24
-#: newmailnotifiersettingswidget.cpp:110
+#: newmailnotificationhistorywidget.cpp:25
+#: newmailnotifiersettingswidget.cpp:111
 #, kde-format
 msgctxt "@option:check"
 msgid "Enabled"
@@ -98,7 +98,7 @@ msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "&ביטול בחירה"
 
-#: newmailnotifiersettingswidget.cpp:30
+#: newmailnotifiersettingswidget.cpp:31
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
@@ -107,132 +107,132 @@ msgstr ""
 "<qt><p>כאן אפשר להגדיר הודעה. אפשר להשתמש בתבניות:</p><ul><li>%s set "
 "subject</li><li>%f set from</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:51
+#: newmailnotifiersettingswidget.cpp:52
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "נא לבחור אילו שדות להציג:"
 
-#: newmailnotifiersettingswidget.cpp:56
+#: newmailnotifiersettingswidget.cpp:57
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "הצגת תמונה"
 
-#: newmailnotifiersettingswidget.cpp:60
+#: newmailnotifiersettingswidget.cpp:61
 #, kde-format
 msgctxt "@option:check"
 msgid "Show From"
 msgstr "הצגת מאת"
 
-#: newmailnotifiersettingswidget.cpp:64
+#: newmailnotifiersettingswidget.cpp:65
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "הצגת נושא"
 
-#: newmailnotifiersettingswidget.cpp:68
+#: newmailnotifiersettingswidget.cpp:69
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "הצגת תיקיות"
 
-#: newmailnotifiersettingswidget.cpp:72
+#: newmailnotifiersettingswidget.cpp:73
 #, kde-format
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "לא להודיע לי על הודעות שנשלחו על ידי"
 
-#: newmailnotifiersettingswidget.cpp:76
+#: newmailnotifiersettingswidget.cpp:77
 #, kde-format
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr "לשמור על התראות קבועות"
 
-#: newmailnotifiersettingswidget.cpp:80
+#: newmailnotifiersettingswidget.cpp:81
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr "הצגת כפתורי פעולה"
 
-#: newmailnotifiersettingswidget.cpp:88
+#: newmailnotifiersettingswidget.cpp:89
 #, kde-format
 msgctxt "@option:check"
 msgid "Reply Mail"
 msgstr "תגובה על דוא״ל"
 
-#: newmailnotifiersettingswidget.cpp:96 specialnotifierjob.cpp:163
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:164
 #, kde-format
 msgid "Reply to Author"
 msgstr "תגובה למקור"
 
-#: newmailnotifiersettingswidget.cpp:96 specialnotifierjob.cpp:166
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:167
 #, kde-format
 msgid "Reply to All"
 msgstr "תגובה לכולם"
 
-#: newmailnotifiersettingswidget.cpp:105
+#: newmailnotifiersettingswidget.cpp:106
 #, kde-format
 msgid "Display"
 msgstr "תצוגה"
 
-#: newmailnotifiersettingswidget.cpp:114
+#: newmailnotifiersettingswidget.cpp:115
 #, kde-format
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">איך זה עובד?</a>"
 
-#: newmailnotifiersettingswidget.cpp:123
+#: newmailnotifiersettingswidget.cpp:124
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "הודעה:"
 
-#: newmailnotifiersettingswidget.cpp:135
+#: newmailnotifiersettingswidget.cpp:136
 #, kde-format
 msgid "Text to Speak"
 msgstr "הקראה"
 
-#: newmailnotifiersettingswidget.cpp:141
+#: newmailnotifiersettingswidget.cpp:142
 #, kde-format
 msgid "Notify"
 msgstr "התראה"
 
-#: newmailnotifiersettingswidget.cpp:144
+#: newmailnotifiersettingswidget.cpp:145
 #, kde-format
 msgid "Folders"
 msgstr "תיקיות"
 
-#: specialnotifierjob.cpp:111
+#: specialnotifierjob.cpp:112
 #, kde-format
 msgid "From: %1"
 msgstr "מאת: %1"
 
-#: specialnotifierjob.cpp:119
+#: specialnotifierjob.cpp:120
 #, kde-format
 msgid "Subject: %1"
 msgstr "נושא: %1"
 
-#: specialnotifierjob.cpp:123
+#: specialnotifierjob.cpp:124
 #, kde-format
 msgid "In: %1"
 msgstr "בתוך: %1"
 
-#: specialnotifierjob.cpp:125
+#: specialnotifierjob.cpp:126
 #, kde-format
 msgid "In: %1 (%2)"
 msgstr "בתוך: %1 (%2)"
 
-#: specialnotifierjob.cpp:150
+#: specialnotifierjob.cpp:151
 #, kde-format
 msgid "Show mail…"
 msgstr "הצגת הודעה…"
 
-#: specialnotifierjob.cpp:153
+#: specialnotifierjob.cpp:154
 #, kde-format
 msgid "Mark As Read"
 msgstr "סימון כנקראה"
 
-#: specialnotifierjob.cpp:156
+#: specialnotifierjob.cpp:157
 #, kde-format
 msgid "Delete"
 msgstr "מחיקה"
