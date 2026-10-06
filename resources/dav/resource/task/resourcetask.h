@@ -13,6 +13,10 @@
 #include <KDAV/DavUrl>
 #include <QObject>
 
+namespace KDAV
+{
+class DavJobBase;
+}
 class Settings;
 class DavGroupwareResource;
 
@@ -31,6 +35,12 @@ class ResourceTask : public QObject
 {
     Q_OBJECT
 public:
+    enum class ErrorType {
+        NoError,
+        Retryable,
+        Unrecoverable,
+    };
+
     using CollectionsDavItemCache = QMap<QString, std::shared_ptr<DavItemCache>>;
 
 public:
@@ -56,6 +66,15 @@ private:
     // Call once when task is finished, will schedule cleanup of the task eg. deleteLater
     void finishTask();
 
+protected:
+    virtual void onError(ErrorType errorType);
+    virtual void onDavJobError(const KDAV::DavJobBase *job);
+
 private:
     ResourceStateInterface::Ptr m_resource;
+
+protected:
+    // Error handling
+    ErrorType m_error = ErrorType::NoError;
+    QString m_errorMessage;
 };
