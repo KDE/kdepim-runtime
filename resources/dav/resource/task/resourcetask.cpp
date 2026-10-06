@@ -9,6 +9,8 @@
 #include "davgroupwareresource.h"
 #include "davresource_debug.h"
 
+#include <kdav/davjobbase.h>
+
 ResourceTask::ResourceTask(ResourceStateInterface::Ptr resource, QObject *parent)
     : QObject(parent)
     , m_resource(std::move(resource))
@@ -74,6 +76,35 @@ void ResourceTask::synchronizeCollection(const Akonadi::Collection &collection)
     Q_ASSERT(collection.isValid());
     if (collection.isValid()) {
         m_resource->synchronizeCollection(collection.id());
+    }
+}
+
+void ResourceTask::onError(ErrorType errorType)
+{
+    switch (errorType) {
+    case ErrorType::NoError:
+        Q_ASSERT(false);
+        break;
+    case ErrorType::Retryable:
+        m_error = errorType;
+        break;
+    case ErrorType::Unrecoverable:
+        if (m_error != ErrorType::Retryable) {
+            m_error = errorType;
+        }
+        break;
+    }
+}
+
+void ResourceTask::onDavJobError(const KDAV::DavJobBase *job)
+{
+    if (job->error()) {
+        if (job->canRetryLater()) {
+            onError(ErrorType::Retryable);
+            m_errorMessage = job->errorString();
+        } else {
+            onError(ErrorType::Unrecoverable);
+        }
     }
 }
 

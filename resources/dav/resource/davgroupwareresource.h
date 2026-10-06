@@ -9,6 +9,8 @@
 #include <memory>
 
 #include "settings.h"
+#include "task/resourcetask.h"
+
 #include <Akonadi/AccountBase>
 #include <Akonadi/FreeBusyProviderBase>
 #include <Akonadi/ResourceWidgetBase>
@@ -29,7 +31,7 @@ class DavItem;
 }
 
 class DavGroupwareResource : public Akonadi::ResourceWidgetBase,
-                             public Akonadi::AgentBase::ObserverV2,
+                             public Akonadi::AgentBase::ObserverV3,
                              public Akonadi::FreeBusyProviderBase,
                              public Akonadi::AgentBase::TagObserver,
                              public Akonadi::AccountBase
@@ -77,9 +79,9 @@ public:
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
-    void itemRemoved(const Akonadi::Item &item) override;
+    void itemsRemoved(const Akonadi::Item::List &items) override;
     void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags) override;
-    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSrc, const Akonadi::Collection &collectionDst) override;
+    void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &collectionSrc, const Akonadi::Collection &collectionDst) override;
 
 private:
     enum ItemFetchUpdateType {
@@ -125,8 +127,6 @@ private:
     void onItemAddedFinished(KJob *);
     void onItemChangePrepared(KJob *);
     void onItemChangedFinished(KJob *);
-    void onItemRemovalPrepared(KJob *);
-    void onItemRemovedFinished(KJob *);
     void onItemExceptionsDeleteFinished(KJob *job);
 
     void onCollectionDiscovered(KDAV::Protocol protocol, const QString &collectionUrl, const QString &configuredUrl);
@@ -135,11 +135,6 @@ private:
 
     void doItemAdd(const Akonadi::Item &item, const Akonadi::Collection &collection);
     void doItemChange(const Akonadi::Item &item, const Akonadi::Item::List &dependentItems = Akonadi::Item::List());
-    void doItemRemoval(const Akonadi::Item &item);
-    void doItemMove(const Akonadi::Item &item,
-                    const Akonadi::Item::List &dependentItems,
-                    const Akonadi::Collection &collectionSrc,
-                    const Akonadi::Collection &collectionDst);
 
     void handleConflict(const Akonadi::Item &localItem,
                         const Akonadi::Item::List &localDependentItems,
@@ -175,6 +170,8 @@ private:
      */
     static void setCollectionIcon(Akonadi::Collection &collection);
     QString iconForDavUrl(const KDAV::DavUrl &davUrl);
+
+    ResourceStateInterface::Ptr createTaskResource();
 
 private:
     friend class ResourceState;

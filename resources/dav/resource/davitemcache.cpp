@@ -83,6 +83,14 @@ void DavItemCache::removeException(const QString &remoteId)
     mExceptionCache.remove(mainItemRemoteId, remoteId);
 }
 
+bool DavItemCache::containsItem(const QString &remoteId) const
+{
+    if (isExceptionRemoteId(remoteId)) {
+        return mExceptionCache.contains(baseRemoteId(remoteId), remoteId);
+    }
+    return mEtagCache->contains(remoteId);
+}
+
 void DavItemCache::setEtag(const QString &remoteId, const QString &etag)
 {
     if (isExceptionRemoteId(remoteId)) {

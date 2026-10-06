@@ -85,6 +85,11 @@ public:
     [[nodiscard]] QStringList exceptionUrls(const QString &remoteId) const;
     void removeException(const QString &remoteId);
 
+    /**
+     * Returns true if the remove is contained in the item or exception cache.
+     */
+    bool containsItem(const QString &remoteId) const;
+
 private:
     void onItemFetchJobFinished(KJob *job);
     [[nodiscard]] bool isExceptionRemoteId(const QString &remoteId) const;
