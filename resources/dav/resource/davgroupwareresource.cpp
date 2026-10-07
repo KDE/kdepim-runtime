@@ -702,6 +702,11 @@ void DavGroupwareResource::onItemChangePrepared(KJob *job)
     const auto mainItemIt = std::ranges::find_if(items, [&ridBase](const auto &item) {
         return item.remoteId() == ridBase;
     });
+    if (mainItemIt == items.end()) {
+        qCDebug(DAVRESOURCE_LOG()) << "Item has disappeared during item change, probably moved";
+        changeProcessed();
+        return;
+    }
     Q_ASSERT(mainItemIt != items.end());
 
     const auto mainItem = *mainItemIt;
