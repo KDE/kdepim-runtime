@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-24 00:46+0000\n"
+"POT-Creation-Date: 2026-10-07 00:49+0000\n"
 "PO-Revision-Date: 2026-08-24 13:42+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -35,7 +35,7 @@ msgstr "Не вдалося виконати запит OAuth2"
 msgid "Not authenticated with Microsoft 365 yet"
 msgstr "Ще не розпізнано на Microsoft 365"
 
-#: graphclient/graphrequest.cpp:152
+#: graphclient/graphrequest.cpp:198
 #, kde-format
 msgctxt ""
 "%1 is the server error message, %2 the HTTP status code, %3 the server error "
@@ -98,63 +98,63 @@ msgstr ""
 msgid "Message to be sent has no MIME payload"
 msgstr "У повідомленні, яке має бути надіслано, немає вмісту MIME"
 
-#: graphresource.cpp:166
+#: graphresource.cpp:167
 #, kde-format
 msgctxt "@info:status"
 msgid "Authenticating with Microsoft 365"
 msgstr "Розпізнавання за допомогою Microsoft 365"
 
-#: graphresource.cpp:180
+#: graphresource.cpp:181
 #, kde-format
 msgctxt "@info:status"
 msgid "Migrating item identifiers"
 msgstr "Перенесення ідентифікаторів записів"
 
-#: graphresource.cpp:185
+#: graphresource.cpp:186
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to migrate item identifiers: %1"
 msgstr "Не вдалося перенести ідентифікатори записів: %1"
 
-#: graphresource.cpp:203
+#: graphresource.cpp:204
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Готово"
 
-#: graphresource.cpp:221
+#: graphresource.cpp:222
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed: %1"
 msgstr "Не вдалося пройти розпізнавання: %1"
 
-#: graphresource.cpp:293 graphresource.cpp:550
+#: graphresource.cpp:294 graphresource.cpp:551
 #, kde-format
 msgid "Waiting for the item identifier migration to finish"
 msgstr "Очікування на завершення перенесення ідентифікаторів записів"
 
-#: graphresource.cpp:379
+#: graphresource.cpp:380
 #, kde-format
 msgctxt "@item mail folder"
 msgid "Contacts"
 msgstr "Контакти"
 
-#: graphresource.cpp:731 graphresource.cpp:758
+#: graphresource.cpp:732 graphresource.cpp:759
 #, kde-format
 msgid "The requested items no longer exist"
 msgstr "Потрібних записів вже не існує"
 
-#: graphresource.cpp:1024
+#: graphresource.cpp:1031
 #, kde-format
 msgid "Cannot move task %1: no payload"
 msgstr "Не вдалося перемістити завдання %1: немає вмісту"
 
-#: graphresource.cpp:1032
+#: graphresource.cpp:1039
 #, kde-format
 msgid "Cannot move event %1: no payload"
 msgstr "Не вдалося перемістити запис події %1: немає вмісту"
 
-#: graphresource.cpp:1146
+#: graphresource.cpp:1154
 #, kde-format
 msgid "Moving contacts between folders is not supported"
 msgstr "Підтримки переміщення записів контактів між теками не передбачено"
@@ -206,6 +206,22 @@ msgid "Whether stored remoteIds have been migrated to Graph immutable ids."
 msgstr ""
 "Визначає, чи було перенесено збережені remoteId у незмінні ідентифікатори "
 "Graph."
+
+#: jobs/graphbatchjob.cpp:138
+#, kde-format
+msgid "The server did not answer this request"
+msgstr ""
+
+#: jobs/graphbatchjob.cpp:171
+#, kde-format
+msgid "HTTP %1"
+msgstr ""
+
+#: jobs/graphbatchjob.cpp:193
+#, kde-format
+msgctxt "%1 and %2 are counts, %3 the server error message"
+msgid "%1 of %2 requests failed, first error: %3"
+msgstr ""
 
 #: jobs/graphfetchfoldersjob.cpp:49
 #, kde-format

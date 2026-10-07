@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-24 00:46+0000\n"
+"POT-Creation-Date: 2026-10-07 00:49+0000\n"
 "PO-Revision-Date: 2026-09-17 01:03+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -32,7 +32,7 @@ msgstr "OAuth2 請求失敗"
 msgid "Not authenticated with Microsoft 365 yet"
 msgstr "尚未與 Microsoft 365 進行認證"
 
-#: graphclient/graphrequest.cpp:152
+#: graphclient/graphrequest.cpp:198
 #, kde-format
 msgctxt ""
 "%1 is the server error message, %2 the HTTP status code, %3 the server error "
@@ -92,63 +92,63 @@ msgstr ""
 msgid "Message to be sent has no MIME payload"
 msgstr "要送出的訊息沒有 MIME 負載"
 
-#: graphresource.cpp:166
+#: graphresource.cpp:167
 #, kde-format
 msgctxt "@info:status"
 msgid "Authenticating with Microsoft 365"
 msgstr ""
 
-#: graphresource.cpp:180
+#: graphresource.cpp:181
 #, kde-format
 msgctxt "@info:status"
 msgid "Migrating item identifiers"
 msgstr ""
 
-#: graphresource.cpp:185
+#: graphresource.cpp:186
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to migrate item identifiers: %1"
 msgstr ""
 
-#: graphresource.cpp:203
+#: graphresource.cpp:204
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "已就緒"
 
-#: graphresource.cpp:221
+#: graphresource.cpp:222
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed: %1"
 msgstr "認證失敗：%1"
 
-#: graphresource.cpp:293 graphresource.cpp:550
+#: graphresource.cpp:294 graphresource.cpp:551
 #, kde-format
 msgid "Waiting for the item identifier migration to finish"
 msgstr ""
 
-#: graphresource.cpp:379
+#: graphresource.cpp:380
 #, kde-format
 msgctxt "@item mail folder"
 msgid "Contacts"
 msgstr "聯絡人"
 
-#: graphresource.cpp:731 graphresource.cpp:758
+#: graphresource.cpp:732 graphresource.cpp:759
 #, kde-format
 msgid "The requested items no longer exist"
 msgstr "要求的項目已不存在"
 
-#: graphresource.cpp:1024
+#: graphresource.cpp:1031
 #, kde-format
 msgid "Cannot move task %1: no payload"
 msgstr "無法移動工作項目 %1：無負載"
 
-#: graphresource.cpp:1032
+#: graphresource.cpp:1039
 #, kde-format
 msgid "Cannot move event %1: no payload"
 msgstr "無法移動事件 %1：無負載"
 
-#: graphresource.cpp:1146
+#: graphresource.cpp:1154
 #, kde-format
 msgid "Moving contacts between folders is not supported"
 msgstr "不支援在資料夾間移動聯絡人"
@@ -191,6 +191,22 @@ msgstr ""
 #: graphresource.kcfg:27
 #, kde-format
 msgid "Whether stored remoteIds have been migrated to Graph immutable ids."
+msgstr ""
+
+#: jobs/graphbatchjob.cpp:138
+#, kde-format
+msgid "The server did not answer this request"
+msgstr ""
+
+#: jobs/graphbatchjob.cpp:171
+#, kde-format
+msgid "HTTP %1"
+msgstr ""
+
+#: jobs/graphbatchjob.cpp:193
+#, kde-format
+msgctxt "%1 and %2 are counts, %3 the server error message"
+msgid "%1 of %2 requests failed, first error: %3"
 msgstr ""
 
 #: jobs/graphfetchfoldersjob.cpp:49

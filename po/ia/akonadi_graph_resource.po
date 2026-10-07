@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-24 00:46+0000\n"
+"POT-Creation-Date: 2026-10-07 00:49+0000\n"
 "PO-Revision-Date: 2026-09-04 12:43+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -32,7 +32,7 @@ msgstr "OAuth2 requesta falleva"
 msgid "Not authenticated with Microsoft 365 yet"
 msgstr "Non ancora authenticate con Microsoft 365"
 
-#: graphclient/graphrequest.cpp:152
+#: graphclient/graphrequest.cpp:198
 #, kde-format
 msgctxt ""
 "%1 is the server error message, %2 the HTTP status code, %3 the server error "
@@ -92,63 +92,63 @@ msgstr "Incapace a connecter al ressource master  de Microsoft 365 (Graph)"
 msgid "Message to be sent has no MIME payload"
 msgstr "Message que deberea esser inviate  nonha cargo utile de MIME"
 
-#: graphresource.cpp:166
+#: graphresource.cpp:167
 #, kde-format
 msgctxt "@info:status"
 msgid "Authenticating with Microsoft 365"
 msgstr "Authenticante con Microsoft 365"
 
-#: graphresource.cpp:180
+#: graphresource.cpp:181
 #, kde-format
 msgctxt "@info:status"
 msgid "Migrating item identifiers"
 msgstr "Migrante identificatores de elemento"
 
-#: graphresource.cpp:185
+#: graphresource.cpp:186
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to migrate item identifiers: %1"
 msgstr "Falleva a migrar identificatores  de elemento: %1"
 
-#: graphresource.cpp:203
+#: graphresource.cpp:204
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Preste"
 
-#: graphresource.cpp:221
+#: graphresource.cpp:222
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed: %1"
 msgstr "Authentication falleva: %1"
 
-#: graphresource.cpp:293 graphresource.cpp:550
+#: graphresource.cpp:294 graphresource.cpp:551
 #, kde-format
 msgid "Waiting for the item identifier migration to finish"
 msgstr "Attendente que  le migration de identificator de elemento termina"
 
-#: graphresource.cpp:379
+#: graphresource.cpp:380
 #, kde-format
 msgctxt "@item mail folder"
 msgid "Contacts"
 msgstr "Contactos"
 
-#: graphresource.cpp:731 graphresource.cpp:758
+#: graphresource.cpp:732 graphresource.cpp:759
 #, kde-format
 msgid "The requested items no longer exist"
 msgstr "Le elementos requirite non es plus existente"
 
-#: graphresource.cpp:1024
+#: graphresource.cpp:1031
 #, kde-format
 msgid "Cannot move task %1: no payload"
 msgstr "Non pote remover carga %1:  nulle carga utile"
 
-#: graphresource.cpp:1032
+#: graphresource.cpp:1039
 #, kde-format
 msgid "Cannot move event %1: no payload"
 msgstr "Non pote mover evento %1: nulle carga utile"
 
-#: graphresource.cpp:1146
+#: graphresource.cpp:1154
 #, kde-format
 msgid "Moving contacts between folders is not supported"
 msgstr "Mover contactos inter dossieres non es supportate"
@@ -200,6 +200,22 @@ msgstr ""
 #, kde-format
 msgid "Whether stored remoteIds have been migrated to Graph immutable ids."
 msgstr "SI remoteids immagazinate ha essite migrate a ids immutabile de Graph."
+
+#: jobs/graphbatchjob.cpp:138
+#, kde-format
+msgid "The server did not answer this request"
+msgstr ""
+
+#: jobs/graphbatchjob.cpp:171
+#, kde-format
+msgid "HTTP %1"
+msgstr ""
+
+#: jobs/graphbatchjob.cpp:193
+#, kde-format
+msgctxt "%1 and %2 are counts, %3 the server error message"
+msgid "%1 of %2 requests failed, first error: %3"
+msgstr ""
 
 #: jobs/graphfetchfoldersjob.cpp:49
 #, kde-format

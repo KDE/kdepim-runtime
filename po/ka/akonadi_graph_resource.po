@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-24 00:46+0000\n"
+"POT-Creation-Date: 2026-10-07 00:49+0000\n"
 "PO-Revision-Date: 2026-08-25 06:39+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -33,7 +33,7 @@ msgstr "OAuth2-ის მოთხოვნა ჩავარდა"
 msgid "Not authenticated with Microsoft 365 yet"
 msgstr "Microsoft 365-ზე ჯერ ავთენტიკაცია გავლილი არ გაქვთ"
 
-#: graphclient/graphrequest.cpp:152
+#: graphclient/graphrequest.cpp:198
 #, kde-format
 msgctxt ""
 "%1 is the server error message, %2 the HTTP status code, %3 the server error "
@@ -93,63 +93,63 @@ msgstr "Microsoft 365-ის (Graph) მთავარ რესურსთა
 msgid "Message to be sent has no MIME payload"
 msgstr "გასაგზავნ შეტყობინებას MIME სასარგებლო დატვირთვა არ აქვს"
 
-#: graphresource.cpp:166
+#: graphresource.cpp:167
 #, kde-format
 msgctxt "@info:status"
 msgid "Authenticating with Microsoft 365"
 msgstr "ავთენტიკაცია Microsoft 365-ზე"
 
-#: graphresource.cpp:180
+#: graphresource.cpp:181
 #, kde-format
 msgctxt "@info:status"
 msgid "Migrating item identifiers"
 msgstr "ელემენტის იდენტიფიკატორების მიგრაცია"
 
-#: graphresource.cpp:185
+#: graphresource.cpp:186
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to migrate item identifiers: %1"
 msgstr "ელემენტის იდენტიფიკატორების მიგრაცია ჩავარდა: %1"
 
-#: graphresource.cpp:203
+#: graphresource.cpp:204
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "მზადაა"
 
-#: graphresource.cpp:221
+#: graphresource.cpp:222
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed: %1"
 msgstr "ავთენტიკაცია ჩავარდა: %1"
 
-#: graphresource.cpp:293 graphresource.cpp:550
+#: graphresource.cpp:294 graphresource.cpp:551
 #, kde-format
 msgid "Waiting for the item identifier migration to finish"
 msgstr "ელემენტის იდენტიფიკაციის მიგრაციის დასასრულის მოლოდინი"
 
-#: graphresource.cpp:379
+#: graphresource.cpp:380
 #, kde-format
 msgctxt "@item mail folder"
 msgid "Contacts"
 msgstr "კონტაქტები"
 
-#: graphresource.cpp:731 graphresource.cpp:758
+#: graphresource.cpp:732 graphresource.cpp:759
 #, kde-format
 msgid "The requested items no longer exist"
 msgstr "მოთხოვნილი ელემენტი აღარ არსებობს"
 
-#: graphresource.cpp:1024
+#: graphresource.cpp:1031
 #, kde-format
 msgid "Cannot move task %1: no payload"
 msgstr "ამოცანის %1 გადატანა შეუძლებელია: სასარგებლო დატვირთვის გარეშე"
 
-#: graphresource.cpp:1032
+#: graphresource.cpp:1039
 #, kde-format
 msgid "Cannot move event %1: no payload"
 msgstr "მოვლენის %1 გადატანა შეუძლებელია: სასარგებლო დატვირთვის გარეშე"
 
-#: graphresource.cpp:1146
+#: graphresource.cpp:1154
 #, kde-format
 msgid "Moving contacts between folders is not supported"
 msgstr "საქაღალდეებს შორის კონტაქტების გადატანა მხარდაჭერილი არაა"
@@ -200,6 +200,22 @@ msgstr ""
 msgid "Whether stored remoteIds have been migrated to Graph immutable ids."
 msgstr ""
 "მოხდა, თუ არა დამახსოვრებული remoteId-ების მიგრაცია Graph-ის უცვლელ id-ებზე."
+
+#: jobs/graphbatchjob.cpp:138
+#, kde-format
+msgid "The server did not answer this request"
+msgstr ""
+
+#: jobs/graphbatchjob.cpp:171
+#, kde-format
+msgid "HTTP %1"
+msgstr ""
+
+#: jobs/graphbatchjob.cpp:193
+#, kde-format
+msgctxt "%1 and %2 are counts, %3 the server error message"
+msgid "%1 of %2 requests failed, first error: %3"
+msgstr ""
 
 #: jobs/graphfetchfoldersjob.cpp:49
 #, kde-format
