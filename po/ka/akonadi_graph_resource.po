@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-07 00:49+0000\n"
-"PO-Revision-Date: 2026-08-25 06:39+0200\n"
+"PO-Revision-Date: 2026-10-07 04:09+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.9\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.9\n"
 
 #: graphclient/auth/graphoauth.cpp:137
 #, kde-format
@@ -204,18 +204,18 @@ msgstr ""
 #: jobs/graphbatchjob.cpp:138
 #, kde-format
 msgid "The server did not answer this request"
-msgstr ""
+msgstr "სერვერმა ამ მოთხოვნას არ უპასუხა"
 
 #: jobs/graphbatchjob.cpp:171
 #, kde-format
 msgid "HTTP %1"
-msgstr ""
+msgstr "HTTP %1"
 
 #: jobs/graphbatchjob.cpp:193
 #, kde-format
 msgctxt "%1 and %2 are counts, %3 the server error message"
 msgid "%1 of %2 requests failed, first error: %3"
-msgstr ""
+msgstr "%1 მოთხოვნა %2-დან ჩავარდა. პირველი შეცდომა: %3"
 
 #: jobs/graphfetchfoldersjob.cpp:49
 #, kde-format

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-07 00:49+0000\n"
-"PO-Revision-Date: 2026-08-24 13:42+0300\n"
+"PO-Revision-Date: 2026-10-07 20:39+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -210,18 +210,19 @@ msgstr ""
 #: jobs/graphbatchjob.cpp:138
 #, kde-format
 msgid "The server did not answer this request"
-msgstr ""
+msgstr "Сервер не відповів на цей запит"
 
 #: jobs/graphbatchjob.cpp:171
 #, kde-format
 msgid "HTTP %1"
-msgstr ""
+msgstr "HTTP %1"
 
 #: jobs/graphbatchjob.cpp:193
 #, kde-format
 msgctxt "%1 and %2 are counts, %3 the server error message"
 msgid "%1 of %2 requests failed, first error: %3"
 msgstr ""
+"Спроба виконання %1 з %2 запитів завершилася невдало; перша помилка: %3"
 
 #: jobs/graphfetchfoldersjob.cpp:49
 #, kde-format
