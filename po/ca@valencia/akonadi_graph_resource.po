@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-07 00:49+0000\n"
-"PO-Revision-Date: 2026-08-24 20:49+0200\n"
+"PO-Revision-Date: 2026-10-07 09:13+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 26.08.0\n"
+"X-Generator: Lokalize 25.04.0\n"
 
 #: graphclient/auth/graphoauth.cpp:137
 #, kde-format
@@ -211,18 +211,18 @@ msgstr ""
 #: jobs/graphbatchjob.cpp:138
 #, kde-format
 msgid "The server did not answer this request"
-msgstr ""
+msgstr "El servidor no ha contestat esta sol·licitud"
 
 #: jobs/graphbatchjob.cpp:171
 #, kde-format
 msgid "HTTP %1"
-msgstr ""
+msgstr "HTTP %1"
 
 #: jobs/graphbatchjob.cpp:193
 #, kde-format
 msgctxt "%1 and %2 are counts, %3 the server error message"
 msgid "%1 of %2 requests failed, first error: %3"
-msgstr ""
+msgstr "%1 de %2 sol·licituds han fallat, primer error: %3"
 
 #: jobs/graphfetchfoldersjob.cpp:49
 #, kde-format
