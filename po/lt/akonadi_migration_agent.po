@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: l 10n\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-26 00:46+0000\n"
-"PO-Revision-Date: 2014-03-27 00:20+0200\n"
+"PO-Revision-Date: 2026-10-12 16:01+0300\n"
 "Last-Translator: Liudas Ališauskas <liudas@aksioma.lt>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
 "Language: lt\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 3.9\n"
 
 #: migrationagent.cpp:44
 #, kde-format
@@ -26,26 +26,24 @@ msgctxt ""
 "Title of the window that shows the status of the migration agent and offers "
 "controls to start/stop individual migration jobs."
 msgid "Migration Status"
-msgstr "Migravimo statusas"
+msgstr "Perkėlimo būsena"
 
 #: migrationexecutor.cpp:19
 #, kde-format
 msgctxt "User visible name of ongoing Akonadi migration jobs"
 msgid "PIM Maintenance"
-msgstr "PIM priežiūra"
+msgstr "Asmeninės informacijos tvarkymo (PIM) priežiūra"
 
 #: migrationexecutor.cpp:40
-#, fuzzy, kde-format
-#| msgctxt "PIM-Maintenance is in progress."
-#| msgid "In progress..."
+#, kde-format
 msgctxt "PIM-Maintenance is in progress."
 msgid "In progress…"
-msgstr "Vykdoma..."
+msgstr "Vykdoma…"
 
 #: migrationexecutor.cpp:46
 #, kde-format
 msgid "PIM Maintenance"
-msgstr "PIM priežiūra"
+msgstr "Asmeninės informacijos tvarkymo (PIM) priežiūra"
 
 #: migrationscheduler.cpp:143
 #, kde-format
@@ -54,17 +52,13 @@ msgid "Name"
 msgstr "Pavadinimas"
 
 #: migrationscheduler.cpp:145
-#, fuzzy, kde-format
-#| msgctxt "Progress of the mgirator in %"
-#| msgid "Progress"
+#, kde-format
 msgctxt "Progress of the migrator in %"
 msgid "Progress"
 msgstr "Eiga"
 
 #: migrationscheduler.cpp:147
-#, fuzzy, kde-format
-#| msgctxt "Current status of the migrator (done, in progress, ...)"
-#| msgid "Status"
+#, kde-format
 msgctxt "Current status of the migrator (done, in progress, …)"
 msgid "Status"
 msgstr "Būsena"
@@ -72,19 +66,17 @@ msgstr "Būsena"
 #: migrationstatuswidget.cpp:27
 #, kde-format
 msgid "Start"
-msgstr ""
+msgstr "Pradėti"
 
 #: migrationstatuswidget.cpp:31
-#, fuzzy, kde-format
-#| msgctxt "PIM-Maintenance is paused."
-#| msgid "Paused."
+#, kde-format
 msgid "Pause"
-msgstr "Pristabdyta."
+msgstr "Pristabdyti"
 
 #: migrationstatuswidget.cpp:35
 #, kde-format
 msgid "Abort"
-msgstr ""
+msgstr "Nutraukti"
 
 #: migrationstatuswidget.cpp:97
 #, kde-format
@@ -95,4 +87,4 @@ msgstr "Žurnalo failas"
 #, kde-format
 msgctxt "Title of the window displaying the log of a single migration job."
 msgid "Migration Info"
-msgstr "Migravimo informacija"
+msgstr "Informacija apie perkėlimą"

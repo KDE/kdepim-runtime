@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: l 10n\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-07-09 00:45+0000\n"
-"PO-Revision-Date: 2020-04-29 13:16+0300\n"
+"PO-Revision-Date: 2026-10-12 15:42+0300\n"
 "Last-Translator: Moo\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
 "Language: lt\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 3.9\n"
 
 #: calendarhandler.cpp:92
 #, kde-format
@@ -46,10 +46,7 @@ msgid "Changing event in calendar '%1'"
 msgstr "Keičiamas įvykis kalendoriuje „%1“"
 
 #: calendarhandler.cpp:259
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Removing %1 events"
-#| msgid_plural "Removing %1 event"
+#, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 event"
 msgid_plural "Removing %1 events"
@@ -59,10 +56,7 @@ msgstr[2] "Šalinama %1 įvykių"
 msgstr[3] "Šalinamas %1 įvykis"
 
 #: calendarhandler.cpp:275
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Moving %1 events from calendar '%2' to calendar '%3'"
-#| msgid_plural "Moving %1 event from calendar '%2' to calendar '%3'"
+#, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
 msgid_plural "Moving %1 events from calendar '%2' to calendar '%3'"
@@ -72,18 +66,15 @@ msgstr[2] "Perkeliama %1 įvykių iš kalendoriaus „%2“ į kalendorių „%3
 msgstr[3] "Perkeliamas %1 įvykis iš kalendoriaus „%2“ į kalendorių „%3“"
 
 #: calendarhandler.cpp:342
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Changing contact"
+#, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
-msgstr "Keičiamas adresatas"
+msgstr "Keičiamos įvykių žymės"
 
 #: calendarhandler.cpp:346
-#, fuzzy, kde-format
-#| msgid "Failed to refresh tokens"
+#, kde-format
 msgid "Failed to change tags on events"
-msgstr "Nepavyko iš naujo įkelti prieigos raktų"
+msgstr "Nepavyko pakeisti žymių įvykiuose"
 
 #: calendarhandler.cpp:358
 #, kde-format
@@ -114,10 +105,9 @@ msgid "Cannot handle item unlinking"
 msgstr "Nepavyksta apdoroti elemento atsiejimų"
 
 #: generichandler.cpp:34
-#, fuzzy, kde-format
-#| msgid "Cannot handle item linking"
+#, kde-format
 msgid "Cannot handle item tag changes"
-msgstr "Nepavyksta apdoroti elemento susiejimų"
+msgstr "Nepavyksta apdoroti elemento žymių pakeitimų"
 
 #: generichandler.cpp:61
 #, kde-format
@@ -126,15 +116,14 @@ msgid "Ready"
 msgstr "Pasiruošę"
 
 #: generichandler.h:66 generichandler.h:78
-#, fuzzy, kde-format
-#| msgid "Invalid payload type"
+#, kde-format
 msgid "Invalid item."
-msgstr "Netinkamas naudingosios apkrovos tipas"
+msgstr "Netinkamas elementas."
 
 #: googleresource.cpp:86
 #, kde-format
 msgid "Fetching password…"
-msgstr ""
+msgstr "Gaunamas slaptažodis…"
 
 #: googleresource.cpp:134
 #, kde-format
@@ -143,22 +132,20 @@ msgid "Ready"
 msgstr "Pasiruošę"
 
 #: googleresource.cpp:146
-#, fuzzy, kde-format
-#| msgid "not configured"
+#, kde-format
 msgid "Not configured"
-msgstr "nesukonfigūruota"
+msgstr "Nesukonfigūruota"
 
 #: googleresource.cpp:146
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
-msgstr "Google grupinio darbo programinė įranga (%1)"
+msgstr "„Google“ grupinio darbo programinė įranga (%1)"
 
 #: googleresource.cpp:197
-#, fuzzy, kde-format
-#| msgid "Configured account has been removed"
+#, kde-format
 msgid "Account has been logged out."
-msgstr "Sukonfigūruota paskyra buvo pašalinta"
+msgstr "Paskyra atjungta."
 
 #: googleresource.cpp:200
 #, kde-format
@@ -166,6 +153,9 @@ msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
+"„Google“ grupinio darbo programinė įranga atjungta nuo jūsų paskyros. "
+"Prisijunkite, norėdami vėl įjungti „Google“ kontaktų ir kalendoriaus "
+"sinchronizavimą."
 
 #: googleresource.cpp:201
 #, kde-format
@@ -173,18 +163,21 @@ msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
+"„Google“ grupinio darbo programinė įranga atjungta nuo %1 paskyros. "
+"Prisijunkite, norėdami vėl įjungti „Google“ kontaktų ir kalendoriaus "
+"sinchronizavimą."
 
 #: googleresource.cpp:205
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
-msgstr ""
+msgstr "%1 reikalauja jūsų dėmesio."
 
 #: googleresource.cpp:210
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
-msgstr ""
+msgstr "Prisijungti"
 
 #: googleresource.cpp:222 googleresource.cpp:223
 #, kde-format
@@ -213,32 +206,28 @@ msgstr "Nežinomas kolekcijos mime tipas"
 #, kde-format
 msgctxt "@info:status"
 msgid "No username set"
-msgstr ""
+msgstr "Nėra nustatytas naudotojo vardas"
 
 #: googlesettings.cpp:63
-#, fuzzy, kde-format
-#| msgid "Failed to reparent subtasks: %1"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr "Nepavyko pakeisti dalinių užduočių pirminio elemento: %1"
+msgstr "Nepavyko perskaityti slaptažodžio: %1"
 
 #: googlesettingswidget.cpp:38
-#, fuzzy, kde-format
-#| msgid " minute"
-#| msgid_plural " minutes"
+#, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
-msgstr[0] " minutė"
-msgstr[1] " minutės"
-msgstr[2] " minučių"
-msgstr[3] " minutė"
+msgstr[0] "%v minutė"
+msgstr[1] "%v minutės"
+msgstr[2] "%v minučių"
+msgstr[3] "%v minutė"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingswidget.cpp:100 googlesettingswidget.ui:30
-#, fuzzy, kde-format
-#| msgid "<b>not configured</b>"
+#, kde-format
 msgid "<b>Not configured</b>"
-msgstr "<b>nesukonfigūruota</b>"
+msgstr "<b>Nesukonfigūruota</b>"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)
 #: googlesettingswidget.ui:23
@@ -248,10 +237,9 @@ msgstr "Paskyra:"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
 #: googlesettingswidget.ui:42
-#, fuzzy, kde-format
-#| msgid "Configure..."
+#, kde-format
 msgid "Configure…"
-msgstr "Konfigūruoti..."
+msgstr "Konfigūruoti…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
 #: googlesettingswidget.ui:49
@@ -267,17 +255,15 @@ msgstr "Įkėlimo iš naujo intervalas:"
 
 #. i18n: ectx: property (text), widget (QLabel, eventsLimitLabel)
 #: googlesettingswidget.ui:79
-#, fuzzy, kde-format
-#| msgid "Fetch only events since"
+#, kde-format
 msgid "Fetch only events since:"
-msgstr "Gauti tik įvykius nuo"
+msgstr "Gauti tik įvykius nuo:"
 
 #. i18n: ectx: property (text), widget (QLabel, calendarsLabel)
 #: googlesettingswidget.ui:92
-#, fuzzy, kde-format
-#| msgid "Calendars"
+#, kde-format
 msgid "Enabled Calendars:"
-msgstr "Kalendoriai"
+msgstr "Įjungti kalendoriai:"
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
@@ -288,10 +274,9 @@ msgstr "Įkelti iš naujo"
 
 #. i18n: ectx: property (text), widget (QLabel, taskListsLabel)
 #: googlesettingswidget.ui:135
-#, fuzzy, kde-format
-#| msgid "Tasklists"
+#, kde-format
 msgid "Enabled Tasklists:"
-msgstr "Užduočių sąrašai"
+msgstr "Įjungti užduočių sąrašai:"
 
 #: personhandler.cpp:87
 #, kde-format
@@ -347,10 +332,7 @@ msgid "Changing contact"
 msgstr "Keičiamas adresatas"
 
 #: personhandler.cpp:418
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Removing %1 contacts"
-#| msgid_plural "Removing %1 contact"
+#, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 contact"
 msgid_plural "Removing %1 contacts"
@@ -365,17 +347,14 @@ msgid "Invalid source or destination collection"
 msgstr "Neteisinga šaltinio ar paskirties kolekcija"
 
 #: personhandler.cpp:444
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Moving %1 contacts from group '%2' to '%3'"
-#| msgid_plural "Moving %1 contact from group '%2' to '%3'"
+#, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 contact from group '%2' to '%3'"
 msgid_plural "Moving %1 contacts from group '%2' to '%3'"
-msgstr[0] "Perkeliamas %1 adresatas iš grupės „%2“ į „%3“"
-msgstr[1] "Perkeliami %1 adresatai iš grupės „%2“ į „%3“"
-msgstr[2] "Perkeliama %1 adresatų iš grupės „%2“ į „%3“"
-msgstr[3] "Perkeliamas %1 adresatas iš grupės „%2“ į „%3“"
+msgstr[0] "Perkeliamas %1 adresatas iš grupės „%2“ į grupę „%3“"
+msgstr[1] "Perkeliami %1 adresatai iš grupės „%2“ į grupę „%3“"
+msgstr[2] "Perkeliama %1 adresatų iš grupės „%2“ į grupę „%3“"
+msgstr[3] "Perkeliamas %1 adresatas iš grupės „%2“ į grupę „%3“"
 
 #: personhandler.cpp:461
 #, kde-format
