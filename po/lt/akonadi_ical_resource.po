@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-05-04 00:44+0000\n"
-"PO-Revision-Date: 2011-07-21 15:09+0300\n"
+"PO-Revision-Date: 2026-10-12 15:48+0300\n"
 "Last-Translator: Jonas Česnauskas <upynas@gmail.com>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
 "Language: lt\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
-"X-Generator: Lokalize 1.1\n"
+"X-Generator: Poedit 3.9\n"
 
 #: icalresource.cpp:58 icalresource.cpp:137 icalresource.cpp:218
 #, kde-format
@@ -24,24 +24,24 @@ msgid "Calendar not loaded."
 msgstr "Kalendorius neįkeltas."
 
 #: icalresource.cpp:70
-#, kde-format
+#, fuzzy, kde-format
 msgid "Incidence with uid '%1' not found."
-msgstr "Sutrikimų su uid „%1“ nerasta."
+msgstr "Paplitimas su uid „%1“ nerastas."
 
 #: icalresource.cpp:204
 #, kde-format
 msgid "Failed to save calendar file to %1"
-msgstr "Nepavyko išsaugoti kalendorių %1 faile"
+msgstr "Nepavyko įrašyti kalendoriaus failo į %1"
 
 #: icalresource.cpp:223
 #, kde-format
 msgid "Unable to retrieve added item %1."
-msgstr "Nepavyko pasiekti įkelto elemento %1."
+msgstr "Nepavyko atgauti pridėto elemento %1."
 
 #: icalresource.cpp:223
 #, kde-format
 msgid "Unable to retrieve modified item %1."
-msgstr "Nepavyko pasiekti pakeisto elemento %1."
+msgstr "Nepavyko atgauti modifikuoto elemento %1."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: icalresource.kcfg:10
@@ -53,32 +53,31 @@ msgstr "Kelias iki iCal failo."
 #: icalresource.kcfg:14
 #, kde-format
 msgid "Display name."
-msgstr "Rodyti vardą."
+msgstr "Rodyti pavadinimą."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: icalresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "Nekeisti dabartinių posistemės duomenų."
+msgstr "Nekeisti dabartinių vidinės pusės duomenų."
 
 #. i18n: ectx: label, entry (MonitorFile), group (General)
 #: icalresource.kcfg:22
 #, kde-format
 msgid "Monitor file for changes."
-msgstr "Stebėti failo pakeitimus."
+msgstr "Stebėti, ar faile yra pakeitimų."
 
 #. i18n: ectx: label, entry (PeriodicUpdate), group (General)
 #: icalresource.kcfg:26
 #, kde-format
 msgid "Periodically update the file."
-msgstr ""
+msgstr "Periodiškai atnaujinti failą."
 
 #. i18n: ectx: label, entry (UpdatePeriod), group (General)
 #: icalresource.kcfg:30
-#, fuzzy, kde-format
-#| msgid "Autosave interval time (in minutes)."
+#, kde-format
 msgid "Automatic update period in minutes."
-msgstr "Laiko tarpas tarp Automatinio įrašymo (minutėmis)."
+msgstr "Automatinio atnaujinimo laikotarpis, minutėmis."
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Laiko tarpas tarp Automatinio įrašymo (minutėmis)."

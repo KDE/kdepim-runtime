@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-05-07 00:45+0000\n"
-"PO-Revision-Date: 2020-10-23 02:28+0200\n"
+"PO-Revision-Date: 2026-10-12 15:25+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: lt\n"
@@ -17,65 +17,66 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
+"X-Generator: Poedit 3.9\n"
 
 #: etesyncclientstate.cpp:33
 #, kde-format
 msgctxt "@info:status"
 msgid "Empty account configuration"
-msgstr ""
+msgstr "Tuščia paskyros konfigūracija"
 
 #: etesyncclientstate.cpp:42
 #, kde-format
 msgctxt "@info:status"
 msgid "Etebase error when initializing client: %1"
-msgstr ""
+msgstr "Etebase klaida inicijuojant kliento programą: %1"
 
 #: etesyncclientstate.cpp:159
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
-msgstr ""
+msgstr "Nepavyko perskaityti slaptažodį: %1"
 
 #: etesyncclientstate.cpp:168
 #, kde-format
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
-msgstr ""
+msgstr "Nepavyko gauti etebase paskyros iš podėlio"
 
 #: etesyncresource.cpp:57
 #, kde-format
 msgid "EteSync Resource"
-msgstr ""
+msgstr "EteSync išteklius"
 
 #: etesyncresource.cpp:129
 #, kde-format
 msgid "EteSync Account"
-msgstr ""
+msgstr "EteSync paskyra"
 
 #: etesyncresource.cpp:171
 #, kde-format
 msgid "Temporary server error"
-msgstr ""
+msgstr "Laikina serverio klaida"
 
 #: etesyncresource.cpp:175
 #, kde-format
 msgid "You do not have permission to perform this action."
-msgstr ""
+msgstr "Jūs neturite leidimo atlikti šį veiksmą."
 
 #: etesyncresource.cpp:178
 #, kde-format
 msgid "Permission denied"
-msgstr ""
+msgstr "Leidimas atmestas"
 
 #: etesyncresource.cpp:182
 #, kde-format
 msgid "A server error occurred."
-msgstr ""
+msgstr "Įvyko serverio klaida."
 
 #: etesyncresource.cpp:185
 #, kde-format
 msgid "Server error"
-msgstr ""
+msgstr "Serverio klaida"
 
 #: etesyncresource.cpp:204
 #, kde-format
@@ -83,53 +84,55 @@ msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
 "credentials."
 msgstr ""
+"Jūsų EteSync prisijungimo duomenys buvo pakeisti. Spustelėkite „Gerai“ "
+"norėdami iš naujo įvesti prisijungimo duomenis."
 
 #: etesyncresource.cpp:206
 #, kde-format
 msgid "Credentials Changed"
-msgstr ""
+msgstr "Pakeisti prisijungimo duomenys"
 
 #: etesyncresource.cpp:207
 #, kde-format
 msgid "Your EteSync credentials were changed or are missing."
-msgstr ""
+msgstr "Jūsų EteSync prisijungimo duomenys buvo pakeisti arba jų nėra."
 
 #: etesyncresource.cpp:257
 #, kde-format
 msgid "Cannot retrieve items - account is null"
-msgstr ""
+msgstr "Nepavyko gauti elementų – paskyra yra tuščia"
 
 #: etesyncresource.cpp:264 etesyncresource.cpp:394 etesyncresource.cpp:467
 #: etesyncresource.cpp:525 etesyncresource.cpp:655 etesyncresource.cpp:713
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
-msgstr ""
+msgstr "Nepavyko gauti etesyncCollection iš podėlio „%1“"
 
 #: etesyncresource.cpp:422
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
-msgstr ""
+msgstr "Nepavyko sukurti naujo etesyncItem „%1“"
 
 #: etesyncresource.cpp:474 etesyncresource.cpp:532
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
-msgstr ""
+msgstr "Nepavyko gauti etesyncItem iš podėlio „%1“"
 
 #: etesyncresource.cpp:594
 #, kde-format
 msgid "Could not create new etesyncCollection"
-msgstr ""
+msgstr "Nepavyko sukurti naujo etesyncCollection"
 
 #: etesyncresource.h:58
 #, kde-format
 msgid "Something went wrong"
-msgstr ""
+msgstr "Kažkas nutiko"
 
 #. i18n: ectx: label, entry (BaseUrl), group (General)
 #: etesyncresource.kcfg:14
 #, kde-format
 msgid "Server URL"
-msgstr ""
+msgstr "Serverio URL"
 
 #. i18n: ectx: tooltip, entry (BaseUrl), group (General)
 #. i18n: ectx: whatsthis, entry (BaseUrl), group (General)
@@ -137,64 +140,66 @@ msgstr ""
 #, kde-format
 msgid ""
 "The URL of the EteSync server, should be something like https://myserver.org/"
-msgstr ""
+msgstr "EteSync serverio URL turėtų būti panašus į https://manoserveris.org/"
 
 #. i18n: ectx: label, entry (Username), group (General)
 #: etesyncresource.kcfg:19
 #, kde-format
 msgctxt "the username to login on server"
 msgid "Username"
-msgstr ""
+msgstr "Naudotojo vardas"
 
 #. i18n: ectx: tooltip, entry (Username), group (General)
 #. i18n: ectx: whatsthis, entry (Username), group (General)
 #: etesyncresource.kcfg:20 etesyncresource.kcfg:21
 #, kde-format
 msgid "The username that is used to log into the EteSync server"
-msgstr ""
+msgstr "Naudotojo vardas, naudojamas prisijungimui į EteSync serverį"
 
 #. i18n: ectx: label, entry (BasePath), group (General)
 #: etesyncresource.kcfg:24
 #, kde-format
 msgid "Path to base directory"
-msgstr ""
+msgstr "Kelias iki pagrindinio katalogo"
 
 #: setupwizard.cpp:28
 #, kde-format
 msgctxt "@title:window"
 msgid "EteSync configuration wizard"
-msgstr ""
+msgstr "EteSync konfigūracijos vediklis"
 
 #: setupwizard.cpp:66
 #, kde-format
 msgid "Login Credentials"
-msgstr ""
+msgstr "Prisijungimo duomenys"
 
 #: setupwizard.cpp:67
 #, kde-format
 msgid "Enter your credentials to login to the EteSync server"
 msgstr ""
+"Įveskite prisijungimo duomenis, kad prisijungtumėte prie EteSync serverio "
+"paskyros"
 
 #: setupwizard.cpp:76
 #, kde-format
 msgid "Username:"
-msgstr ""
+msgstr "Naudotojo vardas:"
 
 #: setupwizard.cpp:82
 #, kde-format
 msgid "Password:"
-msgstr ""
+msgstr "Slaptažodis:"
 
 #: setupwizard.cpp:85
 #, kde-format
 msgctxt "@option:check"
 msgid "Advanced settings"
-msgstr ""
+msgstr "Išplėstinės nuostatos"
 
 #: setupwizard.cpp:90
 #, kde-format
 msgid "Server:"
-msgstr ""
+msgstr "Serveris:"
 
 #: setupwizard.cpp:103
 #, kde-format
@@ -202,6 +207,7 @@ msgid ""
 "🛈 The password field is empty because EteSync does not store it for security "
 "reasons."
 msgstr ""
+"🛈 Slaptažodžio laukas yra tuščias, nes EteSync saugumo sumetimais jo nesaugo."
 
 #: setupwizard.cpp:135
 #, kde-format
@@ -209,6 +215,8 @@ msgid ""
 "Please ensure that the server URL is correct. The URL should start with "
 "http:// or https://."
 msgstr ""
+"Įsitikinkite, kad serverio URL adresas yra teisingas. URL turėtų prasidėti "
+"http:// arba https://."
 
 #: setupwizard.cpp:137
 #, kde-format
@@ -216,8 +224,12 @@ msgid ""
 "Could not connect to the server. Please ensure that the server URL is "
 "correct."
 msgstr ""
+"Nepavyko prisijungti prie serverio. Įsitikinkite, kad serverio URL adresas "
+"yra teisingas."
 
 #: setupwizard.cpp:139
 #, kde-format
 msgid "EteSync server not found. Please ensure that the server URL is correct."
 msgstr ""
+"EteSync serveris nerastas. Įsitikinkite, kad serverio URL adresas yra "
+"teisingas."
