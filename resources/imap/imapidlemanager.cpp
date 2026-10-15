@@ -29,7 +29,7 @@ namespace
 // RFC2177 says clients should restart IDLE every 29 minutes, as
 // servers MAY consider clients inactive after 30 minutes.
 // TODO: Make configurable to support less RF-conformant servers
-static const auto IdleTimeout = std::chrono::minutes(29);
+const auto IdleTimeout = std::chrono::minutes(29);
 }
 
 ImapIdleManager::ImapIdleManager(ResourceStateInterface::Ptr state, SessionPool *pool, ImapResource *parent)

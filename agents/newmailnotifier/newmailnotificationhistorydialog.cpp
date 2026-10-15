@@ -18,7 +18,7 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace
 {
-static const char myConfigNewMailHistoryNotificationDialogGroupName[] = "NewMailHistoryNotificationDialog";
+const char myConfigNewMailHistoryNotificationDialogGroupName[] = "NewMailHistoryNotificationDialog";
 }
 NewMailNotificationHistoryDialog::NewMailNotificationHistoryDialog(QWidget *parent)
     : QDialog(parent)

@@ -20,7 +20,7 @@
 #endif
 namespace
 {
-static const char myConfigGroupName[] = "ContactsSettingsDialog";
+const char myConfigGroupName[] = "ContactsSettingsDialog";
 }
 
 ContactsSettingsWidget::ContactsSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
