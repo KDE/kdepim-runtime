@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_openxchange_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:52+0000\n"
-"PO-Revision-Date: 2011-07-26 14:56+0300\n"
+"PO-Revision-Date: 2026-10-17 13:43+0300\n"
 "Last-Translator: Jonas Česnauskas <upynas@gmail.com>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
 "Language: lt\n"
@@ -18,31 +18,32 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
-"X-Generator: Lokalize 1.1\n"
+"X-Generator: Poedit 3.9\n"
 
 #: configwidget.cpp:25
 #, kde-format
 msgid "Enter the http or https URL to your Open-Xchange installation here."
-msgstr "Čia įveskite http arba  https URL į jūsų Open-Xchange diegimą."
+msgstr ""
+"Čia įveskite http arba https URL adresą, nukreipiantį į jūsų „Open-Xchange“ "
+"diegimą."
 
 #: configwidget.cpp:26
 #, kde-format
 msgid "Enter the username of your Open-Xchange account here."
-msgstr "Čia įveskite jūsų Open-Xchange paskyros naudotojo vardą."
+msgstr "Čia įveskite savo „Open-Xchange“ paskyros naudotojo vardą."
 
 #: configwidget.cpp:27
 #, kde-format
 msgid "Enter the password of your Open-Xchange account here."
-msgstr "Čia įveskite jūsų Open-Xchange paskyros slaptažodį."
+msgstr "Čia įveskite savo „Open-Xchange“ paskyros slaptažodį."
 
 #: configwidget.cpp:72
 #, kde-format
 msgid "Unable to connect: %1"
-msgstr "Negalima užmegzti ryšio: %1"
+msgstr "Nepavyko prisijungti: %1"
 
 #: configwidget.cpp:72
-#, fuzzy, kde-format
-#| msgid "Connection error"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection error"
 msgstr "Ryšio klaida"
@@ -50,14 +51,13 @@ msgstr "Ryšio klaida"
 #: configwidget.cpp:74
 #, kde-format
 msgid "Tested connection successfully."
-msgstr "Ryšys patikrintas sėkmingai."
+msgstr "Ryšys sėkmingai patikrintas."
 
 #: configwidget.cpp:74
-#, fuzzy, kde-format
-#| msgid "Connection success"
+#, kde-format
 msgctxt "@title:window"
 msgid "Connection success"
-msgstr "Prisijungta sėkmingai"
+msgstr "Ryšys sėkmingas"
 
 #. i18n: ectx: property (text), widget (QLabel, label_BaseUrl)
 #: configwidget.ui:29
@@ -76,8 +76,8 @@ msgid ""
 "The URL of the Open-Xchange server, should be something like https://"
 "myserver.org/"
 msgstr ""
-"Open-Xchange serverio URL, turėtų būti kažkas panašaus https:// manoserveris."
-"org/"
+"„Open-Xchange“ serverio URL adresas, turėtų būti kažkas panašaus į https://"
+"manoserveris.org/"
 
 #. i18n: ectx: property (text), widget (QLabel, label_Username)
 #: configwidget.ui:52
@@ -94,8 +94,7 @@ msgstr "Naudotojo vardas:"
 #, kde-format
 msgid "The username that is used to log into the Open-Xchange server"
 msgstr ""
-"Naudotojo vardas kuris naudojamas nustatyti jūsų tapatybę Open-Xchange "
-"serveryje"
+"Naudotojo vardas, kuris naudojamas prisijungimui prie „Open-Xchange“ serverio"
 
 #. i18n: ectx: property (text), widget (QLabel, label_Password)
 #: configwidget.ui:72
@@ -112,19 +111,18 @@ msgstr "Slaptažodis:"
 #, kde-format
 msgid "The password that is used to log into the Open-Xchange server"
 msgstr ""
-"Slaptažodis kuris naudojamas nustatyti jūsų tapatybę Open-Xchange serveryje"
+"Slaptažodis, kuris naudojamas prisijungimui prie „Open-Xchange“ serverio"
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
-#, fuzzy, kde-format
-#| msgid "Test Connection..."
+#, kde-format
 msgid "Test Connection…"
-msgstr "Ryšio bandymas.."
+msgstr "Išbandyti ryšį…"
 
 #: openxchangeresource.cpp:248
 #, kde-format
 msgid "Open-Xchange"
-msgstr "Open-Xchange"
+msgstr "„Open-Xchange“"
 
 #: openxchangeresource.cpp:276
 #, kde-format
@@ -139,7 +137,7 @@ msgstr "Viešas aplankas"
 #: openxchangeresource.cpp:292
 #, kde-format
 msgid "Shared Folder"
-msgstr "Dalinimosi aplankas"
+msgstr "Bendrinamas aplankas"
 
 #: openxchangeresource.cpp:300
 #, kde-format
@@ -155,19 +153,19 @@ msgstr "Nepavyko prisijungti prie serverio"
 #, kde-format
 msgid ""
 "The object was edited by another participant in the meantime. Please check."
-msgstr ""
+msgstr "Per tą laiką objektą taisė kitas dalyvis. Patikrinkite."
 
 #: openxchangeresource.cpp:806
 #, kde-format
 msgid ""
 "Object not found. Maybe it was deleted by another participant in the "
 "meantime."
-msgstr ""
+msgstr "Objektas nerastas. Galbūt, per tą laiką kitas dalyvis jį ištrynė."
 
 #: openxchangeresource.cpp:809
 #, kde-format
 msgid "You don't have the permission to perform this action on this object."
-msgstr ""
+msgstr "Jūs neturite leidimo atlikti šį veiksmą su šiuo objektu."
 
 #: openxchangeresource.cpp:812
 #, kde-format
@@ -175,6 +173,8 @@ msgid ""
 "A conflict detected. Please check if there are other objects in conflict "
 "with this one."
 msgstr ""
+"Aptiktas konfliktas. Patikrinkite, ar yra kitų objektų, kurie konfliktuoja "
+"su šiuo objektu."
 
 #: openxchangeresource.cpp:815
 #, kde-format
@@ -182,6 +182,8 @@ msgid ""
 "A mandatory data field is missing. Please check. Otherwise contact your "
 "administrator."
 msgstr ""
+"Trūksta privalomo duomenų lauko. Patikrinkite. Priešingu atveju susisiekite "
+"su administratoriumi."
 
 #: openxchangeresource.cpp:818
 #, kde-format
@@ -189,11 +191,14 @@ msgid ""
 "An appointment conflict detected.\n"
 "Please check if there are other appointments in conflict with this one."
 msgstr ""
+"Aptiktas darbinių susitikimų konfliktas.\n"
+"Patikrinkite, ar yra kitų darbinių susitikimų, kurie konfliktuoja su šiuo "
+"darbiniu susitikimu."
 
 #: openxchangeresource.cpp:821
 #, kde-format
 msgid "Internal server error. Please contact your administrator."
-msgstr ""
+msgstr "Vidinė serverio klaida. Susisiekite su administratoriumi."
 
 #. i18n: ectx: label, entry (BaseUrl), group (General)
 #: openxchangeresource.kcfg:10
@@ -218,7 +223,7 @@ msgstr "Slaptažodis"
 #: openxchangeresource.kcfg:26
 #, kde-format
 msgid "Use incremental updates"
-msgstr "Naudoti pavienius atnaujinimus"
+msgstr "Naudoti prieauginius atnaujinimus"
 
 #. i18n: ectx: tooltip, entry (UseIncrementalUpdates), group (General)
 #. i18n: ectx: whatsthis, entry (UseIncrementalUpdates), group (General)
@@ -228,8 +233,8 @@ msgid ""
 "Use incremental updates instead of reloading all data from the server each "
 "time"
 msgstr ""
-"Naudoti pavienius atnaujinimus, o ne perkrauti visus duomenis iš serverio "
-"kiekvieną kartą"
+"Naudoti prieauginius atnaujinimus užuot kas kartą iš naujo įkeliant visus "
+"duomenis iš serverio"
 
 #~ msgid "Connection"
 #~ msgstr "Ryšys"
