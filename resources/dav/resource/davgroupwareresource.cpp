@@ -1780,6 +1780,8 @@ void DavGroupwareResource::onItemRefreshed(KJob *job)
 void DavGroupwareResource::onItemFetched(KJob *job, ItemFetchUpdateType updateType)
 {
     if (job->error()) {
+        qCWarning(DAVRESOURCE_LOG) << "Unable to fetch item" << qobject_cast<KDAV::DavItemFetchJob *>(job)->item().url().toDisplayString() << job->error()
+                                   << job->errorText();
         if (mSyncErrorNotified) {
             cancelTask();
         } else {
