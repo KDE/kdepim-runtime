@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-24 00:46+0000\n"
-"PO-Revision-Date: 2026-09-23 19:54+0200\n"
+"POT-Creation-Date: 2026-10-19 00:47+0000\n"
+"PO-Revision-Date: 2026-10-15 21:25+0200\n"
 "Last-Translator: Frank Steinmetzger <dev-kde@felsenfleischer.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 26.08.1\n"
+"X-Generator: Lokalize 26.08.2\n"
 
 #: configwidget.cpp:34
 #, kde-format
@@ -244,10 +244,9 @@ msgid "Unable to remove collection: %1"
 msgstr "Sammlung kann nicht gelöscht werden: %1"
 
 #: davgroupwareresource.cpp:1434
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to retrieve collection: %1"
-msgstr "Problem beim Abrufen der Sammlungen: %1"
+msgstr "Problem beim Abrufen der Sammlung: %1"
 
 #: davgroupwareresource.cpp:1449
 #, kde-format
@@ -259,18 +258,18 @@ msgstr "Problem beim Abrufen der Sammlung: %1"
 msgid "Unable to retrieve collections: %1"
 msgstr "Problem beim Abrufen der Sammlungen: %1"
 
-#: davgroupwareresource.cpp:1657 davgroupwareresource.cpp:2216
-#: davgroupwareresource.cpp:2246
+#: davgroupwareresource.cpp:1657 davgroupwareresource.cpp:2218
+#: davgroupwareresource.cpp:2248
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Die Elemente können nicht empfangen werden: %1"
 
-#: davgroupwareresource.cpp:1786
+#: davgroupwareresource.cpp:1788
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Das Element kann nicht empfangen werden: %1"
 
-#: davgroupwareresource.cpp:1806
+#: davgroupwareresource.cpp:1808
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -279,23 +278,23 @@ msgstr ""
 "Eintrag kann nicht abgerufen werden: Die Eintragsdaten konnten nicht "
 "analysiert werden. Vielleicht wurde der Eintrag bereits gelöscht."
 
-#: davgroupwareresource.cpp:1866
+#: davgroupwareresource.cpp:1868
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Das Element kann nicht hinzugefügt werden: %1"
 
-#: davgroupwareresource.cpp:1911 davgroupwareresource.cpp:2043
-#: davgroupwareresource.cpp:2055
+#: davgroupwareresource.cpp:1913 davgroupwareresource.cpp:2045
+#: davgroupwareresource.cpp:2057
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Das Element kann nicht geändert werden: %1"
 
-#: davgroupwareresource.cpp:2017 davgroupwareresource.cpp:2074
+#: davgroupwareresource.cpp:2019 davgroupwareresource.cpp:2076
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Das Element kann nicht gelöscht werden: %1"
 
-#: davgroupwareresource.cpp:2161 davgroupwareresource.cpp:2162
+#: davgroupwareresource.cpp:2163 davgroupwareresource.cpp:2164
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Die Ressource ist noch nicht eingerichtet"

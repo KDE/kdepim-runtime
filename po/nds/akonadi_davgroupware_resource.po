@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-24 00:46+0000\n"
+"POT-Creation-Date: 2026-10-19 00:47+0000\n"
 "PO-Revision-Date: 2014-08-15 15:50+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -255,41 +255,41 @@ msgstr "Sammeln laat sik nich halen: %1"
 msgid "Unable to retrieve collections: %1"
 msgstr "Sammeln laat sik nich halen: %1"
 
-#: davgroupwareresource.cpp:1657 davgroupwareresource.cpp:2216
-#: davgroupwareresource.cpp:2246
+#: davgroupwareresource.cpp:1657 davgroupwareresource.cpp:2218
+#: davgroupwareresource.cpp:2248
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Element laat sik nich halen: %1"
 
-#: davgroupwareresource.cpp:1786
+#: davgroupwareresource.cpp:1788
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Element lett sik nich halen: %1"
 
-#: davgroupwareresource.cpp:1806
+#: davgroupwareresource.cpp:1808
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
 
-#: davgroupwareresource.cpp:1866
+#: davgroupwareresource.cpp:1868
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Element lett sik nich tofögen: %1"
 
-#: davgroupwareresource.cpp:1911 davgroupwareresource.cpp:2043
-#: davgroupwareresource.cpp:2055
+#: davgroupwareresource.cpp:1913 davgroupwareresource.cpp:2045
+#: davgroupwareresource.cpp:2057
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Element lett sik nich ännern: %1"
 
-#: davgroupwareresource.cpp:2017 davgroupwareresource.cpp:2074
+#: davgroupwareresource.cpp:2019 davgroupwareresource.cpp:2076
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Element lett sik nich wegmaken: %1"
 
-#: davgroupwareresource.cpp:2161 davgroupwareresource.cpp:2162
+#: davgroupwareresource.cpp:2163 davgroupwareresource.cpp:2164
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "De Ressource is noch nich inricht."

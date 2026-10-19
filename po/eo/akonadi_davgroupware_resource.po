@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-24 00:46+0000\n"
+"POT-Creation-Date: 2026-10-19 00:47+0000\n"
 "PO-Revision-Date: 2024-07-30 21:06+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -252,18 +252,18 @@ msgstr "Ne eblas preni kolektojn: %1"
 msgid "Unable to retrieve collections: %1"
 msgstr "Ne eblas preni kolektojn: %1"
 
-#: davgroupwareresource.cpp:1657 davgroupwareresource.cpp:2216
-#: davgroupwareresource.cpp:2246
+#: davgroupwareresource.cpp:1657 davgroupwareresource.cpp:2218
+#: davgroupwareresource.cpp:2248
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Ne eblas retrovi erojn: %1"
 
-#: davgroupwareresource.cpp:1786
+#: davgroupwareresource.cpp:1788
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Ne eblas retrovi eron: %1"
 
-#: davgroupwareresource.cpp:1806
+#: davgroupwareresource.cpp:1808
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -272,23 +272,23 @@ msgstr ""
 "Ne eblas retrovi eron: malsukcesis analizi eron-datenojn. Eble ĝi jam estis "
 "forigita."
 
-#: davgroupwareresource.cpp:1866
+#: davgroupwareresource.cpp:1868
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Ne eblas aldoni eron: %1"
 
-#: davgroupwareresource.cpp:1911 davgroupwareresource.cpp:2043
-#: davgroupwareresource.cpp:2055
+#: davgroupwareresource.cpp:1913 davgroupwareresource.cpp:2045
+#: davgroupwareresource.cpp:2057
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Ne eblas ŝanĝi eron: %1"
 
-#: davgroupwareresource.cpp:2017 davgroupwareresource.cpp:2074
+#: davgroupwareresource.cpp:2019 davgroupwareresource.cpp:2076
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Ne eblas forigi eron: %1"
 
-#: davgroupwareresource.cpp:2161 davgroupwareresource.cpp:2162
+#: davgroupwareresource.cpp:2163 davgroupwareresource.cpp:2164
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "La rimedo ankoraŭ ne estas agordita"
