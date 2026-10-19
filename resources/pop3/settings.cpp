@@ -6,6 +6,7 @@
 
 #include "settings.h"
 #include "settingsadaptor.h"
+#include <MailTransport/Transport>
 #include <qt6keychain/keychain.h>
 using namespace QKeychain;
 #include "pop3resource_debug.h"
@@ -30,6 +31,34 @@ void Settings::setResourceId(const QString &resourceIdentifier)
 {
     mResourceId = resourceIdentifier;
 }
+Pop3Settings::AuthenticationMethod Settings::mapTransportAuthToKpop(MailTransport::Transport::EnumAuthenticationType authType)
+{
+    switch (authType) {
+    case MailTransport::Transport::APOP:
+        return Pop3Settings::APOP;
+    case MailTransport::Transport::ANONYMOUS:
+        return Pop3Settings::Anonymous;
+    case MailTransport::Transport::PLAIN:
+        return Pop3Settings::Plain;
+    case MailTransport::Transport::NTLM:
+        return Pop3Settings::NTLM;
+    case MailTransport::Transport::LOGIN:
+        return Pop3Settings::Login;
+    case MailTransport::Transport::GSSAPI:
+        return Pop3Settings::GSSAPI;
+    case MailTransport::Transport::DIGEST_MD5:
+        return Pop3Settings::DigestMD5;
+    case MailTransport::Transport::CRAM_MD5:
+        return Pop3Settings::CramMD5;
+    case MailTransport::Transport::CLEAR:
+        return Pop3Settings::Clear;
+    case MailTransport::Transport::XOAUTH2:
+        return Pop3Settings::XOAuth2;
+    default:
+        qWarning() << "mapping from Transport::EnumAuthenticationType -> KPOP::Pop3Settings::AuthenticationMethod not possible" << authType;
+        return Pop3Settings::Clear; // dummy value, shouldn't get here.
+    }
+}
 
 Pop3Settings Settings::toPop3Settings() const
 {
@@ -37,7 +66,7 @@ Pop3Settings Settings::toPop3Settings() const
     result.setLogin(this->login());
     result.setHost(this->host());
     result.setPort(this->port());
-    result.setAuthenticationMethod(this->authenticationMethod());
+    result.setAuthenticationMethod(mapTransportAuthToKpop(static_cast<MailTransport::Transport::EnumAuthenticationType>(this->authenticationMethod())));
     result.setUseSSL(this->useSSL());
     result.setUseTLS(this->useTLS());
     result.setPipelining(this->pipelining());
