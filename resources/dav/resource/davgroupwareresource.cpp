@@ -32,19 +32,15 @@
 #include <KDAV/DavItemDeleteJob>
 #include <KDAV/DavItemFetchJob>
 #include <KDAV/DavItemModifyJob>
-#if KDAV_VERSION >= QT_VERSION_CHECK(6, 30, 0)
 #include <KDAV/DavItemMoveJob>
-#endif
 #include <KDAV/DavItemsFetchJob>
 #include <KDAV/DavItemsListJob>
 #if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
 #include <KDAV/DavItemsSyncJob>
 #endif
 #include <KDAV/DavPrincipalHomesetsFetchJob>
-#if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
 #include <KDAV/DavPushSupport>
 #include <KDAV/DavSslUiProxy>
-#endif
 #include <KDAV/ProtocolInfo>
 
 #include <KCalendarCore/FreeBusy>
@@ -86,7 +82,6 @@ using IncidencePtr = QSharedPointer<KCalendarCore::Incidence>;
 
 using namespace Qt::Literals::StringLiterals;
 
-#if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
 class SslUiProxy : public KDAV::DavSslUiProxy
 {
 public:
@@ -100,7 +95,6 @@ public:
         }
     }
 };
-#endif
 
 DavGroupwareResource::DavGroupwareResource(const QString &id)
     : ResourceWidgetBase(id)
@@ -108,10 +102,8 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     , AccountBase(this)
     , mFreeBusyHandler(new DavFreeBusyHandler(settings(), this))
 {
-#if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
     auto proxy = std::make_unique<SslUiProxy>();
     KDAV::DavSslUiProxy::setDefaultProxy(std::move(proxy));
-#endif
 
     AttributeFactory::registerAttribute<DavProtocolAttribute>();
     AttributeFactory::registerAttribute<CTagAttribute>();
@@ -960,7 +952,6 @@ void DavGroupwareResource::doItemMove(const Akonadi::Item &item,
     auto davItem = Utils::createDavItem(newItem, collectionDst, newDependentItems);
     const auto oldDavUrl = settings()->davUrlFromCollectionUrl(collectionSrc.remoteId(), item.remoteId());
 
-#if KDAV_VERSION >= QT_VERSION_CHECK(6, 30, 0)
     davItem.setUrl(oldDavUrl);
 
     // We must not pass an authenticated url as destination, only the destination path
@@ -995,62 +986,6 @@ void DavGroupwareResource::doItemMove(const Akonadi::Item &item,
                 changesCommitted(changedItems);
             });
     job->start();
-#else
-    // TODO: Legacy path, to remove once KDAV can be assumed to be >=6.30
-    const auto newDavUrl = settings()->davUrlFromCollectionUrl(collectionDst.remoteId(), davItem.url().toDisplayString());
-    davItem.setUrl(newDavUrl);
-
-    auto *createJob = new KDAV::DavItemCreateJob(davItem);
-    connect(createJob, &KJob::result, this, [=, this](KJob *job) mutable {
-        const auto *moveJob = qobject_cast<KDAV::DavItemCreateJob *>(job);
-        if (job->error()) {
-            if (moveJob->canRetryLater()) {
-                retryAfterFailure(job->errorString());
-            } else {
-                cancelTask(i18n("Unable to create item during move: %1", job->errorString()));
-            }
-            return;
-        }
-
-        // Update item and dependentItem remoteIds
-        auto newDavItem = moveJob->item();
-        newItem.setRemoteId(newDavItem.url().toDisplayString());
-        newItem.setRemoteRevision(newDavItem.etag());
-        for (auto &newDependentItem : newDependentItems) {
-            const auto fragmentIndex = newDependentItem.remoteId().indexOf(u'#');
-            Q_ASSERT(fragmentIndex >= 0);
-            newDependentItem.setRemoteId(newItem.remoteId() + newDependentItem.remoteId().mid(fragmentIndex));
-            newDependentItem.setRemoteRevision(newItem.remoteRevision());
-        }
-
-        // Update cache
-        mDavItemCache[collectionSrc.remoteId()]->removeEtag(item.remoteId());
-        for (const auto &dependentItem : dependentItems) {
-            mDavItemCache[collectionSrc.remoteId()]->removeEtag(dependentItem.remoteId());
-        }
-        mDavItemCache[collectionDst.remoteId()]->setEtag(newItem.remoteId(), newItem.remoteRevision());
-        for (const auto &newDependentItem : newDependentItems) {
-            mDavItemCache[collectionDst.remoteId()]->setEtag(newDependentItem.remoteId(), newDependentItem.remoteRevision());
-        }
-
-        // Update remote id's in akonadiserver
-        auto changedItems = newDependentItems;
-        changedItems << newItem;
-        changesCommitted(changedItems);
-
-        // This is Fire and Forget
-        auto deleteDavItem = davItem;
-        deleteDavItem.setUrl(oldDavUrl);
-        auto *deleteJob = new KDAV::DavItemDeleteJob(deleteDavItem);
-        connect(deleteJob, &KDAV::DavItemDeleteJob::result, this, [this](KJob *deleteJob) {
-            if (deleteJob->error()) {
-                qCWarning(DAVRESOURCE_LOG()) << "Unable to delete item during move:" << deleteJob->errorString();
-            }
-        });
-        deleteJob->start();
-    });
-    createJob->start();
-#endif
 }
 
 class DavItemsModifyJob : public KCompositeJob
@@ -1459,14 +1394,12 @@ void DavGroupwareResource::onRetrieveCollectionFinished(KJob *job, const Akonadi
     modifyJob->start();
 
 #if DAV_ENABLE_PUSH_NOTIFICATIONS
-#if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
     const auto oldVapidKey = state()->getVapidPublicKey();
     const auto newVapidKey = davCollection->davPushSupport().vapidPublicKey();
     if (!newVapidKey.isEmpty() && oldVapidKey != newVapidKey) {
         qCDebug(DAVRESOURCE_LOG()) << "Davpush: PartialSync detected a new vapidkey" << oldVapidKey << "to" << newVapidKey;
         state()->setVapidPublicKey(newVapidKey);
     }
-#endif
 #endif
 
     switch (identifySyncMethod(collection)) {
@@ -1537,7 +1470,6 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
     }
 
 #if DAV_ENABLE_PUSH_NOTIFICATIONS
-#if KDAV_VERSION >= QT_VERSION_CHECK(6, 29, 0)
     const auto davPushCollection = std::ranges::find_if(davCollections, [](const auto &c) {
         return c.davPushSupport().isValid() && !c.davPushSupport().vapidPublicKey().isEmpty();
     });
@@ -1553,7 +1485,6 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         state()->clearToken();
         state()->clearSubscriptionUrl();
     }
-#endif
 #endif
 
     if (!initialCacheSync) {
