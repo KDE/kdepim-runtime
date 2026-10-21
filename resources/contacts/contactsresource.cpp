@@ -22,6 +22,7 @@
 #include <KLocalizedString>
 
 using namespace Akonadi;
+using namespace Qt::StringLiterals;
 
 ContactsResource::ContactsResource(const QString &id)
     : ResourceBase(id)
@@ -140,7 +141,7 @@ void ContactsResource::retrieveItems(const Akonadi::Collection &collection)
         Item item;
         item.setRemoteId(entryFileName);
 
-        if (entryFileName.endsWith(QLatin1StringView(".vcf"))) {
+        if (entryFileName.endsWith(".vcf"_L1, Qt::CaseInsensitive) || entryFileName.endsWith(".vcard"_L1, Qt::CaseInsensitive)) {
             item.setMimeType(KContacts::Addressee::mimeType());
         } else if (entryFileName.endsWith(QLatin1StringView(".ctg"))) {
             item.setMimeType(KContacts::ContactGroup::mimeType());
@@ -198,7 +199,7 @@ bool ContactsResource::doRetrieveItem(Akonadi::Item &item)
         return false;
     }
 
-    if (filePath.endsWith(QLatin1StringView(".vcf"))) {
+    if (filePath.endsWith(".vcf"_L1, Qt::CaseInsensitive) || filePath.endsWith(".vcard"_L1, Qt::CaseInsensitive)) {
         KContacts::VCardConverter converter;
 
         const QByteArray content = file.readAll();
