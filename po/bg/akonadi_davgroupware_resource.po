@@ -639,6 +639,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#~ msgid "Unable to create item during move: %1"
-#~ msgstr "Не може да се създаде елемент по време на преместване: %1"

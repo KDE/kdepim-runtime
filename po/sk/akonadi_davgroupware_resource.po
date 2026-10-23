@@ -225,10 +225,9 @@ msgid "Unable to remove collection: %1"
 msgstr "Nemôžem odstrániť kolekciu: %1"
 
 #: davgroupwareresource.cpp:1369
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to retrieve collection: %1"
-msgstr "Nemôžem získať kolekcie: %1"
+msgstr "Nie je možné získať kolekciu: %1"
 
 #: davgroupwareresource.cpp:1384
 #, kde-format

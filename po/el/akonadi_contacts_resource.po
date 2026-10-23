@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_contacts_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-10-23 00:49+0000\n"
 "PO-Revision-Date: 2016-05-24 16:34+0200\n"
 "Last-Translator: Petros Vidalis <pvidalis@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -72,89 +72,89 @@ msgstr ""
 "μεταβολή στον επιλεγμένο κατάλογο. Η λειτουργία για ανάγνωση-μόνο θα "
 "ενεργοποιηθεί αυτόματα αν δεν έχετε πρόσβαση για εγγραφή στον κατάλογο."
 
-#: contactsresource.cpp:44
+#: contactsresource.cpp:45
 #, kde-format
 msgid "Personal Contacts"
 msgstr "Προσωπικές επαφές"
 
-#: contactsresource.cpp:124
+#: contactsresource.cpp:125
 #, kde-format
 msgid "Directory '%1' does not exists"
 msgstr "Ο κατάλογος '%1' δεν υπάρχει"
 
-#: contactsresource.cpp:148 contactsresource.cpp:223
+#: contactsresource.cpp:149 contactsresource.cpp:224
 #, kde-format
 msgid "Found file of unknown format: '%1'"
 msgstr "Βρέθηκε αρχείο άγνωστου τύπου: '%1'"
 
-#: contactsresource.cpp:197
+#: contactsresource.cpp:198
 #, kde-format
 msgid "Unable to open file '%1'"
 msgstr "Αδυναμία ανοίγματος του αρχείου '%1'"
 
-#: contactsresource.cpp:207
+#: contactsresource.cpp:208
 #, kde-format
 msgid "Found invalid contact in file '%1'"
 msgstr "Βρέθηκε μη έγκυρη επαφή στο αρχείο '%1'"
 
-#: contactsresource.cpp:217
+#: contactsresource.cpp:218
 #, kde-format
 msgid "Found invalid contact group in file '%1': %2"
 msgstr "Βρέθηκε μη έγκυρη ομάδα επαφών στο αρχείο '%1': %2"
 
-#: contactsresource.cpp:233 contactsresource.cpp:358 contactsresource.cpp:379
-#: contactsresource.cpp:412
+#: contactsresource.cpp:234 contactsresource.cpp:359 contactsresource.cpp:380
+#: contactsresource.cpp:413
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Απόπειρα εγγραφής σε κατάλογο για ανάγνωση-μόνο: '%1'"
 
-#: contactsresource.cpp:251 contactsresource.cpp:266 contactsresource.cpp:301
-#: contactsresource.cpp:313
+#: contactsresource.cpp:252 contactsresource.cpp:267 contactsresource.cpp:302
+#: contactsresource.cpp:314
 #, kde-format
 msgid "Unable to write to file '%1': %2"
 msgstr "Αδυναμία εγγραφής στο αρχείο '%1': %2"
 
-#: contactsresource.cpp:285 contactsresource.cpp:333
+#: contactsresource.cpp:286 contactsresource.cpp:334
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'"
 msgstr "Προσπάθεια εγγραφής σε αρχείο για ανάγνωση-μόνο: '%1'"
 
-#: contactsresource.cpp:323
+#: contactsresource.cpp:324
 #, kde-format
 msgid "Received item with unknown payload %1"
 msgstr "Παραλαβή αντικειμένου άγνωστου περιεχομένου %1"
 
-#: contactsresource.cpp:348
+#: contactsresource.cpp:349
 #, kde-format
 msgid "Unable to remove file '%1'"
 msgstr "Αδυναμία διαγραφής του αρχείου '%1'"
 
-#: contactsresource.cpp:365
+#: contactsresource.cpp:366
 #, kde-format
 msgid "Unable to create folder '%1'."
 msgstr "Αδυναμία δημιουργίας του καταλόγου '%1'."
 
-#: contactsresource.cpp:400
+#: contactsresource.cpp:401
 #, kde-format
 msgid "Unable to rename folder '%1'."
 msgstr "Αδυναμία μετονομασίας του καταλόγου '%1'."
 
-#: contactsresource.cpp:418
+#: contactsresource.cpp:419
 #, kde-format
 msgid "Unknown folder to delete."
 msgstr ""
 
-#: contactsresource.cpp:422
+#: contactsresource.cpp:423
 #, kde-format
 msgid "Unable to delete folder '%1'."
 msgstr "Αδυναμία διαγραφής του καταλόγου '%1'."
 
-#: contactsresource.cpp:437
+#: contactsresource.cpp:438
 #, kde-format
 msgid "Unable to move file '%1' to '%2', '%2' already exists."
 msgstr "Αδυναμία μετακίνησης του αρχείου '%1' στο '%2', το '%2' υπάρχει ήδη."
 
-#: contactsresource.cpp:451
+#: contactsresource.cpp:452
 #, kde-format
 msgid "Unable to move directory '%1' to '%2', '%2' already exists."
 msgstr "Αδυναμία μετακίνησης του καταλόγου '%1' στον '%2', ο '%2' υπάρχει ήδη."
