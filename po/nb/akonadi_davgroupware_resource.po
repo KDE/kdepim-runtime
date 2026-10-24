@@ -635,8 +635,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#, fuzzy
-#~| msgid "Unable to retrieve item: %1"
-#~ msgid "Unable to create item during move: %1"
-#~ msgstr "Klarer ikke hente element: %1"
