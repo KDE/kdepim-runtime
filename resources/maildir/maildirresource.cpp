@@ -103,6 +103,8 @@ MaildirResource::MaildirResource(const QString &id)
     }
     new MaildirSettingsAdaptor(mSettings);
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), mSettings, QDBusConnection::ExportAdaptors);
+    setActivitiesEnabled(mSettings->activitiesEnabled());
+    setActivities(mSettings->activities());
     connect(this, &MaildirResource::reloadConfiguration, this, &MaildirResource::configurationChanged);
 
     // We need to enable this here, otherwise we neither get the remote ID of the
@@ -223,6 +225,8 @@ QString MaildirResource::itemMimeType() const
 void MaildirResource::configurationChanged()
 {
     mSettings->load();
+    setActivitiesEnabled(mSettings->activitiesEnabled());
+    setActivities(mSettings->activities());
     bool configValid = ensureSaneConfiguration();
     configValid = configValid && ensureDirExists();
     if (configValid) {
