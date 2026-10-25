@@ -10,9 +10,16 @@
 
 #pragma once
 
+#include "config-kdepim-runtime.h"
 #include "ui_popsettings.h"
 #include <qt6keychain/keychain.h>
 class Settings;
+#if HAVE_ACTIVITY_SUPPORT
+namespace PimCommonActivities
+{
+class ConfigureActivitiesWidget;
+}
+#endif
 
 namespace MailTransport
 {
@@ -67,4 +74,7 @@ private:
     QString mInitalPassword;
     const QString mIdentifier;
     Settings &mSettings;
+#if HAVE_ACTIVITY_SUPPORT
+    PimCommonActivities::ConfigureActivitiesWidget *const mConfigureActivitiesWidget;
+#endif
 };

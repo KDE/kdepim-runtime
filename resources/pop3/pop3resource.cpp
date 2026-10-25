@@ -49,6 +49,8 @@ POP3Resource::POP3Resource(const QString &id)
         }
     }
     setName(mSettings.name());
+    setActivitiesEnabled(mSettings.activitiesEnabled());
+    setActivities(mSettings.activities());
     resetState();
 
     connect(this, &POP3Resource::abortRequested, this, &POP3Resource::slotAbortRequested);
@@ -64,6 +66,8 @@ POP3Resource::~POP3Resource()
 void POP3Resource::configurationChanged()
 {
     mSettings.load();
+    setActivitiesEnabled(mSettings.activitiesEnabled());
+    setActivities(mSettings.activities());
     updateIntervalTimer();
     mPassword.clear();
 }

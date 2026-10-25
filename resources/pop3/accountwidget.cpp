@@ -29,6 +29,10 @@
 #include <QButtonGroup>
 #include <QPushButton>
 #include <QVBoxLayout>
+#if HAVE_ACTIVITY_SUPPORT
+#include <PimCommonActivities/ActivitiesBaseManager>
+#include <PimCommonActivities/ConfigureActivitiesWidget>
+#endif
 
 using namespace MailTransport;
 using namespace Akonadi;
@@ -60,6 +64,9 @@ AccountWidget::AccountWidget(Settings &settings, const QString &identifier, QWid
     , mValidator(this)
     , mIdentifier(identifier)
     , mSettings(settings)
+#if HAVE_ACTIVITY_SUPPORT
+    , mConfigureActivitiesWidget(new PimCommonActivities::ConfigureActivitiesWidget(this))
+#endif
 {
     mValidator.setRegularExpression(QRegularExpression(QStringLiteral("[A-Za-z0-9_:.-]*")));
     setupWidgets();
@@ -120,6 +127,9 @@ void AccountWidget::setupWidgets()
     folderRequester->changeCollectionDialogOptions(Akonadi::CollectionDialog::AllowToCreateNewChildCollection);
 
     connect(usePipeliningCheck, &QCheckBox::clicked, this, &AccountWidget::slotPipeliningClicked);
+#if HAVE_ACTIVITY_SUPPORT
+    tabWidget->addTab(mConfigureActivitiesWidget, i18n("Activities"));
+#endif
 }
 
 void AccountWidget::loadSettings()
@@ -161,6 +171,12 @@ void AccountWidget::loadSettings()
     slotEnableLeaveOnServerDays(leaveOnServerDaysCheck->isEnabled() ? mSettings.leaveOnServerDays() >= 1 : false);
     slotEnableLeaveOnServerCount(leaveOnServerCountCheck->isEnabled() ? mSettings.leaveOnServerCount() >= 1 : false);
     slotEnableLeaveOnServerSize(leaveOnServerSizeCheck->isEnabled() ? mSettings.leaveOnServerSize() >= 1 : false);
+#if HAVE_ACTIVITY_SUPPORT
+    PimCommonActivities::ActivitiesBaseManager::ActivitySettings activitiesSettings;
+    activitiesSettings.enabled = mSettings.activitiesEnabled();
+    activitiesSettings.activities = mSettings.activities();
+    mConfigureActivitiesWidget->setActivitiesSettings(activitiesSettings);
+#endif
 
     // We need to fetch the collection, as the CollectionRequester needs the name
     // of it to work correctly
@@ -466,6 +482,11 @@ void AccountWidget::saveSettings()
     mSettings.setLeaveOnServerCount(leaveOnServerCheck->isChecked() ? (leaveOnServerCountCheck->isChecked() ? leaveOnServerCountSpin->value() : -1) : 0);
     mSettings.setLeaveOnServerSize(leaveOnServerCheck->isChecked() ? (leaveOnServerSizeCheck->isChecked() ? leaveOnServerSizeSpin->value() : -1) : 0);
     mSettings.setTargetCollection(folderRequester->collection().id());
+#if HAVE_ACTIVITY_SUPPORT
+    const PimCommonActivities::ActivitiesBaseManager::ActivitySettings activitiesSettings = mConfigureActivitiesWidget->activitiesSettings();
+    mSettings.setActivitiesEnabled(activitiesSettings.enabled);
+    mSettings.setActivities(activitiesSettings.activities);
+#endif
     mSettings.save();
 
     // Now, either save the password or delete it from the wallet. For both, we need
