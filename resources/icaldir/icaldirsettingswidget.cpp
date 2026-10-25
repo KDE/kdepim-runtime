@@ -77,11 +77,9 @@ void IcalDirSettingsWidget::load()
 {
     mManager->updateWidgets();
 #if HAVE_ACTIVITY_SUPPORT
-    Akonadi::AgentConfigurationBase::ActivitySettings settingsBase = restoreActivitiesSettings();
     PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
-    settings.enabled = settingsBase.enabled;
-    settings.activities = settingsBase.activities;
-    qDebug() << "read activities settings " << settings;
+    settings.enabled = IcalDirResourceSettings::self()->activitiesEnabled();
+    settings.activities = IcalDirResourceSettings::self()->activities();
     mConfigureActivitiesWidget->setActivitiesSettings(settings);
 #endif
 
@@ -93,7 +91,8 @@ bool IcalDirSettingsWidget::save() const
     mManager->updateSettings();
 #if HAVE_ACTIVITY_SUPPORT
     const PimCommonActivities::ActivitiesBaseManager::ActivitySettings activitiesSettings = mConfigureActivitiesWidget->activitiesSettings();
-    saveActivitiesSettings(Akonadi::AgentConfigurationBase::ActivitySettings{activitiesSettings.enabled, activitiesSettings.activities});
+    IcalDirResourceSettings::self()->setActivitiesEnabled(activitiesSettings.enabled);
+    IcalDirResourceSettings::self()->setActivities(activitiesSettings.activities);
 #endif
     IcalDirResourceSettings::self()->setPath(ui.kcfg_Path->url().toLocalFile());
     IcalDirResourceSettings::self()->save();

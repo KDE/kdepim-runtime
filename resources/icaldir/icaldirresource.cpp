@@ -73,6 +73,8 @@ ICalDirResource::ICalDirResource(const QString &id)
     // setup the resource
     new SettingsAdaptor(IcalDirResourceSettings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), IcalDirResourceSettings::self(), QDBusConnection::ExportAdaptors);
+    setActivitiesEnabled(IcalDirResourceSettings::self()->activitiesEnabled());
+    setActivities(IcalDirResourceSettings::self()->activities());
 
     changeRecorder()->itemFetchScope().fetchFullPayload();
     connect(this, &ICalDirResource::reloadConfiguration, this, &ICalDirResource::slotReloadConfig);
@@ -83,6 +85,8 @@ ICalDirResource::~ICalDirResource() = default;
 void ICalDirResource::slotReloadConfig()
 {
     IcalDirResourceSettings::self()->load();
+    setActivitiesEnabled(IcalDirResourceSettings::self()->activitiesEnabled());
+    setActivities(IcalDirResourceSettings::self()->activities());
 
     initializeICalDirectory();
     loadIncidences();

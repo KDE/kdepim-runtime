@@ -43,6 +43,8 @@ public:
     {
         // The resource needs network when the path refers to a non local file.
         setNeedsNetwork(!QUrl::fromUserInput(mSettings->path()).isLocalFile());
+        setActivitiesEnabled(mSettings->activitiesEnabled());
+        setActivities(mSettings->activities());
     }
 
     ~SingleFileResource() override
@@ -53,6 +55,8 @@ public:
     void applyConfigurationChanges() override
     {
         mSettings->load();
+        setActivitiesEnabled(mSettings->activitiesEnabled());
+        setActivities(mSettings->activities());
     }
 
     /**

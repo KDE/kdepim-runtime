@@ -31,6 +31,8 @@ ContactsResource::ContactsResource(const QString &id)
     ContactsResourceSettings::instance(KSharedConfig::openConfig());
     new ContactsResourceSettingsAdaptor(ContactsResourceSettings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), ContactsResourceSettings::self(), QDBusConnection::ExportAdaptors);
+    setActivitiesEnabled(ContactsResourceSettings::self()->activitiesEnabled());
+    setActivities(ContactsResourceSettings::self()->activities());
 
     changeRecorder()->fetchCollection(true);
     changeRecorder()->itemFetchScope().fetchFullPayload(true);
@@ -65,6 +67,9 @@ void ContactsResource::aboutToQuit()
 
 void ContactsResource::slotReloadConfig()
 {
+    ContactsResourceSettings::self()->load();
+    setActivitiesEnabled(ContactsResourceSettings::self()->activitiesEnabled());
+    setActivities(ContactsResourceSettings::self()->activities());
     ContactsResourceSettings::self()->setIsConfigured(true);
     ContactsResourceSettings::self()->save();
 

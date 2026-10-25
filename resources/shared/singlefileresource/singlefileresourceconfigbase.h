@@ -37,11 +37,9 @@ public:
     {
         mWidget->load();
 #if HAVE_ACTIVITY_SUPPORT
-        Akonadi::AgentConfigurationBase::ActivitySettings settingsBase = restoreActivitiesSettings();
         PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
-        settings.enabled = settingsBase.enabled;
-        settings.activities = settingsBase.activities;
-        qDebug() << "read activities settings " << settings;
+        settings.enabled = mSettings->activitiesEnabled();
+        settings.activities = mSettings->activities();
         mConfigureActivitiesWidget->setActivitiesSettings(settings);
 #endif
         Akonadi::AgentConfigurationBase::load();
@@ -51,7 +49,8 @@ public:
     {
 #if HAVE_ACTIVITY_SUPPORT
         const PimCommonActivities::ActivitiesBaseManager::ActivitySettings activitiesSettings = mConfigureActivitiesWidget->activitiesSettings();
-        saveActivitiesSettings(Akonadi::AgentConfigurationBase::ActivitySettings{activitiesSettings.enabled, activitiesSettings.activities});
+        mSettings->setActivitiesEnabled(activitiesSettings.enabled);
+        mSettings->setActivities(activitiesSettings.activities);
 #endif
         if (!mWidget->save()) {
             return false;

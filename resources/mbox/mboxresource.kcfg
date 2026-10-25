@@ -59,4 +59,14 @@
       <default>50</default>
     </entry>
   </group>
+  <group name="Activities">
+    <entry name="ActivitiesEnabled" type="Bool">
+      <label>Whether the activities support of the agent is enabled</label>
+      <default>false</default>
+    </entry>
+    <entry name="Activities" type="StringList">
+      <label>The activities of the agent</label>
+      <default></default>
+    </entry>
+  </group>
 </kcfg>
