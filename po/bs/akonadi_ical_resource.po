@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-02 00:44+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2012-10-05 23:30+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -82,6 +82,18 @@ msgstr ""
 #| msgid "Autosave interval time (in minutes)."
 msgid "Automatic update period in minutes."
 msgstr "Vremenski interval automatskog čuvanja (u minutima)."
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: icalresource.kcfg:36
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: icalresource.kcfg:40
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Vremenski interval automatskog čuvanja (u minutima)."

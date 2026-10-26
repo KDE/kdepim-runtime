@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-04 00:45+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2024-12-28 15:58+0200\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -341,6 +341,18 @@ msgstr "Slēgšanas datne"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Dzēsto vēstuļu skaits pirms sākas izmešana."
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: mboxresource.kcfg:64
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: mboxresource.kcfg:68
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #~ msgid "URL:"
 #~ msgstr "URL:"

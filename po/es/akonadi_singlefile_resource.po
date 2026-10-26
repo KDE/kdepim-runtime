@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2025-04-23 00:53+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -138,64 +138,64 @@ msgstr ""
 "Seleccione el intervalo de autoguardado para los datos del recurso (en "
 "minutos)."
 
-#: singlefileresource.h:68
+#: singlefileresource.h:72
 #, kde-format
 msgid "No file selected."
 msgstr "No se ha seleccionado ningún archivo."
 
-#: singlefileresource.h:70
+#: singlefileresource.h:74
 #, kde-format
 msgid "The resource not configured yet"
 msgstr "El recurso no está configurado todavía"
 
-#: singlefileresource.h:102 singlefileresource.h:131 singlefileresource.h:226
+#: singlefileresource.h:106 singlefileresource.h:135 singlefileresource.h:230
 #: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Preparado"
 
-#: singlefileresource.h:104
+#: singlefileresource.h:108
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "No se ha podido crear el archivo «%1»."
 
-#: singlefileresource.h:118
+#: singlefileresource.h:122
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "No se ha podido leer el archivo «%1»"
 
-#: singlefileresource.h:139
+#: singlefileresource.h:143
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Otra descarga está todavía en curso."
 
-#: singlefileresource.h:149 singlefileresource.h:240
+#: singlefileresource.h:153 singlefileresource.h:244
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Otro envío de archivo está todavía en curso."
 
-#: singlefileresource.h:167
+#: singlefileresource.h:171
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Descargando archivo remoto."
 
-#: singlefileresource.h:190
+#: singlefileresource.h:194
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Tratando de escribir en un archivo de solo lectura: «%1»."
 
-#: singlefileresource.h:202
+#: singlefileresource.h:206
 #, kde-format
 msgid "No file specified."
 msgstr "No se ha especificado ningún archivo."
 
-#: singlefileresource.h:230
+#: singlefileresource.h:234
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Todavía hay una descarga en curso."
 
-#: singlefileresource.h:270
+#: singlefileresource.h:274
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Enviando archivo en caché a una ubicación remota."

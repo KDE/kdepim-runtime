@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-04 00:45+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2010-11-29 09:16+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -369,6 +369,18 @@ msgstr "ឯកសារ​ជាប់សោ"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "ចំនួន​សារ​ដែល​បានលុប​មុន​ពេលការ​ជម្រះ​ត្រូ​វបាន​ចាប់ផ្ដើម ។"
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: mboxresource.kcfg:64
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: mboxresource.kcfg:68
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #~ msgid "URL:"
 #~ msgstr "URL ៖"

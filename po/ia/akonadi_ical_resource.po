@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-02 00:44+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2023-10-06 17:45+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -78,6 +78,18 @@ msgstr "Actualisa periodicamente le file."
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "Tempore de actualisar automatic in minutas."
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: icalresource.kcfg:36
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: icalresource.kcfg:40
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Tempore de salveguardar automatic (in minutas)."

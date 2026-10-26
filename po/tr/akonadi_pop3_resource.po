@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-28 00:46+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2026-10-12 10:41+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -24,31 +24,36 @@ msgstr ""
 "X-Generator: Lokalize 26.08.0\n"
 "X-POOTLE-MTIME: 1413104452.000000\n"
 
-#: accountwidget.cpp:83
+#: accountwidget.cpp:90
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%%p"
 
-#: accountwidget.cpp:91
+#: accountwidget.cpp:98
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%v dakika"
 msgstr[1] "%v dakika"
 
-#: accountwidget.cpp:128 pop3resource.cpp:46
+#: accountwidget.cpp:131
+#, kde-format
+msgid "Activities"
+msgstr ""
+
+#: accountwidget.cpp:138 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 Hesabı"
 
-#: accountwidget.cpp:195
+#: accountwidget.cpp:211
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Cüzdan açılamıyor"
 
-#: accountwidget.cpp:245
+#: accountwidget.cpp:261
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -61,7 +66,7 @@ msgstr ""
 "Bazı sunucular yeteneklerini doğru olarak bildirmedikleri için siz yine de "
 "alınan iletilerin sunucuda bırakılmasını seçebilirsiniz."
 
-#: accountwidget.cpp:260
+#: accountwidget.cpp:276
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -83,17 +88,17 @@ msgstr ""
 "ancak daha fazla hız istiyorsanız önce kendinize toplu birkaç posta\n"
 "gönderip indirerek bunu sınamalısınız."
 
-#: accountwidget.cpp:293
+#: accountwidget.cpp:309
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Lütfen önce Genel sekmesinde bir sunucu ve port numarası tanımlayın."
 
-#: accountwidget.cpp:326
+#: accountwidget.cpp:342
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Sunucuya bağlanılamadı, lütfen sunucu adresini doğrulayın."
 
-#: accountwidget.cpp:370
+#: accountwidget.cpp:386
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -114,7 +119,7 @@ msgstr ""
 "kendinize büyük sayıda sınama iletileri göndererek ve POP sunucusundan "
 "bunları indirerek sınayın."
 
-#: accountwidget.cpp:390
+#: accountwidget.cpp:406
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -129,14 +134,14 @@ msgstr ""
 "Bazı sunucular yeteneklerini doğru olarak bildirmedikleri için yine de "
 "alınmış iletileri sunucuda bırakma özelliğini etkinleştirebilirsiniz."
 
-#: accountwidget.cpp:422
+#: accountwidget.cpp:438
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " gün"
 msgstr[1] " gün"
 
-#: accountwidget.cpp:427
+#: accountwidget.cpp:443
 #, kde-format
 msgid " message"
 msgid_plural " messages"
@@ -302,79 +307,79 @@ msgid ""
 "mail: %1"
 msgstr "Posta indirmeye çalışırken POP3 sunucusu ile iletişimde hata: %1"
 
-#: pop3resource.cpp:95
+#: pop3resource.cpp:99
 #, kde-format
 msgid "Mail check aborted."
 msgstr "E-posta denetimi iptal edildi."
 
-#: pop3resource.cpp:102
+#: pop3resource.cpp:106
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "E-posta denetimi el ile iptal edildi."
 
-#: pop3resource.cpp:130
+#: pop3resource.cpp:134
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "Lütfen “%1” hesabı için kullanıcı adı ve parola girin."
 
-#: pop3resource.cpp:147
+#: pop3resource.cpp:151
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "Parola cüzdandan yüklenemediği için burada sizden isteniyor."
 
-#: pop3resource.cpp:164
+#: pop3resource.cpp:168
 #, kde-format
 msgid "Account:"
 msgstr "Hesap:"
 
-#: pop3resource.cpp:181
+#: pop3resource.cpp:185
 #, kde-format
 msgid "No username and password supplied."
 msgstr "Kullanıcı adı ve parola sağlanmadı."
 
-#: pop3resource.cpp:200
+#: pop3resource.cpp:204
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "“%1” adresi ile iletişime hazırlanılıyor."
 
-#: pop3resource.cpp:221
+#: pop3resource.cpp:225
 #, kde-format
 msgid "Executing precommand."
 msgstr "Ön komut çalıştırılıyor."
 
-#: pop3resource.cpp:246
+#: pop3resource.cpp:250
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr ""
 "Önceki oturum açma girişimi başarısız olduğu için sizden bilgi isteniyor."
 
-#: pop3resource.cpp:248
+#: pop3resource.cpp:252
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "Sağlanan kullanıcı adı boş olduğu için size soruluyor."
 
-#: pop3resource.cpp:275
+#: pop3resource.cpp:279
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "Posta listesi çekiliyor."
 
-#: pop3resource.cpp:331
+#: pop3resource.cpp:335
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "İndirilen iletiler kaydediliyor."
 
-#: pop3resource.cpp:349
+#: pop3resource.cpp:353
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "Parola cüzdana kaydediliyor."
 
-#: pop3resource.cpp:391
+#: pop3resource.cpp:395
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr "Yerel gelen kutusu sağlanamadı, e-posta denetimi iptal ediliyor."
 
-#: pop3resource.cpp:398
+#: pop3resource.cpp:402
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -385,38 +390,38 @@ msgstr ""
 "onun içine alıyordu. Bu hesabın yeni e-postaları Gelen dizinine gelecek "
 "şekilde sıfırlandı.</qt>"
 
-#: pop3resource.cpp:419
+#: pop3resource.cpp:423
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr "Gelen iletiler için dizin bulunamadı, e-posta denetimi iptal ediliyor."
 
-#: pop3resource.cpp:432
+#: pop3resource.cpp:436
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr "Gelen iletiler için dizin bulunamadı, e-posta denetimi iptal ediliyor."
 
-#: pop3resource.cpp:443
+#: pop3resource.cpp:447
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "Ön komut çalıştırılırken bir hata oluştu."
 
-#: pop3resource.cpp:457
+#: pop3resource.cpp:461
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr "“%1” sunucusuna oturum açılamadı."
 
-#: pop3resource.cpp:466
+#: pop3resource.cpp:470
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "Sunucudaki ileti listesini alırken hata oluştu."
 
-#: pop3resource.cpp:480
+#: pop3resource.cpp:484
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr "Sunucudan özgün posta tanımlayıcıları alınırken hata oluştu."
 
-#: pop3resource.cpp:493
+#: pop3resource.cpp:497
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -431,12 +436,12 @@ msgstr ""
 "bu özellik düzgün çalışmadığı zaman iletileri sunucu üzerinde bırakır ve "
 "düzgün çalışmaz."
 
-#: pop3resource.cpp:508
+#: pop3resource.cpp:512
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "Sunucudan e-postalar alınamadı."
 
-#: pop3resource.cpp:568
+#: pop3resource.cpp:572
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
@@ -444,54 +449,54 @@ msgstr ""
 "%5 adresinden iletiler alınıyor %1 / %2 (%3/%4 KB) (Sunucuda %6 KB dosya "
 "kaldı)."
 
-#: pop3resource.cpp:577
+#: pop3resource.cpp:581
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "%5 adresinden iletiler alınıyor %1/%2 (%3/%4 KB)"
 
-#: pop3resource.cpp:600
+#: pop3resource.cpp:604
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "İndirilen e-postalar kaydedilemedi."
 
-#: pop3resource.cpp:748
+#: pop3resource.cpp:752
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "İletiler sunucudan silinemedi."
 
-#: pop3resource.cpp:804
+#: pop3resource.cpp:808
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "E-posta denetimi bitti, indirilen ileti yok."
 
-#: pop3resource.cpp:806
+#: pop3resource.cpp:810
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "E-posta denetimi bitti, 1 ileti indirildi."
 msgstr[1] "E-posta denetimi bitti, %1 ileti indirildi."
 
-#: pop3resource.cpp:820
+#: pop3resource.cpp:824
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "E-postaları getirme işlemi tamamlanamadı."
 
-#: pop3resource.cpp:954
+#: pop3resource.cpp:958
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "E-posta denetimi sürüyor, ikinci bir denetim başlatılamadı."
 
-#: pop3resource.cpp:975
+#: pop3resource.cpp:979
 #, kde-format
 msgid "Ready"
 msgstr "Hazır"
 
-#: pop3resource.cpp:978
+#: pop3resource.cpp:982
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "Çevrim dışı olunduğundan e-posta denetimi iptal edildi."
 
-#: pop3resource.cpp:980
+#: pop3resource.cpp:984
 #, kde-format
 msgid "Offline"
 msgstr "Çevrim dışı"
@@ -860,3 +865,15 @@ msgstr "Sistem vekil ayarlarını kullanarak bağlan"
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "Kullanılacak yetkilendirme türünü tanımlar"
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: settings.kcfg:103
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: settings.kcfg:107
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""

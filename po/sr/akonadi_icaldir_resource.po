@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2016-08-14 23:47+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,24 +18,24 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: icaldirresource.cpp:121
+#: icaldirresource.cpp:125
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "Случај са УИД‑ом „%1“ није нађен."
 
-#: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
+#: icaldirresource.cpp:139 icaldirresource.cpp:172 icaldirresource.cpp:204
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Покушај уписивања у фасциклу само‑за‑читање: „%1“."
 
-#: icaldirresource.cpp:252
+#: icaldirresource.cpp:256
 #, fuzzy, kde-format
 #| msgid "Calendar Folder"
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "Фасцикла календара"
 
-#: icaldirresource.cpp:254
+#: icaldirresource.cpp:258
 #, fuzzy, kde-format
 #| msgid "Calendar Folder"
 msgctxt "@label"
@@ -59,6 +59,18 @@ msgstr "Период аутоматског уписивања (у минути�
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Не мењај заиста позадинске податке."
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: icaldirresource.kcfg:24
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: icaldirresource.kcfg:28
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: icaldirsagentsettingswidget.ui:33

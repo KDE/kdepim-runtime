@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-04 00:45+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2015-12-29 21:04+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -382,6 +382,18 @@ msgstr "Blokavimo failas"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Pašalintų laiškų kiekis iki valymo pradžios."
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: mboxresource.kcfg:64
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: mboxresource.kcfg:68
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #~ msgid "URL:"
 #~ msgstr "URL:"

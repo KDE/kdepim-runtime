@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -18,23 +18,23 @@ msgstr ""
 "pot\n"
 "X-Crowdin-File-ID: 45597\n"
 
-#: icaldirresource.cpp:121
+#: icaldirresource.cpp:125
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "未找到 uid 为“%1”的事件。"
 
-#: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
+#: icaldirresource.cpp:139 icaldirresource.cpp:172 icaldirresource.cpp:204
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "尝试写入只读目录：“%1”"
 
-#: icaldirresource.cpp:252
+#: icaldirresource.cpp:256
 #, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "日历文件夹"
 
-#: icaldirresource.cpp:254
+#: icaldirresource.cpp:258
 #, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
@@ -57,6 +57,18 @@ msgstr "自动保存的间隔(按分钟计)。"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "不更改实际后端数据。"
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: icaldirresource.kcfg:24
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: icaldirresource.kcfg:28
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: icaldirsagentsettingswidget.ui:33

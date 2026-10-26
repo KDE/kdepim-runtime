@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-28 00:46+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2015-12-29 20:27+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -22,13 +22,13 @@ msgstr ""
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: accountwidget.cpp:83
+#: accountwidget.cpp:90
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr ""
 
-#: accountwidget.cpp:91
+#: accountwidget.cpp:98
 #, fuzzy, kde-format
 #| msgid " minute"
 #| msgid_plural " minutes"
@@ -39,19 +39,24 @@ msgstr[1] " minutės"
 msgstr[2] " minučių"
 msgstr[3] " minutė"
 
-#: accountwidget.cpp:128 pop3resource.cpp:46
+#: accountwidget.cpp:131
+#, kde-format
+msgid "Activities"
+msgstr ""
+
+#: accountwidget.cpp:138 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 Paskyra"
 
-#: accountwidget.cpp:195
+#: accountwidget.cpp:211
 #, fuzzy, kde-format
 #| msgid "Unable to open wallet"
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Negalima atidaryti piniginės"
 
-#: accountwidget.cpp:245
+#: accountwidget.cpp:261
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -64,7 +69,7 @@ msgstr ""
 "Kadangi kai kurie serveriai automatiškai nepraneša apie savo galimybes jūs "
 "turbūt turite galimybę palikti atsiųstus laiškus serveryje."
 
-#: accountwidget.cpp:260
+#: accountwidget.cpp:276
 #, fuzzy, kde-format
 #| msgid ""
 #| "Please note that this feature can cause some POP3 servers that do not "
@@ -97,17 +102,17 @@ msgstr ""
 "turėtumėte pabandyti pirmiausia siunčiant sau pačiam laiškų paketą ir jį "
 "atsisiųsti."
 
-#: accountwidget.cpp:293
+#: accountwidget.cpp:309
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Pirmiausia prašome nurodyti serverį ir prievadą Bendrojoje kortelėje."
 
-#: accountwidget.cpp:326
+#: accountwidget.cpp:342
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Negalima užmegzti ryšio, prašom patikrinti serverio adresą."
 
-#: accountwidget.cpp:370
+#: accountwidget.cpp:386
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -127,7 +132,7 @@ msgstr ""
 "paštu pirmiausia turėtumėte išbandyti jį išsiųsdami sau didelį kiekį "
 "bandomųjų laiškų, ir atsisiųsti juos visus vienu kartu iš POP serverio."
 
-#: accountwidget.cpp:390
+#: accountwidget.cpp:406
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -141,7 +146,7 @@ msgstr ""
 "Kadangi kai kurie serveriai automatiškai nepraneša apie savo galimybes jūs "
 "turbūt turite galimybę palikti atsiųstus laiškus serveryje."
 
-#: accountwidget.cpp:422
+#: accountwidget.cpp:438
 #, kde-format
 msgid " day"
 msgid_plural " days"
@@ -150,7 +155,7 @@ msgstr[1] " dienos"
 msgstr[2] " dienų"
 msgstr[3] " diena"
 
-#: accountwidget.cpp:427
+#: accountwidget.cpp:443
 #, kde-format
 msgid " message"
 msgid_plural " messages"
@@ -295,79 +300,79 @@ msgid ""
 "mail: %1"
 msgstr ""
 
-#: pop3resource.cpp:95
+#: pop3resource.cpp:99
 #, kde-format
 msgid "Mail check aborted."
 msgstr "Pašto tikrinimas nutrauktas."
 
-#: pop3resource.cpp:102
+#: pop3resource.cpp:106
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "Pašto tikrinimas buvo atšauktas rankiniu būdu."
 
-#: pop3resource.cpp:130
+#: pop3resource.cpp:134
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "Prašome įvesti paskyros „%1“ naudotojo vardą ir slaptažodį."
 
-#: pop3resource.cpp:147
+#: pop3resource.cpp:151
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "Jūsų prašoma, nes slaptažodžio nepavyko įkrauti iš „wallet“."
 
-#: pop3resource.cpp:164
+#: pop3resource.cpp:168
 #, kde-format
 msgid "Account:"
 msgstr "Paskyra:"
 
-#: pop3resource.cpp:181
+#: pop3resource.cpp:185
 #, kde-format
 msgid "No username and password supplied."
 msgstr "Naudotojo vardas ir slaptažodis nepateikti."
 
-#: pop3resource.cpp:200
+#: pop3resource.cpp:204
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "Ruošiamasi perdavimui iš „%1“."
 
-#: pop3resource.cpp:221
+#: pop3resource.cpp:225
 #, kde-format
 msgid "Executing precommand."
 msgstr "Vykdomos išankstinės komandos."
 
-#: pop3resource.cpp:246
+#: pop3resource.cpp:250
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "Jūsų prašoma, nes ankstesnio seanso pradžia nebuvo sėkminga."
 
-#: pop3resource.cpp:248
+#: pop3resource.cpp:252
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "Jūsų prašoma, nes naudotojo vardo laukelis tuščias."
 
-#: pop3resource.cpp:275
+#: pop3resource.cpp:279
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "Gaunamas laiškų sąrašas."
 
-#: pop3resource.cpp:331
+#: pop3resource.cpp:335
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "Įrašomi atsiųsti laiškai."
 
-#: pop3resource.cpp:349
+#: pop3resource.cpp:353
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "Įrašyti slaptažodį į „wallet“."
 
-#: pop3resource.cpp:391
+#: pop3resource.cpp:395
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
 "Klaida bandant pasiekti vietinį inbox aplanką, pašto tikrinimas nutrauktas."
 
-#: pop3resource.cpp:398
+#: pop3resource.cpp:402
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -378,40 +383,40 @@ msgstr ""
 "pristatomas paštas. Aplankas į kurį pristatomas naujas paštas atstatytas į "
 "pradinę būseną, į pagrindinį Inbox aplanką.</qt>"
 
-#: pop3resource.cpp:419
+#: pop3resource.cpp:423
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr ""
 "Klaida bandant pasiekti aplanką gaunamam paštui, pašto tikrinimas nutrauktas."
 
-#: pop3resource.cpp:432
+#: pop3resource.cpp:436
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr "Nepavyko rasti aplanko gaunamam paštui, pašto tikrinimas nutrauktas."
 
-#: pop3resource.cpp:443
+#: pop3resource.cpp:447
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "Klaida paleidžiant išankstines komandas."
 
-#: pop3resource.cpp:457
+#: pop3resource.cpp:461
 #, fuzzy, kde-format
 #| msgid "Unable to login to the server %1."
 msgid "Unable to login to the server \"%1\"."
 msgstr "Serveryje %1 registracija nepavyko."
 
-#: pop3resource.cpp:466
+#: pop3resource.cpp:470
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "Klaida gaunant laiškų sąrašą serveryje."
 
-#: pop3resource.cpp:480
+#: pop3resource.cpp:484
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr "Klaida gaunant unikalių pašto identifikatorių sąrašą."
 
-#: pop3resource.cpp:493
+#: pop3resource.cpp:497
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -424,39 +429,39 @@ msgstr ""
 "reikalinga nustatyti, patikimu būdu, kurį paštą serveryje KMail jau matė;\n"
 "laiškų palikimo serveryje funkcija negali tinkamai veikti."
 
-#: pop3resource.cpp:508
+#: pop3resource.cpp:512
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "Klaida atsiunčiant paštą iš serverio."
 
-#: pop3resource.cpp:568
+#: pop3resource.cpp:572
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
 msgstr ""
 "Atsiunčiamas laiškas %1 iš %2 (%3 iš %4 KB) į %5 (%6 KB serveryje lieka)."
 
-#: pop3resource.cpp:577
+#: pop3resource.cpp:581
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "Atsiunčiamas laiškas %1 iš %2 (%3 iš %4 KB) į %5"
 
-#: pop3resource.cpp:600
+#: pop3resource.cpp:604
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "Nepavyko išsaugoti atsiųstų laiškų."
 
-#: pop3resource.cpp:748
+#: pop3resource.cpp:752
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "Nepavyko pašalinti laiškų iš serverio."
 
-#: pop3resource.cpp:804
+#: pop3resource.cpp:808
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "Pašto tikrinimas baigtas, laiškų atsiuntimui nėra."
 
-#: pop3resource.cpp:806
+#: pop3resource.cpp:810
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
@@ -465,27 +470,27 @@ msgstr[1] "Pašto tikrinimas baigtas, atsiųsti %1 laiškai."
 msgstr[2] "Pašto tikrinimas baigtas, atsiųsta %1 laiškų."
 msgstr[3] "Pašto tikrinimas baigtas, atsiųstas %1 laiškas."
 
-#: pop3resource.cpp:820
+#: pop3resource.cpp:824
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "Pašto gavimą neįmanoma baigti."
 
-#: pop3resource.cpp:954
+#: pop3resource.cpp:958
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "Vykdomas pašto tikrinimas, sekančio tikrinimo pradėti negalima."
 
-#: pop3resource.cpp:975
+#: pop3resource.cpp:979
 #, kde-format
 msgid "Ready"
 msgstr ""
 
-#: pop3resource.cpp:978
+#: pop3resource.cpp:982
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "Pašto tikrinimas nutrauktas perėjus į atsijungusį rėžimą."
 
-#: pop3resource.cpp:980
+#: pop3resource.cpp:984
 #, kde-format
 msgid "Offline"
 msgstr ""
@@ -882,6 +887,18 @@ msgstr "Piniginė išjungti sistemos nuostatose"
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "Nustato kurį tapatybės nustatymo tipą naudoti."
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: settings.kcfg:103
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: settings.kcfg:107
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #, fuzzy
 #~| msgid "Deleting messages from the server."

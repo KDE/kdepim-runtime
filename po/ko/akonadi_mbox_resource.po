@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-04 00:45+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2024-08-21 00:37+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -330,6 +330,18 @@ msgstr "잠금 파일"
 msgid "Number of deleted messages before a purge is started."
 msgstr ""
 "비우기 작업을 시작하기 전에 다음 개수만큼 메시지가 삭제될 때까지 기다립니다."
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: mboxresource.kcfg:64
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: mboxresource.kcfg:68
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #~ msgid "Activities"
 #~ msgstr "활동"

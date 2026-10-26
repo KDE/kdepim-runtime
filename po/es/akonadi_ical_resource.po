@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-02 00:44+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2023-10-06 12:41+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -82,6 +82,18 @@ msgstr "Actualizar el archivo periódicamente"
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "Período para actualizar automáticamente (en minutos)."
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: icalresource.kcfg:36
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: icalresource.kcfg:40
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Intervalo de tiempo para guardar automáticamente (en minutos)."

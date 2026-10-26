@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-28 00:46+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2024-12-20 22:10+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -19,31 +19,36 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>2);\n"
 "X-Generator: Lokalize 24.08.2\n"
 
-#: accountwidget.cpp:83
+#: accountwidget.cpp:90
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: accountwidget.cpp:91
+#: accountwidget.cpp:98
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
 msgstr[0] "%एकनिमेषे"
 msgstr[1] "%v निमेषाः"
 
-#: accountwidget.cpp:128 pop3resource.cpp:46
+#: accountwidget.cpp:131
+#, kde-format
+msgid "Activities"
+msgstr ""
+
+#: accountwidget.cpp:138 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 खाता"
 
-#: accountwidget.cpp:195
+#: accountwidget.cpp:211
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "बटुकं उद्घाटयितुं असमर्थः"
 
-#: accountwidget.cpp:245
+#: accountwidget.cpp:261
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -56,7 +61,7 @@ msgstr ""
 "यतः केचन सर्वराः स्वक्षमताम् सम्यक् न घोषयन्ति इति कारणतः भवतः अद्यापि सर्वरे "
 "आनितसन्देशान् त्यक्त्वा चालू कर्तुं सम्भावना वर्तते ।"
 
-#: accountwidget.cpp:260
+#: accountwidget.cpp:276
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -78,17 +83,17 @@ msgstr ""
 "भवन्तः प्रथमं स्वयमेव एकं बैचं प्रेषयित्वा किञ्चित् परीक्षणं कुर्वन्तु\n"
 "मेलस्य डाउनलोड् करणं च।"
 
-#: accountwidget.cpp:293
+#: accountwidget.cpp:309
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "कृपया प्रथमं General ट्याब् मध्ये सर्वरं पोर्ट् च निर्दिशन्तु ।"
 
-#: accountwidget.cpp:326
+#: accountwidget.cpp:342
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "सर्वरेण सह संयोजितुं असमर्थः, कृपया सर्वरसङ्केतं सत्यापयन्तु ।"
 
-#: accountwidget.cpp:370
+#: accountwidget.cpp:386
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -108,7 +113,7 @@ msgstr ""
 "परीक्षणसन्देशान् प्रेषयित्वा तस्य परीक्षणं कर्तव्यं यत् भवान् सर्वे POP सर्वरात् एकस्मिन् एव समये "
 "डाउनलोड् कुर्वन्ति ।"
 
-#: accountwidget.cpp:390
+#: accountwidget.cpp:406
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -122,14 +127,14 @@ msgstr ""
 "यतः केचन सर्वराः स्वक्षमताम् सम्यक् न घोषयन्ति इति कारणतः भवतः अद्यापि सर्वरे "
 "आनितसन्देशान् त्यक्त्वा चालू कर्तुं सम्भावना वर्तते ।"
 
-#: accountwidget.cpp:422
+#: accountwidget.cpp:438
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " दिनं"
 msgstr[1] " दिवसाः"
 
-#: accountwidget.cpp:427
+#: accountwidget.cpp:443
 #, kde-format
 msgid " message"
 msgid_plural " messages"
@@ -294,78 +299,78 @@ msgid ""
 "mail: %1"
 msgstr "मेल डाउनलोड् कर्तुं प्रयतमाने POP3 सर्वरेण सह संचारस्य समये त्रुटिः: %1"
 
-#: pop3resource.cpp:95
+#: pop3resource.cpp:99
 #, kde-format
 msgid "Mail check aborted."
 msgstr "मेलपरीक्षा निरस्तः अभवत्।"
 
-#: pop3resource.cpp:102
+#: pop3resource.cpp:106
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "मेलपरीक्षा मैन्युअल् रूपेण रद्दीकृता आसीत् ।"
 
-#: pop3resource.cpp:130
+#: pop3resource.cpp:134
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "कृपया '%1' खातेः उपयोक्तृनाम गुप्तशब्दं च प्रविशन्तु ।"
 
-#: pop3resource.cpp:147
+#: pop3resource.cpp:151
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "भवन्तः अत्र पृष्टाः यतः गुप्तशब्दः बटुकात् लोड् कर्तुं न शक्यते स्म ।"
 
-#: pop3resource.cpp:164
+#: pop3resource.cpp:168
 #, kde-format
 msgid "Account:"
 msgstr "वृतांत्तः:"
 
-#: pop3resource.cpp:181
+#: pop3resource.cpp:185
 #, kde-format
 msgid "No username and password supplied."
 msgstr "उपयोक्तृनाम गुप्तशब्दं च न प्रदत्तम् ।"
 
-#: pop3resource.cpp:200
+#: pop3resource.cpp:204
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "\"%1\" तः संचरणस्य सज्जीकरणम् ।"
 
-#: pop3resource.cpp:221
+#: pop3resource.cpp:225
 #, kde-format
 msgid "Executing precommand."
 msgstr "पूर्वादेशं निष्पादयन् ।"
 
-#: pop3resource.cpp:246
+#: pop3resource.cpp:250
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "भवन्तः अत्र पृष्टाः यतः पूर्वप्रवेशः सफलः नासीत् ।"
 
-#: pop3resource.cpp:248
+#: pop3resource.cpp:252
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "भवान् अत्र पृष्टः यतः भवता प्रदत्तं उपयोक्तृनाम रिक्तम् अस्ति ।"
 
-#: pop3resource.cpp:275
+#: pop3resource.cpp:279
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "मेलसूचीं आनयन्।"
 
-#: pop3resource.cpp:331
+#: pop3resource.cpp:335
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "डाउनलोड् कृतानां सन्देशानां रक्षणम्।"
 
-#: pop3resource.cpp:349
+#: pop3resource.cpp:353
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "बटुके गुप्तशब्दस्य रक्षणम्।"
 
-#: pop3resource.cpp:391
+#: pop3resource.cpp:395
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr "स्थानीयं इनबॉक्सपुटं प्राप्तुं प्रयतमाने त्रुटिः, मेलपरीक्षां निरस्तं कृत्वा ।"
 
-#: pop3resource.cpp:398
+#: pop3resource.cpp:402
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -375,38 +380,38 @@ msgstr ""
 "<qt>भवता विलोपितं पुटं <b>%1</b> खातेन सह सम्बद्धम् आसीत् यत् तस्मिन् मेलम् अयच्छत् । खाता "
 "यस्मिन् पुटे नूतनं मेलं वितरति तस्मिन् मुख्ये Inbox पुटे पुनः सेट् कृतम् आसीत् ।</qt>"
 
-#: pop3resource.cpp:419
+#: pop3resource.cpp:423
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr "आगच्छन्तं मेलस्य कृते पुटं प्राप्तुं प्रयतमाने त्रुटिः, मेलपरीक्षां निरस्तं कृत्वा ।"
 
-#: pop3resource.cpp:432
+#: pop3resource.cpp:436
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr "आगच्छन्तं मेलस्य कृते पुटं न प्राप्नोत्, मेलपरीक्षां निरस्तं कृतवान् ।"
 
-#: pop3resource.cpp:443
+#: pop3resource.cpp:447
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "पूर्वादेशं निष्पादयन् त्रुटिः।"
 
-#: pop3resource.cpp:457
+#: pop3resource.cpp:461
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr "\"%1\" सर्वरे प्रवेशं कर्तुं असमर्थः ।"
 
-#: pop3resource.cpp:466
+#: pop3resource.cpp:470
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "सर्वरे सन्देशसूचीं प्राप्य त्रुटिः।"
 
-#: pop3resource.cpp:480
+#: pop3resource.cpp:484
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr "सर्वरतः अद्वितीयमेलपरिचयकानां सूचीं प्राप्य त्रुटिः ।"
 
-#: pop3resource.cpp:493
+#: pop3resource.cpp:497
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -419,65 +424,65 @@ msgstr ""
 "KMail मध्ये कः मेलः पूर्वं दृष्टवान् इति निर्धारयितुं आवश्यकः\n"
 "अतः सर्वरे मेल-पत्राणि त्यक्तुं विशेषता सम्यक् कार्यं न करिष्यति ।"
 
-#: pop3resource.cpp:508
+#: pop3resource.cpp:512
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "सर्वरतः मेलम् आनयन् त्रुटिः ।"
 
-#: pop3resource.cpp:568
+#: pop3resource.cpp:572
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
 msgstr "%5 कृते %2 तः %1 (%4 KB तः %3) सन्देशं आनयति (%6 KB सर्वरे तिष्ठति) ।"
 
-#: pop3resource.cpp:577
+#: pop3resource.cpp:581
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "%5 कृते %2 तः %1 (%4 KB तः %3) सन्देशं आनयति"
 
-#: pop3resource.cpp:600
+#: pop3resource.cpp:604
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "डाउनलोड् कृतं मेलं संग्रहीतुं असमर्थः।"
 
-#: pop3resource.cpp:748
+#: pop3resource.cpp:752
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "सर्वरात् सन्देशान् विलोपयितुं असफलम्।"
 
-#: pop3resource.cpp:804
+#: pop3resource.cpp:808
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "मेलपरीक्षा समाप्तवती, कोऽपि सन्देशः डाउनलोड् न कृतः।"
 
-#: pop3resource.cpp:806
+#: pop3resource.cpp:810
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "मेलपरीक्षा समाप्तवती, १ सन्देशः डाउनलोड् कृतः।"
 msgstr[1] "मेलपरीक्षणं समाप्तम्, %1 सन्देशाः अवतरणं कृतम् ।"
 
-#: pop3resource.cpp:820
+#: pop3resource.cpp:824
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "मेल-आनयनं सम्पूर्णं कर्तुं असमर्थः ।"
 
-#: pop3resource.cpp:954
+#: pop3resource.cpp:958
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "मेलपरीक्षा पूर्वमेव प्रचलति, द्वितीयपरीक्षा आरभ्यतुं असमर्थः ।"
 
-#: pop3resource.cpp:975
+#: pop3resource.cpp:979
 #, kde-format
 msgid "Ready"
 msgstr "आत्त"
 
-#: pop3resource.cpp:978
+#: pop3resource.cpp:982
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "अफलाइन गमनानन्तरं मेलपरीक्षा निरस्तम्।"
 
-#: pop3resource.cpp:980
+#: pop3resource.cpp:984
 #, kde-format
 msgid "Offline"
 msgstr "अफलाइन"
@@ -841,3 +846,15 @@ msgstr "सिस्टम् प्रॉक्सी सेटिंग्स�
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "उपयोक्तुं प्रमाणीकरणप्रकारं परिभाषयति"
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: settings.kcfg:103
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: settings.kcfg:107
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""

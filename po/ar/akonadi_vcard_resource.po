@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2024-09-26 13:22+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -75,6 +75,18 @@ msgstr "حدث الملف بشكل دوري."
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "فترة التحديث الآليّ بالدّقيقة."
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: vcardresource.kcfg:36
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: vcardresource.kcfg:40
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #~ msgid "Filename:"
 #~ msgstr "اسم الملفّ:"

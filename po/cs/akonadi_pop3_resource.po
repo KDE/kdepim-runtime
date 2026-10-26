@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-28 00:46+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2026-02-05 16:12+0100\n"
 "Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
 "Language-Team: \n"
@@ -21,13 +21,13 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Lokalize 25.12.1\n"
 
-#: accountwidget.cpp:83
+#: accountwidget.cpp:90
 #, kde-format
 msgctxt "Percent value; %p is the value, % is the percent sign"
 msgid "%p%"
 msgstr "%p%"
 
-#: accountwidget.cpp:91
+#: accountwidget.cpp:98
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -35,18 +35,23 @@ msgstr[0] "%v minuta"
 msgstr[1] "%v minuty"
 msgstr[2] "%v minut"
 
-#: accountwidget.cpp:128 pop3resource.cpp:46
+#: accountwidget.cpp:131
+#, kde-format
+msgid "Activities"
+msgstr ""
+
+#: accountwidget.cpp:138 pop3resource.cpp:46
 #, kde-format
 msgid "POP3 Account"
 msgstr "Účet POP3"
 
-#: accountwidget.cpp:195
+#: accountwidget.cpp:211
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Nelze otevřít úschovnu"
 
-#: accountwidget.cpp:245
+#: accountwidget.cpp:261
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -59,7 +64,7 @@ msgstr ""
 "Protože některé servery neoznamují správně své schopnosti, máte stále "
 "možnost ponechávání zpráv na serveru zapnout."
 
-#: accountwidget.cpp:260
+#: accountwidget.cpp:276
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -82,17 +87,17 @@ msgstr ""
 "udělejte napřed několik testů - třeba tak, že sami sobě pošlete několik\n"
 "zpráv a pak se je pokusíte stáhnout."
 
-#: accountwidget.cpp:293
+#: accountwidget.cpp:309
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Prosím, nejprve zadejte server a port v kartě Obecné."
 
-#: accountwidget.cpp:326
+#: accountwidget.cpp:342
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Nelze se spojit se serverem, prosím zkontrolujte adresu serveru."
 
-#: accountwidget.cpp:370
+#: accountwidget.cpp:386
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -112,7 +117,7 @@ msgstr ""
 "testovacích zpráv na vlastní adresu, které z POP serveru stáhnete všechny "
 "najednou."
 
-#: accountwidget.cpp:390
+#: accountwidget.cpp:406
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -126,7 +131,7 @@ msgstr ""
 "Protože některé servery neoznamují správně své schopnosti, máte stále "
 "možnost ponechávání zpráv na serveru zapnout."
 
-#: accountwidget.cpp:422
+#: accountwidget.cpp:438
 #, kde-format
 msgid " day"
 msgid_plural " days"
@@ -134,7 +139,7 @@ msgstr[0] " den"
 msgstr[1] " dny"
 msgstr[2] " dnů"
 
-#: accountwidget.cpp:427
+#: accountwidget.cpp:443
 #, kde-format
 msgid " message"
 msgid_plural " messages"
@@ -302,79 +307,79 @@ msgstr ""
 "Při pokusu o stažení pošty došlo k chybě během komunikace se serverem POP3: "
 "%1"
 
-#: pop3resource.cpp:95
+#: pop3resource.cpp:99
 #, kde-format
 msgid "Mail check aborted."
 msgstr "kontrola pošty přerušena."
 
-#: pop3resource.cpp:102
+#: pop3resource.cpp:106
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "Kontrola pošty byla ručně zrušena."
 
-#: pop3resource.cpp:130
+#: pop3resource.cpp:134
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "Prosím, zadejte uživatelské jméno a heslo pro účet '%1'."
 
-#: pop3resource.cpp:147
+#: pop3resource.cpp:151
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "Jste zde dotazováni, jelikož heslo nelze načíst z úschovny."
 
-#: pop3resource.cpp:164
+#: pop3resource.cpp:168
 #, kde-format
 msgid "Account:"
 msgstr "Účet:"
 
-#: pop3resource.cpp:181
+#: pop3resource.cpp:185
 #, kde-format
 msgid "No username and password supplied."
 msgstr "Uživatelské jméno a heslo nebylo zadáno."
 
-#: pop3resource.cpp:200
+#: pop3resource.cpp:204
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "Příprava přenosu z \"%1\"."
 
-#: pop3resource.cpp:221
+#: pop3resource.cpp:225
 #, kde-format
 msgid "Executing precommand."
 msgstr "Je prováděn předběžný příkaz."
 
-#: pop3resource.cpp:246
+#: pop3resource.cpp:250
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "Jste zde dotazováni, jelikož předchozí přihlášení nebylo úspěšné."
 
-#: pop3resource.cpp:248
+#: pop3resource.cpp:252
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "Jste zde dotazováni, jelikož zadané uživatelské jméno bylo prázdné."
 
-#: pop3resource.cpp:275
+#: pop3resource.cpp:279
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "Stahuji výpis emailů."
 
-#: pop3resource.cpp:331
+#: pop3resource.cpp:335
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "Ukládají se stažené zprávy."
 
-#: pop3resource.cpp:349
+#: pop3resource.cpp:353
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "Ukládá se heslo do úschovny."
 
-#: pop3resource.cpp:391
+#: pop3resource.cpp:395
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
 "Chyba při získávání složky s místní poštou, přerušuje se kontrola pošty."
 
-#: pop3resource.cpp:398
+#: pop3resource.cpp:402
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -385,40 +390,40 @@ msgstr ""
 "ukládal poštu. Tento účet bude nadále ukládat poštu do složky 'Doručená "
 "pošta'.</qt>"
 
-#: pop3resource.cpp:419
+#: pop3resource.cpp:423
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr ""
 "Chyba při získávání složky s odchozí poštou, přerušuje se kontrola pošty."
 
-#: pop3resource.cpp:432
+#: pop3resource.cpp:436
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr "Nelze najít složku s příchozí poštou, přerušuje se kontrola pošty."
 
-#: pop3resource.cpp:443
+#: pop3resource.cpp:447
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "Chyba při provádění předběžného příkazu."
 
-#: pop3resource.cpp:457
+#: pop3resource.cpp:461
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr "Nelze se přihlásit na server \"%1\"."
 
-#: pop3resource.cpp:466
+#: pop3resource.cpp:470
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "Chyba při získávání seznamu zpráv na serveru."
 
-#: pop3resource.cpp:480
+#: pop3resource.cpp:484
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr ""
 "Chyba při získávání seznamu unikátních identifikátorů pošty ze serveru."
 
-#: pop3resource.cpp:493
+#: pop3resource.cpp:497
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -432,39 +437,39 @@ msgstr ""
 "prohlíženy.\n"
 "Možnost ponechání zpráv na serveru nebude tudíž fungovat, jak by měla."
 
-#: pop3resource.cpp:508
+#: pop3resource.cpp:512
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "Chyba při stahování zpráv ze serveru."
 
-#: pop3resource.cpp:568
+#: pop3resource.cpp:572
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
 msgstr ""
 "Stahuje se zpráva %1 z %2 (%3 ze %4 KB) pro %5 (%6 KB zůstává na serveru)."
 
-#: pop3resource.cpp:577
+#: pop3resource.cpp:581
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "Stahuje se zpráva %1 z %2 (%3 ze %4 KB) pro %5"
 
-#: pop3resource.cpp:600
+#: pop3resource.cpp:604
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "Nelze uložit stažené emaily."
 
-#: pop3resource.cpp:748
+#: pop3resource.cpp:752
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "Mazání zpráv ze serveru selhalo."
 
-#: pop3resource.cpp:804
+#: pop3resource.cpp:808
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "Kontrola pošty dokončena, žádná stažená zpráva."
 
-#: pop3resource.cpp:806
+#: pop3resource.cpp:810
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
@@ -472,27 +477,27 @@ msgstr[0] "Kontrola pošty dokončena, žádná stažená zpráva."
 msgstr[1] "Kontrola pošty dokončena, %1 stažené zprávy."
 msgstr[2] "Kontrola pošty dokončena, %1 stažených zpráv."
 
-#: pop3resource.cpp:820
+#: pop3resource.cpp:824
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "Nelze dokončit stažení pošty."
 
-#: pop3resource.cpp:954
+#: pop3resource.cpp:958
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "Kontrola pošty již probíhá, nelze spustit druhou."
 
-#: pop3resource.cpp:975
+#: pop3resource.cpp:979
 #, kde-format
 msgid "Ready"
 msgstr "Připraven"
 
-#: pop3resource.cpp:978
+#: pop3resource.cpp:982
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "Kontrola pošty přerušena po přechodu do odpojeného stavu."
 
-#: pop3resource.cpp:980
+#: pop3resource.cpp:984
 #, kde-format
 msgid "Offline"
 msgstr "Odpojen"
@@ -861,3 +866,15 @@ msgstr "Připojit se pomocí nastavení proxy systému"
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "definuje typ ověření, který se má použít"
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: settings.kcfg:103
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: settings.kcfg:107
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""

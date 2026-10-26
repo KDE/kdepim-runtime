@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-23 00:49+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -68,89 +68,89 @@ msgstr ""
 "如果启用了只读模式，将不会对上面所选的目录写入任何更改。如果您对某个目录没有"
 "写权限，程序会对其自动启用只读模式。"
 
-#: contactsresource.cpp:45
+#: contactsresource.cpp:47
 #, kde-format
 msgid "Personal Contacts"
 msgstr "联系人"
 
-#: contactsresource.cpp:125
+#: contactsresource.cpp:130
 #, kde-format
 msgid "Directory '%1' does not exists"
 msgstr "目录“%1”不存在"
 
-#: contactsresource.cpp:149 contactsresource.cpp:224
+#: contactsresource.cpp:154 contactsresource.cpp:229
 #, kde-format
 msgid "Found file of unknown format: '%1'"
 msgstr "找到未知格式的文件：“%1”"
 
-#: contactsresource.cpp:198
+#: contactsresource.cpp:203
 #, kde-format
 msgid "Unable to open file '%1'"
 msgstr "无法打开文件“%1”"
 
-#: contactsresource.cpp:208
+#: contactsresource.cpp:213
 #, kde-format
 msgid "Found invalid contact in file '%1'"
 msgstr "在文件“%1”中找到了无效的联系人"
 
-#: contactsresource.cpp:218
+#: contactsresource.cpp:223
 #, kde-format
 msgid "Found invalid contact group in file '%1': %2"
 msgstr "在文件“%1”中找到了无效的联系人组：%2"
 
-#: contactsresource.cpp:234 contactsresource.cpp:359 contactsresource.cpp:380
-#: contactsresource.cpp:413
+#: contactsresource.cpp:239 contactsresource.cpp:364 contactsresource.cpp:385
+#: contactsresource.cpp:418
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "尝试向只读目录写入：“%1”"
 
-#: contactsresource.cpp:252 contactsresource.cpp:267 contactsresource.cpp:302
-#: contactsresource.cpp:314
+#: contactsresource.cpp:257 contactsresource.cpp:272 contactsresource.cpp:307
+#: contactsresource.cpp:319
 #, kde-format
 msgid "Unable to write to file '%1': %2"
 msgstr "无法写入文件“%1”：%2"
 
-#: contactsresource.cpp:286 contactsresource.cpp:334
+#: contactsresource.cpp:291 contactsresource.cpp:339
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'"
 msgstr "尝试向只读文件写入：“%1”"
 
-#: contactsresource.cpp:324
+#: contactsresource.cpp:329
 #, kde-format
 msgid "Received item with unknown payload %1"
 msgstr "收到包含不明资料 %1 的项目"
 
-#: contactsresource.cpp:349
+#: contactsresource.cpp:354
 #, kde-format
 msgid "Unable to remove file '%1'"
 msgstr "无法删除文件“%1”"
 
-#: contactsresource.cpp:366
+#: contactsresource.cpp:371
 #, kde-format
 msgid "Unable to create folder '%1'."
 msgstr "无法创建文件夹“%1”。"
 
-#: contactsresource.cpp:401
+#: contactsresource.cpp:406
 #, kde-format
 msgid "Unable to rename folder '%1'."
 msgstr "无法重命名文件夹“%1”。"
 
-#: contactsresource.cpp:419
+#: contactsresource.cpp:424
 #, kde-format
 msgid "Unknown folder to delete."
 msgstr "删除失败，未知文件夹。"
 
-#: contactsresource.cpp:423
+#: contactsresource.cpp:428
 #, kde-format
 msgid "Unable to delete folder '%1'."
 msgstr "无法删除文件夹“%1”。"
 
-#: contactsresource.cpp:438
+#: contactsresource.cpp:443
 #, kde-format
 msgid "Unable to move file '%1' to '%2', '%2' already exists."
 msgstr "无法将文件“%1”移至“%2”。“%2”已经存在。"
 
-#: contactsresource.cpp:452
+#: contactsresource.cpp:457
 #, kde-format
 msgid "Unable to move directory '%1' to '%2', '%2' already exists."
 msgstr "无法将目录“%1”移至“%2”。“%2”已经存在。"
@@ -166,6 +166,18 @@ msgstr "联系人目录的路径"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "不改变实际后端数据。"
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: contactsresource.kcfg:23
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: contactsresource.kcfg:27
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #: contactssettingswidget.cpp:40
 #, kde-format

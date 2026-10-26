@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_contacts_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-23 00:49+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2024-08-17 13:10+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -71,89 +71,89 @@ msgstr ""
 "non sarà scritta nessuna modifica. La modalità di sola lettura sarà "
 "abilitata automaticamente se non hai accesso in scrittura alla cartella."
 
-#: contactsresource.cpp:45
+#: contactsresource.cpp:47
 #, kde-format
 msgid "Personal Contacts"
 msgstr "Contatti personali"
 
-#: contactsresource.cpp:125
+#: contactsresource.cpp:130
 #, kde-format
 msgid "Directory '%1' does not exists"
 msgstr "La cartella «%1» non esiste"
 
-#: contactsresource.cpp:149 contactsresource.cpp:224
+#: contactsresource.cpp:154 contactsresource.cpp:229
 #, kde-format
 msgid "Found file of unknown format: '%1'"
 msgstr "Trovato un file con un formato sconosciuto: «%1»"
 
-#: contactsresource.cpp:198
+#: contactsresource.cpp:203
 #, kde-format
 msgid "Unable to open file '%1'"
 msgstr "Impossibile aprire il file «%1»"
 
-#: contactsresource.cpp:208
+#: contactsresource.cpp:213
 #, kde-format
 msgid "Found invalid contact in file '%1'"
 msgstr "Trovato un contatto non valido nel file «%1»"
 
-#: contactsresource.cpp:218
+#: contactsresource.cpp:223
 #, kde-format
 msgid "Found invalid contact group in file '%1': %2"
 msgstr "Trovato un gruppo di contatti non valido nel file «%1»: %2"
 
-#: contactsresource.cpp:234 contactsresource.cpp:359 contactsresource.cpp:380
-#: contactsresource.cpp:413
+#: contactsresource.cpp:239 contactsresource.cpp:364 contactsresource.cpp:385
+#: contactsresource.cpp:418
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Tentativo di scrivere su una directory a sola lettura: «%1»"
 
-#: contactsresource.cpp:252 contactsresource.cpp:267 contactsresource.cpp:302
-#: contactsresource.cpp:314
+#: contactsresource.cpp:257 contactsresource.cpp:272 contactsresource.cpp:307
+#: contactsresource.cpp:319
 #, kde-format
 msgid "Unable to write to file '%1': %2"
 msgstr "Impossibile scrivere sul file «%1»: %2"
 
-#: contactsresource.cpp:286 contactsresource.cpp:334
+#: contactsresource.cpp:291 contactsresource.cpp:339
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'"
 msgstr "Tentativo di scrivere su un file a sola lettura: «%1»"
 
-#: contactsresource.cpp:324
+#: contactsresource.cpp:329
 #, kde-format
 msgid "Received item with unknown payload %1"
 msgstr "Ricevuto un oggetto con contenuto %1 sconosciuto"
 
-#: contactsresource.cpp:349
+#: contactsresource.cpp:354
 #, kde-format
 msgid "Unable to remove file '%1'"
 msgstr "Impossibile rimuovere il file «%1»."
 
-#: contactsresource.cpp:366
+#: contactsresource.cpp:371
 #, kde-format
 msgid "Unable to create folder '%1'."
 msgstr "Impossibile creare la cartella «%1»."
 
-#: contactsresource.cpp:401
+#: contactsresource.cpp:406
 #, kde-format
 msgid "Unable to rename folder '%1'."
 msgstr "Impossibile rinominare la cartella «%1»."
 
-#: contactsresource.cpp:419
+#: contactsresource.cpp:424
 #, kde-format
 msgid "Unknown folder to delete."
 msgstr "Cartella da eliminare sconosciuta."
 
-#: contactsresource.cpp:423
+#: contactsresource.cpp:428
 #, kde-format
 msgid "Unable to delete folder '%1'."
 msgstr "Impossibile eliminare la cartella «%1»."
 
-#: contactsresource.cpp:438
+#: contactsresource.cpp:443
 #, kde-format
 msgid "Unable to move file '%1' to '%2', '%2' already exists."
 msgstr "Impossibile rinominare il file «%1» in «%2», «%2» esiste già."
 
-#: contactsresource.cpp:452
+#: contactsresource.cpp:457
 #, kde-format
 msgid "Unable to move directory '%1' to '%2', '%2' already exists."
 msgstr "Impossibile rinominare la cartella «%1» in «%2», «%2» esiste già."
@@ -169,6 +169,18 @@ msgstr "Percorso per la cartella dei contatti"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Non modificare i dati attuali del motore."
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: contactsresource.kcfg:23
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: contactsresource.kcfg:27
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #: contactssettingswidget.cpp:40
 #, kde-format

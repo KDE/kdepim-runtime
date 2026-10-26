@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2024-11-10 20:13+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -97,90 +97,90 @@ msgid "Failed to update the file name %1 to %2 on the disk. The error was: %3."
 msgstr ""
 "Неуспешно актуализиране на името на файла %1 с %2 на диска. Грешката е: %3."
 
-#: maildirresource.cpp:122 maildirresource.cpp:254 maildirresource.cpp:293
-#: maildirresource.cpp:387 maildirresource.cpp:428 maildirresource.cpp:548
-#: maildirresource.cpp:578 maildirresource.cpp:621 maildirresource.cpp:654
+#: maildirresource.cpp:124 maildirresource.cpp:258 maildirresource.cpp:297
+#: maildirresource.cpp:391 maildirresource.cpp:432 maildirresource.cpp:552
+#: maildirresource.cpp:582 maildirresource.cpp:625 maildirresource.cpp:658
 #, kde-format
 msgid "Unusable configuration."
 msgstr "Неизползваема конфигурация."
 
-#: maildirresource.cpp:187
+#: maildirresource.cpp:189
 #, kde-format
 msgid "Unable to fetch item: The maildir folder \"%1\" is not valid."
 msgstr ""
 "Невъзможност за извличане на елемент: Папката maildir „%1“ не е валидна."
 
-#: maildirresource.cpp:265
+#: maildirresource.cpp:269
 #, kde-format
 msgid "Error: Unsupported type."
 msgstr "Грешка. Неподдържан вид."
 
-#: maildirresource.cpp:331
+#: maildirresource.cpp:335
 #, kde-format
 msgid "Failed to change the flags for the mail. %1"
 msgstr "Неуспешна промяна на флаговете за пощата. %1"
 
-#: maildirresource.cpp:366
+#: maildirresource.cpp:370
 #, kde-format
 msgid "Maildir resource got a non-mail content."
 msgstr "Maildir ресурсът е получил съдържание, което не е свързано с пощата."
 
-#: maildirresource.cpp:393
+#: maildirresource.cpp:397
 #, kde-format
 msgid "Source folder is invalid: '%1'."
 msgstr "Изходната папка е невалидна: „%1“."
 
-#: maildirresource.cpp:399
+#: maildirresource.cpp:403
 #, kde-format
 msgid "Destination folder is invalid: '%1'."
 msgstr "Папката за местоназначение е невалидна: „%1“."
 
-#: maildirresource.cpp:416
+#: maildirresource.cpp:420
 #, kde-format
 msgid "Could not move message '%1' from '%2' to '%3'. The error was %4."
 msgstr "Не можа да се премести съобщение „%1“ от „%2“ в „%3“. Грешката е %4."
 
-#: maildirresource.cpp:438
+#: maildirresource.cpp:442
 #, kde-format
 msgid "Failed to delete message: %1"
 msgstr "Неуспешно изтриване на съобщение: %1"
 
-#: maildirresource.cpp:527
+#: maildirresource.cpp:531
 #, kde-format
 msgid "Maildir '%1' for collection '%2' is invalid."
 msgstr "Maildir „%1“ за колекция „%2“ е невалидна."
 
-#: maildirresource.cpp:606
+#: maildirresource.cpp:610
 #, kde-format
 msgid "Unable to rename maildir folder '%1'."
 msgstr "Невъзможност за преименуване на папката maildir „%1“."
 
-#: maildirresource.cpp:627
+#: maildirresource.cpp:631
 #, kde-format
 msgid "Cannot move root maildir folder '%1'."
 msgstr "Не може да се премести главната maildir папка „%1“."
 
-#: maildirresource.cpp:642
+#: maildirresource.cpp:646
 #, kde-format
 msgid "Unable to move maildir folder '%1' from '%2' to '%3'."
 msgstr "Невъзможно е да се премести maildir папка „%1“ от „%2“ в „%3“."
 
-#: maildirresource.cpp:660
+#: maildirresource.cpp:664
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
 msgstr "Не може да се изтрие maildir папка от най-високо ниво „%1“."
 
-#: maildirresource.cpp:669
+#: maildirresource.cpp:673
 #, kde-format
 msgid "Failed to delete sub-folder '%1'."
 msgstr "Неуспешно изтриване на подпапка „%1“."
 
-#: maildirresource.cpp:683
+#: maildirresource.cpp:687
 #, kde-format
 msgid "Unable to create maildir '%1'."
 msgstr "Не е възможно да се създаде maildir „%1“."
 
-#: maildirresource.cpp:693
+#: maildirresource.cpp:697
 #, kde-format
 msgid "No usable storage location configured."
 msgstr "Няма конфигурирано използваемо място за съхранение."
@@ -203,6 +203,18 @@ msgstr "Пътят сочи към папка, съдържаща maildir, вм�
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Без промяна на действителните данни на бекенда."
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: maildirresource.kcfg:27
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: maildirresource.kcfg:31
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, ConfigWidget)
 #: settings.ui:15

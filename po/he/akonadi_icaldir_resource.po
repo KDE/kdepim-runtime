@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2025-04-26 13:32+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -18,23 +18,23 @@ msgstr ""
 "n % 10 == 0) ? 2 : 3));\n"
 "X-Generator: Lokalize 24.12.3\n"
 
-#: icaldirresource.cpp:121
+#: icaldirresource.cpp:125
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "לא נמצא מופע עם המזהה ‚%1’."
 
-#: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
+#: icaldirresource.cpp:139 icaldirresource.cpp:172 icaldirresource.cpp:204
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "מתבצע ניסיון לכתוב לתיקייה לקריאה בלבד: ‚%1’"
 
-#: icaldirresource.cpp:252
+#: icaldirresource.cpp:256
 #, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "תיקיית לוחות שנה"
 
-#: icaldirresource.cpp:254
+#: icaldirresource.cpp:258
 #, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
@@ -57,6 +57,18 @@ msgstr "פרק זמן בין שמירות אוטומטיות (בדקות)."
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "לא לשנות את נתוני המנגנון בפועל."
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: icaldirresource.kcfg:24
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: icaldirresource.kcfg:28
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: icaldirsagentsettingswidget.ui:33

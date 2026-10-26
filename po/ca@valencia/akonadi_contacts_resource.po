@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-23 00:49+0000\n"
+"POT-Creation-Date: 2026-10-26 00:50+0000\n"
 "PO-Revision-Date: 2024-08-17 11:22+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -75,89 +75,89 @@ msgstr ""
 "directori seleccionat anteriorment. El mode de només lectura s'activa "
 "automàticament en cas de no tindre accés d'escriptura al directori."
 
-#: contactsresource.cpp:45
+#: contactsresource.cpp:47
 #, kde-format
 msgid "Personal Contacts"
 msgstr "Contactes personals"
 
-#: contactsresource.cpp:125
+#: contactsresource.cpp:130
 #, kde-format
 msgid "Directory '%1' does not exists"
 msgstr "La carpeta «%1» no existix"
 
-#: contactsresource.cpp:149 contactsresource.cpp:224
+#: contactsresource.cpp:154 contactsresource.cpp:229
 #, kde-format
 msgid "Found file of unknown format: '%1'"
 msgstr "S'ha trobat un fitxer de format desconegut: «%1»"
 
-#: contactsresource.cpp:198
+#: contactsresource.cpp:203
 #, kde-format
 msgid "Unable to open file '%1'"
 msgstr "No s'ha pogut obrir el fitxer «%1»"
 
-#: contactsresource.cpp:208
+#: contactsresource.cpp:213
 #, kde-format
 msgid "Found invalid contact in file '%1'"
 msgstr "S'ha trobat un contacte no vàlid en el fitxer «%1»"
 
-#: contactsresource.cpp:218
+#: contactsresource.cpp:223
 #, kde-format
 msgid "Found invalid contact group in file '%1': %2"
 msgstr "S'ha trobat un grup de contactes no vàlid en el fitxer «%1»: %2"
 
-#: contactsresource.cpp:234 contactsresource.cpp:359 contactsresource.cpp:380
-#: contactsresource.cpp:413
+#: contactsresource.cpp:239 contactsresource.cpp:364 contactsresource.cpp:385
+#: contactsresource.cpp:418
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "S'està intentant escriure en un directori de només lectura: «%1»"
 
-#: contactsresource.cpp:252 contactsresource.cpp:267 contactsresource.cpp:302
-#: contactsresource.cpp:314
+#: contactsresource.cpp:257 contactsresource.cpp:272 contactsresource.cpp:307
+#: contactsresource.cpp:319
 #, kde-format
 msgid "Unable to write to file '%1': %2"
 msgstr "No s'ha pogut escriure en el fitxer «%1»: %2"
 
-#: contactsresource.cpp:286 contactsresource.cpp:334
+#: contactsresource.cpp:291 contactsresource.cpp:339
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'"
 msgstr "S'està intentant escriure en un fitxer de només lectura: «%1»"
 
-#: contactsresource.cpp:324
+#: contactsresource.cpp:329
 #, kde-format
 msgid "Received item with unknown payload %1"
 msgstr "S'ha rebut un element amb contingut desconegut %1"
 
-#: contactsresource.cpp:349
+#: contactsresource.cpp:354
 #, kde-format
 msgid "Unable to remove file '%1'"
 msgstr "No s'ha pogut eliminar el fitxer «%1»"
 
-#: contactsresource.cpp:366
+#: contactsresource.cpp:371
 #, kde-format
 msgid "Unable to create folder '%1'."
 msgstr "No s'ha pogut crear la carpeta «%1»."
 
-#: contactsresource.cpp:401
+#: contactsresource.cpp:406
 #, kde-format
 msgid "Unable to rename folder '%1'."
 msgstr "No s'ha pogut canviar de nom la carpeta «%1»."
 
-#: contactsresource.cpp:419
+#: contactsresource.cpp:424
 #, kde-format
 msgid "Unknown folder to delete."
 msgstr "Es desconeix la carpeta que se suprimirà."
 
-#: contactsresource.cpp:423
+#: contactsresource.cpp:428
 #, kde-format
 msgid "Unable to delete folder '%1'."
 msgstr "No s'ha pogut suprimir la carpeta «%1»."
 
-#: contactsresource.cpp:438
+#: contactsresource.cpp:443
 #, kde-format
 msgid "Unable to move file '%1' to '%2', '%2' already exists."
 msgstr "No s'ha pogut moure el fitxer «%1» a «%2», «%2» ja existix."
 
-#: contactsresource.cpp:452
+#: contactsresource.cpp:457
 #, kde-format
 msgid "Unable to move directory '%1' to '%2', '%2' already exists."
 msgstr "No s'ha pogut moure el directori «%1» a «%2», «%2» ja existix."
@@ -173,6 +173,18 @@ msgstr "Camí cap al directori de contactes"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "No es canvien les dades reals del dorsal."
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: contactsresource.kcfg:23
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: contactsresource.kcfg:27
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #: contactssettingswidget.cpp:40
 #, kde-format
