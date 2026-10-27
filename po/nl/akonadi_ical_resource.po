@@ -2,7 +2,7 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2009, 2023 Freek de Kruijf <f.de.kruijf@hetnet.nl>
+# SPDX-FileCopyrightText: 2009, 2023, 2026 Freek de Kruijf <f.de.kruijf@hetnet.nl>
 # Freek de Kruijf <freekdekruijf@kde.nl>, 2010.
 # Freek de Kruijf <freekdekruijf@kde.nl>, 2010.
 msgid ""
@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-26 00:50+0000\n"
-"PO-Revision-Date: 2023-10-06 11:43+0200\n"
+"PO-Revision-Date: 2026-10-26 14:06+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 23.08.1\n"
+"X-Generator: Lokalize 26.08.2\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: icalresource.cpp:53 icalresource.cpp:130 icalresource.cpp:172
@@ -86,13 +86,13 @@ msgstr "Automatische bijwerkperiode in minuten."
 #: icalresource.kcfg:36
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Of de ondersteuning voor activiteiten van de agent zijn ingeschakeld"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: icalresource.kcfg:40
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "De activiteiten van de agent"
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Tijd tussen automatisch opslaan (in minuten)."

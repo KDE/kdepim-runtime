@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-26 00:50+0000\n"
-"PO-Revision-Date: 2025-04-26 04:56+0200\n"
+"PO-Revision-Date: 2026-10-26 04:31+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.10\n"
 
 #: icaldirresource.cpp:125
 #, kde-format
@@ -62,13 +62,13 @@ msgstr "უკანაბოლოს მონაცემების შე�
 #: icaldirresource.kcfg:24
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "ჩართულია თუ არა აგენტის მხარდაჭერა აქტივობებისთვის"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: icaldirresource.kcfg:28
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "აგენტის აქტივობები"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: icaldirsagentsettingswidget.ui:33

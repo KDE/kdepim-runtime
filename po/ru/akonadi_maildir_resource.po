@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-26 00:50+0000\n"
-"PO-Revision-Date: 2024-11-18 14:30+0300\n"
-"Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
+"PO-Revision-Date: 2026-10-26 07:46+0200\n"
+"Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
 "Language-Team: Basealt Translation Team\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -219,13 +219,13 @@ msgstr "Не изменять существующие данные."
 #: maildirresource.kcfg:27
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Используется ли поддержка комнат агентом"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: maildirresource.kcfg:31
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Комнаты агента"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, ConfigWidget)
 #: settings.ui:15

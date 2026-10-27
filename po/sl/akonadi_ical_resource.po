@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-26 00:50+0000\n"
-"PO-Revision-Date: 2023-10-06 09:20+0200\n"
+"PO-Revision-Date: 2026-10-26 06:47+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.10\n"
 
 #: icalresource.cpp:53 icalresource.cpp:130 icalresource.cpp:172
 #: icalresource.cpp:212
@@ -86,13 +86,13 @@ msgstr "Čas samodejne posodobitve v minutah."
 #: icalresource.kcfg:36
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Ali je podpora za dejavnosti agenta omogočena"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: icalresource.kcfg:40
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Dejavnosti agenta"
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Razmik med shranjevanji v minutah."

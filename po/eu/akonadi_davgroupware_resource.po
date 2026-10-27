@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-20 00:53+0000\n"
+"POT-Creation-Date: 2026-10-27 01:00+0000\n"
 "PO-Revision-Date: 2026-07-27 05:35+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -175,91 +175,74 @@ msgid "Unable to parse free-busy data received"
 msgstr ""
 "Ez da jasotako libre/lanpetuta datuen azterketa-sintaktikoa gainditzeko gai"
 
-#: davgroupwareresource.cpp:292
+#: davgroupwareresource.cpp:299
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "Ez da libre/lanpetuta informazioa lerroz-kanpo dagoela eskuratzeko gai"
 
-#: davgroupwareresource.cpp:379
+#: davgroupwareresource.cpp:386
 #, kde-format
 msgid "Fetching collections"
 msgstr "Bildumak eskuratzen"
 
-#: davgroupwareresource.cpp:439
+#: davgroupwareresource.cpp:446
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Bilduma ezezagun baterako datuak eskuratzeko galdetu du: %1"
 
-#: davgroupwareresource.cpp:513
+#: davgroupwareresource.cpp:520
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "%1 elementurako bilduma baliogabea."
 
-#: davgroupwareresource.cpp:790
-#, kde-format
-msgid "Unable to delete item exceptions: %1"
-msgstr "Ezin izan dira elementu-salbuespenak ezabatu: %1"
-
-#: davgroupwareresource.cpp:900
-#, fuzzy, kde-format
-#| msgid "Unable to change item: %1"
-msgid "Unable to fetch items: %1"
-msgstr "Ez da elementua aldatzeko gai: %1"
-
-#: davgroupwareresource.cpp:968
-#, fuzzy, kde-format
-#| msgid "Unable to remove item: %1"
-msgid "Unable to move item: %1"
-msgstr "Ez da elementua kentzeko gai: %1"
-
-#: davgroupwareresource.cpp:1115
+#: davgroupwareresource.cpp:904
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Elementua ezin ditu aldatu: %1"
 
-#: davgroupwareresource.cpp:1188
+#: davgroupwareresource.cpp:977
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Ez da bilduma aldatzeko gai: %1"
 
-#: davgroupwareresource.cpp:1318
+#: davgroupwareresource.cpp:1107
 #, kde-format
 msgid "Unable to create collection: %1"
 msgstr "Ezin izan da bilduma sortu: %1"
 
-#: davgroupwareresource.cpp:1347
+#: davgroupwareresource.cpp:1136
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Ez da bilduma kentzeko gai: %1"
 
-#: davgroupwareresource.cpp:1369
+#: davgroupwareresource.cpp:1158
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to retrieve collection: %1"
 msgstr "Ez da bildumak eskuratzeko gai: %1"
 
-#: davgroupwareresource.cpp:1384
+#: davgroupwareresource.cpp:1173
 #, kde-format
 msgid "Failed to retrieve collection: %1"
 msgstr "Bildumak eskuratzean huts egin du: %1"
 
-#: davgroupwareresource.cpp:1428
+#: davgroupwareresource.cpp:1217
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Ez da bildumak eskuratzeko gai: %1"
 
-#: davgroupwareresource.cpp:1588 davgroupwareresource.cpp:2149
-#: davgroupwareresource.cpp:2179
+#: davgroupwareresource.cpp:1377 davgroupwareresource.cpp:1917
+#: davgroupwareresource.cpp:1947
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Ez da elementuak eskuratzeko gai: %1"
 
-#: davgroupwareresource.cpp:1719
+#: davgroupwareresource.cpp:1508
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Ez da elementua eskuratzeko gai: %1"
 
-#: davgroupwareresource.cpp:1739
+#: davgroupwareresource.cpp:1528
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -268,23 +251,23 @@ msgstr ""
 "Ez da elementua eskuratzeko gai: elementuaren datuen azterketa-sintaktikoa "
 "huts egin du. Agian dagoeneko ezabatu da."
 
-#: davgroupwareresource.cpp:1799
+#: davgroupwareresource.cpp:1588
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Ez da elementua gehitzeko gai: %1"
 
-#: davgroupwareresource.cpp:1844 davgroupwareresource.cpp:1976
-#: davgroupwareresource.cpp:1988
+#: davgroupwareresource.cpp:1633 davgroupwareresource.cpp:1744
+#: davgroupwareresource.cpp:1756
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Ez da elementua aldatzeko gai: %1"
 
-#: davgroupwareresource.cpp:1950 davgroupwareresource.cpp:2007
+#: davgroupwareresource.cpp:1775
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Ez da elementua kentzeko gai: %1"
 
-#: davgroupwareresource.cpp:2094 davgroupwareresource.cpp:2095
+#: davgroupwareresource.cpp:1862 davgroupwareresource.cpp:1863
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Baliabidea ez dago konfiguratuta oraindik"
@@ -644,6 +627,19 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
+
+#~ msgid "Unable to delete item exceptions: %1"
+#~ msgstr "Ezin izan dira elementu-salbuespenak ezabatu: %1"
+
+#, fuzzy
+#~| msgid "Unable to change item: %1"
+#~ msgid "Unable to fetch items: %1"
+#~ msgstr "Ez da elementua aldatzeko gai: %1"
+
+#, fuzzy
+#~| msgid "Unable to remove item: %1"
+#~ msgid "Unable to move item: %1"
+#~ msgstr "Ez da elementua kentzeko gai: %1"
 
 #, fuzzy
 #~| msgid "Unable to retrieve item: %1"

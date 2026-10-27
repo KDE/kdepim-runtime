@@ -1,21 +1,22 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # SPDX-FileCopyrightText: 2010, 2011, 2023 Vít Pelčák <vit@pelcak.org>
+# SPDX-FileCopyrightText: 2026 Libor Filípek <libor.filipek@gmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-26 00:50+0000\n"
-"PO-Revision-Date: 2023-11-06 14:45+0100\n"
-"Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
+"PO-Revision-Date: 2026-10-26 13:00+0100\n"
+"Last-Translator: Libor Filípek <libor.filipek@gmail.com>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 23.08.2\n"
+"X-Generator: Lokalize 26.08.2\n"
 
 #: icalresource.cpp:53 icalresource.cpp:130 icalresource.cpp:172
 #: icalresource.cpp:212
@@ -83,10 +84,10 @@ msgstr "Interval automatické aktualizace v minutách."
 #: icalresource.kcfg:36
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Zda je povolena podpora aktivit agenta"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: icalresource.kcfg:40
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Činnosti agenta"
