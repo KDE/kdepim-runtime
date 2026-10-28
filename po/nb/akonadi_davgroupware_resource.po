@@ -617,18 +617,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#, fuzzy
-#~| msgid "Unable to retrieve collections: %1"
-#~ msgid "Unable to delete item exceptions: %1"
-#~ msgstr "Klarer ikke hente samlinger: %1"
-
-#, fuzzy
-#~| msgid "Unable to change item: %1"
-#~ msgid "Unable to fetch items: %1"
-#~ msgstr "Klarte ikke å endre element: %1"
-
-#, fuzzy
-#~| msgid "Unable to remove item: %1"
-#~ msgid "Unable to move item: %1"
-#~ msgstr "Klarer ikke å fjerne element: %1"

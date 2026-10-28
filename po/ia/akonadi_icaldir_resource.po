@@ -1,20 +1,20 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2012, 2015, 2020, 2021, 2024, 2025 Giovanni Sora <g.sora@tiscali.it>
+# SPDX-FileCopyrightText: 2012, 2015, 2020, 2021, 2024, 2025, 2026 Giovanni Sora <g.sora@tiscali.it>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-26 00:50+0000\n"
-"PO-Revision-Date: 2025-05-09 16:52+0200\n"
+"PO-Revision-Date: 2026-10-27 16:05+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 25.04.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: icaldirresource.cpp:125
@@ -61,13 +61,13 @@ msgstr "Non modifica le datos actual de retro-administration."
 #: icaldirresource.kcfg:24
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Si le supporto de activitates del agente es habilitate"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: icaldirresource.kcfg:28
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Le activitates del agente"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: icaldirsagentsettingswidget.ui:33
