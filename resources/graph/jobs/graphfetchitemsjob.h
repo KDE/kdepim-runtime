@@ -30,6 +30,7 @@ public:
 
 private:
     void onRequestFinished(KJob *);
+    void fetchEnvelopes(const QStringList &ids);
     [[nodiscard]] Akonadi::Item itemStubFromJson(const QJsonObject &message) const;
 
     GraphClient &mClient;
