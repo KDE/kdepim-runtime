@@ -34,7 +34,7 @@ msgstr[2] " minút"
 #: accountwidget.cpp:131
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "Aktivity"
 
 #: accountwidget.cpp:138 pop3resource.cpp:46
 #, kde-format
@@ -867,13 +867,13 @@ msgstr "Definuje typ overenia na použitie"
 #: settings.kcfg:103
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Či je zapnutá podpora aktivít pre agenta"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: settings.kcfg:107
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Aktivity agenta"
 
 #, fuzzy
 #~ msgid "Unexpected response from POP3 server."

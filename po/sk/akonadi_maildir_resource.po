@@ -204,13 +204,13 @@ msgstr "Nezmeniť aktuálne backend dáta."
 #: maildirresource.kcfg:27
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Či je zapnutá podpora aktivít pre agenta"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: maildirresource.kcfg:31
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Aktivity agenta"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, ConfigWidget)
 #: settings.ui:15

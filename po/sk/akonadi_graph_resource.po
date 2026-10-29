@@ -1,0 +1,224 @@
+# Slovak translations for kdepim-runtime package
+# Slovenské preklady pre balík kdepim-runtime.
+# Copyright (C) 2026 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+# Roman Paholík <wizzardsk@gmail.com>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kdepim-runtime\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-10-07 00:49+0000\n"
+"PO-Revision-Date: 2026-10-28 10:57+0100\n"
+"Last-Translator: Roman Paholík <wizzardsk@gmail.com>\n"
+"Language-Team: Slovak <opensuse-translation@opensuse.org>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: graphclient/auth/graphoauth.cpp:137
+#, kde-format
+msgid "OAuth2: cannot listen on localhost (no free port?)"
+msgstr "OAuth2: nie je možné počúvať na localhost (žiadny voľný port?)"
+
+#: graphclient/auth/graphoauth.cpp:166
+#, kde-format
+msgid "OAuth2 request failed"
+msgstr "Požiadavka OAuth2 zlyhala"
+
+#: graphclient/graphrequest.cpp:70
+#, kde-format
+msgid "Not authenticated with Microsoft 365 yet"
+msgstr "Zatiaľ nie ste overení v Microsoft 365"
+
+#: graphclient/graphrequest.cpp:198
+#, kde-format
+msgctxt ""
+"%1 is the server error message, %2 the HTTP status code, %3 the server error "
+"code"
+msgid "%1 (HTTP %2, %3)"
+msgstr "%1 (HTTP %2, %3)"
+
+#: graphconfig.cpp:45
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Account name:"
+msgstr "Názov účtu:"
+
+#: graphconfig.cpp:48
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Email / UPN:"
+msgstr "E-mail / UPN:"
+
+#: graphconfig.cpp:51
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Azure tenant:"
+msgstr "Tenant Azure:"
+
+#: graphconfig.cpp:53
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Application (client) ID:"
+msgstr "ID aplikácie (klienta):"
+
+#: graphconfig.cpp:56
+#, kde-format
+msgctxt "@item:valuesuffix minutes"
+msgid " min"
+msgstr " min"
+
+#: graphconfig.cpp:57
+#, kde-format
+msgctxt "@label:spinbox"
+msgid "Check for new mail every:"
+msgstr "Kontrolovať novú poštu každých:"
+
+#: graphconfig.cpp:59
+#, kde-format
+msgctxt "@info"
+msgid "Changing the tenant or client id requires signing in again."
+msgstr "Zmena tenanta alebo ID klienta vyžaduje nové prihlásenie."
+
+#: graphmtaresource.cpp:79
+#, kde-format
+msgid "Unable to connect to master Microsoft 365 (Graph) resource"
+msgstr "Nie je možné pripojiť sa k hlavnému prostriedku Microsoft 365 (Graph)"
+
+#: graphmtaresource.cpp:88
+#, kde-format
+msgid "Message to be sent has no MIME payload"
+msgstr "Správa na odoslanie nemá žiadny obsah MIME"
+
+#: graphresource.cpp:167
+#, kde-format
+msgctxt "@info:status"
+msgid "Authenticating with Microsoft 365"
+msgstr "Overuje sa v Microsoft 365"
+
+#: graphresource.cpp:181
+#, kde-format
+msgctxt "@info:status"
+msgid "Migrating item identifiers"
+msgstr "Migrujú sa identifikátory položiek"
+
+#: graphresource.cpp:186
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to migrate item identifiers: %1"
+msgstr "Migrácia identifikátorov položiek zlyhala: %1"
+
+#: graphresource.cpp:204
+#, kde-format
+msgctxt "@info:status"
+msgid "Ready"
+msgstr "Pripravené"
+
+#: graphresource.cpp:222
+#, kde-format
+msgctxt "@info:status"
+msgid "Authentication failed: %1"
+msgstr "Overenie zlyhalo: %1"
+
+#: graphresource.cpp:294 graphresource.cpp:551
+#, kde-format
+msgid "Waiting for the item identifier migration to finish"
+msgstr "Čaká sa na dokončenie migrácie identifikátorov položiek"
+
+#: graphresource.cpp:380
+#, kde-format
+msgctxt "@item mail folder"
+msgid "Contacts"
+msgstr "Kontakty"
+
+#: graphresource.cpp:732 graphresource.cpp:759
+#, kde-format
+msgid "The requested items no longer exist"
+msgstr "Požadované položky už neexistujú"
+
+#: graphresource.cpp:1031
+#, kde-format
+msgid "Cannot move task %1: no payload"
+msgstr "Úlohu %1 nie je možné presunúť: chýba obsah"
+
+#: graphresource.cpp:1039
+#, kde-format
+msgid "Cannot move event %1: no payload"
+msgstr "Udalosť %1 nie je možné presunúť: chýba obsah"
+
+#: graphresource.cpp:1154
+#, kde-format
+msgid "Moving contacts between folders is not supported"
+msgstr "Presúvanie kontaktov medzi priečinkami nie je podporované"
+
+#. i18n: ectx: label, entry (Email), group (General)
+#: graphresource.kcfg:10
+#, kde-format
+msgid "Primary email / UPN of the Microsoft 365 account."
+msgstr "Hlavný e-mail / UPN účtu Microsoft 365."
+
+#. i18n: ectx: label, entry (TenantId), group (General)
+#: graphresource.kcfg:13
+#, kde-format
+msgid ""
+"Azure AD tenant: \"common\", \"organizations\", \"consumers\" or a tenant "
+"GUID."
+msgstr ""
+"Tenant Azure AD: „common“, „organizations“, „consumers“ alebo GUID tenanta."
+
+#. i18n: ectx: label, entry (ClientId), group (General)
+#: graphresource.kcfg:17
+#, kde-format
+msgid ""
+"Azure app registration Application (client) ID. Configure your own in the "
+"account dialog — see README.md / docs."
+msgstr ""
+"ID aplikácie (klienta) z registrácie aplikácie v Azure. Vlastné nastavte v "
+"dialógu účtu – pozri README.md / dokumentáciu."
+
+#. i18n: ectx: label, entry (FolderDeltaLink), group (General)
+#: graphresource.kcfg:20
+#, kde-format
+msgid "Persisted top-level mailFolders @odata.deltaLink (sync state)."
+msgstr "Uložený @odata.deltaLink najvyšších mailFolders (stav synchronizácie)."
+
+#. i18n: ectx: label, entry (PollInterval), group (General)
+#: graphresource.kcfg:23
+#, kde-format
+msgid "Delta poll interval in minutes (no push on Graph for desktop)."
+msgstr "Interval kontroly zmien v minútach (Graph pre desktop nemá push)."
+
+#. i18n: ectx: label, entry (ImmutableIdsMigrated), group (General)
+#: graphresource.kcfg:27
+#, kde-format
+msgid "Whether stored remoteIds have been migrated to Graph immutable ids."
+msgstr "Či boli uložené remoteId migrované na nemenné ID Graph."
+
+#: jobs/graphbatchjob.cpp:138
+#, kde-format
+msgid "The server did not answer this request"
+msgstr "Server na túto požiadavku neodpovedal"
+
+#: jobs/graphbatchjob.cpp:171
+#, kde-format
+msgid "HTTP %1"
+msgstr "HTTP %1"
+
+#: jobs/graphbatchjob.cpp:193
+#, kde-format
+msgctxt "%1 and %2 are counts, %3 the server error message"
+msgid "%1 of %2 requests failed, first error: %3"
+msgstr "Zlyhalo %1 z %2 požiadaviek, prvá chyba: %3"
+
+#: jobs/graphfetchfoldersjob.cpp:49
+#, kde-format
+msgid "Could not resolve the mailbox root folder"
+msgstr "Nepodarilo sa zistiť koreňový priečinok poštovej schránky"
+
+#: jobs/graphfetchitempayloadjob.cpp:75
+#, kde-format
+msgid "Failed to fetch the content of message %1 (HTTP %2)"
+msgstr "Nepodarilo sa získať obsah správy %1 (HTTP %2)"

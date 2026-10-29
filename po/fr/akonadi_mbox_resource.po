@@ -4,7 +4,7 @@
 # Joëlle Cornavin <jcornavi@club-internet.fr>, 2009.
 # Geoffray Levasseur <geoffray.levasseurbrandin@numericable.fr>, 2009, 2014.
 # Joëlle Cornavin <jcornavin@laposte.net>, 2010.
-# SPDX-FileCopyrightText: 2013, 2021, 2023, 2024, 2026 Xavier Besnard <xavier.besnard@kde.org>
+# SPDX-FileCopyrightText: 2013, 2021, 2023-2024, 2026 Xavier Besnard <xavier.besnard@kde.org>
 # Simon Depiets <sdepiets@gmail.com>, 2019.
 # Xavier Besnard <xavier.besnard@kde.org>, 2023.
 #
@@ -13,9 +13,9 @@ msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-26 00:50+0000\n"
-"PO-Revision-Date: 2026-03-20 18:19+0100\n"
+"PO-Revision-Date: 2026-10-27 12:45+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
-"Language-Team: \n"
+"Language-Team: fr\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Accelerator-Marker: &\n"
 "X-Environment: kde\n"
-"X-Generator: Lokalize 25.12.3\n"
+"X-Generator: Lokalize 26.08.1\n"
 "X-Text-Markup: kde4\n"
 
 #: compactpage.cpp:71
@@ -355,12 +355,13 @@ msgstr "Nombre de messages supprimés avant qu'une purge ne soit lancée."
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
 msgstr ""
+"Définit si la prise en charge des activités de l'agent est activée ou non"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: mboxresource.kcfg:68
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Les activités de l'agent"
 
 #~ msgid "Activities"
 #~ msgstr "Activités"

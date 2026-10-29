@@ -341,13 +341,13 @@ msgstr "Počet vymazaných správ pred spustením čistenia."
 #: mboxresource.kcfg:64
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Či je zapnutá podpora aktivít pre agenta"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: mboxresource.kcfg:68
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Aktivity agenta"
 
 #~ msgid "URL:"
 #~ msgstr "URL:"

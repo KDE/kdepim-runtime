@@ -81,13 +81,13 @@ msgstr "Perióda automatickej aktualizácie v minútach."
 #: icalresource.kcfg:36
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Či je zapnutá podpora aktivít pre agenta"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: icalresource.kcfg:40
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Aktivity agenta"
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Interval pre automatické ukladanie (v minútach)."
