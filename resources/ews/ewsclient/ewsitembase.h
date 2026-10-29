@@ -19,8 +19,6 @@ public:
     EwsItemBase(const EwsItemBase &other);
     EwsItemBase(EwsItemBase &&other);
     virtual ~EwsItemBase();
-    EwsItemBase &operator=(const EwsItemBase &other);
-    EwsItemBase &operator=(EwsItemBase &&other);
 
     bool isValid() const;
 

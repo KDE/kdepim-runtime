@@ -44,7 +44,6 @@ public:
     void init();
     void setAccountId(const QString &accountId);
 
-    QString appId() const;
     QString clientId() const;
     QString clientSecret() const;
 

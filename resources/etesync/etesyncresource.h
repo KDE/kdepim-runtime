@@ -37,8 +37,6 @@ protected Q_SLOTS:
 protected:
     void aboutToQuit() override;
 
-    void initialise();
-
     [[nodiscard]] Akonadi::Collection createRootCollection();
 
     void initialiseDirectory(const QString &path) const;

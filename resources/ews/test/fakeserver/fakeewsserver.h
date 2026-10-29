@@ -13,7 +13,6 @@
 #include <QMutex>
 #include <QPointer>
 #include <QTcpServer>
-class QTcpSocket;
 
 class FakeEwsConnection;
 class QXmlResultItems;
@@ -50,8 +49,6 @@ private Q_SLOTS:
     void streamingConnectionStarted(FakeEwsConnection *conn);
 
 private:
-    void dataAvailable(QTcpSocket *sock);
-    void sendError(QTcpSocket *sock, const QString &msg, ushort code = 500);
     const DialogEntry::List dialog() const;
     const DialogEntry::ReplyCallback defaultReplyCallback() const;
     const DialogEntry::ReplyCallback overrideReplyCallback() const;

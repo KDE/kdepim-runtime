@@ -20,9 +20,6 @@ public:
     [[nodiscard]] QString topic() const;
     void setTopic(const QString &topic);
 
-    [[nodiscard]] QUrl registrationUrl() const;
-    void setRegistrationUrl(const QUrl &registrationUrl);
-
     [[nodiscard]] QDateTime expirationDate() const;
     void setExpirationDate(const QDateTime &expirationDate);
 
