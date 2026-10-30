@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-07 00:45+0000\n"
+"POT-Creation-Date: 2026-10-30 00:54+0000\n"
 "PO-Revision-Date: 2025-07-01 19:57+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -122,7 +122,7 @@ msgstr "無法從快取 '%1' 取得 etesyncItem"
 msgid "Could not create new etesyncCollection"
 msgstr "無法建立新的 etesyncCollection"
 
-#: etesyncresource.h:58
+#: etesyncresource.h:56
 #, kde-format
 msgid "Something went wrong"
 msgstr "發生了錯誤"

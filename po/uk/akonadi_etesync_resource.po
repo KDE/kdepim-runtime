@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_etesync_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-07 00:45+0000\n"
+"POT-Creation-Date: 2026-10-30 00:54+0000\n"
 "PO-Revision-Date: 2025-06-27 11:37+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -124,7 +124,7 @@ msgstr "Не вдалося отримати etesyncItem з кешу «%1»"
 msgid "Could not create new etesyncCollection"
 msgstr "Не вдалося створити etesyncCollection"
 
-#: etesyncresource.h:58
+#: etesyncresource.h:56
 #, kde-format
 msgid "Something went wrong"
 msgstr "Виникли якісь проблеми"

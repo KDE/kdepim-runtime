@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-07 00:45+0000\n"
+"POT-Creation-Date: 2026-10-30 00:54+0000\n"
 "PO-Revision-Date: 2026-10-12 15:25+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -123,7 +123,7 @@ msgstr "Nepavyko gauti etesyncItem iš podėlio „%1“"
 msgid "Could not create new etesyncCollection"
 msgstr "Nepavyko sukurti naujo etesyncCollection"
 
-#: etesyncresource.h:58
+#: etesyncresource.h:56
 #, kde-format
 msgid "Something went wrong"
 msgstr "Kažkas nutiko"

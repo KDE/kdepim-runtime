@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-07 00:45+0000\n"
+"POT-Creation-Date: 2026-10-30 00:54+0000\n"
 "PO-Revision-Date: 2026-02-05 16:06+0100\n"
 "Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
 "Language-Team: \n"
@@ -122,7 +122,7 @@ msgstr "Nelze získat položku etesync '%1' z mezipaměti"
 msgid "Could not create new etesyncCollection"
 msgstr "Nelze vytvořit novou sbírku etesync"
 
-#: etesyncresource.h:58
+#: etesyncresource.h:56
 #, kde-format
 msgid "Something went wrong"
 msgstr "Došlo k nějakému problému"

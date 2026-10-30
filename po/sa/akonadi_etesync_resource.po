@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-07 00:45+0000\n"
+"POT-Creation-Date: 2026-10-30 00:54+0000\n"
 "PO-Revision-Date: 2024-12-20 21:52+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -132,7 +132,7 @@ msgstr "'%1' सञ्चिकातः etesyncItem प्राप्तुं
 msgid "Could not create new etesyncCollection"
 msgstr "नूतनं etesyncCollection निर्मातुं न शक्तवान्"
 
-#: etesyncresource.h:58
+#: etesyncresource.h:56
 #, kde-format
 msgid "Something went wrong"
 msgstr "किमपि भ्रष्टं जातम्"
