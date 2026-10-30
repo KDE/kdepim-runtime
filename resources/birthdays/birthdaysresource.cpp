@@ -89,7 +89,7 @@ bool BirthdaysResource::retrieveItems(const Akonadi::Item::List &items, const QS
     QSet<Akonadi::Item::Id> contactIds;
     contactIds.reserve(items.count());
     for (const auto &item : items) {
-        const Akonadi::Item::Id contactId = item.remoteId().mid(1).toLongLong();
+        const Akonadi::Item::Id contactId = QStringView(item.remoteId()).mid(1).toLongLong();
         contactIds << contactId;
     }
 
@@ -109,7 +109,7 @@ bool BirthdaysResource::retrieveItems(const Akonadi::Item::List &items, const QS
 bool BirthdaysResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(parts)
-    const qint64 contactId = item.remoteId().mid(1).toLongLong();
+    const qint64 contactId = QStringView(item.remoteId()).mid(1).toLongLong();
     auto job = new ItemFetchJob(Item(contactId), this);
     job->fetchScope().fetchFullPayload();
     connect(job, &ItemFetchJob::result, this, &BirthdaysResource::contactRetrieved);
@@ -178,7 +178,7 @@ void BirthdaysResource::contactsRetrieved(KJob *job)
 
     for (auto &item : queriedItems) {
         const QString remoteId = item.remoteId();
-        const Akonadi::Item::Id contactId = remoteId.mid(1).toLongLong();
+        const Akonadi::Item::Id contactId = QStringView(remoteId).mid(1).toLongLong();
         auto it = contacts.constFind(contactId);
         if (it == contacts.constEnd()) {
             cancelTask();
