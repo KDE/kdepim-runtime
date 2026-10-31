@@ -82,6 +82,3 @@ msgstr "Actualitza periòdicament el fitxer."
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "Període d'actualització automàtica, en minuts."
-
-#~ msgid "Autosave interval time (in minutes)."
-#~ msgstr "Interval de temps d'autodesat (en minuts)."
