@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-26 00:50+0000\n"
-"PO-Revision-Date: 2026-08-10 18:29+0400\n"
+"PO-Revision-Date: 2026-10-31 18:57+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Lokalize 25.12.3\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: configwidget.cpp:36
 #, kde-format
@@ -206,13 +206,13 @@ msgstr "لا تغيّر بيانات السّند الفعليّة."
 #: maildirresource.kcfg:27
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "ما إذا كان دعم أنشطة الوكيل ممكّنًا"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: maildirresource.kcfg:31
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "أنشطة الوكيل"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, ConfigWidget)
 #: settings.ui:15

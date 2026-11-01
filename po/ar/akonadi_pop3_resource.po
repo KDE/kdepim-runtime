@@ -1,14 +1,14 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 # Safa Alfulaij <safa1996alfulaij@gmail.com>, 2018.
-# SPDX-FileCopyrightText: 2022, 2024, 2025 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+# SPDX-FileCopyrightText: 2022, 2024-2026 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-26 00:50+0000\n"
-"PO-Revision-Date: 2025-08-09 21:08+0400\n"
+"PO-Revision-Date: 2026-10-31 18:57+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: accountwidget.cpp:90
 #, kde-format
@@ -39,7 +39,7 @@ msgstr[5] "%v دقيقة"
 #: accountwidget.cpp:131
 #, kde-format
 msgid "Activities"
-msgstr ""
+msgstr "الأنشطة"
 
 #: accountwidget.cpp:138 pop3resource.cpp:46
 #, kde-format
@@ -868,13 +868,13 @@ msgstr "يحدّد نوع الاستيثاق لاستخدامه"
 #: settings.kcfg:103
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "ما إذا كان دعم أنشطة الوكيل ممكّنًا"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: settings.kcfg:107
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "أنشطة الوكيل"
 
 #~ msgid "Internal error, number expected: %1"
 #~ msgstr "خطأ داخليّ، كان يتوقع رقم: %1"

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-07 00:49+0000\n"
-"PO-Revision-Date: 2026-08-29 18:25+0400\n"
+"PO-Revision-Date: 2026-10-31 18:57+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Lokalize 25.12.3\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: graphclient/auth/graphoauth.cpp:137
 #, kde-format
@@ -202,18 +202,18 @@ msgstr "ما إذا كانت المعرّفات البعيدة المخزنة ق
 #: jobs/graphbatchjob.cpp:138
 #, kde-format
 msgid "The server did not answer this request"
-msgstr ""
+msgstr "لم يستجب الخادم لهذا الطلب"
 
 #: jobs/graphbatchjob.cpp:171
 #, kde-format
 msgid "HTTP %1"
-msgstr ""
+msgstr "HTTP %1"
 
 #: jobs/graphbatchjob.cpp:193
 #, kde-format
 msgctxt "%1 and %2 are counts, %3 the server error message"
 msgid "%1 of %2 requests failed, first error: %3"
-msgstr ""
+msgstr "فشل %1 من أصل %2 من الطلبات، الخطأ الأول: %3"
 
 #: jobs/graphfetchfoldersjob.cpp:49
 #, kde-format
