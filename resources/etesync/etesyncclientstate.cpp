@@ -130,12 +130,13 @@ void EteSyncClientState::saveAccount()
     etebase_utils_randombytes(encryptionKey.data(), encryptionKey.size());
 
     auto job = new QKeychain::WritePasswordJob(etebaseKeychainFolder);
-    job->setKey(mUsername);
+    job->setKey(keychainKey());
     job->setBinaryData(encryptionKey);
 
     connect(job, &QKeychain::Job::finished, this, [this, encryptionKey, job] {
         if (job->error() != QKeychain::Error::NoError) {
             qCWarning(ETESYNC_LOG) << "Could not store encryption key for account" << mUsername << "in keychain" << job->error();
+            Q_EMIT accountSaved(false, i18nc("@info:status", "Unable to store encryption key: %1", job->errorString()));
             return;
         }
 
@@ -144,16 +145,34 @@ void EteSyncClientState::saveAccount()
         if (etebase_fs_cache_save_account(mEtebaseCache.get(), mAccount.get(), encryptionKey.constData(), encryptionKey.size())) {
             qCDebug(ETESYNC_LOG) << "Could not save account to cache";
             qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_code() << etebase_error_get_message();
+            Q_EMIT accountSaved(false, i18nc("@info:status", "Unable to save account to cache: %1", QString::fromUtf8(etebase_error_get_message())));
+            return;
         }
+
+        Q_EMIT accountSaved(true);
     });
     job->start();
 }
 
 void EteSyncClientState::loadAccount()
 {
+    loadAccountFromKeychain(keychainKey());
+}
+
+void EteSyncClientState::loadAccountFromKeychain(const QString &key)
+{
     auto job = new QKeychain::ReadPasswordJob(etebaseKeychainFolder);
-    job->setKey(mUsername);
-    connect(job, &QKeychain::Job::finished, this, [this, job] {
+    job->setKey(key);
+    connect(job, &QKeychain::Job::finished, this, [this, job, key] {
+        // Older versions stored the encryption key per username only, shared by all
+        // resource instances. Fall back to it and migrate it to the per-instance entry.
+        const bool isLegacyKey = key == mUsername;
+        if (job->error() == QKeychain::Error::EntryNotFound && !isLegacyKey) {
+            qCDebug(ETESYNC_LOG) << "No keychain entry for this instance, trying legacy entry";
+            loadAccountFromKeychain(mUsername);
+            return;
+        }
+
         if (job->error() != QKeychain::Error::NoError) {
             qCWarning(ETESYNC_LOG) << "Unable to read password:" << job->errorString();
             Q_EMIT clientInitialised(false, i18nc("@info:status", "Unable to read password: %1", job->errorString()));
@@ -169,9 +188,28 @@ void EteSyncClientState::loadAccount()
             return;
         }
 
+        if (isLegacyKey) {
+            // Keep the legacy entry, other instances of the same user may still need it
+            qCDebug(ETESYNC_LOG) << "Migrating legacy keychain entry";
+            auto writeJob = new QKeychain::WritePasswordJob(etebaseKeychainFolder);
+            writeJob->setKey(keychainKey());
+            writeJob->setBinaryData(encryptionKey);
+            connect(writeJob, &QKeychain::Job::finished, this, [writeJob] {
+                if (writeJob->error() != QKeychain::Error::NoError) {
+                    qCWarning(ETESYNC_LOG) << "Unable to migrate keychain entry:" << writeJob->errorString();
+                }
+            });
+            writeJob->start();
+        }
+
         Q_EMIT clientInitialised(true);
     });
     job->start();
+}
+
+QString EteSyncClientState::keychainKey() const
+{
+    return mUsername + u'_' + mAgentId;
 }
 
 void EteSyncClientState::deleteKeychainEntry()
@@ -179,7 +217,7 @@ void EteSyncClientState::deleteKeychainEntry()
     qCDebug(ETESYNC_LOG) << "Deleting keychain entry";
 
     auto job = new QKeychain::DeletePasswordJob(etebaseKeychainFolder);
-    job->setKey(mUsername);
+    job->setKey(keychainKey());
     connect(job, &QKeychain::Job::finished, this, [job] {
         if (job->error() != QKeychain::Error::NoError) {
             qCDebug(ETESYNC_LOG) << "Unable to delete keychain entry";

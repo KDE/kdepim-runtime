@@ -72,6 +72,11 @@ public:
         mErrorMessage = errorMessage;
     }
 
+    void setSaveAccountError(const QString &saveAccountError)
+    {
+        mSaveAccountError = saveAccountError;
+    }
+
 private:
     QLineEdit *mUserName = nullptr;
     KPasswordLineEdit *mPassword = nullptr;
@@ -85,4 +90,5 @@ private:
     bool mAccountStatusResult = false;
     int mErrorCode;
     QString mErrorMessage;
+    QString mSaveAccountError;
 };

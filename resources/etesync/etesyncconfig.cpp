@@ -40,7 +40,6 @@ public:
                 if (wizard.exec() == QDialog::Accepted) {
                     qCDebug(ETESYNC_LOG) << "Wizard accepted.";
                     mConfigClientState->saveSettings();
-                    mConfigClientState->saveAccount();
                     if (const auto dlg = qobject_cast<QDialog *>(parentWidget()->window())) {
                         dlg->accept();
                     }

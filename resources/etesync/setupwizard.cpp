@@ -47,12 +47,34 @@ void SetupWizard::manualNext()
         auto job = new LoginJob(mClientState, serverUrl, username, password, this);
         connect(job, &LoginJob::finished, this, [this](KJob *job) {
             qCDebug(ETESYNC_LOG) << "Login finished";
-            static_cast<LoginPage *>(page(W_LoginPage))->setLoginResult(static_cast<LoginJob *>(job)->getLoginResult());
-            static_cast<LoginPage *>(page(W_LoginPage))->setAccountStatusResult(static_cast<LoginJob *>(job)->getAccountStatusResult());
-            static_cast<LoginPage *>(page(W_LoginPage))->setErrorCode(job->error());
-            static_cast<LoginPage *>(page(W_LoginPage))->setErrorMessage(job->errorText());
-            static_cast<LoginPage *>(page(W_LoginPage))->hideProgressBar();
-            nextId() == -1 ? QWizard::accept() : QWizard::next();
+            auto loginJob = static_cast<LoginJob *>(job);
+            auto loginPage = static_cast<LoginPage *>(page(W_LoginPage));
+            loginPage->setLoginResult(loginJob->getLoginResult());
+            loginPage->setAccountStatusResult(loginJob->getAccountStatusResult());
+            loginPage->setErrorCode(job->error());
+            loginPage->setErrorMessage(job->errorText());
+            loginPage->setSaveAccountError({});
+            if (!loginJob->getLoginResult() || !loginJob->getAccountStatusResult()) {
+                loginPage->hideProgressBar();
+                nextId() == -1 ? QWizard::accept() : QWizard::next();
+                return;
+            }
+            // The account has to be stored before the wizard is closed, as the
+            // resource loads it from the cache right after configuration
+            connect(
+                mClientState,
+                &EteSyncClientState::accountSaved,
+                this,
+                [this, loginPage](bool successful, const QString &error) {
+                    qCDebug(ETESYNC_LOG) << "Account saved" << successful;
+                    if (!successful) {
+                        loginPage->setSaveAccountError(error);
+                    }
+                    loginPage->hideProgressBar();
+                    nextId() == -1 ? QWizard::accept() : QWizard::next();
+                },
+                Qt::SingleShotConnection);
+            mClientState->saveAccount();
         });
         job->start();
         return;
@@ -145,6 +167,11 @@ bool LoginPage::validatePage()
     if (!mAccountStatusResult) {
         qCDebug(ETESYNC_LOG) << "accountStatus error" << mErrorCode;
         mLoginLabel->setText(i18n(charArrFromQString(mErrorMessage)));
+        return false;
+    }
+    if (!mSaveAccountError.isEmpty()) {
+        qCDebug(ETESYNC_LOG) << "saveAccount error" << mSaveAccountError;
+        mLoginLabel->setText(mSaveAccountError);
         return false;
     }
     return true;

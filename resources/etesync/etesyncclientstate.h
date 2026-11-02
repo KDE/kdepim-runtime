@@ -63,9 +63,13 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void clientInitialised(bool successful, const QString &error = {});
+    void accountSaved(bool successful, const QString &error = {});
     void tokenRefreshed(bool successful);
 
 private:
+    void loadAccountFromKeychain(const QString &key);
+    [[nodiscard]] QString keychainKey() const;
+
     EtebaseClientPtr mClient;
     EtebaseAccountPtr mAccount;
     EtebaseFileSystemCachePtr mEtebaseCache;

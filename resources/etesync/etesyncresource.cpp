@@ -322,17 +322,22 @@ void EteSyncResource::onReloadConfiguration()
         mSettings->load();
     }
     if (mClientState) {
+        // The account is loaded asynchronously, validate credentials once that is done
+        connect(
+            mClientState.get(),
+            &EteSyncClientState::clientInitialised,
+            this,
+            [this](bool successful) {
+                mCredentialsRequired = !successful;
+                setOnline(successful);
+                if (successful) {
+                    qCDebug(ETESYNC_LOG) << "Account is valid. Going online.";
+                } else {
+                    qCWarning(ETESYNC_LOG) << "Invalid or missing account after config reload!";
+                }
+            },
+            Qt::SingleShotConnection);
         mClientState->init();
-
-        // Validate credentials on reload
-        mCredentialsRequired = mClientState->account() == nullptr;
-        setOnline(!mCredentialsRequired);
-        if (mClientState->account()) {
-            qCDebug(ETESYNC_LOG) << "Account is valid. Going online.";
-            synchronize();
-        } else {
-            qCWarning(ETESYNC_LOG) << "Invalid or missing account after config reload!";
-        }
     } else {
         qCWarning(ETESYNC_LOG) << "The client state is invalid after config reload";
     }
