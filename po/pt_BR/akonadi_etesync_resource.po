@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-30 00:54+0000\n"
+"POT-Creation-Date: 2026-11-03 00:55+0000\n"
 "PO-Revision-Date: 2025-07-23 19:03-0300\n"
 "Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -30,13 +30,27 @@ msgctxt "@info:status"
 msgid "Etebase error when initializing client: %1"
 msgstr "Erro etebase ao iniciar o cliente: %1"
 
-#: etesyncclientstate.cpp:159
+#: etesyncclientstate.cpp:139
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Unable to read password: %1"
+msgctxt "@info:status"
+msgid "Unable to store encryption key: %1"
+msgstr "Não foi possível ler a senha: %1"
+
+#: etesyncclientstate.cpp:148
+#, kde-format
+msgctxt "@info:status"
+msgid "Unable to save account to cache: %1"
+msgstr ""
+
+#: etesyncclientstate.cpp:178
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
 msgstr "Não foi possível ler a senha: %1"
 
-#: etesyncclientstate.cpp:168
+#: etesyncclientstate.cpp:187
 #, kde-format
 msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
@@ -101,23 +115,23 @@ msgstr "Suas credenciais do EteSync foram alteradas ou estão faltando."
 msgid "Cannot retrieve items - account is null"
 msgstr "Não foi possível obter os itens - a conta é nula"
 
-#: etesyncresource.cpp:264 etesyncresource.cpp:394 etesyncresource.cpp:467
-#: etesyncresource.cpp:525 etesyncresource.cpp:655 etesyncresource.cpp:713
+#: etesyncresource.cpp:264 etesyncresource.cpp:399 etesyncresource.cpp:472
+#: etesyncresource.cpp:530 etesyncresource.cpp:660 etesyncresource.cpp:718
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "Não foi possível obter o etesyncCollection do cache '%1'"
 
-#: etesyncresource.cpp:422
+#: etesyncresource.cpp:427
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
 msgstr "Não foi possível criar um novo etesyncItem '%1'"
 
-#: etesyncresource.cpp:474 etesyncresource.cpp:532
+#: etesyncresource.cpp:479 etesyncresource.cpp:537
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
 msgstr "Não foi possível obter o etesyncItem do cache '%1'"
 
-#: etesyncresource.cpp:594
+#: etesyncresource.cpp:599
 #, kde-format
 msgid "Could not create new etesyncCollection"
 msgstr "Não foi possível criar um novo etesyncCollection"
@@ -169,38 +183,38 @@ msgctxt "@title:window"
 msgid "EteSync configuration wizard"
 msgstr "Assistente de configuração do EteSync"
 
-#: setupwizard.cpp:66
+#: setupwizard.cpp:88
 #, kde-format
 msgid "Login Credentials"
 msgstr "Credenciais da conta"
 
-#: setupwizard.cpp:67
+#: setupwizard.cpp:89
 #, kde-format
 msgid "Enter your credentials to login to the EteSync server"
 msgstr "Digite as suas credenciais para se autenticar no servidor EteSync"
 
-#: setupwizard.cpp:76
+#: setupwizard.cpp:98
 #, kde-format
 msgid "Username:"
 msgstr "Nome de usuário:"
 
-#: setupwizard.cpp:82
+#: setupwizard.cpp:104
 #, kde-format
 msgid "Password:"
 msgstr "Senha:"
 
-#: setupwizard.cpp:85
+#: setupwizard.cpp:107
 #, kde-format
 msgctxt "@option:check"
 msgid "Advanced settings"
 msgstr "Configurações avançadas"
 
-#: setupwizard.cpp:90
+#: setupwizard.cpp:112
 #, kde-format
 msgid "Server:"
 msgstr "Servidor:"
 
-#: setupwizard.cpp:103
+#: setupwizard.cpp:125
 #, kde-format
 msgid ""
 "🛈 The password field is empty because EteSync does not store it for security "
@@ -209,7 +223,7 @@ msgstr ""
 "🛈 O campo da senha está vazio pois o EteSync não o armazena por motivos de "
 "segurança."
 
-#: setupwizard.cpp:135
+#: setupwizard.cpp:157
 #, kde-format
 msgid ""
 "Please ensure that the server URL is correct. The URL should start with "
@@ -218,7 +232,7 @@ msgstr ""
 "Certifique-se de que a URL do servidor está correta. A URL deve iniciar com "
 "http:// ou https://."
 
-#: setupwizard.cpp:137
+#: setupwizard.cpp:159
 #, kde-format
 msgid ""
 "Could not connect to the server. Please ensure that the server URL is "
@@ -227,7 +241,7 @@ msgstr ""
 "Não foi possível conectar ao servidor. Certifique-se de que a URL do "
 "servidor está correta."
 
-#: setupwizard.cpp:139
+#: setupwizard.cpp:161
 #, kde-format
 msgid "EteSync server not found. Please ensure that the server URL is correct."
 msgstr ""
