@@ -201,8 +201,7 @@ endif()
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ewsresource.desktop.cmake ${CMAKE_CURRENT_BINARY_DIR}/ewsresource.desktop)
 
 if(BUILD_TESTING)
-    #add_subdirectory(test)
-    message(STATUS "ews test was disable in qt6 XmlPattern was removed in qt6")
+    add_subdirectory(test)
 endif()
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ewsresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
