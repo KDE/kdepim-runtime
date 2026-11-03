@@ -282,7 +282,7 @@ void POP3Resource::doStateStep()
     case Connect:
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Connect ========================";
         Q_ASSERT(!mPopSession);
-        mPopSession = new KPOP::Session(mSettings.toPop3Settings(), mPassword);
+        mPopSession = new KPOP::Session(mSettings.toPop3Settings());
         mPopSession->setUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));
         advanceState(Login);
         break;
@@ -290,6 +290,7 @@ void POP3Resource::doStateStep()
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Login ==========================";
 
         auto loginJob = new KPOP::LoginJob(mPopSession);
+        loginJob->setPassword(mPassword);
         connect(loginJob, &KPOP::LoginJob::result, this, &POP3Resource::loginJobResult);
         loginJob->start();
         break;
