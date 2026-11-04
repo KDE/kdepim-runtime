@@ -32,47 +32,33 @@ void Settings::setResourceId(const QString &resourceIdentifier)
     mResourceId = resourceIdentifier;
 }
 
-Pop3Settings::AuthenticationMethod Settings::mapTransportAuthToKpop(MailTransport::Transport::EnumAuthenticationType authType)
+KPOP::LoginJob::AuthenticationMethod Settings::mapTransportAuthToKpop(MailTransport::Transport::EnumAuthenticationType authType)
 {
     switch (authType) {
     case MailTransport::Transport::APOP:
-        return Pop3Settings::APOP;
+        return KPOP::LoginJob::APOP;
     case MailTransport::Transport::ANONYMOUS:
-        return Pop3Settings::Anonymous;
+        return KPOP::LoginJob::Anonymous;
     case MailTransport::Transport::PLAIN:
-        return Pop3Settings::Plain;
+        return KPOP::LoginJob::Plain;
     case MailTransport::Transport::NTLM:
-        return Pop3Settings::NTLM;
+        return KPOP::LoginJob::NTLM;
     case MailTransport::Transport::LOGIN:
-        return Pop3Settings::Login;
+        return KPOP::LoginJob::Login;
     case MailTransport::Transport::GSSAPI:
-        return Pop3Settings::GSSAPI;
+        return KPOP::LoginJob::GSSAPI;
     case MailTransport::Transport::DIGEST_MD5:
-        return Pop3Settings::DigestMD5;
+        return KPOP::LoginJob::DigestMD5;
     case MailTransport::Transport::CRAM_MD5:
-        return Pop3Settings::CramMD5;
+        return KPOP::LoginJob::CramMD5;
     case MailTransport::Transport::CLEAR:
-        return Pop3Settings::Clear;
+        return KPOP::LoginJob::Clear;
     case MailTransport::Transport::XOAUTH2:
-        return Pop3Settings::XOAuth2;
+        return KPOP::LoginJob::XOAuth2;
     default:
-        qWarning() << "mapping from Transport::EnumAuthenticationType -> KPOP::Pop3Settings::AuthenticationMethod not possible" << authType;
-        return Pop3Settings::Clear; // dummy value, shouldn't get here.
+        qWarning() << "mapping from Transport::EnumAuthenticationType -> KPOP::LoginJob::AuthenticationMethod not possible" << authType;
+        return KPOP::LoginJob::Clear; // dummy value, shouldn't get here.
     }
-}
-
-Pop3Settings Settings::toPop3Settings() const
-{
-    Pop3Settings result;
-    result.setLogin(this->login());
-    result.setHost(this->host());
-    result.setPort(this->port());
-    result.setAuthenticationMethod(mapTransportAuthToKpop(static_cast<MailTransport::Transport::EnumAuthenticationType>(this->authenticationMethod())));
-    result.setUseSSL(this->useSSL());
-    result.setUseTLS(this->useTLS());
-    result.setPipelining(this->pipelining());
-    result.setUseProxy(this->useProxy());
-    return result;
 }
 
 void Settings::setPassword(const QString &password)

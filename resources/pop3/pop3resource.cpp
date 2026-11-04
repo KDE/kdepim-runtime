@@ -282,7 +282,8 @@ void POP3Resource::doStateStep()
     case Connect:
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Connect ========================";
         Q_ASSERT(!mPopSession);
-        mPopSession = new KPOP::Session(mSettings.toPop3Settings());
+        mPopSession = new KPOP::Session();
+        mPopSession->setPipelining(mSettings.pipelining());
         mPopSession->setUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));
         advanceState(Login);
         break;
@@ -290,7 +291,14 @@ void POP3Resource::doStateStep()
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Login ==========================";
 
         auto loginJob = new KPOP::LoginJob(mPopSession);
+        loginJob->setLogin(mSettings.login());
         loginJob->setPassword(mPassword);
+        loginJob->setHost(mSettings.host());
+        loginJob->setPort(mSettings.port());
+        loginJob->setAuthenticationMethod(mSettings.mapTransportAuthToKpop(static_cast<Transport::EnumAuthenticationType>(mSettings.authenticationMethod())));
+        loginJob->setUseSSL(mSettings.useSSL());
+        loginJob->setUseTLS(mSettings.useTLS());
+        loginJob->setUseProxy(mSettings.useProxy());
         connect(loginJob, &KPOP::LoginJob::result, this, &POP3Resource::loginJobResult);
         loginJob->start();
         break;
