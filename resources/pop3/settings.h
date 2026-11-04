@@ -8,6 +8,7 @@
 
 #include "settingsbase.h"
 
+#include <KPOP/LoginJob>
 #include <MailTransport/Transport>
 #include <kpop/pop3settings.h>
 #include <qwindowdefs.h>
@@ -32,8 +33,7 @@ public:
     void setWindowId(WId id);
     void setResourceId(const QString &resourceIdentifier);
 
-    [[nodiscard]] static Pop3Settings::AuthenticationMethod mapTransportAuthToKpop(MailTransport::Transport::EnumAuthenticationType authType);
-    [[nodiscard]] Pop3Settings toPop3Settings() const;
+    [[nodiscard]] static KPOP::LoginJob::AuthenticationMethod mapTransportAuthToKpop(MailTransport::Transport::EnumAuthenticationType authType);
 
 public Q_SLOTS:
     Q_SCRIPTABLE void setPassword(const QString &password);
