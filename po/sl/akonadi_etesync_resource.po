@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-11-03 00:55+0000\n"
-"PO-Revision-Date: 2025-06-27 06:11+0200\n"
+"PO-Revision-Date: 2026-11-03 07:20+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.10\n"
 
 #: etesyncclientstate.cpp:33
 #, kde-format
@@ -31,18 +31,16 @@ msgid "Etebase error when initializing client: %1"
 msgstr "Napaka etebase pri inicializaciji odjemalca: %1"
 
 #: etesyncclientstate.cpp:139
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Unable to read password: %1"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unable to store encryption key: %1"
-msgstr "Ni mogoče prebrati gesla: %1"
+msgstr "Ni mogoče shraniti ključa za šifriranje: %1"
 
 #: etesyncclientstate.cpp:148
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to save account to cache: %1"
-msgstr ""
+msgstr "Ni mogoče shraniti računa v predpomnilnik: %1"
 
 #: etesyncclientstate.cpp:178
 #, kde-format

@@ -4,13 +4,13 @@
 # This file is distributed under the same license as the kdepim-runtime package.
 #
 # Automatically generated, 2022.
-# SPDX-FileCopyrightText: 2023, 2024, 2025 Kisaragi Hiu <mail@kisaragi-hiu.com>
+# SPDX-FileCopyrightText: 2023-2026 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-11-03 00:55+0000\n"
-"PO-Revision-Date: 2025-07-01 19:57+0900\n"
+"PO-Revision-Date: 2026-11-03 22:08+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 25.07.70\n"
+"X-Generator: Lokalize 26.11.70\n"
 
 #: etesyncclientstate.cpp:33
 #, kde-format
@@ -33,18 +33,16 @@ msgid "Etebase error when initializing client: %1"
 msgstr "Etebase 初始化用戶端時發生錯誤：%1"
 
 #: etesyncclientstate.cpp:139
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Unable to read password: %1"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unable to store encryption key: %1"
-msgstr "無法讀取密碼：%1"
+msgstr "無法儲存加密金鑰：%1"
 
 #: etesyncclientstate.cpp:148
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to save account to cache: %1"
-msgstr ""
+msgstr "無法將帳號儲存到快取：%1"
 
 #: etesyncclientstate.cpp:178
 #, kde-format

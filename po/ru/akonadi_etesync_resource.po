@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-11-03 00:55+0000\n"
-"PO-Revision-Date: 2026-01-28 20:04+0200\n"
-"Last-Translator: Alexander Yavorskiy <kekcuha@gmail.com>\n"
+"PO-Revision-Date: 2026-11-03 07:44+0200\n"
+"Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -32,18 +32,16 @@ msgid "Etebase error when initializing client: %1"
 msgstr "Ошибка при инициализации клиента Etebase: %1"
 
 #: etesyncclientstate.cpp:139
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Unable to read password: %1"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unable to store encryption key: %1"
-msgstr "Не удалось прочитать пароль: %1"
+msgstr "Не удалось сохранить ключ шифрования: %1"
 
 #: etesyncclientstate.cpp:148
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to save account to cache: %1"
-msgstr ""
+msgstr "Не удалось сохранить учётную запись в кэше: %1"
 
 #: etesyncclientstate.cpp:178
 #, kde-format

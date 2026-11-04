@@ -4,20 +4,20 @@
 # Frank Weng (a.k.a. Franklin) <franklin at goodhorse dot idv dot tw>, 2009, 2010.
 # Franklin Weng <franklin@goodhorse.idv.tw>, 2010, 2012.
 # Jeff Huang <s8321414@gmail.com>, 2016.
-# SPDX-FileCopyrightText: 2023, 2024 Kisaragi Hiu <mail@kisaragi-hiu.com>
+# SPDX-FileCopyrightText: 2023-2024, 2026 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-26 00:50+0000\n"
-"PO-Revision-Date: 2024-08-18 00:47+0900\n"
+"PO-Revision-Date: 2026-11-03 22:07+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.04.70\n"
+"X-Generator: Lokalize 26.11.70\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab_3)
@@ -173,13 +173,13 @@ msgstr "不要變更實際的後端資料。"
 #: contactsresource.kcfg:23
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "代理程式對於活動的支援是否已啟用"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: contactsresource.kcfg:27
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "代理程式的活動"
 
 #: contactssettingswidget.cpp:40
 #, kde-format

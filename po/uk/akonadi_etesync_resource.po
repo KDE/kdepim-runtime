@@ -3,13 +3,13 @@
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2024, 2025.
+# SPDX-FileCopyrightText: 2020, 2024, 2025, 2026 Yuri Chornoivan <yurchor@ukr.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_etesync_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-11-03 00:55+0000\n"
-"PO-Revision-Date: 2025-06-27 11:37+0300\n"
+"PO-Revision-Date: 2026-11-03 08:26+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Lokalize 23.04.3\n"
+"X-Generator: Lokalize 25.12.1\n"
 
 #: etesyncclientstate.cpp:33
 #, kde-format
@@ -33,18 +33,16 @@ msgid "Etebase error when initializing client: %1"
 msgstr "Помилка Etebase при ініціалізації клієнта: %1"
 
 #: etesyncclientstate.cpp:139
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Unable to read password: %1"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unable to store encryption key: %1"
-msgstr "Не вдалося прочитати пароль: %1"
+msgstr "Не вдалося зберегти ключ шифрування: %1"
 
 #: etesyncclientstate.cpp:148
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to save account to cache: %1"
-msgstr ""
+msgstr "Не вдалося зберегти обліковий запис до кешу: %1"
 
 #: etesyncclientstate.cpp:178
 #, kde-format

@@ -1,21 +1,21 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022-2026 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-26 00:50+0000\n"
-"PO-Revision-Date: 2025-04-26 19:49+0300\n"
-"Last-Translator: Emir SARI <emir_sari@îcloud.com>\n"
+"PO-Revision-Date: 2026-11-03 21:52+0300\n"
+"Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.04.0\n"
+"X-Generator: Lokalize 26.08.0\n"
 "X-POOTLE-MTIME: 1502203052.000000\n"
 
 #: icaldirresource.cpp:125
@@ -62,13 +62,13 @@ msgstr "Gerçek arka uç verisini değiştirmeyin."
 #: icaldirresource.kcfg:24
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Aracının etkinlikler desteğinin etkinleştirilip etkinleştirilmediği"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: icaldirresource.kcfg:28
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Aracının etkinlikleri"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: icaldirsagentsettingswidget.ui:33
@@ -80,7 +80,7 @@ msgstr "Dizin"
 #: icaldirsagentsettingswidget.ui:39
 #, kde-format
 msgid "Di&rectory:"
-msgstr "Di%zin:"
+msgstr "&Dizin:"
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: icaldirsagentsettingswidget.ui:58

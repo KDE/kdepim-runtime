@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-11-03 00:55+0000\n"
-"PO-Revision-Date: 2026-02-05 16:06+0100\n"
-"Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2026-11-04 00:32+0100\n"
+"Last-Translator: Libor Filípek <libor.filipek@gmail.com>\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 26.08.2\n"
 
 #: etesyncclientstate.cpp:33
 #, kde-format
@@ -31,18 +31,16 @@ msgid "Etebase error when initializing client: %1"
 msgstr "Chyba Etebase při inicializaci klienta: %1"
 
 #: etesyncclientstate.cpp:139
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Unable to read password: %1"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unable to store encryption key: %1"
-msgstr "Nelze přečíst heslo: %1"
+msgstr "Nelze uložit šifrovací klíč pro %1."
 
 #: etesyncclientstate.cpp:148
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to save account to cache: %1"
-msgstr ""
+msgstr "Nelze uložit účet do mezipaměti: %1"
 
 #: etesyncclientstate.cpp:178
 #, kde-format

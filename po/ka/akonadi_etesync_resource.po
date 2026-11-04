@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-11-03 00:55+0000\n"
-"PO-Revision-Date: 2025-06-27 05:13+0200\n"
+"PO-Revision-Date: 2026-11-03 03:38+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.10\n"
 
 #: etesyncclientstate.cpp:33
 #, kde-format
@@ -31,18 +31,16 @@ msgid "Etebase error when initializing client: %1"
 msgstr "Etebase-ის შეცდომა კლიენტის ინიციალიზაციისას: %1"
 
 #: etesyncclientstate.cpp:139
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Unable to read password: %1"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unable to store encryption key: %1"
-msgstr "პაროლის წაკითხვის შეცდომა: %1"
+msgstr "დაშიფვრის გასაღების შენახვა შეუძლებელია: %1"
 
 #: etesyncclientstate.cpp:148
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to save account to cache: %1"
-msgstr ""
+msgstr "ანგარიშების კეშში შენახვა შეუძლებელია: %1"
 
 #: etesyncclientstate.cpp:178
 #, kde-format
