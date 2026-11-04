@@ -26,6 +26,7 @@ Name[sv]=Microsoft 365 (Graph)
 Name[tr]=Microsoft 365 (Graph)
 Name[uk]=Microsoft 365 (Graph)
 Name[zh_CN]=Microsoft 365 (Graph)
+Name[zh_TW]=Microsoft 365 (Graph)
 Comment=Provides access to mail, calendar, tasks and contacts of a Microsoft 365 / Exchange Online account using the Microsoft Graph API
 Comment[ar]=يتيح الوصول إلى البريد والتقويم والمهام وجهات الاتصال لحساب Microsoft 365 / Exchange Online باستخدام واجهة برمجة تطبيقات Microsoft Graph
 Comment[bg]=Достъп до поща, календар, задачи и контакти от акаунт Microsoft 365 / Exchange Online чрез Microsoft Graph API
