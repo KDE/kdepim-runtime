@@ -1,0 +1,6 @@
+{
+    "X-Akonadi-PluginType": "AgentConfig",
+    "X-Akonadi-Library": "vcardconfigquick",
+    "X-Akonadi-AgentConfig-Type": "akonadi_vcard_resource",
+    "X-Akonadi-ConfigUi": "Quick"
+}

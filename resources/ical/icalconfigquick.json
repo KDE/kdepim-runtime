@@ -1,0 +1,6 @@
+{
+    "X-Akonadi-PluginType": "AgentConfig",
+    "X-Akonadi-Library": "icalconfigquick",
+    "X-Akonadi-AgentConfig-Type": "akonadi_ical_resource",
+    "X-Akonadi-ConfigUi": "Quick"
+}

@@ -104,3 +104,13 @@ if(HAVE_ACTIVITY_SUPPORT)
     )
 endif()
 
+include(../shared/singlefileresource/SingleFileResourceConfigQuick.cmake)
+add_singlefileresource_config_quick(mboxconfigquick
+    URI org.kde.akonadi.mboxconfig
+    SOURCES
+        mboxconfigquick.cpp
+        mboxconfigquick.h
+        ${mboxresource_common_SRCS}
+    QML_FILES MBoxConfigurationPage.qml
+    LINK_LIBRARIES KPim6::Mbox
+)

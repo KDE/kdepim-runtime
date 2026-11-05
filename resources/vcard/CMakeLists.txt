@@ -66,3 +66,12 @@ target_link_libraries(
 if(HAVE_ACTIVITY_SUPPORT)
     target_link_libraries(vcardconfig KPim6::PimCommonActivities)
 endif()
+
+include(../shared/singlefileresource/SingleFileResourceConfigQuick.cmake)
+add_singlefileresource_config_quick(vcardconfigquick
+    URI org.kde.akonadi.vcardconfig
+    SOURCES
+        vcardconfigquick.cpp
+        vcardconfigquick.h
+        ${vcardresource_common_SRCS}
+)

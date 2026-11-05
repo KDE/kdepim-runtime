@@ -155,6 +155,9 @@ find_package(
     REQUIRED
         Network
         Widgets
+        Qml
+        Quick
+        QuickControls2
         Test
         DBus
         NetworkAuth
@@ -189,6 +192,8 @@ find_package(KF6Notifications ${KF_MIN_VERSION} CONFIG REQUIRED) # pop3, ews
 find_package(KF6KCMUtils ${KF_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF6DAV ${KF_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF6I18n ${KF_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF6Kirigami ${KF_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF6KirigamiAddons 1.8 CONFIG REQUIRED)
 
 find_package(KF6TextCustomEditor ${KTEXTADDONS_MIN_VERSION} CONFIG REQUIRED)
 

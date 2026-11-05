@@ -79,3 +79,12 @@ target_link_libraries(
     KPim6::AkonadiCore
     akonadi-singlefileresource-widget
 )
+
+include(../shared/singlefileresource/SingleFileResourceConfigQuick.cmake)
+add_singlefileresource_config_quick(icalconfigquick
+    URI org.kde.akonadi.icalconfig
+    SOURCES
+        icalconfigquick.cpp
+        icalconfigquick.h
+        ${icalresource_common_SRCS}
+)

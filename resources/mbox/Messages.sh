@@ -2,4 +2,4 @@
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileCopyrightText: none
 $EXTRACTRC `find . -name \*.ui` `find . -name \*.kcfg` >> rc.cpp || exit 11
-$XGETTEXT *.cpp -o $podir/akonadi_mbox_resource.pot
+$XGETTEXT *.cpp *.qml -o $podir/akonadi_mbox_resource.pot
