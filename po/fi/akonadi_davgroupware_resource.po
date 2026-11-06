@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-27 01:00+0000\n"
-"PO-Revision-Date: 2026-08-25 20:02+0300\n"
+"PO-Revision-Date: 2026-10-06 12:46+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -214,10 +214,9 @@ msgid "Unable to remove collection: %1"
 msgstr "Kokoelmaa ei voida poistaa: %1"
 
 #: davgroupwareresource.cpp:1158
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to retrieve collection: %1"
-msgstr "Kokoelmia ei voida noutaa: %1"
+msgstr "Kokoelmaa ei voitu noutaa: %1"
 
 #: davgroupwareresource.cpp:1173
 #, kde-format
