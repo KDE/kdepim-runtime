@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=PimDataProvider
+Comment=Agent to manage akonadi calendars via dbus
+Type=AkonadiAgent
+Exec=akonadi_pimdataprovider_agent
+Icon=system-run
+
+X-Akonadi-MimeTypes=text/calendar,application/x-vnd.akonadi.calendar.event,application/x-vnd.akonadi.calendar.todo,application/x-vnd.akonadi.calendar.journal,application/x-vnd.akonadi.calendar.freebusy,text/directory
+X-Akonadi-Capabilities=Unique,Autostart
+X-Akonadi-Identifier=akonadi_pimdataprovider_agent
