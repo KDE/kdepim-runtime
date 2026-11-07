@@ -19,7 +19,7 @@ repos:
   - id: destroyed-symlinks
   - id: check-executables-have-shebangs
 - repo: https://github.com/pre-commit/mirrors-clang-format
-  rev: v22.1.5
+  rev: v23.1.5
   hooks:
   - id: clang-format
     exclude: ^(templates/akonadiresource/src/|templates/akonadiserializer/src/)
@@ -27,14 +27,14 @@ repos:
     args: ["--style=file:.clang-format-pre-commit"]
 - repo: https://github.com/astral-sh/ruff-pre-commit
   # Ruff version.
-  rev: v0.15.12
+  rev: v0.17.4
   hooks:
     # Run the linter.
     - id: ruff
     # Run the formatter.
     - id: ruff-format
 - repo: https://github.com/codespell-project/codespell
-  rev: v2.4.2
+  rev: v2.4.3
   hooks:
   - id: codespell
 - repo: https://github.com/BlankSpruce/gersemi
@@ -42,17 +42,17 @@ repos:
   hooks:
   - id: gersemi
 - repo: https://github.com/DavidAnson/markdownlint-cli2
-  rev: v0.22.1
+  rev: v0.24.0
   hooks:
   - id: markdownlint-cli2
     files: \.(md|mdown|markdown)$
     language_version: lts
 - repo: https://github.com/scop/pre-commit-shfmt
-  rev: v3.13.1-1
+  rev: v3.14.1-1
   hooks:
   - id: shfmt
 - repo: https://github.com/shellcheck-py/shellcheck-py
-  rev: v0.11.0.1
+  rev: v0.11.0.1-1
   hooks:
   - id: shellcheck
 #- repo: https://github.com/fsfe/reuse-tool
