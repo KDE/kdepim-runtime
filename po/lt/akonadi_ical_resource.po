@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-26 00:50+0000\n"
-"PO-Revision-Date: 2026-10-12 15:48+0300\n"
+"PO-Revision-Date: 2026-11-06 15:42+0200\n"
 "Last-Translator: Jonas Česnauskas <upynas@gmail.com>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
 "Language: lt\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
-"X-Generator: Poedit 3.9\n"
+"X-Generator: Poedit 3.10\n"
 
 #: icalresource.cpp:53 icalresource.cpp:130 icalresource.cpp:172
 #: icalresource.cpp:212
@@ -25,9 +25,9 @@ msgid "Calendar not loaded."
 msgstr "Kalendorius neįkeltas."
 
 #: icalresource.cpp:65
-#, fuzzy, kde-format
+#, kde-format
 msgid "Incidence with uid '%1' not found."
-msgstr "Paplitimas su uid „%1“ nerastas."
+msgstr "Reiškinys, kurio uid „%1“, nerastas."
 
 #: icalresource.cpp:198
 #, kde-format
@@ -84,13 +84,13 @@ msgstr "Automatinio atnaujinimo laikotarpis, minutėmis."
 #: icalresource.kcfg:36
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Ar įjungtas agento veiklų palaikymas"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: icalresource.kcfg:40
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Veiklų agentas"
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Laiko tarpas tarp Automatinio įrašymo (minutėmis)."
