@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-11-03 00:55+0000\n"
-"PO-Revision-Date: 2026-01-12 10:38+0100\n"
+"PO-Revision-Date: 2026-11-03 10:11+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
@@ -34,18 +34,16 @@ msgid "Etebase error when initializing client: %1"
 msgstr "S'ha produït un error d'«etebase» en restablir el client: %1"
 
 #: etesyncclientstate.cpp:139
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Unable to read password: %1"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unable to store encryption key: %1"
-msgstr "No s'ha pogut llegir la contrasenya: %1"
+msgstr "No s'ha pogut emmagatzemar la clau d'encriptació: %1"
 
 #: etesyncclientstate.cpp:148
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to save account to cache: %1"
-msgstr ""
+msgstr "No s'ha pogut guardar el compte a la memòria cau: %1"
 
 #: etesyncclientstate.cpp:178
 #, kde-format
