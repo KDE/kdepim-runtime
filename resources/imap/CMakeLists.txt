@@ -67,7 +67,6 @@ set(imapresource_LIB_SRCS
     imapidlemanager.cpp
     resourcestate.cpp
     collectionmetadatahelper.cpp
-    replacemessagejob.cpp
     addcollectiontask.h
     additemtask.h
     batchfetcher.h
@@ -98,7 +97,6 @@ set(imapresource_LIB_SRCS
     imapidlemanager.h
     resourcestate.h
     collectionmetadatahelper.h
-    replacemessagejob.h
     ${imap_common_SRCS}
 )
 
