@@ -324,31 +324,22 @@ void POP3Resource::doStateStep()
         // Determine which mails we want to download. Those are all mails which are
         // currently on their server, minus the ones we have already downloaded (we
         // remember which UIDs we have downloaded in the settings)
-        QList<int> idsToDownload = mIdsToSizeMap.keys();
+        mIdsToMessagesToDownloadMap = QHash(mIdsToMessagesMap);
         const QStringList alreadyDownloadedUIDs = mSettings.seenUidList();
         for (const QString &uidOnServer : std::as_const(mIdsToUidsMap)) {
             if (alreadyDownloadedUIDs.contains(uidOnServer)) {
                 const int idOfUIDOnServer = mUidsToIdsMap.value(uidOnServer, -1);
                 Q_ASSERT(idOfUIDOnServer != -1);
-                idsToDownload.removeAll(idOfUIDOnServer);
+                mIdsToMessagesToDownloadMap.remove(idOfUIDOnServer);
             }
         }
-        mIdsToDownload = idsToDownload;
-        qCDebug(POP3RESOURCE_LOG) << "We are going to download" << mIdsToDownload.size() << "messages";
+        qCDebug(POP3RESOURCE_LOG) << "We are going to download" << mIdsToMessagesToDownloadMap.size() << "messages";
 
-        // For proper progress, the job needs to know the sizes of the messages, so
-        // put them into a list here
-        QList<int> sizesOfMessagesToDownload;
-        sizesOfMessagesToDownload.reserve(idsToDownload.count());
-        for (int id : std::as_const(idsToDownload)) {
-            sizesOfMessagesToDownload.append(mIdsToSizeMap.value(id));
-        }
-
-        if (mIdsToDownload.empty()) {
+        if (mIdsToMessagesToDownloadMap.empty()) {
             advanceState(CheckRemovingMessage);
         } else {
             auto fetchJob = new KPOP::FetchJob(mPopSession);
-            fetchJob->setFetchIds(idsToDownload, sizesOfMessagesToDownload);
+            fetchJob->setFetchMessages(mIdsToMessagesToDownloadMap.values());
             connect(fetchJob, &KPOP::FetchJob::result, this, &POP3Resource::fetchJobResult);
             connect(fetchJob, &KPOP::FetchJob::messageFinished, this, &POP3Resource::messageFinished);
             connect(fetchJob, &KPOP::FetchJob::processedAmountChanged, this, &POP3Resource::messageDownloadProgress);
@@ -500,9 +491,12 @@ void POP3Resource::listJobResult(KJob *job)
     } else {
         auto listJob = qobject_cast<KPOP::ListJob *>(job);
         Q_ASSERT(listJob);
-        mIdsToSizeMap = listJob->idList();
+        mIdsToMessagesMap.clear();
+        for (const auto &message : listJob->messageList()) {
+            mIdsToMessagesMap.insert(message.id(), message);
+        }
         mIdsToSaveValid = false;
-        qCDebug(POP3RESOURCE_LOG) << "IdsToSizeMap size" << mIdsToSizeMap.size();
+        qCDebug(POP3RESOURCE_LOG) << "IdsToSizeMap size" << mIdsToMessagesMap.size();
         advanceState(UIDList);
     }
 }
@@ -519,7 +513,7 @@ void POP3Resource::uidListJobResult(KJob *job)
         qCDebug(POP3RESOURCE_LOG) << "IdsToUidsMap size" << mIdsToUidsMap.size();
         qCDebug(POP3RESOURCE_LOG) << "UidsToIdsMap size" << mUidsToIdsMap.size();
 
-        mUidListValid = !mIdsToUidsMap.isEmpty() || mIdsToSizeMap.isEmpty();
+        mUidListValid = !mIdsToUidsMap.isEmpty() || mIdsToMessagesMap.isEmpty();
         if (mSettings.leaveOnServer() && !mUidListValid) {
             // FIXME: this needs a proper parent window
             KMessageBox::error(nullptr,
@@ -543,10 +537,10 @@ void POP3Resource::fetchJobResult(KJob *job)
     } else {
         qCDebug(POP3RESOURCE_LOG) << "Downloaded" << mDownloadedIDs.size() << "mails";
 
-        if (!mIdsToDownload.isEmpty()) {
+        if (!mIdsToMessagesToDownloadMap.isEmpty()) {
             qCWarning(POP3RESOURCE_LOG) << "We did not download all messages, there are still some remaining "
                                            "IDs, even though we requested their download:"
-                                        << mIdsToDownload;
+                                        << mIdsToMessagesToDownloadMap.keys();
         }
 
         advanceState(Save);
@@ -577,7 +571,7 @@ void POP3Resource::messageFinished(int messageId, std::shared_ptr<KMime::Message
     connect(itemCreateJob, &ItemCreateJob::result, this, &POP3Resource::itemCreateJobResult);
 
     mDownloadedIDs.append(messageId);
-    mIdsToDownload.removeAll(messageId);
+    mIdsToMessagesToDownloadMap.remove(messageId);
 }
 
 void POP3Resource::messageDownloadProgress(KJob *job, KJob::Unit unit, qulonglong totalBytes)
@@ -586,13 +580,13 @@ void POP3Resource::messageDownloadProgress(KJob *job, KJob::Unit unit, qulonglon
     Q_UNUSED(unit)
     Q_ASSERT(unit == KJob::Bytes);
     QString statusMessage;
-    const int totalMessages = mIdsToDownload.size() + mDownloadedIDs.size();
+    const int totalMessages = mIdsToMessagesToDownloadMap.size() + mDownloadedIDs.size();
     int bytesRemainingOnServer = 0;
     const auto seenUidList{mSettings.seenUidList()};
     for (const QString &alreadyDownloadedUID : seenUidList) {
         const int alreadyDownloadedID = mUidsToIdsMap.value(alreadyDownloadedUID, -1);
         if (alreadyDownloadedID != -1) {
-            bytesRemainingOnServer += mIdsToSizeMap.value(alreadyDownloadedID);
+            bytesRemainingOnServer += mIdsToMessagesMap.value(alreadyDownloadedID).size();
         }
     }
 
@@ -698,7 +692,7 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
     // By default, we delete all messages. But if we have "leave on server"
     // rules, we can save some messages.
     if (mSettings.leaveOnServer()) {
-        idsToDeleteFromServer = mIdsToSizeMap.keys();
+        idsToDeleteFromServer = mIdsToMessagesMap.keys();
         if (!mIdsToSaveValid) {
             mIdsToSaveValid = true;
             mIdsToSave.clear();
@@ -748,12 +742,12 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
                 const qint64 limitInBytes = mSettings.leaveOnServerSize() * (1024 * 1024);
                 qint64 sizeOnServerAfterDeletion = 0;
                 for (int id : std::as_const(mIdsToSave)) {
-                    sizeOnServerAfterDeletion += mIdsToSizeMap.value(id);
+                    sizeOnServerAfterDeletion += mIdsToMessagesMap.value(id).size();
                 }
                 while (sizeOnServerAfterDeletion > limitInBytes) {
                     const int oldestId = idOfOldestMessage(mIdsToSave);
                     mIdsToSave.remove(oldestId);
-                    sizeOnServerAfterDeletion -= mIdsToSizeMap.value(oldestId);
+                    sizeOnServerAfterDeletion -= mIdsToMessagesMap.value(oldestId).size();
                 }
             }
         }
@@ -769,7 +763,7 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
         if (downloadedId != -1) {
             idsToDeleteFromServer << downloadedId;
         } else {
-            idsToDeleteFromServer << mIdsToSizeMap.keys();
+            idsToDeleteFromServer << mIdsToMessagesMap.keys();
         }
     }
     return idsToDeleteFromServer;
@@ -804,7 +798,7 @@ void POP3Resource::deleteJobResult(KJob *job)
             }
         }
         mIdsToUidsMap.remove(deletedId);
-        mIdsToSizeMap.remove(deletedId);
+        mIdsToMessagesMap.remove(deletedId);
     }
     mSettings.setSeenUidList(seenUIDs);
     mSettings.setSeenUidTimeList(timeOfSeenUids);
@@ -945,11 +939,11 @@ void POP3Resource::resetState()
 {
     mState = Idle;
     mTargetCollection = Collection(-1);
-    mIdsToSizeMap.clear();
+    mIdsToMessagesMap.clear();
     mIdsToUidsMap.clear();
     mUidsToIdsMap.clear();
     mDownloadedIDs.clear();
-    mIdsToDownload.clear();
+    mIdsToMessagesToDownloadMap.clear();
     mPendingCreateJobs.clear();
     mIDsStored.clear();
     mDeletedIDs.clear();

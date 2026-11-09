@@ -5,6 +5,7 @@
 */
 
 #pragma once
+#include <kpop/pop3message.h>
 
 class KJob;
 #include <Akonadi/ResourceWidgetBase>
@@ -134,8 +135,8 @@ private:
     bool mSavePassword = false;
     bool mTestLocalInbox = false;
 
-    // Maps IDs on the server to message sizes on the server
-    QMap<int, int> mIdsToSizeMap;
+    // Maps IDs on the server to message information on the server (id and size)
+    QHash<int, KPOP::Pop3Message> mIdsToMessagesMap;
 
     // Maps IDs on the server to UIDs on the server.
     // This can be empty, if the server doesn't support UIDL
@@ -152,10 +153,11 @@ private:
     // that the messages corresponding to the IDs are stored in Akonadi yet
     QList<int> mDownloadedIDs;
 
-    // IDs of messages that we want to download and that we have started the
+    // Messages that we want to download and that we have started the
     // FetchJob with. After the FetchJob, this should be empty, except if there
-    // was some error
-    QList<int> mIdsToDownload;
+    // was some error.
+    // It also maps IDs to message information (id and size)
+    QHash<int, KPOP::Pop3Message> mIdsToMessagesToDownloadMap;
 
     // After downloading a message, we store it in Akonadi by using an ItemCreateJob.
     // This map stores the currently running ItemCreateJob's and their corresponding
