@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <Akonadi/ItemFetchJob>
+#include <Akonadi/Item>
 
-#include "ewsfinditemrequest.h"
+#include "ewsitem.h"
 #include "ewsjob.h"
 
 namespace Akonadi

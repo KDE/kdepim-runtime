@@ -18,6 +18,7 @@
 #include <KIMAP/IdJob>
 #include <KIMAP/LogoutJob>
 #include <KIMAP/NamespaceJob>
+#include <KIMAP/Session>
 
 #include "imapaccount.h"
 #include "passwordrequesterinterface.h"

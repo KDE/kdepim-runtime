@@ -13,18 +13,21 @@
 #include "settingsadaptor.h"
 #include "utils.h"
 
-#include <KAuthorized>
-#include <KLocalizedString>
-
 #include <KDAV/ProtocolInfo>
 
 #include <QByteArray>
 #include <QCoreApplication>
 #include <QDBusConnection>
+#include <QDBusMessage>
+#include <QDBusReply>
+#include <QDBusUnixFileDescriptor>
 #include <QDataStream>
+#include <QDir>
+#include <QEventLoop>
 #include <QFile>
 #include <QFileInfo>
-#include <QRegularExpression>
+#include <QStandardPaths>
+#include <QTime>
 #include <QUrl>
 
 #include <qt6keychain/keychain.h>

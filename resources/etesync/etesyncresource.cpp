@@ -20,6 +20,8 @@
 #include <KContacts/Addressee>
 #include <KNotification>
 #include <QDBusConnection>
+#include <QDir>
+#include <QFile>
 
 #include "entriesfetchjob.h"
 #include "etesync_debug.h"

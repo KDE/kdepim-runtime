@@ -6,6 +6,8 @@
 
 #include "ewsitemhandler.h"
 
+#include <QSharedPointer>
+
 #include "ewsresource.h"
 #include "ewsresource_debug.h"
 

@@ -6,7 +6,7 @@
 
 #include "ewsfindfolderrequest.h"
 
-#include <memory>
+#include <array>
 
 #include <QXmlStreamWriter>
 

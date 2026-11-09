@@ -9,7 +9,6 @@
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/CollectionMoveJob>
-#include <Akonadi/CollectionStatistics>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
 #include <KContacts/Addressee>
@@ -18,6 +17,7 @@
 
 #include "ewsclient.h"
 #include "ewseffectiverights.h"
+#include "ewsfolder.h"
 #include "ewsresource_debug.h"
 #include "ewssyncfolderhierarchyrequest.h"
 

@@ -11,7 +11,6 @@
 #include "ewsitem.h"
 #include "ewsitemshape.h"
 #include "ewsrequest.h"
-#include "ewstypes.h"
 
 class EwsGetItemRequest : public EwsRequest
 {

@@ -5,7 +5,6 @@
 */
 
 #include "lockmethodpage.h"
-#include "settings.h"
 
 #include <QStandardPaths>
 

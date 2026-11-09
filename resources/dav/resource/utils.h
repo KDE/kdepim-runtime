@@ -10,6 +10,11 @@
 #include <KDAV/Enums>
 
 #include <Akonadi/Item>
+#include <Akonadi/Tag>
+
+#include <QStringList>
+
+#include <optional>
 
 namespace KDAV
 {
@@ -21,7 +26,6 @@ class DavCollection;
 namespace Akonadi
 {
 class Collection;
-class Item;
 }
 
 /**

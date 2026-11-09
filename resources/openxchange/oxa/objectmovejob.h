@@ -10,7 +10,6 @@
 
 #include <KJob>
 
-#include "folder.h"
 #include "object.h"
 
 namespace OXA

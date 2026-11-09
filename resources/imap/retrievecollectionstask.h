@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <Akonadi/Collection>
+#include <QSet>
 
 #include "resourcetask.h"
 

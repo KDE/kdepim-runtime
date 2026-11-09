@@ -12,7 +12,7 @@
 #include "settings.h"
 
 #include <Akonadi/Collection>
-#include <QDialog>
+#include <QWidget>
 
 #include <QRegularExpressionValidator>
 

@@ -9,10 +9,10 @@
 #include <QAbstractItemView>
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <QVBoxLayout>
 
 #include <KWindowSystem>
 
-#include <Akonadi/AgentFilterProxyModel>
 #include <Akonadi/AgentInstance>
 #include <Akonadi/AgentInstanceFilterProxyModel>
 #include <Akonadi/AgentInstanceModel>

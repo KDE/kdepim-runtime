@@ -8,7 +8,6 @@
 
 #include <Akonadi/Collection>
 
-#include "ewsfolder.h"
 #include "ewsjob.h"
 
 #include <memory>

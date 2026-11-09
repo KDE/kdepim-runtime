@@ -12,6 +12,8 @@
 #include <KWindowSystem>
 
 #include <QDialogButtonBox>
+#include <QEventLoop>
+#include <QIcon>
 #include <QPushButton>
 #include <QVBoxLayout>
 

@@ -8,8 +8,6 @@
 
 #include <functional>
 
-#include <QSharedPointer>
-
 #include "ewspropertyfield.h"
 #include "ewstypes.h"
 

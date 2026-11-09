@@ -8,6 +8,7 @@
 
 #include <Akonadi/ResourceBase>
 #include <KLocalizedString>
+#include <QDateTime>
 
 #include "etesyncclientstate.h"
 #include "settings.h"

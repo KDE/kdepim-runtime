@@ -24,9 +24,9 @@
 #include "broker1.h"
 #include "ewsclient_debug.h"
 #include <KLocalizedString>
-#include <QByteArrayView>
-#include <QDBusPendingCall>
 #include <QDBusPendingCallWatcher>
+#include <QDBusPendingReply>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QScopedPointer>

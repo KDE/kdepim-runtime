@@ -8,8 +8,11 @@
 
 #include <functional>
 
+#include <QHash>
 #include <QList>
+#include <QVariant>
 #include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 
 #include "ewsclient_debug.h"
 

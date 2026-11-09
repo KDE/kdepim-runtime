@@ -7,6 +7,9 @@
 #include "ewspropertyfield.h"
 
 #include <QString>
+#include <QVariant>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 
 #include "ewsclient_debug.h"
 

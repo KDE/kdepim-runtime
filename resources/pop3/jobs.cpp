@@ -7,8 +7,6 @@
 #include "jobs.h"
 #include "settings.h"
 
-#include <MailTransport/Transport>
-
 #include "pop3resource_debug.h"
 #include <KIO/SslUi>
 #include <KLocalizedString>

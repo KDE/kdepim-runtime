@@ -12,6 +12,8 @@
 
 #include <QDBusConnection>
 #include <QDir>
+#include <QFileInfo>
+#include <QTimer>
 
 #include <Akonadi/CachePolicy>
 #include <Akonadi/ChangeRecorder>

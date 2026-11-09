@@ -13,8 +13,6 @@
 #include <QXmlStreamWriter>
 
 #include "ewsitem.h"
-#include "ewspropertyfield.h"
-#include "ewstypes.h"
 
 class EwsAttachmentPrivate;
 

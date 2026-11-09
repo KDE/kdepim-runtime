@@ -38,7 +38,11 @@
 #include "oxa/oxerrors.h"
 #include "oxa/updateusersjob.h"
 #include "oxa/users.h"
+#include <QDBusConnection>
+#include <QDebug>
+#include <QFile>
 #include <QStandardPaths>
+#include <QUuid>
 
 using namespace Akonadi;
 

@@ -16,7 +16,6 @@ namespace Akonadi
 class CollectionRequester;
 }
 
-class FolderArchiveAccountInfo;
 class FolderArchiveComboBox;
 class FOLDERARCHIVESETTINGS_EXPORT FolderArchiveSettingPage : public QWidget
 {

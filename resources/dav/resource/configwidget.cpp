@@ -6,6 +6,7 @@
 
 #include "configwidget.h"
 #include "searchdialog.h"
+#include "settings.h"
 #include "setupwizard.h"
 #include "urlconfigurationdialog.h"
 #include "utils.h"
@@ -17,10 +18,13 @@
 #include <KLocalizedString>
 #include <KMessageBox>
 
+#include <QIcon>
+
 #include <QPointer>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QStringList>
+#include <QUrl>
 #include <QVBoxLayout>
 
 constexpr auto ProtocolRole = Qt::UserRole + 1;

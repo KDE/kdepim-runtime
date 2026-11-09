@@ -16,6 +16,7 @@
 
 #include <QCheckBox>
 #include <QComboBox>
+#include <QCursor>
 #include <QGroupBox>
 #include <QLabel>
 #include <QTabWidget>

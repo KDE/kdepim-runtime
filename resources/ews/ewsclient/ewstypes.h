@@ -6,8 +6,11 @@
 
 #pragma once
 
-class QString;
+#include <QLatin1StringView>
 #include <QList>
+#include <array>
+
+class QString;
 
 extern const QString soapEnvNsUri;
 extern const QString ewsMsgNsUri;

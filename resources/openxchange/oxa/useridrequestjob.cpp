@@ -8,7 +8,6 @@
 
 #include "useridrequestjob.h"
 
-#include "davmanager.h"
 #include "foldersrequestjob.h"
 
 using namespace OXA;

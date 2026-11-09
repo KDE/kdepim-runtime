@@ -5,6 +5,7 @@
 */
 
 #include "ewsattendee.h"
+#include <array>
 
 #include <QSharedData>
 #include <QXmlStreamReader>

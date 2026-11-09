@@ -8,6 +8,7 @@
 #include "batchfetcher.h"
 
 #include "imapresource_debug.h"
+#include <KIMAP/SearchJob>
 #include <KIMAP/Session>
 BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,
                            const KIMAP::ImapSet &set,

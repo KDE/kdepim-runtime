@@ -7,7 +7,6 @@
 #pragma once
 
 #include <QList>
-#include <QSharedPointer>
 
 #include "ewsitem.h"
 #include "ewsrequest.h"

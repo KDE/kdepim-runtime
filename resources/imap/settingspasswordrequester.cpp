@@ -12,7 +12,6 @@
 #include <KNotification>
 #include <KService>
 
-#include <mailtransport/transportbase.h>
 #include <qt6keychain/keychain.h>
 
 #include "imapresource.h"

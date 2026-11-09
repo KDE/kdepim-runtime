@@ -6,10 +6,12 @@
 
 #pragma once
 
+#include <QList>
+#include <QMetaType>
 #include <QSharedDataPointer>
-#include <QXmlStreamReader>
+#include <QString>
 
-#include "ewsitembase.h"
+class QXmlStreamReader;
 
 class EwsMailboxPrivate;
 

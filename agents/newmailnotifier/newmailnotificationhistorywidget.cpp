@@ -11,8 +11,6 @@
 #include "newmailnotifieragentsettings.h"
 #include <KLocalizedString>
 
-#include <TextCustomEditor/PlainTextEditor>
-
 #include <QCheckBox>
 #include <QScrollBar>
 #include <QVBoxLayout>

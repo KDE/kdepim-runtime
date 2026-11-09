@@ -8,7 +8,7 @@
 
 #include <QWidget>
 
-#include "ewsid.h"
+#include <QStringList>
 
 #include <memory>
 

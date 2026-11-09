@@ -7,8 +7,8 @@
 #pragma once
 
 #include <Akonadi/Item>
+#include <KIMAP/FetchJob>
 #include <KMime/Message>
-#include <kimap/FetchJob>
 
 class MessageHelper
 {

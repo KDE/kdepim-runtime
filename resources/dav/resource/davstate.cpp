@@ -7,7 +7,6 @@
 #include "davstate.h"
 
 #include <KConfigGroup>
-#include <KSharedConfig>
 #include <QUrl>
 
 using namespace Qt::Literals;

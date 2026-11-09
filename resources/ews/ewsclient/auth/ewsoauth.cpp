@@ -20,6 +20,7 @@ using namespace Mock;
 #include <QNetworkReply>
 #include <QOAuth2AuthorizationCodeFlow>
 #include <QPointer>
+#include <QWebEnginePage>
 #include <QWebEngineProfile>
 #include <QWebEngineUrlRequestInterceptor>
 #include <QWebEngineUrlRequestJob>

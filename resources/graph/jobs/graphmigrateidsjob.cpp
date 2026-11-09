@@ -17,7 +17,6 @@
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/TransactionSequence>
 
-#include <KLocalizedString>
 #include <KMime/Message>
 #include <QJsonArray>
 #include <QJsonObject>

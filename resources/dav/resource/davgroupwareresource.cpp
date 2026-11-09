@@ -22,18 +22,14 @@
 #include "task/removeitemstask.h"
 #include "utils.h"
 
-#include <KDAV/DavCollection>
 #include <KDAV/DavCollectionCreateJob>
 #include <KDAV/DavCollectionDeleteJob>
 #include <KDAV/DavCollectionModifyJob>
 #include <KDAV/DavCollectionsFetchJob>
 #include <KDAV/DavCollectionsMultiFetchJob>
-#include <KDAV/DavItem>
 #include <KDAV/DavItemCreateJob>
-#include <KDAV/DavItemDeleteJob>
 #include <KDAV/DavItemFetchJob>
 #include <KDAV/DavItemModifyJob>
-#include <KDAV/DavItemMoveJob>
 #include <KDAV/DavItemsFetchJob>
 #include <KDAV/DavItemsListJob>
 #if KDAV_VERSION >= QT_VERSION_CHECK(6, 31, 0)
@@ -44,18 +40,17 @@
 #include <KDAV/DavPrincipalHomesetsFetchJob>
 #include <KDAV/DavPushSupport>
 #include <KDAV/DavSslUiProxy>
-
 #include <KDAV/EtagCache>
+
 #include <KDAV/ProtocolInfo>
 
+#include <KCalendarCore/Event>
 #include <KCalendarCore/FreeBusy>
-#include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/Incidence>
-#include <KCalendarCore/MemoryCalendar>
+#include <KCalendarCore/Journal>
 #include <KCalendarCore/Todo>
 #include <KJob>
 
-#include <Akonadi/AccountBase>
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CachePolicy>
 #include <Akonadi/ChangeRecorder>
@@ -69,15 +64,16 @@
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/RecursiveItemFetchJob>
 #include <KContacts/Addressee>
-#include <KContacts/VCardConverter>
 
 #include <KLocalizedString>
 
 #include <KIO/SslUi>
 #include <KSslErrorUiData>
 
+#include <QColor>
 #include <QDBusMessage>
 #include <QDBusReply>
+#include <QUuid>
 
 #include <algorithm>
 #include <iterator>

@@ -26,7 +26,6 @@ class Session;
 
 class ImapIdleManager;
 class SessionPool;
-class ResourceState;
 class Settings;
 
 class ImapResource : public Akonadi::ResourceWidgetBase, public Akonadi::AgentBase::ObserverV3, public Akonadi::AgentSearchInterface

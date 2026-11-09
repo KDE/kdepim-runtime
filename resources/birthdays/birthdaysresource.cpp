@@ -18,6 +18,7 @@
 #include <Akonadi/VectorHelper>
 
 #include <KContacts/Addressee>
+#include <QDBusConnection>
 
 #include <KEmailAddress>
 

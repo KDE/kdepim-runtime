@@ -14,8 +14,6 @@
 #include <KLocalizedString>
 #include <qt6keychain/keychain.h>
 
-#include <memory>
-
 using namespace QKeychain;
 
 static constexpr QLatin1StringView clientId{"18da2bc3-146a-4581-8c92-27dc7b9954a0"};

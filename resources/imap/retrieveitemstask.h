@@ -13,10 +13,6 @@
 #include "resourcetask.h"
 #include <QElapsedTimer>
 class BatchFetcher;
-namespace Akonadi
-{
-class Session;
-}
 
 class RetrieveItemsTask : public ResourceTask
 {

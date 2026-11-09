@@ -11,6 +11,7 @@
 
 class QByteArray;
 class QString;
+class QUrl;
 
 class DavState : public QObject
 {

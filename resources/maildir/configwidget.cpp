@@ -12,6 +12,7 @@
 
 #include <KConfigDialogManager>
 #include <KLineEdit>
+#include <QDir>
 #include <QVBoxLayout>
 #if HAVE_ACTIVITY_SUPPORT
 #include <PimCommonActivities/ActivitiesBaseManager>

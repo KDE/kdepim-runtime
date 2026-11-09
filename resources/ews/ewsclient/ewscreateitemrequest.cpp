@@ -6,6 +6,7 @@
 
 #include "ewscreateitemrequest.h"
 #include "ewsclient_debug.h"
+#include <array>
 
 using namespace Qt::Literals::StringLiterals;
 

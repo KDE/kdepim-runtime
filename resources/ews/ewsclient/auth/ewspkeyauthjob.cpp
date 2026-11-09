@@ -6,6 +6,7 @@
 
 #include "ewspkeyauthjob.h"
 
+#include <QDateTime>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>

@@ -6,12 +6,9 @@
 
 #pragma once
 
-#include <QSharedPointer>
 #include <QTimer>
 
 #include "ewseventrequestbase.h"
-#include "ewsid.h"
-#include "ewstypes.h"
 
 class EwsGetStreamingEventsRequest : public EwsEventRequestBase
 {

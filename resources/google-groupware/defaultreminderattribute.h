@@ -11,7 +11,11 @@
 #include <KGAPI/Types>
 
 #include <KCalendarCore/Alarm>
-#include <KCalendarCore/Incidence>
+
+namespace KCalendarCore
+{
+class Incidence;
+}
 
 class DefaultReminderAttribute : public Akonadi::Attribute
 {

@@ -7,7 +7,6 @@
 #pragma once
 #include "config-newmailnotifier.h"
 #include <Akonadi/AgentConfigurationBase>
-#include <Akonadi/Collection>
 
 class KNotifyConfigWidget;
 class QCheckBox;

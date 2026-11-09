@@ -15,9 +15,9 @@
 #include <QUrl>
 
 #include <QFontDatabase>
-#include <QPushButton>
 #include <QTimer>
 #if HAVE_ACTIVITY_SUPPORT
+#include <PimCommonActivities/ActivitiesBaseManager>
 #include <PimCommonActivities/ConfigureActivitiesWidget>
 #endif
 

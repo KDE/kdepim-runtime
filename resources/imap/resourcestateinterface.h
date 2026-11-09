@@ -13,6 +13,7 @@
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
 #include <Akonadi/ItemSync>
+#include <Akonadi/Tag>
 
 #include <KIMAP/ListJob>
 

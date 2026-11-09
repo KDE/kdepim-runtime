@@ -6,7 +6,7 @@
 
 #include "removeitemstask.h"
 
-#include "davgroupwareresource.h"
+#include "davitemcache.h"
 #include "davresource_debug.h"
 #include "utils.h"
 
@@ -17,7 +17,7 @@
 #include <KDAV/DavItem>
 #include <KDAV/DavItemDeleteJob>
 #include <KDAV/DavItemModifyJob>
-#include <klocalizedstring.h>
+#include <KLocalizedString>
 
 using namespace Qt::Literals;
 

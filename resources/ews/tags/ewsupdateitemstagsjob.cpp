@@ -6,9 +6,7 @@
 
 #include "ewsupdateitemstagsjob.h"
 
-#include <Akonadi/AttributeFactory>
 #include <Akonadi/Tag>
-#include <Akonadi/TagAttribute>
 #include <Akonadi/TagFetchJob>
 #include <Akonadi/TagFetchScope>
 

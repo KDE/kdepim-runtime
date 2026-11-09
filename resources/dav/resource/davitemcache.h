@@ -7,9 +7,11 @@
 
 #pragma once
 
+#include <QHash>
 #include <QObject>
+#include <QStringList>
 
-#include <qhash.h>
+#include <memory>
 
 namespace Akonadi
 {

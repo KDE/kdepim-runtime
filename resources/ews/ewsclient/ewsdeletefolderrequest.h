@@ -8,7 +8,7 @@
 
 #include <QList>
 
-#include "ewsfolder.h"
+#include "ewsid.h"
 #include "ewsrequest.h"
 #include "ewstypes.h"
 

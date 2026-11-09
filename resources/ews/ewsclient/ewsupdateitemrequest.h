@@ -8,6 +8,7 @@
 
 #include <QList>
 #include <QSharedPointer>
+#include <QVariant>
 
 #include "ewsitem.h"
 #include "ewsitemshape.h"

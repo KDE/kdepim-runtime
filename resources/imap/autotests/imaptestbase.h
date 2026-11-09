@@ -8,6 +8,7 @@
 #pragma once
 
 #include "kimaptest/fakeserver.h"
+#include <KIMAP/Session>
 
 #include "dummypasswordrequester.h"
 #include "dummyresourcestate.h"

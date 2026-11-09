@@ -9,9 +9,6 @@
 
 #include "settingsbase.h"
 
-#include <QPointer>
-#include <qwindowdefs.h>
-
 #include <KGAPI/Types>
 
 namespace QKeychain

@@ -8,8 +8,6 @@
 
 #include <MailTransport/TransportJob>
 
-#include <Akonadi/Item>
-
 namespace MailTransport
 {
 /**

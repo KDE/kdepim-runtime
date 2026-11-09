@@ -8,8 +8,6 @@
 #pragma once
 
 #include <KIMAP/FetchJob>
-#include <KIMAP/SearchJob>
-#include <KJob>
 
 #include "messagehelper.h"
 

@@ -12,6 +12,8 @@
 #include <KContacts/Addressee>
 #include <KContacts/VCardConverter>
 
+#include <QMap>
+
 class VCardResource : public Akonadi::SingleFileResource<Akonadi_VCard_Resource::Settings>
 {
     Q_OBJECT

@@ -9,7 +9,6 @@
 #include <KGAPI/Types>
 
 #include <QObject>
-#include <QSharedPointer>
 
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
@@ -21,6 +20,7 @@
 #define ITEM_PROPERTY "_AkonadiItem"
 #define ITEMS_PROPERTY "_AkonadiItems"
 #define COLLECTION_PROPERTY "_AkonadiCollection"
+#define JOB_PROPERTY "_KGAPI2Job"
 
 namespace KGAPI2
 {

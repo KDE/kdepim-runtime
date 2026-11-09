@@ -11,6 +11,8 @@
 #include <KContacts/Addressee>
 #include <KContacts/VCardConverter>
 
+#include <QMap>
+
 class VCardDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
     Q_OBJECT

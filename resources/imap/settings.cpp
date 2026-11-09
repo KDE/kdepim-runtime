@@ -8,7 +8,6 @@
 #include "settings.h"
 #include "imapaccount.h"
 #include "settingsadaptor.h"
-#include <config-imap.h>
 
 #include "imapresource_debug.h"
 

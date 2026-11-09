@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "kimap/sessionuiproxy.h"
+#include <KIMAP/SessionUiProxy>
 
 #include <KIO/SslUi>
 

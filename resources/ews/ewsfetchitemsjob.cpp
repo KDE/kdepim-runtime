@@ -9,10 +9,12 @@
 #include <KLocalizedString>
 
 #include <Akonadi/AgentBase>
+#include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 
 #include "ewsclient.h"
 #include "ewsfetchitemdetailjob.h"
+#include "ewsfinditemrequest.h"
 #include "ewsitemhandler.h"
 #include "ewsresource.h"
 #include "ewsresource_debug.h"

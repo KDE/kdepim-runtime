@@ -8,6 +8,8 @@
 
 #include "passwordrequesterinterface.h"
 
+#include <memory>
+
 namespace MailTransport
 {
 class OutlookOAuthTokenRequester;

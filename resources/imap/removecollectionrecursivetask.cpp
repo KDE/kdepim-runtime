@@ -11,6 +11,7 @@
 #include <Akonadi/MessageFlags>
 #include <KIMAP/CloseJob>
 #include <KIMAP/DeleteJob>
+#include <KIMAP/ListJob>
 #include <KIMAP/SelectJob>
 #include <KIMAP/StoreJob>
 #include <KLocalizedString>

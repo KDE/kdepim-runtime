@@ -15,6 +15,7 @@
 #include <QIcon>
 
 #include <QDialogButtonBox>
+#include <QPushButton>
 #include <QStandardItemModel>
 #include <QUrl>
 #include <QVBoxLayout>

@@ -6,7 +6,7 @@
 
 #include "ewsfinditemrequest.h"
 
-#include <memory>
+#include <array>
 
 #include <QXmlStreamWriter>
 

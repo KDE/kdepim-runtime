@@ -8,11 +8,6 @@
 
 #include <Akonadi/ResourceBase>
 
-#include <KContacts/Addressee>
-#include <KContacts/ContactGroup>
-#include <KContacts/ContactGroupTool>
-#include <KContacts/VCardConverter>
-
 class QDir;
 
 class ContactsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2

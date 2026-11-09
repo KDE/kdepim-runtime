@@ -14,8 +14,6 @@
 #include "oxutils.h"
 
 #include <KIO/DavJob>
-#include <QDomDocument>
-#include <QDomElement>
 
 using namespace OXA;
 

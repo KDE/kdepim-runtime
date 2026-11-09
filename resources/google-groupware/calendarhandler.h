@@ -9,7 +9,6 @@
 
 #include "generichandler.h"
 #include <QObject>
-#include <QSharedPointer>
 
 class CalendarHandler : public GenericHandler
 {

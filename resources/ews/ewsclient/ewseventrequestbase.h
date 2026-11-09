@@ -8,7 +8,6 @@
 
 #include <QDateTime>
 #include <QList>
-#include <QSharedPointer>
 
 #include "ewsid.h"
 #include "ewsrequest.h"

@@ -6,10 +6,7 @@
 
 #include "resourcetask.h"
 
-#include "davgroupwareresource.h"
-#include "davresource_debug.h"
-
-#include <kdav/davjobbase.h>
+#include <KDAV/DavJobBase>
 
 ResourceTask::ResourceTask(ResourceStateInterface::Ptr resource, QObject *parent)
     : QObject(parent)

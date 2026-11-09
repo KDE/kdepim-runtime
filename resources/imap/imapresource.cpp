@@ -13,11 +13,10 @@
 
 #include <QHostInfo>
 #include <QSettings>
+#include <QTimer>
 
 #include "imapresource_debug.h"
 #include <KLocalizedString>
-
-#include <Akonadi/MessageParts>
 
 #include <Akonadi/AgentManager>
 #include <Akonadi/AttributeFactory>
@@ -27,12 +26,9 @@
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/ItemFetchScope>
-#include <Akonadi/Session>
 #include <Akonadi/SpecialCollections>
 
 #include <QStandardPaths>
-
-#include <qt6keychain/keychain.h>
 
 #include <PimCommonAkonadi/ImapAclAttribute>
 
@@ -46,7 +42,6 @@
 #include "imapaccount.h"
 #include "imapidlemanager.h"
 #include "settings.h"
-#include "subscriptiondialog.h"
 
 #include "addcollectiontask.h"
 #include "additemtask.h"
@@ -86,7 +81,6 @@ Q_DECLARE_METATYPE(QList<qint64>)
 Q_DECLARE_METATYPE(QWeakPointer<QObject>)
 
 using namespace Akonadi;
-using namespace QKeychain;
 
 ImapResource::ImapResource(const QString &id)
     : ResourceWidgetBase(id)

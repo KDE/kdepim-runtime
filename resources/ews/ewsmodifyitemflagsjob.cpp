@@ -6,6 +6,8 @@
 
 #include "ewsmodifyitemflagsjob.h"
 
+#include "ewsclient.h"
+
 #include "ewsitemhandler.h"
 #include "ewsmodifyitemjob.h"
 

@@ -14,10 +14,8 @@
 
 #include <KConfigDialogManager>
 #include <KLocalizedString>
-#include <KSharedConfig>
 
 #include <QFontDatabase>
-#include <QPushButton>
 #include <QStringList>
 #include <QTabBar>
 #include <QVBoxLayout>

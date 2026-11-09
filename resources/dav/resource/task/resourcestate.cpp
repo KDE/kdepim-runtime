@@ -8,8 +8,6 @@
 
 #include "davgroupwareresource.h"
 
-#include <klocalizedstring.h>
-
 ResourceState::ResourceState(DavGroupwareResource *resource)
     : m_resource(resource)
 {

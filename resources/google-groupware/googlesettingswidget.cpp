@@ -6,7 +6,7 @@
 */
 
 #include "googlesettingswidget.h"
-#include "googleresource.h"
+#include "generichandler.h"
 #include "googleresource_debug.h"
 #include "googlescopes.h"
 

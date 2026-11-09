@@ -7,12 +7,15 @@
 #pragma once
 
 #include <QSharedDataPointer>
-#include <QXmlStreamWriter>
 #include <cstddef>
 
 #include "ewstypes.h"
 
 class EwsPropertyFieldPrivate;
+class QDebug;
+class QVariant;
+class QXmlStreamReader;
+class QXmlStreamWriter;
 
 class EwsPropertyField
 {

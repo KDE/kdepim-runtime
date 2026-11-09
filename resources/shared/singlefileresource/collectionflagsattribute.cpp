@@ -6,8 +6,6 @@
 
 #include "collectionflagsattribute.h"
 
-#include <QByteArray>
-
 using namespace Akonadi;
 
 CollectionFlagsAttribute::CollectionFlagsAttribute(const QList<QByteArray> &flags)

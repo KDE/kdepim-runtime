@@ -11,6 +11,12 @@
 
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
+
+#include <KContacts/Addressee>
+#include <KContacts/ContactGroup>
+#include <KContacts/ContactGroupTool>
+#include <KContacts/VCardConverter>
 
 #include "contacts_resources_debug.h"
 #include <Akonadi/ChangeRecorder>

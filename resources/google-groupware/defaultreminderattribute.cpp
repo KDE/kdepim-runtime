@@ -9,6 +9,7 @@
 #include <QJsonDocument>
 #include <QVariant>
 
+#include <KCalendarCore/Incidence>
 #include <KGAPI/Calendar/Reminder>
 
 using namespace KGAPI2;

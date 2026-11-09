@@ -7,24 +7,19 @@
 */
 
 #include "personhandler.h"
-#include "googleresource.h"
 #include "googlesettings.h"
 #include "peopleconversionjob.h"
 
 #include "googlepeople_debug.h"
 
+#include <Akonadi/AgentBase>
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/LinkJob>
-#include <Akonadi/VectorHelper>
 
 #include <KContacts/Addressee>
 #include <KContacts/Picture>
-
-#include <kgapicore_export.h>
 
 #include <KGAPI/Account>
 #include <KGAPI/People/ContactGroup>

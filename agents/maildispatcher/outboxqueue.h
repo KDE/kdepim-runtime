@@ -9,6 +9,8 @@
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
 
+#include <QDateTime>
+#include <QMultiMap>
 #include <QObject>
 
 class KJob;

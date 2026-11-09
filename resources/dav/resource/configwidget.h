@@ -8,13 +8,13 @@
 
 #include "ui_configwidget.h"
 
-#include "settings.h"
 #include <KDAV/Enums>
 #include <QList>
 #include <QPair>
 #include <QString>
 
 class KConfigDialogManager;
+class Settings;
 class QStandardItemModel;
 
 class ConfigWidget : public QWidget

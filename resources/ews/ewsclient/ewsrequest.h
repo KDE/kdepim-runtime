@@ -8,11 +8,8 @@
 
 #include <functional>
 
-#include <QSharedPointer>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
-
-#include <KIO/TransferJob>
 
 #include "ewsclient.h"
 #include "ewsjob.h"

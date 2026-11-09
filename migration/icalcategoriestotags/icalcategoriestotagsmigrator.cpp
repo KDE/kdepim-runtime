@@ -22,9 +22,9 @@
 #include <KCalendarCore/Todo>
 
 #include <QTimer>
-#include <akonadi/itemmodifyjob.h>
 
 #include <algorithm>
+#include <numeric>
 
 class MigrationJob : public KCompositeJob
 {

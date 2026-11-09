@@ -8,10 +8,8 @@
 #include "mboxresource_debug.h"
 
 #include <Akonadi/AttributeFactory>
-#include <Akonadi/ChangeRecorder>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionModifyJob>
-#include <Akonadi/ItemFetchScope>
 #include <Akonadi/MessageFlags>
 #include <Akonadi/SpecialCollectionAttribute>
 

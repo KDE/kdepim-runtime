@@ -6,14 +6,11 @@
 
 #include "ewssettings.h"
 
-#include <KLocalizedString>
-
 #include "auth/ewsintuneauth.h"
 #include "auth/ewsoauth.h"
 #include "auth/ewspasswordauth.h"
 
 #include "ewsresource_debug.h"
-#include <KAuthorized>
 #include <qt6keychain/keychain.h>
 
 using namespace QKeychain;

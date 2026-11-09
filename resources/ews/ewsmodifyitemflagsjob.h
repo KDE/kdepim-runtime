@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include <Akonadi/Collection>
 #include <Akonadi/Item>
 
-#include "ewsclient.h"
 #include "ewsjob.h"
 #include "ewstypes.h"
+
+class EwsClient;
 
 class EwsModifyItemFlagsJob : public EwsJob
 {

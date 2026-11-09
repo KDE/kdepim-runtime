@@ -11,7 +11,7 @@
 #include <KConfigDialogManager>
 
 #include <KSharedConfig>
-#include <QPushButton>
+#include <QFileInfo>
 #include <QTimer>
 #include <QUrl>
 #if HAVE_ACTIVITY_SUPPORT

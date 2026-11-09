@@ -29,14 +29,10 @@
 #include "filestore/itemmovejob.h"
 #include "filestore/storecompactjob.h"
 
-#include <Akonadi/MessageParts>
-#include <Akonadi/MessageStatus>
-
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
-#include <Akonadi/ItemModifyJob>
 
 #include <KMime/Message>
 

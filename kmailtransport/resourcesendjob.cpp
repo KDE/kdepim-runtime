@@ -10,7 +10,6 @@
 #include <KMime/Message>
 
 #include <Akonadi/AddressAttribute>
-#include <Akonadi/Collection>
 #include <Akonadi/MessageQueueJob>
 
 using namespace Akonadi;

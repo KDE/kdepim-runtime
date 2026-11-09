@@ -6,6 +6,8 @@
 
 #include "ewsfolder.h"
 
+#include <array>
+
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 

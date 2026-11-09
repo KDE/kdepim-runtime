@@ -9,14 +9,7 @@
 #include "resourcetask.h"
 
 #include <Akonadi/Item>
-#include <KDAV/DavItem>
-#include <kdav_version.h>
 
-namespace Akonadi
-{
-class Collection;
-}
-class QObject;
 namespace KDAV
 {
 class DavJobBase;

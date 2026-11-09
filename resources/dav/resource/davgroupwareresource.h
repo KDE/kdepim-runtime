@@ -23,13 +23,6 @@ class DavFreeBusyHandler;
 
 #include <QSet>
 
-#include <QDBusObjectPath>
-
-namespace KDAV
-{
-class DavItem;
-}
-
 class DavGroupwareResource : public Akonadi::ResourceWidgetBase,
                              public Akonadi::AgentBase::ObserverV3,
                              public Akonadi::FreeBusyProviderBase,

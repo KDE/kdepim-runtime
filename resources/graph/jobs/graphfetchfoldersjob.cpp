@@ -7,7 +7,6 @@
 
 #include "graphclient/graphrequest.h"
 
-#include <Akonadi/Collection>
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <QJsonArray>

@@ -8,6 +8,7 @@
 
 #include <QList>
 #include <QSharedPointer>
+#include <QVariant>
 
 #include "ewsfolder.h"
 #include "ewsfoldershape.h"

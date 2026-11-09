@@ -8,6 +8,7 @@
 
 #include <QString>
 
+class QDebug;
 class QXmlStreamReader;
 class QXmlStreamWriter;
 

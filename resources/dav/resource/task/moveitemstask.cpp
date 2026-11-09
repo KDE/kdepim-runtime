@@ -6,19 +6,17 @@
 
 #include "moveitemstask.h"
 
-#include "davgroupwareresource.h"
+#include "davitemcache.h"
 #include "davresource_debug.h"
 #include "utils.h"
 
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
+#include <KCalendarCore/Incidence>
 #include <KDAV/DavItem>
 #include <KDAV/DavItemMoveJob>
-#include <KIO/DavJob>
-#include <kcalendarcore/todo.h>
-#include <klocalizedstring.h>
-#include <kstandardguiitem.h>
+#include <KLocalizedString>
 
 using namespace Qt::Literals;
 

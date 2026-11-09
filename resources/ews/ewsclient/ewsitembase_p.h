@@ -7,6 +7,7 @@
 #pragma once
 
 #include "ewsid.h"
+#include "ewspropertyfield.h"
 #include <QHash>
 #include <QSharedData>
 

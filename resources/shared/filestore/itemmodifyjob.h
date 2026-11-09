@@ -10,6 +10,8 @@
 
 #include <Akonadi/Item>
 
+#include <QSet>
+
 #include <memory>
 
 namespace Akonadi

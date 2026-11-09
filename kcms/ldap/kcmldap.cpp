@@ -12,7 +12,6 @@
 #include <QVBoxLayout>
 
 #include <KLDAPWidgets/LdapConfigureWidgetNg>
-#include <KLocalizedString>
 #include <KPluginFactory>
 
 K_PLUGIN_CLASS_WITH_JSON(KCMLdap, "kcmldap.json")

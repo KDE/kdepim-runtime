@@ -14,7 +14,6 @@
 
 #include "ewsgetitemrequest.h"
 #include "ewsitemshape.h"
-#include "ewsmailbox.h"
 #include "ewsoccurrence.h"
 #include "ewsresource_debug.h"
 

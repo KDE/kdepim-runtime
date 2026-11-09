@@ -7,13 +7,10 @@
 
 #include "birthdaysconfigagentwidget.h"
 #include "settings.h"
-#include <Akonadi/Tag>
 #include <KConfigDialogManager>
 #include <KLocalization>
 #include <KLocalizedString>
 #include <KSharedConfig>
-#include <QIcon>
-#include <QPushButton>
 
 using namespace Qt::Literals;
 

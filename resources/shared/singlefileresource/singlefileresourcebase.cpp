@@ -21,7 +21,6 @@
 
 #include <QCryptographicHash>
 #include <QDir>
-#include <QFutureWatcher>
 #include <QPromise>
 #include <QStandardPaths>
 #include <QTimer>

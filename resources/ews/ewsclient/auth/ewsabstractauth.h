@@ -5,7 +5,11 @@
 */
 #pragma once
 
+#include <QHash>
+#include <QMap>
 #include <QObject>
+
+class QWidget;
 
 /**
  *  @brief  Abstract base class for authentication providers

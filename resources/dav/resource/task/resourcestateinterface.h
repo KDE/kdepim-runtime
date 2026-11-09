@@ -6,13 +6,15 @@
 
 #pragma once
 
+#include <QMap>
 #include <QSharedPointer>
 #include <QStringList>
 
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
-#include <Akonadi/ItemSync>
 #include <KDAV/DavUrl>
+
+#include <memory>
 
 class Settings;
 class DavItemCache;

@@ -99,8 +99,8 @@ void EwsRequest::prepare(const QString &body)
     if (mClient.isNTLMv2Enabled()) {
         job->setNTLM(username, password);
     }
-    connect(job, &KIO::TransferJob::result, this, &EwsRequest::requestResult);
-    connect(job, &KIO::TransferJob::percentChanged, this, [this](KJob *job, unsigned long) {
+    connect(job, &KJob::result, this, &EwsRequest::requestResult);
+    connect(job, &KJob::percentChanged, this, [this](KJob *job, unsigned long) {
         requestProgress(job);
     });
     addSubjob(job);

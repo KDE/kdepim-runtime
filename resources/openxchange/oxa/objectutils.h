@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "folder.h"
 #include "object.h"
 
 class KJob;

@@ -11,21 +11,15 @@
 #include <Akonadi/FreeBusyProviderBase>
 #include <Akonadi/ResourceWidgetBase>
 
-#include <QDBusObjectPath>
-#include <qwindowdefs.h>
-
 #include "calendarhandler.h"
 #include "generichandler.h"
 #include "googlesettings.h"
-
-#define JOB_PROPERTY "_KGAPI2Job"
 
 namespace KGAPI2
 {
 class Job;
 }
 
-class GoogleSettings;
 class GoogleResourceState;
 
 class GoogleResource : public Akonadi::ResourceWidgetBase,

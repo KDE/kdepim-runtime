@@ -9,6 +9,7 @@
 #include <QBitArray>
 
 #include "ewsclient_debug.h"
+#include "ewstypes.h"
 #include "ewsxml.h"
 
 using namespace Qt::Literals::StringLiterals;

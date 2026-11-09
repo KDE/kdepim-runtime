@@ -7,6 +7,7 @@
 #pragma once
 
 #include <QString>
+#include <cstdlib>
 #include <etebase.h>
 #include <memory>
 #include <vector>

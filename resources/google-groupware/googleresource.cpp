@@ -10,7 +10,6 @@
 #include "googleresource_debug.h"
 #include "googleresourcestate.h"
 #include "googlescopes.h"
-#include "settingsadaptor.h"
 
 #include "personhandler.h"
 #include "taskhandler.h"
@@ -20,20 +19,14 @@
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CachePolicy>
 #include <Akonadi/ChangeRecorder>
-#include <Akonadi/CollectionColorAttribute>
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/ItemFetchScope>
-#include <Akonadi/TagFetchScope>
-
-#include <KCalendarCore/Event>
 
 #include <KLocalizedString>
 #include <KNotification>
 
 #include <KGAPI/Account>
-#include <KGAPI/AccountInfo>
-#include <KGAPI/AccountInfoFetchJob>
 #include <KGAPI/AuthJob>
 
 #include <algorithm>

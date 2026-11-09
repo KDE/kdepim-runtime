@@ -7,13 +7,11 @@
 #include "davfreebusyhandler.h"
 
 #include "settings.h"
-#include <KDAV/DavCollectionsFetchJob>
 #include <KDAV/DavPrincipalSearchJob>
 #include <QDomElement>
 
 #include "davresource_debug.h"
 #include <KCalendarCore/ICalFormat>
-#include <KIO/Job>
 #include <KIO/StoredTransferJob>
 #include <KLocalizedString>
 

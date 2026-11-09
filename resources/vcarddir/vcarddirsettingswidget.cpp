@@ -14,7 +14,6 @@
 #include <KLocalizedString>
 #include <QUrl>
 
-#include <QPushButton>
 #include <QTimer>
 #if HAVE_ACTIVITY_SUPPORT
 #include <PimCommonActivities/ConfigureActivitiesWidget>

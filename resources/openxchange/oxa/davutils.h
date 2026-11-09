@@ -9,9 +9,6 @@
 #pragma once
 
 #include <QDomDocument>
-#include <QDomElement>
-#include <QDomNode>
-#include <QString>
 
 namespace OXA
 {

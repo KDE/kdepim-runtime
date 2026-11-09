@@ -13,12 +13,10 @@
 #include <QHostInfo>
 #include <QRandomGenerator>
 #include <QRegularExpression>
-#include <QUuid>
 
 #include "libmaildir_debug.h"
 #include <Akonadi/MessageFlags>
 #include <KLocalizedString>
-#include <fcntl.h>
 
 // Define it to get more debug output to expense of operating speed
 // #define DEBUG_KEYCACHE_CONSITENCY

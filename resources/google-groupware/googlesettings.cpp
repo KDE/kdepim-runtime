@@ -14,7 +14,11 @@
 #include <KGAPI/Account>
 #include <KLocalizedString>
 
+#include <QDBusMessage>
+#include <QDBusReply>
+#include <QDBusUnixFileDescriptor>
 #include <QDataStream>
+#include <QFile>
 #include <QIODevice>
 
 #include <qt6keychain/keychain.h>

@@ -11,7 +11,6 @@
 #include "singlefileresource.h"
 
 #include <KCalendarCore/FileStorage>
-#include <KCalendarCore/IncidenceBase>
 #include <KCalendarCore/MemoryCalendar>
 
 class ICalResource : public Akonadi::SingleFileResource<SETTINGS_NAMESPACE::Settings>, public Akonadi::AgentBase::TagObserver

@@ -8,10 +8,9 @@
 #include "calendarhandler.h"
 #include "defaultreminderattribute.h"
 #include "googlecalendar_debug.h"
-#include "googleresource.h"
 #include "googlesettings.h"
 
-#include <Akonadi/AttributeFactory>
+#include <Akonadi/AgentBase>
 #include <Akonadi/BlockAlarmsAttribute>
 #include <Akonadi/CollectionColorAttribute>
 #include <Akonadi/CollectionModifyJob>
@@ -32,10 +31,8 @@
 #include <KGAPI/Calendar/EventMoveJob>
 #include <KGAPI/Calendar/FreeBusyQueryJob>
 
-#include <KCalendarCore/Calendar>
 #include <KCalendarCore/FreeBusy>
 #include <KCalendarCore/ICalFormat>
-#include <calendar/eventmodifyjob.h>
 
 using namespace KGAPI2;
 using namespace Akonadi;

@@ -8,6 +8,7 @@
 
 #include <KCalendarCore/Recurrence>
 
+class QBitArray;
 class QXmlStreamReader;
 
 class EwsRecurrence : public KCalendarCore::Recurrence

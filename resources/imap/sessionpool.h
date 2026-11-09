@@ -10,13 +10,12 @@
 #include <QObject>
 #include <QStringList>
 
-#include "kimap/sessionuiproxy.h"
 #include <KIMAP/ListJob>
-#include <KIMAP/Session>
+#include <KIMAP/SessionUiProxy>
 
 namespace KIMAP
 {
-struct MailBoxDescriptor;
+class Session;
 }
 
 class ImapAccount;

@@ -14,6 +14,7 @@
 #include <KMessageBox>
 
 #include <KLocalizedString>
+#include <QApplication>
 #include <QPushButton>
 
 ConfigWidget::ConfigWidget(Settings *settings, QWidget *parent)

@@ -5,6 +5,7 @@
 */
 
 #include "ewsfoldershape.h"
+#include <array>
 
 using namespace Qt::Literals::StringLiterals;
 

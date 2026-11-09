@@ -17,6 +17,7 @@
 
 #include <KWindowConfig>
 #include <QButtonGroup>
+#include <QDialogButtonBox>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QVBoxLayout>

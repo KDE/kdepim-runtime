@@ -15,7 +15,10 @@
 #include <QMap>
 #include <QObject>
 
+#include <memory>
+
 class KSslErrorUiData;
+class QThread;
 class BaseJob;
 class POP3Protocol;
 class Settings;

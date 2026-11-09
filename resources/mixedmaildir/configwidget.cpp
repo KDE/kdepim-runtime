@@ -11,6 +11,7 @@
 
 #include <KConfigDialogManager>
 #include <KLineEdit>
+#include <QDir>
 using KPIM::Maildir;
 
 ConfigWidget::ConfigWidget(Settings *settings, QWidget *parent)

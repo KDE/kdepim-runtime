@@ -10,7 +10,6 @@
 #include "graphclient/graphrequest.h"
 #include "todo/graphtodohandler.h"
 
-#include <KCalendarCore/Event>
 #include <KContacts/Picture>
 #include <QJsonArray>
 #include <QJsonObject>

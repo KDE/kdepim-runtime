@@ -6,6 +6,7 @@
 
 #include "loginjob.h"
 
+#include <QDateTime>
 #include <QFutureWatcher>
 #include <QtConcurrentRun>
 

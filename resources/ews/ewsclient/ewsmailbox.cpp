@@ -7,10 +7,12 @@
 #include "ewsmailbox.h"
 
 #include <QSharedData>
+#include <QXmlStreamReader>
 
 #include <KMime/Types>
 
 #include "ewsclient_debug.h"
+#include "ewstypes.h"
 
 class EwsMailboxPrivate : public QSharedData
 {

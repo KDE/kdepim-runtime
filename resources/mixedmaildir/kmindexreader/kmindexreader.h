@@ -14,6 +14,7 @@
 using Akonadi::MessageStatus;
 
 #include <QFile>
+#include <QHash>
 #include <QList>
 #include <QSharedPointer>
 

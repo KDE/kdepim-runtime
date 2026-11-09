@@ -6,8 +6,6 @@
 
 #include "ewssyncfolderitemsrequest.h"
 
-#include <memory>
-
 #include <QXmlStreamWriter>
 
 #include "ewsclient_debug.h"

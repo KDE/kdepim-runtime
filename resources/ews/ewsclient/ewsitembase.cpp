@@ -7,6 +7,9 @@
 #include "ewsitembase.h"
 #include "ewsitembase_p.h"
 
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
+
 #include "ewsclient_debug.h"
 
 using namespace Qt::Literals::StringLiterals;

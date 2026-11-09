@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "davitemcache.h"
 #include "resourcestateinterface.h"
 
 #include <Akonadi/Item>
@@ -17,8 +16,6 @@ namespace KDAV
 {
 class DavJobBase;
 }
-class Settings;
-class DavGroupwareResource;
 
 /**
  * @class ResourceTask
@@ -41,7 +38,7 @@ public:
         Unrecoverable,
     };
 
-    using CollectionsDavItemCache = QMap<QString, std::shared_ptr<DavItemCache>>;
+    using CollectionsDavItemCache = ResourceStateInterface::CollectionsDavItemCache;
 
 public:
     explicit ResourceTask(ResourceStateInterface::Ptr resource, QObject *parent = nullptr);

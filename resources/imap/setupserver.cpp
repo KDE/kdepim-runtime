@@ -17,10 +17,8 @@
 
 #include "setupserver.h"
 #include "folderarchivesettingpage.h"
-#include "imapresource.h"
 
 #include "serverinfodialog.h"
-#include <config-imap.h>
 
 #include <KLineEditEventHandler>
 #include <MailTransport/ServerTest>
@@ -42,7 +40,9 @@
 #include <KMessageBox>
 #include <KUser>
 
+#include <QApplication>
 #include <QFontDatabase>
+#include <QIcon>
 #include <QNetworkInformation>
 #include <QPointer>
 #include <QPushButton>

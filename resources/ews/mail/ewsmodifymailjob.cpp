@@ -6,8 +6,6 @@
 
 #include "ewsmodifymailjob.h"
 
-#include <Akonadi/MessageFlags>
-
 #include <KLocalizedString>
 
 #include "ewsmailhandler.h"
