@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2025-05-23 23:26+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -148,7 +148,7 @@ msgid "The resource not configured yet"
 msgstr "Baliabidea oraindik konfiguratu gabe"
 
 #: singlefileresource.h:106 singlefileresource.h:135 singlefileresource.h:230
-#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
+#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -199,7 +199,7 @@ msgstr "Zama-jaiste bat oraindik martxan dago."
 msgid "Uploading cached file to remote location."
 msgstr "Cacheratutako fitxategia urruneko kokalekura zama-igotzea."
 
-#: singlefileresourcebase.cpp:240
+#: singlefileresourcebase.cpp:239
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -208,12 +208,12 @@ msgstr ""
 "'%1' fitxategia diskoan aldatu da. Badaezpada ere, bere aurreko edukiaren "
 "babes-kopia bat sortu da '%2'(e)an."
 
-#: singlefileresourcebase.cpp:272
+#: singlefileresourcebase.cpp:271
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Ezin du fitxategia zamatu '%1'."
 
-#: singlefileresourcebase.cpp:288
+#: singlefileresourcebase.cpp:287
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Ezin izan du '%1' fitxategia gorde."
@@ -305,7 +305,7 @@ msgstr ""
 "Fitxategia aldizka eguneratzen du. Gainbegiratzekoa erabilgarri ez dagoenean "
 "erabili daiteke (adib. urrutiko egutegietarako)."
 
-#: singlefileresourceconfigwidgetbase.cpp:37
+#: singlefileresourceconfigwidgetbase.cpp:35
 #, kde-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -315,7 +315,7 @@ msgstr ""
 "Egutegi-fitxategia duen fitxategi baten bide-izena edo URLa. Behin sortuta, "
 "kokaleku hori ezin da aldatu."
 
-#: singlefileresourceconfigwidgetbase.cpp:39
+#: singlefileresourceconfigwidgetbase.cpp:37
 #, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
@@ -329,7 +329,7 @@ msgstr ""
 "Kokalekua aldatzeko, baliabide hau ezabatu eta berria sortu bide-izen "
 "eguneratuarekin.</note></para>"
 
-#: singlefileresourceconfigwidgetbase.cpp:145
+#: singlefileresourceconfigwidgetbase.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

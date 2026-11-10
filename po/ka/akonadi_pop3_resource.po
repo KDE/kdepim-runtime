@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 02:58+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2026-10-26 04:35+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -145,7 +145,7 @@ msgid_plural " messages"
 msgstr[0] " შეტყობინება"
 msgstr[1] " შეტყობინება"
 
-#: jobs.cpp:148
+#: jobs.cpp:146
 #, kde-format
 msgid "Unable to initialize SASL, aborting mail check."
 msgstr "SASL-ის ინიციალიზაცია შეუძლებელია. ელფოსტის შემოწმება გაუქმდა."

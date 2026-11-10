@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2014-09-04 15:55+0200\n"
 "Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -18,43 +18,43 @@ msgstr ""
 "X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: configwidget.cpp:28
+#: configwidget.cpp:29
 #, kde-format
 msgid "The selected path is empty."
 msgstr "A kijelölt útvonal üres."
 
-#: configwidget.cpp:41
+#: configwidget.cpp:42
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
 msgstr "A kijelölt útvonal érvényes MailDir mappákat tartalmaz."
 
-#: configwidget.cpp:48
+#: configwidget.cpp:49
 #, kde-format
 msgid "The selected path is a valid Maildir."
 msgstr "A kijelölt útvonal egy érvényes MailDir."
 
-#: configwidget.cpp:54
+#: configwidget.cpp:55
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
 msgstr "A kijelölt útvonal még nem létezik, új MailDir lesz létrehozva."
 
-#: configwidget.cpp:57
+#: configwidget.cpp:58
 #, kde-format
 msgid "The selected path does not exist."
 msgstr "A kijelölt útvonal nem létezik."
 
-#: mixedmaildirresource.cpp:102 mixedmaildirresource.cpp:117
-#: mixedmaildirresource.cpp:148 mixedmaildirresource.cpp:178
-#: mixedmaildirresource.cpp:193 mixedmaildirresource.cpp:208
-#: mixedmaildirresource.cpp:240 mixedmaildirresource.cpp:253
-#: mixedmaildirresource.cpp:280 mixedmaildirresource.cpp:311
-#: mixedmaildirresource.cpp:339
+#: mixedmaildirresource.cpp:98 mixedmaildirresource.cpp:113
+#: mixedmaildirresource.cpp:144 mixedmaildirresource.cpp:174
+#: mixedmaildirresource.cpp:189 mixedmaildirresource.cpp:204
+#: mixedmaildirresource.cpp:236 mixedmaildirresource.cpp:249
+#: mixedmaildirresource.cpp:276 mixedmaildirresource.cpp:307
+#: mixedmaildirresource.cpp:335
 #, kde-format
 msgctxt "@info:status"
 msgid "Unusable configuration."
 msgstr "Használhatatlan beállítás."
 
-#: mixedmaildirresource.cpp:171
+#: mixedmaildirresource.cpp:167
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -63,36 +63,36 @@ msgstr ""
 "A(z) %1 elem a(z) %2 érvénytelen gyűjteményhez tartozik. Talán törölve lett "
 "időközben?"
 
-#: mixedmaildirresource.cpp:202
+#: mixedmaildirresource.cpp:198
 #, kde-format
 msgctxt "@info:status"
 msgid "Synchronizing email folders"
 msgstr "E-mail mappák szinkronizálása"
 
-#: mixedmaildirresource.cpp:217
+#: mixedmaildirresource.cpp:213
 #, kde-format
 msgctxt "@info:status"
 msgid "Synchronizing email folder %1"
 msgstr "%1 e-mail mappa szinkronizálása"
 
-#: mixedmaildirresource.cpp:318
+#: mixedmaildirresource.cpp:314
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move root maildir folder '%1'."
 msgstr "Nem lehet áthelyezni a(z) „%1” maildir gyökérmappát."
 
-#: mixedmaildirresource.cpp:346
+#: mixedmaildirresource.cpp:342
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
 msgstr "Nem lehet törölni a(z) „%1” legfelsőbb szintű maildir mappát."
 
-#: mixedmaildirresource.cpp:360
+#: mixedmaildirresource.cpp:356
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to create maildir '%1'."
 msgstr "Nem lehet létrehozni a(z) „%1” maildirt."
 
-#: mixedmaildirresource.cpp:372
+#: mixedmaildirresource.cpp:368
 #, kde-format
 msgctxt "@info:status"
 msgid "No usable storage location configured."

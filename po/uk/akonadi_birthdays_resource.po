@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_birthdays_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-09 00:45+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2024-08-17 09:56+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: birthdaysconfigagentwidget.cpp:33
+#: birthdaysconfigagentwidget.cpp:30
 #, kde-format
 msgid "%v day"
 msgid_plural "%v days"
@@ -59,34 +59,34 @@ msgstr "Фільтр"
 msgid "&Filter by categories"
 msgstr "&Фільтрувати за категоріями"
 
-#: birthdaysresource.cpp:40
+#: birthdaysresource.cpp:41
 #, kde-format
 msgid "Birthdays & Anniversaries"
 msgstr "Дні народження і річниці"
 
-#: birthdaysresource.cpp:309
+#: birthdaysresource.cpp:310
 #, kde-format
 msgid "%1's birthday"
 msgstr "%1 (день народження)"
 
-#: birthdaysresource.cpp:320
+#: birthdaysresource.cpp:321
 #, kde-format
 msgid "Birthday"
 msgstr "День народження"
 
-#: birthdaysresource.cpp:358
+#: birthdaysresource.cpp:359
 #, kde-format
 msgctxt "insert names of both spouses"
 msgid "%1's & %2's anniversary"
 msgstr "Річниця весілля %1 і %2"
 
-#: birthdaysresource.cpp:360
+#: birthdaysresource.cpp:361
 #, kde-format
 msgctxt "only one spouse in addressbook, insert the name"
 msgid "%1's anniversary"
 msgstr "Річниця весілля %1"
 
-#: birthdaysresource.cpp:372
+#: birthdaysresource.cpp:373
 #, kde-format
 msgid "Anniversary"
 msgstr "Річниця весілля"

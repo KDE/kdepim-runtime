@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 02:58+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2025-03-28 07:20+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -90,94 +90,94 @@ msgstr ""
 "Zapisovanje nekaterih seznamov za nadzor dostopa za »%1« na strežniku IMAP "
 "ni uspelo. %2"
 
-#: imapresource.cpp:235
+#: imapresource.cpp:229
 #, kde-format
 msgid "No server configured yet."
 msgstr "Ni še nastavljenih strežnikov."
 
-#: imapresource.cpp:255
+#: imapresource.cpp:249
 #, kde-format
 msgid "Connection established."
 msgstr "Povezava je vzpostavljena."
 
-#: imapresource.cpp:272
+#: imapresource.cpp:266
 #, kde-format
 msgid "Server is not available."
 msgstr "Strežnik ni na voljo."
 
-#: imapresource.cpp:323
+#: imapresource.cpp:317
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Dodajanje predmeta v '%1'"
 
-#: imapresource.cpp:330
+#: imapresource.cpp:324
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Posodabljanje predmeta v '%1'"
 
-#: imapresource.cpp:337
+#: imapresource.cpp:331
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Posodabljanje predmetov"
 
-#: imapresource.cpp:351
+#: imapresource.cpp:345
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Odstranjevanje predmetov"
 
-#: imapresource.cpp:367
+#: imapresource.cpp:361
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Premikanje predmetov iz '%1' v '%2'"
 
-#: imapresource.cpp:376
+#: imapresource.cpp:370
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Pridobivanje map"
 
-#: imapresource.cpp:383
+#: imapresource.cpp:377
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Pridobivanje dodatnih podrobnosti za mapo '%1'"
 
-#: imapresource.cpp:401
+#: imapresource.cpp:395
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Ustvarjanje mape '%1'"
 
-#: imapresource.cpp:407
+#: imapresource.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Posodabljanje mape '%1'"
 
-#: imapresource.cpp:420
+#: imapresource.cpp:414
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Odstranjevanje mape '%1'"
 
-#: imapresource.cpp:427
+#: imapresource.cpp:421
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Premikanje mape '%1' iz '%2' v '%3'"
 
-#: imapresource.cpp:457
+#: imapresource.cpp:451
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "Iskanje…"
 
-#: imapresource.cpp:729
+#: imapresource.cpp:723
 #, kde-format
 msgid "IMAP Account"
 msgstr "Račun IMAP"
@@ -434,19 +434,19 @@ msgstr ""
 "Označevanje sporočila iz '%1' za brisanje s strežnika IMAP ni uspelo. Ob "
 "naslednji uskladitvi se bo spet pojavilo."
 
-#: outlookpasswordrequester.cpp:67 outlookpasswordrequester.cpp:76
+#: outlookpasswordrequester.cpp:65 outlookpasswordrequester.cpp:74
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
 msgstr "Gesla iz obeska za ključe ni bilo mogoče prebrati."
 
-#: removecollectionrecursivetask.cpp:113 removecollectionrecursivetask.cpp:129
-#: removecollectionrecursivetask.cpp:142
+#: removecollectionrecursivetask.cpp:114 removecollectionrecursivetask.cpp:130
+#: removecollectionrecursivetask.cpp:143
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "Brisanje mape ni uspelo, obnavljanje seznama map."
 
-#: removecollectionrecursivetask.cpp:147
+#: removecollectionrecursivetask.cpp:148
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "Iskanje mape za izbris ni uspelo, obnavljanje seznama map."
@@ -495,17 +495,17 @@ msgstr "Prejeto"
 msgid "Shared Folders"
 msgstr "Deljene mape"
 
-#: retrieveitemtask.cpp:35
+#: retrieveitemtask.cpp:34
 #, kde-format
 msgid "Remote id is empty or invalid"
 msgstr "Oddaljeni določilnik je prazen ali ni veljaven"
 
-#: retrieveitemtask.cpp:78 retrieveitemtask.cpp:94
+#: retrieveitemtask.cpp:77 retrieveitemtask.cpp:93
 #, kde-format
 msgid "No message retrieved, failed to read the message."
 msgstr "Prejeto ni bilo nobeno sporočilo, sporočila ni bilo mogoče prebrati."
 
-#: retrieveitemtask.cpp:115
+#: retrieveitemtask.cpp:114
 #, kde-format
 msgid "No message retrieved, server reply was empty."
 msgstr "Prejeto ni bilo nobeno sporočilo, odgovor strežnika je bil prazen."
@@ -533,7 +533,7 @@ msgstr "Napaka pri pridobivanju zmogljivosti strežnika: %1"
 msgid "Resource not synchronized yet."
 msgstr "Vir še ni usklajen."
 
-#: sessionpool.cpp:251 sessionpool.cpp:415
+#: sessionpool.cpp:252 sessionpool.cpp:416
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -542,7 +542,7 @@ msgstr ""
 "Povezovanje s strežnikom IMAP %1 ni uspelo.\n"
 "%2"
 
-#: sessionpool.cpp:255
+#: sessionpool.cpp:256
 #, kde-format
 msgid ""
 "Could not connect to the IMAP server.\n"
@@ -551,28 +551,28 @@ msgstr ""
 "Povezovanje s strežnikom IMAP ni uspelo.\n"
 "%1"
 
-#: sessionpool.cpp:280 sessionpool.cpp:321 sessionpool.cpp:390
-#: sessionpool.cpp:433 sessionpool.cpp:510
+#: sessionpool.cpp:281 sessionpool.cpp:322 sessionpool.cpp:391
+#: sessionpool.cpp:434 sessionpool.cpp:511
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "Med prijavljanjem je bila povezava s strežnikom prekinjena."
 
-#: sessionpool.cpp:304
+#: sessionpool.cpp:305
 #, kde-format
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr "Dodatne povezave s strežnikom IMAP %1 ni bilo mogoče ustvariti."
 
-#: sessionpool.cpp:334
+#: sessionpool.cpp:335
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr "Gesla ni bilo mogoče prebrati: uporabnik je zavrnil dostop do listnice"
 
-#: sessionpool.cpp:342
+#: sessionpool.cpp:343
 #, kde-format
 msgid "Empty password"
 msgstr "Prazno geslo"
 
-#: sessionpool.cpp:354
+#: sessionpool.cpp:355
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
@@ -581,7 +581,7 @@ msgstr ""
 "Za povezovanje s %1 ste zahtevali TLS/SSL, vendar je videti, da sistem tega "
 "ne podpira."
 
-#: sessionpool.cpp:418
+#: sessionpool.cpp:419
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
@@ -590,7 +590,7 @@ msgstr ""
 "Povezovanje s strežnikom IMAP ni uspelo.\n"
 "%1"
 
-#: sessionpool.cpp:441
+#: sessionpool.cpp:442
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
@@ -599,7 +599,7 @@ msgstr ""
 "Zmožnosti, ki jih podpira strežnik IMAP %1, ni bilo mogoče preizkusiti.\n"
 "%2"
 
-#: sessionpool.cpp:449
+#: sessionpool.cpp:450
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
@@ -608,7 +608,7 @@ msgstr ""
 "Zmožnosti, ki jih podpira strežnik IMAP, ni bilo mogoče preizkusiti.\n"
 "%1"
 
-#: sessionpool.cpp:469
+#: sessionpool.cpp:470
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -617,18 +617,18 @@ msgstr ""
 "Strežnika IMAP %1 ni mogoče uporabljati, ker manjkajo nekatere obvezne "
 "zmožnosti: %2. Prosite svojega skrbnika sistema, da nadgradi strežnik."
 
-#: sessionpool.cpp:553 sessionpool.cpp:572
+#: sessionpool.cpp:554 sessionpool.cpp:573
 #, kde-format
 msgid "Disconnected during login."
 msgstr "Med prijavljanjem je bila povezava prekinjena."
 
-#: settings.cpp:126
+#: settings.cpp:125
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "Ni bilo mogoče najti gesla za %1 račun IMAP"
 
-#: settings.cpp:131
+#: settings.cpp:130
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -638,13 +638,13 @@ msgstr ""
 "Prišlo je do napake pri pridobivanju gesla IMAP iz sistemske verige ključev: "
 "\"%1\""
 
-#: settings.cpp:159
+#: settings.cpp:158
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "Gesla ni bilo mogoče najti za račun %1 sieve"
 
-#: settings.cpp:164
+#: settings.cpp:163
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -654,7 +654,7 @@ msgstr ""
 "Prišlo je do napake pri pridobivanju gesla za sieve iz sistemske verige "
 "ključev: \"%1\""
 
-#: settings.cpp:194
+#: settings.cpp:193
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -664,7 +664,7 @@ msgstr ""
 "Prišlo je do napake pri shranjevanju gesla za sieve v sistemsko verigo "
 "ključev: \"%1\""
 
-#: settings.cpp:220
+#: settings.cpp:219
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -674,19 +674,19 @@ msgstr ""
 "Prišlo je do napake pri shranjevanju gesla za IMAP v sistemsko verigo "
 "ključev: \"%1\""
 
-#: settings.cpp:307
+#: settings.cpp:306
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr "Težava z računom IMAP %1"
 
-#: settingspasswordrequester.cpp:75
+#: settingspasswordrequester.cpp:74
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr "E-poštni račun IMAP potrebuje vašo pozornost."
 
-#: settingspasswordrequester.cpp:79
+#: settingspasswordrequester.cpp:78
 #, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
@@ -699,7 +699,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:84
+#: settingspasswordrequester.cpp:83
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -712,13 +712,13 @@ msgstr ""
 "\n"
 "%2"
 
-#: settingspasswordrequester.cpp:91
+#: settingspasswordrequester.cpp:90
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Poskusi znova"
 
-#: settingspasswordrequester.cpp:97
+#: settingspasswordrequester.cpp:96
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2026-11-03 22:08+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -20,47 +20,47 @@ msgstr ""
 "X-Generator: Lokalize 26.11.70\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: configwidget.cpp:36
+#: configwidget.cpp:37
 #, kde-format
 msgid "Archive Folder"
 msgstr "歸檔資料夾"
 
-#: configwidget.cpp:39
+#: configwidget.cpp:40
 #, kde-format
 msgid "Activities"
 msgstr "活動"
 
-#: configwidget.cpp:54
+#: configwidget.cpp:55
 #, kde-format
 msgid "The selected path is empty."
 msgstr "選取的路徑是空的。"
 
-#: configwidget.cpp:67
+#: configwidget.cpp:68
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
 msgstr "選取的路徑包含合法的 Maildir 資料夾。"
 
-#: configwidget.cpp:74
+#: configwidget.cpp:75
 #, kde-format
 msgid "The selected path is a valid Maildir."
 msgstr "選取的路徑是一個合法的 Maildir 資料夾。"
 
-#: configwidget.cpp:80
+#: configwidget.cpp:81
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
 msgstr "選取的路徑不存在，將建立一個新的 Maildir 資料夾。"
 
-#: configwidget.cpp:84
+#: configwidget.cpp:85
 #, kde-format
 msgid "The selected path does not exist."
 msgstr "選取的路徑不存在。"
 
-#: libmaildir/maildir.cpp:214 libmaildir/maildir.cpp:219
+#: libmaildir/maildir.cpp:212 libmaildir/maildir.cpp:217
 #, kde-format
 msgid "Error opening %1; this folder is missing."
 msgstr "開啟 %1 時發生錯誤；資料夾已遺失"
 
-#: libmaildir/maildir.cpp:225
+#: libmaildir/maildir.cpp:223
 #, kde-format
 msgid ""
 "Error opening %1; either this is not a valid maildir folder, or you do not "
@@ -68,117 +68,117 @@ msgid ""
 msgstr ""
 "開啟 %1 時發生錯誤；可能是這不是合法的郵件資料夾，或是您沒有足夠的權限存取。"
 
-#: libmaildir/maildir.cpp:452 libmaildir/maildir.cpp:474
-#: libmaildir/maildir.cpp:492 libmaildir/maildir.cpp:512
-#: libmaildir/maildir.cpp:531 libmaildir/maildir.cpp:555
-#: libmaildir/maildir.cpp:630 libmaildir/maildir.cpp:780
+#: libmaildir/maildir.cpp:450 libmaildir/maildir.cpp:472
+#: libmaildir/maildir.cpp:490 libmaildir/maildir.cpp:510
+#: libmaildir/maildir.cpp:529 libmaildir/maildir.cpp:553
+#: libmaildir/maildir.cpp:628 libmaildir/maildir.cpp:778
 #, kde-format
 msgid "Cannot locate mail file %1."
 msgstr "找不到郵件檔 %1。"
 
-#: libmaildir/maildir.cpp:458 libmaildir/maildir.cpp:480
+#: libmaildir/maildir.cpp:456 libmaildir/maildir.cpp:478
 #, kde-format
 msgid "Cannot open mail file %1."
 msgstr "無法開啟郵件檔 %1。"
 
-#: libmaildir/maildir.cpp:563 libmaildir/maildir.cpp:590
+#: libmaildir/maildir.cpp:561 libmaildir/maildir.cpp:588
 #, kde-format
 msgid "Cannot write to mail file %1."
 msgstr "無法寫入郵件檔 %1。"
 
-#: libmaildir/maildir.cpp:604
+#: libmaildir/maildir.cpp:602
 #, kde-format
 msgid "Failed to create mail file %1. The error was: %2"
 msgstr "建立郵件檔 %1 失敗。錯誤為：%2"
 
-#: libmaildir/maildir.cpp:698
+#: libmaildir/maildir.cpp:696
 #, kde-format
 msgid "Failed to update the file name %1 to %2 on the disk. The error was: %3."
 msgstr "更新檔案 %1 的名稱為 %2 失敗。錯誤為：%3"
 
-#: maildirresource.cpp:124 maildirresource.cpp:258 maildirresource.cpp:297
-#: maildirresource.cpp:391 maildirresource.cpp:432 maildirresource.cpp:552
-#: maildirresource.cpp:582 maildirresource.cpp:625 maildirresource.cpp:658
+#: maildirresource.cpp:126 maildirresource.cpp:260 maildirresource.cpp:299
+#: maildirresource.cpp:393 maildirresource.cpp:434 maildirresource.cpp:554
+#: maildirresource.cpp:584 maildirresource.cpp:627 maildirresource.cpp:660
 #, kde-format
 msgid "Unusable configuration."
 msgstr "無法使用的設定。"
 
-#: maildirresource.cpp:189
+#: maildirresource.cpp:191
 #, kde-format
 msgid "Unable to fetch item: The maildir folder \"%1\" is not valid."
 msgstr "無法抓取項目：maildir 資料夾 %1 不合法。"
 
-#: maildirresource.cpp:269
+#: maildirresource.cpp:271
 #, kde-format
 msgid "Error: Unsupported type."
 msgstr "錯誤：不支援的類型"
 
-#: maildirresource.cpp:335
+#: maildirresource.cpp:337
 #, kde-format
 msgid "Failed to change the flags for the mail. %1"
 msgstr "變更此信件的旗標時失敗。 %1"
 
-#: maildirresource.cpp:370
+#: maildirresource.cpp:372
 #, kde-format
 msgid "Maildir resource got a non-mail content."
 msgstr "Maildir 資源中有非郵件的內容。"
 
-#: maildirresource.cpp:397
+#: maildirresource.cpp:399
 #, kde-format
 msgid "Source folder is invalid: '%1'."
 msgstr "來源資料夾不合法：%1。"
 
-#: maildirresource.cpp:403
+#: maildirresource.cpp:405
 #, kde-format
 msgid "Destination folder is invalid: '%1'."
 msgstr "目的資料夾不合法：%1。"
 
-#: maildirresource.cpp:420
+#: maildirresource.cpp:422
 #, kde-format
 msgid "Could not move message '%1' from '%2' to '%3'. The error was %4."
 msgstr "無法將信件 '%1' 從 '%2' 移動到 '%3'。錯誤為 %4。"
 
-#: maildirresource.cpp:442
+#: maildirresource.cpp:444
 #, kde-format
 msgid "Failed to delete message: %1"
 msgstr "刪除信件失敗：%1"
 
-#: maildirresource.cpp:531
+#: maildirresource.cpp:533
 #, kde-format
 msgid "Maildir '%1' for collection '%2' is invalid."
 msgstr "收藏 %2 的 Maildir %1 不合法。"
 
-#: maildirresource.cpp:610
+#: maildirresource.cpp:612
 #, kde-format
 msgid "Unable to rename maildir folder '%1'."
 msgstr "無法重新命名 Maildir 資料夾 %1。"
 
-#: maildirresource.cpp:631
+#: maildirresource.cpp:633
 #, kde-format
 msgid "Cannot move root maildir folder '%1'."
 msgstr "無法移動根 maildir 資料夾 %1。"
 
-#: maildirresource.cpp:646
+#: maildirresource.cpp:648
 #, kde-format
 msgid "Unable to move maildir folder '%1' from '%2' to '%3'."
 msgstr "無法將 maildir 資料夾 %1 從 %2 移動到 %3。"
 
-#: maildirresource.cpp:664
+#: maildirresource.cpp:666
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
 msgstr "無法刪除頂層 maildir 資料夾 %1。"
 
-#: maildirresource.cpp:673
+#: maildirresource.cpp:675
 #, kde-format
 msgid "Failed to delete sub-folder '%1'."
 msgstr "刪除子資料夾 %1 失敗。"
 
-#: maildirresource.cpp:687
+#: maildirresource.cpp:689
 #, kde-format
 msgid "Unable to create maildir '%1'."
 msgstr "無法建立 maildir %1。"
 
-#: maildirresource.cpp:697
+#: maildirresource.cpp:699
 #, kde-format
 msgid "No usable storage location configured."
 msgstr "沒有設定可使用的儲存位置。"

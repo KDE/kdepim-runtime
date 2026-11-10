@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_birthdays_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-09 00:45+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2010-03-09 22:30+0900\n"
 "Last-Translator: Yukiko Bando <ybando@k6.dion.ne.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: birthdaysconfigagentwidget.cpp:33
+#: birthdaysconfigagentwidget.cpp:30
 #, fuzzy, kde-format
 #| msgid " day"
 #| msgid_plural " days"
@@ -55,34 +55,34 @@ msgstr "フィルタ"
 msgid "&Filter by categories"
 msgstr "カテゴリでフィルタする(&F)"
 
-#: birthdaysresource.cpp:40
+#: birthdaysresource.cpp:41
 #, kde-format
 msgid "Birthdays & Anniversaries"
 msgstr "誕生日と記念日"
 
-#: birthdaysresource.cpp:309
+#: birthdaysresource.cpp:310
 #, kde-format
 msgid "%1's birthday"
 msgstr "%1 の誕生日"
 
-#: birthdaysresource.cpp:320
+#: birthdaysresource.cpp:321
 #, kde-format
 msgid "Birthday"
 msgstr "誕生日"
 
-#: birthdaysresource.cpp:358
+#: birthdaysresource.cpp:359
 #, kde-format
 msgctxt "insert names of both spouses"
 msgid "%1's & %2's anniversary"
 msgstr "%1 と %2 の記念日"
 
-#: birthdaysresource.cpp:360
+#: birthdaysresource.cpp:361
 #, kde-format
 msgctxt "only one spouse in addressbook, insert the name"
 msgid "%1's anniversary"
 msgstr "%1 の記念日"
 
-#: birthdaysresource.cpp:372
+#: birthdaysresource.cpp:373
 #, kde-format
 msgid "Anniversary"
 msgstr "記念日"

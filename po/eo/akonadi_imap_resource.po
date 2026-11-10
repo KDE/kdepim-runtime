@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 02:58+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2024-08-22 22:54+0200\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -83,94 +83,94 @@ msgstr ""
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr "Malsukcesis verki kelkajn ACL-ojn por '%1' sur la IMAP-servilo. %2"
 
-#: imapresource.cpp:235
+#: imapresource.cpp:229
 #, kde-format
 msgid "No server configured yet."
 msgstr "Ankoraŭ neniu servilo agordita."
 
-#: imapresource.cpp:255
+#: imapresource.cpp:249
 #, kde-format
 msgid "Connection established."
 msgstr "Konekto establita."
 
-#: imapresource.cpp:272
+#: imapresource.cpp:266
 #, kde-format
 msgid "Server is not available."
 msgstr "Servilo ne disponeblas."
 
-#: imapresource.cpp:323
+#: imapresource.cpp:317
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Aldonante eron en '%1'"
 
-#: imapresource.cpp:330
+#: imapresource.cpp:324
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Ĝisdatigante eron en '%1'"
 
-#: imapresource.cpp:337
+#: imapresource.cpp:331
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Ĝisdatigante erojn"
 
-#: imapresource.cpp:351
+#: imapresource.cpp:345
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Forigante erojn"
 
-#: imapresource.cpp:367
+#: imapresource.cpp:361
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Movante erojn de '%1' al '%2'"
 
-#: imapresource.cpp:376
+#: imapresource.cpp:370
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Reakiro de dosierujoj"
 
-#: imapresource.cpp:383
+#: imapresource.cpp:377
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Prenante ekstrajn dosierujojn por '%1'"
 
-#: imapresource.cpp:401
+#: imapresource.cpp:395
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Kreante dosierujon '%1'"
 
-#: imapresource.cpp:407
+#: imapresource.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Ĝisdatigante dosierujon '%1'"
 
-#: imapresource.cpp:420
+#: imapresource.cpp:414
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Forigante dosierujon '%1'"
 
-#: imapresource.cpp:427
+#: imapresource.cpp:421
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Movante dosierujon '%1' de '%2' al '%3'"
 
-#: imapresource.cpp:457
+#: imapresource.cpp:451
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "Serĉante…"
 
-#: imapresource.cpp:729
+#: imapresource.cpp:723
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP-konto"
@@ -418,19 +418,19 @@ msgstr ""
 "Malsukcesis marki la mesaĝon de '%1' por forigo sur la IMAP-servilo. Ĝi "
 "reaperos en la sekva sinkronigo."
 
-#: outlookpasswordrequester.cpp:67 outlookpasswordrequester.cpp:76
+#: outlookpasswordrequester.cpp:65 outlookpasswordrequester.cpp:74
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
 msgstr "Malsukcesis legi pasvorton el ŝosilĉeno."
 
-#: removecollectionrecursivetask.cpp:113 removecollectionrecursivetask.cpp:129
-#: removecollectionrecursivetask.cpp:142
+#: removecollectionrecursivetask.cpp:114 removecollectionrecursivetask.cpp:130
+#: removecollectionrecursivetask.cpp:143
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "Malsukcesis forigi la dosierujon, restarigante dosierujon."
 
-#: removecollectionrecursivetask.cpp:147
+#: removecollectionrecursivetask.cpp:148
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""
@@ -480,17 +480,17 @@ msgstr "Enirkesto"
 msgid "Shared Folders"
 msgstr "Komunaj Dosierujoj"
 
-#: retrieveitemtask.cpp:35
+#: retrieveitemtask.cpp:34
 #, kde-format
 msgid "Remote id is empty or invalid"
 msgstr "Fora identigilo estas malplena aŭ nevalida"
 
-#: retrieveitemtask.cpp:78 retrieveitemtask.cpp:94
+#: retrieveitemtask.cpp:77 retrieveitemtask.cpp:93
 #, kde-format
 msgid "No message retrieved, failed to read the message."
 msgstr "Neniu mesaĝo retrovita, malsukcesis legi la mesaĝon."
 
-#: retrieveitemtask.cpp:115
+#: retrieveitemtask.cpp:114
 #, kde-format
 msgid "No message retrieved, server reply was empty."
 msgstr "Neniu mesaĝo retrovita, servila respondo estis malplena."
@@ -518,7 +518,7 @@ msgstr ""
 msgid "Resource not synchronized yet."
 msgstr "Rimedo ankoraŭ ne sinkronigita."
 
-#: sessionpool.cpp:251 sessionpool.cpp:415
+#: sessionpool.cpp:252 sessionpool.cpp:416
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -527,7 +527,7 @@ msgstr ""
 "Ne eblis konekti al la IMAP-servilo %1.\n"
 "%2"
 
-#: sessionpool.cpp:255
+#: sessionpool.cpp:256
 #, kde-format
 msgid ""
 "Could not connect to the IMAP server.\n"
@@ -536,28 +536,28 @@ msgstr ""
 "Ne eblis konektiĝi al la IMAP-servilo.\n"
 "%1"
 
-#: sessionpool.cpp:280 sessionpool.cpp:321 sessionpool.cpp:390
-#: sessionpool.cpp:433 sessionpool.cpp:510
+#: sessionpool.cpp:281 sessionpool.cpp:322 sessionpool.cpp:391
+#: sessionpool.cpp:434 sessionpool.cpp:511
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "Malkonektita de servilo dum ensaluto."
 
-#: sessionpool.cpp:304
+#: sessionpool.cpp:305
 #, kde-format
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr "Ne eblis krei alian kroman konekton al la IMAP-servilo %1."
 
-#: sessionpool.cpp:334
+#: sessionpool.cpp:335
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr "Ne eblis legi la pasvorton: uzanto malakceptis aliron al monujo"
 
-#: sessionpool.cpp:342
+#: sessionpool.cpp:343
 #, kde-format
 msgid "Empty password"
 msgstr "Malplena pasvorto"
 
-#: sessionpool.cpp:354
+#: sessionpool.cpp:355
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
@@ -566,7 +566,7 @@ msgstr ""
 "Vi petis TLS/SSL por konekti al %1, sed via sistemo ne ŝajnas esti agordita "
 "por tio."
 
-#: sessionpool.cpp:418
+#: sessionpool.cpp:419
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
@@ -575,7 +575,7 @@ msgstr ""
 "Ne eblis konektiĝi al la IMAP-servilo.\n"
 "%1"
 
-#: sessionpool.cpp:441
+#: sessionpool.cpp:442
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
@@ -584,7 +584,7 @@ msgstr ""
 "Ne eblis testi la kapablojn subtenatajn de la IMAP-servilo %1.\n"
 "%2"
 
-#: sessionpool.cpp:449
+#: sessionpool.cpp:450
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
@@ -593,7 +593,7 @@ msgstr ""
 "Ne eblis testi la kapablojn subtenatajn de la IMAP-servilo.\n"
 "%1"
 
-#: sessionpool.cpp:469
+#: sessionpool.cpp:470
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -602,18 +602,18 @@ msgstr ""
 "Ne povas uzi la IMAP-servilon %1, kelkaj devigaj kapabloj mankas: %2. "
 "Bonvolu peti vian administranton ĝisdatigi la servilon."
 
-#: sessionpool.cpp:553 sessionpool.cpp:572
+#: sessionpool.cpp:554 sessionpool.cpp:573
 #, kde-format
 msgid "Disconnected during login."
 msgstr "Malkonektita dum ensaluto."
 
-#: settings.cpp:126
+#: settings.cpp:125
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr ""
 
-#: settings.cpp:131
+#: settings.cpp:130
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -621,13 +621,13 @@ msgid ""
 "keychain: \"%1\""
 msgstr ""
 
-#: settings.cpp:159
+#: settings.cpp:158
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr ""
 
-#: settings.cpp:164
+#: settings.cpp:163
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -635,7 +635,7 @@ msgid ""
 "keychain: \"%1\""
 msgstr ""
 
-#: settings.cpp:194
+#: settings.cpp:193
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -643,7 +643,7 @@ msgid ""
 "\"%1\""
 msgstr ""
 
-#: settings.cpp:220
+#: settings.cpp:219
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -651,19 +651,19 @@ msgid ""
 "\"%1\""
 msgstr ""
 
-#: settings.cpp:307
+#: settings.cpp:306
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr ""
 
-#: settingspasswordrequester.cpp:75
+#: settingspasswordrequester.cpp:74
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr "IMAP-retpoŝta konto bezonas vian atenton."
 
-#: settingspasswordrequester.cpp:79
+#: settingspasswordrequester.cpp:78
 #, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
@@ -676,7 +676,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:84
+#: settingspasswordrequester.cpp:83
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -690,13 +690,13 @@ msgstr ""
 "\n"
 "%2"
 
-#: settingspasswordrequester.cpp:91
+#: settingspasswordrequester.cpp:90
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "Reprovi"
 
-#: settingspasswordrequester.cpp:97
+#: settingspasswordrequester.cpp:96
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-09 00:45+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2026-05-10 13:26+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 26.04.0\n"
 
-#: birthdaysconfigagentwidget.cpp:33
+#: birthdaysconfigagentwidget.cpp:30
 #, kde-format
 msgid "%v day"
 msgid_plural "%v days"
@@ -59,34 +59,34 @@ msgstr "Süz"
 msgid "&Filter by categories"
 msgstr "Kategorilere göre s&üz"
 
-#: birthdaysresource.cpp:40
+#: birthdaysresource.cpp:41
 #, kde-format
 msgid "Birthdays & Anniversaries"
 msgstr "Doğum Günleri ve Yıl Dönümleri"
 
-#: birthdaysresource.cpp:309
+#: birthdaysresource.cpp:310
 #, kde-format
 msgid "%1's birthday"
 msgstr "%1 kişisinin doğum günü"
 
-#: birthdaysresource.cpp:320
+#: birthdaysresource.cpp:321
 #, kde-format
 msgid "Birthday"
 msgstr "Doğum günü"
 
-#: birthdaysresource.cpp:358
+#: birthdaysresource.cpp:359
 #, kde-format
 msgctxt "insert names of both spouses"
 msgid "%1's & %2's anniversary"
 msgstr "%1 ve %2 kişilerinin yıl dönümü"
 
-#: birthdaysresource.cpp:360
+#: birthdaysresource.cpp:361
 #, kde-format
 msgctxt "only one spouse in addressbook, insert the name"
 msgid "%1's anniversary"
 msgstr "%1 kişisinin yıl dönümü"
 
-#: birthdaysresource.cpp:372
+#: birthdaysresource.cpp:373
 #, kde-format
 msgid "Anniversary"
 msgstr "Yıl dönümü"

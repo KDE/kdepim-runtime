@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 02:58+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2025-03-28 22:30+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -81,94 +81,94 @@ msgstr ""
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr "כתיבת ACLים (רשימות בקרת גישה) ל־‚%1’ בשרת ה־IMAP נכשלה. %2"
 
-#: imapresource.cpp:235
+#: imapresource.cpp:229
 #, kde-format
 msgid "No server configured yet."
 msgstr "לא הוגדר שרת עדיין."
 
-#: imapresource.cpp:255
+#: imapresource.cpp:249
 #, kde-format
 msgid "Connection established."
 msgstr "החיבור נוצר."
 
-#: imapresource.cpp:272
+#: imapresource.cpp:266
 #, kde-format
 msgid "Server is not available."
 msgstr "השרת לא זמין."
 
-#: imapresource.cpp:323
+#: imapresource.cpp:317
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "נוסף פריט ב־‚%1’"
 
-#: imapresource.cpp:330
+#: imapresource.cpp:324
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "הפריט ב־‚%1’ מתעדכן"
 
-#: imapresource.cpp:337
+#: imapresource.cpp:331
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "פריטים מעודכנים"
 
-#: imapresource.cpp:351
+#: imapresource.cpp:345
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "פריטים נמחקים"
 
-#: imapresource.cpp:367
+#: imapresource.cpp:361
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "פריטים מועברים מ־‚%1’ אל ‚%2’"
 
-#: imapresource.cpp:376
+#: imapresource.cpp:370
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "התיקיות נמשכות"
 
-#: imapresource.cpp:383
+#: imapresource.cpp:377
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "מתקבל מידע תיקייה נוסף על ‚%1’"
 
-#: imapresource.cpp:401
+#: imapresource.cpp:395
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "התיקייה ‚%1’ נוצרת"
 
-#: imapresource.cpp:407
+#: imapresource.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "התיקייה ‚%1’ מתעדכנת"
 
-#: imapresource.cpp:420
+#: imapresource.cpp:414
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "התיקייה ‚%1’ נמחקת"
 
-#: imapresource.cpp:427
+#: imapresource.cpp:421
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "התיקייה ‚%1’ מועבר מ־‚%2’ אל ‚%3’"
 
-#: imapresource.cpp:457
+#: imapresource.cpp:451
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "מתבצע חיפוש…"
 
-#: imapresource.cpp:729
+#: imapresource.cpp:723
 #, kde-format
 msgid "IMAP Account"
 msgstr "חשבון IMAP"
@@ -413,19 +413,19 @@ msgid ""
 msgstr ""
 "סימון ההודעה מ־‚%1’ למחיקה בשרת ה־IMAP נכשל. היא תופיע מחדש בסנכרון הבא."
 
-#: outlookpasswordrequester.cpp:67 outlookpasswordrequester.cpp:76
+#: outlookpasswordrequester.cpp:65 outlookpasswordrequester.cpp:74
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
 msgstr "קריאת הסיסמה ממחזיק המפתחות נכשלה."
 
-#: removecollectionrecursivetask.cpp:113 removecollectionrecursivetask.cpp:129
-#: removecollectionrecursivetask.cpp:142
+#: removecollectionrecursivetask.cpp:114 removecollectionrecursivetask.cpp:130
+#: removecollectionrecursivetask.cpp:143
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "מחיקת התיקייה נכשלה, רשימת התיקיות משוחזרת."
 
-#: removecollectionrecursivetask.cpp:147
+#: removecollectionrecursivetask.cpp:148
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "איתור התיקייה למחיקה נכשל, רשימת התיקיות משוחזרת."
@@ -474,17 +474,17 @@ msgstr "דואר נכנס"
 msgid "Shared Folders"
 msgstr "תיקיות משותפות"
 
-#: retrieveitemtask.cpp:35
+#: retrieveitemtask.cpp:34
 #, kde-format
 msgid "Remote id is empty or invalid"
 msgstr "המזהה המרוחק ריק או שגוי"
 
-#: retrieveitemtask.cpp:78 retrieveitemtask.cpp:94
+#: retrieveitemtask.cpp:77 retrieveitemtask.cpp:93
 #, kde-format
 msgid "No message retrieved, failed to read the message."
 msgstr "לא נמשכה הודעה כלל, קריאת ההודעה נכשלה."
 
-#: retrieveitemtask.cpp:115
+#: retrieveitemtask.cpp:114
 #, kde-format
 msgid "No message retrieved, server reply was empty."
 msgstr "לא התקבלה הודעה, תגובת השרת הייתה ריקה."
@@ -512,7 +512,7 @@ msgstr "שגיאה במשיכת יכולות השרת: %1"
 msgid "Resource not synchronized yet."
 msgstr "המשאב לא מסונכרן עדיין."
 
-#: sessionpool.cpp:251 sessionpool.cpp:415
+#: sessionpool.cpp:252 sessionpool.cpp:416
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -521,7 +521,7 @@ msgstr ""
 "לא ניתן להתחבר לשרת ה־IMAP‏ %1.\n"
 "%2"
 
-#: sessionpool.cpp:255
+#: sessionpool.cpp:256
 #, kde-format
 msgid ""
 "Could not connect to the IMAP server.\n"
@@ -530,35 +530,35 @@ msgstr ""
 "לא ניתן להתחבר לשרת ה־IMAP‏.\n"
 "%1"
 
-#: sessionpool.cpp:280 sessionpool.cpp:321 sessionpool.cpp:390
-#: sessionpool.cpp:433 sessionpool.cpp:510
+#: sessionpool.cpp:281 sessionpool.cpp:322 sessionpool.cpp:391
+#: sessionpool.cpp:434 sessionpool.cpp:511
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "החיבור לשרת נקטע מצד השרת במהלך הכניסה לחשבון."
 
-#: sessionpool.cpp:304
+#: sessionpool.cpp:305
 #, kde-format
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr "לא ניתן ליצור חיבור נוסף לשרת ה־IMAP‏ %1."
 
-#: sessionpool.cpp:334
+#: sessionpool.cpp:335
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr "לא ניתן לקרוא את הסיסמה: גישת המשתמש לארנק נדחתה"
 
-#: sessionpool.cpp:342
+#: sessionpool.cpp:343
 #, kde-format
 msgid "Empty password"
 msgstr "סיסמה ריקה"
 
-#: sessionpool.cpp:354
+#: sessionpool.cpp:355
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
 "set up for that."
 msgstr "ביקשת TLS/SSL כדי להתחבר אל %1, אך נראה שהמערכת שלך לא מוגדרת לזה."
 
-#: sessionpool.cpp:418
+#: sessionpool.cpp:419
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
@@ -567,7 +567,7 @@ msgstr ""
 "לא ניתן להתחבר לשרת ה־IMAP.\n"
 "%1"
 
-#: sessionpool.cpp:441
+#: sessionpool.cpp:442
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
@@ -576,7 +576,7 @@ msgstr ""
 "לא ניתן לבחון את היכולות שנתמכות על ידי שרת ה־IMAP‏ %1.\n"
 "%2"
 
-#: sessionpool.cpp:449
+#: sessionpool.cpp:450
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
@@ -585,7 +585,7 @@ msgstr ""
 "לא ניתן לבחון את היכולות שנתמכות על ידי שרת ה־IMAP‏.\n"
 "%1"
 
-#: sessionpool.cpp:469
+#: sessionpool.cpp:470
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -594,18 +594,18 @@ msgstr ""
 "לא ניתן להשתמש בשרת ה־IMAP‏ %1, כמה יכולות הכרחיות חסרות: %2. נא לבקש מהנהלת "
 "השרת שלך לשדרג את השרת."
 
-#: sessionpool.cpp:553 sessionpool.cpp:572
+#: sessionpool.cpp:554 sessionpool.cpp:573
 #, kde-format
 msgid "Disconnected during login."
 msgstr "החיבור נותק במהלך הכניסה לחשבון."
 
-#: settings.cpp:126
+#: settings.cpp:125
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "לא נמצאה סיסמה לחשבון ה־IMAP‏ %1"
 
-#: settings.cpp:131
+#: settings.cpp:130
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -614,13 +614,13 @@ msgid ""
 msgstr ""
 "אירעה שגיאה בניסיון למשוך את סיסמת ה־IMAP מצרור המפתחות של המערכת: „%1”"
 
-#: settings.cpp:159
+#: settings.cpp:158
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "לא נמצאה סיסמה לחשבון ה־sieve‏ %1"
 
-#: settings.cpp:164
+#: settings.cpp:163
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -629,7 +629,7 @@ msgid ""
 msgstr ""
 "אירעה שגיאה בניסיון למשוך את סיסמת ה־sieve מצרור המפתחות של המערכת: „%1”"
 
-#: settings.cpp:194
+#: settings.cpp:193
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -638,7 +638,7 @@ msgid ""
 msgstr ""
 "אירעה שגיאה בניסיון לשמור את סיסמת ה־sieve לצרור המפתחות של המערכת: „%1”"
 
-#: settings.cpp:220
+#: settings.cpp:219
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -647,19 +647,19 @@ msgid ""
 msgstr ""
 "אירעה שגיאה בניסיון לשמור את סיסמת ה־IMAP לצרור המפתחות של המערכת: „%1”"
 
-#: settings.cpp:307
+#: settings.cpp:306
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr "בעיה עם חשבון ה־IMAP‏ %1"
 
-#: settingspasswordrequester.cpp:75
+#: settingspasswordrequester.cpp:74
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr "חשבון דוא״ל IMAP צריך את תשומת הלב שלך."
 
-#: settingspasswordrequester.cpp:79
+#: settingspasswordrequester.cpp:78
 #, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
@@ -672,7 +672,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:84
+#: settingspasswordrequester.cpp:83
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -685,13 +685,13 @@ msgstr ""
 "\n"
 "%2"
 
-#: settingspasswordrequester.cpp:91
+#: settingspasswordrequester.cpp:90
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "לנסות שוב"
 
-#: settingspasswordrequester.cpp:97
+#: settingspasswordrequester.cpp:96
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"

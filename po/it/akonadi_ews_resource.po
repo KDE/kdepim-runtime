@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-17 00:44+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2025-05-02 10:57+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 "Recupero delle credenziali InTune non riuscito per l'account Microsoft "
 "Exchange <b>%1</b>. Aggiornalo nella pagina delle impostazioni dell'account."
 
-#: ewsclient/auth/ewsoauth.cpp:512
+#: ewsclient/auth/ewsoauth.cpp:513
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -57,7 +57,7 @@ msgstr ""
 "Le credenziali di Microsoft Exchange per l'account <b>%1</b> non sono più "
 "valide. Devi autenticarti per poter continuare ad usarlo."
 
-#: ewsclient/auth/ewsoauth.cpp:521
+#: ewsclient/auth/ewsoauth.cpp:522
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -78,48 +78,48 @@ msgstr ""
 "EWS <b>%1</b> non è valido. Aggiornalo nella pagina delle impostazioni "
 "dell'account."
 
-#: ewsconfigdialog.cpp:77
+#: ewsconfigdialog.cpp:79
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
 msgstr "Configurazione di Microsoft Exchange"
 
-#: ewsconfigdialog.cpp:103
+#: ewsconfigdialog.cpp:105
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:129 ewsconfigdialog.cpp:131
+#: ewsconfigdialog.cpp:131 ewsconfigdialog.cpp:133
 #, kde-format
 msgid "PEM file"
 msgstr "File PEM"
 
-#: ewsconfigdialog.cpp:149
+#: ewsconfigdialog.cpp:151
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "Personalizzata"
 
-#: ewsconfigdialog.cpp:160
+#: ewsconfigdialog.cpp:162
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Risorsa Akonadi per servizi web Microsoft Exchange (EWS)"
 
-#: ewsconfigdialog.cpp:161
+#: ewsconfigdialog.cpp:163
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "Copyright (c) Krzysztof Nowicki 2015-2020"
 
-#: ewsconfigdialog.cpp:162
+#: ewsconfigdialog.cpp:164
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "Versione %1"
 
-#: ewsconfigdialog.cpp:163
+#: ewsconfigdialog.cpp:165
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -129,37 +129,37 @@ msgstr ""
 "Distribuito con licenza GNU Library General Public License versione 2.0 o "
 "successiva."
 
-#: ewsconfigdialog.cpp:267
+#: ewsconfigdialog.cpp:269
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "Rilevamento automatico non riuscito"
 
-#: ewsconfigdialog.cpp:280
+#: ewsconfigdialog.cpp:282
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Connessione non riuscita"
 
-#: ewsconfigdialog.cpp:281 ewsconfigdialog.cpp:440
+#: ewsconfigdialog.cpp:283 ewsconfigdialog.cpp:442
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Non riuscita"
 
-#: ewsconfigdialog.cpp:282 ewsconfigdialog.cpp:441
+#: ewsconfigdialog.cpp:284 ewsconfigdialog.cpp:443
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Sconosciuta"
 
-#: ewsconfigdialog.cpp:284 ewsconfigdialog.cpp:445
+#: ewsconfigdialog.cpp:286 ewsconfigdialog.cpp:447
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:356
+#: ewsconfigdialog.cpp:358
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -168,13 +168,13 @@ msgstr ""
 "Rilevamento automatico non riuscito. Questo può essere causato da parametri "
 "non corretti. Vuoi ancora salvare le tue impostazioni?"
 
-#: ewsconfigdialog.cpp:357 ewsprogressdialog.cpp:48
+#: ewsconfigdialog.cpp:359 ewsprogressdialog.cpp:48
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Rilevamento automatico del server Exchange"
 
-#: ewsconfigdialog.cpp:387
+#: ewsconfigdialog.cpp:389
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -183,13 +183,13 @@ msgstr ""
 "Connessione a Exchange non riuscita. Questo può essere causato da parametri "
 "non corretti. Vuoi ancora salvare le tue impostazioni?"
 
-#: ewsconfigdialog.cpp:388
+#: ewsconfigdialog.cpp:390
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Connessione al server Exchange"
 
-#: ewsconfigdialog.cpp:442
+#: ewsconfigdialog.cpp:444
 #, kde-format
 msgid "Connection failed"
 msgstr "Connessione non riuscita"
@@ -731,19 +731,19 @@ msgctxt "@info:status"
 msgid "Failed to fetch item payload"
 msgstr "Impossibile recuperare il contenuto dell'elemento"
 
-#: ewsfetchitemsjob.cpp:98
+#: ewsfetchitemsjob.cpp:100
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list"
 msgstr "Recupero della lista di elementi %1"
 
-#: ewsfetchitemsjob.cpp:214
+#: ewsfetchitemsjob.cpp:216
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
 msgstr "Recupero della lista di elementi %1 (%2 elementi)"
 
-#: ewsfetchitemsjob.cpp:399
+#: ewsfetchitemsjob.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"
@@ -1321,13 +1321,13 @@ msgstr "Solo sottoscrizioni"
 msgid "Failed to create mail item"
 msgstr "Impossibile creare l'elemento di posta"
 
-#: mail/ewsmodifymailjob.cpp:92
+#: mail/ewsmodifymailjob.cpp:90
 #, kde-format
 msgctxt "@info:status"
 msgid "Item update failed: "
 msgstr "Aggiornamento elemento non riuscito:"
 
-#: mail/ewsmodifymailjob.cpp:103
+#: mail/ewsmodifymailjob.cpp:101
 #, kde-format
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2024-08-24 11:47+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
@@ -144,7 +144,7 @@ msgid "The resource not configured yet"
 msgstr "The resource is not configured yet"
 
 #: singlefileresource.h:106 singlefileresource.h:135 singlefileresource.h:230
-#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
+#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -195,7 +195,7 @@ msgstr "A download is still in progress."
 msgid "Uploading cached file to remote location."
 msgstr "Uploading cached file to remote location."
 
-#: singlefileresourcebase.cpp:240
+#: singlefileresourcebase.cpp:239
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -204,12 +204,12 @@ msgstr ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
 "contents has been created at '%2'."
 
-#: singlefileresourcebase.cpp:272
+#: singlefileresourcebase.cpp:271
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Could not load file '%1'."
 
-#: singlefileresourcebase.cpp:288
+#: singlefileresourcebase.cpp:287
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Could not save file '%1'."
@@ -299,7 +299,7 @@ msgstr ""
 "Periodically updates the file. Can be used when monitoring is not available "
 "(e.g. for remote calendars)."
 
-#: singlefileresourceconfigwidgetbase.cpp:37
+#: singlefileresourceconfigwidgetbase.cpp:35
 #, kde-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -307,7 +307,7 @@ msgid ""
 "cannot be modified."
 msgstr ""
 
-#: singlefileresourceconfigwidgetbase.cpp:39
+#: singlefileresourceconfigwidgetbase.cpp:37
 #, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
@@ -317,7 +317,7 @@ msgid ""
 "one with the updated path.</note></para>"
 msgstr ""
 
-#: singlefileresourceconfigwidgetbase.cpp:145
+#: singlefileresourceconfigwidgetbase.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

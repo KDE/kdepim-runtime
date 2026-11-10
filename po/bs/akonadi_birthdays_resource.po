@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-09 00:45+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2012-10-05 17:03+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Launchpad-Export-Date: 2013-01-16 05:30+0000\n"
 "X-Generator: Launchpad (build 16420)\n"
 
-#: birthdaysconfigagentwidget.cpp:33
+#: birthdaysconfigagentwidget.cpp:30
 #, fuzzy, kde-format
 #| msgid " day"
 #| msgid_plural " days"
@@ -61,34 +61,34 @@ msgstr "Filter"
 msgid "&Filter by categories"
 msgstr "&Filtriraj prema kategorijama"
 
-#: birthdaysresource.cpp:40
+#: birthdaysresource.cpp:41
 #, kde-format
 msgid "Birthdays & Anniversaries"
 msgstr "Rođendani i godišnjice"
 
-#: birthdaysresource.cpp:309
+#: birthdaysresource.cpp:310
 #, kde-format
 msgid "%1's birthday"
 msgstr "%1 slavi rođendan"
 
-#: birthdaysresource.cpp:320
+#: birthdaysresource.cpp:321
 #, kde-format
 msgid "Birthday"
 msgstr "Rođendan"
 
-#: birthdaysresource.cpp:358
+#: birthdaysresource.cpp:359
 #, kde-format
 msgctxt "insert names of both spouses"
 msgid "%1's & %2's anniversary"
 msgstr "%1 i %2 slave godišnjicu"
 
-#: birthdaysresource.cpp:360
+#: birthdaysresource.cpp:361
 #, kde-format
 msgctxt "only one spouse in addressbook, insert the name"
 msgid "%1's anniversary"
 msgstr "%1 slavi godišnjicu"
 
-#: birthdaysresource.cpp:372
+#: birthdaysresource.cpp:373
 #, kde-format
 msgid "Anniversary"
 msgstr "_Godišnjica:"

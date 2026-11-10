@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-07 00:49+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2026-10-07 13:24+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -217,7 +217,7 @@ msgctxt "%1 and %2 are counts, %3 the server error message"
 msgid "%1 of %2 requests failed, first error: %3"
 msgstr "%1 van %2 verzoeken is mislukt, eerste fout: %3"
 
-#: jobs/graphfetchfoldersjob.cpp:49
+#: jobs/graphfetchfoldersjob.cpp:48
 #, kde-format
 msgid "Could not resolve the mailbox root folder"
 msgstr "De hoofdmap van het postvak kon niet worden opgelost"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_birthdays_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-09 00:45+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2024-09-26 13:22+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -19,7 +19,7 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Lokalize 23.08.5\n"
 
-#: birthdaysconfigagentwidget.cpp:33
+#: birthdaysconfigagentwidget.cpp:30
 #, kde-format
 msgid "%v day"
 msgid_plural "%v days"
@@ -60,34 +60,34 @@ msgstr "المرشّح"
 msgid "&Filter by categories"
 msgstr "&رشّح بالفئات"
 
-#: birthdaysresource.cpp:40
+#: birthdaysresource.cpp:41
 #, kde-format
 msgid "Birthdays & Anniversaries"
 msgstr "أعياد الميلاد والسّنويّات"
 
-#: birthdaysresource.cpp:309
+#: birthdaysresource.cpp:310
 #, kde-format
 msgid "%1's birthday"
 msgstr "عيد ميلاد %1"
 
-#: birthdaysresource.cpp:320
+#: birthdaysresource.cpp:321
 #, kde-format
 msgid "Birthday"
 msgstr "عيد ميلاد"
 
-#: birthdaysresource.cpp:358
+#: birthdaysresource.cpp:359
 #, kde-format
 msgctxt "insert names of both spouses"
 msgid "%1's & %2's anniversary"
 msgstr "سنويّة %1 و%2"
 
-#: birthdaysresource.cpp:360
+#: birthdaysresource.cpp:361
 #, kde-format
 msgctxt "only one spouse in addressbook, insert the name"
 msgid "%1's anniversary"
 msgstr "سنويّة %1"
 
-#: birthdaysresource.cpp:372
+#: birthdaysresource.cpp:373
 #, kde-format
 msgid "Anniversary"
 msgstr "سنويّة"

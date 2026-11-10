@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-16 06:51+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2010-12-26 09:10+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
@@ -124,7 +124,7 @@ msgstr ""
 msgid "Do not change the actual backend data."
 msgstr ""
 
-#: vcarddirsettingswidget.cpp:42
+#: vcarddirsettingswidget.cpp:41
 #, fuzzy, kde-format
 #| msgid " minute"
 #| msgid_plural " minutes"
@@ -133,7 +133,7 @@ msgid_plural "%v minutes"
 msgstr[0] " ਮਿੰਟ"
 msgstr[1] " ਮਿੰਟ"
 
-#: vcarddirsettingswidget.cpp:45
+#: vcarddirsettingswidget.cpp:44
 #, kde-format
 msgid "Activities"
 msgstr ""

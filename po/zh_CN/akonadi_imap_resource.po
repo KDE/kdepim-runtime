@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 02:58+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2024-04-23 19:24\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -79,94 +79,94 @@ msgstr ""
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr "将 %1 的访问控制列表写入 IMAP 服务器失败。%2"
 
-#: imapresource.cpp:235
+#: imapresource.cpp:229
 #, kde-format
 msgid "No server configured yet."
 msgstr "尚未配置服务器。"
 
-#: imapresource.cpp:255
+#: imapresource.cpp:249
 #, kde-format
 msgid "Connection established."
 msgstr "连接已建立。"
 
-#: imapresource.cpp:272
+#: imapresource.cpp:266
 #, kde-format
 msgid "Server is not available."
 msgstr "服务器不可用。"
 
-#: imapresource.cpp:323
+#: imapresource.cpp:317
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "正在添加“%1”中的项目"
 
-#: imapresource.cpp:330
+#: imapresource.cpp:324
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "正在更新“%1”中的项目"
 
-#: imapresource.cpp:337
+#: imapresource.cpp:331
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "正在更新项目"
 
-#: imapresource.cpp:351
+#: imapresource.cpp:345
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "正在移除项目"
 
-#: imapresource.cpp:367
+#: imapresource.cpp:361
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "正在将项目从“%1”移至“%2”"
 
-#: imapresource.cpp:376
+#: imapresource.cpp:370
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "正在获取文件夹"
 
-#: imapresource.cpp:383
+#: imapresource.cpp:377
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "正在获取“%1”的额外文件夹信息"
 
-#: imapresource.cpp:401
+#: imapresource.cpp:395
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "正在创建文件夹“%1”"
 
-#: imapresource.cpp:407
+#: imapresource.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "正在更新文件夹“%1”"
 
-#: imapresource.cpp:420
+#: imapresource.cpp:414
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "正在移除文件夹“%1”"
 
-#: imapresource.cpp:427
+#: imapresource.cpp:421
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "正在将文件夹“%1”从“%2”移至“%3”"
 
-#: imapresource.cpp:457
+#: imapresource.cpp:451
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "正在搜索..."
 
-#: imapresource.cpp:729
+#: imapresource.cpp:723
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP 账户"
@@ -405,19 +405,19 @@ msgid ""
 msgstr ""
 "将 IMAP 服务器上来自“%1”的信件标记为删除失败。这些信件下次同步时会再次出现。"
 
-#: outlookpasswordrequester.cpp:67 outlookpasswordrequester.cpp:76
+#: outlookpasswordrequester.cpp:65 outlookpasswordrequester.cpp:74
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
 msgstr "无法从密钥串中读取密码。"
 
-#: removecollectionrecursivetask.cpp:113 removecollectionrecursivetask.cpp:129
-#: removecollectionrecursivetask.cpp:142
+#: removecollectionrecursivetask.cpp:114 removecollectionrecursivetask.cpp:130
+#: removecollectionrecursivetask.cpp:143
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "删除文件夹失败，还原文件夹列表。"
 
-#: removecollectionrecursivetask.cpp:147
+#: removecollectionrecursivetask.cpp:148
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "未找到要删除的文件夹，还原文件夹列表。"
@@ -466,17 +466,17 @@ msgstr "收件箱"
 msgid "Shared Folders"
 msgstr "共享文件夹"
 
-#: retrieveitemtask.cpp:35
+#: retrieveitemtask.cpp:34
 #, kde-format
 msgid "Remote id is empty or invalid"
 msgstr "远程 id 为空或无效。"
 
-#: retrieveitemtask.cpp:78 retrieveitemtask.cpp:94
+#: retrieveitemtask.cpp:77 retrieveitemtask.cpp:93
 #, kde-format
 msgid "No message retrieved, failed to read the message."
 msgstr "未收到消息，读取消息失败。"
 
-#: retrieveitemtask.cpp:115
+#: retrieveitemtask.cpp:114
 #, kde-format
 msgid "No message retrieved, server reply was empty."
 msgstr "未收到消息，服务器的响应为空。"
@@ -504,7 +504,7 @@ msgstr "获取服务器兼容性时出错： %1"
 msgid "Resource not synchronized yet."
 msgstr "资源尚未同步好。"
 
-#: sessionpool.cpp:251 sessionpool.cpp:415
+#: sessionpool.cpp:252 sessionpool.cpp:416
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -513,7 +513,7 @@ msgstr ""
 "无法连接到 IMAP 服务器 %1。\n"
 "%2"
 
-#: sessionpool.cpp:255
+#: sessionpool.cpp:256
 #, kde-format
 msgid ""
 "Could not connect to the IMAP server.\n"
@@ -522,35 +522,35 @@ msgstr ""
 "无法连接到 IMAP 服务器。\n"
 "%1"
 
-#: sessionpool.cpp:280 sessionpool.cpp:321 sessionpool.cpp:390
-#: sessionpool.cpp:433 sessionpool.cpp:510
+#: sessionpool.cpp:281 sessionpool.cpp:322 sessionpool.cpp:391
+#: sessionpool.cpp:434 sessionpool.cpp:511
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "登录时与服务器断开连接。"
 
-#: sessionpool.cpp:304
+#: sessionpool.cpp:305
 #, kde-format
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr "无法创建到 IMAP 服务器 %1 的另一个连接。"
 
-#: sessionpool.cpp:334
+#: sessionpool.cpp:335
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr "无法读取密码：用户拒绝了对密码库的访问。"
 
-#: sessionpool.cpp:342
+#: sessionpool.cpp:343
 #, kde-format
 msgid "Empty password"
 msgstr "空密码"
 
-#: sessionpool.cpp:354
+#: sessionpool.cpp:355
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
 "set up for that."
 msgstr "您正请求以 TLS/SSL 模式连接到 %1，但您的系统似乎不支持。"
 
-#: sessionpool.cpp:418
+#: sessionpool.cpp:419
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
@@ -559,7 +559,7 @@ msgstr ""
 "无法连接到 IMAP 服务器。\n"
 "%1"
 
-#: sessionpool.cpp:441
+#: sessionpool.cpp:442
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
@@ -568,7 +568,7 @@ msgstr ""
 "无法测试 IMAP 服务器 %1 的兼容特性。\n"
 "%2"
 
-#: sessionpool.cpp:449
+#: sessionpool.cpp:450
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
@@ -577,7 +577,7 @@ msgstr ""
 "无法测试 IMAP 服务器的兼容特性。\n"
 "%1"
 
-#: sessionpool.cpp:469
+#: sessionpool.cpp:470
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -586,18 +586,18 @@ msgstr ""
 "无法使用 IMAP 服务器 %1，因为缺少一些必须的特性：%2。您可以请求系统管理员升级"
 "服务器。"
 
-#: sessionpool.cpp:553 sessionpool.cpp:572
+#: sessionpool.cpp:554 sessionpool.cpp:573
 #, kde-format
 msgid "Disconnected during login."
 msgstr "登录时断开连接。"
 
-#: settings.cpp:126
+#: settings.cpp:125
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "找不到 %1 的 IMAP 账户密码"
 
-#: settings.cpp:131
+#: settings.cpp:130
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -605,13 +605,13 @@ msgid ""
 "keychain: \"%1\""
 msgstr "从系统密钥链中获取 IMAP 密码时发生错误：“%1”"
 
-#: settings.cpp:159
+#: settings.cpp:158
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "找不到 %1 的 Sieve 账户密码"
 
-#: settings.cpp:164
+#: settings.cpp:163
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -619,7 +619,7 @@ msgid ""
 "keychain: \"%1\""
 msgstr "从系统密钥链中获取 Sieve 密码时发生错误：“%1”"
 
-#: settings.cpp:194
+#: settings.cpp:193
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -627,7 +627,7 @@ msgid ""
 "\"%1\""
 msgstr "保存系统密钥链中的 Sieve 密码时发生错误：“%1”"
 
-#: settings.cpp:220
+#: settings.cpp:219
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -635,19 +635,19 @@ msgid ""
 "\"%1\""
 msgstr "保存系统密钥链中的 IMAP 密码时发生错误：“%1”"
 
-#: settings.cpp:307
+#: settings.cpp:306
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr "%1 的 IMAP 帐户存在问题"
 
-#: settingspasswordrequester.cpp:75
+#: settingspasswordrequester.cpp:74
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr "IMAP 电子邮件账户需要您注意。"
 
-#: settingspasswordrequester.cpp:79
+#: settingspasswordrequester.cpp:78
 #, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
@@ -660,7 +660,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:84
+#: settingspasswordrequester.cpp:83
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -673,13 +673,13 @@ msgstr ""
 "\n"
 "%2"
 
-#: settingspasswordrequester.cpp:91
+#: settingspasswordrequester.cpp:90
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "重试"
 
-#: settingspasswordrequester.cpp:97
+#: settingspasswordrequester.cpp:96
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"

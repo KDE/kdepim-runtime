@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-27 01:00+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2026-09-24 11:14+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -22,38 +22,38 @@ msgstr ""
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
 "X-Generator: Poedit 3.9\n"
 
-#: configwidget.cpp:34
+#: configwidget.cpp:38
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "Nastavitev virov Dav"
 
-#: configwidget.cpp:40
+#: configwidget.cpp:44
 #, kde-format
 msgid "Protocol"
 msgstr "Protokol"
 
-#: configwidget.cpp:40 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:44 urlconfigurationdialog.cpp:268
 #, kde-format
 msgid "URL"
 msgstr "URL"
 
-#: configwidget.cpp:53
+#: configwidget.cpp:57
 #, kde-format
 msgid "Days"
 msgstr "Dnevi"
 
-#: configwidget.cpp:54
+#: configwidget.cpp:58
 #, kde-format
 msgid "Months"
 msgstr "Meseci"
 
-#: configwidget.cpp:55
+#: configwidget.cpp:59
 #, kde-format
 msgid "Years"
 msgstr "Leta"
 
-#: configwidget.cpp:166
+#: configwidget.cpp:170
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -160,90 +160,90 @@ msgstr "Odstrani"
 msgid "Edit"
 msgstr "Uredi"
 
-#: davfreebusyhandler.cpp:62
+#: davfreebusyhandler.cpp:60
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr ""
 "Za %1 ni bila najdena nobena mapa za pošiljanje urnika (schedule-outbox)"
 
-#: davfreebusyhandler.cpp:194 davfreebusyhandler.cpp:205
+#: davfreebusyhandler.cpp:192 davfreebusyhandler.cpp:203
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Neveljaven odgovor strežnika"
 
-#: davfreebusyhandler.cpp:216
+#: davfreebusyhandler.cpp:214
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Prejetih podatkov o prostosti/zaposlenosti ni mogoče razčleniti"
 
-#: davgroupwareresource.cpp:299
+#: davgroupwareresource.cpp:295
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr ""
 "V nepovezanem načinu ni mogoče pridobiti podatkov o prostosti/zaposlenosti"
 
-#: davgroupwareresource.cpp:386
+#: davgroupwareresource.cpp:382
 #, kde-format
 msgid "Fetching collections"
 msgstr "Pridobivanje zbirk"
 
-#: davgroupwareresource.cpp:446
+#: davgroupwareresource.cpp:442
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Zahteva se pridobivanje predmetov za neznano zbirko: %1"
 
-#: davgroupwareresource.cpp:520
+#: davgroupwareresource.cpp:516
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Neveljavna zbirka za predmet %1."
 
-#: davgroupwareresource.cpp:904
+#: davgroupwareresource.cpp:900
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Ni mogoče spreminjati postavk: %1"
 
-#: davgroupwareresource.cpp:977
+#: davgroupwareresource.cpp:973
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Zbirke ni mogoče spremeniti: %1"
 
-#: davgroupwareresource.cpp:1107
+#: davgroupwareresource.cpp:1103
 #, kde-format
 msgid "Unable to create collection: %1"
 msgstr "Ni mogoče ustvariti zbirke: %1"
 
-#: davgroupwareresource.cpp:1136
+#: davgroupwareresource.cpp:1132
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Zbirke ni mogoče odstraniti: %1"
 
-#: davgroupwareresource.cpp:1158
+#: davgroupwareresource.cpp:1154
 #, kde-format
 msgid "Unable to retrieve collection: %1"
 msgstr "Ni mogoče pridobiti zbirke: %1"
 
-#: davgroupwareresource.cpp:1173
+#: davgroupwareresource.cpp:1169
 #, kde-format
 msgid "Failed to retrieve collection: %1"
 msgstr "Zbirke ni bilo mogoče pridobiti: %1"
 
-#: davgroupwareresource.cpp:1217
+#: davgroupwareresource.cpp:1213
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Zbirk ni mogoče pridobiti: %1"
 
-#: davgroupwareresource.cpp:1377 davgroupwareresource.cpp:1917
-#: davgroupwareresource.cpp:1947
+#: davgroupwareresource.cpp:1373 davgroupwareresource.cpp:1913
+#: davgroupwareresource.cpp:1943
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Predmetov ni mogoče pridobiti: %1"
 
-#: davgroupwareresource.cpp:1508
+#: davgroupwareresource.cpp:1504
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Predmeta ni mogoče pridobiti: %1"
 
-#: davgroupwareresource.cpp:1528
+#: davgroupwareresource.cpp:1524
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -252,23 +252,23 @@ msgstr ""
 "Predmeta ni bilo mogoče pridobiti; i bilo mogoče razčleniti podatkov "
 "predmeta. Mogoče je bil že zbrisan."
 
-#: davgroupwareresource.cpp:1588
+#: davgroupwareresource.cpp:1584
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Postavke ni moč dodati: %1"
 
-#: davgroupwareresource.cpp:1633 davgroupwareresource.cpp:1744
-#: davgroupwareresource.cpp:1756
+#: davgroupwareresource.cpp:1629 davgroupwareresource.cpp:1740
+#: davgroupwareresource.cpp:1752
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Postavke ni moč spremeniti: %1"
 
-#: davgroupwareresource.cpp:1775
+#: davgroupwareresource.cpp:1771
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Postavke ni moč odstraniti: %1"
 
-#: davgroupwareresource.cpp:1862 davgroupwareresource.cpp:1863
+#: davgroupwareresource.cpp:1858 davgroupwareresource.cpp:1859
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Vir še ni nastavljen"
@@ -337,18 +337,18 @@ msgstr ""
 msgid "Do not change the actual backend data."
 msgstr "Ne spremeni dejanskih podatkov zaledja."
 
-#: searchdialog.cpp:26
+#: searchdialog.cpp:27
 #, kde-format
 msgctxt "@title:window"
 msgid "Search"
 msgstr "Poišči"
 
-#: searchdialog.cpp:41
+#: searchdialog.cpp:42
 #, kde-format
 msgid "Add Selected Items"
 msgstr "Dodaj izbrane predmete"
 
-#: searchdialog.cpp:126 searchdialog.cpp:169
+#: searchdialog.cpp:127 searchdialog.cpp:170
 #, kde-format
 msgid ""
 "An error occurred when executing search:\n"
@@ -560,7 +560,7 @@ msgstr "Prišlo je do napake: %1"
 msgid "Connected successfully"
 msgstr "Povezava uspešna"
 
-#: urlconfigurationdialog.cpp:267
+#: urlconfigurationdialog.cpp:268
 #, kde-format
 msgid "Display Name"
 msgstr "Ime za prikaz"

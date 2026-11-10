@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_etesync_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-03 00:55+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2026-08-25 01:37+0200\n"
 "Last-Translator: Philipp Kiemle <l10n.daphipz@fastmail.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -57,42 +57,42 @@ msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
 msgstr "Etebase-Konto kann nicht aus dem Cache abgerufen werden"
 
-#: etesyncresource.cpp:57
+#: etesyncresource.cpp:59
 #, kde-format
 msgid "EteSync Resource"
 msgstr "EteSync-Ressource"
 
-#: etesyncresource.cpp:129
+#: etesyncresource.cpp:131
 #, kde-format
 msgid "EteSync Account"
 msgstr "EteSync-Konto"
 
-#: etesyncresource.cpp:171
+#: etesyncresource.cpp:173
 #, kde-format
 msgid "Temporary server error"
 msgstr "Temporärer Serverfehler"
 
-#: etesyncresource.cpp:175
+#: etesyncresource.cpp:177
 #, kde-format
 msgid "You do not have permission to perform this action."
 msgstr "Sie haben keine Berechtigung, um diese Aktion auszuführen."
 
-#: etesyncresource.cpp:178
+#: etesyncresource.cpp:180
 #, kde-format
 msgid "Permission denied"
 msgstr "Zugriff verweigert"
 
-#: etesyncresource.cpp:182
+#: etesyncresource.cpp:184
 #, kde-format
 msgid "A server error occurred."
 msgstr "Es ist ein Serverfehler aufgetreten."
 
-#: etesyncresource.cpp:185
+#: etesyncresource.cpp:187
 #, kde-format
 msgid "Server error"
 msgstr "Serverfehler"
 
-#: etesyncresource.cpp:204
+#: etesyncresource.cpp:206
 #, kde-format
 msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
@@ -101,43 +101,43 @@ msgstr ""
 "Ihre Anmeldeinformationen für EteSync wurden geändert. Klicken Sie auf OK, "
 "um sie erneut einzugeben."
 
-#: etesyncresource.cpp:206
+#: etesyncresource.cpp:208
 #, kde-format
 msgid "Credentials Changed"
 msgstr "Anmeldeinformationen geändert"
 
-#: etesyncresource.cpp:207
+#: etesyncresource.cpp:209
 #, kde-format
 msgid "Your EteSync credentials were changed or are missing."
 msgstr "Ihre Anmeldeinformationen für EteSync wurden geändert oder fehlen."
 
-#: etesyncresource.cpp:257
+#: etesyncresource.cpp:259
 #, kde-format
 msgid "Cannot retrieve items - account is null"
 msgstr "Die Elemente können nicht abgeholt werden – Konto ist null"
 
-#: etesyncresource.cpp:264 etesyncresource.cpp:399 etesyncresource.cpp:472
-#: etesyncresource.cpp:530 etesyncresource.cpp:660 etesyncresource.cpp:718
+#: etesyncresource.cpp:266 etesyncresource.cpp:401 etesyncresource.cpp:474
+#: etesyncresource.cpp:532 etesyncresource.cpp:662 etesyncresource.cpp:720
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "EtesyncCollection kann nicht aus dem Cache „%1“ geholt werden"
 
-#: etesyncresource.cpp:427
+#: etesyncresource.cpp:429
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
 msgstr "Das neue etesyncItem „%1“ kann nicht erstellt werden"
 
-#: etesyncresource.cpp:479 etesyncresource.cpp:537
+#: etesyncresource.cpp:481 etesyncresource.cpp:539
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
 msgstr "EtesyncItem kann nicht aus dem Cache „%1“ geholt werden"
 
-#: etesyncresource.cpp:599
+#: etesyncresource.cpp:601
 #, kde-format
 msgid "Could not create new etesyncCollection"
 msgstr "Neue etesyncCollection kann nicht erstellt werden"
 
-#: etesyncresource.h:56
+#: etesyncresource.h:57
 #, kde-format
 msgid "Something went wrong"
 msgstr "Leider ist ein Fehler aufgetreten"

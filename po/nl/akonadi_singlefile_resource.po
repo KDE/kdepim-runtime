@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2025-04-22 12:36+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -148,7 +148,7 @@ msgid "The resource not configured yet"
 msgstr "De hulpbron is nog niet geconfigureerd"
 
 #: singlefileresource.h:106 singlefileresource.h:135 singlefileresource.h:230
-#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
+#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -199,7 +199,7 @@ msgstr "Een download is nog bezig."
 msgid "Uploading cached file to remote location."
 msgstr "Bezig een bestand in de cache te uploaden naar een locatie op afstand."
 
-#: singlefileresourcebase.cpp:240
+#: singlefileresourcebase.cpp:239
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -208,12 +208,12 @@ msgstr ""
 "Het bestand '%1' was op de schijf gewijzigd. Als voorzorg is er een "
 "reservekopie van de vorige inhoud gemaakt in '%2'."
 
-#: singlefileresourcebase.cpp:272
+#: singlefileresourcebase.cpp:271
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Kan bestand '%1' niet laden."
 
-#: singlefileresourcebase.cpp:288
+#: singlefileresourcebase.cpp:287
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Kan bestand '%1' niet opslaan."
@@ -306,7 +306,7 @@ msgstr ""
 "Het bestand periodiek bijwerken. Kan gebruikt worden wanneer monitoren niet "
 "beschikbaar is (bijv. voor agenda's op afstand)."
 
-#: singlefileresourceconfigwidgetbase.cpp:37
+#: singlefileresourceconfigwidgetbase.cpp:35
 #, kde-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -316,7 +316,7 @@ msgstr ""
 "Een pad naar een bestand of URL die minstens het agendabestand bevat. "
 "Eenmaal aangemaakt, kan deze locatie niet meer gewijzigd worden."
 
-#: singlefileresourceconfigwidgetbase.cpp:39
+#: singlefileresourceconfigwidgetbase.cpp:37
 #, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
@@ -331,7 +331,7 @@ msgstr ""
 "verwijder deze hulpbron en maak daarna een nieuwe aan met het bijgewerkte "
 "pad.</note></para>"
 
-#: singlefileresourceconfigwidgetbase.cpp:145
+#: singlefileresourceconfigwidgetbase.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

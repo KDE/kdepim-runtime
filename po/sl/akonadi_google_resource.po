@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-09 00:45+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2025-06-27 06:12+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -22,31 +22,31 @@ msgstr ""
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
 "X-Generator: Poedit 3.6\n"
 
-#: calendarhandler.cpp:92
+#: calendarhandler.cpp:89
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving calendars"
 msgstr "Pridobivanje koledarjev"
 
-#: calendarhandler.cpp:143
+#: calendarhandler.cpp:140
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
 msgstr "Pridobivanje dogodkov za koledar »%1«"
 
-#: calendarhandler.cpp:221 taskhandler.cpp:168
+#: calendarhandler.cpp:218 taskhandler.cpp:168
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
 msgstr "Dodajanje dogodka v koledar »%1«"
 
-#: calendarhandler.cpp:247
+#: calendarhandler.cpp:244
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing event in calendar '%1'"
 msgstr "Spreminjanje dogodka v koledarju »%1«"
 
-#: calendarhandler.cpp:259
+#: calendarhandler.cpp:256
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 event"
@@ -56,7 +56,7 @@ msgstr[1] "Odstranjevanje %1 dogodka"
 msgstr[2] "Odstranjevanje %1 dogodkov"
 msgstr[3] "Odstranjevanje %1 dogodkov"
 
-#: calendarhandler.cpp:275
+#: calendarhandler.cpp:272
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
@@ -66,30 +66,30 @@ msgstr[1] "Premikanje %1 dogodka iz koledarja »%2« v koledar »%3«"
 msgstr[2] "Premikanje %1 dogodkov iz koledarja »%2« v koledar »%3«"
 msgstr[3] "Premikanje %1 dogodkov iz koledarja »%2« v koledar »%3«"
 
-#: calendarhandler.cpp:342
+#: calendarhandler.cpp:339
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
 msgstr "Spreminjanje oznak dogodka"
 
-#: calendarhandler.cpp:346
+#: calendarhandler.cpp:343
 #, kde-format
 msgid "Failed to change tags on events"
 msgstr "Sprememba oznak dogodkov ni uspela"
 
-#: calendarhandler.cpp:358
+#: calendarhandler.cpp:355
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating calendar '%1'"
 msgstr "Ustvarjanje koledarja »%1«"
 
-#: calendarhandler.cpp:386
+#: calendarhandler.cpp:383
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing calendar '%1'"
 msgstr "Spreminjanje koledarja »%1«"
 
-#: calendarhandler.cpp:399
+#: calendarhandler.cpp:396
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing calendar '%1'"
@@ -121,34 +121,34 @@ msgstr "Pripravljen"
 msgid "Invalid item."
 msgstr "Neveljavni predmet."
 
-#: googleresource.cpp:86
+#: googleresource.cpp:79
 #, kde-format
 msgid "Fetching password…"
 msgstr "Pridobivanje gesla…"
 
-#: googleresource.cpp:134
+#: googleresource.cpp:127
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Pripravljen"
 
-#: googleresource.cpp:146
+#: googleresource.cpp:139
 #, kde-format
 msgid "Not configured"
 msgstr "Ni nastavljeno"
 
-#: googleresource.cpp:146
+#: googleresource.cpp:139
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google Groupware (%1)"
 
-#: googleresource.cpp:197
+#: googleresource.cpp:190
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Račun je bil odjavljen."
 
-#: googleresource.cpp:200
+#: googleresource.cpp:193
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -157,7 +157,7 @@ msgstr ""
 "Google Groupware je bil odjavljen iz vašega računa. Znova se prijavite, da "
 "omogočite ponovno usklajevanje Google Contacts in Calendar."
 
-#: googleresource.cpp:201
+#: googleresource.cpp:194
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -166,48 +166,48 @@ msgstr ""
 "Google Groupware je bil odjavljen iz računa %1. Znova se prijavite, da "
 "omogočite ponovno usklajevanje Google Contacts in Calendar."
 
-#: googleresource.cpp:205
+#: googleresource.cpp:198
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 potrebuje vaša pozornost."
 
-#: googleresource.cpp:210
+#: googleresource.cpp:203
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Prijavi se"
 
-#: googleresource.cpp:222 googleresource.cpp:223
+#: googleresource.cpp:215 googleresource.cpp:216
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Vir ni nastavljen"
 
-#: googleresource.cpp:238
+#: googleresource.cpp:231
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Žetonov ni bilo mogoče osvežiti"
 
-#: googleresource.cpp:422 googleresource.cpp:436 googleresource.cpp:450
-#: googleresource.cpp:465 googleresource.cpp:479 googleresource.cpp:493
-#: googleresource.cpp:507
+#: googleresource.cpp:415 googleresource.cpp:429 googleresource.cpp:443
+#: googleresource.cpp:458 googleresource.cpp:472 googleresource.cpp:486
+#: googleresource.cpp:500
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Neveljavna vrsta vsebine"
 
-#: googleresource.cpp:521 googleresource.cpp:535 googleresource.cpp:549
+#: googleresource.cpp:514 googleresource.cpp:528 googleresource.cpp:542
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Neznana vrsta MIME zbirke"
 
-#: googlesettings.cpp:44
+#: googlesettings.cpp:48
 #, kde-format
 msgctxt "@info:status"
 msgid "No username set"
 msgstr "Ni nastavljenega uporabniškega imena"
 
-#: googlesettings.cpp:63
+#: googlesettings.cpp:67
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
@@ -277,60 +277,60 @@ msgstr "Znova naloži"
 msgid "Enabled Tasklists:"
 msgstr "Omogočeni seznami opravil:"
 
-#: personhandler.cpp:87
+#: personhandler.cpp:82
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Coworkers"
 msgstr "Sodelavci"
 
-#: personhandler.cpp:89
+#: personhandler.cpp:84
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Friends"
 msgstr "Prijatelji"
 
-#: personhandler.cpp:91
+#: personhandler.cpp:86
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Family"
 msgstr "Družina"
 
-#: personhandler.cpp:93
+#: personhandler.cpp:88
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "My Contacts"
 msgstr "Moji stiki"
 
-#: personhandler.cpp:117
+#: personhandler.cpp:112
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts groups"
 msgstr "Pridobivanje skupin stikov"
 
-#: personhandler.cpp:124 personhandler.cpp:130
+#: personhandler.cpp:119 personhandler.cpp:125
 #, kde-format
 msgid "Other Contacts"
 msgstr "Drugi stiki"
 
-#: personhandler.cpp:170
+#: personhandler.cpp:165
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts for group '%1'"
 msgstr "Pridobivanje stikov za skupino »%1«"
 
-#: personhandler.cpp:370
+#: personhandler.cpp:365
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding contact to group '%1'"
 msgstr "Dodajanje stika v skupino »%1«"
 
-#: personhandler.cpp:404
+#: personhandler.cpp:399
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact"
 msgstr "Spreminjanje stika"
 
-#: personhandler.cpp:418
+#: personhandler.cpp:413
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 contact"
@@ -340,12 +340,12 @@ msgstr[1] "Odstranjevanje %1 stika"
 msgstr[2] "Odstranjevanje %1 stikov"
 msgstr[3] "Odstranjevanje %1 stikov"
 
-#: personhandler.cpp:438
+#: personhandler.cpp:433
 #, kde-format
 msgid "Invalid source or destination collection"
 msgstr "Neveljavna zbirka vira ali cilja"
 
-#: personhandler.cpp:444
+#: personhandler.cpp:439
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 contact from group '%2' to '%3'"
@@ -355,7 +355,7 @@ msgstr[1] "Premikanje %1 stika iz skupine »%2« v »%3«"
 msgstr[2] "Premikanje %1 stikov iz skupine »%2« v »%3«"
 msgstr[3] "Premikanje %1 stikov iz skupine »%2« v »%3«"
 
-#: personhandler.cpp:461
+#: personhandler.cpp:456
 #, kde-format
 msgctxt "@info:status"
 msgid "Linking %1 contact"
@@ -365,7 +365,7 @@ msgstr[1] "Povezovanje %1 stika"
 msgstr[2] "Povezovanje %1 stikov"
 msgstr[3] "Povezovanje %1 stikov"
 
-#: personhandler.cpp:475
+#: personhandler.cpp:470
 #, kde-format
 msgctxt "@info:status"
 msgid "Unlinking %1 contact"
@@ -375,19 +375,19 @@ msgstr[1] "Prekinjanje povezave %1 stika"
 msgstr[2] "Prekinjanje povezav %1 stikov"
 msgstr[3] "Prekinjanje povezav %1 stikov"
 
-#: personhandler.cpp:508
+#: personhandler.cpp:503
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new contact group '%1'"
 msgstr "Ustvarjanje nove skupine stikov »%1«"
 
-#: personhandler.cpp:529
+#: personhandler.cpp:524
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact group '%1'"
 msgstr "Spreminjanje skupine stikov »%1«"
 
-#: personhandler.cpp:554
+#: personhandler.cpp:549
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing contact group '%1'"

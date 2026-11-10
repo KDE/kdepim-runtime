@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-27 01:00+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2026-10-01 02:47+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -22,38 +22,38 @@ msgstr ""
 "X-Generator: Lokalize 26.11.70\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: configwidget.cpp:34
+#: configwidget.cpp:38
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "DAV 資源設定"
 
-#: configwidget.cpp:40
+#: configwidget.cpp:44
 #, kde-format
 msgid "Protocol"
 msgstr "協定"
 
-#: configwidget.cpp:40 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:44 urlconfigurationdialog.cpp:268
 #, kde-format
 msgid "URL"
 msgstr "網址"
 
-#: configwidget.cpp:53
+#: configwidget.cpp:57
 #, kde-format
 msgid "Days"
 msgstr "天"
 
-#: configwidget.cpp:54
+#: configwidget.cpp:58
 #, kde-format
 msgid "Months"
 msgstr "月"
 
-#: configwidget.cpp:55
+#: configwidget.cpp:59
 #, kde-format
 msgid "Years"
 msgstr "年"
 
-#: configwidget.cpp:166
+#: configwidget.cpp:170
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -156,111 +156,111 @@ msgstr "移除"
 msgid "Edit"
 msgstr "編輯"
 
-#: davfreebusyhandler.cpp:62
+#: davfreebusyhandler.cpp:60
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "找不到 %1 的排程外送資料匣"
 
-#: davfreebusyhandler.cpp:194 davfreebusyhandler.cpp:205
+#: davfreebusyhandler.cpp:192 davfreebusyhandler.cpp:203
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "從伺服器傳來無效的回應"
 
-#: davfreebusyhandler.cpp:216
+#: davfreebusyhandler.cpp:214
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "無法剖析接收到的行程資料"
 
-#: davgroupwareresource.cpp:299
+#: davgroupwareresource.cpp:295
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "離線時無法取得行程資訊"
 
-#: davgroupwareresource.cpp:386
+#: davgroupwareresource.cpp:382
 #, kde-format
 msgid "Fetching collections"
 msgstr "抓取收藏"
 
-#: davgroupwareresource.cpp:446
+#: davgroupwareresource.cpp:442
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "要求取得未知收藏的項目：%1"
 
-#: davgroupwareresource.cpp:520
+#: davgroupwareresource.cpp:516
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "項目 %1 無效的收藏。"
 
-#: davgroupwareresource.cpp:904
+#: davgroupwareresource.cpp:900
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "無法修改項目：%1"
 
-#: davgroupwareresource.cpp:977
+#: davgroupwareresource.cpp:973
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "無法修改收藏：%1"
 
-#: davgroupwareresource.cpp:1107
+#: davgroupwareresource.cpp:1103
 #, kde-format
 msgid "Unable to create collection: %1"
 msgstr "無法建立收藏：%1"
 
-#: davgroupwareresource.cpp:1136
+#: davgroupwareresource.cpp:1132
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "無法移除收藏：%1"
 
-#: davgroupwareresource.cpp:1158
+#: davgroupwareresource.cpp:1154
 #, kde-format
 msgid "Unable to retrieve collection: %1"
 msgstr "無法取得收藏：%1"
 
-#: davgroupwareresource.cpp:1173
+#: davgroupwareresource.cpp:1169
 #, kde-format
 msgid "Failed to retrieve collection: %1"
 msgstr "取得收藏失敗：%1"
 
-#: davgroupwareresource.cpp:1217
+#: davgroupwareresource.cpp:1213
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "無法取得收藏：%1"
 
-#: davgroupwareresource.cpp:1377 davgroupwareresource.cpp:1917
-#: davgroupwareresource.cpp:1947
+#: davgroupwareresource.cpp:1373 davgroupwareresource.cpp:1913
+#: davgroupwareresource.cpp:1943
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "無法取得項目：%1"
 
-#: davgroupwareresource.cpp:1508
+#: davgroupwareresource.cpp:1504
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "無法取得項目：%1"
 
-#: davgroupwareresource.cpp:1528
+#: davgroupwareresource.cpp:1524
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr "無法取得項目：剖析項目資料失敗。或許它已經被刪除了。"
 
-#: davgroupwareresource.cpp:1588
+#: davgroupwareresource.cpp:1584
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "無法新增項目：%1"
 
-#: davgroupwareresource.cpp:1633 davgroupwareresource.cpp:1744
-#: davgroupwareresource.cpp:1756
+#: davgroupwareresource.cpp:1629 davgroupwareresource.cpp:1740
+#: davgroupwareresource.cpp:1752
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "無法變更項目：%1"
 
-#: davgroupwareresource.cpp:1775
+#: davgroupwareresource.cpp:1771
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "無法移除項目：%1"
 
-#: davgroupwareresource.cpp:1862 davgroupwareresource.cpp:1863
+#: davgroupwareresource.cpp:1858 davgroupwareresource.cpp:1859
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "此資源尚未設定"
@@ -327,18 +327,18 @@ msgstr "用於表達發現的收藏與設定的網址間對映關係用的字串
 msgid "Do not change the actual backend data."
 msgstr "不要變更實際的後端資料。"
 
-#: searchdialog.cpp:26
+#: searchdialog.cpp:27
 #, kde-format
 msgctxt "@title:window"
 msgid "Search"
 msgstr "搜尋"
 
-#: searchdialog.cpp:41
+#: searchdialog.cpp:42
 #, kde-format
 msgid "Add Selected Items"
 msgstr "新增選取的項目"
 
-#: searchdialog.cpp:126 searchdialog.cpp:169
+#: searchdialog.cpp:127 searchdialog.cpp:170
 #, kde-format
 msgid ""
 "An error occurred when executing search:\n"
@@ -547,7 +547,7 @@ msgstr "發生錯誤：%1"
 msgid "Connected successfully"
 msgstr "已成功連線"
 
-#: urlconfigurationdialog.cpp:267
+#: urlconfigurationdialog.cpp:268
 #, kde-format
 msgid "Display Name"
 msgstr "顯示名稱"

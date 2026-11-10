@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2016-05-24 16:37+0200\n"
 "Last-Translator: Petros Vidalis <pvidalis@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -40,84 +40,84 @@ msgstr ""
 msgid "Creating instance of type %1"
 msgstr "Δημιουργία αντικειμένου τύπου %1"
 
-#: ../migratorbase.cpp:128
+#: ../migratorbase.cpp:129
 #, kde-format
 msgid "Missing Identifier"
 msgstr "Απουσία αναγνωριστικού"
 
-#: ../migratorbase.cpp:141
+#: ../migratorbase.cpp:142
 #, kde-format
 msgid "Failed to start migration because migrator is not ready"
 msgstr ""
 "Αποτυχία έναρξης της μεταφοράς διότι το εργαλείο μεταφοράς δεν είναι έτοιμο"
 
-#: ../migratorbase.cpp:147
+#: ../migratorbase.cpp:148
 #, kde-format
 msgid "Starting migration…"
 msgstr "Έναρξη της μεταφοράς…"
 
-#: ../migratorbase.cpp:189
+#: ../migratorbase.cpp:190
 #, kde-format
 msgid "Migration complete"
 msgstr "Η μεταφορά ολοκληρώθηκε"
 
-#: ../migratorbase.cpp:193
+#: ../migratorbase.cpp:194
 #, kde-format
 msgid "Migration aborted"
 msgstr "Η μεταφορά ακυρώθηκε"
 
-#: ../migratorbase.cpp:199
+#: ../migratorbase.cpp:200
 #, kde-format
 msgid "Migration failed"
 msgstr "Η μεταφορά απέτυχε"
 
-#: ../migratorbase.cpp:203
+#: ../migratorbase.cpp:204
 #, kde-format
 msgid "Migration paused"
 msgstr "Η μεταφορά διακόπηκε"
 
-#: ../migratorbase.cpp:233
+#: ../migratorbase.cpp:234
 #, kde-format
 msgid "This migration has already been started once but was aborted"
 msgstr "Η μεταφορά είχε ήδη ξεκινήσει αλλά εγκαταλείφθηκε"
 
-#: ../migratorbase.cpp:270
+#: ../migratorbase.cpp:271
 #, kde-format
 msgctxt "@info:status"
 msgid "Not started"
 msgstr "Δεν ξεκίνησε"
 
-#: ../migratorbase.cpp:272
+#: ../migratorbase.cpp:273
 #, kde-format
 msgctxt "@info:status"
 msgid "Running…"
 msgstr "Εκτελείται…"
 
-#: ../migratorbase.cpp:274
+#: ../migratorbase.cpp:275
 #, kde-format
 msgctxt "@info:status"
 msgid "Complete"
 msgstr "Ολοκληρώθηκε"
 
-#: ../migratorbase.cpp:276
+#: ../migratorbase.cpp:277
 #, kde-format
 msgctxt "@info:status"
 msgid "Aborted"
 msgstr "Εγκαταλείφθηκε"
 
-#: ../migratorbase.cpp:278
+#: ../migratorbase.cpp:279
 #, kde-format
 msgctxt "@info:status"
 msgid "Paused"
 msgstr "Σε παύση"
 
-#: ../migratorbase.cpp:280
+#: ../migratorbase.cpp:281
 #, kde-format
 msgctxt "@info:status"
 msgid "Needs Update"
 msgstr "Απαιτείται ενημέρωση"
 
-#: ../migratorbase.cpp:282
+#: ../migratorbase.cpp:283
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-17 00:44+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2025-05-01 12:42+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -52,7 +52,7 @@ msgstr ""
 "Exchange <b>%1</b>. Будь ласка, оновіть їх на сторінці параметрів облікового "
 "запису."
 
-#: ewsclient/auth/ewsoauth.cpp:512
+#: ewsclient/auth/ewsoauth.cpp:513
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -63,7 +63,7 @@ msgstr ""
 "втратили чинність. Вам слід знову пройти розпізнавання, щоб продовжити "
 "користуватися сервером."
 
-#: ewsclient/auth/ewsoauth.cpp:521
+#: ewsclient/auth/ewsoauth.cpp:522
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -85,48 +85,48 @@ msgstr ""
 "Exchange <b>%1</b> не є чинною. Будь ласка, оновіть дані у параметрах "
 "облікового запису."
 
-#: ewsconfigdialog.cpp:77
+#: ewsconfigdialog.cpp:79
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
 msgstr "Налаштовування Microsoft Exchange"
 
-#: ewsconfigdialog.cpp:103
+#: ewsconfigdialog.cpp:105
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
 msgstr "Гаразд"
 
-#: ewsconfigdialog.cpp:129 ewsconfigdialog.cpp:131
+#: ewsconfigdialog.cpp:131 ewsconfigdialog.cpp:133
 #, kde-format
 msgid "PEM file"
 msgstr "Файл PEM"
 
-#: ewsconfigdialog.cpp:149
+#: ewsconfigdialog.cpp:151
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "Нетиповий"
 
-#: ewsconfigdialog.cpp:160
+#: ewsconfigdialog.cpp:162
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Ресурс Akonadi для вебслужб Microsoft Exchange (EWS)"
 
-#: ewsconfigdialog.cpp:161
+#: ewsconfigdialog.cpp:163
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "© Krzysztof Nowicki, 2015–2020"
 
-#: ewsconfigdialog.cpp:162
+#: ewsconfigdialog.cpp:164
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "Версія %1"
 
-#: ewsconfigdialog.cpp:163
+#: ewsconfigdialog.cpp:165
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -136,37 +136,37 @@ msgstr ""
 "Розповсюджується за умов дотримання GNU Library General Public License "
 "версії 2.0 або будь-якої пізнішої версії."
 
-#: ewsconfigdialog.cpp:267
+#: ewsconfigdialog.cpp:269
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "Не вдалося виконати автовизначення"
 
-#: ewsconfigdialog.cpp:280
+#: ewsconfigdialog.cpp:282
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Не вдалося встановити з’єднання"
 
-#: ewsconfigdialog.cpp:281 ewsconfigdialog.cpp:440
+#: ewsconfigdialog.cpp:283 ewsconfigdialog.cpp:442
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Помилка"
 
-#: ewsconfigdialog.cpp:282 ewsconfigdialog.cpp:441
+#: ewsconfigdialog.cpp:284 ewsconfigdialog.cpp:443
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Невідома"
 
-#: ewsconfigdialog.cpp:284 ewsconfigdialog.cpp:445
+#: ewsconfigdialog.cpp:286 ewsconfigdialog.cpp:447
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "Гаразд"
 
-#: ewsconfigdialog.cpp:356
+#: ewsconfigdialog.cpp:358
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -175,13 +175,13 @@ msgstr ""
 "Спроба автоматичного визначення зазнала невдачі. Причиною цього можуть бути "
 "неправильні параметри. Хочете зберегти ваші параметри попри це?"
 
-#: ewsconfigdialog.cpp:357 ewsprogressdialog.cpp:48
+#: ewsconfigdialog.cpp:359 ewsprogressdialog.cpp:48
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Автовизначення сервера Exchange"
 
-#: ewsconfigdialog.cpp:387
+#: ewsconfigdialog.cpp:389
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -190,13 +190,13 @@ msgstr ""
 "Не вдалося встановити з'єднання із Exchange. Причиною цього можуть бути "
 "неправильні параметри. Хочете зберегти ваші параметри попри це?"
 
-#: ewsconfigdialog.cpp:388
+#: ewsconfigdialog.cpp:390
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "З'єднання із сервером Exchange"
 
-#: ewsconfigdialog.cpp:442
+#: ewsconfigdialog.cpp:444
 #, kde-format
 msgid "Connection failed"
 msgstr "Не вдалося встановити з’єднання"
@@ -740,19 +740,19 @@ msgctxt "@info:status"
 msgid "Failed to fetch item payload"
 msgstr "Не вдалося отримати вміст запису"
 
-#: ewsfetchitemsjob.cpp:98
+#: ewsfetchitemsjob.cpp:100
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list"
 msgstr "Отримуємо список записів %1"
 
-#: ewsfetchitemsjob.cpp:214
+#: ewsfetchitemsjob.cpp:216
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
 msgstr "Отримуємо список записів %1 (%2 записів)"
 
-#: ewsfetchitemsjob.cpp:399
+#: ewsfetchitemsjob.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"
@@ -1328,13 +1328,13 @@ msgstr "Лише підписані"
 msgid "Failed to create mail item"
 msgstr "Не вдалося створити запис пошти"
 
-#: mail/ewsmodifymailjob.cpp:92
+#: mail/ewsmodifymailjob.cpp:90
 #, kde-format
 msgctxt "@info:status"
 msgid "Item update failed: "
 msgstr "Помилка під час оновлення записів:"
 
-#: mail/ewsmodifymailjob.cpp:103
+#: mail/ewsmodifymailjob.cpp:101
 #, kde-format
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-17 00:44+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2025-05-01 10:30+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -50,7 +50,7 @@ msgstr ""
 "Ha fallat en obtenir les credencials d'InTune per al compte <b>%1</b> de "
 "Microsoft Exchange. Actualitzeu-les a la pàgina de configuració del compte."
 
-#: ewsclient/auth/ewsoauth.cpp:512
+#: ewsclient/auth/ewsoauth.cpp:513
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -60,7 +60,7 @@ msgstr ""
 "Les credencials del Microsoft Exchange per al compte <b>%1</b> ja no són "
 "vàlides. Caldrà que us autentiqueu per a continuar-lo emprant."
 
-#: ewsclient/auth/ewsoauth.cpp:521
+#: ewsclient/auth/ewsoauth.cpp:522
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -81,48 +81,48 @@ msgstr ""
 "Exchange no són vàlids. Actualitzeu-los a la pàgina de configuració del "
 "compte."
 
-#: ewsconfigdialog.cpp:77
+#: ewsconfigdialog.cpp:79
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
 msgstr "Configuració del Microsoft Exchange"
 
-#: ewsconfigdialog.cpp:103
+#: ewsconfigdialog.cpp:105
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
 msgstr "D'acord"
 
-#: ewsconfigdialog.cpp:129 ewsconfigdialog.cpp:131
+#: ewsconfigdialog.cpp:131 ewsconfigdialog.cpp:133
 #, kde-format
 msgid "PEM file"
 msgstr "Fitxer PEM"
 
-#: ewsconfigdialog.cpp:149
+#: ewsconfigdialog.cpp:151
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "A mida"
 
-#: ewsconfigdialog.cpp:160
+#: ewsconfigdialog.cpp:162
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Recurs Akonadi per als serveis web de Microsoft Exchange (EWS)"
 
-#: ewsconfigdialog.cpp:161
+#: ewsconfigdialog.cpp:163
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "Copyright (c) Krzysztof Nowicki 2015-2020"
 
-#: ewsconfigdialog.cpp:162
+#: ewsconfigdialog.cpp:164
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "Versió %1"
 
-#: ewsconfigdialog.cpp:163
+#: ewsconfigdialog.cpp:165
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -132,37 +132,37 @@ msgstr ""
 "Distribuït segons la Llicència pública general de biblioteques de GNU versió "
 "2.0 o posterior."
 
-#: ewsconfigdialog.cpp:267
+#: ewsconfigdialog.cpp:269
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "Ha fallat el descobriment automàtic"
 
-#: ewsconfigdialog.cpp:280
+#: ewsconfigdialog.cpp:282
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Ha fallat la connexió"
 
-#: ewsconfigdialog.cpp:281 ewsconfigdialog.cpp:440
+#: ewsconfigdialog.cpp:283 ewsconfigdialog.cpp:442
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Ha fallat"
 
-#: ewsconfigdialog.cpp:282 ewsconfigdialog.cpp:441
+#: ewsconfigdialog.cpp:284 ewsconfigdialog.cpp:443
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Desconeguda"
 
-#: ewsconfigdialog.cpp:284 ewsconfigdialog.cpp:445
+#: ewsconfigdialog.cpp:286 ewsconfigdialog.cpp:447
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "D'acord"
 
-#: ewsconfigdialog.cpp:356
+#: ewsconfigdialog.cpp:358
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -171,13 +171,13 @@ msgstr ""
 "Ha fallat el descobriment automàtic. Això pot ser causat per paràmetres "
 "incorrectes. Voleu desar la configuració?"
 
-#: ewsconfigdialog.cpp:357 ewsprogressdialog.cpp:48
+#: ewsconfigdialog.cpp:359 ewsprogressdialog.cpp:48
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "Descobriment automàtic del servidor Exchange"
 
-#: ewsconfigdialog.cpp:387
+#: ewsconfigdialog.cpp:389
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -186,13 +186,13 @@ msgstr ""
 "Ha fallat en connectar amb Exchange. Això pot ser causat per paràmetres "
 "incorrectes. Voleu desar la configuració?"
 
-#: ewsconfigdialog.cpp:388
+#: ewsconfigdialog.cpp:390
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "Connexió amb el servidor Exchange"
 
-#: ewsconfigdialog.cpp:442
+#: ewsconfigdialog.cpp:444
 #, kde-format
 msgid "Connection failed"
 msgstr "Ha fallat la connexió"
@@ -737,19 +737,19 @@ msgctxt "@info:status"
 msgid "Failed to fetch item payload"
 msgstr "Ha fallat en recuperar el contingut de l'element"
 
-#: ewsfetchitemsjob.cpp:98
+#: ewsfetchitemsjob.cpp:100
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list"
 msgstr "S'estan recuperant %1 llista d'elements"
 
-#: ewsfetchitemsjob.cpp:214
+#: ewsfetchitemsjob.cpp:216
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
 msgstr "S'estan recuperant %1 llista d'elements (%2 elements)"
 
-#: ewsfetchitemsjob.cpp:399
+#: ewsfetchitemsjob.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"
@@ -1335,13 +1335,13 @@ msgstr "Només els subscrits"
 msgid "Failed to create mail item"
 msgstr "Ha fallat en crear l'element de correu"
 
-#: mail/ewsmodifymailjob.cpp:92
+#: mail/ewsmodifymailjob.cpp:90
 #, kde-format
 msgctxt "@info:status"
 msgid "Item update failed: "
 msgstr "Ha fallat l'actualització dels elements: "
 
-#: mail/ewsmodifymailjob.cpp:103
+#: mail/ewsmodifymailjob.cpp:101
 #, kde-format
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."

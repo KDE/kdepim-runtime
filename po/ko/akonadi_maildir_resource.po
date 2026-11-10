@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2024-08-21 00:37+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -17,165 +17,165 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 23.08.5\n"
 
-#: configwidget.cpp:36
+#: configwidget.cpp:37
 #, kde-format
 msgid "Archive Folder"
 msgstr "폴더 아카이브"
 
-#: configwidget.cpp:39
+#: configwidget.cpp:40
 #, kde-format
 msgid "Activities"
 msgstr "활동"
 
-#: configwidget.cpp:54
+#: configwidget.cpp:55
 #, kde-format
 msgid "The selected path is empty."
 msgstr "선택한 경로가 비어 있습니다."
 
-#: configwidget.cpp:67
+#: configwidget.cpp:68
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
 msgstr "선택한 경로에 올바른 Maildir 폴더가 있습니다."
 
-#: configwidget.cpp:74
+#: configwidget.cpp:75
 #, kde-format
 msgid "The selected path is a valid Maildir."
 msgstr "선택한 경로는 올바른 Maildir입니다."
 
-#: configwidget.cpp:80
+#: configwidget.cpp:81
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
 msgstr "선택한 경로가 비어 있으므로 새 Maildir을 만듭니다."
 
-#: configwidget.cpp:84
+#: configwidget.cpp:85
 #, kde-format
 msgid "The selected path does not exist."
 msgstr "선택한 경로가 없습니다."
 
-#: libmaildir/maildir.cpp:214 libmaildir/maildir.cpp:219
+#: libmaildir/maildir.cpp:212 libmaildir/maildir.cpp:217
 #, kde-format
 msgid "Error opening %1; this folder is missing."
 msgstr "%1 열기 오류: 폴더가 없습니다."
 
-#: libmaildir/maildir.cpp:225
+#: libmaildir/maildir.cpp:223
 #, kde-format
 msgid ""
 "Error opening %1; either this is not a valid maildir folder, or you do not "
 "have sufficient access permissions."
 msgstr "%1 열기 오류: 올바른 maildir 폴더가 아니거나 권한이 거부되었습니다."
 
-#: libmaildir/maildir.cpp:452 libmaildir/maildir.cpp:474
-#: libmaildir/maildir.cpp:492 libmaildir/maildir.cpp:512
-#: libmaildir/maildir.cpp:531 libmaildir/maildir.cpp:555
-#: libmaildir/maildir.cpp:630 libmaildir/maildir.cpp:780
+#: libmaildir/maildir.cpp:450 libmaildir/maildir.cpp:472
+#: libmaildir/maildir.cpp:490 libmaildir/maildir.cpp:510
+#: libmaildir/maildir.cpp:529 libmaildir/maildir.cpp:553
+#: libmaildir/maildir.cpp:628 libmaildir/maildir.cpp:778
 #, kde-format
 msgid "Cannot locate mail file %1."
 msgstr "메일 파일 %1을(를) 찾을 수 없습니다."
 
-#: libmaildir/maildir.cpp:458 libmaildir/maildir.cpp:480
+#: libmaildir/maildir.cpp:456 libmaildir/maildir.cpp:478
 #, kde-format
 msgid "Cannot open mail file %1."
 msgstr "메일 파일 %1을(를) 열 수 없습니다."
 
-#: libmaildir/maildir.cpp:563 libmaildir/maildir.cpp:590
+#: libmaildir/maildir.cpp:561 libmaildir/maildir.cpp:588
 #, kde-format
 msgid "Cannot write to mail file %1."
 msgstr "메일 파일 %1에 쓸 수 없습니다."
 
-#: libmaildir/maildir.cpp:604
+#: libmaildir/maildir.cpp:602
 #, kde-format
 msgid "Failed to create mail file %1. The error was: %2"
 msgstr "메일 파일 %1을(를) 만들 수 없습니다. 오류: %2"
 
-#: libmaildir/maildir.cpp:698
+#: libmaildir/maildir.cpp:696
 #, kde-format
 msgid "Failed to update the file name %1 to %2 on the disk. The error was: %3."
 msgstr "디스크의 메일 파일 %1의 이름을 %2(으)로 바꿀 수 없습니다. 오류: %3."
 
-#: maildirresource.cpp:124 maildirresource.cpp:258 maildirresource.cpp:297
-#: maildirresource.cpp:391 maildirresource.cpp:432 maildirresource.cpp:552
-#: maildirresource.cpp:582 maildirresource.cpp:625 maildirresource.cpp:658
+#: maildirresource.cpp:126 maildirresource.cpp:260 maildirresource.cpp:299
+#: maildirresource.cpp:393 maildirresource.cpp:434 maildirresource.cpp:554
+#: maildirresource.cpp:584 maildirresource.cpp:627 maildirresource.cpp:660
 #, kde-format
 msgid "Unusable configuration."
 msgstr "사용할 수 없는 설정입니다."
 
-#: maildirresource.cpp:189
+#: maildirresource.cpp:191
 #, kde-format
 msgid "Unable to fetch item: The maildir folder \"%1\" is not valid."
 msgstr "항목을 가져올 수 없음: Maildir 폴더 \"%1\"이(가) 올바르지 않습니다."
 
-#: maildirresource.cpp:269
+#: maildirresource.cpp:271
 #, kde-format
 msgid "Error: Unsupported type."
 msgstr "오류: 지원하지 않는 형식입니다."
 
-#: maildirresource.cpp:335
+#: maildirresource.cpp:337
 #, kde-format
 msgid "Failed to change the flags for the mail. %1"
 msgstr "메일의 플래그를 변경할 수 없습니다. %1"
 
-#: maildirresource.cpp:370
+#: maildirresource.cpp:372
 #, kde-format
 msgid "Maildir resource got a non-mail content."
 msgstr "Maildir 리소스에 메일이 아닌 것이 있습니다."
 
-#: maildirresource.cpp:397
+#: maildirresource.cpp:399
 #, kde-format
 msgid "Source folder is invalid: '%1'."
 msgstr "원본 폴더가 잘못되었습니다: '%1'."
 
-#: maildirresource.cpp:403
+#: maildirresource.cpp:405
 #, kde-format
 msgid "Destination folder is invalid: '%1'."
 msgstr "대상 폴더가 잘못되었습니다: '%1'."
 
-#: maildirresource.cpp:420
+#: maildirresource.cpp:422
 #, kde-format
 msgid "Could not move message '%1' from '%2' to '%3'. The error was %4."
 msgstr ""
 "메시지 '%1'을(를) '%2'에서 '%3'(으)로 이동할 수 없습니다. 오류는 %4입니다."
 
-#: maildirresource.cpp:442
+#: maildirresource.cpp:444
 #, kde-format
 msgid "Failed to delete message: %1"
 msgstr "메시지를 삭제할 수 없습니다: %1"
 
-#: maildirresource.cpp:531
+#: maildirresource.cpp:533
 #, kde-format
 msgid "Maildir '%1' for collection '%2' is invalid."
 msgstr "모음집 '%2'의 Maildir '%1'이(가) 잘못되었습니다."
 
-#: maildirresource.cpp:610
+#: maildirresource.cpp:612
 #, kde-format
 msgid "Unable to rename maildir folder '%1'."
 msgstr "Maildir 폴더 '%1'의 이름을 바꿀 수 없습니다."
 
-#: maildirresource.cpp:631
+#: maildirresource.cpp:633
 #, kde-format
 msgid "Cannot move root maildir folder '%1'."
 msgstr "루트 Maildir 폴더 '%1'을(를) 이동할 수 없습니다."
 
-#: maildirresource.cpp:646
+#: maildirresource.cpp:648
 #, kde-format
 msgid "Unable to move maildir folder '%1' from '%2' to '%3'."
 msgstr "Maildir 폴더 '%1'을(를) '%2'에서 '%3'(으)로 이동할 수 없습니다."
 
-#: maildirresource.cpp:664
+#: maildirresource.cpp:666
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
 msgstr "최상위 Maildir 폴더 '%1'을(를) 삭제할 수 없습니다."
 
-#: maildirresource.cpp:673
+#: maildirresource.cpp:675
 #, kde-format
 msgid "Failed to delete sub-folder '%1'."
 msgstr "하위 폴더 '%1'을(를) 삭제할 수 없습니다."
 
-#: maildirresource.cpp:687
+#: maildirresource.cpp:689
 #, kde-format
 msgid "Unable to create maildir '%1'."
 msgstr "Maildir '%1'을(를) 만들 수 없습니다."
 
-#: maildirresource.cpp:697
+#: maildirresource.cpp:699
 #, kde-format
 msgid "No usable storage location configured."
 msgstr "사용할 수 있는 저장소 위치가 설정되지 않았습니다."

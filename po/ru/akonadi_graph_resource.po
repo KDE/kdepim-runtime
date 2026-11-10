@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_graph_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-07 00:49+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2026-10-09 19:38+0200\n"
 "Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -223,7 +223,7 @@ msgctxt "%1 and %2 are counts, %3 the server error message"
 msgid "%1 of %2 requests failed, first error: %3"
 msgstr "Не удалось выполнить %1 из %2 запросов, первая ошибка: %3"
 
-#: jobs/graphfetchfoldersjob.cpp:49
+#: jobs/graphfetchfoldersjob.cpp:48
 #, kde-format
 msgid "Could not resolve the mailbox root folder"
 msgstr "Не удалось определить корневую папку почтового ящика"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-03 00:55+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2026-11-03 21:53+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -53,42 +53,42 @@ msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
 msgstr "Önbellekten EteBase hesabı alınamadı"
 
-#: etesyncresource.cpp:57
+#: etesyncresource.cpp:59
 #, kde-format
 msgid "EteSync Resource"
 msgstr "EteSync Özkaynağı"
 
-#: etesyncresource.cpp:129
+#: etesyncresource.cpp:131
 #, kde-format
 msgid "EteSync Account"
 msgstr "EteSync Hesabı"
 
-#: etesyncresource.cpp:171
+#: etesyncresource.cpp:173
 #, kde-format
 msgid "Temporary server error"
 msgstr "Geçici sunucu hatası"
 
-#: etesyncresource.cpp:175
+#: etesyncresource.cpp:177
 #, kde-format
 msgid "You do not have permission to perform this action."
 msgstr "Bu eylemi gerçekleştirmek için yeterli izniniz yok."
 
-#: etesyncresource.cpp:178
+#: etesyncresource.cpp:180
 #, kde-format
 msgid "Permission denied"
 msgstr "İzin reddedildi"
 
-#: etesyncresource.cpp:182
+#: etesyncresource.cpp:184
 #, kde-format
 msgid "A server error occurred."
 msgstr "Bir sunucu hatası oluştu."
 
-#: etesyncresource.cpp:185
+#: etesyncresource.cpp:187
 #, kde-format
 msgid "Server error"
 msgstr "Sunucu hatası"
 
-#: etesyncresource.cpp:204
+#: etesyncresource.cpp:206
 #, kde-format
 msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
@@ -97,43 +97,43 @@ msgstr ""
 "EteSync kimlik bilgileriniz değiştrilmiş. Bilgilerinizi yeniden girmek için "
 "Tamam’a tıklayın."
 
-#: etesyncresource.cpp:206
+#: etesyncresource.cpp:208
 #, kde-format
 msgid "Credentials Changed"
 msgstr "Bilgiler Değişti"
 
-#: etesyncresource.cpp:207
+#: etesyncresource.cpp:209
 #, kde-format
 msgid "Your EteSync credentials were changed or are missing."
 msgstr "EteSync kimlik bilgileriniz değiştirilmiş veya eksik."
 
-#: etesyncresource.cpp:257
+#: etesyncresource.cpp:259
 #, kde-format
 msgid "Cannot retrieve items - account is null"
 msgstr "Ögeler alınamıyor — hesap boş"
 
-#: etesyncresource.cpp:264 etesyncresource.cpp:399 etesyncresource.cpp:472
-#: etesyncresource.cpp:530 etesyncresource.cpp:660 etesyncresource.cpp:718
+#: etesyncresource.cpp:266 etesyncresource.cpp:401 etesyncresource.cpp:474
+#: etesyncresource.cpp:532 etesyncresource.cpp:662 etesyncresource.cpp:720
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "“%1” önbelleğinden etesyncCollection alınamadı"
 
-#: etesyncresource.cpp:427
+#: etesyncresource.cpp:429
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
 msgstr "Yeni etesyncItem “%1” oluşturulamadı"
 
-#: etesyncresource.cpp:479 etesyncresource.cpp:537
+#: etesyncresource.cpp:481 etesyncresource.cpp:539
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
 msgstr "“%1” önbelleğinden etesyncItem alınamadı"
 
-#: etesyncresource.cpp:599
+#: etesyncresource.cpp:601
 #, kde-format
 msgid "Could not create new etesyncCollection"
 msgstr "Yeni etesyncCollection oluşturulamadı"
 
-#: etesyncresource.h:56
+#: etesyncresource.h:57
 #, kde-format
 msgid "Something went wrong"
 msgstr "Bir şeyler ters gitti"

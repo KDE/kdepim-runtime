@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2025-04-23 00:53+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -149,7 +149,7 @@ msgid "The resource not configured yet"
 msgstr "El recurso no está configurado todavía"
 
 #: singlefileresource.h:106 singlefileresource.h:135 singlefileresource.h:230
-#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
+#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -200,7 +200,7 @@ msgstr "Todavía hay una descarga en curso."
 msgid "Uploading cached file to remote location."
 msgstr "Enviando archivo en caché a una ubicación remota."
 
-#: singlefileresourcebase.cpp:240
+#: singlefileresourcebase.cpp:239
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -209,12 +209,12 @@ msgstr ""
 "El archivo «%1» ha sido cambiado en el disco. Como precaución, se ha creado "
 "una copia de respaldo de los contenidos anteriores en «%2»."
 
-#: singlefileresourcebase.cpp:272
+#: singlefileresourcebase.cpp:271
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "No se ha podido cargar el archivo «%1»."
 
-#: singlefileresourcebase.cpp:288
+#: singlefileresourcebase.cpp:287
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "No se ha podido guardar el archivo «%1»."
@@ -306,7 +306,7 @@ msgstr ""
 "Actualiza periódicamente el archivo. Se puede usar cuando no está disponible "
 "el monitoreo (por ejemplo, para calendarios remotos)."
 
-#: singlefileresourceconfigwidgetbase.cpp:37
+#: singlefileresourceconfigwidgetbase.cpp:35
 #, kde-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -316,7 +316,7 @@ msgstr ""
 "Una ruta de archivo o una URL que contiene el archivo de calendario. Una vez "
 "creado, no se puede modificar esta ubicación."
 
-#: singlefileresourceconfigwidgetbase.cpp:39
+#: singlefileresourceconfigwidgetbase.cpp:37
 #, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
@@ -330,7 +330,7 @@ msgstr ""
 "haya creado el recurso. Para modificar la ubicación, borre este recurso y "
 "cree uno nuevo con la ruta actualizada.</note></para>"
 
-#: singlefileresourceconfigwidgetbase.cpp:145
+#: singlefileresourceconfigwidgetbase.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

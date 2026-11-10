@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 02:58+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2024-12-24 20:39+0530\n"
 "Last-Translator: kali <shreekantkalwar@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -81,94 +81,94 @@ msgstr ""
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr "IMAP सर्वरे '%1' कृते केचन ACL लिखितुं असफलम् । %2"
 
-#: imapresource.cpp:235
+#: imapresource.cpp:229
 #, kde-format
 msgid "No server configured yet."
 msgstr "अद्यापि कोऽपि सर्वरः विन्यस्तः नास्ति ।"
 
-#: imapresource.cpp:255
+#: imapresource.cpp:249
 #, kde-format
 msgid "Connection established."
 msgstr "संबन्धः स्थापितः।"
 
-#: imapresource.cpp:272
+#: imapresource.cpp:266
 #, kde-format
 msgid "Server is not available."
 msgstr "सर्वरः उपलब्धः नास्ति ।"
 
-#: imapresource.cpp:323
+#: imapresource.cpp:317
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "'%1' इत्यस्मिन् मदं योजयन् ।"
 
-#: imapresource.cpp:330
+#: imapresource.cpp:324
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "'%1' इत्यस्मिन् द्रव्यं अद्यतनीकरोति ।"
 
-#: imapresource.cpp:337
+#: imapresource.cpp:331
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "वस्तूनि अद्यतनं कुर्वन्"
 
-#: imapresource.cpp:351
+#: imapresource.cpp:345
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "वस्तूनि निष्कासयन्"
 
-#: imapresource.cpp:367
+#: imapresource.cpp:361
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "'%1' तः '%2' मध्ये वस्तूनि स्थानान्तरयति।"
 
-#: imapresource.cpp:376
+#: imapresource.cpp:370
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "पुटं पुनः प्राप्तम्"
 
-#: imapresource.cpp:383
+#: imapresource.cpp:377
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "'%1' कृते अतिरिक्तपुटसूचनाः पुनः प्राप्ताः ।"
 
-#: imapresource.cpp:401
+#: imapresource.cpp:395
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "'%1' इति पुटस्य निर्माणम् ।"
 
-#: imapresource.cpp:407
+#: imapresource.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "'%1' पुटस्य अद्यतनीकरणम् ।"
 
-#: imapresource.cpp:420
+#: imapresource.cpp:414
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "'%1' पुटं निष्कासयति।"
 
-#: imapresource.cpp:427
+#: imapresource.cpp:421
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "'%1' पुटं '%2' तः '%3' मध्ये स्थानान्तरयति।"
 
-#: imapresource.cpp:457
+#: imapresource.cpp:451
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "अन्वेषणं कुर्वन्…"
 
-#: imapresource.cpp:729
+#: imapresource.cpp:723
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP खाता"
@@ -411,19 +411,19 @@ msgstr ""
 "IMAP सर्वरे विलोपनार्थं '%1' तः सन्देशं चिह्नितुं असफलम् । अग्रिमे समन्वयने पुनः प्रकटितं "
 "भविष्यति ।"
 
-#: outlookpasswordrequester.cpp:67 outlookpasswordrequester.cpp:76
+#: outlookpasswordrequester.cpp:65 outlookpasswordrequester.cpp:74
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
 msgstr "कीचेन् तः गुप्तशब्दं पठितुं असफलम्।"
 
-#: removecollectionrecursivetask.cpp:113 removecollectionrecursivetask.cpp:129
-#: removecollectionrecursivetask.cpp:142
+#: removecollectionrecursivetask.cpp:114 removecollectionrecursivetask.cpp:130
+#: removecollectionrecursivetask.cpp:143
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "पुटसूचीं पुनःस्थापयन् पुटं विलोपयितुं असफलम् ।"
 
-#: removecollectionrecursivetask.cpp:147
+#: removecollectionrecursivetask.cpp:148
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "विलोपनीयं पुटं अन्वेष्टुं असफलम्, पुटसूचीं पुनः स्थापयित्वा ।"
@@ -472,17 +472,17 @@ msgstr "इनबॉक्स"
 msgid "Shared Folders"
 msgstr "साझापुटम्"
 
-#: retrieveitemtask.cpp:35
+#: retrieveitemtask.cpp:34
 #, kde-format
 msgid "Remote id is empty or invalid"
 msgstr "दूरस्थः id रिक्तः अथवा अमान्यः अस्ति"
 
-#: retrieveitemtask.cpp:78 retrieveitemtask.cpp:94
+#: retrieveitemtask.cpp:77 retrieveitemtask.cpp:93
 #, kde-format
 msgid "No message retrieved, failed to read the message."
 msgstr "न कोऽपि सन्देशः पुनः प्राप्तः, सन्देशं पठितुं असफलः ।"
 
-#: retrieveitemtask.cpp:115
+#: retrieveitemtask.cpp:114
 #, kde-format
 msgid "No message retrieved, server reply was empty."
 msgstr "कोऽपि सन्देशः न प्राप्तः, सर्वरस्य उत्तरं रिक्तम् आसीत् ।"
@@ -510,7 +510,7 @@ msgstr ""
 msgid "Resource not synchronized yet."
 msgstr "संसाधनम् अद्यापि समन्वयितं नास्ति।"
 
-#: sessionpool.cpp:251 sessionpool.cpp:415
+#: sessionpool.cpp:252 sessionpool.cpp:416
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -519,7 +519,7 @@ msgstr ""
 "IMAP-सर्वर %1 इत्यनेन सह सम्बद्धं कर्तुं न शक्तम् ।\n"
 "%2"
 
-#: sessionpool.cpp:255
+#: sessionpool.cpp:256
 #, kde-format
 msgid ""
 "Could not connect to the IMAP server.\n"
@@ -528,28 +528,28 @@ msgstr ""
 "IMAP सर्वरेण सह सम्बद्धं कर्तुं न शक्तवान् ।\n"
 "%1"
 
-#: sessionpool.cpp:280 sessionpool.cpp:321 sessionpool.cpp:390
-#: sessionpool.cpp:433 sessionpool.cpp:510
+#: sessionpool.cpp:281 sessionpool.cpp:322 sessionpool.cpp:391
+#: sessionpool.cpp:434 sessionpool.cpp:511
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "प्रवेशकाले सर्वरेण विच्छिन्नः।"
 
-#: sessionpool.cpp:304
+#: sessionpool.cpp:305
 #, kde-format
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr "IMAP-सर्वर %1 कृते अन्यत् अतिरिक्तं संयोजनं निर्मातुं न शक्तम् ।"
 
-#: sessionpool.cpp:334
+#: sessionpool.cpp:335
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr "गुप्तशब्दं पठितुं न शक्तवान्: उपयोक्ता बटुकप्रवेशं अङ्गीकृतवान्"
 
-#: sessionpool.cpp:342
+#: sessionpool.cpp:343
 #, kde-format
 msgid "Empty password"
 msgstr "रिक्त गुप्तशब्द"
 
-#: sessionpool.cpp:354
+#: sessionpool.cpp:355
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
@@ -558,7 +558,7 @@ msgstr ""
 "भवान् TLS/SSL इत्यस्य %1 इत्यनेन सह सम्बद्धतां कर्तुं प्रार्थितवान्, परन्तु भवतः प्रणाली तदर्थं "
 "न स्थापिता इव दृश्यते ।"
 
-#: sessionpool.cpp:418
+#: sessionpool.cpp:419
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
@@ -567,7 +567,7 @@ msgstr ""
 "IMAP-सर्वरेण सह सम्बद्धं कर्तुं न शक्तवान् ।\n"
 "%1"
 
-#: sessionpool.cpp:441
+#: sessionpool.cpp:442
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
@@ -576,7 +576,7 @@ msgstr ""
 "IMAP सर्वर %1 समर्थितानां क्षमतानां परीक्षणं कर्तुं न शक्तवान् ।\n"
 "%2"
 
-#: sessionpool.cpp:449
+#: sessionpool.cpp:450
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
@@ -585,7 +585,7 @@ msgstr ""
 "IMAP सर्वरेण समर्थितानां क्षमतानां परीक्षणं कर्तुं न शक्तवान् ।\n"
 "%1"
 
-#: sessionpool.cpp:469
+#: sessionpool.cpp:470
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -594,18 +594,18 @@ msgstr ""
 "IMAP सर्वर %1 उपयोक्तुं न शक्यते, केचन अनिवार्यक्षमता अनुपलब्धाः सन्ति: %2. कृपया स्वस्य "
 "sysadmin इत्यनेन सर्वरस्य उन्नयनार्थं पृच्छन्तु ।"
 
-#: sessionpool.cpp:553 sessionpool.cpp:572
+#: sessionpool.cpp:554 sessionpool.cpp:573
 #, kde-format
 msgid "Disconnected during login."
 msgstr "प्रवेशकाले विच्छिन्नः।"
 
-#: settings.cpp:126
+#: settings.cpp:125
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr "%1 IMAP खातेः कृते गुप्तशब्दः न प्राप्तः"
 
-#: settings.cpp:131
+#: settings.cpp:130
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid ""
@@ -617,13 +617,13 @@ msgid ""
 "keychain: \"%1\""
 msgstr "प्रणाली कीलश्रृङ्खलातः IMAP गुप्तशब्दं पुनः प्राप्तुं त्रुटिः अभवत्: \"%1\"."
 
-#: settings.cpp:159
+#: settings.cpp:158
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr "%1 sieve खातेः कृते गुप्तशब्दः न प्राप्तः"
 
-#: settings.cpp:164
+#: settings.cpp:163
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid ""
@@ -635,7 +635,7 @@ msgid ""
 "keychain: \"%1\""
 msgstr "प्रणाली कीलश्रृङ्खलातः चलनीगुप्तशब्दं पुनः प्राप्तुं त्रुटिः अभवत्: \"%1\"."
 
-#: settings.cpp:194
+#: settings.cpp:193
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid ""
@@ -647,7 +647,7 @@ msgid ""
 "\"%1\""
 msgstr "सिस्टम् कीलचेन् मध्ये चलनीगुप्तशब्दं रक्षन्ते सति त्रुटिः अभवत्: \"%1\"."
 
-#: settings.cpp:220
+#: settings.cpp:219
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid ""
@@ -659,19 +659,19 @@ msgid ""
 "\"%1\""
 msgstr "सिस्टम् कीचेन् मध्ये IMAP गुप्तशब्दं रक्षन्ते सति त्रुटिः अभवत्: \"%1\"."
 
-#: settings.cpp:307
+#: settings.cpp:306
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr "%1 IMAP खातेन समस्या"
 
-#: settingspasswordrequester.cpp:75
+#: settingspasswordrequester.cpp:74
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr "IMAP ई-मेल खाते भवतः ध्यानस्य आवश्यकता वर्तते।"
 
-#: settingspasswordrequester.cpp:79
+#: settingspasswordrequester.cpp:78
 #, kde-format
 msgid ""
 "The IMAP server refused the supplied username and password.\n"
@@ -684,7 +684,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:84
+#: settingspasswordrequester.cpp:83
 #, kde-format
 msgid ""
 "The IMAP server for account %1 refused the supplied username and password.\n"
@@ -697,13 +697,13 @@ msgstr ""
 "\n"
 "%2"
 
-#: settingspasswordrequester.cpp:91
+#: settingspasswordrequester.cpp:90
 #, kde-format
 msgctxt "@action:button"
 msgid "Try again"
 msgstr "पुनः प्रयासं कुर्वन्तु"
 
-#: settingspasswordrequester.cpp:97
+#: settingspasswordrequester.cpp:96
 #, kde-format
 msgctxt "@action:button"
 msgid "Open settings"

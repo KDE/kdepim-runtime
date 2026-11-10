@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-17 00:44+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2024-12-25 19:45+0530\n"
 "Last-Translator: kali <shreekantkalwar@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -57,7 +57,7 @@ msgstr ""
 "Microsoft Exchange खातेः <b>%1</b> कृते प्रमाणपत्राणि प्राप्तुं असफलम् । कृपया "
 "खातासेटिंग्स् पृष्ठे अद्यतनं कुर्वन्तु।"
 
-#: ewsclient/auth/ewsoauth.cpp:512
+#: ewsclient/auth/ewsoauth.cpp:513
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -67,7 +67,7 @@ msgstr ""
 "<b>%1</b> खातेः Microsoft Exchange प्रमाणपत्राणि अधुना वैधं न भवन्ति । तस्य उपयोगं "
 "निरन्तरं कर्तुं भवद्भिः प्रमाणीकरणं करणीयम् ।"
 
-#: ewsclient/auth/ewsoauth.cpp:521
+#: ewsclient/auth/ewsoauth.cpp:522
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -87,48 +87,48 @@ msgstr ""
 "Microsoft Exchange EWS खातेः <b>%1</b> उपयोक्तृनाम/गुप्तशब्दः वैधः नास्ति । कृपया "
 "खातासेटिंग्स् पृष्ठे अद्यतनं कुर्वन्तु।"
 
-#: ewsconfigdialog.cpp:77
+#: ewsconfigdialog.cpp:79
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
 msgstr "Microsoft Exchange विन्यासः"
 
-#: ewsconfigdialog.cpp:103
+#: ewsconfigdialog.cpp:105
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
 msgstr "अस्तु"
 
-#: ewsconfigdialog.cpp:129 ewsconfigdialog.cpp:131
+#: ewsconfigdialog.cpp:131 ewsconfigdialog.cpp:133
 #, kde-format
 msgid "PEM file"
 msgstr "PEM सञ्चिका"
 
-#: ewsconfigdialog.cpp:149
+#: ewsconfigdialog.cpp:151
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "आचारः"
 
-#: ewsconfigdialog.cpp:160
+#: ewsconfigdialog.cpp:162
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Microsoft Exchange Web Services (EWS) कृते अकोनाडी संसाधनम्"
 
-#: ewsconfigdialog.cpp:161
+#: ewsconfigdialog.cpp:163
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "प्रतिलिपि अधिकार (ग) Krzysztof Nowicki 2015-2020"
 
-#: ewsconfigdialog.cpp:162
+#: ewsconfigdialog.cpp:164
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "संस्करणम् %1"
 
-#: ewsconfigdialog.cpp:163
+#: ewsconfigdialog.cpp:165
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -136,37 +136,37 @@ msgid ""
 "later."
 msgstr "GNU Library General Public License संस्करणं 2.0 अथवा ततः परं वितरितम् ।"
 
-#: ewsconfigdialog.cpp:267
+#: ewsconfigdialog.cpp:269
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "स्वतः आविष्कारः विफलः अभवत्"
 
-#: ewsconfigdialog.cpp:280
+#: ewsconfigdialog.cpp:282
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "संयोजनं विफलम् अभवत्"
 
-#: ewsconfigdialog.cpp:281 ewsconfigdialog.cpp:440
+#: ewsconfigdialog.cpp:283 ewsconfigdialog.cpp:442
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "असफल"
 
-#: ewsconfigdialog.cpp:282 ewsconfigdialog.cpp:441
+#: ewsconfigdialog.cpp:284 ewsconfigdialog.cpp:443
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "अज्ञात"
 
-#: ewsconfigdialog.cpp:284 ewsconfigdialog.cpp:445
+#: ewsconfigdialog.cpp:286 ewsconfigdialog.cpp:447
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "अस्तु"
 
-#: ewsconfigdialog.cpp:356
+#: ewsconfigdialog.cpp:358
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -175,13 +175,13 @@ msgstr ""
 "स्वतः आविष्कारः विफलः अभवत् । एतत् अशुद्धमापदण्डैः कारणं भवितुम् अर्हति । किं भवन्तः "
 "अद्यापि स्वस्य सेटिङ्ग्स् रक्षितुं इच्छन्ति?"
 
-#: ewsconfigdialog.cpp:357 ewsprogressdialog.cpp:48
+#: ewsconfigdialog.cpp:359 ewsprogressdialog.cpp:48
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server autodiscovery"
 msgstr "एक्सचेंज सर्वर ऑटोडिस्कवरी"
 
-#: ewsconfigdialog.cpp:387
+#: ewsconfigdialog.cpp:389
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -190,13 +190,13 @@ msgstr ""
 "Exchange इत्यनेन सह संयोजनं विफलम् अभवत् । एतत् अशुद्धमापदण्डैः कारणं भवितुम् अर्हति । किं "
 "भवन्तः अद्यापि स्वस्य सेटिङ्ग्स् रक्षितुं इच्छन्ति?"
 
-#: ewsconfigdialog.cpp:388
+#: ewsconfigdialog.cpp:390
 #, kde-format
 msgctxt "@title:window"
 msgid "Exchange server connection"
 msgstr "सर्वर-संयोजनम् आदान-प्रदानं कुर्वन्तु"
 
-#: ewsconfigdialog.cpp:442
+#: ewsconfigdialog.cpp:444
 #, kde-format
 msgid "Connection failed"
 msgstr "संयोजनं विफलम् अभवत्"
@@ -717,19 +717,19 @@ msgctxt "@info:status"
 msgid "Failed to fetch item payload"
 msgstr "मदं पेलोड् आनेतुं असफलम्"
 
-#: ewsfetchitemsjob.cpp:98
+#: ewsfetchitemsjob.cpp:100
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list"
 msgstr "%1 मदसूचीं पुनः प्राप्तम्"
 
-#: ewsfetchitemsjob.cpp:214
+#: ewsfetchitemsjob.cpp:216
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
 msgstr "%1 द्रव्यसूचीं (%2 द्रव्यं) पुनः प्राप्तम्"
 
-#: ewsfetchitemsjob.cpp:399
+#: ewsfetchitemsjob.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"
@@ -1289,13 +1289,13 @@ msgstr "सदस्यता प्राप्त ही"
 msgid "Failed to create mail item"
 msgstr "मेल-वस्तु निर्मातुं असफलम्"
 
-#: mail/ewsmodifymailjob.cpp:92
+#: mail/ewsmodifymailjob.cpp:90
 #, kde-format
 msgctxt "@info:status"
 msgid "Item update failed: "
 msgstr "मद अद्यतनं विफलम्: "
 
-#: mail/ewsmodifymailjob.cpp:103
+#: mail/ewsmodifymailjob.cpp:101
 #, kde-format
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."

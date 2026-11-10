@@ -1,14 +1,14 @@
 # translation of akonadi_mbox_resource.po to Italian
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2010, 2014, 2019, 2023, 2024.
+# SPDX-FileCopyrightText: 2010, 2014, 2019, 2023-2024, 2026 Luigi Toscano <luigi.toscano@tiscali.it>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 02:58+0000\n"
-"PO-Revision-Date: 2024-08-17 13:12+0200\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"PO-Revision-Date: 2026-11-04 15:59+0100\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 26.08.2\n"
 
 #: compactpage.cpp:71
 #, kde-format
@@ -234,39 +234,39 @@ msgstr "Frequenza di compattamento"
 msgid "Lock method"
 msgstr "Metodo di lock"
 
-#: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:187
+#: mboxresource.cpp:85 mboxresource.cpp:145 mboxresource.cpp:185
 #, kde-format
 msgctxt "@info:status"
 msgid "MBox not configured."
 msgstr "MBox non configurato."
 
-#: mboxresource.cpp:143 mboxresource.cpp:183
+#: mboxresource.cpp:141 mboxresource.cpp:181
 #, kde-format
 msgid "MBox not loaded."
 msgstr "File MBox non caricato."
 
-#: mboxresource.cpp:158
+#: mboxresource.cpp:156
 #, kde-format
 msgid "Failed to read message with uid '%1'."
 msgstr "Lettura del messaggio con uid «%1» non riuscita."
 
-#: mboxresource.cpp:193
+#: mboxresource.cpp:191
 #, kde-format
 msgid "Only email messages can be added to the MBox resource."
 msgstr ""
 "Solo messaggi di posta elettronica possono essere aggiunti alla risorsa MBox."
 
-#: mboxresource.cpp:199
+#: mboxresource.cpp:197
 #, kde-format
 msgid "Mail message not added to the MBox."
 msgstr "Messaggio di posta non aggiunto alla risorsa MBox."
 
-#: mboxresource.cpp:238
+#: mboxresource.cpp:236
 #, kde-format
 msgid "Could not fetch the collection: %1"
 msgstr "Impossibile recuperare la collezione: %1"
 
-#: mboxresource.cpp:267
+#: mboxresource.cpp:265
 #, kde-format
 msgid ""
 "The MBox file was changed by another program. A copy of the new file was "
@@ -280,12 +280,12 @@ msgstr ""
 "assicurarsi che tutti i programmi che accedono al file mbox usino lo stesso "
 "metodo di locking."
 
-#: mboxresource.cpp:298
+#: mboxresource.cpp:296
 #, kde-format
 msgid "Failed to save mbox file to %1"
 msgstr "Salvataggio del file mbox in %1 non riuscito"
 
-#: mboxresource.cpp:357
+#: mboxresource.cpp:355
 #, kde-format
 msgid ""
 "Failed to update the changed item because the old item could not be deleted "
@@ -346,13 +346,13 @@ msgstr "Numero di messaggi eliminati prima che venga avviata la ripulitura"
 #: mboxresource.kcfg:64
 #, kde-format
 msgid "Whether the activities support of the agent is enabled"
-msgstr ""
+msgstr "Se il supporto per le attività dell'agente è abilitato"
 
 #. i18n: ectx: label, entry (Activities), group (Activities)
 #: mboxresource.kcfg:68
 #, kde-format
 msgid "The activities of the agent"
-msgstr ""
+msgstr "Le attività dell'agente"
 
 #~ msgid "Activities"
 #~ msgstr "Attività"

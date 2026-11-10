@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 02:58+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2024-08-17 10:15+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -234,38 +234,38 @@ msgstr "Trinkotzeko maiztasuna"
 msgid "Lock method"
 msgstr "Giltzatze metodoa"
 
-#: mboxresource.cpp:87 mboxresource.cpp:147 mboxresource.cpp:187
+#: mboxresource.cpp:85 mboxresource.cpp:145 mboxresource.cpp:185
 #, kde-format
 msgctxt "@info:status"
 msgid "MBox not configured."
 msgstr "«Mbox» konfiguratu gabe."
 
-#: mboxresource.cpp:143 mboxresource.cpp:183
+#: mboxresource.cpp:141 mboxresource.cpp:181
 #, kde-format
 msgid "MBox not loaded."
 msgstr "«Mbox» zamatu gabe."
 
-#: mboxresource.cpp:158
+#: mboxresource.cpp:156
 #, kde-format
 msgid "Failed to read message with uid '%1'."
 msgstr "'%1' UID duen mezua irakurtzea huts egin du."
 
-#: mboxresource.cpp:193
+#: mboxresource.cpp:191
 #, kde-format
 msgid "Only email messages can be added to the MBox resource."
 msgstr "E-posta mezuak baino ezin dira gehitu «Mbox» baliabidera."
 
-#: mboxresource.cpp:199
+#: mboxresource.cpp:197
 #, kde-format
 msgid "Mail message not added to the MBox."
 msgstr "Posta mezua ez da «Mbox»era gehitu."
 
-#: mboxresource.cpp:238
+#: mboxresource.cpp:236
 #, kde-format
 msgid "Could not fetch the collection: %1"
 msgstr "Ezin izan du bilduma ekarri: %1"
 
-#: mboxresource.cpp:267
+#: mboxresource.cpp:265
 #, kde-format
 msgid ""
 "The MBox file was changed by another program. A copy of the new file was "
@@ -278,12 +278,12 @@ msgstr ""
 "Horrelakorik gerta ez dadin, giltzatzea erabili, eta ziurtatu mbox atzitzen "
 "duten programa guztiek giltzatzeko metodo bera erabiltzen dutela."
 
-#: mboxresource.cpp:298
+#: mboxresource.cpp:296
 #, kde-format
 msgid "Failed to save mbox file to %1"
 msgstr "«Mbox» fitxategia %1(e)an gordetzea huts egin du"
 
-#: mboxresource.cpp:357
+#: mboxresource.cpp:355
 #, kde-format
 msgid ""
 "Failed to update the changed item because the old item could not be deleted "

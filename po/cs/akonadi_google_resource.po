@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-09 00:45+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2026-02-05 16:10+0100\n"
 "Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
 "Language-Team: \n"
@@ -19,31 +19,31 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Lokalize 25.12.1\n"
 
-#: calendarhandler.cpp:92
+#: calendarhandler.cpp:89
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving calendars"
 msgstr "Načítání kalendářů"
 
-#: calendarhandler.cpp:143
+#: calendarhandler.cpp:140
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving events for calendar '%1'"
 msgstr "Načítání událostí pro kalendář '%1'"
 
-#: calendarhandler.cpp:221 taskhandler.cpp:168
+#: calendarhandler.cpp:218 taskhandler.cpp:168
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding event to calendar '%1'"
 msgstr "Přidávání události do kalendáře '%1'"
 
-#: calendarhandler.cpp:247
+#: calendarhandler.cpp:244
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing event in calendar '%1'"
 msgstr "Změna události v kalendáři '%1'"
 
-#: calendarhandler.cpp:259
+#: calendarhandler.cpp:256
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 event"
@@ -52,7 +52,7 @@ msgstr[0] "Odstraňování %1 události"
 msgstr[1] "Odstraňování %1 událostí"
 msgstr[2] "Odstraňování %1 událostí"
 
-#: calendarhandler.cpp:275
+#: calendarhandler.cpp:272
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
@@ -61,30 +61,30 @@ msgstr[0] "Přesun %1 události z kalendáře '%2' do kalendáře '%3'"
 msgstr[1] "Přesun %1 událostí z kalendáře '%2' do kalendáře '%3'"
 msgstr[2] "Přesun %1 událostí z kalendáře '%2' do kalendáře '%3'"
 
-#: calendarhandler.cpp:342
+#: calendarhandler.cpp:339
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing events tags"
 msgstr "Změna značek událostí"
 
-#: calendarhandler.cpp:346
+#: calendarhandler.cpp:343
 #, kde-format
 msgid "Failed to change tags on events"
 msgstr "Nepodařilo se změnit značky událostí"
 
-#: calendarhandler.cpp:358
+#: calendarhandler.cpp:355
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating calendar '%1'"
 msgstr "Vytváření kalendáře '%1'"
 
-#: calendarhandler.cpp:386
+#: calendarhandler.cpp:383
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing calendar '%1'"
 msgstr "Změna kalendáře '%1'"
 
-#: calendarhandler.cpp:399
+#: calendarhandler.cpp:396
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing calendar '%1'"
@@ -116,34 +116,34 @@ msgstr "Připraveno"
 msgid "Invalid item."
 msgstr "Neplatná položka."
 
-#: googleresource.cpp:86
+#: googleresource.cpp:79
 #, kde-format
 msgid "Fetching password…"
 msgstr "Získávám heslo…"
 
-#: googleresource.cpp:134
+#: googleresource.cpp:127
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Připraveno"
 
-#: googleresource.cpp:146
+#: googleresource.cpp:139
 #, kde-format
 msgid "Not configured"
 msgstr "Nenastaveno"
 
-#: googleresource.cpp:146
+#: googleresource.cpp:139
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google Groupware (%1)"
 
-#: googleresource.cpp:197
+#: googleresource.cpp:190
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Účet byl odhlášen."
 
-#: googleresource.cpp:200
+#: googleresource.cpp:193
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -152,7 +152,7 @@ msgstr ""
 "Google Groupware byl odhlášen z vašeho účtu. Přihlaste se prosím, abyste "
 "znovu povolili synchronizaci kontaktů a kalendáře Google."
 
-#: googleresource.cpp:201
+#: googleresource.cpp:194
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -161,48 +161,48 @@ msgstr ""
 "Google Groupware byl odhlášen z účtu %1. Přihlaste se prosím, abyste znovu "
 "povolili synchronizaci kontaktů a kalendáře Google."
 
-#: googleresource.cpp:205
+#: googleresource.cpp:198
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 vyžaduje vaši pozornost"
 
-#: googleresource.cpp:210
+#: googleresource.cpp:203
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Přihlásit"
 
-#: googleresource.cpp:222 googleresource.cpp:223
+#: googleresource.cpp:215 googleresource.cpp:216
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Zdroj není nastaven"
 
-#: googleresource.cpp:238
+#: googleresource.cpp:231
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Obnovení tokenů se nezdařilo"
 
-#: googleresource.cpp:422 googleresource.cpp:436 googleresource.cpp:450
-#: googleresource.cpp:465 googleresource.cpp:479 googleresource.cpp:493
-#: googleresource.cpp:507
+#: googleresource.cpp:415 googleresource.cpp:429 googleresource.cpp:443
+#: googleresource.cpp:458 googleresource.cpp:472 googleresource.cpp:486
+#: googleresource.cpp:500
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Neplatný typ přílohy"
 
-#: googleresource.cpp:521 googleresource.cpp:535 googleresource.cpp:549
+#: googleresource.cpp:514 googleresource.cpp:528 googleresource.cpp:542
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Neznámá sbírka mimetypu"
 
-#: googlesettings.cpp:44
+#: googlesettings.cpp:48
 #, kde-format
 msgctxt "@info:status"
 msgid "No username set"
 msgstr "Není nastaveno žádné uživatelské jméno"
 
-#: googlesettings.cpp:63
+#: googlesettings.cpp:67
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to read password: %1"
@@ -271,60 +271,60 @@ msgstr "Obnovit"
 msgid "Enabled Tasklists:"
 msgstr "Povolené seznamy úkolů:"
 
-#: personhandler.cpp:87
+#: personhandler.cpp:82
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Coworkers"
 msgstr "Spolupracovníci"
 
-#: personhandler.cpp:89
+#: personhandler.cpp:84
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Friends"
 msgstr "Přátelé"
 
-#: personhandler.cpp:91
+#: personhandler.cpp:86
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "Family"
 msgstr "Rodina"
 
-#: personhandler.cpp:93
+#: personhandler.cpp:88
 #, kde-format
 msgctxt "Name of a group of contacts"
 msgid "My Contacts"
 msgstr "Moje kontakty"
 
-#: personhandler.cpp:117
+#: personhandler.cpp:112
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts groups"
 msgstr "Načítání skupin kontaktů"
 
-#: personhandler.cpp:124 personhandler.cpp:130
+#: personhandler.cpp:119 personhandler.cpp:125
 #, kde-format
 msgid "Other Contacts"
 msgstr "Jiné kontakty"
 
-#: personhandler.cpp:170
+#: personhandler.cpp:165
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving contacts for group '%1'"
 msgstr "Načítání kontaktů pro skupinu '%1'"
 
-#: personhandler.cpp:370
+#: personhandler.cpp:365
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding contact to group '%1'"
 msgstr "Přidávání kontaktů do skupiny '%1'"
 
-#: personhandler.cpp:404
+#: personhandler.cpp:399
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact"
 msgstr "Změna kontaktu"
 
-#: personhandler.cpp:418
+#: personhandler.cpp:413
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 contact"
@@ -333,12 +333,12 @@ msgstr[0] "Odstraňování %1 kontaktu"
 msgstr[1] "Odstraňování %1 kontaktů"
 msgstr[2] "Odstraňování %1 kontaktů"
 
-#: personhandler.cpp:438
+#: personhandler.cpp:433
 #, kde-format
 msgid "Invalid source or destination collection"
 msgstr "Neplatná zdrojová, nebo cílová sbírka"
 
-#: personhandler.cpp:444
+#: personhandler.cpp:439
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving %1 contact from group '%2' to '%3'"
@@ -347,7 +347,7 @@ msgstr[0] "Přesun %1 kontaktu ze skupiny '%2' do skupiny '%3'"
 msgstr[1] "Přesun %1 kontaktů ze skupiny '%2' do skupiny '%3'"
 msgstr[2] "Přesun %1 kontaktů ze skupiny '%2' do skupiny '%3'"
 
-#: personhandler.cpp:461
+#: personhandler.cpp:456
 #, kde-format
 msgctxt "@info:status"
 msgid "Linking %1 contact"
@@ -356,7 +356,7 @@ msgstr[0] "Propojení %1 kontaktu"
 msgstr[1] "Propojení %1 kontaktů"
 msgstr[2] "Propojení %1 kontaktů"
 
-#: personhandler.cpp:475
+#: personhandler.cpp:470
 #, kde-format
 msgctxt "@info:status"
 msgid "Unlinking %1 contact"
@@ -365,19 +365,19 @@ msgstr[0] "Odpojení %1 kontaktu"
 msgstr[1] "Odpojení %1 kontaktů"
 msgstr[2] "Odpojení %1 kontaktů"
 
-#: personhandler.cpp:508
+#: personhandler.cpp:503
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating new contact group '%1'"
 msgstr "Vytváření nové skupiny kontaktů '%1'"
 
-#: personhandler.cpp:529
+#: personhandler.cpp:524
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing contact group '%1'"
 msgstr "Změna skupiny kontaktů '%1'"
 
-#: personhandler.cpp:554
+#: personhandler.cpp:549
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing contact group '%1'"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2025-04-23 22:04+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -147,7 +147,7 @@ msgid "The resource not configured yet"
 msgstr "Ресурсът не  е конфигуриран."
 
 #: singlefileresource.h:106 singlefileresource.h:135 singlefileresource.h:230
-#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
+#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -198,7 +198,7 @@ msgstr "Друго изтегляне все още е в процес на из
 msgid "Uploading cached file to remote location."
 msgstr "Качване на кеширан файл на отдалечено местоположение."
 
-#: singlefileresourcebase.cpp:240
+#: singlefileresourcebase.cpp:239
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -207,12 +207,12 @@ msgstr ""
 "Файлът „%1“ е променен на диска. Като предпазна мярка, резервно копие на "
 "предишнотосъдържание е създадено на „%2“."
 
-#: singlefileresourcebase.cpp:272
+#: singlefileresourcebase.cpp:271
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Не може да се зареди файл „%1“."
 
-#: singlefileresourcebase.cpp:288
+#: singlefileresourcebase.cpp:287
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Не може да се запази файл „%1“."
@@ -303,7 +303,7 @@ msgstr ""
 "Периодично актуализира файла. Може да се използва, когато наблюдението не е "
 "налично (напр. за отдалечени календари)."
 
-#: singlefileresourceconfigwidgetbase.cpp:37
+#: singlefileresourceconfigwidgetbase.cpp:35
 #, kde-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -313,7 +313,7 @@ msgstr ""
 "Път до директория или URL адрес, съдържащ файл с календар. Веднъж създадено, "
 "това местоположение не може да се променя."
 
-#: singlefileresourceconfigwidgetbase.cpp:39
+#: singlefileresourceconfigwidgetbase.cpp:37
 #, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
@@ -327,7 +327,7 @@ msgstr ""
 "като ресурсът е създаден. За да промените местоположението, изтрийте този "
 "ресурс и след това създайте нов с актуализирания път.</note></para>"
 
-#: singlefileresourceconfigwidgetbase.cpp:145
+#: singlefileresourceconfigwidgetbase.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

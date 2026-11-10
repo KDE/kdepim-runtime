@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 02:58+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2026-11-03 22:08+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -136,7 +136,7 @@ msgid " message"
 msgid_plural " messages"
 msgstr[0] " 封信件"
 
-#: jobs.cpp:148
+#: jobs.cpp:146
 #, kde-format
 msgid "Unable to initialize SASL, aborting mail check."
 msgstr "無法初始化 SASL，中止檢查郵件。"

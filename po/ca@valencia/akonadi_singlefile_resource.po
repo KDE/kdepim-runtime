@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2025-04-22 09:08+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -152,7 +152,7 @@ msgid "The resource not configured yet"
 msgstr "El recurs encara no està configurat"
 
 #: singlefileresource.h:106 singlefileresource.h:135 singlefileresource.h:230
-#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
+#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -203,7 +203,7 @@ msgstr "Encara hi ha una baixada en curs."
 msgid "Uploading cached file to remote location."
 msgstr "S'està pujant el fitxer en la memòria cau a una ubicació remota."
 
-#: singlefileresourcebase.cpp:240
+#: singlefileresourcebase.cpp:239
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -212,12 +212,12 @@ msgstr ""
 "El fitxer «%1» ha canviat en el disc. Com a precaució, s'ha creat una còpia "
 "de seguretat del seu contingut anterior a «%2»."
 
-#: singlefileresourcebase.cpp:272
+#: singlefileresourcebase.cpp:271
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "No s'ha pogut carregar el fitxer «%1»."
 
-#: singlefileresourcebase.cpp:288
+#: singlefileresourcebase.cpp:287
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "No s'ha pogut guardar el fitxer «%1»."
@@ -308,7 +308,7 @@ msgstr ""
 "Actualitza periòdicament el fitxer. Es pot utilitzar quan no es trobe "
 "disponible el control de canvis (p. ex., per als calendaris remots)."
 
-#: singlefileresourceconfigwidgetbase.cpp:37
+#: singlefileresourceconfigwidgetbase.cpp:35
 #, kde-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -318,7 +318,7 @@ msgstr ""
 "Un camí de directori o un URL que continga el fitxer de calendari. Una "
 "vegada creada, esta ubicació no es pot modificar."
 
-#: singlefileresourceconfigwidgetbase.cpp:39
+#: singlefileresourceconfigwidgetbase.cpp:37
 #, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
@@ -332,7 +332,7 @@ msgstr ""
 "vegada s'haja creat el recurs. Per a canviar la ubicació, suprimiu este "
 "recurs i creeu-ne un de nou amb el camí actualitzat.</note></para>"
 
-#: singlefileresourceconfigwidgetbase.cpp:145
+#: singlefileresourceconfigwidgetbase.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

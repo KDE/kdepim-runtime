@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 02:58+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2014-09-04 16:12+0200\n"
 "Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -90,88 +90,88 @@ msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr ""
 "Nem sikerült írni néhány ACL-t az IMAP kiszolgálón a következőhöz: „%1”. %2"
 
-#: imapresource.cpp:235
+#: imapresource.cpp:229
 #, kde-format
 msgid "No server configured yet."
 msgstr "Még egy kiszolgáló sincs beállítva."
 
-#: imapresource.cpp:255
+#: imapresource.cpp:249
 #, kde-format
 msgid "Connection established."
 msgstr "A kapcsolat létrejött."
 
-#: imapresource.cpp:272
+#: imapresource.cpp:266
 #, kde-format
 msgid "Server is not available."
 msgstr "A kiszolgáló nem érhető el."
 
-#: imapresource.cpp:323
+#: imapresource.cpp:317
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Elem hozzáadása ebbe: „%1”"
 
-#: imapresource.cpp:330
+#: imapresource.cpp:324
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Elem frissítése ebben: „%1”"
 
-#: imapresource.cpp:337
+#: imapresource.cpp:331
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Elemek frissítése"
 
-#: imapresource.cpp:351
+#: imapresource.cpp:345
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Elemek eltávolítása"
 
-#: imapresource.cpp:367
+#: imapresource.cpp:361
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Elemek áthelyezése innen: „%1” ide: „%2”"
 
-#: imapresource.cpp:376
+#: imapresource.cpp:370
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Mappák letöltése"
 
-#: imapresource.cpp:383
+#: imapresource.cpp:377
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Extra mappajellemzők lekérése ehhez: „%1”"
 
-#: imapresource.cpp:401
+#: imapresource.cpp:395
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "A(z) „%1” mappa létrehozása"
 
-#: imapresource.cpp:407
+#: imapresource.cpp:401
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "A(z) „%1” mappa frissítése"
 
-#: imapresource.cpp:420
+#: imapresource.cpp:414
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "A(z) „%1” mappa eltávolítása"
 
-#: imapresource.cpp:427
+#: imapresource.cpp:421
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "A(z) „%1” mappa áthelyezése innen: „%2” ide: „%3”"
 
-#: imapresource.cpp:457
+#: imapresource.cpp:451
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Searching..."
@@ -179,7 +179,7 @@ msgctxt "@info:status"
 msgid "Searching…"
 msgstr "Keresés…"
 
-#: imapresource.cpp:729
+#: imapresource.cpp:723
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP azonosító"
@@ -442,19 +442,19 @@ msgstr ""
 "Nem sikerült megjelölni törlése az üzenetet innen: „%1” az IMAP kiszolgálón. "
 "A következő szinkronizáláskor újra meg fog jelenni."
 
-#: outlookpasswordrequester.cpp:67 outlookpasswordrequester.cpp:76
+#: outlookpasswordrequester.cpp:65 outlookpasswordrequester.cpp:74
 #, kde-format
 msgctxt "@status"
 msgid "Failed to read password from keychain."
 msgstr ""
 
-#: removecollectionrecursivetask.cpp:113 removecollectionrecursivetask.cpp:129
-#: removecollectionrecursivetask.cpp:142
+#: removecollectionrecursivetask.cpp:114 removecollectionrecursivetask.cpp:130
+#: removecollectionrecursivetask.cpp:143
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "Nem sikerült törölni a mappát, a mappalista visszaállítása."
 
-#: removecollectionrecursivetask.cpp:147
+#: removecollectionrecursivetask.cpp:148
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "Nem sikerült törölni a mappát, a mappalista visszaállítása."
@@ -508,17 +508,17 @@ msgstr "Bejövő"
 msgid "Shared Folders"
 msgstr "Megosztott mappák"
 
-#: retrieveitemtask.cpp:35
+#: retrieveitemtask.cpp:34
 #, kde-format
 msgid "Remote id is empty or invalid"
 msgstr "A távoli azonosító üres vagy érvénytelen"
 
-#: retrieveitemtask.cpp:78 retrieveitemtask.cpp:94
+#: retrieveitemtask.cpp:77 retrieveitemtask.cpp:93
 #, kde-format
 msgid "No message retrieved, failed to read the message."
 msgstr "Nincs üzenet letöltve, nem sikerült az üzenet olvasása."
 
-#: retrieveitemtask.cpp:115
+#: retrieveitemtask.cpp:114
 #, kde-format
 msgid "No message retrieved, server reply was empty."
 msgstr "Nincs üzenet letöltve, a kiszolgáló válasza üres volt."
@@ -546,7 +546,7 @@ msgstr ""
 msgid "Resource not synchronized yet."
 msgstr ""
 
-#: sessionpool.cpp:251 sessionpool.cpp:415
+#: sessionpool.cpp:252 sessionpool.cpp:416
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server %1.\n"
@@ -555,7 +555,7 @@ msgstr ""
 "Nem sikerült csatlakozni a(z) %1 IMAP kiszolgálóhoz.\n"
 "%2"
 
-#: sessionpool.cpp:255
+#: sessionpool.cpp:256
 #, kde-format
 msgid ""
 "Could not connect to the IMAP server.\n"
@@ -564,31 +564,31 @@ msgstr ""
 "Nem sikerült csatlakozni az IMAP kiszolgálóhoz.\n"
 "%1"
 
-#: sessionpool.cpp:280 sessionpool.cpp:321 sessionpool.cpp:390
-#: sessionpool.cpp:433 sessionpool.cpp:510
+#: sessionpool.cpp:281 sessionpool.cpp:322 sessionpool.cpp:391
+#: sessionpool.cpp:434 sessionpool.cpp:511
 #, kde-format
 msgid "Disconnected from server during login."
 msgstr "A kapcsolat megszakadt a kiszolgálóval a bejelentkezés során."
 
-#: sessionpool.cpp:304
+#: sessionpool.cpp:305
 #, kde-format
 msgid "Could not create another extra connection to the IMAP-server %1."
 msgstr ""
 "Nem sikerült létrehozni egy másik kapcsolatot a(z) %1 IMAP kiszolgálóhoz."
 
-#: sessionpool.cpp:334
+#: sessionpool.cpp:335
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
 msgstr ""
 "Nem sikerült olvasni a jelszót: a felhasználó megtiltotta a jelszótároló "
 "elérését"
 
-#: sessionpool.cpp:342
+#: sessionpool.cpp:343
 #, kde-format
 msgid "Empty password"
 msgstr "Üres jelszó"
 
-#: sessionpool.cpp:354
+#: sessionpool.cpp:355
 #, kde-format
 msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
@@ -597,7 +597,7 @@ msgstr ""
 "TSL/SSL kapcsolatot kért a következőhöz: %1, de a rendszer nincs beállítva "
 "ahhoz."
 
-#: sessionpool.cpp:418
+#: sessionpool.cpp:419
 #, kde-format
 msgid ""
 "Could not connect to the IMAP-server.\n"
@@ -606,7 +606,7 @@ msgstr ""
 "Nem sikerült csatlakozni az IMAP kiszolgálóhoz.\n"
 "%1"
 
-#: sessionpool.cpp:441
+#: sessionpool.cpp:442
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
@@ -616,7 +616,7 @@ msgstr ""
 "képességeket.\n"
 "%2"
 
-#: sessionpool.cpp:449
+#: sessionpool.cpp:450
 #, kde-format
 msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
@@ -625,7 +625,7 @@ msgstr ""
 "Nem sikerült tesztelni az IMAP kiszolgáló által támogatott képességeket.\n"
 "%1"
 
-#: sessionpool.cpp:469
+#: sessionpool.cpp:470
 #, kde-format
 msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
@@ -634,19 +634,19 @@ msgstr ""
 "Nem lehet használni a(z) %1 IMAP kiszolgálót, néhány kötelező képesség "
 "hiányzik: %2. Kérje meg a rendszergazdát a kiszolgáló frissítésére."
 
-#: sessionpool.cpp:553 sessionpool.cpp:572
+#: sessionpool.cpp:554 sessionpool.cpp:573
 #, fuzzy, kde-format
 #| msgid "Disconnected from server during login."
 msgid "Disconnected during login."
 msgstr "A kapcsolat megszakadt a kiszolgálóval a bejelentkezés során."
 
-#: settings.cpp:126
+#: settings.cpp:125
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 IMAP account"
 msgstr ""
 
-#: settings.cpp:131
+#: settings.cpp:130
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -654,13 +654,13 @@ msgid ""
 "keychain: \"%1\""
 msgstr ""
 
-#: settings.cpp:159
+#: settings.cpp:158
 #, kde-format
 msgctxt "@info:status"
 msgid "Password not found for %1 sieve account"
 msgstr ""
 
-#: settings.cpp:164
+#: settings.cpp:163
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -668,7 +668,7 @@ msgid ""
 "keychain: \"%1\""
 msgstr ""
 
-#: settings.cpp:194
+#: settings.cpp:193
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -676,7 +676,7 @@ msgid ""
 "\"%1\""
 msgstr ""
 
-#: settings.cpp:220
+#: settings.cpp:219
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -684,19 +684,19 @@ msgid ""
 "\"%1\""
 msgstr ""
 
-#: settings.cpp:307
+#: settings.cpp:306
 #, kde-format
 msgctxt "@title"
 msgid "Problem with %1 IMAP account"
 msgstr ""
 
-#: settingspasswordrequester.cpp:75
+#: settingspasswordrequester.cpp:74
 #, kde-format
 msgctxt "@title"
 msgid "An IMAP e-mail account needs your attention."
 msgstr ""
 
-#: settingspasswordrequester.cpp:79
+#: settingspasswordrequester.cpp:78
 #, fuzzy, kde-format
 #| msgid ""
 #| "The server for account \"%2\" refused the supplied username and password. "
@@ -716,7 +716,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:84
+#: settingspasswordrequester.cpp:83
 #, fuzzy, kde-format
 #| msgid ""
 #| "The server for account \"%2\" refused the supplied username and password. "
@@ -736,7 +736,7 @@ msgstr ""
 "\n"
 "%1"
 
-#: settingspasswordrequester.cpp:91
+#: settingspasswordrequester.cpp:90
 #, fuzzy, kde-format
 #| msgctxt "Input username/password manually and not store them"
 #| msgid "Try Again"
@@ -744,7 +744,7 @@ msgctxt "@action:button"
 msgid "Try again"
 msgstr "Újra"
 
-#: settingspasswordrequester.cpp:97
+#: settingspasswordrequester.cpp:96
 #, fuzzy, kde-format
 #| msgid "Identity Settings"
 msgctxt "@action:button"

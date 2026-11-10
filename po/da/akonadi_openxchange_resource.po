@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2024-07-17 21:05+0200\n"
 "Last-Translator: rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -18,39 +18,39 @@ msgstr ""
 "X-Generator: Lokalize 24.05.2\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: configwidget.cpp:25
+#: configwidget.cpp:26
 #, kde-format
 msgid "Enter the http or https URL to your Open-Xchange installation here."
 msgstr "Angiv HTTP- eller HTTPS-URL til din Open-Xchange-installation her."
 
-#: configwidget.cpp:26
+#: configwidget.cpp:27
 #, kde-format
 msgid "Enter the username of your Open-Xchange account here."
 msgstr "Angiv brugernavn til din Open-Xchange-konto her."
 
-#: configwidget.cpp:27
+#: configwidget.cpp:28
 #, kde-format
 msgid "Enter the password of your Open-Xchange account here."
 msgstr "Angiv adgangskode til din Open-Xchange-konto her."
 
-#: configwidget.cpp:72
+#: configwidget.cpp:73
 #, kde-format
 msgid "Unable to connect: %1"
 msgstr "Kan ikke forbinde: %1"
 
-#: configwidget.cpp:72
+#: configwidget.cpp:73
 #, fuzzy, kde-format
 #| msgid "Connection error"
 msgctxt "@title:window"
 msgid "Connection error"
 msgstr "Forbindelsesfejl"
 
-#: configwidget.cpp:74
+#: configwidget.cpp:75
 #, kde-format
 msgid "Tested connection successfully."
 msgstr "Test af forbindelse gennemført."
 
-#: configwidget.cpp:74
+#: configwidget.cpp:75
 #, fuzzy, kde-format
 #| msgid "Connection success"
 msgctxt "@title:window"
@@ -115,44 +115,44 @@ msgstr "Adgangskoden der bruges til at logge på Open-Xchange-serveren"
 msgid "Test Connection…"
 msgstr "Test forbindelse…"
 
-#: openxchangeresource.cpp:248
+#: openxchangeresource.cpp:252
 #, kde-format
 msgid "Open-Xchange"
 msgstr "Open-Xchange"
 
-#: openxchangeresource.cpp:276
+#: openxchangeresource.cpp:280
 #, kde-format
 msgid "Private Folder"
 msgstr "Privat mappe"
 
-#: openxchangeresource.cpp:284
+#: openxchangeresource.cpp:288
 #, kde-format
 msgid "Public Folder"
 msgstr "Offentlig mappe"
 
-#: openxchangeresource.cpp:292
+#: openxchangeresource.cpp:296
 #, kde-format
 msgid "Shared Folder"
 msgstr "Delt mappe"
 
-#: openxchangeresource.cpp:300
+#: openxchangeresource.cpp:304
 #, kde-format
 msgid "System Folder"
 msgstr "Systemmappe"
 
-#: openxchangeresource.cpp:615
+#: openxchangeresource.cpp:619
 #, kde-format
 msgid "Unable to connect to server"
 msgstr "Kan ikke forbinde til serveren"
 
-#: openxchangeresource.cpp:803
+#: openxchangeresource.cpp:807
 #, kde-format
 msgid ""
 "The object was edited by another participant in the meantime. Please check."
 msgstr ""
 "Objektet blev redigeret af en anden deltager i mellemtiden. Tjek venligst."
 
-#: openxchangeresource.cpp:806
+#: openxchangeresource.cpp:810
 #, kde-format
 msgid ""
 "Object not found. Maybe it was deleted by another participant in the "
@@ -161,12 +161,12 @@ msgstr ""
 "Objektet blev ikke fundet. Måske blev det slettet af en anden deltager i "
 "mellemtiden."
 
-#: openxchangeresource.cpp:809
+#: openxchangeresource.cpp:813
 #, kde-format
 msgid "You don't have the permission to perform this action on this object."
 msgstr "Du har ikke rettigheder til at udføre denne handling på dette objekt."
 
-#: openxchangeresource.cpp:812
+#: openxchangeresource.cpp:816
 #, kde-format
 msgid ""
 "A conflict detected. Please check if there are other objects in conflict "
@@ -175,7 +175,7 @@ msgstr ""
 "En konflikt blev fundet. Tjek om der er andre objekter der er i konflikt med "
 "denne."
 
-#: openxchangeresource.cpp:815
+#: openxchangeresource.cpp:819
 #, kde-format
 msgid ""
 "A mandatory data field is missing. Please check. Otherwise contact your "
@@ -184,7 +184,7 @@ msgstr ""
 "Et obligatorisk datafelt mangler. Tjek venligst eller kontakt din "
 "administrator."
 
-#: openxchangeresource.cpp:818
+#: openxchangeresource.cpp:822
 #, kde-format
 msgid ""
 "An appointment conflict detected.\n"
@@ -193,7 +193,7 @@ msgstr ""
 "En aftalekonflikt blev fundet.\n"
 "Tjek om der er andre aftaler der er i konflikt med denne."
 
-#: openxchangeresource.cpp:821
+#: openxchangeresource.cpp:825
 #, kde-format
 msgid "Internal server error. Please contact your administrator."
 msgstr "Intern serverfejl. Kontakt din administrator."

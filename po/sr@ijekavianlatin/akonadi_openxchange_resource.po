@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_openxchange_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2017-09-28 18:00+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -18,39 +18,39 @@ msgstr ""
 "X-Text-Markup: kde4\n"
 "X-Environment: kde\n"
 
-#: configwidget.cpp:25
+#: configwidget.cpp:26
 #, kde-format
 msgid "Enter the http or https URL to your Open-Xchange installation here."
 msgstr "Unesite ovde HTTP ili HTTPS URL svoje instalacije Open‑Xchangea."
 
-#: configwidget.cpp:26
+#: configwidget.cpp:27
 #, kde-format
 msgid "Enter the username of your Open-Xchange account here."
 msgstr "Unesite ovde korisničko ime svog naloga na Open‑Xchangeu."
 
-#: configwidget.cpp:27
+#: configwidget.cpp:28
 #, kde-format
 msgid "Enter the password of your Open-Xchange account here."
 msgstr "Unesite lozinku za svoj nalog na Open‑Xchangeu."
 
-#: configwidget.cpp:72
+#: configwidget.cpp:73
 #, kde-format
 msgid "Unable to connect: %1"
 msgstr "Ne mogu da se povežem: %1"
 
-#: configwidget.cpp:72
+#: configwidget.cpp:73
 #, fuzzy, kde-format
 #| msgid "Connection error"
 msgctxt "@title:window"
 msgid "Connection error"
 msgstr "Greška povezivanja"
 
-#: configwidget.cpp:74
+#: configwidget.cpp:75
 #, kde-format
 msgid "Tested connection successfully."
 msgstr "Veza uspešno isprobana."
 
-#: configwidget.cpp:74
+#: configwidget.cpp:75
 #, fuzzy, kde-format
 #| msgid "Connection success"
 msgctxt "@title:window"
@@ -114,62 +114,62 @@ msgstr "Lozinka za prijavljivanje na server Open‑Xchangea."
 msgid "Test Connection…"
 msgstr "Isprobaj vezu..."
 
-#: openxchangeresource.cpp:248
+#: openxchangeresource.cpp:252
 #, kde-format
 msgid "Open-Xchange"
 msgstr "Open‑Xchange"
 
-#: openxchangeresource.cpp:276
+#: openxchangeresource.cpp:280
 #, kde-format
 msgid "Private Folder"
 msgstr "Privatna fascikla"
 
-#: openxchangeresource.cpp:284
+#: openxchangeresource.cpp:288
 #, kde-format
 msgid "Public Folder"
 msgstr "Javna fascikla"
 
-#: openxchangeresource.cpp:292
+#: openxchangeresource.cpp:296
 #, kde-format
 msgid "Shared Folder"
 msgstr "Dijeljena fascikla"
 
-#: openxchangeresource.cpp:300
+#: openxchangeresource.cpp:304
 #, kde-format
 msgid "System Folder"
 msgstr "Sistemska fascikla"
 
-#: openxchangeresource.cpp:615
+#: openxchangeresource.cpp:619
 #, kde-format
 msgid "Unable to connect to server"
 msgstr "Ne mogu da se povežem sa serverom."
 
-#: openxchangeresource.cpp:803
+#: openxchangeresource.cpp:807
 #, kde-format
 msgid ""
 "The object was edited by another participant in the meantime. Please check."
 msgstr "Drugi učesnik je u međuvremenu uredio objekat. Proverite ovo."
 
-#: openxchangeresource.cpp:806
+#: openxchangeresource.cpp:810
 #, kde-format
 msgid ""
 "Object not found. Maybe it was deleted by another participant in the "
 "meantime."
 msgstr "Objekat nije nađen. Možda ga je u međuvremenu obrisao drugi učesnik."
 
-#: openxchangeresource.cpp:809
+#: openxchangeresource.cpp:813
 #, kde-format
 msgid "You don't have the permission to perform this action on this object."
 msgstr "Nemate dozvolu da izvršite ovu radnju nad ovim objektom."
 
-#: openxchangeresource.cpp:812
+#: openxchangeresource.cpp:816
 #, kde-format
 msgid ""
 "A conflict detected. Please check if there are other objects in conflict "
 "with this one."
 msgstr "Otkriven je sukob. Proverite ima li drugih objekata u sukobu sa ovim."
 
-#: openxchangeresource.cpp:815
+#: openxchangeresource.cpp:819
 #, kde-format
 msgid ""
 "A mandatory data field is missing. Please check. Otherwise contact your "
@@ -178,7 +178,7 @@ msgstr ""
 "Nedostaje obavezno polje. Proverite ovo. Inače se obratite svom "
 "administratoru."
 
-#: openxchangeresource.cpp:818
+#: openxchangeresource.cpp:822
 #, kde-format
 msgid ""
 "An appointment conflict detected.\n"
@@ -187,7 +187,7 @@ msgstr ""
 "Otkriven je sukob kod sastanka.\n"
 "Proverite ima li drugih sastanaka u sukobu sa ovim."
 
-#: openxchangeresource.cpp:821
+#: openxchangeresource.cpp:825
 #, kde-format
 msgid "Internal server error. Please contact your administrator."
 msgstr "Unutrašnja greška servera. Obratite se svom administratoru."

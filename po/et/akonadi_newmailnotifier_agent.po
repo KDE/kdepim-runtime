@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-06 00:47+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2020-01-02 11:46+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -41,8 +41,8 @@ msgstr "Kaustad"
 msgid "[Show Mail]"
 msgstr "Näita kirja..."
 
-#: newmailnotificationhistorywidget.cpp:25
-#: newmailnotifiersettingswidget.cpp:111
+#: newmailnotificationhistorywidget.cpp:23
+#: newmailnotifiersettingswidget.cpp:112
 #, fuzzy, kde-format
 #| msgid "Enabled"
 msgctxt "@option:check"
@@ -103,7 +103,7 @@ msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "&Tühista kõigi valik"
 
-#: newmailnotifiersettingswidget.cpp:31
+#: newmailnotifiersettingswidget.cpp:32
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
@@ -112,108 +112,108 @@ msgstr ""
 "<qt><p>Siin saab määrata sõnumi. Kasutada saab kohatäitjaid:</p><ul><li>%s "
 "määrab teema</li><li>%f määrab saatja</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:52
+#: newmailnotifiersettingswidget.cpp:53
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "Näidatavad väljad:"
 
-#: newmailnotifiersettingswidget.cpp:57
+#: newmailnotifiersettingswidget.cpp:58
 #, fuzzy, kde-format
 #| msgid "Show Photo"
 msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "Foto näitamine"
 
-#: newmailnotifiersettingswidget.cpp:61
+#: newmailnotifiersettingswidget.cpp:62
 #, fuzzy, kde-format
 #| msgid "Show From"
 msgctxt "@option:check"
 msgid "Show From"
 msgstr "Saatja näitamine"
 
-#: newmailnotifiersettingswidget.cpp:65
+#: newmailnotifiersettingswidget.cpp:66
 #, fuzzy, kde-format
 #| msgid "Show Subject"
 msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "Teema näitamine"
 
-#: newmailnotifiersettingswidget.cpp:69
+#: newmailnotifiersettingswidget.cpp:70
 #, fuzzy, kde-format
 #| msgid "Show Folders"
 msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "Kaustade näitamine"
 
-#: newmailnotifiersettingswidget.cpp:73
+#: newmailnotifiersettingswidget.cpp:74
 #, fuzzy, kde-format
 #| msgid "Do not notify when email was sent by me"
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "Märguannet ei näidata, kui kirja saatsin ma ise"
 
-#: newmailnotifiersettingswidget.cpp:77
+#: newmailnotifiersettingswidget.cpp:78
 #, fuzzy, kde-format
 #| msgid "Keep Persistent Notification"
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr "Püsivate märguannete alleshoidmine"
 
-#: newmailnotifiersettingswidget.cpp:81
+#: newmailnotifiersettingswidget.cpp:82
 #, fuzzy, kde-format
 #| msgid "Show Action Buttons"
 msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr "Toimingunuppude näitamine"
 
-#: newmailnotifiersettingswidget.cpp:89
+#: newmailnotifiersettingswidget.cpp:90
 #, fuzzy, kde-format
 #| msgid "&Select All"
 msgctxt "@option:check"
 msgid "Reply Mail"
 msgstr "&Vali kõik"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:164
+#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:164
 #, kde-format
 msgid "Reply to Author"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:167
+#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:167
 #, fuzzy, kde-format
 #| msgid "&Select All"
 msgid "Reply to All"
 msgstr "&Vali kõik"
 
-#: newmailnotifiersettingswidget.cpp:106
+#: newmailnotifiersettingswidget.cpp:107
 #, kde-format
 msgid "Display"
 msgstr "Vaade"
 
-#: newmailnotifiersettingswidget.cpp:115
+#: newmailnotifiersettingswidget.cpp:116
 #, fuzzy, kde-format
 #| msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Kuidas see töötab?</a>"
 
-#: newmailnotifiersettingswidget.cpp:124
+#: newmailnotifiersettingswidget.cpp:125
 #, fuzzy, kde-format
 #| msgid "Message:"
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "Sõnum:"
 
-#: newmailnotifiersettingswidget.cpp:136
+#: newmailnotifiersettingswidget.cpp:137
 #, kde-format
 msgid "Text to Speak"
 msgstr "Teksti ettelugemine"
 
-#: newmailnotifiersettingswidget.cpp:142
+#: newmailnotifiersettingswidget.cpp:143
 #, kde-format
 msgid "Notify"
 msgstr "Märguanne"
 
-#: newmailnotifiersettingswidget.cpp:145
+#: newmailnotifiersettingswidget.cpp:146
 #, kde-format
 msgid "Folders"
 msgstr "Kaustad"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2025-04-22 04:58+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -146,7 +146,7 @@ msgid "The resource not configured yet"
 msgstr "რესურსი ჯერ მორგებული არაა"
 
 #: singlefileresource.h:106 singlefileresource.h:135 singlefileresource.h:230
-#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
+#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -197,7 +197,7 @@ msgstr "სხვა გადმოწერა ჯერ კიდევ მ�
 msgid "Uploading cached file to remote location."
 msgstr "დაქეშილი ფაილების დაშორებულ ადგილას ატვირთვა."
 
-#: singlefileresourcebase.cpp:240
+#: singlefileresourcebase.cpp:239
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -206,12 +206,12 @@ msgstr ""
 "ფაილი '%1' დისკზე შეიცვალა. თავის დაზღვევის მიზნით მისი წინა შემცველობა "
 "დამარქაფდა მისამართზე '%2'."
 
-#: singlefileresourcebase.cpp:272
+#: singlefileresourcebase.cpp:271
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "ფაილის ჩატვირთვა შეუძლებელია: \"%1\"."
 
-#: singlefileresourcebase.cpp:288
+#: singlefileresourcebase.cpp:287
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "ფაილის შენახვა შეუძლებელია: \"%1\"."
@@ -301,7 +301,7 @@ msgstr ""
 "პერიოდულად განაახლებს ფაილს. შეგიძლიათ, გამოიყენოთ, როცა მონიტორინგი "
 "ხელმისაწვდომი არაა (მაგ: დაშორებული კალენდრებისთვის)."
 
-#: singlefileresourceconfigwidgetbase.cpp:37
+#: singlefileresourceconfigwidgetbase.cpp:35
 #, kde-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -311,7 +311,7 @@ msgstr ""
 "კალენდრის შემცველი ფაილის ბილიკი ან URL. შექმნის შემდეგ ამ მდებარეობას ვეღარ "
 "შეცვლით."
 
-#: singlefileresourceconfigwidgetbase.cpp:39
+#: singlefileresourceconfigwidgetbase.cpp:37
 #, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
@@ -325,7 +325,7 @@ msgstr ""
 "მდებარეობის შესაცვლელად, წაშალეთ ეს რესურსი და შექმენით ახალი, განახლებული "
 "ბილიკით.</note></para>"
 
-#: singlefileresourceconfigwidgetbase.cpp:145
+#: singlefileresourceconfigwidgetbase.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

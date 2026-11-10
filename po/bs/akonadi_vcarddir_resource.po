@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-16 06:51+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2015-02-04 15:16+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -136,7 +136,7 @@ msgstr "Vremenski interval automatskog čuvanja (u minutima)."
 msgid "Do not change the actual backend data."
 msgstr "Ne mijenja aktuelne bekend podatke."
 
-#: vcarddirsettingswidget.cpp:42
+#: vcarddirsettingswidget.cpp:41
 #, kde-format
 msgid "%v minute"
 msgid_plural "%v minutes"
@@ -144,7 +144,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: vcarddirsettingswidget.cpp:45
+#: vcarddirsettingswidget.cpp:44
 #, kde-format
 msgid "Activities"
 msgstr ""

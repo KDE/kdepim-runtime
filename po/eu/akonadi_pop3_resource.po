@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 02:58+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2024-08-17 10:16+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -147,7 +147,7 @@ msgid_plural " messages"
 msgstr[0] " mezu"
 msgstr[1] " mezu"
 
-#: jobs.cpp:148
+#: jobs.cpp:146
 #, kde-format
 msgid "Unable to initialize SASL, aborting mail check."
 msgstr "SASL hasieratu ezinik, posta egiaztapena uzten."

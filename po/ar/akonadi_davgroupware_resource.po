@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-27 01:00+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2026-09-25 16:43+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -19,38 +19,38 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Lokalize 25.12.3\n"
 
-#: configwidget.cpp:34
+#: configwidget.cpp:38
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "ضبط برمجيّات DAV التّعاونيّة"
 
-#: configwidget.cpp:40
+#: configwidget.cpp:44
 #, kde-format
 msgid "Protocol"
 msgstr "الميفاق"
 
-#: configwidget.cpp:40 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:44 urlconfigurationdialog.cpp:268
 #, kde-format
 msgid "URL"
 msgstr "المسار"
 
-#: configwidget.cpp:53
+#: configwidget.cpp:57
 #, kde-format
 msgid "Days"
 msgstr "يوم"
 
-#: configwidget.cpp:54
+#: configwidget.cpp:58
 #, kde-format
 msgid "Months"
 msgstr "شهر"
 
-#: configwidget.cpp:55
+#: configwidget.cpp:59
 #, kde-format
 msgid "Years"
 msgstr "سنة"
 
-#: configwidget.cpp:166
+#: configwidget.cpp:170
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -155,111 +155,111 @@ msgstr "أزِل"
 msgid "Edit"
 msgstr "حرّر"
 
-#: davfreebusyhandler.cpp:62
+#: davfreebusyhandler.cpp:60
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "لم يُعثر على صندوق صادر مجدول لِ‍ %1"
 
-#: davfreebusyhandler.cpp:194 davfreebusyhandler.cpp:205
+#: davfreebusyhandler.cpp:192 davfreebusyhandler.cpp:203
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "ردّ غير صالح من الخادم"
 
-#: davfreebusyhandler.cpp:216
+#: davfreebusyhandler.cpp:214
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "تعذّر تحليل بيانات ”مشغول/متفرّغ“ المستقبلة"
 
-#: davgroupwareresource.cpp:299
+#: davgroupwareresource.cpp:295
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "لا يمكن جلب معلومات ”مشغول/متفرّغ“ وأنت بلا اتّصال"
 
-#: davgroupwareresource.cpp:386
+#: davgroupwareresource.cpp:382
 #, kde-format
 msgid "Fetching collections"
 msgstr "يجلب التّجميعات"
 
-#: davgroupwareresource.cpp:446
+#: davgroupwareresource.cpp:442
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "سُئلتُ لجلب عناصر لتجميعة مجهولة: %1"
 
-#: davgroupwareresource.cpp:520
+#: davgroupwareresource.cpp:516
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "تجميعة غير صالحة للعنصر %1."
 
-#: davgroupwareresource.cpp:904
+#: davgroupwareresource.cpp:900
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "تعذّر تعديل العنصر: %1"
 
-#: davgroupwareresource.cpp:977
+#: davgroupwareresource.cpp:973
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "تعذّر تعديل التّجميعة: %1"
 
-#: davgroupwareresource.cpp:1107
+#: davgroupwareresource.cpp:1103
 #, kde-format
 msgid "Unable to create collection: %1"
 msgstr "تعذّرت إنشاء التّجميعة: %1"
 
-#: davgroupwareresource.cpp:1136
+#: davgroupwareresource.cpp:1132
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "تعذّرت إزالة التّجميعة: %1"
 
-#: davgroupwareresource.cpp:1158
+#: davgroupwareresource.cpp:1154
 #, kde-format
 msgid "Unable to retrieve collection: %1"
 msgstr "تعذّر جلب التّجميعة: %1"
 
-#: davgroupwareresource.cpp:1173
+#: davgroupwareresource.cpp:1169
 #, kde-format
 msgid "Failed to retrieve collection: %1"
 msgstr "فشلَ في جلب التّجميعة: %1"
 
-#: davgroupwareresource.cpp:1217
+#: davgroupwareresource.cpp:1213
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "تعذّر جلب التّجميعات: %1"
 
-#: davgroupwareresource.cpp:1377 davgroupwareresource.cpp:1917
-#: davgroupwareresource.cpp:1947
+#: davgroupwareresource.cpp:1373 davgroupwareresource.cpp:1913
+#: davgroupwareresource.cpp:1943
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "تعذّر جلب العناصر: %1"
 
-#: davgroupwareresource.cpp:1508
+#: davgroupwareresource.cpp:1504
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "تعذّر جلب العنصر: %1"
 
-#: davgroupwareresource.cpp:1528
+#: davgroupwareresource.cpp:1524
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr "تعذر جلب العنصر: فشل في تحليل بيانات العنصر. ربما يكون محذوفا."
 
-#: davgroupwareresource.cpp:1588
+#: davgroupwareresource.cpp:1584
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "تعذّرت إضافة العنصر: %1"
 
-#: davgroupwareresource.cpp:1633 davgroupwareresource.cpp:1744
-#: davgroupwareresource.cpp:1756
+#: davgroupwareresource.cpp:1629 davgroupwareresource.cpp:1740
+#: davgroupwareresource.cpp:1752
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "تعذّر تغيير العنصر: %1"
 
-#: davgroupwareresource.cpp:1775
+#: davgroupwareresource.cpp:1771
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "تعذّرت إزالة العنصر: %1"
 
-#: davgroupwareresource.cpp:1862 davgroupwareresource.cpp:1863
+#: davgroupwareresource.cpp:1858 davgroupwareresource.cpp:1859
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "لم يُضبط المورد بعد"
@@ -326,18 +326,18 @@ msgstr "تمثيل نصّيّ للارتباطات بين التّجميعات �
 msgid "Do not change the actual backend data."
 msgstr "لا تغيّر بيانات السّند الفعليّة."
 
-#: searchdialog.cpp:26
+#: searchdialog.cpp:27
 #, kde-format
 msgctxt "@title:window"
 msgid "Search"
 msgstr "ابحث"
 
-#: searchdialog.cpp:41
+#: searchdialog.cpp:42
 #, kde-format
 msgid "Add Selected Items"
 msgstr "أضف العناصر المحدّدة"
 
-#: searchdialog.cpp:126 searchdialog.cpp:169
+#: searchdialog.cpp:127 searchdialog.cpp:170
 #, kde-format
 msgid ""
 "An error occurred when executing search:\n"
@@ -549,7 +549,7 @@ msgstr "حدث خطأ: %1"
 msgid "Connected successfully"
 msgstr "نجح الاتّصال"
 
-#: urlconfigurationdialog.cpp:267
+#: urlconfigurationdialog.cpp:268
 #, kde-format
 msgid "Display Name"
 msgstr "اسم العرض"

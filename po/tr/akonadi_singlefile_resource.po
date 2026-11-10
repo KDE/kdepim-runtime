@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2025-04-22 19:55+0300\n"
 "Last-Translator: Emir SARI <emir_sari@îcloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -148,7 +148,7 @@ msgid "The resource not configured yet"
 msgstr "Özkaynak henüz yapılandırılmadı"
 
 #: singlefileresource.h:106 singlefileresource.h:135 singlefileresource.h:230
-#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
+#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -199,7 +199,7 @@ msgstr "Bir indirme işlemi hâlâ sürüyor."
 msgid "Uploading cached file to remote location."
 msgstr "Önbelleğe alınan dosya uzak konuma yükleniyor."
 
-#: singlefileresourcebase.cpp:240
+#: singlefileresourcebase.cpp:239
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -208,12 +208,12 @@ msgstr ""
 "“%1” dosyası diskte değişti. Veri kaybı yaşamamak için değişikliklerin bir "
 "yedeği “%2” olarak oluşturuldu."
 
-#: singlefileresourcebase.cpp:272
+#: singlefileresourcebase.cpp:271
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "“%1” dosyası yüklenemedi."
 
-#: singlefileresourcebase.cpp:288
+#: singlefileresourcebase.cpp:287
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "“%1” dosyası kaydedilemedi."
@@ -304,7 +304,7 @@ msgstr ""
 "Dosyayı periyodik olarak günceller. İzleme olanaklı olmadığında "
 "kullanılabilir (örneğin uzak takvimler için)."
 
-#: singlefileresourceconfigwidgetbase.cpp:37
+#: singlefileresourceconfigwidgetbase.cpp:35
 #, kde-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -314,7 +314,7 @@ msgstr ""
 "Takvim dosyasını içeren bir dosya yolu veya URL. Bir kez oluşturulduktan "
 "sonra bu konum üzerinde değişiklik yapılamaz."
 
-#: singlefileresourceconfigwidgetbase.cpp:39
+#: singlefileresourceconfigwidgetbase.cpp:37
 #, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
@@ -328,7 +328,7 @@ msgstr ""
 "değişiklik yapılamaz. Konumu değiştirmek için bu özkaynağı silin ve "
 "güncellenmiş yolu içeren yeni bir tane oluşturun.</note></para>"
 
-#: singlefileresourceconfigwidgetbase.cpp:145
+#: singlefileresourceconfigwidgetbase.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

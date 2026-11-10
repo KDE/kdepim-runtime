@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-07 00:49+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2026-10-07 09:13+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -223,7 +223,7 @@ msgctxt "%1 and %2 are counts, %3 the server error message"
 msgid "%1 of %2 requests failed, first error: %3"
 msgstr "%1 de %2 sol·licituds han fallat, primer error: %3"
 
-#: jobs/graphfetchfoldersjob.cpp:49
+#: jobs/graphfetchfoldersjob.cpp:48
 #, kde-format
 msgid "Could not resolve the mailbox root folder"
 msgstr "No s'ha pogut resoldre la carpeta arrel de la bústia"

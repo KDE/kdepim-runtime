@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mixedmaildir_resource.po\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2015-02-04 14:17+0000\n"
 "Last-Translator: Samir Ribić <Unknown>\n"
 "Language-Team: bs <bs@kde.org>\n"
@@ -20,80 +20,80 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: configwidget.cpp:28
+#: configwidget.cpp:29
 #, kde-format
 msgid "The selected path is empty."
 msgstr "Odabrana staza je prazna."
 
-#: configwidget.cpp:41
+#: configwidget.cpp:42
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
 msgstr "Odabrana putanja sadrži važeće Meildir direktorije."
 
-#: configwidget.cpp:48
+#: configwidget.cpp:49
 #, kde-format
 msgid "The selected path is a valid Maildir."
 msgstr "Odabrana putanja je važeća Meildir."
 
-#: configwidget.cpp:54
+#: configwidget.cpp:55
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
 msgstr ""
 "Odabrana putanja još uvijek ne postoji, novi Meildir će biti napravljen."
 
-#: configwidget.cpp:57
+#: configwidget.cpp:58
 #, kde-format
 msgid "The selected path does not exist."
 msgstr "Odabrana putanja ne postoji."
 
-#: mixedmaildirresource.cpp:102 mixedmaildirresource.cpp:117
-#: mixedmaildirresource.cpp:148 mixedmaildirresource.cpp:178
-#: mixedmaildirresource.cpp:193 mixedmaildirresource.cpp:208
-#: mixedmaildirresource.cpp:240 mixedmaildirresource.cpp:253
-#: mixedmaildirresource.cpp:280 mixedmaildirresource.cpp:311
-#: mixedmaildirresource.cpp:339
+#: mixedmaildirresource.cpp:98 mixedmaildirresource.cpp:113
+#: mixedmaildirresource.cpp:144 mixedmaildirresource.cpp:174
+#: mixedmaildirresource.cpp:189 mixedmaildirresource.cpp:204
+#: mixedmaildirresource.cpp:236 mixedmaildirresource.cpp:249
+#: mixedmaildirresource.cpp:276 mixedmaildirresource.cpp:307
+#: mixedmaildirresource.cpp:335
 #, kde-format
 msgctxt "@info:status"
 msgid "Unusable configuration."
 msgstr "Neupotrebljiva konfiguracija."
 
-#: mixedmaildirresource.cpp:171
+#: mixedmaildirresource.cpp:167
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Item %1 belongs to invalid collection %2. Maybe it was deleted meanwhile?"
 msgstr ""
 
-#: mixedmaildirresource.cpp:202
+#: mixedmaildirresource.cpp:198
 #, kde-format
 msgctxt "@info:status"
 msgid "Synchronizing email folders"
 msgstr "Sinhrionizujem fascikle pošte"
 
-#: mixedmaildirresource.cpp:217
+#: mixedmaildirresource.cpp:213
 #, kde-format
 msgctxt "@info:status"
 msgid "Synchronizing email folder %1"
 msgstr "Sinhrionizujem fasciklu pošte %1"
 
-#: mixedmaildirresource.cpp:318
+#: mixedmaildirresource.cpp:314
 #, kde-format
 msgctxt "@info:status"
 msgid "Cannot move root maildir folder '%1'."
 msgstr "Ne mogu da premjestim maildir korijenski direktorij '%1'."
 
-#: mixedmaildirresource.cpp:346
+#: mixedmaildirresource.cpp:342
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
 msgstr "Ne mogu da izbrišem maildir direktorij najvišeg nivoa '%1'."
 
-#: mixedmaildirresource.cpp:360
+#: mixedmaildirresource.cpp:356
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to create maildir '%1'."
 msgstr "Ne mogu da napravim meildir '%1'."
 
-#: mixedmaildirresource.cpp:372
+#: mixedmaildirresource.cpp:368
 #, kde-format
 msgctxt "@info:status"
 msgid "No usable storage location configured."

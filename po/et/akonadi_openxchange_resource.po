@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:52+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2012-07-02 21:16+0300\n"
 "Last-Translator: Marek Laane <bald@smail.ee>\n"
 "Language-Team: Estonian <kde-et@linux.ee>\n"
@@ -17,39 +17,39 @@ msgstr ""
 "X-Generator: Lokalize 1.4\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: configwidget.cpp:25
+#: configwidget.cpp:26
 #, kde-format
 msgid "Enter the http or https URL to your Open-Xchange installation here."
 msgstr "Kirjuta siia oma Open-Xchange'i paigalduse http- või https-URL-"
 
-#: configwidget.cpp:26
+#: configwidget.cpp:27
 #, kde-format
 msgid "Enter the username of your Open-Xchange account here."
 msgstr "Kirjuta siia oma Open-Xchange'i konto kasutajanimi."
 
-#: configwidget.cpp:27
+#: configwidget.cpp:28
 #, kde-format
 msgid "Enter the password of your Open-Xchange account here."
 msgstr "Kirjuta siia oma Open-Xchange'i konto parool."
 
-#: configwidget.cpp:72
+#: configwidget.cpp:73
 #, kde-format
 msgid "Unable to connect: %1"
 msgstr "Ühendumine nurjus: %1"
 
-#: configwidget.cpp:72
+#: configwidget.cpp:73
 #, fuzzy, kde-format
 #| msgid "Connection error"
 msgctxt "@title:window"
 msgid "Connection error"
 msgstr "Ühenduse viga"
 
-#: configwidget.cpp:74
+#: configwidget.cpp:75
 #, kde-format
 msgid "Tested connection successfully."
 msgstr "Ühenduse test oli edukas."
 
-#: configwidget.cpp:74
+#: configwidget.cpp:75
 #, fuzzy, kde-format
 #| msgid "Connection success"
 msgctxt "@title:window"
@@ -115,43 +115,43 @@ msgstr "Parool Open-Xchange'i serverisse logimiseks"
 msgid "Test Connection…"
 msgstr "Testi ühendust..."
 
-#: openxchangeresource.cpp:248
+#: openxchangeresource.cpp:252
 #, kde-format
 msgid "Open-Xchange"
 msgstr "Open-Xchange"
 
-#: openxchangeresource.cpp:276
+#: openxchangeresource.cpp:280
 #, kde-format
 msgid "Private Folder"
 msgstr "Erakaust"
 
-#: openxchangeresource.cpp:284
+#: openxchangeresource.cpp:288
 #, kde-format
 msgid "Public Folder"
 msgstr "Avalik kaust"
 
-#: openxchangeresource.cpp:292
+#: openxchangeresource.cpp:296
 #, kde-format
 msgid "Shared Folder"
 msgstr "Jagatud kaust"
 
-#: openxchangeresource.cpp:300
+#: openxchangeresource.cpp:304
 #, kde-format
 msgid "System Folder"
 msgstr "Süsteemne kaust"
 
-#: openxchangeresource.cpp:615
+#: openxchangeresource.cpp:619
 #, kde-format
 msgid "Unable to connect to server"
 msgstr "Serveriga ühendumine nurjus."
 
-#: openxchangeresource.cpp:803
+#: openxchangeresource.cpp:807
 #, kde-format
 msgid ""
 "The object was edited by another participant in the meantime. Please check."
 msgstr "Teine osaleja on vahepeal objekti muutnud. Palun kontrolli."
 
-#: openxchangeresource.cpp:806
+#: openxchangeresource.cpp:810
 #, kde-format
 msgid ""
 "Object not found. Maybe it was deleted by another participant in the "
@@ -159,12 +159,12 @@ msgid ""
 msgstr ""
 "Objekti ei leitud. Võib-olla kustutas vahepeal selle mõni teine osaleja."
 
-#: openxchangeresource.cpp:809
+#: openxchangeresource.cpp:813
 #, kde-format
 msgid "You don't have the permission to perform this action on this object."
 msgstr "Sul ei ole õigusi selle objektiga sellist toimingut ette võtta."
 
-#: openxchangeresource.cpp:812
+#: openxchangeresource.cpp:816
 #, kde-format
 msgid ""
 "A conflict detected. Please check if there are other objects in conflict "
@@ -173,7 +173,7 @@ msgstr ""
 "Leiti konflikt. Palun kontrolli, kas mõni objekt on selle objektiga "
 "konfliktis."
 
-#: openxchangeresource.cpp:815
+#: openxchangeresource.cpp:819
 #, kde-format
 msgid ""
 "A mandatory data field is missing. Please check. Otherwise contact your "
@@ -182,7 +182,7 @@ msgstr ""
 "Kohustuslik kuupäevaväli puudub. Palun kontrolli. Vajaduse korral võta "
 "ühendust administraatoriga."
 
-#: openxchangeresource.cpp:818
+#: openxchangeresource.cpp:822
 #, kde-format
 msgid ""
 "An appointment conflict detected.\n"
@@ -191,7 +191,7 @@ msgstr ""
 "Leiti kohtumiste konflikt.\n"
 "Palun kontrolli, kas mõni kohtumine on selle kohtumisega konfliktis."
 
-#: openxchangeresource.cpp:821
+#: openxchangeresource.cpp:825
 #, kde-format
 msgid "Internal server error. Please contact your administrator."
 msgstr "Serveri sisemine tõrge. Palun võta ühendust administraatoriga."

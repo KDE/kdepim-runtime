@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 02:58+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2012-06-12 10:21+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -146,7 +146,7 @@ msgid " message"
 msgid_plural " messages"
 msgstr[0] " សារ"
 
-#: jobs.cpp:148
+#: jobs.cpp:146
 #, fuzzy, kde-format
 #| msgid "Unable to create POP3 slave, aborting mail check."
 msgid "Unable to initialize SASL, aborting mail check."

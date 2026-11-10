@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2024-12-25 19:37+0530\n"
 "Last-Translator: kali <shreekantkalwar@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -144,7 +144,7 @@ msgid "The resource not configured yet"
 msgstr "संसाधनम् अद्यापि न विन्यस्तम्"
 
 #: singlefileresource.h:106 singlefileresource.h:135 singlefileresource.h:230
-#: singlefileresourcebase.cpp:281 singlefileresourcebase.cpp:299
+#: singlefileresourcebase.cpp:280 singlefileresourcebase.cpp:298
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -195,7 +195,7 @@ msgstr "अद्यापि एकं डाउनलोड् प्रचल
 msgid "Uploading cached file to remote location."
 msgstr "दूरस्थस्थाने संग्रहीतसञ्चिकां अपलोड् करणम् ।"
 
-#: singlefileresourcebase.cpp:240
+#: singlefileresourcebase.cpp:239
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -204,12 +204,12 @@ msgstr ""
 "'%1' इति सञ्चिका डिस्कमध्ये परिवर्तिता । सावधानतायै तस्य पूर्वसामग्रीणां बैकअपं '%2' "
 "इत्यत्र निर्मितम् अस्ति ।"
 
-#: singlefileresourcebase.cpp:272
+#: singlefileresourcebase.cpp:271
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "'%1' सञ्चिकां लोड् कर्तुं न शक्यते ।"
 
-#: singlefileresourcebase.cpp:288
+#: singlefileresourcebase.cpp:287
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "'%1' सञ्चिकां रक्षितुं न शक्यते ।"
@@ -299,7 +299,7 @@ msgstr ""
 "समये समये सञ्चिकां अद्यतनं करोति । यदा निरीक्षणं उपलब्धं नास्ति (उदा. दूरस्थपञ्चाङ्गानां कृते) "
 "तदा उपयोक्तुं शक्यते ।"
 
-#: singlefileresourceconfigwidgetbase.cpp:37
+#: singlefileresourceconfigwidgetbase.cpp:35
 #, kde-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -307,7 +307,7 @@ msgid ""
 "cannot be modified."
 msgstr ""
 
-#: singlefileresourceconfigwidgetbase.cpp:39
+#: singlefileresourceconfigwidgetbase.cpp:37
 #, kde-kuit-format
 msgctxt "@info:whatsthis"
 msgid ""
@@ -317,7 +317,7 @@ msgid ""
 "one with the updated path.</note></para>"
 msgstr ""
 
-#: singlefileresourceconfigwidgetbase.cpp:145
+#: singlefileresourceconfigwidgetbase.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information…"

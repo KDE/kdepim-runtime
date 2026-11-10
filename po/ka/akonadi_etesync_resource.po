@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-03 00:55+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2026-11-03 03:38+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -54,42 +54,42 @@ msgctxt "@info:status"
 msgid "Could not get etebase account from cache"
 msgstr "კეშიდან etebase-ის ანგარიშის მიღება შეუძლებელია"
 
-#: etesyncresource.cpp:57
+#: etesyncresource.cpp:59
 #, kde-format
 msgid "EteSync Resource"
 msgstr "EteSync რესურსი"
 
-#: etesyncresource.cpp:129
+#: etesyncresource.cpp:131
 #, kde-format
 msgid "EteSync Account"
 msgstr "EteSync-ის ანგარიში"
 
-#: etesyncresource.cpp:171
+#: etesyncresource.cpp:173
 #, kde-format
 msgid "Temporary server error"
 msgstr "სერვერის დროებითი შეცდომა"
 
-#: etesyncresource.cpp:175
+#: etesyncresource.cpp:177
 #, kde-format
 msgid "You do not have permission to perform this action."
 msgstr "ამ ქმედების შესრულების წვდომა არ გაგაჩნიათ."
 
-#: etesyncresource.cpp:178
+#: etesyncresource.cpp:180
 #, kde-format
 msgid "Permission denied"
 msgstr "წვდომა აკრძალულია"
 
-#: etesyncresource.cpp:182
+#: etesyncresource.cpp:184
 #, kde-format
 msgid "A server error occurred."
 msgstr "სერვერის შეცდომა."
 
-#: etesyncresource.cpp:185
+#: etesyncresource.cpp:187
 #, kde-format
 msgid "Server error"
 msgstr "სერვერის შეცდომა"
 
-#: etesyncresource.cpp:204
+#: etesyncresource.cpp:206
 #, kde-format
 msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
@@ -98,43 +98,43 @@ msgstr ""
 "EteSync -ის მომხმარებელი/პაროლი შეიცვალა. დააწექით OK-ს და თავიდან შეიყვანეთ "
 "ისინი."
 
-#: etesyncresource.cpp:206
+#: etesyncresource.cpp:208
 #, kde-format
 msgid "Credentials Changed"
 msgstr "მომხმ/პაროლი შეიცვალა"
 
-#: etesyncresource.cpp:207
+#: etesyncresource.cpp:209
 #, kde-format
 msgid "Your EteSync credentials were changed or are missing."
 msgstr "თქვენი EteSync-ის ავტორიზაციის დეტალები შეიცვალა, ან შეყვანილი არაა."
 
-#: etesyncresource.cpp:257
+#: etesyncresource.cpp:259
 #, kde-format
 msgid "Cannot retrieve items - account is null"
 msgstr "ჩანაწერების მიღების შეცდომა - ანგარიში ცარიელია"
 
-#: etesyncresource.cpp:264 etesyncresource.cpp:399 etesyncresource.cpp:472
-#: etesyncresource.cpp:530 etesyncresource.cpp:660 etesyncresource.cpp:718
+#: etesyncresource.cpp:266 etesyncresource.cpp:401 etesyncresource.cpp:474
+#: etesyncresource.cpp:532 etesyncresource.cpp:662 etesyncresource.cpp:720
 #, kde-format
 msgid "Could not get etesyncCollection from cache '%1'"
 msgstr "EtesyncCollection ქეშიდან მიღების შეცდომა '%1'"
 
-#: etesyncresource.cpp:427
+#: etesyncresource.cpp:429
 #, kde-format
 msgid "Could not create new etesyncItem '%1'"
 msgstr "ახალი etesyncItem -ის შექმნის შეცდომა'%1'"
 
-#: etesyncresource.cpp:479 etesyncresource.cpp:537
+#: etesyncresource.cpp:481 etesyncresource.cpp:539
 #, kde-format
 msgid "Could not get etesyncItem from cache '%1'"
 msgstr "კეშიდან etesyncItem-ის მიღების შეცდომა '%1'"
 
-#: etesyncresource.cpp:599
+#: etesyncresource.cpp:601
 #, kde-format
 msgid "Could not create new etesyncCollection"
 msgstr "ახალი etesyncCollection-ის მიღების შეცდომა"
 
-#: etesyncresource.h:56
+#: etesyncresource.h:57
 #, kde-format
 msgid "Something went wrong"
 msgstr "რაღაც არასწორად ხდება"

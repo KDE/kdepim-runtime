@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-27 01:00+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2024-07-18 11:11+0200\n"
 "Last-Translator: rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -18,38 +18,38 @@ msgstr ""
 "X-Generator: Lokalize 24.05.2\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: configwidget.cpp:34
+#: configwidget.cpp:38
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
 msgstr "\tKonfigurationsguide til DAV-groupware"
 
-#: configwidget.cpp:40
+#: configwidget.cpp:44
 #, kde-format
 msgid "Protocol"
 msgstr "Protokol"
 
-#: configwidget.cpp:40 urlconfigurationdialog.cpp:267
+#: configwidget.cpp:44 urlconfigurationdialog.cpp:268
 #, kde-format
 msgid "URL"
 msgstr "URL"
 
-#: configwidget.cpp:53
+#: configwidget.cpp:57
 #, kde-format
 msgid "Days"
 msgstr "Dage"
 
-#: configwidget.cpp:54
+#: configwidget.cpp:58
 #, kde-format
 msgid "Months"
 msgstr "Måneder"
 
-#: configwidget.cpp:55
+#: configwidget.cpp:59
 #, kde-format
 msgid "Years"
 msgstr "År"
 
-#: configwidget.cpp:166
+#: configwidget.cpp:170
 #, kde-format
 msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
@@ -154,91 +154,91 @@ msgstr "Fjern"
 msgid "Edit"
 msgstr "Redigér"
 
-#: davfreebusyhandler.cpp:62
+#: davfreebusyhandler.cpp:60
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "Ingen skema-udbakke fundet for %1"
 
-#: davfreebusyhandler.cpp:194 davfreebusyhandler.cpp:205
+#: davfreebusyhandler.cpp:192 davfreebusyhandler.cpp:203
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Ugyldigt svar fra serveren"
 
-#: davfreebusyhandler.cpp:216
+#: davfreebusyhandler.cpp:214
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Kan ikke fortolke de modtagne ledig/optaget-data"
 
-#: davgroupwareresource.cpp:299
+#: davgroupwareresource.cpp:295
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
 msgstr "Kan ikke hente ledig/optaget-info når offline"
 
-#: davgroupwareresource.cpp:386
+#: davgroupwareresource.cpp:382
 #, kde-format
 msgid "Fetching collections"
 msgstr "Henter samlinger"
 
-#: davgroupwareresource.cpp:446
+#: davgroupwareresource.cpp:442
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
 msgstr "Bedt om at hente elementer for en ukendt samling: %1"
 
-#: davgroupwareresource.cpp:520
+#: davgroupwareresource.cpp:516
 #, kde-format
 msgid "Invalid collection for item %1."
 msgstr "Ugyldig samling for elementet %1."
 
-#: davgroupwareresource.cpp:904
+#: davgroupwareresource.cpp:900
 #, kde-format
 msgid "Unable to modify items: %1"
 msgstr "Kan ikke ændre element: %1"
 
-#: davgroupwareresource.cpp:977
+#: davgroupwareresource.cpp:973
 #, kde-format
 msgid "Unable to modify collection: %1"
 msgstr "Kan ikke ændre samling: %1"
 
-#: davgroupwareresource.cpp:1107
+#: davgroupwareresource.cpp:1103
 #, fuzzy, kde-format
 #| msgid "Unable to remove collection: %1"
 msgid "Unable to create collection: %1"
 msgstr "Kan ikke fjerne samling: %1"
 
-#: davgroupwareresource.cpp:1136
+#: davgroupwareresource.cpp:1132
 #, kde-format
 msgid "Unable to remove collection: %1"
 msgstr "Kan ikke fjerne samling: %1"
 
-#: davgroupwareresource.cpp:1158
+#: davgroupwareresource.cpp:1154
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Unable to retrieve collection: %1"
 msgstr "Kan ikke hente samlinger: %1"
 
-#: davgroupwareresource.cpp:1173
+#: davgroupwareresource.cpp:1169
 #, fuzzy, kde-format
 #| msgid "Unable to retrieve collections: %1"
 msgid "Failed to retrieve collection: %1"
 msgstr "Kan ikke hente samlinger: %1"
 
-#: davgroupwareresource.cpp:1217
+#: davgroupwareresource.cpp:1213
 #, kde-format
 msgid "Unable to retrieve collections: %1"
 msgstr "Kan ikke hente samlinger: %1"
 
-#: davgroupwareresource.cpp:1377 davgroupwareresource.cpp:1917
-#: davgroupwareresource.cpp:1947
+#: davgroupwareresource.cpp:1373 davgroupwareresource.cpp:1913
+#: davgroupwareresource.cpp:1943
 #, kde-format
 msgid "Unable to retrieve items: %1"
 msgstr "Kan ikke hente elementer: %1"
 
-#: davgroupwareresource.cpp:1508
+#: davgroupwareresource.cpp:1504
 #, kde-format
 msgid "Unable to retrieve item: %1"
 msgstr "Kan ikke hente element: %1"
 
-#: davgroupwareresource.cpp:1528
+#: davgroupwareresource.cpp:1524
 #, kde-format
 msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
@@ -247,23 +247,23 @@ msgstr ""
 "Kan ikke hente element: kunne ikke fortolke elementdata. Måske var den "
 "allerede slettet."
 
-#: davgroupwareresource.cpp:1588
+#: davgroupwareresource.cpp:1584
 #, kde-format
 msgid "Unable to add item: %1"
 msgstr "Kan ikke tilføje element: %1"
 
-#: davgroupwareresource.cpp:1633 davgroupwareresource.cpp:1744
-#: davgroupwareresource.cpp:1756
+#: davgroupwareresource.cpp:1629 davgroupwareresource.cpp:1740
+#: davgroupwareresource.cpp:1752
 #, kde-format
 msgid "Unable to change item: %1"
 msgstr "Kan ikke ændre element: %1"
 
-#: davgroupwareresource.cpp:1775
+#: davgroupwareresource.cpp:1771
 #, kde-format
 msgid "Unable to remove item: %1"
 msgstr "Kan ikke fjerne element: %1"
 
-#: davgroupwareresource.cpp:1862 davgroupwareresource.cpp:1863
+#: davgroupwareresource.cpp:1858 davgroupwareresource.cpp:1859
 #, kde-format
 msgid "The resource is not configured yet"
 msgstr "Ressourcen er ikke konfigureret endnu"
@@ -335,18 +335,18 @@ msgstr ""
 msgid "Do not change the actual backend data."
 msgstr "Ændr ikke de faktiske motor-data."
 
-#: searchdialog.cpp:26
+#: searchdialog.cpp:27
 #, kde-format
 msgctxt "@title:window"
 msgid "Search"
 msgstr "Søg"
 
-#: searchdialog.cpp:41
+#: searchdialog.cpp:42
 #, kde-format
 msgid "Add Selected Items"
 msgstr "Tilføj markerede elementer"
 
-#: searchdialog.cpp:126 searchdialog.cpp:169
+#: searchdialog.cpp:127 searchdialog.cpp:170
 #, kde-format
 msgid ""
 "An error occurred when executing search:\n"
@@ -562,7 +562,7 @@ msgstr "Der opstod en fejl: %1"
 msgid "Connected successfully"
 msgstr "Forbindelse lykkedes"
 
-#: urlconfigurationdialog.cpp:267
+#: urlconfigurationdialog.cpp:268
 #, kde-format
 msgid "Display Name"
 msgstr "Vist navn"

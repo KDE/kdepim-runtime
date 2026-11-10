@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2016-07-11 21:32+0100\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -17,48 +17,48 @@ msgstr ""
 "X-Generator: Lokalize 2.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: configwidget.cpp:36
+#: configwidget.cpp:37
 #, kde-format
 msgid "Archive Folder"
 msgstr "Arkivmappe"
 
-#: configwidget.cpp:39
+#: configwidget.cpp:40
 #, kde-format
 msgid "Activities"
 msgstr ""
 
-#: configwidget.cpp:54
+#: configwidget.cpp:55
 #, kde-format
 msgid "The selected path is empty."
 msgstr "Den valgte sti er tom."
 
-#: configwidget.cpp:67
+#: configwidget.cpp:68
 #, kde-format
 msgid "The selected path contains valid Maildir folders."
 msgstr "Den valgte sti indeholder gyldige Maildir-mapper."
 
-#: configwidget.cpp:74
+#: configwidget.cpp:75
 #, kde-format
 msgid "The selected path is a valid Maildir."
 msgstr "Den valgte sti er et gyldigt Maildir."
 
-#: configwidget.cpp:80
+#: configwidget.cpp:81
 #, kde-format
 msgid "The selected path does not exist yet, a new Maildir will be created."
 msgstr ""
 "Den valgte sti findes ikke endnu, et ny Maildir vil blive blive oprettet."
 
-#: configwidget.cpp:84
+#: configwidget.cpp:85
 #, kde-format
 msgid "The selected path does not exist."
 msgstr "Den valgte sti findes ikke."
 
-#: libmaildir/maildir.cpp:214 libmaildir/maildir.cpp:219
+#: libmaildir/maildir.cpp:212 libmaildir/maildir.cpp:217
 #, kde-format
 msgid "Error opening %1; this folder is missing."
 msgstr "Fejl ved åbning af %1: Denne mappe mangler."
 
-#: libmaildir/maildir.cpp:225
+#: libmaildir/maildir.cpp:223
 #, kde-format
 msgid ""
 "Error opening %1; either this is not a valid maildir folder, or you do not "
@@ -67,117 +67,117 @@ msgstr ""
 "Fejl ved åbning af %1: Enten er dette ikke en gyldig maildir-mappe, eller du "
 "har ikke tilstrækkelige adgangsrettigheder."
 
-#: libmaildir/maildir.cpp:452 libmaildir/maildir.cpp:474
-#: libmaildir/maildir.cpp:492 libmaildir/maildir.cpp:512
-#: libmaildir/maildir.cpp:531 libmaildir/maildir.cpp:555
-#: libmaildir/maildir.cpp:630 libmaildir/maildir.cpp:780
+#: libmaildir/maildir.cpp:450 libmaildir/maildir.cpp:472
+#: libmaildir/maildir.cpp:490 libmaildir/maildir.cpp:510
+#: libmaildir/maildir.cpp:529 libmaildir/maildir.cpp:553
+#: libmaildir/maildir.cpp:628 libmaildir/maildir.cpp:778
 #, kde-format
 msgid "Cannot locate mail file %1."
 msgstr "Kan ikke finde mailfilen %1."
 
-#: libmaildir/maildir.cpp:458 libmaildir/maildir.cpp:480
+#: libmaildir/maildir.cpp:456 libmaildir/maildir.cpp:478
 #, kde-format
 msgid "Cannot open mail file %1."
 msgstr "Kan ikke åbne mailfilen %1."
 
-#: libmaildir/maildir.cpp:563 libmaildir/maildir.cpp:590
+#: libmaildir/maildir.cpp:561 libmaildir/maildir.cpp:588
 #, kde-format
 msgid "Cannot write to mail file %1."
 msgstr "Kan ikke skrive til mailfilen %1."
 
-#: libmaildir/maildir.cpp:604
+#: libmaildir/maildir.cpp:602
 #, kde-format
 msgid "Failed to create mail file %1. The error was: %2"
 msgstr "Kunne ikke oprette mailfilen %1. Fejlen var: %2"
 
-#: libmaildir/maildir.cpp:698
+#: libmaildir/maildir.cpp:696
 #, kde-format
 msgid "Failed to update the file name %1 to %2 on the disk. The error was: %3."
 msgstr "Kunne ikke opdatere filnavnet %1 til %2 på disken. Fejlen var: %3."
 
-#: maildirresource.cpp:124 maildirresource.cpp:258 maildirresource.cpp:297
-#: maildirresource.cpp:391 maildirresource.cpp:432 maildirresource.cpp:552
-#: maildirresource.cpp:582 maildirresource.cpp:625 maildirresource.cpp:658
+#: maildirresource.cpp:126 maildirresource.cpp:260 maildirresource.cpp:299
+#: maildirresource.cpp:393 maildirresource.cpp:434 maildirresource.cpp:554
+#: maildirresource.cpp:584 maildirresource.cpp:627 maildirresource.cpp:660
 #, kde-format
 msgid "Unusable configuration."
 msgstr "Ikke brugbar konfiguration."
 
-#: maildirresource.cpp:189
+#: maildirresource.cpp:191
 #, kde-format
 msgid "Unable to fetch item: The maildir folder \"%1\" is not valid."
 msgstr "Kan ikke hente element: Maildir-mappen \"%1\" er ikke gyldig."
 
-#: maildirresource.cpp:269
+#: maildirresource.cpp:271
 #, kde-format
 msgid "Error: Unsupported type."
 msgstr "Fejl: Ikke-understøttet type."
 
-#: maildirresource.cpp:335
+#: maildirresource.cpp:337
 #, kde-format
 msgid "Failed to change the flags for the mail. %1"
 msgstr "Kunne ikke ændre flag for e-mailen. %1"
 
-#: maildirresource.cpp:370
+#: maildirresource.cpp:372
 #, kde-format
 msgid "Maildir resource got a non-mail content."
 msgstr "Maildir-ressourcen fik indhold som ikke er mails."
 
-#: maildirresource.cpp:397
+#: maildirresource.cpp:399
 #, kde-format
 msgid "Source folder is invalid: '%1'."
 msgstr "Kildemappen er ugyldig: \"%1\"."
 
-#: maildirresource.cpp:403
+#: maildirresource.cpp:405
 #, kde-format
 msgid "Destination folder is invalid: '%1'."
 msgstr "Destinationsmappen er ugyldig: \"%1\"."
 
-#: maildirresource.cpp:420
+#: maildirresource.cpp:422
 #, kde-format
 msgid "Could not move message '%1' from '%2' to '%3'. The error was %4."
 msgstr "Kunne ikke flytte brevet \"%1\" fra \"%2\" til \"%3\". Fejlen var %4."
 
-#: maildirresource.cpp:442
+#: maildirresource.cpp:444
 #, kde-format
 msgid "Failed to delete message: %1"
 msgstr "Kunne ikke slette beskeden %1"
 
-#: maildirresource.cpp:531
+#: maildirresource.cpp:533
 #, kde-format
 msgid "Maildir '%1' for collection '%2' is invalid."
 msgstr "Maildir \"%1\" for samlingen \"%2\" er ugyldig."
 
-#: maildirresource.cpp:610
+#: maildirresource.cpp:612
 #, kde-format
 msgid "Unable to rename maildir folder '%1'."
 msgstr "Kan ikke omdøbe maildir-mappen \"%1\"."
 
-#: maildirresource.cpp:631
+#: maildirresource.cpp:633
 #, kde-format
 msgid "Cannot move root maildir folder '%1'."
 msgstr "Kan ikke flytte maildir rodmappen \"%1\"."
 
-#: maildirresource.cpp:646
+#: maildirresource.cpp:648
 #, kde-format
 msgid "Unable to move maildir folder '%1' from '%2' to '%3'."
 msgstr "Kan ikke flytte maildir-mappen \"%1\" fra \"%2\" til \"%3\"."
 
-#: maildirresource.cpp:664
+#: maildirresource.cpp:666
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
 msgstr "Kan ikke slette topniveau maildir-mappe \"%1\"."
 
-#: maildirresource.cpp:673
+#: maildirresource.cpp:675
 #, kde-format
 msgid "Failed to delete sub-folder '%1'."
 msgstr "Kunne ikke slette undermappen \"%1\"."
 
-#: maildirresource.cpp:687
+#: maildirresource.cpp:689
 #, kde-format
 msgid "Unable to create maildir '%1'."
 msgstr "Kan ikke oprette maildir \"%1\"."
 
-#: maildirresource.cpp:697
+#: maildirresource.cpp:699
 #, kde-format
 msgid "No usable storage location configured."
 msgstr "Ingen brugbar lagringsplacering konfigureret."

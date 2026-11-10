@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-06 00:47+0000\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
 "PO-Revision-Date: 2024-12-24 20:39+0530\n"
 "Last-Translator: kali <shreekantkalwar@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -40,8 +40,8 @@ msgstr "[पुटं उद्घाटयतु] ।"
 msgid "[Show Mail]"
 msgstr "[मेलं दर्शयतु] ।"
 
-#: newmailnotificationhistorywidget.cpp:25
-#: newmailnotifiersettingswidget.cpp:111
+#: newmailnotificationhistorywidget.cpp:23
+#: newmailnotifiersettingswidget.cpp:112
 #, kde-format
 msgctxt "@option:check"
 msgid "Enabled"
@@ -97,7 +97,7 @@ msgctxt "@action:button"
 msgid "&Unselect All"
 msgstr "&सर्वं अचयनं कुर्वन्तु"
 
-#: newmailnotifiersettingswidget.cpp:31
+#: newmailnotifiersettingswidget.cpp:32
 #, c-format
 msgid ""
 "<qt><p>Here you can define message. You can use:</p><ul><li>%s set subject</"
@@ -106,97 +106,97 @@ msgstr ""
 "<qt><p>अत्र भवन्तः सन्देशं परिभाषितुं शक्नुवन्ति । भवान् उपयोक्तुं शक्नोति:</p><ul><li> %s "
 "सेट् विषयः</li><li> %f सेट् तः</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:52
+#: newmailnotifiersettingswidget.cpp:53
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "के क्षेत्राणि दर्शयितव्यानि इति चिनोतु:"
 
-#: newmailnotifiersettingswidget.cpp:57
+#: newmailnotifiersettingswidget.cpp:58
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Photo"
 msgstr "फोटो दर्शयतु"
 
-#: newmailnotifiersettingswidget.cpp:61
+#: newmailnotifiersettingswidget.cpp:62
 #, kde-format
 msgctxt "@option:check"
 msgid "Show From"
 msgstr "From From इति दर्शयतु"
 
-#: newmailnotifiersettingswidget.cpp:65
+#: newmailnotifiersettingswidget.cpp:66
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Subject"
 msgstr "विषयं दर्शयतु"
 
-#: newmailnotifiersettingswidget.cpp:69
+#: newmailnotifiersettingswidget.cpp:70
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Folders"
 msgstr "पुटं दर्शयतु"
 
-#: newmailnotifiersettingswidget.cpp:73
+#: newmailnotifiersettingswidget.cpp:74
 #, kde-format
 msgctxt "@option:check"
 msgid "Do not notify when email was sent by me"
 msgstr "मया कदा ईमेल प्रेषितम् इति मा सूचयन्तु"
 
-#: newmailnotifiersettingswidget.cpp:77
+#: newmailnotifiersettingswidget.cpp:78
 #, kde-format
 msgctxt "@option:check"
 msgid "Keep Persistent Notification"
 msgstr "निरन्तरं सूचनां स्थापयन्तु"
 
-#: newmailnotifiersettingswidget.cpp:81
+#: newmailnotifiersettingswidget.cpp:82
 #, kde-format
 msgctxt "@option:check"
 msgid "Show Action Buttons"
 msgstr "क्रिया बटन्स् दर्शयतु"
 
-#: newmailnotifiersettingswidget.cpp:89
+#: newmailnotifiersettingswidget.cpp:90
 #, kde-format
 msgctxt "@option:check"
 msgid "Reply Mail"
 msgstr "उत्तरं मेल"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:164
+#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:164
 #, kde-format
 msgid "Reply to Author"
 msgstr "लेखकस्य उत्तरम्"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:167
+#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:167
 #, kde-format
 msgid "Reply to All"
 msgstr "Reply to All"
 
-#: newmailnotifiersettingswidget.cpp:106
+#: newmailnotifiersettingswidget.cpp:107
 #, kde-format
 msgid "Display"
 msgstr "प्रदर्शन"
 
-#: newmailnotifiersettingswidget.cpp:115
+#: newmailnotifiersettingswidget.cpp:116
 #, kde-format
 msgctxt "@label:textbox"
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">एतत् कथं कार्यं करोति ?</a>"
 
-#: newmailnotifiersettingswidget.cpp:124
+#: newmailnotifiersettingswidget.cpp:125
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Message:"
 msgstr "सन्देशः:"
 
-#: newmailnotifiersettingswidget.cpp:136
+#: newmailnotifiersettingswidget.cpp:137
 #, kde-format
 msgid "Text to Speak"
 msgstr "Text to Speak इति"
 
-#: newmailnotifiersettingswidget.cpp:142
+#: newmailnotifiersettingswidget.cpp:143
 #, kde-format
 msgid "Notify"
 msgstr "सूचयतु"
 
-#: newmailnotifiersettingswidget.cpp:145
+#: newmailnotifiersettingswidget.cpp:146
 #, kde-format
 msgid "Folders"
 msgstr "पुटम्"
