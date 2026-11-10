@@ -135,8 +135,9 @@ void AddItemTask::onSearchDone(KJob *job)
     auto search = static_cast<KIMAP::SearchJob *>(job);
 
     qint64 uid = 0;
-    if (search->results().count() == 1) {
-        uid = search->results().at(0);
+    const auto results = search->results();
+    if (results.count() == 1) {
+        uid = results.at(0);
     }
 
     applyFoundUid(uid);
