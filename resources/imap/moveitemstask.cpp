@@ -128,7 +128,7 @@ void MoveItemsTask::startMove(KIMAP::Session *session)
         job->setUidBased(true);
         job->setSequenceSet(set);
         job->setMailBox(newMailBox);
-        connect(job, &KIMAP::Job ::result, this, &MoveItemsTask::onCopyDone);
+        connect(job, &KIMAP::Job::result, this, &MoveItemsTask::onCopyDone);
         job->start();
     }
     m_oldSet = set;
