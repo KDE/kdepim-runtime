@@ -54,3 +54,8 @@ akonadi_ews_add_ut(ewsattachment_ut)
 # The OAuth mock reimplements QAbstractOAuth and still uses Q_ENUMS, which Qt6
 # removed, so it does not compile. Not built until the port lands in the same draft
 # MR !248 as the request tests above.
+
+# The last test needs the client library and KCalendarCore only, so it is built
+# while the ones above are not.
+akonadi_ews_add_ut(ewsoccurrenceexclusions_ut)
+target_link_libraries(ewsoccurrenceexclusions_ut KF6::CalendarCore)

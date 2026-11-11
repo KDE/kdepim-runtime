@@ -34,6 +34,7 @@ set(EWSCLIENT_SRCS
     ewsmovefolderrequest.cpp
     ewsmoveitemrequest.cpp
     ewsoccurrence.cpp
+    ewsoccurrenceexclusions.cpp
     ewspoxautodiscoverrequest.cpp
     ewspropertyfield.cpp
     ewsrecurrence.cpp
@@ -78,6 +79,7 @@ set(EWSCLIENT_SRCS
     ewsmovefolderrequest.h
     ewsmoveitemrequest.h
     ewsoccurrence.h
+    ewsoccurrenceexclusions.h
     ewspoxautodiscoverrequest.h
     ewspropertyfield.h
     ewsrecurrence.h
