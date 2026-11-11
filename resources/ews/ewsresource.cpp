@@ -109,6 +109,10 @@ EwsResource::EwsResource(const QString &id)
 
     setScheduleAttributeSyncBeforeItemSync(true);
 
+    // Go offline while there is no full connectivity, e.g., on a WiFi
+    // without uplink, instead of retrying requests in a tight loop.
+    setNeedsNetwork(true);
+
     // Load the sync state
     QByteArray data = QByteArray::fromBase64(mSettings->folderSyncState().toLatin1());
     if (!data.isEmpty()) {
