@@ -13,7 +13,6 @@
 #include "ewssubscribedfoldersjob.h"
 #include "ewssubscriberequest.h"
 #include "ewsunsubscriberequest.h"
-#include <QPointer>
 #include <chrono>
 
 using namespace std::chrono_literals;
@@ -61,9 +60,15 @@ void EwsSubscriptionManager::start()
 void EwsSubscriptionManager::cancelSubscription()
 {
     if (!mSettings->eventSubscriptionId().isEmpty()) {
-        QPointer<EwsUnsubscribeRequest> req = new EwsUnsubscribeRequest(mEwsClient, this);
+        /* Send the request asynchronously and do not wait for it. This is also
+         * called from the destructor, e.g., when the resource goes offline, and
+         * a nested event loop would block there until the request finishes,
+         * which it may never do without network. If it fails, the server
+         * expires the subscription anyway. The client owns the request, as this
+         * object may be gone before the request finishes. */
+        auto req = new EwsUnsubscribeRequest(mEwsClient, &mEwsClient);
         req->setSubscriptionId(mSettings->eventSubscriptionId());
-        req->exec();
+        req->start();
         mSettings->setEventSubscriptionId(QString());
         mSettings->setEventSubscriptionWatermark(QString());
         mSettings->save();
