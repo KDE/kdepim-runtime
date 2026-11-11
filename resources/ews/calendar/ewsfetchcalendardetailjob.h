@@ -6,6 +6,9 @@
 
 #pragma once
 
+#include <QDateTime>
+#include <QHash>
+
 #include "ewsfetchitemdetailjob.h"
 
 class EwsFetchCalendarDetailJob : public EwsFetchItemDetailJob
@@ -19,4 +22,14 @@ protected:
     void processItems(const EwsGetItemRequest::Response::List &responses) override;
 private Q_SLOTS:
     void exceptionItemsFetched(KJob *job);
+
+private:
+    struct ExpectedException {
+        QDateTime originalStart;
+        QString masterUid;
+    };
+
+    // What each requested exception is expected to carry, by item id: a response
+    // is only the occurrence asked for when its RECURRENCE-ID matches.
+    QHash<QString, ExpectedException> mExpectedExceptions;
 };

@@ -6,6 +6,8 @@
 
 #include "ewsfetchcalendardetailjob.h"
 
+#include <algorithm>
+
 #include <QTimeZone>
 
 #include <KCalendarCore/Event>
@@ -14,8 +16,7 @@
 
 #include "ewsgetitemrequest.h"
 #include "ewsitemshape.h"
-#include "ewsmailbox.h"
-#include "ewsoccurrence.h"
+#include "ewsoccurrenceexclusions.h"
 #include "ewsresource_debug.h"
 
 using namespace Akonadi;
@@ -82,82 +83,94 @@ EwsFetchCalendarDetailJob::~EwsFetchCalendarDetailJob() = default;
 
 void EwsFetchCalendarDetailJob::processItems(const EwsGetItemRequest::Response::List &responses)
 {
-    Item::List::iterator it = mChangedItems.begin();
     KCalendarCore::ICalFormat format;
 
     EwsId::List addItems;
 
     for (const EwsGetItemRequest::Response &resp : responses) {
-        Item &item = *it;
-
         if (!resp.isSuccess()) {
-            qCWarningNC(EWSRES_LOG) << QStringLiteral("Failed to fetch item %1").arg(item.remoteId());
+            qCWarningNC(EWSRES_LOG) << QStringLiteral("Failed to fetch item: %1 (%2)").arg(resp.responseMessage(), resp.responseCode());
             continue;
         }
 
         const EwsItem &ewsItem = resp.item();
+        const EwsId remoteId = ewsItem[EwsItemFieldItemId].value<EwsId>();
+
+        // The order of the responses is not the order of the request, so the item
+        // a response belongs to is looked up by its id.
+        auto itemIt = std::find_if(mChangedItems.begin(), mChangedItems.end(), [&remoteId](const Item &item) {
+            return item.remoteId() == remoteId.id();
+        });
+        if (itemIt == mChangedItems.end()) {
+            qCWarningNC(EWSRES_LOG) << QStringLiteral("Got a response for an item that was not requested: %1").arg(remoteId.id());
+            continue;
+        }
+
         const QString mimeContent = sanitizeEwsIcal(ewsItem[EwsItemFieldMimeContent].toString());
 
         KCalendarCore::Calendar::Ptr memcal(new KCalendarCore::MemoryCalendar(QTimeZone::utc()));
         format.fromString(memcal, mimeContent);
-        qCDebugNC(EWSRES_LOG) << QStringLiteral("Found %1 events").arg(memcal->events().count());
-        KCalendarCore::Incidence::Ptr incidence;
-        if (memcal->events().count() > 1) {
-            const auto memcalEvents{memcal->events()};
-            for (const KCalendarCore::Event::Ptr &event : memcalEvents) {
-                qCDebugNC(EWSRES_LOG) << QString::number(event->recurrence()->recurrenceType(), 16) << event->recurrenceId() << event->recurrenceId().isValid();
-                if (!event->recurrenceId().isValid()) {
-                    incidence = event;
-                }
-            }
-            const auto excList = ewsItem[EwsItemFieldModifiedOccurrences].value<EwsOccurrence::List>();
-            for (const EwsOccurrence &exc : excList) {
-                addItems.append(exc.itemId());
-            }
-        } else if (memcal->events().count() == 1) {
-            incidence = memcal->events()[0];
+        const auto events{memcal->events()};
+        qCDebugNC(EWSRES_LOG) << QStringLiteral("Found %1 events").arg(events.count());
+
+        EwsCalendarIncidence picked = ewsPickIncidence(memcal);
+        if (!picked.incidence) {
+            qCWarningNC(EWSRES_LOG) << QStringLiteral("Empty calendar or failed to parse it.");
+            continue;
         }
-        // KCalendarCore::Incidence::Ptr incidence(format.fromString(mimeContent));
+        if (!picked.isMaster) {
+            qCDebugNC(EWSRES_LOG)
+                << QStringLiteral("No master event in the calendar data of item %1 - storing the occurrence as it is").arg(itemIt->remoteId());
+        }
+        KCalendarCore::Incidence::Ptr incidence = picked.incidence;
 
-        if (incidence) {
-            QDateTime dt(incidence->dtStart());
+        QDateTime dt(incidence->dtStart());
+        if (dt.isValid()) {
+            incidence->setDtStart(dt);
+        }
+        if (incidence->type() == KCalendarCore::Incidence::TypeEvent) {
+            auto event = reinterpret_cast<KCalendarCore::Event *>(incidence.data());
+            dt = event->dtEnd();
             if (dt.isValid()) {
-                incidence->setDtStart(dt);
+                event->setDtEnd(dt);
             }
-            if (incidence->type() == KCalendarCore::Incidence::TypeEvent) {
-                auto event = reinterpret_cast<KCalendarCore::Event *>(incidence.data());
-                dt = event->dtEnd();
-                if (dt.isValid()) {
-                    event->setDtEnd(dt);
-                }
-            }
-            dt = incidence->recurrenceId();
-            if (dt.isValid()) {
-                incidence->setRecurrenceId(dt);
-            }
-
-            item.setPayload<KCalendarCore::Incidence::Ptr>(incidence);
+        }
+        dt = incidence->recurrenceId();
+        if (dt.isValid()) {
+            incidence->setRecurrenceId(dt);
         }
 
-        ++it;
+        // A cancelled occurrence leaves an empty slot that only the master can be
+        // stopped from generating; a moved one is delivered as an item of its own.
+        ewsPrepareForStorage(ewsItem, picked);
+
+        itemIt->setPayload<KCalendarCore::Incidence::Ptr>(incidence);
+
+        if (picked.isMaster) {
+            for (const EwsMovedOccurrence &moved : ewsMovedOccurrences(ewsItem)) {
+                mExpectedExceptions.insert(moved.itemId.id(), ExpectedException{moved.originalStart, incidence->uid()});
+                addItems.append(moved.itemId);
+            }
+        }
     }
 
     if (addItems.isEmpty()) {
         emitResult();
-    } else {
-        auto req = new EwsGetItemRequest(mClient, this);
-        EwsItemShape shape(EwsShapeIdOnly);
-        //        shape << EwsPropertyField(QStringLiteral("item:Attachments"));
-        shape << EwsPropertyField(QStringLiteral("item:Body"));
-        shape << EwsPropertyField(QStringLiteral("item:MimeContent"));
-        //        shape << EwsPropertyField(QStringLiteral("calendar:TimeZone"));
-        //        shape << EwsPropertyField(QStringLiteral("item:Culture"));
-        req->setItemShape(shape);
-
-        req->setItemIds(addItems);
-        connect(req, &KJob::result, this, &EwsFetchCalendarDetailJob::exceptionItemsFetched);
-        req->start();
+        return;
     }
+
+    auto req = new EwsGetItemRequest(mClient, this);
+    EwsItemShape shape(EwsShapeIdOnly);
+    //        shape << EwsPropertyField(QStringLiteral("item:Attachments"));
+    shape << EwsPropertyField(QStringLiteral("item:Body"));
+    shape << EwsPropertyField(QStringLiteral("item:MimeContent"));
+    //        shape << EwsPropertyField(QStringLiteral("calendar:TimeZone"));
+    //        shape << EwsPropertyField(QStringLiteral("item:Culture"));
+    req->setItemShape(shape);
+
+    req->setItemIds(addItems);
+    connect(req, &KJob::result, this, &EwsFetchCalendarDetailJob::exceptionItemsFetched);
+    req->start();
 }
 
 void EwsFetchCalendarDetailJob::exceptionItemsFetched(KJob *job)
@@ -196,11 +209,38 @@ void EwsFetchCalendarDetailJob::exceptionItemsFetched(KJob *job)
         const QString mimeContent = sanitizeEwsIcal(ewsItem[EwsItemFieldMimeContent].toString());
         KCalendarCore::Calendar::Ptr memcal(new KCalendarCore::MemoryCalendar(QTimeZone::utc()));
         format.fromString(memcal, mimeContent);
-        if (memcal->events().count() == 0) {
+        const auto events{memcal->events()};
+        if (events.isEmpty()) {
             qCWarningNC(EWSRES_LOG) << QStringLiteral("Empty calendar or failed to parse it.");
             continue;
         }
-        KCalendarCore::Incidence::Ptr incidence(memcal->events().last());
+
+        // The occurrence asked for is the event whose RECURRENCE-ID is the original
+        // start of the slot it was moved away from.
+        const ExpectedException expected = mExpectedExceptions.value(id.id());
+        KCalendarCore::Event::Ptr occurrenceEvent;
+        if (expected.originalStart.isValid()) {
+            for (const KCalendarCore::Event::Ptr &candidate : events) {
+                if (candidate->recurrenceId() == expected.originalStart) {
+                    occurrenceEvent = candidate;
+                    break;
+                }
+            }
+            if (!occurrenceEvent) {
+                qCWarningNC(EWSRES_LOG) << QStringLiteral("No occurrence of item %1 starts at %2").arg(id.id(), expected.originalStart.toString(Qt::ISODate));
+                continue;
+            }
+        } else {
+            qCWarningNC(EWSRES_LOG) << QStringLiteral("No original start known for item %1 - taking the last event of its calendar data").arg(id.id());
+            occurrenceEvent = events.last();
+        }
+
+        if (!expected.masterUid.isEmpty() && occurrenceEvent->uid() != expected.masterUid) {
+            qCWarningNC(EWSRES_LOG)
+                << QStringLiteral("Occurrence of item %1 belongs to %2 and not to the master %3").arg(id.id(), occurrenceEvent->uid(), expected.masterUid);
+        }
+
+        KCalendarCore::Incidence::Ptr incidence(occurrenceEvent);
         incidence->clearRecurrence();
 
         QDateTime dt(incidence->dtStart());
