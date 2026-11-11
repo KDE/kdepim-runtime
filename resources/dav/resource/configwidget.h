@@ -10,8 +10,8 @@
 
 #include <KDAV/Enums>
 #include <QList>
-#include <QPair>
 #include <QString>
+#include <utility>
 
 class KConfigDialogManager;
 class Settings;
@@ -53,7 +53,7 @@ private:
     Settings &mSettings;
     Ui::ConfigWidget mUi;
     KConfigDialogManager *mManager = nullptr;
-    QList<QPair<QString, KDAV::Protocol>> mAddedUrls;
-    QList<QPair<QString, KDAV::Protocol>> mRemovedUrls;
+    QList<std::pair<QString, KDAV::Protocol>> mAddedUrls;
+    QList<std::pair<QString, KDAV::Protocol>> mRemovedUrls;
     QStandardItemModel *const mModel;
 };

@@ -24,5 +24,5 @@ namespace GraphMailHandler
 /// KMime payload -> body for creating a message from MIME:
 ///   POST /me/messages  with Content-Type: text/plain and base64(MIME)
 /// Returns (rawBody, contentType).
-[[nodiscard]] QPair<QByteArray, QByteArray> createFromMime(const Akonadi::Item &item);
+[[nodiscard]] std::pair<QByteArray, QByteArray> createFromMime(const Akonadi::Item &item);
 }

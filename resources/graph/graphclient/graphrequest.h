@@ -72,7 +72,7 @@ private:
     QUrl mAbsoluteUrl;
     QByteArray mBody;
     QByteArray mContentType;
-    QList<QPair<QByteArray, QByteArray>> mHeaders;
+    QList<std::pair<QByteArray, QByteArray>> mHeaders;
     bool mUseImmutableIds = true;
 
     QJsonObject mResponseObject;

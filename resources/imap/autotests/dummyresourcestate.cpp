@@ -303,7 +303,7 @@ void DummyResourceState::collectionChangeCommitted(const Akonadi::Collection &co
 
 void DummyResourceState::tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &items)
 {
-    recordCall("tagsRetrieved", QVariant::fromValue(qMakePair(tags, items)));
+    recordCall("tagsRetrieved", QVariant::fromValue(std::make_pair(tags, items)));
 }
 
 void DummyResourceState::tagChangeCommitted(const Akonadi::Tag &tag)
@@ -374,7 +374,7 @@ void DummyResourceState::showInformationDialog(const QString &message, const QSt
     recordCall("showInformationDialog", QVariant::fromValue(message));
 }
 
-QList<QPair<QByteArray, QVariant>> DummyResourceState::calls() const
+QList<std::pair<QByteArray, QVariant>> DummyResourceState::calls() const
 {
     return m_calls;
 }
@@ -391,7 +391,7 @@ void DummyResourceState::setSeparatorCharacter(QChar separator)
 
 void DummyResourceState::recordCall(const QByteArray &callName, const QVariant &parameter)
 {
-    m_calls << QPair<QByteArray, QVariant>(callName, parameter);
+    m_calls << std::pair<QByteArray, QVariant>(callName, parameter);
 }
 
 int DummyResourceState::batchSize() const

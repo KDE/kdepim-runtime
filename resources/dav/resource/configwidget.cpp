@@ -184,7 +184,7 @@ void ConfigWidget::onAddButtonClicked()
             mSettings.newUrlConfiguration(urlConfig, Settings::StorePassword);
 
             addModelRow(dlg->protocol(), dlg->remoteUrl());
-            mAddedUrls << QPair<QString, KDAV::Protocol>(dlg->remoteUrl(), KDAV::Protocol(dlg->protocol()));
+            mAddedUrls << std::pair<QString, KDAV::Protocol>(dlg->remoteUrl(), KDAV::Protocol(dlg->protocol()));
             checkUserInput();
         }
     }
@@ -219,7 +219,7 @@ void ConfigWidget::onSearchButtonClicked()
                 mSettings.newUrlConfiguration(urlConfig, Settings::StorePassword);
 
                 addModelRow(protocol, split.at(1));
-                mAddedUrls << QPair<QString, KDAV::Protocol>(split.at(1), protocol);
+                mAddedUrls << std::pair<QString, KDAV::Protocol>(split.at(1), protocol);
                 checkUserInput();
             }
         }
@@ -238,7 +238,7 @@ void ConfigWidget::onRemoveButtonClicked()
     const auto proto = static_cast<KDAV::Protocol>(mModel->index(indexes.at(0).row(), 0).data(ProtocolRole).toInt());
     const QString url = mModel->index(indexes.at(0).row(), 1).data().toString();
 
-    mRemovedUrls << QPair<QString, KDAV::Protocol>(url, proto);
+    mRemovedUrls << std::pair<QString, KDAV::Protocol>(url, proto);
     mModel->removeRow(indexes.at(0).row());
 
     checkUserInput();
@@ -297,7 +297,7 @@ void ConfigWidget::onEditButtonClicked()
 
 void ConfigWidget::saveSettings() const
 {
-    using UrlPair = QPair<QString, KDAV::Protocol>;
+    using UrlPair = std::pair<QString, KDAV::Protocol>;
     for (const UrlPair &url : std::as_const(mRemovedUrls)) {
         mSettings.removeUrlConfiguration(url.second, url.first);
     }

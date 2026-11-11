@@ -26,7 +26,7 @@ QJsonObject flagPatchBody(const Akonadi::Item &item)
     return body;
 }
 
-QPair<QByteArray, QByteArray> createFromMime(const Akonadi::Item &item)
+std::pair<QByteArray, QByteArray> createFromMime(const Akonadi::Item &item)
 {
     if (!item.hasPayload<std::shared_ptr<KMime::Message>>()) {
         return {};

@@ -7,12 +7,12 @@
 
 #pragma once
 
-#include <QPair>
 #include <QVariant>
+#include <utility>
 
 #include "resourcestateinterface.h"
 
-using TagListAndMembers = QPair<Akonadi::Tag::List, QHash<QString, Akonadi::Item::List>>;
+using TagListAndMembers = std::pair<Akonadi::Tag::List, QHash<QString, Akonadi::Item::List>>;
 
 class DummyResourceState : public ResourceStateInterface
 {
@@ -128,7 +128,7 @@ public:
 
     MessageHelper::Ptr messageHelper() const override;
 
-    QList<QPair<QByteArray, QVariant>> calls() const;
+    QList<std::pair<QByteArray, QVariant>> calls() const;
 
 private:
     void recordCall(const QByteArray &callName, const QVariant &parameter = QVariant());
@@ -161,5 +161,5 @@ private:
     QSet<Akonadi::Tag> m_addedTags;
     QSet<Akonadi::Tag> m_removedTags;
 
-    QList<QPair<QByteArray, QVariant>> m_calls;
+    QList<std::pair<QByteArray, QVariant>> m_calls;
 };

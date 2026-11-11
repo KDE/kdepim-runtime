@@ -203,7 +203,7 @@ bool EwsRequest::readSoapBody(QXmlStreamReader &reader)
     }
     return true;
 }
-QPair<QStringView, QString> EwsRequest::parseNamespacedString(const QString &str, const QXmlStreamNamespaceDeclarations &namespaces)
+std::pair<QStringView, QString> EwsRequest::parseNamespacedString(const QString &str, const QXmlStreamNamespaceDeclarations &namespaces)
 {
     const auto tokens = str.split(u':');
     switch (tokens.count()) {
@@ -220,7 +220,7 @@ QPair<QStringView, QString> EwsRequest::parseNamespacedString(const QString &str
         return {};
     }
 }
-EwsResponseCode EwsRequest::parseEwsResponseCode(const QPair<QStringView, QString> &code)
+EwsResponseCode EwsRequest::parseEwsResponseCode(const std::pair<QStringView, QString> &code)
 
 {
     if (code.first == ewsTypeNsUri) {

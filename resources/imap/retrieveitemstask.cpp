@@ -229,7 +229,7 @@ void RetrieveItemsTask::onStatusDone(KJob *job)
     }
 
     auto status = qobject_cast<KIMAP::StatusJob *>(job);
-    const QList<QPair<QByteArray, qint64>> results = status->status();
+    const QList<std::pair<QByteArray, qint64>> results = status->status();
     for (const auto &val : results) {
         if (val.first == "UIDNEXT") {
             m_nextUid = val.second;

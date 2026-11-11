@@ -25,7 +25,7 @@ public:
     class FAKEEWSSERVER_EXPORT DialogEntry
     {
     public:
-        using HttpResponse = QPair<QString, ushort>;
+        using HttpResponse = std::pair<QString, ushort>;
         using ReplyCallback = std::function<HttpResponse(const QString &, QXmlResultItems &, const QXmlNamePool &)>;
         QString xQuery;
         ReplyCallback replyCallback;

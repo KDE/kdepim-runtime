@@ -86,8 +86,8 @@ private:
     bool readSoapBody(QXmlStreamReader &reader);
     bool readSoapFault(QXmlStreamReader &reader);
     bool readHeader(QXmlStreamReader &reader);
-    QPair<QStringView, QString> parseNamespacedString(const QString &str, const QXmlStreamNamespaceDeclarations &namespaces);
-    EwsResponseCode parseEwsResponseCode(const QPair<QStringView, QString> &code);
+    std::pair<QStringView, QString> parseNamespacedString(const QString &str, const QXmlStreamNamespaceDeclarations &namespaces);
+    EwsResponseCode parseEwsResponseCode(const std::pair<QStringView, QString> &code);
 
     QString mBody;
     EwsClient &mClient;
