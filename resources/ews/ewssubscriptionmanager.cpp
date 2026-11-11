@@ -206,7 +206,11 @@ void EwsSubscriptionManager::getEventsRequestFinished(KJob *job)
             getEvents();
         }
     } else {
-        reset();
+        /* Do not retry right away: if the server is unreachable, e.g., because
+         * there is no route, the request fails instantly and an immediate retry
+         * results in a busy loop. Let the resource reconnect with backoff, like
+         * on the other subscription errors. */
+        Q_EMIT connectionError();
     }
 }
 
