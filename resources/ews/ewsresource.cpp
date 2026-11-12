@@ -1258,9 +1258,7 @@ void EwsResource::doSetOnline(bool online)
 int EwsResource::reconnectTimeout()
 {
     int timeout = mReconnectTimeout;
-    if (mReconnectTimeout < MaxReconnectTimeout) {
-        mReconnectTimeout *= 2;
-    }
+    mReconnectTimeout = qMin(mReconnectTimeout * 2, MaxReconnectTimeout);
     return timeout;
 }
 
