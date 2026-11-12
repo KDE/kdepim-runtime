@@ -166,6 +166,8 @@ private:
 
     EwsClient mEwsClient;
     Akonadi::Collection mRootCollection;
+    // Destroying the subscription manager dereferences mSettings, which is declared below and
+    // therefore destroyed first - ~EwsResource resets this pointer explicitly to avoid that.
     QScopedPointer<EwsSubscriptionManager> mSubManager;
     QString mFolderSyncState;
     QHash<QString, EwsId::List> mItemsToCheck;
