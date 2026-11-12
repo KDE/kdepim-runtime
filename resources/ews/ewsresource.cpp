@@ -132,7 +132,13 @@ EwsResource::EwsResource(const QString &id)
     connect(this, &ResourceBase::nameChanged, this, &EwsResource::adjustRootCollectionName);
 }
 
-EwsResource::~EwsResource() = default;
+EwsResource::~EwsResource()
+{
+    // ~EwsSubscriptionManager() dereferences mSettings through cancelSubscription(), so the
+    // manager has to be gone before the members declared after it (mSettings among them) are
+    // destroyed.
+    mSubManager.reset();
+}
 
 void EwsResource::delayedInit()
 {
