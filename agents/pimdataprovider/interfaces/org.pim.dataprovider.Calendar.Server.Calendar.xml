@@ -1,0 +1,30 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+        "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+    <interface name="org.pim.dataprovider.Calendar.Server.Calendar">
+        <property name="id" type="s" access="read"/>
+        <property name="name" type="s" access="read"/>
+        <property name="color" type="s" access="read"/>
+        <method name="getEvent">
+            <arg name="itemId" type="s" direction="in"/>
+            <arg name="events" type="as" direction="out"/>
+        </method>
+        <method name="getEvents">
+            <arg name="events" type="as" direction="out"/>
+        </method>
+        <method name="getEventsRange">
+            <arg name="startTime" type="t" direction="in"/>
+            <arg name="endTime" type="t" direction="in"/>
+            <arg name="events" type="as" direction="out"/>
+        </method>
+        <signal name="eventAdded">
+            <arg name="icalEvent" type="s" direction="out"/>
+        </signal>
+        <signal name="eventDeleted">
+            <arg name="icalEvent" type="s" direction="out"/>
+        </signal>
+        <signal name="eventChanged">
+            <arg name="icalEvent" type="s" direction="out"/>
+        </signal>
+    </interface>
+</node>

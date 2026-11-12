@@ -2,36 +2,46 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_pimdataprovider_agent\")
 
 kde_enable_exceptions()
 
-add_executable(akonadi_pimdataprovider_agent)
+add_executable(akonadi_pimdataprovider_agent pimdataprovider_types.h)
+
+qt_add_dbus_adaptor(pimdataprovideragent_SRCS
+        interfaces/org.pim.dataprovider.Calendar.Management.xml
+        pimdataprovideragent.h
+        Akonadi::PimDataProviderAgent
+)
+
+qt_add_dbus_adaptor(pimdataprovideragent_SRCS
+        interfaces/org.pim.dataprovider.Calendar.Server.xml
+        pimdataproviderserver.h
+        Akonadi::PimDataProviderServer
+)
+
+qt_add_dbus_adaptor(pimdataprovideragent_SRCS
+        interfaces/org.pim.dataprovider.Calendar.Server.Calendar.xml
+        pimdataprovidercalendar.h
+        Akonadi::PimDataProviderCalendar
+)
 
 target_sources(
     akonadi_pimdataprovider_agent
     PRIVATE
         pimdataprovideragent.cpp
         pimdataprovideragent.h
+        pimdataproviderserver.cpp
+        pimdataproviderserver.h
+        pimdataprovidercalendar.cpp
+        pimdataprovidercalendar.h
+        ${pimdataprovideragent_SRCS}
 )
-
-if(COMPILE_WITH_UNITY_CMAKE_SUPPORT)
-    set_target_properties(
-        akonadi_pimdataprovider_agent
-        PROPERTIES
-            UNITY_BUILD
-                ON
-    )
-endif()
-
-if(APPLE)
-    embed_info_plist(
-        akonadi_pimdataprovider_agent
-        "org.kde.Akonadi.PimDataProvider"
-        "KDE Akonadi PimDataProvider Agent"
-    )
-endif()
 
 target_link_libraries(
     akonadi_pimdataprovider_agent
     KPim6::AkonadiAgentBase
+    KPim6::AkonadiAgentWidgetBase
     KPim6::AkonadiCore
+    KPim6::AkonadiCalendar
+    KF6::CalendarCore
+    Qt6::DBus
 )
 
 install(

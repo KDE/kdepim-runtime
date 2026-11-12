@@ -1,0 +1,25 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+        "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+    <interface name="org.pim.dataprovider.Calendar.Server">
+        <property name="id" type="s" access="read"/>
+        <method name="getCalendars">
+            <arg name="calendars" type="aa{sv}" direction="out"/>
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QList&lt;QVariantMap&gt;"/>
+        </method>
+        <signal name="calendarCreated">
+            <arg name="calendarId" type="s" direction="out"/>
+            <arg name="calendar" type="a{sv}" direction="out"/>
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="PimDataProviderItem"/>
+        </signal>
+        <signal name="calendarChanged">
+            <arg name="calendarId" type="s" direction="out"/>
+            <arg name="calendar" type="a{sv}" direction="out"/>
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="PimDataProviderItem"/>
+        </signal>
+        <signal name="calendarDeleted">
+            <arg name="serverId" type="s" direction="out"/>
+            <arg name="calendarId" type="s" direction="out"/>
+        </signal>
+    </interface>
+</node>
