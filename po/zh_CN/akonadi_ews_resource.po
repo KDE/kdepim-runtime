@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-17 00:44+0000\n"
+"POT-Creation-Date: 2026-11-13 03:40+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -660,8 +660,8 @@ msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
 msgstr "未能处理项目检索请求"
 
-#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
-#: ewsresource.cpp:529
+#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:343 ewsresource.cpp:348
+#: ewsresource.cpp:539
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
@@ -766,305 +766,305 @@ msgstr "连接到 Exchange"
 msgid "Connecting to Microsoft Exchange server…"
 msgstr "正在连接到 Microsoft Exchange 服务器..."
 
-#: ewsresource.cpp:143
+#: ewsresource.cpp:153
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
 msgstr "连接到 Exchange 服务器"
 
-#: ewsresource.cpp:161 ewsresource.cpp:168 ewsresource.cpp:175
-#: ewsresource.cpp:313
+#: ewsresource.cpp:171 ewsresource.cpp:178 ewsresource.cpp:185
+#: ewsresource.cpp:323
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
 msgstr "无法连接到 Exchange 服务器"
 
-#: ewsresource.cpp:253
+#: ewsresource.cpp:263
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
 msgstr "根文件夹 ID 未知。"
 
-#: ewsresource.cpp:257
+#: ewsresource.cpp:267
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
 msgstr "正在检索集合树"
 
-#: ewsresource.cpp:406
+#: ewsresource.cpp:416
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
 msgstr "正在获取项目"
 
-#: ewsresource.cpp:428 ewsresource.cpp:514
+#: ewsresource.cpp:438 ewsresource.cpp:524
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
 msgstr "无法检索项目：内部错误"
 
-#: ewsresource.cpp:462
+#: ewsresource.cpp:472
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
 msgstr "无法检索文件夹：内部错误"
 
-#: ewsresource.cpp:468
+#: ewsresource.cpp:478
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
 msgstr "无法处理文件夹检索请求"
 
-#: ewsresource.cpp:485
+#: ewsresource.cpp:495
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
 msgstr "无效的增量文件夹检索请求作业对象"
 
-#: ewsresource.cpp:548
+#: ewsresource.cpp:558
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
 msgstr "不支持更改的项类型"
 
-#: ewsresource.cpp:561
+#: ewsresource.cpp:571
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
 msgstr "正在更新项目标志"
 
-#: ewsresource.cpp:573
+#: ewsresource.cpp:583
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
 msgstr "无法处理项标志更新请求"
 
-#: ewsresource.cpp:580
+#: ewsresource.cpp:590
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
 msgstr "更新项标志失败：内部错误"
 
-#: ewsresource.cpp:594
+#: ewsresource.cpp:604
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
 msgstr "未能处理项目更新请求"
 
-#: ewsresource.cpp:601
+#: ewsresource.cpp:611
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
 msgstr "未能更新项目：内部错误"
 
-#: ewsresource.cpp:636
+#: ewsresource.cpp:646
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
 msgstr "未能处理项移动请求"
 
-#: ewsresource.cpp:643
+#: ewsresource.cpp:653
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
 msgstr "无法移动项目：内部错误"
 
-#: ewsresource.cpp:650
+#: ewsresource.cpp:660
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
 msgstr "无法移动项 - 从服务器接收的响应数无效"
 
-#: ewsresource.cpp:743
+#: ewsresource.cpp:753
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
 msgstr "未能处理项删除请求"
 
-#: ewsresource.cpp:750
+#: ewsresource.cpp:760
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
 msgstr "未能删除项目 - 内部错误"
 
-#: ewsresource.cpp:757
+#: ewsresource.cpp:767
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
 msgstr "未能删除项目 - 从服务器收到的响应数无效"
 
-#: ewsresource.cpp:802 ewsresource.cpp:1015
+#: ewsresource.cpp:812 ewsresource.cpp:1025
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
 msgstr "不支持的创建项类型"
 
-#: ewsresource.cpp:813
+#: ewsresource.cpp:823
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
 msgstr "未能处理项创建请求"
 
-#: ewsresource.cpp:819
+#: ewsresource.cpp:829
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
 msgstr "未能创建项目 - 内部错误"
 
-#: ewsresource.cpp:840
+#: ewsresource.cpp:850
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr "未能添加集合 - 无法确定 EWS 文件夹类型"
 
-#: ewsresource.cpp:859
+#: ewsresource.cpp:869
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
 msgstr "未能处理文件夹创建请求"
 
-#: ewsresource.cpp:865
+#: ewsresource.cpp:875
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
 msgstr "未能创建文件夹 - 内部错误"
 
-#: ewsresource.cpp:877
+#: ewsresource.cpp:887
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
 msgstr "无法创建文件夹"
 
-#: ewsresource.cpp:900
+#: ewsresource.cpp:910
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
 msgstr "未能处理文件夹移动请求"
 
-#: ewsresource.cpp:906
+#: ewsresource.cpp:916
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
 msgstr "无法移动文件夹 - 内部错误"
 
-#: ewsresource.cpp:912
+#: ewsresource.cpp:922
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
 msgstr "无法移动文件夹 - 从服务器收到的响应数无效"
 
-#: ewsresource.cpp:923
+#: ewsresource.cpp:933
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
 msgstr "无法移动文件夹"
 
-#: ewsresource.cpp:951
+#: ewsresource.cpp:961
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
 msgstr "未能处理文件夹更新请求"
 
-#: ewsresource.cpp:957
+#: ewsresource.cpp:967
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
 msgstr "未能更新文件夹 - 内部错误"
 
-#: ewsresource.cpp:963
+#: ewsresource.cpp:973
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
 msgstr "未能更新文件夹 - 从服务器收到的响应数无效"
 
-#: ewsresource.cpp:974
+#: ewsresource.cpp:984
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
 msgstr "未能更新文件夹"
 
-#: ewsresource.cpp:991
+#: ewsresource.cpp:1001
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
 msgstr "未能处理文件夹删除请求"
 
-#: ewsresource.cpp:997
+#: ewsresource.cpp:1007
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
 msgstr "未能删除文件夹 - 内部错误"
 
-#: ewsresource.cpp:1005
+#: ewsresource.cpp:1015
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
 msgstr "未能删除文件夹"
 
-#: ewsresource.cpp:1029 ewsresource.cpp:1063
+#: ewsresource.cpp:1039 ewsresource.cpp:1073
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
 msgstr "未能处理项目发送请求"
 
-#: ewsresource.cpp:1035 ewsresource.cpp:1069
+#: ewsresource.cpp:1045 ewsresource.cpp:1079
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
 msgstr "未能发送项目 - 内部错误"
 
-#: ewsresource.cpp:1074
+#: ewsresource.cpp:1084
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "从服务器收到的响应数无效"
 
-#: ewsresource.cpp:1268
+#: ewsresource.cpp:1276
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "正在更新项目标签"
 
-#: ewsresource.cpp:1281
+#: ewsresource.cpp:1289
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr "未能处理项标签更新请求"
 
-#: ewsresource.cpp:1287
+#: ewsresource.cpp:1295
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "未能更新项目标签 - 内部错误"
 
-#: ewsresource.cpp:1324
+#: ewsresource.cpp:1332
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr "未能处理全局项标签更新请求"
 
-#: ewsresource.cpp:1340
+#: ewsresource.cpp:1348
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "无法处理全局标签检索请求"
 
-#: ewsresource.cpp:1418
+#: ewsresource.cpp:1426
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "验证"
 
-#: ewsresource.cpp:1430 ewsresource.cpp:1445
+#: ewsresource.cpp:1438 ewsresource.cpp:1453
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "验证失败"
 
-#: ewsresource.cpp:1453
+#: ewsresource.cpp:1461
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"

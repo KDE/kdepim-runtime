@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-17 00:44+0000\n"
+"POT-Creation-Date: 2026-11-13 03:40+0000\n"
 "PO-Revision-Date: 2025-05-01 12:42+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -709,8 +709,8 @@ msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
 msgstr "Не вдалося виконати запит щодо отримання записів"
 
-#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
-#: ewsresource.cpp:529
+#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:343 ewsresource.cpp:348
+#: ewsresource.cpp:539
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
@@ -817,110 +817,110 @@ msgstr "Встановлюємо з'єднання з Exchange"
 msgid "Connecting to Microsoft Exchange server…"
 msgstr "Встановлюємо з'єднання із сервером Microsoft Exchange…"
 
-#: ewsresource.cpp:143
+#: ewsresource.cpp:153
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
 msgstr "Встановлюємо з'єднання із сервером Exchange"
 
-#: ewsresource.cpp:161 ewsresource.cpp:168 ewsresource.cpp:175
-#: ewsresource.cpp:313
+#: ewsresource.cpp:171 ewsresource.cpp:178 ewsresource.cpp:185
+#: ewsresource.cpp:323
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
 msgstr "Не вдалося встановити з'єднання із сервером Exchange"
 
-#: ewsresource.cpp:253
+#: ewsresource.cpp:263
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
 msgstr "Невідомий ідентифікатор кореневої теки."
 
-#: ewsresource.cpp:257
+#: ewsresource.cpp:267
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
 msgstr "Отримання ієрархії збірки"
 
-#: ewsresource.cpp:406
+#: ewsresource.cpp:416
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
 msgstr "Отримання записів"
 
-#: ewsresource.cpp:428 ewsresource.cpp:514
+#: ewsresource.cpp:438 ewsresource.cpp:524
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
 msgstr "Не вдалося отримати записи — внутрішня помилка"
 
-#: ewsresource.cpp:462
+#: ewsresource.cpp:472
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
 msgstr "Не вдалося отримати теки — внутрішня помилка"
 
-#: ewsresource.cpp:468
+#: ewsresource.cpp:478
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
 msgstr "Не вдалося виконати запит щодо отримання тек"
 
-#: ewsresource.cpp:485
+#: ewsresource.cpp:495
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
 msgstr "Некоректний об'єкт завдання щодо запиту ієрархічних тек"
 
-#: ewsresource.cpp:548
+#: ewsresource.cpp:558
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
 msgstr "Не передбачено підтримки обміну таким типом записів"
 
-#: ewsresource.cpp:561
+#: ewsresource.cpp:571
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
 msgstr "Оновлюємо прапорців записів"
 
-#: ewsresource.cpp:573
+#: ewsresource.cpp:583
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
 msgstr "Не вдалося обробити запит щодо оновлення прапорців записів"
 
-#: ewsresource.cpp:580
+#: ewsresource.cpp:590
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
 msgstr "Не вдалося оновити прапорці записів — внутрішня помилка"
 
-#: ewsresource.cpp:594
+#: ewsresource.cpp:604
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
 msgstr "Не вдалося обробити запит щодо оновлення записів"
 
-#: ewsresource.cpp:601
+#: ewsresource.cpp:611
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
 msgstr "Не вдалося оновити запис — внутрішня помилка"
 
-#: ewsresource.cpp:636
+#: ewsresource.cpp:646
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
 msgstr "Не вдалося обробити запит щодо пересування запису"
 
-#: ewsresource.cpp:643
+#: ewsresource.cpp:653
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
 msgstr "Не вдалося пересунути запис — внутрішня помилка"
 
-#: ewsresource.cpp:650
+#: ewsresource.cpp:660
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
@@ -928,19 +928,19 @@ msgstr ""
 "Не вдалося пересунути запис — від сервера отримано некоректну кількість "
 "відповідей"
 
-#: ewsresource.cpp:743
+#: ewsresource.cpp:753
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
 msgstr "Не вдалося обробити запит щодо вилучення запису"
 
-#: ewsresource.cpp:750
+#: ewsresource.cpp:760
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
 msgstr "Не вдалося вилучити запис — внутрішня помилка"
 
-#: ewsresource.cpp:757
+#: ewsresource.cpp:767
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -949,61 +949,61 @@ msgstr ""
 "Не вдалося вилучити запис — від сервера отримано некоректну кількість "
 "відповідей"
 
-#: ewsresource.cpp:802 ewsresource.cpp:1015
+#: ewsresource.cpp:812 ewsresource.cpp:1025
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
 msgstr "Не передбачено підтримки створення запису такого типу"
 
-#: ewsresource.cpp:813
+#: ewsresource.cpp:823
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
 msgstr "Не вдалося обробити запит щодо створення запису"
 
-#: ewsresource.cpp:819
+#: ewsresource.cpp:829
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
 msgstr "Не вдалося створити запис — внутрішня помилка"
 
-#: ewsresource.cpp:840
+#: ewsresource.cpp:850
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr "Не вдалося додати збірку — не вдалося визначити тип теки EWS"
 
-#: ewsresource.cpp:859
+#: ewsresource.cpp:869
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
 msgstr "Не вдалося обробити запит щодо створення теки"
 
-#: ewsresource.cpp:865
+#: ewsresource.cpp:875
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
 msgstr "Не вдалося створити теку — внутрішня помилка"
 
-#: ewsresource.cpp:877
+#: ewsresource.cpp:887
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
 msgstr "Не вдалося створити теку"
 
-#: ewsresource.cpp:900
+#: ewsresource.cpp:910
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
 msgstr "Не вдалося обробити запит щодо пересування теки"
 
-#: ewsresource.cpp:906
+#: ewsresource.cpp:916
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
 msgstr "Не вдалося пересунути теку — внутрішня помилка"
 
-#: ewsresource.cpp:912
+#: ewsresource.cpp:922
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -1012,25 +1012,25 @@ msgstr ""
 "Не вдалося пересунути теку — від сервера отримано некоректну кількість "
 "відповідей"
 
-#: ewsresource.cpp:923
+#: ewsresource.cpp:933
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
 msgstr "Не вдалося пересунути теку"
 
-#: ewsresource.cpp:951
+#: ewsresource.cpp:961
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
 msgstr "Не вдалося обробити запис щодо оновлення теки"
 
-#: ewsresource.cpp:957
+#: ewsresource.cpp:967
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
 msgstr "Не вдалося оновити теку — внутрішня помилка"
 
-#: ewsresource.cpp:963
+#: ewsresource.cpp:973
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -1039,91 +1039,91 @@ msgstr ""
 "Не вдалося оновити теку — від сервера отримано некоректну кількість "
 "відповідей"
 
-#: ewsresource.cpp:974
+#: ewsresource.cpp:984
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
 msgstr "Не вдалося оновити теку"
 
-#: ewsresource.cpp:991
+#: ewsresource.cpp:1001
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
 msgstr "Не вдалося обробити запит щодо вилучення теки"
 
-#: ewsresource.cpp:997
+#: ewsresource.cpp:1007
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
 msgstr "Не вдалося вилучити теку — внутрішня помилка"
 
-#: ewsresource.cpp:1005
+#: ewsresource.cpp:1015
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
 msgstr "Не вдалося вилучити теку"
 
-#: ewsresource.cpp:1029 ewsresource.cpp:1063
+#: ewsresource.cpp:1039 ewsresource.cpp:1073
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
 msgstr "Не вдалося обробити запит щодо надсилання запису"
 
-#: ewsresource.cpp:1035 ewsresource.cpp:1069
+#: ewsresource.cpp:1045 ewsresource.cpp:1079
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
 msgstr "Не вдалося надіслати запис — внутрішня помилка"
 
-#: ewsresource.cpp:1074
+#: ewsresource.cpp:1084
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "Від сервера отримано некоректну кількість відповідей"
 
-#: ewsresource.cpp:1268
+#: ewsresource.cpp:1276
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "Оновлюємо мітки записів"
 
-#: ewsresource.cpp:1281
+#: ewsresource.cpp:1289
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr "Не вдалося обробити запит щодо оновлення міток запису"
 
-#: ewsresource.cpp:1287
+#: ewsresource.cpp:1295
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "Не вдалося оновити мітки запису — внутрішня помилка"
 
-#: ewsresource.cpp:1324
+#: ewsresource.cpp:1332
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr "Не вдалося обробити запит щодо загального оновлення міток"
 
-#: ewsresource.cpp:1340
+#: ewsresource.cpp:1348
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Не вдалося виконати запит щодо загального отримання міток"
 
-#: ewsresource.cpp:1418
+#: ewsresource.cpp:1426
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Пройти розпізнавання"
 
-#: ewsresource.cpp:1430 ewsresource.cpp:1445
+#: ewsresource.cpp:1438 ewsresource.cpp:1453
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Не вдалося пройти розпізнавання"
 
-#: ewsresource.cpp:1453
+#: ewsresource.cpp:1461
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"

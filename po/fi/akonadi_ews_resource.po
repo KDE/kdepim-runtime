@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-17 00:44+0000\n"
+"POT-Creation-Date: 2026-11-13 03:40+0000\n"
 "PO-Revision-Date: 2025-05-25 16:30+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -686,8 +686,8 @@ msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
 msgstr "Tietueiden noutopyynnön käsittely epäonnistui"
 
-#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
-#: ewsresource.cpp:529
+#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:343 ewsresource.cpp:348
+#: ewsresource.cpp:539
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
@@ -792,110 +792,110 @@ msgstr "Yhdistetään Exchangeen"
 msgid "Connecting to Microsoft Exchange server…"
 msgstr "Yhdistetään Microsoft Exchange -palvelimeen…"
 
-#: ewsresource.cpp:143
+#: ewsresource.cpp:153
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
 msgstr "Yhdistetään Exchange-palvelimeen"
 
-#: ewsresource.cpp:161 ewsresource.cpp:168 ewsresource.cpp:175
-#: ewsresource.cpp:313
+#: ewsresource.cpp:171 ewsresource.cpp:178 ewsresource.cpp:185
+#: ewsresource.cpp:323
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
 msgstr "Yhdistäminen Exchange-palvelimeen ei onnistu"
 
-#: ewsresource.cpp:253
+#: ewsresource.cpp:263
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
 msgstr "Juurikansion tunnistetta ei tiedetä."
 
-#: ewsresource.cpp:257
+#: ewsresource.cpp:267
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
 msgstr "Noudetaan kokoelmapuuta"
 
-#: ewsresource.cpp:406
+#: ewsresource.cpp:416
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
 msgstr "Noudetaan tietueita"
 
-#: ewsresource.cpp:428 ewsresource.cpp:514
+#: ewsresource.cpp:438 ewsresource.cpp:524
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
 msgstr "Tietueiden nouto epäonnistui: sisäinen virhe"
 
-#: ewsresource.cpp:462
+#: ewsresource.cpp:472
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
 msgstr "Kansioiden nouto epäonnistui: sisäinen virhe"
 
-#: ewsresource.cpp:468
+#: ewsresource.cpp:478
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
 msgstr "Kansioiden noutopyynnön käsittely epäonnistui"
 
-#: ewsresource.cpp:485
+#: ewsresource.cpp:495
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
 msgstr "Virheellinen inkrementaalisten kansioiden noutopyyntötyöolio"
 
-#: ewsresource.cpp:548
+#: ewsresource.cpp:558
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
 msgstr "Tietuetyypin muuttamista ei tueta"
 
-#: ewsresource.cpp:561
+#: ewsresource.cpp:571
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
 msgstr "Päivitetään tietueen lippuja"
 
-#: ewsresource.cpp:573
+#: ewsresource.cpp:583
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
 msgstr "Tietueen lippujen päivityspyynnön käsittely epäonnistui"
 
-#: ewsresource.cpp:580
+#: ewsresource.cpp:590
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
 msgstr "Tietueen lippujen päivitys epäonnistui: sisäinen virhe"
 
-#: ewsresource.cpp:594
+#: ewsresource.cpp:604
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
 msgstr "Tietueen päivityspyynnön käsittely epäonnistui"
 
-#: ewsresource.cpp:601
+#: ewsresource.cpp:611
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
 msgstr "Tietueen päivitys epäonnistui: sisäinen virhe"
 
-#: ewsresource.cpp:636
+#: ewsresource.cpp:646
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
 msgstr "Tietueen siirtopyynnön käsittely epäonnistui"
 
-#: ewsresource.cpp:643
+#: ewsresource.cpp:653
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
 msgstr "Tietueen siirto epäonnistui: sisäinen virhe"
 
-#: ewsresource.cpp:650
+#: ewsresource.cpp:660
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
@@ -903,19 +903,19 @@ msgstr ""
 "Tietueen siirto epäonnistui: palvelimelta saapui virheellinen määrä "
 "vastauksia"
 
-#: ewsresource.cpp:743
+#: ewsresource.cpp:753
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
 msgstr "Tietueen poistopyynnön käsittely epäonnistui"
 
-#: ewsresource.cpp:750
+#: ewsresource.cpp:760
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
 msgstr "Tietueen poisto epäonnistui: sisäinen virhe"
 
-#: ewsresource.cpp:757
+#: ewsresource.cpp:767
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -924,61 +924,61 @@ msgstr ""
 "Tietueen poisto epäonnistui: palvelimelta saapui virheellinen määrä "
 "vastauksia"
 
-#: ewsresource.cpp:802 ewsresource.cpp:1015
+#: ewsresource.cpp:812 ewsresource.cpp:1025
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
 msgstr "Tietuetyypin luomista ei tueta"
 
-#: ewsresource.cpp:813
+#: ewsresource.cpp:823
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
 msgstr "Tietueen luontipyynnön käsittely epäonnistui"
 
-#: ewsresource.cpp:819
+#: ewsresource.cpp:829
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
 msgstr "Tietueen luonti epäonnistui: sisäinen virhe"
 
-#: ewsresource.cpp:840
+#: ewsresource.cpp:850
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr "Kokoelman lisäys epäonnistui: EWS-kansion tyyppiä ei saada selville"
 
-#: ewsresource.cpp:859
+#: ewsresource.cpp:869
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
 msgstr "Kansion luontipyynnön käsittely epäonnistui"
 
-#: ewsresource.cpp:865
+#: ewsresource.cpp:875
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
 msgstr "Kansion luonti epäonnistui: sisäinen virhe"
 
-#: ewsresource.cpp:877
+#: ewsresource.cpp:887
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
 msgstr "Kansion luonti epäonnistui"
 
-#: ewsresource.cpp:900
+#: ewsresource.cpp:910
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
 msgstr "Kansion siirtopyynnön käsittely epäonnistui"
 
-#: ewsresource.cpp:906
+#: ewsresource.cpp:916
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
 msgstr "Kansion siirto epäonnistui: sisäinen virhe"
 
-#: ewsresource.cpp:912
+#: ewsresource.cpp:922
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -986,25 +986,25 @@ msgid ""
 msgstr ""
 "Kansion siirto epäonnistui: palvelimelta saapui virheellinen määrä vastauksia"
 
-#: ewsresource.cpp:923
+#: ewsresource.cpp:933
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
 msgstr "Kansion siirto epäonnistui"
 
-#: ewsresource.cpp:951
+#: ewsresource.cpp:961
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
 msgstr "Kansion päivityspyynnön käsittely epäonnistui"
 
-#: ewsresource.cpp:957
+#: ewsresource.cpp:967
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
 msgstr "Kansion päivitys epäonnistui: sisäinen virhe"
 
-#: ewsresource.cpp:963
+#: ewsresource.cpp:973
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -1013,91 +1013,91 @@ msgstr ""
 "Kansion päivitys epäonnistui: palvelimelta saatujen vastausten määrä on "
 "virheellinen"
 
-#: ewsresource.cpp:974
+#: ewsresource.cpp:984
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
 msgstr "Kansion päivitys epäonnistui"
 
-#: ewsresource.cpp:991
+#: ewsresource.cpp:1001
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
 msgstr "Kansion poistopyynnön käsittely epäonnistui"
 
-#: ewsresource.cpp:997
+#: ewsresource.cpp:1007
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
 msgstr "Kansion poisto epäonnistui: sisäinen virhe"
 
-#: ewsresource.cpp:1005
+#: ewsresource.cpp:1015
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
 msgstr "Kansion poisto epäonnistui"
 
-#: ewsresource.cpp:1029 ewsresource.cpp:1063
+#: ewsresource.cpp:1039 ewsresource.cpp:1073
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
 msgstr "Tietueen lähetyspyynnön käsittely epäonnistui"
 
-#: ewsresource.cpp:1035 ewsresource.cpp:1069
+#: ewsresource.cpp:1045 ewsresource.cpp:1079
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
 msgstr "Tietueen lähetys epäonnistui: sisäinen virhe"
 
-#: ewsresource.cpp:1074
+#: ewsresource.cpp:1084
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "Palvelimelta saatujen vastausten määrä on virheellinen"
 
-#: ewsresource.cpp:1268
+#: ewsresource.cpp:1276
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "Päivitetään tietueen luokituksia"
 
-#: ewsresource.cpp:1281
+#: ewsresource.cpp:1289
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr "Tietueen tunnisteiden päivityspyynnön käsittely epäonnistui"
 
-#: ewsresource.cpp:1287
+#: ewsresource.cpp:1295
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "Tietueen tunnisteiden päivitys epäonnistui: sisäinen virhe"
 
-#: ewsresource.cpp:1324
+#: ewsresource.cpp:1332
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr "Yleisten tunnisteiden päivityspyynnön käsittely epäonnistui"
 
-#: ewsresource.cpp:1340
+#: ewsresource.cpp:1348
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Yleisten tunnisteiden noutopyynnön käsittely epäonnistui"
 
-#: ewsresource.cpp:1418
+#: ewsresource.cpp:1426
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Tunnistaudu"
 
-#: ewsresource.cpp:1430 ewsresource.cpp:1445
+#: ewsresource.cpp:1438 ewsresource.cpp:1453
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Tunnistautuminen epäonnistui"
 
-#: ewsresource.cpp:1453
+#: ewsresource.cpp:1461
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"

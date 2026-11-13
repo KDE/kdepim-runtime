@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-17 00:44+0000\n"
+"POT-Creation-Date: 2026-11-13 03:40+0000\n"
 "PO-Revision-Date: 2026-02-05 16:07+0100\n"
 "Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
 "Language-Team: \n"
@@ -689,8 +689,8 @@ msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
 msgstr "Nepodařilo se zpracovat požadavek na načtení položek"
 
-#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
-#: ewsresource.cpp:529
+#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:343 ewsresource.cpp:348
+#: ewsresource.cpp:539
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
@@ -796,110 +796,110 @@ msgstr "Připojování k Exchange"
 msgid "Connecting to Microsoft Exchange server…"
 msgstr "Připojování k serveru Microsoft Exchange…"
 
-#: ewsresource.cpp:143
+#: ewsresource.cpp:153
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
 msgstr "Připojení k serveru Exchange"
 
-#: ewsresource.cpp:161 ewsresource.cpp:168 ewsresource.cpp:175
-#: ewsresource.cpp:313
+#: ewsresource.cpp:171 ewsresource.cpp:178 ewsresource.cpp:185
+#: ewsresource.cpp:323
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
 msgstr "Nelze se připojit k serveru Exchange"
 
-#: ewsresource.cpp:253
+#: ewsresource.cpp:263
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
 msgstr "ID kořenové složky není známo."
 
-#: ewsresource.cpp:257
+#: ewsresource.cpp:267
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
 msgstr "Načítání stromu sbírky"
 
-#: ewsresource.cpp:406
+#: ewsresource.cpp:416
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
 msgstr "Načítání položek"
 
-#: ewsresource.cpp:428 ewsresource.cpp:514
+#: ewsresource.cpp:438 ewsresource.cpp:524
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
 msgstr "Nepodařilo se načíst položky – interní chyba"
 
-#: ewsresource.cpp:462
+#: ewsresource.cpp:472
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
 msgstr "Nepodařilo se načíst složky – interní chyba"
 
-#: ewsresource.cpp:468
+#: ewsresource.cpp:478
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
 msgstr "Nepodařilo se zpracovat požadavek na načtení složek"
 
-#: ewsresource.cpp:485
+#: ewsresource.cpp:495
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
 msgstr "Neplatný objekt úlohy pro načtení přírůstkových složek"
 
-#: ewsresource.cpp:548
+#: ewsresource.cpp:558
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
 msgstr "Typ položky není podporován pro změnu"
 
-#: ewsresource.cpp:561
+#: ewsresource.cpp:571
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
 msgstr "Aktualizace příznaku položek"
 
-#: ewsresource.cpp:573
+#: ewsresource.cpp:583
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
 msgstr "Selhání zpracování požadavku na aktualizaci příznaků položky"
 
-#: ewsresource.cpp:580
+#: ewsresource.cpp:590
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
 msgstr "Nepodařilo se aktualizovat značky položek – interní chyba"
 
-#: ewsresource.cpp:594
+#: ewsresource.cpp:604
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
 msgstr "Nepodařilo se zpracovat požadavek na aktualizaci položky"
 
-#: ewsresource.cpp:601
+#: ewsresource.cpp:611
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
 msgstr "Nepodařilo se aktualizovat položku – interní chyba"
 
-#: ewsresource.cpp:636
+#: ewsresource.cpp:646
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
 msgstr "Nepodařilo se zpracovat požadavek na přesun položky"
 
-#: ewsresource.cpp:643
+#: ewsresource.cpp:653
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
 msgstr "Nepodařilo se přesunout položku – interní chyba"
 
-#: ewsresource.cpp:650
+#: ewsresource.cpp:660
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
@@ -907,19 +907,19 @@ msgstr ""
 "Nepodařilo se přesunout položku – neplatný počet odpovědí přijatých od "
 "serveru"
 
-#: ewsresource.cpp:743
+#: ewsresource.cpp:753
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
 msgstr "Nepodařilo se zpracovat požadavek na odstranění položky"
 
-#: ewsresource.cpp:750
+#: ewsresource.cpp:760
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
 msgstr "Nepodařilo se odstranit položku – interní chyba"
 
-#: ewsresource.cpp:757
+#: ewsresource.cpp:767
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -928,61 +928,61 @@ msgstr ""
 "Nepodařilo se odstranit položku – neplatný počet odpovědí přijatých od "
 "serveru"
 
-#: ewsresource.cpp:802 ewsresource.cpp:1015
+#: ewsresource.cpp:812 ewsresource.cpp:1025
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
 msgstr "Typ položky není podporován pro vytvoření"
 
-#: ewsresource.cpp:813
+#: ewsresource.cpp:823
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
 msgstr "Nepodařilo se zpracovat požadavek na vytvoření položky"
 
-#: ewsresource.cpp:819
+#: ewsresource.cpp:829
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
 msgstr "Nepodařilo se vytvořit položku – interní chyba"
 
-#: ewsresource.cpp:840
+#: ewsresource.cpp:850
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr "Nepodařilo se přidat sbírku – nelze určit typ složky EWS"
 
-#: ewsresource.cpp:859
+#: ewsresource.cpp:869
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
 msgstr "Nepodařilo se zpracovat požadavek na vytvoření složky"
 
-#: ewsresource.cpp:865
+#: ewsresource.cpp:875
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
 msgstr "Nepodařilo se vytvořit složku – interní chyba"
 
-#: ewsresource.cpp:877
+#: ewsresource.cpp:887
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
 msgstr "Nepodařilo se vytvořit složku"
 
-#: ewsresource.cpp:900
+#: ewsresource.cpp:910
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
 msgstr "Nepodařilo se zpracovat požadavek na přesunutí složky"
 
-#: ewsresource.cpp:906
+#: ewsresource.cpp:916
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
 msgstr "Nepodařilo se přesunout složku – interní chyba"
 
-#: ewsresource.cpp:912
+#: ewsresource.cpp:922
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -990,25 +990,25 @@ msgid ""
 msgstr ""
 "Nepodařilo se přesunout složku – neplatný počet odpovědí přijatých od serveru"
 
-#: ewsresource.cpp:923
+#: ewsresource.cpp:933
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
 msgstr "Nepodařilo se přesunout složku"
 
-#: ewsresource.cpp:951
+#: ewsresource.cpp:961
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
 msgstr "Nepodařilo se zpracovat požadavek na aktualizaci složky"
 
-#: ewsresource.cpp:957
+#: ewsresource.cpp:967
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
 msgstr "Nepodařilo se aktualizovat složku – interní chyba"
 
-#: ewsresource.cpp:963
+#: ewsresource.cpp:973
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -1017,91 +1017,91 @@ msgstr ""
 "Nepodařilo se aktualizovat složku – neplatný počet odpovědí přijatých od "
 "serveru"
 
-#: ewsresource.cpp:974
+#: ewsresource.cpp:984
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
 msgstr "Nepodařilo se aktualizovat složku"
 
-#: ewsresource.cpp:991
+#: ewsresource.cpp:1001
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
 msgstr "Nepodařilo se zpracovat požadavek na odstranění složky"
 
-#: ewsresource.cpp:997
+#: ewsresource.cpp:1007
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
 msgstr "Nepodařilo se odstranit složku – interní chyba"
 
-#: ewsresource.cpp:1005
+#: ewsresource.cpp:1015
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
 msgstr "Nepodařilo se odstranit složku"
 
-#: ewsresource.cpp:1029 ewsresource.cpp:1063
+#: ewsresource.cpp:1039 ewsresource.cpp:1073
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
 msgstr "Nepodařilo se zpracovat požadavek na odeslání položky"
 
-#: ewsresource.cpp:1035 ewsresource.cpp:1069
+#: ewsresource.cpp:1045 ewsresource.cpp:1079
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
 msgstr "Nepodařilo se odeslat položku – interní chyba"
 
-#: ewsresource.cpp:1074
+#: ewsresource.cpp:1084
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "Neplatný počet odpovědí přijatých ze serveru"
 
-#: ewsresource.cpp:1268
+#: ewsresource.cpp:1276
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "Aktualizace značek položek"
 
-#: ewsresource.cpp:1281
+#: ewsresource.cpp:1289
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr "Nepodařilo se zpracovat požadavek na aktualizaci štítků položek."
 
-#: ewsresource.cpp:1287
+#: ewsresource.cpp:1295
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "Nepodařilo se aktualizovat značky položek – interní chyba"
 
-#: ewsresource.cpp:1324
+#: ewsresource.cpp:1332
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr "Nepodařilo se zpracovat požadavek na aktualizaci globální značky"
 
-#: ewsresource.cpp:1340
+#: ewsresource.cpp:1348
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Nepodařilo se zpracovat požadavek na načtení globálních značek"
 
-#: ewsresource.cpp:1418
+#: ewsresource.cpp:1426
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Ověřit"
 
-#: ewsresource.cpp:1430 ewsresource.cpp:1445
+#: ewsresource.cpp:1438 ewsresource.cpp:1453
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Ověření selhalo"
 
-#: ewsresource.cpp:1453
+#: ewsresource.cpp:1461
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"
