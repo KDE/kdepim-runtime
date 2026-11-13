@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-13 01:00+0000\n"
 "PO-Revision-Date: 2025-05-01 03:45+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -695,8 +695,8 @@ msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
 msgstr "ელემენტების მიღების მოთხოვნის დამუშავების შეცდომა"
 
-#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
-#: ewsresource.cpp:529
+#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:343 ewsresource.cpp:348
+#: ewsresource.cpp:539
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
@@ -803,111 +803,111 @@ msgstr "Exchange-სთან მიერთება"
 msgid "Connecting to Microsoft Exchange server…"
 msgstr "Microsoft Exchange-ის სერვერთან მიერთება…"
 
-#: ewsresource.cpp:143
+#: ewsresource.cpp:153
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
 msgstr "Exchange-ის სერვერთან მიერთება"
 
-#: ewsresource.cpp:161 ewsresource.cpp:168 ewsresource.cpp:175
-#: ewsresource.cpp:313
+#: ewsresource.cpp:171 ewsresource.cpp:178 ewsresource.cpp:185
+#: ewsresource.cpp:323
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
 msgstr "Exchange-ის სერვერთან მიერთების შეცდომა"
 
-#: ewsresource.cpp:253
+#: ewsresource.cpp:263
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
 msgstr "Root საქაღალდის ID უცნობია."
 
-#: ewsresource.cpp:257
+#: ewsresource.cpp:267
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
 msgstr "კოლექციის ხის მიღება"
 
-#: ewsresource.cpp:406
+#: ewsresource.cpp:416
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
 msgstr "ელემენტების მიღება"
 
-#: ewsresource.cpp:428 ewsresource.cpp:514
+#: ewsresource.cpp:438 ewsresource.cpp:524
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
 msgstr "ელემენტების მიღება შეუძლებელია - შიდა შეცდომა"
 
-#: ewsresource.cpp:462
+#: ewsresource.cpp:472
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
 msgstr "საქაღალდეების მიღება შეუძლებელია - შიდა შეცდომა"
 
-#: ewsresource.cpp:468
+#: ewsresource.cpp:478
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
 msgstr "საქაღალდეების მიღების მოთხოვნის დამუშავების შეცდომა"
 
-#: ewsresource.cpp:485
+#: ewsresource.cpp:495
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
 msgstr ""
 "არასწორი ინკრემენტული საქაღალდეების მიღების მოთხოვნის დავალების ობიექტი"
 
-#: ewsresource.cpp:548
+#: ewsresource.cpp:558
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
 msgstr "ელემენტის ტიპის შეცვლა აკრძალულია"
 
-#: ewsresource.cpp:561
+#: ewsresource.cpp:571
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
 msgstr "ელემენტის ალმების განახლება"
 
-#: ewsresource.cpp:573
+#: ewsresource.cpp:583
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
 msgstr "ელემენტის ალმების განახლების მოთხოვნის დამუშავების შეცდომა"
 
-#: ewsresource.cpp:580
+#: ewsresource.cpp:590
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
 msgstr "ელემენტის ალმების განახლების პრობლემა - შიდა შეცდომა"
 
-#: ewsresource.cpp:594
+#: ewsresource.cpp:604
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
 msgstr "ელემენტის განახლების მოთხოვნის დამუშავების შეცდომა"
 
-#: ewsresource.cpp:601
+#: ewsresource.cpp:611
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
 msgstr "ელემენტის განახლების შეცდომა - შიდა შეცდომა"
 
-#: ewsresource.cpp:636
+#: ewsresource.cpp:646
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
 msgstr "ელემენტის გადატანის მოთხოვნის დამუშავების შეცდომა"
 
-#: ewsresource.cpp:643
+#: ewsresource.cpp:653
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
 msgstr "ელემენტის გადატანის შეცდომა - შიდა შეცდომა"
 
-#: ewsresource.cpp:650
+#: ewsresource.cpp:660
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
@@ -915,19 +915,19 @@ msgstr ""
 "ელემენტის გადატანის შეცდომა - სერვერიდან მიღებული პასუხების რაოდენობა "
 "არასწორია"
 
-#: ewsresource.cpp:743
+#: ewsresource.cpp:753
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
 msgstr "ელემენტის წაშლის მოთხოვნის დამუშავების შეცდომა"
 
-#: ewsresource.cpp:750
+#: ewsresource.cpp:760
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
 msgstr "ელემენტის წაშლის მოთხოვნის შეცდომა - შიდა შეცდომა"
 
-#: ewsresource.cpp:757
+#: ewsresource.cpp:767
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -935,62 +935,62 @@ msgid ""
 msgstr ""
 "ელემენტის წაშლის შეცდომა - სერვერიდან მიღებული პასუხების რაოდენობა არასწორია"
 
-#: ewsresource.cpp:802 ewsresource.cpp:1015
+#: ewsresource.cpp:812 ewsresource.cpp:1025
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
 msgstr "ელემენტის ტიპი შექმნისთვის მხარდაჭერილი არაა"
 
-#: ewsresource.cpp:813
+#: ewsresource.cpp:823
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
 msgstr "ელემენტის შექმნის მოთხოვნის დამუშავების შეცდომა"
 
-#: ewsresource.cpp:819
+#: ewsresource.cpp:829
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
 msgstr "ელემენტის შექმნა შეუძლებელია - შიდა შეცდომა"
 
-#: ewsresource.cpp:840
+#: ewsresource.cpp:850
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr ""
 "კოლექციის დამატების შეცდომა - EWS-ის საქაღალდის ტიპის დადგენა შეუძლებელია"
 
-#: ewsresource.cpp:859
+#: ewsresource.cpp:869
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
 msgstr "საქაღალდის შექმნის მოთხოვნის დამუშავების შეცდომა"
 
-#: ewsresource.cpp:865
+#: ewsresource.cpp:875
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
 msgstr "საქაღალდის შექმნა შეუძლებელია - შიდა შეცდომა"
 
-#: ewsresource.cpp:877
+#: ewsresource.cpp:887
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
 msgstr "საქაღალდის შექმნის შეცდომა"
 
-#: ewsresource.cpp:900
+#: ewsresource.cpp:910
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
 msgstr "საქაღალდის გადატანის მოთხოვნის დამუშავების შეცდომა"
 
-#: ewsresource.cpp:906
+#: ewsresource.cpp:916
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
 msgstr "საქაღალდის გადატანა შეუძლებელია - შიდა შეცდომა"
 
-#: ewsresource.cpp:912
+#: ewsresource.cpp:922
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -999,25 +999,25 @@ msgstr ""
 "საქაღალდის გადატანის შეცდომა - სერვერიდან მიღებული პასუხების რაოდენობა "
 "არასწორია"
 
-#: ewsresource.cpp:923
+#: ewsresource.cpp:933
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
 msgstr "საქაღალდის გადატანა შეუძლებელია"
 
-#: ewsresource.cpp:951
+#: ewsresource.cpp:961
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
 msgstr "საქაღალდის განახლების მოთხოვნის დამუშავების შეცდომა"
 
-#: ewsresource.cpp:957
+#: ewsresource.cpp:967
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
 msgstr "საქაღალდის განახლება შეუძლებელია - შიდა შეცდომა"
 
-#: ewsresource.cpp:963
+#: ewsresource.cpp:973
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -1026,91 +1026,91 @@ msgstr ""
 "საქაღალდის განახლების შეცდომა - სერვერიდან მიღებული პასუხების რაოდენობა "
 "არასწორია"
 
-#: ewsresource.cpp:974
+#: ewsresource.cpp:984
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
 msgstr "საქაღალდის განახლების შეცდომა"
 
-#: ewsresource.cpp:991
+#: ewsresource.cpp:1001
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
 msgstr "საქაღალდის წაშლის მოთხოვნის დამუშავების შეცდომა"
 
-#: ewsresource.cpp:997
+#: ewsresource.cpp:1007
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
 msgstr "საქაღალდის წაშლა შეუძლებელია - შიდა შეცდომა"
 
-#: ewsresource.cpp:1005
+#: ewsresource.cpp:1015
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
 msgstr "საქაღალდის წაშლის შეცდომა"
 
-#: ewsresource.cpp:1029 ewsresource.cpp:1063
+#: ewsresource.cpp:1039 ewsresource.cpp:1073
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
 msgstr "ელემენტის გაგზავნის მოთხოვნის დამუშავების შეცდომა"
 
-#: ewsresource.cpp:1035 ewsresource.cpp:1069
+#: ewsresource.cpp:1045 ewsresource.cpp:1079
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
 msgstr "ელემენტის გაგზავნა შეუძლებელია - შიდა შეცდომა"
 
-#: ewsresource.cpp:1074
+#: ewsresource.cpp:1084
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "სერვერიდან მიღებული პასუხების რაოდენობა არასწორია"
 
-#: ewsresource.cpp:1268
+#: ewsresource.cpp:1276
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "ელემენტის ჭდეების განახლება"
 
-#: ewsresource.cpp:1281
+#: ewsresource.cpp:1289
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr "ელემენტის ჭდეების განახლების მოთხოვნის დამუშავების შეცდომა"
 
-#: ewsresource.cpp:1287
+#: ewsresource.cpp:1295
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "ელემენტის ჭდეების განახლება შეუძლებელია - შიდა შეცდომა"
 
-#: ewsresource.cpp:1324
+#: ewsresource.cpp:1332
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr "გლობალური ჭდის განახლების მოთხოვნის დამუშავების შეცდომა"
 
-#: ewsresource.cpp:1340
+#: ewsresource.cpp:1348
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "გლობალური ჭდის განახლების მიღების დამუშავების შეცდომა"
 
-#: ewsresource.cpp:1418
+#: ewsresource.cpp:1426
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "ავთენტიფიკაცია"
 
-#: ewsresource.cpp:1430 ewsresource.cpp:1445
+#: ewsresource.cpp:1438 ewsresource.cpp:1453
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "ავთენტიკაციის შეცდომა"
 
-#: ewsresource.cpp:1453
+#: ewsresource.cpp:1461
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"
