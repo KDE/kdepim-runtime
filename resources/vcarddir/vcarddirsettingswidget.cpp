@@ -66,6 +66,12 @@ void VcardDirSettingsWidget::validate()
 
 void VcardDirSettingsWidget::load()
 {
+#if HAVE_ACTIVITY_SUPPORT
+    PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
+    settings.enabled = VcardDirResourceSettings::self()->activitiesEnabled();
+    settings.activities = VcardDirResourceSettings::self()->activities();
+    mConfigureActivitiesWidget->setActivitiesSettings(settings);
+#endif
     mManager->updateWidgets();
     QTimer::singleShot(0, this, &VcardDirSettingsWidget::validate);
 }
@@ -73,6 +79,11 @@ void VcardDirSettingsWidget::load()
 bool VcardDirSettingsWidget::save() const
 {
     mManager->updateSettings();
+#if HAVE_ACTIVITY_SUPPORT
+    const PimCommonActivities::ActivitiesBaseManager::ActivitySettings activitiesSettings = mConfigureActivitiesWidget->activitiesSettings();
+    VcardDirResourceSettings::self()->setActivitiesEnabled(activitiesSettings.enabled);
+    VcardDirResourceSettings::self()->setActivities(activitiesSettings.activities);
+#endif
     VcardDirResourceSettings::self()->setPath(ui.kcfg_Path->url().toLocalFile());
     VcardDirResourceSettings::self()->save();
     return true;
