@@ -12,6 +12,7 @@
 
 #include "config-kdepim-runtime.h"
 #include "ui_popsettings.h"
+#include <Akonadi/AgentConfigurationBase>
 #include <qt6keychain/keychain.h>
 class Settings;
 #if HAVE_ACTIVITY_SUPPORT
@@ -38,6 +39,10 @@ public:
 
     void loadSettings();
     void saveSettings();
+#if HAVE_ACTIVITY_SUPPORT
+    [[nodiscard]] Akonadi::AgentConfigurationBase::ActivitySettings activitiesSettings() const;
+    void setActivitiesSettings(const Akonadi::AgentConfigurationBase::ActivitySettings &activitiesSettings);
+#endif
 
 Q_SIGNALS:
     void okEnabled(bool enabled);

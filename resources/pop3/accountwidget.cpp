@@ -171,12 +171,6 @@ void AccountWidget::loadSettings()
     slotEnableLeaveOnServerDays(leaveOnServerDaysCheck->isEnabled() ? mSettings.leaveOnServerDays() >= 1 : false);
     slotEnableLeaveOnServerCount(leaveOnServerCountCheck->isEnabled() ? mSettings.leaveOnServerCount() >= 1 : false);
     slotEnableLeaveOnServerSize(leaveOnServerSizeCheck->isEnabled() ? mSettings.leaveOnServerSize() >= 1 : false);
-#if HAVE_ACTIVITY_SUPPORT
-    PimCommonActivities::ActivitiesBaseManager::ActivitySettings activitiesSettings;
-    activitiesSettings.enabled = mSettings.activitiesEnabled();
-    activitiesSettings.activities = mSettings.activities();
-    mConfigureActivitiesWidget->setActivitiesSettings(activitiesSettings);
-#endif
 
     // We need to fetch the collection, as the CollectionRequester needs the name
     // of it to work correctly
@@ -482,11 +476,6 @@ void AccountWidget::saveSettings()
     mSettings.setLeaveOnServerCount(leaveOnServerCheck->isChecked() ? (leaveOnServerCountCheck->isChecked() ? leaveOnServerCountSpin->value() : -1) : 0);
     mSettings.setLeaveOnServerSize(leaveOnServerCheck->isChecked() ? (leaveOnServerSizeCheck->isChecked() ? leaveOnServerSizeSpin->value() : -1) : 0);
     mSettings.setTargetCollection(folderRequester->collection().id());
-#if HAVE_ACTIVITY_SUPPORT
-    const PimCommonActivities::ActivitiesBaseManager::ActivitySettings activitiesSettings = mConfigureActivitiesWidget->activitiesSettings();
-    mSettings.setActivitiesEnabled(activitiesSettings.enabled);
-    mSettings.setActivities(activitiesSettings.activities);
-#endif
     mSettings.save();
 
     // Now, either save the password or delete it from the wallet. For both, we need
@@ -542,5 +531,21 @@ void AccountWidget::localFolderRequestJobFinished(KJob *job)
         folderRequester->setCollection(targetCollection);
     }
 }
+
+#if HAVE_ACTIVITY_SUPPORT
+Akonadi::AgentConfigurationBase::ActivitySettings AccountWidget::activitiesSettings() const
+{
+    const PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings = mConfigureActivitiesWidget->activitiesSettings();
+    return {settings.enabled, settings.activities};
+}
+
+void AccountWidget::setActivitiesSettings(const Akonadi::AgentConfigurationBase::ActivitySettings &activitiesSettings)
+{
+    PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
+    settings.enabled = activitiesSettings.enabled;
+    settings.activities = activitiesSettings.activities;
+    mConfigureActivitiesWidget->setActivitiesSettings(settings);
+}
+#endif
 
 #include "moc_accountwidget.cpp"

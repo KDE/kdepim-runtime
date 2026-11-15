@@ -22,11 +22,17 @@ public:
     {
         Akonadi::AgentConfigurationBase::load();
         mWidget.loadSettings();
+#if HAVE_ACTIVITY_SUPPORT
+        mWidget.setActivitiesSettings(restoreActivitiesSettings());
+#endif
     }
 
     [[nodiscard]] bool save() const override
     {
         const_cast<ImapConfig *>(this)->mWidget.saveSettings();
+#if HAVE_ACTIVITY_SUPPORT
+        saveActivitiesSettings(mWidget.activitiesSettings());
+#endif
         return Akonadi::AgentConfigurationBase::save();
     }
 

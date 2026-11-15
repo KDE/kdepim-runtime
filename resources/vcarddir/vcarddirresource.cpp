@@ -29,8 +29,6 @@ VCardDirResource::VCardDirResource(const QString &id)
     // setup the resource
     new SettingsAdaptor(VcardDirResourceSettings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), VcardDirResourceSettings::self(), QDBusConnection::ExportAdaptors);
-    setActivitiesEnabled(VcardDirResourceSettings::self()->activitiesEnabled());
-    setActivities(VcardDirResourceSettings::self()->activities());
 
     changeRecorder()->itemFetchScope().fetchFullPayload();
     connect(this, &VCardDirResource::reloadConfiguration, this, &VCardDirResource::slotReloadConfig);
@@ -45,8 +43,6 @@ VCardDirResource::~VCardDirResource()
 void VCardDirResource::slotReloadConfig()
 {
     VcardDirResourceSettings::self()->load();
-    setActivitiesEnabled(VcardDirResourceSettings::self()->activitiesEnabled());
-    setActivities(VcardDirResourceSettings::self()->activities());
 
     initializeVCardDirectory();
     loadAddressees();

@@ -89,12 +89,6 @@ void ConfigWidget::checkPath()
 
 void ConfigWidget::load()
 {
-#if HAVE_ACTIVITY_SUPPORT
-    PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
-    settings.enabled = mSettings->activitiesEnabled();
-    settings.activities = mSettings->activities();
-    mConfigureActivitiesWidget->setActivitiesSettings(settings);
-#endif
     mFolderArchiveSettingPage->loadSettings();
     mManager = new KConfigDialogManager(this, mSettings);
     mManager->updateWidgets();
@@ -107,11 +101,6 @@ bool ConfigWidget::save() const
     QString path = ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile() : ui.kcfg_Path->url().path();
     mSettings->setPath(path);
     mSettings->setTopLevelIsContainer(mToplevelIsContainer);
-#if HAVE_ACTIVITY_SUPPORT
-    const PimCommonActivities::ActivitiesBaseManager::ActivitySettings activitiesSettings = mConfigureActivitiesWidget->activitiesSettings();
-    mSettings->setActivitiesEnabled(activitiesSettings.enabled);
-    mSettings->setActivities(activitiesSettings.activities);
-#endif
     mSettings->save();
 
     if (ui.kcfg_Path->url().isLocalFile()) {
@@ -122,5 +111,21 @@ bool ConfigWidget::save() const
     }
     return true;
 }
+
+#if HAVE_ACTIVITY_SUPPORT
+Akonadi::AgentConfigurationBase::ActivitySettings ConfigWidget::activitiesSettings() const
+{
+    const PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings = mConfigureActivitiesWidget->activitiesSettings();
+    return {settings.enabled, settings.activities};
+}
+
+void ConfigWidget::setActivitiesSettings(const Akonadi::AgentConfigurationBase::ActivitySettings &activitiesSettings)
+{
+    PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
+    settings.enabled = activitiesSettings.enabled;
+    settings.activities = activitiesSettings.activities;
+    mConfigureActivitiesWidget->setActivitiesSettings(settings);
+}
+#endif
 
 #include "moc_configwidget.cpp"

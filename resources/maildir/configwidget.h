@@ -7,6 +7,7 @@
 #pragma once
 
 #include "config-kdepim-runtime.h"
+#include <Akonadi/AgentConfigurationBase>
 #include <QWidget>
 
 #include "ui_settings.h"
@@ -31,6 +32,10 @@ public:
 
     void load();
     bool save() const;
+#if HAVE_ACTIVITY_SUPPORT
+    [[nodiscard]] Akonadi::AgentConfigurationBase::ActivitySettings activitiesSettings() const;
+    void setActivitiesSettings(const Akonadi::AgentConfigurationBase::ActivitySettings &activitiesSettings);
+#endif
 
 Q_SIGNALS:
     void okEnabled(bool enabled);

@@ -20,11 +20,17 @@ void MaildirConfig::load()
     Akonadi::AgentConfigurationBase::load();
 
     mWidget->load();
+#if HAVE_ACTIVITY_SUPPORT
+    mWidget->setActivitiesSettings(restoreActivitiesSettings());
+#endif
 }
 
 bool MaildirConfig::save() const
 {
     mWidget->save();
+#if HAVE_ACTIVITY_SUPPORT
+    saveActivitiesSettings(mWidget->activitiesSettings());
+#endif
 
     return Akonadi::AgentConfigurationBase::save();
 }
