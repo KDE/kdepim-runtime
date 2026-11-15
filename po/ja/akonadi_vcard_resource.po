@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-15 01:07+0000\n"
 "PO-Revision-Date: 2010-03-09 22:30+0900\n"
 "Last-Translator: Yukiko Bando <ybando@k6.dion.ne.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -16,16 +16,11 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: vcardconfig.cpp:22
+#: vcardconfig.cpp:15
 #, kde-format
 msgctxt "Filedialog filter for *.vcf"
 msgid "vCard Address Book File"
 msgstr "vCard アドレス帳ファイル"
-
-#: vcardconfig.cpp:24
-#, kde-format
-msgid "Activities"
-msgstr ""
 
 #: vcardresource.cpp:71
 #, kde-format

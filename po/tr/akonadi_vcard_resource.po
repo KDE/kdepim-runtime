@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-15 01:07+0000\n"
 "PO-Revision-Date: 2026-11-03 21:51+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -23,16 +23,11 @@ msgstr ""
 "X-Generator: Lokalize 26.08.0\n"
 "X-POOTLE-MTIME: 1413102276.000000\n"
 
-#: vcardconfig.cpp:22
+#: vcardconfig.cpp:15
 #, kde-format
 msgctxt "Filedialog filter for *.vcf"
 msgid "vCard Address Book File"
 msgstr "vCard Adres Defteri Dosyası"
-
-#: vcardconfig.cpp:24
-#, kde-format
-msgid "Activities"
-msgstr "Etkinlikler"
 
 #: vcardresource.cpp:71
 #, kde-format
@@ -91,3 +86,6 @@ msgstr "Aracının etkinlikler desteğinin etkinleştirilip etkinleştirilmediğ
 #, kde-format
 msgid "The activities of the agent"
 msgstr "Aracının etkinlikleri"
+
+#~ msgid "Activities"
+#~ msgstr "Etkinlikler"

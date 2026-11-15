@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-15 01:07+0000\n"
 "PO-Revision-Date: 2026-10-26 18:26+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -20,16 +20,11 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: vcardconfig.cpp:22
+#: vcardconfig.cpp:15
 #, kde-format
 msgctxt "Filedialog filter for *.vcf"
 msgid "vCard Address Book File"
 msgstr "Файл адресної книги vCard"
-
-#: vcardconfig.cpp:24
-#, kde-format
-msgid "Activities"
-msgstr "Простори дій"
 
 #: vcardresource.cpp:71
 #, kde-format
@@ -88,6 +83,9 @@ msgstr "Визначає, чи увімкнено підтримку прост�
 #, kde-format
 msgid "The activities of the agent"
 msgstr "Простори дій агента"
+
+#~ msgid "Activities"
+#~ msgstr "Простори дій"
 
 #~ msgid "Filename:"
 #~ msgstr "Назва файла:"

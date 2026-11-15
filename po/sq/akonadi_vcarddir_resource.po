@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-15 01:07+0000\n"
 "PO-Revision-Date: 2009-11-04 23:40+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Albanian <sq@li.org>\n"
@@ -89,22 +89,22 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr ""
 
-#: vcarddirresource.cpp:122
+#: vcarddirresource.cpp:126
 #, kde-format
 msgid "Contact with uid '%1' not found."
 msgstr ""
 
-#: vcarddirresource.cpp:134 vcarddirresource.cpp:173 vcarddirresource.cpp:209
+#: vcarddirresource.cpp:138 vcarddirresource.cpp:177 vcarddirresource.cpp:213
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr ""
 
-#: vcarddirresource.cpp:154
+#: vcarddirresource.cpp:158
 #, kde-format
 msgid "Impossible to write in file: '%1'"
 msgstr ""
 
-#: vcarddirresource.cpp:244
+#: vcarddirresource.cpp:248
 #, kde-format
 msgid "Contacts Folder"
 msgstr ""
@@ -126,6 +126,18 @@ msgstr "Intervali kohor për vetëruajtje (në minuta)."
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Mos i ndrysho të dhënat aktuale backend."
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: vcarddirresource.kcfg:24
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: vcarddirresource.kcfg:28
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #: vcarddirsettingswidget.cpp:41
 #, kde-format
