@@ -153,8 +153,6 @@ void ImapResource::init()
             settings()->setName(name());
         }
     }
-    setActivitiesEnabled(settings()->activitiesEnabled());
-    setActivities(settings()->activities());
     setName(settings()->name());
 }
 
@@ -711,8 +709,6 @@ void ImapResource::slotConfigurationChanged()
         clearCache();
     }
 
-    setActivitiesEnabled(settings()->activitiesEnabled());
-    setActivities(settings()->activities());
     setName(settings()->name());
 
     reconnect();

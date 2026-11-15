@@ -77,9 +77,10 @@ void IcalDirSettingsWidget::load()
 {
     mManager->updateWidgets();
 #if HAVE_ACTIVITY_SUPPORT
+    const ActivitySettings agentSettings = restoreActivitiesSettings();
     PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
-    settings.enabled = IcalDirResourceSettings::self()->activitiesEnabled();
-    settings.activities = IcalDirResourceSettings::self()->activities();
+    settings.enabled = agentSettings.enabled;
+    settings.activities = agentSettings.activities;
     mConfigureActivitiesWidget->setActivitiesSettings(settings);
 #endif
 
@@ -91,8 +92,7 @@ bool IcalDirSettingsWidget::save() const
     mManager->updateSettings();
 #if HAVE_ACTIVITY_SUPPORT
     const PimCommonActivities::ActivitiesBaseManager::ActivitySettings activitiesSettings = mConfigureActivitiesWidget->activitiesSettings();
-    IcalDirResourceSettings::self()->setActivitiesEnabled(activitiesSettings.enabled);
-    IcalDirResourceSettings::self()->setActivities(activitiesSettings.activities);
+    saveActivitiesSettings({activitiesSettings.enabled, activitiesSettings.activities});
 #endif
     IcalDirResourceSettings::self()->setPath(ui.kcfg_Path->url().toLocalFile());
     IcalDirResourceSettings::self()->save();

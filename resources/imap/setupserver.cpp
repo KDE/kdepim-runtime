@@ -358,13 +358,6 @@ void SetupServer::saveSettings()
     if (m_oldResourceName != m_ui->accountName->text() && !m_ui->accountName->text().isEmpty()) {
         m_settings.renameRootCollection(m_ui->accountName->text());
     }
-
-#if HAVE_ACTIVITY_SUPPORT
-    const PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings = mConfigureActivitiesWidget->activitiesSettings();
-    qDebug() << "write activities settings " << settings;
-    m_settings.setActivitiesEnabled(settings.enabled);
-    m_settings.setActivities(settings.activities);
-#endif
 }
 
 void SetupServer::loadSettings()
@@ -489,15 +482,6 @@ void SetupServer::sievePasswordFetched()
     } else if (sieverCustomAuth == QLatin1StringView("CustomUserPassword")) {
         m_ui->customUserPassword->setChecked(true);
     }
-
-#if HAVE_ACTIVITY_SUPPORT
-    PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
-    settings.enabled = m_settings.activitiesEnabled();
-    settings.activities = m_settings.activities();
-    qDebug() << "read activities settings " << settings;
-    // TODO fix me initialize list of activities
-    mConfigureActivitiesWidget->setActivitiesSettings(settings);
-#endif
 }
 
 void SetupServer::slotTest()
@@ -717,5 +701,21 @@ void SetupServer::slotServerChanged()
 {
     populateDefaultAuthenticationOptions(m_ui->authenticationCombo);
 }
+
+#if HAVE_ACTIVITY_SUPPORT
+Akonadi::AgentConfigurationBase::ActivitySettings SetupServer::activitiesSettings() const
+{
+    const PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings = mConfigureActivitiesWidget->activitiesSettings();
+    return {settings.enabled, settings.activities};
+}
+
+void SetupServer::setActivitiesSettings(const Akonadi::AgentConfigurationBase::ActivitySettings &activitiesSettings)
+{
+    PimCommonActivities::ActivitiesBaseManager::ActivitySettings settings;
+    settings.enabled = activitiesSettings.enabled;
+    settings.activities = activitiesSettings.activities;
+    mConfigureActivitiesWidget->setActivitiesSettings(settings);
+}
+#endif
 
 #include "moc_setupserver.cpp"

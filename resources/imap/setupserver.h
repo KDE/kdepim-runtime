@@ -11,6 +11,7 @@
 #include "config-kdepim-runtime.h"
 #include "settings.h"
 
+#include <Akonadi/AgentConfigurationBase>
 #include <Akonadi/Collection>
 #include <QWidget>
 
@@ -60,6 +61,10 @@ public:
 
     void loadSettings();
     void saveSettings();
+#if HAVE_ACTIVITY_SUPPORT
+    [[nodiscard]] Akonadi::AgentConfigurationBase::ActivitySettings activitiesSettings() const;
+    void setActivitiesSettings(const Akonadi::AgentConfigurationBase::ActivitySettings &activitiesSettings);
+#endif
 
     /**
      * Destructor
