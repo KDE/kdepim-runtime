@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-15 03:16+0000\n"
 "PO-Revision-Date: 2024-08-21 00:37+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -17,16 +17,11 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 23.08.5\n"
 
-#: vcardconfig.cpp:22
+#: vcardconfig.cpp:15
 #, kde-format
 msgctxt "Filedialog filter for *.vcf"
 msgid "vCard Address Book File"
 msgstr "vCard 주소록 파일"
-
-#: vcardconfig.cpp:24
-#, kde-format
-msgid "Activities"
-msgstr "활동"
 
 #: vcardresource.cpp:71
 #, kde-format
@@ -85,6 +80,9 @@ msgstr ""
 #, kde-format
 msgid "The activities of the agent"
 msgstr ""
+
+#~ msgid "Activities"
+#~ msgstr "활동"
 
 #~ msgid "Filename:"
 #~ msgstr "파일 이름:"

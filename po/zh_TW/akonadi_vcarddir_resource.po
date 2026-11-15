@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcarddir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-16 06:51+0000\n"
+"POT-Creation-Date: 2026-11-15 03:16+0000\n"
 "PO-Revision-Date: 2025-12-16 21:25+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -91,22 +91,22 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "自動儲存間隔："
 
-#: vcarddirresource.cpp:122
+#: vcarddirresource.cpp:126
 #, kde-format
 msgid "Contact with uid '%1' not found."
 msgstr "找不到代碼為 %1 的聯絡人。"
 
-#: vcarddirresource.cpp:134 vcarddirresource.cpp:173 vcarddirresource.cpp:209
+#: vcarddirresource.cpp:138 vcarddirresource.cpp:177 vcarddirresource.cpp:213
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "試著寫入唯讀目錄：%1"
 
-#: vcarddirresource.cpp:154
+#: vcarddirresource.cpp:158
 #, kde-format
 msgid "Impossible to write in file: '%1'"
 msgstr "無法寫入檔案：'%1'"
 
-#: vcarddirresource.cpp:244
+#: vcarddirresource.cpp:248
 #, kde-format
 msgid "Contacts Folder"
 msgstr "聯絡人資料夾"
@@ -128,6 +128,18 @@ msgstr "自動儲存間隔時間（分）。"
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "不要變更實際的後端資料。"
+
+#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
+#: vcarddirresource.kcfg:24
+#, kde-format
+msgid "Whether the activities support of the agent is enabled"
+msgstr ""
+
+#. i18n: ectx: label, entry (Activities), group (Activities)
+#: vcarddirresource.kcfg:28
+#, kde-format
+msgid "The activities of the agent"
+msgstr ""
 
 #: vcarddirsettingswidget.cpp:42
 #, kde-format

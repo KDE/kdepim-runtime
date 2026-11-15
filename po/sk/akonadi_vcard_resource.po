@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-15 03:16+0000\n"
 "PO-Revision-Date: 2014-04-02 21:27+0200\n"
 "Last-Translator: Roman Paholík <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
@@ -16,16 +16,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: vcardconfig.cpp:22
+#: vcardconfig.cpp:15
 #, kde-format
 msgctxt "Filedialog filter for *.vcf"
 msgid "vCard Address Book File"
 msgstr "Súbor adresára vCard"
-
-#: vcardconfig.cpp:24
-#, kde-format
-msgid "Activities"
-msgstr "Aktivity"
 
 #: vcardresource.cpp:71
 #, kde-format
@@ -84,6 +79,9 @@ msgstr "Či je zapnutá podpora aktivít pre agenta"
 #, kde-format
 msgid "The activities of the agent"
 msgstr "Aktivity agenta"
+
+#~ msgid "Activities"
+#~ msgstr "Aktivity"
 
 #~ msgid "Filename:"
 #~ msgstr "Názov súboru:"

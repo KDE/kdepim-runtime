@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-15 03:16+0000\n"
 "PO-Revision-Date: 2024-08-24 11:47+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
@@ -18,16 +18,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 24.05.2\n"
 
-#: vcardconfig.cpp:22
+#: vcardconfig.cpp:15
 #, kde-format
 msgctxt "Filedialog filter for *.vcf"
 msgid "vCard Address Book File"
 msgstr "vCard Address Book File"
-
-#: vcardconfig.cpp:24
-#, kde-format
-msgid "Activities"
-msgstr "Activities"
 
 #: vcardresource.cpp:71
 #, kde-format
@@ -86,6 +81,9 @@ msgstr ""
 #, kde-format
 msgid "The activities of the agent"
 msgstr ""
+
+#~ msgid "Activities"
+#~ msgstr "Activities"
 
 #~ msgid "Filename:"
 #~ msgstr "Filename:"

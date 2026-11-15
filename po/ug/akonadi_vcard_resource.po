@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-15 03:16+0000\n"
 "PO-Revision-Date: 2026-09-23 06:56+0900\n"
 "Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur <kde-i18n-doc@kde.org>\n"
@@ -18,16 +18,11 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.9\n"
 
-#: vcardconfig.cpp:22
+#: vcardconfig.cpp:15
 #, kde-format
 msgctxt "Filedialog filter for *.vcf"
 msgid "vCard Address Book File"
 msgstr "vCard ئادرېس دەپتىرى ھۆججىتى"
-
-#: vcardconfig.cpp:24
-#, kde-format
-msgid "Activities"
-msgstr "پائالىيەت"
 
 #: vcardresource.cpp:71
 #, kde-format
@@ -86,6 +81,9 @@ msgstr ""
 #, kde-format
 msgid "The activities of the agent"
 msgstr ""
+
+#~ msgid "Activities"
+#~ msgstr "پائالىيەت"
 
 #~ msgid "Select Address Book"
 #~ msgstr "ئادرېس دەپتىرى تاللاش"

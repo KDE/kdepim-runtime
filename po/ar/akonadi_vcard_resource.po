@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-15 03:16+0000\n"
 "PO-Revision-Date: 2026-10-31 18:57+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -19,16 +19,11 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Lokalize 26.08.1\n"
 
-#: vcardconfig.cpp:22
+#: vcardconfig.cpp:15
 #, kde-format
 msgctxt "Filedialog filter for *.vcf"
 msgid "vCard Address Book File"
 msgstr "ملفّ دفتر عناوين vCard."
-
-#: vcardconfig.cpp:24
-#, kde-format
-msgid "Activities"
-msgstr "الأنشطة"
 
 #: vcardresource.cpp:71
 #, kde-format
@@ -87,6 +82,9 @@ msgstr "ما إذا كان دعم أنشطة الوكيل ممكّنًا"
 #, kde-format
 msgid "The activities of the agent"
 msgstr "أنشطة الوكيل"
+
+#~ msgid "Activities"
+#~ msgstr "الأنشطة"
 
 #~ msgid "Filename:"
 #~ msgstr "اسم الملفّ:"
