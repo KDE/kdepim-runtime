@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 00:14+0000\n"
+"POT-Creation-Date: 2026-11-16 04:02+0000\n"
 "PO-Revision-Date: 2026-11-03 22:08+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -329,17 +329,11 @@ msgstr "鎖定檔"
 msgid "Number of deleted messages before a purge is started."
 msgstr "刪除的信件累積到幾封時開始整理。"
 
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: mboxresource.kcfg:64
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr "代理程式對於活動的支援是否已啟用"
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr "代理程式對於活動的支援是否已啟用"
 
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: mboxresource.kcfg:68
-#, kde-format
-msgid "The activities of the agent"
-msgstr "代理程式的活動"
+#~ msgid "The activities of the agent"
+#~ msgstr "代理程式的活動"
 
 #~ msgid "Activities"
 #~ msgstr "活動"

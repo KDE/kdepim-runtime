@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 00:14+0000\n"
+"POT-Creation-Date: 2026-11-16 04:02+0000\n"
 "PO-Revision-Date: 2026-10-26 14:08+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -341,14 +341,8 @@ msgstr "Заключващ файл"
 msgid "Number of deleted messages before a purge is started."
 msgstr "Брой на изтритите съобщения, преди да се започне прочистване."
 
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: mboxresource.kcfg:64
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr "Активиране на поддръжката на дейности от агента"
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr "Активиране на поддръжката на дейности от агента"
 
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: mboxresource.kcfg:68
-#, kde-format
-msgid "The activities of the agent"
-msgstr "Дейности на агента"
+#~ msgid "The activities of the agent"
+#~ msgstr "Дейности на агента"

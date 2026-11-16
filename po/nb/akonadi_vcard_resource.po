@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-15 03:16+0000\n"
+"POT-Creation-Date: 2026-11-16 04:02+0000\n"
 "PO-Revision-Date: 2010-08-16 16:19+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@nuug.no>\n"
@@ -69,16 +69,4 @@ msgstr ""
 #: vcardresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
-msgstr ""
-
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: vcardresource.kcfg:36
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr ""
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: vcardresource.kcfg:40
-#, kde-format
-msgid "The activities of the agent"
 msgstr ""

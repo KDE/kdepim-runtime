@@ -6,13 +6,13 @@
 # obsoleteman <tulliana@gmail.com>, 2009.
 # Volkan Gezer <volkangezer@gmail.com>, 2013, 2014, 2015.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022-2026 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-15 03:16+0000\n"
-"PO-Revision-Date: 2025-12-19 12:09+0300\n"
+"POT-Creation-Date: 2026-11-16 04:02+0000\n"
+"PO-Revision-Date: 2026-11-15 17:31+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.11.80\n"
+"X-Generator: Lokalize 26.08.2\n"
 "X-POOTLE-MTIME: 1413102277.000000\n"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
@@ -71,8 +71,8 @@ msgid ""
 "selected above. Read-only mode will be automatically enabled if you do not "
 "have write access to the directory."
 msgstr ""
-"Saltokunur kipi etkinse yukarıda seçili dizinde hiçbir değişiklik "
-"yapılmayacak. Bu dizine yazma yetkiniz yoksa saltokunur kipi kendiliğinden "
+"Saltokunur kip etkinse yukarıda seçili dizinde hiçbir değişiklik "
+"yapılmayacak. Bu dizine yazma yetkiniz yoksa saltokunur kip kendiliğinden "
 "etkinleştirilecek."
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
@@ -99,22 +99,22 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "Otomatik kaydetme aralığı:"
 
-#: vcarddirresource.cpp:126
+#: vcarddirresource.cpp:122
 #, kde-format
 msgid "Contact with uid '%1' not found."
 msgstr "Kullanıcı kimliği '%1' ile bir kişi bulunamadı."
 
-#: vcarddirresource.cpp:138 vcarddirresource.cpp:177 vcarddirresource.cpp:213
+#: vcarddirresource.cpp:134 vcarddirresource.cpp:173 vcarddirresource.cpp:209
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Saltokunur bir dizine yazılmaya çalışılıyor: '%1'"
 
-#: vcarddirresource.cpp:158
+#: vcarddirresource.cpp:154
 #, kde-format
 msgid "Impossible to write in file: '%1'"
 msgstr "Dosyaya yazma olanaksız: “%1”"
 
-#: vcarddirresource.cpp:248
+#: vcarddirresource.cpp:244
 #, kde-format
 msgid "Contacts Folder"
 msgstr "Kişiler Klasörü"
@@ -137,18 +137,6 @@ msgstr "Dakika türünden otomatik kaydetme aralığı."
 msgid "Do not change the actual backend data."
 msgstr "Güncel arka uç verilerini değiştirmeyin."
 
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: vcarddirresource.kcfg:24
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr ""
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: vcarddirresource.kcfg:28
-#, kde-format
-msgid "The activities of the agent"
-msgstr ""
-
 #: vcarddirsettingswidget.cpp:42
 #, kde-format
 msgid "%v minute"
@@ -160,3 +148,9 @@ msgstr[1] "%v dakika"
 #, kde-format
 msgid "Activities"
 msgstr "Etkinlikler"
+
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr "Aracının etkinlikler desteğinin etkinleştirilip etkinleştirilmediği"
+
+#~ msgid "The activities of the agent"
+#~ msgstr "Aracının etkinlikleri"

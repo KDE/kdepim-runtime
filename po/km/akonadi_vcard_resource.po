@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-15 03:16+0000\n"
+"POT-Creation-Date: 2026-11-16 04:02+0000\n"
 "PO-Revision-Date: 2010-11-29 09:29+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -65,18 +65,6 @@ msgstr ""
 #: vcardresource.kcfg:30
 #, kde-format
 msgid "Automatic update period in minutes."
-msgstr ""
-
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: vcardresource.kcfg:36
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr ""
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: vcardresource.kcfg:40
-#, kde-format
-msgid "The activities of the agent"
 msgstr ""
 
 #~ msgid "Select Address Book"

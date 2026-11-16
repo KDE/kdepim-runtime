@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 00:14+0000\n"
+"POT-Creation-Date: 2026-11-16 04:02+0000\n"
 "PO-Revision-Date: 2024-11-23 12:06+0000\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
@@ -82,94 +82,94 @@ msgstr ""
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr "Failed to write some ACLs for '%1' on the IMAP server. %2"
 
-#: imapresource.cpp:235
+#: imapresource.cpp:233
 #, kde-format
 msgid "No server configured yet."
 msgstr "No server configured yet."
 
-#: imapresource.cpp:255
+#: imapresource.cpp:253
 #, kde-format
 msgid "Connection established."
 msgstr "Connection established."
 
-#: imapresource.cpp:272
+#: imapresource.cpp:270
 #, kde-format
 msgid "Server is not available."
 msgstr "Server is not available."
 
-#: imapresource.cpp:323
+#: imapresource.cpp:321
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Adding item in '%1'"
 
-#: imapresource.cpp:330
+#: imapresource.cpp:328
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Updating item in '%1'"
 
-#: imapresource.cpp:337
+#: imapresource.cpp:335
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Updating items"
 
-#: imapresource.cpp:351
+#: imapresource.cpp:349
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Removing items"
 
-#: imapresource.cpp:367
+#: imapresource.cpp:365
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Moving items from '%1' to '%2'"
 
-#: imapresource.cpp:376
+#: imapresource.cpp:374
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Retrieving folders"
 
-#: imapresource.cpp:383
+#: imapresource.cpp:381
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Retrieving extra folder information for '%1'"
 
-#: imapresource.cpp:401
+#: imapresource.cpp:399
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Creating folder '%1'"
 
-#: imapresource.cpp:407
+#: imapresource.cpp:405
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Updating folder '%1'"
 
-#: imapresource.cpp:420
+#: imapresource.cpp:418
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Removing folder '%1'"
 
-#: imapresource.cpp:427
+#: imapresource.cpp:425
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Moving folder '%1' from '%2' to '%3'"
 
-#: imapresource.cpp:457
+#: imapresource.cpp:455
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "Searching…"
 
-#: imapresource.cpp:729
+#: imapresource.cpp:725
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP Account"
@@ -356,18 +356,6 @@ msgstr "Define username used from custom server sieve url"
 #, kde-format
 msgid "Defines the type of identification used by custom sieve server"
 msgstr "Defines the type of identification used by custom sieve server"
-
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: imapresource.kcfg:129
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr ""
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: imapresource.kcfg:133
-#, kde-format
-msgid "The activities of the agent"
-msgstr ""
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -809,22 +797,22 @@ msgctxt "@title:window"
 msgid "User name change"
 msgstr "User name change"
 
-#: setupserver.cpp:550
+#: setupserver.cpp:534
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Unable to connect to the server, please verify the server address."
 
-#: setupserver.cpp:562
+#: setupserver.cpp:546
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 
-#: setupserver.cpp:565
+#: setupserver.cpp:549
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 
-#: setupserver.cpp:569
+#: setupserver.cpp:553
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -833,12 +821,12 @@ msgstr ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
 
-#: setupserver.cpp:572
+#: setupserver.cpp:556
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>It is not possible to use this server.</b></qt>"
 
-#: setupserver.cpp:663
+#: setupserver.cpp:647
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"

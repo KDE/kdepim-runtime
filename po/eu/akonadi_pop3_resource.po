@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 00:14+0000\n"
+"POT-Creation-Date: 2026-11-16 04:02+0000\n"
 "PO-Revision-Date: 2024-08-17 10:16+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -43,13 +43,13 @@ msgstr ""
 msgid "POP3 Account"
 msgstr "POP3 kontua"
 
-#: accountwidget.cpp:211
+#: accountwidget.cpp:205
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Zorroa ireki ezinik"
 
-#: accountwidget.cpp:261
+#: accountwidget.cpp:255
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -62,7 +62,7 @@ msgstr ""
 "Zerbitzari batzuek beren gaitasunak behar bezala iragartzen ez dituztenez, "
 "eskuratutako mezuak zerbitzarian uztea pizteko aukera duzu oraindik."
 
-#: accountwidget.cpp:276
+#: accountwidget.cpp:270
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -86,18 +86,18 @@ msgstr ""
 "proba batzuk egin beharko zenituzke, aurrena zeure buruari posta-sorta bat\n"
 "bidaliz eta haiek zama-jaitsiz."
 
-#: accountwidget.cpp:309
+#: accountwidget.cpp:303
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Mesedez, aurrena zehartu zerbitzari bat eta ataka bat Orokorra fitxan."
 
-#: accountwidget.cpp:342
+#: accountwidget.cpp:336
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Zerbitzariarekin konektatu ezinik, mesedez egiaztatu zerbitzariaren helbidea."
 
-#: accountwidget.cpp:386
+#: accountwidget.cpp:380
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -118,7 +118,7 @@ msgstr ""
 "erabili aurretik, lehenik probatu egin behar zenuke, zeure buruari proba-"
 "mezu kopuru handia bidaliz, POP zerbitzaritik denak batera zama-jaisteko."
 
-#: accountwidget.cpp:406
+#: accountwidget.cpp:400
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -133,14 +133,14 @@ msgstr ""
 "Zerbitzari batzuek beren gaitasunak behar bezala iragartzen ez dituztenez, "
 "eskuratutako mezuak zerbitzarian uztea pizteko aukera duzu oraindik."
 
-#: accountwidget.cpp:438
+#: accountwidget.cpp:432
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " egun"
 msgstr[1] " egun"
 
-#: accountwidget.cpp:443
+#: accountwidget.cpp:437
 #, kde-format
 msgid " message"
 msgid_plural " messages"
@@ -308,80 +308,80 @@ msgid ""
 msgstr ""
 "errorea posta zama-jaisten saiatzeko POP3 zerbitzariarekin komunikatzean: %1"
 
-#: pop3resource.cpp:99
+#: pop3resource.cpp:95
 #, kde-format
 msgid "Mail check aborted."
 msgstr "Posta egiaztapena utzi da."
 
-#: pop3resource.cpp:106
+#: pop3resource.cpp:102
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "Posta egiaztapena eskuz utzi da."
 
-#: pop3resource.cpp:134
+#: pop3resource.cpp:130
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "Mesedez, sartu '%1' kontuaren erabiltzaile-izena eta pasahitza."
 
-#: pop3resource.cpp:151
+#: pop3resource.cpp:147
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "Hemen galdetzen zaizu pasahitza ezin izan delako zorrotik zamatu."
 
-#: pop3resource.cpp:168
+#: pop3resource.cpp:164
 #, kde-format
 msgid "Account:"
 msgstr "Kontua:"
 
-#: pop3resource.cpp:185
+#: pop3resource.cpp:181
 #, kde-format
 msgid "No username and password supplied."
 msgstr "Ez da erabiltzaile-izena eta pasahitza eman."
 
-#: pop3resource.cpp:204
+#: pop3resource.cpp:200
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "\"%1\"(e)tik transmisioa prestatzen."
 
-#: pop3resource.cpp:225
+#: pop3resource.cpp:221
 #, kde-format
 msgid "Executing precommand."
 msgstr "Aurre-komandoa exekutatzen."
 
-#: pop3resource.cpp:250
+#: pop3resource.cpp:246
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "Hemen galdetzen zaizu aurreko saio-hastea ez delako ondo irten."
 
-#: pop3resource.cpp:252
+#: pop3resource.cpp:248
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "Hemen galdetzen zaizu eman duzun erabiltzaile-izena hutsik dagoelako."
 
-#: pop3resource.cpp:279
+#: pop3resource.cpp:275
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "Posta-zerrenda eskuratzen."
 
-#: pop3resource.cpp:335
+#: pop3resource.cpp:331
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "Zama-jaitsitako mezuak gordetzen."
 
-#: pop3resource.cpp:353
+#: pop3resource.cpp:349
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "Pasahitza zorroan gordetzen."
 
-#: pop3resource.cpp:395
+#: pop3resource.cpp:391
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
 "Errorea sarrera-ontzi lokalaren karpeta lortzen saiatzean, posta egiaztatzea "
 "uzten."
 
-#: pop3resource.cpp:402
+#: pop3resource.cpp:398
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -392,7 +392,7 @@ msgstr ""
 "lotuta zegoen. Kontuak posta berria igortzen duen karpeta, sarrera-ontzi "
 "nagusira berrezarri da.</qt>"
 
-#: pop3resource.cpp:423
+#: pop3resource.cpp:419
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
@@ -400,35 +400,35 @@ msgstr ""
 "Errorea sarrerako postaren karpeta lortzen saiatzean, posta egiaztatzea "
 "uzten."
 
-#: pop3resource.cpp:436
+#: pop3resource.cpp:432
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr ""
 "Ezin izan du sarrerako postaren karpeta aurkitu, posta egiaztatzea uzten."
 
-#: pop3resource.cpp:447
+#: pop3resource.cpp:443
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "Errorea aurre-komandoa exekutatzean."
 
-#: pop3resource.cpp:461
+#: pop3resource.cpp:457
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr "\"%1\" zerbitzarian saio-hasi ezinik."
 
-#: pop3resource.cpp:470
+#: pop3resource.cpp:466
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "Errorea zerbitzaritik mezu-zerrenda lortu bitartean."
 
-#: pop3resource.cpp:484
+#: pop3resource.cpp:480
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr ""
 "Errorea zerbitzaritik posta identifikatzaile bakarren zerrenda lortu "
 "bitartean."
 
-#: pop3resource.cpp:497
+#: pop3resource.cpp:493
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -442,12 +442,12 @@ msgstr ""
 "era fidagarrian zehazteko.;\n"
 "beraz, postak zerbitzarian uzteko ezaugarria ez da ondo ibiliko."
 
-#: pop3resource.cpp:512
+#: pop3resource.cpp:508
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "Errorea zerbitzaritik mezuak eskuratzean."
 
-#: pop3resource.cpp:572
+#: pop3resource.cpp:568
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
@@ -455,56 +455,56 @@ msgstr ""
 "%1 / %2 (%3 / %4 KB) mezua eskuratzen, %5(e)rako (%6 KB geratzen dira "
 "zerbitzarian)."
 
-#: pop3resource.cpp:581
+#: pop3resource.cpp:577
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "%1 / %2 (%3 / %4 KB) mezua eskuratzen, %5(e)rako"
 
-#: pop3resource.cpp:604
+#: pop3resource.cpp:600
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "Zama-jaitsitako postak gorde ezinik."
 
-#: pop3resource.cpp:752
+#: pop3resource.cpp:748
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "Zerbitzaritik mezua ezabatzea huts egin du."
 
-#: pop3resource.cpp:808
+#: pop3resource.cpp:804
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "Posta egiaztapena amaitu da, ez da mezurik zama-jaitsi."
 
-#: pop3resource.cpp:810
+#: pop3resource.cpp:806
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "Posta egiaztapena amaitu da, mezu 1 zama-jaitsi da."
 msgstr[1] "Posta egiaztapena amaitu da, %1 mezu zama-jaitsi dira."
 
-#: pop3resource.cpp:824
+#: pop3resource.cpp:820
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "Posta eskuratzea osatu ezinik."
 
-#: pop3resource.cpp:958
+#: pop3resource.cpp:954
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr ""
 "Posta egiaztapena dagoeneko martxan dago, ez da bigarren egiaztapen bat "
 "hasteko gai."
 
-#: pop3resource.cpp:979
+#: pop3resource.cpp:975
 #, kde-format
 msgid "Ready"
 msgstr "Prest"
 
-#: pop3resource.cpp:982
+#: pop3resource.cpp:978
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "Posta egiaztapena zapuztu da lerroz-kanpo joatean."
 
-#: pop3resource.cpp:984
+#: pop3resource.cpp:980
 #, kde-format
 msgid "Offline"
 msgstr "Lerroz-kanpo"
@@ -872,18 +872,6 @@ msgstr "Konektatu sistemako ordezkari-ezarpenak erabiliz"
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "Erabili beharreko autentifikazio mota definitzen du"
-
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: settings.kcfg:103
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr ""
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: settings.kcfg:107
-#, kde-format
-msgid "The activities of the agent"
-msgstr ""
 
 #~ msgid "Internal error, number expected: %1"
 #~ msgstr "Barneko errorea, zenbakia espero da: %1"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 00:14+0000\n"
+"POT-Creation-Date: 2026-11-16 04:02+0000\n"
 "PO-Revision-Date: 2023-10-07 08:11+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -340,18 +340,6 @@ msgstr "Zablokuj plik"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Liczba usuniętych wiadomości przez rozpoczęciem usuwania."
-
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: mboxresource.kcfg:64
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr ""
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: mboxresource.kcfg:68
-#, kde-format
-msgid "The activities of the agent"
-msgstr ""
 
 #~ msgid "URL:"
 #~ msgstr "Adres URL:"

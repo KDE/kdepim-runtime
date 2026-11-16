@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-15 03:16+0000\n"
+"POT-Creation-Date: 2026-11-16 04:02+0000\n"
 "PO-Revision-Date: 2026-10-26 14:08+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -71,17 +71,12 @@ msgstr "Het bestand periodiek bijwerken."
 msgid "Automatic update period in minutes."
 msgstr "Automatische bijwerkperiode in minuten."
 
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: vcardresource.kcfg:36
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr "Of de ondersteuning voor activiteiten van de agent zijn ingeschakeld"
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr ""
+#~ "Of de ondersteuning voor activiteiten van de agent zijn ingeschakeld"
 
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: vcardresource.kcfg:40
-#, kde-format
-msgid "The activities of the agent"
-msgstr "De activiteiten van de agent"
+#~ msgid "The activities of the agent"
+#~ msgstr "De activiteiten van de agent"
 
 #~ msgid "Activities"
 #~ msgstr "Activiteiten"

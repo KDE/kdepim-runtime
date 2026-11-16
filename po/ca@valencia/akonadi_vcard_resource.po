@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-15 03:16+0000\n"
+"POT-Creation-Date: 2026-11-16 04:02+0000\n"
 "PO-Revision-Date: 2026-10-26 09:50+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -75,17 +75,11 @@ msgstr "Actualitza periòdicament el fitxer."
 msgid "Automatic update period in minutes."
 msgstr "Període d'actualització automàtica, en minuts."
 
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: vcardresource.kcfg:36
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr "Si el suport d'activitats de l'agent està activat"
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr "Si el suport d'activitats de l'agent està activat"
 
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: vcardresource.kcfg:40
-#, kde-format
-msgid "The activities of the agent"
-msgstr "Les activitats de l'agent"
+#~ msgid "The activities of the agent"
+#~ msgstr "Les activitats de l'agent"
 
 #~ msgid "Activities"
 #~ msgstr "Activitats"

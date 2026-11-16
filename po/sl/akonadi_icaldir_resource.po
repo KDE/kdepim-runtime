@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-16 04:02+0000\n"
 "PO-Revision-Date: 2026-10-26 06:48+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -22,23 +22,23 @@ msgstr ""
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
 "X-Generator: Poedit 3.10\n"
 
-#: icaldirresource.cpp:125
+#: icaldirresource.cpp:121
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "Pojavitev z uporabniškim določilnikom '%1' ni bila najdena."
 
-#: icaldirresource.cpp:139 icaldirresource.cpp:172 icaldirresource.cpp:204
+#: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Poskus pisanja v mapo, ki je samo za branje: '%1'"
 
-#: icaldirresource.cpp:256
+#: icaldirresource.cpp:252
 #, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "Koledarska mapa"
 
-#: icaldirresource.cpp:258
+#: icaldirresource.cpp:254
 #, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
@@ -61,18 +61,6 @@ msgstr "Razmik med shranjevanji v minutah."
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Ne spremeni dejanskih podatkov zaledja."
-
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: icaldirresource.kcfg:24
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr "Ali je podpora za dejavnosti agenta omogočena"
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: icaldirresource.kcfg:28
-#, kde-format
-msgid "The activities of the agent"
-msgstr "Dejavnosti agenta"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: icaldirsagentsettingswidget.ui:33
@@ -168,6 +156,12 @@ msgstr[3] "%v minut"
 #, kde-format
 msgid "Activities"
 msgstr "Dejavnosti"
+
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr "Ali je podpora za dejavnosti agenta omogočena"
+
+#~ msgid "The activities of the agent"
+#~ msgstr "Dejavnosti agenta"
 
 #~ msgctxt "@info:whatsthis"
 #~ msgid ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-08 00:14+0000\n"
+"POT-Creation-Date: 2026-11-16 04:02+0000\n"
 "PO-Revision-Date: 2026-10-31 18:57+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -342,17 +342,11 @@ msgstr "ملفّ القفل"
 msgid "Number of deleted messages before a purge is started."
 msgstr "عدد الرّسائل المحذوفة قبل بدء التّخلّص منها."
 
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: mboxresource.kcfg:64
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr "ما إذا كان دعم أنشطة الوكيل ممكّنًا"
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr "ما إذا كان دعم أنشطة الوكيل ممكّنًا"
 
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: mboxresource.kcfg:68
-#, kde-format
-msgid "The activities of the agent"
-msgstr "أنشطة الوكيل"
+#~ msgid "The activities of the agent"
+#~ msgstr "أنشطة الوكيل"
 
 #~ msgid "URL:"
 #~ msgstr "المسار:"
