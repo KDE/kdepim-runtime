@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-16 01:07+0000\n"
 "PO-Revision-Date: 2026-11-03 21:52+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -342,14 +342,8 @@ msgstr "Kilit dosyası"
 msgid "Number of deleted messages before a purge is started."
 msgstr "Temizleme işlemi başlamadan önce silinen iletilerin sayısı."
 
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: mboxresource.kcfg:64
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr "Aracının etkinlikler desteğinin etkinleştirilip etkinleştirilmediği"
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr "Aracının etkinlikler desteğinin etkinleştirilip etkinleştirilmediği"
 
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: mboxresource.kcfg:68
-#, kde-format
-msgid "The activities of the agent"
-msgstr "Aracının etkinlikleri"
+#~ msgid "The activities of the agent"
+#~ msgstr "Aracının etkinlikleri"

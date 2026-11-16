@@ -2,21 +2,22 @@
 # This file is distributed under the same license as the PACKAGE package.
 # SPDX-FileCopyrightText: 2010, 2011, 2013, 2014, 2024, 2026 Vít Pelčák <vit@pelcak.org>
 # Tomáš Chvátal <tomas.chvatal@gmail.com>, 2013.
+# SPDX-FileCopyrightText: 2026 Libor Filípek <libor.filipek@gmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-15 01:07+0000\n"
-"PO-Revision-Date: 2026-02-05 16:13+0100\n"
-"Last-Translator:  Vít Pelčák <vit@pelcak.org>\n"
+"POT-Creation-Date: 2026-11-16 01:07+0000\n"
+"PO-Revision-Date: 2026-11-15 11:30+0100\n"
+"Last-Translator: Libor Filípek <libor.filipek@gmail.com>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 26.08.3\n"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: vcarddiragentsettingswidget.ui:33
@@ -94,22 +95,22 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr "Automatické ukládání:"
 
-#: vcarddirresource.cpp:126
+#: vcarddirresource.cpp:122
 #, kde-format
 msgid "Contact with uid '%1' not found."
 msgstr "Kontakt s uid '%1' nenalezen."
 
-#: vcarddirresource.cpp:138 vcarddirresource.cpp:177 vcarddirresource.cpp:213
+#: vcarddirresource.cpp:134 vcarddirresource.cpp:173 vcarddirresource.cpp:209
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Pokus o zápis do adresáře pouze pro čtení: '%1'"
 
-#: vcarddirresource.cpp:158
+#: vcarddirresource.cpp:154
 #, kde-format
 msgid "Impossible to write in file: '%1'"
 msgstr "Nelze zapisovat do souboru: '%1'"
 
-#: vcarddirresource.cpp:248
+#: vcarddirresource.cpp:244
 #, kde-format
 msgid "Contacts Folder"
 msgstr "Složka kontaktů"
@@ -132,18 +133,6 @@ msgstr "Interval automatického ukládání (v minutách)."
 msgid "Do not change the actual backend data."
 msgstr "Neměňte data aktuálního podpůrného nástroje."
 
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: vcarddirresource.kcfg:24
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr ""
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: vcarddirresource.kcfg:28
-#, kde-format
-msgid "The activities of the agent"
-msgstr ""
-
 #: vcarddirsettingswidget.cpp:41
 #, kde-format
 msgid "%v minute"
@@ -156,3 +145,9 @@ msgstr[2] "%v minut"
 #, kde-format
 msgid "Activities"
 msgstr "Aktivity"
+
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr "Zda je povolena podpora aktivit agenta"
+
+#~ msgid "The activities of the agent"
+#~ msgstr "Činnosti agenta"

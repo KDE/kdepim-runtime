@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-16 01:07+0000\n"
 "PO-Revision-Date: 2026-10-26 06:47+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -82,17 +82,11 @@ msgstr "Periodično posodobi datoteko."
 msgid "Automatic update period in minutes."
 msgstr "Čas samodejne posodobitve v minutah."
 
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: icalresource.kcfg:36
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr "Ali je podpora za dejavnosti agenta omogočena"
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr "Ali je podpora za dejavnosti agenta omogočena"
 
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: icalresource.kcfg:40
-#, kde-format
-msgid "The activities of the agent"
-msgstr "Dejavnosti agenta"
+#~ msgid "The activities of the agent"
+#~ msgstr "Dejavnosti agenta"
 
 #~ msgid "Autosave interval time (in minutes)."
 #~ msgstr "Razmik med shranjevanji v minutah."

@@ -4,14 +4,14 @@
 #
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2009, 2010, 2011, 2012, 2015, 2016, 2018.
 # Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2010, 2019, 2020, 2021.
-# SPDX-FileCopyrightText: 2025-2026 Marcus Gama <marcus.gama@gmail.com>
+# SPDX-FileCopyrightText: 2025-2026 Marcus Gama <marcus.gama@kde.org>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-16 01:07+0000\n"
 "PO-Revision-Date: 2026-10-26 08:51-0300\n"
-"Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
+"Last-Translator: Marcus Gama <marcus.gama@kde.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -43,13 +43,13 @@ msgstr "Atividades"
 msgid "POP3 Account"
 msgstr "Conta POP3"
 
-#: accountwidget.cpp:211
+#: accountwidget.cpp:205
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Não foi possível abrir a carteira"
 
-#: accountwidget.cpp:261
+#: accountwidget.cpp:255
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -63,7 +63,7 @@ msgstr ""
 "existe ainda a possibilidade de habilitar a opção de deixar as mensagens "
 "baixadas no servidor."
 
-#: accountwidget.cpp:276
+#: accountwidget.cpp:270
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -87,18 +87,18 @@ msgstr ""
 "alguns testes primeiro, enviando para si mesmo um conjunto de mensagens e\n"
 "depois tente baixá-las."
 
-#: accountwidget.cpp:309
+#: accountwidget.cpp:303
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Especifique primeiramente um servidor e porta na aba Geral."
 
-#: accountwidget.cpp:342
+#: accountwidget.cpp:336
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Não foi possível estabelecer conexão com o servidor, verifique o endereço."
 
-#: accountwidget.cpp:386
+#: accountwidget.cpp:380
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -120,7 +120,7 @@ msgstr ""
 "você mesmo um grande número de mensagens de teste, que você deverá baixar de "
 "uma vez do servidor POP."
 
-#: accountwidget.cpp:406
+#: accountwidget.cpp:400
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -136,14 +136,14 @@ msgstr ""
 "existe ainda a possibilidade de habilitar a opção de deixar as mensagens "
 "baixadas no servidor."
 
-#: accountwidget.cpp:438
+#: accountwidget.cpp:432
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " dia"
 msgstr[1] " dias"
 
-#: accountwidget.cpp:443
+#: accountwidget.cpp:437
 #, kde-format
 msgid " message"
 msgid_plural " messages"
@@ -310,22 +310,22 @@ msgstr ""
 "Ocorreu um erro durante a comunicação com o servidor de POP3 ao tentar "
 "baixar o e-mail: %1"
 
-#: pop3resource.cpp:99
+#: pop3resource.cpp:95
 #, kde-format
 msgid "Mail check aborted."
 msgstr "Verificação de e-mails cancelada."
 
-#: pop3resource.cpp:106
+#: pop3resource.cpp:102
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "Verificação de e-mails cancelada manualmente."
 
-#: pop3resource.cpp:134
+#: pop3resource.cpp:130
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "Digite o nome de usuário e a senha para a conta '%1'."
 
-#: pop3resource.cpp:151
+#: pop3resource.cpp:147
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
@@ -333,62 +333,62 @@ msgstr ""
 "Você será questionado aqui porque não foi possível carregar a senha a partir "
 "da carteira."
 
-#: pop3resource.cpp:168
+#: pop3resource.cpp:164
 #, kde-format
 msgid "Account:"
 msgstr "Conta:"
 
-#: pop3resource.cpp:185
+#: pop3resource.cpp:181
 #, kde-format
 msgid "No username and password supplied."
 msgstr "Não foi indicado um usuário e senha."
 
-#: pop3resource.cpp:204
+#: pop3resource.cpp:200
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "Preparando a transmissão de \"%1\"."
 
-#: pop3resource.cpp:225
+#: pop3resource.cpp:221
 #, kde-format
 msgid "Executing precommand."
 msgstr "Executando pré-comando."
 
-#: pop3resource.cpp:250
+#: pop3resource.cpp:246
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr ""
 "Você terá questionado aqui porque a última autenticação não teve sucesso."
 
-#: pop3resource.cpp:252
+#: pop3resource.cpp:248
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr ""
 "Você será questionado aqui porque o nome de usuário que indicou aqui está em "
 "branco."
 
-#: pop3resource.cpp:279
+#: pop3resource.cpp:275
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "Obter listas de e-mails."
 
-#: pop3resource.cpp:335
+#: pop3resource.cpp:331
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "Salvando as mensagens baixadas."
 
-#: pop3resource.cpp:353
+#: pop3resource.cpp:349
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "Salvando a senha na carteira."
 
-#: pop3resource.cpp:395
+#: pop3resource.cpp:391
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
 "Ocorreu um erro ao tentar obter a caixa de correio local, interrompendo a "
 "verificação de e-mails."
 
-#: pop3resource.cpp:402
+#: pop3resource.cpp:398
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -399,7 +399,7 @@ msgstr ""
 "o e-mail para a mesma. A pasta onde a conta irá entregar o e-mail foi "
 "reposta com a caixa de entrada principal.</qt>"
 
-#: pop3resource.cpp:423
+#: pop3resource.cpp:419
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
@@ -407,36 +407,36 @@ msgstr ""
 "Ocorreu um erro ao tentar obter a pasta da caixa de entrada, interrompendo a "
 "verificação de e-mails."
 
-#: pop3resource.cpp:436
+#: pop3resource.cpp:432
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr ""
 "Não foi possível localizar a pasta da caixa de entrada, interrompendo a "
 "verificação de e-mails."
 
-#: pop3resource.cpp:447
+#: pop3resource.cpp:443
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "Ocorreu um erro ao executar o pré-comando."
 
-#: pop3resource.cpp:461
+#: pop3resource.cpp:457
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr "Não foi possível autenticar-se no servidor \"%1\"."
 
-#: pop3resource.cpp:470
+#: pop3resource.cpp:466
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "Ocorreu um erro ao obter a lista de mensagens no servidor."
 
-#: pop3resource.cpp:484
+#: pop3resource.cpp:480
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr ""
 "Ocorreu um erro ao obter a lista de identificadores únicos de e-mails do "
 "servidor."
 
-#: pop3resource.cpp:497
+#: pop3resource.cpp:493
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -450,12 +450,12 @@ msgstr ""
 "servidor o KMail já foram vistas anteriormente.\n"
 "O recurso de deixar as mensagens no servidor não funcionará corretamente."
 
-#: pop3resource.cpp:512
+#: pop3resource.cpp:508
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "Ocorreu um erro ao obter os e-mails do servidor."
 
-#: pop3resource.cpp:572
+#: pop3resource.cpp:568
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
@@ -463,56 +463,56 @@ msgstr ""
 "Obtendo a mensagem %1 de %2 (%3 de %4 KB) para %5 (%6 KB permanecem no "
 "servidor)."
 
-#: pop3resource.cpp:581
+#: pop3resource.cpp:577
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "Obtendo a mensagem %1 de %2 (%3 de %4 KB) para %5"
 
-#: pop3resource.cpp:604
+#: pop3resource.cpp:600
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "Não foi possível armazenar os e-mails baixados."
 
-#: pop3resource.cpp:752
+#: pop3resource.cpp:748
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "Não foi possível excluir as mensagens do servidor."
 
-#: pop3resource.cpp:808
+#: pop3resource.cpp:804
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "Terminou a verificação do e-mails, sem mensagens baixadas."
 
-#: pop3resource.cpp:810
+#: pop3resource.cpp:806
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "Terminou a verificação do e-mails, 1 mensagem baixada."
 msgstr[1] "Terminou a verificação do e-mails, %1 mensagens baixadas."
 
-#: pop3resource.cpp:824
+#: pop3resource.cpp:820
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "Não foi possível concluir a obtenção de e-mails."
 
-#: pop3resource.cpp:958
+#: pop3resource.cpp:954
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr ""
 "Verificação de e-mails em andamento, não é possível iniciar uma segunda "
 "verificação."
 
-#: pop3resource.cpp:979
+#: pop3resource.cpp:975
 #, kde-format
 msgid "Ready"
 msgstr "Pronto"
 
-#: pop3resource.cpp:982
+#: pop3resource.cpp:978
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "A verificação de e-mails foi cancelada após a desconexão."
 
-#: pop3resource.cpp:984
+#: pop3resource.cpp:980
 #, kde-format
 msgid "Offline"
 msgstr "Desconectado"
@@ -884,17 +884,11 @@ msgstr "Conectar usando a configuração de proxy do sistema"
 msgid "Defines the authentication type to use"
 msgstr "Define o tipo de autenticação a ser usado"
 
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: settings.kcfg:103
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr "Se o suporte à atividades deste agente está ativo"
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr "Se o suporte à atividades deste agente está ativo"
 
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: settings.kcfg:107
-#, kde-format
-msgid "The activities of the agent"
-msgstr "As atividades do agente"
+#~ msgid "The activities of the agent"
+#~ msgstr "As atividades do agente"
 
 #~ msgid "Internal error, number expected: %1"
 #~ msgstr "Erro interno, número esperado: %1"

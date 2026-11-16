@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-16 01:07+0000\n"
 "PO-Revision-Date: 2024-07-17 21:41+0200\n"
 "Last-Translator: rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -83,94 +83,94 @@ msgstr ""
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
 msgstr "Kunne ikke skrive visse ACL'er for \"%1\" på IMAP-serveren. %2"
 
-#: imapresource.cpp:229
+#: imapresource.cpp:227
 #, kde-format
 msgid "No server configured yet."
 msgstr "Ingen server konfigureret endnu."
 
-#: imapresource.cpp:249
+#: imapresource.cpp:247
 #, kde-format
 msgid "Connection established."
 msgstr "Forbindelse oprettet."
 
-#: imapresource.cpp:266
+#: imapresource.cpp:264
 #, kde-format
 msgid "Server is not available."
 msgstr "Serveren er ikke tilgængelig."
 
-#: imapresource.cpp:317
+#: imapresource.cpp:315
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Tilføjer element i \"%1\""
 
-#: imapresource.cpp:324
+#: imapresource.cpp:322
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Opdaterer element i \"%1\""
 
-#: imapresource.cpp:331
+#: imapresource.cpp:329
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Opdaterer elementer"
 
-#: imapresource.cpp:345
+#: imapresource.cpp:343
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Fjerner elementer"
 
-#: imapresource.cpp:361
+#: imapresource.cpp:359
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Flytter elementer fra \"%1\" til \"%2\""
 
-#: imapresource.cpp:370
+#: imapresource.cpp:368
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Henter mapper"
 
-#: imapresource.cpp:377
+#: imapresource.cpp:375
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Henter ekstra mappeinformation for \"%1\""
 
-#: imapresource.cpp:395
+#: imapresource.cpp:393
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Opretter mappen \"%1\""
 
-#: imapresource.cpp:401
+#: imapresource.cpp:399
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Opdaterer mappen \"%1\""
 
-#: imapresource.cpp:414
+#: imapresource.cpp:412
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Fjerner mappen \"%1\""
 
-#: imapresource.cpp:421
+#: imapresource.cpp:419
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Flytter mappen \"%1\" fra \"%2\" til \"%3\""
 
-#: imapresource.cpp:451
+#: imapresource.cpp:449
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching…"
 msgstr "Søger…"
 
-#: imapresource.cpp:723
+#: imapresource.cpp:719
 #, kde-format
 msgid "IMAP Account"
 msgstr "IMAP-konto"
@@ -361,18 +361,6 @@ msgid "Defines the type of identification used by custom sieve server"
 msgstr ""
 "Definerer den type af identifikation der bruges af den brugervalgte sieve-"
 "server"
-
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: imapresource.kcfg:129
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr ""
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: imapresource.kcfg:133
-#, kde-format
-msgid "The activities of the agent"
-msgstr ""
 
 #: movecollectiontask.cpp:29
 #, kde-format
@@ -797,22 +785,22 @@ msgctxt "@title:window"
 msgid "User name change"
 msgstr "Ændring af brugernavn"
 
-#: setupserver.cpp:550
+#: setupserver.cpp:534
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Kan ikke forbinde til serveren. Kontrollér venligst serveradressen."
 
-#: setupserver.cpp:562
+#: setupserver.cpp:546
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS understøttes og anbefales.</b></qt>"
 
-#: setupserver.cpp:565
+#: setupserver.cpp:549
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS understøttes og anbefales.</b></qt>"
 
-#: setupserver.cpp:569
+#: setupserver.cpp:553
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -821,12 +809,12 @@ msgstr ""
 "<qt><b>Ingen sikkerhed understøttet. Det anbefales ikke at forbinde til "
 "denne server.</b></qt>"
 
-#: setupserver.cpp:572
+#: setupserver.cpp:556
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Det er ikke muligt at bruge denne server.</b></qt>"
 
-#: setupserver.cpp:663
+#: setupserver.cpp:647
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"

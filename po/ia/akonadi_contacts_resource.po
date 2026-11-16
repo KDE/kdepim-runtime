@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-16 01:07+0000\n"
 "PO-Revision-Date: 2026-10-27 16:03+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -71,89 +71,89 @@ msgstr ""
 "automaticamente habilitate si tu non ha permission de scriptura in le "
 "directorio."
 
-#: contactsresource.cpp:53
+#: contactsresource.cpp:51
 #, kde-format
 msgid "Personal Contacts"
 msgstr "Contactos personal"
 
-#: contactsresource.cpp:136
+#: contactsresource.cpp:132
 #, kde-format
 msgid "Directory '%1' does not exists"
 msgstr "Directorio '%1' non existe"
 
-#: contactsresource.cpp:160 contactsresource.cpp:235
+#: contactsresource.cpp:156 contactsresource.cpp:231
 #, kde-format
 msgid "Found file of unknown format: '%1'"
 msgstr "Trovava file de formato incognite: '%1'"
 
-#: contactsresource.cpp:209
+#: contactsresource.cpp:205
 #, kde-format
 msgid "Unable to open file '%1'"
 msgstr "Incapace de aperir file '%1'"
 
-#: contactsresource.cpp:219
+#: contactsresource.cpp:215
 #, kde-format
 msgid "Found invalid contact in file '%1'"
 msgstr "Trovava contacto invalide in file '%1'"
 
-#: contactsresource.cpp:229
+#: contactsresource.cpp:225
 #, kde-format
 msgid "Found invalid contact group in file '%1': %2"
 msgstr "Trovava grupo de contacto invalide in file '%1': %2"
 
-#: contactsresource.cpp:245 contactsresource.cpp:370 contactsresource.cpp:391
-#: contactsresource.cpp:424
+#: contactsresource.cpp:241 contactsresource.cpp:366 contactsresource.cpp:387
+#: contactsresource.cpp:420
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Tentante de scriber in un directorio de sol lectura: '%1'"
 
-#: contactsresource.cpp:263 contactsresource.cpp:278 contactsresource.cpp:313
-#: contactsresource.cpp:325
+#: contactsresource.cpp:259 contactsresource.cpp:274 contactsresource.cpp:309
+#: contactsresource.cpp:321
 #, kde-format
 msgid "Unable to write to file '%1': %2"
 msgstr "Incapace de scriber in file '%1': %2"
 
-#: contactsresource.cpp:297 contactsresource.cpp:345
+#: contactsresource.cpp:293 contactsresource.cpp:341
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'"
 msgstr "Tentante de scriber a un file de sol lectura: '%1'"
 
-#: contactsresource.cpp:335
+#: contactsresource.cpp:331
 #, kde-format
 msgid "Received item with unknown payload %1"
 msgstr "Recipeva elemento con carga utile incognite %1"
 
-#: contactsresource.cpp:360
+#: contactsresource.cpp:356
 #, kde-format
 msgid "Unable to remove file '%1'"
 msgstr "Incapace de remover file '%1'"
 
-#: contactsresource.cpp:377
+#: contactsresource.cpp:373
 #, kde-format
 msgid "Unable to create folder '%1'."
 msgstr "Il non pote crear dossier  '%1'."
 
-#: contactsresource.cpp:412
+#: contactsresource.cpp:408
 #, kde-format
 msgid "Unable to rename folder '%1'."
 msgstr "Incapace de renominar dossier '%1'."
 
-#: contactsresource.cpp:430
+#: contactsresource.cpp:426
 #, kde-format
 msgid "Unknown folder to delete."
 msgstr "Dossier incognite de deler."
 
-#: contactsresource.cpp:434
+#: contactsresource.cpp:430
 #, kde-format
 msgid "Unable to delete folder '%1'."
 msgstr "Incapace de deler dossier '%1'."
 
-#: contactsresource.cpp:449
+#: contactsresource.cpp:445
 #, kde-format
 msgid "Unable to move file '%1' to '%2', '%2' already exists."
 msgstr "Incapace de mover file '%1' in '%2', '%2' ja existe."
 
-#: contactsresource.cpp:463
+#: contactsresource.cpp:459
 #, kde-format
 msgid "Unable to move directory '%1' to '%2', '%2' already exists."
 msgstr "Incapace de mover directorio '%1' in '%2', '%2' ja existe."
@@ -170,22 +170,16 @@ msgstr "Percurso a directorio de contactos"
 msgid "Do not change the actual backend data."
 msgstr "Non modifica le datos actual de retro-administration."
 
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: contactsresource.kcfg:23
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr "Si le supporto de activitates del agente es habilitate"
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: contactsresource.kcfg:27
-#, kde-format
-msgid "The activities of the agent"
-msgstr "Le activitates del agente"
-
 #: contactssettingswidget.cpp:40
 #, kde-format
 msgid "Activities"
 msgstr "Activitates"
+
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr "Si le supporto de activitates del agente es habilitate"
+
+#~ msgid "The activities of the agent"
+#~ msgstr "Le activitates del agente"
 
 #~ msgid "Filename:"
 #~ msgstr "Nomine de file:"

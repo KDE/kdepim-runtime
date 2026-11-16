@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-15 01:07+0000\n"
+"POT-Creation-Date: 2026-11-16 01:07+0000\n"
 "PO-Revision-Date: 2026-10-26 07:46+0200\n"
 "Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -78,17 +78,11 @@ msgstr "Обновлять файл через указанный интерва
 msgid "Automatic update period in minutes."
 msgstr "Интервал автоматического обновления в минутах."
 
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: vcardresource.kcfg:36
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr "Используется ли поддержка комнат агентом"
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr "Используется ли поддержка комнат агентом"
 
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: vcardresource.kcfg:40
-#, kde-format
-msgid "The activities of the agent"
-msgstr "Комнаты агента"
+#~ msgid "The activities of the agent"
+#~ msgstr "Комнаты агента"
 
 #~ msgid "Activities"
 #~ msgstr "Комнаты"

@@ -4,7 +4,7 @@
 #
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2010, 2011, 2013, 2014.
 # Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2010.
-# Marcus Vinícius de Andrade Gama <marcus.gama@gmail.com>, 2010.
+# Marcus Vinícius de Andrade Gama <marcus.gama@kde.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mixedmaildir_resource\n"

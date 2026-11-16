@@ -4,14 +4,14 @@
 #
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2012, 2014, 2016.
 # Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2016, 2020, 2021.
-# SPDX-FileCopyrightText: 2025-2026 Marcus Gama <marcus.gama@gmail.com>
+# SPDX-FileCopyrightText: 2025-2026 Marcus Gama <marcus.gama@kde.org>
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_icaldir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-26 00:50+0000\n"
+"POT-Creation-Date: 2026-11-16 01:07+0000\n"
 "PO-Revision-Date: 2026-10-26 08:54-0300\n"
-"Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
+"Last-Translator: Marcus Gama <marcus.gama@kde.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -20,23 +20,23 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 26.08.2\n"
 
-#: icaldirresource.cpp:125
+#: icaldirresource.cpp:121
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "A incidência com UID '%1' não foi encontrada."
 
-#: icaldirresource.cpp:139 icaldirresource.cpp:172 icaldirresource.cpp:204
+#: icaldirresource.cpp:135 icaldirresource.cpp:168 icaldirresource.cpp:200
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Tentando gravar em uma pasta apenas para leitura: '%1'"
 
-#: icaldirresource.cpp:256
+#: icaldirresource.cpp:252
 #, kde-format
 msgctxt "@label"
 msgid "Calendar Folder"
 msgstr "Pasta de calendários"
 
-#: icaldirresource.cpp:258
+#: icaldirresource.cpp:254
 #, kde-format
 msgctxt "@label"
 msgid "%1 Calendar Folder"
@@ -59,18 +59,6 @@ msgstr "Intervalo de salvamento automático (em minutos)."
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Não alterar os dados reais da infraestrutura."
-
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: icaldirresource.kcfg:24
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr "Se o suporte à atividades deste agente está ativo"
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: icaldirresource.kcfg:28
-#, kde-format
-msgid "The activities of the agent"
-msgstr "As atividades do agente"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: icaldirsagentsettingswidget.ui:33
@@ -164,6 +152,12 @@ msgstr[1] " minutos"
 #, kde-format
 msgid "Activities"
 msgstr "Atividades"
+
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr "Se o suporte à atividades deste agente está ativo"
+
+#~ msgid "The activities of the agent"
+#~ msgstr "As atividades do agente"
 
 #~ msgid "Directory Name"
 #~ msgstr "Nome da pasta"

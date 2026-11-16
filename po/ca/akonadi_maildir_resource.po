@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-16 01:07+0000\n"
 "PO-Revision-Date: 2026-10-26 09:50+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -102,96 +102,96 @@ msgstr ""
 "No s'ha pogut actualitzar el nom de fitxer %1 a %2 al disc. L'error ha "
 "estat: %3."
 
-#: maildirresource.cpp:126 maildirresource.cpp:260 maildirresource.cpp:299
-#: maildirresource.cpp:393 maildirresource.cpp:434 maildirresource.cpp:554
-#: maildirresource.cpp:584 maildirresource.cpp:627 maildirresource.cpp:660
+#: maildirresource.cpp:124 maildirresource.cpp:256 maildirresource.cpp:295
+#: maildirresource.cpp:389 maildirresource.cpp:430 maildirresource.cpp:550
+#: maildirresource.cpp:580 maildirresource.cpp:623 maildirresource.cpp:656
 #, kde-format
 msgid "Unusable configuration."
 msgstr "Configuració no usable."
 
-#: maildirresource.cpp:191
+#: maildirresource.cpp:189
 #, kde-format
 msgid "Unable to fetch item: The maildir folder \"%1\" is not valid."
 msgstr ""
 "No s'ha pogut recuperar l'element: la carpeta per al directori de correu "
 "«%1» no és vàlida."
 
-#: maildirresource.cpp:271
+#: maildirresource.cpp:267
 #, kde-format
 msgid "Error: Unsupported type."
 msgstr "Error: tipus no acceptat."
 
-#: maildirresource.cpp:337
+#: maildirresource.cpp:333
 #, kde-format
 msgid "Failed to change the flags for the mail. %1"
 msgstr "Ha fallat en canviar els indicadors del correu. %1"
 
-#: maildirresource.cpp:372
+#: maildirresource.cpp:368
 #, kde-format
 msgid "Maildir resource got a non-mail content."
 msgstr "El recurs del directori de correu té un contingut que no és correu."
 
-#: maildirresource.cpp:399
+#: maildirresource.cpp:395
 #, kde-format
 msgid "Source folder is invalid: '%1'."
 msgstr "La carpeta d'origen no és vàlida: «%1»."
 
-#: maildirresource.cpp:405
+#: maildirresource.cpp:401
 #, kde-format
 msgid "Destination folder is invalid: '%1'."
 msgstr "La carpeta de destinació no és vàlida: «%1»."
 
-#: maildirresource.cpp:422
+#: maildirresource.cpp:418
 #, kde-format
 msgid "Could not move message '%1' from '%2' to '%3'. The error was %4."
 msgstr ""
 "No s'ha pogut moure el missatge «%1» des de «%2» a «%3». L'error ha estat %4."
 
-#: maildirresource.cpp:444
+#: maildirresource.cpp:440
 #, kde-format
 msgid "Failed to delete message: %1"
 msgstr "Ha fallat en suprimir el missatge: %1"
 
-#: maildirresource.cpp:533
+#: maildirresource.cpp:529
 #, kde-format
 msgid "Maildir '%1' for collection '%2' is invalid."
 msgstr "El directori de correu «%1» per a la col·lecció «%2» no és vàlid."
 
-#: maildirresource.cpp:612
+#: maildirresource.cpp:608
 #, kde-format
 msgid "Unable to rename maildir folder '%1'."
 msgstr "No s'ha pogut reanomenar la carpeta de directori de correu «%1»."
 
-#: maildirresource.cpp:633
+#: maildirresource.cpp:629
 #, kde-format
 msgid "Cannot move root maildir folder '%1'."
 msgstr "No s'ha pogut moure la carpeta del directori de correu arrel «%1»."
 
-#: maildirresource.cpp:648
+#: maildirresource.cpp:644
 #, kde-format
 msgid "Unable to move maildir folder '%1' from '%2' to '%3'."
 msgstr ""
 "No s'ha pogut moure la carpeta del directori de correu arrel «%1» des de "
 "«%2» a «%3»."
 
-#: maildirresource.cpp:666
+#: maildirresource.cpp:662
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
 msgstr ""
 "No s'ha pogut suprimir la carpeta del directori de correu de nivell superior "
 "«%1»."
 
-#: maildirresource.cpp:675
+#: maildirresource.cpp:671
 #, kde-format
 msgid "Failed to delete sub-folder '%1'."
 msgstr "Ha fallat en suprimir la subcarpeta «%1»."
 
-#: maildirresource.cpp:689
+#: maildirresource.cpp:685
 #, kde-format
 msgid "Unable to create maildir '%1'."
 msgstr "No s'ha pogut crear el directori de correu «%1»."
 
-#: maildirresource.cpp:699
+#: maildirresource.cpp:695
 #, kde-format
 msgid "No usable storage location configured."
 msgstr "No s'ha configurat cap ubicació usable per a l'emmagatzematge."
@@ -217,18 +217,6 @@ msgstr ""
 msgid "Do not change the actual backend data."
 msgstr "No es canvien les dades reals del dorsal."
 
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: maildirresource.kcfg:27
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr "Si el suport d'activitats de l'agent està activat"
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: maildirresource.kcfg:31
-#, kde-format
-msgid "The activities of the agent"
-msgstr "Les activitats de l'agent"
-
 #. i18n: ectx: property (windowTitle), widget (QWidget, ConfigWidget)
 #: settings.ui:15
 #, kde-format
@@ -253,3 +241,9 @@ msgstr ""
 #, kde-format
 msgid "Open in read-only mode"
 msgstr "Obre en el mode de només lectura"
+
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr "Si el suport d'activitats de l'agent està activat"
+
+#~ msgid "The activities of the agent"
+#~ msgstr "Les activitats de l'agent"

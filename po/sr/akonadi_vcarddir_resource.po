@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_vcarddir_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-15 01:07+0000\n"
+"POT-Creation-Date: 2026-11-16 01:07+0000\n"
 "PO-Revision-Date: 2014-08-17 13:36+0200\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -86,22 +86,22 @@ msgstr ""
 msgid "Autosave delay:"
 msgstr ""
 
-#: vcarddirresource.cpp:126
+#: vcarddirresource.cpp:122
 #, kde-format
 msgid "Contact with uid '%1' not found."
 msgstr "Контакт са УИД‑ом „%1“ није нађен."
 
-#: vcarddirresource.cpp:138 vcarddirresource.cpp:177 vcarddirresource.cpp:213
+#: vcarddirresource.cpp:134 vcarddirresource.cpp:173 vcarddirresource.cpp:209
 #, kde-format
 msgid "Trying to write to a read-only directory: '%1'"
 msgstr "Покушај уписивања у фасциклу само‑за‑читање: „%1“."
 
-#: vcarddirresource.cpp:158
+#: vcarddirresource.cpp:154
 #, kde-format
 msgid "Impossible to write in file: '%1'"
 msgstr ""
 
-#: vcarddirresource.cpp:248
+#: vcarddirresource.cpp:244
 #, kde-format
 msgid "Contacts Folder"
 msgstr "Фасцикла контаката"
@@ -123,18 +123,6 @@ msgstr "Период аутоматског уписивања (у минути�
 #, kde-format
 msgid "Do not change the actual backend data."
 msgstr "Не мењај заиста позадинске податке."
-
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: vcarddirresource.kcfg:24
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr ""
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: vcarddirresource.kcfg:28
-#, kde-format
-msgid "The activities of the agent"
-msgstr ""
 
 #: vcarddirsettingswidget.cpp:41
 #, fuzzy, kde-format

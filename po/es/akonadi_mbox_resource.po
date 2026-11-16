@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_mbox_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-16 01:07+0000\n"
 "PO-Revision-Date: 2026-10-26 23:49+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -339,15 +339,9 @@ msgstr "Archivo de bloqueo"
 msgid "Number of deleted messages before a purge is started."
 msgstr "Número de mensajes borrados antes de iniciar una purga."
 
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: mboxresource.kcfg:64
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr ""
-"Indica si la compatibilidad con las actividades del agente está activada"
+#~ msgid "Whether the activities support of the agent is enabled"
+#~ msgstr ""
+#~ "Indica si la compatibilidad con las actividades del agente está activada"
 
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: mboxresource.kcfg:68
-#, kde-format
-msgid "The activities of the agent"
-msgstr "Las actividades del agente"
+#~ msgid "The activities of the agent"
+#~ msgstr "Las actividades del agente"

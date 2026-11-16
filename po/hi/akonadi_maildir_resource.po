@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-16 01:07+0000\n"
 "PO-Revision-Date: 2024-12-15 15:57+0530\n"
 "Last-Translator: Kali <EMAIL@ADDRESS>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
@@ -92,89 +92,89 @@ msgstr ""
 msgid "Failed to update the file name %1 to %2 on the disk. The error was: %3."
 msgstr ""
 
-#: maildirresource.cpp:126 maildirresource.cpp:260 maildirresource.cpp:299
-#: maildirresource.cpp:393 maildirresource.cpp:434 maildirresource.cpp:554
-#: maildirresource.cpp:584 maildirresource.cpp:627 maildirresource.cpp:660
+#: maildirresource.cpp:124 maildirresource.cpp:256 maildirresource.cpp:295
+#: maildirresource.cpp:389 maildirresource.cpp:430 maildirresource.cpp:550
+#: maildirresource.cpp:580 maildirresource.cpp:623 maildirresource.cpp:656
 #, kde-format
 msgid "Unusable configuration."
 msgstr ""
 
-#: maildirresource.cpp:191
+#: maildirresource.cpp:189
 #, kde-format
 msgid "Unable to fetch item: The maildir folder \"%1\" is not valid."
 msgstr ""
 
-#: maildirresource.cpp:271
+#: maildirresource.cpp:267
 #, kde-format
 msgid "Error: Unsupported type."
 msgstr ""
 
-#: maildirresource.cpp:337
+#: maildirresource.cpp:333
 #, kde-format
 msgid "Failed to change the flags for the mail. %1"
 msgstr ""
 
-#: maildirresource.cpp:372
+#: maildirresource.cpp:368
 #, kde-format
 msgid "Maildir resource got a non-mail content."
 msgstr ""
 
-#: maildirresource.cpp:399
+#: maildirresource.cpp:395
 #, kde-format
 msgid "Source folder is invalid: '%1'."
 msgstr ""
 
-#: maildirresource.cpp:405
+#: maildirresource.cpp:401
 #, kde-format
 msgid "Destination folder is invalid: '%1'."
 msgstr ""
 
-#: maildirresource.cpp:422
+#: maildirresource.cpp:418
 #, kde-format
 msgid "Could not move message '%1' from '%2' to '%3'. The error was %4."
 msgstr ""
 
-#: maildirresource.cpp:444
+#: maildirresource.cpp:440
 #, kde-format
 msgid "Failed to delete message: %1"
 msgstr ""
 
-#: maildirresource.cpp:533
+#: maildirresource.cpp:529
 #, kde-format
 msgid "Maildir '%1' for collection '%2' is invalid."
 msgstr ""
 
-#: maildirresource.cpp:612
+#: maildirresource.cpp:608
 #, kde-format
 msgid "Unable to rename maildir folder '%1'."
 msgstr ""
 
-#: maildirresource.cpp:633
+#: maildirresource.cpp:629
 #, kde-format
 msgid "Cannot move root maildir folder '%1'."
 msgstr ""
 
-#: maildirresource.cpp:648
+#: maildirresource.cpp:644
 #, kde-format
 msgid "Unable to move maildir folder '%1' from '%2' to '%3'."
 msgstr ""
 
-#: maildirresource.cpp:666
+#: maildirresource.cpp:662
 #, kde-format
 msgid "Cannot delete top-level maildir folder '%1'."
 msgstr ""
 
-#: maildirresource.cpp:675
+#: maildirresource.cpp:671
 #, kde-format
 msgid "Failed to delete sub-folder '%1'."
 msgstr ""
 
-#: maildirresource.cpp:689
+#: maildirresource.cpp:685
 #, kde-format
 msgid "Unable to create maildir '%1'."
 msgstr ""
 
-#: maildirresource.cpp:699
+#: maildirresource.cpp:695
 #, kde-format
 msgid "No usable storage location configured."
 msgstr ""
@@ -196,18 +196,6 @@ msgstr ""
 #: maildirresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr ""
-
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: maildirresource.kcfg:27
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr ""
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: maildirresource.kcfg:31
-#, kde-format
-msgid "The activities of the agent"
 msgstr ""
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, ConfigWidget)

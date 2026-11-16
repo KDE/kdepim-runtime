@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-16 01:07+0000\n"
 "PO-Revision-Date: 2024-07-18 11:45+0200\n"
 "Last-Translator: rasmus rosendahl-kaa <rasmus@rosendahl-kaa.name>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -43,13 +43,13 @@ msgstr ""
 msgid "POP3 Account"
 msgstr "POP3-konto"
 
-#: accountwidget.cpp:211
+#: accountwidget.cpp:205
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Unable to open wallet"
 msgstr "Kan ikke åbne tegnebogen"
 
-#: accountwidget.cpp:261
+#: accountwidget.cpp:255
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -62,7 +62,7 @@ msgstr ""
 "Du har stadig mulighed for, at aktivere \"Efterlad hentede breve på serveren"
 "\", da nogle servere ikke bekendtgør deres kapabiliteter korrekt."
 
-#: accountwidget.cpp:276
+#: accountwidget.cpp:270
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -84,17 +84,17 @@ msgstr ""
 "Hvis du ønsker højere hastighed, men din server ikke bekendtgør dette, bør\n"
 "du først teste lidt ved at sende dig selv en samling breve, og downloade dem."
 
-#: accountwidget.cpp:309
+#: accountwidget.cpp:303
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Angiv først en server og port i fanebladet Generelt."
 
-#: accountwidget.cpp:342
+#: accountwidget.cpp:336
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Kan ikke forbinde til serveren. Kontrollér venligst serveradressen."
 
-#: accountwidget.cpp:386
+#: accountwidget.cpp:380
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -114,7 +114,7 @@ msgstr ""
 "sende dig selv et større antal testbreve, som du derefter downloader på én "
 "gang fra POP-serveren."
 
-#: accountwidget.cpp:406
+#: accountwidget.cpp:400
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -129,14 +129,14 @@ msgstr ""
 "Du har stadig mulighed for, at aktivere \"Efterlad hentede breve på serveren"
 "\", da nogle servere ikke bekendtgør deres kapabiliteter korrekt."
 
-#: accountwidget.cpp:438
+#: accountwidget.cpp:432
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " dag"
 msgstr[1] " dage"
 
-#: accountwidget.cpp:443
+#: accountwidget.cpp:437
 #, kde-format
 msgid " message"
 msgid_plural " messages"
@@ -304,80 +304,80 @@ msgstr ""
 "Fejl under kommunikation med POP3-serveren, mens der blev forsøgt at "
 "downloade mail: %1"
 
-#: pop3resource.cpp:99
+#: pop3resource.cpp:95
 #, kde-format
 msgid "Mail check aborted."
 msgstr "Tjek af e-mail afbrudt."
 
-#: pop3resource.cpp:106
+#: pop3resource.cpp:102
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "Tjek af e-mail blev annulleret manuelt."
 
-#: pop3resource.cpp:134
+#: pop3resource.cpp:130
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "Angiv brugernavn og adgangskode for kontoen \"%1\"."
 
-#: pop3resource.cpp:151
+#: pop3resource.cpp:147
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr ""
 "Du bliver spurgt her fordi adgangskoden ikke kunne indlæses fra tegnebogen."
 
-#: pop3resource.cpp:168
+#: pop3resource.cpp:164
 #, kde-format
 msgid "Account:"
 msgstr "Konto:"
 
-#: pop3resource.cpp:185
+#: pop3resource.cpp:181
 #, kde-format
 msgid "No username and password supplied."
 msgstr "Brugernavn og adgangskode ikke oplyst."
 
-#: pop3resource.cpp:204
+#: pop3resource.cpp:200
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "Forbereder overførsel fra \"%1\"."
 
-#: pop3resource.cpp:225
+#: pop3resource.cpp:221
 #, kde-format
 msgid "Executing precommand."
 msgstr "Kører forkommando."
 
-#: pop3resource.cpp:250
+#: pop3resource.cpp:246
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "Du bliver spurgt her fordi det forrige login ikke blev gennemført."
 
-#: pop3resource.cpp:252
+#: pop3resource.cpp:248
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "Du bliver spurgt her fordi brugernavnet du oplyste var tomt."
 
-#: pop3resource.cpp:279
+#: pop3resource.cpp:275
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "Henter e-mail-liste."
 
-#: pop3resource.cpp:335
+#: pop3resource.cpp:331
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "Gemmer downloadede breve."
 
-#: pop3resource.cpp:353
+#: pop3resource.cpp:349
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "Gemmer adgangskode i tegnebogen."
 
-#: pop3resource.cpp:395
+#: pop3resource.cpp:391
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
 "Fejl under forsøg på at hente lokal indbakke-mappe, afbryder tjek af e-mail."
 
-#: pop3resource.cpp:402
+#: pop3resource.cpp:398
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -388,7 +388,7 @@ msgstr ""
 "i den. Mappen hvori kontoen leverer nye e-mails blev nulstillet til hoved-"
 "indbakkemappen.</qt>"
 
-#: pop3resource.cpp:423
+#: pop3resource.cpp:419
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
@@ -396,34 +396,34 @@ msgstr ""
 "Fejl under forsøg på at hente mappen til indkommende post, afbryder tjek af "
 "e-mail."
 
-#: pop3resource.cpp:436
+#: pop3resource.cpp:432
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr ""
 "Kunne ikke finde mappen til indkommende e-mail, afbryder tjek af e-mail."
 
-#: pop3resource.cpp:447
+#: pop3resource.cpp:443
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "Fejl under kørsel af forkommando."
 
-#: pop3resource.cpp:461
+#: pop3resource.cpp:457
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr "Kan ikke logge ind på serveren '%1'."
 
-#: pop3resource.cpp:470
+#: pop3resource.cpp:466
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "Fejl under hentning af liste over breve på serveren."
 
-#: pop3resource.cpp:484
+#: pop3resource.cpp:480
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr ""
 "Fejl under henting af liste over entydige brevidentifikatorer fra serveren."
 
-#: pop3resource.cpp:497
+#: pop3resource.cpp:493
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -437,66 +437,66 @@ msgstr ""
 "serveren KMail allerede har set tidligere.\n"
 "Funktionen der efterlader e-mail på serveren vil derfor ikke virke korrekt."
 
-#: pop3resource.cpp:512
+#: pop3resource.cpp:508
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "Fejl under hentning af e-mails fra serveren."
 
-#: pop3resource.cpp:572
+#: pop3resource.cpp:568
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
 msgstr ""
 "Henter brev %1 ud af %2 (%3 ud af %4 KB) for %5 (%6 KB tilbage på serveren)."
 
-#: pop3resource.cpp:581
+#: pop3resource.cpp:577
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "Henter brev %1 ud af %2 (%3 ud af %4 KB) for %5"
 
-#: pop3resource.cpp:604
+#: pop3resource.cpp:600
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "Kan ikke lagre downloadede e-mails."
 
-#: pop3resource.cpp:752
+#: pop3resource.cpp:748
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "Kunne ikke slette brevene fra serveren."
 
-#: pop3resource.cpp:808
+#: pop3resource.cpp:804
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "Tjek af e-mail gennemført. Ingen breve downloadet."
 
-#: pop3resource.cpp:810
+#: pop3resource.cpp:806
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "Tjek af e-mail gennemført. 1 brev downloadet."
 msgstr[1] "Tjek af e-mail gennemført. %1 breve downloadet."
 
-#: pop3resource.cpp:824
+#: pop3resource.cpp:820
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "Kan ikke gennemføre hentning af e-mail."
 
-#: pop3resource.cpp:958
+#: pop3resource.cpp:954
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "Tjek af e-mail allerede i gang, kan ikke starte endnu et tjek."
 
-#: pop3resource.cpp:979
+#: pop3resource.cpp:975
 #, kde-format
 msgid "Ready"
 msgstr "Klar"
 
-#: pop3resource.cpp:982
+#: pop3resource.cpp:978
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "Tjek af e-mail afbrudt efter du er gået offline."
 
-#: pop3resource.cpp:984
+#: pop3resource.cpp:980
 #, kde-format
 msgid "Offline"
 msgstr "Offline"
@@ -866,18 +866,6 @@ msgstr "Forbind med brug af systemets proxy-indstillinger"
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "Bestemmer den type af autentificering der skal bruges"
-
-#. i18n: ectx: label, entry (ActivitiesEnabled), group (Activities)
-#: settings.kcfg:103
-#, kde-format
-msgid "Whether the activities support of the agent is enabled"
-msgstr ""
-
-#. i18n: ectx: label, entry (Activities), group (Activities)
-#: settings.kcfg:107
-#, kde-format
-msgid "The activities of the agent"
-msgstr ""
 
 #, fuzzy
 #~| msgid "Deleting messages from the server."
