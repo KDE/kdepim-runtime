@@ -17,11 +17,15 @@ PimDataProviderServer::PimDataProviderServer(const QString &serverId, QObject *p
 {
     new ServerAdaptor(this);
 
-    const QString path = QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + serverId;
+    const QString path = QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + encodeForDBusPath(serverId);
     QDBusConnection::sessionBus().registerObject(path, this, QDBusConnection::ExportAdaptors);
 }
 
-PimDataProviderServer::~PimDataProviderServer() = default;
+PimDataProviderServer::~PimDataProviderServer()
+{
+    const QString path = QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + encodeForDBusPath(mServerId);
+    QDBusConnection::sessionBus().unregisterObject(path);
+}
 
 QString PimDataProviderServer::id() const
 {

@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <QCryptographicHash>
 #include <QDBusMetaType>
 #include <QList>
 #include <QMap>
@@ -44,4 +45,9 @@ inline void registerPimDataProviderDBusTypes()
     qDBusRegisterMetaType<QList<QVariantMap>>();
     qDBusRegisterMetaType<PimDataProviderItem>();
     qDBusRegisterMetaType<PimDataProviderItemList>();
+}
+
+inline QString encodeForDBusPath(const QString &id)
+{
+    return QString::fromLatin1(QCryptographicHash::hash(id.toUtf8(), QCryptographicHash::Sha256).toHex());
 }
