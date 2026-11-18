@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <Akonadi/Monitor>
+#include <KCalendarCore/MemoryCalendar>
 #include <QObject>
 #include <QString>
 #include <QStringList>
@@ -20,8 +22,12 @@ class PimDataProviderCalendar : public QObject
     Q_PROPERTY(QString color READ color)
 
 public:
-    explicit PimDataProviderCalendar(const QString &serverId, const QString &calendarId, QObject *parent = nullptr);
+    explicit PimDataProviderCalendar(const QString &serverId, const Collection &collection, QObject *parent = nullptr);
     ~PimDataProviderCalendar() override;
+    PimDataProviderCalendar(const PimDataProviderCalendar &) = delete;
+    PimDataProviderCalendar &operator=(const PimDataProviderCalendar &) = delete;
+    PimDataProviderCalendar(PimDataProviderCalendar &&) = delete;
+    PimDataProviderCalendar &operator=(PimDataProviderCalendar &&) = delete;
 
     [[nodiscard]] QString id() const;
     /**
@@ -61,9 +67,23 @@ Q_SIGNALS:
     void eventChanged(const QString &icalEvent);
 
 private:
+    void slotItemAdded(const Item &item, const Collection &collection);
+    void slotItemChanged(const Item &item, const QSet<QByteArray> &partIdentifiers);
+    void slotItemRemoved(const Item &item);
+
+    void slotInitialEventsFetched(KJob *job);
+
     QString mServerId;
     QString mCalendarId;
     QString mName;
     QString mColor;
+
+    Monitor *mMonitor = nullptr;
+    KCalendarCore::MemoryCalendar::Ptr mCalendar;
+    /**
+     * Used to map the akonadi ID to the event UID
+     * This is necessary because we don't get the payload, nor the remoteId of the item in the delete slot
+     */
+    QMap<Akonadi::Item::Id, QString> mEventUIDs;
 };
 } // namespace Akonadi

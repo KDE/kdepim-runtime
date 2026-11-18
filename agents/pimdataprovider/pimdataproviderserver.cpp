@@ -92,7 +92,7 @@ void PimDataProviderServer::slotCalendarAdded(const Collection &collection)
         color = colorAttribute->color().name(QColor::HexArgb);
     }
 
-    auto const calendar = std::make_shared<PimDataProviderCalendar>(mServerId, calendarId);
+    auto const calendar = std::make_shared<PimDataProviderCalendar>(mServerId, collection);
     calendar->setName(name);
     calendar->setColor(color);
     mCalendars.insert(calendarId, calendar);
@@ -184,7 +184,7 @@ void PimDataProviderServer::slotInitialCalendarsFetched(KJob *job)
                 color = colorAttribute->color().name(QColor::HexArgb);
             }
 
-            auto const calendar = std::make_shared<PimDataProviderCalendar>(mServerId, calendarId);
+            auto const calendar = std::make_shared<PimDataProviderCalendar>(mServerId, collection);
             calendar->setName(name);
             calendar->setColor(color);
             mCalendars.insert(calendarId, calendar);
