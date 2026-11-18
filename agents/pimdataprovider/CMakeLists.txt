@@ -48,6 +48,7 @@ target_link_libraries(
     KPim6::AkonadiCore
     KPim6::AkonadiCalendar
     KF6::CalendarCore
+    KF6::ConfigCore
     Qt6::DBus
 )
 
