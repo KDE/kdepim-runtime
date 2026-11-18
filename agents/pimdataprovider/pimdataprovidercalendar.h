@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <Akonadi/Monitor>
+#include <KCalendarCore/MemoryCalendar>
 #include <QObject>
 #include <QString>
 #include <QStringList>
@@ -20,7 +22,7 @@ class PimDataProviderCalendar : public QObject
     Q_PROPERTY(QString color READ color)
 
 public:
-    explicit PimDataProviderCalendar(const QString &serverId, const QString &calendarId, QObject *parent = nullptr);
+    explicit PimDataProviderCalendar(const QString &serverId, const QString &calendarId, const Collection &collection, QObject *parent = nullptr);
     ~PimDataProviderCalendar() override;
 
     [[nodiscard]] QString id() const;
@@ -40,9 +42,18 @@ Q_SIGNALS:
     void eventChanged(const QString &icalEvent);
 
 private:
+    void slotItemAdded(const Item &item, const Collection &collection);
+    void slotItemChanged(const Item &item, const QSet<QByteArray> &partIdentifiers);
+    void slotItemRemoved(const Item &item);
+
+    void slotInitialCalendarsFetched(KJob *job);
+
     QString mServerId;
     QString mCalendarId;
     QString mName;
     QString mColor;
+
+    Monitor *mMonitor = nullptr;
+    KCalendarCore::MemoryCalendar::Ptr mCalendar;
 };
 } // namespace Akonadi

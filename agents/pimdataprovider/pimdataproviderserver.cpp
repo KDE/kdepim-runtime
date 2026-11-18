@@ -58,7 +58,8 @@ QList<QVariantMap> PimDataProviderServer::getCalendars() const
     QList<QVariantMap> result;
     result.reserve(mCalendars.size());
     for (const auto calendar : mCalendars) {
-        const QString path = QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + mServerId + QLatin1Char('/Calendar/') + calendar->id();
+        const QString path = QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + encodeForDBusPath(mServerId) + QStringLiteral("/Calendar/")
+            + encodeForDBusPath(calendar->id());
         QVariantMap calendarMap;
         calendarMap.insert(QStringLiteral("path"), path);
         calendarMap.insert(QStringLiteral("id"), calendar->id());
@@ -81,7 +82,7 @@ void PimDataProviderServer::slotCalendarAdded(const Collection &collection)
     }
 
     const QString calendarId = collection.remoteId();
-    auto calendar = new PimDataProviderCalendar(mServerId, calendarId, this);
+    auto calendar = new PimDataProviderCalendar(mServerId, calendarId, collection, this);
 
     QString name = collection.name();
     auto displayNameAttribute = collection.attribute<Akonadi::EntityDisplayAttribute>();
@@ -99,7 +100,8 @@ void PimDataProviderServer::slotCalendarAdded(const Collection &collection)
 
     mCalendars.insert(calendarId, calendar);
 
-    const QString path = QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + mServerId + QLatin1Char('/Calendar/') + calendarId;
+    const QString path =
+        QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + encodeForDBusPath(mServerId) + QStringLiteral("/Calendar/") + encodeForDBusPath(calendarId);
     QVariantMap calendarMap;
     calendarMap.insert(QStringLiteral("path"), path);
     calendarMap.insert(QStringLiteral("id"), calendarId);
@@ -135,7 +137,8 @@ void PimDataProviderServer::slotCalendarUpdated(const Collection &collection)
     calendar->setColor(color);
 
     const QString calendarId = calendar->id();
-    const QString path = QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + mServerId + QLatin1Char('/Calendar/') + calendarId;
+    const QString path =
+        QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + encodeForDBusPath(mServerId) + QStringLiteral("/Calendar/") + encodeForDBusPath(calendarId);
     QVariantMap calendarMap;
     calendarMap.insert(QStringLiteral("path"), path);
     calendarMap.insert(QStringLiteral("id"), calendarId);
@@ -172,7 +175,7 @@ void PimDataProviderServer::slotInitialCalendarsFetched(KJob *job)
         const QString calendarId = collection.remoteId();
         // prevent creating a service for the root collection of the resource
         if (collection.resource() != calendarId) {
-            auto calendar = new PimDataProviderCalendar(mServerId, calendarId, this);
+            auto calendar = new PimDataProviderCalendar(mServerId, calendarId, collection, this);
 
             QString name = collection.name();
             auto displayNameAttribute = collection.attribute<Akonadi::EntityDisplayAttribute>();
