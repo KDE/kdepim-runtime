@@ -36,6 +36,9 @@ public:
      */
     [[nodiscard]] QString color() const;
 
+    void setName(const QString &name);
+    void setColor(const QString &color);
+
     /**
      * Return the event with the given id (with its exceptions)
      * The event is returned in the ical format

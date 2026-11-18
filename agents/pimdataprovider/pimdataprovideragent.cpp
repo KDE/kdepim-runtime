@@ -52,7 +52,7 @@ PimDataProviderAgent::PimDataProviderAgent(const QString &id)
     for (const AgentInstance &instance : instances) {
         if (instance.type().identifier() == QLatin1StringView("akonadi_davgroupware_resource")) {
             const QString serverUrl = extractDavUrl(instance);
-            mServers.insert(serverUrl, std::make_shared<PimDataProviderServer>(serverUrl));
+            mServers.insert(serverUrl, std::make_shared<PimDataProviderServer>(serverUrl, instance.identifier()));
         }
     }
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/org/pim/dataprovider/Calendar/Management"), this, QDBusConnection::ExportAdaptors);
@@ -98,7 +98,7 @@ void PimDataProviderAgent::slotServerAdded(const AgentInstance &instance)
     if (mServers.contains(serverId)) {
         return;
     }
-    mServers.insert(serverId, std::make_shared<PimDataProviderServer>(serverId));
+    mServers.insert(serverId, std::make_shared<PimDataProviderServer>(serverId, instance.identifier()));
 
     const QString path = QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + encodeForDBusPath(serverId);
     QVariantMap serverMap;

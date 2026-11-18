@@ -6,6 +6,7 @@
 
 #include "pimdataprovidercalendar.h"
 #include "calendaradaptor.h"
+#include "pimdataprovider_types.h"
 
 #include <QDBusConnection>
 
@@ -18,11 +19,17 @@ PimDataProviderCalendar::PimDataProviderCalendar(const QString &serverId, const 
 {
     new CalendarAdaptor(this);
 
-    const QString path = QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + serverId + QLatin1Char('/') + calendarId;
+    const QString path =
+        QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + encodeForDBusPath(serverId) + QLatin1Char('/Calendar/') + encodeForDBusPath(calendarId);
     QDBusConnection::sessionBus().registerObject(path, this, QDBusConnection::ExportAdaptors);
 }
 
-PimDataProviderCalendar::~PimDataProviderCalendar() = default;
+PimDataProviderCalendar::~PimDataProviderCalendar()
+{
+    const QString path =
+        QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + encodeForDBusPath(mServerId) + QLatin1Char('/Calendar/') + encodeForDBusPath(mCalendarId);
+    QDBusConnection::sessionBus().unregisterObject(path);
+}
 
 QString PimDataProviderCalendar::id() const
 {
@@ -37,6 +44,16 @@ QString PimDataProviderCalendar::name() const
 QString PimDataProviderCalendar::color() const
 {
     return mColor;
+}
+
+void PimDataProviderCalendar::setName(const QString &name)
+{
+    mName = name;
+}
+
+void PimDataProviderCalendar::setColor(const QString &color)
+{
+    mColor = color;
 }
 
 QStringList PimDataProviderCalendar::getEvent(const QString &itemId) const
