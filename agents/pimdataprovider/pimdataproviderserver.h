@@ -7,7 +7,9 @@
 #pragma once
 
 #include "pimdataprovider_types.h"
+#include "pimdataprovidercalendar.h"
 
+#include <Akonadi/Monitor>
 #include <QVariantMap>
 
 namespace Akonadi
@@ -18,7 +20,7 @@ class PimDataProviderServer : public QObject
     Q_PROPERTY(QString id READ id)
 
 public:
-    explicit PimDataProviderServer(const QString &serverId, QObject *parent = nullptr);
+    explicit PimDataProviderServer(const QString &serverId, const QString &resourceId, QObject *parent = nullptr);
     ~PimDataProviderServer() override;
 
     [[nodiscard]] QString id() const;
@@ -30,6 +32,13 @@ Q_SIGNALS:
     void calendarDeleted(const QString &serverId, const QString &calendarId);
 
 private:
+    void slotCalendarAdded(const Akonadi::Collection &collection);
+    void slotCalendarUpdated(const Akonadi::Collection &collection);
+    void slotCalendarRemoved(const Akonadi::Collection &collection);
+    void slotInitialCalendarsFetched(KJob *job);
+
     QString mServerId;
+    Monitor *mMonitor = nullptr;
+    QMap<QString, PimDataProviderCalendar *> mCalendars;
 };
 } // namespace Akonadi

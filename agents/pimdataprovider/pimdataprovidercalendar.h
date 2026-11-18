@@ -27,6 +27,9 @@ public:
     [[nodiscard]] QString name() const;
     [[nodiscard]] QString color() const;
 
+    void setName(const QString &name);
+    void setColor(const QString &color);
+
     [[nodiscard]] QStringList getEvent(const QString &itemId) const;
     [[nodiscard]] QStringList getEvents() const;
     [[nodiscard]] QStringList getEventsRange(quint64 startTime, quint64 endTime) const;
