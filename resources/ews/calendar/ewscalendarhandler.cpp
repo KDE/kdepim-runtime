@@ -11,6 +11,7 @@
 #include "ewscreatecalendarjob.h"
 #include "ewsfetchcalendardetailjob.h"
 #include "ewsmodifycalendarjob.h"
+#include "ewsresource_debug.h"
 
 using namespace Akonadi;
 
@@ -41,10 +42,21 @@ QString EwsCalendarHandler::mimeType()
 
 bool EwsCalendarHandler::setItemPayload(Akonadi::Item &item, const EwsItem &ewsItem)
 {
-    Q_UNUSED(item)
-    Q_UNUSED(ewsItem)
-
+    /* Akonadi requests the payload of an item that is not cached. Returning without one
+     * made it store the item empty, so that calendar applications did not show it. */
+    const EwsCalendarIncidence picked = EwsFetchCalendarDetailJob::incidenceFromItem(ewsItem);
+    if (!picked.incidence) {
+        qCWarningNC(EWSRES_LOG) << QStringLiteral("Empty calendar or failed to parse it.");
+        return false;
+    }
+    item.setPayload<KCalendarCore::Incidence::Ptr>(picked.incidence);
     return true;
+}
+
+QList<EwsPropertyField> EwsCalendarHandler::payloadProperties()
+{
+    // Needed for the exclusions of a series, see ewsPrepareForStorage().
+    return {EwsPropertyField(QStringLiteral("calendar:ModifiedOccurrences")), EwsPropertyField(QStringLiteral("calendar:DeletedOccurrences"))};
 }
 
 EwsModifyItemJob *EwsCalendarHandler::modifyItemJob(EwsClient &client, const QList<Akonadi::Item> &items, const QSet<QByteArray> &parts, QObject *parent)

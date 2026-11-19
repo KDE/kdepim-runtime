@@ -35,6 +35,11 @@ public:
     virtual void setSeenFlag(Akonadi::Item &item, bool value) = 0;
     virtual QString mimeType() = 0;
     virtual bool setItemPayload(Akonadi::Item &item, const EwsItem &ewsItem) = 0;
+    // Properties setItemPayload() needs in addition to the MIME content.
+    virtual QList<EwsPropertyField> payloadProperties()
+    {
+        return {};
+    }
     virtual EwsModifyItemJob *modifyItemJob(EwsClient &client, const QList<Akonadi::Item> &items, const QSet<QByteArray> &parts, QObject *parent) = 0;
     virtual EwsCreateItemJob *
     createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent) = 0;

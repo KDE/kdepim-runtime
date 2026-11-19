@@ -81,10 +81,46 @@ EwsFetchCalendarDetailJob::EwsFetchCalendarDetailJob(EwsClient &client, QObject 
 
 EwsFetchCalendarDetailJob::~EwsFetchCalendarDetailJob() = default;
 
+EwsCalendarIncidence EwsFetchCalendarDetailJob::incidenceFromItem(const EwsItem &item)
+{
+    const QString mimeContent = sanitizeEwsIcal(item[EwsItemFieldMimeContent].toString());
+
+    KCalendarCore::ICalFormat format;
+    KCalendarCore::Calendar::Ptr memcal(new KCalendarCore::MemoryCalendar(QTimeZone::utc()));
+    format.fromString(memcal, mimeContent);
+    qCDebugNC(EWSRES_LOG) << QStringLiteral("Found %1 events").arg(memcal->events().count());
+
+    EwsCalendarIncidence picked = ewsPickIncidence(memcal);
+    if (!picked.incidence) {
+        return picked;
+    }
+    const KCalendarCore::Incidence::Ptr &incidence = picked.incidence;
+
+    QDateTime dt(incidence->dtStart());
+    if (dt.isValid()) {
+        incidence->setDtStart(dt);
+    }
+    if (incidence->type() == KCalendarCore::Incidence::TypeEvent) {
+        auto event = reinterpret_cast<KCalendarCore::Event *>(incidence.data());
+        dt = event->dtEnd();
+        if (dt.isValid()) {
+            event->setDtEnd(dt);
+        }
+    }
+    dt = incidence->recurrenceId();
+    if (dt.isValid()) {
+        incidence->setRecurrenceId(dt);
+    }
+
+    // A cancelled occurrence leaves an empty slot that only the master can be
+    // stopped from generating; a moved one is delivered as an item of its own.
+    ewsPrepareForStorage(item, picked);
+
+    return picked;
+}
+
 void EwsFetchCalendarDetailJob::processItems(const EwsGetItemRequest::Response::List &responses)
 {
-    KCalendarCore::ICalFormat format;
-
     EwsId::List addItems;
 
     for (const EwsGetItemRequest::Response &resp : responses) {
@@ -106,14 +142,7 @@ void EwsFetchCalendarDetailJob::processItems(const EwsGetItemRequest::Response::
             continue;
         }
 
-        const QString mimeContent = sanitizeEwsIcal(ewsItem[EwsItemFieldMimeContent].toString());
-
-        KCalendarCore::Calendar::Ptr memcal(new KCalendarCore::MemoryCalendar(QTimeZone::utc()));
-        format.fromString(memcal, mimeContent);
-        const auto events{memcal->events()};
-        qCDebugNC(EWSRES_LOG) << QStringLiteral("Found %1 events").arg(events.count());
-
-        EwsCalendarIncidence picked = ewsPickIncidence(memcal);
+        EwsCalendarIncidence picked = incidenceFromItem(ewsItem);
         if (!picked.incidence) {
             qCWarningNC(EWSRES_LOG) << QStringLiteral("Empty calendar or failed to parse it.");
             continue;
@@ -122,27 +151,7 @@ void EwsFetchCalendarDetailJob::processItems(const EwsGetItemRequest::Response::
             qCDebugNC(EWSRES_LOG)
                 << QStringLiteral("No master event in the calendar data of item %1 - storing the occurrence as it is").arg(itemIt->remoteId());
         }
-        KCalendarCore::Incidence::Ptr incidence = picked.incidence;
-
-        QDateTime dt(incidence->dtStart());
-        if (dt.isValid()) {
-            incidence->setDtStart(dt);
-        }
-        if (incidence->type() == KCalendarCore::Incidence::TypeEvent) {
-            auto event = reinterpret_cast<KCalendarCore::Event *>(incidence.data());
-            dt = event->dtEnd();
-            if (dt.isValid()) {
-                event->setDtEnd(dt);
-            }
-        }
-        dt = incidence->recurrenceId();
-        if (dt.isValid()) {
-            incidence->setRecurrenceId(dt);
-        }
-
-        // A cancelled occurrence leaves an empty slot that only the master can be
-        // stopped from generating; a moved one is delivered as an item of its own.
-        ewsPrepareForStorage(ewsItem, picked);
+        const KCalendarCore::Incidence::Ptr incidence = picked.incidence;
 
         itemIt->setPayload<KCalendarCore::Incidence::Ptr>(incidence);
 
