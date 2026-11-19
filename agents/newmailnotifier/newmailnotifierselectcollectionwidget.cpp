@@ -183,9 +183,8 @@ void NewMailNotifierSelectCollectionWidget::forceStatus(const QModelIndex &paren
 
 void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive()
 {
-    QHashIterator<Akonadi::Collection, bool> i(mNewMailNotifierProxyModel->notificationCollection());
-    while (i.hasNext()) {
-        i.next();
+    const QHash<Akonadi::Collection, bool> &notificationCollection = mNewMailNotifierProxyModel->notificationCollection();
+    for (auto i = notificationCollection.cbegin(), end = notificationCollection.cend(); i != end; ++i) {
         Akonadi::Collection collection = i.key();
         auto attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
         Akonadi::CollectionModifyJob *modifyJob = nullptr;

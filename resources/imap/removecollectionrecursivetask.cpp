@@ -63,21 +63,21 @@ void RemoveCollectionRecursiveTask::onMailBoxesReceived(const QList<KIMAP::MailB
     mFolderFound = true;
 
     // Now start the actual deletion work
-    mFolderIterator.reset(new QMultiMapIterator<int, KIMAP::MailBoxDescriptor>(foldersToDelete));
-    mFolderIterator->toBack(); // we start with largest nesting value first
+    mFoldersToDelete = std::move(foldersToDelete);
+    mFolderIterator = mFoldersToDelete.cend(); // we start with largest nesting value first
 
     deleteNextMailbox();
 }
 
 void RemoveCollectionRecursiveTask::deleteNextMailbox()
 {
-    if (!mFolderIterator->hasPrevious()) {
+    if (mFolderIterator == mFoldersToDelete.cbegin()) {
         changeProcessed(); // finish the job
         return;
     }
 
-    mFolderIterator->previous();
-    const KIMAP::MailBoxDescriptor &descriptor = mFolderIterator->value();
+    --mFolderIterator;
+    const KIMAP::MailBoxDescriptor &descriptor = mFolderIterator.value();
     qCDebug(IMAPRESOURCE_LOG) << descriptor.name;
 
     // first select the mailbox

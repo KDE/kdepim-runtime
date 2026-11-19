@@ -9,6 +9,8 @@
 
 #include "resourcetask.h"
 
+#include <QMultiMap>
+
 class RemoveCollectionRecursiveTask : public ResourceTask
 {
     Q_OBJECT
@@ -32,5 +34,6 @@ private:
     KIMAP::Session *mSession = nullptr;
     bool mFolderFound = false;
 
-    QScopedPointer<QMultiMapIterator<int, KIMAP::MailBoxDescriptor>> mFolderIterator;
+    QMultiMap<int, KIMAP::MailBoxDescriptor> mFoldersToDelete;
+    QMultiMap<int, KIMAP::MailBoxDescriptor>::const_iterator mFolderIterator;
 };

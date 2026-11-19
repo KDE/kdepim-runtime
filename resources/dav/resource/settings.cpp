@@ -95,11 +95,7 @@ Settings::Settings(const KSharedConfigPtr &config, Options options)
 
 Settings::~Settings()
 {
-    QMapIterator<QString, UrlConfiguration *> it(mUrls);
-    while (it.hasNext()) {
-        it.next();
-        delete it.value();
-    }
+    qDeleteAll(mUrls);
 }
 
 void Settings::cleanup()
@@ -392,10 +388,8 @@ void Settings::updateRemoteUrls()
     QStringList newUrls;
     newUrls.reserve(mUrls.count());
 
-    QMapIterator<QString, UrlConfiguration *> it(mUrls);
-    while (it.hasNext()) {
-        it.next();
-        newUrls << it.value()->serialize();
+    for (UrlConfiguration *urlConfig : std::as_const(mUrls)) {
+        newUrls << urlConfig->serialize();
     }
 
     setRemoteUrls(newUrls);

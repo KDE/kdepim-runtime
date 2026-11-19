@@ -51,12 +51,9 @@ User Users::lookupUid(qlonglong uid) const
 
 User Users::lookupEmail(const QString &email) const
 {
-    QMapIterator<qlonglong, User> it(mUsers);
-    while (it.hasNext()) {
-        it.next();
-
-        if (it.value().email() == email) {
-            return it.value();
+    for (const User &user : mUsers) {
+        if (user.email() == email) {
+            return user;
         }
     }
 
@@ -133,11 +130,8 @@ void Users::saveToCache()
     stream << (qulonglong)mUsers.count();
 
     // write uid, name and email address for each user
-    QMapIterator<qlonglong, User> it(mUsers);
-    while (it.hasNext()) {
-        it.next();
-
-        stream << it.value().uid() << it.value().name() << it.value().email();
+    for (const User &user : std::as_const(mUsers)) {
+        stream << user.uid() << user.name() << user.email();
     }
 }
 

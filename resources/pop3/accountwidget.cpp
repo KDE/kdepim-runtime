@@ -439,10 +439,9 @@ void AccountWidget::slotLeaveOnServerCountChanged(int value)
 
 void AccountWidget::checkHighest(QButtonGroup *btnGroup)
 {
-    QListIterator<QAbstractButton *> it(btnGroup->buttons());
-    it.toBack();
-    while (it.hasPrevious()) {
-        QAbstractButton *btn = it.previous();
+    const QList<QAbstractButton *> buttons = btnGroup->buttons();
+    for (auto it = buttons.crbegin(), end = buttons.crend(); it != end; ++it) {
+        QAbstractButton *btn = *it;
         if (btn && btn->isEnabled()) {
             btn->animateClick();
             return;

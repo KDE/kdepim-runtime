@@ -36,9 +36,7 @@ static Item::List itemsFromSpy(QSignalSpy *spy)
 {
     Item::List items;
 
-    QListIterator<QList<QVariant>> it(*spy);
-    while (it.hasNext()) {
-        const QList<QVariant> invocation = it.next();
+    for (const QList<QVariant> &invocation : std::as_const(*spy)) {
         Q_ASSERT(invocation.count() == 1);
 
         items << invocation.first().value<Item::List>();

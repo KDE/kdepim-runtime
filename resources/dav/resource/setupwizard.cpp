@@ -343,9 +343,7 @@ ServerTypePage::ServerTypePage(QWidget *parent)
         offers.append({provider.readName(), fileName, provider.readIcon()});
     }
     std::sort(offers.begin(), offers.end(), compareServiceOffers);
-    QListIterator<ProviderInfo> it(offers);
-    while (it.hasNext()) {
-        ProviderInfo p = it.next();
+    for (const ProviderInfo &p : std::as_const(offers)) {
         mProvidersCombo->addItem(QIcon::fromTheme(p.readIcon), p.readName, p.fileName);
     }
     registerField(QStringLiteral("provider"), mProvidersCombo, "currentText");

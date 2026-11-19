@@ -27,9 +27,7 @@ static Collection::List collectionsFromSpy(const std::unique_ptr<QSignalSpy> &sp
 {
     Collection::List collections;
 
-    QListIterator<QList<QVariant>> it(*spy);
-    while (it.hasNext()) {
-        const QList<QVariant> invocation = it.next();
+    for (const QList<QVariant> &invocation : std::as_const(*spy)) {
         Q_ASSERT(invocation.count() == 1);
 
         collections << invocation.first().value<Collection::List>();
