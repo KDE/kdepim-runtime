@@ -7,6 +7,7 @@
 #include "ewsfetchitempayloadjob.h"
 
 #include <KLocalizedString>
+#include <QSet>
 
 #include "ewsitemhandler.h"
 
@@ -32,9 +33,26 @@ void EwsFetchItemPayloadJob::start()
         ids << EwsId(item.remoteId(), item.remoteRevision());
     }
 
+    // Properties that the handlers of the requested item types need besides the MIME content.
+    QSet<EwsItemType> types;
+    for (const Item &item : std::as_const(mItems)) {
+        types.insert(EwsItemHandler::mimeToItemType(item.mimeType()));
+    }
+    QList<EwsPropertyField> properties{EwsPropertyField(QStringLiteral("item:MimeContent"))};
+    for (const EwsItemType type : std::as_const(types)) {
+        if (EwsItemHandler *handler = (type != EwsItemTypeItem) ? EwsItemHandler::itemHandler(type) : nullptr) {
+            const auto handlerProperties = handler->payloadProperties();
+            for (const EwsPropertyField &property : handlerProperties) {
+                if (!properties.contains(property)) {
+                    properties.append(property);
+                }
+            }
+        }
+    }
+
     mChunkedJob.setItems(ids);
     mChunkedJob.start(
-        [this](const EwsId::List::const_iterator &firstId, const EwsId::List::const_iterator &lastId) {
+        [this, properties](const EwsId::List::const_iterator &firstId, const EwsId::List::const_iterator &lastId) {
             auto req = new EwsGetItemRequest(mClient, this);
             EwsId::List ids;
             for (auto it = firstId; it != lastId; ++it) {
@@ -42,7 +60,9 @@ void EwsFetchItemPayloadJob::start()
             }
             req->setItemIds(ids);
             EwsItemShape shape(EwsShapeIdOnly);
-            shape << EwsPropertyField(QStringLiteral("item:MimeContent"));
+            for (const EwsPropertyField &property : properties) {
+                shape << property;
+            }
             req->setItemShape(shape);
             return req;
         },
@@ -100,10 +120,12 @@ void EwsFetchItemPayloadJob::itemFetchFinished(bool success, const QString & /*e
             return;
         }
         if (!EwsItemHandler::itemHandler(type)->setItemPayload(*it, ewsItem)) {
-            qCWarningNC(EWSRES_AGENTIF_LOG) << "retrieveItems: Failed to fetch item payload";
-            setErrorText(i18nc("@info:status", "Failed to fetch item payload"));
-            emitResult();
-            return;
+            /* Leave the item out instead of failing the whole request, which would block the
+             * retrieval of the other items requested along with it. The item stays without
+             * payload. */
+            qCWarningNC(EWSRES_AGENTIF_LOG) << QStringLiteral("retrieveItems: Failed to set the payload of item %1 - skipping").arg(ewsHash(id.id()));
+            it = mItems.erase(it);
+            continue;
         }
         ++it;
     }

@@ -10,6 +10,7 @@
 #include <QHash>
 
 #include "ewsfetchitemdetailjob.h"
+#include "ewsoccurrenceexclusions.h"
 
 class EwsFetchCalendarDetailJob : public EwsFetchItemDetailJob
 {
@@ -17,6 +18,13 @@ class EwsFetchCalendarDetailJob : public EwsFetchItemDetailJob
 public:
     EwsFetchCalendarDetailJob(EwsClient &client, QObject *parent, const Akonadi::Collection &collection);
     ~EwsFetchCalendarDetailJob() override;
+
+    /**
+      Converts the calendar data of @p item into the incidence to store. The item has to
+      hold MimeContent and, for the exclusions of a series, DeletedOccurrences and
+      ModifiedOccurrences. The incidence is null if the data cannot be parsed.
+     */
+    static EwsCalendarIncidence incidenceFromItem(const EwsItem &item);
 
 protected:
     void processItems(const EwsGetItemRequest::Response::List &responses) override;
