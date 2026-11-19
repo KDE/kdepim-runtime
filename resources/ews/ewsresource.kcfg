@@ -78,5 +78,8 @@
     <entry name="FolderSyncState" type="String" />
     <entry name="EventSubscriptionId" type="String" />
     <entry name="EventSubscriptionWatermark" type="String" />
+    <entry name="PayloadRepairedCollections" type="IntList">
+      <label>Calendar folders synchronized once in full to fetch items stored without payload by earlier versions</label>
+    </entry>
   </group>
 </kcfg>

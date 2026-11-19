@@ -66,6 +66,9 @@ public:
 
     void setQueuedUpdates(const QueuedUpdateList &updates);
 
+    /// Whether a full sync of this folder fetches items without payload again, see isPayloadMissing().
+    static bool repairsMissingPayload(const Akonadi::Collection &collection);
+
     void start() override;
 private Q_SLOTS:
     void localItemFetchDone(KJob *job);
@@ -79,6 +82,7 @@ Q_SIGNALS:
 
 private:
     void compareItemLists();
+    bool isPayloadMissing(const Akonadi::Item &item, EwsItemType type) const;
     void syncTags();
     bool processIncrementalRemoteItemUpdates(const EwsItem::List &items,
                                              QHash<QString, Akonadi::Item> &itemHash,
@@ -103,6 +107,7 @@ private:
     unsigned mTotalItemsFetched;
     QString mSyncState;
     bool mFullSync;
+    const bool mRepairMissingPayload;
     QueuedUpdateHash mQueuedUpdates;
     EwsTagStore *mTagStore = nullptr;
     bool mTagsSynced;
