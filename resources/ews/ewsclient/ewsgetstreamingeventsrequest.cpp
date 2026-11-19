@@ -17,7 +17,7 @@ static constexpr auto respChunkTimeout = 250ms;
 
 EwsGetStreamingEventsRequest::EwsGetStreamingEventsRequest(EwsClient &client, QObject *parent)
     : EwsEventRequestBase(client, QStringLiteral("GetStreamingEvents"), parent)
-    , mTimeout(30s)
+    , mTimeout(30min)
     , mRespTimer(this)
 {
     mRespTimer.setInterval(respChunkTimeout);

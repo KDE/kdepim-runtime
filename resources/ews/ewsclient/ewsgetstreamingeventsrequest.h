@@ -17,7 +17,7 @@ public:
     EwsGetStreamingEventsRequest(EwsClient &client, QObject *parent);
     ~EwsGetStreamingEventsRequest() override;
 
-    void setTimeout(std::chrono::seconds timeout)
+    void setTimeout(std::chrono::minutes timeout)
     {
         mTimeout = timeout;
     }
@@ -32,6 +32,7 @@ protected Q_SLOTS:
     void requestDataTimeout();
 
 protected:
-    std::chrono::seconds mTimeout;
+    // EWS expects the connection timeout in minutes, between 1 and 30.
+    std::chrono::minutes mTimeout;
     QTimer mRespTimer;
 };

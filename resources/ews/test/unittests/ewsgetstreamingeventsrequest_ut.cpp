@@ -117,13 +117,15 @@ void UtEwsGetStreamingEventsRequest::eventsWhileConnectionOpen()
     std::unique_ptr<EwsGetStreamingEventsRequest> req(new EwsGetStreamingEventsRequest(client, nullptr));
     req->setAutoDelete(false);
     req->setSubscriptionId(u"sub1"_s);
-    req->setTimeout(std::chrono::seconds(30 * 60));
+    req->setTimeout(std::chrono::minutes(30));
     QSignalSpy eventsSpy(req.get(), &EwsGetStreamingEventsRequest::eventsReceived);
     QSignalSpy resultSpy(req.get(), &KJob::result);
     req->start();
 
     QTRY_VERIFY(server.requestData.contains("</soap:Envelope>"));
     QVERIFY(server.requestData.contains("GetStreamingEvents"));
+    // The connection timeout is given in minutes.
+    QVERIFY(server.requestData.contains("ConnectionTimeout>30</"));
 
     server.writeResponseHeader();
     server.conn->write(chunk(streamingResponse(newMailNotification)));
