@@ -323,7 +323,16 @@ void EwsResource::connectionError()
 
 void EwsResource::retrieveItems(const Collection &collection)
 {
-    queueFetchItemsJob(collection, RetrieveItems, [this](EwsFetchItemsJob *fetchJob) {
+    /* Earlier versions stored calendar items without payload on change notifications. A full
+     * sync fetches these again, but an incremental one only lists changed items. Synchronize
+     * each calendar folder once in full to repair the existing ones. */
+    Collection col = collection;
+    if (EwsFetchItemsJob::repairsMissingPayload(col) && !mSettings->payloadRepairedCollections().contains(col.id())) {
+        qCDebugNC(EWSRES_LOG) << QStringLiteral("Synchronizing collection %1 in full once to fetch items without payload").arg(col.id());
+        col.addAttribute(new EwsSyncStateAttribute(QString()));
+    }
+
+    queueFetchItemsJob(col, RetrieveItems, [this](EwsFetchItemsJob *fetchJob) {
         auto col = fetchJob->collection();
         if (fetchJob->error()) {
             qCWarningNC(EWSRES_LOG) << QStringLiteral("Item fetch error:") << fetchJob->errorString() << fetchJob->error() << fetchJob->ewsResponseCode();
@@ -349,6 +358,13 @@ void EwsResource::retrieveItems(const Collection &collection)
         } else {
             saveCollectionSyncState(col, fetchJob->syncState());
             itemsRetrievedIncremental(fetchJob->newItems() + fetchJob->changedItems(), fetchJob->deletedItems());
+            if (EwsFetchItemsJob::repairsMissingPayload(col)) {
+                auto repaired = mSettings->payloadRepairedCollections();
+                if (!repaired.contains(col.id())) {
+                    repaired.append(static_cast<int>(col.id()));
+                    mSettings->setPayloadRepairedCollections(repaired);
+                }
+            }
         }
         saveState();
         mItemsToCheck.remove(fetchJob->collection().remoteId());

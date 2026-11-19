@@ -6,6 +6,7 @@
 
 #include "ewsfetchitemsjob.h"
 
+#include <KCalendarCore/Event>
 #include <KLocalizedString>
 
 #include <Akonadi/AgentBase>
@@ -87,6 +88,7 @@ EwsFetchItemsJob::EwsFetchItemsJob(const Collection &collection,
     , mTotalItemsFetched(0)
     , mSyncState(syncState)
     , mFullSync(syncState.isNull())
+    , mRepairMissingPayload(mFullSync && repairsMissingPayload(collection))
     , mTagStore(tagStore)
     , mTagsSynced(false)
 {
@@ -94,6 +96,21 @@ EwsFetchItemsJob::EwsFetchItemsJob(const Collection &collection,
 }
 
 EwsFetchItemsJob::~EwsFetchItemsJob() = default;
+
+bool EwsFetchItemsJob::repairsMissingPayload(const Collection &collection)
+{
+    // Of the item types other than mail, only calendar items get a payload so far.
+    return collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType());
+}
+
+/* Whether a local item has no payload, so that it has to be fetched even if its change key
+ * matches. This repairs calendar items that were stored without their payload, e.g., by
+ * earlier versions on change notifications. Only a full sync checks this: an incremental
+ * one lists changed items only, whose change key differs anyway. */
+bool EwsFetchItemsJob::isPayloadMissing(const Item &item, EwsItemType type) const
+{
+    return mRepairMissingPayload && (type == EwsItemTypeCalendarItem) && item.cachedPayloadParts().isEmpty();
+}
 
 void EwsFetchItemsJob::start()
 {
@@ -116,7 +133,9 @@ void EwsFetchItemsJob::start()
     auto itemJob = new ItemFetchJob(mCollection);
     ItemFetchScope itemScope;
     itemScope.setCacheOnly(true);
-    itemScope.fetchFullPayload(false);
+    // Only check which payload parts are cached, see isPayloadMissing().
+    itemScope.fetchFullPayload(mRepairMissingPayload);
+    itemScope.setCheckForCachedPayloadPartsOnly(mRepairMissingPayload);
     itemJob->setFetchScope(itemScope);
     connect(itemJob, &ItemFetchJob::result, this, &EwsFetchItemsJob::localItemFetchDone);
     addSubjob(itemJob);
@@ -336,7 +355,7 @@ void EwsFetchItemsJob::compareItemLists()
             Item &item = *it;
             /* In case of a full sync even unchanged items appear as new. Compare the change keys
              * to determine if a fetch is needed. */
-            if (item.remoteRevision() != id.changeKey()) {
+            if (item.remoteRevision() != id.changeKey() || isPayloadMissing(item, type)) {
                 item.clearPayload();
                 item.setRemoteRevision(id.changeKey());
                 if (!mTagStore->readEwsProperties(item, ewsItem, mTagsSynced)) {
