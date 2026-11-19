@@ -14,10 +14,7 @@
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/ItemCreateJob>
-#include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemFetchScope>
-#include <Akonadi/ItemModifyJob>
 #include <Akonadi/SpecialMailCollections>
 #include <KMime/Message>
 #include <KNotification>
@@ -1115,28 +1112,24 @@ void EwsResource::foldersModifiedCollectionSyncFinished(KJob *job)
         return;
     }
 
+    /* Synchronize the folder like any other sync request. Storing the changed items here
+     * directly lost their payload: a bulk ItemModifyJob does not store payloads, and new
+     * items ended up empty as well. As the stored sync state was advanced nevertheless,
+     * later syncs did not fetch these items again.
+     * Akonadi drops a sync request for a folder that is being synced right now, although
+     * that sync may have requested the changes from the server already. Request the sync
+     * through a custom task, which Akonadi runs only once the current task has finished. */
     auto fetchColJob = qobject_cast<CollectionFetchJob *>(job);
-    const auto collection = fetchColJob->collections().at(0);
-    queueFetchItemsJob(collection, SubscriptionSync, [this](EwsFetchItemsJob *fetchJob) {
-        auto collection = fetchJob->collection();
-        if (fetchJob->error()) {
-            qCWarningNC(EWSRES_LOG) << QStringLiteral("Item fetch error:") << fetchJob->errorString() << fetchJob->error();
-            synchronizeCollection(collection.id());
-        } else {
-            const auto newItems = fetchJob->newItems();
-            for (const auto &newItem : newItems) {
-                new ItemCreateJob(newItem, collection, this);
-            }
-            if (!fetchJob->changedItems().isEmpty()) {
-                new ItemModifyJob(fetchJob->changedItems());
-            }
-            if (!fetchJob->deletedItems().isEmpty()) {
-                new ItemDeleteJob(fetchJob->deletedItems());
-            }
-            saveCollectionSyncState(collection, fetchJob->syncState());
-            emitReadyStatus();
-        }
-    });
+    const auto collections = fetchColJob->collections();
+    for (const auto &collection : collections) {
+        scheduleCustomTask(this, "synchronizeModifiedCollection", collection.id());
+    }
+}
+
+void EwsResource::synchronizeModifiedCollection(const QVariant &collectionId)
+{
+    synchronizeCollection(collectionId.toLongLong());
+    taskDone();
 }
 
 void EwsResource::folderTreeModifiedEvent()

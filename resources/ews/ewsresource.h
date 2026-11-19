@@ -103,6 +103,7 @@ private Q_SLOTS:
     void delayedInit();
     void foldersModifiedEvent(const EwsId::List &folders);
     void foldersModifiedCollectionSyncFinished(KJob *job);
+    void synchronizeModifiedCollection(const QVariant &collectionId);
     void folderTreeModifiedEvent();
     void fullSyncRequestedEvent();
     void rootFolderFetchFinished(KJob *job);
@@ -138,7 +139,6 @@ private:
 
     enum QueuedFetchItemsJobType {
         RetrieveItems,
-        SubscriptionSync
     };
 
     void fetchSpecialFolders();
