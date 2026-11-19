@@ -22,6 +22,8 @@ EwsGetStreamingEventsRequest::EwsGetStreamingEventsRequest(EwsClient &client, QO
 {
     mRespTimer.setInterval(respChunkTimeout);
     connect(&mRespTimer, &QTimer::timeout, this, &EwsGetStreamingEventsRequest::requestDataTimeout);
+    // The final data is parsed when the request finishes.
+    connect(this, &KJob::result, &mRespTimer, &QTimer::stop);
 }
 
 EwsGetStreamingEventsRequest::~EwsGetStreamingEventsRequest() = default;
@@ -59,12 +61,11 @@ void EwsGetStreamingEventsRequest::start()
     doSend();
 }
 
-void EwsGetStreamingEventsRequest::requestProgress(KJob *job)
+void EwsGetStreamingEventsRequest::requestDataReceived()
 {
-    Q_UNUSED(job)
-
-    mRespTimer.stop();
-    qCDebug(EWSCLI_PROTO_LOG) << "progress" << job;
+    /* The server keeps the connection open and sends each notification as a
+     * separate SOAP document. Parse the data once no more has arrived for a
+     * short while, which means that the current document is complete. */
     mRespTimer.start();
 }
 
@@ -94,6 +95,7 @@ void EwsGetStreamingEventsRequest::requestDataTimeout()
         }
         emitResult();
     } else {
+        mResponseDataParsed = true;
         Q_EMIT eventsReceived(this);
     }
 

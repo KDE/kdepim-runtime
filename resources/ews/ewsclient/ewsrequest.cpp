@@ -100,13 +100,15 @@ void EwsRequest::prepare(const QString &body)
         job->setNTLM(username, password);
     }
     connect(job, &KJob::result, this, &EwsRequest::requestResult);
-    connect(job, &KJob::percentChanged, this, [this](KJob *job, unsigned long) {
-        requestProgress(job);
+    connect(job, &TransferJob::dataReceived, this, [this](const QByteArray &data) {
+        qCDebug(EWSCLI_PROTO_LOG) << "data" << data;
+        mResponseData += data;
+        requestDataReceived();
     });
     addSubjob(job);
 }
 
-void EwsRequest::requestProgress(KJob *)
+void EwsRequest::requestDataReceived()
 {
 }
 
@@ -118,7 +120,9 @@ void EwsRequest::requestResult(KJob *job)
     auto reply = trJob->reply();
     Q_ASSERT(reply);
 
-    mResponseData = trJob->reply()->readAll();
+    // Most of the response has usually been received through
+    // TransferJob::dataReceived() already, so append the rest.
+    mResponseData += trJob->reply()->readAll();
 
     if (EWSCLI_PROTO_LOG().isDebugEnabled()) {
         ewsLogDir.setAutoRemove(false);
@@ -151,6 +155,9 @@ void EwsRequest::requestResult(KJob *job)
     else if ((resp >= 300) && (resp != 500)) {
         setErrorMsg(QStringLiteral("Failed to process EWS request - HTTP code %1").arg(resp));
         setError(resp);
+    } else if (mResponseData.isEmpty() && mResponseDataParsed) {
+        /* The response has been parsed completely while it arrived, and the server closed
+         * it without sending anything more. This is the normal end of a streaming response. */
     } else {
         QXmlStreamReader reader(mResponseData);
         readResponse(reader);

@@ -19,6 +19,9 @@ TransferJob::TransferJob(const QNetworkRequest &request, const QByteArray &body)
 void TransferJob::start()
 {
     mReply.reset(qnam->post(mRequest, mBody));
+    connect(mReply.get(), &QNetworkReply::readyRead, this, [this] {
+        Q_EMIT dataReceived(mReply->readAll());
+    });
     connect(mReply.get(), &QNetworkReply::finished, this, [this] {
         emitResult();
     });

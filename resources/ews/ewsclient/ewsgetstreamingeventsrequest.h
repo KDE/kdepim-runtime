@@ -28,7 +28,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void eventsReceived(KJob *job);
 protected Q_SLOTS:
-    void requestProgress(KJob *job) override;
+    void requestDataReceived() override;
     void requestDataTimeout();
 
 protected:

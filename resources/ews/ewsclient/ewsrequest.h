@@ -78,9 +78,12 @@ protected:
     bool readResponse(QXmlStreamReader &reader);
 
     QByteArray mResponseData;
+    /// Whether parts of the response have been parsed while it arrived, see requestDataReceived().
+    bool mResponseDataParsed = false;
 protected Q_SLOTS:
     void requestResult(KJob *job);
-    virtual void requestProgress(KJob *job);
+    /// Called each time a chunk of the response has been appended to mResponseData.
+    virtual void requestDataReceived();
 
 private:
     bool readSoapBody(QXmlStreamReader &reader);
