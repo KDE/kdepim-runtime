@@ -153,6 +153,8 @@ private:
     int reconnectTimeout();
     void setUpAuth();
     void reauthNotificationDismissed(bool accepted);
+    /* Returns whether a failed change stays queued, so that it must not be canceled. */
+    bool postponeChange();
     void reauthenticate();
 
     static QString getCollectionSyncState(const Akonadi::Collection &col);
@@ -175,6 +177,8 @@ private:
     QString mPassword;
     QScopedPointer<EwsAbstractAuth> mAuth;
     AuthStage mAuthStage;
+    bool mWaitingForAuth = false;
+    bool mRequestAuthFailed = false;
     QPointer<KNotification> mReauthNotification;
 
     bool mTagsRetrieved = false;

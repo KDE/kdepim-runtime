@@ -605,6 +605,9 @@ void EwsResource::itemModifyFlagsRequestFinished(KJob *job)
 {
     if (job->error()) {
         qCWarning(EWSRES_AGENTIF_LOG) << "itemsFlagsChanged:" << job->errorString();
+        if (postponeChange()) {
+            return;
+        }
         cancelTask(i18nc("@info:status", "Failed to process item flags update request"));
         return;
     }
@@ -626,6 +629,9 @@ void EwsResource::itemChangeRequestFinished(KJob *job)
 {
     if (job->error()) {
         qCWarningNC(EWSRES_AGENTIF_LOG) << "itemChanged: " << job->errorString();
+        if (postponeChange()) {
+            return;
+        }
         cancelTask(i18nc("@info:status", "Failed to process item update request"));
         return;
     }
@@ -668,6 +674,9 @@ void EwsResource::itemMoveRequestFinished(KJob *job)
 {
     if (job->error()) {
         qCWarningNC(EWSRES_AGENTIF_LOG) << "itemsMoved: " << job->errorString();
+        if (postponeChange()) {
+            return;
+        }
         cancelTask(i18nc("@info:status", "Failed to process item move request"));
         return;
     }
@@ -775,6 +784,9 @@ void EwsResource::itemDeleteRequestFinished(KJob *job)
 {
     if (job->error()) {
         qCWarningNC(EWSRES_AGENTIF_LOG) << "itemsRemoved: " << job->errorString();
+        if (postponeChange()) {
+            return;
+        }
         cancelTask(i18nc("@info:status", "Failed to process item delete request"));
         return;
     }
@@ -845,6 +857,9 @@ void EwsResource::itemAdded(const Item &item, const Collection &collection)
 void EwsResource::itemCreateRequestFinished(KJob *job)
 {
     if (job->error()) {
+        if (postponeChange()) {
+            return;
+        }
         cancelTask(i18nc("@info:status", "Failed to process item create request"));
         return;
     }
@@ -891,6 +906,9 @@ void EwsResource::collectionAdded(const Collection &collection, const Collection
 void EwsResource::folderCreateRequestFinished(KJob *job)
 {
     if (job->error()) {
+        if (postponeChange()) {
+            return;
+        }
         cancelTask(i18nc("@info:status", "Failed to process folder create request"));
         return;
     }
@@ -932,6 +950,9 @@ void EwsResource::collectionMoved(const Collection &collection, const Collection
 void EwsResource::folderMoveRequestFinished(KJob *job)
 {
     if (job->error()) {
+        if (postponeChange()) {
+            return;
+        }
         cancelTask(i18nc("@info:status", "Failed to process folder move request"));
         return;
     }
@@ -983,6 +1004,9 @@ void EwsResource::collectionChanged(const Akonadi::Collection &collection)
 void EwsResource::folderUpdateRequestFinished(KJob *job)
 {
     if (job->error()) {
+        if (postponeChange()) {
+            return;
+        }
         cancelTask(i18nc("@info:status", "Failed to process folder update request"));
         return;
     }
@@ -1023,6 +1047,9 @@ void EwsResource::collectionRemoved(const Collection &collection)
 void EwsResource::folderDeleteRequestFinished(KJob *job)
 {
     if (job->error()) {
+        if (postponeChange()) {
+            return;
+        }
         cancelTask(i18nc("@info:status", "Failed to process folder delete request"));
         return;
     }
@@ -1274,15 +1301,37 @@ void EwsResource::saveState()
 void EwsResource::doSetOnline(bool online)
 {
     if (online) {
+        /* The authentication set up by reloadConfig() loads its credentials asynchronously, and
+         * requests fail until then. Start processing tasks only afterwards, in authSucceeded(), as
+         * a change that fails would otherwise be dropped. */
+        mWaitingForAuth = true;
         reloadConfig();
     } else {
+        mWaitingForAuth = false;
         mSubManager.reset(nullptr);
         // The connections may not survive going offline, e.g., on suspend, and a
         // request sent on a dead connection would hang until it times out.
         TransferJob::clearConnectionCache();
+        ResourceBase::doSetOnline(false);
     }
+}
 
-    ResourceBase::doSetOnline(online);
+bool EwsResource::postponeChange()
+{
+    if (!isOnline()) {
+        /* Going offline has returned the change to the queue. It is replayed once the resource
+         * is online again. */
+        qCDebugNC(EWSRES_AGENTIF_LOG) << "Postponing the change until the resource is online";
+        return true;
+    }
+    if (mRequestAuthFailed) {
+        /* Going offline returns the change to the queue, so that it is replayed after
+         * reauthentication instead of being dropped. */
+        qCDebugNC(EWSRES_AGENTIF_LOG) << "Postponing the change until the resource is authenticated";
+        setTemporaryOffline(reconnectTimeout());
+        return true;
+    }
+    return false;
 }
 
 int EwsResource::reconnectTimeout()
@@ -1310,6 +1359,9 @@ void EwsResource::itemsTagChangeFinished(KJob *job)
     emitReadyStatus();
 
     if (job->error()) {
+        if (postponeChange()) {
+            return;
+        }
         cancelTask(i18nc("@info:status", "Failed to process item tags update request"));
         return;
     }
@@ -1353,6 +1405,9 @@ void EwsResource::tagRemoved(const Tag &tag)
 void EwsResource::globalTagChangeFinished(KJob *job)
 {
     if (job->error()) {
+        if (postponeChange()) {
+            return;
+        }
         cancelTask(i18nc("@info:status", "Failed to process global tag update request"));
     } else {
         changeProcessed();
@@ -1385,6 +1440,10 @@ void EwsResource::setUpAuth()
     connect(auth, &EwsAbstractAuth::authSucceeded, this, &EwsResource::authSucceeded, Qt::QueuedConnection);
     connect(auth, &EwsAbstractAuth::authFailed, this, &EwsResource::authFailed, Qt::QueuedConnection);
     connect(auth, &EwsAbstractAuth::requestAuthFailed, this, &EwsResource::requestAuthFailed, Qt::QueuedConnection);
+    /* Record the failure right away, before the failed request reports its result. */
+    connect(auth, &EwsAbstractAuth::requestAuthFailed, this, [this]() {
+        mRequestAuthFailed = true;
+    });
 
     qCDebugNC(EWSRES_LOG) << QStringLiteral("Initializing authentication");
 
@@ -1395,11 +1454,23 @@ void EwsResource::setUpAuth()
 
 void EwsResource::authSucceeded()
 {
+    mRequestAuthFailed = false;
+
+    if (mWaitingForAuth) {
+        mWaitingForAuth = false;
+        ResourceBase::doSetOnline(true);
+    }
+
     if (mAuthStage != AuthIdle) {
         setOnline(true);
     }
 
     mAuthStage = AuthIdle;
+
+    if (mWaitingForAuth) {
+        /* Going online has set up a new authentication, which calls this again when ready. */
+        return;
+    }
 
     resetUrl();
 }
