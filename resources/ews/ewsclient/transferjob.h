@@ -28,6 +28,12 @@ public:
     /// Return the reply or null if the request wasn't sent.
     QNetworkReply *reply() const;
 
+Q_SIGNALS:
+    /// Emitted for each chunk of the response body as it arrives. The data is
+    /// consumed from the reply, so reply()->readAll() only returns what has
+    /// not been passed on by this signal yet.
+    void dataReceived(const QByteArray &data);
+
 private:
     QNetworkRequest mRequest;
     const QByteArray mBody;

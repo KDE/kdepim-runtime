@@ -59,3 +59,7 @@ akonadi_ews_add_ut(ewsattachment_ut)
 # while the ones above are not.
 akonadi_ews_add_ut(ewsoccurrenceexclusions_ut)
 target_link_libraries(ewsoccurrenceexclusions_ut KF6::CalendarCore)
+
+# Runs the request against a local QTcpServer, so it does not need the stub above.
+akonadi_ews_add_ut(ewsgetstreamingeventsrequest_ut)
+target_link_libraries(ewsgetstreamingeventsrequest_ut Qt::Network)
