@@ -74,6 +74,7 @@ public:
 
 protected:
     void doSetOnline(bool online) override;
+    void aboutToQuit() override;
 public Q_SLOTS:
     void configure(WId windowId) override;
     Q_SCRIPTABLE void clearCollectionSyncState(int collectionId);
