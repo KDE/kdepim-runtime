@@ -239,6 +239,7 @@ ecm_set_disabled_deprecation_versions(QT 6.12.0 KF 6.28.0
 
 option(USE_UNITY_CMAKE_SUPPORT "Use UNITY cmake support (speedup compile time)" OFF)
 add_definitions(-DQT_NO_CONTEXTLESS_CONNECT)
+add_definitions(-DQT_LEAN_HEADERS=2)
 set(COMPILE_WITH_UNITY_CMAKE_SUPPORT OFF)
 if(USE_UNITY_CMAKE_SUPPORT)
     set(COMPILE_WITH_UNITY_CMAKE_SUPPORT ON)
