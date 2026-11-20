@@ -138,6 +138,17 @@ EwsResource::~EwsResource()
     mSubManager.reset();
 }
 
+void EwsResource::aboutToQuit()
+{
+    /* The process exits only once no job is left, but the pending request for
+     * change notifications runs until the server closes it, which is up to
+     * 30 minutes for streaming notifications. Stop it, so that the resource
+     * does not get killed on shutdown. */
+    mSubManager.reset();
+
+    ResourceBase::aboutToQuit();
+}
+
 void EwsResource::delayedInit()
 {
     new EwsResourceAdaptor(this);
