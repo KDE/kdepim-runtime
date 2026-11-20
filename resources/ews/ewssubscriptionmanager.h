@@ -59,7 +59,7 @@ Q_SIGNALS:
     void connectionError();
 
 private:
-    void subscribeRequestFinished(KJob *job);
+    void subscribeRequestFinished(KJob *job, const EwsId::List &folders);
     void verifySubFoldersRequestFinished(KJob *job);
     void getEventsRequestFinished(KJob *job);
     void streamingEventsReceived(KJob *job);

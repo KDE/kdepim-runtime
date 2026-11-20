@@ -113,7 +113,9 @@ void EwsSubscriptionManager::setupSubscriptionReq(const EwsId::List &ids)
     }
     req->setFolderIds(ids);
     req->setAllFolders(false);
-    connect(req, &EwsRequest::result, this, &EwsSubscriptionManager::subscribeRequestFinished);
+    connect(req, &EwsRequest::result, this, [this, ids](KJob *job) {
+        subscribeRequestFinished(job, ids);
+    });
     req->start();
 }
 
@@ -133,7 +135,7 @@ void EwsSubscriptionManager::resetSubscription()
     setupSubscription();
 }
 
-void EwsSubscriptionManager::subscribeRequestFinished(KJob *job)
+void EwsSubscriptionManager::subscribeRequestFinished(KJob *job, const EwsId::List &folders)
 {
     if (!job->error()) {
         auto req = qobject_cast<EwsSubscribeRequest *>(job);
@@ -147,6 +149,14 @@ void EwsSubscriptionManager::subscribeRequestFinished(KJob *job)
                 mPollTimer.start();
             }
             mSettings->save();
+
+            /* A new subscription reports only the changes from now on. Changes
+             * made while there was none, e.g., while the resource was offline,
+             * would show up only with the next sync of their folder for another
+             * reason. Synchronize the subscribed folders once to pick them up.
+             * The folder tree is synchronized when the resource goes online. */
+            qCDebugNC(EWSRES_LOG) << QStringLiteral("New subscription - synchronizing the subscribed folders");
+            Q_EMIT foldersModified(folders);
         }
     } else {
         Q_EMIT connectionError();
