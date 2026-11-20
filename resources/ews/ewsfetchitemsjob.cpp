@@ -17,6 +17,7 @@
 #include "ewsfetchitemdetailjob.h"
 #include "ewsfinditemrequest.h"
 #include "ewsitemhandler.h"
+#include "ewsoccurrenceexclusions.h"
 #include "ewsresource.h"
 #include "ewsresource_debug.h"
 #include "ewssyncfolderitemsrequest.h"
@@ -27,6 +28,7 @@ using namespace Akonadi;
 
 static constexpr int listBatchSize = 100;
 static constexpr int fetchBatchSize = 50;
+static constexpr int occurrenceBatchSize = 100;
 
 /**
  * The fetch items job is processed in two stages.
@@ -171,7 +173,7 @@ void EwsFetchItemsJob::localItemFetchDone(KJob *job)
         mLocalItems = fetchJob->items();
         --mPendingJobs;
         if (mPendingJobs == 0) {
-            compareItemLists();
+            fetchModifiedOccurrences();
         }
     }
 }
@@ -225,7 +227,7 @@ void EwsFetchItemsJob::remoteItemFetchDone(KJob *job)
             mSyncState = itemReq->syncState();
             --mPendingJobs;
             if (mPendingJobs == 0) {
-                compareItemLists();
+                fetchModifiedOccurrences();
             }
         }
         const auto totalItems = mRemoteAddedItems.size() + mRemoteChangedItems.size() + mRemoteDeletedIds.size() + mRemoteFlagChangedIds.size();
@@ -269,7 +271,7 @@ void EwsFetchItemsJob::checkedItemsFetchFinished(KJob *job)
         }
         --mPendingJobs;
         if (mPendingJobs == 0) {
-            compareItemLists();
+            fetchModifiedOccurrences();
         }
     }
 }
@@ -311,6 +313,73 @@ bool EwsFetchItemsJob::processIncrementalRemoteItemUpdates(const EwsItem::List &
     return true;
 }
 
+void EwsFetchItemsJob::fetchModifiedOccurrences()
+{
+    /* The resource stores the modified occurrences of recurring calendar items as items of their
+     * own, but the folder listing contains only the series. On a full sync, which deletes the
+     * local items that are not listed, ask the server for the modified occurrences of all listed
+     * calendar items, so that the existing ones are kept and missing ones are fetched again. */
+    if (!mFullSync) {
+        compareItemLists();
+        return;
+    }
+
+    EwsId::List calendarIds;
+    for (const EwsItem &ewsItem : std::as_const(mRemoteAddedItems)) {
+        if (ewsItem.internalType() == EwsItemTypeCalendarItem) {
+            calendarIds.append(EwsId(ewsItem[EwsItemFieldItemId].value<EwsId>().id(), QString()));
+        }
+    }
+    if (calendarIds.isEmpty()) {
+        compareItemLists();
+        return;
+    }
+
+    qCDebugNC(EWSRES_LOG) << QStringLiteral("Fetching the modified occurrences of %1 calendar items").arg(calendarIds.size());
+    EwsItemShape shape(EwsShapeIdOnly);
+    shape << EwsPropertyField(QStringLiteral("calendar:ModifiedOccurrences"));
+    for (qsizetype i = 0; i < calendarIds.size(); i += occurrenceBatchSize) {
+        const EwsId::List ids = calendarIds.mid(i, occurrenceBatchSize);
+        auto req = new EwsGetItemRequest(mClient, this);
+        req->setItemIds(ids);
+        req->setItemShape(shape);
+        connect(req, &KJob::result, this, [this, ids](KJob *job) {
+            modifiedOccurrencesFetched(job, ids);
+        });
+        ++mPendingOccurrenceRequests;
+        req->start();
+    }
+}
+
+void EwsFetchItemsJob::modifiedOccurrencesFetched(KJob *job, const EwsId::List &ids)
+{
+    auto req = qobject_cast<EwsGetItemRequest *>(job);
+    if (!req || req->error() || req->responses().size() != ids.size()) {
+        qCWarningNC(EWSRES_LOG) << QStringLiteral("Failed to fetch modified occurrences - keeping unlisted calendar items");
+        mOccurrencesKnown = false;
+    } else {
+        /* The responses are in the order of the requested ids. */
+        auto it = ids.cbegin();
+        const auto responses = req->responses();
+        for (const EwsGetItemRequest::Response &resp : responses) {
+            if (resp.isSuccess()) {
+                const auto occurrences = ewsMovedOccurrences(resp.item());
+                for (const EwsMovedOccurrence &occurrence : occurrences) {
+                    mOccurrenceMasters.insert(occurrence.itemId.id(), it->id());
+                }
+            } else {
+                mOccurrencesKnown = false;
+            }
+            ++it;
+        }
+    }
+
+    if (--mPendingOccurrenceRequests == 0) {
+        qCDebugNC(EWSRES_LOG) << QStringLiteral("Found %1 modified occurrences").arg(mOccurrenceMasters.size());
+        compareItemLists();
+    }
+}
+
 void EwsFetchItemsJob::compareItemLists()
 {
     /* Begin stage 2 - determine list of new/changed items and fetch details about them. */
@@ -320,6 +389,14 @@ void EwsFetchItemsJob::compareItemLists()
     QHash<QString, Item> itemHash;
     for (const Item &item : std::as_const(mLocalItems)) {
         itemHash.insert(item.remoteId(), item);
+    }
+
+    /* Fetch a series again if one of its modified occurrences is missing locally. */
+    QSet<QString> incompleteSeries;
+    for (auto it = mOccurrenceMasters.cbegin(); it != mOccurrenceMasters.cend(); ++it) {
+        if (!itemHash.contains(it.key())) {
+            incompleteSeries.insert(it.value());
+        }
     }
 
     for (const EwsItem &ewsItem : std::as_const(mRemoteAddedItems)) {
@@ -354,7 +431,7 @@ void EwsFetchItemsJob::compareItemLists()
             Item &item = *it;
             /* In case of a full sync even unchanged items appear as new. Compare the change keys
              * to determine if a fetch is needed. */
-            if (item.remoteRevision() != id.changeKey() || isPayloadMissing(item, type)) {
+            if (item.remoteRevision() != id.changeKey() || isPayloadMissing(item, type) || incompleteSeries.contains(id.id())) {
                 item.clearPayload();
                 item.setRemoteRevision(id.changeKey());
                 if (!mTagStore->readEwsProperties(item, ewsItem, mTagsSynced)) {
@@ -373,9 +450,14 @@ void EwsFetchItemsJob::compareItemLists()
 
     if (mFullSync) {
         /* In case of a full sync all items that are still on the local item list do not exist
-         * remotely and need to be deleted locally. */
+         * remotely and need to be deleted locally, except for the modified occurrences of
+         * recurring calendar items, see fetchModifiedOccurrences(). */
         const QHash<QString, Item>::iterator end(itemHash.end());
+        const QString calendarMimeType = EwsItemHandler::itemHandler(EwsItemTypeCalendarItem)->mimeType();
         for (QHash<QString, Item>::iterator it = itemHash.begin(); it != end; ++it) {
+            if (mOccurrenceMasters.contains(it.key()) || (!mOccurrencesKnown && it->mimeType() == calendarMimeType)) {
+                continue;
+            }
             mDeletedItems.append(it.value());
         }
     } else {

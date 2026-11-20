@@ -8,6 +8,8 @@
 
 #include <Akonadi/Item>
 
+#include <QSet>
+
 #include "ewsitem.h"
 #include "ewsjob.h"
 
@@ -75,12 +77,14 @@ private Q_SLOTS:
     void remoteItemFetchDone(KJob *job);
     void itemDetailFetchDone(KJob *job);
     void checkedItemsFetchFinished(KJob *job);
+    void modifiedOccurrencesFetched(KJob *job, const EwsId::List &ids);
     void tagSyncFinished(KJob *job);
 Q_SIGNALS:
     void reportStatus(int status, const QString &message = QString());
     void reportPercent(ulong progress);
 
 private:
+    void fetchModifiedOccurrences();
     void compareItemLists();
     bool isPayloadMissing(const Akonadi::Item &item, EwsItemType type) const;
     void syncTags();
@@ -111,6 +115,10 @@ private:
     QueuedUpdateHash mQueuedUpdates;
     EwsTagStore *mTagStore = nullptr;
     bool mTagsSynced;
+    // Modified occurrences of the listed calendar items on a full sync: occurrence id -> series id.
+    QHash<QString, QString> mOccurrenceMasters;
+    bool mOccurrencesKnown = true;
+    int mPendingOccurrenceRequests = 0;
 
     Akonadi::Item::List mNewItems;
     Akonadi::Item::List mChangedItems;
