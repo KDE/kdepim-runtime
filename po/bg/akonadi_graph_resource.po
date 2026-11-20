@@ -1,0 +1,233 @@
+# Copyright (C) 2026 This file is copyright:
+# This file is distributed under the same license as the kdepim-runtime package.
+#
+# SPDX-FileCopyrightText: 2026 Mincho Kondarev <mkondarev@yahoo.de>
+msgid ""
+msgstr ""
+"Project-Id-Version: kdepim-runtime\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"PO-Revision-Date: 2026-11-19 22:03+0100\n"
+"Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
+"Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
+"Language: bg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 26.08.3\n"
+
+#: graphclient/auth/graphoauth.cpp:137
+#, kde-format
+msgid "OAuth2: cannot listen on localhost (no free port?)"
+msgstr "OAuth2: невъзможно е слушане на localhost (няма свободен порт?)"
+
+#: graphclient/auth/graphoauth.cpp:166
+#, kde-format
+msgid "OAuth2 request failed"
+msgstr "Грешка при заявка за OAuth2"
+
+#: graphclient/graphrequest.cpp:70
+#, kde-format
+msgid "Not authenticated with Microsoft 365 yet"
+msgstr "Още не е извършена идентификация с Microsoft 365"
+
+#: graphclient/graphrequest.cpp:198
+#, kde-format
+msgctxt ""
+"%1 is the server error message, %2 the HTTP status code, %3 the server error "
+"code"
+msgid "%1 (HTTP %2, %3)"
+msgstr "%1 (HTTP %2, %3)"
+
+#: graphconfig.cpp:45
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Account name:"
+msgstr "Име на профила:"
+
+#: graphconfig.cpp:48
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Email / UPN:"
+msgstr "Имейл / UPN:"
+
+#: graphconfig.cpp:51
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Azure tenant:"
+msgstr "Наемател в Azure:"
+
+#: graphconfig.cpp:53
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Application (client) ID:"
+msgstr "ID на приложението (клиента):"
+
+#: graphconfig.cpp:56
+#, kde-format
+msgctxt "@item:valuesuffix minutes"
+msgid " min"
+msgstr " мин"
+
+#: graphconfig.cpp:57
+#, kde-format
+msgctxt "@label:spinbox"
+msgid "Check for new mail every:"
+msgstr "Проверка за нова поща на всеки:"
+
+#: graphconfig.cpp:59
+#, kde-format
+msgctxt "@info"
+msgid "Changing the tenant or client id requires signing in again."
+msgstr ""
+"Промяната на идентификатора на наемателя или клиента изисква повторно "
+"влизане."
+
+#: graphmtaresource.cpp:79
+#, kde-format
+msgid "Unable to connect to master Microsoft 365 (Graph) resource"
+msgstr "Невъзможно е свързване с основния ресурс на Microsoft 365 (Graph)"
+
+#: graphmtaresource.cpp:88
+#, kde-format
+msgid "Message to be sent has no MIME payload"
+msgstr "Съобщението за изпращане няма MIME съдържание"
+
+#: graphresource.cpp:167
+#, kde-format
+msgctxt "@info:status"
+msgid "Authenticating with Microsoft 365"
+msgstr "Автентикация с Microsoft 365"
+
+#: graphresource.cpp:181
+#, kde-format
+msgctxt "@info:status"
+msgid "Migrating item identifiers"
+msgstr "Миграция на идентификатори на елементи"
+
+#: graphresource.cpp:186
+#, kde-format
+msgctxt "@info:status"
+msgid "Failed to migrate item identifiers: %1"
+msgstr "Грешка при миграция на идентификаторите на елементите: %1"
+
+#: graphresource.cpp:204
+#, kde-format
+msgctxt "@info:status"
+msgid "Ready"
+msgstr "Готово"
+
+#: graphresource.cpp:222
+#, kde-format
+msgctxt "@info:status"
+msgid "Authentication failed: %1"
+msgstr "Грешка при удостоверяването: %1"
+
+#: graphresource.cpp:294 graphresource.cpp:551
+#, kde-format
+msgid "Waiting for the item identifier migration to finish"
+msgstr ""
+"Очакване за приключване на миграцията на идентификаторите на елементите"
+
+#: graphresource.cpp:380
+#, kde-format
+msgctxt "@item mail folder"
+msgid "Contacts"
+msgstr "Контакти"
+
+#: graphresource.cpp:732 graphresource.cpp:759
+#, kde-format
+msgid "The requested items no longer exist"
+msgstr "Заявените елементи вече не съществуват"
+
+#: graphresource.cpp:1031
+#, kde-format
+msgid "Cannot move task %1: no payload"
+msgstr "Не може да се премести задача %1: липсва полезен товар"
+
+#: graphresource.cpp:1039
+#, kde-format
+msgid "Cannot move event %1: no payload"
+msgstr "Не може да се премести събитието %1: липсва полезен товар"
+
+#: graphresource.cpp:1154
+#, kde-format
+msgid "Moving contacts between folders is not supported"
+msgstr "Преместването на контакти между папки не се поддържа"
+
+#. i18n: ectx: label, entry (Email), group (General)
+#: graphresource.kcfg:10
+#, kde-format
+msgid "Primary email / UPN of the Microsoft 365 account."
+msgstr "Основен имейл / UPN на акаунта в Microsoft 365."
+
+#. i18n: ectx: label, entry (TenantId), group (General)
+#: graphresource.kcfg:13
+#, kde-format
+msgid ""
+"Azure AD tenant: \"common\", \"organizations\", \"consumers\" or a tenant "
+"GUID."
+msgstr ""
+"Наемател в Azure AD: „common“, „organizations“, „consumers“ или GUID на "
+"наемателя."
+
+#. i18n: ectx: label, entry (ClientId), group (General)
+#: graphresource.kcfg:17
+#, kde-format
+msgid ""
+"Azure app registration Application (client) ID. Configure your own in the "
+"account dialog — see README.md / docs."
+msgstr ""
+"Идентификатор на приложението (клиент) за регистрация в Azure. Конфигуриране "
+"в диалоговия прозорец за акаунт — вижте README.md / документация."
+
+#. i18n: ectx: label, entry (FolderDeltaLink), group (General)
+#: graphresource.kcfg:20
+#, kde-format
+msgid "Persisted top-level mailFolders @odata.deltaLink (sync state)."
+msgstr ""
+"Запазена връзка към промените (@odata.deltaLink) за пощенските папки от най-"
+"горно ниво (състояние на синхронизацията)."
+
+#. i18n: ectx: label, entry (PollInterval), group (General)
+#: graphresource.kcfg:23
+#, kde-format
+msgid "Delta poll interval in minutes (no push on Graph for desktop)."
+msgstr ""
+"Интервал в минути за проверка за промени (без известия от Graph за настолни "
+"приложения)."
+
+#. i18n: ectx: label, entry (ImmutableIdsMigrated), group (General)
+#: graphresource.kcfg:27
+#, kde-format
+msgid "Whether stored remoteIds have been migrated to Graph immutable ids."
+msgstr ""
+"Съхранените отдалечени идентификатори (remoteIds) са мигрирани към "
+"неизменяеми идентификатори на Graph."
+
+#: jobs/graphbatchjob.cpp:138
+#, kde-format
+msgid "The server did not answer this request"
+msgstr "Сървърът не отговори на тази заявка"
+
+#: jobs/graphbatchjob.cpp:171
+#, kde-format
+msgid "HTTP %1"
+msgstr "HTTP %1"
+
+#: jobs/graphbatchjob.cpp:193
+#, kde-format
+msgctxt "%1 and %2 are counts, %3 the server error message"
+msgid "%1 of %2 requests failed, first error: %3"
+msgstr "%1 от %2 заявки не бяха успешни, първа грешка: %3"
+
+#: jobs/graphfetchfoldersjob.cpp:48
+#, kde-format
+msgid "Could not resolve the mailbox root folder"
+msgstr "Неуспешно разрешаване на основната папка на пощенската кутия"
+
+#: jobs/graphfetchitempayloadjob.cpp:75
+#, kde-format
+msgid "Failed to fetch the content of message %1 (HTTP %2)"
+msgstr "Грешка при извличане на съдържанието на съобщение %1 (HTTP %2)"

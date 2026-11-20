@@ -80,9 +80,3 @@ msgstr "Периодично актуализиране на файла."
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "Интервал на автоматично обновяване в минути."
-
-#~ msgid "Whether the activities support of the agent is enabled"
-#~ msgstr "Разрешаване на поддръжката на дейности от агента"
-
-#~ msgid "The activities of the agent"
-#~ msgstr "Дейности на агента"

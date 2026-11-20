@@ -340,9 +340,3 @@ msgstr "Заключващ файл"
 #, kde-format
 msgid "Number of deleted messages before a purge is started."
 msgstr "Брой на изтритите съобщения, преди да се започне прочистване."
-
-#~ msgid "Whether the activities support of the agent is enabled"
-#~ msgstr "Активиране на поддръжката на дейности от агента"
-
-#~ msgid "The activities of the agent"
-#~ msgstr "Дейности на агента"
