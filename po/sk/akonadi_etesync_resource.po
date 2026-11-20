@@ -28,18 +28,16 @@ msgid "Etebase error when initializing client: %1"
 msgstr "Chyba Etebase pri inicializácii klienta: %1"
 
 #: etesyncclientstate.cpp:139
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Unable to read password: %1"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unable to store encryption key: %1"
-msgstr "Zlyhalo vymazanie úlohy: %1"
+msgstr "Šifrovací kľúč sa nepodarilo uložiť: %1"
 
 #: etesyncclientstate.cpp:148
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to save account to cache: %1"
-msgstr ""
+msgstr "Účet sa nepodarilo uložiť do vyrovnávacej pamäte: %1"
 
 #: etesyncclientstate.cpp:178
 #, kde-format

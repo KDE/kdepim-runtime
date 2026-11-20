@@ -1207,9 +1207,3 @@ msgstr "Търсене:"
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "&Само абонирани"
-
-#~ msgid "Whether the activities support of the agent is enabled"
-#~ msgstr "Дали поддръжката на дейностите на агента е разрешена"
-
-#~ msgid "The activities of the agent"
-#~ msgstr "Дейности на агента"
