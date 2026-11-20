@@ -7,6 +7,7 @@
 #pragma once
 
 #include <Akonadi/ResourceBase>
+#include <QMap>
 
 class OpenXchangeResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {

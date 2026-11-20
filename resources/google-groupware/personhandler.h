@@ -11,6 +11,7 @@
 #include "generichandler.h"
 #include <KGAPI/People/Person>
 #include <KGAPI/Types>
+#include <QMap>
 
 class PersonHandler : public GenericHandler
 {

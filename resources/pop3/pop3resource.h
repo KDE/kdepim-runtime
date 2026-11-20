@@ -9,6 +9,7 @@
 class KJob;
 #include <Akonadi/ResourceWidgetBase>
 #include <KMime/Message>
+#include <QMap>
 #include <QSet>
 
 #include "settings.h"

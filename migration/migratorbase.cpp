@@ -14,6 +14,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QMap>
 #include <QStandardPaths>
 
 static QString messageTypeToString(MigratorBase::MessageType type)
