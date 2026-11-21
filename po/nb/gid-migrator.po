@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-21 01:12+0000\n"
 "PO-Revision-Date: 2014-09-23 21:46+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@nuug.no>\n"
@@ -40,83 +40,83 @@ msgstr ""
 msgid "Creating instance of type %1"
 msgstr "Oppretter instans av type %1"
 
-#: ../migratorbase.cpp:129
+#: ../migratorbase.cpp:130
 #, kde-format
 msgid "Missing Identifier"
 msgstr "Mangler identifikator"
 
-#: ../migratorbase.cpp:142
+#: ../migratorbase.cpp:143
 #, kde-format
 msgid "Failed to start migration because migrator is not ready"
 msgstr "Klarte ikke å starte migrering fordi migrator ikke er klar"
 
-#: ../migratorbase.cpp:148
+#: ../migratorbase.cpp:149
 #, fuzzy, kde-format
 msgid "Starting migration…"
 msgstr "Starter migrering …"
 
-#: ../migratorbase.cpp:190
+#: ../migratorbase.cpp:191
 #, kde-format
 msgid "Migration complete"
 msgstr "Migrering fullført"
 
-#: ../migratorbase.cpp:194
+#: ../migratorbase.cpp:195
 #, kde-format
 msgid "Migration aborted"
 msgstr "Migrering avbrutt"
 
-#: ../migratorbase.cpp:200
+#: ../migratorbase.cpp:201
 #, kde-format
 msgid "Migration failed"
 msgstr "Migrering mislyktes"
 
-#: ../migratorbase.cpp:204
+#: ../migratorbase.cpp:205
 #, kde-format
 msgid "Migration paused"
 msgstr "Migrering pauset"
 
-#: ../migratorbase.cpp:234
+#: ../migratorbase.cpp:235
 #, kde-format
 msgid "This migration has already been started once but was aborted"
 msgstr "Denne migreringen er allerede startet en gang, men ble avbrutt"
 
-#: ../migratorbase.cpp:271
+#: ../migratorbase.cpp:272
 #, kde-format
 msgctxt "@info:status"
 msgid "Not started"
 msgstr "Ikke startet"
 
-#: ../migratorbase.cpp:273
+#: ../migratorbase.cpp:274
 #, fuzzy, kde-format
 msgctxt "@info:status"
 msgid "Running…"
 msgstr "Kjører …"
 
-#: ../migratorbase.cpp:275
+#: ../migratorbase.cpp:276
 #, kde-format
 msgctxt "@info:status"
 msgid "Complete"
 msgstr "Fullført"
 
-#: ../migratorbase.cpp:277
+#: ../migratorbase.cpp:278
 #, kde-format
 msgctxt "@info:status"
 msgid "Aborted"
 msgstr "Avbrutt"
 
-#: ../migratorbase.cpp:279
+#: ../migratorbase.cpp:280
 #, kde-format
 msgctxt "@info:status"
 msgid "Paused"
 msgstr "Pauset"
 
-#: ../migratorbase.cpp:281
+#: ../migratorbase.cpp:282
 #, kde-format
 msgctxt "@info:status"
 msgid "Needs Update"
 msgstr "Trenger oppdatering"
 
-#: ../migratorbase.cpp:283
+#: ../migratorbase.cpp:284
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed"

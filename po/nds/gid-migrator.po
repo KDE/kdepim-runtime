@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-21 01:12+0000\n"
 "PO-Revision-Date: 2014-08-21 16:40+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -38,54 +38,54 @@ msgstr ""
 msgid "Creating instance of type %1"
 msgstr "Utgaav vun Typ \"%1\" warrt opstellt"
 
-#: ../migratorbase.cpp:129
+#: ../migratorbase.cpp:130
 #, kde-format
 msgid "Missing Identifier"
 msgstr "Beteker fehlt"
 
-#: ../migratorbase.cpp:142
+#: ../migratorbase.cpp:143
 #, kde-format
 msgid "Failed to start migration because migrator is not ready"
 msgstr "Ümwanneln lett sik nich starten, de Ümwannelhölper is nich praat"
 
-#: ../migratorbase.cpp:148
+#: ../migratorbase.cpp:149
 #, fuzzy, kde-format
 #| msgid "Starting migration..."
 msgid "Starting migration…"
 msgstr "Ümwanneln warrt start..."
 
-#: ../migratorbase.cpp:190
+#: ../migratorbase.cpp:191
 #, kde-format
 msgid "Migration complete"
 msgstr "Ümwanneln afslaten"
 
-#: ../migratorbase.cpp:194
+#: ../migratorbase.cpp:195
 #, kde-format
 msgid "Migration aborted"
 msgstr "Ümwanneln afbraken"
 
-#: ../migratorbase.cpp:200
+#: ../migratorbase.cpp:201
 #, kde-format
 msgid "Migration failed"
 msgstr "Ümwanneln fehlslaan"
 
-#: ../migratorbase.cpp:204
+#: ../migratorbase.cpp:205
 #, kde-format
 msgid "Migration paused"
 msgstr "Ümwanneln anhollen"
 
-#: ../migratorbase.cpp:234
+#: ../migratorbase.cpp:235
 #, kde-format
 msgid "This migration has already been started once but was aborted"
 msgstr "Du hest disse Ümwanneln al maal anfungen, man wedder afbraken"
 
-#: ../migratorbase.cpp:271
+#: ../migratorbase.cpp:272
 #, kde-format
 msgctxt "@info:status"
 msgid "Not started"
 msgstr "Nich anfungen"
 
-#: ../migratorbase.cpp:273
+#: ../migratorbase.cpp:274
 #, fuzzy, kde-format
 #| msgctxt "@info:status"
 #| msgid "Running..."
@@ -93,31 +93,31 @@ msgctxt "@info:status"
 msgid "Running…"
 msgstr "Löppt..."
 
-#: ../migratorbase.cpp:275
+#: ../migratorbase.cpp:276
 #, kde-format
 msgctxt "@info:status"
 msgid "Complete"
 msgstr "Afslaten"
 
-#: ../migratorbase.cpp:277
+#: ../migratorbase.cpp:278
 #, kde-format
 msgctxt "@info:status"
 msgid "Aborted"
 msgstr "Afbraken"
 
-#: ../migratorbase.cpp:279
+#: ../migratorbase.cpp:280
 #, kde-format
 msgctxt "@info:status"
 msgid "Paused"
 msgstr "Anhollen"
 
-#: ../migratorbase.cpp:281
+#: ../migratorbase.cpp:282
 #, kde-format
 msgctxt "@info:status"
 msgid "Needs Update"
 msgstr "Opfrischen nödig"
 
-#: ../migratorbase.cpp:283
+#: ../migratorbase.cpp:284
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed"

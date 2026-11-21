@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-21 01:12+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -38,83 +38,83 @@ msgstr "%p%"
 msgid "Creating instance of type %1"
 msgstr "正在创建 %1 类型的实例"
 
-#: ../migratorbase.cpp:129
+#: ../migratorbase.cpp:130
 #, kde-format
 msgid "Missing Identifier"
 msgstr "缺少标识符"
 
-#: ../migratorbase.cpp:142
+#: ../migratorbase.cpp:143
 #, kde-format
 msgid "Failed to start migration because migrator is not ready"
 msgstr "迁移器未准备就绪，迁移失败"
 
-#: ../migratorbase.cpp:148
+#: ../migratorbase.cpp:149
 #, kde-format
 msgid "Starting migration…"
 msgstr "开始迁移..."
 
-#: ../migratorbase.cpp:190
+#: ../migratorbase.cpp:191
 #, kde-format
 msgid "Migration complete"
 msgstr "迁移完成"
 
-#: ../migratorbase.cpp:194
+#: ../migratorbase.cpp:195
 #, kde-format
 msgid "Migration aborted"
 msgstr "迁移中止"
 
-#: ../migratorbase.cpp:200
+#: ../migratorbase.cpp:201
 #, kde-format
 msgid "Migration failed"
 msgstr "迁移失败"
 
-#: ../migratorbase.cpp:204
+#: ../migratorbase.cpp:205
 #, kde-format
 msgid "Migration paused"
 msgstr "迁移暂停"
 
-#: ../migratorbase.cpp:234
+#: ../migratorbase.cpp:235
 #, kde-format
 msgid "This migration has already been started once but was aborted"
 msgstr "之前进行过迁移，但是中途停止"
 
-#: ../migratorbase.cpp:271
+#: ../migratorbase.cpp:272
 #, kde-format
 msgctxt "@info:status"
 msgid "Not started"
 msgstr "未开始"
 
-#: ../migratorbase.cpp:273
+#: ../migratorbase.cpp:274
 #, kde-format
 msgctxt "@info:status"
 msgid "Running…"
 msgstr "运行中..."
 
-#: ../migratorbase.cpp:275
+#: ../migratorbase.cpp:276
 #, kde-format
 msgctxt "@info:status"
 msgid "Complete"
 msgstr "完成"
 
-#: ../migratorbase.cpp:277
+#: ../migratorbase.cpp:278
 #, kde-format
 msgctxt "@info:status"
 msgid "Aborted"
 msgstr "已中止"
 
-#: ../migratorbase.cpp:279
+#: ../migratorbase.cpp:280
 #, kde-format
 msgctxt "@info:status"
 msgid "Paused"
 msgstr "已暂停"
 
-#: ../migratorbase.cpp:281
+#: ../migratorbase.cpp:282
 #, kde-format
 msgctxt "@info:status"
 msgid "Needs Update"
 msgstr "需要更新"
 
-#: ../migratorbase.cpp:283
+#: ../migratorbase.cpp:284
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed"
