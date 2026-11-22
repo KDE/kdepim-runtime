@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-22 01:06+0000\n"
 "PO-Revision-Date: 2026-10-01 02:47+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -463,86 +463,86 @@ msgstr "群組伺服器"
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "選擇資源要設定的群組伺服器"
 
-#: setupwizard.cpp:359
+#: setupwizard.cpp:357
 #, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "使用這些伺服器其中一個："
 
-#: setupwizard.cpp:368
+#: setupwizard.cpp:366
 #, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "手動設定資源"
 
-#: setupwizard.cpp:403
+#: setupwizard.cpp:401
 #, kde-format
 msgid "Connection"
 msgstr "連線"
 
-#: setupwizard.cpp:404
+#: setupwizard.cpp:402
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "輸入群組伺服器的連線資訊"
 
-#: setupwizard.cpp:411
+#: setupwizard.cpp:409
 #, kde-format
 msgid "Host"
 msgstr "主機"
 
-#: setupwizard.cpp:414
+#: setupwizard.cpp:412
 #, kde-format
 msgid "Installation path"
 msgstr "安裝路徑"
 
-#: setupwizard.cpp:417
+#: setupwizard.cpp:415
 #, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "使用安全連線"
 
-#: setupwizard.cpp:445
+#: setupwizard.cpp:443
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "最終網址（CalDav）"
 
-#: setupwizard.cpp:450
+#: setupwizard.cpp:448
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "最終網址（CardDav）"
 
-#: setupwizard.cpp:455
+#: setupwizard.cpp:453
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "最終網址（GroupDav）"
 
-#: setupwizard.cpp:519
+#: setupwizard.cpp:517
 #, kde-format
 msgid "Test Connection"
 msgstr "測試連線"
 
-#: setupwizard.cpp:520
+#: setupwizard.cpp:518
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
 "current configuration"
 msgstr "您現在可以測試是否能以目前的設定存取群組伺服器"
 
-#: setupwizard.cpp:525
+#: setupwizard.cpp:523
 #, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "測試連線"
 
-#: setupwizard.cpp:565
+#: setupwizard.cpp:563
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "發生錯誤：%1"
 
-#: setupwizard.cpp:568
+#: setupwizard.cpp:566
 #, kde-format
 msgid "Connected successfully"
 msgstr "已成功連線"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-22 01:06+0000\n"
 "PO-Revision-Date: 2026-09-14 20:10+0200\n"
 "Last-Translator: Roman Paholík <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -465,68 +465,68 @@ msgstr "Groupware Server"
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "Vyberte groupware server, pre ktorý sa má nastaviť zdroj"
 
-#: setupwizard.cpp:359
+#: setupwizard.cpp:357
 #, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Použiť jeden z týchto serverov:"
 
-#: setupwizard.cpp:368
+#: setupwizard.cpp:366
 #, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Nastaviť zdroj ručne"
 
-#: setupwizard.cpp:403
+#: setupwizard.cpp:401
 #, kde-format
 msgid "Connection"
 msgstr "Spojenie"
 
-#: setupwizard.cpp:404
+#: setupwizard.cpp:402
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Zadajte informácie o pripojení pre groupware server"
 
-#: setupwizard.cpp:411
+#: setupwizard.cpp:409
 #, kde-format
 msgid "Host"
 msgstr "Hostiteľ"
 
-#: setupwizard.cpp:414
+#: setupwizard.cpp:412
 #, kde-format
 msgid "Installation path"
 msgstr "Inštalačná cesta"
 
-#: setupwizard.cpp:417
+#: setupwizard.cpp:415
 #, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Použiť bezpečné pripojenie"
 
-#: setupwizard.cpp:445
+#: setupwizard.cpp:443
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "Konečné URL (CalDav)"
 
-#: setupwizard.cpp:450
+#: setupwizard.cpp:448
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "Konečné URL (CardDav)"
 
-#: setupwizard.cpp:455
+#: setupwizard.cpp:453
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Konečné URL (GroupDav)"
 
-#: setupwizard.cpp:519
+#: setupwizard.cpp:517
 #, kde-format
 msgid "Test Connection"
 msgstr "Testovať pripojenie"
 
-#: setupwizard.cpp:520
+#: setupwizard.cpp:518
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -535,18 +535,18 @@ msgstr ""
 "Teraz môžete otestovať, či sa dá pristupovať na groupware server s aktuálnym "
 "nastavením"
 
-#: setupwizard.cpp:525
+#: setupwizard.cpp:523
 #, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Testovať pripojenie"
 
-#: setupwizard.cpp:565
+#: setupwizard.cpp:563
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Vyskytla sa chyba: %1"
 
-#: setupwizard.cpp:568
+#: setupwizard.cpp:566
 #, kde-format
 msgid "Connected successfully"
 msgstr "Úspešne pripojený"

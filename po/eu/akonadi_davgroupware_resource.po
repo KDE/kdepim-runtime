@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-22 01:06+0000\n"
 "PO-Revision-Date: 2026-07-27 05:35+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -474,68 +474,68 @@ msgid "Select the groupware server the resource shall be configured for"
 msgstr ""
 "Hautatu baliabidea zein talde-lanerako zerbitzarirako konfiguratu behar den"
 
-#: setupwizard.cpp:359
+#: setupwizard.cpp:357
 #, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Erabili zerbitzari horietako bat:"
 
-#: setupwizard.cpp:368
+#: setupwizard.cpp:366
 #, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Konfiguratu baliabidea eskuz"
 
-#: setupwizard.cpp:403
+#: setupwizard.cpp:401
 #, kde-format
 msgid "Connection"
 msgstr "Konexioa"
 
-#: setupwizard.cpp:404
+#: setupwizard.cpp:402
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Sartu talde-lanerako zerbitzarirako konexioaren informazioa"
 
-#: setupwizard.cpp:411
+#: setupwizard.cpp:409
 #, kde-format
 msgid "Host"
 msgstr "Ostalaria"
 
-#: setupwizard.cpp:414
+#: setupwizard.cpp:412
 #, kde-format
 msgid "Installation path"
 msgstr "Instalazioaren bide-izena"
 
-#: setupwizard.cpp:417
+#: setupwizard.cpp:415
 #, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Erabili konexio segurua"
 
-#: setupwizard.cpp:445
+#: setupwizard.cpp:443
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "Amaierako URLa (CalDav)"
 
-#: setupwizard.cpp:450
+#: setupwizard.cpp:448
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "Amaierako URLa (CardDav)"
 
-#: setupwizard.cpp:455
+#: setupwizard.cpp:453
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Amaierako URLa (GroupDav)"
 
-#: setupwizard.cpp:519
+#: setupwizard.cpp:517
 #, kde-format
 msgid "Test Connection"
 msgstr "Probako konexioa"
 
-#: setupwizard.cpp:520
+#: setupwizard.cpp:518
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -544,18 +544,18 @@ msgstr ""
 "Talde-lanerako zerbitzaria uneko konfigurazioarekin atzi daitekeen proba "
 "dezakezu orain"
 
-#: setupwizard.cpp:525
+#: setupwizard.cpp:523
 #, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Probako konexioa"
 
-#: setupwizard.cpp:565
+#: setupwizard.cpp:563
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Errore bat gertatu da: %1"
 
-#: setupwizard.cpp:568
+#: setupwizard.cpp:566
 #, kde-format
 msgid "Connected successfully"
 msgstr "Konexio arrakastatsua"

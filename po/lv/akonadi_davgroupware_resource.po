@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-22 01:06+0000\n"
 "PO-Revision-Date: 2025-09-26 16:21+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -473,68 +473,68 @@ msgstr "Grupprogrammatūras serveris"
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "Izvēlieties grupprogrammatūras serveri, kuram konfigurēt resursus"
 
-#: setupwizard.cpp:359
+#: setupwizard.cpp:357
 #, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Lietot kādu no šiem serveriem:"
 
-#: setupwizard.cpp:368
+#: setupwizard.cpp:366
 #, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Manuāli konfigurēt resursu"
 
-#: setupwizard.cpp:403
+#: setupwizard.cpp:401
 #, kde-format
 msgid "Connection"
 msgstr "Savienojums"
 
-#: setupwizard.cpp:404
+#: setupwizard.cpp:402
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Ievadiet informāciju par savienojumu ar grupprogrammatūras serveri"
 
-#: setupwizard.cpp:411
+#: setupwizard.cpp:409
 #, kde-format
 msgid "Host"
 msgstr "Resursdators"
 
-#: setupwizard.cpp:414
+#: setupwizard.cpp:412
 #, kde-format
 msgid "Installation path"
 msgstr "Instalācijas ceļš"
 
-#: setupwizard.cpp:417
+#: setupwizard.cpp:415
 #, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Lietot drošu savienojumu"
 
-#: setupwizard.cpp:445
+#: setupwizard.cpp:443
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "Beigu URL („CalDav“)"
 
-#: setupwizard.cpp:450
+#: setupwizard.cpp:448
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "Beigu URL („CardDav“)"
 
-#: setupwizard.cpp:455
+#: setupwizard.cpp:453
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Beigu URL („GroupDav“)"
 
-#: setupwizard.cpp:519
+#: setupwizard.cpp:517
 #, kde-format
 msgid "Test Connection"
 msgstr "Pārbaudīt savienojumu"
 
-#: setupwizard.cpp:520
+#: setupwizard.cpp:518
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -543,18 +543,18 @@ msgstr ""
 "Tagad varat pārbaudīt, vai grupprogrammatūras serverim var piekļūt ar "
 "pašreizējo konfigurāciju"
 
-#: setupwizard.cpp:525
+#: setupwizard.cpp:523
 #, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Pārbaudīt savienojumu"
 
-#: setupwizard.cpp:565
+#: setupwizard.cpp:563
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Radās kļūda: %1"
 
-#: setupwizard.cpp:568
+#: setupwizard.cpp:566
 #, kde-format
 msgid "Connected successfully"
 msgstr "Savienošanās izdevusies"

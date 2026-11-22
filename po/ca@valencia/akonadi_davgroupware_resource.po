@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-22 01:06+0000\n"
 "PO-Revision-Date: 2026-09-24 08:46+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -479,68 +479,68 @@ msgid "Select the groupware server the resource shall be configured for"
 msgstr ""
 "Trieu el servidor de treball en grup per al qual s'ha de configurar el recurs"
 
-#: setupwizard.cpp:359
+#: setupwizard.cpp:357
 #, kde-format
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Utilitza un d'estos servidors:"
 
-#: setupwizard.cpp:368
+#: setupwizard.cpp:366
 #, kde-format
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Configura el recurs manualment"
 
-#: setupwizard.cpp:403
+#: setupwizard.cpp:401
 #, kde-format
 msgid "Connection"
 msgstr "Connexió"
 
-#: setupwizard.cpp:404
+#: setupwizard.cpp:402
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Introduïu la informació de connexió per al servidor de treball en grup"
 
-#: setupwizard.cpp:411
+#: setupwizard.cpp:409
 #, kde-format
 msgid "Host"
 msgstr "Amfitrió"
 
-#: setupwizard.cpp:414
+#: setupwizard.cpp:412
 #, kde-format
 msgid "Installation path"
 msgstr "Camí d'instal·lació"
 
-#: setupwizard.cpp:417
+#: setupwizard.cpp:415
 #, kde-format
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Utilitza una connexió segura"
 
-#: setupwizard.cpp:445
+#: setupwizard.cpp:443
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "URL final (CalDav)"
 
-#: setupwizard.cpp:450
+#: setupwizard.cpp:448
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "URL final (CardDav)"
 
-#: setupwizard.cpp:455
+#: setupwizard.cpp:453
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "URL final (GroupDav)"
 
-#: setupwizard.cpp:519
+#: setupwizard.cpp:517
 #, kde-format
 msgid "Test Connection"
 msgstr "Prova de connexió"
 
-#: setupwizard.cpp:520
+#: setupwizard.cpp:518
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -549,18 +549,18 @@ msgstr ""
 "Ara podeu intentar si es pot accedir al servidor de treball en grup amb la "
 "configuració actual"
 
-#: setupwizard.cpp:525
+#: setupwizard.cpp:523
 #, kde-format
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Prova de connexió"
 
-#: setupwizard.cpp:565
+#: setupwizard.cpp:563
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "S'ha detectat un error: %1"
 
-#: setupwizard.cpp:568
+#: setupwizard.cpp:566
 #, kde-format
 msgid "Connected successfully"
 msgstr "S'ha connectat satisfactòriament"

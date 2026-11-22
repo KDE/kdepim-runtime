@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-22 01:06+0000\n"
 "PO-Revision-Date: 2020-04-20 11:34+0300\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -474,74 +474,74 @@ msgstr "Grupitöö server"
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "Vali grupitöö server, mille jaoks ressurssi seadistada"
 
-#: setupwizard.cpp:359
+#: setupwizard.cpp:357
 #, fuzzy, kde-format
 #| msgid "Use one of those servers:"
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Ühe järgnevatest serveritest kasutamine:"
 
-#: setupwizard.cpp:368
+#: setupwizard.cpp:366
 #, fuzzy, kde-format
 #| msgid "Configure the resource manually"
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Ressursi seadistamine käsitsi"
 
-#: setupwizard.cpp:403
+#: setupwizard.cpp:401
 #, kde-format
 msgid "Connection"
 msgstr "Ühendus"
 
-#: setupwizard.cpp:404
+#: setupwizard.cpp:402
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Grupitöö serveri ühenduse teave"
 
-#: setupwizard.cpp:411
+#: setupwizard.cpp:409
 #, kde-format
 msgid "Host"
 msgstr "Masin"
 
-#: setupwizard.cpp:414
+#: setupwizard.cpp:412
 #, kde-format
 msgid "Installation path"
 msgstr "Paigaldamise asukoht"
 
-#: setupwizard.cpp:417
+#: setupwizard.cpp:415
 #, fuzzy, kde-format
 #| msgid "Use secure connection"
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Turvalise ühenduse kasutamine"
 
-#: setupwizard.cpp:445
+#: setupwizard.cpp:443
 #, fuzzy, kde-format
 #| msgid "Final URL (CalDav)"
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "Lõplik URL (CalDav)"
 
-#: setupwizard.cpp:450
+#: setupwizard.cpp:448
 #, fuzzy, kde-format
 #| msgid "Final URL (CardDav)"
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "Lõplik URL (CardDav)"
 
-#: setupwizard.cpp:455
+#: setupwizard.cpp:453
 #, fuzzy, kde-format
 #| msgid "Final URL (GroupDav)"
 msgctxt "@label:textbox"
 msgid "Final URL (GroupDav)"
 msgstr "Lõplik URL (GroupDav)"
 
-#: setupwizard.cpp:519
+#: setupwizard.cpp:517
 #, kde-format
 msgid "Test Connection"
 msgstr "Ühenduse testimine"
 
-#: setupwizard.cpp:520
+#: setupwizard.cpp:518
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -550,19 +550,19 @@ msgstr ""
 "Nüüd saab testida, kas määratud seadistusega on võimalik grupitöö serverisse "
 "pääseda"
 
-#: setupwizard.cpp:525
+#: setupwizard.cpp:523
 #, fuzzy, kde-format
 #| msgid "Test Connection"
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Ühenduse testimine"
 
-#: setupwizard.cpp:565
+#: setupwizard.cpp:563
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Tekkis tõrge: %1"
 
-#: setupwizard.cpp:568
+#: setupwizard.cpp:566
 #, kde-format
 msgid "Connected successfully"
 msgstr "Ühendumine oli edukas"

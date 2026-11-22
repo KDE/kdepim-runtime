@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-10 00:58+0000\n"
+"POT-Creation-Date: 2026-11-22 01:06+0000\n"
 "PO-Revision-Date: 2017-01-22 23:51+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -487,62 +487,62 @@ msgstr "Grupverski server"
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "Izaberite grupverski server za koji treba podesiti resurs."
 
-#: setupwizard.cpp:359
+#: setupwizard.cpp:357
 #, fuzzy, kde-format
 #| msgid "Use one of those servers:"
 msgctxt "@option:radio"
 msgid "Use one of those servers:"
 msgstr "Koristi jedan od ovih servera:"
 
-#: setupwizard.cpp:368
+#: setupwizard.cpp:366
 #, fuzzy, kde-format
 #| msgid "Configure the resource manually"
 msgctxt "@option:radio"
 msgid "Configure the resource manually"
 msgstr "Podesi resurs ručno"
 
-#: setupwizard.cpp:403
+#: setupwizard.cpp:401
 #, kde-format
 msgid "Connection"
 msgstr "Povezivanje"
 
-#: setupwizard.cpp:404
+#: setupwizard.cpp:402
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Unesite podatke za povezivanje na grupverski server"
 
-#: setupwizard.cpp:411
+#: setupwizard.cpp:409
 #, kde-format
 msgid "Host"
 msgstr "Domaćin"
 
-#: setupwizard.cpp:414
+#: setupwizard.cpp:412
 #, kde-format
 msgid "Installation path"
 msgstr "Instalaciona putanja"
 
-#: setupwizard.cpp:417
+#: setupwizard.cpp:415
 #, fuzzy, kde-format
 #| msgid "Use secure connection"
 msgctxt "@option:check"
 msgid "Use secure connection"
 msgstr "Bezbedno povezivanje"
 
-#: setupwizard.cpp:445
+#: setupwizard.cpp:443
 #, fuzzy, kde-format
 #| msgid "Final URL (CalDav)"
 msgctxt "@label:textbox"
 msgid "Final URL (CalDav)"
 msgstr "Krajnji URL (CalDAV)"
 
-#: setupwizard.cpp:450
+#: setupwizard.cpp:448
 #, fuzzy, kde-format
 #| msgid "Final URL (CardDav)"
 msgctxt "@label:textbox"
 msgid "Final URL (CardDav)"
 msgstr "Krajnji URL (CardDAV)"
 
-#: setupwizard.cpp:455
+#: setupwizard.cpp:453
 #, fuzzy, kde-format
 #| msgid "Final URL (GroupDav)"
 msgctxt "@label:textbox"
@@ -551,12 +551,12 @@ msgstr "Krajnji URL (GroupDAV)"
 
 # >! Contexts.
 # >> @title:window
-#: setupwizard.cpp:519
+#: setupwizard.cpp:517
 #, kde-format
 msgid "Test Connection"
 msgstr "Isprobaj vezu"
 
-#: setupwizard.cpp:520
+#: setupwizard.cpp:518
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -567,19 +567,19 @@ msgstr ""
 
 # >! Contexts.
 # >> @title:window
-#: setupwizard.cpp:525
+#: setupwizard.cpp:523
 #, fuzzy, kde-format
 #| msgid "Test Connection"
 msgctxt "@action:button"
 msgid "Test Connection"
 msgstr "Isprobaj vezu"
 
-#: setupwizard.cpp:565
+#: setupwizard.cpp:563
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Došlo je do greške: %1"
 
-#: setupwizard.cpp:568
+#: setupwizard.cpp:566
 #, kde-format
 msgid "Connected successfully"
 msgstr "Uspešno povezivanje"
