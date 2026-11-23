@@ -91,7 +91,7 @@ void FakeEwsConnection::dataAvailable()
                 if (line.trimmed().mid(21) == "dGVzdDp0ZXN0") {
                     mAuthenticated = true;
                 }
-            } else if (line.toLower() == "connection: keep-alive\r\n") {
+            } else if (line.compare("connection: keep-alive\r\n", Qt::CaseInsensitive) == 0) {
                 mKeepAlive = true;
             }
         } while (!line.trimmed().isEmpty());
