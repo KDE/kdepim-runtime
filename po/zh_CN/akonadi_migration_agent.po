@@ -64,17 +64,17 @@ msgstr "状态"
 #: migrationstatuswidget.cpp:27
 #, kde-format
 msgid "Start"
-msgstr ""
+msgstr "开始"
 
 #: migrationstatuswidget.cpp:31
 #, kde-format
 msgid "Pause"
-msgstr ""
+msgstr "暂停"
 
 #: migrationstatuswidget.cpp:35
 #, kde-format
 msgid "Abort"
-msgstr ""
+msgstr "中止"
 
 #: migrationstatuswidget.cpp:97
 #, kde-format

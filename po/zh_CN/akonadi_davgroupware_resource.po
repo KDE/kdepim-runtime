@@ -208,10 +208,9 @@ msgid "Unable to remove collection: %1"
 msgstr "无法删除收藏：%1"
 
 #: davgroupwareresource.cpp:1154
-#, fuzzy, kde-format
-#| msgid "Unable to retrieve collections: %1"
+#, kde-format
 msgid "Unable to retrieve collection: %1"
-msgstr "无法获取收藏：%1"
+msgstr "无法获取集合：%1"
 
 #: davgroupwareresource.cpp:1169
 #, kde-format
@@ -612,15 +611,3 @@ msgstr "CardDav"
 #, kde-format
 msgid "GroupDav"
 msgstr "GroupDav"
-
-#~ msgid "Unable to delete item exceptions: %1"
-#~ msgstr "无法删除项目例外：%1"
-
-#~ msgid "Unable to fetch items: %1"
-#~ msgstr "无法获取项目：%1"
-
-#~ msgid "Unable to move item: %1"
-#~ msgstr "无法移动项目：%1"
-
-#~ msgid "Unable to create item during move: %1"
-#~ msgstr "无法在移动过程中创建项目：%1"

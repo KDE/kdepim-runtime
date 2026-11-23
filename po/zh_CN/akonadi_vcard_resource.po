@@ -69,6 +69,3 @@ msgstr "定期更新该文件。"
 #, kde-format
 msgid "Automatic update period in minutes."
 msgstr "自动更新周期 (以分钟为单位) 。"
-
-#~ msgid "Activities"
-#~ msgstr "活动"
