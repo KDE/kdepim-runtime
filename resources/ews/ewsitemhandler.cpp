@@ -35,10 +35,9 @@ EwsItemHandler *EwsItemHandler::itemHandler(EwsItemType type)
     if (it != handlers->end()) {
         return it->data();
     } else {
-        const HandlerList::const_iterator end(handlerFactories->cend());
-        for (HandlerList::const_iterator it = handlerFactories->cbegin(); it != end; ++it) {
-            if (it->type == type) {
-                EwsItemHandler *handler = it->factory();
+        for (const auto &factory : std::as_const(*handlerFactories)) {
+            if (factory.type == type) {
+                EwsItemHandler *handler = factory.factory();
                 (*handlers)[type].reset(handler);
                 return handler;
             }

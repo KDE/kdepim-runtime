@@ -341,7 +341,6 @@ void EwsFetchItemsJob::compareItemLists()
         if (it == itemHash.end()) {
             Item item(mimeType);
             item.setParentCollection(mCollection);
-            auto id = ewsItem[EwsItemFieldItemId].value<EwsId>();
             item.setRemoteId(id.id());
             item.setRemoteRevision(id.changeKey());
             if (!mTagStore->readEwsProperties(item, ewsItem, mTagsSynced)) {

@@ -85,8 +85,8 @@ void EwsFetchItemPayloadJob::itemFetchFinished(bool success, const QString & /*e
         return;
     }
 
-    const EwsGetItemRequest::Response &resp = mChunkedJob.responses()[0];
-    if (!resp.isSuccess()) {
+    const EwsGetItemRequest::Response &firstResp = mChunkedJob.responses()[0];
+    if (!firstResp.isSuccess()) {
         qCWarningNC(EWSRES_AGENTIF_LOG) << QStringLiteral("retrieveItems: Item fetch failed.");
         setErrorText(i18nc("@info:status", "Failed to retrieve items"));
         emitResult();
