@@ -1,7 +1,7 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 
-exclude: (^po/|.desktop|Messages.sh|^resources/mixedmaildir/autotests/data|^resources/mixedmaildir/kmindexreader/autotests/data|^resources/maildir/autotests/maildir/|^resources/maildir/autotests/|^resources/vcard/autotests/|^resources/ical/autotests/|.xq|.mbox)
+exclude: (^po/|.desktop|Messages.sh|^resources/mixedmaildir/autotests/data|^resources/mixedmaildir/kmindexreader/autotests/data|^resources/maildir/autotests/maildir/|^resources/maildir/autotests/|^resources/vcard/autotests/|^resources/ical/autotests/|.mbox)
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v6.0.0
