@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include <QSharedPointer>
-#include <QTimer>
-
 #include "ewseventrequestbase.h"
 #include "ewsid.h"
 #include "ewstypes.h"
@@ -32,10 +29,14 @@ Q_SIGNALS:
     void eventsReceived(KJob *job);
 protected Q_SLOTS:
     void requestDataReceived() override;
-    void requestDataTimeout();
 
 protected:
     // EWS expects the connection timeout in minutes, between 1 and 30.
     std::chrono::minutes mTimeout;
-    QTimer mRespTimer;
+
+private:
+    /// Returns the size in bytes of the first complete SOAP document in mResponseData, 0 if
+    /// none is complete yet, or -1 if the data is not well-formed XML.
+    qsizetype completeDocumentSize() const;
+    void dumpDocument(const QByteArray &document) const;
 };

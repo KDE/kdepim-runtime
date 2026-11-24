@@ -100,7 +100,135 @@ class UtEwsGetStreamingEventsRequest : public QObject
 private Q_SLOTS:
     void eventsWhileConnectionOpen();
     void endWithoutFinalDocument();
+    void twoDocumentsInOneChunk();
+    void documentSplitByPause();
+    void documentSplitInCharacter();
+
+private:
+    std::unique_ptr<EwsGetStreamingEventsRequest> startRequest(StreamingServer &server, EwsClient &client);
 };
+
+std::unique_ptr<EwsGetStreamingEventsRequest> UtEwsGetStreamingEventsRequest::startRequest(StreamingServer &server, EwsClient &client)
+{
+    client.setUrl(server.url());
+    // A finished job deletes itself, but the tests still use the request.
+    std::unique_ptr<EwsGetStreamingEventsRequest> req(new EwsGetStreamingEventsRequest(client, nullptr));
+    req->setAutoDelete(false);
+    req->setSubscriptionId(u"sub1"_s);
+    req->start();
+    if (!QTest::qWaitFor([&server]() {
+            return server.requestData.contains("</soap:Envelope>");
+        })) {
+        return nullptr;
+    }
+    server.writeResponseHeader();
+    return req;
+}
+
+namespace
+{
+QByteArray notification(const QByteArray &itemId, const QByteArray &folderId)
+{
+    return R"(<m:Notifications><m:Notification>)"
+           R"(<t:SubscriptionId>sub1</t:SubscriptionId>)"
+           R"(<t:ModifiedEvent>)"
+           R"(<t:TimeStamp>2026-11-19T10:00:00Z</t:TimeStamp>)"
+           R"(<t:ItemId Id=")"
+        + itemId
+        + R"(" ChangeKey="ck1" />)"
+          R"(<t:ParentFolderId Id=")"
+        + folderId
+        + R"(" ChangeKey="ck2" />)"
+          R"(</t:ModifiedEvent>)"
+          R"(</m:Notification></m:Notifications>)";
+}
+
+QStringList parentFolderIds(const EwsGetStreamingEventsRequest &req)
+{
+    QStringList ids;
+    for (const auto &resp : req.responses()) {
+        for (const auto &nfy : resp.notifications()) {
+            for (const auto &event : nfy.events()) {
+                ids.append(event.parentFolderId().id());
+            }
+        }
+    }
+    return ids;
+}
+}
+
+/* Two documents may arrive in one piece; both must be processed. */
+void UtEwsGetStreamingEventsRequest::twoDocumentsInOneChunk()
+{
+    StreamingServer server;
+    QVERIFY(server.listen());
+    EwsClient client;
+    auto req = startRequest(server, client);
+    QVERIFY(req);
+    QSignalSpy eventsSpy(req.get(), &EwsGetStreamingEventsRequest::eventsReceived);
+    QSignalSpy resultSpy(req.get(), &KJob::result);
+
+    server.conn->write(chunk(streamingResponse(notification("item1", "folder1")) + "\r\n" + streamingResponse(notification("item2", "folder2"))));
+    QTRY_COMPARE(parentFolderIds(*req), QStringList({u"folder1"_s, u"folder2"_s}));
+    QCOMPARE(resultSpy.count(), 0);
+    QVERIFY(eventsSpy.count() >= 1);
+}
+
+/* A document may arrive in pieces with a pause in between; it must be
+ * processed once it is complete, together with the following one. */
+void UtEwsGetStreamingEventsRequest::documentSplitByPause()
+{
+    StreamingServer server;
+    QVERIFY(server.listen());
+    EwsClient client;
+    auto req = startRequest(server, client);
+    QVERIFY(req);
+    QSignalSpy eventsSpy(req.get(), &EwsGetStreamingEventsRequest::eventsReceived);
+    QSignalSpy resultSpy(req.get(), &KJob::result);
+
+    const QByteArray first = streamingResponse(notification("item1", "folder1"));
+    const QByteArray second = streamingResponse(notification("item2", "folder2"));
+    const qsizetype half = first.size() / 2;
+
+    server.conn->write(chunk(first.left(half)));
+    QTest::qWait(500);
+    QCOMPARE(eventsSpy.count(), 0);
+    QCOMPARE(resultSpy.count(), 0);
+
+    server.conn->write(chunk(first.mid(half) + second));
+    QTRY_COMPARE(parentFolderIds(*req), QStringList({u"folder1"_s, u"folder2"_s}));
+    QCOMPARE(resultSpy.count(), 0);
+
+    // The server ends the response on the connection timeout.
+    while (!req->responses().isEmpty()) {
+        req->eventsProcessed(req->responses().first());
+    }
+    server.conn->write("0\r\n\r\n");
+    QTRY_COMPARE(resultSpy.count(), 1);
+    QCOMPARE(req->error(), 0);
+}
+
+/* A piece may end in the middle of a multibyte UTF-8 character. */
+void UtEwsGetStreamingEventsRequest::documentSplitInCharacter()
+{
+    StreamingServer server;
+    QVERIFY(server.listen());
+    EwsClient client;
+    auto req = startRequest(server, client);
+    QVERIFY(req);
+    QSignalSpy resultSpy(req.get(), &KJob::result);
+
+    const QByteArray folderId = u"Kalender-\u00e4\u20ac"_s.toUtf8();
+    const QByteArray first = streamingResponse(notification("item1", folderId));
+    const qsizetype split = first.indexOf(folderId) + folderId.size() - 2; // inside the euro sign
+    const QByteArray second = streamingResponse(notification("item2", "folder2"));
+
+    server.conn->write(chunk(first.left(split)));
+    QTest::qWait(100);
+    server.conn->write(chunk(first.mid(split) + second));
+    QTRY_COMPARE(parentFolderIds(*req), QStringList({QString::fromUtf8(folderId), u"folder2"_s}));
+    QCOMPARE(resultSpy.count(), 0);
+}
 
 /* Notifications have to be delivered while the server keeps the connection
  * open, not only once the response is complete, which happens after the
