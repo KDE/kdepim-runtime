@@ -112,14 +112,22 @@ void FakeEwsConnection::dataAvailable()
 
             if (!mAuthenticated) {
                 QString codeStr = responseCodes.value(401);
-                QString response(QStringLiteral("HTTP/1.1 %1 %2\r\n"
-                                                "WWW-Authenticate: Basic realm=\"Fake EWS Server\"\r\n"
-                                                "Connection: close\r\n"
-                                                "\r\n")
-                                     .arg(401)
-                                     .arg(codeStr));
-                response += codeStr;
-                mSock->write(response.toLatin1());
+                /* The body length is stated because Qt6 does not read a 401 body that ends
+                 * with the connection: without it the reply fails before the client can
+                 * retry with its credentials. */
+                const QByteArray body = codeStr.toUtf8();
+                QByteArray response = QStringLiteral(
+                                          "HTTP/1.1 %1 %2\r\n"
+                                          "WWW-Authenticate: Basic realm=\"Fake EWS Server\"\r\n"
+                                          "Content-Length: %3\r\n"
+                                          "Connection: close\r\n"
+                                          "\r\n")
+                                          .arg(401)
+                                          .arg(codeStr)
+                                          .arg(body.size())
+                                          .toLatin1();
+                response += body;
+                mSock->write(response);
                 mSock->disconnectFromHost();
                 return;
             }
