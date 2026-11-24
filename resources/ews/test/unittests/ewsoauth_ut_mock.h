@@ -15,8 +15,10 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLoggingCategory>
+#include <QMap>
 #include <QPointer>
 #include <QUrl>
+#include <QVariant>
 #include <QWidget>
 
 #include <KLocalizedString>
@@ -193,21 +195,21 @@ class QAbstractOAuth : public QObject
 {
     Q_OBJECT
 public:
-    Q_ENUMS(Stage)
     enum class Stage {
         RequestingTemporaryCredentials,
         RequestingAuthorization,
         RequestingAccessToken,
         RefreshingAccessToken,
     };
+    Q_ENUM(Stage)
 
-    Q_ENUMS(Status)
     enum class Status {
         NotAuthenticated,
         TemporaryCredentialsReceived,
         Granted,
         RefreshingToken,
     };
+    Q_ENUM(Status)
 
     explicit QAbstractOAuth(QObject *parent);
     ~QAbstractOAuth() override = default;
@@ -248,11 +250,7 @@ public:
 
 Q_SIGNALS:
     void authorizationCallbackReceived(QMap<QString, QVariant> const &params);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
     void serverReportedErrorOccurred(const QString &error, const QString &errorDescription, const QUrl &uri);
-#else
-    void error(const QString &error, const QString &errorDescription, const QUrl &uri);
-#endif
 };
 
 class QOAuth2AuthorizationCodeFlow : public QAbstractOAuth2
@@ -264,17 +262,9 @@ public:
     explicit QOAuth2AuthorizationCodeFlow(QObject *parent = nullptr);
     ~QOAuth2AuthorizationCodeFlow() override;
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
     void setTokenUrl(const QUrl &url);
-#else
-    void setAccessTokenUrl(const QUrl &url);
-#endif
     void grant();
-#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
     void refreshTokens();
-#else
-    void refreshAccessToken();
-#endif
 
     QString redirectUri() const;
     void setTokenFunction(const TokenFunc &func);
