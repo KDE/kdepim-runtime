@@ -133,8 +133,8 @@ void QWebEngineView::load(const QUrl &url)
 
     simulatePageLoad(url);
 
-    QMap<QString, QVariant> params;
     if (mAuthFunction) {
+        QMap<QString, QVariant> params;
         mAuthFunction(url, params);
 
         simulatePageLoad(QUrl(mRedirectUri + u'?' + mapToSortedQuery(params).toString()));
@@ -261,11 +261,7 @@ QOAuth2AuthorizationCodeFlow::QOAuth2AuthorizationCodeFlow(QObject *parent)
 
 QOAuth2AuthorizationCodeFlow::~QOAuth2AuthorizationCodeFlow() = default;
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
 void QOAuth2AuthorizationCodeFlow::setTokenUrl(const QUrl &url)
-#else
-void QOAuth2AuthorizationCodeFlow::setAccessTokenUrl(const QUrl &url)
-#endif
 {
     mTokenUrl = url;
 }
@@ -285,7 +281,7 @@ void QOAuth2AuthorizationCodeFlow::grant()
         mModifyParamsFunc(Stage::RequestingAuthorization, &map);
     }
 
-    mResource = QUrl::fromPercentEncoding(map.values("resource"_L1).at(0).toByteArray());
+    mResource = QUrl::fromPercentEncoding(map.value("resource"_L1).toByteArray());
 
     QUrl url(mAuthUrl);
     url.setQuery(mapToSortedQuery(map));
@@ -297,11 +293,7 @@ void QOAuth2AuthorizationCodeFlow::grant()
     Q_EMIT authorizeWithBrowser(url);
 }
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
 void QOAuth2AuthorizationCodeFlow::refreshTokens()
-#else
-void QOAuth2AuthorizationCodeFlow::refreshAccessToken()
-#endif
 {
     mStatus = Status::RefreshingToken;
 
@@ -355,11 +347,7 @@ void QOAuth2AuthorizationCodeFlow::authCallbackReceived(QMap<QString, QVariant> 
         mStatus = Status::TemporaryCredentialsReceived;
         doRefreshAccessToken();
     } else {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
         Q_EMIT serverReportedErrorOccurred(QString(), QString(), QUrl());
-#else
-        Q_EMIT error(QString(), QString(), QUrl());
-#endif
     }
 }
 

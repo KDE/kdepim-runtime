@@ -49,6 +49,10 @@ private:
     static void dumpEvents(const QStringList &events, const QStringList &expectedEvents);
 
     void setUpOAuth(EwsOAuth &oAuth, QStringList &events, const QString &password, const QMap<QString, QString> &map);
+
+    /* The authentication dialog is a child of this widget, so that the test leaves no
+     * top-level window behind when the authentication is done. */
+    QWidget mAuthParentWidget;
 };
 
 void UtEwsOAuth::initialInteractiveSuccessful()
@@ -319,6 +323,8 @@ void UtEwsOAuth::dumpEvents(const QStringList &events, const QStringList &expect
 
 void UtEwsOAuth::setUpOAuth(EwsOAuth &oAuth, QStringList &events, const QString &password, const QMap<QString, QString> &map)
 {
+    oAuth.setAuthParentWidget(&mAuthParentWidget);
+
     connect(Mock::QWebEngineView::instance.data(), &Mock::QWebEngineView::logEvent, this, [&events](const QString &event) {
         events.append(event);
     });
