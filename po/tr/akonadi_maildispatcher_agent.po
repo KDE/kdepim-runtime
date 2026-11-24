@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-12 00:45+0000\n"
-"PO-Revision-Date: 2026-05-21 12:03+0300\n"
+"PO-Revision-Date: 2026-11-23 17:58+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 26.04.0\n"
+"X-Generator: Lokalize 26.08.2\n"
 "X-POOTLE-MTIME: 1413131131.000000\n"
 
 #: maildispatcheragent.cpp:79 maildispatcheragent.cpp:224
@@ -131,7 +131,8 @@ msgstr "%1 özkaynağından geçersiz D-Bus yanıtı."
 #, kde-format
 msgid "Default sent-mail folder unavailable. Keeping message in outbox."
 msgstr ""
-"Öntanımlı gönderilen klasörü kullanılamıyor. İleti giden kutusunda tutulacak."
+"Varsayılan gönderilen klasörü kullanılamıyor. İleti giden kutusunda "
+"tutulacak."
 
 #: sendjob.cpp:241
 #, kde-format

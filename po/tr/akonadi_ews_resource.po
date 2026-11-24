@@ -1,21 +1,21 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022-2026 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-11-13 01:00+0000\n"
-"PO-Revision-Date: 2025-05-03 20:40+0300\n"
-"Last-Translator: Emir SARI <emir_sari@îcloud.com>\n"
+"PO-Revision-Date: 2026-11-23 18:14+0300\n"
+"Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.04.0\n"
+"X-Generator: Lokalize 26.08.2\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -290,7 +290,7 @@ msgstr ""
 "geçirecektir (“kullanıcı adı”).</p><p>Alan adı ayarlanmamışsa (alan adı onay "
 "kutusu boş) kullanıcı adı, alan adı olmadan geçirilecektir (“kullanıcı "
 "adı”), bu sunucunun alan adını birlikte yapılandırıldığı alan adına "
-"öntanımlı olarak koymasını sağlar.</p></body></html>"
+"varsayılan olarak koymasını sağlar.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_HasDomain)
 #: ewsconfigdialog.ui:146
@@ -572,7 +572,7 @@ msgid ""
 "allow NTLMv2 authentication. In such case this option must be enabled in "
 "order to connect successfully.</p></body></html>"
 msgstr ""
-"<html><head/><body><p>Öntanımlı olarak, KDE daha az güvenli olan NTLMv1 "
+"<html><head/><body><p>Varsayılan olarak, KDE daha az güvenli olan NTLMv1 "
 "kimlik doğrulamasını kullanır. Bunu etkinleştirmek, daha güvenli olan NTLMv2 "
 "protokolünün kullanılmasını sağlayacaktır.</p><p>Daha yeni Microsoft "
 "Exchange sunucuları yalnızca NTLMv2 kimlik doğrulamasına izin vermek üzere "
@@ -1221,7 +1221,7 @@ msgstr "NTLMv2 kimlik doğrulamayı etkinleştir"
 #: ewsresource.kcfg:59
 #, kde-format
 msgid "Forces a non-default User-Agent string"
-msgstr "Öntanımlı olmayan bir User-Agent dizisi zorlar"
+msgstr "Varsayılan olmayan bir User-Agent dizisi zorlar"
 
 #. i18n: ectx: label, entry (OAuth2AppId), group (General)
 #: ewsresource.kcfg:65
