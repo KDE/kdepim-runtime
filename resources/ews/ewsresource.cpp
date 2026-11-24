@@ -1162,10 +1162,7 @@ void EwsResource::fullSyncRequestedEvent()
 void EwsResource::clearCollectionSyncState(int collectionId)
 {
     Collection col(collectionId);
-    auto attr = col.attribute<EwsSyncStateAttribute>();
-    col.addAttribute(attr);
-    auto job = new CollectionModifyJob(col);
-    job->start();
+    saveCollectionSyncState(col, QString());
 }
 
 void EwsResource::clearFolderTreeSyncState()
