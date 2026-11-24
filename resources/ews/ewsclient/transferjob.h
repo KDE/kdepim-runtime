@@ -28,6 +28,9 @@ public:
     /// Return the reply or null if the request wasn't sent.
     QNetworkReply *reply() const;
 
+    /// Close the idle connections kept for reuse, e.g., when the network went down.
+    static void clearConnectionCache();
+
 Q_SIGNALS:
     /// Emitted for each chunk of the response body as it arrives. The data is
     /// consumed from the reply, so reply()->readAll() only returns what has
