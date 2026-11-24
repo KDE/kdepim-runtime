@@ -15,8 +15,7 @@
 #include <QTcpServer>
 
 class FakeEwsConnection;
-class QXmlResultItems;
-class QXmlNamePool;
+class QDomElement;
 
 class FAKEEWSSERVER_EXPORT FakeEwsServer : public QTcpServer
 {
@@ -26,8 +25,20 @@ public:
     {
     public:
         using HttpResponse = std::pair<QString, ushort>;
-        using ReplyCallback = std::function<HttpResponse(const QString &, QXmlResultItems &, const QXmlNamePool &)>;
-        QString xQuery;
+        /* Decides whether the dialog entry answers a request. The request is handed over as
+         * the root element of its XML document. */
+        using Matcher = std::function<bool(const QDomElement &request)>;
+        // Builds the response for a request the entry matched.
+        using ReplyCallback = std::function<HttpResponse(const QString &request)>;
+
+        DialogEntry() = default;
+        // An entry that answers a matched request with a fixed response.
+        DialogEntry(Matcher matcher, const QString &response, const QString &description = QString());
+        // An entry that lets a callback build the response.
+        DialogEntry(Matcher matcher, ReplyCallback replyCallback, const QString &description = QString());
+
+        Matcher matcher;
+        QString response;
         ReplyCallback replyCallback;
         QString description;
 

@@ -7,9 +7,9 @@ include_directories(../)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/../)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/fakeserver)
 
+add_subdirectory(fakeserver)
 add_subdirectory(unittests)
 
-# The fake EWS server is built on QXmlQuery, which went away with XmlPatterns in
-# Qt6, so it is not built, and neither are the isolated tests that drive it through
-# isolatedtestcommon and the DBus interfaces generated for it. Porting the server is
-# a work of its own.
+# The isolated tests that drive the fake server through isolatedtestcommon and the DBus
+# interfaces generated for it are not built yet: their dialog entries still have to be
+# ported to the fake server's new request matchers.

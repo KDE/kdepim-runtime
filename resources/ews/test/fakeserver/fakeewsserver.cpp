@@ -10,8 +10,23 @@
 #include "fakeewsserver_debug.h"
 #include <QRandomGenerator>
 #include <QThread>
+#include <utility>
 
 const FakeEwsServer::DialogEntry::HttpResponse FakeEwsServer::EmptyResponse = {QString(), 0};
+
+FakeEwsServer::DialogEntry::DialogEntry(Matcher entryMatcher, const QString &entryResponse, const QString &entryDescription)
+    : matcher(std::move(entryMatcher))
+    , response(entryResponse)
+    , description(entryDescription)
+{
+}
+
+FakeEwsServer::DialogEntry::DialogEntry(Matcher entryMatcher, ReplyCallback entryReplyCallback, const QString &entryDescription)
+    : matcher(std::move(entryMatcher))
+    , replyCallback(std::move(entryReplyCallback))
+    , description(entryDescription)
+{
+}
 
 FakeEwsServer::FakeEwsServer(QObject *parent)
     : QTcpServer(parent)
