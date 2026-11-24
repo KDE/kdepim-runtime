@@ -167,7 +167,7 @@ void EwsRequest::requestResult(KJob *job)
     else if ((resp >= 300) && (resp != 500)) {
         setErrorMsg(QStringLiteral("Failed to process EWS request - HTTP code %1").arg(resp));
         setError(resp);
-    } else if (mResponseData.isEmpty() && mResponseDataParsed) {
+    } else if (mResponseData.trimmed().isEmpty() && mResponseDataParsed) {
         /* The response has been parsed completely while it arrived, and the server closed
          * it without sending anything more. This is the normal end of a streaming response. */
     } else {

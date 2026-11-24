@@ -8,22 +8,17 @@
 
 #include <QTemporaryFile>
 
+#include <cctype>
+
 #include "ewsclient_debug.h"
 
 using namespace std::chrono_literals;
 using namespace Qt::Literals::StringLiterals;
 
-static constexpr auto respChunkTimeout = 250ms;
-
 EwsGetStreamingEventsRequest::EwsGetStreamingEventsRequest(EwsClient &client, QObject *parent)
     : EwsEventRequestBase(client, QStringLiteral("GetStreamingEvents"), parent)
     , mTimeout(30min)
-    , mRespTimer(this)
 {
-    mRespTimer.setInterval(respChunkTimeout);
-    connect(&mRespTimer, &QTimer::timeout, this, &EwsGetStreamingEventsRequest::requestDataTimeout);
-    // The final data is parsed when the request finishes.
-    connect(this, &KJob::result, &mRespTimer, &QTimer::stop);
 }
 
 EwsGetStreamingEventsRequest::~EwsGetStreamingEventsRequest() = default;
@@ -64,45 +59,89 @@ void EwsGetStreamingEventsRequest::start()
 void EwsGetStreamingEventsRequest::requestDataReceived()
 {
     /* The server keeps the connection open and sends each notification as a
-     * separate SOAP document. Parse the data once no more has arrived for a
-     * short while, which means that the current document is complete. */
-    mRespTimer.start();
-}
+     * separate SOAP document. Data may arrive in arbitrary pieces: parse every
+     * document that is complete, and keep the incomplete rest for later. */
+    bool parsed = false;
+    while (true) {
+        // An XML declaration must be at the start of a document.
+        qsizetype start = 0;
+        while (start < mResponseData.size() && std::isspace(static_cast<unsigned char>(mResponseData.at(start)))) {
+            ++start;
+        }
+        mResponseData.remove(0, start);
+        if (mResponseData.isEmpty()) {
+            break;
+        }
 
-void EwsGetStreamingEventsRequest::requestDataTimeout()
-{
-    if (mResponseData.isEmpty()) {
-        return;
-    }
-    if (EWSCLI_PROTO_LOG().isDebugEnabled()) {
-        ewsLogDir.setAutoRemove(false);
-        if (ewsLogDir.isValid()) {
-            QTemporaryFile dumpFile(ewsLogDir.path() + QStringLiteral("/ews_xmldump_XXXXXXX.xml"));
-            if (dumpFile.open()) {
-                dumpFile.setAutoRemove(false);
-                dumpFile.write(mResponseData);
-                qCDebug(EWSCLI_PROTO_LOG) << "response dumped to" << dumpFile.fileName();
-                dumpFile.close();
-            } else {
-                qCWarning(EWSCLI_PROTO_LOG) << "failed to dump response:" << dumpFile.errorString();
+        const qsizetype size = completeDocumentSize();
+        if (size == 0) {
+            break;
+        }
+
+        // On malformed XML, parse all data to fail with the parser's error.
+        const QByteArray document = size > 0 ? mResponseData.left(size) : mResponseData;
+        dumpDocument(document);
+        QXmlStreamReader reader(document);
+        if (!readResponse(reader)) {
+            const auto jobs{subjobs()};
+            for (KJob *job : jobs) {
+                removeSubjob(job);
+                job->kill();
             }
+            emitResult();
+            return;
         }
+        mResponseData.remove(0, document.size());
+        mResponseDataParsed = true;
+        parsed = true;
     }
 
-    QXmlStreamReader reader(mResponseData);
-    if (!readResponse(reader)) {
-        const auto jobs{subjobs()};
-        for (KJob *job : jobs) {
-            removeSubjob(job);
-            job->kill();
-        }
-        emitResult();
-    } else {
-        mResponseDataParsed = true;
+    if (parsed) {
         Q_EMIT eventsReceived(this);
     }
+}
 
-    mResponseData.clear();
+qsizetype EwsGetStreamingEventsRequest::completeDocumentSize() const
+{
+    /* Find the end of the root element. The reader counts characters, so
+     * parse the decoded text and convert the offset back to bytes. */
+    const QString text = QString::fromUtf8(mResponseData);
+    QXmlStreamReader reader(text);
+    int depth = 0;
+    while (!reader.atEnd()) {
+        switch (reader.readNext()) {
+        case QXmlStreamReader::StartElement:
+            ++depth;
+            break;
+        case QXmlStreamReader::EndElement:
+            if (--depth == 0) {
+                return QStringView(text).left(reader.characterOffset()).toUtf8().size();
+            }
+            break;
+        default:
+            break;
+        }
+    }
+    return reader.error() == QXmlStreamReader::PrematureEndOfDocumentError ? 0 : -1;
+}
+
+void EwsGetStreamingEventsRequest::dumpDocument(const QByteArray &document) const
+{
+    if (!EWSCLI_PROTO_LOG().isDebugEnabled()) {
+        return;
+    }
+    ewsLogDir.setAutoRemove(false);
+    if (ewsLogDir.isValid()) {
+        QTemporaryFile dumpFile(ewsLogDir.path() + QStringLiteral("/ews_xmldump_XXXXXXX.xml"));
+        if (dumpFile.open()) {
+            dumpFile.setAutoRemove(false);
+            dumpFile.write(document);
+            qCDebug(EWSCLI_PROTO_LOG) << "response dumped to" << dumpFile.fileName();
+            dumpFile.close();
+        } else {
+            qCWarning(EWSCLI_PROTO_LOG) << "failed to dump response:" << dumpFile.errorString();
+        }
+    }
 }
 
 void EwsGetStreamingEventsRequest::eventsProcessed(const Response &resp)
