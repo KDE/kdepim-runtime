@@ -108,11 +108,14 @@ void EwsPoxAutodiscoverRequest::requestResult(KJob *job)
         ewsLogDir.setAutoRemove(false);
         if (ewsLogDir.isValid()) {
             QTemporaryFile dumpFile(ewsLogDir.path() + QStringLiteral("/ews_xmldump_XXXXXXX.xml"));
-            dumpFile.open();
-            dumpFile.setAutoRemove(false);
-            dumpFile.write(mResponseData.toUtf8());
-            qCDebug(EWSCLI_PROTO_LOG) << "response dumped to" << dumpFile.fileName();
-            dumpFile.close();
+            if (dumpFile.open()) {
+                dumpFile.setAutoRemove(false);
+                dumpFile.write(mResponseData.toUtf8());
+                qCDebug(EWSCLI_PROTO_LOG) << "response dumped to" << dumpFile.fileName();
+                dumpFile.close();
+            } else {
+                qCWarning(EWSCLI_PROTO_LOG) << "failed to dump response:" << dumpFile.errorString();
+            }
         }
     }
 
@@ -255,17 +258,23 @@ void EwsPoxAutodiscoverRequest::dump() const
     ewsLogDir.setAutoRemove(false);
     if (ewsLogDir.isValid()) {
         QTemporaryFile reqDumpFile(ewsLogDir.path() + QStringLiteral("/ews_xmlreqdump_XXXXXXX.xml"));
-        reqDumpFile.open();
-        reqDumpFile.setAutoRemove(false);
-        reqDumpFile.write(mBody.toUtf8());
-        reqDumpFile.close();
+        if (reqDumpFile.open()) {
+            reqDumpFile.setAutoRemove(false);
+            reqDumpFile.write(mBody.toUtf8());
+            reqDumpFile.close();
+            qCDebug(EWSCLI_LOG) << "request  dumped to" << reqDumpFile.fileName();
+        } else {
+            qCWarning(EWSCLI_LOG) << "failed to dump request:" << reqDumpFile.errorString();
+        }
         QTemporaryFile resDumpFile(ewsLogDir.path() + QStringLiteral("/ews_xmlresdump_XXXXXXX.xml"));
-        resDumpFile.open();
-        resDumpFile.setAutoRemove(false);
-        resDumpFile.write(mResponseData.toUtf8());
-        resDumpFile.close();
-        qCDebug(EWSCLI_LOG) << "request  dumped to" << reqDumpFile.fileName();
-        qCDebug(EWSCLI_LOG) << "response dumped to" << resDumpFile.fileName();
+        if (resDumpFile.open()) {
+            resDumpFile.setAutoRemove(false);
+            resDumpFile.write(mResponseData.toUtf8());
+            resDumpFile.close();
+            qCDebug(EWSCLI_LOG) << "response dumped to" << resDumpFile.fileName();
+        } else {
+            qCWarning(EWSCLI_LOG) << "failed to dump response:" << resDumpFile.errorString();
+        }
     } else {
         qCWarning(EWSCLI_LOG) << "failed to dump request and response";
     }

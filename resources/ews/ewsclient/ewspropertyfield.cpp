@@ -423,14 +423,14 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
 
             if (attrs.hasAttribute("DistinguishedPropertySetId"_L1)) {
                 auto didText = attrs.value("DistinguishedPropertySetId"_L1);
-                unsigned i;
-                for (i = 0; i < sizeof(distinguishedPropSetIdNames) / sizeof(distinguishedPropSetIdNames[0]); ++i) {
-                    if (didText == distinguishedPropSetIdNames[i]) {
-                        psDid = static_cast<EwsDistinguishedPropSetId>(i);
+                unsigned didIndex;
+                for (didIndex = 0; didIndex < sizeof(distinguishedPropSetIdNames) / sizeof(distinguishedPropSetIdNames[0]); ++didIndex) {
+                    if (didText == distinguishedPropSetIdNames[didIndex]) {
+                        psDid = static_cast<EwsDistinguishedPropSetId>(didIndex);
                         break;
                     }
                 }
-                if (i == sizeof(distinguishedPropSetIdNames) / sizeof(distinguishedPropSetIdNames[0])) {
+                if (didIndex == sizeof(distinguishedPropSetIdNames) / sizeof(distinguishedPropSetIdNames[0])) {
                     qCWarningNC(EWSCLI_LOG)
                         << QStringLiteral("Error reading property field - error reading %1 attribute.").arg(QStringLiteral("DistinguishedPropertySetId"));
                     return false;

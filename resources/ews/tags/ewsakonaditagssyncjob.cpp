@@ -42,9 +42,9 @@ void EwsAkonadiTagsSyncJob::tagFetchFinished(KJob *job)
     Q_ASSERT(tagJob);
 
     if (mTagStore->syncTags(tagJob->tags())) {
-        auto tagJob = new EwsGlobalTagsWriteJob(mTagStore, mClient, mRootCollection, this);
-        connect(tagJob, &EwsGlobalTagsWriteJob::result, this, &EwsAkonadiTagsSyncJob::tagWriteFinished);
-        tagJob->start();
+        auto writeJob = new EwsGlobalTagsWriteJob(mTagStore, mClient, mRootCollection, this);
+        connect(writeJob, &EwsGlobalTagsWriteJob::result, this, &EwsAkonadiTagsSyncJob::tagWriteFinished);
+        writeJob->start();
     } else {
         emitResult();
     }
