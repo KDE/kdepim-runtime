@@ -6,11 +6,7 @@
 
 #pragma once
 
-#ifdef EWSSETTINGS_UNITTEST
-#include "ewssettings_ut_mock.h"
-#else
 #include "ewssettingsbase.h"
-#endif
 
 class EwsAbstractAuth;
 

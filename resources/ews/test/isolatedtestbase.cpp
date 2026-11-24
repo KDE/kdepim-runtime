@@ -6,20 +6,160 @@
 
 #include "isolatedtestbase.h"
 
+#include <QDomDocument>
+#include <QDomElement>
+#include <QHash>
 #include <QTest>
+
+#include <algorithm>
 
 #include <Akonadi/AgentInstanceCreateJob>
 #include <Akonadi/AgentManager>
 #include <Akonadi/Control>
 
 #include "ewsresourceinterface.h"
-#include "ewssettings.h"
-#include "ewswallet.h"
+#include "ewssettingsinterface.h"
+#include "ewswalletinterface.h"
 #include "fakeewsserverthread.h"
 
 using namespace Akonadi;
+using namespace Qt::Literals::StringLiterals;
 
 constexpr int OnlineStateChangeTimeoutMs = 20000;
+
+namespace
+{
+// The local name of an element, whether or not the document uses a namespace prefix.
+QString localName(const QDomElement &element)
+{
+    const QString tagName = element.tagName();
+    const qsizetype colon = tagName.indexOf(u':');
+    return colon < 0 ? tagName : tagName.mid(colon + 1);
+}
+
+bool isNamed(const QDomElement &element, const QString &name)
+{
+    return !element.isNull() && localName(element) == name;
+}
+
+// The first element below root that carries the given local name, or a null
+// element when there is none.
+QDomElement firstDescendant(const QDomElement &root, const QString &name)
+{
+    for (QDomElement element = root.firstChildElement(); !element.isNull(); element = element.nextSiblingElement()) {
+        if (isNamed(element, name)) {
+            return element;
+        }
+        if (const QDomElement found = firstDescendant(element, name); !found.isNull()) {
+            return found;
+        }
+    }
+    return {};
+}
+
+// The child elements of parent with the given local name, in document order.
+QList<QDomElement> childElements(const QDomElement &parent, const QString &name)
+{
+    QList<QDomElement> elements;
+    for (QDomElement element = parent.firstChildElement(); !element.isNull(); element = element.nextSiblingElement()) {
+        if (isNamed(element, name)) {
+            elements.append(element);
+        }
+    }
+    return elements;
+}
+
+QDomElement firstChild(const QDomElement &parent, const QString &name)
+{
+    return childElements(parent, name).value(0);
+}
+
+QString elementText(const QDomElement &element)
+{
+    return element.isNull() ? QString() : element.text();
+}
+
+bool hasAttribute(const QDomElement &element, const QString &name, const QString &value)
+{
+    return !element.isNull() && element.attribute(name) == value;
+}
+
+// The <soap:Body> of an EWS request, or a null element for anything else.
+QDomElement requestBody(const QDomElement &request)
+{
+    const QDomElement envelope = isNamed(request, u"Envelope"_s) ? request : firstDescendant(request, u"Envelope"_s);
+    return firstChild(envelope, u"Body"_s);
+}
+
+/* The GetFolder request in the given request, when it asks for the given base shape, and a
+ * null element for any other request. */
+QDomElement getFolderRequest(const QDomElement &request, const QString &baseShape)
+{
+    const QDomElement getFolder = firstChild(requestBody(request), u"GetFolder"_s);
+    if (elementText(firstChild(firstChild(getFolder, u"FolderShape"_s), u"BaseShape"_s)) != baseShape) {
+        return {};
+    }
+    return getFolder;
+}
+
+/* True when the GetFolder request asks for exactly the given distinguished folder ids in
+ * this order and for no other folder ids. */
+bool asksForDistinguishedFolders(const QDomElement &getFolder, const QStringList &ids)
+{
+    const QDomElement folderIds = firstChild(getFolder, u"FolderIds"_s);
+    const QList<QDomElement> distinguished = childElements(folderIds, u"DistinguishedFolderId"_s);
+    if (distinguished.size() != ids.size() || !childElements(folderIds, u"FolderId"_s).isEmpty()) {
+        return false;
+    }
+    for (qsizetype i = 0; i < ids.size(); ++i) {
+        if (distinguished.at(i).attribute(u"Id"_s) != ids.at(i)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// The additional properties a request asks for, or a null element when it asks for none.
+QDomElement additionalProperties(const QDomElement &request)
+{
+    return firstDescendant(request, u"AdditionalProperties"_s);
+}
+
+bool asksForTagProperties(const QDomElement &request)
+{
+    const QList<QDomElement> extendedUris = childElements(additionalProperties(request), u"ExtendedFieldURI"_s);
+    if (extendedUris.size() != 2) {
+        return false;
+    }
+    const auto isTagProperty = [](const QDomElement &property, const QString &name, const QString &type) {
+        return hasAttribute(property, u"PropertySetId"_s, u"9bf757ae-69b5-4d8a-bf1d-2dd0c0871a28"_s) && hasAttribute(property, u"PropertyName"_s, name)
+            && hasAttribute(property, u"PropertyType"_s, type);
+    };
+    return isTagProperty(extendedUris.at(0), u"GlobalTags"_s, u"StringArray"_s) && isTagProperty(extendedUris.at(1), u"GlobalTagsVersion"_s, u"Integer"_s);
+}
+
+// The response envelope every dialog entry below answers with.
+const QString responseEnvelopeStart = QStringLiteral(
+    "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+    "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
+    "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+    "<soap:Header>"
+    "<t:ServerVersionInfo MajorVersion=\"15\" MinorVersion=\"01\" MajorBuildNumber=\"225\" MinorBuildNumber=\"042\" />"
+    "</soap:Header><soap:Body>");
+const QString responseEnvelopeEnd = QStringLiteral("</soap:Body></soap:Envelope>");
+
+QString getFolderResponseMessage(const QString &folderId)
+{
+    return QStringLiteral(
+               "<m:GetFolderResponseMessage ResponseClass=\"Success\">"
+               "<m:ResponseCode>NoError</m:ResponseCode>"
+               "<m:Folders><t:Folder>"
+               "<t:FolderId Id=\"%1\" ChangeKey=\"MDAx\" />"
+               "</t:Folder></m:Folders>"
+               "</m:GetFolderResponseMessage>")
+        .arg(folderId);
+}
+} // namespace
 
 IsolatedTestBase::IsolatedTestBase(QObject *parent)
     : QObject(parent)
@@ -208,7 +348,22 @@ Akonadi::AgentInstance &TestAgentInstance::instance() const
 MsgRootInboxDialogEntry::MsgRootInboxDialogEntry(const QString &rootId, const QString &inboxId, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
-    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-inbox-msgroot")).arg(rootId, inboxId);
+    matcher = [](const QDomElement &request) {
+        const QDomElement getFolder = getFolderRequest(request, u"IdOnly"_s);
+        if (getFolder.isNull()) {
+            return false;
+        }
+        const auto properties = additionalProperties(request);
+        const auto fieldUris = childElements(properties, u"FieldURI"_s);
+        if (std::none_of(fieldUris.cbegin(), fieldUris.cend(), [](const QDomElement &fieldUri) {
+                return fieldUri.attribute(u"FieldURI"_s) == u"folder:DisplayName"_s;
+            })) {
+            return false;
+        }
+        return asksForTagProperties(request) && asksForDistinguishedFolders(getFolder, {u"msgfolderroot"_s, u"inbox"_s});
+    };
+    response = responseEnvelopeStart + QStringLiteral("<m:GetFolderResponse><m:ResponseMessages>") + getFolderResponseMessage(rootId)
+        + getFolderResponseMessage(inboxId) + QStringLiteral("</m:ResponseMessages></m:GetFolderResponse>") + responseEnvelopeEnd;
     description = QStringLiteral("GetFolder request for inbox and msgroot");
 }
 
@@ -232,16 +387,19 @@ SubscribedFoldersDialogEntry::SubscribedFoldersDialogEntry(const IsolatedTestBas
     for (auto special : specialFolders) {
         const IsolatedTestBase::Folder *folder = folderHash[special];
         if (QTest::qVerify(folder != nullptr, "folder != nullptr", "", __FILE__, __LINE__)) {
-            xml += QStringLiteral("<m:GetFolderResponseMessage ResponseClass=\"Success\">");
-            xml += QStringLiteral("<m:ResponseCode>NoError</m:ResponseCode>");
-            xml += QStringLiteral("<m:Folders><t:Folder>");
-            xml += QStringLiteral("<t:FolderId Id=\"%1\" ChangeKey=\"MDAx\" />").arg(folder->id);
-            xml += QStringLiteral("</t:Folder></m:Folders>");
-            xml += QStringLiteral("</m:GetFolderResponseMessage>");
+            xml += getFolderResponseMessage(folder->id);
         }
     }
 
-    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-subscribedfolders")).arg(xml);
+    matcher = [](const QDomElement &request) {
+        const QDomElement getFolder = getFolderRequest(request, u"IdOnly"_s);
+        if (getFolder.isNull() || !additionalProperties(request).isNull()) {
+            return false;
+        }
+        return asksForDistinguishedFolders(getFolder, {u"inbox"_s, u"calendar"_s, u"tasks"_s, u"contacts"_s});
+    };
+    response = responseEnvelopeStart + QStringLiteral("<m:GetFolderResponse><m:ResponseMessages>") + xml
+        + QStringLiteral("</m:ResponseMessages></m:GetFolderResponse>") + responseEnvelopeEnd;
 }
 
 SpecialFoldersDialogEntry::SpecialFoldersDialogEntry(const IsolatedTestBase::FolderList &list, const QString &descr, const ReplyCallback &callback)
@@ -263,28 +421,67 @@ SpecialFoldersDialogEntry::SpecialFoldersDialogEntry(const IsolatedTestBase::Fol
     for (auto special : specialFolders) {
         const IsolatedTestBase::Folder *folder = folderHash[special];
         if (QTest::qVerify(folder != nullptr, "folder != nullptr", "", __FILE__, __LINE__)) {
-            xml += QStringLiteral("<m:GetFolderResponseMessage ResponseClass=\"Success\">");
-            xml += QStringLiteral("<m:ResponseCode>NoError</m:ResponseCode>");
-            xml += QStringLiteral("<m:Folders><t:Folder>");
-            xml += QStringLiteral("<t:FolderId Id=\"%1\" ChangeKey=\"MDAx\" />").arg(folder->id);
-            xml += QStringLiteral("</t:Folder></m:Folders>");
-            xml += QStringLiteral("</m:GetFolderResponseMessage>");
+            xml += getFolderResponseMessage(folder->id);
         }
     }
 
-    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-specialfolders")).arg(xml);
+    matcher = [](const QDomElement &request) {
+        const QDomElement getFolder = getFolderRequest(request, u"IdOnly"_s);
+        if (getFolder.isNull() || !additionalProperties(request).isNull()) {
+            return false;
+        }
+        return asksForDistinguishedFolders(getFolder, {u"inbox"_s, u"outbox"_s, u"sentitems"_s, u"deleteditems"_s, u"drafts"_s});
+    };
+    response = responseEnvelopeStart + QStringLiteral("<m:GetFolderResponse><m:ResponseMessages>") + xml
+        + QStringLiteral("</m:ResponseMessages></m:GetFolderResponse>") + responseEnvelopeEnd;
 }
 
 GetTagsEmptyDialogEntry::GetTagsEmptyDialogEntry(const QString &rootId, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
-    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-tags")).arg(rootId);
+    matcher = [](const QDomElement &request) {
+        const QDomElement getFolder = getFolderRequest(request, u"IdOnly"_s);
+        return !getFolder.isNull() && asksForTagProperties(request) && asksForDistinguishedFolders(getFolder, {u"msgfolderroot"_s});
+    };
+    response = responseEnvelopeStart + QStringLiteral("<m:GetFolderResponse><m:ResponseMessages>") + getFolderResponseMessage(rootId)
+        + QStringLiteral("</m:ResponseMessages></m:GetFolderResponse>") + responseEnvelopeEnd;
 }
 
 SubscribeStreamingDialogEntry::SubscribeStreamingDialogEntry(const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
-    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/subscribe-streaming"));
+    matcher = [](const QDomElement &request) {
+        const QDomElement streaming = firstChild(firstChild(requestBody(request), u"Subscribe"_s), u"StreamingSubscriptionRequest"_s);
+        if (streaming.isNull()) {
+            return false;
+        }
+        const auto folderIds = childElements(firstChild(streaming, u"FolderIds"_s), u"FolderId"_s);
+        if (folderIds.size() != 4) {
+            return false;
+        }
+        QStringList ids;
+        ids.reserve(folderIds.size());
+        for (const auto &folderId : folderIds) {
+            ids.append(folderId.attribute(u"Id"_s));
+        }
+        for (const auto &expected : {u"aW5ib3g="_s, u"Y2FsZW5kYXI="_s, u"dGFza3M="_s, u"Y29udGFjdHM="_s}) {
+            if (!ids.contains(expected)) {
+                return false;
+            }
+        }
+        return childElements(firstChild(streaming, u"EventTypes"_s), u"EventType"_s).size() == 6;
+    };
+    response = responseEnvelopeStart
+        + QStringLiteral(
+                   "<m:SubscribeResponse>"
+                   "<m:ResponseMessages>"
+                   "<m:SubscribeResponseMessage ResponseClass=\"Success\">"
+                   "<m:ResponseCode>NoError</m:ResponseCode>"
+                   "<m:SubscriptionId>otPO1iOPzS+vL5HOuTZY+cCfIIn+vRqOO0ZHTEWAa8k=</m:SubscriptionId>"
+                   "</m:SubscribeResponseMessage>"
+                   "</m:ResponseMessages>"
+                   "</m:SubscribeResponse>")
+        + responseEnvelopeEnd;
 }
 
 SyncFolderHierInitialDialogEntry::SyncFolderHierInitialDialogEntry(const IsolatedTestBase::FolderList &list,
@@ -331,35 +528,121 @@ SyncFolderHierInitialDialogEntry::SyncFolderHierInitialDialogEntry(const Isolate
         xml += QStringLiteral("</t:Folder>");
         xml += QStringLiteral("</t:Create>");
     }
-    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/syncfolderhierarhy-emptystate")).arg(syncState, xml);
+
+    matcher = [](const QDomElement &request) {
+        const QDomElement sync = firstChild(requestBody(request), u"SyncFolderHierarchy"_s);
+        if (sync.isNull() || elementText(firstChild(firstChild(sync, u"FolderShape"_s), u"BaseShape"_s)) != u"Default"_s) {
+            return false;
+        }
+        const auto properties = additionalProperties(request);
+        const auto extendedUris = childElements(properties, u"ExtendedFieldURI"_s);
+        if (extendedUris.size() != 1 || !hasAttribute(extendedUris.at(0), u"PropertyTag"_s, u"0x3613"_s)
+            || !hasAttribute(extendedUris.at(0), u"PropertyType"_s, u"String"_s)) {
+            return false;
+        }
+        QStringList fieldUris;
+        for (const auto &fieldUri : childElements(properties, u"FieldURI"_s)) {
+            fieldUris.append(fieldUri.attribute(u"FieldURI"_s));
+        }
+        if (fieldUris.size() != 2 || !fieldUris.contains(u"folder:EffectiveRights"_s) || !fieldUris.contains(u"folder:ParentFolderId"_s)) {
+            return false;
+        }
+        const QDomElement syncFolderId = firstChild(sync, u"SyncFolderId"_s);
+        const auto distinguished = childElements(syncFolderId, u"DistinguishedFolderId"_s);
+        return distinguished.size() == 1 && childElements(syncFolderId, u"FolderId"_s).isEmpty()
+            && distinguished.at(0).attribute(u"Id"_s) == u"msgfolderroot"_s;
+    };
+    response = responseEnvelopeStart
+        + QStringLiteral(
+              "<m:SyncFolderHierarchyResponse><m:ResponseMessages>"
+              "<m:SyncFolderHierarchyResponseMessage ResponseClass=\"Success\">"
+              "<m:ResponseCode>NoError</m:ResponseCode>"
+              "<m:SyncState>%1</m:SyncState>"
+              "<m:IncludesLastFolderInRange>true</m:IncludesLastFolderInRange>"
+              "<m:Changes>%2</m:Changes>"
+              "</m:SyncFolderHierarchyResponseMessage>"
+              "</m:ResponseMessages></m:SyncFolderHierarchyResponse>")
+              .arg(syncState, xml)
+        + responseEnvelopeEnd;
+}
+
+/* The resource synchronises the tags of the items of a folder right after the folder
+ * hierarchy, so a test that lets the resource come online needs an answer for it. */
+SyncFolderItemsDialogEntry::SyncFolderItemsDialogEntry(const QString &syncState, const QString &descr, const ReplyCallback &callback)
+    : DialogEntryBase(descr, callback)
+{
+    matcher = [](const QDomElement &request) {
+        const QDomElement syncItems = firstChild(requestBody(request), u"SyncFolderItems"_s);
+        if (syncItems.isNull()) {
+            return false;
+        }
+        const auto extendedUris = childElements(additionalProperties(request), u"ExtendedFieldURI"_s);
+        return std::any_of(extendedUris.cbegin(), extendedUris.cend(), [](const QDomElement &extendedUri) {
+            return hasAttribute(extendedUri, u"PropertyName"_s, u"Tags"_s);
+        });
+    };
+    response = responseEnvelopeStart
+        + QStringLiteral(
+              "<m:SyncFolderItemsResponse><m:ResponseMessages>"
+              "<m:SyncFolderItemsResponseMessage ResponseClass=\"Success\">"
+              "<m:ResponseCode>NoError</m:ResponseCode>"
+              "<m:SyncState>%1</m:SyncState>"
+              "<m:IncludesLastItemInRange>true</m:IncludesLastItemInRange>"
+              "<m:Changes />"
+              "</m:SyncFolderItemsResponseMessage>"
+              "</m:ResponseMessages></m:SyncFolderItemsResponse>")
+              .arg(syncState)
+        + responseEnvelopeEnd;
 }
 
 UnsubscribeDialogEntry::UnsubscribeDialogEntry(const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
-    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/unsubscribe"));
+    static const auto subscriptionId = u"otPO1iOPzS+vL5HOuTZY+cCfIIn+vRqOO0ZHTEWAa8k="_s;
+
+    matcher = [](const QDomElement &request) {
+        const QDomElement unsubscribe = firstChild(requestBody(request), u"Unsubscribe"_s);
+        return elementText(firstChild(unsubscribe, u"SubscriptionId"_s)) == subscriptionId;
+    };
+    response = responseEnvelopeStart
+        + QStringLiteral(
+                   "<m:UnsubscribeResponse>"
+                   "<m:ResponseMessages>"
+                   "<m:UnsubscribeResponseMessage ResponseClass=\"Success\">"
+                   "<m:ResponseCode>NoError</m:ResponseCode>"
+                   "</m:UnsubscribeResponseMessage>"
+                   "</m:ResponseMessages>"
+                   "</m:UnsubscribeResponse>")
+        + responseEnvelopeEnd;
 }
 
 ValidateFolderIdsDialogEntry::ValidateFolderIdsDialogEntry(const QStringList &ids, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
-    QStringList xQueryFolderIds;
     QString responseXml;
-    int folderIndex = 0;
-
     for (const auto &folderId : ids) {
-        xQueryFolderIds.append(QStringLiteral("//m:GetFolder/m:FolderIds/t:FolderId[position()=%1 and @Id=\"%2\"]").arg(++folderIndex).arg(folderId));
-        responseXml += QStringLiteral("<m:GetFolderResponseMessage ResponseClass=\"Success\">");
-        responseXml += QStringLiteral("<m:ResponseCode>NoError</m:ResponseCode>");
-        responseXml += QStringLiteral("<m:Folders><t:Folder>");
-        responseXml += QStringLiteral("<t:FolderId Id=\"%1\" ChangeKey=\"MDAx\" />").arg(folderId);
-        responseXml += QStringLiteral("</t:Folder></m:Folders>");
-        responseXml += QStringLiteral("</m:GetFolderResponseMessage>");
+        responseXml += getFolderResponseMessage(folderId);
     }
 
-    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-validateids"))
-                 .arg(folderIndex)
-                 .arg(xQueryFolderIds.join(QStringLiteral(" and ")), responseXml);
+    matcher = [ids](const QDomElement &request) {
+        const QDomElement getFolder = getFolderRequest(request, u"IdOnly"_s);
+        if (getFolder.isNull() || !additionalProperties(request).isNull()) {
+            return false;
+        }
+        const QDomElement folderIds = firstChild(getFolder, u"FolderIds"_s);
+        const auto plainIds = childElements(folderIds, u"FolderId"_s);
+        if (!childElements(folderIds, u"DistinguishedFolderId"_s).isEmpty() || plainIds.size() != ids.size()) {
+            return false;
+        }
+        for (qsizetype i = 0; i < ids.size(); ++i) {
+            if (plainIds.at(i).attribute(u"Id"_s) != ids.at(i)) {
+                return false;
+            }
+        }
+        return true;
+    };
+    response = responseEnvelopeStart + QStringLiteral("<m:GetFolderResponse><m:ResponseMessages>") + responseXml
+        + QStringLiteral("</m:ResponseMessages></m:GetFolderResponse>") + responseEnvelopeEnd;
 }
 
 #include "moc_isolatedtestbase.cpp"

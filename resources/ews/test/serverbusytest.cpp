@@ -17,6 +17,8 @@
     Boston, MA 02110-1301, USA.
 */
 
+#include <QApplication>
+
 #include <Akonadi/AgentInstanceCreateJob>
 #include <Akonadi/AgentManager>
 #include <Akonadi/CollectionFetchScope>
@@ -26,8 +28,6 @@
 #include <akonadi/qtest_akonadi.h>
 
 #include "ewsresourceinterface.h"
-#include "ewssettings.h"
-#include "ewswallet.h"
 #include "fakeewsserverthread.h"
 #include "isolatedtestbase.h"
 #include "statemonitor.h"
@@ -77,7 +77,7 @@ void BasicTest::cleanupTestCase()
 void BasicTest::busyInit()
 {
     bool requestTriggered = false;
-    mFakeServerThread->setOverrideReplyCallback([&](const QString &, QXmlResultItems &, const QXmlNamePool &) {
+    mFakeServerThread->setOverrideReplyCallback([&](const QString &) {
         requestTriggered = true;
         return FakeEwsServer::DialogEntry::HttpResponse(IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xml/errorserverbusy")), 200);
     });

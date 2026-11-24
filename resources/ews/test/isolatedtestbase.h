@@ -144,6 +144,12 @@ public:
                                               const ReplyCallback &callback = ReplyCallback());
 };
 
+class SyncFolderItemsDialogEntry : public DialogEntryBase
+{
+public:
+    explicit SyncFolderItemsDialogEntry(const QString &syncState, const QString &descr = QString(), const ReplyCallback &callback = ReplyCallback());
+};
+
 class UnsubscribeDialogEntry : public DialogEntryBase
 {
 public:
