@@ -14,6 +14,14 @@
 #include "transferjob.h"
 
 using namespace Qt::Literals::StringLiterals;
+using namespace std::chrono_literals;
+
+/* Abort a request when no data has been transferred for this long. Without a
+ * timeout, a request on a connection that has silently died, e.g., during a
+ * suspend, waits until the operating system gives up on the connection, which
+ * takes about 15 minutes on Linux. A streaming request receives keep-alive data
+ * well within this time. */
+static constexpr auto transferTimeout = 2min;
 
 EwsRequest::EwsRequest(EwsClient &client, QObject *parent)
     : EwsJob(parent)
@@ -84,6 +92,7 @@ void EwsRequest::prepare(const QString &body)
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("text/xml"));
     request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false);
+    request.setTransferTimeout(transferTimeout);
 
     if (!mClient.userAgent().isEmpty()) {
         request.setHeader(QNetworkRequest::UserAgentHeader, mClient.userAgent());

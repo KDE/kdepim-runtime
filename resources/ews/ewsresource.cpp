@@ -49,6 +49,7 @@
 #include "tags/ewsglobaltagswritejob.h"
 #include "tags/ewstagstore.h"
 #include "tags/ewsupdateitemstagsjob.h"
+#include "transferjob.h"
 
 #include "ewsresourceadaptor.h"
 #include "ewssettingsadaptor.h"
@@ -1262,6 +1263,9 @@ void EwsResource::doSetOnline(bool online)
         reloadConfig();
     } else {
         mSubManager.reset(nullptr);
+        // The connections may not survive going offline, e.g., on suspend, and a
+        // request sent on a dead connection would hang until it times out.
+        TransferJob::clearConnectionCache();
     }
 
     ResourceBase::doSetOnline(online);

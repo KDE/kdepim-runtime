@@ -46,6 +46,11 @@ QNetworkReply *TransferJob::reply() const
     return mReply.get();
 }
 
+void TransferJob::clearConnectionCache()
+{
+    qnam->clearConnectionCache();
+}
+
 void TransferJob::setNTLM(const QString &username, const QString &password)
 {
     mUsername = username;
