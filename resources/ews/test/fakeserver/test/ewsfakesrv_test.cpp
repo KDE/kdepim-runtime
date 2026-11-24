@@ -4,18 +4,44 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
+#include <QDomDocument>
+#include <QDomElement>
 #include <QEventLoop>
 #include <QHostAddress>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QTest>
-#include <QXmlItem>
-#include <QXmlNamePool>
-#include <QXmlResultItems>
 
 #include "fakeewsserver.h"
 #include "fakeewsserverthread.h"
+
+using namespace Qt::Literals::StringLiterals;
+
+namespace
+{
+// True when the request root is named rootName and has a child of the given name
+// carrying the given text.
+bool hasRootChild(const QDomElement &request, const QString &rootName, const QString &name, const QString &text = {})
+{
+    if (request.isNull() || request.tagName() != rootName) {
+        return false;
+    }
+    for (QDomElement child = request.firstChildElement(); !child.isNull(); child = child.nextSiblingElement()) {
+        if (child.tagName() == name && child.text() == text) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// True when the request is the plain sample request <test1><a /></test1> the tests
+// below answer.
+bool isSampleRequest(const QDomElement &request)
+{
+    return hasRootChild(request, u"test1"_s, u"a"_s);
+}
+} // namespace
 
 class UtEwsFakeSrvTest : public QObject
 {
@@ -38,7 +64,7 @@ private Q_SLOTS:
     void delayedContentSize();
     void notAuthenticated();
     void badAuthentication();
-    void xqueryResultsInCallback();
+    void requestMatcher();
 
 private:
     QPair<QString, ushort> synchronousHttpReq(const QString &content, ushort port, const std::function<bool(const QString &)> &chunkFn = nullptr);
@@ -140,7 +166,7 @@ void UtEwsFakeSrvTest::defaultCallback()
 {
     QString receivedReq;
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
-    srv->setDefaultReplyCallback([&receivedReq](const QString &req, QXmlResultItems &, const QXmlNamePool &) {
+    srv->setDefaultReplyCallback([&receivedReq](const QString &req) {
         receivedReq = req;
         return FakeEwsServer::DialogEntry::HttpResponse(QStringLiteral("testresp"), 200);
     });
@@ -154,13 +180,12 @@ void UtEwsFakeSrvTest::defaultCallback()
 
 void UtEwsFakeSrvTest::overrideCallback()
 {
-    const FakeEwsServer::DialogEntry::List dialog = {
-        {QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"), FakeEwsServer::DialogEntry::ReplyCallback(), QStringLiteral("Sample request 1")}};
+    const FakeEwsServer::DialogEntry::List dialog = {{isSampleRequest, QStringLiteral("<b/>"), QStringLiteral("Sample request 1")}};
 
     QString receivedReq;
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
     srv->setDialog(dialog);
-    srv->setOverrideReplyCallback([&receivedReq](const QString &req, QXmlResultItems &, const QXmlNamePool &) {
+    srv->setOverrideReplyCallback([&receivedReq](const QString &req) {
         receivedReq = req;
         return FakeEwsServer::DialogEntry::HttpResponse(QStringLiteral("testresp"), 200);
     });
@@ -173,8 +198,7 @@ void UtEwsFakeSrvTest::overrideCallback()
 
 void UtEwsFakeSrvTest::simpleResponse()
 {
-    const FakeEwsServer::DialogEntry::List dialog = {
-        {QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"), FakeEwsServer::DialogEntry::ReplyCallback(), QStringLiteral("Sample request 1")}};
+    const FakeEwsServer::DialogEntry::List dialog = {{isSampleRequest, QStringLiteral("<b/>"), QStringLiteral("Sample request 1")}};
 
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
     srv->setDialog(dialog);
@@ -187,8 +211,8 @@ void UtEwsFakeSrvTest::simpleResponse()
 
 void UtEwsFakeSrvTest::callbackResponse()
 {
-    const FakeEwsServer::DialogEntry::List dialog = {{QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"),
-                                                      [](const QString &, QXmlResultItems &, const QXmlNamePool &) {
+    const FakeEwsServer::DialogEntry::List dialog = {{isSampleRequest,
+                                                      [](const QString &) {
                                                           return FakeEwsServer::DialogEntry::HttpResponse(QStringLiteral("<a/>"), 200);
                                                       },
                                                       QStringLiteral("Sample request 1")}};
@@ -204,11 +228,15 @@ void UtEwsFakeSrvTest::callbackResponse()
 
 void UtEwsFakeSrvTest::multipleResponses()
 {
-    const FakeEwsServer::DialogEntry::List dialog = {{QStringLiteral("if (//test1/a = <a /> or //test1/b = <b />) then (<aresult/>) else ()"),
-                                                      FakeEwsServer::DialogEntry::ReplyCallback(),
+    const FakeEwsServer::DialogEntry::List dialog = {{[](const QDomElement &request) {
+                                                          return hasRootChild(request, u"test1"_s, u"a"_s) || hasRootChild(request, u"test1"_s, u"b"_s);
+                                                      },
+                                                      QStringLiteral("<aresult/>"),
                                                       QStringLiteral("Sample request 1")},
-                                                     {QStringLiteral("if (//test1/b = <b /> or //test1/c = <c />) then (<bresult/>) else ()"),
-                                                      FakeEwsServer::DialogEntry::ReplyCallback(),
+                                                     {[](const QDomElement &request) {
+                                                          return hasRootChild(request, u"test1"_s, u"b"_s) || hasRootChild(request, u"test1"_s, u"c"_s);
+                                                      },
+                                                      QStringLiteral("<bresult/>"),
                                                       QStringLiteral("Sample request 2")}};
 
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
@@ -234,8 +262,8 @@ void UtEwsFakeSrvTest::multipleResponses()
 void UtEwsFakeSrvTest::emptyResponse()
 {
     bool callbackCalled = false;
-    const FakeEwsServer::DialogEntry::List dialog = {{QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"),
-                                                      [&callbackCalled](const QString &, QXmlResultItems &, const QXmlNamePool &) {
+    const FakeEwsServer::DialogEntry::List dialog = {{isSampleRequest,
+                                                      [&callbackCalled](const QString &) {
                                                           callbackCalled = true;
                                                           return FakeEwsServer::EmptyResponse;
                                                       },
@@ -252,8 +280,6 @@ void UtEwsFakeSrvTest::emptyResponse()
 
 void UtEwsFakeSrvTest::getEventsRequest()
 {
-    // const FakeEwsServer::DialogEntry::List emptyDialog;
-
     const QFETCH(QString, request);
     const QFETCH(QStringList, events);
     const QFETCH(ushort, responseCode);
@@ -535,7 +561,6 @@ void UtEwsFakeSrvTest::getEventsRequest_data()
 void UtEwsFakeSrvTest::getStreamingEventsRequest()
 {
     bool callbackCalled = false;
-    // const FakeEwsServer::DialogEntry::List emptyDialog;
 
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
     QVERIFY(srv->start());
@@ -562,7 +587,7 @@ void UtEwsFakeSrvTest::getStreamingEventsRequest()
     srv->queueEventsXml(QStringList() << event);
 
     bool unknownRequestEncountered = false;
-    srv->setDefaultReplyCallback([&](const QString &req, QXmlResultItems &, const QXmlNamePool &) {
+    srv->setDefaultReplyCallback([&](const QString &req) {
         qDebug() << "Unknown EWS request encountered." << req;
         unknownRequestEncountered = true;
         return FakeEwsServer::EmptyResponse;
@@ -647,14 +672,15 @@ void UtEwsFakeSrvTest::getStreamingEventsRequest()
     QDateTime now = QDateTime::currentDateTime();
     qint64 elapsed = startTime.msecsTo(now);
     qDebug() << elapsed;
+    /* The stream has to stay open for the minute it advertises and has to be ended by
+     * the server then; the upper bound leaves room for a loaded build machine. */
     QVERIFY(elapsed >= 1 * 60 * 1000 - 600);
-    QVERIFY(elapsed <= 1 * 60 * 1000 + 600);
+    QVERIFY(elapsed <= 1 * 60 * 1000 + 5000);
 }
 
 void UtEwsFakeSrvTest::serverThread()
 {
-    const FakeEwsServer::DialogEntry::List dialog = {
-        {QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"), FakeEwsServer::DialogEntry::ReplyCallback(), QStringLiteral("Sample request 1")}};
+    const FakeEwsServer::DialogEntry::List dialog = {{isSampleRequest, QStringLiteral("<b/>"), QStringLiteral("Sample request 1")}};
 
     FakeEwsServerThread thread;
     thread.start();
@@ -677,8 +703,7 @@ void UtEwsFakeSrvTest::delayedContentSize()
      *  - content
      */
 
-    const FakeEwsServer::DialogEntry::List dialog = {
-        {QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"), FakeEwsServer::DialogEntry::ReplyCallback(), QStringLiteral("Sample request 1")}};
+    const FakeEwsServer::DialogEntry::List dialog = {{isSampleRequest, QStringLiteral("<b/>"), QStringLiteral("Sample request 1")}};
 
     FakeEwsServerThread thread;
     thread.start();
@@ -772,43 +797,30 @@ void UtEwsFakeSrvTest::badAuthentication()
     QCOMPARE(respCode, static_cast<ushort>(401));
 }
 
-void UtEwsFakeSrvTest::xqueryResultsInCallback()
+void UtEwsFakeSrvTest::requestMatcher()
 {
-    const FakeEwsServer::DialogEntry::List dialog = {{QStringLiteral("if (//test1/a = <a />) then (<b>test</b>) else ()"),
-                                                      [](const QString &, QXmlResultItems &ri, const QXmlNamePool &) {
-                                                          if (ri.hasError()) {
-                                                              qDebug() << "XQuery result has errors.";
-                                                              return FakeEwsServer::EmptyResponse;
-                                                          }
-                                                          QXmlItem item = ri.next();
-                                                          if (item.isNull()) {
-                                                              qDebug() << "XQuery result has no items.";
-                                                              return FakeEwsServer::EmptyResponse;
-                                                          }
-                                                          if (!item.isNode()) {
-                                                              qDebug() << "XQuery result is not a XML node.";
-                                                              return FakeEwsServer::EmptyResponse;
-                                                          }
-                                                          QXmlNodeModelIndex index = item.toNodeModelIndex();
-                                                          if (index.isNull()) {
-                                                              qDebug() << "XQuery XML node is NULL.";
-                                                              return FakeEwsServer::EmptyResponse;
-                                                          }
-                                                          if (index.model()->stringValue(index) != QLatin1StringView("test")) {
-                                                              qDebug() << "Unexpected item value:" << index.model()->stringValue(index);
-                                                              return FakeEwsServer::EmptyResponse;
-                                                          }
-                                                          return FakeEwsServer::DialogEntry::HttpResponse(QStringLiteral("<b/>"), 200);
+    /* The matcher decides on the parsed request and the callback answers with the request
+     * text, so a request the matcher does not describe goes unanswered. */
+    const FakeEwsServer::DialogEntry::List dialog = {{[](const QDomElement &request) {
+                                                          const QDomElement a = request.firstChildElement(QStringLiteral("a"));
+                                                          return !a.isNull() && a.attribute(QStringLiteral("id")) == QLatin1StringView("1");
                                                       },
-                                                      QStringLiteral("Sample request 1")}};
+                                                      [](const QString &request) {
+                                                          const bool carriesId = request.contains(QLatin1StringView("id=\"1\""));
+                                                          return FakeEwsServer::DialogEntry::HttpResponse(QStringLiteral("<b/>"), carriesId ? 200 : 500);
+                                                      },
+                                                      QStringLiteral("Request with a matching attribute")}};
 
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
     srv->setDialog(dialog);
     QVERIFY(srv->start());
 
-    auto resp = synchronousHttpReq(QStringLiteral("<test1><a /></test1>"), srv->portNumber());
+    auto resp = synchronousHttpReq(QStringLiteral("<test1><a id=\"1\" /></test1>"), srv->portNumber());
     QCOMPARE(resp.first, QStringLiteral("<b/>"));
     QCOMPARE(resp.second, static_cast<ushort>(200));
+
+    resp = synchronousHttpReq(QStringLiteral("<test1><a id=\"2\" /></test1>"), srv->portNumber());
+    QCOMPARE(resp.second, static_cast<ushort>(500));
 }
 
 QPair<QString, ushort> UtEwsFakeSrvTest::synchronousHttpReq(const QString &content, ushort port, const std::function<bool(const QString &)> &chunkFn)

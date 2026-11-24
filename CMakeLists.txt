@@ -159,6 +159,7 @@ find_package(
         DBus
         NetworkAuth
         Concurrent
+        Xml
 )
 if(KDEPIM_EWS)
     find_package(Qt6WebEngineWidgets ${QT_REQUIRED_VERSION} CONFIG REQUIRED)

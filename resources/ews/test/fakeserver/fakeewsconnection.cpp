@@ -6,13 +6,11 @@
 
 #include "fakeewsconnection.h"
 
-#include <QBuffer>
+#include <QByteArray>
+#include <QDomDocument>
+#include <QHash>
 #include <QRegularExpression>
 #include <QTcpSocket>
-#include <QXmlNamePool>
-#include <QXmlQuery>
-#include <QXmlResultItems>
-#include <QXmlSerializer>
 
 #include "fakeewsserver_debug.h"
 
@@ -131,9 +129,7 @@ void FakeEwsConnection::dataAvailable()
             const auto server = qobject_cast<FakeEwsServer *>(parent());
             const auto overrideReplyCallback = server->overrideReplyCallback();
             if (overrideReplyCallback) {
-                QXmlResultItems ri;
-                QXmlNamePool namePool;
-                resp = overrideReplyCallback(QString::fromUtf8(mContent), ri, namePool);
+                resp = overrideReplyCallback(QString::fromUtf8(mContent));
             }
 
             if (resp == FakeEwsServer::EmptyResponse) {
@@ -155,9 +151,7 @@ void FakeEwsConnection::dataAvailable()
 
             auto defaultReplyCallback = server->defaultReplyCallback();
             if (defaultReplyCallback && (resp == FakeEwsServer::EmptyResponse)) {
-                QXmlResultItems ri;
-                QXmlNamePool namePool;
-                resp = defaultReplyCallback(QString::fromUtf8(mContent), ri, namePool);
+                resp = defaultReplyCallback(QString::fromUtf8(mContent));
                 qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Returning response from default callback ") << resp.second << QStringLiteral(": ") << resp.first;
             }
 
@@ -214,40 +208,31 @@ FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::parseRequest(const Q
 {
     qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Got request: ") << content;
 
+    QDomDocument request;
+    const QDomDocument::ParseResult parseResult = request.setContent(content);
+    if (!parseResult) {
+        qCDebugNC(EWSFAKE_LOG)
+            << QStringLiteral("Request is not XML (%1:%2) - no dialog entry can match it.").arg(parseResult.errorLine).arg(parseResult.errorColumn);
+        return FakeEwsServer::EmptyResponse;
+    }
+
     auto server = qobject_cast<FakeEwsServer *>(parent());
     FakeEwsServer::DialogEntry::HttpResponse resp = FakeEwsServer::EmptyResponse;
     const auto dialogs{server->dialog()};
     for (const FakeEwsServer::DialogEntry &de : dialogs) {
-        QXmlResultItems ri;
-        QByteArray resultBytes;
-        QString result;
-        QBuffer resultBuffer(&resultBytes);
-        resultBuffer.open(QIODevice::WriteOnly);
-        QXmlQuery query;
-        QXmlSerializer xser(query, &resultBuffer);
-        if (!de.xQuery.isNull()) {
-            query.setFocus(content);
-            query.setQuery(de.xQuery);
-            query.evaluateTo(&xser);
-            query.evaluateTo(&ri);
-            if (ri.hasError()) {
-                qCDebugNC(EWSFAKE_LOG) << QStringLiteral("XQuery failed due to errors - skipping");
-                continue;
-            }
-            result = QString::fromUtf8(resultBytes);
+        if (!de.matcher || !de.matcher(request.documentElement())) {
+            continue;
         }
 
-        if (!result.trimmed().isEmpty()) {
-            qCDebugNC(EWSFAKE_LOG) << QStringLiteral("Got match for \"") << de.description << QStringLiteral("\"");
-            if (de.replyCallback) {
-                resp = de.replyCallback(content, ri, query.namePool());
-                qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Returning response from callback ") << resp.second << QStringLiteral(": ") << resp.first;
-            } else {
-                resp = {result.trimmed(), 200};
-                qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Returning response from XQuery ") << resp.second << QStringLiteral(": ") << resp.first;
-            }
-            break;
+        qCDebugNC(EWSFAKE_LOG) << QStringLiteral("Got match for \"") << de.description << QStringLiteral("\"");
+        if (de.replyCallback) {
+            resp = de.replyCallback(content);
+            qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Returning response from callback ") << resp.second << QStringLiteral(": ") << resp.first;
+        } else {
+            resp = {de.response.trimmed(), 200};
+            qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Returning response from dialog entry ") << resp.second << QStringLiteral(": ") << resp.first;
         }
+        break;
     }
 
     if (resp == FakeEwsServer::EmptyResponse) {

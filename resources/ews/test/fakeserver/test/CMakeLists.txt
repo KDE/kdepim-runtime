@@ -13,6 +13,15 @@ macro(akonadi_fakeserver_add_test tname)
         fakeewsserver
     )
     add_test(NAME ${tname} COMMAND ${tname})
+    # The streaming event test takes the minute its request advertises as the connection
+    # timeout - the smallest value the protocol allows - before the server ends the stream,
+    # so the test runs for about a minute and needs headroom on a loaded machine.
+    set_tests_properties(
+        ${tname}
+        PROPERTIES
+            TIMEOUT
+                120
+    )
 endmacro(
     akonadi_fakeserver_add_test
     tname

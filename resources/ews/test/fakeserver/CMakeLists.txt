@@ -20,7 +20,7 @@ target_link_libraries(
     fakeewsserver
     Qt::Core
     Qt::Network
-    Qt::XmlPatterns
+    Qt::Xml
 )
 
 add_subdirectory(test)
