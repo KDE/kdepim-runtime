@@ -51,4 +51,8 @@ private:
     KIMAP::ImapInterval m_searchUidInterval;
     bool m_gmailEnabled = false;
     bool m_searchInChunks = false;
+    // Set when the flags of m_uidRange are listed with a single UID FETCH, without searching the UIDs first
+    bool m_listUidRange = false;
+    KIMAP::ImapInterval m_uidRange;
+    bool m_itemsDelivered = false;
 };
