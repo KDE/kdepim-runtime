@@ -40,6 +40,19 @@ void BatchFetcher::setSearchUids(const KIMAP::ImapInterval &interval)
 
     // MS Exchange can't handle big results so we have to split the search into small chunks
     m_searchInChunks = m_session->serverGreeting().contains("Microsoft Exchange");
+
+    // The chunks are UID ranges, so the number of SEARCH commands grows with UIDNEXT rather than with the number
+    // of messages (a mailbox with UIDNEXT 300000 needs 150 round trips, even if it only holds a few messages).
+    // When we only list flags we don't need to know the UIDs beforehand: the server can resolve the UID range
+    // itself. This is deliberately a single command, not split in batches: we can't tell how many messages a
+    // UID range holds without the search we want to avoid, and a flag listing is small (a few dozen bytes per
+    // message). Unlike a sequence set, a UID range is valid even if the mailbox has been emptied in the meantime.
+    if (m_searchInChunks && m_scope.mode == KIMAP::FetchJob::FetchScope::Flags && m_scope.changedSince == 0 && interval.hasDefinedEnd()) {
+        m_listUidRange = true;
+        m_uidRange = interval;
+        m_searchUidInterval = KIMAP::ImapInterval();
+        m_currentSet.add(interval);
+    }
 }
 
 void BatchFetcher::setGmailExtensionsEnabled(bool enable)
@@ -51,7 +64,11 @@ static const int maxAmountOfUidToSearchInOneTime = 2000;
 
 void BatchFetcher::start()
 {
-    if (m_searchUidInterval.size()) {
+    if (m_listUidRange) {
+        qCDebug(IMAPRESOURCE_LOG) << "Listing flags of UIDs" << m_uidRange.begin() << m_uidRange.end() << "in one command, without searching the UIDs";
+        m_uidBased = true;
+        fetchNextBatch();
+    } else if (m_searchUidInterval.size()) {
         // Search in chunks also Exchange can handle
         const KIMAP::ImapInterval::Id firstUidToSearch = m_searchUidInterval.begin();
         const KIMAP::ImapInterval::Id lastUidToSearch =
@@ -109,7 +126,7 @@ void BatchFetcher::fetchNextBatch()
     }
 
     auto fetch = new KIMAP::FetchJob(m_session);
-    if (m_scope.changedSince != 0) {
+    if (m_scope.changedSince != 0 || m_listUidRange) {
         qCDebug(IMAPRESOURCE_LOG) << "Fetching all messages in one batch.";
         fetch->setSequenceSet(m_currentSet);
         m_currentSet = KIMAP::ImapSet();
@@ -172,6 +189,7 @@ void BatchFetcher::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messa
     }
     //     qCDebug(IMAPRESOURCE_LOG) << addedItems.size();
     if (!addedItems.isEmpty()) {
+        m_itemsDelivered = true;
         Q_EMIT itemsRetrieved(addedItems);
     }
 }
@@ -179,6 +197,16 @@ void BatchFetcher::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messa
 void BatchFetcher::onHeadersFetchDone(KJob *job)
 {
     m_fetchInProgress = false;
+    if (job->error() && m_listUidRange && !m_itemsDelivered) {
+        // The server refused to list the whole UID range at once: fall back to searching the UIDs in chunks.
+        // Only if nothing has been delivered yet, as the same message must not be delivered twice.
+        qCWarning(IMAPRESOURCE_LOG) << "Listing flags in one command failed, searching the UIDs instead:" << job->errorString();
+        m_listUidRange = false;
+        m_searchUidInterval = m_uidRange;
+        m_currentSet = KIMAP::ImapSet();
+        start();
+        return;
+    }
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << "Fetch job failed " << job->errorString();
         setError(KJob::UserDefinedError);

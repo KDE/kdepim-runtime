@@ -770,6 +770,246 @@ private Q_SLOTS:
 
         server.quit();
     }
+
+    void shouldListFlagsWithoutSearchOnExchange_data()
+    {
+        QTest::addColumn<Akonadi::Collection>("collection");
+        QTest::addColumn<QList<QByteArray>>("scenario");
+        QTest::addColumn<QStringList>("expectedUids");
+
+        Akonadi::Collection collection;
+        QList<QByteArray> scenario;
+        Akonadi::CollectionStatistics stats;
+        Akonadi::CachePolicy policy;
+        policy.setLocalParts(QStringList() << QLatin1StringView(Akonadi::MessagePart::Envelope) << QLatin1StringView(Akonadi::MessagePart::Header)
+                                           << QLatin1StringView(Akonadi::MessagePart::Body));
+
+        // The UID SEARCH workaround for Exchange is only enabled when the greeting says so
+        QList<QByteArray> exchangeConnectionScenario = defaultPoolConnectionScenario();
+        exchangeConnectionScenario[0] = "S: * OK The Microsoft Exchange IMAP4 service is ready.";
+
+        const QByteArray newMessage8 =
+            "S: * 4 FETCH ( FLAGS (\\Seen) UID 8 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+            "RFC822.SIZE 75 BODY[] {75}\r\n"
+            "From: Foo <foo@kde.org>\r\n"
+            "To: Bar <bar@kde.org>\r\n"
+            "Subject: Test Mail\r\n"
+            "\r\n"
+            "Test\r\n"
+            " )";
+        const QByteArray newMessage9 =
+            "S: * 5 FETCH ( FLAGS (\\Seen) UID 9 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+            "RFC822.SIZE 75 BODY[] {75}\r\n"
+            "From: Foo <foo@kde.org>\r\n"
+            "To: Bar <bar@kde.org>\r\n"
+            "Subject: Test Mail\r\n"
+            "\r\n"
+            "Test\r\n"
+            " )";
+
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
+        collection.setCachePolicy(policy);
+        collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(8);
+        stats.setCount(5);
+        collection.setStatistics(stats);
+        scenario.clear();
+        scenario << exchangeConnectionScenario << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 EXPUNGE"
+                 << "S: A000004 OK expunge done"
+                 << "C: A000005 SELECT \"INBOX/Foo\""
+                 << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
+                 << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
+                 << "S: * 5 EXISTS"
+                 << "S: * 0 RECENT"
+                 << "S: * OK [ UIDVALIDITY 1149151135  ]"
+                 << "S: * OK [ UIDNEXT 10  ]"
+                 << "S: A000005 OK select done"
+                 // The new messages are still looked up with a search, that is a single small chunk
+                 << "C: A000006 UID SEARCH UID 8:10"
+                 << "S: * SEARCH 8 9"
+                 << "S: A000006 OK search done"
+                 << "C: A000007 UID FETCH 8:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)" << newMessage8 << newMessage9
+                 << "S: A000007 OK fetch done"
+                 // No "UID SEARCH UID 1:7" here: the flags of the older messages are listed directly
+                 << "C: A000008 UID FETCH 1:7 (FLAGS UID)"
+                 << "S: * 1 FETCH ( FLAGS (\\Seen) UID 1 )"
+                 << "S: * 2 FETCH ( FLAGS () UID 3 )"
+                 << "S: * 3 FETCH ( FLAGS (\\Seen) UID 7 )"
+                 << "S: A000008 OK fetch done";
+
+        // A new message has been added and an old one removed, we can't do an incremental update
+        QTest::newRow("uidnext changed, fetch new messages and list flags")
+            << collection << scenario << QStringList{QStringLiteral("8"), QStringLiteral("9"), QStringLiteral("1"), QStringLiteral("3"), QStringLiteral("7")};
+
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
+        collection.setCachePolicy(policy);
+        collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(8);
+        stats.setCount(3);
+        collection.setStatistics(stats);
+        scenario.clear();
+        scenario << exchangeConnectionScenario << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 EXPUNGE"
+                 << "S: A000004 OK expunge done"
+                 << "C: A000005 SELECT \"INBOX/Foo\""
+                 << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
+                 << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
+                 << "S: * 5 EXISTS"
+                 << "S: * 0 RECENT"
+                 << "S: * OK [ UIDVALIDITY 1149151135  ]"
+                 << "S: * OK [ UIDNEXT 10  ]"
+                 << "S: A000005 OK select done"
+                 << "C: A000006 UID SEARCH UID 8:10"
+                 << "S: * SEARCH 8 9"
+                 << "S: A000006 OK search done"
+                 << "C: A000007 UID FETCH 8:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)" << newMessage8 << newMessage9 << "S: A000007 OK fetch done"
+                 << "C: A000008 UID FETCH 1:7 (FLAGS UID)"
+                 << "S: * 1 FETCH ( FLAGS (\\Seen) UID 1 )"
+                 << "S: * 2 FETCH ( FLAGS () UID 3 )"
+                 << "S: * 3 FETCH ( FLAGS (\\Seen) UID 7 )"
+                 << "S: A000008 OK fetch done";
+
+        // We know no messages have been removed, so this is an incremental update
+        QTest::newRow("uidnext changed, fetch new messages incrementally")
+            << collection << scenario << QStringList{QStringLiteral("8"), QStringLiteral("9"), QStringLiteral("1"), QStringLiteral("3"), QStringLiteral("7")};
+
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
+        collection.setCachePolicy(policy);
+        collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(300000);
+        stats.setCount(5);
+        collection.setStatistics(stats);
+        scenario.clear();
+        scenario << exchangeConnectionScenario << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 EXPUNGE"
+                 << "S: A000004 OK expunge done"
+                 << "C: A000005 SELECT \"INBOX/Foo\""
+                 << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
+                 << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
+                 << "S: * 4 EXISTS"
+                 << "S: * 0 RECENT"
+                 << "S: * OK [ UIDVALIDITY 1149151135 ]"
+                 << "S: * OK [ UIDNEXT 300000 ]"
+                 << "S: A000005 OK select done"
+                 // Used to be 150 searches ("UID SEARCH UID 1:2000", "UID SEARCH UID 2001:4000", ...)
+                 << "C: A000006 UID FETCH 1:300000 (FLAGS UID)"
+                 << "S: * 1 FETCH ( FLAGS (\\Seen) UID 12 )"
+                 << "S: * 2 FETCH ( FLAGS (\\Seen) UID 150000 )"
+                 << "S: * 3 FETCH ( FLAGS (\\Seen) UID 299998 )"
+                 << "S: * 4 FETCH ( FLAGS (\\Seen) UID 299999 )"
+                 << "S: A000006 OK fetch done";
+
+        QTest::newRow("remote message deleted, sparse uids")
+            << collection << scenario << QStringList{QStringLiteral("12"), QStringLiteral("150000"), QStringLiteral("299998"), QStringLiteral("299999")};
+
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
+        collection.setCachePolicy(policy);
+        collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(9);
+        stats.setCount(1);
+        collection.setStatistics(stats);
+        scenario.clear();
+        scenario << exchangeConnectionScenario << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 EXPUNGE"
+                 << "S: A000004 OK expunge done"
+                 << "C: A000005 SELECT \"INBOX/Foo\""
+                 << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
+                 << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
+                 << "S: * 0 EXISTS"
+                 << "S: * 0 RECENT"
+                 << "S: * OK [ UIDVALIDITY 1149151135 ]"
+                 << "S: * OK [ UIDNEXT 9 ]"
+                 << "S: A000005 OK select done";
+
+        // The last message has been removed: nothing is listed at all, the local items are simply dropped
+        QTest::newRow("last message removed, empty mailbox") << collection << scenario << QStringList{};
+
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
+        collection.setCachePolicy(policy);
+        collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(9);
+        stats.setCount(5);
+        collection.setStatistics(stats);
+        scenario.clear();
+        scenario << exchangeConnectionScenario << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 EXPUNGE"
+                 << "S: A000004 OK expunge done"
+                 << "C: A000005 SELECT \"INBOX/Foo\""
+                 << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
+                 << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
+                 << "S: * 4 EXISTS"
+                 << "S: * 0 RECENT"
+                 << "S: * OK [ UIDVALIDITY 1149151135 ]"
+                 << "S: * OK [ UIDNEXT 9 ]"
+                 << "S: A000005 OK select done"
+                 << "C: A000006 UID FETCH 1:9 (FLAGS UID)"
+                 << "S: A000006 NO The specified message set is invalid."
+                 // The server refused to list the whole range: back to searching the UIDs
+                 << "C: A000007 UID SEARCH UID 1:9"
+                 << "S: * SEARCH 1 2 3 4"
+                 << "S: A000007 OK search done"
+                 << "C: A000008 UID FETCH 1:4 (FLAGS UID)"
+                 << "S: * 1 FETCH ( FLAGS (\\Seen) UID 1 )"
+                 << "S: * 2 FETCH ( FLAGS (\\Seen) UID 2 )"
+                 << "S: * 3 FETCH ( FLAGS (\\Seen) UID 3 )"
+                 << "S: * 4 FETCH ( FLAGS (\\Seen) UID 4 )"
+                 << "S: A000008 OK fetch done";
+
+        QTest::newRow("listing refused by the server, fall back to the search")
+            << collection << scenario << QStringList{QStringLiteral("1"), QStringLiteral("2"), QStringLiteral("3"), QStringLiteral("4")};
+    }
+
+    void shouldListFlagsWithoutSearchOnExchange()
+    {
+        QFETCH(Akonadi::Collection, collection);
+        QFETCH(QList<QByteArray>, scenario);
+        QFETCH(QStringList, expectedUids);
+
+        FakeServer server;
+        server.setScenario(scenario);
+        server.startAndWait();
+
+        SessionPool pool(1);
+
+        pool.setPasswordRequester(createDefaultRequester());
+        QVERIFY(pool.connect(createDefaultAccount()));
+        QSignalSpy doneSpy(&pool, &SessionPool::connectDone);
+        QVERIFY(doneSpy.wait());
+
+        DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
+        state->setServerCapabilities(pool.serverCapabilities());
+        state->setCollection(collection);
+
+        auto task = new RetrieveItemsTask(state);
+        task->start(&pool);
+
+        QTRY_VERIFY(!state->calls().isEmpty() && state->calls().constLast().first == "itemsRetrievalDone");
+
+        // Every message must be delivered exactly once, whatever the number of batches
+        // and whether the retrieval is incremental or not
+        QStringList uids;
+        const auto calls = state->calls();
+        for (const auto &call : calls) {
+            QVERIFY2(call.first != "cancelTask", qPrintable(call.second.toString()));
+            if (call.first == "itemsRetrieved" || call.first == "itemsRetrievedIncremental") {
+                const auto items = call.second.value<Akonadi::Item::List>();
+                for (const auto &item : items) {
+                    uids << item.remoteId();
+                }
+            }
+        }
+        QCOMPARE(uids, expectedUids);
+
+        QVERIFY(server.isAllScenarioDone());
+
+        server.quit();
+    }
 };
 
 QTEST_GUILESS_MAIN(TestRetrieveItemsTask)
