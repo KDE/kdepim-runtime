@@ -13,12 +13,12 @@
 #include "ewssubscribedfoldersjob.h"
 #include "ewssubscriberequest.h"
 #include "ewsunsubscriberequest.h"
+#include <algorithm>
 #include <chrono>
 
 using namespace std::chrono_literals;
 
-// TODO: Allow customization
-static constexpr auto pollInterval = 10s;
+static constexpr auto minPollInterval = 30s;
 static constexpr auto streamingTimeout = 30min;
 static constexpr auto streamingConnTimeout = 60s;
 
@@ -30,7 +30,7 @@ EwsSubscriptionManager::EwsSubscriptionManager(EwsClient &client, const EwsId &r
     , mFolderTreeChanged(false)
     , mSettings(settings)
 {
-    mStreamingEvents = mEwsClient.serverVersion().supports(EwsServerVersion::StreamingSubscription);
+    mStreamingEvents = (settings->retrievalMethod() == 1) && mEwsClient.serverVersion().supports(EwsServerVersion::StreamingSubscription);
     mStreamingTimer.setInterval(streamingConnTimeout);
     mStreamingTimer.setSingleShot(true);
     connect(&mStreamingTimer, &QTimer::timeout, this, &EwsSubscriptionManager::streamingConnectionTimeout);
@@ -51,7 +51,8 @@ void EwsSubscriptionManager::start()
     }
 
     if (!mStreamingEvents) {
-        mPollTimer.setInterval(pollInterval);
+        const std::chrono::duration<double, std::ratio<60>> pollInterval(mSettings->pollInterval());
+        mPollTimer.setInterval(std::max(std::chrono::duration_cast<std::chrono::milliseconds>(pollInterval), std::chrono::milliseconds(minPollInterval)));
         mPollTimer.setSingleShot(false);
         connect(&mPollTimer, &QTimer::timeout, this, &EwsSubscriptionManager::getEvents);
     }

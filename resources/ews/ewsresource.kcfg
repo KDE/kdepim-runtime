@@ -40,9 +40,12 @@
       <label>Poll Interval</label>
       <tooltip>Sets the interval for checking for new mail</tooltip>
       <whatsthis>Sets the interval for checking for new mail.</whatsthis>
+      <default>1.0</default>
     </entry>
     <entry name="RetrievalMethod" type="Int">
       <label>Retrieval</label>
+      <!-- 0: poll for events, 1: streaming notifications (if supported by the server) -->
+      <default>1</default>
     </entry>
     <entry name="ServerSubscription" type="Bool">
       <label>Enable Server-Side Subscriptions</label>
