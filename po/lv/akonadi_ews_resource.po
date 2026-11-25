@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-13 03:40+0000\n"
+"POT-Creation-Date: 2026-11-25 03:26+0000\n"
 "PO-Revision-Date: 2025-09-26 16:26+0300\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -687,56 +687,50 @@ msgstr "Nezināms"
 msgid "About"
 msgstr "Par"
 
-#: ewsfetchitempayloadjob.cpp:63
+#: ewsfetchitempayloadjob.cpp:83
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
 msgstr "Neizdevās apstrādāt vienumu izgūšanas pieprasījumu"
 
-#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:343 ewsresource.cpp:348
-#: ewsresource.cpp:539
+#: ewsfetchitempayloadjob.cpp:91 ewsresource.cpp:361 ewsresource.cpp:366
+#: ewsresource.cpp:564
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
 msgstr "Neizdevās izgūt vienumus"
 
-#: ewsfetchitempayloadjob.cpp:78
+#: ewsfetchitempayloadjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - incorrect number of responses"
 msgstr "Neizdevās izgūt vienumu — nepareizs atbilžu skaits"
 
-#: ewsfetchitempayloadjob.cpp:91
+#: ewsfetchitempayloadjob.cpp:111
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Akonadi item not found for item %1"
 msgstr "Neizdevās izgūt vienumus — „Akonadi“ vienums vienumam „%1“ nav atrasts"
 
-#: ewsfetchitempayloadjob.cpp:98
+#: ewsfetchitempayloadjob.cpp:118
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Unknown item type for item %1"
 msgstr "Neizdevās izgūt vienumus — nezināms vienuma tips vienumam „%1“"
 
-#: ewsfetchitempayloadjob.cpp:104
-#, kde-format
-msgctxt "@info:status"
-msgid "Failed to fetch item payload"
-msgstr "Neizdevās izgūt vienuma saturu"
-
-#: ewsfetchitemsjob.cpp:98
+#: ewsfetchitemsjob.cpp:115
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list"
 msgstr "Izgūst %1 vienuma sarakstu"
 
-#: ewsfetchitemsjob.cpp:214
+#: ewsfetchitemsjob.cpp:233
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
 msgstr "Izgūst %1 vienuma sarakstu (%2 vienumi)"
 
-#: ewsfetchitemsjob.cpp:399
+#: ewsfetchitemsjob.cpp:418
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"
@@ -799,306 +793,306 @@ msgstr "Savienojas ar „Exchange“"
 msgid "Connecting to Microsoft Exchange server…"
 msgstr "Savienojas ar „Microsoft Exchange“ serveri…"
 
-#: ewsresource.cpp:153
+#: ewsresource.cpp:162
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
 msgstr "Savienojas ar „Exchange“ serveri"
 
-#: ewsresource.cpp:171 ewsresource.cpp:178 ewsresource.cpp:185
-#: ewsresource.cpp:323
+#: ewsresource.cpp:180 ewsresource.cpp:187 ewsresource.cpp:194
+#: ewsresource.cpp:332
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
 msgstr "Neizdodas savienoties ar „Exchange“ serveri"
 
-#: ewsresource.cpp:263
+#: ewsresource.cpp:272
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
 msgstr "Saknes mapes ID nav zināms."
 
-#: ewsresource.cpp:267
+#: ewsresource.cpp:276
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
 msgstr "Izgūst kolekcijas koku"
 
-#: ewsresource.cpp:416
+#: ewsresource.cpp:441
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
 msgstr "Izgūst vienumus"
 
-#: ewsresource.cpp:438 ewsresource.cpp:524
+#: ewsresource.cpp:463 ewsresource.cpp:549
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
 msgstr "Neizdevās izgūt vienumus — iekšējā kļūda"
 
-#: ewsresource.cpp:472
+#: ewsresource.cpp:497
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
 msgstr "Neizdevās izgūt mapes — iekšēja kļūda"
 
-#: ewsresource.cpp:478
+#: ewsresource.cpp:503
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
 msgstr "Neizdevās apstrādāt mapju izgūšanas pieprasījumu"
 
-#: ewsresource.cpp:495
+#: ewsresource.cpp:520
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
 msgstr "Nederīgs inkrementāls mapju izgūšanas pieprasījuma uzdevuma objekts"
 
-#: ewsresource.cpp:558
+#: ewsresource.cpp:583
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
 msgstr "Nav atbalstīta izmaiņu veikšana vienuma tipam"
 
-#: ewsresource.cpp:571
+#: ewsresource.cpp:596
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
 msgstr "Atjaunina vienuma karogus"
 
-#: ewsresource.cpp:583
+#: ewsresource.cpp:608
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
 msgstr "Neizdevās apstrādāt vienuma karogu atjaunināšanas pieprasījumu"
 
-#: ewsresource.cpp:590
+#: ewsresource.cpp:615
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
 msgstr "Neizdevās atjaunināt vienuma karogus — iekšēja kļūda"
 
-#: ewsresource.cpp:604
+#: ewsresource.cpp:629
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
 msgstr "Neizdevās apstrādāt vienuma atjaunināšanas pieprasījumu"
 
-#: ewsresource.cpp:611
+#: ewsresource.cpp:636
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
 msgstr "Neizdevās atjaunināt vienumu — iekšēja kļūda"
 
-#: ewsresource.cpp:646
+#: ewsresource.cpp:671
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
 msgstr "Neizdevās apstrādāt vienuma pārvietošanas pieprasījumu"
 
-#: ewsresource.cpp:653
+#: ewsresource.cpp:678
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
 msgstr "Neizdevās pārvietot vienumu — iekšēja kļūda"
 
-#: ewsresource.cpp:660
+#: ewsresource.cpp:685
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
 msgstr ""
 "Neizdevās pārvietot vienumu — no servera saņemts nederīgs atbilžu skaits"
 
-#: ewsresource.cpp:753
+#: ewsresource.cpp:778
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
 msgstr "Neizdevās apstrādāt vienuma dzēšanas pieprasījumu"
 
-#: ewsresource.cpp:760
+#: ewsresource.cpp:785
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
 msgstr "Neizdevās dzēst vienumu — iekšēja kļūda"
 
-#: ewsresource.cpp:767
+#: ewsresource.cpp:792
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
 msgstr "Neizdevās dzēst vienumu — no servera saņemts nederīgs atbilžu skaits"
 
-#: ewsresource.cpp:812 ewsresource.cpp:1025
+#: ewsresource.cpp:837 ewsresource.cpp:1050
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
 msgstr "Vienuma tips nav atbalstīts izveidošanai"
 
-#: ewsresource.cpp:823
+#: ewsresource.cpp:848
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
 msgstr "Neizdevās apstrādāt vienuma izveidošanas pieprasījumu"
 
-#: ewsresource.cpp:829
+#: ewsresource.cpp:854
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
 msgstr "Neizdevās izveidot vienumu — iekšēja kļūda"
 
-#: ewsresource.cpp:850
+#: ewsresource.cpp:875
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr "Neizdevās pievienot kolekciju — nevar noteikt EWS mapes tipu"
 
-#: ewsresource.cpp:869
+#: ewsresource.cpp:894
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
 msgstr "Neizdevās apstrādāt mapes izveidošanas pieprasījumu"
 
-#: ewsresource.cpp:875
+#: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
 msgstr "Neizdevās izveidot mapi — iekšēja kļūda"
 
-#: ewsresource.cpp:887
+#: ewsresource.cpp:912
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
 msgstr "Neizdevās izveidot mapi"
 
-#: ewsresource.cpp:910
+#: ewsresource.cpp:935
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
 msgstr "Neizdevās apstrādāt mapes pārvietošanas pieprasījumu"
 
-#: ewsresource.cpp:916
+#: ewsresource.cpp:941
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
 msgstr "Neizdevās pārvietot mapi — iekšēja kļūda"
 
-#: ewsresource.cpp:922
+#: ewsresource.cpp:947
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
 msgstr "Neizdevās pārvietot mapi — no servera saņemts nederīgs atbilžu skaits"
 
-#: ewsresource.cpp:933
+#: ewsresource.cpp:958
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
 msgstr "Neizdevās pārvietot mapi"
 
-#: ewsresource.cpp:961
+#: ewsresource.cpp:986
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
 msgstr "Neizdevās apstrādāt mapes atjaunināšanas pieprasījumu"
 
-#: ewsresource.cpp:967
+#: ewsresource.cpp:992
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
 msgstr "Neizdevās atjaunināt mapi — iekšēja kļūda"
 
-#: ewsresource.cpp:973
+#: ewsresource.cpp:998
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
 msgstr "Neizdevās atjaunināt mapi — no servera saņemts nederīgs atbilžu skaits"
 
-#: ewsresource.cpp:984
+#: ewsresource.cpp:1009
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
 msgstr "Neizdevās atjaunināt mapi"
 
-#: ewsresource.cpp:1001
+#: ewsresource.cpp:1026
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
 msgstr "Neizdevās apstrādāt mapes dzēšanas pieprasījumu"
 
-#: ewsresource.cpp:1007
+#: ewsresource.cpp:1032
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
 msgstr "Neizdevās dzēst mapi — iekšēja kļūda"
 
-#: ewsresource.cpp:1015
+#: ewsresource.cpp:1040
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
 msgstr "Neizdevās dzēst mapi"
 
-#: ewsresource.cpp:1039 ewsresource.cpp:1073
+#: ewsresource.cpp:1064 ewsresource.cpp:1098
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
 msgstr "Neizdevās apstrādāt vienuma sūtīšanas pieprasījumu"
 
-#: ewsresource.cpp:1045 ewsresource.cpp:1079
+#: ewsresource.cpp:1070 ewsresource.cpp:1104
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
 msgstr "Neizdevās sūtīt vienumu — iekšēja kļūda"
 
-#: ewsresource.cpp:1084
+#: ewsresource.cpp:1109
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "No servera saņemts nederīgs atbilžu skaits"
 
-#: ewsresource.cpp:1276
+#: ewsresource.cpp:1297
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "Atjaunina vienuma birkas"
 
-#: ewsresource.cpp:1289
+#: ewsresource.cpp:1310
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr "Neizdevās apstrādāt vienuma birku atjaunināšanas pieprasījumu"
 
-#: ewsresource.cpp:1295
+#: ewsresource.cpp:1316
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "Neizdevās apstrādāt vienuma birkas — iekšēja kļūda"
 
-#: ewsresource.cpp:1332
+#: ewsresource.cpp:1353
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr "Neizdevās apstrādāt globālās birkas atjaunināšanas pieprasījumu"
 
-#: ewsresource.cpp:1348
+#: ewsresource.cpp:1369
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Neizdevās apstrādāt globālo birku atjaunināšanas pieprasījumu"
 
-#: ewsresource.cpp:1426
+#: ewsresource.cpp:1447
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Autentificēties"
 
-#: ewsresource.cpp:1438 ewsresource.cpp:1453
+#: ewsresource.cpp:1459 ewsresource.cpp:1474
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Autentificēšanās neizdevās"
 
-#: ewsresource.cpp:1461
+#: ewsresource.cpp:1482
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"
@@ -1250,6 +1244,14 @@ msgstr "Ceļš uz „PKey“ autentifikācijas PEM sertifikātu"
 msgid "Path to PKey authentication PEM private key"
 msgstr "Ceļš uz „PKey“ autentifikācijas PEM privāto atslēgu"
 
+#. i18n: ectx: label, entry (PayloadRepairedCollections), group (General)
+#: ewsresource.kcfg:82
+#, kde-format
+msgid ""
+"Calendar folders synchronized once in full to fetch items stored without "
+"payload by earlier versions"
+msgstr ""
+
 #: ewssubscriptionwidget.cpp:178
 #, kde-format
 msgctxt "@info"
@@ -1309,3 +1311,7 @@ msgstr "Vienuma atjaunināšana neizdevās: "
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Vienums nedarbojas, kamēr apstrādā vienuma atbildi."
+
+#~ msgctxt "@info:status"
+#~ msgid "Failed to fetch item payload"
+#~ msgstr "Neizdevās izgūt vienuma saturu"

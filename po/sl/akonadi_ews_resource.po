@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-13 03:40+0000\n"
+"POT-Creation-Date: 2026-11-25 03:26+0000\n"
 "PO-Revision-Date: 2025-05-01 06:01+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -686,26 +686,26 @@ msgstr "Neznano"
 msgid "About"
 msgstr "O programu"
 
-#: ewsfetchitempayloadjob.cpp:63
+#: ewsfetchitempayloadjob.cpp:83
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
 msgstr "Zahtevka za pridobivanje elementov ni bilo mogoče obdelati"
 
-#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:343 ewsresource.cpp:348
-#: ewsresource.cpp:539
+#: ewsfetchitempayloadjob.cpp:91 ewsresource.cpp:361 ewsresource.cpp:366
+#: ewsresource.cpp:564
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
 msgstr "Elementov ni bilo mogoče pridobiti"
 
-#: ewsfetchitempayloadjob.cpp:78
+#: ewsfetchitempayloadjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - incorrect number of responses"
 msgstr "Elementov ni bilo mogoče pridobiti - napačno število odzivov"
 
-#: ewsfetchitempayloadjob.cpp:91
+#: ewsfetchitempayloadjob.cpp:111
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Akonadi item not found for item %1"
@@ -713,31 +713,25 @@ msgstr ""
 "Elementov ni bilo mogoče pridobiti - Akonadijevega elementa ni bilo "
 "najdenega za element %1"
 
-#: ewsfetchitempayloadjob.cpp:98
+#: ewsfetchitempayloadjob.cpp:118
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Unknown item type for item %1"
 msgstr "Elementov ni bilo mogoče pridobiti - Neznana zvrst za element %1"
 
-#: ewsfetchitempayloadjob.cpp:104
-#, kde-format
-msgctxt "@info:status"
-msgid "Failed to fetch item payload"
-msgstr "Ni bilo mogoče pridobiti koristnega bremena elementa"
-
-#: ewsfetchitemsjob.cpp:98
+#: ewsfetchitemsjob.cpp:115
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list"
 msgstr "Pridobivanje %1 seznama elementov"
 
-#: ewsfetchitemsjob.cpp:214
+#: ewsfetchitemsjob.cpp:233
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
 msgstr "Pridobivanje %1 seznama elementov (%2 elementov)"
 
-#: ewsfetchitemsjob.cpp:399
+#: ewsfetchitemsjob.cpp:418
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"
@@ -800,129 +794,129 @@ msgstr "Povezujem se z Exchange"
 msgid "Connecting to Microsoft Exchange server…"
 msgstr "Povezujem se s strežnikom Microsoft Exchange…"
 
-#: ewsresource.cpp:153
+#: ewsresource.cpp:162
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
 msgstr "Povezujem se s strežnikom Exchange"
 
-#: ewsresource.cpp:171 ewsresource.cpp:178 ewsresource.cpp:185
-#: ewsresource.cpp:323
+#: ewsresource.cpp:180 ewsresource.cpp:187 ewsresource.cpp:194
+#: ewsresource.cpp:332
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
 msgstr "Ni se bilo mogoče povezati s strežnikom Exchange"
 
-#: ewsresource.cpp:263
+#: ewsresource.cpp:272
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
 msgstr "ID korenske mape ni znan."
 
-#: ewsresource.cpp:267
+#: ewsresource.cpp:276
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
 msgstr "Pridobivanje drevesne zbirke"
 
-#: ewsresource.cpp:416
+#: ewsresource.cpp:441
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
 msgstr "Pridobivanje elementov"
 
-#: ewsresource.cpp:438 ewsresource.cpp:524
+#: ewsresource.cpp:463 ewsresource.cpp:549
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
 msgstr "Elementov ni bilo mogoče pridobiti - notranja napaka"
 
-#: ewsresource.cpp:472
+#: ewsresource.cpp:497
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
 msgstr "Ni bilo mogoče pridobiti map - notranja napaka"
 
-#: ewsresource.cpp:478
+#: ewsresource.cpp:503
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
 msgstr "Zahtevka za pridobivanje map ni bilo mogoče obdelati"
 
-#: ewsresource.cpp:495
+#: ewsresource.cpp:520
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
 msgstr "Neveljaven zahtevek posla za pridobivanje inkrementalnih map"
 
-#: ewsresource.cpp:558
+#: ewsresource.cpp:583
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
 msgstr "Vrsta elementa ni podprta za spreminjanje"
 
-#: ewsresource.cpp:571
+#: ewsresource.cpp:596
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
 msgstr "Posodabljanje zastavic predmetov"
 
-#: ewsresource.cpp:583
+#: ewsresource.cpp:608
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
 msgstr "Zahtevek za obdelavo posodobitve zastavic predmeta ni bil izpolnjen"
 
-#: ewsresource.cpp:590
+#: ewsresource.cpp:615
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
 msgstr "Ni izvedena posodobitev zastavic predmeta - notranja napaka"
 
-#: ewsresource.cpp:604
+#: ewsresource.cpp:629
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
 msgstr "Postopek posodobitve zastavic predmeta ni bil mogoč"
 
-#: ewsresource.cpp:611
+#: ewsresource.cpp:636
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
 msgstr "Ni mogoče posodobiti predmeta - notranja napaka"
 
-#: ewsresource.cpp:646
+#: ewsresource.cpp:671
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
 msgstr "Ni mogoče obdelati zahtevka za prenos predmeta"
 
-#: ewsresource.cpp:653
+#: ewsresource.cpp:678
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
 msgstr "Ni mogoče prenesti predmeta - notranja napaka"
 
-#: ewsresource.cpp:660
+#: ewsresource.cpp:685
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
 msgstr ""
 "Prenos predmeta ni uspel - prejeto neveljavno število odzivov strežnika"
 
-#: ewsresource.cpp:753
+#: ewsresource.cpp:778
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
 msgstr "Neuspela obdelava zahtevka za brisanje predmeta"
 
-#: ewsresource.cpp:760
+#: ewsresource.cpp:785
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
 msgstr "Neuspelo brisanje predmeta - notranja napaka"
 
-#: ewsresource.cpp:767
+#: ewsresource.cpp:792
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -930,86 +924,86 @@ msgid ""
 msgstr ""
 "Neuspelo brisanje predmeta - prejeto neveljavno število odzivov strežnika"
 
-#: ewsresource.cpp:812 ewsresource.cpp:1025
+#: ewsresource.cpp:837 ewsresource.cpp:1050
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
 msgstr "Ustvarjanje nepodprte vrste premeta"
 
-#: ewsresource.cpp:823
+#: ewsresource.cpp:848
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
 msgstr "Zahtevek za ustvarjanje predmeta neuspešen"
 
-#: ewsresource.cpp:829
+#: ewsresource.cpp:854
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
 msgstr "Neuspešno ustvarjanje predmeta - notranja napaka"
 
-#: ewsresource.cpp:850
+#: ewsresource.cpp:875
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr "Neuspelo dodajanje zbirke - ni mogoče določiti tip mape EWS"
 
-#: ewsresource.cpp:869
+#: ewsresource.cpp:894
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
 msgstr "Neuspela obdelava zahtevka za ustvarjanje mape"
 
-#: ewsresource.cpp:875
+#: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
 msgstr "Neuspelo ustvarjanje mape - notranja napaka"
 
-#: ewsresource.cpp:887
+#: ewsresource.cpp:912
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
 msgstr "Neuspelo ustvarjanje mape"
 
-#: ewsresource.cpp:910
+#: ewsresource.cpp:935
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
 msgstr "Neuspel postopek zahtevka za prenos mape"
 
-#: ewsresource.cpp:916
+#: ewsresource.cpp:941
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
 msgstr "Neuspel prenos mape - notranja napaka"
 
-#: ewsresource.cpp:922
+#: ewsresource.cpp:947
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
 msgstr "Neuspel prenos mape - prejeto neveljavno število odzivov strežnika"
 
-#: ewsresource.cpp:933
+#: ewsresource.cpp:958
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
 msgstr "Neuspel prenos mape"
 
-#: ewsresource.cpp:961
+#: ewsresource.cpp:986
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
 msgstr "Obdelava zahtevka za posodobitev mape ni bila uspešna"
 
-#: ewsresource.cpp:967
+#: ewsresource.cpp:992
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
 msgstr "Posodobitev mape ni uspela - notranja napaka"
 
-#: ewsresource.cpp:973
+#: ewsresource.cpp:998
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -1017,92 +1011,92 @@ msgid ""
 msgstr ""
 "Posodobitev mape ni uspela - prejeto neveljavno število odzivov od strežnika"
 
-#: ewsresource.cpp:984
+#: ewsresource.cpp:1009
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
 msgstr "Posodobitev mape ni uspela"
 
-#: ewsresource.cpp:1001
+#: ewsresource.cpp:1026
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
 msgstr ""
 "Posodobitev mape ni uspela - prejeto neveljavno število odzivov od strežnika"
 
-#: ewsresource.cpp:1007
+#: ewsresource.cpp:1032
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
 msgstr "Obdelava zahtevka za brisanje mape ni bila uspešna"
 
-#: ewsresource.cpp:1015
+#: ewsresource.cpp:1040
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
 msgstr "Brisanje mape ni uspelo"
 
-#: ewsresource.cpp:1039 ewsresource.cpp:1073
+#: ewsresource.cpp:1064 ewsresource.cpp:1098
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
 msgstr "Obdelava zahtevka za pošiljanje predmeta ni uspelo"
 
-#: ewsresource.cpp:1045 ewsresource.cpp:1079
+#: ewsresource.cpp:1070 ewsresource.cpp:1104
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
 msgstr "Pošiljanje predmeta ni uspelo - notranja napaka"
 
-#: ewsresource.cpp:1084
+#: ewsresource.cpp:1109
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "Prejeto neveljavno število odzivov od strežnika"
 
-#: ewsresource.cpp:1276
+#: ewsresource.cpp:1297
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "Posodabljanje značk predmetov"
 
-#: ewsresource.cpp:1289
+#: ewsresource.cpp:1310
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr "Obdelava zahtevka za posodobitev značk predmeta ni uspela"
 
-#: ewsresource.cpp:1295
+#: ewsresource.cpp:1316
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "Posodobitev značk predmeta ni uspela - notranja napaka"
 
-#: ewsresource.cpp:1332
+#: ewsresource.cpp:1353
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr "Posodobitev značk predmeta ni uspela - notranja napaka"
 
-#: ewsresource.cpp:1348
+#: ewsresource.cpp:1369
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Obdelava zahtevka za globalno preiskavo značk ni uspela"
 
-#: ewsresource.cpp:1426
+#: ewsresource.cpp:1447
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Preverjanje pristnosti"
 
-#: ewsresource.cpp:1438 ewsresource.cpp:1453
+#: ewsresource.cpp:1459 ewsresource.cpp:1474
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Preverjanje pristnosti ni uspelo"
 
-#: ewsresource.cpp:1461
+#: ewsresource.cpp:1482
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"
@@ -1255,6 +1249,14 @@ msgstr "Pot do overjanja PKey potrdila PEM"
 msgid "Path to PKey authentication PEM private key"
 msgstr "Pot do overjanja PKey zasebnega potrdila PEM"
 
+#. i18n: ectx: label, entry (PayloadRepairedCollections), group (General)
+#: ewsresource.kcfg:82
+#, kde-format
+msgid ""
+"Calendar folders synchronized once in full to fetch items stored without "
+"payload by earlier versions"
+msgstr ""
+
 #: ewssubscriptionwidget.cpp:178
 #, kde-format
 msgctxt "@info"
@@ -1314,6 +1316,10 @@ msgstr "Posodabljanje predmeta je spodletelo: "
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Predmet izven reda med obdelovanjem odziva posodabljanja."
+
+#~ msgctxt "@info:status"
+#~ msgid "Failed to fetch item payload"
+#~ msgstr "Ni bilo mogoče pridobiti koristnega bremena elementa"
 
 #~ msgid "Exchange server autodiscovery"
 #~ msgstr "Samodejno odkrivanje strežnika Exchange"
