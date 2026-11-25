@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-13 01:00+0000\n"
+"POT-Creation-Date: 2026-11-25 01:26+0000\n"
 "PO-Revision-Date: 2025-11-08 21:10-0300\n"
 "Last-Translator: Guilherme Marçal Silva <guimarcalsilva@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -692,26 +692,26 @@ msgstr "Desconhecida"
 msgid "About"
 msgstr "Sobre"
 
-#: ewsfetchitempayloadjob.cpp:63
+#: ewsfetchitempayloadjob.cpp:83
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
 msgstr "Não foi possível processar a requisição dos itens"
 
-#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:343 ewsresource.cpp:348
-#: ewsresource.cpp:539
+#: ewsfetchitempayloadjob.cpp:91 ewsresource.cpp:361 ewsresource.cpp:366
+#: ewsresource.cpp:564
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
 msgstr "Não foi possível obter os itens"
 
-#: ewsfetchitempayloadjob.cpp:78
+#: ewsfetchitempayloadjob.cpp:98
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - incorrect number of responses"
 msgstr "Não foi possível obter os itens - número de respostas incorreto"
 
-#: ewsfetchitempayloadjob.cpp:91
+#: ewsfetchitempayloadjob.cpp:111
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Akonadi item not found for item %1"
@@ -719,31 +719,25 @@ msgstr ""
 "Não foi possível obter os itens - não foi encontrado o item do Akonadi para "
 "o item %1"
 
-#: ewsfetchitempayloadjob.cpp:98
+#: ewsfetchitempayloadjob.cpp:118
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - Unknown item type for item %1"
 msgstr "Não foi possível obter os itens - o tipo do item %1 é desconhecido"
 
-#: ewsfetchitempayloadjob.cpp:104
-#, kde-format
-msgctxt "@info:status"
-msgid "Failed to fetch item payload"
-msgstr "Não foi possível obter o conteúdo do item"
-
-#: ewsfetchitemsjob.cpp:100
+#: ewsfetchitemsjob.cpp:117
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list"
 msgstr "Obtendo %1 lista de itens"
 
-#: ewsfetchitemsjob.cpp:216
+#: ewsfetchitemsjob.cpp:235
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
 msgstr "Obtendo %1 lista de itens (%2 itens)"
 
-#: ewsfetchitemsjob.cpp:401
+#: ewsfetchitemsjob.cpp:420
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"
@@ -806,111 +800,111 @@ msgstr "Conectando ao Exchange"
 msgid "Connecting to Microsoft Exchange server…"
 msgstr "Conectando ao servidor Microsoft Exchange…"
 
-#: ewsresource.cpp:153
+#: ewsresource.cpp:162
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
 msgstr "Conectando ao servidor Exchange"
 
-#: ewsresource.cpp:171 ewsresource.cpp:178 ewsresource.cpp:185
-#: ewsresource.cpp:323
+#: ewsresource.cpp:180 ewsresource.cpp:187 ewsresource.cpp:194
+#: ewsresource.cpp:332
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
 msgstr "Não foi possível conectar ao servidor Exchange"
 
-#: ewsresource.cpp:263
+#: ewsresource.cpp:272
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
 msgstr "O ID da pasta raiz não é conhecido."
 
-#: ewsresource.cpp:267
+#: ewsresource.cpp:276
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
 msgstr "Obtendo a árvore de coleções"
 
-#: ewsresource.cpp:416
+#: ewsresource.cpp:441
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
 msgstr "Obtendo itens"
 
-#: ewsresource.cpp:438 ewsresource.cpp:524
+#: ewsresource.cpp:463 ewsresource.cpp:549
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
 msgstr "Não foi possível obter os itens - erro interno"
 
-#: ewsresource.cpp:472
+#: ewsresource.cpp:497
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
 msgstr "Não foi possível obter as pastas - erro interno"
 
-#: ewsresource.cpp:478
+#: ewsresource.cpp:503
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
 msgstr "Não foi possível processar a requisição das pastas"
 
-#: ewsresource.cpp:495
+#: ewsresource.cpp:520
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
 msgstr ""
 "O objeto da tarefa de requisição de recepção incremental de pastas é inválido"
 
-#: ewsresource.cpp:558
+#: ewsresource.cpp:583
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
 msgstr "Tipo de item não é suportado para modificação"
 
-#: ewsresource.cpp:571
+#: ewsresource.cpp:596
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
 msgstr "Atualizando opções do item"
 
-#: ewsresource.cpp:583
+#: ewsresource.cpp:608
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
 msgstr "Não foi possível processar o pedido de atualização das opções do item"
 
-#: ewsresource.cpp:590
+#: ewsresource.cpp:615
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
 msgstr "Não foi possível atualizar as opções do item - erro interno"
 
-#: ewsresource.cpp:604
+#: ewsresource.cpp:629
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
 msgstr "Não foi possível processar a requisição de atualização do item"
 
-#: ewsresource.cpp:611
+#: ewsresource.cpp:636
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
 msgstr "Não foi possível atualizar o item - erro interno"
 
-#: ewsresource.cpp:646
+#: ewsresource.cpp:671
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
 msgstr "Não foi possível processar a requisição de mudança de local do item"
 
-#: ewsresource.cpp:653
+#: ewsresource.cpp:678
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
 msgstr "Não foi possível mover o item - erro interno"
 
-#: ewsresource.cpp:660
+#: ewsresource.cpp:685
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
@@ -918,19 +912,19 @@ msgstr ""
 "Não foi possível mover o item - foi recebido um número inválido de respostas "
 "do servidor"
 
-#: ewsresource.cpp:753
+#: ewsresource.cpp:778
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
 msgstr "Não foi possível processar o pedido de remoção do item"
 
-#: ewsresource.cpp:760
+#: ewsresource.cpp:785
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
 msgstr "Não foi possível excluir o item - erro interno"
 
-#: ewsresource.cpp:767
+#: ewsresource.cpp:792
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -939,25 +933,25 @@ msgstr ""
 "Não foi possível excluir o item - foi recebido um número inválido de "
 "respostas do servidor"
 
-#: ewsresource.cpp:812 ewsresource.cpp:1025
+#: ewsresource.cpp:837 ewsresource.cpp:1050
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
 msgstr "Tipo de item não é suportado para criação"
 
-#: ewsresource.cpp:823
+#: ewsresource.cpp:848
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
 msgstr "Não foi possível processar o pedido de criação do item"
 
-#: ewsresource.cpp:829
+#: ewsresource.cpp:854
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
 msgstr "Não foi possível criar o item - erro interno"
 
-#: ewsresource.cpp:850
+#: ewsresource.cpp:875
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
@@ -965,37 +959,37 @@ msgstr ""
 "Não foi possível adicionar a coleção - não é possível determinar o tipo de "
 "pasta do EWS"
 
-#: ewsresource.cpp:869
+#: ewsresource.cpp:894
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
 msgstr "Não foi possível processar o pedido de criação da pasta"
 
-#: ewsresource.cpp:875
+#: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
 msgstr "Não foi possível criar a pasta - erro interno"
 
-#: ewsresource.cpp:887
+#: ewsresource.cpp:912
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
 msgstr "Não foi possível criar a pasta"
 
-#: ewsresource.cpp:910
+#: ewsresource.cpp:935
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
 msgstr "Não foi possível processar o pedido de mudança de local da pasta"
 
-#: ewsresource.cpp:916
+#: ewsresource.cpp:941
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
 msgstr "Não foi possível mover a pasta - erro interno"
 
-#: ewsresource.cpp:922
+#: ewsresource.cpp:947
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -1004,25 +998,25 @@ msgstr ""
 "Não foi possível mover a pasta - foi recebido um número inválido de "
 "respostas do servidor"
 
-#: ewsresource.cpp:933
+#: ewsresource.cpp:958
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
 msgstr "Não foi possível mover a pasta"
 
-#: ewsresource.cpp:961
+#: ewsresource.cpp:986
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
 msgstr "Não foi possível processar o pedido de atualização da pasta"
 
-#: ewsresource.cpp:967
+#: ewsresource.cpp:992
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
 msgstr "Não foi possível atualizar a pasta - erro interno"
 
-#: ewsresource.cpp:973
+#: ewsresource.cpp:998
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -1031,93 +1025,93 @@ msgstr ""
 "Não foi possível atualizar a pasta - foi recebido um número inválido de "
 "respostas do servidor"
 
-#: ewsresource.cpp:984
+#: ewsresource.cpp:1009
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
 msgstr "Não foi possível atualizar a pasta"
 
-#: ewsresource.cpp:1001
+#: ewsresource.cpp:1026
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
 msgstr "Não foi possível processar o pedido de exclusão da pasta"
 
-#: ewsresource.cpp:1007
+#: ewsresource.cpp:1032
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
 msgstr "Não foi possível excluir a pasta - erro interno"
 
-#: ewsresource.cpp:1015
+#: ewsresource.cpp:1040
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
 msgstr "Não foi possível excluir a pasta"
 
-#: ewsresource.cpp:1039 ewsresource.cpp:1073
+#: ewsresource.cpp:1064 ewsresource.cpp:1098
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
 msgstr "Não foi possível processar o pedido de envio do item"
 
-#: ewsresource.cpp:1045 ewsresource.cpp:1079
+#: ewsresource.cpp:1070 ewsresource.cpp:1104
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
 msgstr "Não foi possível enviar o item - erro interno"
 
-#: ewsresource.cpp:1084
+#: ewsresource.cpp:1109
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "Foi recebido um número inválido de respostas do servidor"
 
-#: ewsresource.cpp:1276
+#: ewsresource.cpp:1297
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "Atualizando etiquetas do item"
 
-#: ewsresource.cpp:1289
+#: ewsresource.cpp:1310
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr ""
 "Não foi possível processar o pedido de atualização das etiquetas do item"
 
-#: ewsresource.cpp:1295
+#: ewsresource.cpp:1316
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "Não foi possível atualizar as etiquetas do item - erro interno"
 
-#: ewsresource.cpp:1332
+#: ewsresource.cpp:1353
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr ""
 "Não foi possível processar o pedido de atualização das etiquetas globais"
 
-#: ewsresource.cpp:1348
+#: ewsresource.cpp:1369
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Não foi possível processar o pedido de obtenção das etiquetas globais"
 
-#: ewsresource.cpp:1426
+#: ewsresource.cpp:1447
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Autenticar"
 
-#: ewsresource.cpp:1438 ewsresource.cpp:1453
+#: ewsresource.cpp:1459 ewsresource.cpp:1474
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Falha na autenticação"
 
-#: ewsresource.cpp:1461
+#: ewsresource.cpp:1482
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"
@@ -1272,6 +1266,14 @@ msgstr "Caminho do certificado PEM de autenticação por PKey"
 msgid "Path to PKey authentication PEM private key"
 msgstr "Caminho da chave privada PEM de autenticação por PKey"
 
+#. i18n: ectx: label, entry (PayloadRepairedCollections), group (General)
+#: ewsresource.kcfg:82
+#, kde-format
+msgid ""
+"Calendar folders synchronized once in full to fetch items stored without "
+"payload by earlier versions"
+msgstr ""
+
 #: ewssubscriptionwidget.cpp:178
 #, kde-format
 msgctxt "@info"
@@ -1331,6 +1333,10 @@ msgstr "Falha ao atualizar item: "
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Item fora de ordem ao processar a resposta da atualização do item."
+
+#~ msgctxt "@info:status"
+#~ msgid "Failed to fetch item payload"
+#~ msgstr "Não foi possível obter o conteúdo do item"
 
 #~ msgid "Exchange server autodiscovery"
 #~ msgstr "Autodescoberta do servidor de Exchange"
