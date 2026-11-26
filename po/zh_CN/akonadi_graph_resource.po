@@ -14,9 +14,9 @@ msgstr ""
 "X-Crowdin-Project: kdeorg\n"
 "X-Crowdin-Project-ID: 269464\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf6-trunk/messages/kdepim-runtime/akonadi_graph_resource."
+"X-Crowdin-File: /kf6-stable/messages/kdepim-runtime/akonadi_graph_resource."
 "pot\n"
-"X-Crowdin-File-ID: 60413\n"
+"X-Crowdin-File-ID: 60635\n"
 
 #: graphclient/auth/graphoauth.cpp:137
 #, kde-format
@@ -199,18 +199,18 @@ msgstr "存储的远程 ID 是否已迁移到 Graph 不可变 ID。"
 #: jobs/graphbatchjob.cpp:138
 #, kde-format
 msgid "The server did not answer this request"
-msgstr ""
+msgstr "服务器没有回应此请求"
 
 #: jobs/graphbatchjob.cpp:171
 #, kde-format
 msgid "HTTP %1"
-msgstr ""
+msgstr "HTTP %1"
 
 #: jobs/graphbatchjob.cpp:193
 #, kde-format
 msgctxt "%1 and %2 are counts, %3 the server error message"
 msgid "%1 of %2 requests failed, first error: %3"
-msgstr ""
+msgstr "%2 个请求中有 %1 个失败，第一个错误：%3"
 
 #: jobs/graphfetchfoldersjob.cpp:49
 #, kde-format

@@ -14,9 +14,9 @@ msgstr ""
 "X-Crowdin-Project: kdeorg\n"
 "X-Crowdin-Project-ID: 269464\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf6-trunk/messages/kdepim-runtime/akonadi_imap_resource."
+"X-Crowdin-File: /kf6-stable/messages/kdepim-runtime/akonadi_imap_resource."
 "pot\n"
-"X-Crowdin-File-ID: 45621\n"
+"X-Crowdin-File-ID: 51366\n"
 
 #: addcollectiontask.cpp:31
 #, kde-format
@@ -1160,9 +1160,3 @@ msgstr "搜索："
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr "只显示已订阅的"
-
-#~ msgid "Whether the activities support of the agent is enabled"
-#~ msgstr "是否启用代理的活动支持"
-
-#~ msgid "The activities of the agent"
-#~ msgstr "代理的活动"

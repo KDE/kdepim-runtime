@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-11-25 03:26+0000\n"
+"POT-Creation-Date: 2026-11-26 03:15+0000\n"
 "PO-Revision-Date: 2026-08-25 01:38+0200\n"
 "Last-Translator: Philipp Kiemle <l10n.daphipz@fastmail.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -531,7 +531,7 @@ msgstr "Erweitert"
 
 #. i18n: ectx: property (title), widget (QGroupBox, retrievalMethodGroupBox)
 #. i18n: ectx: label, entry (RetrievalMethod), group (General)
-#: ewsconfigdialog.ui:417 ewsresource.kcfg:45
+#: ewsconfigdialog.ui:417 ewsresource.kcfg:46
 #, kde-format
 msgid "Retrieval"
 msgstr "Abruf"
@@ -744,19 +744,19 @@ msgid "Failed to retrieve items - Unknown item type for item %1"
 msgstr ""
 "Das Abrufen der Einträge ist fehlgeschlagen – Unbekannte Art des Eintrags %1"
 
-#: ewsfetchitemsjob.cpp:115
+#: ewsfetchitemsjob.cpp:117
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list"
 msgstr "„%1“-Eintragsliste wird abgeholt"
 
-#: ewsfetchitemsjob.cpp:233
+#: ewsfetchitemsjob.cpp:235
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
 msgstr "„%1“-Eintragsliste wird abgeholt (%2 Einträge)"
 
-#: ewsfetchitemsjob.cpp:418
+#: ewsfetchitemsjob.cpp:499
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"
@@ -889,7 +889,7 @@ msgctxt "@info:status"
 msgid "Updating item flags"
 msgstr "Merker für Eintrag werden aktualisiert"
 
-#: ewsresource.cpp:608
+#: ewsresource.cpp:611
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
@@ -897,7 +897,7 @@ msgstr ""
 "Die Anforderung zur Aktualisierung der Merker des Eintrags kann nicht "
 "verarbeitet werden"
 
-#: ewsresource.cpp:615
+#: ewsresource.cpp:618
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
@@ -905,33 +905,33 @@ msgstr ""
 "Das Aktualisieren der Merker des Eintrags ist fehlgeschlagen – Interner "
 "Fehler"
 
-#: ewsresource.cpp:629
+#: ewsresource.cpp:635
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
 msgstr ""
 "Die Anforderung zur Aktualisierung des Eintrags kann nicht verarbeitet werden"
 
-#: ewsresource.cpp:636
+#: ewsresource.cpp:642
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
 msgstr "Das Aktualisieren des Eintrags ist fehlgeschlagen – Interner Fehler"
 
-#: ewsresource.cpp:671
+#: ewsresource.cpp:680
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
 msgstr ""
 "Die Anforderung zum Verschieben des Eintrags kann nicht verarbeitet werden"
 
-#: ewsresource.cpp:678
+#: ewsresource.cpp:687
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
 msgstr "Das Verschieben des Eintrags ist fehlgeschlagen – Interner Fehler"
 
-#: ewsresource.cpp:685
+#: ewsresource.cpp:694
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
@@ -939,19 +939,19 @@ msgstr ""
 "Das Verschieben des Eintrags ist fehlgeschlagen – Ungültige Anzahl Antworten "
 "vom Server empfangen"
 
-#: ewsresource.cpp:778
+#: ewsresource.cpp:790
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
 msgstr "Die Anforderung zum Löschen des Eintrags kann nicht verarbeitet werden"
 
-#: ewsresource.cpp:785
+#: ewsresource.cpp:797
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
 msgstr "Das Löschen des Eintrags ist fehlgeschlagen – Interner Fehler"
 
-#: ewsresource.cpp:792
+#: ewsresource.cpp:804
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -960,26 +960,26 @@ msgstr ""
 "Das Löschen des Eintrags ist fehlgeschlagen – Ungültige Anzahl Antworten vom "
 "Server empfangen"
 
-#: ewsresource.cpp:837 ewsresource.cpp:1050
+#: ewsresource.cpp:849 ewsresource.cpp:1077
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
 msgstr "Dieser Eintragtyp kann nicht erstellt werden"
 
-#: ewsresource.cpp:848
+#: ewsresource.cpp:863
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
 msgstr ""
 "Die Anforderung zum Erstellen des Eintrags kann nicht verarbeitet werden"
 
-#: ewsresource.cpp:854
+#: ewsresource.cpp:869
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
 msgstr "Das Erstellen des Eintrags ist fehlgeschlagen – Interner Fehler"
 
-#: ewsresource.cpp:875
+#: ewsresource.cpp:890
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
@@ -987,39 +987,39 @@ msgstr ""
 "Das Hinzufügen der Sammlung ist fehlgeschlagen – der EWS-Ordnertyp kann "
 "nicht bestimmt werden"
 
-#: ewsresource.cpp:894
+#: ewsresource.cpp:912
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
 msgstr ""
 "Die Anforderung zum Erstellen des Ordners kann nicht verarbeitet werden"
 
-#: ewsresource.cpp:900
+#: ewsresource.cpp:918
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
 msgstr "Erstellen des Ordners fehlgeschlagen – Interner Fehler"
 
-#: ewsresource.cpp:912
+#: ewsresource.cpp:930
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
 msgstr "Erstellen des Ordners fehlgeschlagen"
 
-#: ewsresource.cpp:935
+#: ewsresource.cpp:956
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
 msgstr ""
 "Die Anforderung zum Verschieben des Ordners kann nicht verarbeitet werden"
 
-#: ewsresource.cpp:941
+#: ewsresource.cpp:962
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
 msgstr "Verschieben des Ordners fehlgeschlagen – Interner Fehler"
 
-#: ewsresource.cpp:947
+#: ewsresource.cpp:968
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -1028,26 +1028,26 @@ msgstr ""
 "Verschieben des Ordners fehlgeschlagen – Ungültige Anzahl Antworten vom "
 "Server empfangen"
 
-#: ewsresource.cpp:958
+#: ewsresource.cpp:979
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
 msgstr "Der Ordner lässt sich nicht verschieben"
 
-#: ewsresource.cpp:986
+#: ewsresource.cpp:1010
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
 msgstr ""
 "Die Anforderung zur Aktualisierung des Ordners kann nicht verarbeitet werden"
 
-#: ewsresource.cpp:992
+#: ewsresource.cpp:1016
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
 msgstr "Aktualisieren des Ordners fehlgeschlagen – Interner Fehler"
 
-#: ewsresource.cpp:998
+#: ewsresource.cpp:1022
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -1056,55 +1056,55 @@ msgstr ""
 "Aktualisieren des Ordners fehlgeschlagen – Ungültige Anzahl Antworten vom "
 "Server empfangen"
 
-#: ewsresource.cpp:1009
+#: ewsresource.cpp:1033
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
 msgstr "Aktualisieren des Ordners fehlgeschlagen"
 
-#: ewsresource.cpp:1026
+#: ewsresource.cpp:1053
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
 msgstr "Die Anforderung zum Löschen des Ordners kann nicht verarbeitet werden"
 
-#: ewsresource.cpp:1032
+#: ewsresource.cpp:1059
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
 msgstr "Löschen des Ordners fehlgeschlagen – Interner Fehler"
 
-#: ewsresource.cpp:1040
+#: ewsresource.cpp:1067
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
 msgstr "Löschen des Ordners fehlgeschlagen"
 
-#: ewsresource.cpp:1064 ewsresource.cpp:1098
+#: ewsresource.cpp:1091 ewsresource.cpp:1125
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
 msgstr "Die Anforderung zum Senden des Eintrags kann nicht verarbeitet werden"
 
-#: ewsresource.cpp:1070 ewsresource.cpp:1104
+#: ewsresource.cpp:1097 ewsresource.cpp:1131
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
 msgstr "Versenden des Eintrags fehlgeschlagen – Interner Fehler"
 
-#: ewsresource.cpp:1109
+#: ewsresource.cpp:1136
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "Ungültige Anzahl Antworten vom Server empfangen"
 
-#: ewsresource.cpp:1297
+#: ewsresource.cpp:1349
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "Stichwörter für Eintrag werden aktualisiert"
 
-#: ewsresource.cpp:1310
+#: ewsresource.cpp:1365
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
@@ -1112,14 +1112,14 @@ msgstr ""
 "Die Anforderung zur Aktualisierung der Stichwörter des Eintrags kann nicht "
 "verarbeitet werden"
 
-#: ewsresource.cpp:1316
+#: ewsresource.cpp:1371
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr ""
 "Aktualisieren der Stichwörter des Eintrags fehlgeschlagen – Interner Fehler"
 
-#: ewsresource.cpp:1353
+#: ewsresource.cpp:1411
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
@@ -1127,7 +1127,7 @@ msgstr ""
 "Die Anforderung zur Aktualisierung des globalen Stichwortes kann nicht "
 "verarbeitet werden"
 
-#: ewsresource.cpp:1369
+#: ewsresource.cpp:1427
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
@@ -1135,19 +1135,19 @@ msgstr ""
 "Die Anforderung zum Empfangen der globalen Stichwörter kann nicht "
 "verarbeitet werden"
 
-#: ewsresource.cpp:1447
+#: ewsresource.cpp:1521
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Authentifizieren"
 
-#: ewsresource.cpp:1459 ewsresource.cpp:1474
+#: ewsresource.cpp:1533 ewsresource.cpp:1548
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Authentifizierung fehlgeschlagen"
 
-#: ewsresource.cpp:1482
+#: ewsresource.cpp:1556
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"
@@ -1253,55 +1253,55 @@ msgid "Sets the interval for checking for new mail."
 msgstr "Setzt das Intervall für die Überprüfung auf neue E-Mails."
 
 #. i18n: ectx: label, entry (ServerSubscription), group (General)
-#: ewsresource.kcfg:48
+#: ewsresource.kcfg:51
 #, kde-format
 msgid "Enable Server-Side Subscriptions"
 msgstr "Serverseitige Abonnements aktivieren"
 
 #. i18n: ectx: label, entry (ServerSubscriptionList), group (General)
-#: ewsresource.kcfg:51
+#: ewsresource.kcfg:54
 #, kde-format
 msgid "List of folders to subscribe to"
 msgstr "Liste der zu abonnierenden Ordner"
 
 #. i18n: ectx: label, entry (EnableNTLMv2), group (General)
-#: ewsresource.kcfg:55
+#: ewsresource.kcfg:58
 #, kde-format
 msgid "Enable NTLMv2 authentication"
 msgstr "NTLMv2-Authentifizierung aktivieren"
 
 #. i18n: ectx: label, entry (UserAgent), group (General)
-#: ewsresource.kcfg:59
+#: ewsresource.kcfg:62
 #, kde-format
 msgid "Forces a non-default User-Agent string"
 msgstr "Erzwingt einen nicht standardmäßigen User-Agent-String"
 
 #. i18n: ectx: label, entry (OAuth2AppId), group (General)
-#: ewsresource.kcfg:65
+#: ewsresource.kcfg:68
 #, kde-format
 msgid "OAuth2 application identifier"
 msgstr "OAuth2-Anwendungskennung"
 
 #. i18n: ectx: label, entry (OAuth2ReturnUri), group (General)
-#: ewsresource.kcfg:69
+#: ewsresource.kcfg:72
 #, kde-format
 msgid "OAuth2 return URI"
 msgstr "OAuth2-Rückgabe-URI"
 
 #. i18n: ectx: label, entry (PKeyCert), group (General)
-#: ewsresource.kcfg:73
+#: ewsresource.kcfg:76
 #, kde-format
 msgid "Path to PKey authentication PEM certificate"
 msgstr "Pfad zum PKey-Authentifizierungs-PEM-Zertifikat"
 
 #. i18n: ectx: label, entry (PKeyKey), group (General)
-#: ewsresource.kcfg:76
+#: ewsresource.kcfg:79
 #, kde-format
 msgid "Path to PKey authentication PEM private key"
 msgstr "Pfad zum privaten Schlüssel des PKey-Authentifizierungs-PEM"
 
 #. i18n: ectx: label, entry (PayloadRepairedCollections), group (General)
-#: ewsresource.kcfg:82
+#: ewsresource.kcfg:85
 #, kde-format
 msgid ""
 "Calendar folders synchronized once in full to fetch items stored without "
