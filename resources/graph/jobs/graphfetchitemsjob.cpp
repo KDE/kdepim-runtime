@@ -5,6 +5,8 @@
 
 #include "graphfetchitemsjob.h"
 
+#include "graph_debug.h"
+#include "graphbatchjob.h"
 #include "graphclient/graphrequest.h"
 
 #include <Akonadi/MessageFlags>
@@ -13,6 +15,10 @@
 #include <QJsonObject>
 
 using namespace Akonadi;
+using namespace Qt::Literals::StringLiterals;
+
+// The envelope fields the message list needs; the body comes via /$value.
+static const QLatin1String kEnvelopeFields("id,isRead,flag,subject,from,toRecipients,ccRecipients,receivedDateTime,internetMessageId");
 
 GraphFetchItemsJob::GraphFetchItemsJob(GraphClient &client, const Collection &collection, const QString &deltaLink, QObject *parent)
     : KJob(parent)
@@ -32,9 +38,7 @@ void GraphFetchItemsJob::start()
         // server again (mirrors EwsFetchMailDetailJob); the body comes via /$value.
         // $top=200: delta defaults to ~10 items per page, which turns a big mailbox
         // into thousands of round trips. 200 is Graph's maximum for messages.
-        req->setPath(QStringLiteral("/me/mailFolders/%1/messages/delta"
-                                    "?$top=200&$select=id,isRead,flag,subject,from,toRecipients,ccRecipients,receivedDateTime,internetMessageId")
-                         .arg(mCollection.remoteId()));
+        req->setPath(QStringLiteral("/me/mailFolders/%1/messages/delta?$top=200&$select=%2").arg(mCollection.remoteId(), kEnvelopeFields));
     }
     connect(req, &KJob::result, this, &GraphFetchItemsJob::onRequestFinished);
     req->start();
@@ -110,17 +114,61 @@ void GraphFetchItemsJob::onRequestFinished(KJob *job)
     }
     mDeltaLink = req->deltaLink();
 
+    QStringList incomplete;
     for (const auto &v : req->aggregatedValue()) {
         const QJsonObject message = v.toObject();
         if (message.contains(QLatin1String("@removed"))) {
             Item item;
             item.setRemoteId(message.value(QLatin1String("id")).toString());
             mRemoved.append(item);
+        } else if (!message.contains("receivedDateTime"_L1)) {
+            // Some delta entries carry only the id and the read state despite the
+            // $select. A stub built from them would replace the cached envelope with an
+            // empty one (no sender, subject or date), so fetch the fields separately.
+            if (incomplete.isEmpty()) {
+                qCInfo(GRAPH_LOG) << "delta" << mCollection.name() << "entry without envelope, keys:" << message.keys();
+            }
+            incomplete.append(message.value(QLatin1String("id")).toString());
         } else {
             mChanged.append(itemStubFromJson(message));
         }
     }
-    emitResult();
+    if (incomplete.isEmpty()) {
+        emitResult();
+        return;
+    }
+    fetchEnvelopes(incomplete);
+}
+
+void GraphFetchItemsJob::fetchEnvelopes(const QStringList &ids)
+{
+    QList<GraphBatchJob::Call> calls;
+    calls.reserve(ids.size());
+    for (const QString &id : ids) {
+        calls.append({GraphRequest::Method::Get, QStringLiteral("/me/messages/%1?$select=%2").arg(id, kEnvelopeFields), {}});
+    }
+    auto batch = new GraphBatchJob(mClient, calls, this);
+    // A message deleted since the delta was taken comes back as 404; its tombstone
+    // follows with the next delta.
+    batch->setIgnoreNotFound(true);
+    connect(batch, &KJob::result, this, [this, batch] {
+        if (batch->error()) {
+            // Fail the whole round so the deltaLink is not advanced and the entries
+            // come again with the next poll.
+            setError(batch->error());
+            setErrorText(batch->errorText());
+            emitResult();
+            return;
+        }
+        const auto responses = batch->responses();
+        for (const QJsonObject &message : responses) {
+            if (!message.isEmpty()) {
+                mChanged.append(itemStubFromJson(message));
+            }
+        }
+        emitResult();
+    });
+    batch->start();
 }
 
 Collection GraphFetchItemsJob::collection() const
