@@ -1276,7 +1276,3 @@ msgstr "项目更新失败："
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "正在处理项目响应时项目出错。"
-
-#~ msgctxt "@info:status"
-#~ msgid "Failed to fetch item payload"
-#~ msgstr "无法获取项有效负载"
