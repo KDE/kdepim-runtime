@@ -61,16 +61,16 @@ public:
      */
     [[nodiscard]] QStringList getEventsRange(quint64 startTime, quint64 endTime) const;
 
+    void addEvent(const Item &item, const Collection &collection);
+    void updateEvent(const Item &item, const QSet<QByteArray> &partIdentifiers);
+    void removeEvent(const Item &item);
+
 Q_SIGNALS:
     void eventAdded(const QString &icalEvent);
     void eventDeleted(const QString &icalEvent);
     void eventChanged(const QString &icalEvent);
 
 private:
-    void slotItemAdded(const Item &item, const Collection &collection);
-    void slotItemChanged(const Item &item, const QSet<QByteArray> &partIdentifiers);
-    void slotItemRemoved(const Item &item);
-
     void slotInitialEventsFetched(KJob *job);
 
     QString mServerId;
@@ -78,7 +78,6 @@ private:
     QString mName;
     QString mColor;
 
-    Monitor *mMonitor = nullptr;
     KCalendarCore::MemoryCalendar::Ptr mCalendar;
     /**
      * Used to map the akonadi ID to the event UID

@@ -30,19 +30,24 @@ public:
     [[nodiscard]] QString id() const;
     [[nodiscard]] QList<QVariantMap> getCalendars() const;
 
+    void addCalendar(const Akonadi::Collection &collection);
+    void updateCalendar(const Akonadi::Collection &collection);
+    void removeCalendar(const Akonadi::Collection &collection);
+
+    void addEvent(const Item &item, const Collection &collection);
+    void updateEvent(const Item &item, const QSet<QByteArray> &partIdentifiers);
+    void removeEvent(const Item &item);
+    void moveEvent(const Item &item, const Collection &collectionSource, const Collection &collectionDestination);
+
 Q_SIGNALS:
     void calendarCreated(const PimDataProviderItem &calendar);
     void calendarChanged(const PimDataProviderItem &calendar);
     void calendarDeleted(const QString &serverId, const QString &calendarId);
 
 private:
-    void slotCalendarAdded(const Akonadi::Collection &collection);
-    void slotCalendarUpdated(const Akonadi::Collection &collection);
-    void slotCalendarRemoved(const Akonadi::Collection &collection);
     void slotInitialCalendarsFetched(KJob *job);
 
     QString mServerId;
-    Monitor *mMonitor = nullptr;
     QMap<QString, std::shared_ptr<PimDataProviderCalendar>> mCalendars;
 };
 } // namespace Akonadi

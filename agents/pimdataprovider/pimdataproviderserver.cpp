@@ -23,15 +23,8 @@ namespace Akonadi
 PimDataProviderServer::PimDataProviderServer(const QString &serverId, const QString &ressourceId, QObject *parent)
     : QObject(parent)
     , mServerId(serverId)
-    , mMonitor(new Monitor(this))
 {
     new ServerAdaptor(this);
-
-    // Calendar management : we use the akonadi monitor
-    mMonitor->setResourceMonitored(ressourceId.toLatin1(), true);
-    connect(mMonitor, &Monitor::collectionAdded, this, &PimDataProviderServer::slotCalendarAdded);
-    connect(mMonitor, qOverload<const Collection &>(&Monitor::collectionChanged), this, &PimDataProviderServer::slotCalendarUpdated);
-    connect(mMonitor, &Monitor::collectionRemoved, this, &PimDataProviderServer::slotCalendarRemoved);
 
     // Get the list of already registered Calendars
     auto fetchJob = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive, this);
@@ -68,7 +61,7 @@ QList<QVariantMap> PimDataProviderServer::getCalendars() const
     return result;
 }
 
-void PimDataProviderServer::slotCalendarAdded(const Collection &collection)
+void PimDataProviderServer::addCalendar(const Collection &collection)
 {
     // prevent creating a service for the root collection of the resource
     if (collection.resource() == collection.remoteId()) {
@@ -112,7 +105,7 @@ void PimDataProviderServer::slotCalendarAdded(const Collection &collection)
     Q_EMIT calendarCreated(item);
 }
 
-void PimDataProviderServer::slotCalendarUpdated(const Collection &collection)
+void PimDataProviderServer::updateCalendar(const Collection &collection)
 {
     auto calendar = mCalendars.value(collection.remoteId());
     if (!calendar) {
@@ -149,11 +142,40 @@ void PimDataProviderServer::slotCalendarUpdated(const Collection &collection)
     Q_EMIT calendarChanged(item);
 }
 
-void PimDataProviderServer::slotCalendarRemoved(const Collection &collection)
+void PimDataProviderServer::removeCalendar(const Collection &collection)
 {
     if (auto calendar = mCalendars.take(collection.remoteId())) {
         const QString calendarId = calendar->id();
         Q_EMIT calendarDeleted(mServerId, calendarId);
+    }
+}
+void PimDataProviderServer::addEvent(const Item &item, const Collection &collection)
+{
+    if (auto const calendar = mCalendars.value(collection.remoteId())) {
+        calendar->addEvent(item, collection);
+    }
+}
+
+void PimDataProviderServer::updateEvent(const Item &item, const QSet<QByteArray> &partIdentifiers)
+{
+    if (auto const calendar = mCalendars.value(item.parentCollection().remoteId())) {
+        calendar->updateEvent(item, partIdentifiers);
+    }
+}
+
+void PimDataProviderServer::removeEvent(const Item &item)
+{
+    if (auto const calendar = mCalendars.value(item.parentCollection().remoteId())) {
+        calendar->removeEvent(item);
+    }
+}
+void PimDataProviderServer::moveEvent(const Item &item, const Collection &collectionSource, const Collection &collectionDestination)
+{
+    auto const sourceCalendar = mCalendars.value(collectionSource.remoteId());
+    auto const destinationCalendar = mCalendars.value(collectionDestination.remoteId());
+    if (sourceCalendar && destinationCalendar) {
+        sourceCalendar->removeEvent(item);
+        destinationCalendar->addEvent(item, collectionDestination);
     }
 }
 

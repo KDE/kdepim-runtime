@@ -47,6 +47,16 @@ private:
     void slotServerAdded(const Akonadi::AgentInstance &instance);
     void slotServerRemoved(const Akonadi::AgentInstance &instance);
 
+    void slotCalendarAdded(const Akonadi::Collection &collection);
+    void slotCalendarUpdated(const Akonadi::Collection &collection);
+    void slotCalendarRemoved(const Akonadi::Collection &collection);
+
+    void slotEventAdded(const Item &item, const Collection &collection);
+    void slotEventUpdated(const Item &item, const QSet<QByteArray> &partIdentifiers);
+    void slotEventRemoved(const Item &item);
+    void slotEventMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination);
+
+    Monitor *mMonitor = nullptr;
     QMap<QString, std::shared_ptr<PimDataProviderServer>> mServers;
 };
 }

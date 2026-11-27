@@ -20,17 +20,9 @@ PimDataProviderCalendar::PimDataProviderCalendar(const QString &serverId, const 
     : QObject(parent)
     , mServerId(serverId)
     , mCalendarId(collection.remoteId())
-    , mMonitor(new Monitor(this))
     , mCalendar(KCalendarCore::MemoryCalendar::Ptr::create(QTimeZone::systemTimeZone()))
 {
     new CalendarAdaptor(this);
-
-    // Event management : we use the akonadi monitor
-    mMonitor->setCollectionMonitored(collection);
-    mMonitor->itemFetchScope().fetchFullPayload(true);
-    connect(mMonitor, &Monitor::itemAdded, this, &PimDataProviderCalendar::slotItemAdded);
-    connect(mMonitor, &Monitor::itemChanged, this, &PimDataProviderCalendar::slotItemChanged);
-    connect(mMonitor, &Monitor::itemRemoved, this, &PimDataProviderCalendar::slotItemRemoved);
 
     // Get the list of already registered events
     auto job = new Akonadi::ItemFetchJob(collection, this);
@@ -126,7 +118,7 @@ QStringList PimDataProviderCalendar::getEventsRange(quint64 startTime, quint64 e
     return result;
 }
 
-void PimDataProviderCalendar::slotItemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
+void PimDataProviderCalendar::addEvent(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
     Q_UNUSED(collection);
     if (!item.hasPayload<KCalendarCore::Event::Ptr>()) {
@@ -147,7 +139,7 @@ void PimDataProviderCalendar::slotItemAdded(const Akonadi::Item &item, const Ako
     Q_EMIT eventAdded(ical);
 }
 
-void PimDataProviderCalendar::slotItemChanged(const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers)
+void PimDataProviderCalendar::updateEvent(const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers)
 {
     Q_UNUSED(partIdentifiers);
     if (!item.hasPayload<KCalendarCore::Event::Ptr>()) {
@@ -169,7 +161,7 @@ void PimDataProviderCalendar::slotItemChanged(const Akonadi::Item &item, const Q
     Q_EMIT eventChanged(ical);
 }
 
-void PimDataProviderCalendar::slotItemRemoved(const Akonadi::Item &item)
+void PimDataProviderCalendar::removeEvent(const Akonadi::Item &item)
 {
     auto const uid = mEventUIDs.take(item.id());
     if (auto const event = mCalendar->event(uid)) {

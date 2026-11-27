@@ -9,6 +9,7 @@
 #include "pimdataproviderserver.h"
 
 #include <Akonadi/AgentManager>
+#include <Akonadi/ItemFetchScope>
 
 #include <KConfigGroup>
 #include <KSharedConfig>
@@ -36,6 +37,7 @@ static QString extractDavUrl(const AgentInstance &instance)
 
 PimDataProviderAgent::PimDataProviderAgent(const QString &id)
     : AgentWidgetBase(id)
+    , mMonitor(new Monitor(this))
 {
     const QString service = QStringLiteral("org.pim.dataprovider.Calendar1.") + id;
     QDBusConnection::sessionBus().registerService(service);
@@ -43,16 +45,27 @@ PimDataProviderAgent::PimDataProviderAgent(const QString &id)
     registerPimDataProviderDBusTypes();
     new ManagementAdaptor(this);
 
-    // Servers management : we use the instance manager
     connect(AgentManager::self(), &AgentManager::instanceAdded, this, &PimDataProviderAgent::slotServerAdded);
     connect(AgentManager::self(), &AgentManager::instanceRemoved, this, &PimDataProviderAgent::slotServerRemoved);
+
+    mMonitor->fetchCollection(true);
+    mMonitor->itemFetchScope().fetchFullPayload(true);
+
+    connect(mMonitor, &Monitor::collectionAdded, this, &PimDataProviderAgent::slotCalendarAdded);
+    connect(mMonitor, qOverload<const Collection &>(&Monitor::collectionChanged), this, &PimDataProviderAgent::slotCalendarUpdated);
+    connect(mMonitor, &Monitor::collectionRemoved, this, &PimDataProviderAgent::slotCalendarRemoved);
+    connect(mMonitor, &Monitor::itemAdded, this, &PimDataProviderAgent::slotEventAdded);
+    connect(mMonitor, &Monitor::itemChanged, this, &PimDataProviderAgent::slotEventUpdated);
+    connect(mMonitor, &Monitor::itemRemoved, this, &PimDataProviderAgent::slotEventRemoved);
+    connect(mMonitor, &Monitor::itemMoved, this, &PimDataProviderAgent::slotEventMoved);
 
     // Get the list of already registered Dav servers
     const AgentInstance::List instances = AgentManager::self()->instances();
     for (const AgentInstance &instance : instances) {
         if (instance.type().identifier() == QLatin1StringView("akonadi_davgroupware_resource")) {
             const QString serverUrl = extractDavUrl(instance);
-            mServers.insert(serverUrl, std::make_shared<PimDataProviderServer>(serverUrl, instance.identifier()));
+            mServers.insert(instance.identifier(), std::make_shared<PimDataProviderServer>(serverUrl, instance.identifier()));
+            mMonitor->setResourceMonitored(instance.identifier().toLatin1());
         }
     }
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/org/pim/dataprovider/Calendar/Management"), this, QDBusConnection::ExportAdaptors);
@@ -94,11 +107,12 @@ void PimDataProviderAgent::slotServerAdded(const AgentInstance &instance)
     if (instance.type().identifier() != QLatin1StringView("akonadi_davgroupware_resource")) {
         return;
     }
-    const QString serverId = extractDavUrl(instance);
-    if (mServers.contains(serverId)) {
+    if (mServers.contains(instance.identifier())) {
         return;
     }
-    mServers.insert(serverId, std::make_shared<PimDataProviderServer>(serverId, instance.identifier()));
+    const QString serverId = extractDavUrl(instance);
+    mServers.insert(instance.identifier(), std::make_shared<PimDataProviderServer>(serverId, instance.identifier()));
+    mMonitor->setResourceMonitored(instance.identifier().toLatin1());
 
     const QString path = QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + encodeForDBusPath(serverId);
     QVariantMap serverMap;
@@ -113,9 +127,68 @@ void PimDataProviderAgent::slotServerAdded(const AgentInstance &instance)
 
 void PimDataProviderAgent::slotServerRemoved(const AgentInstance &instance)
 {
-    const QString serverId = extractDavUrl(instance);
-    if (auto server = mServers.take(serverId)) {
-        Q_EMIT serverDeleted(serverId);
+    if (auto server = mServers.take(instance.identifier())) {
+        Q_EMIT serverDeleted(extractDavUrl(instance));
+    }
+}
+
+void PimDataProviderAgent::slotCalendarAdded(const Collection &collection)
+{
+    auto const resourceId = collection.resource();
+
+    if (auto const server = mServers.value(resourceId)) {
+        server->addCalendar(collection);
+    }
+}
+
+void PimDataProviderAgent::slotCalendarUpdated(const Collection &collection)
+{
+    auto const resourceId = collection.resource();
+
+    if (auto const server = mServers.value(resourceId)) {
+        server->updateCalendar(collection);
+    }
+}
+
+void PimDataProviderAgent::slotCalendarRemoved(const Collection &collection)
+{
+    auto const resourceId = collection.resource();
+
+    if (auto const server = mServers.value(resourceId)) {
+        server->removeCalendar(collection);
+    }
+}
+void PimDataProviderAgent::slotEventAdded(const Item &item, const Collection &collection)
+{
+    auto const resourceId = collection.resource();
+    if (auto const server = mServers.value(resourceId)) {
+        server->addEvent(item, collection);
+    }
+}
+void PimDataProviderAgent::slotEventUpdated(const Item &item, const QSet<QByteArray> &partIdentifiers)
+{
+    auto const resourceId = item.parentCollection().resource();
+
+    if (auto const server = mServers.value(resourceId)) {
+        server->updateEvent(item, partIdentifiers);
+    }
+}
+void PimDataProviderAgent::slotEventRemoved(const Item &item)
+{
+    auto const resourceId = item.parentCollection().resource();
+
+    if (auto const server = mServers.value(resourceId)) {
+        server->removeEvent(item);
+    }
+}
+void PimDataProviderAgent::slotEventMoved(const Akonadi::Item &item,
+                                          const Akonadi::Collection &collectionSource,
+                                          const Akonadi::Collection &collectionDestination)
+{
+    auto const resourceId = item.parentCollection().resource();
+
+    if (auto const server = mServers.value(resourceId)) {
+        server->moveEvent(item, collectionSource, collectionDestination);
     }
 }
 
