@@ -70,6 +70,8 @@ Q_SIGNALS:
     void eventDeleted(const QString &icalEvent);
     void eventChanged(const QString &icalEvent);
 
+    void calendarFinishedLoading(QVariantMap calendarMap);
+
 private:
     void slotInitialEventsFetched(KJob *job);
 

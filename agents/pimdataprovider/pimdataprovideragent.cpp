@@ -64,7 +64,9 @@ PimDataProviderAgent::PimDataProviderAgent(const QString &id)
     for (const AgentInstance &instance : instances) {
         if (instance.type().identifier() == QLatin1StringView("akonadi_davgroupware_resource")) {
             const QString serverUrl = extractDavUrl(instance);
-            mServers.insert(instance.identifier(), std::make_shared<PimDataProviderServer>(serverUrl, instance.identifier()));
+            auto server = std::make_shared<PimDataProviderServer>(serverUrl, instance.identifier());
+            mServers.insert(instance.identifier(), server);
+            connect(server.get(), &PimDataProviderServer::serverFinishedLoading, this, &PimDataProviderAgent::slotServerFinishedLoading);
             mMonitor->setResourceMonitored(instance.identifier().toLatin1());
         }
     }
@@ -111,9 +113,21 @@ void PimDataProviderAgent::slotServerAdded(const AgentInstance &instance)
         return;
     }
     const QString serverId = extractDavUrl(instance);
-    mServers.insert(instance.identifier(), std::make_shared<PimDataProviderServer>(serverId, instance.identifier()));
+    auto server = std::make_shared<PimDataProviderServer>(serverId, instance.identifier());
+    mServers.insert(instance.identifier(), server);
+    connect(server.get(), &PimDataProviderServer::serverFinishedLoading, this, &PimDataProviderAgent::slotServerFinishedLoading);
     mMonitor->setResourceMonitored(instance.identifier().toLatin1());
+}
 
+void PimDataProviderAgent::slotServerRemoved(const AgentInstance &instance)
+{
+    if (auto server = mServers.take(instance.identifier())) {
+        Q_EMIT serverDeleted(extractDavUrl(instance));
+    }
+}
+
+void PimDataProviderAgent::slotServerFinishedLoading(const QString &serverId)
+{
     const QString path = QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + encodeForDBusPath(serverId);
     QVariantMap serverMap;
     serverMap.insert(QStringLiteral("path"), path);
@@ -123,13 +137,6 @@ void PimDataProviderAgent::slotServerAdded(const AgentInstance &instance)
     item.id = serverId;
     item.data = serverMap;
     Q_EMIT serverCreated(item);
-}
-
-void PimDataProviderAgent::slotServerRemoved(const AgentInstance &instance)
-{
-    if (auto server = mServers.take(instance.identifier())) {
-        Q_EMIT serverDeleted(extractDavUrl(instance));
-    }
 }
 
 void PimDataProviderAgent::slotCalendarAdded(const Collection &collection)

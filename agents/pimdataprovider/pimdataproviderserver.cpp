@@ -89,20 +89,7 @@ void PimDataProviderServer::addCalendar(const Collection &collection)
     calendar->setName(name);
     calendar->setColor(color);
     mCalendars.insert(calendarId, calendar);
-
-    const QString path = QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + encodeForDBusPath(mServerId) + QStringLiteral("/Calendar/")
-        + encodeForDBusPath(calendar->id());
-    QVariantMap calendarMap;
-    calendarMap.insert(QStringLiteral("path"), path);
-    calendarMap.insert(QStringLiteral("id"), calendarId);
-    calendarMap.insert(QStringLiteral("name"), name);
-    calendarMap.insert(QStringLiteral("color"), color);
-
-    PimDataProviderItem item;
-    item.id = mServerId;
-    item.data = calendarMap;
-
-    Q_EMIT calendarCreated(item);
+    connect(calendar.get(), &PimDataProviderCalendar::calendarFinishedLoading, this, &PimDataProviderServer::slotCalendarFinishedLoading);
 }
 
 void PimDataProviderServer::updateCalendar(const Collection &collection)
@@ -210,10 +197,21 @@ void PimDataProviderServer::slotInitialCalendarsFetched(KJob *job)
             calendar->setName(name);
             calendar->setColor(color);
             mCalendars.insert(calendarId, calendar);
+            connect(calendar.get(), &PimDataProviderCalendar::calendarFinishedLoading, this, &PimDataProviderServer::slotCalendarFinishedLoading);
         }
     }
     const QString path = QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + encodeForDBusPath(mServerId);
     QDBusConnection::sessionBus().registerObject(path, this, QDBusConnection::ExportAdaptors);
+    Q_EMIT serverFinishedLoading(mServerId);
+}
+
+void PimDataProviderServer::slotCalendarFinishedLoading(const QVariantMap &calendarMap)
+{
+    PimDataProviderItem item;
+    item.id = mServerId;
+    item.data = calendarMap;
+
+    Q_EMIT calendarCreated(item);
 }
 
 } // namespace Akonadi

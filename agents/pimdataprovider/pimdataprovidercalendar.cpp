@@ -197,6 +197,13 @@ void PimDataProviderCalendar::slotInitialEventsFetched(KJob *job)
     const QString path = QStringLiteral("/org/pim/dataprovider/Calendar/Servers/") + encodeForDBusPath(mServerId) + QStringLiteral("/Calendar/")
         + encodeForDBusPath(mCalendarId);
     QDBusConnection::sessionBus().registerObject(path, this, QDBusConnection::ExportAdaptors);
+
+    QVariantMap calendarMap;
+    calendarMap.insert(QStringLiteral("path"), path);
+    calendarMap.insert(QStringLiteral("id"), mCalendarId);
+    calendarMap.insert(QStringLiteral("name"), mName);
+    calendarMap.insert(QStringLiteral("color"), mColor);
+    Q_EMIT calendarFinishedLoading(calendarMap);
 }
 
 } // namespace Akonadi

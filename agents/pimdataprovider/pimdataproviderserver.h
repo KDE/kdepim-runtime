@@ -44,8 +44,12 @@ Q_SIGNALS:
     void calendarChanged(const PimDataProviderItem &calendar);
     void calendarDeleted(const QString &serverId, const QString &calendarId);
 
+    void serverFinishedLoading(const QString &serverId);
+
 private:
     void slotInitialCalendarsFetched(KJob *job);
+
+    void slotCalendarFinishedLoading(const QVariantMap &calendarMap);
 
     QString mServerId;
     QMap<QString, std::shared_ptr<PimDataProviderCalendar>> mCalendars;

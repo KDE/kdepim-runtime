@@ -47,6 +47,8 @@ private:
     void slotServerAdded(const Akonadi::AgentInstance &instance);
     void slotServerRemoved(const Akonadi::AgentInstance &instance);
 
+    void slotServerFinishedLoading(const QString &serverId);
+
     void slotCalendarAdded(const Akonadi::Collection &collection);
     void slotCalendarUpdated(const Akonadi::Collection &collection);
     void slotCalendarRemoved(const Akonadi::Collection &collection);
