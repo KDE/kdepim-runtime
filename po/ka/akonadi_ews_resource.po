@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-11-26 01:05+0000\n"
-"PO-Revision-Date: 2025-05-01 03:45+0200\n"
+"PO-Revision-Date: 2026-11-26 06:24+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.10\n"
 
 #: ewsautodiscoveryjob.cpp:45 ewsautodiscoveryjob.cpp:52
 #, kde-format
@@ -1263,6 +1263,8 @@ msgid ""
 "Calendar folders synchronized once in full to fetch items stored without "
 "payload by earlier versions"
 msgstr ""
+"კალენდრის საქაღალდეების სინქრონიზაცია სრულად ერთხელ ხდება, შემდეგ კი, "
+"მხოლოდ, წინა ვერსიებთან სხვაობების"
 
 #: ewssubscriptionwidget.cpp:178
 #, kde-format
