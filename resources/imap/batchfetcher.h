@@ -51,4 +51,7 @@ private:
     KIMAP::ImapInterval m_searchUidInterval;
     bool m_gmailEnabled = false;
     bool m_searchInChunks = false;
+    // Only deliver messages whose UID is within this interval (used when listing by sequence numbers)
+    KIMAP::ImapInterval m_uidFilter;
+    bool m_listBySequence = false;
 };
