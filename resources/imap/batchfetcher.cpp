@@ -39,18 +39,6 @@ void BatchFetcher::setSearchUids(const KIMAP::ImapInterval &interval)
 
     // MS Exchange can't handle big results so we have to split the search into small chunks
     m_searchInChunks = m_session->serverGreeting().contains("Microsoft Exchange");
-
-    // The chunks are UID ranges, so the number of SEARCH commands grows with UIDNEXT rather than with the number
-    // of messages (a mailbox with UIDNEXT 300000 needs 150 round trips, even if it only holds a few messages).
-    // When we only list flags we don't need to know the UIDs beforehand: fetch by sequence numbers instead,
-    // the UIDs are part of the response, and drop what is outside of the requested UID interval.
-    if (m_searchInChunks && m_scope.mode == KIMAP::FetchJob::FetchScope::Flags && m_scope.changedSince == 0 && interval.hasDefinedEnd()) {
-        m_listBySequence = true;
-        m_uidFilter = interval;
-        m_searchUidInterval = KIMAP::ImapInterval();
-        // Open-ended on purpose: the message count we know from SELECT may be outdated by now
-        m_currentSet.add(KIMAP::ImapInterval(1, 0));
-    }
 }
 
 void BatchFetcher::setGmailExtensionsEnabled(bool enable)
@@ -62,11 +50,7 @@ static const int maxAmountOfUidToSearchInOneTime = 2000;
 
 void BatchFetcher::start()
 {
-    if (m_listBySequence) {
-        qCDebug(IMAPRESOURCE_LOG) << "Listing flags by sequence numbers instead of searching UIDs" << m_uidFilter.begin() << m_uidFilter.end();
-        m_uidBased = false;
-        fetchNextBatch();
-    } else if (m_searchUidInterval.size()) {
+    if (m_searchUidInterval.size()) {
         // Search in chunks also Exchange can handle
         const KIMAP::ImapInterval::Id firstUidToSearch = m_searchUidInterval.begin();
         const KIMAP::ImapInterval::Id lastUidToSearch =
@@ -178,9 +162,6 @@ void BatchFetcher::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messa
     Akonadi::Item::List addedItems;
     for (auto msg = messages.cbegin(), end = messages.cend(); msg != end; ++msg) {
         // qDebug( 5327 ) << "Flags: " << i.flags();
-        if (m_listBySequence && (msg->uid < m_uidFilter.begin() || msg->uid > m_uidFilter.end())) {
-            continue;
-        }
         bool ok;
         const auto item = m_messageHelper->createItemFromMessage(msg->message, msg->uid, msg->size, msg->attributes, msg->flags, fetch->scope(), ok);
         if (ok) {
